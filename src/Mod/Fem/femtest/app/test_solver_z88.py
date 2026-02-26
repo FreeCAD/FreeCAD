@@ -89,14 +89,14 @@ class TestSolverZ88(unittest.TestCase):
     def test_ccx_cantilever_faceload(self):
         from femexamples.ccx_cantilever_faceload import setup
 
-        setup(self.document, "z88")
+        setup(self.document, "z88", test_mode=True)
         self.inputfile_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
     def test_ccx_cantilever_nodeload(self):
         from femexamples.ccx_cantilever_nodeload import setup
 
-        setup(self.document, "z88")
+        setup(self.document, "z88", test_mode=True)
         self.inputfile_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************

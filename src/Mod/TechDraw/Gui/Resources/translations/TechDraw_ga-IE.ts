@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1696"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>Toise Uillinne</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1697"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1505"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>Toise Trastomhas</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1506"/>
@@ -1805,7 +1805,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1457"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Toise Ga</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1458"/>
@@ -2997,7 +2997,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="525"/>
       <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+      <translation>Méid cló</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="566"/>
@@ -3943,7 +3943,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <location filename="../../ViewProviderDimension.cpp" line="136"/>
       <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Cuir %1 in Eagar</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
@@ -4521,7 +4521,7 @@ Angle, surface finish, root</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="219"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Taobhanna smeach</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="241"/>
@@ -4871,7 +4871,7 @@ when hatching a face with a PAT pattern</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="26"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Anótáil</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="43"/>
@@ -5186,7 +5186,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="616"/>
       <source>Normal</source>
-      <translation type="unfinished">Normal</translation>
+      <translation>Gnáth</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="508"/>
@@ -5460,7 +5460,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="147"/>
       <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+      <translation>Méid cló</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="168"/>
@@ -5583,7 +5583,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation type="unfinished">Dimension tool diameter/radius mode</translation>
+      <translation>Mód trastomhas/ga uirlis thoise</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
@@ -5604,17 +5604,17 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="161"/>
       <source>Single tool</source>
-      <translation type="unfinished">Single tool</translation>
+      <translation>Uirlis aonair</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="162"/>
       <source>Separated tools</source>
-      <translation type="unfinished">Separated tools</translation>
+      <translation>Uirlisí scartha</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
       <source>Both</source>
-      <translation type="unfinished">Both</translation>
+      <translation>An dá</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="181"/>
@@ -5629,7 +5629,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="183"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
   </context>
   <context>
@@ -6292,7 +6292,7 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
       <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+      <translation>Méid cló</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="76"/>
@@ -6412,12 +6412,12 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskBalloon.ui" line="273"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>Bréagach</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="278"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>Fíor</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="305"/>
@@ -6435,7 +6435,7 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="52"/>
       <source>Elements</source>
-      <translation type="unfinished">Elements</translation>
+      <translation>Eilimintí</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="83"/>
@@ -6475,7 +6475,7 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskCenterLine.ui" line="146"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="17"/>
@@ -6683,7 +6683,7 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskComplexSection.ui" line="387"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Réamhamharc</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="398"/>
@@ -6922,7 +6922,7 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="718"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Réamhamharc</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="136"/>
@@ -6992,7 +6992,7 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="418"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="428"/>
@@ -7022,12 +7022,12 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="479"/>
       <source>Degree</source>
-      <translation type="unfinished">Degree</translation>
+      <translation>Céim</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="521"/>
       <source>Other</source>
-      <translation type="unfinished">Other</translation>
+      <translation>Eile</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="533"/>
@@ -7042,12 +7042,12 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="553"/>
       <source>Counterbore</source>
-      <translation type="unfinished">Counterbore</translation>
+      <translation>Frithbholl</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="563"/>
       <source>Countersink</source>
-      <translation type="unfinished">Countersink</translation>
+      <translation>Frith-dhúnadh</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="583"/>
@@ -7131,7 +7131,7 @@ Ar mhaith leat leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../TaskDetail.ui" line="242"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="55"/>
@@ -7369,12 +7369,12 @@ by negative value of &apos;Overtolerance&apos;.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="232"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="253"/>
       <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+      <translation>Méid cló</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="272"/>
@@ -7664,7 +7664,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="199"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="212"/>
@@ -7809,7 +7809,7 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="85"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="45"/>
@@ -7824,12 +7824,12 @@ You can pick further points to get line segments.</translation>
     <message>
       <location filename="../../TaskLineDecor.ui" line="72"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>Bréagach</translation>
     </message>
     <message>
       <location filename="../../TaskLineDecor.ui" line="77"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>Fíor</translation>
     </message>
   </context>
   <context>
@@ -8207,7 +8207,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="22"/>
       <source>All</source>
-      <translation type="unfinished">All</translation>
+      <translation>Gach</translation>
     </message>
     <message>
       <location filename="../../TaskRestoreLines.ui" line="39"/>
@@ -8245,7 +8245,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="53"/>
       <source>Base feature</source>
-      <translation type="unfinished">Base feature</translation>
+      <translation>Gné bhunúsach</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="67"/>
@@ -8260,7 +8260,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskRichAnno.ui" line="138"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="148"/>
@@ -8433,7 +8433,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="447"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Réamhamharc</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="458"/>
@@ -9196,7 +9196,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Anótáil</translation>
     </message>
   </context>
   <context>
@@ -9204,7 +9204,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>Image</source>
-      <translation type="unfinished">Image</translation>
+      <translation>Íomhá</translation>
     </message>
   </context>
   <context>
@@ -9220,7 +9220,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
-      <translation type="unfinished">Draft</translation>
+      <translation>Dréacht</translation>
     </message>
   </context>
   <context>
@@ -9311,7 +9311,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="147"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="181"/>
@@ -9341,7 +9341,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="218"/>
       <source>Arc of circle</source>
-      <translation type="unfinished">Arc of circle</translation>
+      <translation>Arc an chiorcail</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="191"/>
@@ -9451,17 +9451,17 @@ there is an open task dialog.</translation>
   <context>
     <name>TechDraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="138"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="139"/>
       <source>Fill Template Fields In </source>
       <translation type="unfinished">Fill Template Fields In </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="145"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="146"/>
       <source>Update</source>
       <translation type="unfinished">Update</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="425"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="406"/>
       <source>Update All</source>
       <translation type="unfinished">Update All</translation>
     </message>
@@ -9479,27 +9479,27 @@ there is an open task dialog.</translation>
   <context>
     <name>Techdraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="81"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="82"/>
       <source> file does not contain the correct field names therefore exiting</source>
       <translation type="unfinished"> file does not contain the correct field names therefore exiting</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="87"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="88"/>
       <source> file has not been found therefore exiting</source>
       <translation type="unfinished"> file has not been found therefore exiting</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="108"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="109"/>
       <source>View or projection group missing</source>
       <translation type="unfinished">View or projection group missing</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="465"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="446"/>
       <source>Corresponding template fields missing</source>
       <translation type="unfinished">Corresponding template fields missing</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="554"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="535"/>
       <source>Fill template fields</source>
       <translation type="unfinished">Fill template fields</translation>
     </message>
@@ -9530,7 +9530,7 @@ there is an open task dialog.</translation>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
-      <translation type="unfinished">No edge selected</translation>
+      <translation>Níor roghnaíodh aon imeall</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
@@ -9554,7 +9554,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="60"/>
       <source>Dashed</source>
-      <translation type="unfinished">Dashed</translation>
+      <translation>Briste</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="61"/>
@@ -9579,7 +9579,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="65"/>
       <source>Dotted</source>
-      <translation type="unfinished">Dotted</translation>
+      <translation>Poncaithe</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="66"/>
@@ -9637,7 +9637,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="81"/>
       <source>Dashed</source>
-      <translation type="unfinished">Dashed</translation>
+      <translation>Briste</translation>
     </message>
     <message>
       <location filename="../../../App/LineNameEnum.cpp" line="82"/>
@@ -9886,7 +9886,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
       <source>Simple</source>
-      <translation type="unfinished">Simple</translation>
+      <translation>Simplí</translation>
     </message>
   </context>
   <context>

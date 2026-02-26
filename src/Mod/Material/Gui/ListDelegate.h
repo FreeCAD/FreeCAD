@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_LISTDELEGATE_H
-#define MATGUI_LISTDELEGATE_H
+#pragma once
 
 #include <QDialog>
 #include <QDir>
@@ -76,5 +75,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_LISTDELEGATE_H

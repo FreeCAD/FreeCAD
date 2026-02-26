@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPad_H
-#define PARTGUI_ViewProviderPad_H
+#pragma once
 
 #include "ViewProviderExtrude.h"
 
@@ -50,6 +49,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderPad_H

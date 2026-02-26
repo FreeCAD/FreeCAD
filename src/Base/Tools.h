@@ -23,12 +23,9 @@
  ***************************************************************************/
 
 
-#ifndef SRC_BASE_TOOLS_H_
-#define SRC_BASE_TOOLS_H_
+#pragma once
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 #include <algorithm>
 #include <cmath>
 #include <numbers>
@@ -428,6 +425,3 @@ template<class... Ts>
 Overloads(Ts...) -> Overloads<Ts...>;
 
 }  // namespace Base
-
-
-#endif  // SRC_BASE_TOOLS_H_

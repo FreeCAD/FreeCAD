@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DLG_ABOUT_H
-#define GUI_DLG_ABOUT_H
+#pragma once
 
 #include <QDialog>
 #include <QTextBrowser>
@@ -104,5 +103,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DLG_ABOUT_H

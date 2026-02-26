@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DOWNLOADMANAGER_H
-#define GUI_DIALOG_DOWNLOADMANAGER_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QDialog>
@@ -127,5 +126,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DOWNLOADMANAGER_H

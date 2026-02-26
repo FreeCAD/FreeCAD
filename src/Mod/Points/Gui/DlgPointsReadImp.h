@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef POINTSGUI_DLGREADPOINTS_H
-#define POINTSGUI_DLGREADPOINTS_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -57,5 +56,3 @@ private:
 };
 
 }  // namespace PointsGui
-
-#endif  // POINTSGUI_DLGREADPOINTS_H

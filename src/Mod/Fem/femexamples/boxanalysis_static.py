@@ -60,7 +60,7 @@ See forum topic post:
     )
 
 
-def setup(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     # init FreeCAD document
     if doc is None:
@@ -71,7 +71,7 @@ def setup(doc=None, solvertype="ccxtools"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # setup box static, add a fixed, force and a pressure constraint
-    doc = setup_boxanalysisbase(doc, solvertype)
+    doc = setup_boxanalysisbase(doc, solvertype, test_mode)
     geom_obj = doc.Box
     analysis = doc.Analysis
 

@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef CLOUD_GUI_PRECOMPILED_H
-#define CLOUD_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -49,5 +48,3 @@
 
 // Qt Toolkit
 #include <Gui/QtAll.h>
-
-#endif  // GUI_PRECOMPILED_H

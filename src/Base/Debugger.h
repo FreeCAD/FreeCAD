@@ -23,14 +23,11 @@
  ***************************************************************************/
 
 
-#ifndef BASE_DEBUGGER_H
-#define BASE_DEBUGGER_H
+#pragma once
 
 #include <QEventLoop>
 #include <QObject>
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 namespace Base
 {
@@ -83,5 +80,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_DEBUGGER_H

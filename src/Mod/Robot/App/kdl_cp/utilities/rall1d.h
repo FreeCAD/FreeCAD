@@ -24,8 +24,7 @@
  *      $Name:  $ 
  ****************************************************************************/
  
-#ifndef Rall1D_H
-#define Rall1D_H
+#pragma once
 #include <assert.h>
 #include "utility.h"
 
@@ -473,7 +472,3 @@ INLINE  bool Equal(const Rall1d<T,V,S>& y,const Rall1d<T,V,S>& x,double eps=epsi
 }
 
 }
-
-
-
-#endif

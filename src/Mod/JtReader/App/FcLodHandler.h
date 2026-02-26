@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FcLodHandler_HEADER
-#define FcLodHandler_HEADER
+#pragma once
 
 #include "JrJt/LodHandler.h"
 
@@ -32,6 +31,3 @@ class FcLodHandler: public LodHandler
 public:
     virtual void startLod();
 };
-
-
-#endif

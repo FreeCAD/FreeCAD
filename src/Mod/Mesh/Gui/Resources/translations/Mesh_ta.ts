@@ -1726,7 +1726,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>நேரம்</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="191"/>

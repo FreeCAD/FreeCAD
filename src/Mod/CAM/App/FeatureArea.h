@@ -21,8 +21,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PATH_FeatureArea_H
-#define PATH_FeatureArea_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -99,6 +98,3 @@ public:
 using FeatureAreaViewPython = App::FeaturePythonT<FeatureAreaView>;
 
 }  // namespace Path
-
-
-#endif  // PATH_FeaturePath_H

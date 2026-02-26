@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_VIEWPROJ_H
-#define BASE_VIEWPROJ_H
+#pragma once
 
 #include "Matrix.h"
 
@@ -122,5 +121,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_VIEWPROJ_H

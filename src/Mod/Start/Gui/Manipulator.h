@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_MANIPULATOR_H
-#define FREECAD_MANIPULATOR_H
+#pragma once
 
 #include <Gui/WorkbenchManipulator.h>
 
@@ -39,5 +38,3 @@ protected:
 };
 
 }  // namespace StartGui
-
-#endif  // FREECAD_MANIPULATOR_H

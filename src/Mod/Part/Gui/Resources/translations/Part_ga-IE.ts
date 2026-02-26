@@ -25,7 +25,7 @@
       <location filename="../../AttacherTexts.cpp" line="845"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Face</translation>
+      <translation>Aghaidh</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="847"/>
@@ -501,7 +501,7 @@
       <location filename="../../AttacherTexts.cpp" line="712"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Line perpendicular to surface at point set by vertex.</translation>
+      <translation>Líne ingearach leis an dromchla ag pointe atá socraithe ag an rinn.</translation>
     </message>
   </context>
   <context>
@@ -516,91 +516,91 @@
       <location filename="../../AttacherTexts.cpp" line="297"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Tá an ceangaltán díchumasaithe. Is féidir an réad a bhogadh trí airí an tSeatáin a chur in eagar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="306"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Aistrigh bunús</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Tá an bunús ailínithe chun meaitseáil leis an mBuaicphointe. Rialaítear an treoshuíomh ag an airí Socrúcháin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="316"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XY</translation>
+      <translation>XY an Réada</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+      <translation>Tá an plána ailínithe le plána áitiúil XY an réada nasctha.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="325"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XZ</translation>
+      <translation>XZ an Réada</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+      <translation>Tá an plána ailínithe le plána áitiúil XZ an réada nasctha.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="334"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's YZ</translation>
+      <translation>YZ an Réada</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="335"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+      <translation>Tá an plána ailínithe le plána áitiúil YZ an réada nasctha.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="343"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY comhthreomhar leis an plána</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="344"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</translation>
+      <translation>Tá an plána X' Y' comhthreomhar leis an bplána (XY an réada) agus téann sé tríd an rinnphointe</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="353"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane face</translation>
+      <translation>Aghaidh plána</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="354"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+      <translation>Tá an plána ailínithe chun comhthráthach a dhéanamh leis an aghaidh phlánach.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="362"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Tangent to surface</translation>
+      <translation>Tadhlaí leis an dromchla</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="363"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+      <translation>Déantar an plána mar thadhlaí don dromchla ag an rinn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="371"/>
@@ -612,13 +612,13 @@
       <location filename="../../AttacherTexts.cpp" line="372"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Déantar an plána a thadhlaí leis an imeall. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="380"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet NB</translation>
+      <translation>Frenet NB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="381"/>
@@ -626,91 +626,91 @@
       <location filename="../../AttacherTexts.cpp" line="401"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Ailínigh le córas comhordanáidí Frenet-Serret an imeall cuartha. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="390"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TN</translation>
+      <translation>Frenet, TN</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="400"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Frenet TB</translation>
+      <translation>Frenet TB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="410"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Comhlárnach</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="411"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+      <translation>Ailínigh le plána i gciorcal luaineach imeall. Tá an bunús ailínithe le pointe cuartha. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="420"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>An Rannóg Réabhlóide</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="421"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+      <translation>Tá an plána ingearach leis an imeall, agus tá an ais-Y meaitseáilte le hais an chiorcail luaineach. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="430"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane by 3 points</translation>
+      <translation>Plána faoi 3 phointe</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="431"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align plane to pass through three vertices.</translation>
+      <translation>Ailínigh an plána chun dul trí thrí bhuaicphointe.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="439"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to 3 points</translation>
+      <translation>Gnáth go 3 phointe</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="440"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
+      <translation>Rachaidh an plána trí na chéad dá bhuaicphointe, agus beidh sé ingearach leis an plána a théann trí thrí bhuaicphointe.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="449"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Fillte</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="450"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+      <translation>Mód speisialtachta le haghaidh polaihéadraí fillte. Roghnaigh 4 imeall in ord: imeall fillte, líne fillte, líne fillte eile, imeall fillte eile. Ailíneofar an plána le fillte an chéad imeall.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="460"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Inertia 2-3</translation>
+      <translation>Táimhe 2-3</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="461"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
+      <translation>Plána tógtha ar an dara agus an tríú príomh-ais táimhe (téann sé trí lár an mhaise).</translation>
     </message>
   </context>
   <context>
@@ -725,109 +725,109 @@
       <location filename="../../AttacherTexts.cpp" line="55"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Attachment is disabled. Object can be moved by editing Placement property.</translation>
+      <translation>Tá an ceangaltán díchumasaithe. Is féidir an réad a bhogadh trí airí an tSeatáin a chur in eagar.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="64"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Translate origin</translation>
+      <translation>Aistrigh bunús</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+      <translation>Tá an bunús ailínithe chun meaitseáil leis an mBuaicphointe. Rialaítear an treoshuíomh ag an airí Socrúcháin.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
       <source>Object's X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Y Z</translation>
+      <translation>X Y Z an Réada</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="75"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+      <translation>Déantar socrúchán cothrom le Socrúchán réada nasctha.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Object's X Z Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Z Y</translation>
+      <translation>Réada X Z Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
       <source>X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local X, Z, -Y, respectively.</translation>
+      <translation>Tá aiseanna X', Y', Z' meaitseáilte le X, Z, -Y áitiúla an réada, faoi seach.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>Object's Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's Y Z X</translation>
+      <translation>Y Z X an Réada</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="93"/>
       <source>X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X', Y', Z' axes are matched with object's local Y, Z, X, respectively.</translation>
+      <translation>Tá aiseanna X', Y', Z' meaitseáilte le Y, Z, X áitiúla an réada, faoi seach.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>XY parallel to plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY comhthreomhar leis an plána</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="102"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is parallel to the plane (object's XY) and passes through the vertex.</translation>
+      <translation>Tá an plána X' Y' comhthreomhar leis an plána (XY an réada) agus téann sé tríd an rinn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY on plane</translation>
+      <translation>XY ar plána</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is aligned to coincide planar face.</translation>
+      <translation>Tá an plána X' Y' ailínithe chun an aghaidh phlánach a chomhthráthú.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="120"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY tangent to surface</translation>
+      <translation>Tadhlaí XY leis an dromchla</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="121"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
+      <translation>Déantar an plána X' Y' a thadhlaí leis an dromchla ag an rinn.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="129"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Z tangent to edge</translation>
+      <translation>Z tadhlaí leis an imeall</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Tá ais Z' ailínithe le bheith tadhlaíoch leis an imeall. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="139"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet NBT</translation>
+      <translation>Frenet NBT</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="140"/>
@@ -835,43 +835,43 @@
       <location filename="../../AttacherTexts.cpp" line="160"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+      <translation>Ailínigh le córas comhordanáidí Frenet-Serret an imeall cuartha. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TNB</translation>
+      <translation>Frenet TNB</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Frenet TBN</translation>
+      <translation>Frenet TBN</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="169"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Concentric</translation>
+      <translation>Comhlárnach</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>An Rannóg Réabhlóide</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Ailínigh ais Y chun ais chiorcail luaineach imeall a mheaitseáil. Sainmhíníonn nasc buaicphointe roghnach cá háit.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="208"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Folding</translation>
+      <translation>Fillte</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="170"/>
@@ -1108,7 +1108,7 @@
       <location filename="../../DlgBlock.ui" line="76"/>
       <location filename="../../DlgBlock.ui" line="237"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="93"/>
@@ -1332,7 +1332,7 @@
     <message>
       <location filename="../../Command.cpp" line="1621"/>
       <source>Chamfer</source>
-      <translation type="unfinished">Chamfer</translation>
+      <translation>Seaimféaráil</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1622"/>
@@ -1478,7 +1478,7 @@
     <message>
       <location filename="../../Command.cpp" line="1677"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Trasghearrthacha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1678"/>
@@ -1606,7 +1606,7 @@
     <message>
       <location filename="../../Command.cpp" line="1593"/>
       <source>Fillet</source>
-      <translation type="unfinished">Fillet</translation>
+      <translation>Filléad</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1594"/>
@@ -2118,7 +2118,7 @@ teilgean.</translation>
     <message>
       <location filename="../../Command.cpp" line="444"/>
       <source>Common</source>
-      <translation type="unfinished">Common</translation>
+      <translation>Coitianta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="544"/>
@@ -2228,7 +2228,7 @@ teilgean.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.cpp" line="489"/>
       <source>Change face colors</source>
-      <translation type="unfinished">Change face colors</translation>
+      <translation>Athraigh dathanna aghaidhe</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="225"/>
@@ -2249,12 +2249,12 @@ teilgean.</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="364"/>
       <location filename="../../TaskShapeBuilder.cpp" line="418"/>
       <source>Face</source>
-      <translation type="unfinished">Face</translation>
+      <translation>Aghaidh</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="483"/>
       <source>Shell</source>
-      <translation type="unfinished">Shell</translation>
+      <translation>Sliogán</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="541"/>
@@ -2269,12 +2269,12 @@ teilgean.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1603"/>
       <source>Project on surface</source>
-      <translation type="unfinished">Project on surface</translation>
+      <translation>Tionscadal ar dhromchla</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="211"/>
       <source>Edit mirror</source>
-      <translation type="unfinished">Edit mirror</translation>
+      <translation>Cuir scáthán in eagar</translation>
     </message>
   </context>
   <context>
@@ -2282,100 +2282,100 @@ teilgean.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>Glacadh leis an rogha</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Tagairt 1</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="52"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Tagairt 2</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="69"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Tagairt 3</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="86"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Tagairt 4</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="101"/>
       <source>Attachment mode</source>
-      <translation type="unfinished">Attachment mode</translation>
+      <translation>Mód ceangail</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset in its Local Coordinate System</source>
-      <translation type="unfinished">Attachment Offset in its Local Coordinate System</translation>
+      <translation>Fritháireamh Ceangail ina Chóras Comhordanáidí Áitiúil</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
       <source>Around X-axis</source>
-      <translation type="unfinished">Around X-axis</translation>
+      <translation>Timpeall an ais-X</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="254"/>
       <source>Rotation around the X-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the X-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Rothlú timpeall an ais-X
+Nóta: Léirítear an socrúchán i spás áitiúil an réada atá á cheangal.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="280"/>
       <source>Around Y-axis</source>
-      <translation type="unfinished">Around Y-axis</translation>
+      <translation>Timpeall ais-Y</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="299"/>
       <source>Rotation around the Y-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the Y-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Rothlú timpeall an ais-Y
+Nóta: Léirítear an socrúchán i spás áitiúil an réada atá á cheangal.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
       <source>Around Z-axis</source>
-      <translation type="unfinished">Around Z-axis</translation>
+      <translation>Timpeall ais Z</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
       <source>Rotation around the Z-axis
 Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Rotation around the Z-axis
-Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Rothlú timpeall ais-Z
+Nóta: Léirítear an socrúchán i spás áitiúil an réada atá á cheangal.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="158"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="190"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="222"/>
       <source>Note: The placement is expressed in local space of object being attached.</source>
-      <translation type="unfinished">Note: The placement is expressed in local space of object being attached.</translation>
+      <translation>Nóta: Léirítear an socrúchán i spás áitiúil an réada atá á cheangal.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="136"/>
       <source>In X-direction</source>
-      <translation type="unfinished">In X-direction</translation>
+      <translation>I dtreo-X</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="171"/>
       <source>In Y-direction</source>
-      <translation type="unfinished">In Y-direction</translation>
+      <translation>I dtreo-Y</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="203"/>
       <source>In Z-direction</source>
-      <translation type="unfinished">In Z-direction</translation>
+      <translation>I dtreo-Z</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="367"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Taobhanna smeach</translation>
     </message>
   </context>
   <context>
@@ -2393,17 +2393,17 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
       <source>XY</source>
-      <translation type="unfinished">XY</translation>
+      <translation>XY</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="36"/>
       <source>XZ</source>
-      <translation type="unfinished">XZ</translation>
+      <translation>XZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="43"/>
       <source>YZ</source>
-      <translation type="unfinished">YZ</translation>
+      <translation>YZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
@@ -2418,22 +2418,22 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation type="unfinished">Sections</translation>
+      <translation>Rannóga</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
       <source>On both sides</source>
-      <translation type="unfinished">On both sides</translation>
+      <translation>Ar an dá thaobh</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation type="unfinished">Count</translation>
+      <translation>Líon</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="341"/>
       <source>Cannot compute cross-sections</source>
-      <translation type="unfinished">Cannot compute cross-sections</translation>
+      <translation>Ní féidir trasghearrthacha a ríomh</translation>
     </message>
   </context>
   <context>
@@ -2452,7 +2452,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="42"/>
       <source>Difference</source>
-      <translation type="unfinished">Difference</translation>
+      <translation>Difríocht</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="49"/>
@@ -2467,81 +2467,81 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
       <source>First shape</source>
-      <translation type="unfinished">First shape</translation>
+      <translation>An chéad chruth</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="81"/>
       <location filename="../../DlgBooleanOperation.ui" line="119"/>
       <source>Solids</source>
-      <translation type="unfinished">Solids</translation>
+      <translation>Solaid</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="86"/>
       <location filename="../../DlgBooleanOperation.ui" line="124"/>
       <source>Shells</source>
-      <translation type="unfinished">Shells</translation>
+      <translation>Sliogáin</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="91"/>
       <location filename="../../DlgBooleanOperation.ui" line="129"/>
       <source>Compounds</source>
-      <translation type="unfinished">Compounds</translation>
+      <translation>Comhdhúile</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="96"/>
       <location filename="../../DlgBooleanOperation.ui" line="134"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>Aghaidheanna</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="114"/>
       <source>Second shape</source>
-      <translation type="unfinished">Second shape</translation>
+      <translation>An dara cruth</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="155"/>
       <source>Swap Selection</source>
-      <translation type="unfinished">Swap Selection</translation>
+      <translation>Malartaigh an Rogha</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="425"/>
       <source>Cannot perform a boolean operation with the same shape</source>
-      <translation type="unfinished">Cannot perform a boolean operation with the same shape</translation>
+      <translation>Ní féidir oibríocht Boole a dhéanamh leis an gcruth céanna</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="435"/>
       <source>No active document available</source>
-      <translation type="unfinished">No active document available</translation>
+      <translation>Níl aon doiciméad gníomhach ar fáil</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="414"/>
       <source>First, select a shape on the left side</source>
-      <translation type="unfinished">First, select a shape on the left side</translation>
+      <translation>Ar dtús, roghnaigh cruth ar an taobh clé</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="418"/>
       <source>First, select a shape on the right side</source>
-      <translation type="unfinished">First, select a shape on the right side</translation>
+      <translation>Ar dtús, roghnaigh cruth ar an taobh deas</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="447"/>
       <source>One of the selected objects does not exist anymore</source>
-      <translation type="unfinished">One of the selected objects does not exist anymore</translation>
+      <translation>Níl ceann de na rudaí roghnaithe ann a thuilleadh</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="457"/>
       <source>Performing union on non-solids is not possible</source>
-      <translation type="unfinished">Performing union on non-solids is not possible</translation>
+      <translation>Ní féidir aontas a dhéanamh ar neamh-sholaid</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="468"/>
       <source>Performing intersection on non-solids is not possible</source>
-      <translation type="unfinished">Performing intersection on non-solids is not possible</translation>
+      <translation>Ní féidir trasnú a dhéanamh ar neamh-sholaid</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="479"/>
       <source>Performing difference on non-solids is not possible</source>
-      <translation type="unfinished">Performing difference on non-solids is not possible</translation>
+      <translation>Ní féidir difríocht a dhéanamh ar neamh-sholaid</translation>
     </message>
   </context>
   <context>
@@ -2549,7 +2549,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1204"/>
       <source>Chamfer Edges</source>
-      <translation type="unfinished">Chamfer Edges</translation>
+      <translation>Imeall Chamfer</translation>
     </message>
   </context>
   <context>
@@ -2557,22 +2557,22 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="23"/>
       <source>If not empty, field contents will be used in the STEP file header</source>
-      <translation type="unfinished">If not empty, field contents will be used in the STEP file header</translation>
+      <translation>Mura bhfuil sé folamh, úsáidfear ábhar an réimse i gceanntásc an chomhaid STEP</translation>
     </message>
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="26"/>
       <source>Header</source>
-      <translation type="unfinished">Header</translation>
+      <translation>Ceanntásc</translation>
     </message>
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="32"/>
       <source>Company</source>
-      <translation type="unfinished">Company</translation>
+      <translation>Cuideachta</translation>
     </message>
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="42"/>
       <source>Author</source>
-      <translation type="unfinished">Author</translation>
+      <translation>Údar</translation>
     </message>
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="52"/>
@@ -2698,7 +2698,7 @@ méid an chomhaid STEP a eascraíonn as a íoslaghdú.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="179"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="204"/>
@@ -2735,7 +2735,7 @@ Más ionann an dá fhad agus náid, úsáidtear méid an treo.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
       <source>Custom direction</source>
-      <translation type="unfinished">Custom direction</translation>
+      <translation>Treo saincheaptha</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="99"/>
@@ -2915,7 +2915,7 @@ Más ionann an dá fhad agus náid, úsáidtear méid an treo.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Paraiméadair</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="57"/>
@@ -2935,7 +2935,7 @@ Más ionann an dá fhad agus náid, úsáidtear méid an treo.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
       <source>All</source>
-      <translation type="unfinished">All</translation>
+      <translation>Gach</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="87"/>
@@ -2970,27 +2970,27 @@ Más ionann an dá fhad agus náid, úsáidtear méid an treo.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="296"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>Imill le camfáil</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="988"/>
       <source>Start length</source>
-      <translation type="unfinished">Start length</translation>
+      <translation>Fad tosaigh</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="293"/>
       <source>Equal distance</source>
-      <translation type="unfinished">Equal distance</translation>
+      <translation>Fad comhionann</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="290"/>
       <source>Chamfer parameters</source>
-      <translation type="unfinished">Chamfer parameters</translation>
+      <translation>Paraiméadair Chamfer</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="294"/>
       <source>Two distances</source>
-      <translation type="unfinished">Two distances</translation>
+      <translation>Dhá achar</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="297"/>
@@ -3000,74 +3000,74 @@ Más ionann an dá fhad agus náid, úsáidtear méid an treo.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="298"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>Méid2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="301"/>
       <source>Fillet parameter</source>
-      <translation type="unfinished">Fillet parameter</translation>
+      <translation>Paraiméadar fillte</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="302"/>
       <source>Fillet type</source>
-      <translation type="unfinished">Fillet type</translation>
+      <translation>Cineál filléad</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="303"/>
       <source>Edges to fillet</source>
-      <translation type="unfinished">Edges to fillet</translation>
+      <translation>Imill le filléidiú</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="304"/>
       <location filename="../../DlgFilletEdges.cpp" line="991"/>
       <source>Start radius</source>
-      <translation type="unfinished">Start radius</translation>
+      <translation>Ga tosaithe</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="305"/>
       <source>End radius</source>
-      <translation type="unfinished">End radius</translation>
+      <translation>Ga deiridh</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="820"/>
       <location filename="../../DlgFilletEdges.cpp" line="883"/>
       <source>Edge%1</source>
-      <translation type="unfinished">Edge%1</translation>
+      <translation>Imeall%1</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="978"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1041"/>
       <source>No valid shape is selected.
 Select a valid shape in the drop-down box first.</source>
-      <translation type="unfinished">No valid shape is selected.
-Select a valid shape in the drop-down box first.</translation>
+      <translation>Níl cruth bailí roghnaithe.
+Roghnaigh cruth bailí sa bhosca anuas ar dtús.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1099"/>
       <source>No edge entity is checked to fillet.
 Check one or more edge entities first.</source>
-      <translation type="unfinished">No edge entity is checked to fillet.
-Check one or more edge entities first.</translation>
+      <translation>Níl aon eintiteas imeall seiceáilte le filléadú.
+Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
       <location filename="../../DlgFilletEdges.cpp" line="981"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1040"/>
       <source>No shape selected</source>
-      <translation type="unfinished">No shape selected</translation>
+      <translation>Níl aon chruth roghnaithe</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1098"/>
       <source>No edge selected</source>
-      <translation type="unfinished">No edge selected</translation>
+      <translation>Níor roghnaíodh aon imeall</translation>
     </message>
   </context>
   <context>
@@ -3075,7 +3075,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="14"/>
       <source>IGES</source>
-      <translation type="unfinished">IGES</translation>
+      <translation>IGES</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="20"/>
@@ -3085,7 +3085,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="26"/>
       <source>Units for export of IGES</source>
-      <translation type="unfinished">Units for export of IGES</translation>
+      <translation>Aonaid le haghaidh onnmhairiú IGES</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="47"/>
@@ -3105,27 +3105,27 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="71"/>
       <source>Solids and shells will be exported as trimmed surface</source>
-      <translation type="unfinished">Solids and shells will be exported as trimmed surface</translation>
+      <translation>Déanfar solaid agus sliogáin a onnmhairiú mar dhromchla bearrtha</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="74"/>
       <source>Groups of Trimmed Surfaces (type 144)</source>
-      <translation type="unfinished">Groups of Trimmed Surfaces (type 144)</translation>
+      <translation>Grúpaí Dromchlaí Bearrtha (cineál 144)</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="65"/>
       <source>Export Solids and Shells As</source>
-      <translation type="unfinished">Export Solids and Shells As</translation>
+      <translation>Easpórtáil Solaid agus Sliogáin Mar</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
       <source>Solids will be exported as manifold solid B-rep object, shells as shell</source>
-      <translation type="unfinished">Solids will be exported as manifold solid B-rep object, shells as shell</translation>
+      <translation>Déanfar solaid a easpórtáil mar réad B-rep soladach iomadúil, sliogáin mar bhlaosc</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
       <source>Solids (type 186) and shells (type 514) / B-rep mode</source>
-      <translation type="unfinished">Solids (type 186) and shells (type 514) / B-rep mode</translation>
+      <translation>Solaid (cineál 186) agus sliogáin (cineál 514) / mód B-reap</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="100"/>
@@ -3135,32 +3135,32 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="106"/>
       <source>Blank entities will not be imported</source>
-      <translation type="unfinished">Blank entities will not be imported</translation>
+      <translation>Ní dhéanfar eintitis bhána a allmhairiú</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="109"/>
       <source>Skip blank entities</source>
-      <translation type="unfinished">Skip blank entities</translation>
+      <translation>Seachain eintitis bhána</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="119"/>
       <source>If not empty, field contents will be used in the IGES file header</source>
-      <translation type="unfinished">If not empty, field contents will be used in the IGES file header</translation>
+      <translation>Mura bhfuil sé folamh, úsáidfear ábhar an réimse i gceanntásc an chomhaid IGES</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="122"/>
       <source>Header</source>
-      <translation type="unfinished">Header</translation>
+      <translation>Ceanntásc</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="128"/>
       <source>Company</source>
-      <translation type="unfinished">Company</translation>
+      <translation>Cuideachta</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="138"/>
       <source>Author</source>
-      <translation type="unfinished">Author</translation>
+      <translation>Údar</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="148"/>
@@ -3173,7 +3173,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="14"/>
       <source>STEP Import Settings</source>
-      <translation type="unfinished">STEP Import Settings</translation>
+      <translation>Socruithe Iompórtála STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="23"/>
@@ -3183,103 +3183,103 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="48"/>
       <source>Use LinkGroup</source>
-      <translation type="unfinished">Use LinkGroup</translation>
+      <translation>Úsáid Grúpa Nasc</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation type="unfinished">Merges compounds during file reading (slower but higher details)</translation>
+      <translation>Cumascann comhdhúile le linn léamh comhad (mall ach le sonraí níos airde)</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
       <source>Enable STEP compound merge</source>
-      <translation type="unfinished">Enable STEP compound merge</translation>
+      <translation>Cumasaigh cumasc cumaisc STEP</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="45"/>
       <source>Select this to use App::LinkGroup as group container, or else use App::Part</source>
-      <translation type="unfinished">Select this to use App::LinkGroup as group container, or else use App::Part</translation>
+      <translation>Roghnaigh é seo chun App::LinkGroup a úsáid mar choimeádán grúpa, nó bain úsáid as App::Part</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="61"/>
       <source>Select this to import invisible objects</source>
-      <translation type="unfinished">Select this to import invisible objects</translation>
+      <translation>Roghnaigh é seo chun rudaí dofheicthe a allmhairiú</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="64"/>
       <source>Import invisible objects</source>
-      <translation type="unfinished">Import invisible objects</translation>
+      <translation>Iompórtáil rudaí dofheicthe</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="77"/>
       <source>Reduce number of objects using Link array</source>
-      <translation type="unfinished">Reduce number of objects using Link array</translation>
+      <translation>Laghdaigh líon na n-ábhar ag baint úsáide as eagar nasc</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="80"/>
       <source>Reduce number of objects</source>
-      <translation type="unfinished">Reduce number of objects</translation>
+      <translation>Laghdaigh líon na n-ábhar</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="93"/>
       <source>Expand compound shape with multiple solids</source>
-      <translation type="unfinished">Expand compound shape with multiple solids</translation>
+      <translation>Leathnaigh cruth cumaisc le solaid iolracha</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="96"/>
       <source>Expand compound shape</source>
-      <translation type="unfinished">Expand compound shape</translation>
+      <translation>Leathnaigh cruth cumaisc</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="109"/>
       <location filename="../../DlgImportStep.ui" line="112"/>
       <source>Show progress bar when importing</source>
-      <translation type="unfinished">Show progress bar when importing</translation>
+      <translation>Taispeáin barra dul chun cinn agus tú ag iompórtáil</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="125"/>
       <source>Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</source>
-      <translation type="unfinished">Do not use instance names. Useful for some legacy STEP files with non-meaningful auto-generated instance names.</translation>
+      <translation>Ná húsáid ainmneacha samplaí. Úsáideach do roinnt comhad STEP oidhreachta a bhfuil ainmneacha samplaí uathghinte neamhbhríoch iontu.</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="128"/>
       <source>Ignore instance names</source>
-      <translation type="unfinished">Ignore instance names</translation>
+      <translation>Déan neamhaird de ainmneacha samplaí</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="152"/>
       <source>CodePage</source>
-      <translation type="unfinished">CodePage</translation>
+      <translation>LeathanachCód</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="179"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Mód</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="199"/>
       <source>Single document</source>
-      <translation type="unfinished">Single document</translation>
+      <translation>Doiciméad aonair</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="204"/>
       <source>Assembly per document</source>
-      <translation type="unfinished">Assembly per document</translation>
+      <translation>Tionól in aghaidh an doiciméid</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="209"/>
       <source>Assembly per document in sub-directory</source>
-      <translation type="unfinished">Assembly per document in sub-directory</translation>
+      <translation>Tionól in aghaidh an doiciméid i bhfo-eolaire</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="214"/>
       <source>Object per document</source>
-      <translation type="unfinished">Object per document</translation>
+      <translation>Réad in aghaidh an doiciméid</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="219"/>
       <source>Object per document in sub-directory</source>
-      <translation type="unfinished">Object per document in sub-directory</translation>
+      <translation>Réad in aghaidh an doiciméid i bhfo-eolaire</translation>
     </message>
   </context>
   <context>
@@ -3287,7 +3287,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="14"/>
       <source>Cylinder Definition</source>
-      <translation type="unfinished">Cylinder Definition</translation>
+      <translation>Sainmhíniú Sorcóra</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
@@ -3317,12 +3317,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="109"/>
       <source>Parameter</source>
-      <translation type="unfinished">Parameter</translation>
+      <translation>Paraiméadar</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="121"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="141"/>
@@ -3335,12 +3335,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="14"/>
       <source>IGES Input File</source>
-      <translation type="unfinished">IGES Input File</translation>
+      <translation>Comhad Ionchuir IGES</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="20"/>
       <source>File Name</source>
-      <translation type="unfinished">File Name</translation>
+      <translation>Ainm Comhaid</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="54"/>
@@ -3353,7 +3353,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="72"/>
       <source>IGES</source>
-      <translation type="unfinished">IGES</translation>
+      <translation>IGES</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportIgesImp.cpp" line="72"/>
@@ -3371,7 +3371,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="20"/>
       <source>File Name</source>
-      <translation type="unfinished">File Name</translation>
+      <translation>Ainm Comhaid</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="54"/>
@@ -3492,13 +3492,13 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
       <source>Parameter</source>
-      <translation type="unfinished">Parameter</translation>
+      <translation>Paraiméadar</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="240"/>
       <location filename="../../DlgPrimitives.ui" line="331"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="260"/>
@@ -3522,7 +3522,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1914"/>
       <location filename="../../DlgPrimitives.ui" line="1970"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="569"/>
@@ -3554,23 +3554,23 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1064"/>
       <location filename="../../DlgPrimitives.ui" line="1253"/>
       <source>U parameter</source>
-      <translation type="unfinished">U parameter</translation>
+      <translation>Paraiméadar U</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="872"/>
       <source>V parameters</source>
-      <translation type="unfinished">V parameters</translation>
+      <translation>Paraiméadair V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1015"/>
       <source>Radius 3</source>
-      <translation type="unfinished">Radius 3</translation>
+      <translation>Ga 3</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1084"/>
       <location filename="../../DlgPrimitives.ui" line="1273"/>
       <source>V parameter</source>
-      <translation type="unfinished">V parameter</translation>
+      <translation>Paraiméadar V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1376"/>
@@ -3582,32 +3582,32 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1399"/>
       <location filename="../../DlgPrimitives.ui" line="2441"/>
       <source>Circumradius</source>
-      <translation type="unfinished">Circumradius</translation>
+      <translation>Circumradius</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1518"/>
       <source>X min/max</source>
-      <translation type="unfinished">X min/max</translation>
+      <translation>X íosmhéid/uasmhéid</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1548"/>
       <source>Y min/max</source>
-      <translation type="unfinished">Y min/max</translation>
+      <translation>Y íosmhéid/uasmhéid</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1578"/>
       <source>Z min/max</source>
-      <translation type="unfinished">Z min/max</translation>
+      <translation>Z íosmhéid/uasmhéid</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1608"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 íosmhéid/uasmhéid</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1641"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 íos/uas</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1725"/>
@@ -3617,7 +3617,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Córas comhordanáidí</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1874"/>
@@ -3627,34 +3627,34 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1894"/>
       <source>Number of rotations</source>
-      <translation type="unfinished">Number of rotations</translation>
+      <translation>Líon na rothlaithe</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1990"/>
       <location filename="../../DlgPrimitives.ui" line="2112"/>
       <source>Angle 1</source>
-      <translation type="unfinished">Angle 1</translation>
+      <translation>Uillinn 1</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2007"/>
       <location filename="../../DlgPrimitives.ui" line="2129"/>
       <source>Angle 2</source>
-      <translation type="unfinished">Angle 2</translation>
+      <translation>Uillinn 2</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2044"/>
       <source>From 3 Points</source>
-      <translation type="unfinished">From 3 Points</translation>
+      <translation>Ó 3 Phointe</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2072"/>
       <source>Major radius</source>
-      <translation type="unfinished">Major radius</translation>
+      <translation>Ga mór</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2092"/>
       <source>Minor radius</source>
-      <translation type="unfinished">Minor radius</translation>
+      <translation>Ga beag</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2170"/>
@@ -3680,7 +3680,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1439"/>
       <location filename="../../DlgPrimitives.ui" line="1446"/>
       <source>Angle in first direction</source>
-      <translation type="unfinished">Angle in first direction</translation>
+      <translation>Uillinn sa chéad treo</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="511"/>
@@ -3688,7 +3688,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1465"/>
       <location filename="../../DlgPrimitives.ui" line="1472"/>
       <source>Angle in second direction</source>
-      <translation type="unfinished">Angle in second direction</translation>
+      <translation>Uillinn sa dara treo</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1810"/>
@@ -3769,7 +3769,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Cuir Imeall leis</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
@@ -3992,12 +3992,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="52"/>
       <source>Maximum deviation depending on the model bounding box</source>
-      <translation type="unfinished">Maximum deviation depending on the model bounding box</translation>
+      <translation>Uasmhéid diall ag brath ar bhosca teorann an mhúnla</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="87"/>
       <source>Maximum angular deflection</source>
-      <translation type="unfinished">Maximum angular deflection</translation>
+      <translation>Uasmhéid diall uilleach</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="88"/>
@@ -4007,17 +4007,17 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="89"/>
       <source>Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Má shocraítear diall róbheag, tógfaidh an tessellation níos faide agus dá bhrí sin reoiteann nó moillíonn sé an grafach úsáideora.</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="110"/>
       <source>Angle deflection</source>
-      <translation type="unfinished">Angle deflection</translation>
+      <translation>Diall uillinne</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="111"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
-      <translation type="unfinished">Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</translation>
+      <translation>Má shocraítear diall uillinne róbheag, tógfaidh an tessellation níos faide agus dá bhrí sin reoiteann nó moillíonn sé an grafach úsáideora.</translation>
     </message>
   </context>
   <context>
@@ -4030,77 +4030,77 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
       <source>Automatically check model after boolean operation</source>
-      <translation type="unfinished">Automatically check model after boolean operation</translation>
+      <translation>Seiceáil an tsamhail go huathoibríoch tar éis oibríochta booléan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="42"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation type="unfinished">Automatically refine model after boolean operation</translation>
+      <translation>Múnla a scagadh go huathoibríoch tar éis oibríochta booléan</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="105"/>
       <source>Add name of base object</source>
-      <translation type="unfinished">Add name of base object</translation>
+      <translation>Cuir ainm an réada bhunúsaigh leis</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="20"/>
       <source>Model Settings</source>
-      <translation type="unfinished">Model Settings</translation>
+      <translation>Socruithe Múnla</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after applying operations</source>
-      <translation type="unfinished">Automatically refine model after applying operations</translation>
+      <translation>Múnla a bheachtú go huathoibríoch tar éis oibríochtaí a chur i bhfeidhm</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="99"/>
       <source>Object Naming</source>
-      <translation type="unfinished">Object Naming</translation>
+      <translation>Ainmniú Réada</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="127"/>
       <source>Features Settings</source>
-      <translation type="unfinished">Features Settings</translation>
+      <translation>Socruithe Gnéithe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="135"/>
       <source>Default profile type for holes</source>
-      <translation type="unfinished">Default profile type for holes</translation>
+      <translation>Cineál próifíle réamhshocraithe do phoill</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="152"/>
       <source>Circles and arcs</source>
-      <translation type="unfinished">Circles and arcs</translation>
+      <translation>Ciorcail agus stuaiceanna</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="157"/>
       <source>Points, circles and arcs</source>
-      <translation type="unfinished">Points, circles and arcs</translation>
+      <translation>Pointí, ciorcail agus stuaiceanna</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="162"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>Pointí</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="175"/>
       <source>Switch to task panel when entering Part Design workbench</source>
-      <translation type="unfinished">Switch to task panel when entering Part Design workbench</translation>
+      <translation>Athraigh go dtí an painéal tascanna nuair a théann tú isteach sa bhinse oibre Dearaidh Cuid</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="206"/>
       <source>Show final result by default when editing features</source>
-      <translation type="unfinished">Show final result by default when editing features</translation>
+      <translation>Taispeáin an toradh deiridh de réir réamhshocraithe agus gnéithe á n-eagarthóireacht</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="219"/>
       <source>Show transparent preview overlay by default when editing features</source>
-      <translation type="unfinished">Show transparent preview overlay by default when editing features</translation>
+      <translation>Taispeáin réamhamhairc thrédhearcach de réir réamhshocraithe agus gnéithe á n-eagarthóireacht</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="235"/>
       <source>Highlight the profile used to create features</source>
-      <translation type="unfinished">Highlight the profile used to create features</translation>
+      <translation>Aibhsigh an phróifíl a úsáideadh chun gnéithe a chruthú</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="257"/>
@@ -4110,32 +4110,32 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="266"/>
       <source>These settings are experimental and may result in decreased stability, problems and undefined behaviors</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, problems and undefined behaviors</translation>
+      <translation>Is socruithe turgnamhacha iad seo agus d’fhéadfadh laghdú ar chobhsaíocht, fadhbanna agus iompraíochtaí neamhshainithe a bheith mar thoradh orthu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="276"/>
       <source>Show interactive draggers when editing features</source>
-      <translation type="unfinished">Show interactive draggers when editing features</translation>
+      <translation>Taispeáin tarraingteoirí idirghníomhacha agus gnéithe á n-eagarthóireacht</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Disable recompute while dragging</source>
-      <translation type="unfinished">Disable recompute while dragging</translation>
+      <translation>Díchumasaigh athríomh agus tú ag tarraingt</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="172"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
-      <translation type="unfinished">Automatically switch to the task panel when the Part Design workbench is activated</translation>
+      <translation>Athraigh go huathoibríoch chuig an bpainéal tascanna nuair a ghníomhaítear an binse oibre Dearaidh Páirteanna</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="197"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Réamhamharc</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Allow multiple solids in Part Design bodies by default</source>
-      <translation type="unfinished">Allow multiple solids in Part Design bodies by default</translation>
+      <translation>Ceadaigh il-sholaid i gcorp Dearaidh Cuid de réir réamhshocraithe</translation>
     </message>
   </context>
   <context>
@@ -4148,7 +4148,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Shape Appearance Properties</source>
-      <translation type="unfinished">Default Shape Appearance Properties</translation>
+      <translation>Airíonna Réamhshocraithe Cuma Crutha</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4158,67 +4158,67 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="41"/>
       <source>The default color for new shapes</source>
-      <translation type="unfinished">The default color for new shapes</translation>
+      <translation>An dath réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="61"/>
       <source>Use random color instead</source>
-      <translation type="unfinished">Use random color instead</translation>
+      <translation>Bain úsáid as dath randamach ina ionad</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="64"/>
       <source>Random</source>
-      <translation type="unfinished">Random</translation>
+      <translation>Randamach</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="83"/>
       <source>Ambient shape color</source>
-      <translation type="unfinished">Ambient shape color</translation>
+      <translation>Dath cruth comhthimpeallach</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="90"/>
       <source>The default ambient color for new shapes</source>
-      <translation type="unfinished">The default ambient color for new shapes</translation>
+      <translation>An dath comhthimpeallach réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="116"/>
       <source>Emissive shape color</source>
-      <translation type="unfinished">Emissive shape color</translation>
+      <translation>Dath cruth astaíochta</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="123"/>
       <source>The default emissive color for new shapes</source>
-      <translation type="unfinished">The default emissive color for new shapes</translation>
+      <translation>An dath astaíochta réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="149"/>
       <source>Specular shape color</source>
-      <translation type="unfinished">Specular shape color</translation>
+      <translation>Dath cruth lonrach</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="156"/>
       <source>The default specular color for new shapes</source>
-      <translation type="unfinished">The default specular color for new shapes</translation>
+      <translation>An dath réamhshocraithe speictreamaigh do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="182"/>
       <source>Shape transparency</source>
-      <translation type="unfinished">Shape transparency</translation>
+      <translation>Trédhearcacht cruth</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="189"/>
       <source>The default transparency for new shapes</source>
-      <translation type="unfinished">The default transparency for new shapes</translation>
+      <translation>An trédhearcacht réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="217"/>
       <source>Shape shininess</source>
-      <translation type="unfinished">Shape shininess</translation>
+      <translation>Lonracht cruth</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="224"/>
       <source>The default shininess for new shapes</source>
-      <translation type="unfinished">The default shininess for new shapes</translation>
+      <translation>An lonrachas réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
@@ -4228,7 +4228,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="262"/>
       <source>The default line color for new shapes</source>
-      <translation type="unfinished">The default line color for new shapes</translation>
+      <translation>An dath líne réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="288"/>
@@ -4238,47 +4238,47 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="295"/>
       <source>The default line thickness for new shapes</source>
-      <translation type="unfinished">The default line thickness for new shapes</translation>
+      <translation>An tiús líne réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="323"/>
       <source>Vertex color</source>
-      <translation type="unfinished">Vertex color</translation>
+      <translation>Dath na buaicphointe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="330"/>
       <source>The default color for new vertices</source>
-      <translation type="unfinished">The default color for new vertices</translation>
+      <translation>An dath réamhshocraithe do bhuaicphointí nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="356"/>
       <source>Vertex size</source>
-      <translation type="unfinished">Vertex size</translation>
+      <translation>Méid na buaicphointe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="363"/>
       <source>The default size for new vertices</source>
-      <translation type="unfinished">The default size for new vertices</translation>
+      <translation>An méid réamhshocraithe do bhuaicphointí nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="391"/>
       <source>Bounding box color</source>
-      <translation type="unfinished">Bounding box color</translation>
+      <translation>Dath an bhosca teorannaithe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="398"/>
       <source>The color of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The color of bounding boxes in the 3D view</translation>
+      <translation>Dath na mboscaí teorannaithe san amharc 3T</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="424"/>
       <source>Bounding box font size</source>
-      <translation type="unfinished">Bounding box font size</translation>
+      <translation>Méid cló an bhosca teorannaithe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="431"/>
       <source>The font size of bounding boxes in the 3D view</source>
-      <translation type="unfinished">The font size of bounding boxes in the 3D view</translation>
+      <translation>Méid cló na mboscaí teorannaithe san amharc 3T</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="465"/>
@@ -4286,10 +4286,10 @@ Check one or more edge entities first.</translation>
 If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
-      <translation type="unfinished">The bottom side of the surface will be rendered the same way as the top.
-If not checked, it depends on the option "Backlight color"
-(preferences section Display -&gt; 3D View); either the backlight color
-will be used or black.</translation>
+      <translation>Déanfar bun an dromchla a rindreáil ar an mbealach céanna leis an mbarr.
+Mura ndéantar é a sheiceáil, braitheann sé ar an rogha "Dath an tsolais chúltaca"
+(an rannán roghanna Taispeántas -&gt; Radharc 3T); úsáidfear dath an tsolais
+chúltaca nó dubh.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="471"/>
@@ -4299,7 +4299,7 @@ will be used or black.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="505"/>
       <source>Default Annotation Color</source>
-      <translation type="unfinished">Default Annotation Color</translation>
+      <translation>Dath Réamhshocraithe anótála</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="519"/>
@@ -4355,17 +4355,17 @@ will be used or black.</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>X-component of direction vector</source>
-      <translation type="unfinished">X-component of direction vector</translation>
+      <translation>Comhpháirt X de veicteoir treorach</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="154"/>
       <source>Y-component of direction vector</source>
-      <translation type="unfinished">Y-component of direction vector</translation>
+      <translation>Comhpháirt Y de veicteoir treorach</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="183"/>
       <source>Z-component of direction vector</source>
-      <translation type="unfinished">Z-component of direction vector</translation>
+      <translation>Comhpháirt Z den veicteoir treorach</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>
@@ -4607,7 +4607,7 @@ have the same values.</source>
       <location filename="../../SectionCutting.ui" line="257"/>
       <location filename="../../SectionCutting.ui" line="397"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="308"/>
@@ -4619,7 +4619,7 @@ have the same values.</source>
       <location filename="../../SectionCutting.ui" line="333"/>
       <location filename="../../SectionCutting.ui" line="476"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Trédhearcacht</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="371"/>
@@ -4764,7 +4764,7 @@ ach na gearrthacha cruthaithe le feiceáil</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="382"/>
       <source>Invalid selection</source>
-      <translation type="unfinished">Invalid selection</translation>
+      <translation>Rogha neamhbhailí</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="383"/>
@@ -4794,19 +4794,19 @@ ach na gearrthacha cruthaithe le feiceáil</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="481"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
-      <translation type="unfinished">Select one or more connected edges in the 3D view and press 'Done'</translation>
+      <translation>Roghnaigh imeall ceangailte amháin nó níos mó sa radharc 3T agus brúigh 'Críochnaithe'</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
       <source>Sweep path</source>
-      <translation type="unfinished">Sweep path</translation>
+      <translation>Cosán scuabtha</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="505"/>
       <location filename="../../TaskSweep.cpp" line="513"/>
       <source>The selected sweep path is invalid.</source>
-      <translation type="unfinished">The selected sweep path is invalid.</translation>
+      <translation>Tá an cosán scuabtha roghnaithe neamhbhailí.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="525"/>
@@ -4824,37 +4824,37 @@ ach na gearrthacha cruthaithe le feiceáil</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation type="unfinished">Selection accepted</translation>
+      <translation>Glacadh leis an rogha</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="35"/>
       <source>Reference 1</source>
-      <translation type="unfinished">Reference 1</translation>
+      <translation>Tagairt 1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="52"/>
       <source>Reference 2</source>
-      <translation type="unfinished">Reference 2</translation>
+      <translation>Tagairt 2</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="69"/>
       <source>Reference 3</source>
-      <translation type="unfinished">Reference 3</translation>
+      <translation>Tagairt 3</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="86"/>
       <source>Reference 4</source>
-      <translation type="unfinished">Reference 4</translation>
+      <translation>Tagairt 4</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="101"/>
       <source>Attachment mode</source>
-      <translation type="unfinished">Attachment mode</translation>
+      <translation>Mód ceangail</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <source>Attachment Offset in its Local Coordinate System</source>
-      <translation type="unfinished">Attachment Offset in its Local Coordinate System</translation>
+      <translation>Fritháireamh Ceangail ina Chóras Comhordanáidí Áitiúil</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="155"/>
@@ -4862,104 +4862,104 @@ ach na gearrthacha cruthaithe le feiceáil</translation>
       <location filename="../../TaskAttacher.ui" line="227"/>
       <source>The offset is expressed in the local coordinate system
 of the object being attached</source>
-      <translation type="unfinished">The offset is expressed in the local coordinate system
-of the object being attached</translation>
+      <translation>Léirítear an fritháireamh i gcóras comhordanáidí áitiúil
+an réada atá á cheangal</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
       <source>In X-direction</source>
-      <translation type="unfinished">In X-direction</translation>
+      <translation>I dtreo-X</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="172"/>
       <source>In Y-direction</source>
-      <translation type="unfinished">In Y-direction</translation>
+      <translation>I dtreo-Y</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="208"/>
       <source>In Z-direction</source>
-      <translation type="unfinished">In Z-direction</translation>
+      <translation>I dtreo-Z</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="244"/>
       <source>Around X-axis</source>
-      <translation type="unfinished">Around X-axis</translation>
+      <translation>Timpeall an ais-X</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the local X-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local X-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>Rothlú timpeall an ais-X áitiúil. Léirítear an t-eas-chur i gcóras
+comhordanáidí áitiúil an réada atá á cheangal.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="283"/>
       <source>Around Y-axis</source>
-      <translation type="unfinished">Around Y-axis</translation>
+      <translation>Timpeall ais-Y</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="296"/>
       <source>Rotation around the local Y-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local Y-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>Rothlú timpeall an ais-Y áitiúil. Léirítear an t-eas-chur i gcóras
+comhordanáidí áitiúil an réada atá á cheangal.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="322"/>
       <source>Around Z-axis</source>
-      <translation type="unfinished">Around Z-axis</translation>
+      <translation>Timpeall ais Z</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="335"/>
       <source>Rotation around the local Z-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local Z-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>Rothlú timpeall an ais-Z áitiúil. Léirítear an t-aschur i gcóras
+comhordanáidí áitiúil an réada atá á cheangal.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="358"/>
       <source>Flip side of attachment and offset</source>
-      <translation type="unfinished">Flip side of attachment and offset</translation>
+      <translation>Taobh smeach an cheangail agus an fhritháireamh</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="361"/>
       <source>Flip sides</source>
-      <translation type="unfinished">Flip sides</translation>
+      <translation>Taobhanna smeach</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="402"/>
       <source>OCC error: %1</source>
-      <translation type="unfinished">OCC error: %1</translation>
+      <translation>Earráid OCC: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="405"/>
       <source>unknown error</source>
-      <translation type="unfinished">unknown error</translation>
+      <translation>earráid anaithnid</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="408"/>
       <source>Attachment mode failed: %1</source>
-      <translation type="unfinished">Attachment mode failed: %1</translation>
+      <translation>Theip ar mhodh ceangail: %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="413"/>
       <source>Not attached</source>
-      <translation type="unfinished">Not attached</translation>
+      <translation>Gan cheangal</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="421"/>
       <source>Attached with mode %1</source>
-      <translation type="unfinished">Attached with mode %1</translation>
+      <translation>Ceangailte le mód %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="425"/>
       <source>Attachment offset (in its local coordinate system):</source>
-      <translation type="unfinished">Attachment offset (in its local coordinate system):</translation>
+      <translation>Fritháireamh an cheangail (ina chóras comhordanáidí áitiúil):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="426"/>
       <source>Attachment offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment offset (inactive - not attached):</translation>
+      <translation>Fritháireamh ceangail (neamhghníomhach - gan cheangal):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1009"/>
@@ -4969,7 +4969,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="915"/>
       <source>Face</source>
-      <translation type="unfinished">Face</translation>
+      <translation>Aghaidh</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="922"/>
@@ -4984,27 +4984,27 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1015"/>
       <source>Reference%1</source>
-      <translation type="unfinished">Reference%1</translation>
+      <translation>Tagairt%1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1084"/>
       <source>Not editable because rotation of AttachmentOffset is bound by expressions.</source>
-      <translation type="unfinished">Not editable because rotation of AttachmentOffset is bound by expressions.</translation>
+      <translation>Ní féidir é a chur in eagar mar go bhfuil rothlú AttachmentOffset ceangailte le léirithe.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1161"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Teaglaim tagartha:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1183"/>
       <source>%1 (add %2)</source>
-      <translation type="unfinished">%1 (add %2)</translation>
+      <translation>%1 (cuir %2 leis)</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1186"/>
       <source>%1 (add more references)</source>
-      <translation type="unfinished">%1 (add more references)</translation>
+      <translation>%1 (cuir tuilleadh tagairtí leis)</translation>
     </message>
   </context>
   <context>
@@ -5012,105 +5012,105 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1188"/>
       <source>Shape Content</source>
-      <translation type="unfinished">Shape Content</translation>
+      <translation>Ábhar Cruth</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
       <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Socruithe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
       <source>Default: false</source>
-      <translation type="unfinished">Default: false</translation>
+      <translation>Réamhshocrú: bréagach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
       <source>Run boolean operation check</source>
-      <translation type="unfinished">Run boolean operation check</translation>
+      <translation>Rith seiceáil oibríochta booléanach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1219"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
-      <translation type="unfinished">Extra boolean operations check that can sometimes find errors that
-the standard BRep geometry check misses. These errors do not always
-mean the checked object is unusable.  Default: false</translation>
+      <translation>Seiceáil oibríochtaí breise Boole a fhéadann earráidí a aimsiú uaireanta nach mbíonn
+sa tseiceáil chaighdeánach geoiméadrachta BRep. Ní chiallaíonn na hearráidí seo i gcónaí
+nach féidir an réad seiceáilte a úsáid. Réamhshocrú: bréagach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1228"/>
       <source>Single-threaded</source>
-      <translation type="unfinished">Single-threaded</translation>
+      <translation>Aon-snáithe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
-      <translation type="unfinished">Run the geometry check in a single thread.  This is slower,
-but more stable.  Default: false</translation>
+      <translation>Rith an seiceáil geoiméadrachta i snáithe amháin. Tá sé seo níos moille,
+ach níos cobhsaí. Réamhshocrú: bréagach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1243"/>
       <source>Log errors</source>
-      <translation type="unfinished">Log errors</translation>
+      <translation>Earráidí logála</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
       <source>Log errors to report view.  Default: true</source>
-      <translation type="unfinished">Log errors to report view.  Default: true</translation>
+      <translation>Logáil earráidí chuig an radharc tuairiscithe. Réamhshocrú: fíor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1255"/>
       <source>Expand shape content</source>
-      <translation type="unfinished">Expand shape content</translation>
+      <translation>Leathnaigh ábhar an chrutha</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1257"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Expand shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Leathnaigh ábhar an chrutha. Tiocfaidh na hathruithe i bhfeidhm an chéad uair eile
+a úsáideann tú an uirlis seiceála geoiméadrachta. Réamhshocrú: bréagach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1270"/>
       <source>Advanced shape content</source>
-      <translation type="unfinished">Advanced shape content</translation>
+      <translation>Ábhar cruthanna ardleibhéil</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1272"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
-      <translation type="unfinished">Show advanced shape content.  Changes will take effect next time you use 
-the check geometry tool.  Default: false</translation>
+      <translation>Taispeáin ábhar cruthanna ardleibhéil. Tiocfaidh na hathruithe i bhfeidhm an chéad
+uair eile a úsáideann tú an uirlis seiceála geoiméadrachta. Réamhshocrú: bréagach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1284"/>
       <source>
 Individual boolean operation checks:</source>
-      <translation type="unfinished">
-Individual boolean operation checks:</translation>
+      <translation>
+Seiceálacha oibríochta booléan aonair:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1287"/>
       <source>Bad type</source>
-      <translation type="unfinished">Bad type</translation>
+      <translation>Drochchineál</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1299"/>
       <source>Self-intersect</source>
-      <translation type="unfinished">Self-intersect</translation>
+      <translation>Féin-trasnú</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1311"/>
       <source>Too small edge</source>
-      <translation type="unfinished">Too small edge</translation>
+      <translation>Imeall róbheag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1323"/>
       <source>Nonrecoverable face</source>
-      <translation type="unfinished">Nonrecoverable face</translation>
+      <translation>Aghaidh neamh-aisghabhála</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1335"/>
@@ -5120,67 +5120,67 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1347"/>
       <source>Incompatibility of face</source>
-      <translation type="unfinished">Incompatibility of face</translation>
+      <translation>Neamh-chomhoiriúnacht aghaidhe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1359"/>
       <source>Incompatibility of vertex</source>
-      <translation type="unfinished">Incompatibility of vertex</translation>
+      <translation>Neamh-chomhoiriúnacht an bhuaicphointe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1371"/>
       <source>Incompatibility of edge</source>
-      <translation type="unfinished">Incompatibility of edge</translation>
+      <translation>Neamh-chomhoiriúnacht imeall</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1383"/>
       <source>Invalid curve on surface</source>
-      <translation type="unfinished">Invalid curve on surface</translation>
+      <translation>Cuar neamhbhailí ar dhromchla</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
       <source>Check for bad argument types.  Default: true</source>
-      <translation type="unfinished">Check for bad argument types.  Default: true</translation>
+      <translation>Seiceáil le haghaidh cineálacha argóintí lochtacha. Réamhshocrú: fíor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
       <source>Skip this settings page</source>
-      <translation type="unfinished">Skip this settings page</translation>
+      <translation>Scipeáil an leathanach socruithe seo</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Skip this settings page and run the geometry check automatically</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically</translation>
+      <translation>Scipeáil an leathanach socruithe seo agus rith an seiceáil geoiméadrachta go huathoibríoch</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
       <source>Check for self-intersections.  Default: true</source>
-      <translation type="unfinished">Check for self-intersections.  Default: true</translation>
+      <translation>Seiceáil le haghaidh féin-trasnuithe. Réamhshocrú: fíor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
       <source>Check for edges that are too small.  Default: true</source>
-      <translation type="unfinished">Check for edges that are too small.  Default: true</translation>
+      <translation>Seiceáil le haghaidh imill atá róbheag. Réamhshocrú: fíor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
-      <translation type="unfinished">Check for nonrecoverable faces.  Default: true</translation>
+      <translation>Seiceáil le haghaidh aghaidheanna nach féidir a aisghabháil. Réamhshocrú: fíor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
       <source>Check for continuity.  Default: true</source>
-      <translation type="unfinished">Check for continuity.  Default: true</translation>
+      <translation>Seiceáil le haghaidh leanúnachais. Réamhshocrú: fíor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
       <source>Check for incompatible faces.  Default: true</source>
-      <translation type="unfinished">Check for incompatible faces.  Default: true</translation>
+      <translation>Seiceáil le haghaidh aghaidheanna neamh-chomhoiriúnacha. Réamhshocrú: fíor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
       <source>Check for incompatible vertices.  Default: true</source>
-      <translation type="unfinished">Check for incompatible vertices.  Default: true</translation>
+      <translation>Seiceáil le haghaidh buaicphointí neamh-chomhoiriúnacha. Réamhshocrú: fíor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
@@ -5350,7 +5350,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Mód</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="42"/>
@@ -5365,7 +5365,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>Díreach ar a chúl</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
@@ -5401,7 +5401,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>Aghaidheanna</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="144"/>
@@ -5513,7 +5513,7 @@ sreang sa radharc 3D don chonair scuabtha.</translation>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
       <source>Parameter</source>
-      <translation type="unfinished">Parameter</translation>
+      <translation>Paraiméadar</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="46"/>
@@ -5564,7 +5564,7 @@ sreang sa radharc 3D don chonair scuabtha.</translation>
       <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Cuir %1 in Eagar</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="252"/>
@@ -5599,13 +5599,13 @@ sreang sa radharc 3D don chonair scuabtha.</translation>
       <location filename="../../Command.cpp" line="427"/>
       <location filename="../../Command.cpp" line="527"/>
       <source>Non-solids selected</source>
-      <translation type="unfinished">Non-solids selected</translation>
+      <translation>Neamhsholaid roghnaithe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Select 2 shapes</source>
-      <translation type="unfinished">Select 2 shapes</translation>
+      <translation>Roghnaigh 2 chruth</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="351"/>
@@ -5613,28 +5613,28 @@ sreang sa radharc 3D don chonair scuabtha.</translation>
       <location filename="../../Command.cpp" line="528"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
-      <translation type="unfinished">The use of non-solids for boolean operations may lead to unexpected results.
-Continue?</translation>
+      <translation>D’fhéadfadh torthaí gan choinne a bheith mar thoradh ar úsáid neamh-sholaid le haghaidh oibríochtaí booléacha.
+Leanúint ar aghaidh?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="411"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</source>
-      <translation type="unfinished">Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between.</translation>
+      <translation>Roghnaigh 2 chruth ar a laghad. Nó is féidir leat comhdhúil amháin ina bhfuil 2 chruth nó níos mó a roghnú chun an trasnú eatarthu a ríomh.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="511"/>
       <source>Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</source>
-      <translation type="unfinished">Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused.</translation>
+      <translation>Roghnaigh 2 chruth ar a laghad. Nó is féidir comhdhúil amháin ina bhfuil 2 chruth nó níos mó le comhleá a roghnú.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="953"/>
       <source>Select at least one shape</source>
-      <translation type="unfinished">Select at least one shape</translation>
+      <translation>Roghnaigh cruth amháin ar a laghad</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1210"/>
       <source>All CAD Files</source>
-      <translation type="unfinished">All CAD Files</translation>
+      <translation>Gach Comhad CAD</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1214"/>
@@ -5644,18 +5644,18 @@ Continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Select either 2 edges or 2 wires.</source>
-      <translation type="unfinished">Select either 2 edges or 2 wires.</translation>
+      <translation>Roghnaigh 2 imeall nó 2 shreang.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="73"/>
       <location filename="../../TaskAttacher.cpp" line="106"/>
       <source>No reference selected</source>
-      <translation type="unfinished">No reference selected</translation>
+      <translation>Níl aon tagairt roghnaithe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
-      <translation type="unfinished">Face</translation>
+      <translation>Aghaidh</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
@@ -5675,7 +5675,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound solid</source>
-      <translation type="unfinished">Compound solid</translation>
+      <translation>Soladach cumaisc</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
@@ -5685,7 +5685,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Shell</source>
-      <translation type="unfinished">Shell</translation>
+      <translation>Sliogán</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
@@ -5700,207 +5700,207 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="101"/>
       <source>No error</source>
-      <translation type="unfinished">No error</translation>
+      <translation>Gan earráid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>Invalid point on curve</source>
-      <translation type="unfinished">Invalid point on curve</translation>
+      <translation>Pointe neamhbhailí ar an gcuar</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="104"/>
       <source>Invalid point on curve on surface</source>
-      <translation type="unfinished">Invalid point on curve on surface</translation>
+      <translation>Pointe neamhbhailí ar chuar ar dhromchla</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="106"/>
       <source>Invalid point on surface</source>
-      <translation type="unfinished">Invalid point on surface</translation>
+      <translation>Pointe neamhbhailí ar dhromchla</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>No 3D curve</source>
-      <translation type="unfinished">No 3D curve</translation>
+      <translation>Gan cuar 3T</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>Multiple 3D curves</source>
-      <translation type="unfinished">Multiple 3D curves</translation>
+      <translation>Il-chuar 3T</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Invalid 3D curve</source>
-      <translation type="unfinished">Invalid 3D curve</translation>
+      <translation>Cuar 3T neamhbhailí</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>No curve on surface</source>
-      <translation type="unfinished">No curve on surface</translation>
+      <translation>Gan cuar ar an dromchla</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>Invalid curve on surface</source>
-      <translation type="unfinished">Invalid curve on surface</translation>
+      <translation>Cuar neamhbhailí ar dhromchla</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="113"/>
       <source>Invalid curve on closed surface</source>
-      <translation type="unfinished">Invalid curve on closed surface</translation>
+      <translation>Cuar neamhbhailí ar dhromchla dúnta</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Invalid same range flag</source>
-      <translation type="unfinished">Invalid same range flag</translation>
+      <translation>Bratach neamhbhailí den raon céanna</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid same parameter flag</source>
-      <translation type="unfinished">Invalid same parameter flag</translation>
+      <translation>Bratach neamhbhailí den pharaiméadar céanna</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid degenerated flag</source>
-      <translation type="unfinished">Invalid degenerated flag</translation>
+      <translation>Bratach neamhbhailí díghinithe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Free edge</source>
-      <translation type="unfinished">Free edge</translation>
+      <translation>Imeall saor</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Invalid multi-connexity</source>
-      <translation type="unfinished">Invalid multi-connexity</translation>
+      <translation>Il-nasc neamhbhailí</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid range</source>
-      <translation type="unfinished">Invalid range</translation>
+      <translation>Raon neamhbhailí</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Empty wire</source>
-      <translation type="unfinished">Empty wire</translation>
+      <translation>Sreang folamh</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Redundant edge</source>
-      <translation type="unfinished">Redundant edge</translation>
+      <translation>Imeall iomarcach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Self-intersecting wire</source>
-      <translation type="unfinished">Self-intersecting wire</translation>
+      <translation>Sreang féin-trasnaithe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>No surface</source>
-      <translation type="unfinished">No surface</translation>
+      <translation>Gan dromchla</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>Invalid wire</source>
-      <translation type="unfinished">Invalid wire</translation>
+      <translation>Sreang neamhbhailí</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Redundant wire</source>
-      <translation type="unfinished">Redundant wire</translation>
+      <translation>Sreang iomarcach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Intersecting wires</source>
-      <translation type="unfinished">Intersecting wires</translation>
+      <translation>Sreanga ag trasnú</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Invalid imbrication of wires</source>
-      <translation type="unfinished">Invalid imbrication of wires</translation>
+      <translation>Imbrication neamhbhailí sreanga</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Empty shell</source>
-      <translation type="unfinished">Empty shell</translation>
+      <translation>Blaosc folamh</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Redundant face</source>
-      <translation type="unfinished">Redundant face</translation>
+      <translation>Aghaidh iomarcach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Unorientable shape</source>
-      <translation type="unfinished">Unorientable shape</translation>
+      <translation>Cruth neamh-threoraithe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Not closed</source>
-      <translation type="unfinished">Not closed</translation>
+      <translation>Gan dúnadh</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Not connected</source>
-      <translation type="unfinished">Not connected</translation>
+      <translation>Gan cheangal</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="134"/>
       <source>Sub-shape not in shape</source>
-      <translation type="unfinished">Sub-shape not in shape</translation>
+      <translation>Fo-chruth nach bhfuil i gcruth</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="135"/>
       <source>Bad orientation</source>
-      <translation type="unfinished">Bad orientation</translation>
+      <translation>Drochthreoshuíomh</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="136"/>
       <source>Bad orientation of sub-shape</source>
-      <translation type="unfinished">Bad orientation of sub-shape</translation>
+      <translation>Drochthreoshuíomh an fho-chrutha</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="137"/>
       <source>Invalid tolerance value</source>
-      <translation type="unfinished">Invalid tolerance value</translation>
+      <translation>Luach lamháltais neamhbhailí</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="138"/>
       <source>Check failed</source>
-      <translation type="unfinished">Check failed</translation>
+      <translation>Theip ar an seiceáil</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="147"/>
       <source>No result</source>
-      <translation type="unfinished">No result</translation>
+      <translation>Gan toradh</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="150"/>
       <source>Out of enum range:</source>
-      <translation type="unfinished">Out of enum range:</translation>
+      <translation>Lasmuigh den raon uimhrithe:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
       <source>Boolean operation: unknown check</source>
-      <translation type="unfinished">Boolean operation: unknown check</translation>
+      <translation>Oibríocht Boole: seiceáil anaithnid</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: bad type</source>
-      <translation type="unfinished">Boolean operation: bad type</translation>
+      <translation>Oibríocht Boole: cineál lochtach</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: self-intersection found</source>
-      <translation type="unfinished">Boolean operation: self-intersection found</translation>
+      <translation>Oibríocht Boole: féin-trasnú aimsithe</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: edge too small</source>
-      <translation type="unfinished">Boolean operation: edge too small</translation>
+      <translation>Oibríocht Booleanach: imeall róbheag</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: non-recoverable face</source>
-      <translation type="unfinished">Boolean operation: non-recoverable face</translation>
+      <translation>Oibríocht Booleanach: aghaidh neamh-aisghabhála</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="168"/>
@@ -5950,12 +5950,12 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="305"/>
       <source>Edit Fillet</source>
-      <translation type="unfinished">Edit Fillet</translation>
+      <translation>Cuir Filléad in Eagar</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="426"/>
       <source>Edit Chamfer</source>
-      <translation type="unfinished">Edit Chamfer</translation>
+      <translation>Cuir Seaimféaráil in Eagar</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="566"/>
@@ -5988,7 +5988,7 @@ Continue?</translation>
       <translation>Eagarthóir Ceangaltán</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1003"/>
+      <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
       <translation>Dealramh in aghaidh an Aghaidhe</translation>
     </message>
@@ -6079,7 +6079,7 @@ Continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
       <source>Solids</source>
-      <translation type="unfinished">Solids</translation>
+      <translation>Solaid</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="38"/>
@@ -6089,7 +6089,7 @@ Continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>Uirlisí Booleánacha</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -6324,32 +6324,32 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="471"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>Neamhaird déanta air. Ní féidir réad a cheangal leis féin!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="479"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
+      <translation>Braitheann {} ar an réad atá á cheangal, ní féidir é a úsáid le haghaidh ceangail</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="631"/>
       <source>{} (add {})</source>
-      <translation type="unfinished">{} (add {})</translation>
+      <translation>{} (cuir {} leis)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="635"/>
       <source>{} (add more references)</source>
-      <translation type="unfinished">{} (add more references)</translation>
+      <translation>{} (cuir tuilleadh tagairtí leis)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="671"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Teaglaim tagartha:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="686"/>
       <source>Reference{}</source>
-      <translation type="unfinished">Reference{}</translation>
+      <translation>Tagairt{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="693"/>
@@ -6359,32 +6359,32 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="722"/>
       <source>Failed to resolve links. {}</source>
-      <translation type="unfinished">Failed to resolve links. {}</translation>
+      <translation>Theip ar naisc a réiteach. {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="733"/>
       <source>Not attached</source>
-      <translation type="unfinished">Not attached</translation>
+      <translation>Gan cheangal</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
       <source>Attached with mode {}</source>
-      <translation type="unfinished">Attached with mode {}</translation>
+      <translation>Ceangailte le mód {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="746"/>
       <source>Error: {}</source>
-      <translation type="unfinished">Error: {}</translation>
+      <translation>Earráid: {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="752"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Fritháireamh Ceangaltáin (i gcomhordanáidí áitiúla):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="757"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation type="unfinished">Attachment Offset (inactive - not attached):</translation>
+      <translation>Fritháireamh Ceangail (neamhghníomhach - gan a bheith ceangailte):</translation>
     </message>
   </context>
   <context>
@@ -6392,7 +6392,7 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Cineál cruth</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="33"/>
@@ -6402,37 +6402,37 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
       <source>Edges</source>
-      <translation type="unfinished">Edges</translation>
+      <translation>Imeall</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="36"/>
       <source>Wires</source>
-      <translation type="unfinished">Wires</translation>
+      <translation>Sreanga</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="37"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>Aghaidheanna</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="38"/>
       <source>Shells</source>
-      <translation type="unfinished">Shells</translation>
+      <translation>Sliogáin</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="39"/>
       <source>Solids</source>
-      <translation type="unfinished">Solids</translation>
+      <translation>Solaid</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="42"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>CompSolids</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
       <source>Compounds</source>
-      <translation type="unfinished">Compounds</translation>
+      <translation>Comhdhúile</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="51"/>
@@ -6452,22 +6452,22 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="96"/>
       <source>Mass</source>
-      <translation type="unfinished">Mass</translation>
+      <translation>Mais</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="103"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="110"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="117"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Lár na cuar</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="124"/>
@@ -6482,7 +6482,7 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="152"/>
       <source>Is closed</source>
-      <translation type="unfinished">Is closed</translation>
+      <translation>Tá dúnta</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="159"/>
@@ -6492,12 +6492,12 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="177"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Lárionad maise domhanda</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="195"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Socrú domhanda</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="197"/>
@@ -6510,16 +6510,16 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="668"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>Booleánach XOR</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="675"/>
       <source>Performs an 'exclusive OR' boolean operation with two or more selected objects,
 or with the shapes inside a compound.
 Overlapping volumes of the shapes will be removed.</source>
-      <translation type="unfinished">Performs an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-Overlapping volumes of the shapes will be removed.</translation>
+      <translation>Déanann sé oibríocht booléanach 'eisiach NÓ' le dhá réad roghnaithe nó níos mó,
+nó leis na cruthanna laistigh de chomhdhúil.
+Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
     </message>
   </context>
   <context>
@@ -6532,47 +6532,47 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
       <source>Factor</source>
-      <translation type="unfinished">Factor</translation>
+      <translation>Fachtóir</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>Fachtóir X</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Fachtóir Z</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>Scálaigh an réad le fachtóir amháin i ngach treo.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>Scálú Aonfhoirmeach</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Fachtóir Y</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction</translation>
+      <translation>Sonraigh fachtóir scála difriúil do gach treo cardinal</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-uniform scaling</source>
-      <translation type="unfinished">Non-uniform scaling</translation>
+      <translation>Scálú neamh-aonfhoirmeach</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shapes to be scaled</source>
-      <translation type="unfinished">Select shapes to be scaled</translation>
+      <translation>Roghnaigh cruthanna le scálú</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6582,7 +6582,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>Níl aon chruthanna inscálaithe roghnaithe</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="216"/>
@@ -6594,7 +6594,7 @@ Overlapping volumes of the shapes will be removed.</translation>
       <location filename="../../DlgScale.cpp" line="283"/>
       <source>Creating scale failed.
 %1</source>
-      <translation type="unfinished">Creating scale failed.
+      <translation>Theip ar scála a chruthú.
 %1</translation>
     </message>
   </context>
@@ -6613,7 +6613,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="1478"/>
       <source>Scales the selected shape</source>
-      <translation type="unfinished">Scales the selected shape</translation>
+      <translation>Scálaíonn an cruth roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -6621,7 +6621,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="82"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation type="unfinished">Shape must be a wire, edge or compound. Something else was supplied.</translation>
+      <translation>Ní mór don chruth a bheith ina sreang, ina imeall nó ina chomhdhúil. Soláthraíodh rud éigin eile.</translation>
     </message>
   </context>
   <context>
@@ -6629,12 +6629,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="307"/>
       <source>Simple</source>
-      <translation type="unfinished">Simple</translation>
+      <translation>Simplí</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="312"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
+      <translation>Déanann sé aghaidh phlána ar leithligh ó gach sreang go neamhspleách. Gan tacaíocht do phoill; is féidir sreanga a bheith ar phlánaí difriúla.</translation>
     </message>
   </context>
   <context>
@@ -6642,12 +6642,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="61"/>
       <source>Bull's-eye facemaker</source>
-      <translation type="unfinished">Bull's-eye facemaker</translation>
+      <translation>Déantóir aghaidhe súile tarbh</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="66"/>
       <source>Supports making planar faces with holes with islands in them</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands in them</translation>
+      <translation>Tacaíonn sé le haghaidheanna plánacha a dhéanamh le poill agus oileáin iontu</translation>
     </message>
   </context>
   <context>
@@ -6655,12 +6655,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="257"/>
       <source>Cheese facemaker</source>
-      <translation type="unfinished">Cheese facemaker</translation>
+      <translation>Déantóir aghaidhe cáise</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="262"/>
       <source>Supports making planar faces with holes, but no islands inside holes</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes</translation>
+      <translation>Tacaíonn sé le haghaidheanna plánacha a dhéanamh le poill, ach gan oileáin taobh istigh de phoill</translation>
     </message>
   </context>
   <context>
@@ -6668,12 +6668,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
       <source>Part Extrude facemaker</source>
-      <translation type="unfinished">Part Extrude facemaker</translation>
+      <translation>Déantóir aghaidhe easbhrúite cuid</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
       <source>Supports making faces with holes, does not support nesting.</source>
-      <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
+      <translation>Tacaíonn sé le haghaidheanna a dhéanamh le poill, ní thacaíonn sé le neadú.</translation>
     </message>
   </context>
   <context>
@@ -6686,12 +6686,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
       <source>Select the faces in the 3D view</source>
-      <translation type="unfinished">Select the faces in the 3D view</translation>
+      <translation>Roghnaigh na haghaidheanna sa radharc 3T</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="41"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>Aghaidheanna</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="66"/>
@@ -6706,17 +6706,17 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="88"/>
       <source>Resets color for all faces of the part</source>
-      <translation type="unfinished">Resets color for all faces of the part</translation>
+      <translation>Athshocraíonn dath do gach aghaidh den chuid</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="91"/>
       <source>Set to Default</source>
-      <translation type="unfinished">Set to Default</translation>
+      <translation>Socraigh go Réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="98"/>
       <source>Allows the selection of multiple faces by dragging a rectangle in the 3D view</source>
-      <translation type="unfinished">Allows the selection of multiple faces by dragging a rectangle in the 3D view</translation>
+      <translation>Ceadaíonn sé seo roghnú il-aghaidheanna trí dhronuilleog a tharraingt san amharc 3T</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
@@ -6752,12 +6752,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="232"/>
       <source>Set Tolerance</source>
-      <translation type="unfinished">Set Tolerance</translation>
+      <translation>Socraigh Lamháltas</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="237"/>
       <source>Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</source>
-      <translation type="unfinished">Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</translation>
+      <translation>Cruthaíonn sé cóip pharaiméadrach den réad roghnaithe agus na lamháltais uile socraithe ag luach íosta áirithe ar a laghad</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="249"/>
@@ -6767,7 +6767,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="248"/>
       <source>Select at least one object or compounds</source>
-      <translation type="unfinished">Select at least one object or compounds</translation>
+      <translation>Roghnaigh réad amháin nó comhdhúile amháin ar a laghad</translation>
     </message>
   </context>
   <context>
@@ -6780,12 +6780,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2538"/>
       <source>Coordinate System</source>
-      <translation type="unfinished">Coordinate System</translation>
+      <translation>Córas Comhordanáidí</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2539"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
-      <translation type="unfinished">Creates a coordinate system that can be attached to other objects</translation>
+      <translation>Cruthaíonn sé córas comhordanáidí is féidir a cheangal le rudaí eile</translation>
     </message>
   </context>
   <context>
@@ -6798,12 +6798,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2677"/>
       <source>Datums</source>
-      <translation type="unfinished">Datums</translation>
+      <translation>Dátaí</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2679"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</translation>
+      <translation>Cruthaíonn sé réad sonraí (córas comhordanáidí, plána, líne, nó pointe) is féidir a cheangal le réada eile</translation>
     </message>
   </context>
   <context>
@@ -6811,7 +6811,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/Geometry.cpp" line="6656"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
+      <translation>Ní féidir trasnú na gcuar a thomhas. Bain triail as srian comhthráthach a chur idir buaicphointí na gcuar atá beartaithe agat a líonadh.</translation>
     </message>
   </context>
   <context>
@@ -6824,12 +6824,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2576"/>
       <source>Datum Plane</source>
-      <translation type="unfinished">Datum Plane</translation>
+      <translation>Plána Dáta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
       <source>Creates a datum plane that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum plane that can be attached to other objects</translation>
+      <translation>Cruthaíonn sé plána sonraí is féidir a cheangal le rudaí eile</translation>
     </message>
   </context>
   <context>
@@ -6842,12 +6842,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2609"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>Líne Dáta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2610"/>
       <source>Creates a datum line that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum line that can be attached to other objects</translation>
+      <translation>Cruthaíonn líne sonraí is féidir a cheangal le rudaí eile</translation>
     </message>
   </context>
   <context>
@@ -6860,12 +6860,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2642"/>
       <source>Datum Point</source>
-      <translation type="unfinished">Datum Point</translation>
+      <translation>Pointe Sonraí</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2643"/>
       <source>Creates a datum point that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum point that can be attached to other objects</translation>
+      <translation>Cruthaíonn sé pointe sonraí is féidir a cheangal le rudaí eile</translation>
     </message>
   </context>
   <context>
@@ -6878,7 +6878,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="95"/>
       <source>Opens the attachment editor to change the attachment of the selected object</source>
-      <translation type="unfinished">Opens the attachment editor to change the attachment of the selected object</translation>
+      <translation>Osclaíonn an eagarthóir ceangaltán chun ceangaltán an réada roghnaithe a athrú</translation>
     </message>
   </context>
   <context>
@@ -6886,12 +6886,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="223"/>
       <source>Connect Shapes</source>
-      <translation type="unfinished">Connect Shapes</translation>
+      <translation>Ceangail Cruthanna</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="227"/>
       <source>Fuses shapes, taking care to preserve voids</source>
-      <translation type="unfinished">Fuses shapes, taking care to preserve voids</translation>
+      <translation>Comhleáíonn cruthanna, ag tabhairt aire do na folúntais a chaomhnú</translation>
     </message>
   </context>
   <context>
@@ -6899,12 +6899,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="338"/>
       <source>Embed Shapes</source>
-      <translation type="unfinished">Embed Shapes</translation>
+      <translation>Cruthanna a Leabú</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="342"/>
       <source>Fuses one shape into another, taking care to preserve voids</source>
-      <translation type="unfinished">Fuses one shape into another, taking care to preserve voids</translation>
+      <translation>Comhcheanglaíonn cruth amháin le cruth eile, ag tabhairt aire do na folúntais a chaomhnú</translation>
     </message>
   </context>
   <context>
@@ -6912,12 +6912,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="454"/>
       <source>Cutout Shape</source>
-      <translation type="unfinished">Cutout Shape</translation>
+      <translation>Cruth Gearrtha</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="458"/>
       <source>Creates a cutout in the selected shape to fit another shape</source>
-      <translation type="unfinished">Creates a cutout in the selected shape to fit another shape</translation>
+      <translation>Cruthaíonn sé gearrtha amach sa chruth roghnaithe chun cruth eile a fheistiú</translation>
     </message>
   </context>
   <context>
@@ -6925,12 +6925,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="222"/>
       <source>Boolean Fragments</source>
-      <translation type="unfinished">Boolean Fragments</translation>
+      <translation>Blúirí Booleánacha</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="227"/>
       <source>Creates a boolean union which is sliced at the intersections of the selected shapes</source>
-      <translation type="unfinished">Creates a boolean union which is sliced at the intersections of the selected shapes</translation>
+      <translation>Cruthaíonn sé aontas booléanach atá slisnithe ag trasnaíochtaí na gcruthanna roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -6938,12 +6938,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="443"/>
       <source>Slice to Compound</source>
-      <translation type="unfinished">Slice to Compound</translation>
+      <translation>Sliseáil go Comhdhúil</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="448"/>
       <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
-      <translation type="unfinished">Slices the selected object by using other objects as cutting tools and storing the results in one compound</translation>
+      <translation>Gearrann sé an réad roghnaithe trí réada eile a úsáid mar uirlisí gearrtha agus na torthaí a stóráil i gcomhdhúil amháin</translation>
     </message>
   </context>
   <context>
@@ -6951,12 +6951,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="482"/>
       <source>Slice Apart</source>
-      <translation type="unfinished">Slice Apart</translation>
+      <translation>Sliseáil óna chéile</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
       <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
-      <translation type="unfinished">Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</translation>
+      <translation>Gearrann sé an réad roghnaithe de réir réada eile, agus scoilteann sé óna chéile é, ag cruthú scagaire cumaisc do gach sleamhnán</translation>
     </message>
   </context>
   <context>
@@ -6964,7 +6964,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="14"/>
       <source>Box Definition</source>
-      <translation type="unfinished">Box Definition</translation>
+      <translation>Sainmhíniú Bosca</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
@@ -6999,7 +6999,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="121"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="141"/>
@@ -7022,12 +7022,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
       <source>Sew Shape</source>
-      <translation type="unfinished">Sew Shape</translation>
+      <translation>Cruth Fuaigh</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
       <source>Tolerance for sewing the shape</source>
-      <translation type="unfinished">Tolerance for sewing the shape</translation>
+      <translation>Caoinfhulaingt chun an cruth a fhuáil</translation>
     </message>
   </context>
   <context>
@@ -7035,12 +7035,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="371"/>
       <source>Ring facemaker</source>
-      <translation type="unfinished">Ring facemaker</translation>
+      <translation>Déantóir aghaidhe fáinne</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="376"/>
       <source>Supports making planar faces with holes and holes as faces</source>
-      <translation type="unfinished">Supports making planar faces with holes and holes as faces</translation>
+      <translation>Tacaíonn sé le haghaidheanna plánacha a dhéanamh le poill agus poill mar aghaidheanna</translation>
     </message>
   </context>
   <context>
@@ -7048,12 +7048,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2473"/>
       <source>Persiste&amp;nt Section Cut</source>
-      <translation type="unfinished">Persiste&amp;nt Section Cut</translation>
+      <translation>Gearradh Roinne Buan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2474"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
-      <translation type="unfinished">Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</translation>
+      <translation>Cruthaíonn réad nua mar thrasnú booléanach de na cruthanna infheicthe go léir agus na pláin ais roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -7061,12 +7061,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
+      <translation>Scagaire Roghnúcháin</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <source>Changes the selection filter</source>
-      <translation type="unfinished">Changes the selection filter</translation>
+      <translation>Athraíonn an scagaire roghnúcháin</translation>
     </message>
   </context>
   <context>
@@ -7074,12 +7074,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="193"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Roghnú Buaicphointe</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="194"/>
       <source>Only allows the selection of vertices</source>
-      <translation type="unfinished">Only allows the selection of vertices</translation>
+      <translation>Ní cheadaítear ach roghnú buaicphointí</translation>
     </message>
   </context>
   <context>
@@ -7087,12 +7087,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="218"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Roghnú Imeall</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="219"/>
       <source>Only allows the selection of edges</source>
-      <translation type="unfinished">Only allows the selection of edges</translation>
+      <translation>Ní cheadaítear ach roghnú imeall</translation>
     </message>
   </context>
   <context>
@@ -7100,12 +7100,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="243"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Roghnú Aghaidhe</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="244"/>
       <source>Only allows the selection of faces</source>
-      <translation type="unfinished">Only allows the selection of faces</translation>
+      <translation>Ní cheadaítear ach roghnú aghaidheanna</translation>
     </message>
   </context>
   <context>
@@ -7113,12 +7113,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="268"/>
       <source>No Selection Filters</source>
-      <translation type="unfinished">No Selection Filters</translation>
+      <translation>Gan Scagairí Roghnúcháin</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="269"/>
       <source>Clears all selection filters</source>
-      <translation type="unfinished">Clears all selection filters</translation>
+      <translation>Glanann sé na scagairí roghnaithe go léir</translation>
     </message>
   </context>
   <context>
@@ -7142,7 +7142,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="29"/>
       <source>Direction 2</source>
-      <translation type="unfinished">Direction 2</translation>
+      <translation>Treo 2</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="36"/>
@@ -7152,12 +7152,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="50"/>
       <source>Reverse the direction of the pattern.</source>
-      <translation type="unfinished">Reverse the direction of the pattern.</translation>
+      <translation>Droim ar ais treo an phatrúin.</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="68"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Mód</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="76"/>
@@ -7168,38 +7168,38 @@ Overlapping volumes of the shapes will be removed.</translation>
       <location filename="../../PatternParametersWidget.ui" line="81"/>
       <location filename="../../PatternParametersWidget.ui" line="103"/>
       <source>Spacing</source>
-      <translation type="unfinished">Spacing</translation>
+      <translation>Spásáil</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="89"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="141"/>
       <source>Add spacing to create spacing patterns.</source>
-      <translation type="unfinished">Add spacing to create spacing patterns.</translation>
+      <translation>Cuir spásáil leis chun patrúin spásála a chruthú.</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="158"/>
       <source>Occurrences</source>
-      <translation type="unfinished">Occurrences</translation>
+      <translation>Tarluithe</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="69"/>
       <source>Axis</source>
-      <translation type="unfinished">Axis</translation>
+      <translation>Ais</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="408"/>
       <location filename="../../PatternParametersWidget.cpp" line="504"/>
       <source>Spacing %1</source>
-      <translation type="unfinished">Spacing %1</translation>
+      <translation>Spásáil %1</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="424"/>
       <source>Remove this spacing definition.</source>
-      <translation type="unfinished">Remove this spacing definition.</translation>
+      <translation>Bain an sainmhíniú spásála seo.</translation>
     </message>
   </context>
   <context>
@@ -7207,7 +7207,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
-      <translation type="unfinished">Failure while rendering preview: %1. That usually indicates an error with model.</translation>
+      <translation>Teip agus réamhamharc á rindreáil: %1. De ghnáth léiríonn sé sin earráid leis an tsamhail.</translation>
     </message>
   </context>
 </TS>

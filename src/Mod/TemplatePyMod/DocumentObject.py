@@ -28,9 +28,14 @@ class DocumentObject(object):
 
     def __getattr__(self, attr):
         if attr !="__object__" and hasattr(self.__object__,attr):
-            return getattr(self.__object__,attr)
-        else:
-            return object.__getattribute__(self,attr)
+            # Methods like "getSubObject" are called from the C++ code if they exist in
+            # this class (DocumentObject).
+            # Our __object__ also has a method with the same name ("getSubObject"),
+            # but it does not require the extra first argument "obj" which is the same
+            # as self.__object__. So we cannot map these methods 1:1.
+            if attr not in ("getSubObject", "getSubObjects", "getLinkedObject"):
+                return getattr(self.__object__,attr)
+        return object.__getattribute__(self,attr)
     def __setattr__(self, attr, value):
         if attr !="__object__" and hasattr(self.__object__,attr):
             setattr(self.__object__,attr,value)
@@ -91,12 +96,11 @@ class DocumentObject(object):
     def purgeTouched(self):
         "removes the to-be-recomputed flag of this object"
         return self.__object__.purgeTouched()
-    def __setstate__(self,value):
-        """allows saving custom attributes of this object as strings, so
-        they can be saved when saving the FreeCAD document"""
+    def loads(self,value):
+        """Called during document restore."""
         return None
-    def __getstate__(self):
-        """reads values previously saved with __setstate__()"""
+    def dumps(self):
+        """Called during document saving."""
         return None
     @property
     def PropertiesList(self):
@@ -224,12 +228,11 @@ class ViewProvider(object):
     def getDocumentationOfProperty(self,attr):
         "returns the documentation string of a given property"
         return self.__vobject__.getDocumentationOfProperty(attr)
-    def __setstate__(self,value):
-        """allows saving custom attributes of this object as strings, so
-        they can be saved when saving the FreeCAD document"""
+    def loads(self,value):
+        """Called during document restore."""
         return None
-    def __getstate__(self):
-        """reads values previously saved with __setstate__()"""
+    def dumps(self):
+        """Called during document saving."""
         return None
     @property
     def Annotation(self):

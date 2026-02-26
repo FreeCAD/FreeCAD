@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_IGES_IMPORTEXPORTSETTINGS_H
-#define PART_IGES_IMPORTEXPORTSETTINGS_H
+#pragma once
 
 #include <Mod/Part/App/Interface.h>
 #include <Base/Parameter.h>
@@ -65,5 +64,3 @@ private:
 
 }  // namespace IGES
 }  // namespace Part
-
-#endif

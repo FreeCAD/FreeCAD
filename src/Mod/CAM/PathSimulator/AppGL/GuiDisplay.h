@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __guidisplay_t__
-#define __guidisplay_t__
+#pragma once
 #include "OpenGlWrapper.h"
 #include "Texture.h"
 #include "Shader.h"
@@ -153,5 +152,3 @@ private:
 };
 
 }  // namespace MillSim
-
-#endif  // __guidisplay_t__

@@ -24,13 +24,13 @@ that reference the same configurable object</translation>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="161"/>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Bunús</translation>
     </message>
   </context>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1110"/>
+      <location filename="../../Document.cpp" line="1117"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -76,7 +76,7 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="271"/>
       <source>Origin</source>
-      <translation type="unfinished">Origin</translation>
+      <translation>Bunús</translation>
     </message>
   </context>
 </TS>

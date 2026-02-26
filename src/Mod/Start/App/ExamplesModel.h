@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_EXAMPLESMODEL_H
-#define FREECAD_START_EXAMPLESMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QDir>
@@ -49,5 +48,3 @@ private:
 };
 
 }  // namespace Start
-
-#endif  // FREECAD_START_EXAMPLESMODEL_H

@@ -207,6 +207,7 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
 
 ViewProviderMeasureBase::~ViewProviderMeasureBase()
 {
+    pDragger->removeValueChangedCallback(draggerChangedCallback, this);
     _mVisibilityChangedConnection.disconnect();
     pGlobalSeparator->unref();
     pLabel->unref();

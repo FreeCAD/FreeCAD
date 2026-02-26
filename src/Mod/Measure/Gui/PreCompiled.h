@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MEASUREGUI_PRECOMPILED_H
-#define MEASUREGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -74,5 +73,3 @@
 
 // Inventor includes OpenGL
 #include <Gui/InventorAll.h>
-
-#endif

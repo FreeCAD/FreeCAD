@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4SURFACE_H
-#define WM4SURFACE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4System.h"
@@ -40,5 +39,3 @@ typedef Surface<float> Surfacef;
 typedef Surface<double> Surfaced;
 
 }
-
-#endif

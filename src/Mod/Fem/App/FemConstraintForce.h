@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINTFORCE_H
-#define FEM_CONSTRAINTFORCE_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -67,6 +66,3 @@ private:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTFORCE_H

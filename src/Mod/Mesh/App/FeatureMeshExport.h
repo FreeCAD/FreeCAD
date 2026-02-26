@@ -22,15 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_FEATUREMESHEXPORT_H
-#define MESH_FEATUREMESHEXPORT_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
 
 namespace Mesh
 {
@@ -63,5 +60,3 @@ public:
 };
 
 }  // namespace Mesh
-
-#endif  // MESH_FEATUREMESHEXPORT_H

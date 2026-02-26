@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVERTEX_H
-#define DRAWINGGUI_QGRAPHICSITEMVERTEX_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -61,5 +60,3 @@ protected:
 };
 
 }
-
-#endif // DRAWINGGUI_QGRAPHICSITEMVERTEX_H

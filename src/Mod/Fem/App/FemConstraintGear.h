@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINTGear_H
-#define FEM_CONSTRAINTGear_H
+#pragma once
 
 #include "FemConstraintBearing.h"
 
@@ -63,6 +62,3 @@ private:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTGear_H

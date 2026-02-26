@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYEDITOR_H
-#define PROPERTYEDITOR_H
+#pragma once
 
 #include <unordered_set>
 
@@ -192,5 +191,3 @@ private:
 
 }  // namespace PropertyEditor
 }  // namespace Gui
-
-#endif  // PROPERTYEDITOR_H

@@ -26,8 +26,7 @@
  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
  */
 
-#ifndef FCREPALGOAPIFUSE_H
-#define FCREPALGOAPIFUSE_H
+#pragma once
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 
@@ -47,4 +46,3 @@ public:
     //! <anOperation> - the type of the operation
     Standard_EXPORT FCBRepAlgoAPI_Fuse(const TopoDS_Shape& S1, const TopoDS_Shape& S2);
 };
-#endif

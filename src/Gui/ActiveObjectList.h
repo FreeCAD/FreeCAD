@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ActiveObjectList_H
-#define GUI_ActiveObjectList_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -107,5 +106,3 @@ private:
 static const char PDBODYKEY[] = "pdbody";
 static const char PARTKEY[] = "part";
 static const char ASSEMBLYKEY[] = "assembly";
-
-#endif

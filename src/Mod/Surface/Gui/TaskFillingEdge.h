@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKFILLINGEDGE_H
-#define SURFACEGUI_TASKFILLINGEDGE_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -103,5 +102,3 @@ private:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_TASKFILLINGEDGE_H

@@ -150,6 +150,11 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """G28 G91 Z0
 """
 
+# List of drill G codes where some parameters are required and their
+# required parameters.
+DRILL_OPERATION = ("G73", "G81", "G82", "G83", "G84", "G85")
+DRILL_PARAM_REQ = ("L", "P", "Q", "R", "Z")
+
 
 def processArguments(argstring):
     global OUTPUT_HEADER
@@ -189,7 +194,7 @@ def processArguments(argstring):
             SHOW_EDITOR = False
         else:
             SHOW_EDITOR = True
-        print("Show editor = %s" % SHOW_EDITOR)
+        # print("Show editor = %s" % SHOW_EDITOR)  # Commented to reduce test noise
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
         else:
@@ -249,7 +254,7 @@ def export(objectslist, filename, argstring):
             )
             return None
 
-    print("postprocessing...")
+    # print("postprocessing...")  # Commented to reduce test noise
     gcode = ""
 
     gcode += "%\n"
@@ -375,7 +380,7 @@ def export(objectslist, filename, argstring):
     else:
         final = gcode
 
-    print("done postprocessing.")
+    # print("done postprocessing.")  # Commented to reduce test noise
 
     if not filename == "-":
         gfile = pyopen(filename, "w")
@@ -395,6 +400,8 @@ def linenumber():
 
 def parse(pathobj):
     global PRECISION
+    global DRILL_OPERATION
+    global DRILL_PARAM_REQ
     global MODAL
     global OUTPUT_DOUBLES
     global UNIT_FORMAT
@@ -627,7 +634,11 @@ def parse(pathobj):
                         if (
                             (not OUTPUT_DOUBLES)
                             and (param in currLocation)
-                            and (currLocation[param] == c.Parameters[param])
+                            and currLocation[param] == c.Parameters[param]
+                            and (
+                                command not in DRILL_OPERATION
+                                or (command in DRILL_OPERATION and param not in DRILL_PARAM_REQ)
+                            )
                         ):
                             continue
                         else:

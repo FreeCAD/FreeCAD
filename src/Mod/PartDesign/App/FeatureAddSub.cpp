@@ -29,6 +29,8 @@
 #include <App/FeaturePythonPyImp.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
+#include <GProp_GProps.hxx>
+#include <BRepGProp.hxx>
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
@@ -77,7 +79,6 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& s
         subShape = AddSubShape.getShape();
     }
 }
-
 void FeatureAddSub::updatePreviewShape()
 {
     const auto notifyWarning = [](const QString& message) {
@@ -90,10 +91,43 @@ void FeatureAddSub::updatePreviewShape()
     // for subtractive shapes we want to also showcase removed volume, not only the tool
     if (addSubType == Subtractive) {
         TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
+        const TopoShape& tool = AddSubShape.getShape();
 
-        if (const TopoShape& addSubShape = AddSubShape.getShape(); !addSubShape.isEmpty()) {
+        if (!tool.isEmpty()) {
             try {
-                base.makeElementBoolean(Part::OpCodes::Common, {base, addSubShape});
+                // Compute removed volume preview (for display)
+                TopoShape common;
+                common.makeElementBoolean(
+                    Part::OpCodes::Common,
+                    {base, tool},
+                    "Preview",
+                    Precision::Confusion()
+                );
+
+                // does CUT change volume?
+                GProp_GProps propsBefore, propsAfter;
+                BRepGProp::VolumeProperties(base.getShape(), propsBefore);
+
+                TopoShape cut;
+                cut.makeElementBoolean(
+                    Part::OpCodes::Cut,
+                    {base, tool},
+                    "PreviewCheck",
+                    Precision::Confusion()
+                );
+
+                BRepGProp::VolumeProperties(cut.getShape(), propsAfter);
+
+                const double removed = propsBefore.Mass() - propsAfter.Mass();
+
+                if (removed <= Precision::Confusion()) {
+                    notifyWarning(
+                        tr("Resulting shape is empty. That may indicate that no material will be "
+                           "removed or a problem with the model.")
+                    );
+                }
+                PreviewShape.setValue(common);
+                return;
             }
             catch (Standard_Failure& e) {
                 notifyWarning(QString::fromUtf8(e.GetMessageString()));
@@ -101,14 +135,6 @@ void FeatureAddSub::updatePreviewShape()
             catch (Base::Exception& e) {
                 notifyWarning(QString::fromStdString(e.getMessage()));
             }
-
-            if (base.isEmpty()) {
-                notifyWarning(
-                    tr("Resulting shape is empty. That may indicate that no material will be "
-                       "removed or a problem with the model.")
-                );
-            }
-
             PreviewShape.setValue(base);
             return;
         }

@@ -24,15 +24,12 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FACTORY_H
-#define BASE_FACTORY_H
+#pragma once
 
 #include <list>
 #include <map>
 #include <string>
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 
 namespace Base
@@ -139,6 +136,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif

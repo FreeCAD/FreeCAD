@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_Path_H
-#define APP_Path_H
+#pragma once
 
 #include <Base/Persistence.h>
 #include <FCGlobal.h>
@@ -54,6 +53,3 @@ public:
 };
 
 }  // namespace App
-
-
-#endif  // APP_Path_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_ViewProviderSetGeometry_H
-#define FEM_ViewProviderSetGeometry_H
+#pragma once
 
 #include <Gui/ViewProviderGeometryObject.h>
 
@@ -42,6 +41,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-
-#endif  // FEM_ViewProviderSetGeometry_H

@@ -61,7 +61,7 @@
       <location filename="../../VisualInspection.ui" line="39"/>
       <location filename="../../VisualInspection.ui" line="66"/>
       <source>Objects</source>
-      <translation type="unfinished">Objects</translation>
+      <translation>Réada</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
       <source>Parameter</source>
-      <translation type="unfinished">Parameter</translation>
+      <translation>Paraiméadar</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
@@ -105,7 +105,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="569"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Anótáil</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="572"/>

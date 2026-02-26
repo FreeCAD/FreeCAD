@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_APP_APPLICATION_H_
-#define SRC_APP_APPLICATION_H_
+#pragma once
 
 #include <fastsignals/signal.h>
 #include <QtCore/qtextstream.h>
@@ -129,6 +128,15 @@ public:
     App::Document* newDocument(const char* proposedName = nullptr,
                                const char* proposedLabel = nullptr,
                                DocumentInitFlags CreateFlags = DocumentInitFlags());
+
+    /**
+     * @brief Closes the document and removes it from the application.
+     *
+     * @param[in] doc The document to close.
+     * @return Returns true if the document was found and closed, false otherwise.
+     */
+    bool closeDocument(const Document* doc);
+
     /**
      * @brief Closes the document and removes it from the application.
      *
@@ -1035,6 +1043,3 @@ inline App::Application &GetApplication(){
 }
 
 } // namespace App
-
-
-#endif // SRC_APP_APPLICATION_H_

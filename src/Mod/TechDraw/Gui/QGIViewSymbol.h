@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -68,4 +67,3 @@ protected:
 };
 
 } // namespace
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSYMBOL_H

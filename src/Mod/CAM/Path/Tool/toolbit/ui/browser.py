@@ -39,7 +39,7 @@ from .editor import ToolBitEditor
 from .util import natural_sort_key
 
 
-Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+Path.Log.setLevel(Path.Log.Level.ERROR, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 

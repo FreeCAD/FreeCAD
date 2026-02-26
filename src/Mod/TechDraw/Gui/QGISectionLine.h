@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGISECTIONLINE_H
-#define TECHDRAWGUI_QGISECTIONLINE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -130,5 +129,3 @@ private:
 };
 
 }
-
-#endif // TECHDRAWGUI_QGISECTIONLINE_H

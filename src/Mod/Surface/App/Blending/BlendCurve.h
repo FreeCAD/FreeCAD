@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_BLEND_CURVE_H
-#define SURFACE_BLEND_CURVE_H
+#pragma once
 
 #include <Geom_BezierCurve.hxx>
 #include <Mod/Surface/App/Blending/BlendPoint.h>
@@ -60,5 +59,3 @@ public:
     void setSize(int, double, bool);
 };
 }  // namespace Surface
-
-#endif

@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
-#define DRAWINGGUI_VIEWPROVIDERPAGE_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
@@ -157,6 +156,3 @@ private:
 };
 
 }// namespace TechDrawGui
-
-
-#endif// DRAWINGGUI_VIEWPROVIDERPAGE_H

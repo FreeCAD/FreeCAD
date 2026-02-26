@@ -325,7 +325,7 @@ def export(objectslist, filename, argstring):
     global MOTION_MODE
     global SUPPRESS_COMMANDS
 
-    print("Post Processor: " + __name__ + " postprocessing...")
+    # print("Post Processor: " + __name__ + " postprocessing...")  # Commented to reduce test noise
     gcode = ""
 
     # Write header:
@@ -455,7 +455,7 @@ def export(objectslist, filename, argstring):
     else:
         final = gcode
 
-    print("Done postprocessing.")
+    # print("Done postprocessing.")  # Commented to reduce test noise
 
     # Write the file:
     if not filename == "-":

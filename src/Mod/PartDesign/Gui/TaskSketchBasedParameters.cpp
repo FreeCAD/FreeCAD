@@ -76,10 +76,19 @@ const QString TaskSketchBasedParameters::onAddSelection(
     std::string subname = msg.pSubName;
     QString refStr;
 
-    // Remove subname for planes and datum features
     if (PartDesign::Feature::isDatum(selObj)) {
-        subname = "";
-        refStr = QString::fromUtf8(selObj->getNameInDocument());
+        // Check if it's a plane within a LCS
+        auto datum = freecad_cast<App::DatumElement*>(selObj);
+        if (datum && datum->getLCS()) {
+            selObj = datum->getLCS();
+            subname = datum->getNameInDocument();
+            refStr = QString::fromStdString((std::string(selObj->getNameInDocument()) + ":" + subname));
+        }
+        else {
+            // Remove subname for planes and datum features
+            subname = "";
+            refStr = QString::fromUtf8(selObj->getNameInDocument());
+        }
     }
     else if (subname.size() > 4) {
         int faceId = std::atoi(&subname[4]);
