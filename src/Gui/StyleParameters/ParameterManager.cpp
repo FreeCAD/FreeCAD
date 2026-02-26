@@ -45,6 +45,38 @@ namespace Gui::StyleParameters
 namespace
 {
 
+/// Converts a YAML node to a StyleParameters expression string.
+/// Scalars are returned as-is; sequences become unnamed tuples "(a, b, ...)";
+/// maps become named tuples "(key1: val1, key2: val2, ...)". Recursive.
+std::string yamlNodeToExpression(const YAML::Node& node)
+{
+    if (node.IsScalar()) {
+        return node.as<std::string>();
+    }
+
+    if (node.IsSequence()) {
+        std::vector<std::string> parts;
+        parts.reserve(node.size());
+        for (const auto& element : node) {
+            parts.push_back(yamlNodeToExpression(element));
+        }
+        return fmt::format("({})", fmt::join(parts, ", "));
+    }
+
+    if (node.IsMap()) {
+        std::vector<std::string> parts;
+        parts.reserve(node.size());
+        for (auto it = node.begin(); it != node.end(); ++it) {
+            parts.push_back(
+                fmt::format("{}: {}", it->first.as<std::string>(), yamlNodeToExpression(it->second))
+            );
+        }
+        return fmt::format("({})", fmt::join(parts, ", "));
+    }
+
+    return "";
+}
+
 /// Formats a gradient tuple as QSS qlineargradient() or qradialgradient().
 std::string gradientToQss(const Tuple& tuple, const auto& formatValue)
 {
@@ -248,8 +280,8 @@ void YamlParameterSource::reload()
     YAML::Node root = YAML::Load(content);
     parameters.clear();
     for (auto it = root.begin(); it != root.end(); ++it) {
-        auto key = it->first.as<std::string>();
-        auto value = it->second.as<std::string>();
+        const auto key = it->first.as<std::string>();
+        const auto value = yamlNodeToExpression(it->second);
 
         parameters[key] = Parameter {
             .name = key,
