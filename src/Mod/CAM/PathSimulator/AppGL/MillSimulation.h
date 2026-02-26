@@ -113,6 +113,8 @@ protected:
     void RemoveTool(int toolId);
 
 protected:
+    bool simulationInitiated = false;
+
     std::vector<EndMill*> mToolTable;
     GCodeParser mCodeParser;
     GuiDisplay guiDisplay;

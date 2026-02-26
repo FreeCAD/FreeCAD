@@ -63,7 +63,6 @@ public:
         return shaderId > 0;
     }
 
-
 protected:
     int mModelPos = -1;
     int mNormalRotPos = -1;
@@ -88,8 +87,8 @@ protected:
     int mScreenWidthPos = -1;
     int mScreenHeightPos = -1;
 
-    const char* vertShader = nullptr;
-    const char* fragShader = nullptr;
+    std::string vertShader;
+    std::string fragShader;
 };
 
 extern Shader* CurrentShader;
