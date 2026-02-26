@@ -511,6 +511,7 @@ SET(Tests_SRCS
     CAMTests/TestCentroidLegacyPost.py
     CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
+    CAMTests/TestGenericPlasma.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
