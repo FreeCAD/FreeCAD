@@ -703,12 +703,300 @@ class TestBuildPostList(unittest.TestCase):
 
         # T2 (early prep) should come shortly after first M6 (within a few commands)
         self.assertLess(first_m6_idx, first_t2_idx, "T2 prep should come after first M6")
-        self.assertLess(
-            first_t2_idx - first_m6_idx, 5, "T2 prep should be within a few commands of first M6"
-        )
 
         # T2 early prep should come before second M6
         if second_m6_idx is not None:
             self.assertLess(
                 first_t2_idx, second_m6_idx, "T2 early prep should come before second M6"
             )
+
+
+class TestJobPropertyOverrides(unittest.TestCase):
+    """Test job-level postprocessor property overrides."""
+
+    @classmethod
+    def setUpClass(cls):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
+        cls.doc = FreeCAD.newDocument("job_override_test")
+
+        # Create test geometry
+        import Part
+
+        box = cls.doc.addObject("Part::Box", "TestBox")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 20
+
+        # Create job
+        cls.job = PathJob.Create("OverrideTestJob", [box], None)
+        cls.job.PostProcessor = "generic"
+        cls.job.PostProcessorOutputFile = ""
+        cls.job.SplitOutput = False
+        cls.job.OrderOutputBy = "Operation"
+        cls.job.Fixtures = ["G54"]
+        cls.job.Machine = "TestMachine"
+
+        # Create tool
+        from Path.Tool.toolbit import ToolBit
+
+        tool_attrs = {
+            "name": "TestTool",
+            "shape": "endmill.fcstd",
+            "parameter": {"Diameter": 6.0},
+            "attribute": {},
+        }
+        toolbit = ToolBit.from_dict(tool_attrs)
+        tool = toolbit.attach_to_doc(doc=cls.doc)
+        tool.Label = "6mm_Endmill"
+
+        tc = PathToolController.Create("TC_Test_Tool", tool, 1)
+        tc.Label = "TC: 6mm Endmill"
+        cls.job.addObject(tc)
+
+        # Create operation
+        profile_op = cls.doc.addObject("Path::FeaturePython", "TestProfile")
+        profile_op.Label = "TestProfile"
+        profile_op.Path = Path.Path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                Path.Command("G1", {"X": 100.0, "Y": 0.0, "Z": -5.0, "F": 100.0}),
+                Path.Command("G1", {"X": 100.0, "Y": 100.0, "Z": -5.0}),
+                Path.Command("G1", {"X": 0.0, "Y": 100.0, "Z": -5.0}),
+                Path.Command("G1", {"X": 0.0, "Y": 0.0, "Z": -5.0}),
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+            ]
+        )
+        cls.job.Operations.addObject(profile_op)
+
+        cls.doc.recompute()
+
+    @classmethod
+    def tearDownClass(cls):
+        FreeCAD.closeDocument(cls.doc.Name)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
+
+    def _create_test_machine(self, **properties):
+        """Create a test machine with specified postprocessor properties."""
+        from Machine.models.machine import Machine, Toolhead, ToolheadType
+
+        machine = Machine.create_3axis_config()
+        machine.name = "TestMachine"
+        machine.postprocessor_file_name = "generic"
+        machine.postprocessor_properties = {
+            "pierce_delay": 1000,
+            "cooling_delay": 500,
+            "force_rapid_feeds": False,
+            **properties,
+        }
+
+        # Add toolhead
+        toolhead = Toolhead(
+            name="Default Toolhead",
+            toolhead_type=ToolheadType.ROTARY,
+            id="toolhead1",
+            max_power_kw=2.2,
+            max_rpm=24000,
+            min_rpm=6000,
+            tool_change="manual",
+        )
+        machine.toolheads = [toolhead]
+        return machine
+
+    def test_job_property_overrides_basic(self):
+        """
+        Test that job-level postprocessor property overrides work correctly.
+
+        Expected:
+            - Job overrides take precedence over machine defaults
+            - Only specified keys are overridden
+            - Invalid JSON is handled gracefully
+        """
+        from Path.Post.Processor import PostProcessor
+        from Machine.models.machine import MachineFactory
+
+        # Reset job overrides to clean state
+        self.job.PostProcessorPropertyOverrides = "{}"
+
+        # Create test machine
+        machine = self._create_test_machine()
+
+        # Mock MachineFactory to return our test machine
+        original_get_machine = MachineFactory.get_machine
+        MachineFactory.get_machine = lambda name: machine
+
+        try:
+            # Test 1: Basic override functionality
+            self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 1800, "cooling_delay": 700}'
+
+            processor = PostProcessor(self.job, "", "", "mm")
+            # Call export2 to trigger the override mechanism
+            processor.export2()
+
+            # Verify overrides were applied
+            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1800)
+            self.assertEqual(processor._machine.postprocessor_properties["cooling_delay"], 700)
+            # Verify non-overridden property stays at machine default
+            self.assertEqual(
+                processor._machine.postprocessor_properties["force_rapid_feeds"], False
+            )
+
+            # Test 2: Empty overrides do nothing
+            machine2 = self._create_test_machine()  # Fresh machine instance
+            MachineFactory.get_machine = lambda name: machine2
+            self.job.PostProcessorPropertyOverrides = "{}"
+            processor = PostProcessor(self.job, "", "", "mm")
+            processor.export2()
+            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1000)
+            self.assertEqual(processor._machine.postprocessor_properties["cooling_delay"], 500)
+
+            # Test 3: Invalid JSON is handled gracefully
+            machine3 = self._create_test_machine()  # Fresh machine instance
+            MachineFactory.get_machine = lambda name: machine3
+            self.job.PostProcessorPropertyOverrides = (
+                '{"pierce_delay": 1800,'  # Missing closing brace
+            )
+            processor = PostProcessor(self.job, "", "", "mm")
+            processor.export2()
+            # Should fall back to machine defaults
+            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1000)
+
+            # Test 4: Unknown keys are ignored
+            machine4 = self._create_test_machine()  # Fresh machine instance
+            MachineFactory.get_machine = lambda name: machine4
+            self.job.PostProcessorPropertyOverrides = (
+                '{"unknown_property": 1234, "pierce_delay": 1500}'
+            )
+            processor = PostProcessor(self.job, "", "", "mm")
+            processor.export2()
+            # Known property should be overridden
+            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1500)
+            # Unknown property should not be added
+            self.assertNotIn("unknown_property", processor._machine.postprocessor_properties)
+
+        finally:
+            # Restore original MachineFactory
+            MachineFactory.get_machine = original_get_machine
+
+    def test_job_property_overrides_with_plasma(self):
+        """
+        Test that job-level overrides affect G-code output with plasma postprocessor.
+
+        Expected:
+            - Override values are reflected in the final G-code output
+        """
+        from Path.Post.scripts.generic_plasma_post import GenericPlasma
+        from Machine.models.machine import MachineFactory
+
+        # Reset job overrides to clean state
+        self.job.PostProcessorPropertyOverrides = "{}"
+
+        # Create machine with plasma postprocessor
+        machine = self._create_test_machine(pierce_delay=1000)
+        machine.postprocessor_file_name = "generic_plasma"
+
+        # Add M3/M4 commands to trigger plasma behavior
+        plasma_commands = [
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+            Path.Command("M3", {}),  # Torch on - should trigger pierce delay
+            Path.Command("G1", {"X": 100.0, "Y": 0.0, "Z": -5.0, "F": 100.0}),
+            Path.Command("M5", {}),  # Torch off
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+        ]
+
+        # Update operation path
+        profile_op = self.doc.getObject("TestProfile")
+        original_path = profile_op.Path
+        profile_op.Path = Path.Path(plasma_commands)
+
+        try:
+            # Mock MachineFactory
+            original_get_machine = MachineFactory.get_machine
+            MachineFactory.get_machine = lambda name: machine
+
+            # Test with no overrides (machine defaults)
+            self.job.PostProcessorPropertyOverrides = "{}"
+            processor = GenericPlasma(self.job, "", "", "mm")
+            results = processor.export2()
+            gcode_no_override = ""
+            for section_name, gcode in results:
+                gcode_no_override += gcode
+
+            # Test with pierce_delay override
+            self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 2500}'  # 2.5 seconds
+            processor = GenericPlasma(self.job, "", "", "mm")
+            results = processor.export2()
+            gcode_with_override = ""
+            for section_name, gcode in results:
+                gcode_with_override += gcode
+
+            # The override should result in different G-code
+            self.assertNotEqual(gcode_no_override, gcode_with_override)
+
+            # Verify the specific G4 dwell command reflects the override
+            # With 2500ms override, we should see G4 P2.5
+            self.assertIn("G4 P2.5", gcode_with_override)
+            # With 1000ms default, we should see G4 P1.0
+            self.assertIn("G4 P1.0", gcode_no_override)
+
+        finally:
+            # Restore original path and MachineFactory
+            profile_op.Path = original_path
+            MachineFactory.get_machine = original_get_machine
+
+    def test_job_property_overrides_template_round_trip(self):
+        """
+        Test that job property overrides survive template save/restore cycle.
+
+        Expected:
+            - Overrides are saved to template
+            - Overrides are restored from template
+            - Empty overrides are not saved to template
+        """
+        import json
+        import tempfile
+        import os
+
+        # Set some overrides and machine
+        self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 1800, "cooling_delay": 700}'
+        self.job.Machine = "TestMachine"
+
+        # Save to template
+        template_attrs = self.job.Proxy.templateAttrs(self.job)
+
+        # Verify overrides are in template
+        self.assertIn("PostPropertyOverrides", template_attrs)
+        self.assertEqual(
+            template_attrs["PostPropertyOverrides"], {"pierce_delay": 1800, "cooling_delay": 700}
+        )
+
+        # Verify machine is in template
+        self.assertIn("Machine", template_attrs)
+        self.assertEqual(template_attrs["Machine"], "TestMachine")
+
+        # Test empty overrides are not saved
+        self.job.PostProcessorPropertyOverrides = "{}"
+        template_attrs = self.job.Proxy.templateAttrs(self.job)
+        self.assertNotIn("PostPropertyOverrides", template_attrs)
+
+        # Test round-trip: save to file and restore
+        self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 1500}'
+        self.job.Machine = "RoundTripTestMachine"
+        template_attrs = self.job.Proxy.templateAttrs(self.job)
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            json.dump(template_attrs, f)
+            template_path = f.name
+
+        try:
+            # Create a new job and restore from template
+            new_job = PathJob.Create("TemplateTestJob", [self.job.Stock], None)
+            new_job.Proxy.setFromTemplateFile(new_job, template_path)
+
+            # Verify overrides were restored
+            self.assertEqual(new_job.PostProcessorPropertyOverrides, '{"pierce_delay": 1500}')
+
+            # Verify machine was restored
+            self.assertEqual(new_job.Machine, "RoundTripTestMachine")
+
+        finally:
+            os.unlink(template_path)

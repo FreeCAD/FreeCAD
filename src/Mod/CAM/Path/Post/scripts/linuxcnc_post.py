@@ -196,6 +196,15 @@ class Linuxcnc(PostProcessor):
         This ensures the blend command is added to the preamble before
         the parent's export2() reads it from postprocessor_properties.
         """
+        # Apply job property overrides FIRST so blend command uses overridden values
+        self._apply_job_property_overrides()
+
+        # Update values dict with overridden blend tolerance
+        if self._machine and hasattr(self._machine, "postprocessor_properties"):
+            props = self._machine.postprocessor_properties
+            self.values["BLEND_TOLERANCE"] = props.get("blend_tolerance", 0.0)
+            self.values["BLEND_MODE"] = props.get("blend_mode", "BLEND")
+
         # Inject blend command into preamble before parent export2 processes it
         if self._machine and hasattr(self._machine, "postprocessor_properties"):
             blend_cmd = self._get_blend_command()

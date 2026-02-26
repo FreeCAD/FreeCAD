@@ -65,6 +65,8 @@ class JobTemplate:
     Stock = "Stock"
     # TCs are grouped under Tools in a job, the template refers to them directly though
     ToolController = "ToolController"
+    PostProcessorPropertyOverrides = "PostPropertyOverrides"
+    Machine = "Machine"
     Version = "Version"
 
 
@@ -216,6 +218,16 @@ class ObjectJob:
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
         )
+        obj.addProperty(
+            "App::PropertyString",
+            "PostProcessorPropertyOverrides",
+            "Output",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "JSON dict of postprocessor properties that override machine defaults for this job",
+            ),
+        )
+        obj.PostProcessorPropertyOverrides = "{}"
 
         obj.Fixtures = ["G54"]
 
@@ -537,6 +549,17 @@ class ObjectJob:
                 "Output",
                 QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
             )
+        if not hasattr(obj, "PostProcessorPropertyOverrides"):
+            obj.addProperty(
+                "App::PropertyString",
+                "PostProcessorPropertyOverrides",
+                "Output",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "JSON dict of postprocessor properties that override machine defaults for this job",
+                ),
+            )
+            obj.PostProcessorPropertyOverrides = "{}"
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -588,8 +611,14 @@ class ObjectJob:
                         obj.PostProcessorArgs = attrs.get(JobTemplate.PostProcessorArgs)
                     else:
                         obj.PostProcessorArgs = ""
+                if attrs.get(JobTemplate.PostProcessorPropertyOverrides):
+                    obj.PostProcessorPropertyOverrides = json.dumps(
+                        attrs[JobTemplate.PostProcessorPropertyOverrides]
+                    )
                 if attrs.get(JobTemplate.PostProcessorOutputFile):
                     obj.PostProcessorOutputFile = attrs.get(JobTemplate.PostProcessorOutputFile)
+                if attrs.get(JobTemplate.Machine):
+                    obj.Machine = attrs.get(JobTemplate.Machine)
                 if attrs.get(JobTemplate.Description):
                     obj.Description = attrs.get(JobTemplate.Description)
 
@@ -633,8 +662,18 @@ class ObjectJob:
             attrs[JobTemplate.Fixtures] = [{f: True} for f in obj.Fixtures]
             attrs[JobTemplate.OrderOutputBy] = obj.OrderOutputBy
             attrs[JobTemplate.SplitOutput] = obj.SplitOutput
+        if (
+            hasattr(obj, "PostProcessorPropertyOverrides")
+            and obj.PostProcessorPropertyOverrides
+            and obj.PostProcessorPropertyOverrides != "{}"
+        ):
+            attrs[JobTemplate.PostProcessorPropertyOverrides] = json.loads(
+                obj.PostProcessorPropertyOverrides
+            )
         if obj.PostProcessorOutputFile:
             attrs[JobTemplate.PostProcessorOutputFile] = obj.PostProcessorOutputFile
+        if hasattr(obj, "Machine") and obj.Machine:
+            attrs[JobTemplate.Machine] = obj.Machine
         attrs[JobTemplate.GeometryTolerance] = str(obj.GeometryTolerance.Value)
         if obj.Description:
             attrs[JobTemplate.Description] = obj.Description

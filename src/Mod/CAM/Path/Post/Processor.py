@@ -30,6 +30,7 @@ The base classes for post processors in the CAM workbench.
 """
 import argparse
 import importlib.util
+import json
 import os
 from PySide import QtCore, QtGui
 import re
@@ -690,6 +691,50 @@ class PostProcessor:
             if hasattr(duplicates, "parameters"):
                 self.values["OUTPUT_DOUBLES"] = duplicates.parameters
 
+    def _apply_job_property_overrides(self):
+        """Apply job-level postprocessor property overrides on top of machine config.
+
+        Reads Job.PostProcessorPropertyOverrides (JSON dict) and merges
+        overridden values into self._machine.postprocessor_properties.
+        Only keys present in the override dict are changed; all other
+        machine defaults remain intact.
+
+        This must be called after _merge_machine_config() so that machine
+        defaults are established first, then selectively overridden.
+        """
+        if not self._job or not self._machine:
+            return
+
+        overrides_str = getattr(self._job, "PostProcessorPropertyOverrides", "{}")
+        if not overrides_str or overrides_str == "{}":
+            return
+
+        try:
+            overrides = json.loads(overrides_str)
+        except (json.JSONDecodeError, TypeError) as e:
+            Path.Log.warning(f"Invalid PostProcessorPropertyOverrides JSON: {e}")
+            return
+
+        if not isinstance(overrides, dict):
+            Path.Log.warning("PostProcessorPropertyOverrides is not a dict, ignoring")
+            return
+
+        # Allow any property that already exists in machine.postprocessor_properties
+        # This enables overrides for postprocessors that don't have full schema defined yet
+        existing_props = set(self._machine.postprocessor_properties.keys())
+
+        for key, value in overrides.items():
+            if key in existing_props:
+                Path.Log.info(
+                    f"Job override: {key} = {value} "
+                    f"(machine default: {self._machine.postprocessor_properties.get(key, 'N/A')})"
+                )
+                self._machine.postprocessor_properties[key] = value
+            else:
+                Path.Log.warning(
+                    f"Job override key '{key}' not found in machine postprocessor_properties, ignoring"
+                )
+
     def _build_header(self, postables):
         """Build the G-code header from job/machine metadata.
 
@@ -1215,6 +1260,9 @@ class PostProcessor:
 
         # Merge machine configuration into values dict
         self._merge_machine_config()
+
+        # Apply job-level property overrides on top of machine defaults
+        self._apply_job_property_overrides()
 
         # ===== STAGE 1: ORDERING =====
         # Process all jobs (currently only first job supported)

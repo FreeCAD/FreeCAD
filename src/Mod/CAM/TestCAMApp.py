@@ -57,11 +57,7 @@ from CAMTests.TestPathOpUtil import TestPathOpUtil
 from CAMTests.TestPostToolProcessing import TestToolLengthOffset, TestToolProcessing
 
 # Post-processing tests split into 3 files for better organization
-from CAMTests.TestPostCore import (
-    TestPathPostUtils,
-    TestBuildPostList,
-    # TestConvertCommandToGcode,  # DEPRECATED - redundant with integration tests
-)
+from CAMTests.TestPostCore import TestPathPostUtils, TestBuildPostList, TestJobPropertyOverrides
 from CAMTests.TestPostProcessor import (
     TestPostProcessorFactory,
     TestResolvingPostProcessorName,
@@ -115,6 +111,7 @@ from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi
 
 from CAMTests.TestGenericPost import TestGenericPost
+from CAMTests.TestGenericPlasma import TestGenericPlasma
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
 from CAMTests.TestFanucPost import TestFanucPost
 
