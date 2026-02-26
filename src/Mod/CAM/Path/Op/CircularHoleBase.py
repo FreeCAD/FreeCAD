@@ -88,8 +88,8 @@ class ObjectOp(PathOp.ObjectOp):
         Can safely be overwritten by subclasses."""
         pass
 
-    def holeDiameter(self, obj, base, sub):
-        """holeDiameter(obj, base, sub) ... returns the diameter of the specified hole."""
+    def holeDiameter(self, base, sub):
+        """holeDiameter(base, sub) ... returns the diameter of the specified hole."""
         try:
             shape = base.Shape.getElement(sub)
             if isinstance(shape, Part.Vertex):
@@ -179,7 +179,7 @@ class ObjectOp(PathOp.ObjectOp):
                             {
                                 "x": pos.x,
                                 "y": pos.y,
-                                "r": self.holeDiameter(obj, base, sub),
+                                "r": self.holeDiameter(base, sub),
                             }
                         )
 
