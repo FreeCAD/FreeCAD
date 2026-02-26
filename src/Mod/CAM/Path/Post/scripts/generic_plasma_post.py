@@ -140,17 +140,13 @@ class GenericPlasma(PostProcessor):
         Path.Log.debug("Generic Plasma post processor initialized.")
 
         # State tracking for plasma-specific features
-        self._first_entry_done = False
         self._torch_active = False
         self._last_z = None  # Track last Z position for direction detection
-        self._last_z_direction = None  # Track Z movement direction
 
     def _reset_plasma_state(self):
         """Reset plasma-specific state tracking for each operation."""
-        self._first_entry_done = False
         self._torch_active = False
         self._last_z = None
-        self._last_z_direction = None
 
     def _get_property_value(self, name, default):
         """Get a property value from machine configuration with fallback to default."""
@@ -262,6 +258,7 @@ class GenericPlasma(PostProcessor):
 
                     # Get operation heights from the path object
                     pierce_height = self._get_operation_height(item, "StartDepth", 0)
+                    cut_height = self._get_operation_height(item, "FinalDepth", 0)
 
                     new_commands = []
                     for cmd in item.Path.Commands:
@@ -277,20 +274,23 @@ class GenericPlasma(PostProcessor):
                             self._last_z = cmd.Parameters["Z"]
 
                         # Handle torch control based on Z movement
-                        if z_direction == "down" and not self._torch_active:
+                        # Torch ignites AT pierce_height but is TRIGGERED by move to cut_height
+                        if (
+                            z_direction == "down"
+                            and cmd.Parameters["Z"] >= cut_height
+                            and not self._torch_active
+                        ):
+                            # Move to pierce height first if not already there
                             if (
                                 not self._get_property_value("mark_entry_only", False)
-                                or not self._first_entry_done
+                                and self._last_z > pierce_height
                             ):
-                                # Move to pierce height first if not already there
-                                if hasattr(self, "_last_z") and self._last_z > pierce_height:
-                                    move_cmd = Path.Command("G0", {"Z": pierce_height})
-                                    new_commands.append(move_cmd)
+                                move_cmd = Path.Command("G0", {"Z": pierce_height})
+                                new_commands.append(move_cmd)
 
-                                # Insert M3 before Z- move (torch ignition)
-                                new_commands.append(Path.Command("M3"))
-                                self._torch_active = True
-                                self._first_entry_done = True
+                            # Insert M3 before Z- move (torch ignition)
+                            new_commands.append(Path.Command("M3"))
+                            self._torch_active = True
                         elif z_direction == "up" and self._torch_active:
                             # Insert M5 after Z+ move (torch extinguish)
                             new_commands.append(Path.Command("M5"))
@@ -353,19 +353,14 @@ class GenericPlasma(PostProcessor):
                         ):
 
                             # Mark the entry point
-                            # 1. Move to pierce height if not already there
-                            if self._last_z > pierce_height:
-                                new_commands.append(Path.Command("G0", {"Z": pierce_height}))
-
                             # 2. Move to cut height (torch on)
                             new_commands.append(Path.Command("G1", {"Z": cut_height, "F": 200}))
 
                             # 3. Very short delay (torch mark)
                             new_commands.append(Path.Command("G4", {"P": 0.1}))
 
-                            # 4. Torch off and retract to clearance
+                            # 4. Torch off
                             new_commands.append(Path.Command("M5"))
-                            new_commands.append(Path.Command("G0", {"Z": clearance_height}))
 
                             first_entry_done = True
                             # Skip the original Z move since we handled it
@@ -376,7 +371,6 @@ class GenericPlasma(PostProcessor):
                             # Only allow Z+ movements (retractions)
                             if self._last_z is not None and cmd.Parameters["Z"] > self._last_z:
                                 new_commands.append(cmd)
-                                self._last_z = cmd.Parameters["Z"]
                         elif cmd.Name in ["M3", "M4", "M5"]:
                             # Skip torch commands in mark entry mode
                             continue
@@ -526,11 +520,14 @@ class GenericPlasma(PostProcessor):
         """
         Path.Log.debug("GenericPlasma.export2() starting plasma post-processing")
 
+        # Apply job property overrides FIRST so plasma injections use overridden values
+        self._apply_job_property_overrides()
+
         # Get the postables list from parent (before processing)
         postables = self._buildPostList()
         Path.Log.debug(f"GenericPlasma: Processing {len(postables)} sections")
 
-        # Apply plasma-specific transformations
+        # Apply plasma-specific transformations (now with overridden property values)
         self._inject_mark_entry_only(postables)
         self._inject_torch_control(postables)
         self._inject_pierce_delay(postables)
@@ -538,8 +535,21 @@ class GenericPlasma(PostProcessor):
         self._force_rapid_feeds(postables)
 
         Path.Log.debug("GenericPlasma: Plasma transformations applied, calling parent export2()")
-        # Call parent export2 with modified postables
-        return super().export2()
+        # Call parent export2 with modified postables (but skip override application since already done)
+        # We need to call parent's export2 but prevent double override application
+        return self._export2_without_overrides()
+
+    def _export2_without_overrides(self):
+        """Call parent export2 but skip job property override application."""
+        # Temporarily replace _apply_job_property_overrides with no-op
+        original_method = self._apply_job_property_overrides
+        self._apply_job_property_overrides = lambda: None
+
+        try:
+            return super().export2()
+        finally:
+            # Restore original method
+            self._apply_job_property_overrides = original_method
 
     @property
     def tooltip(self):
