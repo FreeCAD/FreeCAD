@@ -139,7 +139,9 @@ def addComponents(objectsList, host):
                 if Draft.getType(o) == "Window":
                     if hasattr(o, "Hosts") and not host in o.Hosts:
                         o.Hosts += [host]
-                elif hasattr(o, "getLinkedObject") and Draft.getType(o.getLinkedObject()) == "Window":
+                elif (
+                    hasattr(o, "getLinkedObject") and Draft.getType(o.getLinkedObject()) == "Window"
+                ):
                     # Override the inherited Hosts property (required if Link has not been recomputed):
                     o.getLinkedObject().Proxy.addSketchArchFeatures(o)
                     if hasattr(o, "Hosts") and not host in o.Hosts:
@@ -211,7 +213,9 @@ def removeComponents(objectsList, host=None):
                 if Draft.getType(o) == "Window":
                     if hasattr(o, "Hosts") and not host in o.Hosts:
                         o.Hosts += [host]
-                elif hasattr(o, "getLinkedObject") and Draft.getType(o.getLinkedObject()) == "Window":
+                elif (
+                    hasattr(o, "getLinkedObject") and Draft.getType(o.getLinkedObject()) == "Window"
+                ):
                     # Override the inherited Hosts property (required if Link has not been recomputed):
                     o.getLinkedObject().Proxy.addSketchArchFeatures(o)
                     if hasattr(o, "Hosts") and not host in o.Hosts:
