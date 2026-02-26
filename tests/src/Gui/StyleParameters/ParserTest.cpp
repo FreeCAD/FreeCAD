@@ -2757,3 +2757,73 @@ TEST_F(ParserTest, ShadesCustomMinMax)
     EXPECT_LE(lightOklch.lightness, 0.91F);
     EXPECT_GE(darkOklch.lightness, 0.19F);
 }
+
+// content_box() tests
+
+TEST_F(ParserTest, ContentBoxWithSizeTupleAndPadding)
+{
+    Parser parser("content_box((width: 100px, height: 50px), padding(10px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 80.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 30.0);
+}
+
+TEST_F(ParserTest, ContentBoxWithAsymmetricPadding)
+{
+    // padding(top, right, bottom, left): horizontal = right + left = 5 + 15 = 20
+    //                                    vertical   = top + bottom = 10 + 20 = 30
+    Parser parser("content_box((width: 200px, height: 100px), padding(10px, 5px, 20px, 15px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 180.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 70.0);
+}
+
+TEST_F(ParserTest, ContentBoxWithMultipleInsets)
+{
+    // padding(4px): horizontal = 8, vertical = 8
+    // border_thickness(2px): horizontal = 4, vertical = 4
+    // total: width -= 12, height -= 12
+    Parser parser("content_box((width: 100px, height: 60px), padding(4px), border_thickness(2px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 88.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 48.0);
+}
+
+TEST_F(ParserTest, ContentBoxWithNumericValue)
+{
+    // Single Numeric: both width and height start at 32px, subtract padding(4px) = 8px each side
+    Parser parser("content_box(32px, padding(4px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 24.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 24.0);
+}
+
+TEST_F(ParserTest, ContentBoxPreservesUnit)
+{
+    Parser parser("content_box((width: 100px, height: 50px), padding(10px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.get<Numeric>("width").unit, "px");
+    EXPECT_EQ(tuple.get<Numeric>("height").unit, "px");
+}
+
+TEST_F(ParserTest, ContentBoxTooFewArguments)
+{
+    Parser parser("content_box((width: 100px, height: 50px))");
+    auto expr = parser.parse();
+    EXPECT_THROW(expr->evaluate({.manager = &manager, .context = {}}), Base::ExpressionError);
+}
