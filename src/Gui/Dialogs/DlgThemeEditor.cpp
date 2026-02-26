@@ -68,12 +68,12 @@ QPixmap applyDropShadow(const QPixmap& source)
 
 QPixmap colorPreview(const QColor& color)
 {
-    constexpr qsizetype size = 16;
-    constexpr qsizetype shapeSize = 12;
+    constexpr qsizetype iconSize = 20;
+    constexpr qsizetype shapeSize = 16;
     constexpr qsizetype shapeX = 2;
-    constexpr qsizetype shapeY = 1;
+    constexpr qsizetype shapeY = 2;
 
-    QPixmap preview = Gui::BitmapFactory().empty({size, size});
+    QPixmap preview = Gui::BitmapFactory().empty({iconSize, iconSize});
 
     {
         QPainter painter(&preview);
@@ -88,13 +88,13 @@ QPixmap colorPreview(const QColor& color)
 
 QPixmap gradientPreview(const Gui::StyleParameters::Tuple& tuple)
 {
-    constexpr qsizetype size = 16;
-    constexpr qsizetype shapeSize = 12;
+    constexpr qsizetype iconSize = 20;
+    constexpr qsizetype shapeSize = 16;
     constexpr qsizetype shapeX = 2;
-    constexpr qsizetype shapeY = 1;
+    constexpr qsizetype shapeY = 2;
     constexpr int cornerRadius = 3;
 
-    QPixmap preview = Gui::BitmapFactory().empty({size, size});
+    QPixmap preview = Gui::BitmapFactory().empty({iconSize, iconSize});
 
     try {
         QBrush brush;
