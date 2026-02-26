@@ -35,6 +35,9 @@
 #include <StyleParameters/Gradient.h>
 
 #include <ranges>
+#include <QGraphicsEffect>
+#include <QGraphicsItem>
+#include <QGraphicsScene>
 #include <QImageReader>
 #include <QLinearGradient>
 #include <QPainter>
@@ -42,24 +45,53 @@
 #include <QStyledItemDelegate>
 #include <QTimer>
 
+QPixmap applyDropShadow(const QPixmap& source)
+{
+    auto* effect = new QGraphicsDropShadowEffect;
+    effect->setBlurRadius(2.5);
+    effect->setOffset(QPointF(0.0, 1.0));
+    effect->setColor(QColor(0, 0, 0, 90));
+
+    QGraphicsPixmapItem item;
+    item.setPixmap(source);
+    item.setGraphicsEffect(effect);
+
+    QGraphicsScene scene;
+    scene.addItem(&item);
+
+    QPixmap result(source.size());
+    result.fill(Qt::transparent);
+    QPainter painter(&result);
+    scene.render(&painter, QRectF(QPointF(), source.size()), QRectF(QPointF(), source.size()));
+    return result;
+}
+
 QPixmap colorPreview(const QColor& color)
 {
     constexpr qsizetype size = 16;
+    constexpr qsizetype shapeSize = 12;
+    constexpr qsizetype shapeX = 2;
+    constexpr qsizetype shapeY = 1;
 
     QPixmap preview = Gui::BitmapFactory().empty({size, size});
 
-    QPainter painter(&preview);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(color);
-    painter.drawEllipse(QRect {0, 0, size, size});
+    {
+        QPainter painter(&preview);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(color);
+        painter.drawEllipse(QRect {shapeX, shapeY, shapeSize, shapeSize});
+    }
 
-    return preview;
+    return applyDropShadow(preview);
 }
 
 QPixmap gradientPreview(const Gui::StyleParameters::Tuple& tuple)
 {
     constexpr qsizetype size = 16;
+    constexpr qsizetype shapeSize = 12;
+    constexpr qsizetype shapeX = 2;
+    constexpr qsizetype shapeY = 1;
     constexpr int cornerRadius = 3;
 
     QPixmap preview = Gui::BitmapFactory().empty({size, size});
@@ -69,7 +101,12 @@ QPixmap gradientPreview(const Gui::StyleParameters::Tuple& tuple)
 
         if (tuple.kind == Gui::StyleParameters::TupleKind::LinearGradient) {
             const Gui::StyleParameters::LinearGradient lg(tuple);
-            QLinearGradient qGradient(lg.x1() * size, lg.y1() * size, lg.x2() * size, lg.y2() * size);
+            QLinearGradient qGradient(
+                shapeX + lg.x1() * shapeSize,
+                shapeY + lg.y1() * shapeSize,
+                shapeX + lg.x2() * shapeSize,
+                shapeY + lg.y2() * shapeSize
+            );
             for (const auto& stop : lg.colorStops()) {
                 qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
             }
@@ -78,11 +115,11 @@ QPixmap gradientPreview(const Gui::StyleParameters::Tuple& tuple)
         else if (tuple.kind == Gui::StyleParameters::TupleKind::RadialGradient) {
             const Gui::StyleParameters::RadialGradient rg(tuple);
             QRadialGradient qGradient(
-                rg.cx() * size,
-                rg.cy() * size,
-                rg.radius() * size,
-                rg.fx() * size,
-                rg.fy() * size
+                shapeX + rg.cx() * shapeSize,
+                shapeY + rg.cy() * shapeSize,
+                rg.radius() * shapeSize,
+                shapeX + rg.fx() * shapeSize,
+                shapeY + rg.fy() * shapeSize
             );
             for (const auto& stop : rg.colorStops()) {
                 qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
@@ -93,16 +130,22 @@ QPixmap gradientPreview(const Gui::StyleParameters::Tuple& tuple)
             return preview;
         }
 
-        QPainter painter(&preview);
-        painter.setRenderHint(QPainter::Antialiasing);
-        painter.setPen(Qt::NoPen);
-        painter.setBrush(brush);
-        painter.drawRoundedRect(QRect {0, 0, size, size}, cornerRadius, cornerRadius);
+        {
+            QPainter painter(&preview);
+            painter.setRenderHint(QPainter::Antialiasing);
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(brush);
+            painter.drawRoundedRect(
+                QRect {shapeX, shapeY, shapeSize, shapeSize},
+                cornerRadius,
+                cornerRadius
+            );
+        }
     }
     catch (...) {
     }
 
-    return preview;
+    return applyDropShadow(preview);
 }
 
 QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
