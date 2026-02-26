@@ -137,11 +137,13 @@ def addComponents(objectsList, host):
         for o in objectsList:
             if hasattr(o, "Shape"):
                 if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                    if hasattr(o, "Hosts") and not host in o.Hosts:
+                        o.Hosts += [host]
+                elif hasattr(o, "getLinkedObject") and Draft.getType(o.getLinkedObject()) == "Window":
+                    # Override the inherited Hosts property (required if Link has not been recomputed):
+                    o.getLinkedObject().Proxy.addSketchArchFeatures(o)
+                    if hasattr(o, "Hosts") and not host in o.Hosts:
+                        o.Hosts += [host]
                 elif o in outList:
                     FreeCAD.Console.PrintWarning(
                         translate(
@@ -207,11 +209,13 @@ def removeComponents(objectsList, host=None):
             s = host.Subtractions
             for o in objectsList:
                 if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                    if hasattr(o, "Hosts") and not host in o.Hosts:
+                        o.Hosts += [host]
+                elif hasattr(o, "getLinkedObject") and Draft.getType(o.getLinkedObject()) == "Window":
+                    # Override the inherited Hosts property (required if Link has not been recomputed):
+                    o.getLinkedObject().Proxy.addSketchArchFeatures(o)
+                    if hasattr(o, "Hosts") and not host in o.Hosts:
+                        o.Hosts += [host]
                 elif not o in s:
                     s.append(o)
                     if FreeCAD.GuiUp:
