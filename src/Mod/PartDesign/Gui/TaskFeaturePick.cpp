@@ -677,14 +677,6 @@ bool TaskDlgFeaturePick::reject()
     accepted = false;
     return true;
 }
-void TaskDlgFeaturePick::activate()
-{
-    pick->attachSelection();
-}
-void TaskDlgFeaturePick::deactivate()
-{
-    pick->detachSelection();
-}
 
 void TaskDlgFeaturePick::showExternal(bool val)
 {
