@@ -851,12 +851,12 @@ const char* TreeWidget::getTreeName() const
 }
 
 // RAII guard for safely tracking select all operation state
-struct SelectAllGuard                                                                                              
-{           
-    bool* flag;                                                                                                    
-    explicit SelectAllGuard(bool& f)                                                                               
-        : flag(&f)                                                                                                 
-    {                                                                                                              
+struct SelectAllGuard
+{
+    bool* flag;
+    explicit SelectAllGuard(bool& f)
+        : flag(&f)
+    {
         *flag = true;
     }
     ~SelectAllGuard()
