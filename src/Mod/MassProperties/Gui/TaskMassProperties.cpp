@@ -49,6 +49,7 @@
 #include <Base/Precision.h>
 #include <Base/Quantity.h>
 #include <Base/Rotation.h>
+#include <Base/Type.h>
 #include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 
@@ -608,13 +609,39 @@ void TaskMassProperties::tryupdate()
 
     if (!selectingCustomCoordSystem) {
         bool hasElementSelection = false;
-        std::vector<std::pair<App::DocumentObject*, std::string>> selectedObjects;
+        bool hasInvisibleSelection = false;
+        std::vector<std::tuple<App::DocumentObject*, std::string, bool>> selectedObjects;
         selectedObjects.reserve(guiSelection.size());
 
         for (const auto& sel : guiSelection) {
             if (!sel.pObject) {
                 continue;
             }
+
+            App::DocumentObject* pickedObject = sel.pObject;
+            if (sel.pResolvedObject && sel.pResolvedObject != sel.pObject) {
+                pickedObject = sel.pResolvedObject;
+            }
+            if (sel.SubName && sel.SubName[0]) {
+                App::SubObjectT sub(sel.pObject, sel.SubName);
+                if (auto* leaf = sub.getSubObject()) {
+                    pickedObject = leaf;
+                }
+            }
+
+            bool isVisible = true;
+            Gui::Document* guiDoc = Gui::Application::Instance->getDocument(pickedObject->getDocument());
+            if (guiDoc) {
+                auto* viewProvider = dynamic_cast<Gui::ViewProviderDocumentObject*>(guiDoc->getViewProvider(pickedObject));
+                if (viewProvider && !viewProvider->Visibility.getValue()) {
+                    isVisible = false;
+                }
+            }
+
+            if (!isVisible) {
+                hasInvisibleSelection = true;
+            }
+
             if (sel.SubName && sel.SubName[0]) {
                 App::SubObjectT sub(sel.pObject, sel.SubName);
                 std::string subNoElement = sub.getSubNameNoElement();
@@ -625,29 +652,34 @@ void TaskMassProperties::tryupdate()
                     hasElementSelection = true;
                 }
                 if (canPickShape) {
-                    selectedObjects.emplace_back(sel.pObject, subNoElement);
+                    selectedObjects.emplace_back(sel.pObject, subNoElement, isVisible);
                 }
                 else {
-                    selectedObjects.emplace_back(sel.pObject, sel.SubName);
+                    selectedObjects.emplace_back(sel.pObject, sel.SubName, isVisible);
                 }
             }
             else {
-                selectedObjects.emplace_back(sel.pObject, std::string());
+                selectedObjects.emplace_back(sel.pObject, std::string(), isVisible);
             }
         }
 
-        if (hasElementSelection) {
+        if (hasElementSelection || hasInvisibleSelection) {
             std::unordered_set<std::string> seen;
             isUpdating = true;
             Gui::Selection().clearSelection();
 
             for (const auto& selected : selectedObjects) {
-                App::DocumentObject* obj = selected.first;
+                bool isVisible = std::get<2>(selected);
+                if (!isVisible) {
+                    continue;
+                }
+
+                App::DocumentObject* obj = std::get<0>(selected);
                 if (!obj || !obj->getDocument()) {
                     continue;
                 }
 
-                const std::string& subName = selected.second;
+                const std::string& subName = std::get<1>(selected);
                 std::string key = obj->getDocument()->getName();
                 key += '|' + obj->getNameInDocument() + '|' + subName;
 
@@ -880,9 +912,35 @@ void TaskMassProperties::tryupdate()
         if (!selObj.pObject) {
             continue;
         }
-        
-        if (!isReferenceObject(selObj.pObject)) {
-            objectList->addItem(QString::fromStdString(selObj.pObject->getFullLabel()));
+
+        App::DocumentObject* displayObject = selObj.pObject;
+        if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
+            displayObject = selObj.pResolvedObject;
+        }
+
+        if (selObj.SubName && selObj.SubName[0]) {
+            App::SubObjectT sub(selObj.pObject, selObj.SubName);
+            if (auto* leaf = sub.getSubObject()) {
+                displayObject = leaf;
+            }
+        }
+
+        if (!isReferenceObject(displayObject)) {
+            if (displayObject->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
+                continue;
+            }
+
+            Gui::Document* guiDoc = Gui::Application::Instance->getDocument(displayObject->getDocument());
+            if (!guiDoc) {
+                continue;
+            }
+
+            auto* viewProvider = dynamic_cast<Gui::ViewProviderDocumentObject*>(guiDoc->getViewProvider(displayObject));
+            if (!viewProvider || !viewProvider->Visibility.getValue()) {
+                continue;
+            }
+
+            objectList->addItem(QString::fromStdString(displayObject->getFullLabel()));
         }
 
         App::DocumentObject* coordSystem = selObj.pObject;
@@ -937,6 +995,11 @@ void TaskMassProperties::tryupdate()
     }
 
     if (currentMode == "Custom" && !referenceDatum) {
+        this->clearUiFields();
+        return;
+    }
+
+    if (objectList->count() == 0) {
         this->clearUiFields();
         return;
     }
@@ -1137,8 +1200,15 @@ void TaskMassProperties::createLCS(std::string name, bool removeExisting)
         plm.setRotation(mat);
 
         prop->setValue(plm);
-        
+
         LCS->Visibility.setValue(true);
+        if (auto* lcsObj = dynamic_cast<App::LocalCoordinateSystem*>(LCS)) {
+            for (auto* plane : lcsObj->planes()) {
+                if (plane) {
+                    plane->Visibility.setValue(false);
+                }
+            }
+        }
 
         doc->commitTransaction();
         doc->recompute();
@@ -1220,6 +1290,7 @@ void TaskMassProperties::saveResult()
         if (prop) {
             prop->setUnit(unit);
             prop->setValue(value);
+            prop->setReadOnly(true);
         }
     };
 
@@ -1234,6 +1305,7 @@ void TaskMassProperties::saveResult()
         );
         if (prop) {
             prop->setValue(value);
+            prop->setReadOnly(true);
         }
     };
 
@@ -1243,6 +1315,7 @@ void TaskMassProperties::saveResult()
         );
         if (prop) {
             prop->setValue(value);
+            prop->setReadOnly(true);
         }
     };
 
