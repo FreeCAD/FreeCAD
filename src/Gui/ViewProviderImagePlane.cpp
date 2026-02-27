@@ -341,4 +341,3 @@ void ViewProviderImagePlane::updateData(const App::Property* prop)
         Gui::ViewProviderGeometryObject::updateData(prop);
     }
 }
-
