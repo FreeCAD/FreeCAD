@@ -327,15 +327,15 @@ int RedirectStdError::sync()
 
 std::stringstream& LogLevel::prefix(std::stringstream& str, const char* src, int line)
 {
-    static FC_TIME_POINT s_tstart;
+    static std::chrono::high_resolution_clock::time_point s_tstart;
     static bool s_timing = false;
     if (print_time) {
         if (!s_timing) {
             s_timing = true;
-            _FC_TIME_INIT(s_tstart);
+            s_tstart = std::chrono::high_resolution_clock::now();
         }
-        auto tnow = std::chrono::FC_TIME_CLOCK::now();
-        auto dc = std::chrono::duration_cast<FC_DURATION>(tnow - s_tstart);
+        auto tnow = std::chrono::high_resolution_clock::now();
+        auto dc = std::chrono::duration_cast<std::chrono::duration<double>>(tnow - s_tstart);
         str << dc.count() << ' ';
     }
     if (print_tag) {
