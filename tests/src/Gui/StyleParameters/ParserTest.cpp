@@ -2798,6 +2798,31 @@ TEST_F(ParserTest, ContentBoxWithMultipleInsets)
     EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 48.0);
 }
 
+TEST_F(ParserTest, ContentBoxWithSingleNumericInset)
+{
+    // Single numeric: all sides 4px → horizontal=8, vertical=8
+    Parser parser("content_box((width: 100px, height: 60px), 4px)");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 92.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 52.0);
+}
+
+TEST_F(ParserTest, ContentBoxWithTwoNumericInsets)
+{
+    // Each numeric arg is a separate uniform inset, accumulated independently:
+    // 4px all sides + 2px all sides → width -= 12, height -= 12
+    Parser parser("content_box((width: 100px, height: 60px), 4px, 2px)");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 88.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 48.0);
+}
+
 TEST_F(ParserTest, ContentBoxWithNumericValue)
 {
     // Single Numeric: both width and height start at 32px, subtract padding(4px) = 8px each side

@@ -289,17 +289,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
                 }
 
                 for (size_t index = 1; index < args.size(); ++index) {
-                    const Value& insetValue = args.at(index);
-                    if (!insetValue.holds<Tuple>()) {
-                        THROWM(
-                            Base::TypeError,
-                            fmt::format("content_box: argument {} must be an inset tuple", index)
-                        );
-                    }
-                    const auto& insetTuple = insetValue.get<Tuple>();
-                    const Insets insets(
-                        insetTuple.kind == TupleKind::Generic ? Insets::expand(insetTuple) : insetTuple
-                    );
+                    const Insets insets(args.at(index));
                     width = width - insets.horizontal();
                     height = height - insets.vertical();
                 }
