@@ -147,7 +147,9 @@ def get_write_comments(name):
 def get_custom_dir():
     """Get value for :term:`General/CustomDirectoryPath` parameter."""
     param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
-    return param_group.GetString("CustomDirectoryPath")
+    custom_dir = param_group.GetString("CustomDirectoryPath")
+    # if no custom directory, use home directory
+    return custom_dir if custom_dir else FreeCAD.ConfigGet("UserHomePath")
 
 
 def get_dir_setting():
