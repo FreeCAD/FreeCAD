@@ -66,7 +66,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         )
 
         # Create postprocessor using the mock job
-        self.post = PostProcessorFactory.get_post_processor(self.job, "fanuc")
+        self.post = PostProcessorFactory.get_post_processor(self.job, "fanuc_legacy")
 
         # allow a full length "diff" if an error occurs
         self.maxDiff = None
