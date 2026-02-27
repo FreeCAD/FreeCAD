@@ -1406,7 +1406,7 @@ void StdCmdSelectAll::activated(int iMsg)
         }
     }
 
-    // try to use TreeWidget's own select all cause it handles the grouping stuff
+    // try to use TreeWidget's own select all because it handles the grouping stuff
     if (auto* tree = TreeWidget::instance()) {
         tree->selectAll();
         return;
