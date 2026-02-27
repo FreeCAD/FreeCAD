@@ -96,7 +96,7 @@ def setup(doc=None, solvertype="ccxtools"):
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "buckling"
         solver_obj.BucklingFactors = 10
-        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.GeometricalNonlinearity = False
         solver_obj.ThermoMechSteadyState = False
         solver_obj.MatrixSolverType = "default"
         solver_obj.IterationsControlParameterTimeUse = False

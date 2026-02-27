@@ -142,7 +142,7 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
         )
     if solvertype == "ccxtools":
         solver_obj.AnalysisType = "thermomech"
-        solver_obj.GeometricalNonlinearity = "linear"
+        solver_obj.GeometricalNonlinearity = False
         solver_obj.ThermoMechSteadyState = True
         # solver_obj.MatrixSolverType = "default"
         solver_obj.MatrixSolverType = "spooles"  # thomas
