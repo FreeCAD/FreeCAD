@@ -293,6 +293,15 @@ void MDIViewPage::setTabText(std::string tabText)
     }
 }
 
+// The tab title for a TechDraw Page always shows the DrawPage's Label, not the document Label.
+void MDIViewPage::onRelabel(Gui::Document* /*pDoc*/)
+{
+    TechDraw::DrawPage* page = m_vpPage->getDrawPage();
+    if (page) {
+        setTabText(page->Label.getValue());
+    }
+}
+
 // advise the page to check QGraphicsScene parent/child relationships after undo
 void MDIViewPage::fixSceneDependencies()
 {
