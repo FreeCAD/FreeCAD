@@ -2772,8 +2772,7 @@ void Application::initConfig(int argc, char ** argv)
 
 void Application::SaveEnv(const char* s)
 {
-    auto c = getenvUTF8(s);
-    if (c) {
+    if (auto c = getenvUTF8(s)) {
         mConfig[s] = c.value();
     }
 }
