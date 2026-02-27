@@ -858,6 +858,29 @@ void prepareProfileBased(
     std::function<void(Part::Feature*, App::DocumentObject*)> func
 )
 {
+
+    // we called the opencommand here which cause trasaction
+    // so on top we have pad transaction then we try abort so this
+    // cause the pad transactuon was deleted/aborted which later cause segfault
+    // see #27865
+
+    if (Gui::Control().activeDialog()) {
+        QMessageBox msgBox(Gui::getMainWindow());
+        msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
+        msgBox.setInformativeText(QObject::tr("Close this dialog?"));
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        if (msgBox.exec() != QMessageBox::Yes) {
+            return;
+        }
+        Gui::Control().reject();
+        if (Gui::Control().activeDialog()) {
+            // should not reach here, but just prevent the crash to happen.
+            FC_WARN("Please close the task dialog and try again.");
+            return;
+        }
+    }
+
     auto base_worker = [=](App::DocumentObject* feature, const std::vector<std::string>& subs) {
         if (!feature || !feature->isDerivedFrom<Part::Feature>()) {
             return;
@@ -1131,31 +1154,9 @@ void prepareProfileBased(
     // Show sketch choose dialog and let user pick sketch if no sketch was selected and no free one
     // available or multiple free ones are available
     if (bNoSketchWasSelected && (freeSketches != 1)) {
-
-        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-        PartDesignGui::TaskDlgFeaturePick* pickDlg
-            = qobject_cast<PartDesignGui::TaskDlgFeaturePick*>(dlg);
-        if (dlg && !pickDlg) {
-            QMessageBox msgBox(Gui::getMainWindow());
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes) {
-                Gui::Control().closeDialog();
-            }
-            else {
-                return;
-            }
-        }
-
-        if (dlg) {
-            Gui::Control().closeDialog();
-        }
-
         Gui::Selection().clearSelection();
-        pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker, true);
+        auto* pickDlg
+            = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, sketch_worker, true);
         // Logically dead code because 'bNoSketchWasSelected' must be true
         // if (!bNoSketchWasSelected && extReference)
         //    pickDlg->showExternal(true);
