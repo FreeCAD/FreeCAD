@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef APP_APPLICATIONPY_H
-#define APP_APPLICATIONPY_H
+#pragma once
 
 #include <Base/PyObjectBase.h>
 
@@ -90,5 +89,3 @@ public:
 };
 
 }
-
-#endif  // APP_APPLICATIONPY_H

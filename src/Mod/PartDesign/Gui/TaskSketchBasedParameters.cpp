@@ -82,9 +82,7 @@ const QString TaskSketchBasedParameters::onAddSelection(
         if (datum && datum->getLCS()) {
             selObj = datum->getLCS();
             subname = datum->getNameInDocument();
-
-            refStr = QString::fromUtf8(selObj->getNameInDocument()) + QStringLiteral(":")
-                + QString::fromUtf8(subname);
+            refStr = QString::fromStdString((std::string(selObj->getNameInDocument()) + ":" + subname));
         }
         else {
             // Remove subname for planes and datum features

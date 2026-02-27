@@ -57,7 +57,7 @@ if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+    Path.Log.setLevel(Path.Log.Level.ERROR, Path.Log.thisModule())
 
 
 _LibraryRole = Qt.UserRole + 1

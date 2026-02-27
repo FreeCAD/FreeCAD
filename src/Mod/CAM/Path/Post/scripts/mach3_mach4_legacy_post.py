@@ -189,7 +189,7 @@ def export(objectslist, filename, argstring):
             )
             return None
 
-    print("postprocessing...")
+    # print("postprocessing...")  # Commented to reduce test noise
     gcode = ""
 
     # write header
@@ -265,7 +265,7 @@ def export(objectslist, filename, argstring):
     else:
         final = gcode
 
-    print("done postprocessing.")
+    # print("done postprocessing.")  # Commented to reduce test noise
 
     if not filename == "-":
         gfile = pyopen(filename, "w")

@@ -25,9 +25,8 @@
 #pragma once
 
 #include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
+
 #include <algorithm>
 #include <limits>
 #include <list>

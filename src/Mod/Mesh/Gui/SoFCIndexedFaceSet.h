@@ -29,9 +29,7 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <vector>
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
 
 
 class SoGLCoordinateElement;

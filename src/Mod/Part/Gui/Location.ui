@@ -111,7 +111,7 @@
          <string>Select a point in the 3D view to set the location automatically</string>
         </property>
         <property name="text">
-         <string>3D View</string>
+         <string>Pick Position</string>
         </property>
        </widget>
       </item>

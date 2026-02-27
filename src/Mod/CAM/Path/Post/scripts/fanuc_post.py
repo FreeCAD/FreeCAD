@@ -194,7 +194,7 @@ def processArguments(argstring):
             SHOW_EDITOR = False
         else:
             SHOW_EDITOR = True
-        print("Show editor = %s" % SHOW_EDITOR)
+        # print("Show editor = %s" % SHOW_EDITOR)  # Commented to reduce test noise
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
         else:
@@ -254,7 +254,7 @@ def export(objectslist, filename, argstring):
             )
             return None
 
-    print("postprocessing...")
+    # print("postprocessing...")  # Commented to reduce test noise
     gcode = ""
 
     gcode += "%\n"
@@ -380,7 +380,7 @@ def export(objectslist, filename, argstring):
     else:
         final = gcode
 
-    print("done postprocessing.")
+    # print("done postprocessing.")  # Commented to reduce test noise
 
     if not filename == "-":
         gfile = pyopen(filename, "w")

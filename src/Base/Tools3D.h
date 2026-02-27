@@ -25,9 +25,7 @@
 
 #pragma once
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 #include <cmath>
 #include <vector>

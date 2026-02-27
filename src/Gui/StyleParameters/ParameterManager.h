@@ -28,13 +28,12 @@
 #include <optional>
 #include <set>
 #include <string>
-#include <vector>
-
-#include <QColor>
 
 #include <App/Application.h>
 #include <Base/Bitmask.h>
 #include <Base/Parameter.h>
+
+#include "Value.h"
 
 // That macro uses inline const because some older compilers to not properly support constexpr
 // for std::string. It should be changed into static constepxr once we migrate to newer compiler.
@@ -49,82 +48,6 @@ namespace Gui::StyleParameters
 
 // Forward declaration for Parser
 class Parser;
-
-/**
- * @brief Represents a length in a specified unit.
- *
- * This struct is a very simplified representation of lengths that can be used as parameters for
- * styling purposes. The length basically consists of value and unit. Unit is optional, empty unit
- * represents a dimensionless length that can be used as a scalar. This struct does not care about
- * unit conversions as its uses do not require it.
- */
-struct Numeric
-{
-    /// Numeric value of the length.
-    double value;
-    /// Unit of the length, empty if the value is dimensionless.
-    std::string unit = "";
-
-    /**
-     * @name Operators
-     *
-     * This struct supports basic operations on Length. Each operation requires for operands to be
-     * the same unit. Multiplication and division additionally allow one operand to be dimensionless
-     * and hence act as a scalar.
-     *
-     * @code{c++}
-     * Numeric a { 10, "px" };
-     * Numeric b { 5, "px" };
-     *
-     * Numeric differentUnit { 3, "rem" }
-     * Numeric scalar { 2, "" };
-     *
-     * // basic operations with the same unit are allowed
-     * auto sum = a + b; // 15 px
-     * auto difference = a - 5; // 10 px
-     *
-     * // basic operations with mixed units are NOT allowed
-     * auto sumOfIncompatibleUnits = a + differentUnit; // will throw
-     * auto productOfIncompatibleUnits = a * differentUnit; // will throw
-     *
-     * // exception is that for multiplication and division dimensionless units are allowed
-     * auto productWithScalar = a * scalar; // 20 px
-     * @endcode
-     * @{
-     */
-    Numeric operator+(const Numeric& rhs) const;
-    Numeric operator-(const Numeric& rhs) const;
-    Numeric operator-() const;
-
-    Numeric operator/(const Numeric& rhs) const;
-    Numeric operator*(const Numeric& rhs) const;
-    /// @}
-
-private:
-    void ensureEqualUnits(const Numeric& rhs) const;
-};
-
-/**
- * @brief This struct represents any valid value that can be used as the parameter value.
- *
- * The value can be one of three basic types:
- *  - Numbers / Lengths (so any length with optional unit) (Length)
- *  - Colors (QColor)
- *  - Any other generic expression. (std::string)
- *
- * As a rule, operations can be only performed over values of the same type.
- */
-struct Value: std::variant<Numeric, Base::Color, std::string>
-{
-    using std::variant<Numeric, Base::Color, std::string>::variant;
-
-    /**
-     * Converts the object into its string representation.
-     *
-     * @return A string representation of the object that can later be used in QSS.
-     */
-    std::string toString() const;
-};
 
 /**
  * @brief A structure to define parameters which can be referenced in the code.

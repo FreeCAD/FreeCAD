@@ -1421,18 +1421,12 @@ std::vector<int> readElements(
 }
 
 // read parameter header (not used)
-void readParameter(std::ifstream& ifstr, const std::string& line)
-{
-    // do nothing
-    (void)ifstr;
-    (void)line;
-}
+void readParameter([[maybe_unused]] std::ifstream& ifstr, [[maybe_unused]] const std::string& line)
+{}
 
 // read first header from nodal result block
-void readResultInfo(std::ifstream& ifstr, const std::string& lines, FRDResultInfo& info)
+void readResultInfo([[maybe_unused]] std::ifstream& ifstr, const std::string& lines, FRDResultInfo& info)
 {
-    (void)ifstr;
-
     std::string keyCode = "  100C";
 
     std::string_view view {lines};
@@ -1459,14 +1453,13 @@ void readResultInfo(std::ifstream& ifstr, const std::string& lines, FRDResultInf
 // read result from nodal result block and add result array to grid
 void readResults(
     std::ifstream& ifstr,
-    const std::string& lines,
+    [[maybe_unused]] const std::string& lines,
     const std::map<int, int>& mapNodes,
     const FRDResultInfo& info,
     vtkSmartPointer<vtkUnstructuredGrid>& grid
 )
 {
     int digits = getDigits(info.indicator);
-    (void)lines;
 
     // get dataset info, start with " -4"
     std::string line;

@@ -29,9 +29,7 @@
 #include <QTranslator>
 #include <memory>
 #include <list>
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 namespace Py
 {

@@ -137,7 +137,7 @@ double ConstraintEqual::grad(double* param)
 }
 void ConstraintEqual::evaluate()
 {
-    *param2() = *param1() * ratio;
+    *param2() = *param1() / ratio;
 }
 
 // --------------------------------------------------------

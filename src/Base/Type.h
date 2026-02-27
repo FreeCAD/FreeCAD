@@ -31,9 +31,7 @@
 #include <map>
 #include <set>
 #include <vector>
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 namespace Base
 {
