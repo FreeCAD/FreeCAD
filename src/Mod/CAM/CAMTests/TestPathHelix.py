@@ -55,6 +55,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         """Verify Helix does not throw an exception."""
 
         op = PathHelix.Create("Helix")
+        op.Proxy.findAllHoles(op)
         op.Proxy.execute(op)
 
     def testCreateWithPrototype(self):
@@ -67,6 +68,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         """Verify Helix generates proper holes from model"""
 
         op = PathHelix.Create("Helix")
+        op.Proxy.findAllHoles(op)
         proxy = op.Proxy
         for base in op.Base:
             model = base[0]
@@ -78,6 +80,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         """Verify Helix generates proper holes for rotated model"""
 
         op = PathHelix.Create("Helix")
+        op.Proxy.findAllHoles(op)
         proxy = op.Proxy
         model = self.job.Model.Group[0]
 
@@ -104,6 +107,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             self.job.Tools.Group[0].Tool.Diameter = 0.5
 
             op = PathHelix.Create("Helix")
+            op.Proxy.findAllHoles(op)
             proxy = op.Proxy
             model = self.job.Model.Group[0]
 
@@ -128,6 +132,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             self.job.Tools.Group[0].Tool.Diameter = 0.5
 
             op = PathHelix.Create("Helix")
+            op.Proxy.findAllHoles(op)
             proxy = op.Proxy
             model = self.job.Model.Group[0]
 
@@ -143,6 +148,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
     def testPathDirection(self):
         """Verify that the generated paths obeys the given parameters"""
         helix = PathHelix.Create("Helix")
+        helix.Proxy.findAllHoles(helix)
 
         def check(start_side, cut_mode, expected_direction):
             with self.subTest(f"({start_side}, {cut_mode}) => {expected_direction}"):
@@ -154,12 +160,12 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 self.assertEqual(
                     helix.Direction,
                     expected_direction,
-                    msg=f"Direction was not correctly determined",
+                    msg="Direction was not correctly determined",
                 )
                 self.assertPathDirection(
                     helix.Path,
                     expected_direction,
-                    msg=f"Path with wrong direction generated",
+                    msg="Path with wrong direction generated",
                 )
 
         check("Inside", "Conventional", "CW")

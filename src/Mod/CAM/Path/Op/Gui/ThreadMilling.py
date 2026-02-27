@@ -256,6 +256,7 @@ Command = PathOpGui.SetupOperation(
         "Creates a Thread Milling toolpath from features of a base object",
     ),
     PathThreadMilling.SetupProperties,
+    commandClass=PathCircularHoleBaseGui.CircularHoleCommand,
 )
 
 FreeCAD.Console.PrintLog("Loading PathThreadMillingGui ... done\n")
