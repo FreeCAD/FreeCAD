@@ -931,7 +931,7 @@ void TreeWidget::selectAllGroupLevel(const QTreeWidgetItem* targetNode, bool isG
     }
     selection.clearSelection();
 
-    // if current item is a group, we gotta make sure its selected along with all childs
+    // If current item is a group, also select the group itself along with its children
     if (isGroup) {
         const auto* item = static_cast<const DocumentObjectItem*>(targetNode);
         const auto* vp = item->object();
