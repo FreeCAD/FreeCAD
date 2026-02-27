@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 def create_nodes(femmesh):
     # nodes
     femmesh.addNode(67.0, -1.77635683819838e-15, -15.0, 1)

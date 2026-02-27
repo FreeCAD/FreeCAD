@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *   Copyright (c) 2025 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *

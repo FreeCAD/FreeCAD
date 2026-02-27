@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2019 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
