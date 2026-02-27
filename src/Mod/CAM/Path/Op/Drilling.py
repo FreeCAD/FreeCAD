@@ -251,9 +251,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
     def circularHoleExecute(self, obj, holes):
         """circularHoleExecute(obj, holes) ... generate operation for each hole based on strategy."""
         Path.Log.track()
-        
+
         strategy = obj.Strategy if hasattr(obj, "Strategy") else "Drilling"
-        
+
         if strategy == "Drilling":
             self._executeDrilling(obj, holes)
         elif strategy == "Tapping":

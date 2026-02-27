@@ -103,7 +103,7 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
             "Please use the Drilling operation with Strategy set to 'Tapping' instead. "
             "Existing Tapping operations will continue to work but you cannot create new ones."
         )
-        
+
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",

@@ -57,7 +57,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         # Strategy selector handler
         if hasattr(self.form, "Strategy"):
             self.form.Strategy.currentIndexChanged.connect(self.onStrategyChanged)
-        
+
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
         self.form.peckEnabled.toggled.connect(self.form.feedRetractEnabled.setDisabled)
@@ -99,10 +99,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """Handle strategy selector changes - update property visibility"""
         if not hasattr(self.form, "Strategy"):
             return
-        
+
         strategy = str(self.form.Strategy.currentData())
         self.updateStrategyVisibility(None, strategy)
-        
+
         # Validate tool for tapping strategy
         if strategy == "Tapping":
             self.validateTappingTool()
@@ -111,13 +111,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """Show/hide properties based on selected strategy"""
         if not hasattr(self.form, "Strategy"):
             return
-        
+
         if strategy is None:
             if obj and hasattr(obj, "Strategy"):
                 strategy = obj.Strategy
             else:
                 strategy = str(self.form.Strategy.currentData())
-        
+
         # Drilling-specific controls
         drilling_controls = [
             self.form.peckEnabled,
@@ -126,13 +126,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.chipBreakEnabled,
             self.form.feedRetractEnabled,
         ]
-        
+
         # Show/hide based on strategy
-        is_drilling = (strategy == "Drilling")
+        is_drilling = strategy == "Drilling"
         for control in drilling_controls:
             if hasattr(self.form, control.objectName()):
                 control.setVisible(is_drilling)
-        
+
         # Tapping note/info (if we add UI elements for it in future)
         # For now, both strategies share: DwellEnabled, DwellTime, KeepToolDown, ExtraOffset
 
@@ -166,7 +166,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         if hasattr(self.form, "Strategy") and hasattr(obj, "Strategy"):
             if obj.Strategy != str(self.form.Strategy.currentData()):
                 obj.Strategy = str(self.form.Strategy.currentData())
-        
+
         if obj.KeepToolDown != self.form.KeepToolDownEnabled.isChecked():
             obj.KeepToolDown = self.form.KeepToolDownEnabled.isChecked()
         if obj.DwellEnabled != self.form.dwellEnabled.isChecked():
@@ -192,7 +192,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         if hasattr(self.form, "Strategy") and hasattr(obj, "Strategy"):
             self.selectInComboBox(obj.Strategy, self.form.Strategy)
             self.updateStrategyVisibility(obj)
-        
+
         if not hasattr(obj, "KeepToolDown"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -241,7 +241,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         if hasattr(self.form, "Strategy"):
             signals.append(self.form.Strategy.currentIndexChanged)
-        
+
         signals.append(self.form.peckDepth.editingFinished)
         signals.append(self.form.dwellTime.editingFinished)
         if hasattr(self.form.dwellEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
