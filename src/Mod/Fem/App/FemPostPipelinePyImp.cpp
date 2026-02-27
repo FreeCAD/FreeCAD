@@ -22,15 +22,12 @@
 
 #include <Python.h>
 
-
 #include <Base/FileInfo.h>
 #include <Base/UnitPy.h>
 
-// clang-format off
 #include "FemPostPipeline.h"
 #include "FemPostPipelinePy.h"
 #include "FemPostPipelinePy.cpp"
-// clang-format on
 
 #ifdef FC_USE_VTK_PYTHON
 # include <vtkPythonUtil.h>
@@ -304,7 +301,7 @@ PyObject* FemPostPipelinePy::renameArrays(PyObject* args)
     Py_Return;
 }
 
-PyObject* FemPostPipelinePy::getOutputAlgorithm(PyObject* args)
+PyObject* FemPostPipelinePy::getOutputAlgorithm([[maybe_unused]] PyObject* args)
 {
 #ifdef FC_USE_VTK_PYTHON
     // we take no arguments
@@ -318,7 +315,6 @@ PyObject* FemPostPipelinePy::getOutputAlgorithm(PyObject* args)
 
     return py_algorithm;
 #else
-    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
     return nullptr;
 #endif

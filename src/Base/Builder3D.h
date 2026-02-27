@@ -31,9 +31,7 @@
 #include <vector>
 #include <cstdint>
 #include <Base/Tools3D.h>
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 #include "Placement.h"
 

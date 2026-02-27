@@ -90,6 +90,7 @@ CmdMoveCW = Constants.GCODE_MOVE_CW
 CmdMoveCCW = Constants.GCODE_MOVE_CCW
 CmdMoveDrill = Constants.GCODE_MOVE_DRILL
 CmdMoveArc = Constants.GCODE_MOVE_ARC
+CmdMoveMill = Constants.GCODE_MOVE_MILL
 CmdMove = Constants.GCODE_MOVE
 CmdMoveAll = Constants.GCODE_MOVE_ALL
 

@@ -147,16 +147,14 @@ def write_femelement_material(f, ccxwriter):
             f.write(f"{abs_perm:.13G}\n")
 
         # nonlinear material properties
-        if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
-
-            for nlfemobj in ccxwriter.member.mats_nonlinear:
-                # femobj --> dict, FreeCAD document object is nlfemobj["Object"]
-                nl_mat_obj = nlfemobj["Object"]
-                if nl_mat_obj.LinearBaseMaterial == mat_obj:
-                    if nl_mat_obj.MaterialModelNonlinearity == "isotropic hardening":
+        nl_mat_obj = mat_obj.Nonlinear
+        if ccxwriter.solver_obj.MaterialNonlinearity:
+            if nl_mat_obj and not nl_mat_obj.Suppressed:
+                match nl_mat_obj.MaterialModelNonlinearity:
+                    case "isotropic hardening":
                         f.write("*PLASTIC\n")
-                    else:
+                    case "kinematic hardening":
                         f.write("*PLASTIC, HARDENING=KINEMATIC\n")
-                    for yield_point in nl_mat_obj.YieldPoints:
-                        f.write(f"{yield_point}\n")
+                for yield_point in nl_mat_obj.YieldPoints:
+                    f.write(f"{yield_point}\n")
                 f.write("\n")

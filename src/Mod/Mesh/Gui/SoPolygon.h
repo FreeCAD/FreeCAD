@@ -28,9 +28,7 @@
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/nodes/SoShape.h>
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
 
 
 namespace MeshGui

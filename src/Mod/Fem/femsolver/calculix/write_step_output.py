@@ -56,8 +56,15 @@ def write_step_output(f, ccxwriter):
         variables = "S, E"
         if ccxwriter.analysis_type == "thermomech":
             variables += ", HFL"
-        if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
-            variables += ", PEEQ"
+
+        # plastic strain only if some material has nonlinear properties
+        if ccxwriter.solver_obj.MaterialNonlinearity:
+            for mat in ccxwriter.member.mats_linear:
+                mat_nonlin = mat["Object"].Nonlinear
+                if mat_nonlin and not mat_nonlin.Suppressed:
+                    variables += ", PEEQ"
+                    break
+
         if ccxwriter.analysis_type == "electromagnetic":
             variables = "HFL"
 

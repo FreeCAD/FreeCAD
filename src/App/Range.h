@@ -26,9 +26,7 @@
 
 #include <string>
 #include <Base/Bitmask.h>
-#ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
-#endif
 
 namespace App
 {

@@ -31,6 +31,9 @@ GCODE_MOVE_ARC = GCODE_MOVE_CW + GCODE_MOVE_CCW
 # Canned drilling cycles
 GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"]
 
+# Cutting moves (feed moves and arcs)
+GCODE_MOVE_MILL = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC
+
 # All cutting moves (feed moves, arcs, and drill cycles)
 GCODE_MOVE = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC + GCODE_MOVE_DRILL
 
