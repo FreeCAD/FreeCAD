@@ -107,8 +107,8 @@ public:
     /**
      * @brief Selects all selectable objects within the current group or document.
      *
-
-     * * First press: selects all sibling items of the current selected object
+     *
+     * First press: selects all sibling items of the current selected object
      * (children of
      * same parent) or a group and its childs.
      * Second press: expands selection to the whole
