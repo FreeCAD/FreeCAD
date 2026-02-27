@@ -68,6 +68,12 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Gui_tests_run --gtest_output=json:${{ inputs.reportdir }}gui_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}gui_gtest_test_log.txt
           testName: Gui
+      - name: C++ Qt tests
+        id: qttests
+        uses: ./.github/workflows/actions/runCPPTests/runQtTests
+        with:
+          builddir: ${{ inputs.builddir }}
+          testLogFile: ${{ inputs.reportdir }}qt_ctest_log.txt
       - name: C++ Material tests
         id: material
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
