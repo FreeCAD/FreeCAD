@@ -26,7 +26,7 @@ __author__ = "Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
 import numpy as np
-import shutil
+import os
 import sys
 import tempfile
 from PySide.QtCore import QProcess, QThread, QProcessEnvironment
@@ -76,21 +76,17 @@ class NetgenTools(ObjectTools):
     def __init__(self, obj):
         super().__init__(obj)
         self.fem_mesh = None
-        self.tmpdir = ""
         self.mesh_params = {}
 
     def write_geom(self):
-        if not self.tmpdir:
-            self.tmpdir = tempfile.mkdtemp(prefix="fem_")
-
         global_pla = self.obj.Shape.getGlobalPlacement()
         geom = self.obj.Shape.getPropertyOfGeometry()
         # get partner shape
         geom_trans = geom.transformed(FreeCAD.Placement().Matrix)
         geom_trans.Placement = global_pla
-        self.brep_file = self.tmpdir + "/shape.brep"
-        self.result_file = self.tmpdir + "/result.npy"
-        self.script_file = self.tmpdir + "/code.py"
+        self.brep_file = os.path.join(self.obj.WorkingDirectory, "shape.brep")
+        self.result_file = os.path.join(self.obj.WorkingDirectory, "result.npy")
+        self.model_file = os.path.join(self.obj.WorkingDirectory, "code.py")
         geom_trans.exportBrep(self.brep_file)
 
     def prepare(self):
@@ -111,7 +107,7 @@ class NetgenTools(ObjectTools):
             "zrefine_direction": tuple(self.obj.ZRefineDirection),
         }
 
-        with open(self.script_file, "w") as file:
+        with open(self.model_file, "w") as file:
             file.write(
                 self.code.format(
                     kwds=self.mesh_params,
@@ -123,7 +119,7 @@ class NetgenTools(ObjectTools):
     def compute(self):
         env = QProcessEnvironment.systemEnvironment()
         self.process.setProcessEnvironment(env)
-        self.process.start(self._get_python_exe(), ["-X", "utf8", "-E", self.script_file])
+        self.process.start(self._get_python_exe(), ["-X", "utf8", "-E", self.model_file])
 
         return self.process
 
@@ -429,7 +425,3 @@ except:
         info = p.readAll().data().decode()
 
         return info
-
-    def __del__(self):
-        if self.tmpdir:
-            shutil.rmtree(self.tmpdir)
