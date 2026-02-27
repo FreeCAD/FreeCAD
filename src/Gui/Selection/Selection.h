@@ -264,6 +264,7 @@ private:
     std::string filterDocName;
     std::string filterObjName;
     ResolveMode resolve;
+    const char* pDocumentScopeName {nullptr};
     bool blockedSelection;
 };
 
@@ -825,7 +826,7 @@ protected:
 
     using SelStackItem = std::set<App::SubObjectT>;
     // Each document has a description context
-    struct SelectionContext
+    struct SelectionInfo
     {
         Gui::SelectionGate* gate {nullptr};
         ResolveMode resolveMode {ResolveMode::OldStyleElement};
@@ -839,15 +840,25 @@ protected:
 
         SelectionStyle selectionStyle {SelectionStyle::NormalSelection};
     };
+    struct SelectionContext
+    {
+        SelectionInfo* info;
+        std::string docName;
+    };
+    struct SelectionConstContext
+    {
+        const SelectionInfo* info;
+        std::string docName;
+    };
 
     // Returns a selection context or nullptr if the document is not found
-    SelectionContext* getSelectionContext(const char* pDocName);
-    const SelectionContext* getSelectionContext(const char* pDocName) const;
+    SelectionContext getSelectionContext(const char* pDocName);
+    SelectionConstContext getSelectionContext(const char* pDocName) const;
 
     static SelectionSingleton* _pcSingleton;
 
 
-    std::map<App::Document*, SelectionContext> docSelectionContext;
+    std::map<App::Document*, SelectionInfo> docSelectionContext;
 
     // Preselection helpers, it's a mess, needs clarifying -theo-vt
     std::string DocName;

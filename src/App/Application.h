@@ -205,6 +205,8 @@ public:
      */
     App::Document* getDocument(const char *Name) const;
 
+    App::Document* getDocumentOrActive(const char *Name) const;
+
     /// %Path matching modes for getDocumentByPath()
     enum class PathMatchMode
     {
