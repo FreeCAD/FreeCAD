@@ -31,28 +31,26 @@
 namespace Part
 {
 
-void OCCTMessagePrinter::send(const TCollection_AsciiString& message,
-                              const Message_Gravity gravity) const
+void OCCTMessagePrinter::send(const TCollection_AsciiString& message, const Message_Gravity gravity) const
 {
-  const char* txt = message.ToCString();
+    const char* txt = message.ToCString();
 
-  switch (gravity)
-  {
-    case Message_Fail:
-    case Message_Alarm:
-      Base::Console().error("OCCT: %s\n", txt);
-      break;
-    case Message_Warning:
-      Base::Console().warning("OCCT: %s\n", txt);
-      break;
-    case Message_Info:
-      Base::Console().message("OCCT: %s\n", txt);
-      break;
-    case Message_Trace:
-    default:
-      Base::Console().message("OCCT(trace): %s\n", txt);
-      break;
-  }
+    switch (gravity) {
+        case Message_Fail:
+        case Message_Alarm:
+            Base::Console().error("OCCT: %s\n", txt);
+            break;
+        case Message_Warning:
+            Base::Console().warning("OCCT: %s\n", txt);
+            break;
+        case Message_Info:
+            Base::Console().message("OCCT: %s\n", txt);
+            break;
+        case Message_Trace:
+        default:
+            Base::Console().message("OCCT(trace): %s\n", txt);
+            break;
+    }
 }
 
-} // namespace Part
+}  // namespace Part

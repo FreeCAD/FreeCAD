@@ -25,26 +25,24 @@
 #define PART_OCCT_MESSAGE_PRINTER_H
 
 #include <Message_Printer.hxx>
-# include <Standard_Handle.hxx>
+#include <Standard_Handle.hxx>
 
 #include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {
 
-class PartExport OCCTMessagePrinter : public Message_Printer
+class PartExport OCCTMessagePrinter: public Message_Printer
 {
 public:
     OCCTMessagePrinter() = default;
 
 protected:
-
-    void send(const TCollection_AsciiString& message,
-              Message_Gravity gravity) const override;
+    void send(const TCollection_AsciiString& message, Message_Gravity gravity) const override;
 };
 
 DEFINE_STANDARD_HANDLE(OCCTMessagePrinter, Message_Printer)
 
-} // namespace Part
+}  // namespace Part
 
-#endif // BASE_OCCT_MESSAGE_PRINTER_H
+#endif  // BASE_OCCT_MESSAGE_PRINTER_H
