@@ -23,6 +23,9 @@
 
 #include "FreeCADStyle.h"
 
+#include <QGroupBox>
+#include <QLayout>
+
 using namespace Gui;
 
 bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
@@ -33,6 +36,14 @@ bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
     if (event->type() == QEvent::Polish || event->type() == QEvent::Show) {
         if (auto* btn = qobject_cast<QPushButton*>(obj)) {
             btn->setMinimumWidth(std::max(btn->minimumSizeHint().width(), btn->minimumWidth()));
+        }
+    }
+
+    if (event->type() == QEvent::Polish) {
+        if (auto* groupBox = qobject_cast<QGroupBox*>(obj)) {
+            if (auto* layout = groupBox->layout()) {
+                layout->setContentsMargins(0, 0, 0, 0);
+            }
         }
     }
 
