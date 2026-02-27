@@ -1191,8 +1191,8 @@ QPushButton {
   border-radius: @ButtonBorderRadius;
   border-style: solid;
   padding: @ButtonPadding;
-  height: @{content_box(@ButtonHeight, @ButtonPadding).height};
-  min-width: @{content_box(@ButtonMinWidth, @ButtonPadding).width};
+  height: @{@ButtonContentBox.height};
+  min-width: @{@ButtonContentBox.width};
 }
 
 QPushButton:default {
@@ -1201,11 +1201,24 @@ QPushButton:default {
 }
 
 QPushButton:hover {
-  background-color: @{blend(@ButtonBackground, #ffffff, 50%)};
+  background-color: @{blend(@ButtonBackground, @BaseHoverOverlay, @BaseHoverOverlayOpacity)};
 }
 
 QPushButton:default:hover {
-  background-color: @{blend(@ButtonPrimaryBackground, #ffffff, 50%)};
+  background-color: @{blend(@ButtonPrimaryBackground, @BaseHoverOverlay, @BaseHoverOverlayOpacity)};
+}
+
+QPushButton:pressed {
+  background-color: pink;
+}
+
+QPushButton:checked {
+  background-color: @{blend(@ButtonBackground, @BasePressedOverlay, @BaseHalfPressedOverlayOpacity)};
+}
+
+QPushButton:default {
+  background-color: @ButtonPrimaryBackground;
+  border-color: @ButtonPrimaryBorderColor;
 }
 
 QAbstractButton[flat="true"] {
@@ -1227,10 +1240,6 @@ QPushButton:disabled {
   border: 1px solid @ButtonBorderColor;
 }
 
-QPushButton:checked {
-  background-color: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 @CheckedButtonTopBackgroundColor, stop:1 @CheckedButtonBottomBackgroundColor);
-}
-
 QPushButton:focus, QAbstractButton[flat="true"]:focus {
   border: 1px solid @AccentColor;
 }
@@ -1248,10 +1257,6 @@ QPushButton:checked:selected {
 
 QAbstractButton[flat="true"]:hover {
   border: 1px solid @ButtonBorderColor;
-}
-
-QPushButton:pressed, QAbstractButton[flat="true"]:pressed {
-  border: 1px solid  @GeneralBorderHoverColor;
 }
 
 QPushButton:selected, QAbstractButton[flat="true"]:selected {

@@ -35,7 +35,7 @@ Contrast: "shades(#495057, @BaseShades, range: 0.6)"
 
 Blue: "shades(#418fde, @BaseShades)"
 Orange: "shades(#ff922b, @BaseShades)"
-Accent: "@Orange"
+Accent: "@Blue"
 
 Background:
   050: "@Neutral.050"
@@ -43,6 +43,13 @@ Background:
   200: "@Neutral.200"
 
 BaseTextColor: "@Contrast.800"
+
+BaseHoverOverlay: "#ffffff"
+BaseHoverOverlayOpacity: 50%
+
+BasePressedOverlay: "@Contrast.800"
+BasePressedOverlayOpacity: 15%
+BaseHalfPressedOverlayOpacity: 10%
 
 ButtonMinWidth: 100px
 ButtonHeight: 26px
@@ -53,6 +60,7 @@ ButtonIconSpacing: "@Spacing.300"
 ButtonIconSize: 16px
 ButtonFontSize: 12px
 ButtonFontWeight: 500
+ButtonContentBox: "content_box((width: @ButtonMinWidth, height: @ButtonHeight), @ButtonPadding, @ButtonBorderThickness)"
 
 ButtonSpacing: "@Spacing.250"
 
