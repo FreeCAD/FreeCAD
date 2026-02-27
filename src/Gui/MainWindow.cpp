@@ -223,26 +223,28 @@ public:
         unitChanged();
         getWindowParameter()->Attach(this);
 
-        Gui::Application::Instance->signalActiveDocument.connect(
-            [this](const Gui::Document&) { unitChanged(); });
+        Gui::Application::Instance->signalActiveDocument.connect([this](const Gui::Document&) {
+            unitChanged();
+        });
 
-        Gui::Application::Instance->signalDeleteDocument.connect(
-            [this](const Gui::Document&) { unitChanged(); });
-        //fixed width
+        Gui::Application::Instance->signalDeleteDocument.connect([this](const Gui::Document&) {
+            unitChanged();
+        });
+        // fixed width
         QFontMetrics fm(this->font());
 
         int maxWidth = 0;
 
-        auto actionsList = menu()->actions();   
+        auto actionsList = menu()->actions();
 
-        for (QAction* act : actionsList)        
-        {
+        for (QAction* act : actionsList) {
             int w = fm.horizontalAdvance(extractUnits(act->text()));
-            if (w > maxWidth)
+            if (w > maxWidth) {
                 maxWidth = w;
+            }
         }
 
-        maxWidth += 40;   
+        maxWidth += 40;
 
         fixedWidthValue = maxWidth;
         setMinimumWidth(maxWidth);
@@ -251,12 +253,12 @@ public:
     }
     QString padded(const QString& s)
     {
-        return QStringLiteral("  ") + s;   // 2-space indent
+        return QStringLiteral("  ") + s;  // 2-space indent
     }
     QSize sizeHint() const override
     {
         QSize s = QPushButton::sizeHint();
-        s.setWidth(fixedWidthValue);   // use your computed width
+        s.setWidth(fixedWidthValue);  // use your computed width
         return s;
     }
     ~DimensionWidget() override
@@ -269,10 +271,8 @@ public:
         Q_UNUSED(rCaller)
 
         // Preferences change triggers these
-        if (strcmp(sReason, "UserSchema") == 0 ||
-            strcmp(sReason, "Units") == 0 ||
-            strcmp(sReason, "IgnoreProjectSchema") == 0)
-        {
+        if (strcmp(sReason, "UserSchema") == 0 || strcmp(sReason, "Units") == 0
+            || strcmp(sReason, "IgnoreProjectSchema") == 0) {
             QTimer::singleShot(0, this, [this]() {
                 retranslateUi();
                 unitChanged();
@@ -314,29 +314,34 @@ private:
         int l = schema.indexOf('(');
         int r = schema.indexOf(')');
 
-        if (l != -1 && r != -1 && r > l)
+        if (l != -1 && r != -1 && r > l) {
             return schema.mid(l + 1, r - l - 1);
+        }
 
-        return schema; // fallback
+        return schema;  // fallback
     }
     void unitChanged()
     {
         auto actions = menu()->actions();
-        if (actions.empty())
+        if (actions.empty()) {
             return;
+        }
 
         int userSchema = 0;
 
         App::Document* doc = App::GetApplication().getActiveDocument();
 
-        if (doc)
+        if (doc) {
             userSchema = doc->UnitSystem.getValue();
-        else
+        }
+        else {
             userSchema = getWindowParameter()->GetInt("UserSchema", 0);
+        }
 
         // clamp safely
-        if (userSchema < 0 || userSchema >= actions.size())
+        if (userSchema < 0 || userSchema >= actions.size()) {
             userSchema = 0;
+        }
 
         actions[userSchema]->setChecked(true);
         QString full = actions[userSchema]->text();
@@ -347,7 +352,7 @@ private:
             return;
         }
 
-        setText(padded(units));          // short text
+        setText(padded(units));  // short text
         setToolTip(full);        // full schema on hover
     }
     void retranslateUi()
