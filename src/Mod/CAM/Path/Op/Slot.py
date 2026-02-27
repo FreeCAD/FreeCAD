@@ -167,15 +167,6 @@ class ObjectSlot(PathOp.ObjectOp):
             ),
             (
                 "App::PropertyEnumeration",
-                "LayerMode",
-                "Slot",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Complete the operation in a single pass at depth, or multiple passes to final depth.",
-                ),
-            ),
-            (
-                "App::PropertyEnumeration",
                 "PathOrientation",
                 "Slot",
                 QtCore.QT_TRANSLATE_NOOP(
@@ -250,12 +241,8 @@ class ObjectSlot(PathOp.ObjectOp):
 
         enums = {
             "CutPattern": [
-                (translate("CAM_Slot", "Line"), "Line"),
-                (translate("CAM_Slot", "ZigZag"), "ZigZag"),
-            ],
-            "LayerMode": [
-                (translate("CAM_Slot", "Single-pass"), "Single-pass"),
-                (translate("CAM_Slot", "Multi-pass"), "Multi-pass"),
+                (translate("CAM_Slot", "Directional"), "Directional"),
+                (translate("CAM_Slot", "Bidirectional"), "Bidirectional"),
             ],
             "PathOrientation": [
                 (translate("CAM_Slot", "Start to End"), "Start to End"),
@@ -309,8 +296,7 @@ class ObjectSlot(PathOp.ObjectOp):
             "CustomPoint2": FreeCAD.Vector(0, 0, 0),
             "ExtendPathEnd": 0,
             "Reference2": "Center of Mass",
-            "LayerMode": "Multi-pass",
-            "CutPattern": "ZigZag",
+            "CutPattern": "Bidirectional",
             "PathOrientation": "Start to End",
             "ExtendRadius": 0,
             "ReverseDirection": False,
@@ -356,6 +342,7 @@ class ObjectSlot(PathOp.ObjectOp):
         ENUMS = self.getActiveEnumerations(obj)
         obj.Reference1 = ENUMS["Reference1"]
         obj.Reference2 = ENUMS["Reference2"]
+        obj.CutPattern = ENUMS["CutPattern"]
 
         # Restore pre-existing values if available with active enumerations.
         # If not, set to first element in active enumeration list.
@@ -400,6 +387,16 @@ class ObjectSlot(PathOp.ObjectOp):
             obj.ViewObject.signalChangeIcon()
 
     def opOnDocumentRestored(self, obj):
+        if obj.CutPattern == "Line":
+            self.updateEnumerations(obj)
+            obj.CutPattern = "Directional"
+        if obj.CutPattern == "ZigZag":
+            self.updateEnumerations(obj)
+            obj.CutPattern = "Bidirectional"
+
+        if hasattr(obj, "LayerMode"):
+            obj.removeProperty("LayerMode")
+
         self.propertiesReady = False
         job = PathUtils.findParentJob(obj)
 
@@ -749,28 +746,24 @@ class ObjectSlot(PathOp.ObjectOp):
             )
             return cmds
 
-        if obj.LayerMode == "Single-pass":
-            CMDS.extend(arcPass(PATHS[path_index], obj.FinalDepth.Value))
+        if obj.CutPattern == "Directional":
+            for depth in self.depthParams:
+                CMDS.extend(arcPass(PATHS[path_index], depth))
+                CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
+            CMDS.pop()  # remove last move to safe height
         else:
-            if obj.CutPattern == "Line":
-                for depth in self.depthParams:
+            i = 0
+            for depth in self.depthParams:
+                if i % 2 == 0:  # even
                     CMDS.extend(arcPass(PATHS[path_index], depth))
-                    CMDS.append(
-                        Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-                    )
-            elif obj.CutPattern == "ZigZag":
-                i = 0
-                for depth in self.depthParams:
-                    if i % 2 == 0:  # even
-                        CMDS.extend(arcPass(PATHS[path_index], depth))
-                    else:  # odd
-                        CMDS.extend(arcPass(PATHS[not path_index], depth))
-                    i += 1
-        # Raise to SafeHeight when finished
-        CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
+                else:  # odd
+                    CMDS.extend(arcPass(PATHS[not path_index], depth))
+                i += 1
 
         if self.isDebug:
             Path.Log.debug("G-code arc command is: {}".format(PATHS[path_index][2]))
+
+        CMDS.insert(1, Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
         return CMDS
 
@@ -862,29 +855,24 @@ class ObjectSlot(PathOp.ObjectOp):
             cmds.append(Path.Command("G1", {"X": p2.x, "Y": p2.y, "F": self.horizFeed}))
             return cmds
 
-        # CMDS.append(Path.Command('N (Tool type: {})'.format(toolType), {}))
-        if obj.LayerMode == "Single-pass":
-            CMDS.extend(linePass(p1, p2, obj.FinalDepth.Value))
-            CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
+        if obj.CutPattern == "Directional":
+            for dep in self.depthParams:
+                CMDS.extend(linePass(p1, p2, dep))
+                CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
+            CMDS.pop()  # remove last move to safe height
         else:
-            if obj.CutPattern == "Line":
-                for dep in self.depthParams:
-                    CMDS.extend(linePass(p1, p2, dep))
-                    CMDS.append(
-                        Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-                    )
-            elif obj.CutPattern == "ZigZag":
-                CMDS.append(Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid}))
-                i = 0
-                for dep in self.depthParams:
-                    if i % 2 == 0:  # even
-                        CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
-                        CMDS.append(Path.Command("G1", {"X": p2.x, "Y": p2.y, "F": self.horizFeed}))
-                    else:  # odd
-                        CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
-                        CMDS.append(Path.Command("G1", {"X": p1.x, "Y": p1.y, "F": self.horizFeed}))
-                    i += 1
-            CMDS.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
+            CMDS.append(Path.Command("G0", {"X": p1.x, "Y": p1.y, "F": self.horizRapid}))
+            i = 0
+            for dep in self.depthParams:
+                if i % 2 == 0:  # even
+                    CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
+                    CMDS.append(Path.Command("G1", {"X": p2.x, "Y": p2.y, "F": self.horizFeed}))
+                else:  # odd
+                    CMDS.append(Path.Command("G1", {"Z": dep, "F": self.vertFeed}))
+                    CMDS.append(Path.Command("G1", {"X": p1.x, "Y": p1.y, "F": self.horizFeed}))
+                i += 1
+
+        CMDS.insert(1, Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
         return CMDS
 
