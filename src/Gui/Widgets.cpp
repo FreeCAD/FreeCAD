@@ -1716,6 +1716,10 @@ void ExpLineEdit::finishFormulaDialog()
     if (box->result() == QDialog::Accepted) {
         setExpression(box->getExpression());
     }
+    else if (box->clearedFormula()) {
+        setExpression(std::shared_ptr<Expression>());
+        clear();
+    }
     else if (box->discardedFormula()) {
         setExpression(std::shared_ptr<Expression>());
     }
