@@ -1176,6 +1176,8 @@ public:
     std::vector<std::string> toSections() const;
 
     MappedNameDataTree getNameDataTree() const;
+    
+    static MappedName fromNameDataTree(const MappedNameDataTree tree);
 
     static std::vector<std::string> splitToSections(const std::string data, const char deliminator = '|');
 

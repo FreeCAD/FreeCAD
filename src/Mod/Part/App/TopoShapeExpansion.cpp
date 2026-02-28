@@ -6391,6 +6391,19 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     initCache(1);
     Hasher = hasher;
     Tag = tag;
+
+    if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        for (Data::MappedElement &mappedElement : tmp.ensureElementMap()->getAll()) {
+            Data::MappedNameDataTree tree = mappedElement.name.getNameDataTree();
+
+            if (tree.size()) {
+                tree[tree.size() - 1][2] = std::to_string(tag);
+
+                mappedElement.name = Data::MappedName::fromNameDataTree(tree);
+            }
+        }
+    }
+
     resetElementMap();
     copyElementMap(tmp, postfix);
 }

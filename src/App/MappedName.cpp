@@ -117,6 +117,39 @@ MappedNameDataTree MappedName::getNameDataTree() const {
     return tree;
 }
 
+MappedName MappedName::fromNameDataTree(const MappedNameDataTree tree) {
+    std::stringstream ss;
+
+    for (size_t i = 0; i < tree.size(); ++i) {
+        const auto& mainSection = tree[i];
+        std::stringstream mainSectionStream;
+
+        for (size_t j = 0; j < mainSection.size(); ++j) {
+            const auto& subSection = mainSection[j];
+            std::stringstream subSectionStream;
+
+            for (size_t k = 0; k < subSection.size(); ++k) {
+                subSectionStream << escapeString(subSection[k]);
+
+                if (k + 1 < subSection.size())
+                    subSectionStream << (*Data::SUB_SECTION_LIST_DELIMINATOR);
+            }
+
+            mainSectionStream << subSectionStream.str();
+
+            if (j + 1 < mainSection.size())
+                mainSectionStream << (*Data::SECTION_SUB_DELIMINATOR);
+        }
+
+        ss << mainSectionStream.str();
+
+        if ((i + 1) < tree.size())
+            ss << (*Data::NAME_SECTION_DELIMINATOR);
+    }
+
+    return MappedName(ss.str());
+}
+
 std::string MappedName::escapeString(const std::string stringToEscape) {
     std::stringstream ss;
     std::unordered_set<char> charsToEscape {
@@ -141,7 +174,7 @@ std::string MappedName::escapeString(const std::string stringToEscape) {
 
 
 // IMPORTANT: make sure the placement of the sub-sections in the return
-// string matches what is described in MappingNamingUtils.h
+// string matches what is described in ElementNamingUtils.h
 std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
                                     std::vector<MappedName> referenceNames,
                                     int iterationTag,
