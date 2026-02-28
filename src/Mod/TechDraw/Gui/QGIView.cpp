@@ -192,13 +192,10 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         return newPos;
     }
 
+    // wf: why scene()? because if our selected state has changed because we have been removed from
+    //     the scene, we don't do anything except wait to be deleted.
     if (change == ItemSelectedHasChanged && scene()) {
-        std::vector<Gui::SelectionObject> currentSelection = Gui::Selection().getSelectionEx();
-        bool isViewObjectSelected = Gui::Selection().isSelected(getViewObject());
-        bool hasSelectedSubElements =
-            !DrawGuiUtil::getSubsForSelectedObject(currentSelection, getViewObject()).empty();
-
-        if (isViewObjectSelected || hasSelectedSubElements) {
+        if (isSelected() || hasSelectedChildren(this)) {
             m_colCurrent = getSelectColor();
             m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
         } else {
@@ -213,7 +210,6 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         }
         updateFrameVisibility();
         drawBorder();
-        update();
     }
 
     return QGraphicsItemGroup::itemChange(change, value);
@@ -529,7 +525,6 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
     m_lock->setVisible(getViewObject()->isLocked() && getViewObject()->showLock());
 
     drawBorder();
-    update();
 }
 
 
@@ -549,13 +544,11 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     updateFrameVisibility();
     drawBorder();
-    update();
 }
 
 //sets position in /Gui(graphics), not /App
 void QGIView::setPosition(qreal xPos, qreal yPos)
 {
-    //    Base::Console().message("QGIV::setPosition(%.3f, %.3f) (gui)\n", x, y);
     double newX = xPos;
     double newY = -yPos;
     double oldX = pos().x();
@@ -584,8 +577,6 @@ QGIViewClip* QGIView::getClipGroup()
 
 void QGIView::updateView(bool forceUpdate)
 {
-    //    Base::Console().message("QGIV::updateView() - %s\n", getViewObject()->getNameInDocument());
-
             //allow/prevent dragging
     if (getViewObject()->isLocked()) {
         setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -668,7 +659,6 @@ void QGIView::toggleCache(bool state)
 
 void QGIView::draw()
 {
-    //    Base::Console().message("QGIV::draw()\n");
     double xFeat, yFeat;
     if (getViewObject()) {
         xFeat = Rez::guiX(getViewObject()->X.getValue());
@@ -732,10 +722,10 @@ void QGIView::layoutDecorations(const QRectF& contentArea,
 
 void QGIView::drawBorder()
 {
-    // Base::Console().message("QGIV::drawBorder() - %s\n", getViewName());
     auto feat = getViewObject();
-    if (!feat)
+    if (!feat) {
         return;
+    }
 
     prepareCaption();
 
@@ -800,6 +790,7 @@ QRectF QGIView::frameRect() const
             continue;
         }
         if (
+            // we only want the area defined by the edges
             child->type() != UserType::QGIRichAnno &&
             child->type() != UserType::QGEPath &&
             child->type() != UserType::QGMText &&
@@ -835,7 +826,9 @@ QRectF QGIView::customChildrenBoundingRect() const
             child->type() != UserType::QGCustomBorder &&
             child->type() != UserType::QGCustomLabel &&
             child->type() != UserType::QGICaption &&
-            child->type() != UserType::QGIVertex &&
+            // we treat vertices as part of the boundingRect to allow loose vertices outside of the
+            // area defined by the edges as in frameRect()
+            // child->type() != UserType::QGIVertex &&
             child->type() != UserType::QGICMark) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
@@ -1049,6 +1042,20 @@ void QGIView::makeMark(double xPos, double yPos, QColor color)
     vItem->setPrettyNormal();
     vItem->setZValue(ZVALUE::VERTEX);
 }
+
+//! true if parent has any children which are selected
+bool QGIView::hasSelectedChildren(QGIView* parent)
+{
+    QList<QGraphicsItem*> children = parent->childItems();
+
+    auto itMatch = std::find_if(children.begin(), children.end(),
+             [&](QGraphicsItem* child) {
+                return child->isSelected();
+             });
+
+    return itMatch != children.end();
+}
+
 
 void QGIView::makeMark(Base::Vector3d pos, QColor color)
 {

@@ -95,6 +95,8 @@ public:
     void setTrackerMode(TrackerMode m) { m_trackerMode = m; }
     QPointF snapToAngle(QPointF pt);
 
+    void setOwnerQView(QGIView* owner) { m_qgParent = owner; }
+
 Q_SIGNALS:
     void drawingFinished(std::vector<QPointF> pts, TechDrawGui::QGIView* qgParent);
     void qViewPicked(QPointF pos, TechDrawGui::QGIView* qgParent);

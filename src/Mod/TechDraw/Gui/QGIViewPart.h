@@ -147,14 +147,13 @@ protected:
     void removePrimitives();
     void removeDecorations();
     bool prefFaceEdges();
-    bool prefPrintCenters();
     Base::Color prefBreaklineColor();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
-    bool showCenterMarks();
-    bool showVertices();
+    bool showCenterMarks() const;
+    bool showVertices() const;
 
 private:
     QList<QGraphicsItem*> deleteItems;
