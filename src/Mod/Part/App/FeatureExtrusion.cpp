@@ -339,7 +339,7 @@ void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const E
 
     // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
     TopoShape myShape(source.makeElementCopy());
-    myShape.Tag = myShape.Tag;
+    myShape.Tag = result.Tag;
 
     if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
         || std::fabs(params.taperAngleRev) >= Precision::Angular()) {

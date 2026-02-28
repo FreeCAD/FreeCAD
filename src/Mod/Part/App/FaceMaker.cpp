@@ -307,8 +307,6 @@ void Part::FaceMaker::postBuild()
             int masterTag = this->myTopoShape.Tag;
 
             if (masterTag == 0) {
-                masterTag = -1;
-
                 for (auto& sourceShape : this->mySourceShapes) {
                     if (sourceShape.Tag != 0) {
                         masterTag = sourceShape.Tag;

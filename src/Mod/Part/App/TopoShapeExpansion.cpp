@@ -2037,11 +2037,11 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         long masterTag = Tag;
 
         if (masterTag == 0) {
-            masterTag = -1;
-
             for (const auto& incomingShape : shapes) {
-                if (masterTag == -1 && incomingShape.Tag != 0)
+                if (incomingShape.Tag != 0) {
                     masterTag = incomingShape.Tag;
+                    break;
+                }
             }
         }
 
@@ -6376,7 +6376,7 @@ long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) con
     return res;
 }
 
-void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix)
+void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix, bool force)
 {
     if (!tag) {
         FC_WARN("invalid shape tag for re-tagging");
@@ -6392,20 +6392,25 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
     Hasher = hasher;
     Tag = tag;
 
-    if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-        for (Data::MappedElement &mappedElement : tmp.ensureElementMap()->getAll()) {
+    if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+        resetElementMap();
+        copyElementMap(tmp, postfix);
+    } else if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        std::vector<Data::MappedElement> copiedElementMap = tmp.ensureElementMap()->getAll();
+
+        for (Data::MappedElement &mappedElement : copiedElementMap) {
             Data::MappedNameDataTree tree = mappedElement.name.getNameDataTree();
 
-            if (tree.size()) {
-                tree[tree.size() - 1][2] = std::to_string(tag);
-
+            if (tree.size() && (tree[tree.size() - 1][2][0] == "0" || force)) {
+                tree[tree.size() - 1][2][0] = std::to_string(tag);
+                
                 mappedElement.name = Data::MappedName::fromNameDataTree(tree);
             }
         }
-    }
 
-    resetElementMap();
-    copyElementMap(tmp, postfix);
+        resetElementMap();
+        setElementMap(copiedElementMap);
+    }
 }
 
 void TopoShape::cacheRelatedElements(
