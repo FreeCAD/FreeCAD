@@ -161,7 +161,10 @@ void MaterialManagerLocal::renameLibrary(const QString& libraryName, const QStri
     for (auto& library : *_libraryList) {
         if (library->isLocal() && library->isName(libraryName)) {
             auto materialLibrary =
-                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+                std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(library);
+            if (!materialLibrary) {
+                throw LibraryNotFound();
+            }
             materialLibrary->setName(newName);
             return;
         }
@@ -175,7 +178,10 @@ void MaterialManagerLocal::changeIcon(const QString& libraryName, const QByteArr
     for (auto& library : *_libraryList) {
         if (library->isLocal() && library->isName(libraryName)) {
             auto materialLibrary =
-                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+                std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(library);
+            if (!materialLibrary) {
+                throw LibraryNotFound();
+            }
             materialLibrary->setIcon(icon);
             return;
         }
@@ -312,7 +318,10 @@ std::shared_ptr<Material> MaterialManagerLocal::getMaterialByPath(const QString&
     for (auto& library : *_libraryList) {
         if (library->isLocal()) {
             auto materialLibrary =
-                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+                std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(library);
+            if (!materialLibrary) {
+                continue;
+            }
             if (cleanPath.startsWith(materialLibrary->getDirectory())) {
                 try {
                     return materialLibrary->getMaterialByPath(cleanPath);
@@ -359,7 +368,10 @@ std::shared_ptr<Material> MaterialManagerLocal::getMaterialByPath(const QString&
     auto library = getLibrary(lib);  // May throw LibraryNotFound
     if (library->isLocal()) {
         auto materialLibrary =
-            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
+            std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(library);
+        if (!materialLibrary) {
+            throw LibraryNotFound();
+        }
         return materialLibrary->getMaterialByPath(path);  // May throw MaterialNotFound
     }
 
@@ -385,11 +397,13 @@ bool MaterialManagerLocal::exists(const MaterialLibrary& library,
 {
     try {
         auto material = getMaterial(uuid);
-        if (material && material->getLibrary()->isLocal()) {
+        if (material && material->getLibrary()) {
             auto materialLibrary =
-                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(
-                    *(material->getLibrary()));
-            return (*materialLibrary == library);
+                std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(
+                    material->getLibrary());
+            if (materialLibrary) {
+                return (*materialLibrary == library);
+            }
         }
     }
     catch (const MaterialNotFound&) {
