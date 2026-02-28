@@ -55,7 +55,7 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyLinkList",
                 name="MeshRegionList",
-                group="Base",
+                group="Mesh Parameters",
                 doc="Refinements of the mesh",
                 value=[],
             )
@@ -576,6 +576,10 @@ class MeshNetgen(base_fempythonobject.BaseFemPythonObject):
                 )
                 # update enum values
                 setattr(obj, prop.name, prop.value)
+
+            # Migrate group of properties for old projects
+            if obj.getGroupOfProperty(prop.name) != prop.group:
+                obj.setGroupOfProperty(prop.name, prop.group)
 
     def get_predef_fineness_params(self, fineness):
         # set specific parameters by fineness
