@@ -304,9 +304,22 @@ void Part::FaceMaker::postBuild()
 
             if (edgeNames.empty() && edgeIDs.empty()) continue;
 
+            int masterTag = this->myTopoShape.Tag;
+
+            if (masterTag == 0) {
+                masterTag = -1;
+
+                for (auto& sourceShape : this->mySourceShapes) {
+                    if (sourceShape.Tag != 0) {
+                        masterTag = sourceShape.Tag;
+                        break;
+                    }
+                }
+            }
+
             std::string faceString = Data::MappedName::makeSection(edgeIDs,
                                                                    edgeNames,
-                                                                   this->myTopoShape.Tag,
+                                                                   masterTag,
                                                                    op,
                                                                    0,
                                                                    'F',

@@ -1201,7 +1201,10 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         // skip encoding only when masterTag=0, child.tag=0, and count is exactly at threshold
         bool skipEncoding = (masterTag == 0 && child.tag == 0 && child.count == threshold && child.elementMap);
 
-        if ((child.count >= threshold && !skipEncoding) || !child.elementMap) {
+        if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1
+            && (child.count >= threshold && !skipEncoding)
+               || !child.elementMap)
+        {
             encodeElementName(child.indexedName[0],
                               tmp,
                               ss,

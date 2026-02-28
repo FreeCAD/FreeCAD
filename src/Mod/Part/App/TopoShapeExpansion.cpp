@@ -1315,6 +1315,20 @@ struct NameInfo
 };
 
 
+struct ReverseMapValue
+{
+    Data::IndexedName mapElementIndexName;
+    TopoDS_Shape mapElementShape;
+    TopoShape mapParentShape;
+};
+
+struct ReverseMapBase
+{
+    Data::IndexedName masterName;
+    std::vector<ReverseMapValue> mapElements;
+};
+
+
 const std::string& modPostfix()
 {
     static std::string postfix(Data::POSTFIX_MOD);
@@ -1989,7 +2003,47 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     } else if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         // This algorithm has some edgecase detection from the V1 Algorithm, which is why it looks a little bit copypasted.
 
-        std::unordered_map<TopoDS_Shape, std::pair<Data::IndexedName, std::vector<std::pair<Data::IndexedName, std::pair<TopoDS_Shape, TopoShape>>>>> reverseGeneratedMap { };
+        std::unordered_map<TopoDS_Shape, ReverseMapBase> reverseGeneratedMap { };
+
+        // Data::IndexedName mapElementIndexName;
+        // TopoDS_Shape mapElementShape;
+        // TopoShape mapParentShape;
+
+        auto addToReverseMap = [](std::unordered_map<TopoDS_Shape, ReverseMapBase> &map,
+                                  TopoDS_Shape newShape,
+                                  Data::IndexedName newShapeIndexName,
+                                  Data::IndexedName mapShapeIndexName,
+                                  TopoDS_Shape mapElementShape,
+                                  TopoShape incomingShape) mutable 
+        {
+            if (map.find(newShape) == map.end()) {
+                ReverseMapBase newBase = ReverseMapBase();
+
+                newBase.mapElements = { };
+                newBase.masterName = newShapeIndexName;
+
+                map.insert({newShape, newBase});
+            }
+
+            ReverseMapValue newValue = ReverseMapValue();
+
+            newValue.mapElementIndexName = mapShapeIndexName;
+            newValue.mapElementShape = mapElementShape;
+            newValue.mapParentShape = incomingShape;
+
+            map[newShape].mapElements.push_back(newValue);
+        };
+
+        long masterTag = Tag;
+
+        if (masterTag == 0) {
+            masterTag = -1;
+
+            for (const auto& incomingShape : shapes) {
+                if (masterTag == -1 && incomingShape.Tag != 0)
+                    masterTag = incomingShape.Tag;
+            }
+        }
 
         // These loops generate names with the Modified and Generated methods of the Maker class.
         // This will miss some shapes, so in the next stage we will find names with the IsPartner method.
@@ -2005,7 +2059,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 for (int i = 1; i <= otherMap.count(); i++) {
                     const auto& otherElement = otherMap.find(incomingShape._Shape, i);
                     Data::IndexedName incomingShapeIndexedName = Data::IndexedName::fromConst(info->shapetype, i);
-                    Data::MappedName incomingShapeMappedName = incomingShape.getMappedName(incomingShapeIndexedName);
+                    auto incomingShapeMappedNames = incomingShape.getElementMappedNames(incomingShapeIndexedName);
 
                     std::vector<TopoDS_Shape> modifiedShapes = mapper.modified(otherElement);
                     std::vector<TopoDS_Shape> generatedShapes = mapper.generated(otherElement);
@@ -2055,24 +2109,34 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         Data::IndexedName element
                             = Data::IndexedName::fromConst(newInfo.shapetype, modifiedShapeIndex);
 
-                        // if (getMappedName(element)) {
-                        //     continue;
-                        // }
+                        // Since indexed names can have multiple MappedNames assigned to them,
+                        // we want to make sure we include all of them in the new ElementMap for reliability sake.
+                        for (auto &incomingShapeMappedName : incomingShapeMappedNames) {
+                            std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames = getElementMappedNames(element);
+                            Data::MappedName newName = Data::MappedName(incomingShapeMappedName.first);
 
-                        Data::MappedName newName = Data::MappedName(incomingShapeMappedName);
+                            // we ONLY append a section to the name if something actually changes.
+                            if (modifiedShapes.size() > 1) {
+                                newName.append(Data::MappedName::makeSection({},
+                                                                             {},
+                                                                             masterTag,
+                                                                             op,
+                                                                             modifiedI,
+                                                                             (*info->shapetype),
+                                                                             0).c_str());
+                            }
 
-                        // we ONLY append a section to the name if something actually changes.
-                        if (modifiedShapes.size() > 1) {
-                            newName.append(Data::MappedName::makeSection({},
-                                                                         {},
-                                                                         Tag == 0 ? incomingShape.Tag : Tag,
-                                                                         op,
-                                                                         modifiedI,
-                                                                         (*info->shapetype),
-                                                                         0).c_str());
+                            bool skipMap = false;
+                            
+                            for (const auto& mappedNameInfo : mappedNames) {
+                                if (mappedNameInfo.first == newName) {
+                                    skipMap = true;
+                                    break;
+                                }
+                            }
+
+                            if (!skipMap) ensureElementMap()->setElementName(element, newName, masterTag);
                         }
-
-                        ensureElementMap()->setElementName(element, newName, Tag);
                     }
 
                     for (size_t generatedI = 0; generatedI < generatedShapes.size(); generatedI++) {
@@ -2124,28 +2188,25 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             continue;
                         }
 
-                        if (reverseGeneratedMap.find(generatedShape) == reverseGeneratedMap.end())
-                            reverseGeneratedMap.insert({generatedShape, {element, {}}});
-                        reverseGeneratedMap[generatedShape].second.push_back({incomingShapeIndexedName, {otherElement, incomingShape}});
+                        addToReverseMap(reverseGeneratedMap, generatedShape, element, incomingShapeIndexedName, otherElement, incomingShape);
                     }
                 }
             }
         }
 
+        // Eventually this needs to be unordered to improve performance.
+        std::set<std::vector<Data::MappedName>> usedLinkedNames { };
+
         for (auto &generatedShapeKey : reverseGeneratedMap) {
-            if (getMappedName(generatedShapeKey.second.first)) {
+            if (getMappedName(generatedShapeKey.second.masterName)) {
                 continue;
             }
 
             std::vector<Data::MappedName> linkedNames { };
-            int incomingIterationTag = -1;
 
-            if (generatedShapeKey.second.second.size()) {
-                for (auto &generatedInfo : generatedShapeKey.second.second) {
-                    Data::MappedName foundName = generatedInfo.second.second.getMappedName(generatedInfo.first);
-
-                    if (incomingIterationTag == -1 && generatedInfo.second.second.Tag != 0)
-                        incomingIterationTag = generatedInfo.second.second.Tag;
+            if (generatedShapeKey.second.mapElements.size()) {
+                for (auto &generatedInfo : generatedShapeKey.second.mapElements) {
+                    Data::MappedName foundName = generatedInfo.mapParentShape.getMappedName(generatedInfo.mapElementIndexName);
 
                     if (foundName.size()) {
                         linkedNames.push_back(foundName);
@@ -2156,21 +2217,26 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             if (linkedNames.size()) {
                 Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
                                                                                           linkedNames,
-                                                                                          Tag == 0 ? incomingIterationTag : Tag,
+                                                                                          masterTag,
                                                                                           op,
-                                                                                          0,
-                                                                                          generatedShapeKey.second.first.toString()[0],
+                                                                                          usedLinkedNames.count(linkedNames),
+                                                                                          generatedShapeKey.second.masterName.toString()[0],
                                                                                           0).c_str());
+                
+                usedLinkedNames.insert(linkedNames);
 
-                ensureElementMap()->setElementName(generatedShapeKey.second.first, newName, Tag);
+                ensureElementMap()->setElementName(generatedShapeKey.second.masterName, newName, masterTag);
             } else {
                 FC_LOG("Generated loop was unable to find LinkedNames for a shape.");
             }
         }
+
+        const std::map<std::string, TopAbs_ShapeEnum> ancestorTypeMap {{"Edge", TopAbs_FACE}, {"Face", TopAbs_EDGE}, {"Vertex", TopAbs_EDGE}};
     
-        // Now let's map any unmapped shapes with the IsPartner method.
+        // Now let's map any unmapped shapes with the IsPartner and ancestor method.
         for (const auto& info : infos) {
             for (int mainI = 1; mainI <= info->count(); mainI++) {
+                bool wasMapped = false;
                 const auto& mainElement = info->find(mainI);
                 Data::IndexedName mainElementIndexedName = Data::IndexedName::fromConst(info->shapetype, mainI);
 
@@ -2193,19 +2259,53 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             Data::IndexedName incomingShapeIndexedName = Data::IndexedName::fromConst(info->shapetype, otherI);
                             Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
                                                                                                     {incomingShape.getMappedName(incomingShapeIndexedName)},
-                                                                                                    Tag == 0 ? incomingShape.Tag : Tag,
+                                                                                                    masterTag,
                                                                                                     op,
                                                                                                     0,
                                                                                                     (*info->shapetype),
                                                                                                     0,
                                                                                                     "PTN").c_str());
 
-                            ensureElementMap()->setElementName(mainElementIndexedName, newName, Tag);
+                            wasMapped = true;
+                            ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
+                            break;
                         }
+                    }
+                }
+
+                auto it = ancestorTypeMap.find(std::string(info->shapetype));
+           
+                if (!wasMapped && it != ancestorTypeMap.end()) {
+                    std::vector<int> ancestors = findAncestors(mainElement, it->second);
+                    std::vector<Data::MappedName> ancestorNames { };
+
+                    for (const auto &ancestorIndex : ancestors) {
+                        Data::IndexedName ancestorIndexName = Data::IndexedName::fromConst(info->shapetype, ancestorIndex);
+                        Data::MappedName ancestorMappedName = getMappedName(ancestorIndexName);
+
+                        if (ancestorMappedName) {
+                            ancestorNames.push_back(ancestorMappedName);
+                        }
+                    }
+
+                    if (ancestorNames.size()) {
+                        Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
+                                                                                                ancestorNames,
+                                                                                                masterTag,
+                                                                                                op,
+                                                                                                0,
+                                                                                                (*info->shapetype),
+                                                                                                0,
+                                                                                                "ANC").c_str());
+                        
+                        ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
                     }
                 }
             }
         }
+
+        reverseGeneratedMap.clear();
+        usedLinkedNames.clear();
     }
     
     return *this;

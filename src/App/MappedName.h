@@ -499,8 +499,8 @@ public:
             else {
                 const char* constData = this->postfix.constData();
 
-                if (strlen(constData) > 0 && constData[strlen(constData) - 1] != '|') {
-                    this->postfix.append('|', 1);
+                if (strlen(constData) == 0 || constData[strlen(constData) - 1] != '|') {
+                    this->postfix.append("|", 1);
                 }
 
                 this->postfix.append(dataToAppend, size);
