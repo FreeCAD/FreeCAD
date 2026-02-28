@@ -30,6 +30,7 @@
 #include <QLocale>
 #include <QMessageBox>
 #include <QString>
+#include <QToolButton>
 #include <algorithm>
 
 #include <App/Document.h>
@@ -618,21 +619,16 @@ void DlgSettingsGeneral::loadDockWindowVisibility()
 
 void DlgSettingsGeneral::recreatePreferencePackMenu()
 {
-    ui->PreferencePacks->setRowCount(0);  // Begin by clearing whatever is there
-    ui->PreferencePacks->horizontalHeader()->setDefaultAlignment(Qt::AlignLeft);
+    ui->PreferencePacks->setRootIsDecorated(false);
+    ui->PreferencePacks->setUniformRowHeights(false);
+    ui->PreferencePacks->clear();
     ui->PreferencePacks->setColumnCount(3);
-    ui->PreferencePacks->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
-    ui->PreferencePacks->horizontalHeader()->setStretchLastSection(false);
-    ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeMode::Stretch);
-    ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeMode::Stretch);
-    ui->PreferencePacks->horizontalHeader()->setSectionResizeMode(
-        2,
-        QHeaderView::ResizeMode::ResizeToContents
-    );
-    QStringList columnHeaders;
-    columnHeaders << tr("Preference Pack Name") << tr("Tags")
-                  << QString();  // for the "Load" buttons
-    ui->PreferencePacks->setHorizontalHeaderLabels(columnHeaders);
+    ui->PreferencePacks->header()->setDefaultAlignment(Qt::AlignLeft);
+    ui->PreferencePacks->header()->setStretchLastSection(false);
+    ui->PreferencePacks->header()->setSectionResizeMode(0, QHeaderView::ResizeMode::Stretch);
+    ui->PreferencePacks->header()->setSectionResizeMode(1, QHeaderView::ResizeMode::Stretch);
+    ui->PreferencePacks->header()->setSectionResizeMode(2, QHeaderView::ResizeMode::ResizeToContents);
+    ui->PreferencePacks->setHeaderLabels({tr("Preference Pack Name"), tr("Tags"), QString()});
 
     // Populate the Preference Packs list
     Application::Instance->prefPackManager()->rescan();
@@ -649,27 +645,23 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
         packs.erase(key);  // Remove the elements from the map
     }
 
-    ui->PreferencePacks->setRowCount(packs.size());
-
-    int row = 0;
     QIcon icon = style()->standardIcon(QStyle::SP_DialogApplyButton);
     for (const auto& pack : packs) {
-        auto name = new QTableWidgetItem(QString::fromStdString(pack.first));
-        name->setToolTip(QString::fromStdString(pack.second.metadata().description()));
-        ui->PreferencePacks->setItem(row, 0, name);
+        auto* item = new QTreeWidgetItem(ui->PreferencePacks);
+        item->setText(0, QString::fromStdString(pack.first));
+        item->setToolTip(0, QString::fromStdString(pack.second.metadata().description()));
+
         auto tags = pack.second.metadata().tag();
-        QString tagString;
+        QStringList tagList;
         for (const auto& tag : tags) {
-            if (tagString.isEmpty()) {
-                tagString.append(QString::fromStdString(tag));
-            }
-            else {
-                tagString.append(QStringLiteral(", ") + QString::fromStdString(tag));
-            }
+            tagList.append(QString::fromStdString(tag));
         }
-        auto kind = new QTableWidgetItem(tagString);
-        ui->PreferencePacks->setItem(row, 1, kind);
-        auto button = new QPushButton(icon, tr("Apply"));
+        item->setText(1, tagList.join(QStringLiteral(", ")));
+
+        auto* button = new QToolButton();
+        button->setText(tr("Apply"));
+        button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        button->setIcon(icon);
         button->setEnabled(true);
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
@@ -689,8 +681,7 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
                 onLoadPreferencePackClicked(pack.first);
             });
         }
-        ui->PreferencePacks->setCellWidget(row, 2, button);
-        ++row;
+        ui->PreferencePacks->setItemWidget(item, 2, button);
     }
 }
 
