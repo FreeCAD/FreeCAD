@@ -478,8 +478,8 @@ void TaskMeasure::updateResultWithUnit()
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
         if (resultString.contains(QLatin1String("X:")) && resultString.contains(QLatin1String("Y:"))
             && resultString.contains(QLatin1String("Z:"))) {
-            
-                Base::Quantity targetUnit = Base::Quantity::parse(
+
+            Base::Quantity targetUnit = Base::Quantity::parse(
                 (QLatin1String("1 ") + currentUnit).toStdString()
             );
 
@@ -509,7 +509,8 @@ void TaskMeasure::updateResultWithUnit()
                     else {
                         formattedValue = QString::number(convertedValue, 'f', 4);
                     }
-                    line = QString::fromLatin1("%1: %2 %3").arg(QChar::fromLatin1(text[0]), formattedValue, currentUnit);
+                    line = QString::fromLatin1("%1: %2 %3")
+                               .arg(QChar::fromLatin1(text[0]), formattedValue, currentUnit);
                 }
                 catch (const Base::Exception&) {
                 }

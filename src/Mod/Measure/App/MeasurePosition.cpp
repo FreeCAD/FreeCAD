@@ -131,12 +131,18 @@ QString MeasurePosition::getResultString()
     if (prop == nullptr) {
         return {};
     }
-    
+
     Base::Vector3d value = Position.getValue();
-    QString xValue = QString::fromStdString(Base::Quantity(value.x, Base::Unit::Length).getUserString());
-    QString yValue = QString::fromStdString(Base::Quantity(value.y, Base::Unit::Length).getUserString());
-    QString zValue = QString::fromStdString(Base::Quantity(value.z, Base::Unit::Length).getUserString());
-    
+    QString xValue = QString::fromStdString(
+        Base::Quantity(value.x, Base::Unit::Length).getUserString()
+    );
+    QString yValue = QString::fromStdString(
+        Base::Quantity(value.y, Base::Unit::Length).getUserString()
+    );
+    QString zValue = QString::fromStdString(
+        Base::Quantity(value.z, Base::Unit::Length).getUserString()
+    );
+
     QString text;
 
     QTextStream(&text) << "X: " << xValue << Qt::endl
