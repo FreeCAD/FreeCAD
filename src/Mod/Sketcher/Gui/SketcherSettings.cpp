@@ -233,10 +233,10 @@ void SketcherSettings::loadSettings()
     // The items have to be added in the same order
     // as the AutoScaleMode enum
     ui->autoScaleMode->clear();
+    ui->autoScaleMode->addItem(tr("When no scale feature is visible"));
     ui->autoScaleMode->addItem(tr("Always"));
     ui->autoScaleMode->addItem(tr("Never"));
-    ui->autoScaleMode->addItem(tr("When no scale feature is visible"));
-    index = hGrp->GetInt("AutoScaleMode", static_cast<int>(AutoScaleMode::Always));
+    index = hGrp->GetInt("AutoScaleMode", static_cast<int>(AutoScaleMode::WhenNoScaleFeatureIsVisible));
     ui->autoScaleMode->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
