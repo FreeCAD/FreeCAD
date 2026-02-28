@@ -202,7 +202,6 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const
 }
 TopoShape ProfileBased::getTopoShapeVerifiedFace(
     bool silent,
-    [[maybe_unused]] bool doFit,  // TODO: Remove parameter
     bool allowOpen,
     const App::DocumentObject* profile,
     const std::vector<std::string>& _subs
@@ -1374,11 +1373,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const
         return SketchVector;
     }
 
-    // For newer version, do not do fitting, as it may flip the face normal for
-    // some reason.
-    TopoShape shape = getTopoShapeVerifiedFace(true, true, true);  //, _ProfileBasedVersion.getValue()
-                                                                   //<= 0);
-
+    TopoShape shape = getTopoShapeVerifiedFace(true, true);
     if (shape.isNull()) {
         return SketchVector;
     }

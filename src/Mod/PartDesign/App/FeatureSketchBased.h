@@ -111,14 +111,12 @@ public:
      * @param silent: if profile property is malformed and the parameter is true
      *                silently returns nullptr, otherwise throw a Base::Exception.
      *                Default is false.
-     * @param doFit: Whether to fitting according to the 'Fit' property
      * @param allowOpen: Whether allow open wire
      * @param profile: optional profile object, if not given then use 'Profile' property
      * @param subs: optional profile sub-object names, if not given then use 'Profile' property
      */
     TopoShape getTopoShapeVerifiedFace(
         bool silent = false,
-        bool doFit = true,
         bool allowOpen = false,
         const App::DocumentObject* profile = nullptr,
         const std::vector<std::string>& subs = {}
