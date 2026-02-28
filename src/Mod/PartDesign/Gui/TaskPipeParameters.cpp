@@ -73,6 +73,20 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+    // Enable multi-selection in edges list
+    ui->listWidgetReferences->setSelectionMode(QAbstractItemView::ExtendedSelection);
+
+    // Make Remove edge button work on selection
+    connect(ui->buttonRefRemove, &QToolButton::clicked,
+            this, &TaskPipeParameters::onDeleteEdge);
+
+    // Ctrl+A should select edges list, not tree view
+    QAction* selectAll = new QAction(tr("Select All"), this);
+    selectAll->setShortcut(QKeySequence::SelectAll);
+    selectAll->setShortcutContext(Qt::WidgetShortcut);
+    ui->listWidgetReferences->addAction(selectAll);
+    connect(selectAll, &QAction::triggered, ui->listWidgetReferences, &QListWidget::selectAll);
+
     QMetaObject::connectSlotsByName(this);
 
     // some buttons are handled in a buttongroup
@@ -282,26 +296,27 @@ void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString items
 
 void TaskPipeParameters::onDeleteEdge()
 {
-    // Delete the selected path edge
-    int row = ui->listWidgetReferences->currentRow();
-    QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
-    if (item) {
+    auto items = ui->listWidgetReferences->selectedItems();
+    if (items.empty())
+        return;
+
+    const auto pipe = getObject<PartDesign::Pipe>();
+    std::vector<std::string> refs = pipe->Spine.getSubValues();
+
+    for (auto* item : items) {
         QByteArray data = item->data(Qt::UserRole).toByteArray();
-        delete item;
+        std::string obj = data.constData();
 
-        // search inside the list of spines
-        const auto pipe = getObject<PartDesign::Pipe>();
-        std::vector<std::string> refs = pipe->Spine.getSubValues();
-        const std::string obj = data.constData();
+        delete ui->listWidgetReferences->takeItem(
+            ui->listWidgetReferences->row(item));
 
-        // if something was found, delete it and update the spine list
-        if (const auto f = std::ranges::find(refs, obj); f != refs.end()) {
+        if (const auto f = std::ranges::find(refs, obj); f != refs.end())
             refs.erase(f);
-            pipe->Spine.setValue(pipe->Spine.getValue(), refs);
-            clearButtons();
-            recomputeFeature();
-        }
     }
+
+    pipe->Spine.setValue(pipe->Spine.getValue(), refs);
+    clearButtons();
+    recomputeFeature();
 }
 
 bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
