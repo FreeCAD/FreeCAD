@@ -801,6 +801,7 @@ StdCmdSaveCopy::StdCmdSaveCopy()
     sWhatsThis = "Std_SaveCopy";
     sStatusTip = sToolTipText;
     sPixmap = "Std_SaveCopy";
+    sAccel = "Ctrl+Shift+C";
 }
 
 void StdCmdSaveCopy::activated(int iMsg)
