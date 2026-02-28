@@ -1456,535 +1456,758 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     infoMap[TopAbs_COMPOUND] = &faceInfo;
     infoMap[TopAbs_COMPSOLID] = &faceInfo;
 
-    std::ostringstream ss;
-    std::string postfix;
-    Data::MappedName newName;
+    if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+        std::ostringstream ss;
+        std::string postfix;
+        Data::MappedName newName;
 
-    std::map<Data::IndexedName, std::map<NameKey, NameInfo>> newNames;
+        std::map<Data::IndexedName, std::map<NameKey, NameInfo>> newNames;
 
-    // First, collect names from other shapes that generates or modifies the
-    // new shape
-    for (auto& pinfo : infos) {  // Walk Vertexes, then Edges, then Faces
-        auto& info = *pinfo;
-        for (const auto& incomingShape : shapes) {
-            if (!canMapElement(incomingShape)) {
-                continue;
-            }
-            auto& otherMap = incomingShape._cache->getAncestry(info.type);
-            if (otherMap.empty()) {
-                continue;
-            }
-            for (int i = 1; i <= otherMap.count(); i++) {
-                const auto& otherElement = otherMap.find(incomingShape._Shape, i);
-                // Find all new objects that are a modification of the old object
-                Data::ElementIDRefs sids;
-                NameKey key(
-                    info.type,
-                    incomingShape
-                        .getMappedName(Data::IndexedName::fromConst(info.shapetype, i), true, &sids)
-                );
-
-                int newShapeCounter = 0;
-                for (auto& newShape : mapper.modified(otherElement)) {
-                    ++newShapeCounter;
-                    if (newShape.ShapeType() >= TopAbs_SHAPE) {
-                        // NOLINTNEXTLINE
-                        FC_ERR(
-                            "unknown modified shape type " << newShape.ShapeType() << " from "
-                                                           << info.shapetype << i
-                        );
-                        continue;
-                    }
-                    auto& newInfo = *infoMap.at(newShape.ShapeType());
-                    if (newInfo.type != newShape.ShapeType()) {
-                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            // TODO: it seems modified shape may report higher
-                            // level shape type just like generated shape below.
-                            // Maybe we shall do the same for name construction.
-                            // NOLINTNEXTLINE
-                            FC_WARN(
-                                "modified shape type " << shapeName(newShape.ShapeType())
-                                                       << " mismatch with " << info.shapetype << i
-                            );
-                        }
-                        continue;
-                    }
-                    int newShapeIndex = newInfo.find(newShape);
-                    if (newShapeIndex == 0) {
-                        // This warning occurs in makeElementRevolve. It generates
-                        // some shape from a vertex that never made into the
-                        // final shape. There may be incomingShape cases there.
-                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            // NOLINTNEXTLINE
-                            FC_WARN(
-                                "Cannot find " << op << " modified " << newInfo.shapetype
-                                               << " from " << info.shapetype << i
-                            );
-                        }
-                        continue;
-                    }
-
-                    Data::IndexedName element
-                        = Data::IndexedName::fromConst(newInfo.shapetype, newShapeIndex);
-                    if (getMappedName(element)) {
-                        continue;
-                    }
-
-                    key.tag = incomingShape.Tag;
-                    auto& name_info = newNames[element][key];
-                    name_info.sids = sids;
-                    name_info.index = newShapeCounter;
-                    name_info.shapetype = info.shapetype;
+        // First, collect names from other shapes that generates or modifies the
+        // new shape
+        for (auto& pinfo : infos) {  // Walk Vertexes, then Edges, then Faces
+            auto& info = *pinfo;
+            for (const auto& incomingShape : shapes) {
+                if (!canMapElement(incomingShape)) {
+                    continue;
                 }
+                auto& otherMap = incomingShape._cache->getAncestry(info.type);
+                if (otherMap.empty()) {
+                    continue;
+                }
+                for (int i = 1; i <= otherMap.count(); i++) {
+                    const auto& otherElement = otherMap.find(incomingShape._Shape, i);
+                    // Find all new objects that are a modification of the old object
+                    Data::ElementIDRefs sids;
+                    NameKey key(
+                        info.type,
+                        incomingShape
+                            .getMappedName(Data::IndexedName::fromConst(info.shapetype, i), true, &sids)
+                    );
 
-                int checkParallel = -1;
-                gp_Pln pln;
-
-                // Find all new objects that were generated from an old object
-                // (e.g. a face generated from an edge)
-                newShapeCounter = 0;
-                for (auto& newShape : mapper.generated(otherElement)) {
-                    if (newShape.ShapeType() >= TopAbs_SHAPE) {
-                        // NOLINTNEXTLINE
-                        FC_ERR(
-                            "unknown generated shape type " << newShape.ShapeType() << " from "
-                                                            << info.shapetype << i
-                        );
-                        continue;
-                    }
-
-                    int parallelFace = -1;
-                    int coplanarFace = -1;
-                    auto& newInfo = *infoMap.at(newShape.ShapeType());
-                    std::vector<TopoDS_Shape> newShapes;
-                    int shapeOffset = 0;
-                    if (newInfo.type == newShape.ShapeType()) {
-                        newShapes.push_back(newShape);
-                    }
-                    else {
-                        // It is possible for the maker to report generating a
-                        // higher level shape, such as shell or solid. For
-                        // example, when extruding, OCC will report the
-                        // extruding face generating the entire solid. However,
-                        // it will also report the edges of the extruding face
-                        // generating the side faces. In this case, too much
-                        // information is bad for us. We don't want the name of
-                        // the side face (and its edges) to be coupled with
-                        // incomingShape (unrelated) edges in the extruding face.
-                        //
-                        // shapeOffset below is used to make sure the higher
-                        // level mapped names comes late after sorting. We'll
-                        // ignore those names if there are more precise mapping
-                        // available.
-                        shapeOffset = 3;
-
-                        if (info.type == TopAbs_FACE && checkParallel < 0) {
-                            if (!TopoShape(otherElement).findPlane(pln)) {
-                                checkParallel = 0;
-                            }
-                            else {
-                                checkParallel = 1;
-                            }
-                        }
-                        checkForParallelOrCoplanar(
-                            newShape,
-                            newInfo,
-                            newShapes,
-                            pln,
-                            parallelFace,
-                            coplanarFace,
-                            checkParallel
-                        );
-                    }
-                    key.shapetype += shapeOffset;
-                    for (auto& workingShape : newShapes) {
+                    int newShapeCounter = 0;
+                    for (auto& newShape : mapper.modified(otherElement)) {
                         ++newShapeCounter;
-                        int workingShapeIndex = newInfo.find(workingShape);
-                        if (workingShapeIndex == 0) {
+                        if (newShape.ShapeType() >= TopAbs_SHAPE) {
+                            // NOLINTNEXTLINE
+                            FC_ERR(
+                                "unknown modified shape type " << newShape.ShapeType() << " from "
+                                                            << info.shapetype << i
+                            );
+                            continue;
+                        }
+                        auto& newInfo = *infoMap.at(newShape.ShapeType());
+                        if (newInfo.type != newShape.ShapeType()) {
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                // TODO: it seems modified shape may report higher
+                                // level shape type just like generated shape below.
+                                // Maybe we shall do the same for name construction.
+                                // NOLINTNEXTLINE
+                                FC_WARN(
+                                    "modified shape type " << shapeName(newShape.ShapeType())
+                                                        << " mismatch with " << info.shapetype << i
+                                );
+                            }
+                            continue;
+                        }
+                        int newShapeIndex = newInfo.find(newShape);
+                        if (newShapeIndex == 0) {
+                            // This warning occurs in makeElementRevolve. It generates
+                            // some shape from a vertex that never made into the
+                            // final shape. There may be incomingShape cases there.
                             if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
                                 // NOLINTNEXTLINE
                                 FC_WARN(
-                                    "Cannot find " << op << " generated " << newInfo.shapetype
-                                                   << " from " << info.shapetype << i
+                                    "Cannot find " << op << " modified " << newInfo.shapetype
+                                                << " from " << info.shapetype << i
                                 );
                             }
                             continue;
                         }
 
                         Data::IndexedName element
-                            = Data::IndexedName::fromConst(newInfo.shapetype, workingShapeIndex);
-                        auto mapped = getMappedName(element);
-                        if (mapped) {
+                            = Data::IndexedName::fromConst(newInfo.shapetype, newShapeIndex);
+                        if (getMappedName(element)) {
                             continue;
                         }
 
                         key.tag = incomingShape.Tag;
                         auto& name_info = newNames[element][key];
                         name_info.sids = sids;
-                        if (newShapeCounter == parallelFace) {
-                            name_info.index = std::numeric_limits<int>::min();
-                        }
-                        else if (newShapeCounter == coplanarFace) {
-                            name_info.index = std::numeric_limits<int>::min() + 1;
-                        }
-                        else {
-                            name_info.index = -newShapeCounter;
-                        }
+                        name_info.index = newShapeCounter;
                         name_info.shapetype = info.shapetype;
                     }
-                    key.shapetype -= shapeOffset;
-                }
-            }
-        }
-    }
 
-    // We shall first exclude those names generated from high level mapping. If
-    // there are still any unnamed elements left after we go through the process
-    // below, we set delayed=true, and start using those excluded names.
-    bool delayed = false;
+                    int checkParallel = -1;
+                    gp_Pln pln;
 
-    while (true) {
-        constexpr int intMin = std::numeric_limits<int>::min();
-
-        // Construct the names for modification/generation info collected in
-        // the previous step
-        for (auto itName = newNames.begin(), itNext = itName; itNext != newNames.end();
-             itName = itNext) {
-            // We treat the first modified/generated source shape name specially.
-            // If case there are more than one source shape. We hash the first
-            // source name separately, and then obtain the second string id by
-            // hashing all the source names together.  We then use the second
-            // string id as the postfix for our name.
-            //
-            // In this way, we can associate the same source that are modified by
-            // multiple other shapes.
-
-            ++itNext;
-
-            auto& element = itName->first;
-            auto& names = itName->second;
-            const auto& first_key = names.begin()->first;
-            auto& first_info = names.begin()->second;
-
-            if (!delayed && first_key.shapetype >= 3 && first_info.index > intMin + 1) {
-                // This name is mapped from high level (shell, solid, etc.)
-                // Delay till next round.
-                //
-                // index>INT_MAX+1 is for checking generated coplanar and
-                // parallel face mapping, which has special fixed index to make
-                // name stable.  These names are not delayed.
-                continue;
-            }
-            if (!delayed && getMappedName(element)) {
-                newNames.erase(itName);
-                continue;
-            }
-
-            int name_type = first_info.index > 0 ? 1
-                                                 : 2;  // index>0 means modified, or else generated
-            Data::MappedName first_name = first_key.name;
-
-            Data::ElementIDRefs sids(first_info.sids);
-
-            postfix.clear();
-            if (names.size() > 1) {
-                ss.str("");
-                ss << '(';
-                bool first = true;
-                auto it = names.begin();
-                int count = 0;
-                for (++it; it != names.end(); ++it) {
-                    auto& other_key = it->first;
-                    if (other_key.shapetype >= 3 && first_key.shapetype < 3) {
-                        // shapetype>=3 means it's a high level mapping (e.g. a face
-                        // generates a solid). We don't want that if there are more
-                        // precise low level mapping available. See comments above
-                        // for more details.
-                        break;
-                    }
-                    if (first) {
-                        first = false;
-                    }
-                    else {
-                        ss << '|';
-                    }
-                    auto& other_info = it->second;
-                    std::ostringstream ss2;
-                    if (other_info.index != 1) {
-                        // 'K' marks the additional source shape of this
-                        // generate (or modified) shape.
-                        ss2 << elementMapPrefix() << 'K';
-                        if (other_info.index == intMin) {
-                            ss2 << '0';
+                    // Find all new objects that were generated from an old object
+                    // (e.g. a face generated from an edge)
+                    newShapeCounter = 0;
+                    for (auto& newShape : mapper.generated(otherElement)) {
+                        if (newShape.ShapeType() >= TopAbs_SHAPE) {
+                            // NOLINTNEXTLINE
+                            FC_ERR(
+                                "unknown generated shape type " << newShape.ShapeType() << " from "
+                                                                << info.shapetype << i
+                            );
+                            continue;
                         }
-                        else if (other_info.index == intMin + 1) {
-                            ss2 << "00";
+
+                        int parallelFace = -1;
+                        int coplanarFace = -1;
+                        auto& newInfo = *infoMap.at(newShape.ShapeType());
+                        std::vector<TopoDS_Shape> newShapes;
+                        int shapeOffset = 0;
+                        if (newInfo.type == newShape.ShapeType()) {
+                            newShapes.push_back(newShape);
                         }
                         else {
-                            // The same source shape may generate or modify
-                            // more than one shape. The index here marks the
-                            // position it is reported by OCC. Including the
-                            // index here is likely to degrade name stablilty,
-                            // but is unfortunately a necessity to avoid
-                            // duplicate names.
-                            ss2 << other_info.index;
+                            // It is possible for the maker to report generating a
+                            // higher level shape, such as shell or solid. For
+                            // example, when extruding, OCC will report the
+                            // extruding face generating the entire solid. However,
+                            // it will also report the edges of the extruding face
+                            // generating the side faces. In this case, too much
+                            // information is bad for us. We don't want the name of
+                            // the side face (and its edges) to be coupled with
+                            // incomingShape (unrelated) edges in the extruding face.
+                            //
+                            // shapeOffset below is used to make sure the higher
+                            // level mapped names comes late after sorting. We'll
+                            // ignore those names if there are more precise mapping
+                            // available.
+                            shapeOffset = 3;
+
+                            if (info.type == TopAbs_FACE && checkParallel < 0) {
+                                if (!TopoShape(otherElement).findPlane(pln)) {
+                                    checkParallel = 0;
+                                }
+                                else {
+                                    checkParallel = 1;
+                                }
+                            }
+                            checkForParallelOrCoplanar(
+                                newShape,
+                                newInfo,
+                                newShapes,
+                                pln,
+                                parallelFace,
+                                coplanarFace,
+                                checkParallel
+                            );
                         }
-                    }
-                    Data::MappedName other_name = other_key.name;
+                        key.shapetype += shapeOffset;
+                        for (auto& workingShape : newShapes) {
+                            ++newShapeCounter;
+                            int workingShapeIndex = newInfo.find(workingShape);
+                            if (workingShapeIndex == 0) {
+                                if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                    // NOLINTNEXTLINE
+                                    FC_WARN(
+                                        "Cannot find " << op << " generated " << newInfo.shapetype
+                                                    << " from " << info.shapetype << i
+                                    );
+                                }
+                                continue;
+                            }
 
-                    ensureElementMap()->encodeElementName(
-                        *other_info.shapetype,
-                        other_name,
-                        ss2,
-                        &sids,
-                        Tag,
-                        nullptr,
-                        other_key.tag
-                    );
-                    ss << other_name;
-                    if ((name_type == 1 && other_info.index < 0)
-                        || (name_type == 2 && other_info.index > 0)) {
-                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            FC_WARN("element is both generated and modified");  // NOLINT
+                            Data::IndexedName element
+                                = Data::IndexedName::fromConst(newInfo.shapetype, workingShapeIndex);
+                            auto mapped = getMappedName(element);
+                            if (mapped) {
+                                continue;
+                            }
+
+                            key.tag = incomingShape.Tag;
+                            auto& name_info = newNames[element][key];
+                            name_info.sids = sids;
+                            if (newShapeCounter == parallelFace) {
+                                name_info.index = std::numeric_limits<int>::min();
+                            }
+                            else if (newShapeCounter == coplanarFace) {
+                                name_info.index = std::numeric_limits<int>::min() + 1;
+                            }
+                            else {
+                                name_info.index = -newShapeCounter;
+                            }
+                            name_info.shapetype = info.shapetype;
                         }
-                        name_type = 0;
+                        key.shapetype -= shapeOffset;
                     }
-                    sids += other_info.sids;
-                    // To avoid the name becoming to long, just put some limit here
-                    if (++count == 4) {
-                        break;
-                    }
-                }
-                if (!first) {
-                    ss << ')';
-                    if (Hasher) {
-                        sids.push_back(Hasher->getID(ss.str().c_str()));
-                        ss.str("");
-                        ss << sids.back().toString();
-                    }
-                    postfix = ss.str();
-                }
-            }
-
-            ss.str("");
-            if (name_type == 2) {
-                ss << genPostfix();
-            }
-            else if (name_type == 1) {
-                ss << modPostfix();
-            }
-            else {
-                ss << modgenPostfix();
-            }
-            if (first_info.index == intMin) {
-                ss << '0';
-            }
-            else if (first_info.index == intMin + 1) {
-                ss << "00";
-            }
-            else if (abs(first_info.index) > 1) {
-                ss << abs(first_info.index);
-            }
-            ss << postfix;
-
-            ensureElementMap()
-                ->encodeElementName(element[0], first_name, ss, &sids, Tag, op, first_key.tag);
-            elementMap()->setElementName(element, first_name, Tag, &sids);
-            if (!delayed && first_key.shapetype < 3) {
-                newNames.erase(itName);
-            }
-        }
-
-        // The reverse pass. Starting from the highest level element, i.e.
-        // Face, for any element that are named, assign names for its lower unnamed
-        // elements. For example, if Edge1 is named E1, and its vertexes are not
-        // named, then name them as E1;U1, E1;U2, etc.
-        //
-        // In order to make the name as stable as possible, we may assign multiple
-        // names (which must be sorted, because we may use the first one to name
-        // upper element in the final pass) to lower element if it appears in
-        // multiple higher elements, e.g. same edge in multiple faces.
-
-        for (size_t infoIndex = infos.size() - 1; infoIndex != 0; --infoIndex) {
-            std::map<Data::IndexedName, std::map<Data::MappedName, NameInfo, Data::ElementNameComparator>>
-                names;
-            auto& info = *infos.at(infoIndex);
-            auto& next = *infos.at(infoIndex - 1);
-            int elementCounter = 1;
-            auto it = newNames.end();
-            if (delayed) {
-                it = newNames.upper_bound(Data::IndexedName::fromConst(info.shapetype, 0));
-            }
-            for (;; ++elementCounter) {
-                Data::IndexedName element;
-                if (!delayed) {
-                    if (elementCounter > info.count()) {
-                        break;
-                    }
-                    element = Data::IndexedName::fromConst(info.shapetype, elementCounter);
-                    if (newNames.count(element) != 0U) {
-                        continue;
-                    }
-                }
-                else if (it == newNames.end()
-                         || !boost::starts_with(it->first.getType(), info.shapetype)) {
-                    break;
-                }
-                else {
-                    element = it->first;
-                    ++it;
-                    elementCounter = element.getIndex();
-                    if (elementCounter == 0 || elementCounter > info.count()) {
-                        continue;
-                    }
-                }
-                Data::ElementIDRefs sids;
-                Data::MappedName mapped = getMappedName(element, false, &sids);
-                if (!mapped) {
-                    continue;
-                }
-
-                TopTools_IndexedMapOfShape submap;
-                TopExp::MapShapes(info.find(elementCounter), next.type, submap);
-                for (int submapIndex = 1, infoCounter = 1; submapIndex <= submap.Extent();
-                     ++submapIndex) {
-                    ss.str("");
-                    int elementIndex = next.find(submap(submapIndex));
-                    assert(elementIndex);
-                    Data::IndexedName indexedName
-                        = Data::IndexedName::fromConst(next.shapetype, elementIndex);
-                    if (getMappedName(indexedName)) {
-                        continue;
-                    }
-                    auto& infoRef = names[indexedName][mapped];
-                    infoRef.index = infoCounter++;
-                    infoRef.sids = sids;
-                }
-            }
-            // Assign the actual names
-            for (auto& [indexedName, nameInfoMap] : names) {
-                // Do we really want multiple names for an element in this case?
-                // If not, we just pick the name in the first sorting order here.
-                auto& nameInfoMapEntry = *nameInfoMap.begin();
-                {
-                    auto& nameInfo = nameInfoMapEntry.second;
-                    auto& sids = nameInfo.sids;
-                    newName = nameInfoMapEntry.first;
-                    ss.str("");
-                    ss << upperPostfix();
-                    if (nameInfo.index > 1) {
-                        ss << nameInfo.index;
-                    }
-
-                    ensureElementMap()->encodeElementName(indexedName[0], newName, ss, &sids, Tag, op);
-                    elementMap()->setElementName(indexedName, newName, Tag, &sids);
                 }
             }
         }
 
-        // The forward pass. For any elements that are not named, try construct its
-        // name from the lower elements
-        bool hasUnnamed = false;
-        for (size_t ifo = 1; ifo < infos.size(); ++ifo) {
-            auto& info = *infos.at(ifo);
-            auto& prev = *infos.at(ifo - 1);
-            for (int i = 1; i <= info.count(); ++i) {
-                Data::IndexedName element = Data::IndexedName::fromConst(info.shapetype, i);
-                if (getMappedName(element)) {
+        // We shall first exclude those names generated from high level mapping. If
+        // there are still any unnamed elements left after we go through the process
+        // below, we set delayed=true, and start using those excluded names.
+        bool delayed = false;
+
+        while (true) {
+            constexpr int intMin = std::numeric_limits<int>::min();
+
+            // Construct the names for modification/generation info collected in
+            // the previous step
+            for (auto itName = newNames.begin(), itNext = itName; itNext != newNames.end();
+                itName = itNext) {
+                // We treat the first modified/generated source shape name specially.
+                // If case there are more than one source shape. We hash the first
+                // source name separately, and then obtain the second string id by
+                // hashing all the source names together.  We then use the second
+                // string id as the postfix for our name.
+                //
+                // In this way, we can associate the same source that are modified by
+                // multiple other shapes.
+
+                ++itNext;
+
+                auto& element = itName->first;
+                auto& names = itName->second;
+                const auto& first_key = names.begin()->first;
+                auto& first_info = names.begin()->second;
+
+                if (!delayed && first_key.shapetype >= 3 && first_info.index > intMin + 1) {
+                    // This name is mapped from high level (shell, solid, etc.)
+                    // Delay till next round.
+                    //
+                    // index>INT_MAX+1 is for checking generated coplanar and
+                    // parallel face mapping, which has special fixed index to make
+                    // name stable.  These names are not delayed.
+                    continue;
+                }
+                if (!delayed && getMappedName(element)) {
+                    newNames.erase(itName);
                     continue;
                 }
 
-                Data::ElementIDRefs sids;
-                std::map<Data::MappedName, Data::IndexedName, Data::ElementNameComparator> names;
-                TopExp_Explorer xp;
-                if (info.type == TopAbs_FACE) {
-                    xp.Init(BRepTools::OuterWire(TopoDS::Face(info.find(i))), TopAbs_EDGE);
-                }
-                else {
-                    xp.Init(info.find(i), prev.type);
-                }
-                for (; xp.More(); xp.Next()) {
-                    int previousElementIndex = prev.find(xp.Current());
-                    assert(previousElementIndex);
-                    Data::IndexedName prevElement
-                        = Data::IndexedName::fromConst(prev.shapetype, previousElementIndex);
-                    if (!delayed && (newNames.count(prevElement) != 0U)) {
-                        names.clear();
-                        break;
-                    }
-                    Data::ElementIDRefs sid;
-                    Data::MappedName name = getMappedName(prevElement, false, &sid);
-                    if (!name) {
-                        // only assign name if all lower elements are named
-                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            FC_WARN("unnamed lower element " << prevElement);  // NOLINT
-                        }
-                        names.clear();
-                        break;
-                    }
-                    auto res = names.emplace(name, prevElement);
-                    if (res.second) {
-                        sids += sid;
-                    }
-                    else if (prevElement != res.first->second) {
-                        // The seam edge will appear twice, which is normal. We
-                        // only warn if the mapped element names are different.
-                        // NOLINTNEXTLINE
-                        FC_WARN(
-                            "lower element " << prevElement << " and " << res.first->second
-                                             << " has duplicated name " << name << " for "
-                                             << info.shapetype << i
-                        );
-                    }
-                }
-                if (names.empty()) {
-                    hasUnnamed = true;
-                    continue;
-                }
-                auto it = names.begin();
-                newName = it->first;
-                if (names.size() == 1) {
-                    ss << lowerPostfix();
-                }
-                else {
-                    bool first = true;
+                int name_type = first_info.index > 0 ? 1
+                                                    : 2;  // index>0 means modified, or else generated
+                Data::MappedName first_name = first_key.name;
+
+                Data::ElementIDRefs sids(first_info.sids);
+
+                postfix.clear();
+                if (names.size() > 1) {
                     ss.str("");
-                    if (!Hasher) {
-                        ss << lowerPostfix();
-                    }
                     ss << '(';
+                    bool first = true;
+                    auto it = names.begin();
                     int count = 0;
                     for (++it; it != names.end(); ++it) {
+                        auto& other_key = it->first;
+                        if (other_key.shapetype >= 3 && first_key.shapetype < 3) {
+                            // shapetype>=3 means it's a high level mapping (e.g. a face
+                            // generates a solid). We don't want that if there are more
+                            // precise low level mapping available. See comments above
+                            // for more details.
+                            break;
+                        }
                         if (first) {
                             first = false;
                         }
                         else {
                             ss << '|';
                         }
-                        ss << it->first;
+                        auto& other_info = it->second;
+                        std::ostringstream ss2;
+                        if (other_info.index != 1) {
+                            // 'K' marks the additional source shape of this
+                            // generate (or modified) shape.
+                            ss2 << elementMapPrefix() << 'K';
+                            if (other_info.index == intMin) {
+                                ss2 << '0';
+                            }
+                            else if (other_info.index == intMin + 1) {
+                                ss2 << "00";
+                            }
+                            else {
+                                // The same source shape may generate or modify
+                                // more than one shape. The index here marks the
+                                // position it is reported by OCC. Including the
+                                // index here is likely to degrade name stablilty,
+                                // but is unfortunately a necessity to avoid
+                                // duplicate names.
+                                ss2 << other_info.index;
+                            }
+                        }
+                        Data::MappedName other_name = other_key.name;
 
+                        ensureElementMap()->encodeElementName(
+                            *other_info.shapetype,
+                            other_name,
+                            ss2,
+                            &sids,
+                            Tag,
+                            nullptr,
+                            other_key.tag
+                        );
+                        ss << other_name;
+                        if ((name_type == 1 && other_info.index < 0)
+                            || (name_type == 2 && other_info.index > 0)) {
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                FC_WARN("element is both generated and modified");  // NOLINT
+                            }
+                            name_type = 0;
+                        }
+                        sids += other_info.sids;
                         // To avoid the name becoming to long, just put some limit here
                         if (++count == 4) {
                             break;
                         }
                     }
-                    ss << ')';
-                    if (Hasher) {
-                        sids.push_back(Hasher->getID(ss.str().c_str()));
-                        ss.str("");
-                        ss << lowerPostfix() << sids.back().toString();
+                    if (!first) {
+                        ss << ')';
+                        if (Hasher) {
+                            sids.push_back(Hasher->getID(ss.str().c_str()));
+                            ss.str("");
+                            ss << sids.back().toString();
+                        }
+                        postfix = ss.str();
                     }
                 }
 
-                ensureElementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
-                elementMap()->setElementName(element, newName, Tag, &sids);
+                ss.str("");
+                if (name_type == 2) {
+                    ss << genPostfix();
+                }
+                else if (name_type == 1) {
+                    ss << modPostfix();
+                }
+                else {
+                    ss << modgenPostfix();
+                }
+                if (first_info.index == intMin) {
+                    ss << '0';
+                }
+                else if (first_info.index == intMin + 1) {
+                    ss << "00";
+                }
+                else if (abs(first_info.index) > 1) {
+                    ss << abs(first_info.index);
+                }
+                ss << postfix;
+
+                ensureElementMap()
+                    ->encodeElementName(element[0], first_name, ss, &sids, Tag, op, first_key.tag);
+                elementMap()->setElementName(element, first_name, Tag, &sids);
+                if (!delayed && first_key.shapetype < 3) {
+                    newNames.erase(itName);
+                }
+            }
+
+            // The reverse pass. Starting from the highest level element, i.e.
+            // Face, for any element that are named, assign names for its lower unnamed
+            // elements. For example, if Edge1 is named E1, and its vertexes are not
+            // named, then name them as E1;U1, E1;U2, etc.
+            //
+            // In order to make the name as stable as possible, we may assign multiple
+            // names (which must be sorted, because we may use the first one to name
+            // upper element in the final pass) to lower element if it appears in
+            // multiple higher elements, e.g. same edge in multiple faces.
+
+            for (size_t infoIndex = infos.size() - 1; infoIndex != 0; --infoIndex) {
+                std::map<Data::IndexedName, std::map<Data::MappedName, NameInfo, Data::ElementNameComparator>>
+                    names;
+                auto& info = *infos.at(infoIndex);
+                auto& next = *infos.at(infoIndex - 1);
+                int elementCounter = 1;
+                auto it = newNames.end();
+                if (delayed) {
+                    it = newNames.upper_bound(Data::IndexedName::fromConst(info.shapetype, 0));
+                }
+                for (;; ++elementCounter) {
+                    Data::IndexedName element;
+                    if (!delayed) {
+                        if (elementCounter > info.count()) {
+                            break;
+                        }
+                        element = Data::IndexedName::fromConst(info.shapetype, elementCounter);
+                        if (newNames.count(element) != 0U) {
+                            continue;
+                        }
+                    }
+                    else if (it == newNames.end()
+                            || !boost::starts_with(it->first.getType(), info.shapetype)) {
+                        break;
+                    }
+                    else {
+                        element = it->first;
+                        ++it;
+                        elementCounter = element.getIndex();
+                        if (elementCounter == 0 || elementCounter > info.count()) {
+                            continue;
+                        }
+                    }
+                    Data::ElementIDRefs sids;
+                    Data::MappedName mapped = getMappedName(element, false, &sids);
+                    if (!mapped) {
+                        continue;
+                    }
+
+                    TopTools_IndexedMapOfShape submap;
+                    TopExp::MapShapes(info.find(elementCounter), next.type, submap);
+                    for (int submapIndex = 1, infoCounter = 1; submapIndex <= submap.Extent();
+                        ++submapIndex) {
+                        ss.str("");
+                        int elementIndex = next.find(submap(submapIndex));
+                        assert(elementIndex);
+                        Data::IndexedName indexedName
+                            = Data::IndexedName::fromConst(next.shapetype, elementIndex);
+                        if (getMappedName(indexedName)) {
+                            continue;
+                        }
+                        auto& infoRef = names[indexedName][mapped];
+                        infoRef.index = infoCounter++;
+                        infoRef.sids = sids;
+                    }
+                }
+                // Assign the actual names
+                for (auto& [indexedName, nameInfoMap] : names) {
+                    // Do we really want multiple names for an element in this case?
+                    // If not, we just pick the name in the first sorting order here.
+                    auto& nameInfoMapEntry = *nameInfoMap.begin();
+                    {
+                        auto& nameInfo = nameInfoMapEntry.second;
+                        auto& sids = nameInfo.sids;
+                        newName = nameInfoMapEntry.first;
+                        ss.str("");
+                        ss << upperPostfix();
+                        if (nameInfo.index > 1) {
+                            ss << nameInfo.index;
+                        }
+
+                        ensureElementMap()->encodeElementName(indexedName[0], newName, ss, &sids, Tag, op);
+                        elementMap()->setElementName(indexedName, newName, Tag, &sids);
+                    }
+                }
+            }
+
+            // The forward pass. For any elements that are not named, try construct its
+            // name from the lower elements
+            bool hasUnnamed = false;
+            for (size_t ifo = 1; ifo < infos.size(); ++ifo) {
+                auto& info = *infos.at(ifo);
+                auto& prev = *infos.at(ifo - 1);
+                for (int i = 1; i <= info.count(); ++i) {
+                    Data::IndexedName element = Data::IndexedName::fromConst(info.shapetype, i);
+                    if (getMappedName(element)) {
+                        continue;
+                    }
+
+                    Data::ElementIDRefs sids;
+                    std::map<Data::MappedName, Data::IndexedName, Data::ElementNameComparator> names;
+                    TopExp_Explorer xp;
+                    if (info.type == TopAbs_FACE) {
+                        xp.Init(BRepTools::OuterWire(TopoDS::Face(info.find(i))), TopAbs_EDGE);
+                    }
+                    else {
+                        xp.Init(info.find(i), prev.type);
+                    }
+                    for (; xp.More(); xp.Next()) {
+                        int previousElementIndex = prev.find(xp.Current());
+                        assert(previousElementIndex);
+                        Data::IndexedName prevElement
+                            = Data::IndexedName::fromConst(prev.shapetype, previousElementIndex);
+                        if (!delayed && (newNames.count(prevElement) != 0U)) {
+                            names.clear();
+                            break;
+                        }
+                        Data::ElementIDRefs sid;
+                        Data::MappedName name = getMappedName(prevElement, false, &sid);
+                        if (!name) {
+                            // only assign name if all lower elements are named
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                FC_WARN("unnamed lower element " << prevElement);  // NOLINT
+                            }
+                            names.clear();
+                            break;
+                        }
+                        auto res = names.emplace(name, prevElement);
+                        if (res.second) {
+                            sids += sid;
+                        }
+                        else if (prevElement != res.first->second) {
+                            // The seam edge will appear twice, which is normal. We
+                            // only warn if the mapped element names are different.
+                            // NOLINTNEXTLINE
+                            FC_WARN(
+                                "lower element " << prevElement << " and " << res.first->second
+                                                << " has duplicated name " << name << " for "
+                                                << info.shapetype << i
+                            );
+                        }
+                    }
+                    if (names.empty()) {
+                        hasUnnamed = true;
+                        continue;
+                    }
+                    auto it = names.begin();
+                    newName = it->first;
+                    if (names.size() == 1) {
+                        ss << lowerPostfix();
+                    }
+                    else {
+                        bool first = true;
+                        ss.str("");
+                        if (!Hasher) {
+                            ss << lowerPostfix();
+                        }
+                        ss << '(';
+                        int count = 0;
+                        for (++it; it != names.end(); ++it) {
+                            if (first) {
+                                first = false;
+                            }
+                            else {
+                                ss << '|';
+                            }
+                            ss << it->first;
+
+                            // To avoid the name becoming to long, just put some limit here
+                            if (++count == 4) {
+                                break;
+                            }
+                        }
+                        ss << ')';
+                        if (Hasher) {
+                            sids.push_back(Hasher->getID(ss.str().c_str()));
+                            ss.str("");
+                            ss << lowerPostfix() << sids.back().toString();
+                        }
+                    }
+
+                    ensureElementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
+                    elementMap()->setElementName(element, newName, Tag, &sids);
+                }
+            }
+            if (!hasUnnamed || delayed || newNames.empty()) {
+                break;
+            }
+            delayed = true;
+        }
+    } else if (ensureElementMap()->getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        // This algorithm has some edgecase detection from the V1 Algorithm, which is why it looks a little bit copypasted.
+
+        std::unordered_map<TopoDS_Shape, std::pair<Data::IndexedName, std::vector<std::pair<Data::IndexedName, std::pair<TopoDS_Shape, TopoShape>>>>> reverseGeneratedMap { };
+
+        // These loops generate names with the Modified and Generated methods of the Maker class.
+        // This will miss some shapes, so in the next stage we will find names with the IsPartner method.
+        for (auto& info : infos) {
+            for (const auto& incomingShape : shapes) {
+                if (!canMapElement(incomingShape)) {
+                    continue;
+                }
+                auto& otherMap = incomingShape._cache->getAncestry(info->type);
+                if (otherMap.empty()) {
+                    continue;
+                }
+                for (int i = 1; i <= otherMap.count(); i++) {
+                    const auto& otherElement = otherMap.find(incomingShape._Shape, i);
+                    Data::IndexedName incomingShapeIndexedName = Data::IndexedName::fromConst(info->shapetype, i);
+                    Data::MappedName incomingShapeMappedName = incomingShape.getMappedName(incomingShapeIndexedName);
+
+                    std::vector<TopoDS_Shape> modifiedShapes = mapper.modified(otherElement);
+                    std::vector<TopoDS_Shape> generatedShapes = mapper.generated(otherElement);
+                    
+                    for (size_t modifiedI = 0; modifiedI < modifiedShapes.size(); modifiedI++) {
+                        auto& modifiedShape = modifiedShapes[modifiedI];
+
+                        if (modifiedShape.ShapeType() >= TopAbs_SHAPE) {
+                            // NOLINTNEXTLINE
+                            FC_ERR(
+                                "unknown modified shape type " << modifiedShape.ShapeType() << " from "
+                                                            << info->shapetype << i
+                            );
+                            continue;
+                        }
+
+                        auto& newInfo = *infoMap.at(modifiedShape.ShapeType());
+                        if (newInfo.type != modifiedShape.ShapeType()) {
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                // TODO: it seems modified shape may report higher
+                                // level shape type just like generated shape below.
+                                // Maybe we shall do the same for name construction.
+                                // NOLINTNEXTLINE
+                                FC_WARN(
+                                    "modified shape type " << shapeName(modifiedShape.ShapeType())
+                                                        << " mismatch with " << info->shapetype << i
+                                );
+                            }
+                            continue;
+                        }
+
+                        int modifiedShapeIndex = newInfo.find(modifiedShape);
+                        if (modifiedShapeIndex == 0) {
+                            // This warning occurs in makeElementRevolve. It generates
+                            // some shape from a vertex that never made into the
+                            // final shape. There may be incomingShape cases there.
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                // NOLINTNEXTLINE
+                                FC_WARN(
+                                    "Cannot find " << op << " modified " << newInfo.shapetype
+                                                << " from " << info->shapetype << i
+                                );
+                            }
+                            continue;
+                        }
+
+                        Data::IndexedName element
+                            = Data::IndexedName::fromConst(newInfo.shapetype, modifiedShapeIndex);
+
+                        // if (getMappedName(element)) {
+                        //     continue;
+                        // }
+
+                        Data::MappedName newName = Data::MappedName(incomingShapeMappedName);
+
+                        // we ONLY append a section to the name if something actually changes.
+                        if (modifiedShapes.size() > 1) {
+                            newName.append(Data::MappedName::makeSection({},
+                                                                         {},
+                                                                         Tag == 0 ? incomingShape.Tag : Tag,
+                                                                         op,
+                                                                         modifiedI,
+                                                                         (*info->shapetype),
+                                                                         0).c_str());
+                        }
+
+                        ensureElementMap()->setElementName(element, newName, Tag);
+                    }
+
+                    for (size_t generatedI = 0; generatedI < generatedShapes.size(); generatedI++) {
+                        auto& generatedShape = generatedShapes[generatedI];
+
+                        if (generatedShape.ShapeType() >= TopAbs_SHAPE) {
+                            // NOLINTNEXTLINE
+                            FC_ERR(
+                                "unknown modified shape type " << generatedShape.ShapeType() << " from "
+                                                            << info->shapetype << i
+                            );
+                            continue;
+                        }
+
+                        auto& newInfo = *infoMap.at(generatedShape.ShapeType());
+                        if (newInfo.type != generatedShape.ShapeType()) {
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                // TODO: it seems modified shape may report higher
+                                // level shape type just like generated shape below.
+                                // Maybe we shall do the same for name construction.
+                                // NOLINTNEXTLINE
+                                FC_WARN(
+                                    "modified shape type " << shapeName(generatedShape.ShapeType())
+                                                        << " mismatch with " << info->shapetype << i
+                                );
+                            }
+                            continue;
+                        }
+
+                        int generatedShapeIndex = newInfo.find(generatedShape);
+                        if (generatedShapeIndex == 0) {
+                            // This warning occurs in makeElementRevolve. It generates
+                            // some shape from a vertex that never made into the
+                            // final shape. There may be incomingShape cases there.
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                // NOLINTNEXTLINE
+                                FC_WARN(
+                                    "Cannot find " << op << " generated " << newInfo.shapetype
+                                                << " from " << info->shapetype << i
+                                );
+                            }
+                            continue;
+                        }
+
+                        Data::IndexedName element
+                            = Data::IndexedName::fromConst(newInfo.shapetype, generatedShapeIndex);
+
+                        if (getMappedName(element)) {
+                            continue;
+                        }
+
+                        if (reverseGeneratedMap.find(generatedShape) == reverseGeneratedMap.end())
+                            reverseGeneratedMap.insert({generatedShape, {element, {}}});
+                        reverseGeneratedMap[generatedShape].second.push_back({incomingShapeIndexedName, {otherElement, incomingShape}});
+                    }
+                }
             }
         }
-        if (!hasUnnamed || delayed || newNames.empty()) {
-            break;
+
+        for (auto &generatedShapeKey : reverseGeneratedMap) {
+            if (getMappedName(generatedShapeKey.second.first)) {
+                continue;
+            }
+
+            std::vector<Data::MappedName> linkedNames { };
+            int incomingIterationTag = -1;
+
+            if (generatedShapeKey.second.second.size()) {
+                for (auto &generatedInfo : generatedShapeKey.second.second) {
+                    Data::MappedName foundName = generatedInfo.second.second.getMappedName(generatedInfo.first);
+
+                    if (incomingIterationTag == -1 && generatedInfo.second.second.Tag != 0)
+                        incomingIterationTag = generatedInfo.second.second.Tag;
+
+                    if (foundName.size()) {
+                        linkedNames.push_back(foundName);
+                    }
+                }
+            }
+
+            if (linkedNames.size()) {
+                Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
+                                                                                          linkedNames,
+                                                                                          Tag == 0 ? incomingIterationTag : Tag,
+                                                                                          op,
+                                                                                          0,
+                                                                                          generatedShapeKey.second.first.toString()[0],
+                                                                                          0).c_str());
+
+                ensureElementMap()->setElementName(generatedShapeKey.second.first, newName, Tag);
+            } else {
+                FC_LOG("Generated loop was unable to find LinkedNames for a shape.");
+            }
         }
-        delayed = true;
+    
+        // Now let's map any unmapped shapes with the IsPartner method.
+        for (const auto& info : infos) {
+            for (int mainI = 1; mainI <= info->count(); mainI++) {
+                const auto& mainElement = info->find(mainI);
+                Data::IndexedName mainElementIndexedName = Data::IndexedName::fromConst(info->shapetype, mainI);
+
+                if (getMappedName(mainElementIndexedName)) {
+                    continue;
+                }
+
+                for (const auto& incomingShape : shapes) {
+                    if (!canMapElement(incomingShape)) {
+                        continue;
+                    }
+                    auto& otherMap = incomingShape._cache->getAncestry(info->type);
+                    if (otherMap.empty()) {
+                        continue;
+                    }
+                    for (int otherI = 1; otherI <= otherMap.count(); otherI++) {
+                        const auto& incomingElement = otherMap.find(incomingShape._Shape, otherI);
+
+                        if (incomingElement.IsPartner(mainElement)) {
+                            Data::IndexedName incomingShapeIndexedName = Data::IndexedName::fromConst(info->shapetype, otherI);
+                            Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
+                                                                                                    {incomingShape.getMappedName(incomingShapeIndexedName)},
+                                                                                                    Tag == 0 ? incomingShape.Tag : Tag,
+                                                                                                    op,
+                                                                                                    0,
+                                                                                                    (*info->shapetype),
+                                                                                                    0,
+                                                                                                    "PTN").c_str());
+
+                            ensureElementMap()->setElementName(mainElementIndexedName, newName, Tag);
+                        }
+                    }
+                }
+            }
+        }
     }
+    
     return *this;
 }
 

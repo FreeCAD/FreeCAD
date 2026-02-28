@@ -1600,11 +1600,15 @@ public:
     }
 
     App::HistoryAlgorithm getHistoryAlgorithm() const {
-        return elementMap()->getHistoryAlgorithm();
+        if (elementMap() != nullptr) {
+            return elementMap()->getHistoryAlgorithm();
+        } else {
+            return App::HistoryAlgorithm::V2;
+        }
     };
 
     void setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
-        elementMap()->setHistoryAlgorithm(newAlgorithm);
+        ensureElementMap()->setHistoryAlgorithm(newAlgorithm);
     };
 
     /** Try to simplify geometry of any linear/planar subshape to line/plane
