@@ -60,6 +60,7 @@
         <file>icons/FEM_FEMMesh2Mesh.svg</file>
         <file>icons/FEM_MeshBoundaryLayer.svg</file>
         <file>icons/FEM_MeshClear.svg</file>
+        <file>icons/FEM_MeshClearGroups.svg</file>
         <file>icons/FEM_MeshDisplayInfo.svg</file>
         <file>icons/FEM_MeshGmshFromShape.svg</file>
         <file>icons/FEM_MeshGroup.svg</file>
