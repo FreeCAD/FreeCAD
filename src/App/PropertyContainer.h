@@ -28,6 +28,7 @@
 #include <cstring>
 #include <vector>
 #include <string>
+#include <limits>
 #include <Base/Persistence.h>
 
 #include "DynamicProperty.h"
@@ -140,7 +141,7 @@ struct AppExport PropertyData
       short int getOffsetTo(const App::Property* prop) const {
             auto *pt = (const char*)prop;
             auto *base = (const char *)m_container;
-            if(pt<base || pt>base+SHRT_MAX)
+            if(pt<base || pt>base+std::numeric_limits<short>::max())
                 return -1;
             return (short) (pt-base);
       }
