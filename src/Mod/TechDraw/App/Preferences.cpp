@@ -714,3 +714,13 @@ bool Preferences::fixColorAlphaOnLoad()
 {
     return getPreferenceGroup("General")->GetBool("FixColorAlphaOnLoad", true);
 }
+
+bool Preferences::showCenterMarks()
+{
+    return getPreferenceGroup("Decorations")->GetBool("ShowCenterMarks", false);
+}
+
+bool Preferences::printCenterMarks()
+{
+    return getPreferenceGroup("Decorations")->GetBool("PrintCenterMarks", false);
+}

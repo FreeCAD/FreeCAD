@@ -174,6 +174,8 @@ public:
 
     bool pseudoEventFilter(QGraphicsItem *watched, QEvent *event) { return sceneEventFilter(watched, event); }
 
+    static bool hasSelectedChildren(QGIView* parent);
+
 protected:
     QGIView* getQGIVByName(std::string name) const;
 

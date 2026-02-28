@@ -81,7 +81,8 @@ namespace sp = std::placeholders;
 TYPESYSTEM_SOURCE_ABSTRACT(TechDrawGui::MDIViewPage, Gui::MDIView)
 
 MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* parent)
-    : Gui::MDIView(doc, parent), m_vpPage(pageVp)
+    : Gui::MDIView(doc, parent), m_vpPage(pageVp),
+      m_previewState(false)
 {
     setMouseTracking(true);
 
@@ -362,7 +363,9 @@ void MDIViewPage::printPreview()
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&MDIViewPage::print));
+    m_previewState = true;
     dlg.exec();
+    m_previewState = false;
 }
 
 
@@ -411,7 +414,7 @@ void MDIViewPage::print(QPrinter* printer)
         }
     }
 
-    PagePrinter::print(getViewProviderPage(), printer);
+    PagePrinter::print(getViewProviderPage(), printer, m_previewState);
 }
 
 // static routine to print all pages in a document.  Used by PrintAll command in Command.cpp
