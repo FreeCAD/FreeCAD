@@ -2,11 +2,6 @@
 <ui version="4.0">
  <class>Gui::Dialog::DlgPreferences</class>
  <widget class="QDialog" name="Gui::Dialog::DlgPreferences">
-  <property name="styleSheet">
-    <string notr="true">#sidebar { background-color: rgba(0, 0, 0, 25); }
-      #groupsTreeView { background-color: transparent; }
-      #groupsTreeView::item { padding: 6px 0px; }</string>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -23,6 +18,9 @@
   </property>
   <property name="windowTitle">
    <string>Preferences</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>
@@ -75,10 +73,10 @@
         <bool>false</bool>
        </property>
        <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Shape::NoFrame</enum>
        </property>
        <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
+        <enum>QFrame::Shadow::Raised</enum>
        </property>
        <property name="lineWidth">
         <number>0</number>
@@ -102,13 +100,13 @@
         <item>
          <widget class="QTreeView" name="groupsTreeView">
           <property name="contextMenuPolicy">
-           <enum>Qt::NoContextMenu</enum>
+           <enum>Qt::ContextMenuPolicy::NoContextMenu</enum>
           </property>
           <property name="autoFillBackground">
            <bool>false</bool>
           </property>
           <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
+           <enum>QFrame::Shape::NoFrame</enum>
           </property>
           <property name="lineWidth">
            <number>0</number>
@@ -183,7 +181,7 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <property name="sizeConstraint">
-           <enum>QLayout::SetDefaultConstraint</enum>
+           <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
           </property>
           <item>
            <widget class="QLabel" name="headerLabel">
@@ -200,7 +198,7 @@
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -250,13 +248,13 @@
            </sizepolicy>
           </property>
           <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
+           <enum>QFrame::Shape::NoFrame</enum>
           </property>
           <property name="horizontalScrollBarPolicy">
-           <enum>Qt::ScrollBarAsNeeded</enum>
+           <enum>Qt::ScrollBarPolicy::ScrollBarAsNeeded</enum>
           </property>
           <property name="sizeAdjustPolicy">
-           <enum>QAbstractScrollArea::AdjustIgnored</enum>
+           <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustIgnored</enum>
           </property>
           <property name="widgetResizable">
            <bool>true</bool>
@@ -315,7 +313,7 @@
            <bool>false</bool>
           </property>
           <property name="standardButtons">
-           <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+           <set>QDialogButtonBox::StandardButton::Apply|QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
           </property>
           <property name="centerButtons">
            <bool>false</bool>

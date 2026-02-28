@@ -18,3 +18,7 @@ Gui--SplitButton QToolButton::menu-indicator {
     image: none;
     border-image: none;
 }
+
+Gui--Dialog--DlgPreferencesImp #sidebar { background-color: rgba(0, 0, 0, 25); }
+Gui--Dialog--DlgPreferencesImp #groupsTreeView { background-color: transparent; }
+Gui--Dialog--DlgPreferencesImp #groupsTreeView::item { padding: 6px 0px; }

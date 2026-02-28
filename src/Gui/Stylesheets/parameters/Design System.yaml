@@ -11,6 +11,11 @@ BaseShades:
   800: 0.80
   900: 0.90
 
+BaseRadius:
+  small: 1px
+  medium: 2px
+  large: 4px
+
 BaseSpacing: 4px
 SpacingFactors:
   000: 0.0
@@ -30,7 +35,7 @@ SpacingFactors:
 
 Spacing: "@BaseSpacing * @SpacingFactors"
 
-Neutral: "shades(#adb5bd, @BaseShades, range: 0.6)"
+Neutral: "shades(#adb5bd, (000: 0.00, 150: 0.15) + @BaseShades, range: 0.6)"
 Contrast: "shades(#495057, @BaseShades, range: 0.6)"
 
 Blue: "shades(#418fde, @BaseShades)"
@@ -38,23 +43,32 @@ Orange: "shades(#ff922b, @BaseShades)"
 Accent: "@Blue"
 
 Background:
+  000: "@Neutral.000"
   050: "@Neutral.050"
   100: "@Neutral.100"
+  150: "@Neutral.150"
   200: "@Neutral.200"
 
-BaseTextColor: "@Contrast.800"
+BaseTextColor: "@Contrast.700"
 
 BaseHoverOverlay: "#ffffff"
 BaseHoverOverlayOpacity: 50%
 
 BasePressedOverlay: "@Contrast.800"
-BasePressedOverlayOpacity: 15%
-BaseHalfPressedOverlayOpacity: 10%
+BasePressedOverlayOpacity: 10%
+BaseHalfPressedOverlayOpacity: 7%
+
+FormControlSmallHeight: 22px
+FormControlHeight: 26px
+FormControlBigHeight: 32px
+
+FormControlBorderThickness: 1px
+FormControlBorderRadius: "@BaseRadius.medium"
 
 ButtonMinWidth: 100px
-ButtonHeight: 26px
-ButtonBorderThickness: 1px
-ButtonBorderRadius: 3px
+ButtonHeight: "@FormControlHeight"
+ButtonBorderThickness: "@FormControlBorderThickness"
+ButtonBorderRadius: "@FormControlBorderRadius"
 ButtonPadding: "padding(horizontal: @Spacing.300, vertical: @Spacing.100)"
 ButtonIconSpacing: "@Spacing.300"
 ButtonIconSize: 16px
@@ -70,3 +84,15 @@ ButtonBackground: "linear_gradient(x1: 0, y1: 0, x2: 0, y2: 1, @Background.100, 
 
 ButtonPrimaryBackground: "blend(@ButtonBackground, @Accent.400, 15%)"
 ButtonPrimaryBorderColor: "blend(@ButtonBorderColor, @Accent.400, 15%)"
+
+DialogBackground: "@Background.000"
+
+GroupBoxBackground: "@Background.000"
+GroupBoxBorderColor: "@Neutral.300"
+GroupBoxBorderRadius: "@BaseRadius.medium"
+GroupBoxPadding: "padding(@Spacing.300, top: @Spacing.400)"
+
+GroupBoxTitlePadding: "padding(horizontal: @Spacing.150, vertical: 0)"
+GroupBoxTitleFontSize: 10px
+GroupBoxTitleFontWeight: 600
+GroupBoxTitleTextColor: "@Contrast.500"
