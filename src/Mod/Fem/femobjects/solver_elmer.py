@@ -161,3 +161,7 @@ class SolverElmer(base_fempythonobject.BaseFemPythonObject):
                 obj.getPropertyByName(prop.name)
             except Base.PropertyError:
                 prop.add_to_object(obj)
+
+            # Migrate group of properties for old projects
+            if obj.getGroupOfProperty(prop.name) != prop.group:
+                obj.setGroupOfProperty(prop.name, prop.group)

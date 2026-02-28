@@ -55,7 +55,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyLinkList",
                 name="MeshBoundaryLayerList",
-                group="Base",
+                group="Mesh Parameters",
                 doc="Mesh boundaries need inflation layers",
                 value=[],
             )
@@ -64,7 +64,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyLinkList",
                 name="MeshRegionList",
-                group="Base",
+                group="Mesh Parameters",
                 doc="Mesh refinments of the mesh",
                 value=[],
             )
@@ -73,7 +73,7 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             _PropHelper(
                 type="App::PropertyLinkList",
                 name="MeshGroupList",
-                group="Base",
+                group="Mesh Parameters",
                 doc="Mesh groups of the mesh",
                 value=[],
             )
@@ -291,8 +291,8 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
                     obj, "App::PropertyBool", lambda x: "Optimization" if x else "None"
                 )
             # Migrate group of properties for old projects
-            if obj.getGroupOfProperty(prop.name) == "FEM Gmsh Mesh Params":
-                obj.setGroupOfProperty(prop.name, "Mesh Parameters")
+            if obj.getGroupOfProperty(prop.name) != prop.group:
+                obj.setGroupOfProperty(prop.name, prop.group)
 
         # migrate old Part property to Shape property
         try:
