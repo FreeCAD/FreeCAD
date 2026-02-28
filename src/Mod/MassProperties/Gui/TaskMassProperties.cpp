@@ -80,6 +80,9 @@ MassPropertiesData currentInfo;
 std::string currentMode = "Center of gravity";
 App::DocumentObject* currentDatum = nullptr;
 
+std::vector<double> centerOfGravity;
+std::vector<double> centerOfVolume;
+
 TaskMassProperties::TaskMassProperties()
     : Gui::SelectionObserver(true)
     , selectingCustomCoordSystem(false)
@@ -100,19 +103,19 @@ TaskMassProperties::TaskMassProperties()
         }
     }
 
-    auto physicalProperties = new Gui::TaskView::TaskBox(
+    auto parameters = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("PropertiesIcon"),
-        tr("Physical Properties"),
+        tr("Parameters"),
         true,
         nullptr
     );
     
-    auto shortcutQuit = new QShortcut(physicalProperties);
+    auto shortcutQuit = new QShortcut(parameters);
     shortcutQuit->setKey(QKeySequence(QStringLiteral("ESC")));
     shortcutQuit->setContext(Qt::ApplicationShortcut);
     connect(shortcutQuit, &QShortcut::activated, this, &TaskMassProperties::escape);
 
-    QBoxLayout* physicalLayout = physicalProperties->groupLayout();
+    QBoxLayout* physicalLayout = parameters->groupLayout();
     physicalLayout->setContentsMargins(10, 10, 10, 10);
     physicalLayout->setSpacing(8);
 
@@ -141,7 +144,7 @@ TaskMassProperties::TaskMassProperties()
             onCoordinateSystemChanged("Custom");
         }
     });
-    QButtonGroup *coordinateSystemGroup = new QButtonGroup(physicalProperties);
+    QButtonGroup *coordinateSystemGroup = new QButtonGroup(parameters);
     coordinateSystemGroup->addButton(centerOfGravityRadioButton);
     coordinateSystemGroup->addButton(customRadioButton);
 
@@ -161,7 +164,7 @@ TaskMassProperties::TaskMassProperties()
     physicalLayout->addWidget(centerOfGravityRadioButton);
     physicalLayout->addLayout(customControls);
 
-    unitsComboBox = new QComboBox(physicalProperties);
+    unitsComboBox = new QComboBox(parameters);
     unitsComboBox->addItem(QString::fromUtf8("mm, kg, kg·mm²"));
     unitsComboBox->addItem(QString::fromUtf8("m, kg, kg·m²"));
     unitsComboBox->addItem(QString::fromUtf8("in, lb, lb·in²"));
@@ -179,16 +182,16 @@ TaskMassProperties::TaskMassProperties()
         update(Gui::SelectionChanges());
     });
 
-    Content.emplace_back(physicalProperties);
+    Content.emplace_back(parameters);
 
-    auto basicProperties = new Gui::TaskView::TaskBox(
+    auto physicalProperties = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("PropertiesIcon"),
-        tr("Basic Properties"),
+        tr("Physical Properties"),
         true,
         nullptr
     );
 
-    QBoxLayout* basicLayout = basicProperties->groupLayout();
+    QBoxLayout* basicLayout = physicalProperties->groupLayout();
     basicLayout->setContentsMargins(10, 10, 10, 10);
     basicLayout->setSpacing(8);
 
@@ -215,7 +218,7 @@ TaskMassProperties::TaskMassProperties()
 
     basicLayout->addLayout(basicForm);
 
-    Content.emplace_back(basicProperties);
+    Content.emplace_back(physicalProperties);
     
     auto centerOfGravity = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("Std_Point"),
@@ -437,9 +440,25 @@ bool TaskMassProperties::eventFilter(QObject* watched, QEvent* event)
 {
     Q_UNUSED(watched);
 
-    if (event && (event->type() == QEvent::ShortcutOverride || event->type() == QEvent::KeyPress)) {
+    if (event->type() == QEvent::ShortcutOverride || event->type() == QEvent::KeyPress) {
         auto* keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent && keyEvent->key() == Qt::Key_Delete) {
+        if (keyEvent->key() == Qt::Key_Delete && objectList && objectList->hasFocus()) {
+            QList<QListWidgetItem*> selectedItems = objectList->selectedItems();
+            for (auto* item : selectedItems) {
+                QString userData = item->data(Qt::UserRole).toString();
+                QStringList parts = userData.split(QLatin1Char('|'));
+
+                if (parts.size() == 3) {
+                    QByteArray docName = parts[0].toLatin1();
+                    QByteArray objName = parts[1].toLatin1();
+                    QByteArray subName = parts[2].toLatin1();
+                    Gui::Selection().rmvSelection(
+                        docName.isEmpty() ? nullptr : docName.constData(),
+                        objName.isEmpty() ? nullptr : objName.constData(),
+                        subName.isEmpty() ? nullptr : subName.constData()
+                    );
+                }
+            }
             event->accept();
             return true;
         }
@@ -601,9 +620,10 @@ void TaskMassProperties::tryupdate()
     auto guiSelection = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
     
     if (guiSelection.empty()) {
-        if (currentMode == "Custom") {
-            clearUiFields();
-        }
+        clearUiFields();
+        objectsToMeasure.clear();
+        objectList->clear();
+        removeTemporaryObjects();
         return;
     }
 
@@ -702,7 +722,7 @@ void TaskMassProperties::tryupdate()
         }
     }
 
-    std::vector<MassPropertiesInput> objectsToMeasure;
+    objectsToMeasure.clear();
     App::DocumentObject const* referenceDatum = nullptr;
     
     objectList->clear();
@@ -940,7 +960,15 @@ void TaskMassProperties::tryupdate()
                 continue;
             }
 
-            objectList->addItem(QString::fromStdString(displayObject->getFullLabel()));
+            auto* item = new QListWidgetItem(QString::fromStdString(displayObject->getFullLabel()));
+            QString docName;
+            if (auto* doc = selObj.pObject->getDocument()) {
+                docName = QString::fromLatin1(doc->getName());
+            }
+            QString objName = QString::fromLatin1(selObj.pObject->getNameInDocument());
+            QString subName = selObj.SubName ? QString::fromLatin1(selObj.SubName) : QString();
+            item->setData(Qt::UserRole, docName + QLatin1String("|") + objName + QLatin1String("|") + subName);
+            objectList->addItem(item);
         }
 
         App::DocumentObject* coordSystem = selObj.pObject;
@@ -1023,15 +1051,9 @@ void TaskMassProperties::tryupdate()
         info.covX -= currentInfo.cogX;
         info.covY -= currentInfo.cogY;
         info.covZ -= currentInfo.cogZ;
-    }
-    if (currentMode == "Custom" && !referenceDatum) {
-        info.cogX = 0.0;
-        info.cogY = 0.0;
-        info.cogZ = 0.0;
 
-        info.covX = 0.0;
-        info.covY = 0.0;
-        info.covZ = 0.0;
+        centerOfGravity = {info.cogX, info.cogY, info.cogZ};
+        centerOfVolume = {info.covX, info.covY, info.covZ};
     }
     else if (currentMode == "Custom" && referenceDatum) {
         auto applyOriginOffset = [&](const Base::Vector3d& originPos) {
@@ -1042,6 +1064,9 @@ void TaskMassProperties::tryupdate()
             info.covX -= originPos.x;
             info.covY -= originPos.y;
             info.covZ -= originPos.z;
+
+            centerOfGravity = {info.cogX, info.cogY, info.cogZ};
+            centerOfVolume = {info.covX, info.covY, info.covZ};
         };
 
 
@@ -1246,10 +1271,17 @@ void TaskMassProperties::onCoordinateSystemChanged(std::string coordSystem)
     currentMode = coordSystem;
     if (currentMode != "Custom") {
         selectingCustomCoordSystem = false;
-        currentDatum = nullptr;
+        currentDatum = nullptr; 
         hasCurrentDatumPlacement = false;
         customEdit->clear();
     }
+    if (Gui::Selection().getSelection().empty()) {
+        clearUiFields();
+        objectList->clear();
+        removeTemporaryObjects();
+        return;
+    }
+
     updateInertiaVisibility();
     tryupdate();
 }
@@ -1258,7 +1290,7 @@ void TaskMassProperties::saveResult()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     
-    if (!doc || objectList->count() == 0) {
+    if (!doc || objectList->count() == 0 || (currentMode == "Custom" && !currentDatum)) {
         return;
     }
 
@@ -1326,12 +1358,12 @@ void TaskMassProperties::saveResult()
     setQuantity("Density", currentInfo.density, Base::Unit::Density);
     setQuantity("SurfaceArea", currentInfo.surfaceArea, Base::Unit::Area);
 
-    setQuantity("CenterOfGravityX", currentInfo.cogX, Base::Unit::Length);
-    setQuantity("CenterOfGravityY", currentInfo.cogY, Base::Unit::Length);
-    setQuantity("CenterOfGravityZ", currentInfo.cogZ, Base::Unit::Length);
-    setQuantity("CenterOfVolumeX", currentInfo.covX, Base::Unit::Length);
-    setQuantity("CenterOfVolumeY", currentInfo.covY, Base::Unit::Length);
-    setQuantity("CenterOfVolumeZ", currentInfo.covZ, Base::Unit::Length);
+    setQuantity("CenterOfGravityX", centerOfGravity[0], Base::Unit::Length);
+    setQuantity("CenterOfGravityY", centerOfGravity[1], Base::Unit::Length);
+    setQuantity("CenterOfGravityZ", centerOfGravity[2], Base::Unit::Length);
+    setQuantity("CenterOfVolumeX", centerOfVolume[0], Base::Unit::Length);
+    setQuantity("CenterOfVolumeY", centerOfVolume[1], Base::Unit::Length);
+    setQuantity("CenterOfVolumeZ", centerOfVolume[2], Base::Unit::Length);
 
     if (currentInfo.axisInertia != 0.0) {
         setQuantity("AxisInertia", currentInfo.axisInertia, Base::Unit::Inertia);
