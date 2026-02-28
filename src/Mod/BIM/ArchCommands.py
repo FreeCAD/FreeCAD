@@ -99,7 +99,7 @@ def getDefaultColor(objectType):
 
 def _check_and_setup_window(obj):
     """Returns `True` of obj is a (Link to a) Window. The function ensures that
-    a Link has its own Hosts property. Used by addComponents and removeComponents"""
+    a Link has its own Hosts property. Used by addComponents and removeComponents."""
     if Draft.getType(obj) == "Window":
         return True
     if hasattr(obj, "getLinkedObject") and Draft.getType(obj.getLinkedObject()) == "Window":
