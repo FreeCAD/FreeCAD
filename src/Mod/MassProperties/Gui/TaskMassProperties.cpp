@@ -124,7 +124,8 @@ TaskMassProperties::TaskMassProperties()
     physicalLayout->addWidget(objectsLabel);
 
     objectList = new QListWidget();
-    objectList->setMaximumHeight(50);
+    objectList->setMaximumHeight(75);
+    objectList->setSelectionMode(QAbstractItemView::ExtendedSelection);
     physicalLayout->addWidget(objectList);
 
     QLabel* referenceLabel = new QLabel(tr("Reference"));
@@ -444,10 +445,18 @@ bool TaskMassProperties::eventFilter(QObject* watched, QEvent* event)
         auto* keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Delete && objectList && objectList->hasFocus()) {
             QList<QListWidgetItem*> selectedItems = objectList->selectedItems();
-            for (auto* item : selectedItems) {
-                QString userData = item->data(Qt::UserRole).toString();
-                QStringList parts = userData.split(QLatin1Char('|'));
 
+            std::vector<QString> toRemove;
+            for (auto* item : selectedItems) {
+                toRemove.push_back(item->data(Qt::UserRole).toString());
+            }
+
+            if (toRemove.size() == objectList->count()) {
+                Gui::Selection().clearSelection();
+            }
+
+            for (const auto& userData : toRemove) {
+                QStringList parts = userData.split(QLatin1Char('|'));
                 if (parts.size() == 3) {
                     QByteArray docName = parts[0].toLatin1();
                     QByteArray objName = parts[1].toLatin1();
