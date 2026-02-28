@@ -38,6 +38,8 @@
 
 #include <Base/Placement.h>
 
+#include "Mod/MassProperties/App/MassPropertiesResult.h"
+
 namespace MassPropertiesGui {
 
 class TaskMassProperties : public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
@@ -123,6 +125,8 @@ private:
 
     Gui::Action* deleteAction = nullptr;
     bool deleteActivated = false;
+
+    std::vector<MassPropertiesInput> objectsToMeasure;
 };
 
 } // namespace MassPropertiesGui
