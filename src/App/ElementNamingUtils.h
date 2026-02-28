@@ -3,6 +3,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <utility>
 #include "FCGlobal.h"
 
@@ -118,6 +119,9 @@ AppExport const char *findElementName(const char *subname);
 AppExport const char *hasMappedElementName(const char *subname);
 
 AppExport const std::string indexSuffix(int index, const char *label=ELEMENT_MAP_INDEX);
+
+/// Given a string and a prefix, return the integer index that follows that prefix, or 0 if not found
+AppExport int indexOfElement(std::string_view s, std::string_view prefix);
 
 }  // namespace Data
 // clang-format on

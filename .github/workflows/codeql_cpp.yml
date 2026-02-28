@@ -156,7 +156,7 @@ jobs:
         sarif_file: sarif-results/cpp.sarif
 
     - name: Upload loc as a Build Artifact
-      uses: actions/upload-artifact@v6.0.0
+      uses: actions/upload-artifact@v7.0.0
       with:
         name: sarif-results
         path: sarif-results

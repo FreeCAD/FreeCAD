@@ -28,7 +28,6 @@ from .base import ToolBitShape
 
 class ToolBitShapeReamer(ToolBitShape):
     name = "Reamer"
-    aliases = ("reamer",)
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

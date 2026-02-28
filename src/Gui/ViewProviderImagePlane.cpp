@@ -167,7 +167,7 @@ void ViewProviderImagePlane::onChanged(const App::Property* prop)
 void ViewProviderImagePlane::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* action = menu->addAction(QObject::tr("Change Image"));
+    QAction* action = menu->addAction(QObject::tr("Edit Image Plane"));
     action->setIcon(QIcon(QLatin1String("images:image-scaling.svg")));
     func->trigger(action, [this]() { this->manipulateImage(); });
 

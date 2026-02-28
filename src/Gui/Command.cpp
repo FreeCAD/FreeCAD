@@ -49,6 +49,7 @@
 #include "BitmapFactory.h"
 #include "Control.h"
 #include "Dialogs/DlgUndoRedo.h"
+#include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "frameobject.h"
 #include "Macro.h"
@@ -821,8 +822,11 @@ std::string Command::_assureWorkbench(const char* file, int line, const char* sN
         return actName;
     }
 
-    // else - switch to new WB
-    _doCommand(file, line, Gui, "Gui.activateWorkbench('%s')", sName);
+    QStringList disabledWbNames = DlgSettingsWorkbenchesImp::getDisabledWorkbenches();
+    if (!disabledWbNames.contains(QString::fromUtf8(sName))) {
+        // else - switch to new WB
+        _doCommand(file, line, Gui, "Gui.activateWorkbench('%s')", sName);
+    }
 
     return actName;
 }

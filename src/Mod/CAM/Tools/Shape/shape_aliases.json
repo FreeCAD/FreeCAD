@@ -1,0 +1,107 @@
+{
+    "Ballend": {
+        "aliases": [
+            "ballend"
+        ],
+        "subtypes": []
+    },
+    "Bullnose": {
+        "aliases": [
+            "bullnose",
+            "torus"
+        ],
+        "subtypes": []
+    },
+    "Chamfer": {
+        "aliases": [
+            "chamfer"
+        ],
+        "subtypes": []
+    },
+    "Custom": {
+        "aliases": [
+            "custom"
+        ],
+        "subtypes": []
+    },
+    "Dovetail": {
+        "aliases": [
+            "dovetail"
+        ],
+        "subtypes": []
+    },
+    "Drill": {
+        "aliases": [
+            "drill"
+        ],
+        "subtypes": [
+            "jobber",
+            "stub",
+            "spot",
+            "center",
+            "brad_point"
+        ]
+    },
+    "Endmill": {
+        "aliases": [
+            "endmill"
+        ],
+        "subtypes": []
+    },
+    "Probe": {
+        "aliases": [
+            "probe"
+        ],
+        "subtypes": []
+    },
+    "Radius": {
+        "aliases": [
+            "radius",
+            "fillet"
+        ],
+        "subtypes": []
+    },
+    "Reamer": {
+        "aliases": [
+            "reamer"
+        ],
+        "subtypes": []
+    },
+    "SlittingSaw": {
+        "aliases": [
+            "slittingsaw",
+            "slitting-saw",
+            "slitting_saw"
+        ],
+        "subtypes": []
+    },
+    "Tap": {
+        "aliases": [
+            "tap"
+        ],
+        "subtypes": []
+    },
+    "TaperedBallNose": {
+        "aliases": [
+            "taperballnose",
+            "conicalballnose"
+        ],
+        "subtypes": []
+    },
+    "ThreadMill": {
+        "aliases": [
+            "threadmill",
+            "thread-mill",
+            "thread_mill"
+        ],
+        "subtypes": []
+    },
+    "VBit": {
+        "aliases": [
+            "vbit",
+            "v-bit",
+            "v_bit"
+        ],
+        "subtypes": []
+    }
+}

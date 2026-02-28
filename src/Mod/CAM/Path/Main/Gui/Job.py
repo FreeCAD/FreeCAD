@@ -1143,16 +1143,31 @@ class TaskPanel:
         self.toolControllerSelect()
 
     def toolControllerAdd(self):
-        selector = ToolBitSelector(compact=True)
+        selector = ToolBitSelector(compact=True, show_all_tools=True)
         if not selector.exec_():
             return
-        toolbit = selector.get_selected_tool()
-        toolbit.attach_to_doc(FreeCAD.ActiveDocument)
-        toolNum = self.obj.Proxy.nextToolNumber()
-        tc = PathToolControllerGui.Create(
-            name=f"TC: {toolbit.label}", tool=toolbit.obj, toolNumber=toolNum
-        )
-        self.obj.Proxy.addToolController(tc)
+
+        toolbits = selector.get_selected_tools()
+        if not toolbits:
+            return
+
+        # Get tool numbers mapping (from library or empty for auto-increment)
+        tool_numbers = selector.get_tool_numbers()
+
+        # Add each selected tool
+        for toolbit in toolbits:
+            toolbit.attach_to_doc(FreeCAD.ActiveDocument)
+
+            # Get tool number: use library number if available, otherwise auto-increment
+            toolbit_uri = str(toolbit.get_uri())
+            toolNum = tool_numbers.get(toolbit_uri)
+            if toolNum is None:
+                toolNum = self.obj.Proxy.nextToolNumber()
+
+            tc = PathToolControllerGui.Create(
+                name=f"TC: {toolbit.label}", tool=toolbit.obj, toolNumber=toolNum
+            )
+            self.obj.Proxy.addToolController(tc)
 
         FreeCAD.ActiveDocument.recompute()
         self.updateToolController()

@@ -34,15 +34,18 @@
 #  define WINVER 0x502 // needed for SetDllDirectory
 #  include <Windows.h>
 # endif
+
 # include <boost/algorithm/string.hpp>
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
+# include <optional>
 # include <random>
 # include <memory>
 # include <utility>
 # include <set>
+# include <string>
 # include <list>
 # include <algorithm>
 # include <iostream>
@@ -172,6 +175,38 @@
 #else // Ansi C/C++ new handler
 # include <new>
 #endif
+
+#ifdef FC_OS_WIN32
+#include <windows.h>
+#endif
+
+std::optional<std::string> getenvUTF8(const char* name) {
+#ifdef FC_OS_WIN32
+    int wideLength = MultiByteToWideChar(CP_UTF8, 0, name, -1, nullptr, 0);
+    std::wstring wideName(wideLength ? wideLength - 1 : 0, L'\0');
+    if (wideLength) {
+        MultiByteToWideChar(CP_UTF8, 0, name, -1, wideName.data(), wideLength);
+    }
+
+    DWORD needed = GetEnvironmentVariableW(wideName.c_str(), nullptr, 0);
+    if (needed == 0) {
+        return std::nullopt;
+    }
+
+    std::wstring wideValue(needed, L'\0');
+    DWORD written = GetEnvironmentVariableW(wideName.c_str(), wideValue.data(), needed);
+    if (written == 0) {
+        return std::nullopt;
+    }
+    wideValue.resize(written);
+    return Base::Tools::wstringToString(wideValue);
+#else
+    if (const char* v = std::getenv(name)) {
+        return std::string(v);
+    }
+    return std::nullopt;
+#endif
+}
 
 FC_LOG_LEVEL_INIT("App", true, true)
 
@@ -2744,9 +2779,9 @@ void Application::initConfig(int argc, char ** argv)
 
 void Application::SaveEnv(const char* s)
 {
-    const char *c = getenv(s);
-    if (c)
-        mConfig[s] = c;
+    if (auto c = getenvUTF8(s)) {
+        mConfig[s] = c.value();
+    }
 }
 
 void Application::initApplication()
