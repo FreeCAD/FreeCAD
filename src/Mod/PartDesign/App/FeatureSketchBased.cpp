@@ -1056,15 +1056,6 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
     return false;
 }
 
-void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
-{
-    (void)newShape;
-    // Realthunder: with the new topological naming, I don't think this function
-    // is necessary. A missing element will cause an explicitly error, and the
-    // user will be force to manually select the element. Various editors, such
-    // as dress up editors, can perform element guessing when activated.
-}
-
 namespace PartDesign
 {
 struct gp_Pnt_Less

@@ -158,8 +158,6 @@ public:
     double getThroughAllLength() const;
 
 protected:
-    void remapSupportShape(const TopoDS_Shape&);
-
     TopoDS_Face getSupportFace(const Part::Part2DObject*) const;
     TopoDS_Face getSupportFace(const App::PropertyLinkSub& link) const;
 
