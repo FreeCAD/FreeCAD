@@ -131,7 +131,7 @@ ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
 
-    removeTaskSolver();
+    updateTaskPanel(false);
 };
 
 QIcon ViewProviderAssembly::getIcon() const
@@ -301,12 +301,7 @@ bool ViewProviderAssembly::setEdit(int mode)
 
         attachSelection();
 
-        Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
-        if (taskView) {
-            // Waiting for the solver to support reporting information.
-            taskSolver = new TaskAssemblyMessages(this);
-            taskView->addContextualPanel(taskSolver);
-        }
+        updateTaskPanel(true);
 
         auto* assembly = getObject<AssemblyObject>();
         connectSolverUpdate = assembly->signalSolverUpdate.connect([this] {
@@ -320,6 +315,12 @@ bool ViewProviderAssembly::setEdit(int mode)
                 std::placeholders::_1,
                 std::placeholders::_2
             )
+        );
+
+        workbenchConnection = QObject::connect(
+            Gui::getMainWindow(),
+            &Gui::MainWindow::workbenchActivated,
+            [this](const QString& name) { this->onWorkbenchActivated(name); }
         );
 
         assembly->solve();
@@ -356,7 +357,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
             );
         }
 
-        removeTaskSolver();
+        updateTaskPanel(false);
 
         connectSolverUpdate.disconnect();
         connectActivatedVP.disconnect();
@@ -364,15 +365,6 @@ void ViewProviderAssembly::unsetEdit(int mode)
         return;
     }
     ViewProviderPart::unsetEdit(mode);
-}
-
-void ViewProviderAssembly::removeTaskSolver()
-{
-    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
-    if (taskView) {
-        // Waiting for the solver to support reporting information.
-        taskView->removeContextualPanel(taskSolver);
-    }
 }
 
 void ViewProviderAssembly::slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name)
@@ -1865,5 +1857,29 @@ void ViewProviderAssembly::UpdateSolverInformation()
     }
     else {
         signalSetUp(QStringLiteral("fully_constrained"), tr("Fully constrained"), QString(), QString());
+    }
+}
+
+void ViewProviderAssembly::onWorkbenchActivated(const QString& name)
+{
+    bool isAssemblyWb = (name == QLatin1String("AssemblyWorkbench"));
+    updateTaskPanel(isAssemblyWb);
+}
+
+void ViewProviderAssembly::updateTaskPanel(bool show)
+{
+    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+    if (!taskView) {
+        return;
+    }
+
+    if (show && !taskSolver) {
+        taskSolver = new TaskAssemblyMessages(this);
+        taskView->addContextualPanel(taskSolver);
+        UpdateSolverInformation();
+    }
+    else if (!show && taskSolver) {
+        taskView->removeContextualPanel(taskSolver);
+        taskSolver = nullptr;
     }
 }
