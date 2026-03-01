@@ -2232,7 +2232,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         }
 
         const std::map<std::string, TopAbs_ShapeEnum> ancestorTypeMap {{"Edge", TopAbs_FACE}, {"Face", TopAbs_EDGE}, {"Vertex", TopAbs_EDGE}};
-    
+        std::set<std::vector<Data::MappedName>> usedAncestorNames { };
+        std::set<Data::MappedName> usedPartnerNames { };
+
         // Now let's map any unmapped shapes with the IsPartner and ancestor method.
         for (const auto& info : infos) {
             for (int mainI = 1; mainI <= info->count(); mainI++) {
@@ -2257,14 +2259,18 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                         if (incomingElement.IsPartner(mainElement)) {
                             Data::IndexedName incomingShapeIndexedName = Data::IndexedName::fromConst(info->shapetype, otherI);
+                            Data::MappedName incomingShapeMapName = incomingShape.getMappedName(incomingShapeIndexedName);
+
                             Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
-                                                                                                    {incomingShape.getMappedName(incomingShapeIndexedName)},
+                                                                                                    {incomingShapeMapName},
                                                                                                     masterTag,
                                                                                                     op,
-                                                                                                    0,
+                                                                                                    usedPartnerNames.count(incomingShapeMapName),
                                                                                                     (*info->shapetype),
                                                                                                     0,
                                                                                                     "PTN").c_str());
+                            
+                            usedPartnerNames.insert(incomingShapeMapName);
 
                             wasMapped = true;
                             ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
@@ -2293,11 +2299,12 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                                                                                 ancestorNames,
                                                                                                 masterTag,
                                                                                                 op,
-                                                                                                0,
+                                                                                                usedAncestorNames.count(ancestorNames),
                                                                                                 (*info->shapetype),
                                                                                                 0,
                                                                                                 "ANC").c_str());
                         
+                        usedAncestorNames.insert(ancestorNames);
                         ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
                     }
                 }

@@ -590,29 +590,66 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         sid = &_sid;
     }
 
-    std::ostringstream ss;
     Data::MappedName mappedName(name);
-    for (int i = 0;;) {
+
+    if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+        std::ostringstream ss;
+
+        for (int i = 0;;) {
+            IndexedName existing;
+            MappedName res = this->addName(mappedName, element, *sid, overwrite, &existing);
+            if (res) {
+                return res;
+            }
+            const int maxAttempts {100};
+            if (++i == maxAttempts) {
+                FC_ERR("unresolved duplicate element mapping '"  // NOLINT
+                    << name << ' ' << element << '/' << existing);
+                return name;
+            }
+            if (sid != &_sid) {
+                _sid = *sid;
+            }
+            mappedName = renameDuplicateElement(i, element, existing, name, _sid, masterTag);
+            if (!mappedName) {
+                return name;
+            }
+            sid = &_sid;
+        }
+    } else if (getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        int duplicateIndex = 0;
+
         IndexedName existing;
         MappedName res = this->addName(mappedName, element, *sid, overwrite, &existing);
         if (res) {
             return res;
         }
-        const int maxAttempts {100};
-        if (++i == maxAttempts) {
-            FC_ERR("unresolved duplicate element mapping '"  // NOLINT
-                   << name << ' ' << element << '/' << existing);
-            return name;
+
+        Data::MappedNameDataTree nameTree = mappedName.getNameDataTree();
+
+        if (nameTree.size()) {
+            nameTree[nameTree.size() - 1][6][0] = "_";
+
+            for (auto &loopElement : getAll()) {
+                Data::MappedNameDataTree loopTree = loopElement.name.getNameDataTree();
+
+                loopTree[loopTree.size() - 1][6][0] = "_";
+
+                if (loopTree == nameTree) {
+                    duplicateIndex++;
+                }
+            }
+
+            nameTree[nameTree.size() - 1][6][0] = std::to_string(duplicateIndex);
+            
+            mappedName = MappedName::fromNameDataTree(nameTree);
+            res = this->addName(mappedName, element, *sid, overwrite, &existing);
+            
+            return res ? res : name;
         }
-        if (sid != &_sid) {
-            _sid = *sid;
-        }
-        mappedName = renameDuplicateElement(i, element, existing, name, _sid, masterTag);
-        if (!mappedName) {
-            return name;
-        }
-        sid = &_sid;
     }
+
+    return { };
 }
 
 // try to hash element name while preserving the source tag
@@ -762,25 +799,20 @@ MappedName ElementMap::renameDuplicateElement(int index,
                                               ElementIDRefs& sids,
                                               long masterTag) const
 {
-    int idx {0};
-#ifdef FC_DEBUG
-    idx = index;
-#else
-    static std::random_device _RD;
-    static std::mt19937 _RGEN(_RD());
-    static std::uniform_int_distribution<> _RDIST(1, 10000);
-    (void)index;
-    idx = _RDIST(_RGEN);
-#endif
-    std::ostringstream ss;
-    ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << idx;
-    MappedName renamed(name);
-    encodeElementName(element.getType()[0], renamed, ss, &sids, masterTag);
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-        FC_WARN("duplicate element mapping '"  // NOLINT
-                << name << " -> " << renamed << ' ' << element << '/' << element2);
+    if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+        int idx = index;
+        std::ostringstream ss;
+        ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << idx;
+        MappedName renamed(name);
+        encodeElementName(element.getType()[0], renamed, ss, &sids, masterTag);
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+            FC_WARN("duplicate element mapping '"  // NOLINT
+                    << name << " -> " << renamed << ' ' << element << '/' << element2);
+        }
+        return renamed;
     }
-    return renamed;
+
+    return { };
 }
 
 void ElementMap::erase(const MappedName& name)
