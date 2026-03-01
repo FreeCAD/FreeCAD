@@ -540,6 +540,55 @@ def get_svg(
             pass
         return svg
 
+    # Handle Links to Arch Axis objects.
+    # Axis bubble/text data comes from the Axis viewprovider cache and must be
+    # rebuilt in the link placement context to avoid mismatched bubble labels
+    # and positions.
+    if (
+        obj.isDerivedFrom("App::Link")
+        and obj.LinkedObject
+        and utils.get_type(obj.LinkedObject) == "Axis"
+    ):
+        hidden_doc = App.newDocument(name="hidden", hidden=True, temp=True)
+        try:
+            try:
+                source = obj.getLinkedObject(True)
+            except Exception:
+                source = obj.LinkedObject
+            new = hidden_doc.copyObject(source, True)
+            if getattr(obj, "LinkTransform", False):
+                new.Placement = obj.Placement * new.Placement
+            else:
+                new.Placement = obj.Placement
+            if App.GuiUp and hasattr(new, "ViewObject") and hasattr(new.ViewObject, "Proxy"):
+                prx = new.ViewObject.Proxy
+                if prx:
+                    try:
+                        prx.onChanged(new.ViewObject, "BubbleSize")
+                        prx.onChanged(new.ViewObject, "ShowLabel")
+                    except Exception:
+                        pass
+            return get_svg(
+                new,
+                scale,
+                linewidth,
+                fontsize,
+                fillstyle,
+                direction,
+                linestyle,
+                color,
+                linespacing,
+                techdraw,
+                rotation,
+                fillspaces,
+                override,
+            )
+        finally:
+            try:
+                App.closeDocument(hidden_doc.Name)
+            except Exception:
+                pass
+
     vobj = _get_view_object(obj)
 
     pathdata = []
