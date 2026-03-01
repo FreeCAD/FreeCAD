@@ -870,7 +870,10 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchPropertySet", 0)
         else:
             if hasattr(obj, "Width"):
-                obj.setEditorMode("Width", 0)
+                if hasattr(self, 'layers') and not self.layers:
+                    obj.setEditorMode("Width", 0)
+                else:
+                    obj.setEditorMode("Width", ["ReadOnly"])
             if hasattr(obj, "Align"):
                 obj.setEditorMode("Align", 0)
             if hasattr(obj, "Offset"):
@@ -1053,7 +1056,7 @@ class _Wall(ArchComponent.Component):
             else:
                 aligns = [obj.Align]
 
-        # set 'default' align - for filling in any item in the list == 0 or None
+        # Set 'default' align - for filling in any item in the list == 0 or None
         align = obj.Align  # or aligns[0]
 
         # Get offset of each edge segment from Base Objects if they store it
@@ -1106,24 +1109,20 @@ class _Wall(ArchComponent.Component):
         placement = None
         self.basewires = None
 
-        # build wall layers
-        layers = []
-        if hasattr(obj, "Material"):
-            if obj.Material:
-                if hasattr(obj.Material, "Materials"):
-                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
-                    # multimaterials
-                    varwidth = 0
-                    restwidth = width - sum(thicknesses)
-                    if restwidth > 0:
-                        varwidth = [t for t in thicknesses if t == 0]
-                        if varwidth:
-                            varwidth = restwidth / len(varwidth)
-                    for t in obj.Material.Thicknesses:
-                        if t:
-                            layers.append(t)
-                        elif varwidth:
-                            layers.append(varwidth)
+        # Check and build wall layers
+        multimaterialsWidth = False
+        layers = self.get_layers(obj)
+        self.layers = layers
+        # check total width and update Wall's Width
+        if layers:
+            total = sum(layers)
+            if obj.Width.Value != total:
+                    obj.Width = total
+            multimaterialsWidth = True
+        if multimaterialsWidth:
+            obj.setEditorMode("Width", ["ReadOnly"])
+        else:
+            obj.setEditorMode("Width", 0)
 
         # Check if there is obj.Base and its validity to proceed
         if self.ensureBase(obj):
