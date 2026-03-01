@@ -43,6 +43,10 @@ namespace Gui::StyleParameters
 class Corners
 {
 public:
+    explicit Corners(const Value& value)
+        : Corners(asTuple(value))
+    {}
+
     explicit Corners(Tuple tuple)
         : tuple_(expand(tuple))
     {
