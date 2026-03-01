@@ -90,10 +90,23 @@ public:
      *
      * Parameters that are absent or carry an incompatible type are silently
      * ignored; their fields retain their BoxBackground defaults.
+     *
+     * If @p fallbackPrefix is non-empty, each property that is absent under
+     * @p prefix is retried under @p fallbackPrefix before using the default.
      */
-    static BoxBackground resolveBoxBackground(const std::string& prefix);
+    static BoxBackground resolveBoxBackground(
+        const std::string& prefix,
+        const std::string& fallbackPrefix = {}
+    );
 
 protected:
+    void drawPrimitive(
+        PrimitiveElement element,
+        const QStyleOption* option,
+        QPainter* painter,
+        const QWidget* widget = nullptr
+    ) const override;
+
     /**
      * @brief Paints a background box with optional rounded corners and border.
      *

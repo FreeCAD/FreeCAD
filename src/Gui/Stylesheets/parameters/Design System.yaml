@@ -49,7 +49,7 @@ Background:
   150: "@Neutral.150"
   200: "@Neutral.200"
 
-BaseTextColor: "@Contrast.700"
+BaseTextColor: "@Contrast.500"
 
 BaseHoverOverlay: "#ffffff"
 BaseHoverOverlayOpacity: 50%
@@ -63,7 +63,7 @@ FormControlHeight: 26px
 FormControlBigHeight: 32px
 
 FormControlBorderThickness: 1px
-FormControlBorderRadius: "@BaseRadius.medium"
+FormControlBorderRadius: 3px
 
 ButtonMinWidth: 100px
 ButtonHeight: "@FormControlHeight"
@@ -81,6 +81,8 @@ ButtonSpacing: "@Spacing.250"
 ButtonTextColor: "@BaseTextColor"
 ButtonBorderColor: "@Neutral.400"
 ButtonBackground: "linear_gradient(x1: 0, y1: 0, x2: 0, y2: 1, @Background.100, @Background.200)"
+
+ButtonHoverBackground: "blend(@ButtonBackground, @BaseHoverOverlay, @BaseHoverOverlayOpacity)"
 
 ButtonPrimaryBackground: "blend(@ButtonBackground, @Accent.400, 15%)"
 ButtonPrimaryBorderColor: "blend(@ButtonBorderColor, @Accent.400, 15%)"

@@ -156,6 +156,24 @@ void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const
     painter->restore();
 }
 
+void FreeCADStyle::drawPrimitive(
+    PrimitiveElement element,
+    const QStyleOption* option,
+    QPainter* painter,
+    const QWidget* widget
+) const
+{
+    if (element == PE_PanelButtonCommand) {
+        const bool isHovered = option->state & State_MouseOver;
+        const std::string prefix = isHovered ? "ButtonHover" : "Button";
+        const std::string fallback = isHovered ? "Button" : "";
+        drawBoxBackground(painter, option->rect, resolveBoxBackground(prefix, fallback));
+        return;
+    }
+
+    QProxyStyle::drawPrimitive(element, option, painter, widget);
+}
+
 QColor FreeCADStyle::toQColor(const Base::Color& color)
 {
     return QColor::fromRgbF(color.r, color.g, color.b, color.a);
@@ -227,23 +245,36 @@ QBrush FreeCADStyle::toBackgroundBrush(const StyleParameters::Value& value)
     return Qt::NoBrush;
 }
 
-FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(const std::string& prefix)
+FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(
+    const std::string& prefix,
+    const std::string& fallbackPrefix
+)
 {
     auto* manager = Base::provideService<StyleParameters::ParameterManager>();
 
+    const auto resolve = [&](const std::string& suffix) -> std::optional<StyleParameters::Value> {
+        if (auto value = manager->resolve(prefix + suffix)) {
+            return value;
+        }
+        if (!fallbackPrefix.empty()) {
+            return manager->resolve(fallbackPrefix + suffix);
+        }
+        return std::nullopt;
+    };
+
     BoxBackground result;
 
-    if (auto backgroundValue = manager->resolve(prefix + "Background")) {
+    if (auto backgroundValue = resolve("Background")) {
         result.background = toBackgroundBrush(*backgroundValue);
     }
 
-    if (auto borderColorValue = manager->resolve(prefix + "BorderColor")) {
+    if (auto borderColorValue = resolve("BorderColor")) {
         if (borderColorValue->holds<Base::Color>()) {
             result.borderColor = toQColor(borderColorValue->get<Base::Color>());
         }
     }
 
-    if (auto borderThicknessValue = manager->resolve(prefix + "BorderThickness")) {
+    if (auto borderThicknessValue = resolve("BorderThickness")) {
         try {
             result.borderThickness = toMarginsF(
                 StyleParameters::BorderThickness(*borderThicknessValue)
@@ -253,7 +284,7 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(const std::string
         }
     }
 
-    if (auto borderRadiusValue = manager->resolve(prefix + "BorderRadius")) {
+    if (auto borderRadiusValue = resolve("BorderRadius")) {
         try {
             result.borderRadius = toCornerRadii(StyleParameters::Corners(*borderRadiusValue));
         }

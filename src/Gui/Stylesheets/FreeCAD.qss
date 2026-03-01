@@ -69,11 +69,6 @@ Resetting everything helps to unify styles across different operating systems
 
 --------------------------------------------------------------------------- */
 * {
-  border-style: none;
-  border-image: none;
-  border-radius: 0px;
-  border-color: @GeneralBorderColor;
-  border-style: none;
   outline: none;
   color: @BaseTextColor;
   selection-background-color: @TextSelectBackgroundColor;
@@ -1202,11 +1197,6 @@ QPushButton {
   color: @ButtonTextColor;
   font-size: @ButtonFontSize;
   font-weight: @ButtonFontWeight;
-  background-color: @ButtonBackground;
-  border-color: @ButtonBorderColor;
-  border-width: @ButtonBorderThickness;
-  border-radius: @ButtonBorderRadius;
-  border-style: solid;
   padding: @ButtonPadding;
   height: @{@ButtonContentBox.height};
   min-width: @{@ButtonContentBox.width};
@@ -1215,10 +1205,6 @@ QPushButton {
 QPushButton:default {
   background-color: @ButtonPrimaryBackground;
   border-color: @ButtonPrimaryBorderColor;
-}
-
-QPushButton:hover {
-  background-color: @{blend(@ButtonBackground, @BaseHoverOverlay, @BaseHoverOverlayOpacity)};
 }
 
 QPushButton:default:hover {
@@ -1240,10 +1226,6 @@ QPushButton:checked {
 QAbstractButton[flat="true"] {
   background-color: transparent;
   border: 1px solid transparent;
-}
-
-#CreateNewRow > QPushButton {
-  border-radius: @InputFieldBorderRadius;
 }
 
 Gui--FileChooser QPushButton {
