@@ -870,7 +870,7 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchPropertySet", 0)
         else:
             if hasattr(obj, "Width"):
-                if hasattr(self, 'layers') and not self.layers:
+                if hasattr(self, "layers") and not self.layers:
                     obj.setEditorMode("Width", 0)
                 else:
                     obj.setEditorMode("Width", ["ReadOnly"])
@@ -1117,7 +1117,7 @@ class _Wall(ArchComponent.Component):
         if layers:
             total = sum(layers)
             if obj.Width.Value != total:
-                    obj.Width = total
+                obj.Width = total
             multimaterialsWidth = True
         if multimaterialsWidth:
             obj.setEditorMode("Width", ["ReadOnly"])
