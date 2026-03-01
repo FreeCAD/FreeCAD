@@ -52,7 +52,7 @@ Background:
 BaseTextColor: "@Contrast.500"
 
 BaseHoverOverlay: "#ffffff"
-BaseHoverOverlayOpacity: 50%
+BaseHoverOverlayOpacity: 25%
 
 BasePressedOverlay: "@Contrast.800"
 BasePressedOverlayOpacity: 10%
@@ -82,12 +82,12 @@ ButtonTextColor: "@BaseTextColor"
 ButtonBorderColor: "@Neutral.400"
 ButtonBackground: "linear_gradient(x1: 0, y1: 0, x2: 0, y2: 1, @Background.100, @Background.200)"
 
-ButtonHoverBackground: "blend(@ButtonBackground, @BaseHoverOverlay, @BaseHoverOverlayOpacity)"
+ButtonHoverOverlay: "opacity(@BaseHoverOverlay, @BaseHoverOverlayOpacity)"
 
-ButtonPressedBackground: "blend(@ButtonBackground, @BasePressedOverlay, @BasePressedOverlayOpacity)"
+ButtonPressedOverlay: "opacity(@BasePressedOverlay, @BasePressedOverlayOpacity)"
 ButtonPressedInnerShadow: "inner_shadow(color: rgba(0, 0, 0, 50), y: 2px, blur: 6px)"
 
-ButtonCheckedBackground: "blend(@ButtonBackground, @BasePressedOverlay, @BaseHalfPressedOverlayOpacity)"
+ButtonCheckedOverlay: "opacity(@BasePressedOverlay, @BaseHalfPressedOverlayOpacity)"
 ButtonCheckedInnerShadow: "inner_shadow(color: rgba(0, 0, 0, 50), y: 2px, blur: 6px)"
 
 ButtonPrimaryBackground: "blend(@ButtonBackground, @Accent.400, 15%)"

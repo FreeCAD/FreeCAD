@@ -23,8 +23,10 @@
 
 #pragma once
 
+#include <initializer_list>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <FCGlobal.h>
 #include <Base/Color.h>
 #include <QBrush>
@@ -89,28 +91,31 @@ public:
         std::optional<QColor> borderColor;
         std::optional<QMarginsF> borderThickness;
         CornerRadii borderRadius;  // default: all zero (sharp corners)
+        std::optional<QColor> overlay;
         std::optional<InnerShadow> innerShadow;
     };
 
     /**
-     * @brief Resolves style parameters with the given prefix into a BoxBackground.
+     * @brief Resolves style parameters from an ordered list of prefixes into a BoxBackground.
      *
-     * Reads the following parameters (with @p prefix prepended) from the global ParameterManager:
+     * Reads the following parameters (with each prefix prepended) from the global ParameterManager:
      *   - @c {prefix}Background      — solid colour or gradient brush
+     *   - @c {prefix}Overlay         — semi-transparent colour composited on top of background
+     * (optional)
      *   - @c {prefix}BorderColor     — border fill colour (optional)
      *   - @c {prefix}BorderThickness — per-side border widths as QMarginsF (optional)
      *   - @c {prefix}BorderRadius    — per-corner radii as CornerRadii
+     *   - @c {prefix}InnerShadow     — inward shadow (optional)
      *
-     * Parameters that are absent or carry an incompatible type are silently
-     * ignored; their fields retain their BoxBackground defaults.
+     * For each property the prefixes are tried in order; the first match wins.
+     * Parameters that are absent under all prefixes or carry an incompatible
+     * type are silently ignored; their fields retain BoxBackground defaults.
      *
-     * If @p fallbackPrefix is non-empty, each property that is absent under
-     * @p prefix is retried under @p fallbackPrefix before using the default.
+     * @code{.cpp}
+     * resolveBoxBackground({"ButtonPressedPrimary", "ButtonPressed", "Button"})
+     * @endcode
      */
-    static BoxBackground resolveBoxBackground(
-        const std::string& prefix,
-        const std::string& fallbackPrefix = {}
-    );
+    static BoxBackground resolveBoxBackground(std::initializer_list<std::string_view> prefixes);
 
 protected:
     void drawPrimitive(

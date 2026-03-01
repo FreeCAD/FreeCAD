@@ -250,6 +250,10 @@ void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const
         painter->fillPath(roundedRectPath(QRectF(rect), rule.borderRadius), rule.background);
     }
 
+    if (rule.overlay) {
+        painter->fillPath(roundedRectPath(QRectF(rect), rule.borderRadius), *rule.overlay);
+    }
+
     painter->restore();
 
     if (rule.innerShadow) {
@@ -310,7 +314,12 @@ void FreeCADStyle::drawPrimitive(
         drawBoxBackground(
             painter,
             option->rect,
-            resolveBoxBackground(fmt::format("Button{}{}{}", type, "", state), "Button")
+            resolveBoxBackground(
+                {fmt::format("Button{}{}", type, state),
+                 fmt::format("Button{}", type),
+                 fmt::format("Button{}", state),
+                 "Button"}
+            )
         );
         return;
     }
@@ -341,7 +350,7 @@ QMarginsF FreeCADStyle::toMarginsF(const StyleParameters::Insets& insets)
 FreeCADStyle::InnerShadow FreeCADStyle::toInnerShadow(const StyleParameters::InnerShadow& shadow)
 {
     return {
-        .color = toQColor(shadow.color()),
+        .color = shadow.color().asValue<QColor>(),
         .x = shadow.x(),
         .y = shadow.y(),
         .blur = shadow.blur(),
@@ -351,7 +360,7 @@ FreeCADStyle::InnerShadow FreeCADStyle::toInnerShadow(const StyleParameters::Inn
 QBrush FreeCADStyle::toBackgroundBrush(const StyleParameters::Value& value)
 {
     if (value.holds<Base::Color>()) {
-        return QBrush(toQColor(value.get<Base::Color>()));
+        return QBrush(value.get<Base::Color>().asValue<QColor>());
     }
 
     if (!value.holds<StyleParameters::Tuple>()) {
@@ -366,7 +375,7 @@ QBrush FreeCADStyle::toBackgroundBrush(const StyleParameters::Value& value)
             QLinearGradient qGradient(gradient.x1(), gradient.y1(), gradient.x2(), gradient.y2());
             qGradient.setCoordinateMode(QGradient::ObjectMode);
             for (const auto& stop : gradient.colorStops()) {
-                qGradient.setColorAt(stop.position.value, toQColor(stop.color));
+                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
             }
             return QBrush(qGradient);
         }
@@ -387,7 +396,7 @@ QBrush FreeCADStyle::toBackgroundBrush(const StyleParameters::Value& value)
             );
             qGradient.setCoordinateMode(QGradient::ObjectMode);
             for (const auto& stop : gradient.colorStops()) {
-                qGradient.setColorAt(stop.position.value, toQColor(stop.color));
+                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
             }
             return QBrush(qGradient);
         }
@@ -400,18 +409,16 @@ QBrush FreeCADStyle::toBackgroundBrush(const StyleParameters::Value& value)
 }
 
 FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(
-    const std::string& prefix,
-    const std::string& fallbackPrefix
+    std::initializer_list<std::string_view> prefixes
 )
 {
     auto* manager = Base::provideService<StyleParameters::ParameterManager>();
 
     const auto resolve = [&](const std::string& suffix) -> std::optional<StyleParameters::Value> {
-        if (auto value = manager->resolve(prefix + suffix)) {
-            return value;
-        }
-        if (!fallbackPrefix.empty()) {
-            return manager->resolve(fallbackPrefix + suffix);
+        for (const auto prefix : prefixes) {
+            if (auto value = manager->resolve(std::string(prefix) + suffix)) {
+                return value;
+            }
         }
         return std::nullopt;
     };
@@ -422,9 +429,15 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(
         result.background = toBackgroundBrush(*backgroundValue);
     }
 
+    if (auto overlayValue = resolve("Overlay")) {
+        if (overlayValue->holds<Base::Color>()) {
+            result.overlay = overlayValue->get<Base::Color>().asValue<QColor>();
+        }
+    }
+
     if (auto borderColorValue = resolve("BorderColor")) {
         if (borderColorValue->holds<Base::Color>()) {
-            result.borderColor = toQColor(borderColorValue->get<Base::Color>());
+            result.borderColor = borderColorValue->get<Base::Color>().asValue<QColor>();
         }
     }
 

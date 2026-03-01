@@ -77,6 +77,14 @@ Resetting everything helps to unify styles across different operating systems
   font-family: 'Noto Sans';
 }
 
+QFrame {
+  border-style: none;
+  border-image: none;
+  border-radius: 0px;
+  border-color: @GeneralBorderColor;
+  border-style: none;
+}
+
 /* specific reset for elements inside QToolBar */
 QToolBar * {}/*hacks */
 
