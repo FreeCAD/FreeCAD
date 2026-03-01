@@ -24,6 +24,7 @@
 #include "Parser.h"
 #include "Corners.h"
 #include "Gradient.h"
+#include "InnerShadow.h"
 #include "Insets.h"
 #include "ParameterManager.h"
 
@@ -265,6 +266,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         {"border_radius", [&args]() -> Value { return Corners(args).tuple(); }},
         {"linear_gradient", [&args]() -> Value { return LinearGradient(args).tuple(); }},
         {"radial_gradient", [&args]() -> Value { return RadialGradient(args).tuple(); }},
+        {"inner_shadow", [&args]() -> Value { return InnerShadow(args).tuple(); }},
         {
             "content_box",
             [&args]() -> Value {

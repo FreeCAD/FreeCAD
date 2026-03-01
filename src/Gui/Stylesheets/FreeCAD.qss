@@ -1202,27 +1202,6 @@ QPushButton {
   min-width: @{@ButtonContentBox.width};
 }
 
-QPushButton:default {
-  background-color: @ButtonPrimaryBackground;
-  border-color: @ButtonPrimaryBorderColor;
-}
-
-QPushButton:default:hover {
-  background-color: @{blend(@ButtonPrimaryBackground, @BaseHoverOverlay, @BaseHoverOverlayOpacity)};
-}
-
-QPushButton:pressed {
-  background-color: @{blend(@ButtonBackground, @BasePressedOverlay, @BasePressedOverlayOpacity)};
-}
-
-QPushButton:default:pressed {
-  background-color: @{blend(@ButtonPrimaryBackground, @BasePressedOverlay, @BasePressedOverlayOpacity)};
-}
-
-QPushButton:checked {
-  background-color: @{blend(@ButtonBackground, @BasePressedOverlay, @BaseHalfPressedOverlayOpacity)};
-}
-
 QAbstractButton[flat="true"] {
   background-color: transparent;
   border: 1px solid transparent;
@@ -1236,10 +1215,6 @@ QPushButton:disabled {
   background-color: @GeneralDisabledBackgroundColor;
   color: @TextDisabledColor;
   border: 1px solid @ButtonBorderColor;
-}
-
-QPushButton:focus, QAbstractButton[flat="true"]:focus {
-  border: 1px solid @AccentColor;
 }
 
 QPushButton:checked:disabled {

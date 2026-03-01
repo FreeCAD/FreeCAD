@@ -42,6 +42,7 @@ namespace StyleParameters
 {
 class Corners;
 class Insets;
+class InnerShadow;
 struct Value;
 }  // namespace StyleParameters
 
@@ -66,6 +67,17 @@ public:
     };
 
     /**
+     * @brief Describes an inward shadow drawn on top of a box background.
+     */
+    struct InnerShadow
+    {
+        QColor color;
+        qreal x = 0;
+        qreal y = 0;
+        qreal blur = 0;
+    };
+
+    /**
      * @brief Describes the visual appearance of a painted background box.
      *
      * All border fields must be set together (borderColor + borderThickness)
@@ -77,6 +89,7 @@ public:
         std::optional<QColor> borderColor;
         std::optional<QMarginsF> borderThickness;
         CornerRadii borderRadius;  // default: all zero (sharp corners)
+        std::optional<InnerShadow> innerShadow;
     };
 
     /**
@@ -127,6 +140,7 @@ private:
     static QBrush toBackgroundBrush(const StyleParameters::Value& value);
     static CornerRadii toCornerRadii(const StyleParameters::Corners& corners);
     static QMarginsF toMarginsF(const StyleParameters::Insets& insets);
+    static InnerShadow toInnerShadow(const StyleParameters::InnerShadow& shadow);
 };
 
 }  // namespace Gui

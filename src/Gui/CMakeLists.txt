@@ -1457,6 +1457,7 @@ SET(FreeCADGui_SRCS
     StyleParameters/Insets.h
     StyleParameters/Corners.h
     StyleParameters/Gradient.h
+    StyleParameters/InnerShadow.h
     StyleParameters/StyleParametersPy.h
 )
 

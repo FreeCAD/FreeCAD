@@ -84,6 +84,12 @@ ButtonBackground: "linear_gradient(x1: 0, y1: 0, x2: 0, y2: 1, @Background.100, 
 
 ButtonHoverBackground: "blend(@ButtonBackground, @BaseHoverOverlay, @BaseHoverOverlayOpacity)"
 
+ButtonPressedBackground: "blend(@ButtonBackground, @BasePressedOverlay, @BasePressedOverlayOpacity)"
+ButtonPressedInnerShadow: "inner_shadow(color: rgba(0, 0, 0, 50), y: 2px, blur: 6px)"
+
+ButtonCheckedBackground: "blend(@ButtonBackground, @BasePressedOverlay, @BaseHalfPressedOverlayOpacity)"
+ButtonCheckedInnerShadow: "inner_shadow(color: rgba(0, 0, 0, 50), y: 2px, blur: 6px)"
+
 ButtonPrimaryBackground: "blend(@ButtonBackground, @Accent.400, 15%)"
 ButtonPrimaryBorderColor: "blend(@ButtonBorderColor, @Accent.400, 15%)"
 
