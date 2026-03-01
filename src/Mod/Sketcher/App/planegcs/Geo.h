@@ -39,16 +39,14 @@ namespace GCS
 class SketcherExport Point
 {
 public:
-    Point()
-        : x(nullptr)
-        , y(nullptr)
-    {}
     Point(double* px, double* py)
         : x(px)
         , y(py)
     {}
-    double* x;
-    double* y;
+    Point() = default;
+
+    double* x {nullptr};
+    double* y {nullptr};
     int PushOwnParams(VEC_pD& pvec) const;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt);
 };
@@ -204,6 +202,9 @@ public:
 class SketcherExport Line: public Curve
 {
 public:
+    Line(Point p1_, Point p2_);
+    Line() = default;
+
     Point p1;
     Point p2;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
@@ -216,6 +217,9 @@ public:
 class SketcherExport Circle: public Curve
 {
 public:
+    Circle(Point center_, double* rad_);
+    Circle() = default;
+
     Point center;
     double* rad {nullptr};
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
@@ -259,6 +263,9 @@ public:
 class SketcherExport Ellipse: public MajorRadiusConic
 {
 public:
+    Ellipse(Point center_, Point focus1_, double* radmin_);
+    Ellipse() = default;
+
     Point center;
     Point focus1;
     double* radmin {nullptr};
@@ -333,6 +340,9 @@ public:
 class SketcherExport Parabola: public Curve
 {
 public:
+    Parabola(Point vertex_, Point focus1_);
+    Parabola() = default;
+
     Point vertex;
     Point focus1;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;

@@ -124,7 +124,10 @@ DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam
 }
 
 //----------------Line
-
+Line::Line(Point p1_, Point p2_)
+    : p1(p1_)
+    , p2(p2_)
+{}
 DeriVector2 Line::CalculateNormal(const Point& p, const double* derivparam) const
 {
     (void)p;
@@ -175,6 +178,10 @@ Line* Line::Copy()
 
 //---------------circle
 
+Circle::Circle(Point center_, double* rad_)
+    : center(center_)
+    , rad(rad_)
+{}
 DeriVector2 Circle::CalculateNormal(const Point& p, const double* derivparam) const
 {
     DeriVector2 cv(center, derivparam);
@@ -267,6 +274,11 @@ Arc* Arc::Copy()
 
 //--------------ellipse
 
+Ellipse::Ellipse(Point center_, Point focus1_, double* radmin_)
+    : center(center_)
+    , focus1(focus1_)
+    , radmin(radmin_)
+{}
 // this function is exposed to allow reusing pre-filled derivectors in constraints code
 double Ellipse::getRadMaj(
     const DeriVector2& center,
@@ -595,6 +607,10 @@ ArcOfHyperbola* ArcOfHyperbola::Copy()
 
 //---------------parabola
 
+Parabola::Parabola(Point vertex_, Point focus1_)
+    : vertex(vertex_)
+    , focus1(focus1_)
+{}
 DeriVector2 Parabola::CalculateNormal(const Point& p, const double* derivparam) const
 {
     // fill some vectors in
