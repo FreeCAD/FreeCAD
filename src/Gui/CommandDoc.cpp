@@ -791,6 +791,7 @@ bool StdCmdSaveAs::isActive()
 //===========================================================================
 DEF_STD_CMD_A(StdCmdSaveCopy)
 
+
 StdCmdSaveCopy::StdCmdSaveCopy()
     : Command("Std_SaveCopy")
 {
@@ -803,6 +804,7 @@ StdCmdSaveCopy::StdCmdSaveCopy()
     sPixmap = "Std_SaveCopy";
     sAccel = "Ctrl+Alt+Shift+S";
 }
+
 
 void StdCmdSaveCopy::activated(int iMsg)
 {
