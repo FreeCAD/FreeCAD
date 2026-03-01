@@ -838,6 +838,13 @@ void TaskMassProperties::tryupdate()
         if (shape.IsNull()) {
             return false;
         }
+
+        TopAbs_ShapeEnum shapeType = shape.ShapeType();
+        if (shapeType != TopAbs_SOLID && shapeType != TopAbs_COMPSOLID && 
+            shapeType != TopAbs_SHELL && shapeType != TopAbs_FACE && shapeType != TopAbs_COMPOUND) {
+            return false;
+        }
+
         App::DocumentObject* materialObj = object ? object : obj;
 
         std::ostringstream keyBuilder;
@@ -954,6 +961,7 @@ void TaskMassProperties::tryupdate()
             }
         }
 
+        bool shouldAddToList = false;
         if (!isReferenceObject(displayObject)) {
             if (displayObject->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
                 continue;
@@ -969,15 +977,7 @@ void TaskMassProperties::tryupdate()
                 continue;
             }
 
-            auto* item = new QListWidgetItem(QString::fromStdString(displayObject->getFullLabel()));
-            QString docName;
-            if (auto* doc = selObj.pObject->getDocument()) {
-                docName = QString::fromLatin1(doc->getName());
-            }
-            QString objName = QString::fromLatin1(selObj.pObject->getNameInDocument());
-            QString subName = selObj.SubName ? QString::fromLatin1(selObj.SubName) : QString();
-            item->setData(Qt::UserRole, docName + QLatin1String("|") + objName + QLatin1String("|") + subName);
-            objectList->addItem(item);
+            shouldAddToList = true;
         }
 
         App::DocumentObject* coordSystem = selObj.pObject;
@@ -1021,7 +1021,20 @@ void TaskMassProperties::tryupdate()
         Base::Placement rootPlacement = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
         Base::Placement parentPlacement = rootPlacement * getPlacementFromObject(leaf).inverse();
         visited.clear();
+        size_t objectsBefore = objectsToMeasure.size();
         collectBodies(collectBodies, leaf, parentPlacement);
+        
+        if (shouldAddToList && objectsToMeasure.size() > objectsBefore) {
+            auto* item = new QListWidgetItem(QString::fromStdString(displayObject->getFullLabel()));
+            QString docName;
+            if (auto* doc = selObj.pObject->getDocument()) {
+                docName = QString::fromLatin1(doc->getName());
+            }
+            QString objName = QString::fromLatin1(selObj.pObject->getNameInDocument());
+            QString subName = selObj.SubName ? QString::fromLatin1(selObj.SubName) : QString();
+            item->setData(Qt::UserRole, docName + QLatin1String("|") + objName + QLatin1String("|") + subName);
+            objectList->addItem(item);
+        }
     }
 
     if (currentMode == "Custom") {
@@ -1033,11 +1046,13 @@ void TaskMassProperties::tryupdate()
 
     if (currentMode == "Custom" && !referenceDatum) {
         this->clearUiFields();
+        this->removeTemporaryObjects();
         return;
     }
 
     if (objectList->count() == 0) {
         this->clearUiFields();
+        this->removeTemporaryObjects();
         return;
     }
 
@@ -1049,6 +1064,14 @@ void TaskMassProperties::tryupdate()
         referenceDatum,
         hasCurrentDatumPlacement ? &currentDatumPlacement : nullptr
     );
+
+    if (info.volume == 0.0 && info.mass == 0.0 && info.surfaceArea == 0.0) {
+        this->clearUiFields();
+        this->removeTemporaryObjects();
+        objectsToMeasure.clear();
+        objectList->clear();
+        return;
+    }
 
     currentInfo = info;
 
