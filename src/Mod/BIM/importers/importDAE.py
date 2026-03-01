@@ -168,7 +168,6 @@ def read(filename):
     if FreeCAD.GuiUp:
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
-
 def export(
     exports: list[FreeCAD.DocumentObject],
     filename: str,
@@ -219,23 +218,38 @@ def export(
         addgroups=True,
     )
     objects = Arch.pruneIncluded(objects, strict=True)
+    
     for obj in objects:
+        is_link = obj.isDerivedFrom("App::Link")
+        if is_link:
+            real_obj = obj.getLinkedObject(True)
+        else:
+            real_obj = obj   
         findex = np.array([])
         m: Optional[Mesh.Mesh] = None
-        if obj.isDerivedFrom("Part::Feature"):
+        if real_obj.isDerivedFrom("Part::Feature"):
             FreeCAD.Console.PrintMessage(
                 f'Exporting shape of object {obj.Name} ("{obj.Label}")' + "\n"
             )
-            new_shape = obj.Shape.copy()
-            new_shape.Placement = obj.getGlobalPlacement()
-            m = Mesh.Mesh(triangulate(new_shape))
-        elif obj.isDerivedFrom("Mesh::Feature"):
+            shape = real_obj.Shape.copy()
+            if is_link:
+                shape.Placement = obj.Placement
+            else:
+                shape.Placement = obj.getGlobalPlacement()
+            m = Mesh.Mesh(triangulate(shape))
+        elif real_obj.isDerivedFrom("Mesh::Feature"):
             FreeCAD.Console.PrintMessage(
                 f'Exporting mesh of object {obj.Name} ("{obj.Label}")' + "\n"
             )
-            m = obj.Mesh
+            m = real_obj.Mesh.copy()
+
+            if is_link:
+                m.Placement = obj.Placement
+            else:
+                m.Placement = obj.getGlobalPlacement()                
+
         elif obj.isDerivedFrom("App::Part"):
-            for child in obj.OutList:
+            for child in real_obj.OutList:
                 objects.append(child)
             continue
         else:
