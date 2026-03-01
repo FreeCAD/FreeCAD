@@ -45,6 +45,10 @@ namespace Gui::StyleParameters
 class Corners
 {
 public:
+    explicit Corners(const Value& value)
+        : Corners(asGenericTuple(value))
+    {}
+
     explicit Corners(Tuple tuple)
         : tuple_(std::move(tuple))
     {

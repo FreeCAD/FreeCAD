@@ -50,20 +50,11 @@ public:
 
     explicit Insets(const Value& value)
         : tuple_([&value]() -> Tuple {
-            if (value.holds<Numeric>()) {
-                const auto& numeric = value.get<Numeric>();
-                return Tuple({
-                    Tuple::Element::named("top", numeric),
-                    Tuple::Element::named("right", numeric),
-                    Tuple::Element::named("bottom", numeric),
-                    Tuple::Element::named("left", numeric),
-                });
-            }
             if (value.holds<Tuple>()) {
                 const auto& tuple = value.get<Tuple>();
                 return tuple.kind == TupleKind::Generic ? expand(tuple) : tuple;
             }
-            THROWM(Base::TypeError, "Insets: value must be a Numeric or an inset Tuple");
+            return expand(asGenericTuple(value));
         }())
     {}
 
@@ -205,6 +196,10 @@ public:
         : Insets(std::move(tuple), TupleKind::Padding)
     {}
 
+    explicit Padding(const Value& value)
+        : Insets(asGenericTuple(value), TupleKind::Padding)
+    {}
+
     static constexpr TupleKind kind()
     {
         return TupleKind::Padding;
@@ -221,6 +216,10 @@ public:
         : Insets(std::move(tuple), TupleKind::Margins)
     {}
 
+    explicit Margins(const Value& value)
+        : Insets(asGenericTuple(value), TupleKind::Margins)
+    {}
+
     static constexpr TupleKind kind()
     {
         return TupleKind::Margins;
@@ -235,6 +234,10 @@ class BorderThickness: public Insets
 public:
     explicit BorderThickness(Tuple tuple)
         : Insets(std::move(tuple), TupleKind::BorderThickness)
+    {}
+
+    explicit BorderThickness(const Value& value)
+        : Insets(asGenericTuple(value), TupleKind::BorderThickness)
     {}
 
     static constexpr TupleKind kind()

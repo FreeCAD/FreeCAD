@@ -430,28 +430,25 @@ public:
      * @return The resolved value
      */
     template<typename T>
-        requires std::is_constructible_v<T, const Tuple&>
+        requires std::is_constructible_v<T, const Value&>
     T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
     {
         auto value = resolve(definition.name, std::move(context));
 
-        if (!value || !value->template holds<Tuple>()) {
+        if (!value) {
             return definition.defaultValue;
         }
 
-        const auto& tuple = value->template get<Tuple>();
-
-        // Reject tuples with a different typed kind (e.g., Margins when expecting Padding).
-        // Generic and matching kinds are accepted — the constructor handles expansion.
-        if (tuple.kind != TupleKind::Generic && tuple.kind != T::kind()) {
+        try {
+            return T(*value);
+        }
+        catch (const Base::Exception&) {
             return definition.defaultValue;
         }
-
-        return T(tuple);
     }
 
     template<typename T>
-        requires(!std::is_constructible_v<T, const Tuple&>)
+        requires(!std::is_constructible_v<T, const Value&>)
     T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
     {
         auto value = resolve(definition.name, std::move(context));

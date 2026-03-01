@@ -292,6 +292,20 @@ const T& Tuple::get(const std::string& name) const
 }
 
 /**
+ * @brief Wraps a Value in a 1-element unnamed generic Tuple if it is not already a Tuple.
+ *
+ * This allows scalar values (e.g. a bare Numeric) to be passed into constructors that
+ * expect a Tuple and use CSS-like expansion (1 element → all sides equal).
+ */
+inline Tuple asGenericTuple(const Value& value)
+{
+    if (value.holds<Tuple>()) {
+        return value.get<Tuple>();
+    }
+    return Tuple({Tuple::Element::unnamed(value)});
+}
+
+/**
  * @brief Defines a single parameter in a function signature.
  *
  * Used with ArgumentParser to declare positional/named parameters with optional defaults.

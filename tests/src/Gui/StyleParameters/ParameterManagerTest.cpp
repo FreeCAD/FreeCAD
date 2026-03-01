@@ -25,6 +25,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/Utilities.h>
+#include <Gui/StyleParameters/Insets.h>
 #include <Gui/StyleParameters/ParameterManager.h>
 
 using namespace Gui::StyleParameters;
@@ -462,4 +463,107 @@ TEST_F(ParameterManagerTest, QssFormattingRadialGradient)
         "background: qradialgradient(cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, "
         "stop:0 #ff0000, stop:1 #0000ff)"
     );
+}
+
+// --- Coercive resolve<T> tests ---
+
+// Bare Numeric "5px" should be coerced into a 1-element generic Tuple and expanded to all sides.
+TEST_F(ParameterManagerTest, ResolvePaddingFromBareNumeric)
+{
+    auto coerciveSource = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"BasePadding", "5px"}},
+        ParameterSource::Metadata {"Coercive Source"}
+    );
+    manager.addSource(coerciveSource.get());
+    sources.push_back(std::move(coerciveSource));
+
+    ParameterDefinition<Padding> definition {
+        .name = "BasePadding",
+        .defaultValue = Padding(Tuple({}, TupleKind::Padding)),
+    };
+
+    // Can't default-construct an empty Padding directly, so use a separate check for the result
+    auto result = manager.resolve(definition);
+    EXPECT_DOUBLE_EQ(result.top().value, 5.0);
+    EXPECT_EQ(result.top().unit, "px");
+    EXPECT_DOUBLE_EQ(result.right().value, 5.0);
+    EXPECT_DOUBLE_EQ(result.bottom().value, 5.0);
+    EXPECT_DOUBLE_EQ(result.left().value, 5.0);
+}
+
+// 1-element generic Tuple "(5px)" should be expanded to all sides equal.
+TEST_F(ParameterManagerTest, ResolvePaddingFromOneElementGenericTuple)
+{
+    auto coerciveSource = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"BasePadding", "(5px)"}},
+        ParameterSource::Metadata {"Coercive Source"}
+    );
+    manager.addSource(coerciveSource.get());
+    sources.push_back(std::move(coerciveSource));
+
+    ParameterDefinition<Padding> definition {
+        .name = "BasePadding",
+        .defaultValue = Padding(Tuple({}, TupleKind::Padding)),
+    };
+
+    auto result = manager.resolve(definition);
+    EXPECT_DOUBLE_EQ(result.top().value, 5.0);
+    EXPECT_EQ(result.top().unit, "px");
+    EXPECT_DOUBLE_EQ(result.right().value, 5.0);
+    EXPECT_DOUBLE_EQ(result.bottom().value, 5.0);
+    EXPECT_DOUBLE_EQ(result.left().value, 5.0);
+}
+
+// Typed "padding(5px)" Tuple should be passed through and expand to all sides equal.
+TEST_F(ParameterManagerTest, ResolvePaddingFromTypedPaddingTuple)
+{
+    auto coerciveSource = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"BasePadding", "padding(5px)"}},
+        ParameterSource::Metadata {"Coercive Source"}
+    );
+    manager.addSource(coerciveSource.get());
+    sources.push_back(std::move(coerciveSource));
+
+    ParameterDefinition<Padding> definition {
+        .name = "BasePadding",
+        .defaultValue = Padding(Tuple({}, TupleKind::Padding)),
+    };
+
+    auto result = manager.resolve(definition);
+    EXPECT_DOUBLE_EQ(result.top().value, 5.0);
+    EXPECT_EQ(result.top().unit, "px");
+    EXPECT_DOUBLE_EQ(result.right().value, 5.0);
+    EXPECT_DOUBLE_EQ(result.bottom().value, 5.0);
+    EXPECT_DOUBLE_EQ(result.left().value, 5.0);
+}
+
+// Kind mismatch: "margins(5px)" resolved as Padding should fall back to the default.
+TEST_F(ParameterManagerTest, ResolvePaddingFromWrongKindFallsBackToDefault)
+{
+    auto coerciveSource = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"BasePadding", "margins(5px)"}},
+        ParameterSource::Metadata {"Coercive Source"}
+    );
+    manager.addSource(coerciveSource.get());
+    sources.push_back(std::move(coerciveSource));
+
+    const Numeric defaultValue {.value = 99, .unit = "px"};
+    Padding defaultPadding(Tuple(
+        {
+            Tuple::Element::named("top", Value(defaultValue)),
+            Tuple::Element::named("right", Value(defaultValue)),
+            Tuple::Element::named("bottom", Value(defaultValue)),
+            Tuple::Element::named("left", Value(defaultValue)),
+        },
+        TupleKind::Padding
+    ));
+
+    ParameterDefinition<Padding> definition {
+        .name = "BasePadding",
+        .defaultValue = std::move(defaultPadding),
+    };
+
+    auto result = manager.resolve(definition);
+    EXPECT_DOUBLE_EQ(result.top().value, 99.0);
+    EXPECT_EQ(result.top().unit, "px");
 }

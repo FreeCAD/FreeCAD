@@ -263,6 +263,10 @@ protected:
 class LinearGradient: public Gradient
 {
 public:
+    explicit LinearGradient(const Value& value)
+        : LinearGradient(asGenericTuple(value))
+    {}
+
     explicit LinearGradient(Tuple tuple)
         : Gradient(
               tuple.kind == TupleKind::Generic ? expand(tuple) : std::move(tuple),
@@ -318,6 +322,10 @@ private:
 class RadialGradient: public Gradient
 {
 public:
+    explicit RadialGradient(const Value& value)
+        : RadialGradient(asGenericTuple(value))
+    {}
+
     explicit RadialGradient(Tuple tuple)
         : Gradient(
               tuple.kind == TupleKind::Generic ? expand(tuple) : std::move(tuple),
