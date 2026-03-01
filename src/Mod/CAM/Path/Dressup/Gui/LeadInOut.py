@@ -41,6 +41,7 @@ lead_styles = (
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
+    QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZFollow"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "No Retract"),
     QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Vertical"),
 )
@@ -191,22 +192,29 @@ class ObjectDressup:
         if obj.RadiusOut <= 0:
             obj.RadiusOut = 1
 
-        nonZeroAngleStyles = ("Arc", "Arc3d", "ArcZ", "ArcZFollow", "Helix", "LineZ")
+        nonZeroAngleStyles = ("Arc", "Arc3d", "ArcZ", "ArcZFollow", "Helix", "LineZ", "LineZFollow")
         limit_angle_in = 1 if obj.StyleIn in nonZeroAngleStyles else 0
         limit_angle_out = 1 if obj.StyleOut in nonZeroAngleStyles else 0
+
         if obj.AngleIn > 180:
             obj.AngleIn = 180
         if obj.AngleIn < limit_angle_in:
             obj.AngleIn = limit_angle_in
+
         if obj.StyleIn in ("ArcZ", "ArcZFollow") and obj.AngleIn > 179:
             obj.AngleIn = 179
+        elif obj.StyleIn in ("LineZFollow") and obj.AngleIn > 89:
+            obj.AngleIn = 89
 
         if obj.AngleOut > 180:
             obj.AngleOut = 180
         if obj.AngleOut < limit_angle_out:
             obj.AngleOut = limit_angle_out
+
         if obj.StyleOut in ("ArcZ", "ArcZFollow") and obj.AngleOut > 179:
             obj.AngleOut = 179
+        elif obj.StyleOut in ("LineZFollow") and obj.AngleOut > 89:
+            obj.AngleOut = 89
 
         # Use shared hideModes from TaskDressupLeadInOut
         for k, v in TaskDressupLeadInOut.hideModes.items():
@@ -532,6 +540,67 @@ class ObjectDressup:
 
         return stepAngle
 
+    # Create line with move Down and follow profile
+    def createLineZIn(self, obj, begin, end, feedRate):
+        z = begin.z
+        length = begin.distanceToPoint(end)
+        angle = math.asin((begin.z - end.z) / length)
+        distance = length * math.cos(angle)
+        offset = obj.OffsetIn.Value
+        cmds = []
+        if distance + offset > 0:
+            cmds.extend([copy.deepcopy(cmd) for cmd in self.extendTravelIn(distance + offset)])
+            if offset > 0:
+                cmds = self.cutTravelEnd(cmds, offset)
+        if offset < 0:
+            # need process as closed profile even if profile is open
+            cmds.extend([copy.deepcopy(cmd) for cmd in self.extendTravelOut(abs(offset), True)])
+            if distance + offset < 0:
+                cmds = self.cutTravelBegin(cmds, abs(distance + offset))
+
+        for i, cmd in enumerate(cmds):
+            distance -= cmd.pathLength()
+            cmd.begin.z = z
+            if (i == len(cmds) - 1) or Path.Geom.isRoughly(distance, 0) or distance < 0:
+                # forcing end position for last command to exclude precision errors
+                cmd.param["X"] = end.x
+                cmd.param["Y"] = end.y
+                cmd.param["Z"] = end.z
+                return cmds[: i + 1]
+            z = end.z + math.tan(angle) * distance
+            cmd.param["Z"] = z
+        return cmds
+
+    # Create line with move Up and follow profile
+    def createLineZOut(self, obj, begin, end, feedRate):
+        z = begin.z
+        length = begin.distanceToPoint(end)
+        angle = math.asin((end.z - begin.z) / length)
+        distance = length * math.cos(angle)
+        offset = obj.OffsetOut.Value
+        cmds = []
+        if offset < 0:
+            # need process as closed profile even if profile is open
+            cmds.extend([copy.deepcopy(cmd) for cmd in self.extendTravelIn(abs(offset), True)])
+            if distance + offset < 0:
+                cmds = self.cutTravelEnd(cmds, abs(distance + offset))
+        if distance + offset > 0:
+            cmds.extend([copy.deepcopy(cmd) for cmd in self.extendTravelOut(distance + offset)])
+            if offset > 0:
+                cmds = self.cutTravelBegin(cmds, offset)
+
+        dist = 0
+        for i, cmd in enumerate(cmds):
+            dist += cmd.pathLength()
+            cmd.begin.z = z
+            if (i == len(cmds) - 1) or Path.Geom.isRoughly(dist, distance) or dist > distance:
+                # forcing end position for last command to exclude precision errors
+                cmd.param["Z"] = end.z
+                return cmds[: i + 1]
+            z = begin.z + math.tan(angle) * dist
+            cmd.param["Z"] = z
+        return cmds
+
     # Create vertical arc with move Down by line segments
     def createArcZIn(self, begin, end, radius, feedRate):
         commands = []
@@ -717,7 +786,7 @@ class ObjectDressup:
 
             # prepend "LineZ" style lead-in - vertical inclined line
             # Should be applied only on straight Path segment
-            elif styleIn == "LineZ":
+            elif styleIn in ("LineZ", "LineZFollow"):
                 # tangent vector in XY plane
                 # normal vector is vertical
                 normalLengthMax = self.safeHeight - begin.z
@@ -730,6 +799,8 @@ class ObjectDressup:
                 lineBegin = begin + tangent + normal
                 if styleIn == "LineZ":
                     lead.append(self.createStraightMove(lineBegin, begin, self.entranceFeed))
+                else:
+                    lead.extend(self.createLineZIn(obj, lineBegin, begin, self.entranceFeed))
 
             # prepend "ArcZ" style lead-in - vertical Arc
             # Should be applied only on straight Path segment or open profile
@@ -857,7 +928,7 @@ class ObjectDressup:
 
             # append "LineZ" style lead-out - vertical inclined line
             # Should be apply only on straight Path segment
-            elif obj.StyleOut == "LineZ":
+            elif obj.StyleOut in ("LineZ", "LineZFollow"):
                 # tangent vector in XY plane
                 # normal vector is vertical
                 normalLengthMax = self.startDepth - end.z
@@ -870,6 +941,8 @@ class ObjectDressup:
                 lineEnd = end + tangent + normal
                 if obj.StyleOut == "LineZ":
                     lead.append(self.createStraightMove(end, lineEnd, self.exitFeed))
+                else:
+                    lead.extend(self.createLineZOut(obj, end, lineEnd, self.exitFeed))
 
             # prepend "ArcZ" style lead-out - vertical Arc
             # Should be apply only on straight Path segment
@@ -1355,6 +1428,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             "ArcZ",
             "ArcZFollow",
             "LineZ",
+            "LineZFollow",
             "Vertical",
             "Perpendicular",
             "Tangent",
