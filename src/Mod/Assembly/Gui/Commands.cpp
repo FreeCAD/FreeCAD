@@ -137,8 +137,7 @@ void CmdAssemblyLinkSelectLinked::activated(int iMsg)
     if (guiDoc) {
         // Try to activate the view containing the object
         Gui::ViewProvider* vp = guiDoc->getViewProvider(linkedObj);
-        auto vpDoc = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
-        if (vpDoc) {
+        if (auto vpDoc = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp)) {
             guiDoc->setActiveView(vpDoc);
         }
     }
