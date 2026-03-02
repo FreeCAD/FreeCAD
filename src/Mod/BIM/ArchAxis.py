@@ -61,6 +61,182 @@ else:
     # \endcond
 
 
+def _get_axis_number(vobj, num):
+    """Return the bubble number string for an Axis index."""
+    chars = "abcdefghijklmnopqrstuvwxyz"
+    roman = (
+        ("M", 1000),
+        ("CM", 900),
+        ("D", 500),
+        ("CD", 400),
+        ("C", 100),
+        ("XC", 90),
+        ("L", 50),
+        ("XL", 40),
+        ("X", 10),
+        ("IX", 9),
+        ("V", 5),
+        ("IV", 4),
+        ("I", 1),
+    )
+    if hasattr(vobj.Object, "CustomNumber") and vobj.Object.CustomNumber:
+        return vobj.Object.CustomNumber
+    elif hasattr(vobj, "NumberingStyle"):
+        if vobj.NumberingStyle == "1,2,3":
+            return str(num + 1)
+        elif vobj.NumberingStyle == "01,02,03":
+            return str(num + 1).zfill(2)
+        elif vobj.NumberingStyle == "001,002,003":
+            return str(num + 1).zfill(3)
+        elif vobj.NumberingStyle == "A,B,C":
+            result = ""
+            base = num // 26
+            if base:
+                result += chars[base].upper()
+            remainder = num % 26
+            result += chars[remainder].upper()
+            return result
+        elif vobj.NumberingStyle == "a,b,c":
+            result = ""
+            base = num // 26
+            if base:
+                result += chars[base]
+            remainder = num % 26
+            result += chars[remainder]
+            return result
+        elif vobj.NumberingStyle == "I,II,III":
+            result = ""
+            n = num + 1
+            for numeral, integer in roman:
+                while n >= integer:
+                    result += numeral
+                    n -= integer
+            return result
+        elif vobj.NumberingStyle == "L0,L1,L2":
+            return "L" + str(num)
+    return str(num + 1)
+
+
+def get_axis_bubble_data(obj, vobj):
+    """Compute Axis bubble shapes and text positions from object data.
+
+    Returns:
+        tuple[list[Part.Shape], list[tuple[str, FreeCAD.Vector]]]
+    """
+    bubble_shapes = []
+    bubble_texts = []
+    if not obj or not vobj or not hasattr(obj, "Shape") or obj.Shape.isNull():
+        return bubble_shapes, bubble_texts
+    if not obj.Shape.Edges:
+        return bubble_shapes, bubble_texts
+
+    pos = ["Start"]
+    if hasattr(vobj, "BubblePosition"):
+        if vobj.BubblePosition in ["Both", "Arrow left", "Arrow right", "Bar left", "Bar right"]:
+            pos = ["Start", "End"]
+        elif vobj.BubblePosition == "None":
+            pos = []
+        else:
+            pos = [vobj.BubblePosition]
+
+    e = len(obj.Shape.Edges)
+    if getattr(obj, "Limit", 0):
+        e //= 2
+    n = len(getattr(obj, "Distances", []))
+    if not n:
+        n = e
+
+    num = 0
+    if hasattr(vobj, "StartNumber") and vobj.StartNumber > 1:
+        num = vobj.StartNumber - 1
+    alt = False
+    both_mode = hasattr(vobj, "BubblePosition") and vobj.BubblePosition in [
+        "Both",
+        "Arrow left",
+        "Arrow right",
+        "Bar left",
+        "Bar right",
+    ]
+
+    for i in range(min(e, n)):
+        for p in pos:
+            if getattr(obj, "Limit", 0):
+                verts = [
+                    obj.Placement.inverse().multVec(obj.Shape.Edges[i * 2].Vertexes[0].Point),
+                    obj.Placement.inverse().multVec(obj.Shape.Edges[i * 2 + 1].Vertexes[0].Point),
+                ]
+            else:
+                verts = [obj.Placement.inverse().multVec(v.Point) for v in obj.Shape.Edges[i].Vertexes]
+
+            arrow = None
+            if p == "Start":
+                p1 = verts[0]
+                p2 = verts[1]
+                if vobj.BubblePosition.endswith("left"):
+                    arrow = True
+                elif vobj.BubblePosition.endswith("right"):
+                    arrow = False
+            else:
+                p1 = verts[1]
+                p2 = verts[0]
+                if vobj.BubblePosition.endswith("left"):
+                    arrow = False
+                elif vobj.BubblePosition.endswith("right"):
+                    arrow = True
+
+            dv = p2.sub(p1)
+            dv.normalize()
+            rad = vobj.BubbleSize.Value / 2 if hasattr(vobj.BubbleSize, "Value") else vobj.BubbleSize / 2
+            center = p2.add(Vector(dv).multiply(rad))
+            normal = obj.Placement.Rotation.multVec(Vector(0, 0, 1))
+            chord = dv.cross(normal)
+
+            if arrow is True:
+                p3 = p2.add(Vector(chord).multiply(rad / 2).negative())
+                if vobj.BubblePosition.startswith("Arrow"):
+                    p4 = p3.add(Vector(dv).multiply(rad * 2).negative())
+                    p5 = p2.add(Vector(dv).multiply(rad).negative()).add(
+                        Vector(chord).multiply(rad * 1.5).negative()
+                    )
+                    pts = [tuple(p3), tuple(p5), tuple(p4), tuple(p3)]
+                    center = p5.add(Vector(chord).multiply(rad * 2.5))
+                else:
+                    p4 = p3.add(Vector(dv).multiply(rad / 2).negative())
+                    p5 = p4.add(Vector(chord).multiply(rad * 1.5).negative())
+                    p6 = p5.add(Vector(dv).multiply(rad / 2))
+                    pts = [tuple(p3), tuple(p6), tuple(p5), tuple(p4), tuple(p3)]
+                    center = p5.add(Vector(chord).multiply(rad * 3))
+                cir = Part.makePolygon(pts)
+            elif arrow is False:
+                p3 = p2.add(Vector(chord).multiply(rad / 2))
+                if vobj.BubblePosition.startswith("Arrow"):
+                    p4 = p3.add(Vector(dv).multiply(rad * 2).negative())
+                    p5 = p2.add(Vector(dv).multiply(rad).negative()).add(Vector(chord).multiply(rad * 1.5))
+                    pts = [tuple(p3), tuple(p4), tuple(p5), tuple(p3)]
+                    center = p5.add(Vector(chord).multiply(rad * 2.5).negative())
+                else:
+                    p4 = p3.add(Vector(dv).multiply(rad / 2).negative())
+                    p5 = p4.add(Vector(chord).multiply(rad * 1.5))
+                    p6 = p5.add(Vector(dv).multiply(rad / 2))
+                    pts = [tuple(p3), tuple(p4), tuple(p5), tuple(p6), tuple(p3)]
+                    center = p5.add(Vector(chord).multiply(rad * 3).negative())
+                cir = Part.makePolygon(pts)
+            else:
+                cir = Part.makeCircle(rad, center)
+
+            cir.Placement = obj.Placement
+            bubble_shapes.append(cir)
+            bubble_texts.append((_get_axis_number(vobj, num), obj.Placement.multVec(center)))
+
+            num += 1
+            if both_mode:
+                if not alt:
+                    num -= 1
+                alt = not alt
+
+    return bubble_shapes, bubble_texts
+
+
 class _Axis:
     "The Axis object"
 
@@ -701,61 +877,7 @@ class _ViewProviderAxis:
                     self.labelset.addChild(self.labels)
 
     def getNumber(self, vobj, num):
-
-        chars = "abcdefghijklmnopqrstuvwxyz"
-        roman = (
-            ("M", 1000),
-            ("CM", 900),
-            ("D", 500),
-            ("CD", 400),
-            ("C", 100),
-            ("XC", 90),
-            ("L", 50),
-            ("XL", 40),
-            ("X", 10),
-            ("IX", 9),
-            ("V", 5),
-            ("IV", 4),
-            ("I", 1),
-        )
-        if hasattr(vobj.Object, "CustomNumber") and vobj.Object.CustomNumber:
-            return vobj.Object.CustomNumber
-        elif hasattr(vobj, "NumberingStyle"):
-            if vobj.NumberingStyle == "1,2,3":
-                return str(num + 1)
-            elif vobj.NumberingStyle == "01,02,03":
-                return str(num + 1).zfill(2)
-            elif vobj.NumberingStyle == "001,002,003":
-                return str(num + 1).zfill(3)
-            elif vobj.NumberingStyle == "A,B,C":
-                result = ""
-                base = num // 26
-                if base:
-                    result += chars[base].upper()
-                remainder = num % 26
-                result += chars[remainder].upper()
-                return result
-            elif vobj.NumberingStyle == "a,b,c":
-                result = ""
-                base = num // 26
-                if base:
-                    result += chars[base]
-                remainder = num % 26
-                result += chars[remainder]
-                return result
-            elif vobj.NumberingStyle == "I,II,III":
-                result = ""
-                n = num
-                n += 1
-                for numeral, integer in roman:
-                    while n >= integer:
-                        result += numeral
-                        n -= integer
-                return result
-            elif vobj.NumberingStyle == "L0,L1,L2":
-                return "L" + str(num)
-        else:
-            return str(num + 1)
+        return _get_axis_number(vobj, num)
 
     def getTextData(self):
 
