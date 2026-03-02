@@ -116,6 +116,7 @@
 #include "PointPy.h"
 #include "PrimitiveFeature.h"
 #include "RectangularTrimmedSurfacePy.h"
+#include "RestrictedCurvePy.h"
 #include "SpherePy.h"
 #include "SurfaceOfExtrusionPy.h"
 #include "SurfaceOfRevolutionPy.h"
@@ -315,6 +316,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::BezierCurvePy        ::Type,partModule,"BezierCurve");
     Base::Interpreter().addType(&Part::BSplineCurvePy       ::Type,partModule,"BSplineCurve");
     Base::Interpreter().addType(&Part::OffsetCurvePy        ::Type,partModule,"OffsetCurve");
+    Base::Interpreter().addType(&Part::RestrictedCurvePy    ::Type,partModule,"RestrictedCurve");
 
     Base::Interpreter().addType(&Part::PlanePy              ::Type,partModule,"Plane");
     Base::Interpreter().addType(&Part::CylinderPy           ::Type,partModule,"Cylinder");
