@@ -29,6 +29,7 @@
 Upgrades simple 2D objects to more complex objects until it reaches
 Draft scripted objects. For example, an edge to a wire, and to a Draft Line.
 """
+
 ## @package gui_upgrade
 # \ingroup draftguitools
 # \brief Provides GUI tools to upgrade objects.

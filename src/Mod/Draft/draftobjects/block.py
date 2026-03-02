@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Block object."""
+
 ## @package block
 # \ingroup draftobjects
 # \brief Provides the object code for the Block object.

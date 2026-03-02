@@ -49,7 +49,6 @@ from FreeCADGui import Workbench
 # needed imports
 from femguiutils.migrate_gui import FemMigrateGui
 
-
 # migrate old FEM Gui objects
 sys.meta_path.append(FemMigrateGui())
 

@@ -110,11 +110,12 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                 return nullptr;
             }
         }
-        else if (geo->is<Part::GeomPoint>() || geo->is<Part::GeomCircle>()
-                 || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfCircle>()
-                 || geo->is<Part::GeomArcOfEllipse>() || geo->is<Part::GeomArcOfHyperbola>()
-                 || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
-                 || geo->is<Part::GeomLineSegment>()) {
+        else if (
+            geo->is<Part::GeomPoint>() || geo->is<Part::GeomCircle>() || geo->is<Part::GeomEllipse>()
+            || geo->is<Part::GeomArcOfCircle>() || geo->is<Part::GeomArcOfEllipse>()
+            || geo->is<Part::GeomArcOfHyperbola>() || geo->is<Part::GeomArcOfParabola>()
+            || geo->is<Part::GeomBSplineCurve>() || geo->is<Part::GeomLineSegment>()
+        ) {
             ret = this->getSketchObjectPtr()->addGeometry(geo, isConstruction);
         }
         else {
@@ -135,7 +136,8 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
 
                 // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
                 if (geo->is<Part::GeomTrimmedCurve>()) {
-                    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
+                    Handle(Geom_TrimmedCurve)
+                        trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
                     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
                     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
                     if (!circle.IsNull()) {
@@ -159,11 +161,13 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                         return nullptr;
                     }
                 }
-                else if (geo->is<Part::GeomPoint>() || geo->is<Part::GeomCircle>()
-                         || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfCircle>()
-                         || geo->is<Part::GeomArcOfEllipse>() || geo->is<Part::GeomArcOfHyperbola>()
-                         || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
-                         || geo->is<Part::GeomLineSegment>()) {
+                else if (
+                    geo->is<Part::GeomPoint>() || geo->is<Part::GeomCircle>()
+                    || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfCircle>()
+                    || geo->is<Part::GeomArcOfEllipse>() || geo->is<Part::GeomArcOfHyperbola>()
+                    || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
+                    || geo->is<Part::GeomLineSegment>()
+                ) {
                     geoList.push_back(geo);
                 }
                 else {
@@ -465,7 +469,9 @@ PyObject* SketchObjectPy::delConstraints(PyObject* args)
     PyObject* updateGeometry = Py_True;
     PyObject* noSolve = Py_False;
 
-    if (!PyArg_ParseTuple(args, "O|O!O!", &pcObj, &PyBool_Type, &updateGeometry, &PyBool_Type, &noSolve)) {
+    if (
+        !PyArg_ParseTuple(args, "O|O!O!", &pcObj, &PyBool_Type, &updateGeometry, &PyBool_Type, &noSolve)
+    ) {
         return nullptr;
     }
 
@@ -1325,7 +1331,9 @@ PyObject* SketchObjectPy::moveGeometry(PyObject* args)
     int GeoId, PointType;
     int relative = 0;
 
-    if (!PyArg_ParseTuple(args, "iiO!|i", &GeoId, &PointType, &(Base::VectorPy::Type), &pcObj, &relative)) {
+    if (
+        !PyArg_ParseTuple(args, "iiO!|i", &GeoId, &PointType, &(Base::VectorPy::Type), &pcObj, &relative)
+    ) {
         return nullptr;
     }
 
@@ -1626,7 +1634,9 @@ PyObject* SketchObjectPy::addCopy(PyObject* args)
     PyObject *pcObj, *pcVect;
     PyObject* clone = Py_False;
 
-    if (!PyArg_ParseTuple(args, "OO!|O!", &pcObj, &(Base::VectorPy::Type), &pcVect, &PyBool_Type, &clone)) {
+    if (
+        !PyArg_ParseTuple(args, "OO!|O!", &pcObj, &(Base::VectorPy::Type), &pcVect, &PyBool_Type, &clone)
+    ) {
         return nullptr;
     }
 
@@ -2031,7 +2041,9 @@ PyObject* SketchObjectPy::autoconstraint(PyObject* args)
     PyObject* includeconstruction = Py_True;
 
 
-    if (!PyArg_ParseTuple(args, "|ddO!", &precision, &angleprecision, &PyBool_Type, &includeconstruction)) {
+    if (
+        !PyArg_ParseTuple(args, "|ddO!", &precision, &angleprecision, &PyBool_Type, &includeconstruction)
+    ) {
         return nullptr;
     }
 

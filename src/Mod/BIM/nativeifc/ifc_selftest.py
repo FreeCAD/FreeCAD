@@ -45,7 +45,6 @@ from . import ifc_psets
 from . import ifc_objects
 from . import ifc_generator
 
-
 IFC_FILE_PATH = None  # downloaded IFC file path
 FCSTD_FILE_PATH = None  # saved FreeCAD file
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")

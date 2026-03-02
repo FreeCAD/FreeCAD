@@ -56,9 +56,8 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
 {
     static const std::array<const char*, 1> keywords_n {nullptr};
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-            getGeomHyperbolaPtr()->handle()
-        );
+        Handle(Geom_Hyperbola)
+            hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
         hyperbola->SetMajorRadius(2.0);
         hyperbola->SetMinorRadius(1.0);
         return 0;
@@ -69,12 +68,10 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* pHypr;
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_e, &(HyperbolaPy::Type), &pHypr)) {
         HyperbolaPy* pHyperbola = static_cast<HyperbolaPy*>(pHypr);
-        Handle(Geom_Hyperbola) Hypr1 = Handle(Geom_Hyperbola)::DownCast(
-            pHyperbola->getGeomHyperbolaPtr()->handle()
-        );
-        Handle(Geom_Hyperbola) Hypr2 = Handle(Geom_Hyperbola)::DownCast(
-            this->getGeomHyperbolaPtr()->handle()
-        );
+        Handle(Geom_Hyperbola)
+            Hypr1 = Handle(Geom_Hyperbola)::DownCast(pHyperbola->getGeomHyperbolaPtr()->handle());
+        Handle(Geom_Hyperbola)
+            Hypr2 = Handle(Geom_Hyperbola)::DownCast(this->getGeomHyperbolaPtr()->handle());
         Hypr2->SetHypr(Hypr1->Hypr());
         return 0;
     }
@@ -107,9 +104,8 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-            getGeomHyperbolaPtr()->handle()
-        );
+        Handle(Geom_Hyperbola)
+            hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
         hyperbola->SetHypr(me.Value()->Hypr());
         return 0;
     }
@@ -135,9 +131,8 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-            getGeomHyperbolaPtr()->handle()
-        );
+        Handle(Geom_Hyperbola)
+            hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
         hyperbola->SetHypr(me.Value()->Hypr());
         return 0;
     }
@@ -155,58 +150,51 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
 
 Py::Float HyperbolaPy::getMajorRadius() const
 {
-    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-        getGeomHyperbolaPtr()->handle()
-    );
+    Handle(Geom_Hyperbola)
+        hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     return Py::Float(hyperbola->MajorRadius());
 }
 
 void HyperbolaPy::setMajorRadius(Py::Float arg)
 {
-    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-        getGeomHyperbolaPtr()->handle()
-    );
+    Handle(Geom_Hyperbola)
+        hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     hyperbola->SetMajorRadius((double)arg);
 }
 
 Py::Float HyperbolaPy::getMinorRadius() const
 {
-    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-        getGeomHyperbolaPtr()->handle()
-    );
+    Handle(Geom_Hyperbola)
+        hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     return Py::Float(hyperbola->MinorRadius());
 }
 
 void HyperbolaPy::setMinorRadius(Py::Float arg)
 {
-    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-        getGeomHyperbolaPtr()->handle()
-    );
+    Handle(Geom_Hyperbola)
+        hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     hyperbola->SetMinorRadius((double)arg);
 }
 
 Py::Float HyperbolaPy::getFocal() const
 {
-    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-        getGeomHyperbolaPtr()->handle()
-    );
+    Handle(Geom_Hyperbola)
+        hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     return Py::Float(hyperbola->Focal());
 }
 
 Py::Object HyperbolaPy::getFocus1() const
 {
-    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-        getGeomHyperbolaPtr()->handle()
-    );
+    Handle(Geom_Hyperbola)
+        hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     gp_Pnt loc = hyperbola->Focus1();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }
 
 Py::Object HyperbolaPy::getFocus2() const
 {
-    Handle(Geom_Hyperbola) hyperbola = Handle(Geom_Hyperbola)::DownCast(
-        getGeomHyperbolaPtr()->handle()
-    );
+    Handle(Geom_Hyperbola)
+        hyperbola = Handle(Geom_Hyperbola)::DownCast(getGeomHyperbolaPtr()->handle());
     gp_Pnt loc = hyperbola->Focus2();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
 }

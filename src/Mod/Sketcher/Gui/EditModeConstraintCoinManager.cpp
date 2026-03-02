@@ -1147,8 +1147,9 @@ Restart:
                                 pos = lineSeg->getStartPoint() + dir * length;
                                 relPos = norm * 1;  // TODO Huh?
                             }
-                            else if (geo2->is<Part::GeomEllipse>()
-                                     || geo2->is<Part::GeomArcOfEllipse>()) {
+                            else if (
+                                geo2->is<Part::GeomEllipse>() || geo2->is<Part::GeomArcOfEllipse>()
+                            ) {
 
                                 Base::Vector3d center;
                                 if (geo2->is<Part::GeomEllipse>()) {
@@ -1205,8 +1206,9 @@ Restart:
                             pos = circle->getCenter() + dir * circle->getRadius();
                             relPos = dir * 1;
                         }
-                        else if (geo1->is<Part::GeomArcOfCircle>()
-                                 && geo2->is<Part::GeomArcOfCircle>()) {
+                        else if (
+                            geo1->is<Part::GeomArcOfCircle>() && geo2->is<Part::GeomArcOfCircle>()
+                        ) {
                             const Part::GeomArcOfCircle* arc1
                                 = static_cast<const Part::GeomArcOfCircle*>(geo1);
                             const Part::GeomArcOfCircle* arc2

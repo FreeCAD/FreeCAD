@@ -790,8 +790,10 @@ void DSHLineController::addConstraints()
                 constraintp4DistanceY();
             }
         }
-        else if (handler->constructionMethod()
-                 == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle) {
+        else if (
+            handler->constructionMethod()
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle
+        ) {
             if (p3set) {
                 constraintp3length();
             }
@@ -852,8 +854,10 @@ void DSHLineController::addConstraints()
                 constraintp4DistanceY();
             }
         }
-        else if (handler->constructionMethod()
-                 == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle) {
+        else if (
+            handler->constructionMethod()
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthAngle
+        ) {
 
             int DoFs = startpointinfo.getDoFs();
             DoFs += endpointinfo.getDoFs();

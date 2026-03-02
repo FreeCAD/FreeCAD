@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Circle object."""
+
 ## @package circle
 # \ingroup draftobjects
 # \brief Provides the object code for the Circle object.

@@ -11,7 +11,6 @@ import model.generateModel_Python
 import templates.templateModule
 import templates.templateClassPyExport
 
-
 Usage = """generate - generates a FreeCAD Module out of an XML or Python model
 
 Usage:

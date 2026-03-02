@@ -47,7 +47,6 @@ import FreeCAD
 # needed imports
 from femtools.migrate_app import FemMigrateApp
 
-
 # migrate old FEM App objects
 sys.meta_path.append(FemMigrateApp())
 

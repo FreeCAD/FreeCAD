@@ -349,15 +349,9 @@ private:
         PyObject* shape;
         PyObject* enforce;
         double prec = 0.0;
-        if (!PyArg_ParseTuple(
-                args.ptr(),
-                "O!O!|d",
-                &TopoShapePy::Type,
-                &shape,
-                &PyBool_Type,
-                &enforce,
-                &prec
-            )) {
+        if (
+            !PyArg_ParseTuple(args.ptr(), "O!O!|d", &TopoShapePy::Type, &shape, &PyBool_Type, &enforce, &prec)
+        ) {
             throw Py::Exception();
         }
 
@@ -1899,7 +1893,9 @@ private:
     {
         double pitch, height, radius, angle = -1.0;
         PyObject* pleft = Py_False;
-        if (!PyArg_ParseTuple(args.ptr(), "ddd|dO!", &pitch, &height, &radius, &angle, &(PyBool_Type), &pleft)) {
+        if (
+            !PyArg_ParseTuple(args.ptr(), "ddd|dO!", &pitch, &height, &radius, &angle, &(PyBool_Type), &pleft)
+        ) {
             throw Py::RuntimeError("Part.makeLongHelix fails on parms");
         }
 
@@ -2257,15 +2253,9 @@ private:
         PyObject* shape;
         PyObject* list;
         PyObject* checkInterior = Py_True;
-        if (!PyArg_ParseTuple(
-                args.ptr(),
-                "O!O|O!",
-                &(TopoShapePy::Type),
-                &shape,
-                &list,
-                &PyBool_Type,
-                &checkInterior
-            )) {
+        if (
+            !PyArg_ParseTuple(args.ptr(), "O!O|O!", &(TopoShapePy::Type), &shape, &list, &PyBool_Type, &checkInterior)
+        ) {
             throw Py::Exception();
         }
 

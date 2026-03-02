@@ -188,8 +188,10 @@ void SoFCSelection::doAction(SoAction* action)
                     }
                 }
             }
-            else if (selaction->getType() == Gui::SoSelectionElementAction::None
-                     || selaction->getType() == Gui::SoSelectionElementAction::Remove) {
+            else if (
+                selaction->getType() == Gui::SoSelectionElementAction::None
+                || selaction->getType() == Gui::SoSelectionElementAction::Remove
+            ) {
                 SelContextPtr ctx
                     = Gui::SoFCSelectionRoot::getActionContext(action, this, selContext, false);
                 if (ctx && ctx->isSelected()) {

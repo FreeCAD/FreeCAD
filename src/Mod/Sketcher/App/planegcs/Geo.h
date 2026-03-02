@@ -249,8 +249,7 @@ public:
         double b,
         double db,
         double& ret_dRadMaj
-    ) const
-        = 0;
+    ) const = 0;
     virtual double getRadMaj(double* derivparam, double& ret_dRadMaj) const = 0;
     virtual double getRadMaj() const = 0;
     // DeriVector2 CalculateNormal(Point &p, double* derivparam = 0) = 0;

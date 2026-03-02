@@ -31,6 +31,7 @@ These include linear dimensions, including radius and diameter,
 as well as angular dimensions.
 They inherit their behavior from the base Annotation viewprovider.
 """
+
 ## @package view_dimension
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Dimension objects.

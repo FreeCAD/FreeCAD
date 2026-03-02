@@ -1131,8 +1131,8 @@ Handle(Geom_BSplineCurve) getSplineFromPolesAndKnots(struct SplineData& sd)
     }
 
     Standard_Boolean periodic = sd.flag == 2;
-    Handle(Geom_BSplineCurve) geom
-        = new Geom_BSplineCurve(occpoles, occweights, occknots, occmults, sd.degree, periodic);
+    Handle(Geom_BSplineCurve)
+        geom = new Geom_BSplineCurve(occpoles, occweights, occknots, occmults, sd.degree, periodic);
     return geom;
 }
 
@@ -1574,9 +1574,11 @@ std::string ImpExpDxfRead::Deformat(const char* text)
                     longescape = false;
                 }
             }
-            else if ((ch == 'H') || (ch == 'h') || (ch == 'Q') || (ch == 'q') || (ch == 'W')
-                     || (ch == 'w') || (ch == 'F') || (ch == 'f') || (ch == 'A') || (ch == 'a')
-                     || (ch == 'C') || (ch == 'c') || (ch == 'T') || (ch == 't')) {
+            else if (
+                (ch == 'H') || (ch == 'h') || (ch == 'Q') || (ch == 'q') || (ch == 'W')
+                || (ch == 'w') || (ch == 'F') || (ch == 'f') || (ch == 'A') || (ch == 'a')
+                || (ch == 'C') || (ch == 'c') || (ch == 'T') || (ch == 't')
+            ) {
                 longescape = true;
             }
             else {

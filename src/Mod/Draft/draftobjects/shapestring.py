@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the ShapeString object."""
+
 ## @package shapestring
 # \ingroup draftobjects
 # \brief Provides the object code for the ShapeString object.

@@ -585,8 +585,10 @@ void PythonConsole::keyPressEvent(QKeyEvent* e)
                     || e->matches(QKeySequence::SelectAll)) {
                     PythonTextEditor::keyPressEvent(e);
                 }
-                else if (!e->text().isEmpty()
-                         && (e->modifiers() == Qt::NoModifier || e->modifiers() == Qt::ShiftModifier)) {
+                else if (
+                    !e->text().isEmpty()
+                    && (e->modifiers() == Qt::NoModifier || e->modifiers() == Qt::ShiftModifier)
+                ) {
                     this->moveCursor(QTextCursor::End);
                     PythonTextEditor::keyPressEvent(e);
                 }

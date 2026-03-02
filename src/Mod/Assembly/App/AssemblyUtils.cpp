@@ -222,8 +222,7 @@ DistanceType getDistanceType(App::DocumentObject* joint)
             }
         }
 
-        else if (isFaceType(obj1, elt1, GeomAbs_Cylinder)
-                 || isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
+        else if (isFaceType(obj1, elt1, GeomAbs_Cylinder) || isFaceType(obj2, elt2, GeomAbs_Cylinder)) {
             if (!isFaceType(obj1, elt1, GeomAbs_Cylinder)) {
                 swapJCS(joint);  // make sure cylinder is first if its not 2 cylinders.
                 std::swap(elt1, elt2);
@@ -789,8 +788,9 @@ void collectComponentsRecursively(
             }
         }
 
-        else if (obj->isDerivedFrom<App::GeoFeature>()
-                 && !obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
+        else if (
+            obj->isDerivedFrom<App::GeoFeature>() && !obj->isDerivedFrom<App::LocalCoordinateSystem>()
+        ) {
             results.push_back(obj);
         }
     }

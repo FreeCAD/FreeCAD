@@ -32,6 +32,7 @@ in such a way that a callback would crash `Coin`.
 The `ToDo` class essentially calls `QtCore.QTimer.singleShot`
 to execute the instructions stored in internal lists.
 """
+
 ## @package todo
 # \ingroup draftutils
 # \brief Provides the ToDo static class to run commands with a time delay.

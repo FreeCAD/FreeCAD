@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Shape2dView object."""
+
 ## @package shape2dview
 # \ingroup draftobjects
 # \brief Provides the object code for the Shape2dView object.

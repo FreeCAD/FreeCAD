@@ -1285,8 +1285,10 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event)
                     }
                 }
             }
-            else if (mouse_event->type() == QEvent::MouseButtonPress
-                     && mouse_event->button() == Qt::LeftButton && !dragInProgress) {
+            else if (
+                mouse_event->type() == QEvent::MouseButtonPress
+                && mouse_event->button() == Qt::LeftButton && !dragInProgress
+            ) {
                 if (indexResizable(mouse_event->pos()).isValid()) {
                     dragInProgress = true;
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -1298,8 +1300,10 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event)
                     return true;
                 }
             }
-            else if (mouse_event->type() == QEvent::MouseButtonRelease
-                     && mouse_event->button() == Qt::LeftButton && dragInProgress) {
+            else if (
+                mouse_event->type() == QEvent::MouseButtonRelease
+                && mouse_event->button() == Qt::LeftButton && dragInProgress
+            ) {
                 dragInProgress = false;
 
                 auto hGrp = App::GetApplication().GetParameterGroupByPath(

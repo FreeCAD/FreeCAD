@@ -160,9 +160,7 @@ class Centroid(PostProcessor):
         # spindle off, height offset canceled, spindle retracted
         # (M25 is a centroid command to retract spindle)
         #
-        values[
-            "TOOLRETURN"
-        ] = """M5
+        values["TOOLRETURN"] = """M5
 M25
 G49 H0"""
         #

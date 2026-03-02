@@ -27,6 +27,7 @@
 
 See also the `upgrade` function.
 """
+
 ## @package downgrade
 # \ingroup draftfunctions
 # \brief Provides functions to downgrade objects by different methods.

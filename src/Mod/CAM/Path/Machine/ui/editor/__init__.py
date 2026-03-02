@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Machine editor package."""
+
 from .machine_editor import MachineEditorDialog
 
 __all__ = ["MachineEditorDialog"]

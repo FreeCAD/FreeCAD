@@ -49,6 +49,7 @@ or to a circular edge, so even more combinations are possible.
 
 And so on, with the other combinations.
 """
+
 ## @package circles_incomplete
 # \ingroup draftgeoutils
 # \brief Provides various incomplete functions for creating circles.

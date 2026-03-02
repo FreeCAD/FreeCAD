@@ -32,7 +32,6 @@ import Path.Dressup.Tags as PathDressupTag
 import PathScripts.PathUtils as PathUtils
 import Path.Dressup.Utils as PathDressup
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())

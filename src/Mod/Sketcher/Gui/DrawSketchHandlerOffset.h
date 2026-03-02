@@ -787,8 +787,10 @@ private:
                                 break;
                             }
                         }
-                        else if (isLineSegment(*geo2) || isBSplineCurve(*geo2)
-                                 || geo2->is<Part::GeomArcOfConic>()) {
+                        else if (
+                            isLineSegment(*geo2) || isBSplineCurve(*geo2)
+                            || geo2->is<Part::GeomArcOfConic>()
+                        ) {
                             // cases where arc is created by arc join mode.
                             Base::Vector3d p2, p3;
 
@@ -1049,8 +1051,10 @@ private:
             endPoint = line->getEndPoint();
             return true;
         }
-        else if (isArcOfCircle(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo)
-                 || isArcOfParabola(*geo)) {
+        else if (
+            isArcOfCircle(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo)
+            || isArcOfParabola(*geo)
+        ) {
             const auto* arcOfConic = static_cast<const Part::GeomArcOfConic*>(geo);
             startPoint = arcOfConic->getStartPoint(true);
             endPoint = arcOfConic->getEndPoint(true);

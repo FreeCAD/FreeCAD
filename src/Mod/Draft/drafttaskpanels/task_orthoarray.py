@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the task panel code for the Draft OrthoArray tool."""
+
 ## @package task_orthoarray
 # \ingroup drafttaskpanels
 # \brief Provides the task panel code for the Draft OrthoArray tool.
@@ -180,9 +181,9 @@ class TaskPanelOrthoArray:
         """Execute when clicking the OK button or Enter key."""
         self.selection = Gui.Selection.getSelection()
 
-        (self.v_x, self.v_y, self.v_z) = self.get_intervals()
+        self.v_x, self.v_y, self.v_z = self.get_intervals()
 
-        (self.n_x, self.n_y, self.n_z) = self.get_numbers()
+        self.n_x, self.n_y, self.n_z = self.get_numbers()
 
         self.valid_input = self.validate_input(
             self.selection, self.v_x, self.v_y, self.v_z, self.n_x, self.n_y, self.n_z

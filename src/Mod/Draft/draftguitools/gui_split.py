@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to split line and wire objects."""
+
 ## @package gui_split
 # \ingroup draftguitools
 # \brief Provides GUI tools to split line and wire objects.

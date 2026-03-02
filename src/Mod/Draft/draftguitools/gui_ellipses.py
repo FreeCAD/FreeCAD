@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create Ellipse objects."""
+
 ## @package gui_ellipses
 # \ingroup draftguitools
 # \brief Provides GUI tools to create Ellipse objects.

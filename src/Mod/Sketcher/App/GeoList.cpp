@@ -298,19 +298,24 @@ void GeoListModel<T>::rebuildVertexIndex() const
         if (type == Part::GeomPoint::getClassTypeId()) {
             addGeoElement(geoId, PointPos::start);
         }
-        else if (type == Part::GeomLineSegment::getClassTypeId()
-                 || type == Part::GeomBSplineCurve::getClassTypeId()) {
+        else if (
+            type == Part::GeomLineSegment::getClassTypeId()
+            || type == Part::GeomBSplineCurve::getClassTypeId()
+        ) {
             addGeoElement(geoId, PointPos::start);
             addGeoElement(geoId, PointPos::end);
         }
-        else if (type == Part::GeomCircle::getClassTypeId()
-                 || type == Part::GeomEllipse::getClassTypeId()) {
+        else if (
+            type == Part::GeomCircle::getClassTypeId() || type == Part::GeomEllipse::getClassTypeId()
+        ) {
             addGeoElement(geoId, PointPos::mid);
         }
-        else if (type == Part::GeomArcOfCircle::getClassTypeId()
-                 || type == Part::GeomArcOfEllipse::getClassTypeId()
-                 || type == Part::GeomArcOfHyperbola::getClassTypeId()
-                 || type == Part::GeomArcOfParabola::getClassTypeId()) {
+        else if (
+            type == Part::GeomArcOfCircle::getClassTypeId()
+            || type == Part::GeomArcOfEllipse::getClassTypeId()
+            || type == Part::GeomArcOfHyperbola::getClassTypeId()
+            || type == Part::GeomArcOfParabola::getClassTypeId()
+        ) {
             addGeoElement(geoId, PointPos::start);
             addGeoElement(geoId, PointPos::end);
             addGeoElement(geoId, PointPos::mid);
