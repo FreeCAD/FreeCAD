@@ -89,7 +89,7 @@ public:
         : DrawSketchHandlerTextBase(constrMethod)
         , length(0.0)
         , handleId(0)
-        , text("AstoCAD")
+        , text(QObject::tr("Text").toStdString())
         , font("")
         , cachedTextName("")
         , cachedFontName("")
@@ -769,3 +769,4 @@ std::list<Gui::InputHint> DrawSketchHandlerText::lookupTextHints(int method, int
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerText_H
+
