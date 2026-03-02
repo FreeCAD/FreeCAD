@@ -24,70 +24,26 @@
 
 #pragma once
 
-#include "MillMotion.h"
-#include "EndMill.h"
-#include "linmath.h"
-#include "MillPathLine.h"
+#include <Base/Parameter.h>
 
 namespace CAMSimulator
 {
 
-enum MotionType
-{
-    MTVertical = 0,
-    MTHorizontal,
-    MTCurved
-};
+class DlgCAMSimulator;
 
-class MillPathSegment
+class CAMSettings: public ParameterGrp::ObserverType
 {
 public:
-    /// <summary>
-    /// Create a mill path segment primitive
-    /// </summary>
-    /// <param name="endmill">Mill object</param>
-    /// <param name="from">Start point</param>
-    /// <param name="to">End point</param>
-    MillPathSegment(const EndMill& endmill, const MillMotion& from, const MillMotion& to);
-    virtual ~MillPathSegment();
+    explicit CAMSettings(ParameterGrp::handle hGrp, DlgCAMSimulator& dlg);
+    ~CAMSettings();
 
-    virtual void AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer);
-    virtual void render(int substep);
-    virtual void GetHeadPosition(vec3 headPos);
-    static float SetQuality(float quality, float maxStockDimension);  // 1 minimum, 10 maximum
+    void applySettings();
+    void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
 
-public:
-    const EndMill* endmill = nullptr;
-    bool isMultyPart;
-    int numSimSteps;
-    int indexInArray = -1;
-    int segmentIndex = -1;
+private:
+    ParameterGrp::handle hGrp;
 
-protected:
-    mat4x4 mShearMat;
-    Shape mShape;
-    float mXYDistance;
-    float mXYZDistance;
-    float mZDistance;
-    float mXYAngle;
-    float mStartAngRad;
-    float mStepAngRad;
-    float mStepDistance = 0;
-    float mSweepAng;
-    float mRadius = 0;
-    float mArcDir = 0;
-    bool mSmallRad = false;
-    int mStepNumber = 0;
-
-    static float mSmallRadStep;
-    static float mResolution;
-
-    vec3 mDiff;
-    vec3 mStepLength = {0};
-    vec3 mCenter = {0};
-    vec3 mStartPos;
-    vec3 mHeadPos = {0};
-    MotionType mMotionType;
+    DlgCAMSimulator& mDlg;
 };
 
 }  // namespace CAMSimulator

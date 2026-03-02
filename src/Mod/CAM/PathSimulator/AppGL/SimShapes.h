@@ -23,8 +23,10 @@
  ***************************************************************************/
 
 #pragma once
-#include "OpenGlWrapper.h"
+
+#include <vector>
 #include "linmath.h"
+#include "OpenGlWrapper.h"
 
 #define SET_DUAL(var, idx, y, z) \
     { \
@@ -45,7 +47,7 @@
         var[idx++] = z + offs; \
     }
 
-namespace MillSim
+namespace CAMSimulator
 {
 typedef unsigned int uint;
 
@@ -81,12 +83,12 @@ public:
     int numIndices = 0;
 
 public:
-    void Render();
-    void Render(const mat4x4& modelMat, const mat4x4& normallMat);
+    void Render() const;
+    void Render(const mat4x4& modelMat, const mat4x4& normallMat) const;
     void FreeResources();
     void SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer);
     void RotateProfile(
-        float* profPoints,
+        const float* profPoints,
         int nPoints,
         float distance,
         float deltaHeight,
@@ -94,7 +96,7 @@ public:
         bool isHalfTurn
     );
     void ExtrudeProfileRadial(
-        float* profPoints,
+        const float* profPoints,
         int nPoints,
         float radius,
         float angleRad,
@@ -103,7 +105,7 @@ public:
         bool capEnd
     );
     void ExtrudeProfileLinear(
-        float* profPoints,
+        const float* profPoints,
         int nPoints,
         float fromX,
         float toX,
@@ -133,4 +135,4 @@ protected:
     );
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

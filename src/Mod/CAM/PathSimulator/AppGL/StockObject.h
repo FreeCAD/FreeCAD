@@ -23,10 +23,11 @@
  ***************************************************************************/
 
 #pragma once
+
 #include "SolidObject.h"
 #include "linmath.h"
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 class StockObject: public SolidObject
@@ -39,4 +40,5 @@ public:
 private:
     float mProfile[8] = {};
 };
-}  // namespace MillSim
+
+}  // namespace CAMSimulator

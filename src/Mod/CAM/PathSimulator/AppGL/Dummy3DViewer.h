@@ -24,70 +24,34 @@
 
 #pragma once
 
-#include "MillMotion.h"
-#include "EndMill.h"
-#include "linmath.h"
-#include "MillPathLine.h"
+#include <Gui/View3DInventorViewer.h>
+
+#include "TopoShapeViewProvider.h"
 
 namespace CAMSimulator
 {
 
-enum MotionType
-{
-    MTVertical = 0,
-    MTHorizontal,
-    MTCurved
-};
-
-class MillPathSegment
+class Dummy3DViewer: public Gui::View3DInventorViewer
 {
 public:
-    /// <summary>
-    /// Create a mill path segment primitive
-    /// </summary>
-    /// <param name="endmill">Mill object</param>
-    /// <param name="from">Start point</param>
-    /// <param name="to">End point</param>
-    MillPathSegment(const EndMill& endmill, const MillMotion& from, const MillMotion& to);
-    virtual ~MillPathSegment();
+    Dummy3DViewer(QWidget* parent = nullptr);
 
-    virtual void AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer);
-    virtual void render(int substep);
-    virtual void GetHeadPosition(vec3 headPos);
-    static float SetQuality(float quality, float maxStockDimension);  // 1 minimum, 10 maximum
+    void cloneFrom(Dummy3DViewer& viewer);
 
-public:
-    const EndMill* endmill = nullptr;
-    bool isMultyPart;
-    int numSimSteps;
-    int indexInArray = -1;
-    int segmentIndex = -1;
+    void setStockShape(const Part::TopoShape& shape);
+    void setStockVisible(bool b);
+    void setBaseShape(const Part::TopoShape& shape);
+    void setBaseVisible(bool b);
 
 protected:
-    mat4x4 mShearMat;
-    Shape mShape;
-    float mXYDistance;
-    float mXYZDistance;
-    float mZDistance;
-    float mXYAngle;
-    float mStartAngRad;
-    float mStepAngRad;
-    float mStepDistance = 0;
-    float mSweepAng;
-    float mRadius = 0;
-    float mArcDir = 0;
-    bool mSmallRad = false;
-    int mStepNumber = 0;
+    void paintEvent(QPaintEvent* event) override;
 
-    static float mSmallRadStep;
-    static float mResolution;
+public:
+    bool discardPaintEvent_ = true;
 
-    vec3 mDiff;
-    vec3 mStepLength = {0};
-    vec3 mCenter = {0};
-    vec3 mStartPos;
-    vec3 mHeadPos = {0};
-    MotionType mMotionType;
+private:
+    TopoShapeViewProvider stockViewProvider;
+    TopoShapeViewProvider baseViewProvider;
 };
 
 }  // namespace CAMSimulator

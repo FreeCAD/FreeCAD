@@ -23,20 +23,22 @@
  ***************************************************************************/
 
 #include "MillSimulation.h"
-#include "OpenGlWrapper.h"
+
 #include <vector>
 #include <iostream>
+#include <algorithm>
+
+#include "OpenGlWrapper.h"
+
+using namespace std::literals;
 
 #define DRAG_ZOOM_FACTOR 10
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 MillSimulation::MillSimulation()
-{
-    mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0, '\0', 0.0};
-    guiDisplay.SetMillSimulator(this);
-}
+{}
 
 MillSimulation::~MillSimulation()
 {
@@ -53,74 +55,70 @@ void MillSimulation::ClearMillPathSegments()
 
 void MillSimulation::Clear()
 {
-    mCodeParser.Operations.clear();
+    mCodeParser.Clear();
+
+    ClearMillPathSegments();
+
     for (unsigned int i = 0; i < mToolTable.size(); i++) {
         delete mToolTable[i];
     }
-    ClearMillPathSegments();
-    mStockObject.~StockObject();
     mToolTable.clear();
-    guiDisplay.ResetGui();
+
+    mStockObject.Clear();
     simDisplay.CleanGL();
+
     mCurStep = 0;
     mPathStep = -1;
     mNTotalSteps = 0;
 }
 
-
-void MillSimulation::SimNext()
-{
-    static int simDecim = 0;
-
-    simDecim++;
-    if (simDecim < 1) {
-        return;
-    }
-
-    simDecim = 0;
-
-    if (mCurStep < mNTotalSteps) {
-        mCurStep += mSimSpeed;
-        if (mCurStep > mNTotalSteps) {
-            mCurStep = mNTotalSteps;
-        }
-        CalcSegmentPositions();
-        simDisplay.updateDisplay = true;
-    }
-}
-
-void MillSimulation::InitSimulation(float quality)
+void MillSimulation::InitSimulation(float quality, float maxStockDimension)
 {
     ClearMillPathSegments();
     millPathLine.Clear();
-    mViewSSAO = guiDisplay.IsChecked(eGuiItemAmbientOclusion);
+    // mViewSSAO = guiDisplay.IsChecked(eGuiItemAmbientOclusion);
 
-    mDestMotion = mZeroPos;
     // gDestPos = curMillOperation->startPos;
     mCurStep = 0;
     mPathStep = -1;
     mNTotalSteps = 0;
     mSimPlaying = false;
     mSimSpeed = 1;
-    MillPathSegment::SetQuality(quality, simDisplay.maxFar);
+    mTotalElapsed = 0s;
+
+    MillPathSegment::SetQuality(quality, maxStockDimension);
+
     int nOperations = (int)mCodeParser.Operations.size();
     int segId = 0;
-    for (int i = 0; i < nOperations; i++) {
-        mCurMotion = mDestMotion;
-        mDestMotion = mCodeParser.Operations[i];
-        EndMill* tool = GetTool(mDestMotion.tool);
+
+    MillMotion prevMotion = !mCodeParser.Operations.empty() ? mCodeParser.Operations.front()
+                                                            : MillMotion();
+
+    MillPathPosition mpPos;
+    mpPos.X = prevMotion.x;
+    mpPos.Y = prevMotion.y;
+    mpPos.Z = prevMotion.z;
+    mpPos.SegmentId = segId++;
+    millPathLine.MillPathPointsBuffer.push_back(mpPos);
+
+    for (int i = 1; i < nOperations; i++) {
+        const MillMotion curMotion = mCodeParser.Operations[i];
+        const EndMill* tool = GetTool(curMotion.tool);
         if (tool != nullptr) {
-            MillSim::MillPathSegment* segment
-                = new MillSim::MillPathSegment(tool, &mCurMotion, &mDestMotion);
+            auto segment = new MillPathSegment(*tool, prevMotion, curMotion);
             segment->indexInArray = i;
             segment->segmentIndex = segId++;
             mNTotalSteps += segment->numSimSteps;
             MillPathSegments.push_back(segment);
             segment->AppendPathPoints(millPathLine.MillPathPointsBuffer);
         }
+
+        prevMotion = curMotion;
     }
+
     mNPathSteps = (int)MillPathSegments.size();
     millPathLine.GenerateModel();
+
     InitDisplay(quality);
 }
 
@@ -171,47 +169,45 @@ bool MillSimulation::ToolExists(int toolid)
 void MillSimulation::GlsimStart()
 {
     glDisable(GL_BLEND);
-    glEnable(GL_STENCIL_TEST);
     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+    glEnable(GL_STENCIL_TEST);
 }
 
 void MillSimulation::GlsimToolStep1(void)
 {
     glCullFace(GL_BACK);
     glDepthFunc(GL_LESS);
+    glDepthMask(GL_FALSE);
     glStencilFunc(GL_ALWAYS, 1, 0xFF);
     glStencilOp(GL_ZERO, GL_ZERO, GL_REPLACE);
-    glDepthMask(GL_FALSE);
 }
-
 
 void MillSimulation::GlsimToolStep2(void)
 {
+    glCullFace(GL_FRONT);
+    glDepthFunc(GL_GREATER);
+    glDepthMask(GL_TRUE);
     glStencilFunc(GL_EQUAL, 1, 0xFF);
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-    glDepthFunc(GL_GREATER);
-    glCullFace(GL_FRONT);
-    glDepthMask(GL_TRUE);
 }
 
 void MillSimulation::GlsimClipBack(void)
 {
+    glCullFace(GL_FRONT);
+    glDepthFunc(GL_LESS);
+    glDepthMask(GL_FALSE);
     glStencilFunc(GL_ALWAYS, 1, 0xFF);
     glStencilOp(GL_REPLACE, GL_REPLACE, GL_ZERO);
-    glDepthFunc(GL_LESS);
-    glCullFace(GL_FRONT);
-    glDepthMask(GL_FALSE);
 }
-
 
 void MillSimulation::GlsimRenderStock(void)
 {
+    glCullFace(GL_BACK);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glDepthFunc(GL_EQUAL);
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_EQUAL, 1, 0xFF);
     glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-    glDepthFunc(GL_EQUAL);
-    glCullFace(GL_BACK);
 }
 
 void MillSimulation::GlsimRenderTools(void)
@@ -222,16 +218,18 @@ void MillSimulation::GlsimRenderTools(void)
 void MillSimulation::GlsimEnd(void)
 {
     glCullFace(GL_BACK);
-    glStencilFunc(GL_ALWAYS, 1, 0xFF);
-    glDisable(GL_STENCIL_TEST);
     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    glDepthMask(GL_TRUE);
+
     glDepthFunc(GL_LESS);
+    glDepthMask(GL_TRUE);
+
+    glDisable(GL_STENCIL_TEST);
+    glStencilFunc(GL_ALWAYS, 1, 0xFF);
 }
 
 void MillSimulation::renderSegmentForward(int iSeg)
 {
-    MillSim::MillPathSegment* p = MillPathSegments.at(iSeg);
+    MillPathSegment* p = MillPathSegments.at(iSeg);
     int step = iSeg == mPathStep ? mSubStep : p->numSimSteps;
     int start = p->isMultyPart ? 1 : step;
     for (int i = start; i <= step; i++) {
@@ -244,7 +242,7 @@ void MillSimulation::renderSegmentForward(int iSeg)
 
 void MillSimulation::renderSegmentReversed(int iSeg)
 {
-    MillSim::MillPathSegment* p = MillPathSegments.at(iSeg);
+    MillPathSegment* p = MillPathSegments.at(iSeg);
     int step = iSeg == mPathStep ? mSubStep : p->numSimSteps;
     int end = p->isMultyPart ? 1 : step;
     for (int i = step; i >= end; i--) {
@@ -259,7 +257,7 @@ void MillSimulation::CalcSegmentPositions()
 {
     mSubStep = mCurStep;
     for (mPathStep = 0; mPathStep < mNPathSteps; mPathStep++) {
-        MillSim::MillPathSegment* p = MillPathSegments[mPathStep];
+        MillPathSegment* p = MillPathSegments[mPathStep];
         if (mSubStep < p->numSimSteps) {
             break;
         }
@@ -315,7 +313,7 @@ void MillSimulation::RenderSimulation()
     simDisplay.StartGeometryPass(cutColor, true);
     GlsimRenderTools();
     for (int i = 0; i <= mPathStep; i++) {
-        MillSim::MillPathSegment* p = MillPathSegments.at(i);
+        MillPathSegment* p = MillPathSegments.at(i);
         int step = (i == mPathStep) ? mSubStep : p->numSimSteps;
         int start = p->isMultyPart ? 1 : step;
         for (int j = start; j <= step; j++) {
@@ -332,9 +330,8 @@ void MillSimulation::RenderTool()
         return;
     }
 
+    MillPathSegment* p = MillPathSegments.at(mPathStep);
     vec3 toolPos;
-    MotionPosToVec(toolPos, &mDestMotion);
-    MillSim::MillPathSegment* p = MillPathSegments.at(mPathStep);
     p->GetHeadPosition(toolPos);
     mat4x4 tmat;
     mat4x4_translate(tmat, toolPos[0], toolPos[1], toolPos[2]);
@@ -373,9 +370,9 @@ void MillSimulation::Render()
     // set background
     glClearColor(bgndColor[0], bgndColor[1], bgndColor[2], 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    simDisplay.PrepareDisplay(mStockObject.center);
 
     // render the simulation offscreen in an FBO
+
     if (simDisplay.updateDisplay) {
         simDisplay.PrepareFrameBuffer();
         RenderSimulation();
@@ -402,62 +399,57 @@ void MillSimulation::Render()
            p->render(mDebug);
        }*/
 
-    float progress = (float)mCurStep / mNTotalSteps;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    guiDisplay.Render(progress);
 }
 
-void MillSimulation::ProcessSim(unsigned int time_ms)
+void MillSimulation::ProcessSim(const clock::duration& elapsed)
 {
+    SimNext(elapsed);
+    Render();
+}
 
-    static int ancient = 0;
-    static unsigned int last = 0;
-    static unsigned int msec = 0xFFFFFFFF;
-    static int fps = 0;
-    static int renderTime = 0;
+void MillSimulation::SimNext(const clock::duration& elapsed)
+{
+    // calculate number of steps based on elapsed time
 
-    last = msec == 0xFFFFFFFF ? time_ms : msec;
-    msec = time_ms;
-    if (guiDisplay.IsChecked(eGuiItemRotate)) {
-        simDisplay.RotateEye((msec - last) / 4600.0f);
+    int numSteps = 0;
+
+    if (mSimPlaying) {
+        mTotalElapsed += elapsed;
+
+        const float seconds
+            = std::chrono::duration_cast<std::chrono::duration<float>>(mTotalElapsed).count();
+
+        const float secondsToSteps = mSimSpeed * 60;
+        numSteps = seconds * secondsToSteps;
+
+        const std::chrono::duration<float> processed {(float)numSteps / secondsToSteps};
+        mTotalElapsed -= std::chrono::duration_cast<clock::duration>(processed);
     }
+    else if (mSingleStep) {
+        numSteps = 1;
 
-    if (last / 1000 != msec / 1000) {
-        float calcFps = 1000.0f * fps / (msec - ancient);
-        mFpsStream.str("");
-        mFpsStream << "fps: " << calcFps << "    rendertime:" << renderTime
-                   << "    zpos:" << mDestMotion.z << std::ends;
-        ancient = msec;
-        fps = 0;
-    }
-
-    if (mSimPlaying || mSingleStep) {
-        SimNext();
+        mTotalElapsed = 0s;
         mSingleStep = false;
     }
-
-    Render();
-
-    ++fps;
-}
-
-void MillSimulation::HandleKeyPress(int key)
-{
-    if (key >= '1' && key <= '9') {
-        mSimSpeed = key - '0';
-    }
-    else if (key == 'D') {
-        mDebug++;
-    }
-    else if (key == 'K') {
-        mDebug2++;
-    }
     else {
-        guiDisplay.HandleKeyPress(key);
+        return;
+    }
+
+    // advance simulation
+
+    const int oldStep = mCurStep;
+
+    mCurStep += numSteps;
+    mCurStep = std::clamp(mCurStep, 0, mNTotalSteps);
+
+    if (mCurStep != oldStep) {
+        CalcSegmentPositions();
+        simDisplay.updateDisplay = true;
     }
 }
 
-void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
+/* void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
 {
     switch (actionItem) {
         case eGuiItemPlay:
@@ -531,7 +523,7 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
             break;
     }
     guiDisplay.UpdatePlayState(mSimPlaying);
-}
+}	*/
 
 
 void MillSimulation::InitDisplay(float quality)
@@ -547,9 +539,6 @@ void MillSimulation::InitDisplay(float quality)
 
     // init 3d display
     simDisplay.InitGL();
-
-    // init gui elements
-    guiDisplay.InitGui();
 }
 
 void MillSimulation::SetBoxStock(float x, float y, float z, float l, float w, float h)
@@ -567,86 +556,39 @@ void MillSimulation::SetArbitraryStock(
     simDisplay.ScaleViewToStock(&mStockObject);
 }
 
+void MillSimulation::SetStockVisible(bool b)
+{
+    if (b == IsStockVisible()) {
+        return;
+    }
+
+    mViewItems ^= VIEWITEM_SIMULATION;
+    simDisplay.updateDisplay = true;
+}
+
+bool MillSimulation::IsStockVisible() const
+{
+    return mViewItems & VIEWITEM_SIMULATION;
+}
+
 void MillSimulation::SetBaseObject(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices)
 {
     mBaseShape.GenerateSolid(verts, indices);
 }
 
-void MillSimulation::MouseDrag(int buttons, int dx, int dy)
+void MillSimulation::SetBaseVisible(bool b)
 {
-    if (buttons == (MS_MOUSE_MID | MS_MOUSE_LEFT) || buttons == MS_KBD_ALT) {
-        simDisplay.TiltEye((float)dy / 100.0f);
-        simDisplay.RotateEye((float)dx / 100.0f);
+    if (b == IsBaseVisible()) {
+        return;
     }
-    else if (buttons == MS_MOUSE_MID || buttons == MS_KBD_SHIFT) {
-        simDisplay.MoveEye(dx, -dy);
-    }
-    else if (buttons == (MS_KBD_CONTROL | MS_KBD_SHIFT)) {
-        Zoom(0.003 * dy);
-    }
-    guiDisplay.MouseDrag(buttons, dx, dy);
+
+    mViewItems ^= VIEWITEM_BASE_SHAPE;
+    simDisplay.updateDisplay = true;
 }
 
-void MillSimulation::MouseMove(int px, int py, int modifiers)
+bool MillSimulation::IsBaseVisible() const
 {
-    if (modifiers != mLastModifiers) {
-        mLastMouseX = px;
-        mLastMouseY = py;
-        mLastModifiers = modifiers;
-    }
-
-    int buttons = mMouseButtonState | modifiers;
-    if (buttons > 0) {
-        int dx = px - mLastMouseX;
-        int dy = py - mLastMouseY;
-        if (dx != 0 || dy != 0) {
-            MouseDrag(buttons, dx, dy);
-            mLastMouseX = px;
-            mLastMouseY = py;
-        }
-    }
-    else {
-        MouseHover(px, py);
-    }
-}
-
-void MillSimulation::MouseScroll(float dy)
-{
-    Zoom(-0.02f * dy);
-}
-
-
-void MillSimulation::MouseHover(int px, int py)
-{
-    guiDisplay.MouseCursorPos(px, py);
-}
-
-void MillSimulation::MousePress(int button, bool isPressed, int px, int py)
-{
-    if (isPressed) {
-        mMouseButtonState |= button;
-    }
-    else {
-        mMouseButtonState &= ~button;
-    }
-
-    if (mMouseButtonState > 0) {
-        mLastMouseX = px;
-        mLastMouseY = py;
-    }
-    guiDisplay.MousePressed(button, isPressed, mSimPlaying);
-}
-
-void MillSimulation::Zoom(float factor)
-{
-    factor += simDisplay.GetEyeFactor();
-    if (factor > 0.6f) {
-        factor = 0.6f;
-    }
-    else if (factor < 0.01f) {
-        factor = 0.01f;
-    }
-    simDisplay.UpdateEyeFactor(factor);
+    return mViewItems & VIEWITEM_BASE_SHAPE;
 }
 
 void MillSimulation::UpdateWindowScale(int width, int height)
@@ -659,11 +601,32 @@ void MillSimulation::UpdateWindowScale(int width, int height)
     mHeight = height;
 
     simDisplay.UpdateWindowScale(width, height);
-    guiDisplay.UpdateWindowScale(width, height);
+}
 
+void MillSimulation::SetPathVisible(bool b)
+{
+    if (b == mViewPath) {
+        return;
+    }
+
+    mViewPath = b;
     simDisplay.updateDisplay = true;
 }
 
+void MillSimulation::EnableSsao(bool b)
+{
+    if (b == mViewSSAO) {
+        return;
+    }
+
+    mViewSSAO = b;
+    simDisplay.updateDisplay = true;
+}
+
+void MillSimulation::UpdateCamera(const SoCamera& camera)
+{
+    simDisplay.UpdateCamera(camera);
+}
 
 bool MillSimulation::LoadGCodeFile(const char* fileName)
 {
@@ -679,29 +642,57 @@ bool MillSimulation::AddGcodeLine(const char* line)
     return mCodeParser.AddLine(line);
 }
 
+void MillSimulation::SetPlaying(bool b)
+{
+    if (b == mSimPlaying) {
+        return;
+    }
+
+    mSimPlaying = b;
+    simDisplay.updateDisplay = true;
+}
+
+void MillSimulation::SingleStep()
+{
+    if (!mSimPlaying && mSingleStep) {
+        return;
+    }
+
+    mSimPlaying = false;
+    mSingleStep = true;
+    simDisplay.updateDisplay = true;
+}
+
+void MillSimulation::SetSpeed(int s)
+{
+    mSimSpeed = s;
+}
+
 void MillSimulation::SetSimulationStage(float stage)
 {
-    int newStep = (int)((float)mNTotalSteps * stage);
+    const int newStep = (int)((float)mNTotalSteps * stage);
     if (newStep == mCurStep) {
         return;
     }
+
     mCurStep = newStep;
-    simDisplay.updateDisplay = true;
     mSingleStep = true;
     CalcSegmentPositions();
+
+    simDisplay.updateDisplay = true;
 }
 
 void MillSimulation::SetState(const MillSimulationState& state)
 {
-    mSimPlaying = state.mSimPlaying;
-    mSingleStep = state.mSingleStep;
-    guiDisplay.UpdatePlayState(mSimPlaying);
+    SetPlaying(state.mSimPlaying);
+    if (state.mSingleStep) {
+        SingleStep();
+    }
 
     const float stage = (float)state.mCurStep / state.mNTotalSteps;
     SetSimulationStage(stage);
 
-    mSimSpeed = state.mSimSpeed;
-    guiDisplay.UpdateSimSpeed(mSimSpeed);
+    SetSpeed(state.mSimSpeed);
 
     mViewItems = state.mViewItems;
     mViewPath = state.mViewPath;
@@ -713,4 +704,17 @@ const MillSimulationState& MillSimulation::GetState() const
     return *this;
 }
 
-}  // namespace MillSim
+void MillSimulation::SetBackgroundColor(const vec3& c)
+{
+    bgndColor[0] = c[0];
+    bgndColor[1] = c[1];
+    bgndColor[2] = c[2];
+}
+
+void MillSimulation::SetPathColor(const vec3& normal, const vec3& rapid)
+{
+    simDisplay.SetPathColor(normal, rapid);
+}
+
+
+}  // namespace CAMSimulator

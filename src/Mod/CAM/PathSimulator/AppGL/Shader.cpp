@@ -30,12 +30,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "GlUtils.h"
 #include "Shader.h"
+
 #include <iostream>
+
 #include <Base/Console.h>
 
-namespace MillSim
+#include "GlUtils.h"
+#include "OpenGlWrapper.h"
+
+namespace CAMSimulator
 {
 
 Shader* CurrentShader = nullptr;
@@ -277,6 +281,10 @@ void Shader::Destroy()
     shaderId = 0;
 }
 
+bool Shader::IsValid()
+{
+    return shaderId > 0;
+}
 
 const char* VertShader3DNorm = R"(
     #version 330 core
@@ -323,7 +331,6 @@ const char* VertShader3DInvNorm = R"(
     }
 )";
 
-
 const char* VertShader2DTex = R"(
     #version 330 core
 
@@ -357,7 +364,6 @@ const char* FragShader2dTex = R"(
         FragColor = vec4(objectColor, 1.0) * texColor;
     }
 )";
-
 
 const char* FragShaderNorm = R"(
     #version 330
@@ -627,4 +633,4 @@ const char* FragShader3DLine = R"(
     }
 )";
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

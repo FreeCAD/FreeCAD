@@ -30,21 +30,25 @@
 
 #include "GCodeParser.h"
 
-using namespace MillSim;
+using namespace CAMSimulator;
 
 static char TokTypes[] = "GTXYZIJKR";
 
 GCodeParser::~GCodeParser()
 {
-    // Clear the vector
+    Clear();
+}
+
+void GCodeParser::Clear()
+{
     Operations.clear();
+    lastState = {};
+    lastTool = -1;
 }
 
 bool GCodeParser::Parse(const char* filename)
 {
-    Operations.clear();
-    lastState = {eNop, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    lastTool = -1;
+    Clear();
 
     FILE* fl;
     if ((fl = fopen(filename, "rt")) == nullptr) {
@@ -152,9 +156,23 @@ bool GCodeParser::ParseLine(const char* ptr)
     bool validMotion = false;
     bool exitLoop = false;
     int cmd = 0;
+
+    // By default GCode words are not sticky, except for some exceptions. We copy the needed
+    // parameters explicitly (instead of assigning the full lastState).
+
+    MillMotion newState;
+
+    newState.x = lastState.x;
+    newState.y = lastState.y;
+    newState.z = lastState.z;
+
+    newState.tool = lastState.tool;
+
+    newState.retract_mode = lastState.retract_mode;
+    newState.retract_z = lastState.retract_z;
+
     while (*ptr != 0 && !exitLoop) {
         ptr = GetNextToken(ptr, &token);
-        lastLastState = lastState;
         switch (token.letter) {
             case '*':
                 exitLoop = true;
@@ -163,62 +181,64 @@ bool GCodeParser::ParseLine(const char* ptr)
             case 'G':
                 cmd = token.ival;
                 if (cmd == 0 || cmd == 1) {
-                    lastState.cmd = eMoveLiner;
+                    newState.cmd = eMoveLiner;
                 }
                 else if (cmd == 2) {
-                    lastState.cmd = eRotateCW;
+                    newState.cmd = eRotateCW;
                 }
                 else if (cmd == 3) {
-                    lastState.cmd = eRotateCCW;
+                    newState.cmd = eRotateCCW;
                 }
                 else if (cmd == 73 || cmd == 81 || cmd == 82 || cmd == 83) {
-                    lastState.cmd = eDril;
-                    lastState.retract_z = lastState.z;
+                    newState.cmd = eDril;
+                    newState.retract_z = lastState.z;
                 }
                 else if (cmd == 98 || cmd == 99) {
-                    lastState.retract_mode = cmd;
+                    newState.retract_mode = cmd;
                 }
                 else if (cmd == 80) {
-                    lastState.retract_mode = 0;
+                    newState.retract_mode = 0;
                 }
                 break;
 
             case 'T':
-                lastState.tool = token.ival;
+                newState.tool = token.ival;
                 break;
 
             case 'X':
-                lastState.x = token.fval;
+                newState.x = token.fval;
                 validMotion = true;
                 break;
 
             case 'Y':
-                lastState.y = token.fval;
+                newState.y = token.fval;
                 validMotion = true;
                 break;
 
             case 'Z':
-                lastState.z = token.fval;
+                newState.z = token.fval;
                 validMotion = true;
                 break;
 
             case 'I':
-                lastState.i = token.fval;
+                newState.i = token.fval;
                 break;
 
             case 'J':
-                lastState.j = token.fval;
+                newState.j = token.fval;
                 break;
 
             case 'K':
-                lastState.k = token.fval;
+                newState.k = token.fval;
                 break;
 
             case 'R':
-                lastState.r = token.fval;
+                newState.r = token.fval;
                 break;
         }
     }
+
+    lastState = newState;
     return validMotion;
 }
 
