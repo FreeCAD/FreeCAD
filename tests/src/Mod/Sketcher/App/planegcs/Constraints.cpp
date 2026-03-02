@@ -47,24 +47,13 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
     // TODO: Add arc, B-spline, and point
     double pointX = 3.5, arcStartX = 5.0, arcEndX = 0.0, arcCenterX = 0.0;
     double pointY = 3.5, arcStartY = 0.0, arcEndY = 5.0, arcCenterY = 0.0;
-    GCS::Point point, arcStart, arcEnd, arcCenter;
-    point.x = &pointX;
-    point.y = &pointY;
-    arcStart.x = &arcStartX;
-    arcStart.y = &arcStartY;
-    arcEnd.x = &arcEndX;
-    arcEnd.y = &arcEndY;
-    arcCenter.x = &arcCenterX;
-    arcCenter.y = &arcCenterY;
+    GCS::Point point(&pointX, &pointY), arcStart(&arcStartX, &arcStartY),
+        arcEnd(&arcEndX, &arcEndY), arcCenter(&arcCenterX, &arcCenterY);
     double arcRadius = 5.0, arcStartAngle = 0.0, arcEndAngle = std::numbers::pi / 2;
     double desiredAngle = std::numbers::pi;
     double bSplineStartX = 0.0, bSplineEndX = 16.0;
     double bSplineStartY = 10.0, bSplineEndY = -10.0;
-    GCS::Point bSplineStart, bSplineEnd;
-    bSplineStart.x = &bSplineStartX;
-    bSplineStart.y = &bSplineStartY;
-    bSplineEnd.x = &bSplineEndX;
-    bSplineEnd.y = &bSplineEndY;
+    GCS::Point bSplineStart(&bSplineStartX, &bSplineStartY), bSplineEnd(&bSplineEndX, &bSplineEndY);
     std::vector<double> bSplineControlPointsX(5);
     std::vector<double> bSplineControlPointsY(5);
     bSplineControlPointsX[0] = 0.0;
@@ -79,8 +68,7 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
     bSplineControlPointsY[4] = -10.0;
     std::vector<GCS::Point> bSplineControlPoints(5);
     for (size_t i = 0; i < bSplineControlPoints.size(); ++i) {
-        bSplineControlPoints[i].x = &bSplineControlPointsX[i];
-        bSplineControlPoints[i].y = &bSplineControlPointsY[i];
+        bSplineControlPoints[i] = GCS::Point(&bSplineControlPointsX[i], &bSplineControlPointsY[i]);
     }
     std::vector<double> weights(bSplineControlPoints.size(), 1.0);
     std::vector<double*> weightsAsPtr;
@@ -114,33 +102,21 @@ TEST_F(ConstraintsTest, tangentBSplineAndArc)  // NOLINT
     bspline.periodic = false;
     double bsplineParam = 0.35;
 
-    std::vector<double*> params = {
-        point.x,
-        point.y,
-        arcStart.x,
-        arcStart.y,
-        arcEnd.x,
-        arcEnd.y,
-        arcCenter.x,
-        arcCenter.y,
-        &arcRadius,
-        bSplineStart.x,
-        bSplineStart.y,
-        bSplineEnd.x,
-        bSplineEnd.y,
-        &bSplineControlPointsX[0],
-        &bSplineControlPointsY[0],
-        &bSplineControlPointsX[1],
-        &bSplineControlPointsY[1],
-        &bSplineControlPointsX[2],
-        &bSplineControlPointsY[2],
-        &bSplineControlPointsX[3],
-        &bSplineControlPointsY[3],
-        &bSplineControlPointsX[4],
-        &bSplineControlPointsY[4],
-        &desiredAngle,
-        &bsplineParam
-    };
+    std::vector<double*> params;
+
+    point.PushOwnParams(params);
+    arcStart.PushOwnParams(params);
+    arcEnd.PushOwnParams(params);
+    arcCenter.PushOwnParams(params);
+    params.push_back(&arcRadius);
+    bSplineStart.PushOwnParams(params);
+    bSplineEnd.PushOwnParams(params);
+
+    for (const auto& point : bSplineControlPoints) {
+        point.PushOwnParams(params);
+    }
+    params.push_back(&desiredAngle);
+    params.push_back(&bsplineParam);
     params.insert(params.end(), weightsAsPtr.begin(), weightsAsPtr.end());
     params.insert(params.end(), knotsAsPtr.begin(), knotsAsPtr.end());
 
@@ -208,10 +184,10 @@ TEST_F(ConstraintsTest, p2pDistanceRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 108.405607354, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p1.x), -0.794357832977, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.y), -0.607450107571, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.x), 0.794357832977, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.y), 0.607450107571, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.x()), -0.794357832977, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.y()), -0.607450107571, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.x()), 0.794357832977, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.y()), 0.607450107571, 1e-8);
     }
     {
         double p1x = 10;
@@ -228,10 +204,10 @@ TEST_F(ConstraintsTest, p2pDistanceRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 70, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p1.x), 0, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.y), -1, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.x), 0, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.y), 1, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.x()), 0, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.y()), -1, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.x()), 0, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.y()), 1, 1e-8);
     }
 }
 TEST_F(ConstraintsTest, p2pAngleRegression)  // NOLINT
@@ -257,10 +233,10 @@ TEST_F(ConstraintsTest, p2pAngleRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -0.49759744736, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p1.x), 0.004730713246, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.y), -0.00618631732169, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.x), -0.004730713246, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.y), 0.00618631732169, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.x()), 0.004730713246, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.y()), -0.00618631732169, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.x()), -0.004730713246, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.y()), 0.00618631732169, 1e-8);
     }
     {
         double p1x = 10;
@@ -277,10 +253,10 @@ TEST_F(ConstraintsTest, p2pAngleRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 2.98672286269, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p1.x), 0.01, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.y), 2.16840434497e-19, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.x), -0.01, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.y), -2.16840434497e-19, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.x()), 0.01, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.y()), 2.16840434497e-19, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.x()), -0.01, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.y()), -2.16840434497e-19, 1e-8);
     }
 }
 TEST_F(ConstraintsTest, p2lDistanceeRegression)  // NOLINT
@@ -308,12 +284,12 @@ TEST_F(ConstraintsTest, p2lDistanceeRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 66.9592559361, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), 0.607450107571, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), -0.794357832977, 1e-8);
-        EXPECT_NEAR(constr.grad(line.p1.x), -0.427292961403, 1e-8);
-        EXPECT_NEAR(constr.grad(line.p1.y), 0.558767718757, 1e-8);
-        EXPECT_NEAR(constr.grad(line.p2.x), -0.180157146168, 1e-8);
-        EXPECT_NEAR(constr.grad(line.p2.y), 0.23559011422, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), 0.607450107571, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), -0.794357832977, 1e-8);
+        EXPECT_NEAR(constr.grad(line.p1.x()), -0.427292961403, 1e-8);
+        EXPECT_NEAR(constr.grad(line.p1.y()), 0.558767718757, 1e-8);
+        EXPECT_NEAR(constr.grad(line.p2.x()), -0.180157146168, 1e-8);
+        EXPECT_NEAR(constr.grad(line.p2.y()), 0.23559011422, 1e-8);
     }
     {
         double p0x = 100;
@@ -332,12 +308,12 @@ TEST_F(ConstraintsTest, p2lDistanceeRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 70, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), 1, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), 0, 1e-8);
-        EXPECT_NEAR(constr.grad(line.p1.x), 9.06, 1e-8);
-        EXPECT_NEAR(constr.grad(line.p1.y), 0, 1e-8);
-        EXPECT_NEAR(constr.grad(line.p2.x), -10.06, 1e-8);
-        EXPECT_NEAR(constr.grad(line.p2.y), 0, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), 1, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), 0, 1e-8);
+        EXPECT_NEAR(constr.grad(line.p1.x()), 9.06, 1e-8);
+        EXPECT_NEAR(constr.grad(line.p1.y()), 0, 1e-8);
+        EXPECT_NEAR(constr.grad(line.p2.x()), -10.06, 1e-8);
+        EXPECT_NEAR(constr.grad(line.p2.y()), 0, 1e-8);
     }
 }
 TEST_F(ConstraintsTest, pointOnLineRegression)  // NOLINT
@@ -365,12 +341,12 @@ TEST_F(ConstraintsTest, pointOnLineRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -76.9592559361, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), -0.607450107571, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), 0.794357832977, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.x), 0.427292961403, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.y), -0.558767718757, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.x), 0.180157146168, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.y), -0.23559011422, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), -0.607450107571, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), 0.794357832977, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.x()), 0.427292961403, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.y()), -0.558767718757, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.x()), 0.180157146168, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.y()), -0.23559011422, 1e-8);
     }
     {
         double p0x = 100;
@@ -389,12 +365,12 @@ TEST_F(ConstraintsTest, pointOnLineRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -90, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), -1, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), 0, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.x), -9.06, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.y), 0, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.x), 10.06, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.y), 0, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), -1, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), 0, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.x()), -9.06, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.y()), 0, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.x()), 10.06, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.y()), 0, 1e-8);
     }
 }
 TEST_F(ConstraintsTest, pointOnPerpBisectorRegression)  // NOLINT
@@ -422,12 +398,12 @@ TEST_F(ConstraintsTest, pointOnPerpBisectorRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -52.2407092511, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), 1.58871566595, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), 1.21490021514, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.x), -1.5225021759, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.y), 0.344738648553, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.x), -0.0662134900594, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.y), -1.55963886369, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), 1.58871566595, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), 1.21490021514, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.x()), -1.5225021759, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.y()), 0.344738648553, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.x()), -0.0662134900594, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.y()), -1.55963886369, 1e-8);
     }
     {
         double p0x = 100;
@@ -446,12 +422,12 @@ TEST_F(ConstraintsTest, pointOnPerpBisectorRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 1912, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), 0, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), 2, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.x), -1.8, 1e-8);
-        EXPECT_NEAR(constr.grad(p1.y), -1, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.x), 1.8, 1e-8);
-        EXPECT_NEAR(constr.grad(p2.y), -1, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), 0, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), 2, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.x()), -1.8, 1e-8);
+        EXPECT_NEAR(constr.grad(p1.y()), -1, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.x()), 1.8, 1e-8);
+        EXPECT_NEAR(constr.grad(p2.y()), -1, 1e-8);
     }
 }
 TEST_F(ConstraintsTest, parallelRegression)  // NOLINT
@@ -479,14 +455,14 @@ TEST_F(ConstraintsTest, parallelRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 0.98645774632, 1e-8);
 
-        EXPECT_NEAR(constr.grad(l1.p1.x), 0.0094567549078, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p1.y), -0.00679704258998, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.x), -0.0094567549078, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.y), 0.00679704258998, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.x), 0.011229896453, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.y), 0.0227553164969, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.x), -0.011229896453, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.y), -0.0227553164969, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.x()), 0.0094567549078, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.y()), -0.00679704258998, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.x()), -0.0094567549078, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.y()), 0.00679704258998, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.x()), 0.011229896453, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.y()), 0.0227553164969, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.x()), -0.011229896453, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.y()), -0.0227553164969, 1e-8);
     }
     {
         double l1p1x = -40;
@@ -505,14 +481,14 @@ TEST_F(ConstraintsTest, parallelRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -0.371390676354, 1e-8);
 
-        EXPECT_NEAR(constr.grad(l1.p1.x), -0.00928476690885, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p1.y), 0.00928476690885, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.x), 0.00928476690885, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.y), -0.00928476690885, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.x), 0.00541611403016, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.y), -0.00232119172721, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.x), -0.00541611403016, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.y), 0.00232119172721, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.x()), -0.00928476690885, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.y()), 0.00928476690885, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.x()), 0.00928476690885, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.y()), -0.00928476690885, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.x()), 0.00541611403016, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.y()), -0.00232119172721, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.x()), -0.00541611403016, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.y()), 0.00232119172721, 1e-8);
     }
 }
 TEST_F(ConstraintsTest, perpendicularRegression)  // NOLINT
@@ -540,14 +516,14 @@ TEST_F(ConstraintsTest, perpendicularRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 0.164015592932, 1e-8);
 
-        EXPECT_NEAR(constr.grad(l1.p1.x), 0.00679704258998, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p1.y), 0.0094567549078, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.x), -0.00679704258998, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.y), -0.0094567549078, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.x), 0.0227553164969, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.y), -0.011229896453, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.x), -0.0227553164969, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.y), 0.011229896453, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.x()), 0.00679704258998, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.y()), 0.0094567549078, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.x()), -0.00679704258998, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.y()), -0.0094567549078, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.x()), 0.0227553164969, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.y()), -0.011229896453, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.x()), -0.0227553164969, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.y()), 0.011229896453, 1e-8);
     }
     {
         double l1p1x = -40;
@@ -566,14 +542,14 @@ TEST_F(ConstraintsTest, perpendicularRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 0.928476690885, 1e-8);
 
-        EXPECT_NEAR(constr.grad(l1.p1.x), -0.00928476690885, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p1.y), -0.00928476690885, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.x), 0.00928476690885, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.y), 0.00928476690885, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.x), -0.00232119172721, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.y), -0.00541611403016, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.x), 0.00232119172721, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.y), 0.00541611403016, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.x()), -0.00928476690885, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.y()), -0.00928476690885, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.x()), 0.00928476690885, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.y()), 0.00928476690885, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.x()), -0.00232119172721, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.y()), -0.00541611403016, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.x()), 0.00232119172721, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.y()), 0.00541611403016, 1e-8);
     }
 }
 TEST_F(ConstraintsTest, l2lAngleRegression)  // NOLINT
@@ -603,14 +579,14 @@ TEST_F(ConstraintsTest, l2lAngleRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 0.606036319623, 1e-8);
 
-        EXPECT_NEAR(constr.grad(l1.p1.x), -0.00515394005154, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p1.y), -0.0104435101044, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.x), 0.00515394005154, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.y), 0.0104435101044, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.x), -0.020605280103, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.y), 0.0148100450741, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.x), 0.020605280103, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.y), -0.0148100450741, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.x()), -0.00515394005154, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.y()), -0.0104435101044, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.x()), 0.00515394005154, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.y()), 0.0104435101044, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.x()), -0.020605280103, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.y()), 0.0148100450741, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.x()), 0.020605280103, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.y()), -0.0148100450741, 1e-8);
     }
     {
         double l1p1x = -40;
@@ -631,14 +607,14 @@ TEST_F(ConstraintsTest, l2lAngleRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 0.419493622888, 1e-8);
 
-        EXPECT_NEAR(constr.grad(l1.p1.x), -0.0120689655172, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p1.y), 0.0051724137931, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.x), 0.0120689655172, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.y), -0.0051724137931, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.x), 0.00416666666667, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.y), -0.00416666666667, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.x), -0.00416666666667, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.y), 0.00416666666667, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.x()), -0.0120689655172, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.y()), 0.0051724137931, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.x()), 0.0120689655172, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.y()), -0.0051724137931, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.x()), 0.00416666666667, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.y()), -0.00416666666667, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.x()), -0.00416666666667, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.y()), 0.00416666666667, 1e-8);
     }
 }
 TEST_F(ConstraintsTest, midPointOnLineRegression)  // NOLINT
@@ -666,14 +642,14 @@ TEST_F(ConstraintsTest, midPointOnLineRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -92.138369167, 1e-8);
 
-        EXPECT_NEAR(constr.grad(l1.p1.x), 0.406007685671, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p1.y), -0.291818024076, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.x), 0.406007685671, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.y), -0.291818024076, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.x), 0.730186391552, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.y), -0.524821468928, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.x), -1.54220176289, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.y), 1.10845751708, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.x()), 0.406007685671, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.y()), -0.291818024076, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.x()), 0.406007685671, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.y()), -0.291818024076, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.x()), 0.730186391552, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.y()), -0.524821468928, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.x()), -1.54220176289, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.y()), 1.10845751708, 1e-8);
     }
     {
         double l1p1x = -40;
@@ -692,14 +668,14 @@ TEST_F(ConstraintsTest, midPointOnLineRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 24.7487373415, 1e-8);
 
-        EXPECT_NEAR(constr.grad(l1.p1.x), -0.353553390593, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p1.y), 0.353553390593, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.x), -0.353553390593, 1e-8);
-        EXPECT_NEAR(constr.grad(l1.p2.y), 0.353553390593, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.x), 0.397747564417, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p1.y), -0.397747564417, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.x), 0.309359216769, 1e-8);
-        EXPECT_NEAR(constr.grad(l2.p2.y), -0.309359216769, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.x()), -0.353553390593, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p1.y()), 0.353553390593, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.x()), -0.353553390593, 1e-8);
+        EXPECT_NEAR(constr.grad(l1.p2.y()), 0.353553390593, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.x()), 0.397747564417, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p1.y()), -0.397747564417, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.x()), 0.309359216769, 1e-8);
+        EXPECT_NEAR(constr.grad(l2.p2.y()), -0.309359216769, 1e-8);
     }
 }
 TEST_F(ConstraintsTest, tangeantCircumfRegression)  // NOLINT
@@ -725,11 +701,11 @@ TEST_F(ConstraintsTest, tangeantCircumfRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -700, 1e-8);
 
-        EXPECT_NEAR(constr.grad(c1.center.x), 60, 1e-8);
-        EXPECT_NEAR(constr.grad(c1.center.y), -60, 1e-8);
+        EXPECT_NEAR(constr.grad(c1.center.x()), 60, 1e-8);
+        EXPECT_NEAR(constr.grad(c1.center.y()), -60, 1e-8);
         EXPECT_NEAR(constr.grad(c1.rad), -100, 1e-8);
-        EXPECT_NEAR(constr.grad(c2.center.x), -60, 1e-8);
-        EXPECT_NEAR(constr.grad(c2.center.y), 60, 1e-8);
+        EXPECT_NEAR(constr.grad(c2.center.x()), -60, 1e-8);
+        EXPECT_NEAR(constr.grad(c2.center.y()), 60, 1e-8);
         EXPECT_NEAR(constr.grad(c2.rad), -100, 1e-8);
     }
     {
@@ -747,11 +723,11 @@ TEST_F(ConstraintsTest, tangeantCircumfRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -207, 1e-8);
 
-        EXPECT_NEAR(constr.grad(c1.center.x), -66, 1e-8);
-        EXPECT_NEAR(constr.grad(c1.center.y), -54, 1e-8);
+        EXPECT_NEAR(constr.grad(c1.center.x()), -66, 1e-8);
+        EXPECT_NEAR(constr.grad(c1.center.y()), -54, 1e-8);
         EXPECT_NEAR(constr.grad(c1.rad), -90, 1e-8);
-        EXPECT_NEAR(constr.grad(c2.center.x), 66, 1e-8);
-        EXPECT_NEAR(constr.grad(c2.center.y), 54, 1e-8);
+        EXPECT_NEAR(constr.grad(c2.center.x()), 66, 1e-8);
+        EXPECT_NEAR(constr.grad(c2.center.y()), 54, 1e-8);
         EXPECT_NEAR(constr.grad(c2.rad), -90, 1e-8);
     }
 }
@@ -784,12 +760,12 @@ TEST_F(ConstraintsTest, pointOnEllipseRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 97.6558983402, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), -1.90770030154, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), 0.393810475974, 1e-8);
-        EXPECT_NEAR(constr.grad(el.focus1.x), -0.081766561895, 1e-8);
-        EXPECT_NEAR(constr.grad(el.focus1.y), -0.803364458911, 1e-8);
-        EXPECT_NEAR(constr.grad(el.center.x), 1.98946686343, 1e-8);
-        EXPECT_NEAR(constr.grad(el.center.y), 0.409553982936, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), -1.90770030154, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), 0.393810475974, 1e-8);
+        EXPECT_NEAR(constr.grad(el.focus1.x()), -0.081766561895, 1e-8);
+        EXPECT_NEAR(constr.grad(el.focus1.y()), -0.803364458911, 1e-8);
+        EXPECT_NEAR(constr.grad(el.center.x()), 1.98946686343, 1e-8);
+        EXPECT_NEAR(constr.grad(el.center.y()), 0.409553982936, 1e-8);
         EXPECT_NEAR(constr.grad(el.radmin), -1.55365734542, 1e-8);
     }
     {
@@ -813,12 +789,12 @@ TEST_F(ConstraintsTest, pointOnEllipseRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), 18.7974219733, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), -1.16392591687, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), 1.43420336522, 1e-8);
-        EXPECT_NEAR(constr.grad(el.focus1.x), -0.380988858027, 1e-8);
-        EXPECT_NEAR(constr.grad(el.focus1.y), 0.303943497172, 1e-8);
-        EXPECT_NEAR(constr.grad(el.center.x), 1.54491477489, 1e-8);
-        EXPECT_NEAR(constr.grad(el.center.y), -1.73814686239, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), -1.16392591687, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), 1.43420336522, 1e-8);
+        EXPECT_NEAR(constr.grad(el.focus1.x()), -0.380988858027, 1e-8);
+        EXPECT_NEAR(constr.grad(el.focus1.y()), 0.303943497172, 1e-8);
+        EXPECT_NEAR(constr.grad(el.center.x()), 1.54491477489, 1e-8);
+        EXPECT_NEAR(constr.grad(el.center.y()), -1.73814686239, 1e-8);
         EXPECT_NEAR(constr.grad(el.radmin), -1.73612417504, 1e-8);
     }
 }
@@ -847,12 +823,12 @@ TEST_F(ConstraintsTest, pointOnHyperbollaRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -28.8472475367, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), -0.180532043696, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), -1.94273657539, 1e-8);
-        EXPECT_NEAR(constr.grad(par.vertex.x), -0.585557251732, 1e-8);
-        EXPECT_NEAR(constr.grad(par.vertex.y), 1.9408282659, 1e-8);
-        EXPECT_NEAR(constr.grad(par.focus1.x), 0.766089295428, 1e-8);
-        EXPECT_NEAR(constr.grad(par.focus1.y), 0.00190830949738, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), -0.180532043696, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), -1.94273657539, 1e-8);
+        EXPECT_NEAR(constr.grad(par.vertex.x()), -0.585557251732, 1e-8);
+        EXPECT_NEAR(constr.grad(par.vertex.y()), 1.9408282659, 1e-8);
+        EXPECT_NEAR(constr.grad(par.focus1.x()), 0.766089295428, 1e-8);
+        EXPECT_NEAR(constr.grad(par.focus1.y()), 0.00190830949738, 1e-8);
     }
     {
         double p0x = -10;
@@ -871,11 +847,11 @@ TEST_F(ConstraintsTest, pointOnHyperbollaRegression)  // NOLINT
 
         EXPECT_NEAR(constr.error(), -15.3536262028, 1e-8);
 
-        EXPECT_NEAR(constr.grad(p0.x), -0.0286098387325, 1e-8);
-        EXPECT_NEAR(constr.grad(p0.y), 0.192598008092, 1e-8);
-        EXPECT_NEAR(constr.grad(par.vertex.x), -2.28268823564, 1e-8);
-        EXPECT_NEAR(constr.grad(par.vertex.y), 0.884541691309, 1e-8);
-        EXPECT_NEAR(constr.grad(par.focus1.x), 2.31129807437, 1e-8);
-        EXPECT_NEAR(constr.grad(par.focus1.y), -1.0771396994, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.x()), -0.0286098387325, 1e-8);
+        EXPECT_NEAR(constr.grad(p0.y()), 0.192598008092, 1e-8);
+        EXPECT_NEAR(constr.grad(par.vertex.x()), -2.28268823564, 1e-8);
+        EXPECT_NEAR(constr.grad(par.vertex.y()), 0.884541691309, 1e-8);
+        EXPECT_NEAR(constr.grad(par.focus1.x()), 2.31129807437, 1e-8);
+        EXPECT_NEAR(constr.grad(par.focus1.y()), -1.0771396994, 1e-8);
     }
 }
