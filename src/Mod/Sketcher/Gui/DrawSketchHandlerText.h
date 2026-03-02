@@ -769,4 +769,3 @@ std::list<Gui::InputHint> DrawSketchHandlerText::lookupTextHints(int method, int
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerText_H
-
