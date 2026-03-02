@@ -836,9 +836,12 @@ TEST_F(SchemaTest, sweep_internal)
         {"1 nA",
          "10 nA",
          "100 nA",
-         "1 \xC2\xB5""A",
-         "10 \xC2\xB5""A",
-         "100 \xC2\xB5""A",
+         "1 \xC2\xB5"
+         "A",
+         "10 \xC2\xB5"
+         "A",
+         "100 \xC2\xB5"
+         "A",
          "1 mA",
          "1 A",
          "10 A",
