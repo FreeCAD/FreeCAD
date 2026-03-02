@@ -157,14 +157,13 @@ M2"""
 
     def export(self):
         """Override export to handle network upload to SmoothieBoard."""
-        # First, do the standard export processing
-        gcode_sections = super().export()
+        # Use the base export method - remote posting is now handled in remote_post()
+        return super().export()
 
-        if gcode_sections is None:
-            return None
-
-        # If IP address is specified, send to SmoothieBoard instead of writing to file
-        if self.ip_addr:
+    def remote_post(self, gcode_sections):
+        """Override remote_post to handle SmoothieBoard network upload."""
+        # Check if remote posting is enabled and IP address is specified
+        if self.values.get("REMOTE_POST", False) and self.ip_addr:
             # Combine all G-code sections
             gcode = ""
             for section_name, section_gcode in gcode_sections:
@@ -177,12 +176,6 @@ M2"""
                 filename = "output.nc"
 
             self._send_to_smoothie(self.ip_addr, gcode, filename)
-
-            # Return the gcode for display/editor
-            return gcode_sections
-
-        # Normal file-based export
-        return gcode_sections
 
     def _send_to_smoothie(self, ip: str, gcode: str, fname: str) -> None:
         """

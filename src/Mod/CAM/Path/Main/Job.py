@@ -65,6 +65,8 @@ class JobTemplate:
     Stock = "Stock"
     # TCs are grouped under Tools in a job, the template refers to them directly though
     ToolController = "ToolController"
+    PostProcessorPropertyOverrides = "PostPropertyOverrides"
+    Machine = "Machine"
     Version = "Version"
 
 
@@ -210,6 +212,22 @@ class ObjectJob:
             "WCS",
             QT_TRANSLATE_NOOP("App::Property", "The Work Coordinate Systems for the Job"),
         )
+        obj.addProperty(
+            "App::PropertyString",
+            "Machine",
+            "Output",
+            QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "PostProcessorPropertyOverrides",
+            "Output",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "JSON dict of postprocessor properties that override machine defaults for this job",
+            ),
+        )
+        obj.PostProcessorPropertyOverrides = "{}"
 
         obj.Fixtures = ["G54"]
 
@@ -524,6 +542,25 @@ class ObjectJob:
             )
             obj.setEditorMode("JobType", 2)  # Hide
 
+        if not hasattr(obj, "Machine"):
+            obj.addProperty(
+                "App::PropertyString",
+                "Machine",
+                "Output",
+                QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
+            )
+        if not hasattr(obj, "PostProcessorPropertyOverrides"):
+            obj.addProperty(
+                "App::PropertyString",
+                "PostProcessorPropertyOverrides",
+                "Output",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "JSON dict of postprocessor properties that override machine defaults for this job",
+                ),
+            )
+            obj.PostProcessorPropertyOverrides = "{}"
+
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
@@ -574,8 +611,14 @@ class ObjectJob:
                         obj.PostProcessorArgs = attrs.get(JobTemplate.PostProcessorArgs)
                     else:
                         obj.PostProcessorArgs = ""
+                if attrs.get(JobTemplate.PostProcessorPropertyOverrides):
+                    obj.PostProcessorPropertyOverrides = json.dumps(
+                        attrs[JobTemplate.PostProcessorPropertyOverrides]
+                    )
                 if attrs.get(JobTemplate.PostProcessorOutputFile):
                     obj.PostProcessorOutputFile = attrs.get(JobTemplate.PostProcessorOutputFile)
+                if attrs.get(JobTemplate.Machine):
+                    obj.Machine = attrs.get(JobTemplate.Machine)
                 if attrs.get(JobTemplate.Description):
                     obj.Description = attrs.get(JobTemplate.Description)
 
@@ -619,8 +662,18 @@ class ObjectJob:
             attrs[JobTemplate.Fixtures] = [{f: True} for f in obj.Fixtures]
             attrs[JobTemplate.OrderOutputBy] = obj.OrderOutputBy
             attrs[JobTemplate.SplitOutput] = obj.SplitOutput
+        if (
+            hasattr(obj, "PostProcessorPropertyOverrides")
+            and obj.PostProcessorPropertyOverrides
+            and obj.PostProcessorPropertyOverrides != "{}"
+        ):
+            attrs[JobTemplate.PostProcessorPropertyOverrides] = json.loads(
+                obj.PostProcessorPropertyOverrides
+            )
         if obj.PostProcessorOutputFile:
             attrs[JobTemplate.PostProcessorOutputFile] = obj.PostProcessorOutputFile
+        if hasattr(obj, "Machine") and obj.Machine:
+            attrs[JobTemplate.Machine] = obj.Machine
         attrs[JobTemplate.GeometryTolerance] = str(obj.GeometryTolerance.Value)
         if obj.Description:
             attrs[JobTemplate.Description] = obj.Description
@@ -689,6 +742,27 @@ class ObjectJob:
                 group.append(op)
             self.obj.Operations.Group = group
             # op.Path.Center = self.obj.Operations.Path.Center
+
+    def getMachine(self):
+        """getMachine() ... returns an instantiated Machine object for this job.
+        Returns None if no machine is configured or if the machine cannot be loaded.
+        """
+        # TODO: Once Machine property is added to Job, use it here
+        # For now, return None since Machine property doesn't exist yet
+        if not hasattr(self.obj, "Machine"):
+            return None
+
+        machine_name = self.obj.Machine
+        if not machine_name:
+            return None
+
+        try:
+            from Machine.models.machine import MachineFactory
+
+            return MachineFactory.get_machine(machine_name)
+        except Exception as e:
+            Path.Log.error(f"Failed to load machine '{machine_name}': {e}")
+            return None
 
     def nextToolNumber(self):
         # returns the next available toolnumber in the job
