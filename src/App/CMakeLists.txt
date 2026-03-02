@@ -1,5 +1,12 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+BISON_TARGET(ExpressionParser Expression.y Expression.tab.c
+    DEFINES_FILE Expression.tab.h
+    COMPILE_FLAGS "-v -Wall -Wcounterexamples -Wconflicts-sr")
+FLEX_TARGET(ExpressionLexer Expression.l Expression.lex.c
+    COMPILE_FLAGS "-v")
+ADD_FLEX_BISON_DEPENDENCY(ExpressionLexer ExpressionParser)
+
 add_library(FreeCADApp SHARED)
 
 if(WIN32)
@@ -62,6 +69,12 @@ target_include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
+)
+
+# PUBLIC because Expression.tab.h is included transitively via ExpressionParser.h
+target_include_directories(
+    FreeCADApp
+    PUBLIC
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
@@ -371,6 +384,11 @@ if (FREECAD_WARN_ERROR)
 endif()
 
 add_dependencies(FreeCADApp fc_version)
+
+add_custom_target(GenerateExpressionParser DEPENDS
+    ${BISON_ExpressionParser_OUTPUTS}
+    ${FLEX_ExpressionLexer_OUTPUTS})
+add_dependencies(FreeCADApp GenerateExpressionParser)
 
 SET_BIN_DIR(FreeCADApp FreeCADApp)
 

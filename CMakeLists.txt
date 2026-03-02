@@ -79,6 +79,13 @@ SetupLibFmt()
 SetupYamlCpp()
 SetupZipIos()
 find_package(ICU REQUIRED COMPONENTS uc i18n)
+# On Windows, winflexbison uses win_flex/win_bison names
+if(WIN32)
+    find_program(FLEX_EXECUTABLE NAMES flex win_flex)
+    find_program(BISON_EXECUTABLE NAMES bison win_bison)
+endif()
+find_package(FLEX REQUIRED)
+find_package(BISON 3.6 REQUIRED)  # 3.6+ required for -Wcounterexamples flag
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIBPACK_CHECKFILE_VERSION)
     SetupPython()
     SetupPCL()

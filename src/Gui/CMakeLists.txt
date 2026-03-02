@@ -1,3 +1,10 @@
+BISON_TARGET(SelectionFilterParser Selection/SelectionFilter.y
+    Selection/SelectionFilter.tab.c
+    DEFINES_FILE Selection/SelectionFilter.tab.h)
+FLEX_TARGET(SelectionFilterLexer Selection/SelectionFilter.l
+    Selection/SelectionFilter.lex.cpp)
+ADD_FLEX_BISON_DEPENDENCY(SelectionFilterLexer SelectionFilterParser)
+
 add_library(FreeCADGui SHARED)
 
 if ( EXISTS "${CMAKE_SOURCE_DIR}/src/3rdParty/GSL/include" )
@@ -70,6 +77,7 @@ target_include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/Selection
     ${CMAKE_CURRENT_SOURCE_DIR}/StyleParameters
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/Selection
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/Language
@@ -1553,6 +1561,11 @@ endif ()
 
 target_sources(FreeCADGui PRIVATE ${FreeCADGui_SRCS})
 target_link_libraries(FreeCADGui PUBLIC ${FreeCADGui_LIBS})
+
+add_custom_target(GenerateSelectionFilterParser DEPENDS
+    ${BISON_SelectionFilterParser_OUTPUTS}
+    ${FLEX_SelectionFilterLexer_OUTPUTS})
+add_dependencies(FreeCADGui GenerateSelectionFilterParser)
 
 if (MSVC)
     target_compile_definitions(FreeCADGui PRIVATE WIN32_LEAN_AND_MEAN)
