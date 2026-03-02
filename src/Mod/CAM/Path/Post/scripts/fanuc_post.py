@@ -50,7 +50,7 @@ fanuc_post.export(object,"/path/to/file.ncc","")
 """
 
 # Preamble text will appear at the beginning of the GCODE output file.
-DEFAULT_PREAMBLE = """G17 G54 G40 G49 G80 G90
+DEFAULT_PREAMBLE = """G17 G54 G40 G49 G80 G90 G94
 """
 
 # Postamble text will appear following the last operation.
@@ -152,7 +152,7 @@ TOOL_CHANGE = """G28 G91 Z0
 
 # List of drill G codes where some parameters are required and their
 # required parameters.
-DRILL_OPERATION = ("G73", "G81", "G82", "G83", "G84", "G85")
+DRILL_OPERATION = ("G73", "G81", "G82", "G83", "G85")
 DRILL_PARAM_REQ = ("L", "P", "Q", "R", "Z")
 
 
@@ -507,85 +507,100 @@ def parse(pathobj):
                 if command == "G0":
                     continue
 
-            # if tool a tap, we thread tap, so stop the spindle for now.
-            # This only trigger when pathobj is a ToolController.
+            # If tool a tap, we will thread tap, so stop the spindle
+            # for now as there is no point in starting it to stop it
+            # in the G74/G84 operation after S29.  This only trigger
+            # when pathobj is a ToolController.
             if command == "M03" or command == "M3":
-                if hasattr(pathobj, "Tool") and pathobj.Tool.ShapeName.lower() == "tap":
+                if (
+                    hasattr(pathobj, "Tool")
+                    and getattr(pathobj.Tool, "ShapeType", "").lower() == "tap"
+                ):
                     tapSpeed = int(pathobj.SpindleSpeed)
                     continue
 
-            # Convert drill cycles to tap cycles if tool is a tap.
+            # Handle thread tapping cycles.  Uses rigid tapping.
             # This only trigger when pathobj is a Operation.
-            if command == "G81" or command == "G83":
-                if (
-                    hasattr(pathobj, "ToolController")
-                    and pathobj.ToolController.Tool.ShapeName.lower() == "tap"
-                ):
-                    command = "G84"
-                    out += linenumber() + "G95\n"
-                    paramstring = ""
-                    for param in ["X", "Y"]:
-                        if param in c.Parameters:
-                            if (
-                                (not OUTPUT_DOUBLES)
-                                and (param in currLocation)
-                                and (currLocation[param] == c.Parameters[param])
-                            ):
-                                continue
-                            else:
-                                pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-                                paramstring += (
-                                    " "
-                                    + param
-                                    + format(
-                                        float(pos.getValueAs(UNIT_FORMAT)),
-                                        precision_string,
-                                    )
-                                )
-                    if paramstring != "":
-                        out += linenumber() + "G00" + paramstring + "\n"
-
-                    if "S" in c.Parameters:
-                        tapSpeed = int(c.Parameters["S"])
-                    out += "M29 S" + str(tapSpeed) + "\n"
-
-                    for param in ["Z", "R"]:
-                        if param in c.Parameters:
-                            if (
-                                (not OUTPUT_DOUBLES)
-                                and (param in currLocation)
-                                and (currLocation[param] == c.Parameters[param])
-                            ):
-                                continue
-                            else:
-                                pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
-                                paramstring += (
-                                    " "
-                                    + param
-                                    + format(
-                                        float(pos.getValueAs(UNIT_FORMAT)),
-                                        precision_string,
-                                    )
-                                )
-                    # in this mode, F is the distance per revolution of the thread (pitch)
-                    # P is the dwell time in seconds at the bottom of the thread
-                    # Q is the peck depth of the threading operation
-                    for param in ["F", "P", "Q"]:
-                        if param in c.Parameters:
-                            value = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+            if command == "G74" or command == "G84":
+                pitch_mm = float(c.Parameters["F"])
+                # Convert pitch to inches if needed
+                if UNITS == "G20":  # imperial
+                    pitch = pitch_mm / 25.4
+                else:
+                    pitch = pitch_mm
+                paramstring = ""
+                for param in ["X", "Y"]:
+                    if param in c.Parameters:
+                        if (
+                            (not OUTPUT_DOUBLES)
+                            and (param in currLocation)
+                            and (currLocation[param] == c.Parameters[param])
+                        ):
+                            continue
+                        else:
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             paramstring += (
                                 " "
                                 + param
                                 + format(
-                                    float(value.getValueAs(UNIT_FORMAT)),
+                                    float(pos.getValueAs(UNIT_FORMAT)),
+                                    precision_string,
+                                )
+                            )
+                if paramstring != "":
+                    out += linenumber() + "G00" + paramstring + "\n"
+
+                if "S" in c.Parameters:
+                    tapSpeed = int(c.Parameters["S"])
+                out += "M29 S" + str(tapSpeed) + "\n"
+
+                for param in ["Z", "R"]:
+                    if param in c.Parameters:
+                        if (
+                            (not OUTPUT_DOUBLES)
+                            and (param in currLocation)
+                            and (currLocation[param] == c.Parameters[param])
+                        ):
+                            continue
+                        else:
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                            paramstring += (
+                                " "
+                                + param
+                                + format(
+                                    float(pos.getValueAs(UNIT_FORMAT)),
                                     precision_string,
                                 )
                             )
 
-                    out += linenumber() + "G84" + paramstring + "\n"
-                    out += linenumber() + "G80\n"
-                    out += linenumber() + "G94\n"
-                    continue
+                # Calculate feed rate as distance per minute
+                if tapSpeed is not None:
+                    feed_rate = pitch * tapSpeed
+                    speed = Units.Quantity(feed_rate, UNIT_SPEED_FORMAT)
+                    paramstring += " F" + format(
+                        float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string
+                    )
+                else:
+                    # No spindle speed found, output pitch as F
+                    paramstring += " F" + format(pitch, precision_string)
+
+                # P is the dwell time in seconds at the bottom of the thread
+                # Q is the peck depth of the threading operation
+                for param in ["P", "Q"]:
+                    if param in c.Parameters:
+                        value = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
+                        paramstring += (
+                            " "
+                            + param
+                            + format(
+                                float(value.getValueAs(UNIT_FORMAT)),
+                                precision_string,
+                            )
+                        )
+
+                out += linenumber() + command + paramstring + "\n"
+                out += linenumber() + "G80\n"  # End tapping cycle
+                continue
 
             outstring.append(command)
 
