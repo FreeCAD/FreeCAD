@@ -254,6 +254,47 @@ TEST_F(SchemaTest, internal_20000_mm_precision_2)
     EXPECT_EQ(result, expect);
 }
 
+TEST_F(SchemaTest, internal_20nA_precision_0)
+{
+    const std::string result = setWithPrecision("Internal", 20 * 1e-9, Unit::ElectricCurrent, 0);
+    const auto expect {"20 nA"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, internal_100uA_precision_0)
+{
+    const std::string result = setWithPrecision("Internal", 100 * 1e-6, Unit::ElectricCurrent, 0);
+    const auto expect {"100 \xC2\xB5"
+                       "A"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, internal_20nW_precision_0)
+{
+    const std::string result = setWithPrecision("Internal", 0.2, Unit::Power, 0);
+    const auto expect {"200 nW"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, internal_20uW_precision_0)
+{
+    const std::string result = setWithPrecision("Internal", 20, Unit::Power, 0);
+    const auto expect {"20 \xC2\xB5W"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, internal_1mol_p_l_precision_1)
+{
+    const std::string result = setWithPrecision("Internal", 1e-6, Unit::Concentration, 1);
+    const auto expect {"1.0 mol/l"};
+
+    EXPECT_EQ(result, expect);
+}
+
 TEST_F(SchemaTest, imperial_decimal_1_mm_precision_0)
 {
     const std::string result = setWithPrecision("ImperialDecimal", 1.0, Unit::Length, 0);
@@ -557,6 +598,7 @@ TEST_F(SchemaTest, round_trip_test)
         Unit::Area,
         Unit::Density,
         Unit::Volume,
+        Unit::Concentration,
         Unit::TimeSpan,
         Unit::Frequency,
         Unit::Velocity,
@@ -775,6 +817,33 @@ TEST_F(SchemaTest, sweep_internal)
          "1 m^3",
          "10 m^3",
          /* default */ "1e+06 m^3"},
+        // Amount of Substance
+        {"1 nmol",
+         "1 \xC2\xB5mol",
+         "10 mmol",
+         "100 mol",
+         /* default */ "1e+06 mol"},
+        // Concentration
+        {"1 \xC2\xB5mol/l",
+         "10 \xC2\xB5mol/l",
+         "100 \xC2\xB5mol/l",
+         "1 mmol/l",
+         "10 mmol/l",
+         "100 mmol/l",
+         "1 mol/l",
+         /* default */ "1e+06 mol/l"},
+        // ElectricCurrent
+        {"1 nA",
+         "10 nA",
+         "100 nA",
+         "1 \xC2\xB5""A",
+         "10 \xC2\xB5""A",
+         "100 \xC2\xB5""A",
+         "1 mA",
+         "1 A",
+         "10 A",
+         "100 A",
+         /* default */ "1e+07 A"},
         // Pressure
         {"1 Pa",
          "10 Pa",
@@ -804,7 +873,13 @@ TEST_F(SchemaTest, sweep_internal)
          "10 MN",
          /* default */ "1e+06 MN"},
         // Power
-        {"1 mW",
+        {"1 nW",
+         "10 nW",
+         "100 nW",
+         "1 \xC2\xB5W",
+         "10 \xC2\xB5W",
+         "100 \xC2\xB5W",
+         "1 mW",
          "10 mW",
          "100 mW",
          "1 W",
