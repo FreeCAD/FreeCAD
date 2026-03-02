@@ -273,8 +273,7 @@ void CmdAssemblySelectJointsOfComponent::activated(int iMsg)
         const std::vector<std::string> subs = sel.getSubNames();
         std::string sub = subs.empty() ? "" : subs.front();
 
-        App::DocumentObject* comp = getMovingPartFromSel(assembly, sel.getObject(), sub);
-        if (comp) {
+        if (App::DocumentObject* comp = getMovingPartFromSel(assembly, sel.getObject(), sub)) {
             components.insert(comp);
         }
     }
