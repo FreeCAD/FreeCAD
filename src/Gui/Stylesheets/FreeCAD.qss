@@ -70,6 +70,7 @@ Resetting everything helps to unify styles across different operating systems
 --------------------------------------------------------------------------- */
 * {
   outline: none;
+  background: transparent;
   color: @BaseTextColor;
   selection-background-color: @TextSelectBackgroundColor;
   selection-color: @TextForegroundColor;
@@ -117,7 +118,7 @@ Main window
 ==================================================================================================*/
 QMainWindow,
 QDockWidget {
-  background-color: @PrimaryColor;/* main background color */
+  background-color: @{@Background.100};/* main background color */
 }
 
 QDialog {
@@ -346,7 +347,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qgroupbox
 
 --------------------------------------------------------------------------- */
 QGroupBox {
-  background-color: @GroupBoxBackground;
+  background-color: transparent;
   border-radius: @GroupBoxBorderRadius;
   border-color: @GroupBoxBorderColor;
   border: 1px solid @GroupBoxBorderColor;
@@ -491,7 +492,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qmenubar
 
 --------------------------------------------------------------------------- */
 QMenuBar {
-  background-color: @MenuBackgroundColor;
+  background-color: @{@Background.100};
 }
 
 QMenuBar:disabled,
@@ -883,35 +884,25 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbar
 
 --------------------------------------------------------------------------- */
 QToolBar {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColor ,stop:0.97 @PrimaryColor , stop:1 @GeneralBorderColor);
-}
-
-/* fix background color for toolbars that are the on menubar. */
-
-QToolBar:only-one {
-  background-color: transparent;
+  background-color: @{@Background.100};
+  border: none;
+  outline: none;
 }
 
 QToolBar:horizontal {
   padding-top: 3px;
   padding-left: 3px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColor ,stop:0.97 @PrimaryColor , stop:1 @GeneralBorderColor);
+  border-bottom: 1px solid @GeneralBorderColor;
+  padding-bottom: 4px;
 }
 
 QMenu QToolBar:horizontal {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColor ,stop:0.97 @PrimaryColor , stop:1 @GeneralBorderColor);
 }
 
-/* fix background color for toolbars that are the on menubar. */
-QToolBar:only-one {
-  background-color: transparent;
-  border:0px;
-}
-
 QToolBar:vertical {
   padding-top: 3px;
   padding-left: 3px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @GeneralBorderColor, stop:0.02 @PrimaryColor ,stop:0.98 @PrimaryColor , stop:1 @GeneralBorderColor);
 }
 
 QToolBar:disabled {}
@@ -1002,19 +993,16 @@ QSpinBox {
   border-radius: @InputFieldBorderRadius;
   padding-left: 4px;
   padding-right: 4px;
+  height: @{@FormControlHeight - 5px};
 }
 
 QAbstractSpinBox:up-button {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
   subcontrol-origin: border;
   subcontrol-position: top right;
-  border-top: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-bottom: 1px solid @GeneralBorderColor;
-  border-top-right-radius: 2px;
-  border-left: 1px solid @GeneralBorderColor;
-  margin:1px;
-  margin-bottom:-1px;
+  border: none;
+  background: transparent;
+  margin-top: 2px;
+  margin-right: 2px;
 }
 
 QAbstractSpinBox:up-button:hover{
@@ -1040,16 +1028,12 @@ QAbstractSpinBox::up-arrow:hover {
 }
 
 QAbstractSpinBox:down-button {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
   subcontrol-origin: border;
   subcontrol-position: bottom right;
-  border-bottom: 1px solid transparent;
-  border-right: 1px solid transparent;
-  border-top: 1px solid @GeneralBorderColor;
-  border-bottom-right-radius: 2px;
-  border-left: 1px solid @GeneralBorderColor;
-  margin:1px;
-  margin-top:-1px;
+  border: none;
+  background: transparent;
+  margin-bottom: 2px;
+  margin-right: 2px;
 }
 
 QAbstractSpinBox:down-button:disabled {
@@ -1256,124 +1240,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
 
 --------------------------------------------------------------------------- */
 QToolButton {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
-  border: 1px solid @GeneralBorderColor;
-  border-radius: @InputFieldBorderRadius;
   padding: 2px;
-}
-
-QToolBar QToolButton {
-  background-color: transparent;
-  padding: @ToolbarButtonsPadding;
-  outline: none;
-  border: 1px solid transparent;
-  border-radius: @InputFieldBorderRadius;
-}
-
-QDialog QToolButton:hover {
-  background-color: @GeneralBackgroundHoverColor;
-  /* border: 1px solid @AccentColor;*/}
-QToolButton:disabled {
-  /* padding: 2px; */
-  /* background-color: @GeneralDisabledBackgroundColor; */
-  color: @TextDisabledColor;
-}
-
-QToolButton:checked {
-  background-color: @ToolButtonCheckedBackground;
-  border-radius: @InputFieldBorderRadius;
-  border: 1px solid @ToolButtonCheckedBorderColor;
-}
-
-QToolButton:checked:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  border: 1px solid @ButtonBorderColor;
-}
-
-QToolButton:checked:hover {
-  background-color: @GeneralBackgroundHoverColor;
-  border: 1px solid @AccentColor;
-}
-
-QToolButton:checked:pressed {
-  background-color: @ButtonTopBackgroundColor;
-}
-
-QToolButton:checked:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonBottomBackgroundColor, stop:0.7 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
-  border: 1px solid @AccentColor;
-}
-
-QToolButton:hover {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-/*
- * Hover state: Add a visible border to create the frame effect.
- * This rule is more specific than the theme's general QToolButton:hover, so it will apply only to
- * toolbar buttons.
- */
-QToolBar QToolButton:hover {
-    border: 1px solid @ButtonBorderColor;
-}
-
-QToolButton:pressed {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-/*
- * Pressed state: Add an "inset" border style and gradient to create the "pushed in" look.
- */
-QToolBar QToolButton:hover:pressed {
-    border: 1px solid @ButtonBorderColor;
-    border-style: inset;
-    background-color: @PrimaryColorDarken2;
-}
-
-QToolButton:selected {
-  border: 1px solid @GeneralBackgroundHoverColor;
-}
-
-QToolButton#qt_toolbutton_menubutton {
-  padding-right: 15px;/*Hack to add more width to buttons with menu */
-  border-radius: @InputFieldBorderRadius;
- }
-
-QToolButton::menu-button {
-  border: 1px solid transparent;
-  /* 16px width + 4px for border = 20px allocated above */
-  width: 15px;
-  border-radius: @InputFieldBorderRadius;
-}
-
-QToolButton::menu-button:hover {
-  border: 1px solid transparent;
-}
-
-QToolButton::menu-button:pressed {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QToolButton::menu-button:checked:hover {
-  border: 1px solid @GeneralBackgroundHoverColor;
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QToolButton::menu-indicator {
-  subcontrol-position: right center;
-}
-
-QToolButton::menu-arrow {
-  image: url(qss:@IconsLocationFolderName/arrow-down-lightgray.svg);
-  height: 13px;
-}
-
-QToolButton::menu-arrow:open {
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-}
-
-QToolButton::menu-arrow:hover {
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
 }
 
 /* Gui::SplitButton --------------------------------------------------------- */
@@ -1422,7 +1289,7 @@ QComboBox {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
   padding-left: 4px;
   padding-right: 18px; /* 18px for the check-mark that says which item is active */
-  min-height: 22px;
+  height: @{@FormControlHeight - 2px};
 }
 
 QComboBox:editable {
@@ -1773,6 +1640,7 @@ QLineEdit, QTextEdit, QPlainTextEdit {
   border-style: solid;
   border: 1px solid @GeneralBorderColor;
   border-radius: @InputFieldBorderRadius;
+  height: @FormControlHeight;
 }
 
 QLineEdit:disabled, QTextEdit:disabled, QPlainTextEdit:disabled {
@@ -2539,6 +2407,16 @@ QDateEdit QAbstractItemView, QDateTimeEdit QAbstractItemView {
 /* QAbstractView ----------------------------------------------------------
 
 --------------------------------------------------------------------------- */
+QTreeView, QListView, QTableView {
+  background-color: @{@Background.000};
+  border: 1px solid @GeneralBorderColor;
+  border-radius: @FormControlBorderRadius;
+}
+
+QHeaderView::section {
+  border: none;
+}
+
 QAbstractView:hover {
   border: 1px solid @AccentColor;
 }
@@ -2678,6 +2556,9 @@ padding-right: -10px;
 }
 /* Below is a fix for indentation in properties*/
 
+QTreeView#groupsTreeView {
+  border: none;
+}
 
 QTreeView::item#groupsTreeView {
   /* background-color: @AccentColor; */

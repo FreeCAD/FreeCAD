@@ -300,11 +300,8 @@ void FreeCADStyle::drawPrimitive(
         }();
 
         const std::string type = [&option]() -> std::string {
-            const QStyleOptionButton* styleOptionButton = static_cast<const QStyleOptionButton*>(
-                option
-            );
-
-            if (styleOptionButton->features & QStyleOptionButton::DefaultButton) {
+            if (auto* styleOptionButton = qstyleoption_cast<const QStyleOptionButton*>(option);
+                styleOptionButton && styleOptionButton->features & QStyleOptionButton::DefaultButton) {
                 return "Primary";
             }
 
