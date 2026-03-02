@@ -30,7 +30,7 @@ using namespace Fem;
 
 PROPERTY_SOURCE(Fem::ConstraintHeatflux, Fem::Constraint)
 
-static const char* ConstraintTypes[] = {"DFlux", "Convection", "Radiation", nullptr};
+static const char* ConstraintTypes[] = {"Flux", "Convection", "Radiation", nullptr};
 
 ConstraintHeatflux::ConstraintHeatflux()
 {
@@ -38,7 +38,13 @@ ConstraintHeatflux::ConstraintHeatflux()
     /*ADD_PROPERTY(FaceTemp,(0.0));*/
     ADD_PROPERTY_TYPE(FilmCoef, (0.0), "ConstraintHeatflux", App::Prop_None, "Film coefficient");
     ADD_PROPERTY_TYPE(Emissivity, (0.0), "ConstraintHeatflux", App::Prop_None, "Emissivity");
-    ADD_PROPERTY_TYPE(DFlux, (0.0), "ConstraintHeatflux", App::Prop_None, "Distributed heat flux");
+    ADD_PROPERTY_TYPE(
+        DistributedHeatFlux,
+        (0.0),
+        "ConstraintHeatflux",
+        App::Prop_None,
+        "Distributed heat flux"
+    );
     ADD_PROPERTY_TYPE(
         ConstraintType,
         (1),
@@ -86,11 +92,6 @@ void ConstraintHeatflux::handleChangedPropertyType(
         filmCoefProperty.Restore(reader);
         FilmCoef.setValue(filmCoefProperty.getValue());
     }
-    else if (prop == &DFlux && strcmp(typeName, "App::PropertyFloat") == 0) {
-        App::PropertyFloat dFluxProperty;
-        dFluxProperty.Restore(reader);
-        DFlux.setValue(dFluxProperty.getValue());
-    }
     else if (prop == &AmbientTemp && strcmp(typeName, "App::PropertyFloat") == 0) {
         App::PropertyFloat tempProperty;
         tempProperty.Restore(reader);
@@ -100,6 +101,25 @@ void ConstraintHeatflux::handleChangedPropertyType(
         Constraint::handleChangedPropertyType(reader, typeName, prop);
     }
 }
+
+void ConstraintHeatflux::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
+{
+    if (strcmp(propName, "DFlux") == 0
+        && (strcmp(typeName, "App::PropertyHeatFlux") == 0
+            || strcmp(typeName, "App::PropertyFloat") == 0)) {
+        App::PropertyHeatFlux dflux;
+        dflux.Restore(reader);
+        DistributedHeatFlux.setValue(dflux.getValue());
+    }
+    else {
+        Constraint::handleChangedPropertyName(reader, typeName, propName);
+    }
+}
+
 
 void ConstraintHeatflux::onChanged(const App::Property* prop)
 {

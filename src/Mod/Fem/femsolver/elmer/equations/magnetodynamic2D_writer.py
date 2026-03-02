@@ -200,7 +200,7 @@ class MgDyn2Dwriter:
             self.write.handled(obj)
 
     def handleMagnetodynamic2DBndConditions(self, equation):
-        for obj in self.write.getMember("Fem::ConstraintElectrostaticPotential"):
+        for obj in self.write.getMember("Fem::ConstraintElectromagnetic"):
             if obj.References:
                 for name in obj.References[0][1]:
                     # output the FreeCAD label as comment

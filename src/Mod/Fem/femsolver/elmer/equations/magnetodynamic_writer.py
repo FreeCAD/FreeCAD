@@ -205,7 +205,7 @@ class MgDynwriter:
                     magnetization = obj.Magnetization_im_3.getValueAs("A/m")
                     self.write.bodyForce(name, "Magnetization Im 3", magnetization)
 
-        if femutils.is_derived_from(obj, "Fem::ConstraintElectrostaticPotential"):
+        if femutils.is_derived_from(obj, "Fem::ConstraintElectromagnetic"):
             if obj.PotentialEnabled:
                 # output only if potential is enabled and needed
                 potential = obj.Potential.getValueAs("V")
@@ -261,7 +261,7 @@ class MgDynwriter:
 
         # the potential can either be a body force or a boundary constraint
         # therefore only output here if a solid is referenced
-        potentials = self.write.getMember("Fem::ConstraintElectrostaticPotential")
+        potentials = self.write.getMember("Fem::ConstraintElectromagnetic")
         for obj in potentials:
             if obj.References:
                 firstName = obj.References[0][1][0]
@@ -281,7 +281,7 @@ class MgDynwriter:
                 current_density = obj.NormalCurrentDensity_im.getValueAs("A/m^2")
                 self.write.boundary(name, "Electric Current Density Im", current_density)
 
-        if femutils.is_derived_from(obj, "Fem::ConstraintElectrostaticPotential"):
+        if femutils.is_derived_from(obj, "Fem::ConstraintElectromagnetic"):
             if obj.BoundaryCondition == "Dirichlet":
                 if obj.EnableAV:
                     potential = obj.AV_re.getValueAs("V")
@@ -353,7 +353,7 @@ class MgDynwriter:
 
         # the potential can either be a body force or a boundary constraint
         # therefore only output here if a face is referenced
-        potentials = self.write.getMember("Fem::ConstraintElectrostaticPotential")
+        potentials = self.write.getMember("Fem::ConstraintElectromagnetic")
         for obj in potentials:
             if obj.References:
                 firstName = obj.References[0][1][0]

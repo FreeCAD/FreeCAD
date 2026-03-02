@@ -365,15 +365,15 @@ class _BaseSolverCalculix:
             obj.MatrixSolverType = known_ccx_solver_types
             obj.MatrixSolverType = known_ccx_solver_types[0]
 
-        if not hasattr(obj, "BeamShellResultOutput3D"):
+        if not hasattr(obj, "Output3d"):
             obj.addProperty(
                 "App::PropertyBool",
-                "BeamShellResultOutput3D",
+                "Output3d",
                 "Fem",
                 "Output 3D results for 1D and 2D analysis ",
                 locked=True,
             )
-            obj.BeamShellResultOutput3D = True
+            obj.Output3d = True
 
         if not hasattr(obj, "BeamReducedIntegration"):
             obj.addProperty(

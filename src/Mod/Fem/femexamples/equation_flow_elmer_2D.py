@@ -215,7 +215,7 @@ def setup(doc=None, solvertype="elmer"):
 
     # constraint initial temperature
     Temperature_Initial = ObjectsFem.makeConstraintInitialTemperature(doc, "Temperature_Initial")
-    Temperature_Initial.initialTemperature = 300.0
+    Temperature_Initial.InitialTemperature = 300.0
     analysis.addObject(Temperature_Initial)
 
     # constraint wall temperature
