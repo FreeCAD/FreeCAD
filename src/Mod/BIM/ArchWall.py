@@ -870,10 +870,7 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchPropertySet", 0)
         else:
             if hasattr(obj, "Width"):
-                if (
-                    hasattr(self, "multimaterialsWidth")
-                    and self.multimaterialsWidth
-                ):
+                if hasattr(self, "multimaterialsWidth") and self.multimaterialsWidth:
                     obj.setEditorMode("Width", ["ReadOnly"])
                 else:
                     obj.setEditorMode("Width", 0)
@@ -1123,7 +1120,7 @@ class _Wall(ArchComponent.Component):
             # If there is no 0 (zero) in any of the layers, the total thickness
             # is driven by the multi-materials itself.  Otherwise, user should
             # be able in any time change the Width and drive the total thickness
-            # - in the latter case, Width property should not be changed to 
+            # - in the latter case, Width property should not be changed to
             # ready-only.
             if not (0 in obj.Material.Thicknesses):
                 self.multimaterialsWidth = True
