@@ -336,8 +336,8 @@ class BuildingPart(ArchIFC.IfcProduct):
                 # v1.0 and v1.1dev
                 material = vobj.ChildrenShapeColor
                 # correct the alpha value of the diffuse color which is wrongly zero:
-                material.DiffuseColor = material.DiffuseColor[:-1] + (1.0, )
-            vobj.ChildrenShapeAppearance = (material, )
+                material.DiffuseColor = material.DiffuseColor[:-1] + (1.0,)
+            vobj.ChildrenShapeAppearance = (material,)
             vobj.setPropertyStatus("ChildrenShapeColor", "-LockDynamic")
             vobj.removeProperty("ChildrenShapeColor")
 
@@ -459,9 +459,7 @@ class BuildingPart(ArchIFC.IfcProduct):
                     if hasattr(child, "Material") and child.Material:
                         matname = child.Material.Name
                     if matname in materialstable:
-                        materialstable[matname] = (
-                            materialstable[matname] + "," + str(solidindex)
-                        )
+                        materialstable[matname] = materialstable[matname] + "," + str(solidindex)
                     else:
                         materialstable[matname] = str(solidindex)
                     solidindex += 1
@@ -535,7 +533,7 @@ class ViewProviderBuildingPart:
             self.setProperties(vobj)
             material = vobj.ShapeAppearance[0]  # App.Material() based on current preferences.
             material.DiffuseColor = ArchCommands.getDefaultColor("Helpers")
-            vobj.ShapeAppearance = (material, )
+            vobj.ShapeAppearance = (material,)
             self.Object = vobj.Object
 
     def setProperties(self, vobj):
@@ -755,7 +753,7 @@ class ViewProviderBuildingPart:
                 locked=True,
             )
             # The default App::PropertyMaterialList does not match the preferences, we have to do:
-            vobj.ChildrenShapeAppearance = (utils.get_view_material(), )
+            vobj.ChildrenShapeAppearance = (utils.get_view_material(),)
         if not "ChildrenTransparency" in pl:
             vobj.addProperty(
                 "App::PropertyPercent",
@@ -933,7 +931,6 @@ class ViewProviderBuildingPart:
         "get the colors of objects inside this BuildingPart"
 
         return Draft.get_diffuse_color(Draft.get_group_contents(obj, walls=True))
-
 
     def onChanged(self, vobj, prop):
 
