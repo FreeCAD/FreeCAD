@@ -6369,7 +6369,7 @@ If the "Copy" option is active, it creates displaced copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="266"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit.py" line="267"/>
@@ -7925,7 +7925,7 @@ beyond the dimension line</translation>
       <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
       <location filename="../../draftviewproviders/view_base.py" line="502"/>
       <source>Transform</source>
-      <translation>Transformer</translation>
+      <translation>Transformér</translation>
     </message>
   </context>
   <context>

@@ -3131,7 +3131,7 @@ Virker kun, når "Gendan kameraposition efter redigering" er aktiveret.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="507"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
-      <translation type="unfinished">Applies current visibility automation settings to all sketches in the open documents</translation>
+      <translation>Anvender de aktuelle indstillinger for automatisk visning på alle skitser i de åbne dokumenter</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="510"/>
@@ -5122,7 +5122,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="41"/>
       <source>Color used while new sketch elements are created</source>
-      <translation>Anvendt farve mens nye elementer oprettes i skitsen</translation>
+      <translation>Farve på nyoprettede elementer i skitsen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="80"/>

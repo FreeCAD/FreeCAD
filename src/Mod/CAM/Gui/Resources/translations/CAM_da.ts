@@ -792,7 +792,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="63"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
@@ -3127,7 +3127,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="126"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="133"/>
@@ -3327,7 +3327,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
       <location filename="../panels/PathEdit.ui" line="1304"/>
       <location filename="../panels/PathEdit.ui" line="1523"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="884"/>
@@ -3932,7 +3932,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Base/Gui/IconViewProvider.py" line="96"/>
       <source>Edit</source>
       <extracomment>float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=0) float = field(default=None) bool = field(default=False) str = field(default=&quot;G54&quot;) str = field(default=&quot;off&quot;) int = field(default=0) int = field(default=None)</extracomment>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="74"/>
@@ -6179,7 +6179,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="191"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="640"/>
@@ -6837,7 +6837,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="358"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="630"/>
@@ -7619,7 +7619,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="115"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/generic_post.py" line="45"/>

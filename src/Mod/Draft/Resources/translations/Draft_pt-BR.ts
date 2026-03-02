@@ -5837,12 +5837,12 @@ Para permitir que o FreeCAD baixe estas bibliotecas, responda Sim.</translation>
     <message>
       <location filename="../../draftobjects/hatch.py" line="144"/>
       <source>Specified PAT file is not a file</source>
-      <translation>Arquivo PAT especificado não é um arquivo</translation>
+      <translation>O arquivo PAT especificado não é um arquivo</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="148"/>
       <source>Specified file type is not supported</source>
-      <translation>O arquivo especificado não é suportado</translation>
+      <translation>O tipo de arquivo especificado não é suportado</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="152"/>
@@ -5855,27 +5855,27 @@ Para permitir que o FreeCAD baixe estas bibliotecas, responda Sim.</translation>
     <message>
       <location filename="../../InitGui.py" line="112"/>
       <source>Draft Creation</source>
-      <translation>Criação de Rascunho</translation>
+      <translation>Criação de rascunho</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="115"/>
       <source>Draft Annotation</source>
-      <translation>Anotação de Rascunho</translation>
+      <translation>Anotação no rascunho</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="118"/>
       <source>Draft Modification</source>
-      <translation>Modificação de Rascunho</translation>
+      <translation>Modificação do rascunho</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="121"/>
       <source>Draft Utility</source>
-      <translation>Utilidade de Rascunho</translation>
+      <translation>Utilidade do rascunho</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="124"/>
       <source>Draft Snap</source>
-      <translation>Encaixe de Draft</translation>
+      <translation>Rascunho Instantâneo</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="128"/>
@@ -5900,7 +5900,7 @@ Para permitir que o FreeCAD baixe estas bibliotecas, responda Sim.</translation>
     <message>
       <location filename="../../draftutils/init_tools.py" line="55"/>
       <source>Arc Tools</source>
-      <translation>Ferramentas de arco</translation>
+      <translation>Ferramentas de Arco</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_tools.py" line="64"/>
@@ -6018,12 +6018,12 @@ Para permitir que o FreeCAD baixe estas bibliotecas, responda Sim.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="108"/>
       <source>Pick From/To Points</source>
-      <translation>Escolha de Pontos De/Para</translation>
+      <translation>Escolha De / Para Pontos</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="206"/>
       <source>Edit Scale</source>
-      <translation>Editar Escala</translation>
+      <translation>Editar escala</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="104"/>
@@ -6064,7 +6064,7 @@ Para permitir que o FreeCAD baixe estas bibliotecas, responda Sim.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="401"/>
       <source>Draw Style</source>
-      <translation>Estilo de linha</translation>
+      <translation>Desenhar estilo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="402"/>
@@ -6079,7 +6079,7 @@ Para permitir que o FreeCAD baixe estas bibliotecas, responda Sim.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="405"/>
       <source>Line Print Color</source>
-      <translation>Cor de impressão de linha</translation>
+      <translation>Cor da Impressão em Linha4</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="404"/>
@@ -7057,17 +7057,17 @@ Para obter melhores resultados com "Original" ou "Tangente", você pode ter que 
     <message>
       <location filename="../../draftobjects/patharray.py" line="354"/>
       <source>Base fixed distance between elements.</source>
-      <translation type="unfinished">Base fixed distance between elements.</translation>
+      <translation>Distância fixa entre os elementos.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="362"/>
       <source>Use repeating spacing patterns instead of uniform spacing.</source>
-      <translation type="unfinished">Use repeating spacing patterns instead of uniform spacing.</translation>
+      <translation>Use a repetição de padrões de espaçamento em vez de um espaçamento uniforme.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="369"/>
       <source>Spacing is multiplied by a corresponding number in this sequence.</source>
-      <translation type="unfinished">Spacing is multiplied by a corresponding number in this sequence.</translation>
+      <translation>O espaçamento é multiplicado por um número correspondente nesta sequência.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/patharray.py" line="379"/>
@@ -7092,10 +7092,10 @@ Caso contrário, as cópias terão a mesma orientação do Objeto Base original.
 - Ortho: places the copies in the direction of the global X, Y, Z axes.
 - Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
 - Circular: places the copies in concentric circles around the base object.</source>
-      <translation type="unfinished">The type of array to create.
-- Ortho: places the copies in the direction of the global X, Y, Z axes.
-- Polar: places the copies along a circular arc, up to a specified angle, and with certain orientation defined by a center and an axis.
-- Circular: places the copies in concentric circles around the base object.</translation>
+      <translation>O tipo de matriz para criar.
+- Ortolo: coloca as cópias na direção dos eixos X, Y, Z globais.
+- Polar: coloca as cópias em um arco circular, até um ângulo especificado, e com uma certa orientação definida por um centro e um eixo.
+- Circular: coloca as cópias em círculos concêntricos ao redor do objeto base.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="119"/>
@@ -7108,32 +7108,32 @@ Caso contrário, as cópias terão a mesma orientação do Objeto Base original.
     <message>
       <location filename="../../draftobjects/array.py" line="158"/>
       <source>Number of copies in X-direction</source>
-      <translation type="unfinished">Number of copies in X-direction</translation>
+      <translation>Número de cópias na direção X</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="165"/>
       <source>Number of copies in Y-direction</source>
-      <translation type="unfinished">Number of copies in Y-direction</translation>
+      <translation>Número de cópias na direção Y</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="172"/>
       <source>Number of copies in Z-direction</source>
-      <translation type="unfinished">Number of copies in Z-direction</translation>
+      <translation>Número de cópias na direção Z</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="181"/>
       <source>Distance and orientation of intervals in X-direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in X-direction</translation>
+      <translation>Distância e orientação de intervalos na direção X</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="190"/>
       <source>Distance and orientation of intervals in Y-direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Y-direction</translation>
+      <translation>Distância e orientação de intervalos na direção Y</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="199"/>
       <source>Distance and orientation of intervals in Z-direction</source>
-      <translation type="unfinished">Distance and orientation of intervals in Z-direction</translation>
+      <translation>Distância e orientação de intervalos na direção Z</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="215"/>
@@ -7174,22 +7174,22 @@ Deixe essa propriedade vazia para pode definir "Eixo" e "Centro" manualmente.</t
     <message>
       <location filename="../../draftobjects/array.py" line="281"/>
       <source>Distance between concentric circles</source>
-      <translation type="unfinished">Distance between concentric circles</translation>
+      <translation>Distância entre círculos concêntricos</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="290"/>
       <source>Distance between copies in the same circle</source>
-      <translation type="unfinished">Distance between copies in the same circle</translation>
+      <translation>Distância entre cópias no mesmo círculo</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="300"/>
       <source>Number of concentric circle. The 'Base' object counts as one circle.</source>
-      <translation type="unfinished">Number of concentric circle. The 'Base' object counts as one circle.</translation>
+      <translation>Número de círculos concêntricos. O objeto 'Base' conta como um círculo.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="312"/>
       <source>A parameter that determines how many symmetry planes the circular array will have</source>
-      <translation type="unfinished">A parameter that determines how many symmetry planes the circular array will have</translation>
+      <translation>Um parâmetro que determina quantos planos de simetria terá a matriz circular</translation>
     </message>
     <message>
       <location filename="../../draftobjects/array.py" line="140"/>
@@ -7401,7 +7401,7 @@ Esta propriedade é somente leitura, já que o número depende dos pontos em "Ob
     <message>
       <location filename="../../draftobjects/dimension.py" line="143"/>
       <source>The object measured by this dimension</source>
-      <translation type="unfinished">The object measured by this dimension</translation>
+      <translation>O objeto medido por esta dimensão</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="159"/>
@@ -7412,13 +7412,12 @@ There are various possibilities:
 - An object, and one of its edges.
 - An object, and two of its vertices.
 - An arc object, and its edge.</source>
-      <translation type="unfinished">The object, and specific subelements of it,
-that this dimension is measuring.
+      <translation>O objeto, e seus subelementos específico, que esta dimensão está medindo.
 
-There are various possibilities:
-- An object, and one of its edges.
-- An object, and two of its vertices.
-- An arc object, and its edge.</translation>
+Existem várias possibilidades:
+- Um objeto e uma das suas arestas.
+- Um objeto e dois dos seus vértices.
+- Um objeto arco e a sua aresta.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/dimension.py" line="183"/>
@@ -7641,7 +7640,7 @@ das propriedades "Primeiro Ângulo" e '"Último Ângulo".</translation>
     <message>
       <location filename="../../draftobjects/bspline.py" line="53"/>
       <source>Create a face if this B-spline is closed</source>
-      <translation type="unfinished">Create a face if this B-spline is closed</translation>
+      <translation>Criar uma face se esta B-spline estiver fechada</translation>
     </message>
     <message>
       <location filename="../../draftobjects/bspline.py" line="70"/>
@@ -7875,7 +7874,7 @@ além da linha de cota</translation>
     <message>
       <location filename="../../draftviewproviders/view_rectangle.py" line="45"/>
       <source>Defines a texture image (overrides hatch patterns)</source>
-      <translation type="unfinished">Defines a texture image (overrides hatch patterns)</translation>
+      <translation>Define uma imagem de textura (Substitui os padrões de hachura)</translation>
     </message>
   </context>
   <context>
@@ -7912,12 +7911,12 @@ além da linha de cota</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="81"/>
       <source>Annotation Styles</source>
-      <translation type="unfinished">Annotation Styles</translation>
+      <translation>Estilos de Anotação</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="85"/>
       <source>Opens an editor to manage or create annotation styles</source>
-      <translation type="unfinished">Opens an editor to manage or create annotation styles</translation>
+      <translation>Abre um editor para gerenciar ou criar estilos de anotação</translation>
     </message>
   </context>
   <context>
@@ -7925,12 +7924,12 @@ além da linha de cota</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="518"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>Arco a partir de 3 pontos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="521"/>
       <source>Creates a circular arc from 3 points</source>
-      <translation type="unfinished">Creates a circular arc from 3 points</translation>
+      <translation>Cria um arco circular a partir de 3 pontos</translation>
     </message>
   </context>
   <context>
@@ -7938,12 +7937,12 @@ além da linha de cota</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="683"/>
       <source>Arc Tools</source>
-      <translation>Ferramentas de arco</translation>
+      <translation>Ferramentas de Arco</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="686"/>
       <source>Tools to create various types of circular arcs</source>
-      <translation type="unfinished">Tools to create various types of circular arcs</translation>
+      <translation>Ferramentas para criar vários tipos de arcos circulares</translation>
     </message>
   </context>
   <context>
@@ -7956,7 +7955,7 @@ além da linha de cota</translation>
     <message>
       <location filename="../../draftguitools/gui_arrays.py" line="79"/>
       <source>Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays</source>
-      <translation type="unfinished">Tools to create various types of arrays, including rectangular, polar, circular, path, and point arrays</translation>
+      <translation>Ferramentas para criar vários tipos de matrizes, incluindo matrizes retangulares, polares, circulares, caminhos e pontos de vista</translation>
     </message>
   </context>
   <context>
@@ -7969,7 +7968,7 @@ além da linha de cota</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="73"/>
       <source>Creates an n-degree Bézier curve. The more points, the higher the degree.</source>
-      <translation type="unfinished">Creates an n-degree Bézier curve. The more points, the higher the degree.</translation>
+      <translation>Cria uma curva Bézier de n-grau. Quanto mais pontos, maior o grau.</translation>
     </message>
   </context>
   <context>
@@ -7983,8 +7982,8 @@ além da linha de cota</translation>
       <location filename="../../draftguitools/gui_beziers.py" line="270"/>
       <source>Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.
 Control points and properties of each knot can be edited after creation.</source>
-      <translation type="unfinished">Creates a Bézier curve made of 2nd degree (quadratic) and 3rd degree (cubic) segments. Clicking and dragging allows to define segments.
-Control points and properties of each knot can be edited after creation.</translation>
+      <translation>Cria uma curva de Bézier feita de 2º grau (quadrática) e segmentos de 3º grau (cúbicas). Clicar e arrastar permite definir segmentos.
+Pontos de controle e propriedades de cada nó pode ser editado após a criação.</translation>
     </message>
   </context>
   <context>
@@ -7997,7 +7996,7 @@ Control points and properties of each knot can be edited after creation.</transl
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="528"/>
       <source>Tools to create various types of Bézier curves</source>
-      <translation type="unfinished">Tools to create various types of Bézier curves</translation>
+      <translation>Ferramentas para criar vários tipos de curvas Bénsier</translation>
     </message>
   </context>
   <context>
@@ -8010,7 +8009,7 @@ Control points and properties of each knot can be edited after creation.</transl
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="62"/>
       <source>Creates copies of the selected object in a radial pattern with 1 or more circular layers</source>
-      <translation type="unfinished">Creates copies of the selected object in a radial pattern with 1 or more circular layers</translation>
+      <translation>Cria cópias do objeto selecionado em um padrão radial com 1 ou mais camadas circulares</translation>
     </message>
   </context>
   <context>
@@ -8024,8 +8023,8 @@ Control points and properties of each knot can be edited after creation.</transl
       <location filename="../../draftguitools/gui_dimension_ops.py" line="68"/>
       <source>Flips the normal direction of the selected dimensions (linear, radial, angular).
 If other objects are selected they are ignored.</source>
-      <translation type="unfinished">Flips the normal direction of the selected dimensions (linear, radial, angular).
-If other objects are selected they are ignored.</translation>
+      <translation>Inverte a direção normal das dimensões selecionadas (linear, radial, angular).
+Se outros objetos são selecionados, eles são ignorados.</translation>
     </message>
   </context>
   <context>
@@ -8033,16 +8032,16 @@ If other objects are selected they are ignored.</translation>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="60"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation>Rascunho para esboço</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="64"/>
       <source>Converts bidirectionally between Draft objects and sketches.
 Multiple selected Draft objects are converted into a single sketch.
 However, a single sketch with disconnected traces is converted into several individual Draft objects.</source>
-      <translation type="unfinished">Converts bidirectionally between Draft objects and sketches.
-Multiple selected Draft objects are converted into a single sketch.
-However, a single sketch with disconnected traces is converted into several individual Draft objects.</translation>
+      <translation>Converte bidirecionalmente ibjetos Draft e rascunhos.
+Vários objetos Draft selecionados são convertidos em um único esboço.
+No entanto, um único esboço com traços desconectados é convertido em vários objetos Draft individuais.</translation>
     </message>
   </context>
   <context>
@@ -8050,12 +8049,12 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="63"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>Alternar Grade</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="66"/>
       <source>Toggles the visibility of the Draft grid</source>
-      <translation type="unfinished">Toggles the visibility of the Draft grid</translation>
+      <translation>Alterna a visibilidade da grade de rascunho</translation>
     </message>
   </context>
   <context>
@@ -8068,7 +8067,7 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="80"/>
       <source>Adds selected objects to a group, or removes them from any group</source>
-      <translation type="unfinished">Adds selected objects to a group, or removes them from any group</translation>
+      <translation>Adiciona objetos selecionados a um grupo ou os remove de qualquer grupo</translation>
     </message>
   </context>
   <context>
@@ -8076,12 +8075,12 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="179"/>
       <source>Select Group</source>
-      <translation type="unfinished">Select Group</translation>
+      <translation>Selecionar grupo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="183"/>
       <source>Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in are selected.</source>
-      <translation type="unfinished">Selects the contents of selected groups. For selected non-group objects, the contents of the group they are in are selected.</translation>
+      <translation>Seleciona o conteúdo dos grupos selecionados. Para objetos que não pertencem a grupos, o conteúdo do grupo ao qual pertencem é selecionado.</translation>
     </message>
   </context>
   <context>
@@ -8089,12 +8088,12 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="230"/>
       <source>Auto-Group</source>
-      <translation type="unfinished">Auto-Group</translation>
+      <translation>Auto-Grupo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="233"/>
       <source>Adds new Draft and BIM objects to the selected layer or group</source>
-      <translation type="unfinished">Adds new Draft and BIM objects to the selected layer or group</translation>
+      <translation>Adiciona novos objetos Rascunhos e BIM à camada ou grupo selecionado.</translation>
     </message>
   </context>
   <context>
@@ -8109,9 +8108,8 @@ However, a single sketch with disconnected traces is converted into several indi
       <source>Adds the selected objects to the construction group,
 and changes their appearance to the construction style.
 The construction group is created if it does not exist.</source>
-      <translation type="unfinished">Adds the selected objects to the construction group,
-and changes their appearance to the construction style.
-The construction group is created if it does not exist.</translation>
+      <translation>Adiciona os objetos selecionados ao grupo de construção e muda sua aparência para o estilo de construção.
+Caso o grupo de construção não exista, ele será criado.</translation>
     </message>
   </context>
   <context>
@@ -8119,12 +8117,12 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="427"/>
       <source>New Named Group</source>
-      <translation type="unfinished">New Named Group</translation>
+      <translation>Novo Grupo Nomeado</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="428"/>
       <source>Adds a group with a given name</source>
-      <translation type="unfinished">Adds a group with a given name</translation>
+      <translation>Adiciona um grupo com um nome específico.</translation>
     </message>
   </context>
   <context>
@@ -8132,12 +8130,12 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="65"/>
       <source>Open Links</source>
-      <translation type="unfinished">Open Links</translation>
+      <translation>Abrir Links</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hyperlink.py" line="66"/>
       <source>Opens linked documents</source>
-      <translation type="unfinished">Opens linked documents</translation>
+      <translation>Abre documentos vinculados</translation>
     </message>
   </context>
   <context>
@@ -8145,12 +8143,12 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="106"/>
       <source>Add to Layer</source>
-      <translation type="unfinished">Add to Layer</translation>
+      <translation>Adicionar à camada</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="110"/>
       <source>Adds selected objects to a layer, or removes them from any layer</source>
-      <translation type="unfinished">Adds selected objects to a layer, or removes them from any layer</translation>
+      <translation>Adiciona objetos selecionados a uma camada, ou os remove de qualquer camada</translation>
     </message>
   </context>
   <context>
@@ -8158,12 +8156,12 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="205"/>
       <source>Manage Layers</source>
-      <translation type="unfinished">Manage Layers</translation>
+      <translation>Gerenciar camadas</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="206"/>
       <source>Allows to modify the layers</source>
-      <translation type="unfinished">Allows to modify the layers</translation>
+      <translation>Permite modificar as camadas</translation>
     </message>
   </context>
   <context>
@@ -8171,7 +8169,7 @@ The construction group is created if it does not exist.</translation>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="69"/>
       <source>Set Slope</source>
-      <translation type="unfinished">Set Slope</translation>
+      <translation>Definir inclinação</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="73"/>

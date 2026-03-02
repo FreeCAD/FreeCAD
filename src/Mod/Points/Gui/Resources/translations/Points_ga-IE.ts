@@ -169,7 +169,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>Teimpléad</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>

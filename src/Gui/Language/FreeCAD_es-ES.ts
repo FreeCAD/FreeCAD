@@ -8457,7 +8457,7 @@ Would you like to save the file with a different name?</source>
     <message>
       <location filename="../Document.cpp" line="1605"/>
       <source>Save document under new filename…</source>
-      <translation type="unfinished">Save document under new filename…</translation>
+      <translation>Guardar documento bajo el nombre de archivo nuevo…</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1732"/>
@@ -12901,7 +12901,7 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="770"/>
       <source>Saves the active document under a new file name</source>
-      <translation type="unfinished">Saves the active document under a new file name</translation>
+      <translation>Guarda el documento activo con un nombre de archivo nuevo</translation>
     </message>
   </context>
   <context>
@@ -12914,7 +12914,7 @@ de la región no son opacos.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="800"/>
       <source>Saves a copy of the active document under a new file name</source>
-      <translation type="unfinished">Saves a copy of the active document under a new file name</translation>
+      <translation>Guarda una copia del documento activo con un nuevo nombre de archivo</translation>
     </message>
   </context>
   <context>

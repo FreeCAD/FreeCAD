@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="293"/>
       <source>Creates a contact constraint between faces</source>
-      <translation>Opretter en relation som fastholder kontakten mellem flader</translation>
+      <translation>Fastholder kontakt mellem flader</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="370"/>
       <source>Displacement Boundary Condition</source>
-      <translation>Opdrift-grænsebetingelse</translation>
+      <translation>Fasthold til flade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="371"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
-      <translation>Opretter en opdrift-grænsebetingelse for en geometrisk enhed</translation>
+      <translation>Opretter grænsebetingelse der kun tillader forskydning af en geometrisk enhed</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Fixed Boundary Condition</source>
-      <translation>Fikseret-grænsebetingelse</translation>
+      <translation>Fiksering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
-      <translation>Opretter en fikseret-grænsebetingelse for en geometrisk enhed</translation>
+      <translation>Fikserer en geometrisk enhed til koordinatsystemet</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="704"/>
       <source>Heat Flux Load</source>
-      <translation type="unfinished">Heat Flux Load</translation>
+      <translation>Varmeindstråling</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="705"/>
       <source>Creates a heat flux load acting on a face</source>
-      <translation type="unfinished">Creates a heat flux load acting on a face</translation>
+      <translation>Opretter en varmeindstråling, der virker på en flade</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="1067"/>
       <source>Temperature Boundary Condition</source>
-      <translation>Temperatur-grænsebetingelse</translation>
+      <translation>Temperaturpåvirkning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1068"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
-      <translation>Opretter en temperatur eller koncentreret varmepåvirkning, der virker på en flade</translation>
+      <translation>Opretter en temperaturpåvirkning / koncentreret varmevirkning på en flade</translation>
     </message>
   </context>
   <context>
@@ -432,12 +432,12 @@
     <message>
       <location filename="../../Command.cpp" line="2614"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Filtrerfunktioner</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2615"/>
       <source>Functions for use in postprocessing filter</source>
-      <translation type="unfinished">Functions for use in postprocessing filter</translation>
+      <translation>Funktioner til brug i efterbehandlingsfilteret</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2813"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../../Command.cpp" line="610"/>
       <source>Make force load on geometry</source>
-      <translation type="unfinished">Make force load on geometry</translation>
+      <translation>Opret kraftpåvirkning på geometri</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="672"/>
@@ -635,12 +635,12 @@
     <message>
       <location filename="../../Command.cpp" line="721"/>
       <source>Make heat flux load on face</source>
-      <translation type="unfinished">Make heat flux load on face</translation>
+      <translation>Opret en varmeindstråling på en flade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="794"/>
       <source>Make initial temperature condition on body</source>
-      <translation type="unfinished">Make initial temperature condition on body</translation>
+      <translation>Opret en starttemperatur for et emne</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="851"/>
@@ -871,7 +871,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="231"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>Kontroller mesh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="240"/>
@@ -946,7 +946,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="173"/>
       <source>Analysis Defaults</source>
-      <translation type="unfinished">Analysis Defaults</translation>
+      <translation>Standarder for analyser</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="257"/>
@@ -1114,7 +1114,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
       <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
-      <translation type="unfinished">Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</translation>
+      <translation>Antal parallelle beregninger. Sæt til `1` hvis Elmer ikke bruger MPI.&lt;br&gt;Brug et lige antal kerner for at drage fordel af mesh-symmetrier&lt;br&gt;(Brug af 8 kerner kan være hurtigere end 9 kerner).&lt;br&gt;I ekstreme tilfælde kan Elmer-løsnigen måske ikke konvergere, hvis antallet af kerner er for højt.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
@@ -1197,12 +1197,13 @@ Highest: Only the highest elements will be exported. This means volumes for a vo
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation type="unfinished">All: All elements will be exported.
+      <translation>Alle: Alle elementer bliver eksporteret.
 
-Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
+Højeste: Kun de højest rangerende elementer bliver eksporteret. Det betyder 
+volumener for et volumetrisk mesh og flader for et overflade mesh.
 
-FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.</translation>
+FEM: Kun FEM elementer bliver eksporteret. Det betyder kanter
+der ikke er knyttet til flader, og flader der ikke er knytte til volumener.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
@@ -1291,12 +1292,12 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="268"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
       <source>Working Directory for Solving Analysis and Gmsh Meshing</source>
-      <translation type="unfinished">Working Directory for Solving Analysis and Gmsh Meshing</translation>
+      <translation>Arbejdsmappe til løsning af analyser og Gmsh Meshing</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
@@ -1341,13 +1342,13 @@ with the last used dialog settings</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation type="unfinished">All analysis features are hidden in the model view
-when the results dialog is opened</translation>
+      <translation>Alle analysefunktioner i modelvisningen bliver skjult
+når dialogen med resultater åbnes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
       <source>Hide analysis features when opening result dialog</source>
-      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
+      <translation>Skjul analysefunktioner når resultatvisningen åbnes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1812,12 +1813,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="69"/>
       <source>Edit FEM mesh</source>
-      <translation type="unfinished">Edit FEM mesh</translation>
+      <translation>Rediger FEM mesh</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="100"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Fejl ved oprettelse af mesh</translation>
     </message>
   </context>
   <context>
@@ -1841,7 +1842,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="56"/>
       <source>Analysis Feature Properties</source>
-      <translation type="unfinished">Analysis Feature Properties</translation>
+      <translation>Egenskaber for analysefunktioner</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="182"/>
@@ -1889,7 +1890,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="216"/>
       <source>Only linear edges can be picked</source>
-      <translation type="unfinished">Only linear edges can be picked</translation>
+      <translation>Der må kun vælges retlinjede kanter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="225"/>
@@ -1987,13 +1988,13 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="375"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="396"/>
       <source>Only faces can be picked (edges in 2D models)</source>
-      <translation type="unfinished">Only faces can be picked (edges in 2D models)</translation>
+      <translation>Der må kun vælges flader (konturlinjer i 2D modeller)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
@@ -2043,12 +2044,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="256"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="295"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Kun én type af valg (punkt, flade eller kant) er tilladt pr. analysefunktion!</translation>
     </message>
   </context>
   <context>
@@ -2088,12 +2089,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="131"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="167"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Kun én type af valg (punkt, flade eller kant) er tilladt pr. analysefunktion!</translation>
     </message>
   </context>
   <context>
@@ -2151,7 +2152,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="537"/>
       <source>Hydraulic Diameter [m]</source>
-      <translation type="unfinished">Hydraulic Diameter [m]</translation>
+      <translation>Hydraulisk diameter [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="566"/>
@@ -2191,7 +2192,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="676"/>
       <source>Only one planar face or edge can be selected!</source>
-      <translation type="unfinished">Only one planar face or edge can be selected!</translation>
+      <translation>Kun én plan flade eller kant kan vælges!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="694"/>
@@ -2206,7 +2207,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="713"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
-      <translation type="unfinished">Only faces for 3D part or edges for 2D can be picked</translation>
+      <translation>Der kan kun flader på 3D-komponenter, eller konturlinjer i 2D</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
@@ -2228,17 +2229,17 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="905"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Kun én type af valg (punkt, flade eller kant) er tilladt pr. analysefunktion!</translation>
     </message>
   </context>
   <context>
@@ -2273,17 +2274,17 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="180"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Kun én type af valg (punkt, flade eller kant) er tilladt pr. analysefunktion!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
@@ -2314,12 +2315,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="166"/>
       <source>Only linear edges can be picked</source>
-      <translation type="unfinished">Only linear edges can be picked</translation>
+      <translation>Der må kun vælges retlinjede kanter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="175"/>
       <source>Only faces and edges can be picked</source>
-      <translation>Kun flader og kanter kan vælges</translation>
+      <translation>Der må kun vælges flader og kanter</translation>
     </message>
   </context>
   <context>
@@ -2360,13 +2361,13 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="300"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="312"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="381"/>
       <source>Selection must only consist of faces! (edges in 2D models)</source>
-      <translation type="unfinished">Selection must only consist of faces! (edges in 2D models)</translation>
+      <translation>Valget må kun bestå af flader! (konturlinjer i 2D modeller)</translation>
     </message>
   </context>
   <context>
@@ -2415,7 +2416,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="159"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
@@ -2465,12 +2466,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="146"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="158"/>
       <source>Only faces (edges in 2D models) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D models) can be picked</translation>
+      <translation>Der må kun vælges flader (konturlinjer i 2D modeller)</translation>
     </message>
   </context>
   <context>
@@ -2523,7 +2524,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="151"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
@@ -2567,7 +2568,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="216"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
   </context>
   <context>
@@ -2607,7 +2608,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="350"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
@@ -2699,12 +2700,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="69"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Fejl ved oprettelse af mesh</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="70"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation type="unfinished">The FEM module is built without NETGEN support. Meshing will not work!!!</translation>
+      <translation>FEM modulet er kompileret uden NETGEN support. Oprettelse af mesh vil ikke virke!!!</translation>
     </message>
   </context>
   <context>
@@ -3376,7 +3377,7 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <source>Analysis Feature Properties</source>
-      <translation type="unfinished">Analysis Feature Properties</translation>
+      <translation>Egenskaber for analysefunktioner</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
@@ -3705,7 +3706,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="54"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Oprettelse af mesh</translation>
     </message>
     <message>
       <location filename="../../AppFemGui.cpp" line="185"/>
@@ -3736,7 +3737,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="117"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="118"/>
@@ -3766,7 +3767,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="157"/>
       <source>Edit Analysis Feature</source>
-      <translation type="unfinished">Edit Analysis Feature</translation>
+      <translation>Rediger analysefunktion</translation>
     </message>
   </context>
   <context>
@@ -3914,16 +3915,16 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="522"/>
       <source>User-Defined Equation</source>
-      <translation type="unfinished">User-Defined Equation</translation>
+      <translation>Brugerdefineret formel</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Runs the equation given in the field below,
 outputs the results to the Min and Max fields
 and colors the result mesh accordingly</source>
-      <translation type="unfinished">Runs the equation given in the field below,
-outputs the results to the Min and Max fields
-and colors the result mesh accordingly</translation>
+      <translation>Anvender formlen som angives i feltet nedenfor,
+Resultaterne gemmes i Min og Max felterne
+og resultat-meshet farves i overensstemmelse hermed</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="533"/>
@@ -3934,8 +3935,8 @@ and colors the result mesh accordingly</translation>
       <location filename="../ui/ResultShow.ui" line="552"/>
       <source>Enter here an equation to be calculated.
 For possible variables, see the description box below.</source>
-      <translation type="unfinished">Enter here an equation to be calculated.
-For possible variables, see the description box below.</translation>
+      <translation>Angiv den formel der skal anvendes.
+For mulige variabler, se beskrivelsesfeltet nedenfor.</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="556"/>
@@ -4020,7 +4021,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
       <source>reinforcement ratio: rx, ry, rz</source>
-      <translation type="unfinished">reinforcement ratio: rx, ry, rz</translation>
+      <translation>armeringsforhold: rx, ry, rz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
@@ -4073,7 +4074,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="91"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>Kontroller mesh</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="98"/>
@@ -4147,7 +4148,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Analysis features</source>
-      <translation type="unfinished">Analysis features</translation>
+      <translation>Analysefunktioner</translation>
     </message>
   </context>
   <context>
@@ -4589,7 +4590,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="434"/>
       <source>Heat flux [W/m2]</source>
-      <translation type="unfinished">Heat flux [W/m2]</translation>
+      <translation>Varmeindstråling [W/m2]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="441"/>
@@ -4607,7 +4608,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Vælg geometri af typen: Punkt, kant, flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4643,8 +4644,8 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>Som retning anvendes retningsvektoren for 
+en kant eller normalvektoren for en flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
@@ -4693,7 +4694,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="218"/>
       <source>Ambient temperature</source>
-      <translation type="unfinished">Ambient temperature</translation>
+      <translation>Omgivelsestemperatur</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="193"/>
@@ -4809,7 +4810,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation>Vælg geometri af typen: Hjørne, kant, fade</translation>
+      <translation>Vælg geometri af typen: Punkt, kant, flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -4834,7 +4835,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="107"/>
       <source>Concentrated heat flux</source>
-      <translation type="unfinished">Concentrated heat flux</translation>
+      <translation>Koncentreret varmestråling</translation>
     </message>
   </context>
   <context>
@@ -5046,7 +5047,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
       <location filename="../../TaskPostDisplay.ui" line="103"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>Flade med kanter</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
@@ -5100,7 +5101,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="52"/>
       <source>Surface with Edges</source>
-      <translation>Flader og kanter</translation>
+      <translation>Flade med kanter</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
@@ -5319,12 +5320,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Geometrical Analysis Features</source>
-      <translation type="unfinished">Geometrical Analysis Features</translation>
+      <translation>Geometriske analysefunktioner</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>&amp;Geometrical Analysis Features</source>
-      <translation type="unfinished">&amp;Geometrical Analysis Features</translation>
+      <translation>&amp;Geometriske analysefunktioner</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
@@ -5359,7 +5360,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Filtrerfunktioner</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="74"/>
@@ -5451,7 +5452,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Creates an analysis container with default solver</source>
-      <translation type="unfinished">Creates an analysis container with default solver</translation>
+      <translation>Opretter en beholder til analyser med standard løsningsværktøjer</translation>
     </message>
   </context>
   <context>
@@ -5485,7 +5486,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="563"/>
       <source>Material Editor</source>
-      <translation>Materiale Editor</translation>
+      <translation>Materialevælger</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="566"/>
@@ -5524,12 +5525,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="760"/>
       <source>Display Mesh Info</source>
-      <translation type="unfinished">Display Mesh Info</translation>
+      <translation>Vis mesh information</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="761"/>
       <source>Displays FEM mesh information</source>
-      <translation type="unfinished">Displays FEM mesh information</translation>
+      <translation>Viser informationer om FEM mesh</translation>
     </message>
   </context>
   <context>
@@ -5660,7 +5661,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="304"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="241"/>
@@ -6394,12 +6395,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="198"/>
       <source>Body Heat Source</source>
-      <translation type="unfinished">Body Heat Source</translation>
+      <translation>Varmeafgivelse</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="201"/>
       <source>Creates a body heat source</source>
-      <translation type="unfinished">Creates a body heat source</translation>
+      <translation>Opretter varmeafgivelse fra en komponent</translation>
     </message>
   </context>
   <context>
@@ -6407,12 +6408,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="211"/>
       <source>Centrifugal Load</source>
-      <translation type="unfinished">Centrifugal Load</translation>
+      <translation>Centrifugalkraft</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="212"/>
       <source>Creates a centrifugal load</source>
-      <translation type="unfinished">Creates a centrifugal load</translation>
+      <translation>Opretter en centrifugalkraft som virker på en geometri</translation>
     </message>
   </context>
   <context>
@@ -6498,12 +6499,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="346"/>
       <source>Gravity Load</source>
-      <translation type="unfinished">Gravity Load</translation>
+      <translation>Tyngdekraft</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="347"/>
       <source>Creates a gravity load</source>
-      <translation type="unfinished">Creates a gravity load</translation>
+      <translation>Opretter en tyngdekraftsbelastning</translation>
     </message>
   </context>
   <context>
@@ -6511,12 +6512,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="357"/>
       <source>Tie Constraint</source>
-      <translation type="unfinished">Tie Constraint</translation>
+      <translation>Sammenføjning</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="358"/>
       <source>Creates a tie constraint</source>
-      <translation type="unfinished">Creates a tie constraint</translation>
+      <translation>Sammenføjer to elementer</translation>
     </message>
   </context>
   <context>
@@ -6683,7 +6684,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="320"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
@@ -6872,12 +6873,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="246"/>
       <source>Netgen Version</source>
-      <translation type="unfinished">Netgen Version</translation>
+      <translation>Netgen version</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="192"/>
       <source>Netgen</source>
-      <translation type="unfinished">Netgen</translation>
+      <translation>Netgen</translation>
     </message>
   </context>
   <context>
@@ -7089,7 +7090,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="45"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="56"/>
@@ -7099,7 +7100,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="82"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Analysetype</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="122"/>
@@ -7520,12 +7521,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="381"/>
       <source>Beam Cross Section</source>
-      <translation type="unfinished">Beam Cross Section</translation>
+      <translation>Bjælketværsnit</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Creates a beam cross section</source>
-      <translation type="unfinished">Creates a beam cross section</translation>
+      <translation>Opretter et bjælketværsnit</translation>
     </message>
   </context>
   <context>
@@ -7533,12 +7534,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="392"/>
       <source>Shell Plate Thickness</source>
-      <translation type="unfinished">Shell Plate Thickness</translation>
+      <translation>Pladetykkelse</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="395"/>
       <source>Creates a shell plate thickness</source>
-      <translation type="unfinished">Creates a shell plate thickness</translation>
+      <translation>Opretter pladetykkelse for en skal</translation>
     </message>
   </context>
   <context>
@@ -7585,12 +7586,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="443"/>
       <source>Electricforce Equation</source>
-      <translation type="unfinished">Electricforce Equation</translation>
+      <translation>Formel for elektrisk kraft</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="446"/>
       <source>Creates an equation for electric forces</source>
-      <translation type="unfinished">Creates an equation for electric forces</translation>
+      <translation>Opretter en formel for elektriske kræfter</translation>
     </message>
   </context>
   <context>
@@ -7655,7 +7656,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="508"/>
       <source>Creates an equation for magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for magnetodynamic forces</translation>
+      <translation>Opretter en formel for magnetiske kræfter</translation>
     </message>
   </context>
   <context>
@@ -7668,7 +7669,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="524"/>
       <source>Creates an equation for 2D magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for 2D magnetodynamic forces</translation>
+      <translation>Opretter en ligning for 2-dimensionale magnetiske kræfter</translation>
     </message>
   </context>
   <context>
@@ -7702,7 +7703,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="592"/>
       <source>Non-Linear Mechanical Material</source>
-      <translation>Ikke-lineært elastisk materiale</translation>
+      <translation>Ikke lineært elastisk materiale</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="595"/>
@@ -7798,7 +7799,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1204"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
-      <translation type="unfinished">Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
+      <translation>Tilføjer et efterbehandlingsfilter, der markerer mesh-knudepunkter til visualisering af punktegenskaber</translation>
     </message>
   </context>
   <context>
@@ -7989,7 +7990,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="168"/>
       <source>Activate Analysis</source>
-      <translation type="unfinished">Activate Analysis</translation>
+      <translation>Aktiver analyse</translation>
     </message>
   </context>
   <context>
@@ -8036,7 +8037,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="45"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="56"/>

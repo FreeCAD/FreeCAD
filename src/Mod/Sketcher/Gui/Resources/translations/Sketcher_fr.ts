@@ -3043,7 +3043,7 @@ Cela prend en charge tous les systèmes d'unités sauf les "unités états-unien
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="37"/>
       <source>Pixel size used to render constraint symbols</source>
-      <translation>Taille des pixels utilisés pour l'affichage les symboles de contrainte</translation>
+      <translation>Taille des pixels utilisés pour l'affichage les symboles des contraintes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="78"/>
@@ -3378,7 +3378,7 @@ Notez que pour toutes les contraintes futures, le verrouillage restera activé p
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="65"/>
       <source>Filter</source>
-      <translation>Filtre</translation>
+      <translation>Filtrage</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="87"/>
@@ -3447,12 +3447,12 @@ Notez que pour toutes les contraintes futures, le verrouillage restera activé p
     <message>
       <location filename="../../TaskSketcherElements.ui" line="59"/>
       <source>Filters elements by type</source>
-      <translation>Filtrer les éléments par type</translation>
+      <translation>Filtre les éléments par type.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="65"/>
       <source>Filter</source>
-      <translation>Filtre</translation>
+      <translation>Filtrage</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.ui" line="81"/>
@@ -5376,7 +5376,7 @@ appliquées entre les objets originaux et leurs copies.</translation>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="720"/>
       <source>Constraint symbols</source>
-      <translation>Contraintes pilotantes</translation>
+      <translation>Symboles des contraintes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="727"/>

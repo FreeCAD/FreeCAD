@@ -259,7 +259,7 @@ les entités IFC de ce projet seront prises en compte.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="109"/>
       <source>Filter</source>
-      <translation>Filtre</translation>
+      <translation>Filtrage</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="71"/>
@@ -3198,7 +3198,7 @@ One object is the base object, the others are clones.</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="175"/>
       <source>One compound per floor</source>
-      <translation>Un élément composé par niveau</translation>
+      <translation>Un élément composite par niveau</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="14"/>
@@ -3241,7 +3241,7 @@ plusieurs cœurs sont définis.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="219"/>
       <source>One compound for all</source>
-      <translation>Un élément composé pour tout</translation>
+      <translation>Un élément composite pour tout</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="224"/>
@@ -4287,13 +4287,13 @@ Si Longueur = 0, la longueur est calculée de manière à ce que la hauteur soit
     <message>
       <location filename="../../ArchReference.py" line="766"/>
       <source>Unable to get lightWeight node for object referenced in</source>
-      <translation>Impossible d'obtenir le nœud lightWeight pour l'objet référencé dans</translation>
+      <translation>Impossible d'obtenir le nœud en mode léger pour l'objet référencé dans</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="776"/>
       <location filename="../../ArchReference.py" line="780"/>
       <source>Invalid lightWeight node for object referenced in</source>
-      <translation>Nœud lightWeight invalide pour l'objet référencé dans</translation>
+      <translation>Nœud en mode léger invalide pour l'objet référencé dans</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="792"/>
@@ -6787,8 +6787,10 @@ documentation du site pour savoir comment en obtenir un.</translation>
     <message>
       <location filename="../../ArchReference.py" line="86"/>
       <source>The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</source>
-      <translation>Le façon dont les objets référencés sont inclus dans le document en cours.
-"Normal" inclut la forme, "Transitoire" écarte la forme quand l'objet est désactivé (fichier plus petit), "Léger" n'importe pas la forme mais seulement la representation d'OpenInvestor.</translation>
+      <translation>La manière dont les objets référencés sont inclus dans le document en cours.
+- « Normal » inclut la forme,
+- « Transitoire » supprime la forme lorsque l'objet est désactivé (taille de fichier réduite),
+- « Léger » n'importe pas la forme mais uniquement la représentation d'OpenInventor.</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="100"/>
@@ -6843,7 +6845,7 @@ documentation du site pour savoir comment en obtenir un.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="150"/>
       <source>If true, geometry is fused, otherwise a compound</source>
-      <translation>Si mis à vrai, la géométrie est fusionnée, sinon c'est un composé</translation>
+      <translation>Si mis à vrai, la géométrie est fusionnée, sinon c'est un composite.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="144"/>
@@ -8403,12 +8405,12 @@ Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.<
     <message>
       <location filename="../../ArchStructure.py" line="2138"/>
       <source>Structure Tools</source>
-      <translation>Outils de structures</translation>
+      <translation>Outils des structures</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="2139"/>
       <source>Structure tools</source>
-      <translation>Outils pour les structures</translation>
+      <translation>Outils des structures</translation>
     </message>
   </context>
   <context>
@@ -10888,7 +10890,7 @@ Vérifier votre installation FreeCAD ou fournir un modèle personnalisé dans le
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="127"/>
       <source>Nudge Switch</source>
-      <translation>Mode Auto/manuel</translation>
+      <translation>Mode automatique/manuel</translation>
     </message>
   </context>
   <context>
@@ -11806,12 +11808,12 @@ Voir les préférences : Draft → Général → Plan de travail par défaut</tr
     <message>
       <location filename="../../bimcommands/BimCompound.py" line="38"/>
       <source>Create Compound</source>
-      <translation>Créer un composé</translation>
+      <translation>Créer un composite</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCompound.py" line="39"/>
       <source>Create a compound of several shapes</source>
-      <translation>Crée un composé de plusieurs formes.</translation>
+      <translation>Crée un composite de plusieurs formes.</translation>
     </message>
   </context>
   <context>

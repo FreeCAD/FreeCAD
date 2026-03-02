@@ -633,7 +633,7 @@ This only works if "Link array" is off.</source>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="447"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>உருகி</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="454"/>
@@ -730,7 +730,7 @@ This only works if "Link array" is off.</source>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
       <source>Fuse</source>
-      <translation type="unfinished">Fuse</translation>
+      <translation>உருகி</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="197"/>
@@ -1085,7 +1085,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>வரி அகலம்</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="253"/>
@@ -1093,7 +1093,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
       <source> px</source>
-      <translation type="unfinished"> px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
@@ -1307,7 +1307,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
       <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+      <translation>எழுத்துரு அளவு</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="348"/>
@@ -1736,7 +1736,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="111"/>
       <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+      <translation>எழுத்துரு அளவு</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="130"/>
@@ -1896,7 +1896,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="230"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>வரி அகலம்</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="237"/>
@@ -1907,7 +1907,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
       <location filename="../ui/preferences-drafttexts.ui" line="240"/>
       <location filename="../ui/preferences-draft.ui" line="338"/>
       <source> px</source>
-      <translation type="unfinished"> px</translation>
+      <translation>px</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="289"/>
@@ -2371,7 +2371,7 @@ DXF கோப்பின் அலகுக்கும் மில்லி�
     <message>
       <location filename="../ui/preferences-dxf.ui" line="307"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>பிரிவகம்</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="323"/>
@@ -2745,7 +2745,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <location filename="../ui/preferences-draft.ui" line="89"/>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>தானியங்கி</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="26"/>
@@ -3207,7 +3207,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="592"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>நீளம்</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="593"/>
@@ -3328,7 +3328,7 @@ Uncheck to use working plane coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="667"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>செயல்தவிர்</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="701"/>
@@ -3348,7 +3348,7 @@ Uncheck to use working plane coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="625"/>
       <source>Make face</source>
-      <translation type="unfinished">Make face</translation>
+      <translation>முகத்தை உருவாக்குங்கள்</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="633"/>
@@ -4243,7 +4243,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_rotate.py" line="205"/>
       <location filename="../../draftguitools/gui_rotate.py" line="324"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>சுழற்சி</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="217"/>
@@ -4650,7 +4650,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="224"/>
       <source>Scale</source>
-      <translation type="unfinished">Scale</translation>
+      <translation>அளவுகோல்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="257"/>
@@ -6025,7 +6025,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="52"/>
       <source>Scale</source>
-      <translation type="unfinished">Scale</translation>
+      <translation>அளவுகோல்</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="56"/>
@@ -6136,7 +6136,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftobjects/label.py" line="315"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>தனிப்பயன்</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="317"/>
@@ -6151,7 +6151,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="../../draftobjects/label.py" line="319"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>நீளம்</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="320"/>
@@ -6280,7 +6280,7 @@ DXF லைப்ரரி addon ஐ கைமுறையாக நிறுவ�
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="66"/>
       <source>Line</source>
-      <translation type="unfinished">Line</translation>
+      <translation>வரி</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="67"/>
@@ -6306,7 +6306,7 @@ DXF லைப்ரரி addon ஐ கைமுறையாக நிறுவ�
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="42"/>
       <source>Hatch</source>
-      <translation type="unfinished">Hatch</translation>
+      <translation>குஞ்சு பொரிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="46"/>
@@ -6347,7 +6347,7 @@ The lines must share a common point at the start or at the end.</source>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="58"/>
       <source>Move</source>
-      <translation type="unfinished">Move</translation>
+      <translation>நகர்த்தவும்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="62"/>
@@ -6362,7 +6362,7 @@ If the "Copy" option is active, it creates displaced copies.</source>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="66"/>
       <source>Arc</source>
-      <translation type="unfinished">Arc</translation>
+      <translation>பரிதி</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="69"/>
@@ -6388,7 +6388,7 @@ If the "Copy" option is active, it creates displaced copies.</source>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="66"/>
       <source>Point</source>
-      <translation type="unfinished">Point</translation>
+      <translation>புள்ளியம்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="67"/>
@@ -6401,7 +6401,7 @@ If the "Copy" option is active, it creates displaced copies.</source>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="60"/>
       <source>Rotate</source>
-      <translation type="unfinished">Rotate</translation>
+      <translation>சுழற்று</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="64"/>
@@ -6416,7 +6416,7 @@ If the "Copy" option is active, it will create rotated copies.</source>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="72"/>
       <source>Fillet</source>
-      <translation type="unfinished">Fillet</translation>
+      <translation>ஃபில்லட்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_fillets.py" line="75"/>
@@ -6481,7 +6481,7 @@ If the "Copy" option is active, it will create rotated copies.</source>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="62"/>
       <source>Ellipse</source>
-      <translation type="unfinished">Ellipse</translation>
+      <translation>நீள்வட்டம்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="63"/>
@@ -6520,7 +6520,7 @@ If the "Copy" option is active, it will create rotated copies.</source>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="70"/>
       <source>Scale</source>
-      <translation type="unfinished">Scale</translation>
+      <translation>அளவுகோல்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="73"/>
@@ -6574,7 +6574,7 @@ Objects added to this layer can share the same visual properties.</source>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
       <source>Rectangle</source>
-      <translation type="unfinished">Rectangle</translation>
+      <translation>செவ்வகம்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="58"/>
@@ -7744,12 +7744,12 @@ the 'First Angle' and 'Last Angle' properties.</source>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="173"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>வரி அகலம்</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="178"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>வரி நிறம்</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="112"/>
@@ -7819,7 +7819,7 @@ the 'First Angle' and 'Last Angle' properties.</source>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="125"/>
       <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+      <translation>எழுத்துரு அளவு</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="125"/>
@@ -7943,7 +7943,7 @@ beyond the dimension line</source>
       <location filename="../../InitGui.py" line="156"/>
       <location filename="../../InitGui.py" line="159"/>
       <source>Draft</source>
-      <translation type="unfinished">Draft</translation>
+      <translation>வரைவு</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="237"/>
@@ -7972,7 +7972,7 @@ beyond the dimension line</source>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="518"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>3 புள்ளிகளில் இருந்து ஆர்க்</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="521"/>
@@ -8097,7 +8097,7 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="63"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Toggle Grid</translation>
+      <translation>கட்டத்தை நிலைமாற்று</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="66"/>

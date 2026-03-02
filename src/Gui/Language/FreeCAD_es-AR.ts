@@ -8453,7 +8453,7 @@ Would you like to save the file with a different name?</source>
     <message>
       <location filename="../Document.cpp" line="1605"/>
       <source>Save document under new filename…</source>
-      <translation type="unfinished">Save document under new filename…</translation>
+      <translation>Guardar documento bajo el nombre de archivo nuevo…</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1732"/>
