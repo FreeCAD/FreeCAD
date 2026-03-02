@@ -2223,8 +2223,8 @@ Questo valore è la lunghezza massima del segmento.</translation>
       <location filename="../ui/preferences-dxf.ui" line="26"/>
       <source>If checked, this preferences dialog will be shown each time you import or export
 a DXF file.</source>
-      <translation type="unfinished">If checked, this preferences dialog will be shown each time you import or export
-a DXF file.</translation>
+      <translation>Se selezionato, questa finestra di dialogo delle preferenze verrà mostrata ogni volta che si importa o esporta un file DXF.
+.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="30"/>
@@ -4828,7 +4828,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="244"/>
       <source>Create Polar Array</source>
-      <translation type="unfinished">Create Polar Array</translation>
+      <translation>Crea serie polare</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="276"/>
@@ -4876,7 +4876,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
       <source>Create Orthogonal Array</source>
-      <translation type="unfinished">Create Orthogonal Array</translation>
+      <translation>Crea serie ortogonale</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="289"/>
@@ -5009,7 +5009,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="270"/>
       <source>Create Circular Array</source>
-      <translation type="unfinished">Create Circular Array</translation>
+      <translation>Crea serie circolare</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="344"/>

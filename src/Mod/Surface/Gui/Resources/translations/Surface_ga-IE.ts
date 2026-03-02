@@ -162,7 +162,7 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="55"/>
       <source>Curved</source>
-      <translation type="unfinished">Curved</translation>
+      <translation>Cuartha</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="76"/>
@@ -268,7 +268,7 @@
       <location filename="../../Blending/TaskBlendCurve.ui" line="96"/>
       <location filename="../../Blending/TaskBlendCurve.ui" line="189"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Méid</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="113"/>

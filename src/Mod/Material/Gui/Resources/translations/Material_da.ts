@@ -1363,7 +1363,7 @@ Hvis ikke markeret, vil de blive sorteret efter deres navn.</translation>
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>

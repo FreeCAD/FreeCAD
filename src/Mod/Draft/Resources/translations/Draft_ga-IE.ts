@@ -889,7 +889,7 @@ reatha gach uair a thosófar ordú</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="77"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Uathoibríoch</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="86"/>
@@ -1076,13 +1076,13 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="156"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>Dath líne</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Leithead líne</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="253"/>
@@ -1115,7 +1115,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="229"/>
       <source>DashDot</source>
-      <translation type="unfinished">DashDot</translation>
+      <translation>DaisPonc</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
@@ -1166,7 +1166,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="667"/>
       <source>Annotations</source>
-      <translation type="unfinished">Annotations</translation>
+      <translation>Anótálacha</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="587"/>
@@ -1191,7 +1191,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="533"/>
       <source>Dimensions</source>
-      <translation type="unfinished">Dimensions</translation>
+      <translation>Toisí</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
@@ -1395,22 +1395,22 @@ toisí líneacha amháin.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="653"/>
       <source>Selected</source>
-      <translation type="unfinished">Selected</translation>
+      <translation>Roghnaithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="14"/>
       <source>Hatch</source>
-      <translation type="unfinished">Hatch</translation>
+      <translation>Haiste</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="20"/>
       <source>PAT file</source>
-      <translation type="unfinished">PAT file</translation>
+      <translation>Comhad PAT</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="34"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>Patrún</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="44"/>
@@ -1420,7 +1420,7 @@ toisí líneacha amháin.</translation>
     <message>
       <location filename="../ui/dialogHatch.ui" line="64"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../ui/dialogHatch.ui" line="81"/>
@@ -1857,7 +1857,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="20"/>
       <source>Annotations</source>
-      <translation type="unfinished">Annotations</translation>
+      <translation>Anótálacha</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="78"/>
@@ -1892,7 +1892,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="230"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Leithead líne</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="237"/>
@@ -2690,7 +2690,7 @@ ghreille má mheaitseálann siad ais X, Y nó Z an chórais chomhordanáidí dho
     <message>
       <location filename="../ui/preferences-draft.ui" line="270"/>
       <source> seconds</source>
-      <translation type="unfinished"> seconds</translation>
+      <translation> soicindí</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="311"/>
@@ -2736,7 +2736,7 @@ ghreille má mheaitseálann siad ais X, Y nó Z an chórais chomhordanáidí dho
       <location filename="../ui/preferences-draft.ui" line="89"/>
       <location filename="../ui/preferences-dwg.ui" line="51"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Uathoibríoch</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="26"/>
@@ -2916,7 +2916,7 @@ ghreille má mheaitseálann siad ais X, Y nó Z an chórais chomhordanáidí dho
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="298"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>Cealaigh</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="439"/>
@@ -3060,7 +3060,7 @@ ghreille má mheaitseálann siad ais X, Y nó Z an chórais chomhordanáidí dho
     <message>
       <location filename="../../DraftGui.py" line="684"/>
       <source>Set Working Plane</source>
-      <translation type="unfinished">Set Working Plane</translation>
+      <translation>Socraigh Plána Oibre</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="690"/>
@@ -3319,7 +3319,7 @@ Díthiceáil chun córas comhordanáidí an eitleáin oibre a úsáid</translati
     <message>
       <location filename="../../DraftGui.py" line="667"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>Cealaigh</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="701"/>
@@ -3409,7 +3409,7 @@ Ní bheidh sé ar fáil má tá an rogha 'Úsáid Bunphrionsabail Chuid' cumasai
     <message>
       <location filename="../../DraftGui.py" line="857"/>
       <source>DWire</source>
-      <translation type="unfinished">DWire</translation>
+      <translation>DWire</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="880"/>
@@ -3425,7 +3425,7 @@ Ní bheidh sé ar fáil má tá an rogha 'Úsáid Bunphrionsabail Chuid' cumasai
       <location filename="../../DraftGui.py" line="890"/>
       <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <source>Rotate</source>
-      <translation type="unfinished">Rotate</translation>
+      <translation>Rothlaigh</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="896"/>
@@ -3581,7 +3581,7 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
       <location filename="../../draftutils/init_draft_statusbar.py" line="96"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="184"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Saincheaptha</translation>
     </message>
     <message>
       <location filename="../../draftutils/init_draft_statusbar.py" line="170"/>
@@ -4180,7 +4180,7 @@ nó bain triail as é a shábháil chuig leagan níos óige de DWG.</translation
     <message>
       <location filename="../../draftguitools/gui_shape2dview.py" line="122"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>Cruthaigh Radharc 2T</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="139"/>
@@ -4234,7 +4234,7 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
       <location filename="../../draftguitools/gui_rotate.py" line="205"/>
       <location filename="../../draftguitools/gui_rotate.py" line="324"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="217"/>
@@ -4290,7 +4290,7 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="436"/>
       <source>New Group</source>
-      <translation type="unfinished">New Group</translation>
+      <translation>Grúpa Nua</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="437"/>
@@ -4347,7 +4347,7 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="75"/>
       <source>Polygon</source>
-      <translation type="unfinished">Polygon</translation>
+      <translation>Polagán</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="245"/>
@@ -4704,7 +4704,7 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="66"/>
       <source>Rectangle</source>
-      <translation type="unfinished">Rectangle</translation>
+      <translation>Dronuilleog</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="130"/>
@@ -5906,7 +5906,7 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
     <message>
       <location filename="../../InitGui.py" line="124"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>Dréacht-Snap</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="128"/>
@@ -5974,7 +5974,7 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="506"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Rabhadh</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_setstyle.py" line="507"/>
@@ -5995,7 +5995,7 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
       <location filename="../../draftguitools/gui_lineslope.py" line="91"/>
       <location filename="../../draftguitools/gui_lineslope.py" line="94"/>
       <source>Slope</source>
-      <translation type="unfinished">Slope</translation>
+      <translation>Claonadh</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="122"/>
@@ -6069,7 +6069,7 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="105"/>
       <source>Writing camera position</source>
-      <translation type="unfinished">Writing camera position</translation>
+      <translation>Suíomh an cheamara á scríobh</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="123"/>
@@ -6125,7 +6125,7 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
     <message>
       <location filename="../../draftobjects/label.py" line="315"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Saincheaptha</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="317"/>
@@ -6145,7 +6145,7 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
     <message>
       <location filename="../../draftobjects/label.py" line="320"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Limistéar</translation>
     </message>
     <message>
       <location filename="../../draftobjects/label.py" line="321"/>
@@ -6295,7 +6295,7 @@ Suiteáil an breiseán Leabharlann DXF de láimh le do thoil
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="42"/>
       <source>Hatch</source>
-      <translation type="unfinished">Hatch</translation>
+      <translation>Haiste</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="46"/>
@@ -6390,7 +6390,7 @@ Má tá an rogha "Cóipeáil" gníomhach, cruthaíonn sé cóipeanna díláithri
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="60"/>
       <source>Rotate</source>
-      <translation type="unfinished">Rotate</translation>
+      <translation>Rothlaigh</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="64"/>
@@ -6418,7 +6418,7 @@ Má tá an rogha "Cóipeáil" gníomhach, cruthófar cóipeanna rothlaithe.</tra
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="60"/>
       <source>Polygon</source>
-      <translation type="unfinished">Polygon</translation>
+      <translation>Polagán</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="63"/>
@@ -6483,7 +6483,7 @@ Má tá an rogha "Cóipeáil" gníomhach, cruthófar cóipeanna rothlaithe.</tra
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="63"/>
       <source>Facebinder</source>
-      <translation type="unfinished">Facebinder</translation>
+      <translation>Ceanglóir Aghaidhe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="66"/>
@@ -6563,7 +6563,7 @@ Is féidir leis na hairíonna amhairc céanna a bheith ag réada a chuirtear lei
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="57"/>
       <source>Rectangle</source>
-      <translation type="unfinished">Rectangle</translation>
+      <translation>Dronuilleog</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="58"/>
@@ -7726,12 +7726,12 @@ Is maoin léite amháin í seo mar go ríomhtar an luach ó na hairíonna 'An Ch
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="173"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Leithead líne</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="178"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>Dath líne</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_base.py" line="112"/>
@@ -7835,7 +7835,7 @@ Scríobh '$dim' ionas go gcuirfear fad na toise ina áit.</translation>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="163"/>
       <source>Show the unit suffix</source>
-      <translation type="unfinished">Show the unit suffix</translation>
+      <translation>Taispeáin iarmhír an aonaid</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_dimension.py" line="173"/>
@@ -7893,12 +7893,12 @@ thar an líne toise</translation>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="51"/>
       <source>The display length of this section plane</source>
-      <translation type="unfinished">The display length of this section plane</translation>
+      <translation>Fad taispeána an eitleáin rannóige seo</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="54"/>
       <source>The size of the arrows of this section plane</source>
-      <translation type="unfinished">The size of the arrows of this section plane</translation>
+      <translation>Méid na saigheada den eitleán trasghearrtha seo</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_rectangle.py" line="45"/>
@@ -8186,7 +8186,7 @@ Cruthaítear an grúpa tógála mura bhfuil sé ann.</translation>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="205"/>
       <source>Manage Layers</source>
-      <translation type="unfinished">Manage Layers</translation>
+      <translation>Bainistigh Sraitheanna</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="206"/>
@@ -8738,7 +8738,7 @@ de chruth an tsraithe. Is fearr é seo chun comhaid an-mhóra a fheiceáil leis 
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="110"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Rabhadh</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="136"/>

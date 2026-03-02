@@ -2242,7 +2242,7 @@ Juster parametrene og prøv igen.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="69"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="72"/>

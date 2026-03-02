@@ -627,7 +627,7 @@ in modo da evitare l'intersezione automatica.</translation>
     <message>
       <location filename="../../Command.cpp" line="1330"/>
       <source>Revolve</source>
-      <translation>Rivoluziona</translation>
+      <translation>Rivoluzione</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1331"/>

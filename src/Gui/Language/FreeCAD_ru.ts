@@ -3797,7 +3797,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="69"/>
       <source>Macro Path</source>
-      <translation>Куда записывать макросы</translation>
+      <translation>Путь к макросу </translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="109"/>
@@ -4260,7 +4260,7 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="211"/>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="248"/>
       <source>Isometric</source>
-      <translation>Изометрия</translation>
+      <translation>Изометрическая</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="212"/>
@@ -4620,7 +4620,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="150"/>
       <source>Central:</source>
-      <translation>В центре:</translation>
+      <translation>Центральное:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="151"/>
@@ -4630,7 +4630,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="152"/>
       <source>End:</source>
-      <translation>На периферии:</translation>
+      <translation>Конец:</translation>
     </message>
   </context>
   <context>
@@ -8632,7 +8632,7 @@ Choose 'Abort' to abort</source>
       <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
       <source>Transform</source>
-      <translation>Переместить</translation>
+      <translation>Преобразовать</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="886"/>

@@ -1352,7 +1352,7 @@ samhail nuair a osclaítear an dialóg torthaí</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
       <source>Defaults</source>
-      <translation type="unfinished">Defaults</translation>
+      <translation>Réamhshocruithe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
@@ -3200,7 +3200,7 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
@@ -3257,7 +3257,7 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
       <location filename="../ui/ElementGeometry1D.ui" line="41"/>
       <location filename="../ui/ElementGeometry1D.ui" line="279"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
@@ -3551,7 +3551,7 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
@@ -3563,7 +3563,7 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
-      <translation type="unfinished">Frames</translation>
+      <translation>Frámaí</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
@@ -3761,7 +3761,7 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="320"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>An bhfuil tú cinnte gur mian leat leanúint ar aghaidh?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="157"/>
@@ -4126,7 +4126,7 @@ Le haghaidh athróga féideartha, féach an bosca cur síos thíos.</translation
     <message>
       <location filename="../../SphereWidget.ui" line="20"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
   </context>
   <context>
@@ -4568,7 +4568,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="306"/>
       <source>Page</source>
-      <translation type="unfinished">Page</translation>
+      <translation>Leathanach</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="312"/>
@@ -4988,7 +4988,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="17"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
@@ -5669,7 +5669,7 @@ normal vector of the face is used as direction</source>
       <location filename="../../../femsolver/solver_taskpanel.py" line="301"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Rith</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
@@ -6200,7 +6200,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="209"/>
       <source>default</source>
-      <translation type="unfinished">default</translation>
+      <translation>réamhshocraithe</translation>
     </message>
   </context>
   <context>
@@ -6300,7 +6300,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../BoxWidget.ui" line="20"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="32"/>
@@ -6325,7 +6325,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../BoxWidget.ui" line="153"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="182"/>
@@ -6338,7 +6338,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../CylinderWidget.ui" line="20"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="26"/>
@@ -6535,7 +6535,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
@@ -6613,7 +6613,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
@@ -6702,7 +6702,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="20"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="28"/>
@@ -6727,7 +6727,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
       <source>Restore</source>
-      <translation type="unfinished">Restore</translation>
+      <translation>Athchóirigh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="70"/>
@@ -7044,7 +7044,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../../TaskPostFrames.ui" line="26"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="34"/>
@@ -7146,7 +7146,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="25"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="42"/>
@@ -7346,7 +7346,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
       <source>Labels</source>
-      <translation type="unfinished">Labels</translation>
+      <translation>Lipéid</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="156"/>
@@ -7363,7 +7363,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
       <source>Title</source>
-      <translation type="unfinished">Title</translation>
+      <translation>Teideal</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="192"/>
@@ -7805,7 +7805,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <location filename="../../TaskPostExtraction.ui" line="14"/>
       <location filename="../ui/TaskPostExtraction.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="22"/>
@@ -7842,7 +7842,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
@@ -7873,7 +7873,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="89"/>
       <source>Lines</source>
-      <translation type="unfinished">Lines</translation>
+      <translation>Línte</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="102"/>
@@ -7905,7 +7905,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="34"/>
       <source>Marker</source>
-      <translation type="unfinished">Marker</translation>
+      <translation>Marcóir</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="87"/>

@@ -1138,7 +1138,7 @@ Roghnaigh corp ón liosta thíos, nó cruthaigh corp nua.</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="82"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="173"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="193"/>
@@ -1161,7 +1161,7 @@ Roghnaigh corp ón liosta thíos, nó cruthaigh corp nua.</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="391"/>
       <source>Rotation angle</source>
-      <translation type="unfinished">Rotation angle</translation>
+      <translation>Uillinn rothlaithe</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="465"/>
@@ -1237,7 +1237,7 @@ Más nialas é, is ionann é agus Ga2</translation>
       <location filename="../../TaskPrimitiveParameters.ui" line="1214"/>
       <location filename="../../TaskPrimitiveParameters.ui" line="2290"/>
       <source>Polygon</source>
-      <translation type="unfinished">Polygon</translation>
+      <translation>Polagán</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1234"/>
@@ -1273,7 +1273,7 @@ Más nialas é, is ionann é agus Ga2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1560"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Páirc</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1637"/>
@@ -1520,7 +1520,7 @@ Más nialas é, is ionann é agus Ga2</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="100"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Méid</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="146"/>
@@ -1961,7 +1961,7 @@ Coigeartaigh na paraiméadair agus déan iarracht arís.</translation>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="125"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Páirc</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="152"/>
@@ -3362,7 +3362,7 @@ D’fhéadfadh torthaí gan choinne a bheith mar thoradh air seo.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="230"/>
       <source>Body</source>
-      <translation type="unfinished">Body</translation>
+      <translation>Corp</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="421"/>
@@ -4003,7 +4003,7 @@ Tabhair faoi deara go bhféadfadh roinnt ama a bheith i gceist leis an ríomh</t
     <message>
       <location filename="../../TaskHoleParameters.ui" line="49"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Méid</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="722"/>
@@ -5303,7 +5303,7 @@ Ní cheadaítear eintitis sceitse nó il-aghaidheanna a thrasnaíonn a chéile i
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1007"/>
       <source>Attachment</source>
-      <translation type="unfinished">Attachment</translation>
+      <translation>Ceangaltán</translation>
     </message>
   </context>
   <context>

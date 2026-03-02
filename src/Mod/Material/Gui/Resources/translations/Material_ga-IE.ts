@@ -153,7 +153,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="199"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Leithead líne</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="237"/>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="389"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>Dath líne</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="35"/>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="35"/>
@@ -431,7 +431,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>No</source>
-      <translation type="unfinished">No</translation>
+      <translation>Níl</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -611,17 +611,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="111"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="195"/>
       <source>Select an image</source>
-      <translation type="unfinished">Select an image</translation>
+      <translation>Roghnaigh íomhá</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="206"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
+      <translation>Comhaid íomhá (*.jpg *.jpeg *.png *.bmp);;Gach comhad (*)</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="218"/>
@@ -1066,7 +1066,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>Oscail…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>

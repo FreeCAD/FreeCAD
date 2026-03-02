@@ -11,57 +11,57 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Zoom</source>
-      <translation type="unfinished">Zoom</translation>
+      <translation>பெரிதாக்கு</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="91"/>
       <source>Rotate</source>
-      <translation type="unfinished">Rotate</translation>
+      <translation>சுழற்று</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="92"/>
       <source>Pan</source>
-      <translation type="unfinished">Pan</translation>
+      <translation>பான்</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Tilt</source>
-      <translation type="unfinished">Tilt</translation>
+      <translation>சாய்வு</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="94"/>
       <source>Navigation style</source>
-      <translation type="unfinished">Navigation style</translation>
+      <translation>வழிசெலுத்தல் பாணி</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Page Up or Page Down key.</source>
-      <translation type="unfinished">Page Up or Page Down key.</translation>
+      <translation>பேச் அப் அல்லது பேச் பேரூர் கீ.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="96"/>
       <source>Rotation focus</source>
-      <translation type="unfinished">Rotation focus</translation>
+      <translation>சுழற்சி கவனம்</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="97"/>
       <source>Middle mouse button or H key.</source>
-      <translation type="unfinished">Middle mouse button or H key.</translation>
+      <translation>நடு மவுச் பொத்தான் அல்லது எச் கீ.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="99"/>
       <source>Middle mouse button.</source>
-      <translation type="unfinished">Middle mouse button.</translation>
+      <translation>நடு சுட்டி பொத்தான்.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="102"/>
       <source>Navigation style not recognized.</source>
-      <translation type="unfinished">Navigation style not recognized.</translation>
+      <translation>வழிசெலுத்தல் நடை அங்கீகரிக்கப்படவில்லை.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="653"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>அமைப்புகள்</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="654"/>
@@ -71,12 +71,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="655"/>
       <source>Compact</source>
-      <translation type="unfinished">Compact</translation>
+      <translation>கச்சிதமான</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="656"/>
       <source>Tooltip</source>
-      <translation type="unfinished">Tooltip</translation>
+      <translation>உதவிக்குறிப்பு</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="657"/>
@@ -96,17 +96,17 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>
       <source>Trackball Classic</source>
-      <translation type="unfinished">Trackball Classic</translation>
+      <translation>டிராக்பால் கிளாசிக்</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="661"/>
       <source>Rounded Arcball</source>
-      <translation type="unfinished">Rounded Arcball</translation>
+      <translation>வட்டமான ஆர்க்பால்</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="662"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>வரையறுக்கப்படாத</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="674"/>

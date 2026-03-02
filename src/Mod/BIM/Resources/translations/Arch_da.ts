@@ -4497,7 +4497,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchMaterial.py" line="470"/>
       <location filename="../../ArchMaterial.py" line="797"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1648"/>
@@ -9059,7 +9059,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchSite.py" line="1314"/>
       <location filename="../../ArchAxis.py" line="798"/>
       <source>Transform</source>
-      <translation>Transformer</translation>
+      <translation>Transformér</translation>
     </message>
   </context>
   <context>

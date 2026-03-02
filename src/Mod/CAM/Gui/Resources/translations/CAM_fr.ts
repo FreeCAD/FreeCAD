@@ -4469,7 +4469,7 @@ Peut-être utile pour les opérations multi-profils, par exemple une poche avec 
     <message>
       <location filename="../../../Path/Main/Job.py" line="184"/>
       <source>Compound path of all operations in the order they are processed.</source>
-      <translation>Parcours combiné de toutes les opérations dans l’ordre où elles sont traitées.</translation>
+      <translation>Parcours composé de toutes les opérations dans l’ordre où elles sont traitées.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="191"/>

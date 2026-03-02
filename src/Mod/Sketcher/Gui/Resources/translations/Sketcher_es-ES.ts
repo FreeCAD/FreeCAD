@@ -2430,12 +2430,12 @@ Combinaciones aceptadas: dos curvas; un extremo y una curva; dos extremos; dos c
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="87"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>Cota horizontal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="89"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>Cota vertical</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="93"/>
@@ -6143,7 +6143,7 @@ Los puntos deben estar más cerca de una quinta parte del tamaño de la cuadríc
     <message>
       <location filename="../../CommandConstraints.cpp" line="10294"/>
       <source>Edit Value</source>
-      <translation type="unfinished">Edit Value</translation>
+      <translation>Editar valor</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10295"/>
