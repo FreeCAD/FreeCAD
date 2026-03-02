@@ -167,6 +167,13 @@ ViewProviderFemPostObject::ViewProviderFemPostObject()
         "Set wireframe line color."
     );
     ADD_PROPERTY_TYPE(
+        NoneFieldColor,
+        (0.8f, 0.8f, 0.8f),
+        "Object Style",
+        App::Prop_None,
+        "Shape color used if Field property is None."
+    );
+    ADD_PROPERTY_TYPE(
         PlainColorEdgeOnSurface,
         (false),
         "Object Style",
@@ -689,7 +696,8 @@ void ViewProviderFemPostObject::WriteColorData(bool ResetColorBarRange)
     }
 
     if (Field.getEnumVector().empty() || Field.getValue() == 0) {
-        m_material->diffuseColor.setValue(SbColor(0.8, 0.8, 0.8));
+        Base::Color cNone = NoneFieldColor.getValue();
+        m_material->diffuseColor.setValue(SbColor(cNone.r, cNone.g, cNone.b));
         float trans = Base::fromPercent(Transparency.getValue());
         m_material->transparency.setValue(trans);
         m_materialBinding->value = SoMaterialBinding::OVERALL;
@@ -866,6 +874,9 @@ void ViewProviderFemPostObject::onChanged(const App::Property* prop)
             && (strcmp("Surface with Edges", DisplayMode.getValueAsString()) == 0);
         int child = plainColor ? 1 : 0;
         m_switchMatEdges->whichChild.setValue(child);
+    }
+    else if (prop == &NoneFieldColor) {
+        WriteColorData(ResetColorBarRange);
     }
 
     ViewProviderDocumentObject::onChanged(prop);
