@@ -1709,6 +1709,9 @@ class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
         #  Initialize generic parent (creates self.options_widget and self.baseform)
         super().__init__(obj, property_definitions)
 
+        # Alias for compatibility with node/tool methods
+        self.Object = self.obj
+
         self.nodes_widget = QtGui.QWidget()
         self.nodes_widget.setWindowTitle(QtGui.QApplication.translate("Arch", "Node Tools", None))
         lay = QtGui.QVBoxLayout(self.nodes_widget)
