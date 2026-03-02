@@ -59,11 +59,11 @@ import femresult.resulttools as resulttools
 translate = FreeCAD.Qt.translate
 
 
+
 class _TaskPanel:
     """
     The task panel for the post-processing
     """
-
     def __init__(self, obj):
         self.result_obj = obj
         self.mesh_obj = self.result_obj.Mesh
@@ -81,8 +81,6 @@ class _TaskPanel:
         self.animate_inc = 1
         self.startAnimate = False
         self.animateText = []
-        self.slider_max = False
-        self.recurlim = min(200, sys.getrecursionlimit() / 2)
 
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
@@ -186,6 +184,7 @@ class _TaskPanel:
             QtCore.SIGNAL("valueChanged(int)"),
             self.hsb_disp_factor_changed,
         )
+        self.result_widget.hsb_displacement_factor.sliderReleased.connect(self.set_focus_sb_disp)
 
         self.result_widget.sb_displacement_factor.valueChanged.connect(self.sb_disp_factor_changed)
         self.result_widget.sb_displacement_factor_max.valueChanged.connect(
@@ -197,6 +196,10 @@ class _TaskPanel:
         QtCore.QObject.connect(
             self.result_widget.calculate, QtCore.SIGNAL("clicked()"), self.calculate
         )
+
+        # Since, the slider is integer based keep it always between 0 to 100
+        # and scale the value from the inputbox
+        self.result_widget.hsb_displacement_factor.setRange(0, 100)
 
         self.update()
         if self.restore_result_settings_in_dialog:
@@ -257,10 +260,9 @@ class _TaskPanel:
 
             df = FreeCAD.FEM_dialog["disp_factor"]
             dfm = FreeCAD.FEM_dialog["disp_factor_max"]
-            self.result_widget.hsb_displacement_factor.setMaximum(dfm)
-            self.result_widget.hsb_displacement_factor.setValue(df)
             self.result_widget.sb_displacement_factor_max.setValue(dfm)
             self.result_widget.sb_displacement_factor.setValue(df)
+            self.result_widget.hsb_displacement_factor.setValue(self.convert_to_slider_value(dfm))
             # animate
             self.startAnimate = False
             if FreeCAD.FEM_dialog["animate"][0] != -1:
@@ -647,6 +649,11 @@ class _TaskPanel:
         self.mesh_obj.ViewObject.applyDisplacement(factor)
 
     def show_displacement(self, checked):
+        # Enable or disable the input widgets in the displacement group
+        self.result_widget.sb_displacement_factor.setEnabled(checked)
+        self.result_widget.sb_displacement_factor_max.setEnabled(checked)
+        self.result_widget.hsb_displacement_factor.setEnabled(checked)
+
         QApplication.setOverrideCursor(Qt.WaitCursor)
         FreeCAD.FEM_dialog["show_disp"] = checked
         if "result_obj" in FreeCAD.FEM_dialog:
@@ -660,41 +667,58 @@ class _TaskPanel:
         self.update_displacement()
         QtGui.QApplication.restoreOverrideCursor()
 
+    def convert_to_slider_value(self, value: float):
+        # The slider always goes between 0 to 100 in steps of 1
+        if value == 0.0:
+            return 0.0
+
+        max_val = self.result_widget.sb_displacement_factor_max.value()
+        res =  round(value/max_val * 100)
+        return res
+
+    def convert_from_slider_value(self, value: float):
+        if value == 0.0:
+            return 0.0
+
+        max_val = self.result_widget.sb_displacement_factor_max.value()
+        return value/100 * max_val
+
     def hsb_disp_factor_changed(self, value):
-        self.result_widget.sb_displacement_factor.setValue(
-            value / 100.0 * self.result_widget.sb_displacement_factor_max.value()
-        )
+        inputbox = self.result_widget.sb_displacement_factor
+        
+        scaled_val = self.convert_from_slider_value(value)
+        FreeCAD.FEM_dialog["disp_factor"] = scaled_val
         self.update_displacement()
 
+        # Prevent recursive calls
+        inputbox.blockSignals(True)
+        inputbox.setValue(scaled_val)
+        inputbox.blockSignals(False)
+
     def sb_disp_factor_max_changed(self, value):
-        self.slider_max = True
         FreeCAD.FEM_dialog["disp_factor_max"] = value
-        if value < self.result_widget.sb_displacement_factor.value():
-            self.result_widget.sb_displacement_factor.setValue(value)
-        if value == 0.0:
-            self.result_widget.hsb_displacement_factor.setValue(0)
-        else:
-            self.result_widget.hsb_displacement_factor.setValue(
-                round(self.result_widget.sb_displacement_factor.value() / value * 100.0)
-            )
-        self.slider_max = False
+        inputbox = self.result_widget.sb_displacement_factor
+        inputbox.setMaximum(value)
+
+        self.result_widget.hsb_displacement_factor.setValue(
+            self.convert_to_slider_value(inputbox.value())
+        )
 
     def sb_disp_factor_changed(self, value):
-        # this bit of code causes:
-        # RecursionError: maximum recursion depth exceeded
-        # so check on the depth and don't exceed recurlim
-        if len(inspect.stack(0)) < self.recurlim:
-            FreeCAD.FEM_dialog["disp_factor"] = value
-            if value > self.result_widget.sb_displacement_factor_max.value():
-                self.result_widget.sb_displacement_factor.setValue(
-                    self.result_widget.sb_displacement_factor_max.value()
-                )
-            if self.result_widget.sb_displacement_factor_max.value() == 0.0:
-                self.result_widget.hsb_displacement_factor.setValue(0.0)
-            else:
-                self.result_widget.hsb_displacement_factor.setValue(
-                    round(value / self.result_widget.sb_displacement_factor_max.value() * 100.0)
-                )
+        FreeCAD.FEM_dialog["disp_factor"] = value
+        self.update_displacement()
+
+        slider = self.result_widget.hsb_displacement_factor
+
+        # Prevent recursive calls
+        slider.blockSignals(True)
+        scaled_val = self.convert_to_slider_value(value)
+        slider.setValue(scaled_val)
+        slider.blockSignals(False)
+
+    def set_focus_sb_disp(self):
+        self.result_widget.sb_displacement_factor.selectAll()
+        self.result_widget.sb_displacement_factor.setFocus()
 
     def disable_empty_result_buttons(self):
         """disable radio buttons if result does not exists in result object"""
@@ -871,22 +895,6 @@ class _TaskPanel:
                 self.animate_displacement()
             else:
                 self.startAnimate = False
-        # # this is taken care of in the "ui"
-        # # set the scale - scroll bar - Show
-        # elif myType == "scale" and not self.slider_max:
-        #     if self.animate_inc == 0:
-        #         if self.result_widget.hsb_displacement_factor.value() > 1:
-        #             self.result_widget.sb_displacement_factor.setValue(
-        #                 self.result_widget.hsb_displacement_factor.value()
-        #             )
-        #     self.animate_inc = 1 - self.animate_inc
-        # # set the factor - spin - Factor
-        # elif myType == "factor" and not self.slider_max:
-        #     if self.animate_inc == 0:
-        #         self.result_widget.hsb_displacement_factor.setValue(
-        #             int(self.result_widget.sb_displacement_factor.value())
-        #         )
-        #     self.animate_inc = 1 - self.animate_inc
         else:
             pass
         try:
