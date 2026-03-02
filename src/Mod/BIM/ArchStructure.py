@@ -463,9 +463,7 @@ class _CommandStructure:
             else:
                 # metal profile
                 FreeCADGui.doCommand("p = Arch.makeProfile(" + str(self.Profile) + ")")
-                if (
-                    abs(self.Length - self.Profile[4]) >= 0.1
-                ) or self.bmode:  # forgive rounding errors
+                if self.bmode:
                     # horizontal
                     FreeCADGui.doCommand(
                         "s = Arch.makeStructure(p,length=" + str(self.Length) + ")"
