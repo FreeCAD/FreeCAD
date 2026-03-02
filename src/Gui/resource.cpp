@@ -49,7 +49,6 @@
 #include "Dialogs/DlgToolbarsImp.h"
 #include "Dialogs/DlgActionsImp.h"
 #include "Dialogs/DlgKeyboardImp.h"
-#include <qttranslation.h>
 
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
 # include "Dialogs/DlgCustomizeSpaceball.h"
