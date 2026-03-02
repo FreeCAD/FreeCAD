@@ -166,7 +166,9 @@ def get_axis_bubble_data(obj, vobj):
                     obj.Placement.inverse().multVec(obj.Shape.Edges[i * 2 + 1].Vertexes[0].Point),
                 ]
             else:
-                verts = [obj.Placement.inverse().multVec(v.Point) for v in obj.Shape.Edges[i].Vertexes]
+                verts = [
+                    obj.Placement.inverse().multVec(v.Point) for v in obj.Shape.Edges[i].Vertexes
+                ]
 
             arrow = None
             if p == "Start":
@@ -186,7 +188,11 @@ def get_axis_bubble_data(obj, vobj):
 
             dv = p2.sub(p1)
             dv.normalize()
-            rad = vobj.BubbleSize.Value / 2 if hasattr(vobj.BubbleSize, "Value") else vobj.BubbleSize / 2
+            rad = (
+                vobj.BubbleSize.Value / 2
+                if hasattr(vobj.BubbleSize, "Value")
+                else vobj.BubbleSize / 2
+            )
             center = p2.add(Vector(dv).multiply(rad))
             normal = obj.Placement.Rotation.multVec(Vector(0, 0, 1))
             chord = dv.cross(normal)
@@ -211,7 +217,9 @@ def get_axis_bubble_data(obj, vobj):
                 p3 = p2.add(Vector(chord).multiply(rad / 2))
                 if vobj.BubblePosition.startswith("Arrow"):
                     p4 = p3.add(Vector(dv).multiply(rad * 2).negative())
-                    p5 = p2.add(Vector(dv).multiply(rad).negative()).add(Vector(chord).multiply(rad * 1.5))
+                    p5 = p2.add(Vector(dv).multiply(rad).negative()).add(
+                        Vector(chord).multiply(rad * 1.5)
+                    )
                     pts = [tuple(p3), tuple(p4), tuple(p5), tuple(p3)]
                     center = p5.add(Vector(chord).multiply(rad * 2.5).negative())
                 else:

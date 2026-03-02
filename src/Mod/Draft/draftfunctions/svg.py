@@ -869,6 +869,7 @@ def get_svg(
             if is_linked_axis:
                 try:
                     import ArchAxis
+
                     bubble_shapes, bubble_texts = ArchAxis.get_axis_bubble_data(obj, axis_vobj)
                 except ImportError as err:
                     _wrn("Unable to import ArchAxis for '{}': {}".format(obj.Label, err))
