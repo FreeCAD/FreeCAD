@@ -59,10 +59,12 @@ import femresult.resulttools as resulttools
 translate = FreeCAD.Qt.translate
 
 
+
 class _TaskPanel:
     """
     The task panel for the post-processing
     """
+    FEM_dialog = {}
 
     def __init__(self, obj):
         self.result_obj = obj
@@ -81,8 +83,6 @@ class _TaskPanel:
         self.animate_inc = 1
         self.startAnimate = False
         self.animateText = []
-        self.slider_max = False
-        self.recurlim = min(200, sys.getrecursionlimit() / 2)
 
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         self.restore_result_settings_in_dialog = self.fem_prefs.GetBool("RestoreResultDialog", True)
@@ -186,6 +186,7 @@ class _TaskPanel:
             QtCore.SIGNAL("valueChanged(int)"),
             self.hsb_disp_factor_changed,
         )
+        self.result_widget.hsb_displacement_factor.sliderReleased.connect(self.set_focus_sb_disp)
 
         self.result_widget.sb_displacement_factor.valueChanged.connect(self.sb_disp_factor_changed)
         self.result_widget.sb_displacement_factor_max.valueChanged.connect(
@@ -208,9 +209,13 @@ class _TaskPanel:
             self.result_widget.sb_displacement_factor_max.setValue(10.0 * scale_factor)
             self.result_widget.sb_displacement_factor.setValue(scale_factor)
 
+        # Since, the slider is integer based keep it always between 0 to 100
+        # and scale the value from the inputbox
+        self.result_widget.hsb_displacement_factor.setRange(0, 100)
+
     def restore_result_dialog(self):
         try:
-            rt = FreeCAD.FEM_dialog["results_type"]
+            rt = _TaskPanel.FEM_dialog["results_type"]
             if rt == "None":
                 self.result_widget.rb_none.setChecked(True)
                 self.none_selected(True)
@@ -251,27 +256,26 @@ class _TaskPanel:
                 self.result_widget.rb_peeq.setChecked(True)
                 self.peeq_selected(True)
 
-            sd = FreeCAD.FEM_dialog["show_disp"]
+            sd = _TaskPanel.FEM_dialog["show_disp"]
             self.result_widget.cb_show_displacement.setChecked(sd)
             self.show_displacement(sd)
 
-            df = FreeCAD.FEM_dialog["disp_factor"]
-            dfm = FreeCAD.FEM_dialog["disp_factor_max"]
-            self.result_widget.hsb_displacement_factor.setMaximum(dfm)
-            self.result_widget.hsb_displacement_factor.setValue(df)
+            df = _TaskPanel.FEM_dialog["disp_factor"]
+            dfm = _TaskPanel.FEM_dialog["disp_factor_max"]
             self.result_widget.sb_displacement_factor_max.setValue(dfm)
             self.result_widget.sb_displacement_factor.setValue(df)
+            self.result_widget.hsb_displacement_factor.setValue(self.convert_to_slider_value(dfm))
             # animate
             self.startAnimate = False
-            if FreeCAD.FEM_dialog["animate"][0] != -1:
-                self.result_widget.steps.setValue(FreeCAD.FEM_dialog["animate"][0])
-                self.result_widget.loops.setValue(FreeCAD.FEM_dialog["animate"][1])
-                self.result_widget.framerate.setValue(FreeCAD.FEM_dialog["animate"][2])
-                if FreeCAD.FEM_dialog["animate"][3]:
+            if _TaskPanel.FEM_dialog["animate"][0] != -1:
+                self.result_widget.steps.setValue(_TaskPanel.FEM_dialog["animate"][0])
+                self.result_widget.loops.setValue(_TaskPanel.FEM_dialog["animate"][1])
+                self.result_widget.framerate.setValue(_TaskPanel.FEM_dialog["animate"][2])
+                if _TaskPanel.FEM_dialog["animate"][3]:
                     self.result_widget.rb_full_cycle.setChecked(True)
                 else:
                     self.result_widget.rb_half_cycle.setChecked(True)
-                self.result_widget.sb_displacement_factor.setValue(FreeCAD.FEM_dialog["animate"][4])
+                self.result_widget.sb_displacement_factor.setValue(_TaskPanel.FEM_dialog["animate"][4])
         except Exception:
             self.restore_initial_result_dialog()
 
@@ -285,7 +289,7 @@ class _TaskPanel:
         # This is not smart at all IMHO (Bernd)
         # It was added with commit 3a7772d
         # https://github.com/FreeCAD/FreeCAD/commit/3a7772d
-        FreeCAD.FEM_dialog = {
+        _TaskPanel.FEM_dialog = {
             "results_type": "None",
             "show_disp": True,  # False,
             "disp_factor": 5.0,
@@ -302,7 +306,7 @@ class _TaskPanel:
 
     def none_selected(self, state):
         self.set_label(self.result_obj.Label, "No Contours")
-        FreeCAD.FEM_dialog["results_type"] = "None"
+        _TaskPanel.FEM_dialog["results_type"] = "None"
         self.set_result_stats("mm", 0.0, 0.0)
         self.reset_mesh_color()
         if len(plt.get_fignums()) > 0:
@@ -454,7 +458,7 @@ class _TaskPanel:
             # if the plot was closed and subsequently the Histogram button was pressed again
             # we have valid settings, but must restore the dialog to refill the plot content
             # see https://github.com/FreeCAD/FreeCAD/issues/6975
-            if FreeCAD.FEM_dialog["results_type"] != "None":
+            if _TaskPanel.FEM_dialog["results_type"] != "None":
                 self.restore_result_dialog()
             if len(plt.get_fignums()) > 0:
                 plt.show()
@@ -469,7 +473,7 @@ class _TaskPanel:
                 )
 
     def user_defined_text(self, equation):
-        FreeCAD.FEM_dialog["results_type"] = "user"
+        _TaskPanel.FEM_dialog["results_type"] = "user"
         self.result_widget.user_def_eq.toPlainText()
 
     def calculate(self):
@@ -525,7 +529,7 @@ class _TaskPanel:
             s3y = np.array(ps3vector[:, 1])
             s3z = np.array(ps3vector[:, 2])
 
-        FreeCAD.FEM_dialog["results_type"] = "None"
+        _TaskPanel.FEM_dialog["results_type"] = "None"
         self.update()
         self.restore_result_dialog()
         userdefined_eq = self.result_widget.user_def_eq.toPlainText()  # Get equation to be used
@@ -603,7 +607,7 @@ class _TaskPanel:
 
     def result_selected(self, res_type, res_values, res_unit, res_title):
         self.results_name = res_title
-        FreeCAD.FEM_dialog["results_type"] = res_type
+        _TaskPanel.FEM_dialog["results_type"] = res_type
         (minm, maxm) = self.get_result_stats(res_type)
         self.update_colors_stats(res_values, res_unit, minm, maxm)
 
@@ -640,19 +644,24 @@ class _TaskPanel:
 
     def update_displacement(self, factor=None):
         if factor is None:
-            if FreeCAD.FEM_dialog["show_disp"]:
+            if _TaskPanel.FEM_dialog["show_disp"]:
                 factor = self.result_widget.sb_displacement_factor.value()
             else:
                 factor = 0.0
         self.mesh_obj.ViewObject.applyDisplacement(factor)
 
     def show_displacement(self, checked):
+        # Enable or disable the input widgets in the displacement group
+        self.result_widget.sb_displacement_factor.setEnabled(checked)
+        self.result_widget.sb_displacement_factor_max.setEnabled(checked)
+        self.result_widget.hsb_displacement_factor.setEnabled(checked)
+
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        FreeCAD.FEM_dialog["show_disp"] = checked
-        if "result_obj" in FreeCAD.FEM_dialog:
-            if FreeCAD.FEM_dialog["result_obj"] != self.result_obj:
+        _TaskPanel.FEM_dialog["show_disp"] = checked
+        if "result_obj" in _TaskPanel.FEM_dialog:
+            if _TaskPanel.FEM_dialog["result_obj"] != self.result_obj:
                 self.update_displacement()
-        FreeCAD.FEM_dialog["result_obj"] = self.result_obj
+        _TaskPanel.FEM_dialog["result_obj"] = self.result_obj
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeDisplacementByVectors(
                 self.result_obj.NodeNumbers, self.result_obj.DisplacementVectors
@@ -660,41 +669,58 @@ class _TaskPanel:
         self.update_displacement()
         QtGui.QApplication.restoreOverrideCursor()
 
+    def convert_to_slider_value(self, value: float):
+        # The slider always goes between 0 to 100 in steps of 1
+        if value == 0.0:
+            return 0.0
+
+        max_val = self.result_widget.sb_displacement_factor_max.value()
+        res =  round(value/max_val * 100)
+        return res
+
+    def convert_from_slider_value(self, value: float):
+        if value == 0.0:
+            return 0.0
+
+        max_val = self.result_widget.sb_displacement_factor_max.value()
+        return value/100 * max_val
+
     def hsb_disp_factor_changed(self, value):
-        self.result_widget.sb_displacement_factor.setValue(
-            value / 100.0 * self.result_widget.sb_displacement_factor_max.value()
-        )
+        inputbox = self.result_widget.sb_displacement_factor
+        
+        scaled_val = self.convert_from_slider_value(value)
+        _TaskPanel.FEM_dialog["disp_factor"] = scaled_val
         self.update_displacement()
 
+        # Prevent recursive calls
+        inputbox.blockSignals(True)
+        inputbox.setValue(scaled_val)
+        inputbox.blockSignals(False)
+
     def sb_disp_factor_max_changed(self, value):
-        self.slider_max = True
-        FreeCAD.FEM_dialog["disp_factor_max"] = value
-        if value < self.result_widget.sb_displacement_factor.value():
-            self.result_widget.sb_displacement_factor.setValue(value)
-        if value == 0.0:
-            self.result_widget.hsb_displacement_factor.setValue(0)
-        else:
-            self.result_widget.hsb_displacement_factor.setValue(
-                round(self.result_widget.sb_displacement_factor.value() / value * 100.0)
-            )
-        self.slider_max = False
+        _TaskPanel.FEM_dialog["disp_factor_max"] = value
+        inputbox = self.result_widget.sb_displacement_factor
+        inputbox.setMaximum(value)
+
+        self.result_widget.hsb_displacement_factor.setValue(
+            self.convert_to_slider_value(inputbox.value())
+        )
 
     def sb_disp_factor_changed(self, value):
-        # this bit of code causes:
-        # RecursionError: maximum recursion depth exceeded
-        # so check on the depth and don't exceed recurlim
-        if len(inspect.stack(0)) < self.recurlim:
-            FreeCAD.FEM_dialog["disp_factor"] = value
-            if value > self.result_widget.sb_displacement_factor_max.value():
-                self.result_widget.sb_displacement_factor.setValue(
-                    self.result_widget.sb_displacement_factor_max.value()
-                )
-            if self.result_widget.sb_displacement_factor_max.value() == 0.0:
-                self.result_widget.hsb_displacement_factor.setValue(0.0)
-            else:
-                self.result_widget.hsb_displacement_factor.setValue(
-                    round(value / self.result_widget.sb_displacement_factor_max.value() * 100.0)
-                )
+        _TaskPanel.FEM_dialog["disp_factor"] = value
+        self.update_displacement()
+
+        slider = self.result_widget.hsb_displacement_factor
+
+        # Prevent recursive calls
+        slider.blockSignals(True)
+        scaled_val = self.convert_to_slider_value(value)
+        slider.setValue(scaled_val)
+        slider.blockSignals(False)
+
+    def set_focus_sb_disp(self):
+        self.result_widget.sb_displacement_factor.selectAll()
+        self.result_widget.sb_displacement_factor.setFocus()
 
     def disable_empty_result_buttons(self):
         """disable radio buttons if result does not exists in result object"""
@@ -790,23 +816,23 @@ class _TaskPanel:
                 a.hide()
             self.animateText = []
         self.startAnimate = False
-        FreeCAD.FEM_dialog["animate"][0] = self.result_widget.steps.value()
-        FreeCAD.FEM_dialog["animate"][1] = self.result_widget.loops.value()
-        FreeCAD.FEM_dialog["animate"][2] = self.result_widget.framerate.value()
-        FreeCAD.FEM_dialog["animate"][3] = self.result_widget.rb_full_cycle.isChecked()
+        _TaskPanel.FEM_dialog["animate"][0] = self.result_widget.steps.value()
+        _TaskPanel.FEM_dialog["animate"][1] = self.result_widget.loops.value()
+        _TaskPanel.FEM_dialog["animate"][2] = self.result_widget.framerate.value()
+        _TaskPanel.FEM_dialog["animate"][3] = self.result_widget.rb_full_cycle.isChecked()
         try:
-            FreeCAD.FEM_dialog["animate"][4] = self.result_widget.sb_displacement_factor.value()
+            _TaskPanel.FEM_dialog["animate"][4] = self.result_widget.sb_displacement_factor.value()
         except:
-            FreeCAD.FEM_dialog["animate"][4] = 1
+            _TaskPanel.FEM_dialog["animate"][4] = 1
 
     # animation start
 
     def animate_displacement(self):
-        if "result_obj" in FreeCAD.FEM_dialog:
-            if FreeCAD.FEM_dialog["result_obj"] != self.result_obj:
+        if "result_obj" in _TaskPanel.FEM_dialog:
+            if _TaskPanel.FEM_dialog["result_obj"] != self.result_obj:
                 self.update_displacement()
         self.result_widget.cb_show_displacement.setChecked(True)
-        FreeCAD.FEM_dialog["result_obj"] = self.result_obj
+        _TaskPanel.FEM_dialog["result_obj"] = self.result_obj
         if self.suitable_results:
             self.mesh_obj.ViewObject.setNodeDisplacementByVectors(
                 self.result_obj.NodeNumbers, self.result_obj.DisplacementVectors
@@ -871,22 +897,6 @@ class _TaskPanel:
                 self.animate_displacement()
             else:
                 self.startAnimate = False
-        # # this is taken care of in the "ui"
-        # # set the scale - scroll bar - Show
-        # elif myType == "scale" and not self.slider_max:
-        #     if self.animate_inc == 0:
-        #         if self.result_widget.hsb_displacement_factor.value() > 1:
-        #             self.result_widget.sb_displacement_factor.setValue(
-        #                 self.result_widget.hsb_displacement_factor.value()
-        #             )
-        #     self.animate_inc = 1 - self.animate_inc
-        # # set the factor - spin - Factor
-        # elif myType == "factor" and not self.slider_max:
-        #     if self.animate_inc == 0:
-        #         self.result_widget.hsb_displacement_factor.setValue(
-        #             int(self.result_widget.sb_displacement_factor.value())
-        #         )
-        #     self.animate_inc = 1 - self.animate_inc
         else:
             pass
         try:
