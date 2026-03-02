@@ -675,25 +675,29 @@ class ObjectOp(object):
             key = id(base_obj)
             if key not in proxy_cache:
                 if hasattr(base_obj, "Shape") and base_obj.Shape:
-                    transformed = base_obj.Shape.copy().transformShape(matrix, True, False)
-                    
+                    transformed = base_obj.Shape.copy().transformShape(matrix, False, False)
+
                     # Convert BSplines back to circles/arcs when possible
                     # This preserves geometry types for operations like Deburr
                     fixed_edges = []
                     for edge in transformed.Edges:
-                        if hasattr(edge, 'Curve') and type(edge.Curve).__name__ == 'BSplineCurve':
+                        try:
+                            curve = edge.Curve
+                        except TypeError:
+                            fixed_edges.append(edge)
+                            continue
+                        if type(curve).__name__ == "BSplineCurve":
                             try:
-                                # Try to convert BSpline back to arc/circle
-                                arc = edge.Curve.toArc()
+                                arc = curve.toArc()
                                 if arc:
                                     # Create new edge with the converted curve
                                     new_edge = Part.Edge(arc)
                                     fixed_edges.append(new_edge)
                                     continue
-                            except:
-                                pass  # Keep as BSpline if conversion fails
+                            except Exception:
+                                pass
                         fixed_edges.append(edge)
-                    
+
                     # Rebuild shape with fixed edges
                     if len(fixed_edges) != len(transformed.Edges):
                         # Create a compound of the fixed edges
@@ -701,24 +705,26 @@ class ObjectOp(object):
                         Path.Log.debug(f"  Created compound with {len(fixed_edges)} fixed edges")
                     else:
                         shape = transformed
-                        Path.Log.debug(f"  Using original transformed shape with {len(transformed.Edges)} edges")
-                    
+                        Path.Log.debug(
+                            f"  Using original transformed shape with {len(transformed.Edges)} edges"
+                        )
+
                     # Validate the shape before creating proxy
                     Path.Log.debug(f"  Final shape type: {type(shape).__name__}")
-                    if hasattr(shape, 'ShapeType'):
+                    if hasattr(shape, "ShapeType"):
                         Path.Log.debug(f"  Shape type: {shape.ShapeType}")
-                    if hasattr(shape, 'isNull') and shape.isNull():
+                    if hasattr(shape, "isNull") and shape.isNull():
                         Path.Log.warning(f"  Transformed shape is null, using original")
                         shape = base_obj.Shape
-                    elif hasattr(shape, 'Volume') and shape.Volume < 1e-9:
+                    elif hasattr(shape, "Volume") and shape.Volume < 1e-9:
                         Path.Log.debug(f"  Transformed shape has very small volume: {shape.Volume}")
-                    
+
                     # Check if we have faces
-                    if hasattr(shape, 'Faces'):
+                    if hasattr(shape, "Faces"):
                         Path.Log.debug(f"  Shape has {len(shape.Faces)} faces")
                         if len(shape.Faces) == 0:
                             Path.Log.warning(f"  Transformed shape has no faces!")
-                    
+
                     proxy_cache[key] = _TransformedShapeProxy(base_obj, shape)
                 else:
                     proxy_cache[key] = base_obj
@@ -869,7 +875,14 @@ class ObjectOp(object):
         if not self._setBaseAndStock(obj, ignoreErrors):
             return False
 
-        stockBB = self.stock.Shape.BoundBox
+        # When 3+2 workplane is active, compute depths from transformed
+        # geometry so that all Z values are in the rotated (Z-up) frame.
+        matrix = getattr(self, "_geom_transform_matrix", None)
+
+        if matrix is not None:
+            stockBB = self.stock.Shape.copy().transformShape(matrix, False, False).BoundBox
+        else:
+            stockBB = self.stock.Shape.BoundBox
         zmin = stockBB.ZMin
         zmax = stockBB.ZMax
 
@@ -878,14 +891,22 @@ class ObjectOp(object):
 
         if hasattr(obj, "Base") and obj.Base:
             for base, sublist in obj.Base:
-                bb = base.Shape.BoundBox
+                if matrix is not None:
+                    transformed = base.Shape.copy().transformShape(matrix, False, False)
+                    bb = transformed.BoundBox
+                else:
+                    transformed = None
+                    bb = base.Shape.BoundBox
                 zmax = max(zmax, bb.ZMax)
                 for sub in sublist:
                     try:
                         if sub:
-                            fbb = base.Shape.getElement(sub).BoundBox
+                            if transformed is not None:
+                                fbb = transformed.getElement(sub).BoundBox
+                            else:
+                                fbb = base.Shape.getElement(sub).BoundBox
                         else:
-                            fbb = base.Shape.BoundBox
+                            fbb = bb
                         zmin = max(zmin, faceZmin(bb, fbb))
                         zmax = max(zmax, fbb.ZMax)
                     except Part.OCCError as e:
@@ -895,7 +916,27 @@ class ObjectOp(object):
             # clearing with stock boundaries
             job = PathUtils.findParentJob(obj)
             zmax = stockBB.ZMax
-            zmin = job.Proxy.modelBoundBox(job).ZMax
+            if matrix is not None:
+                # Transform model bounding box to get Z in rotated frame
+                modelBB = job.Proxy.modelBoundBox(job)
+                rot = getattr(self, "_geometry_rotation", None)
+                if rot is not None:
+                    corners = [
+                        FreeCAD.Vector(modelBB.XMin, modelBB.YMin, modelBB.ZMin),
+                        FreeCAD.Vector(modelBB.XMax, modelBB.YMin, modelBB.ZMin),
+                        FreeCAD.Vector(modelBB.XMin, modelBB.YMax, modelBB.ZMin),
+                        FreeCAD.Vector(modelBB.XMax, modelBB.YMax, modelBB.ZMin),
+                        FreeCAD.Vector(modelBB.XMin, modelBB.YMin, modelBB.ZMax),
+                        FreeCAD.Vector(modelBB.XMax, modelBB.YMin, modelBB.ZMax),
+                        FreeCAD.Vector(modelBB.XMin, modelBB.YMax, modelBB.ZMax),
+                        FreeCAD.Vector(modelBB.XMax, modelBB.YMax, modelBB.ZMax),
+                    ]
+                    transformed_corners = [rot.multVec(c) for c in corners]
+                    zmin = max(c.z for c in transformed_corners)
+                else:
+                    zmin = modelBB.ZMax
+            else:
+                zmin = job.Proxy.modelBoundBox(job).ZMax
 
         if FeatureDepths & self.opFeatures(obj):
             # first set update final depth, it's value is not negotiable
@@ -939,6 +980,85 @@ class ObjectOp(object):
 
         self.isBaseValid = True
         return True
+
+    def _setup_workplane_transform(self, obj):
+        """Set up 3+2 geometry transformation if workplane is not Z-up.
+
+        When the workplane is rotated, this method:
+        1. Solves for the rotary axis angles via the orientation solver
+        2. Computes the geometry transform matrix (rotation that maps the
+           workplane normal to Z-up)
+        3. Stores rotation G-code commands for later emission
+        4. Sets ``self._geom_transform_matrix`` so that ``updateDepths()``
+           and ``baseShapes()`` see transformed geometry
+
+        If the workplane is Z-up or no machine with rotary axes is available,
+        this is a no-op.
+        """
+        # Clean any stale state from a previous execute()
+        for attr in ("_geom_transform_matrix", "_geometry_rotation", "_rotation_commands"):
+            if hasattr(self, attr):
+                delattr(self, attr)
+
+        if not hasattr(obj, "Workplane"):
+            return
+
+        wp = obj.Workplane
+        z_up = FreeCAD.Vector(0, 0, 1)
+
+        # Check if workplane is effectively Z-up (no rotation needed)
+        if wp.isEqual(z_up, 1e-6):
+            return
+
+        # Need rotation — get machine from job
+        machine = self.job.Proxy.getMachine() if self.job else None
+        if machine is None or not machine.has_rotary_axes:
+            Path.Log.warning(
+                f"Operation {obj.Label}: Workplane requires rotation but "
+                f"no machine with rotary axes is configured"
+            )
+            return
+
+        # Solve orientation
+        try:
+            import Path.Base.Generator.rotation as rotation
+
+            result = rotation.solve_orientation(machine, wp)
+            Path.Log.debug(result)
+
+            if not result.success:
+                Path.Log.error(
+                    f"Operation {obj.Label}: Cannot solve workplane "
+                    f"orientation: {result.reason}"
+                )
+                return
+
+            # Build rotation commands (G0 moves for each rotary axis)
+            cmd_params = {name: angle for name, angle in result.angles.items()}
+            rotation_cmds = [Path.Command("G0", cmd_params)] if cmd_params else []
+
+            # Compute the geometry transform matrix.
+            chain = rotation.build_kinematic_chain(machine)
+            Path.Log.debug(f"Chain: {chain}")
+            Path.Log.debug(f"Solution Angles: {result.angles}")
+            geom_rotation = rotation.compute_rotation_matrix(chain, result.angles)
+            Path.Log.debug(f"Geometry rotation: {geom_rotation}")
+
+            # Store as FreeCAD.Matrix for transformShape()
+            self._geom_transform_matrix = geom_rotation.toMatrix()
+            self._geometry_rotation = geom_rotation
+            self._rotation_commands = rotation_cmds
+
+            Path.Log.info(
+                f"Operation {obj.Label}: 3+2 workplane active, " f"angles={result.angles}"
+            )
+
+        except Exception as e:
+            Path.Log.error(f"Operation {obj.Label}: Error setting up workplane " f"transform: {e}")
+            # Clean up on failure
+            for attr in ("_geom_transform_matrix", "_geometry_rotation", "_rotation_commands"):
+                if hasattr(self, attr):
+                    delattr(self, attr)
 
     @waiting_effects
     def execute(self, obj):
@@ -1008,17 +1128,85 @@ class ObjectOp(object):
                 self.tool = tool
                 obj.OpToolDiameter = tool.Diameter
 
+        # --- 3+2 Setup: compute geometry transformation before depth calculation ---
+        # If the workplane is not Z-up, solve the orientation and set up the
+        # transform matrix so that updateDepths() sees transformed BoundBoxes
+        # and baseShapes() yields transformed geometry.
+        self._setup_workplane_transform(obj)
+
         self.updateDepths(obj)
         # now that all op values are set make sure the user properties get updated accordingly,
         # in case they still have an expression referencing any op values
         obj.recompute()
+
+        # Update placement from attachment if operation is attached to geometry
+        # This must be called before path generation to ensure correct positioning
+        if hasattr(obj, "positionBySupport"):
+            obj.positionBySupport()
 
         self.commandlist = []
         self.commandlist.append(Path.Command("(%s)" % obj.Label))
         if obj.Comment:
             self.commandlist.append(Path.Command("(%s)" % obj.Comment))
 
-        result = self.opExecute(obj)
+        # Emit rotation commands if 3+2 is active
+        if hasattr(self, "_rotation_commands"):
+            self.commandlist.extend(self._rotation_commands)
+            delattr(self, "_rotation_commands")
+
+        # If a geometry transform is active, wrap self.model and self.stock
+        # in proxy objects so operations that access them see Z-up geometry.
+        # This only touches plain Python attributes — no FreeCAD properties
+        # are written, so no recomputes are triggered.
+        saved_model = self.model
+        saved_stock = self.stock
+        matrix = getattr(self, "_geom_transform_matrix", None)
+        if matrix is not None:
+
+            def transform_shape(shape):
+                if not hasattr(shape, "Shape") or not shape.Shape:
+                    return shape
+
+                # Use transformShape() with checkScale=False to preserve geometry types
+                transformed = shape.Shape.copy().transformShape(matrix, False, False)
+
+                # Convert BSplines back to circles/arcs when possible
+                fixed_edges = []
+                for edge in transformed.Edges:
+                    try:
+                        curve = edge.Curve
+                    except TypeError:
+                        fixed_edges.append(edge)
+                        continue
+                    if type(curve).__name__ == "BSplineCurve":
+                        try:
+                            arc = curve.toArc()
+                            if arc:
+                                new_edge = Part.Edge(arc)
+                                fixed_edges.append(new_edge)
+                                continue
+                        except Exception:
+                            pass
+                    fixed_edges.append(edge)
+
+                # Rebuild shape with fixed edges
+                if len(fixed_edges) != len(transformed.Edges):
+                    final_shape = Part.makeCompound(fixed_edges)
+                else:
+                    final_shape = transformed
+
+                return _TransformedShapeProxy(shape, final_shape)
+
+            self.model = [transform_shape(m) for m in self.model]
+            if self.stock and hasattr(self.stock, "Shape") and self.stock.Shape:
+                self.stock = transform_shape(self.stock)
+
+        try:
+            result = self.opExecute(obj)
+        finally:
+            # Always restore originals, even if opExecute raises
+            self.model = saved_model
+            self.stock = saved_stock
 
         # Add block delete annotations if enabled
         if hasattr(obj, "BlockDelete") and obj.BlockDelete:
@@ -1068,15 +1256,10 @@ class ObjectOp(object):
 
         path = Path.Path(self.commandlist)
 
-        # Set backplot placement if geometry rotation was applied
-        if hasattr(self, '_geometry_rotation'):
-            # Inverse of geometry rotation → places toolpath back in world frame
-            obj.Placement = FreeCAD.Placement(
-                FreeCAD.Vector(0, 0, 0),
-                self._geometry_rotation.inverted()
-            )
-            # Clean up temporary attribute
-            delattr(self, '_geometry_rotation')
+        # Clean up temporary 3+2 attributes
+        for attr in ("_geometry_rotation", "_geom_transform_matrix"):
+            if hasattr(self, attr):
+                delattr(self, attr)
 
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
