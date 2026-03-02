@@ -53,6 +53,11 @@ class Instruction(object):
     def setPositionBegin(self, begin):
         self.begin = begin
 
+    def setPositionEnd(self, end):
+        self.param["X"] = end.x
+        self.param["Y"] = end.y
+        self.param["Z"] = end.z
+
     def positionBegin(self):
         """positionBegin() ... returns a Vector of the begin position"""
         return self.begin
