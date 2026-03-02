@@ -296,13 +296,6 @@ class PostProcessor:
 
         postables = self._buildPostList()
 
-        # Process canned cycles for drilling operations
-        for _, section in enumerate(postables):
-            _, sublist = section
-            for obj in sublist:
-                if hasattr(obj, "Path"):
-                    obj.Path = PostUtils.cannedCycleTerminator(obj.Path)
-
         Path.Log.debug(f"postables count: {len(postables)}")
 
         g_code_sections = []
