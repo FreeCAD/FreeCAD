@@ -948,6 +948,13 @@ MRichTextEdit[floating="true"] {
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working
 Qproperty works but breaks when you move the toolbar*/
 
+QToolButton[controlSize="small"] {
+  height: @{@FormControlSmallHeight - 9px};
+  padding: @{padding(horizontal: 3px, vertical: 2px)};
+  icon-size: 16px;
+  font-size: 10px
+}
+
 QToolButton#qt_toolbar_ext_button {
   background-image: none;
   border-image: url(qss:@IconsLocationFolderName/more-hack.svg);

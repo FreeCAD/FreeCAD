@@ -52,7 +52,7 @@ Background:
 BaseTextColor: "@Contrast.700"
 
 BaseHoverOverlay: "#ffffff"
-BaseHoverOverlayOpacity: 25%
+BaseHoverOverlayOpacity: 40%
 
 BasePressedOverlay: "@Contrast.800"
 BasePressedOverlayOpacity: 10%
@@ -92,6 +92,8 @@ ButtonCheckedInnerShadow: "inner_shadow(color: rgba(0, 0, 0, 50), y: 2px, blur: 
 
 ButtonPrimaryBackground: "blend(@ButtonBackground, @Accent.500, 15%)"
 ButtonPrimaryBorderColor: "blend(@ButtonBorderColor, @Accent.500, 25%)"
+
+ToolButtonPadding: "padding(@Spacing.150)"
 
 DialogBackground: "@Background.050"
 
