@@ -89,7 +89,7 @@ public:
         : DrawSketchHandlerTextBase(constrMethod)
         , length(0.0)
         , handleId(0)
-        , text("AstoCAD")
+        , text(QObject::tr("Text").toStdString())
         , font("")
         , cachedTextName("")
         , cachedFontName("")
