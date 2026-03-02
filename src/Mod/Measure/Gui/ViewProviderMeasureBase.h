@@ -140,6 +140,7 @@ protected:
     void setLabelValue(const QString& value);
     void setLabelTranslation(const SbVec3f& position);
     void updateIcon();
+    void syncDraggerOrientationToView();
 
     SoPickStyle* getSoPickStyle();
     SoDrawStyle* getSoLineStylePrimary();
