@@ -768,7 +768,6 @@ class MachineEditorDialog(QtGui.QDialog):
         if not self.machine or len(self.machine.toolheads) <= 1:
             return  # Don't allow removing the last toolhead
 
-        toolhead = self.machine.toolheads[index]
         reply = QtGui.QMessageBox.question(
             self,
             translate("CAM_MachineEditor", "Remove Toolhead"),
