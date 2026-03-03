@@ -115,14 +115,17 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Step over percent</string>
+         <string>Step Over</string>
         </property>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QSpinBox" name="stepOverPercent">
+       <widget class="QSpinBox" name="stepOver">
         <property name="toolTip">
-         <string>Specify the percent of the tool diameter each helix will be offset to the previous one. A step over of 100% means no overlap of the individual cuts.</string>
+         <string>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool's diameter).</string>
+        </property>
+        <property name="suffix">
+         <string>%</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -131,7 +134,7 @@
          <number>100</number>
         </property>
         <property name="singleStep">
-         <number>10</number>
+         <number>5</number>
         </property>
         <property name="value">
          <number>100</number>
