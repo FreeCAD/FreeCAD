@@ -176,20 +176,33 @@ class ObjectOp(PathOp.ObjectOp):
         for base, subs in obj.Base:
             for sub in subs:
                 Path.Log.debug("processing {} in {}".format(sub, base.Name))
-                if self.isHoleEnabled(obj, base, sub):
-                    pos = self.holePosition(base, sub)
-                    if pos:
-                        holes.append(
-                            {
-                                "x": pos.x,
-                                "y": pos.y,
-                                "r": self.holeDiameter(obj, base, sub),
-                            }
-                        )
+                if not self.isHoleEnabled(obj, base, sub):
+                    continue
+                pos = self.holePosition(base, sub)
+                if not pos:
+                    continue
+                diam = self.holeDiameter(base, sub)
+                for hole in holes:  # check positions repeats
+                    if Path.Geom.pointsCoincide((pos.x, pos.y), (hole["x"], hole["y"])):
+                        if diam > hole["d"] and not Path.Geom.isRoughly(diam, hole["d"]):
+                            name = "%s.%s" % (base.Name, hole["sub"])
+                            disabled = obj.Disabled
+                            disabled.append(name)
+                            obj.Disabled = disabled
+                            hole["d"] = diam
+                            hole["sub"] = sub
+                        else:
+                            name = "%s.%s" % (base.Name, sub)
+                            disabled = obj.Disabled
+                            disabled.append(name)
+                            obj.Disabled = disabled
+                        break
+                else:  # is not a repeat, add unique position
+                    holes.append({"x": pos.x, "y": pos.y, "d": diam, "sub": sub})
 
         if haveLocations(self, obj):
             for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "r": 0})
+                holes.append({"x": location.x, "y": location.y, "d": 0})
 
         if len(holes) > 0:
             holes = PathUtils.sort_locations(holes, ["x", "y"])
