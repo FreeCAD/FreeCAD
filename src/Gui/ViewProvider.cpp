@@ -1150,14 +1150,35 @@ struct BBoxKey
         if (matrix) {
             mat = *matrix;
         }
+        
+        // Normalize -0.0 to 0.0 to ensure consistent hashing
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                if (mat[i][j] == 0.0) {
+                    mat[i][j] = 0.0;
+                }
+            }
+        }
     }
 
     bool operator==(const BBoxKey& other) const
     {
-        return subname == other.subname && mat == other.mat;
+        if (transform != other.transform || subname != other.subname) {
+            return false;
+        }
+        
+        // Exact element-wise comparison to avoid fuzzy Base::Matrix4D::operator==
+        // This satisfies std::unordered_map's strict equivalence relation requirement.
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                if (mat[i][j] != other.mat[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 };
-
 static std::hash<std::string> StringHasher;
 static std::hash<bool> BoolHasher;
 static std::hash<double> DoubleHasher;
@@ -1168,22 +1189,12 @@ struct BBoxKeyHasher
     {
         std::size_t seed = StringHasher(key.subname);
         Base::hash_combine(seed, BoolHasher(key.transform));
-        Base::hash_combine(seed, DoubleHasher(key.mat[0][0]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[0][1]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[0][2]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[0][3]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[1][0]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[1][1]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[1][2]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[1][3]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[2][0]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[2][1]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[2][2]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[2][3]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[3][0]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[3][1]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[3][2]));
-        Base::hash_combine(seed, DoubleHasher(key.mat[3][3]));
+
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                Base::hash_combine(seed, DoubleHasher(key.mat[i][j]));
+            }
+        }
         return seed;
     }
 };
@@ -1365,3 +1376,4 @@ void ViewProvider::setLinkVisible(bool visible)
         ext->setLinkVisible(visible);
     }
 }
+
