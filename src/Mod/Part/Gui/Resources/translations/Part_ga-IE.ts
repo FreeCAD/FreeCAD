@@ -1314,7 +1314,7 @@
     <message>
       <location filename="../../Command.cpp" line="1716"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Tógálaí Cruthanna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1718"/>
@@ -1768,7 +1768,7 @@
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>Fritháireamh 2T</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1872"/>
@@ -1822,7 +1822,7 @@
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Primitive</source>
-      <translation type="unfinished">Primitive</translation>
+      <translation>Primitífeach</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
@@ -2995,7 +2995,7 @@ Más ionann an dá fhad agus náid, úsáidtear méid an treo.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="297"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Méid</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="298"/>
@@ -3504,7 +3504,7 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <location filename="../../DlgPrimitives.ui" line="260"/>
       <location filename="../../DlgPrimitives.ui" line="351"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="371"/>
@@ -3527,7 +3527,7 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="569"/>
       <source>Rotation angle</source>
-      <translation type="unfinished">Rotation angle</translation>
+      <translation>Uillinn rothlaithe</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="643"/>
@@ -3576,7 +3576,7 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
       <location filename="../../DlgPrimitives.ui" line="1376"/>
       <location filename="../../DlgPrimitives.ui" line="2418"/>
       <source>Polygon</source>
-      <translation type="unfinished">Polygon</translation>
+      <translation>Polagán</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1399"/>
@@ -3612,7 +3612,7 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1725"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Páirc</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
@@ -4223,7 +4223,7 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="255"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>Dath líne</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="262"/>
@@ -4233,7 +4233,7 @@ Seiceáil eintiteas imeall amháin nó níos mó ar dtús.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="288"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Leithead líne</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="295"/>
@@ -5308,7 +5308,7 @@ Seiceálacha oibríochta booléan aonair:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1432"/>
       <source>Attachment</source>
-      <translation type="unfinished">Attachment</translation>
+      <translation>Ceangaltán</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1514"/>
@@ -6020,7 +6020,7 @@ Leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="239"/>
       <source>base object</source>
-      <translation type="unfinished">base object</translation>
+      <translation>réad bonn</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="242"/>
@@ -6224,7 +6224,7 @@ Leanúint ar aghaidh?</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="57"/>
       <source>Compound Filter</source>
-      <translation type="unfinished">Compound Filter</translation>
+      <translation>Scagaire Cumaisc</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="87"/>
@@ -6308,7 +6308,7 @@ imbhuailte nó achair.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="266"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="283"/>
       <source>Attachment</source>
-      <translation type="unfinished">Attachment</translation>
+      <translation>Ceangaltán</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="269"/>
@@ -6397,7 +6397,7 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="33"/>
       <source>Vertices</source>
-      <translation type="unfinished">Vertices</translation>
+      <translation>Buaicphointí</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6442,7 +6442,7 @@ imbhuailte nó achair.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="76"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Limistéar</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="89"/>
@@ -6873,7 +6873,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="90"/>
       <source>Attachment</source>
-      <translation type="unfinished">Attachment</translation>
+      <translation>Ceangaltán</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="95"/>
@@ -6994,7 +6994,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="109"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Méid</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="121"/>
@@ -7004,7 +7004,7 @@ Bainfear imleabhair fhorluiteacha na gcruthanna.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="141"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="161"/>

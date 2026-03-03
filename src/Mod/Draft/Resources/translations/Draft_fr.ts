@@ -2270,7 +2270,7 @@ l'extension « dxf-library » à partir du gestionnaire des extensions.</transla
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench. </source>
-      <translation>Crée des objets Draft entièrement paramétriques. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés de Part)
+      <translation>Crée des objets Draft entièrement paramétriques. Les définitions de blocs sont importées en tant qu'objets réutilisables (Part Composite)
 et les instances deviennent des objets « App::Link » conservant ainsi la structure du bloc. Cela convient parfaitement pour une intégration
 complète avec l'atelier Draft.</translation>
     </message>
@@ -2294,7 +2294,7 @@ definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing and Part workbench integration.</source>
       <translation>Crée des objets Part paramétriques (par exemple, Part::Line, Part::Circle). Les définitions de blocs sont importées en tant qu'objets
-réutilisables (composés de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour le
+réutilisables (Part Composite) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour le
 post-traitement basé sur des scripts et l'intégration de l'atelier Part.</translation>
     </message>
     <message>
@@ -2307,8 +2307,7 @@ post-traitement basé sur des scripts et l'intégration de l'atelier Part.</tran
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés
-de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
+      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (Part Composite) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -5471,7 +5470,7 @@ Utiliser 0 à la place.</translation>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="408"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation>Un composé multi-solides a été trouvé : l'exploser.</translation>
+      <translation>Un composite multi-solides a été trouvé : l'exploser.</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="402"/>
@@ -5577,7 +5576,7 @@ Utiliser 0 à la place.</translation>
       <location filename="../../draftfunctions/upgrade.py" line="629"/>
       <location filename="../../draftfunctions/upgrade.py" line="666"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation>Plusieurs objets non traitables ont été trouvés : créer un composé.</translation>
+      <translation>Plusieurs objets non traitables ont été trouvés : créer un composite.</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="670"/>
@@ -5598,7 +5597,7 @@ Utiliser 0 à la place.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="660"/>
       <source>Found points: creating compound</source>
-      <translation>Plusieurs points ont été trouvés : créer un composé.</translation>
+      <translation>Plusieurs points ont été trouvés : créer un composite.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_text.py" line="180"/>
@@ -6787,12 +6786,12 @@ Il s'agit d'une liste de chaînes de caractères. Chaque élément de la liste s
       <location filename="../../draftobjects/clone.py" line="62"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation>Si les clones incluent plusieurs objets. Mettre à vrai pour la fusion ou faux pour un composé.</translation>
+      <translation>Si les clones incluent plusieurs objets. Mettre à vrai pour la fusion ou faux pour un composite.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="65"/>
       <source>Always create a compound</source>
-      <translation>Toujours créer un composé</translation>
+      <translation>Toujours créer un composite</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="47"/>
@@ -8681,7 +8680,7 @@ mettre à l'échelle.</translation>
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench.</source>
-      <translation>Crée des objets Draft entièrement paramétriques. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés de Part)
+      <translation>Crée des objets Draft entièrement paramétriques. Les définitions de blocs sont importées en tant qu'objets réutilisables (Part Composite)
 et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Cela convient parfaitement pour une intégration
 complète avec l'atelier Draft.</translation>
     </message>
@@ -8697,7 +8696,7 @@ definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing.</source>
       <translation>Crée des objets paramétriques (par exemple, Part::Line, Part::Circle). Les définitions de blocs sont importées en tant qu'objets réutilisables
-(composés de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Cela convient parfaitement
+(Part Composite) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Cela convient parfaitement
 pour une intégration complète avec l'atelier Draft.</translation>
     </message>
     <message>
@@ -8710,8 +8709,7 @@ pour une intégration complète avec l'atelier Draft.</translation>
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés
-de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
+      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (Part Composite) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="57"/>

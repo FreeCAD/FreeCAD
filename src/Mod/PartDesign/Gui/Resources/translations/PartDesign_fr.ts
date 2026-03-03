@@ -4469,7 +4469,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
-      <translation>Le résultat comporte plusieurs solides : activer « Autoriser les composés » dans le corps actif.</translation>
+      <translation>Le résultat comporte plusieurs solides : activer « Autoriser les composites » dans le corps actif.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="114"/>

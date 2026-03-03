@@ -1214,7 +1214,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
@@ -1348,7 +1348,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="138"/>
@@ -1543,7 +1543,7 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../RemeshGmsh.cpp" line="100"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Uathoibríoch</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>
@@ -1954,7 +1954,7 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="428"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
   </context>
   <context>
@@ -2372,7 +2372,7 @@ Tabhair cuairt ar https://openscad.org/ chun é a shuiteáil.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Mogalra Boolean</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

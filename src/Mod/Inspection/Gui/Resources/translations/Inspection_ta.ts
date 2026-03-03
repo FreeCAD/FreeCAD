@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>ஆய்வு</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection…</source>
-      <translation type="unfinished">Inspection…</translation>
+      <translation>ஆய்வு…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Inspects distance information</source>
-      <translation type="unfinished">Inspects distance information</translation>
+      <translation>தொலைவு தகவல்களை ஆய்வு செய்கிறது</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
-      <translation type="unfinished">Inspection</translation>
+      <translation>ஆய்வு</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Visual Inspection…</source>
-      <translation type="unfinished">Visual Inspection…</translation>
+      <translation>காட்சி ஆய்வு…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Inspects the objects visually</source>
-      <translation type="unfinished">Inspects the objects visually</translation>
+      <translation>பொருட்களை பார்வைக்கு ஆய்வு செய்கிறது</translation>
     </message>
   </context>
   <context>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../VisualInspection.cpp" line="234"/>
       <source>Visual Inspection</source>
-      <translation type="unfinished">Visual Inspection</translation>
+      <translation>காட்சி ஆய்வு</translation>
     </message>
   </context>
   <context>
@@ -50,12 +50,12 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation type="unfinished">Visual Inspection</translation>
+      <translation>காட்சி ஆய்வு</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
       <source>Actual</source>
-      <translation type="unfinished">Actual</translation>
+      <translation>உண்மையான</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
@@ -66,28 +66,28 @@
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
       <source>Nominal</source>
-      <translation type="unfinished">Nominal</translation>
+      <translation>பெயரளவு</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
       <source>Parameter</source>
-      <translation type="unfinished">Parameter</translation>
+      <translation>கூறளவு</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation type="unfinished">Search distance</translation>
+      <translation>தேடல் தூரம்</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>
       <location filename="../../VisualInspection.ui" line="174"/>
       <source> mm</source>
-      <translation type="unfinished"> mm</translation>
+      <translation>மிமீ</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
       <source>Thickness</source>
-      <translation type="unfinished">Thickness</translation>
+      <translation>தடிமன்</translation>
     </message>
   </context>
   <context>
@@ -95,38 +95,38 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="510"/>
       <source>Remove annotations</source>
-      <translation type="unfinished">Remove annotations</translation>
+      <translation>சிறுகுறிப்புகளை அகற்று</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Do you want to remove all annotations?</source>
-      <translation type="unfinished">Do you want to remove all annotations?</translation>
+      <translation>அனைத்து சிறுகுறிப்புகளையும் அகற்ற விரும்புகிறீர்களா?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="569"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>சிறுகுறிப்பு</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="572"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>செய்தி பயன்முறையை விட்டு வெளியேறவும்</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="708"/>
       <source>Distance: &gt; %1</source>
-      <translation type="unfinished">Distance: &gt; %1</translation>
+      <translation>தூரம்: &gt;% 1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="711"/>
       <source>Distance: &lt; %1</source>
-      <translation type="unfinished">Distance: &lt; %1</translation>
+      <translation>தூரம்: &lt; % 1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="730"/>
       <location filename="../../ViewProviderInspection.cpp" line="748"/>
       <source>Distance: %1</source>
-      <translation type="unfinished">Distance: %1</translation>
+      <translation>தூரம்:% 1</translation>
     </message>
   </context>
 </TS>

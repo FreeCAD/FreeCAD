@@ -4031,12 +4031,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
       <source>Automatically check model after boolean operation</source>
-      <translation type="unfinished">Automatically check model after boolean operation</translation>
+      <translation>Kontroller automatisk modellen efter booleske operationer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="42"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation type="unfinished">Automatically refine model after boolean operation</translation>
+      <translation>Forfin automatisk modellen efter booleske operationer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="105"/>
@@ -4051,7 +4051,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after applying operations</source>
-      <translation type="unfinished">Automatically refine model after applying operations</translation>
+      <translation>Forfin automatisk modellen efter udførelse af operationer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="99"/>
@@ -4126,7 +4126,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="172"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
-      <translation type="unfinished">Automatically switch to the task panel when the Part Design workbench is activated</translation>
+      <translation>Skift automatisk til opgavepanelet når Part Design værktøjskassen aktiveres</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="197"/>
@@ -5151,7 +5151,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Skip this settings page and run the geometry check automatically</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically</translation>
+      <translation>Spring denne indstillingsside over, og kør kontrol af geometrien automatisk</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1300"/>

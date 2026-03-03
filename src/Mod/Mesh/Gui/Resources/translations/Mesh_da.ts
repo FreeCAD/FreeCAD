@@ -1686,7 +1686,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Oprettelse af mesh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>

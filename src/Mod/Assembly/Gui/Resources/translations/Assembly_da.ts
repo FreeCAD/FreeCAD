@@ -1478,7 +1478,7 @@ Filerne hedder "runPreDrag. smt" og "dragging.log" og er placeret i standardmapp
     <message>
       <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
-      <translation type="unfinished">Fully load document</translation>
+      <translation>Indlæs hele dokumentet</translation>
     </message>
   </context>
   <context>

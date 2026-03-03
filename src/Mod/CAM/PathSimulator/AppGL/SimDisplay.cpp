@@ -91,11 +91,15 @@ void SimDisplay::CreateFboQuad()
                             1.0f,  -1.0f, 1.0f, 0.0f, 1.0f,  1.0f,  1.0f, 1.0f
     };
 
-    glGenVertexArrays(1, &mFboQuadVAO);
     glGenBuffers(1, &mFboQuadVBO);
-    glBindVertexArray(mFboQuadVAO);
     glBindBuffer(GL_ARRAY_BUFFER, mFboQuadVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices[0], GL_STATIC_DRAW);
+}
+
+void SimDisplay::SetupVertexAttribs()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, mFboQuadVBO);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
@@ -148,7 +152,6 @@ void SimDisplay::CreateDisplayFbos()
     // a normal texture for the frame buffer
     CreateGBufTex(GL_TEXTURE2, GL_RGB32F, GL_RGBA, GL_FLOAT, mFboNormTexture);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mFboNormTexture, 0);
-
 
     unsigned int attachments[3] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
     glDrawBuffers(3, attachments);
@@ -277,7 +280,6 @@ void SimDisplay::CleanGL()
     CleanFbos();
 
     // cleanup geometry
-    GLDELETE_VERTEXARRAY(mFboQuadVAO);
     GLDELETE_BUFFER(mFboQuadVBO);
 
     // cleanup shaders
@@ -368,6 +370,10 @@ void SimDisplay::ScaleViewToStock(StockObject* obj)
 
 void SimDisplay::RenderResult(bool recalculate, bool ssao)
 {
+    if (!displayInitiated) {
+        return;
+    }
+
     if (mSsaoValid && ssao) {
         RenderResultSSAO(recalculate);
     }
@@ -388,7 +394,7 @@ void SimDisplay::RenderResultStandard()
     shaderSSAOLighting.UpdateNormalTexSlot(2);
     shaderSSAOLighting.UpdateSsaoActive(false);
     // shaderSimFbo.Activate();
-    glBindVertexArray(mFboQuadVAO);
+    SetupVertexAttribs();
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glActiveTexture(GL_TEXTURE0);
@@ -423,7 +429,7 @@ void SimDisplay::RenderResultSSAO(bool recalculate)
         glBindTexture(GL_TEXTURE_2D, mFboPosTexture);
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, mFboNormTexture);
-        glBindVertexArray(mFboQuadVAO);
+        SetupVertexAttribs();
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -434,7 +440,8 @@ void SimDisplay::RenderResultSSAO(bool recalculate)
         shaderSSAOBlur.UpdateSsaoTexSlot(0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, mFboSsaoTexture);
-        glBindVertexArray(mFboQuadVAO);
+        shaderSSAOBlur.UpdateScreenDimension(mWidth, mHeight);
+        SetupVertexAttribs();
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
@@ -456,7 +463,7 @@ void SimDisplay::RenderResultSSAO(bool recalculate)
     glBindTexture(GL_TEXTURE_2D, mFboSsaoBlurTexture);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBindVertexArray(mFboQuadVAO);
+    SetupVertexAttribs();
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 

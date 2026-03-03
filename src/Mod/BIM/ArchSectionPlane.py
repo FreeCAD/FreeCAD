@@ -471,7 +471,11 @@ def getSVG(
 
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
-                style = {"stroke": "SVGLINECOLOR", "stroke-width": "SVGLINEWIDTH"}
+                style = {
+                    "stroke": "SVGLINECOLOR",
+                    "stroke-linecap": "SVGLINECAP",
+                    "stroke-width": "SVGLINEWIDTH",
+                }
                 svgcache += TechDraw.projectToSVG(
                     baseshape,
                     direction,
@@ -486,6 +490,7 @@ def getSVG(
                 hshapes = Part.makeCompound(hshapes)
                 style = {
                     "stroke": "SVGLINECOLOR",
+                    "stroke-linecap": "SVGLINECAP",
                     "stroke-width": "SVGLINEWIDTH",
                     "stroke-dasharray": "SVGHIDDENPATTERN",
                 }
@@ -522,7 +527,11 @@ def getSVG(
                                 )
                     svgcache += "</g>\n"
                 sshapes = Part.makeCompound(sshapes)
-                style = {"stroke": "SVGLINECOLOR", "stroke-width": "SVGCUTLINEWIDTH"}
+                style = {
+                    "stroke": "SVGLINECOLOR",
+                    "stroke-linecap": "SVGLINECAP",
+                    "stroke-width": "SVGCUTLINEWIDTH",
+                }
                 svgcache += TechDraw.projectToSVG(
                     sshapes,
                     direction,
@@ -547,6 +556,7 @@ def getSVG(
             ]
 
     svgcache = svgcache.replace("SVGLINECOLOR", svgLineColor)
+    svgcache = svgcache.replace("SVGLINECAP", "square")
     svgcache = svgcache.replace("SVGLINEWIDTH", svgLineWidth)
     svgcache = svgcache.replace("SVGHIDDENPATTERN", svgHiddenPattern)
     svgcache = svgcache.replace("SVGCUTLINEWIDTH", svgCutLineWidth)
