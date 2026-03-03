@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <BRepAlgo.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepCheck_Solid.hxx>
@@ -96,7 +97,13 @@ App::DocumentObjectExecReturn* Feature::recompute()
     SuppressedShape.setValue(TopoShape());
 
     if (!Suppressed.getValue()) {
-        return Part::Feature::recompute();
+        auto ret = Part::Feature::recompute();
+        if (!ret && !BRepAlgo::IsValid(Shape.getValue())) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Result shape is not valid")
+            );
+        }
+        return ret;
     }
 
     bool failed = false;
