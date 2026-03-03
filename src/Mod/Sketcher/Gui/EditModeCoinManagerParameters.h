@@ -136,8 +136,9 @@ struct DrawingParameters
     int coinFontSize = 17;            // Font size to be used by coin
     int labelFontSize = 17;  // Font size to be used by SoDatumLabel, which uses a QPainter and a
                              // QFont internally
-    int constraintIconSize = 15;  // Size of constraint icons
-    int markerSize = 7;           // Size used for markers
+    int constraintIconSize = 15;    // Size of constraint icons
+    int markerSize = 7;             // Size used for markers
+    float axisTransparency = 0.5f;  // transparency of the axes (0.0 to 1.0)
 
     int CurveWidth = 2;             // width of normal edges
     int ConstructionWidth = 1;      // width of construction edges
@@ -431,10 +432,14 @@ struct EditModeScenegraphNodes
 
     /** @name Axes nodes*/
     //@{
-    SoMaterial* RootCrossMaterials;
-    SoCoordinate3* RootCrossCoordinate;
-    SoLineSet* RootCrossSet;
+    SoMaterial* RootCrossHMaterials;
+    SoCoordinate3* RootCrossHCoordinate;
+    SoLineSet* RootCrossHSet;
     SoDrawStyle* RootCrossDrawStyle;
+
+    SoMaterial* RootCrossVMaterials;
+    SoCoordinate3* RootCrossVCoordinate;
+    SoLineSet* RootCrossVSet;
     //@}
 
     /** @name Temporal edit curve nodes - For geometry creation */

@@ -143,6 +143,7 @@ class SketcherGuiExport EditModeCoinManager
         void initParameters();
         void updateCurvedEdgeCountSegmentsParameter(const std::string& parametername);
         void updateLineRenderingOrderParameters(const std::string& parametername);
+        void updateAxisTransparencyParameter(const std::string& parametername);
         void updateConstraintPresentationParameters(const std::string& parametername);
         void updateWidth(int& width, const std::string& parametername, int def);
         void updatePattern(unsigned int& pattern, const std::string& pname, unsigned int def);
