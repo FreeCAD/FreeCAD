@@ -249,7 +249,7 @@ def export(
                 m.Placement = obj.getGlobalPlacement()                
 
         elif obj.isDerivedFrom("App::Part"):
-            for child in real_obj.OutList:
+            for child in obj.OutList:
                 objects.append(child)
             continue
         else:
