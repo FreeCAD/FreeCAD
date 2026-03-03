@@ -40,21 +40,21 @@ import collections as coll
 import inspect
 import itertools
 import math
-import pivy.coin as coin
-import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
-import PySide.QtWidgets as QtWidgets
+from pivy import coin
+from PySide import QtCore
+from PySide import QtGui
+from PySide import QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
 import Part
-import Draft
 import DraftVecUtils
 import DraftGeomUtils
 import WorkingPlane
 from draftguitools import gui_trackers as trackers
 from draftutils import gui_utils
 from draftutils import params
+from draftutils import utils
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _wrn
 from draftutils.translate import translate
@@ -90,6 +90,7 @@ class Snapper:
 
     def __init__(self):
         self.activeview = None
+        self.toolbar = None
         self.lastObj = []
         self.lastObjSubelements = []
         self.radius = 0
@@ -315,7 +316,7 @@ class Snapper:
 
         # Check if we have an object under the cursor and try to
         # snap to it
-        _view = Draft.get3DView()
+        _view = gui_utils.get_3d_view()
         objectsUnderCursor = _view.getObjectsInfo((screenpos[0], screenpos[1]))
         if objectsUnderCursor:
             if self.snapObjectIndex >= len(objectsUnderCursor):
@@ -370,7 +371,7 @@ class Snapper:
 
         if (
             not obj
-            or Draft.getType(obj) in UNSNAPPABLES
+            or utils.get_type(obj) in UNSNAPPABLES
             or not getattr(obj.ViewObject, "Selectable", True)
         ):
             # increase snapObjectIndex to find other objects under the cursor:
@@ -385,11 +386,11 @@ class Snapper:
         if not shape.isNull():
             snaps.extend(self.snapToSpecials(obj, lastpoint, eline))
 
-            if Draft.getType(obj) == "Polygon":
+            if utils.get_type(obj) == "Polygon":
                 # Special snapping for polygons: add the center
                 snaps.extend(self.snapToPolygon(obj))
 
-            elif Draft.getType(obj) == "BuildingPart" and self.isEnabled("Center"):
+            elif utils.get_type(obj) == "BuildingPart" and self.isEnabled("Center"):
                 # snap to the base placement of empty BuildingParts
                 snaps.append([obj.Placement.Base, "center", self.toWP(obj.Placement.Base)])
 
@@ -433,30 +434,30 @@ class Snapper:
                     # or vertices.
                     snaps.extend(self.snapToNearUnprojected(point))
 
-        elif Draft.getType(obj) in ("LinearDimension", "AngularDimension"):
+        elif utils.get_type(obj) in ("LinearDimension", "AngularDimension"):
             # for dimensions we snap to their 2 points:
             snaps.extend(self.snapToDim(obj))
 
-        elif Draft.getType(obj) == "Axis":
+        elif utils.get_type(obj) == "Axis":
             for edge in obj.Shape.Edges:
                 snaps.extend(self.snapToEndpoints(edge))
                 snaps.extend(self.snapToIntersection(edge))
 
-        elif Draft.getType(obj).startswith("Mesh::"):
+        elif utils.get_type(obj).startswith("Mesh::"):
             snaps.extend(self.snapToNearUnprojected(point))
             snaps.extend(self.snapToEndpoints(obj.Mesh))
 
-        elif Draft.getType(obj).startswith("Points::"):
+        elif utils.get_type(obj).startswith("Points::"):
             snaps.extend(self.snapToEndpoints(obj.Points, point))
 
-        elif Draft.getType(obj) in ("WorkingPlaneProxy", "BuildingPart") and self.isEnabled(
+        elif utils.get_type(obj) in ("WorkingPlaneProxy", "BuildingPart") and self.isEnabled(
             "Center"
         ):
             # snap to the center of WPProxies or to the base
             # placement of no empty BuildingParts
             snaps.append([obj.Placement.Base, "center", self.toWP(obj.Placement.Base)])
 
-        elif Draft.getType(obj) == "SectionPlane":
+        elif utils.get_type(obj) == "SectionPlane":
             # snap to corners of section planes
             snaps.extend(self.snapToEndpoints(obj.Shape))
 
@@ -498,7 +499,7 @@ class Snapper:
         if winner_not_near is None or shortest_not_near == shortest_all:
             winner = winner_all
         else:
-            view = Draft.get3DView()
+            view = gui_utils.get_3d_view()
             # get screen points with pixel coordinates
             scr_win_not_near_pt = App.Vector(*view.getPointOnScreen(winner_not_near[0]), 0)
             scr_cursor_pt = App.Vector(*view.getPointOnScreen(cursor_pt), 0)
@@ -539,7 +540,7 @@ class Snapper:
 
     def getApparentPoint(self, x, y):
         """Return a 3D point, projected on the current working plane."""
-        view = Draft.get3DView()
+        view = gui_utils.get_3d_view()
         pt = view.getPoint(x, y)
         if self.mask != "z":
             if view.getCameraType() == "Perspective":
@@ -618,9 +619,9 @@ class Snapper:
                 if not ob.isDerivedFrom("Part::Feature"):
                     continue
                 edges = ob.Shape.Edges
-                if Draft.getType(ob) == "Wall":
+                if utils.get_type(ob) == "Wall":
                     for so in [ob] + ob.Additions:
-                        if Draft.getType(so) == "Wall":
+                        if utils.get_type(so) == "Wall":
                             if so.Base:
                                 edges.extend(so.Base.Shape.Edges)
                                 edges.reverse()
@@ -1126,14 +1127,14 @@ class Snapper:
         snaps = []
         if self.isEnabled("Special"):
 
-            if Draft.getType(obj) == "Wall":
+            if utils.get_type(obj) == "Wall":
                 # special snapping for wall: snap to its base shape if it is linear
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
                         for v in obj.Base.Shape.Vertexes:
                             snaps.append([v.Point, "special", self.toWP(v.Point)])
 
-            elif Draft.getType(obj) == "Structure":
+            elif utils.get_type(obj) == "Structure":
                 # special snapping for struct: only to its base point
                 if obj.Base:
                     if not obj.Base.Shape.Solids:
@@ -1159,7 +1160,7 @@ class Snapper:
 
     def getScreenDist(self, dist, cursor):
         """Return a distance in 3D space from a screen pixels distance."""
-        view = Draft.get3DView()
+        view = gui_utils.get_3d_view()
         p1 = view.getPoint(cursor)
         p2 = view.getPoint((cursor[0] + dist, cursor[1]))
         return (p2.sub(p1)).Length
@@ -1428,7 +1429,7 @@ class Snapper:
         self.pt = None
         self.holdPoints = []
         self.ui = Gui.draftToolBar
-        self.view = Draft.get3DView()
+        self.view = gui_utils.get_3d_view()
 
         # remove any previous leftover callbacks
         try:
@@ -1561,11 +1562,10 @@ class Snapper:
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""
-        if not (hasattr(self, "toolbar") and self.toolbar):
+        if self.toolbar is None:
             mw = Gui.getMainWindow()
             self.toolbar = mw.findChild(QtWidgets.QToolBar, "Draft Snap")
-        if self.toolbar:
-            return self.toolbar
+        return self.toolbar
 
     def toggleGrid(self):
         """Toggle FreeCAD Draft Grid."""
@@ -1587,22 +1587,21 @@ class Snapper:
 
     def toggle_snap(self, snap, set_to=None):
         """Sets the given snap on/off according to the given parameter"""
-        if set_to:  # set mode
-            if set_to is True:
-                if not snap in self.active_snaps:
-                    self.active_snaps.append(snap)
-                status = True
-            elif set_to is False:
-                if snap in self.active_snaps:
-                    self.active_snaps.remove(snap)
-                status = False
-        else:  # toggle mode, default
+        if set_to is None:  # toggle mode, default
             if not snap in self.active_snaps:
                 self.active_snaps.append(snap)
                 status = True
-            elif snap in self.active_snaps:
+            else:
                 self.active_snaps.remove(snap)
                 status = False
+        elif set_to is True:
+            if not snap in self.active_snaps:
+                self.active_snaps.append(snap)
+            status = True
+        else:
+            if snap in self.active_snaps:
+                self.active_snaps.remove(snap)
+            status = False
         self.save_snap_state()
         return status
 
@@ -1654,7 +1653,7 @@ class Snapper:
 
     def setTrackers(self, update_grid=True):
         """Set the trackers."""
-        v = Draft.get3DView()
+        v = gui_utils.get_3d_view()
         if v is None:
             return
 
