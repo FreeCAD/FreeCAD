@@ -1803,16 +1803,23 @@ for len in max_mesh_sizes:
 
 """
 
-class GmshPreviewTools(GmshTools, QtCore.QObject):
+class PreviewSignals(QtCore.QObject):
+    # Holds all signals that should be emitted for previews from GmshPreviewTools.
+    # The signals cannot be directly added to the Tools class, as Qt metaclass
+    # clashes with abstract base class (ABC) metaclass
+
+    finished = QtCore.Signal()
+
+
+class GmshPreviewTools(GmshTools):
     # overriden tool to not generate a meshing gmsh file, but a sizefield preview
 
-    preview_finished = QtCore.Signal()
+    def __init__(self, gmsh_mesh_obj, preview_object):
 
-    def __init__(self, gmsh_mesh_obj, preview_object, analysis=None):
+        super().__init__(gmsh_mesh_obj)
 
-        super().__init__(gmsh_mesh_obj, analysis)
-        QtCore.QObject.__init__(self)
         self.preview_object = preview_object
+        self.preview_signals = PreviewSignals()
 
     # mandatory functions for logtaskpanel
     # ####################################
@@ -1860,7 +1867,7 @@ class GmshPreviewTools(GmshTools, QtCore.QObject):
         self.mesh_obj.ViewObject.setNodeColorByScalars(ids, data)
         self.size_limits = (min(data), max(data))
 
-        self.preview_finished.emit()
+        self.preview_signals.finished.emit()
 
 
     # internal helper functions
@@ -1949,7 +1956,7 @@ Advanced:
     Distance:               Compute the distance to the given points, curves or surfaces.
     PostView:               Evaluate the post processing view with index ViewIndex, or with tag ViewTag if ViewTag is positive.
 
-Combine:
+Combine (unused):
     Max:            Take the maximum value of a list of fields.
     Min:            Take the minimum value of a list of fields.
     MinAniso:       Take the intersection of a list of possibly anisotropic fields.

@@ -125,7 +125,7 @@ class _TaskPanel:
         # for visualization button purposes
         self.logtask = _LogTask(obj, gmshtools.GmshPreviewTools(self.gmsh_obj, obj))
         self.logtask.setup_connections()
-        self.logtask.tool.preview_finished.connect(self._calculation_finished)
+        self.logtask.tool.preview_signals.finished.connect(self._calculation_finished)
 
         self._preview_running = False
 
