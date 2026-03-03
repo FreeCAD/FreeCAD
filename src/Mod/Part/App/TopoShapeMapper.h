@@ -31,6 +31,8 @@
 #include <TopExp_Explorer.hxx>
 #include "TopoShape.h"
 
+#include <Base/Tools.h>
+
 #include <Mod/Part/PartGlobal.h>
 
 class BRepBuilderAPI_MakeShape;
