@@ -622,6 +622,13 @@ ViewProviderSketch::ViewProviderSketch()
         (App::PropertyType)(App::Prop_None),
         "If true, this sketch will be colored based on user preferences. Turn it off to set color explicitly.");
 
+    ADD_PROPERTY_TYPE(
+        overlaySketch,
+        (true),
+        "Visibility automation",
+        (App::PropertyType)(App::Prop_None),
+        "If true, the edit geometry is rendered on top of everything.");
+
     // TODO: This is part of a naive minimal implementation to substitute rendering order
     // Three equally visual layers to enable/disable layer.
     std::vector<VisualLayer> layers;
@@ -3349,6 +3356,13 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
         if (isInEditMode()) {
             // Configure and rebuild Coin SceneGraph
             editCoinManager->updateGeometryLayersConfiguration();
+        }
+        return;
+    }
+
+    if (prop == &overlaySketch) {
+        if (isInEditMode()) {
+            editCoinManager->updateEditRootType();
         }
         return;
     }
