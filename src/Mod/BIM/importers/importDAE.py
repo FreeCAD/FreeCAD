@@ -168,6 +168,7 @@ def read(filename):
     if FreeCAD.GuiUp:
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
+
 def export(
     exports: list[FreeCAD.DocumentObject],
     filename: str,
@@ -218,13 +219,13 @@ def export(
         addgroups=True,
     )
     objects = Arch.pruneIncluded(objects, strict=True)
-    
+
     for obj in objects:
         is_link = obj.isDerivedFrom("App::Link")
         if is_link:
             real_obj = obj.getLinkedObject(True)
         else:
-            real_obj = obj   
+            real_obj = obj
         findex = np.array([])
         m: Optional[Mesh.Mesh] = None
         if real_obj.isDerivedFrom("Part::Feature"):
@@ -246,7 +247,7 @@ def export(
             if is_link:
                 m.Placement = obj.Placement
             else:
-                m.Placement = obj.getGlobalPlacement()                
+                m.Placement = obj.getGlobalPlacement()
 
         elif obj.isDerivedFrom("App::Part"):
             for child in obj.OutList:
