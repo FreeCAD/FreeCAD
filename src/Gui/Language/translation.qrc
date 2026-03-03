@@ -8,7 +8,7 @@
         <file>qt_pl.qm</file>
         <file>qt_pt-BR.qm</file>
         <file>qt_ru.qm</file>
-        <file>qt_sv-SE.qm</file>
+        <file>qt_sv.qm</file>
         <file>qt_uk.qm</file>
         <file>qt_zh-CN.qm</file>
         <file>qtbase_ar.qm</file>
@@ -35,6 +35,7 @@
         <file>qtbase_pt_BR.qm</file>
         <file>qtbase_ru.qm</file>
         <file>qtbase_sk.qm</file>
+        <file>qtbase_sv.qm</file>
         <file>qtbase_tr.qm</file>
         <file>qtbase_uk.qm</file>
         <file>qtbase_zh_CN.qm</file>
@@ -60,6 +61,7 @@
         <file>qtmultimedia_pt_BR.qm</file>
         <file>qtmultimedia_ru.qm</file>
         <file>qtmultimedia_sk.qm</file>
+        <file>qtmultimedia_sv.qm</file>
         <file>qtmultimedia_tr.qm</file>
         <file>qtmultimedia_uk.qm</file>
         <file>qtmultimedia_zh_CN.qm</file>
