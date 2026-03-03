@@ -91,7 +91,26 @@ You can change this behavior at any time by either right-clicking the sub-assemb
      </property>
     </widget>
    </item>
-   </layout>
+   <item row="5" column="0">
+    <widget class="Gui::PrefCheckBox" name="CheckBox_Mirror">
+     <property name="toolTip">
+      <string>Insert a mirrored version of the selected component.</string>
+     </property>
+     <property name="text">
+      <string>Mirror</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>MirrorComponents</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
