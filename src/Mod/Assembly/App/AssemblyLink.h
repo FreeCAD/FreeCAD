@@ -91,6 +91,7 @@ public:
 
     App::PropertyXLink LinkedObject;
     App::PropertyBool Rigid;
+    App::PropertyFloat Scale;
 
     std::unordered_map<App::DocumentObject*, App::DocumentObject*> objLinkMap;
 
