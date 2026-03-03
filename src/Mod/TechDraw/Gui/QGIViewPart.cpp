@@ -319,7 +319,7 @@ void QGIViewPart::drawAllFaces(void)
     int iFace(0);
     for (auto& face : faceGeoms) {
         QGIFace* newFace = drawFace(face, iFace);
-        if (faceColor.isValid()) {
+        if (faceColor.isValid() && !face->isHole()) {
             newFace->setFillColor(faceColor);
             newFace->setFillMode(faceColor.alpha() ? FillMode::PlainFill : FillMode::NoFill);
         }

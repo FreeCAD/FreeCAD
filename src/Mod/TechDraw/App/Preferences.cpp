@@ -726,3 +726,20 @@ bool Preferences::fixColorAlphaOnLoad()
 {
     return getPreferenceGroup("General")->GetBool("FixColorAlphaOnLoad", true);
 }
+
+FaceFinderVersion Preferences::faceFinderVersion()
+{
+    int faceFinderVer = getPreferenceGroup("General")->GetInt("FaceFinderVersion", -1);
+    if (faceFinderVer < 0) {
+        return getPreferenceGroup("General")->GetBool("NewFaceFinder", false)
+               ? FaceFinderVersion::v0_21 : FaceFinderVersion::v0_17;
+    }
+
+    return static_cast<FaceFinderVersion>(faceFinderVer);
+}
+
+void Preferences::setFaceFinderVersion(FaceFinderVersion version)
+{
+    getPreferenceGroup("General")->SetInt("FaceFinderVersion", static_cast<int>(version));
+    getPreferenceGroup("General")->RemoveAttribute(ParameterGrp::ParamType::FCBool, "NewFaceFinder");
+}
