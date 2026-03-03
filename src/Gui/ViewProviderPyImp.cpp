@@ -875,4 +875,3 @@ Py::Object ViewProviderPy::getToggleVisibility() const
 
     return Py::String(canToggleVisibility ? "CanToggleVisibility" : "NoToggleVisibility");
 }
-
