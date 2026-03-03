@@ -89,6 +89,14 @@ AssemblyLink::AssemblyLink()
         (App::PropertyType)(App::Prop_None),
         "The linked assembly."
     );
+
+    ADD_PROPERTY_TYPE(
+        Scale,
+        (1.0f),
+        "General",
+        (App::PropertyType)(App::Prop_None),
+        "The scale factor applied to the assembly link."
+    );
 }
 
 AssemblyLink::~AssemblyLink() = default;
@@ -122,6 +130,11 @@ void AssemblyLink::onChanged(const App::Property* prop)
                 assemblyLink->updateContents();
             }
         }
+    }
+
+    if (prop == &Scale) {
+        updateContents();
+        return;
     }
 
     if (prop == &Rigid) {
@@ -355,6 +368,9 @@ void AssemblyLink::synchronizeComponents()
     std::vector<App::DocumentObject*> assemblyGroup = assembly->Group.getValues();
     std::vector<App::DocumentObject*> assemblyLinkGroup = Group.getValues();
 
+    float currentScale = Scale.getValue();
+    bool shouldScale = std::abs(currentScale - 1.0f) > Precision::Confusion();
+
     // Filter out child objects from Part-workbench features to get only top-level components.
     // An object is considered a child if it's referenced by another object's 'Base', 'Tool',
     // or 'Shapes' property within the same group.
@@ -503,6 +519,15 @@ void AssemblyLink::synchronizeComponents()
                     if (isSuppressedLinkElement(srcObj)) {
                         continue;
                     }
+
+                    if (shouldScale) {
+                        if (auto propPlc = newObj->getPlacementProperty()) {
+                            Base::Placement plc = propPlc->getValue();
+                            plc.setPosition(plc.getPosition() * currentScale);
+                            propPlc->setValue(plc);
+                            newObj->purgeTouched();
+                        }
+                    }
                     objLinkMap[srcObj] = newObj;
                 }
 
@@ -537,6 +562,31 @@ void AssemblyLink::synchronizeComponents()
     if (isRigid()) {
         for (const auto& [sourceObj, linkObj] : objLinkMap) {
             syncPlacements(sourceObj, linkObj);
+
+            if (shouldScale && linkObj) {
+                if (auto propPlc = linkObj->getPlacementProperty()) {
+                    Base::Placement plc = propPlc->getValue();
+                    plc.setPosition(plc.getPosition() * currentScale);
+                    propPlc->setValue(plc);
+                    linkObj->purgeTouched();
+                }
+            }
+        }
+    }
+
+    // Propagate Scale to children
+    float currentScale = Scale.getValue();
+    for (const auto& [sourceObj, linkObj] : objLinkMap) {
+        if (!linkObj) {
+            continue;
+        }
+
+        if (auto propScaleLink = dynamic_cast<App::PropertyFloat*>(linkObj->getPropertyByName("Scale"))) {
+            float linkScale = propScaleLink->getValue();
+
+            if (currentScale != linkScale) {
+                propScaleLink->setValue(currentScale);
+            }
         }
     }
 
