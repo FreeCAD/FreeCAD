@@ -99,6 +99,7 @@
 #include "Base/BoundBox.h"
 #include "Base/Exception.h"
 #include "Base/Tools.h"
+#include <SignalException.h>
 #include "OCCTProgressIndicator.h"
 
 #include <App/ElementMap.h>
@@ -4136,13 +4137,23 @@ TopoShape& TopoShape::makeElementChamfer(
         if (!shape.findShape(edge)) {
             FC_THROWM(Base::CADKernelError, "edge does not belong to the shape");
         }
+        if (BRep_Tool::Degenerated(TopoDS::Edge(edge))) {
+            FC_THROWM(Base::CADKernelError, "chamfer edge is degenerated");
+        }
         // Add edge to fillet algorithm
         TopoDS_Shape face;
         if (flipDirection == Flip::flip) {
-            face = shape.findAncestorsShapes(edge, TopAbs_FACE).back();
+            const auto faces = shape.findAncestorsShapes(edge, TopAbs_FACE);
+            if (faces.empty()) {
+                FC_THROWM(Base::CADKernelError, "chamfer edge has no adjacent face");
+            }
+            face = faces.back();
         }
         else {
             face = shape.findAncestorShape(edge, TopAbs_FACE);
+        }
+        if (face.IsNull()) {
+            FC_THROWM(Base::CADKernelError, "chamfer edge has no adjacent face");
         }
         switch (chamferType) {
             case ChamferType::equalDistance:  // Equal distance
@@ -4157,6 +4168,7 @@ TopoShape& TopoShape::makeElementChamfer(
                 break;
         }
     }
+    Part::SignalException sig;
     return makeElementShape(mkChamfer, shape, op);
 }
 

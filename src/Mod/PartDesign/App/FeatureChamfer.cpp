@@ -37,6 +37,7 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
+#include <Mod/Part/App/SignalException.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureChamfer.h"
@@ -158,6 +159,7 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     }
     try {
         TopoShape shape(0);
+        Part::SignalException sig;
         shape.makeElementChamfer(
             TopShape,
             edges,
@@ -201,6 +203,11 @@ App::DocumentObjectExecReturn* Chamfer::execute()
     }
     catch (Standard_Failure& e) {
         return new App::DocumentObjectExecReturn(e.GetMessageString());
+    }
+    catch (...) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Chamfer failed: OCC kernel error in chamfer computation")
+        );
     }
 }
 
