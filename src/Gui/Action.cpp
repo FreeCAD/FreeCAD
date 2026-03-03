@@ -26,6 +26,7 @@
 #include <QEvent>
 #include <QFileInfo>
 #include <QMenu>
+#include <QMessageBox>
 #include <QRegularExpression>
 #include <QScreen>
 #include <QTimer>
@@ -857,12 +858,26 @@ RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
     this->groupAction()->addAction(&sep);
 
     //: Empties the list of recent files
-    clearRecentFilesListAction.setText(tr("Clear Recent Files"));
+    clearRecentFilesListAction.setText(tr("Clear Recent Files..."));
     clearRecentFilesListAction.setIcon(QIcon(QStringLiteral(":/icons/edit-delete.svg")));
     clearRecentFilesListAction.setToolTip({});
     this->groupAction()->addAction(&clearRecentFilesListAction);
 
     auto clearFun = [this, hGrp = _pimpl->handle]() {
+        // prompt user before clearing the recent files list
+        QMessageBox::StandardButton reply = QMessageBox::question(
+            getMainWindow(),
+            tr("Clear Recent Files"),
+            tr("Are you sure you want to clear the list of recent files?\n This action can not be "
+               "undone!"),
+            QMessageBox::Yes | QMessageBox::No,
+            QMessageBox::No
+        );
+
+        if (reply != QMessageBox::Yes) {
+            return;
+        }
+
         const size_t recentFilesListSize = hGrp->GetASCIIs("MRU").size();
         for (size_t i = 0; i < recentFilesListSize; i++) {
             const QByteArray key = QStringLiteral("MRU%1").arg(i).toLocal8Bit();
