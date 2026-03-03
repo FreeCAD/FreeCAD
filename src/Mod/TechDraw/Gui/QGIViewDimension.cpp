@@ -569,7 +569,9 @@ double QGIViewDimension::computeLineAndLabelAngles(const Base::Vector2d& rotatio
 
     // If we are too close to the line origin, no further adjustments
     if (lineLabelDistance >= rawDistance) {
-        return 0.0;
+        // avoid flickering when label is close to center
+        lineLabelDistance = rawDistance - Precision::Confusion();
+        //return 0.0;
     }
 
     // Rotate the line by angle between the label rectangle center and label bottom side center
@@ -591,7 +593,7 @@ QGIViewDimension::computeLineStrikeFactor(const Base::BoundBox2d& labelRectangle
     }
 
     std::vector<Base::Vector2d> intersectionPoints;
-    unsigned int startIndex = 0;
+    unsigned int startIndex = 0;   
     unsigned int currentIndex = 1;
 
     while (currentIndex < drawMarking.size()) {
@@ -1707,7 +1709,7 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
             "QGIVD::drawRadiusExecutive - this Standard&Style is not supported: %d\n",
             standardStyle);
     }
-
+    
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(radiusPath);
@@ -1964,7 +1966,7 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
             drawDimensionLine(diameterPath,
                               curveCenter + Base::Vector2d::FromPolar(curveRadius, lineAngle),
                               lineAngle, -curveRadius * 2.0, labelPosition, labelRectangle, 2,
-                              standardStyle, flipArrows);
+                              standardStyle, flipArrows); 
         }
         else if (standardStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED) {
             // Text must remain horizontal, but it may split the leader line
@@ -2212,6 +2214,9 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(anglePath);
+
+    // cache arc radius to be used for snapping dim label
+    m_cachedAngleArcRadius = arcRadius;
 }
 
 void QGIViewDimension::drawArea(TechDraw::DrawViewDimension* dimension,
