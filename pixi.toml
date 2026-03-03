@@ -157,22 +157,27 @@ freecad-stubs = "*"
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-asan = { cmd = [ "cmake", "--preset", "conda-linux-debug", "-DFREECAD_USE_SANITIZER_ASAN=ON", "-B", "build/asan" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.linux-aarch64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-asan = { cmd = [ "cmake", "--preset", "conda-linux-debug", "-DFREECAD_USE_SANITIZER_ASAN=ON", "-B", "build/asan" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.osx-64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-asan = { cmd = [ "cmake", "--preset", "conda-macos-debug", "-DFREECAD_USE_SANITIZER_ASAN=ON", "-B", "build/asan" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.osx-arm64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-asan = { cmd = [ "cmake", "--preset", "conda-macos-debug", "-DFREECAD_USE_SANITIZER_ASAN=ON", "-B", "build/asan" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.win-64.tasks]
 configure-debug = { cmd = [ "cmake", "--preset", "conda-windows-debug", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-asan = { cmd = [ "cmake", "--preset", "conda-windows-debug", "-DFREECAD_USE_SANITIZER_ASAN=ON", "-B", "build/asan", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 configure-release = { cmd = [ "cmake", "--preset", "conda-windows-release", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 freecad-debug = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-debug"]}
 freecad-release = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-release"]}
@@ -185,6 +190,11 @@ build = [{ task = "build-debug" }]
 install = [{ task = "install-debug" }]
 test = [{ task = "test-debug" }]
 freecad = [{ task = "freecad-debug" }]
+
+configure-asan = [{ task = "configure-asan" }]
+build-asan = { cmd = ["cmake", "--build", "build/asan"]}
+install-asan = { cmd = ["cmake", "--install", "build/asan"]}
+freecad-asan = { cmd = "build/asan/bin/FreeCAD", env = { ASAN_OPTIONS = "detect_leaks=0" }}
 
 build-debug = { cmd = ["cmake", "--build", "build/debug"]}
 build-release = { cmd = ["cmake", "--build", "build/release"]}
