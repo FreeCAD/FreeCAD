@@ -541,10 +541,11 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                          % constr->internalAlignmentTypeToString() % geoId1 % geoId2
                      );
                  }
-                 else if (constr->AlignmentType == EllipseFocus1
-                          || constr->AlignmentType == EllipseFocus2
-                          || constr->AlignmentType == HyperbolaFocus
-                          || constr->AlignmentType == ParabolaFocus) {
+                 else if (
+                     constr->AlignmentType == EllipseFocus1 || constr->AlignmentType == EllipseFocus2
+                     || constr->AlignmentType == HyperbolaFocus
+                     || constr->AlignmentType == ParabolaFocus
+                 ) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %i, %s")
                          % constr->internalAlignmentTypeToString() % geoId1

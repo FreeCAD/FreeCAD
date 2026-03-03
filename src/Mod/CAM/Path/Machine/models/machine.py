@@ -29,7 +29,6 @@ from typing import Dict, Any, List, Optional, Tuple, Callable
 from collections import namedtuple
 from enum import Enum
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())

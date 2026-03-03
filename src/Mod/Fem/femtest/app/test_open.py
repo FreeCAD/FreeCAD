@@ -36,7 +36,6 @@ import FreeCAD
 from . import support_utils as testtools
 from .support_utils import fcc_print
 
-
 """
 FIXME TODO HACK
 Important note!

@@ -17,12 +17,10 @@ from App.ComplexGeoData import ComplexGeoData
     FatherNamespace="Data",
     Constructor=True,
 )
-@class_declarations(
-    """
+@class_declarations("""
     private:
     friend class PropertyMeshKernel;
-    class PropertyMeshKernel* parentProperty = nullptr;"""
-)
+    class PropertyMeshKernel* parentProperty = nullptr;""")
 class Mesh(ComplexGeoData):
     """
     Mesh() -- Create an empty mesh object.

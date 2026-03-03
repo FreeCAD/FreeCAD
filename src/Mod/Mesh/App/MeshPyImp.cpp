@@ -289,16 +289,9 @@ PyObject* MeshPy::write(PyObject* args, PyObject* kwds) const
     static const std::array<const char*, 5>
         keywords_stream {"Stream", "Format", "Name", "Material", nullptr};
     PyObject* input;
-    if (Base::Wrapped_ParseTupleAndKeywords(
-            args,
-            kwds,
-            "Os|sO",
-            keywords_stream,
-            &input,
-            &Ext,
-            &ObjName,
-            &List
-        )) {
+    if (
+        Base::Wrapped_ParseTupleAndKeywords(args, kwds, "Os|sO", keywords_stream, &input, &Ext, &ObjName, &List)
+    ) {
         std::string fmt(Ext);
         boost::to_upper(fmt);
         if (ext.find(fmt) != ext.end()) {
@@ -1677,15 +1670,9 @@ PyObject* MeshPy::splitFacet(PyObject* args)
     unsigned long facet {};
     PyObject* vertex1 {};
     PyObject* vertex2 {};
-    if (!PyArg_ParseTuple(
-            args,
-            "kO!O!",
-            &facet,
-            &Base::VectorPy::Type,
-            &vertex1,
-            &Base::VectorPy::Type,
-            &vertex2
-        )) {
+    if (
+        !PyArg_ParseTuple(args, "kO!O!", &facet, &Base::VectorPy::Type, &vertex1, &Base::VectorPy::Type, &vertex2)
+    ) {
         return nullptr;
     }
 

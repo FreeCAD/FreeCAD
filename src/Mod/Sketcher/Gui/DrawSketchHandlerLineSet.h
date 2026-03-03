@@ -217,8 +217,10 @@ public:
                         EditCurve[1] = EditCurve[0] + EditCurve[1];
                     }
                 }
-                else if (TransitionMode == TRANSITION_MODE_Perpendicular_L
-                         || TransitionMode == TRANSITION_MODE_Perpendicular_R) {
+                else if (
+                    TransitionMode == TRANSITION_MODE_Perpendicular_L
+                    || TransitionMode == TRANSITION_MODE_Perpendicular_R
+                ) {
                     Base::Vector2d Perpendicular(-dirVec.y, dirVec.x);
                     EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Perpendicular);
                     EditCurve[1] = EditCurve[0] + EditCurve[1];
@@ -535,8 +537,10 @@ public:
                     if (TransitionMode == TRANSITION_MODE_Tangent) {
                         constrType = "Tangent";
                     }
-                    else if (TransitionMode == TRANSITION_MODE_Perpendicular_L
-                             || TransitionMode == TRANSITION_MODE_Perpendicular_R) {
+                    else if (
+                        TransitionMode == TRANSITION_MODE_Perpendicular_L
+                        || TransitionMode == TRANSITION_MODE_Perpendicular_R
+                    ) {
                         constrType = "Perpendicular";
                     }
                 }

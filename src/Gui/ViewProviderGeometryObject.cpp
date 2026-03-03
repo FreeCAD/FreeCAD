@@ -378,8 +378,10 @@ void ViewProviderGeometryObject::handleChangedPropertyName(
         prop.Restore(reader);
         ShapeAppearance.setDiffuseColor(prop.getValue());
     }
-    else if (strcmp(PropName, "ShapeMaterial") == 0
-             && strcmp(TypeName, App::PropertyMaterial::getClassTypeId().getName()) == 0) {
+    else if (
+        strcmp(PropName, "ShapeMaterial") == 0
+        && strcmp(TypeName, App::PropertyMaterial::getClassTypeId().getName()) == 0
+    ) {
         App::PropertyMaterial prop;
         prop.Restore(reader);
         ShapeAppearance.setValue(prop.getValue());

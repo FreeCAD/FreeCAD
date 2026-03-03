@@ -1344,23 +1344,31 @@ void TaskPostDataAtPoint::onFieldActivated(int i)
     }
     // The Elmer names are different. If there are EigenModes, the names are unique for
     // every mode. Therefore we only check for the beginning of the name.
-    else if ((FieldName.find("tresca", 0) == 0) || (FieldName.find("vonmises", 0) == 0)
-             || (FieldName.find("stress_", 0) == 0) || (FieldName.find("principal stress", 0) == 0)) {
+    else if (
+        (FieldName.find("tresca", 0) == 0) || (FieldName.find("vonmises", 0) == 0)
+        || (FieldName.find("stress_", 0) == 0) || (FieldName.find("principal stress", 0) == 0)
+    ) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("Pa");
     }
-    else if ((FieldName == "current density") || (FieldName == "current density re")
-             || (FieldName == "current density im") || (FieldName == "current density abs")) {
+    else if (
+        (FieldName == "current density") || (FieldName == "current density re")
+        || (FieldName == "current density im") || (FieldName == "current density abs")
+    ) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("A/m^2");
     }
-    else if ((FieldName == "Displacement") || (FieldName == "Displacement Magnitude")
-             || (FieldName.find("displacement", 0) == 0)) {  // Elmer name
+    else if (
+        (FieldName == "Displacement") || (FieldName == "Displacement Magnitude")
+        || (FieldName.find("displacement", 0) == 0)
+    ) {  // Elmer name
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("m");
     }
     else if (FieldName == "electric energy density") {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("J/m^3");
     }
-    else if ((FieldName == "electric field") || (FieldName == "electric field re")
-             || (FieldName == "electric field im") || (FieldName == "electric field abs")) {
+    else if (
+        (FieldName == "electric field") || (FieldName == "electric field re")
+        || (FieldName == "electric field im") || (FieldName == "electric field abs")
+    ) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("V/m");
     }
     else if (FieldName == "electric flux") {
@@ -1375,33 +1383,39 @@ void TaskPostDataAtPoint::onFieldActivated(int i)
     else if ((FieldName == "joule heating") || (FieldName == "nodal joule heating")) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("J");
     }
-    else if ((FieldName == "magnetic field strength") || (FieldName == "magnetic field strength re")
-             || (FieldName == "magnetic field strength im")
-             || (FieldName == "magnetic field strength abs")) {
+    else if (
+        (FieldName == "magnetic field strength") || (FieldName == "magnetic field strength re")
+        || (FieldName == "magnetic field strength im") || (FieldName == "magnetic field strength abs")
+    ) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("A/m");
     }
-    else if ((FieldName == "magnetic flux density") || (FieldName == "magnetic flux density re")
-             || (FieldName == "magnetic flux density im")
-             || (FieldName == "magnetic flux density abs")) {
+    else if (
+        (FieldName == "magnetic flux density") || (FieldName == "magnetic flux density re")
+        || (FieldName == "magnetic flux density im") || (FieldName == "magnetic flux density abs")
+    ) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("T");
     }
-    else if ((FieldName == "maxwell stress 1") || (FieldName == "maxwell stress 2")
-             || (FieldName == "maxwell stress 3") || (FieldName == "maxwell stress 4")
-             || (FieldName == "maxwell stress 5") || (FieldName == "maxwell stress 6")
-             || (FieldName == "maxwell stress re 1") || (FieldName == "maxwell stress re 2")
-             || (FieldName == "maxwell stress re 3") || (FieldName == "maxwell stress re 4")
-             || (FieldName == "maxwell stress re 5") || (FieldName == "maxwell stress re 6")
-             || (FieldName == "maxwell stress im 1") || (FieldName == "maxwell stress im 2")
-             || (FieldName == "maxwell stress im 3") || (FieldName == "maxwell stress im 4")
-             || (FieldName == "maxwell stress im 5") || (FieldName == "maxwell stress im 6")) {
+    else if (
+        (FieldName == "maxwell stress 1") || (FieldName == "maxwell stress 2")
+        || (FieldName == "maxwell stress 3") || (FieldName == "maxwell stress 4")
+        || (FieldName == "maxwell stress 5") || (FieldName == "maxwell stress 6")
+        || (FieldName == "maxwell stress re 1") || (FieldName == "maxwell stress re 2")
+        || (FieldName == "maxwell stress re 3") || (FieldName == "maxwell stress re 4")
+        || (FieldName == "maxwell stress re 5") || (FieldName == "maxwell stress re 6")
+        || (FieldName == "maxwell stress im 1") || (FieldName == "maxwell stress im 2")
+        || (FieldName == "maxwell stress im 3") || (FieldName == "maxwell stress im 4")
+        || (FieldName == "maxwell stress im 5") || (FieldName == "maxwell stress im 6")
+    ) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("As/m^3");
     }
     else if (FieldName == "nodal force") {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("N");
     }
-    else if ((FieldName == "potential") || (FieldName == "potential re")
-             || (FieldName == "potential im") || (FieldName == "potential abs") || (FieldName == "av")
-             || (FieldName == "av re") || (FieldName == "av im") || (FieldName == "av abs")) {
+    else if (
+        (FieldName == "potential") || (FieldName == "potential re") || (FieldName == "potential im")
+        || (FieldName == "potential abs") || (FieldName == "av") || (FieldName == "av re")
+        || (FieldName == "av im") || (FieldName == "av abs")
+    ) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("V");
     }
     else if (FieldName == "potential flux") {
@@ -1415,7 +1429,8 @@ void TaskPostDataAtPoint::onFieldActivated(int i)
         // CalculiX name
         FieldName == "Temperature" ||
         // Elmer name
-        ((FieldName.find("temperature", 0) == 0) && (FieldName != "temperature flux"))) {
+        ((FieldName.find("temperature", 0) == 0) && (FieldName != "temperature flux"))
+    ) {
         getObject<Fem::FemPostDataAtPointFilter>()->Unit.setValue("K");
     }
     else if (FieldName == "temperature flux") {

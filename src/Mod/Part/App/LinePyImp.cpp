@@ -92,7 +92,8 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             // get Geom_Line of line
-            Handle(Geom_Line) this_curv = Handle(Geom_Line)::DownCast(this->getGeomLinePtr()->handle());
+            Handle(Geom_Line)
+                this_curv = Handle(Geom_Line)::DownCast(this->getGeomLinePtr()->handle());
             Handle(Geom_Line) that_curv = ms.Value();
             this_curv->SetLin(that_curv->Lin());
             return 0;

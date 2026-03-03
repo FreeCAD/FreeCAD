@@ -221,8 +221,9 @@ void TaskMultiTransformParameters::onTransformEdit()
     if (subFeature->is<PartDesign::Mirrored>()) {
         subTask = new TaskMirroredParameters(this, ui->subFeatureWidget);
     }
-    else if (subFeature->is<PartDesign::LinearPattern>()
-             || subFeature->is<PartDesign::PolarPattern>()) {
+    else if (
+        subFeature->is<PartDesign::LinearPattern>() || subFeature->is<PartDesign::PolarPattern>()
+    ) {
         subTask = new TaskPatternParameters(this, ui->subFeatureWidget);
     }
     else if (subFeature->is<PartDesign::Scaled>()) {

@@ -24,6 +24,7 @@
 # ***************************************************************************
 
 """ToolBit Library Dock Widget."""
+
 import FreeCAD
 import FreeCADGui
 import Path

@@ -2499,7 +2499,9 @@ PyObject* SelectionSingleton::sAddSelection(PyObject* /*self*/, PyObject* args)
     char* docname;
     char* subname = nullptr;
     float x = 0, y = 0, z = 0;
-    if (PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)) {
+    if (
+        PyArg_ParseTuple(args, "ss|sfffO!", &docname, &objname, &subname, &x, &y, &z, &PyBool_Type, &clearPreselect)
+    ) {
         Selection()
             .addSelection(docname, objname, subname, x, y, z, nullptr, Base::asBoolean(clearPreselect));
         Py_Return;
@@ -2593,15 +2595,9 @@ PyObject* SelectionSingleton::sUpdateSelection(PyObject* /*self*/, PyObject* arg
     PyObject* show;
     PyObject* object;
     char* subname = nullptr;
-    if (!PyArg_ParseTuple(
-            args,
-            "O!O!|s",
-            &PyBool_Type,
-            &show,
-            &(App::DocumentObjectPy::Type),
-            &object,
-            &subname
-        )) {
+    if (
+        !PyArg_ParseTuple(args, "O!O!|s", &PyBool_Type, &show, &(App::DocumentObjectPy::Type), &object, &subname)
+    ) {
         return nullptr;
     }
 

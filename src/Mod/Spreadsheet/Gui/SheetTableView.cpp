@@ -310,8 +310,10 @@ std::vector<Range> SheetTableView::selectedRanges() const
                     }
                     continue;
                 }
-                else if (last.rowCount() == 1 && last.from().row() == sel.top()
-                         && last.to().col() + 1 == sel.left()) {
+                else if (
+                    last.rowCount() == 1 && last.from().row() == sel.top()
+                    && last.to().col() + 1 == sel.left()
+                ) {
                     // This is the case of single row selection
                     last = Range(last.from(), CellAddress(sel.top(), sel.left()));
                     continue;
@@ -910,8 +912,10 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetColumn--;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, 0, -1);
             }
             else {
@@ -927,8 +931,10 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetColumn += colSpan;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, 0, 1);
             }
             else {
@@ -944,8 +950,10 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetRow--;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, -1, 0);
             }
             else {
@@ -960,8 +968,10 @@ void SheetTableView::finishEditWithMove(int keyPressed, Qt::KeyboardModifiers mo
             if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
                 targetRow += rowSpan;
             }
-            else if (modifiers == Qt::ControlModifier
-                     || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)) {
+            else if (
+                modifiers == Qt::ControlModifier
+                || modifiers == (Qt::ControlModifier | Qt::ShiftModifier)
+            ) {
                 scanForRegionBoundary(targetRow, targetColumn, 1, 0);
             }
             else {

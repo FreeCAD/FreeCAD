@@ -93,7 +93,8 @@ PyObject* Curve2dPy::reverse(PyObject* args)
 {
     if (PyArg_ParseTuple(args, "")) {
         try {
-            Handle(Geom2d_Curve) curve = Handle(Geom2d_Curve)::DownCast(getGeom2dCurvePtr()->handle());
+            Handle(Geom2d_Curve)
+                curve = Handle(Geom2d_Curve)::DownCast(getGeom2dCurvePtr()->handle());
             curve->Reverse();
             Py_Return;
         }
@@ -315,15 +316,9 @@ PyObject* Curve2dPy::discretize(PyObject* args, PyObject* kwds) const
         static const std::array<const char*, 4> kwds_numPoints {"Number", "First", "Last", nullptr};
         PyErr_Clear();
         int numPoints = -1;
-        if (Base::Wrapped_ParseTupleAndKeywords(
-                args,
-                kwds,
-                "i|dd",
-                kwds_numPoints,
-                &numPoints,
-                &first,
-                &last
-            )) {
+        if (
+            Base::Wrapped_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_numPoints, &numPoints, &first, &last)
+        ) {
             GCPnts_UniformAbscissa discretizer;
             discretizer.Initialize(adapt, numPoints, first, last);
 
@@ -348,7 +343,9 @@ PyObject* Curve2dPy::discretize(PyObject* args, PyObject* kwds) const
         static const std::array<const char*, 4> kwds_Distance {"Distance", "First", "Last", nullptr};
         PyErr_Clear();
         double distance = -1;
-        if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)) {
+        if (
+            Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)
+        ) {
             GCPnts_UniformAbscissa discretizer;
             discretizer.Initialize(adapt, distance, first, last);
 
@@ -373,15 +370,9 @@ PyObject* Curve2dPy::discretize(PyObject* args, PyObject* kwds) const
         static const std::array<const char*, 4> kwds_Deflection {"Deflection", "First", "Last", nullptr};
         PyErr_Clear();
         double deflection;
-        if (Base::Wrapped_ParseTupleAndKeywords(
-                args,
-                kwds,
-                "d|dd",
-                kwds_Deflection,
-                &deflection,
-                &first,
-                &last
-            )) {
+        if (
+            Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)
+        ) {
             GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
             if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
                 Py::List points;
@@ -735,7 +726,8 @@ PyObject* Curve2dPy::toBSpline(PyObject* args)
                 return nullptr;
             }
             ShapeConstruct_Curve scc;
-            Handle(Geom2d_BSplineCurve) spline = scc.ConvertToBSpline(c, u, v, Precision::Confusion());
+            Handle(Geom2d_BSplineCurve)
+                spline = scc.ConvertToBSpline(c, u, v, Precision::Confusion());
             if (spline.IsNull()) {
                 Standard_NullValue::Raise("Conversion to B-spline failed");
             }

@@ -58,19 +58,12 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* pCirc;
     double dist;
     static const std::array<const char*, 3> keywords_cd {"Circle", "Distance", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(
-            args,
-            kwds,
-            "O!d",
-            keywords_cd,
-            &(Circle2dPy::Type),
-            &pCirc,
-            &dist
-        )) {
+    if (
+        Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(Circle2dPy::Type), &pCirc, &dist)
+    ) {
         Circle2dPy* pcCircle = static_cast<Circle2dPy*>(pCirc);
-        Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(
-            pcCircle->getGeom2dCirclePtr()->handle()
-        );
+        Handle(Geom2d_Circle)
+            circle = Handle(Geom2d_Circle)::DownCast(pcCircle->getGeom2dCirclePtr()->handle());
         GCE2d_MakeCircle mc(circle->Circ2d(), dist);
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
@@ -102,7 +95,8 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
+        Handle(Geom2d_Circle)
+            circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
         circle->SetCirc2d(mc.Value()->Circ2d());
         return 0;
     }
@@ -111,12 +105,10 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
     PyErr_Clear();
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(Circle2dPy::Type), &pCirc)) {
         Circle2dPy* pcCircle = static_cast<Circle2dPy*>(pCirc);
-        Handle(Geom2d_Circle) circ1 = Handle(Geom2d_Circle)::DownCast(
-            pcCircle->getGeom2dCirclePtr()->handle()
-        );
-        Handle(Geom2d_Circle) circ2 = Handle(Geom2d_Circle)::DownCast(
-            this->getGeom2dCirclePtr()->handle()
-        );
+        Handle(Geom2d_Circle)
+            circ1 = Handle(Geom2d_Circle)::DownCast(pcCircle->getGeom2dCirclePtr()->handle());
+        Handle(Geom2d_Circle)
+            circ2 = Handle(Geom2d_Circle)::DownCast(this->getGeom2dCirclePtr()->handle());
         circ2->SetCirc2d(circ1->Circ2d());
         return 0;
     }
@@ -144,7 +136,8 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
             return -1;
         }
 
-        Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
+        Handle(Geom2d_Circle)
+            circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
         circle->SetCirc2d(mc.Value()->Circ2d());
         return 0;
     }
@@ -153,7 +146,8 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
     static const std::array<const char*, 1> keywords_n = {nullptr};
     PyErr_Clear();
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "", keywords_n) != 0) {
-        Handle(Geom2d_Circle) circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
+        Handle(Geom2d_Circle)
+            circle = Handle(Geom2d_Circle)::DownCast(getGeom2dCirclePtr()->handle());
         circle->SetRadius(1.0);
         return 0;
     }

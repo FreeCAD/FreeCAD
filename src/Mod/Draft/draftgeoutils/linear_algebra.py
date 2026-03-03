@@ -27,6 +27,7 @@
 
 This includes calculating linear equation parameters, and matrix determinants.
 """
+
 ## @package linear_algebra
 # \ingroup draftgeoutils
 # \brief Provides various functions for linear algebra.

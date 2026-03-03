@@ -37,7 +37,6 @@ import time
 import traceback
 import string
 
-
 ##############################################################################
 # GUI framework classes
 # The classes BaseGUITestRunner, GUITestResult and RollbackImporter are

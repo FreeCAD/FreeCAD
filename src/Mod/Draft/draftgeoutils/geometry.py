@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions for general geometrical calculations."""
+
 ## @package geometry
 # \ingroup draftgeoutils
 # \brief Provides various functions for general geometrical calculations.

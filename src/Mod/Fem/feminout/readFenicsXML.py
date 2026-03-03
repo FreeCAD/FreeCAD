@@ -242,7 +242,7 @@ def read_fenics_mesh_xml(xmlfilename):
     find_mesh = root.find("mesh")
     if find_mesh is not None:  # these are consistency checks of the XML structure
         Console.PrintMessage("Mesh found\n")
-        (nodes, cells_dict, cell_type, dim) = read_mesh_block(find_mesh)
+        nodes, cells_dict, cell_type, dim = read_mesh_block(find_mesh)
         element_dict = generate_lower_dimensional_structures(nodes, cells_dict, cell_type, dim)
         Console.PrintMessage("Show min max element dict\n")
         for elm, numbers in list(element_dict.items()):

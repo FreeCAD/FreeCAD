@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions to work with edges."""
+
 ## @package edges
 # \ingroup draftgeoutils
 # \brief Provides various functions to work with edges.

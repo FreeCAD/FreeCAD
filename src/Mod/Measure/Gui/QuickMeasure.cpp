@@ -225,8 +225,10 @@ void QuickMeasure::printResult()
     else if (mtype == MeasureType::Cone || mtype == MeasureType::Plane) {
         print(tr("Area: %1").arg(areaStr(measurement->area())));
     }
-    else if (mtype == MeasureType::CylinderSection || mtype == MeasureType::Sphere
-             || mtype == MeasureType::Torus) {
+    else if (
+        mtype == MeasureType::CylinderSection || mtype == MeasureType::Sphere
+        || mtype == MeasureType::Torus
+    ) {
         print(tr("Area: %1, Radius: %2")
                   .arg(areaStr(measurement->area()), lengthStr(measurement->radius())));
     }

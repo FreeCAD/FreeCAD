@@ -603,8 +603,7 @@ public:
     {
     }
 #endif
-        ~ofstream() override
-        = default;
+        ~ofstream() override = default;
     void open(const FileInfo& fi, ios_base::openmode mode = std::ios::out | std::ios::trunc)
     {
 #ifdef _MSC_VER
@@ -638,8 +637,7 @@ public:
     {
     }
 #endif
-        ~ifstream() override
-        = default;
+        ~ifstream() override = default;
     void open(const FileInfo& fi, ios_base::openmode mode = std::ios::in)
     {
 #ifdef _MSC_VER

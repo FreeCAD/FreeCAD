@@ -29,6 +29,7 @@
 The Line class is used by other Gui Commands that behave in a similar way
 like Wire, BSpline, and BezCurve.
 """
+
 ## @package gui_lines
 # \ingroup draftguitools
 # \brief Provides GUI tools to create straight Line and Wire objects.

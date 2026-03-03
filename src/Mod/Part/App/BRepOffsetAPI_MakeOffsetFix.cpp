@@ -282,8 +282,8 @@ TopoDS_Wire BRepOffsetAPI_MakeOffsetFix::ReplaceEdges(GeomAbs_CurveType type, co
             ShapeConstruct_Curve scc;
             double u = curve.FirstParameter();
             double v = curve.LastParameter();
-            Handle(Geom_BSplineCurve) spline
-                = scc.ConvertToBSpline(curve.Curve().Curve(), u, v, Precision::Confusion());
+            Handle(Geom_BSplineCurve)
+                spline = scc.ConvertToBSpline(curve.Curve().Curve(), u, v, Precision::Confusion());
             if (!spline.IsNull()) {
                 BRepBuilderAPI_MakeEdge mkEdge(spline, u, v);
                 edge = mkEdge.Edge();

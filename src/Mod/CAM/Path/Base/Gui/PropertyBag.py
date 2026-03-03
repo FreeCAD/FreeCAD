@@ -30,7 +30,6 @@ import Path.Base.PropertyBag as PathPropertyBag
 import Path.Base.Util as PathUtil
 import re
 
-
 __title__ = "Property Bag Editor"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"

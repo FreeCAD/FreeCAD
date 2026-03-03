@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions to work with arcs."""
+
 ## @package arcs
 # \ingroup draftgeoutils
 # \brief Provides various functions to work with arcs.

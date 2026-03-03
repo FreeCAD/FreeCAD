@@ -581,8 +581,9 @@ void LinearPattern::syncLengthAndOffset(LinearPatternDirection dir)
         && !lengthProp.testStatus(App::Property::Status::Immutable)) {
         lengthProp.setValue(offsetProp.getValue() * occurrences);
     }
-    else if (mode == LinearPatternMode::Extent
-             && !offsetProp.testStatus(App::Property::Status::Immutable)) {
+    else if (
+        mode == LinearPatternMode::Extent && !offsetProp.testStatus(App::Property::Status::Immutable)
+    ) {
         offsetProp.setValue(lengthProp.getValue() / occurrences);
     }
 }

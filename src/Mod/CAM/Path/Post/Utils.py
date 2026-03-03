@@ -28,7 +28,6 @@
 These are common functions and classes for creating custom post processors.
 """
 
-
 from Path.Base.MachineState import MachineState
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Geom import CmdMoveDrill
@@ -39,7 +38,6 @@ import FreeCAD
 import Path
 import os
 import re
-
 
 debug = False
 if debug:

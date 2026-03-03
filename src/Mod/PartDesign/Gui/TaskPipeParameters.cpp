@@ -189,8 +189,9 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->profileBaseEdit->setText(label);
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refSpineEdgeAdd) {
+            else if (
+                stateHandler->getSelectionMode() == StateHandlerTaskPipe::SelectionModes::refSpineEdgeAdd
+            ) {
                 QString sub = QString::fromStdString(msg.pSubName);
                 if (!sub.isEmpty()) {
                     QListWidgetItem* item = new QListWidgetItem();
@@ -207,8 +208,10 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->spineBaseEdit->setText(label);
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove) {
+            else if (
+                stateHandler->getSelectionMode()
+                == StateHandlerTaskPipe::SelectionModes::refSpineEdgeRemove
+            ) {
                 QString sub = QString::fromLatin1(msg.pSubName);
                 if (!sub.isEmpty()) {
                     removeFromListWidget(ui->listWidgetReferences, sub);
@@ -217,8 +220,9 @@ void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
                     ui->spineBaseEdit->clear();
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refSpine) {
+            else if (
+                stateHandler->getSelectionMode() == StateHandlerTaskPipe::SelectionModes::refSpine
+            ) {
                 ui->listWidgetReferences->clear();
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
@@ -471,8 +475,10 @@ bool TaskPipeParameters::accept()
     if (spine && !pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
         extReference = true;
     }
-    else if (auxSpine && !pcActiveBody->hasObject(auxSpine)
-             && !pcActiveBody->getOrigin()->hasObject(auxSpine)) {
+    else if (
+        auxSpine && !pcActiveBody->hasObject(auxSpine)
+        && !pcActiveBody->getOrigin()->hasObject(auxSpine)
+    ) {
         extReference = true;
     }
     else {
@@ -502,8 +508,9 @@ bool TaskPipeParameters::accept()
                 );
                 copies.push_back(pipe->Spine.getValue());
             }
-            else if (!pcActiveBody->hasObject(auxSpine)
-                     && !pcActiveBody->getOrigin()->hasObject(auxSpine)) {
+            else if (
+                !pcActiveBody->hasObject(auxSpine) && !pcActiveBody->getOrigin()->hasObject(auxSpine)
+            ) {
                 pipe->AuxiliarySpine.setValue(
                     PartDesignGui::TaskFeaturePick::makeCopy(
                         auxSpine,
@@ -730,8 +737,10 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
                     ui->profileBaseEdit->setText(label);
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove) {
+            else if (
+                stateHandler->getSelectionMode()
+                == StateHandlerTaskPipe::SelectionModes::refAuxSpineEdgeRemove
+            ) {
                 QString sub = QString::fromLatin1(msg.pSubName);
                 if (!sub.isEmpty()) {
                     removeFromListWidget(ui->listWidgetReferences, sub);
@@ -740,8 +749,9 @@ void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg)
                     ui->profileBaseEdit->clear();
                 }
             }
-            else if (stateHandler->getSelectionMode()
-                     == StateHandlerTaskPipe::SelectionModes::refAuxSpine) {
+            else if (
+                stateHandler->getSelectionMode() == StateHandlerTaskPipe::SelectionModes::refAuxSpine
+            ) {
                 ui->listWidgetReferences->clear();
 
                 App::Document* document = App::GetApplication().getDocument(msg.pDocName);
@@ -1005,8 +1015,10 @@ void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg)
                     );
                     ui->listWidgetReferences->addItem(item);
                 }
-                else if (stateHandler->getSelectionMode()
-                         == StateHandlerTaskPipe::SelectionModes::refSectionRemove) {
+                else if (
+                    stateHandler->getSelectionMode()
+                    == StateHandlerTaskPipe::SelectionModes::refSectionRemove
+                ) {
                     removeFromListWidget(ui->listWidgetReferences, label);
                 }
             }

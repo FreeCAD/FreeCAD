@@ -328,9 +328,11 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
             // relative mode
             absolutecenter = false;
         }
-        else if ((name == "G73") || (name == "G74") || (name == "G81") || (name == "G82")
-                 || (name == "G83") || (name == "G84") || (name == "G85") || (name == "G86")
-                 || (name == "G89")) {
+        else if (
+            (name == "G73") || (name == "G74") || (name == "G81") || (name == "G82")
+            || (name == "G83") || (name == "G84") || (name == "G85") || (name == "G86")
+            || (name == "G89")
+        ) {
             // drill,tap,bore
 
             // Check for RetractMode annotation (G98 or G99)

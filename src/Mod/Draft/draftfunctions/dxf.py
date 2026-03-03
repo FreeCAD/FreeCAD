@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the DXF representation of various shapes."""
+
 ## @package dxf
 # \ingroup draftfunctions
 # \brief Provides functions to return the DXF representation of shapes.

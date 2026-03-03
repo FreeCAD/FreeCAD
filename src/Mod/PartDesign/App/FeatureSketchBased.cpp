@@ -629,8 +629,9 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
     if (!sketch) {
         shape = getTopoShapeVerifiedFace(true);
     }
-    else if (sketch->MapMode.getValue() == Attacher::mmFlatFace
-             && sketch->AttachmentSupport.getValue()) {
+    else if (
+        sketch->MapMode.getValue() == Attacher::mmFlatFace && sketch->AttachmentSupport.getValue()
+    ) {
         const auto& Support = sketch->AttachmentSupport;
         App::DocumentObject* ref = Support.getValue();
         shape = Part::Feature::getTopoShape(

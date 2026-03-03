@@ -226,7 +226,9 @@ PyObject* ViewProviderPy::canDropObject(PyObject* args, PyObject* kw)
     PyObject* pyElements = Py_None;
     const char* subname = nullptr;
     static const std::array<const char*, 5> kwlist {"obj", "owner", "subname", "elem", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist, &obj, &owner, &subname, &pyElements)) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kw, "|OOsO", kwlist, &obj, &owner, &subname, &pyElements)
+    ) {
         return nullptr;
     }
 

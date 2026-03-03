@@ -316,16 +316,16 @@ void EditModeCoinManager::ParameterObserver::updateOverlayVisibilityParameter(
     if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineDegree) {
         Client.overlayParameters.bSplineDegreeVisible = hGrpsk->GetBool(parametername.c_str(), true);
     }
-    else if constexpr (visibilityparameter
-                       == OverlayVisibilityParameter::BSplineControlPolygonVisible) {
+    else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineControlPolygonVisible) {
         Client.overlayParameters.bSplineControlPolygonVisible
             = hGrpsk->GetBool(parametername.c_str(), true);
     }
     else if constexpr (visibilityparameter == OverlayVisibilityParameter::BSplineCombVisible) {
         Client.overlayParameters.bSplineCombVisible = hGrpsk->GetBool(parametername.c_str(), true);
     }
-    else if constexpr (visibilityparameter
-                       == OverlayVisibilityParameter::BSplineKnotMultiplicityVisible) {
+    else if constexpr (
+        visibilityparameter == OverlayVisibilityParameter::BSplineKnotMultiplicityVisible
+    ) {
         Client.overlayParameters.bSplineKnotMultiplicityVisible
             = hGrpsk->GetBool(parametername.c_str(), true);
     }

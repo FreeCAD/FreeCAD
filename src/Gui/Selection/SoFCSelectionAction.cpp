@@ -1130,9 +1130,11 @@ void SoBoxSelectionRenderAction::apply(SoNode* node)
                     }
                     PRIVATE(this)->selectsearch->reset();
                 }
-                else if (selection->isHighlighted()
-                         && selection->selected.getValue() == SoFCSelection::NOTSELECTED
-                         && selection->style.getValue() == SoFCSelection::BOX) {
+                else if (
+                    selection->isHighlighted()
+                    && selection->selected.getValue() == SoFCSelection::NOTSELECTED
+                    && selection->style.getValue() == SoFCSelection::BOX
+                ) {
                     PRIVATE(this)->basecolor->rgb.setValue(selection->colorHighlight.getValue());
 
                     if (!PRIVATE(this)->selectsearch) {
@@ -1177,9 +1179,10 @@ void SoBoxSelectionRenderAction::apply(SoPath* path)
             // because this will destroy the box immediately
             selection->touch();  // force a redraw when dehighlighting
         }
-        else if (selection->isHighlighted()
-                 && selection->selected.getValue() == SoFCSelection::NOTSELECTED
-                 && selection->style.getValue() == SoFCSelection::BOX) {
+        else if (
+            selection->isHighlighted() && selection->selected.getValue() == SoFCSelection::NOTSELECTED
+            && selection->style.getValue() == SoFCSelection::BOX
+        ) {
             PRIVATE(this)->basecolor->rgb.setValue(selection->colorHighlight.getValue());
 
             if (!PRIVATE(this)->selectsearch) {
