@@ -575,7 +575,6 @@ void AssemblyLink::synchronizeComponents()
     }
 
     // Propagate Scale to children
-    float currentScale = Scale.getValue();
     for (const auto& [sourceObj, linkObj] : objLinkMap) {
         if (!linkObj) {
             continue;
