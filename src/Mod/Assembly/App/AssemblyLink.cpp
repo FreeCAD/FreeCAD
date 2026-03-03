@@ -517,7 +517,8 @@ void AssemblyLink::synchronizeComponents()
             continue;
         }
 
-        if (auto propScaleLink = dynamic_cast<App::PropertyFloat*>(linkObj->getPropertyByName("Scale"))) {
+        if (auto propScaleLink
+            = dynamic_cast<App::PropertyFloat*>(linkObj->getPropertyByName("Scale"))) {
             float linkScale = propScaleLink->getValue();
 
             if (currentScale != linkScale) {
