@@ -56,6 +56,8 @@ void DlgSettingsImp::saveSettings()
     );
     QString delimiter = ui->delimiterComboBox->currentText();
     hGrp->SetASCII("ImportExportDelimiter", delimiter.toStdString().c_str());
+    QString trigger = ui->autoRecomputeTriggerComboBox->currentText();
+    hGrp->SetASCII("RecomputeTrigger", trigger.toStdString().c_str());
     ui->quoteCharLineEdit->onSave();
     ui->escapeCharLineEdit->onSave();
     ui->formatString->onSave();
@@ -93,6 +95,17 @@ void DlgSettingsImp::loadSettings()
         ui->delimiterComboBox->addItem(delimiter);
         idx = ui->delimiterComboBox->findText(delimiter, Qt::MatchFixedString);
         ui->delimiterComboBox->setCurrentIndex(idx);
+    }
+
+    QString trigger = QString::fromStdString(hGrp->GetASCII("RecomputeTrigger", "interactions"));
+    idx = ui->autoRecomputeTriggerComboBox->findText(trigger, Qt::MatchFixedString);
+    if (idx != -1) {
+        ui->autoRecomputeTriggerComboBox->setCurrentIndex(idx);
+    }
+    else {
+        ui->autoRecomputeTriggerComboBox->addItem(trigger);
+        idx = ui->autoRecomputeTriggerComboBox->findText(trigger, Qt::MatchFixedString);
+        ui->autoRecomputeTriggerComboBox->setCurrentIndex(idx);
     }
 
     ui->quoteCharLineEdit->onRestore();

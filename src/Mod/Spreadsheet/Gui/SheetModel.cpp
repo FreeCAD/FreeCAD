@@ -577,7 +577,13 @@ void SheetModel::setCellData(QModelIndex index, QString str)
 
         sheet->setContent(address, str.toUtf8().constData());
         Gui::Command::commitCommand();
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+        );
+        QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+        if (trigger.compare(QLatin1String("interactions"), Qt::CaseInsensitive) == 0) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        }
     }
     catch (const Base::Exception& e) {
         e.reportException();
