@@ -1348,7 +1348,6 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
     update();
 }
 
-
 bool QGIViewPart::isExporting() const
 {
     // dvp already validated
@@ -1362,7 +1361,6 @@ bool QGIViewPart::isExporting() const
 
     return scenePage->getExportingAny();
 }
-
 
 // returns true if vertex dots should be shown
 // note this is only one of the "rules" around showing or hiding vertices.
