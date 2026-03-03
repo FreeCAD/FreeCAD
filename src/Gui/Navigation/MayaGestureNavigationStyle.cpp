@@ -589,7 +589,7 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent* const ev)
                         if (comboAfter & BUTTON1DOWN || comboAfter & BUTTON2DOWN) {
                             // don't leave navigation till all buttons have been released
                             if (comboAfter & BUTTON1DOWN && comboAfter & BUTTON2DOWN) {
-                                setRotationCenter(getFocalPoint());
+                                setRotationCenter(viewer->getFocalPoint());
                             }
                             else {
                                 saveCursorPosition(ev);
