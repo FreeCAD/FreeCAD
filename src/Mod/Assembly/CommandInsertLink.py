@@ -163,11 +163,16 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             ):
                 continue
 
+            objType = "Assembly::AssemblyLink" if object.isDerivedFrom("Assembly::AssemblyLink") else "App::Link"
+
             commands = commands + (
-                f'item = assembly.newObject("App::Link", "{object.Name}")\n'
+                f'item = assembly.newObject("{objType}", "{object.Name}")\n'
                 f'item.LinkedObject = App.ActiveDocument.getObject("{object.LinkedObject.Name}")\n'
                 f'item.Label = "{object.Label}"\n'
             )
+
+            if hasattr(object, "Scale") and object.Scale != 1.0:
+                commands = commands + f"item.Scale = {object.Scale}\n"
 
             if translation != App.Vector():
                 commands = commands + (
@@ -411,6 +416,9 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             objType = "App::Link"
 
         addedObject = self.assembly.newObject(objType, selectedPart.Label)
+
+        if self.form.CheckBox_Mirror.isChecked():
+            addedObject.Scale = -addedObject.Scale
 
         # set placement of the added object to the center of the screen.
         view = Gui.activeView()
