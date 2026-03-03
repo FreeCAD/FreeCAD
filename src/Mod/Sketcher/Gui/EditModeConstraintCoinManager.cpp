@@ -1906,6 +1906,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
                                         : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
+                if (!drawingParameters.labelFontName.isEmpty()) {
+                    text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
+                }
                 text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
