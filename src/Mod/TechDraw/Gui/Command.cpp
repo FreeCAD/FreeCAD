@@ -1579,6 +1579,12 @@ void CmdTechDrawSymbol::activated(int iMsg)
                   FeatName.c_str());
 
         updateActive();
+         auto vpSymbol = dynamic_cast<ViewProviderDrawingView*>(
+             Gui::Application::Instance->activeDocument()->getViewProviderByName(FeatName.c_str())
+        );
+        if (vpSymbol && !baseView) {
+          vpSymbol->stackTop();
+        }
         commitCommand();
     }
 }
