@@ -1150,7 +1150,7 @@ struct BBoxKey
         if (matrix) {
             mat = *matrix;
         }
-        
+
         // Normalize -0.0 to 0.0 to ensure consistent hashing
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
@@ -1166,7 +1166,7 @@ struct BBoxKey
         if (transform != other.transform || subname != other.subname) {
             return false;
         }
-        
+
         // Exact element-wise comparison to avoid fuzzy Base::Matrix4D::operator==
         // This satisfies std::unordered_map's strict equivalence relation requirement.
         for (int i = 0; i < 4; ++i) {
@@ -1376,4 +1376,3 @@ void ViewProvider::setLinkVisible(bool visible)
         ext->setLinkVisible(visible);
     }
 }
-
