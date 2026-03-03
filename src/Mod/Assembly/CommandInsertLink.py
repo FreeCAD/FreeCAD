@@ -163,7 +163,11 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             ):
                 continue
 
-            objType = "Assembly::AssemblyLink" if object.isDerivedFrom("Assembly::AssemblyLink") else "App::Link"
+            objType = (
+                "Assembly::AssemblyLink"
+                if object.isDerivedFrom("Assembly::AssemblyLink")
+                else "App::Link"
+            )
 
             commands = commands + (
                 f'item = assembly.newObject("{objType}", "{object.Name}")\n'
