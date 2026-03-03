@@ -190,7 +190,7 @@ void QuickMeasure::addSelectionToMeasurement()
 static QString areaStr(double value)
 {
     Base::Quantity area(value, Base::Unit::Area);
-    return QString::fromStdString(area.getUserString());
+    return QString::fromStdString(area.getUserString()).replace("^2", "²");
 }
 
 static QString lengthStr(double value)
