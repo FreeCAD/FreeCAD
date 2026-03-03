@@ -340,9 +340,6 @@ class RotaryAxis:
         )
 
 
-from enum import Enum
-
-
 class ToolheadType(Enum):
     """Types of toolheads/tools supported by the machine."""
 
@@ -808,8 +805,8 @@ class Machine:
         min_rpm=0,
         tool_change="manual",
     ):
-        """Add a spindle to the configuration"""
-        self.spindles.append(Spindle(name, id, max_power_kw, max_rpm, min_rpm, tool_change))
+        """Add a toolhead to the configuration"""
+        self.toolheads.append(Toolhead(name, id, max_power_kw, max_rpm, min_rpm, tool_change))
         return self
 
     def save(self, filepath):
@@ -879,14 +876,14 @@ class Machine:
     def get_spindle_by_name(self, name):
         """Get a toolhead by name (case-insensitive)"""
         name_lower = name.lower()
-        for toolhead in self.spindles:
+        for toolhead in self.toolheads:
             if toolhead.name.lower() == name_lower:
                 return toolhead
         raise ValueError(f"Toolhead with name '{name}' not found")
 
     def get_spindle_by_id(self, id):
         """Get a toolhead by ID"""
-        for toolhead in self.spindles:
+        for toolhead in self.toolheads:
             if toolhead.id == id:
                 return toolhead
         raise ValueError(f"Toolhead with ID '{id}' not found")
@@ -951,17 +948,6 @@ class Machine:
         config.add_rotary_axis("B", FreeCAD.Vector(0, 1, 0), b_limits[0], b_limits[1])
         config.set_alignment_axes("B", None)
         config.description = "4-axis machine with B-axis rotary table (rotation around Y-axis)"
-        return config
-
-    @classmethod
-    def create_3axis_config(cls):
-        """Create standard 3-axis XYZ configuration (no rotary axes)"""
-        config = cls("3-Axis XYZ Configuration")
-        config.add_linear_axis("X", FreeCAD.Vector(1, 0, 0))
-        config.add_linear_axis("Y", FreeCAD.Vector(0, 1, 0))
-        config.add_linear_axis("Z", FreeCAD.Vector(0, 0, 1))
-        config.description = "Standard 3-axis machine with no rotary axes"
-        # No rotary axes to add, no alignment axes to set
         return config
 
     def to_dict(self):

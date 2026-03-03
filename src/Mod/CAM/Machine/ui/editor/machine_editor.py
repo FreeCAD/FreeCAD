@@ -17,8 +17,6 @@ from Machine.models.machine import (
     Toolhead,
     ToolheadType,
     AxisRole,
-    Kinematics,
-    BaseFrame,
 )
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Post.Processor import PostProcessorFactory
@@ -753,11 +751,10 @@ class MachineEditorDialog(QtGui.QDialog):
         if not self.machine or len(self.machine.toolheads) <= 1:
             return  # Don't allow removing the last toolhead
 
-        toolhead = self.machine.toolheads[index]
         reply = QtGui.QMessageBox.question(
             self,
             translate("CAM_MachineEditor", "Remove Toolhead"),
-            translate("CAM_MachineEditor", f"Remove '{toolhead.name}'? This cannot be undone."),
+            translate("CAM_MachineEditor", "Remove toolhead? This action cannot be undone."),
             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
             QtGui.QMessageBox.No,
         )
@@ -808,7 +805,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 QtGui.QMessageBox.warning(
                     self,
                     translate("CAM_MachineEditor", "Template Load Error"),
-                    translate("CAM_MachineEditor", f"Could not load template: {e}"),
+                    translate("CAM_MachineEditor", "Could not load template"),
                 )
                 return
 
@@ -2333,11 +2330,6 @@ class MachineEditorDialog(QtGui.QDialog):
             self.setPostProcessorTooltip(
                 self.post_processor_combo, name, self.postProcessorDefaultTooltip
             )
-            processor = self.getPostProcessor(name)
-            # if processor.tooltipArgs:
-            #     self.post_processor_args_edit.setToolTip(processor.tooltipArgs)
-            # else:
-            #     self.post_processor_args_edit.setToolTip(self.postProcessorArgsDefaultTooltip)
         else:
             self.post_processor_combo.setToolTip(self.postProcessorDefaultTooltip)
             # self.post_processor_args_edit.setToolTip(self.postProcessorArgsDefaultTooltip)
