@@ -1261,11 +1261,79 @@ def export(exportList, filename):
         _msg(translate("ImportSVG", "Unknown SVG export style, switching to Translated"))
         svg_export_style = 0
 
+    # get selection context - basically, at this point user could select specific faces
+    # or edges
+    shape_color_map = {}
+    if FreeCAD.GuiUp:
+        import FreeCADGui
+
+        selections = FreeCADGui.Selection.getSelectionEx()
+
+        selected_shapes = []
+        for sel in selections:
+            if sel.SubElementNames:
+                obj_shape = sel.Object.Shape
+                vobj = sel.Object.ViewObject if hasattr(sel.Object, "ViewObject") else None
+
+                default_shape_color = None
+                default_line_color = None
+                if vobj:
+                    if hasattr(vobj, "ShapeColor"):
+                        color = vobj.ShapeColor
+                        default_shape_color = "#{:02x}{:02x}{:02x}".format(
+                            int(color[0] * 255), int(color[1] * 255), int(color[2] * 255)
+                        )
+                    if hasattr(vobj, "LineColor"):
+                        color = vobj.LineColor
+                        default_line_color = "#{:02x}{:02x}{:02x}".format(
+                            int(color[0] * 255), int(color[1] * 255), int(color[2] * 255)
+                        )
+
+                for subname in sel.SubElementNames:
+                    if subname.startswith("Face"):
+                        try:
+                            face_idx = int(subname[4:]) - 1
+                            if 0 <= face_idx < len(obj_shape.Faces):
+                                shape = obj_shape.Faces[face_idx]
+                                selected_shapes.append(shape)
+
+                                # check for per-face color
+                                face_color = default_shape_color
+                                if vobj and hasattr(vobj, "DiffuseColor") and vobj.DiffuseColor:
+                                    if face_idx < len(vobj.DiffuseColor):
+                                        color = vobj.DiffuseColor[face_idx]
+                                        face_color = "#{:02x}{:02x}{:02x}".format(
+                                            int(color[0] * 255),
+                                            int(color[1] * 255),
+                                            int(color[2] * 255),
+                                        )
+
+                                # note #88888.. is just default gray for part objects here
+                                shape_color_map[id(shape)] = (
+                                    face_color or "#888888",
+                                    default_line_color or "#000000",
+                                )
+                        except (ValueError, IndexError):
+                            pass
+                    elif subname.startswith("Edge"):
+                        try:
+                            edge_idx = int(subname[4:]) - 1
+                            if 0 <= edge_idx < len(obj_shape.Edges):
+                                shape = obj_shape.Edges[edge_idx]
+                                selected_shapes.append(shape)
+                                shape_color_map[id(shape)] = (None, default_line_color or "#000000")
+                        except (ValueError, IndexError):
+                            pass
+
+        # if we found subelements thenxport those instead of full objs
+        if selected_shapes:
+            exportList = selected_shapes
+
     tmp = []
     hidden_doc = None
     base_sketch_pla = None  # Placement of the 1st sketch.
     for obj in exportList:
-        if obj.isDerivedFrom("Sketcher::SketchObject"):
+        if hasattr(obj, "isDerivedFrom") and obj.isDerivedFrom("Sketcher::SketchObject"):
             if hidden_doc is None:
                 hidden_doc = FreeCAD.newDocument(name="hidden", hidden=True, temp=True)
                 base_sketch_pla = obj.Placement
@@ -1287,7 +1355,10 @@ def export(exportList, filename):
     # of all shapes
     bb = FreeCAD.BoundBox()
     for obj in exportList:
-        if hasattr(obj, "Shape") and obj.Shape and obj.Shape.BoundBox.isValid():
+        if isinstance(obj, Part.Shape):
+            if obj.BoundBox.isValid():
+                bb.add(obj.BoundBox)
+        elif hasattr(obj, "Shape") and obj.Shape and obj.Shape.BoundBox.isValid():
             bb.add(obj.Shape.BoundBox)
         else:
             # if Draft.get_type(obj) in ("Text", "LinearDimension", ...)
@@ -1346,24 +1417,117 @@ def export(exportList, filename):
     svg.write(">\n")
 
     # Write paths
-    for ob in exportList:
+    from draftfunctions import svgshapes
+
+    for idx, ob in enumerate(exportList):
+        if isinstance(ob, Part.Shape):
+            obj_id = "selection_%d" % idx
+            obj_label = obj_id
+        else:
+            obj_id = ob.Name
+            obj_label = ob.Label
+
+        # write group with transform
         if svg_export_style == 0:
-            # translated-style exports have the entire sketch translated
-            # to fit in the X>0, Y>0 quadrant
-            # svg.write('<g transform="translate('
-            #           + str(-minx) + ',' + str(-miny + 2*margin)
-            #           + ') scale(1,-1)">\n')
             svg.write(
-                '<g id="%s" transform="translate(%f,%f) ' 'scale(1,-1)">\n' % (ob.Name, -minx, maxy)
+                '<g id="%s" transform="translate(%f,%f) ' 'scale(1,-1)">\n' % (obj_id, -minx, maxy)
             )
         else:
-            # raw-style exports do not translate the sketch
-            svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
+            svg.write('<g id="%s" transform="scale(1,-1)">\n' % obj_id)
 
-        svg.write(Draft.get_svg(ob, override=False))
-        _label_enc = str(ob.Label.encode("utf8"))
+        if isinstance(ob, Part.Shape):
+            pathdata = []
+            # get colors from map if not then use defaults
+            fill_color, stroke_color = shape_color_map.get(id(ob), ("#888888", "#000000"))
+
+            if ob.ShapeType == "Face" and ob.Faces:
+                wires = [ob.OuterWire]
+                wires.extend([w for w in ob.Wires if w.hashCode() != ob.OuterWire.hashCode()])
+                svg.write(
+                    svgshapes.get_path(
+                        ob,
+                        None,
+                        fill_color,
+                        pathdata,
+                        stroke_color,
+                        0.35,
+                        "none",
+                        None,
+                        wires=wires,
+                        pathname=obj_id,
+                    )
+                )
+            elif ob.ShapeType == "Edge" or (hasattr(ob, "Edges") and ob.Edges):
+                edges = ob.Edges if hasattr(ob, "Edges") else [ob]
+                svg.write(
+                    svgshapes.get_path(
+                        ob,
+                        None,
+                        "none",
+                        pathdata,
+                        stroke_color,
+                        0.35,
+                        "none",
+                        None,
+                        edges=edges,
+                        pathname=obj_id,
+                    )
+                )
+        else:
+            color_source = ob
+            if hasattr(ob, "Tip") and ob.Tip:
+                color_source = ob.Tip
+
+            vobj = color_source.ViewObject if hasattr(color_source, "ViewObject") else None
+            has_colors = (
+                vobj
+                and hasattr(vobj, "DiffuseColor")
+                and vobj.DiffuseColor
+                and len(vobj.DiffuseColor) >= 1
+            )
+
+            # export faces individually if we have color information
+            if has_colors and hasattr(ob, "Shape") and ob.Shape and ob.Shape.Faces:
+                pathdata = []
+                default_stroke = "#000000"
+                if vobj and hasattr(vobj, "LineColor"):
+                    color = vobj.LineColor
+                    default_stroke = "#{:02x}{:02x}{:02x}".format(
+                        int(color[0] * 255), int(color[1] * 255), int(color[2] * 255)
+                    )
+
+                for face_idx, face in enumerate(ob.Shape.Faces):
+                    # get color for this face (or use first color if uniform)
+                    color_idx = min(face_idx, len(vobj.DiffuseColor) - 1)
+                    color = vobj.DiffuseColor[color_idx]
+                    face_color = "#{:02x}{:02x}{:02x}".format(
+                        int(color[0] * 255), int(color[1] * 255), int(color[2] * 255)
+                    )
+
+                    wires = [face.OuterWire]
+                    wires.extend(
+                        [w for w in face.Wires if w.hashCode() != face.OuterWire.hashCode()]
+                    )
+                    svg.write(
+                        svgshapes.get_path(
+                            face,
+                            None,
+                            face_color,
+                            pathdata,
+                            default_stroke,
+                            0.35,
+                            "none",
+                            None,
+                            wires=wires,
+                            pathname="%s_f%d" % (obj_id, face_idx),
+                        )
+                    )
+            else:
+                svg.write(Draft.get_svg(ob, override=False))
+
+        # write title
+        _label_enc = str(obj_label.encode("utf8"))
         _label = _label_enc.replace("<", "&lt;").replace(">", "&gt;")
-        # replace('"', "&quot;")
         svg.write("<title>%s</title>\n" % _label)
         svg.write("</g>\n")
 
