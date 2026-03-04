@@ -228,7 +228,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(PartDesignGui_SRCS
     ${PartDesignGui_SRCS}
-    ${PartDesignGui_UIC_HDRS}
+    ${PartDesignGui_UIC_SRCS}
     ${PartDesignGuiModule_SRCS}
     ${PartDesignGuiTaskDlgs_SRCS}
     ${PartDesignGuiViewProvider_SRCS}
