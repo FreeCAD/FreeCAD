@@ -206,10 +206,10 @@ def setStatusIcons(show=True):
                     translate(
                         "BIM",
                         "The value of the nudge movement (rotation is always 45°)."
-                        "CTRL+arrows to move\nCTRL+, to rotate left"
-                        "CTRL+. to rotate right\nCTRL+PgUp to extend extrusion"
-                        "CTRL+PgDown to shrink extrusion"
-                        "CTRL+/ to switch between auto and manual mode",
+                        "Alt+arrows to move\nAlt+, to rotate left"
+                        "Alt+. to rotate right\nAlt+PgUp to extend extrusion"
+                        "Alt+PgDown to shrink extrusion"
+                        "Alt+/ to switch between auto and manual mode",
                     )
                 )
                 statuswidget.addWidget(nudge)
