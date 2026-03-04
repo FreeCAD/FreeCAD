@@ -2237,4 +2237,3 @@ void CreateDocCommands()
 }
 
 }  // namespace Gui
-
