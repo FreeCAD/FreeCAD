@@ -583,13 +583,11 @@ class ObjectDressup:
         for i, cmd in enumerate(cmds):
             distance -= cmd.pathLength()
             cmd.begin.z = z
-            if (i == len(cmds) - 1) or Path.Geom.isRoughly(distance, 0) or distance < 0:
-                # forcing end position for last command to exclude precision errors
-                cmd.param["X"] = end.x
-                cmd.param["Y"] = end.y
-                cmd.param["Z"] = end.z
-                return cmds[: i + 1]
-            z = end.z + math.tan(angle) * distance
+            if i == len(cmds) - 1:  # last command
+                # forcing end position to exclude precision error
+                z = end.z
+            else:
+                z = end.z + math.tan(angle) * distance
             cmd.param["Z"] = z
         return cmds
 
@@ -604,11 +602,11 @@ class ObjectDressup:
         for i, cmd in enumerate(cmds):
             dist += cmd.pathLength()
             cmd.begin.z = z
-            if (i == len(cmds) - 1) or Path.Geom.isRoughly(dist, distance) or dist > distance:
-                # forcing end position for last command to exclude precision errors
-                cmd.param["Z"] = end.z
-                return cmds[: i + 1]
-            z = begin.z + math.tan(angle) * dist
+            if i == len(cmds) - 1:  # last command
+                # forcing end position to exclude precision error
+                z = end.z
+            else:
+                z = begin.z + math.tan(angle) * dist
             cmd.param["Z"] = z
         return cmds
 
@@ -704,85 +702,15 @@ class ObjectDressup:
         points.insert(0, wire.OrderedVertexes[0].Point)
         prevZ = begin.z
         commands = []
-        distance = 0
+        dist = 0
         for i, p in enumerate(points):
-            distance += p.distanceToPoint(points[i + 1])
-            nextZ = begin.z + radius - math.sqrt(radius**2 - distance**2)
+            dist += p.distanceToPoint(points[i + 1])
+            nextZ = begin.z + radius - math.sqrt(radius**2 - dist**2)
             param = {"X": points[i + 1].x, "Y": points[i + 1].y, "Z": nextZ, "F": feedRate}
             commands.append(PathLanguage.MoveStraight(App.Vector(p.x, p.y, prevZ), "G1", param))
             if i == len(points) - 2:
                 break
             prevZ = nextZ
-        return commands
-
-    # Create vertical arc with move Down and follow profile
-    # TODO first implimentation
-    def _createArcZFollowIn(self, obj, begin, end, radius, feedRate):
-        commands = []
-        angle = math.acos((radius - begin.z + end.z) / radius)  # arc start angle
-        stepAngle = self.getStepAngleArcZ(angle, radius)
-        iterBegin = None
-        while angle > 0 and not Path.Geom.isRoughly(angle, 0):
-            distance = radius * math.sin(angle) + obj.OffsetIn.Value
-            if distance >= 0:
-                # get next point with positive distance
-                cmds = self.extendTravelIn(distance)
-                iterEnd = cmds[0].positionBegin()
-            elif self.closedProfile:
-                # get next point with negative distance for closed Profile
-                cmds = self.extendTravelOut(abs(distance))
-                iterEnd = cmds[-1].positionEnd()
-            else:
-                # get next point with negative distance for open Profile
-                cmds = self.cutTravelBegin(
-                    self.source[self.firstMillIndex : self.lastMillIndex + 1], abs(distance)
-                )
-                iterEnd = cmds[0].positionBegin()
-
-            iterEnd.z = end.z + radius * (1 - math.cos(angle))
-            if iterBegin:
-                param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-                commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-            iterBegin = copy.copy(iterEnd)
-            angle -= stepAngle
-
-        # last move to end point
-        param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
-        commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-
-        return commands
-
-    # Create vertical arc with move Up and follow profile
-    # TODO first implimentation
-    def _createArcZFollowOut(self, obj, begin, end, radius, feedRate):
-        commands = []
-        angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
-        stepAngle = self.getStepAngleArcZ(angleMax, radius)
-        iterBegin = copy.copy(begin)  # start point of short segment
-        angle = stepAngle  # start angle
-        while angle <= angleMax or Path.Geom.isRoughly(angle, angleMax):
-            distance = radius * math.sin(angle) + obj.OffsetOut.Value
-            if distance >= 0:
-                # get next point with positive distance
-                cmds = self.extendTravelOut(distance)
-                iterEnd = cmds[-1].positionEnd()
-            elif self.closedProfile:
-                # get next point with negative distance for closed Profile
-                cmds = self.extendTravelIn(abs(distance))
-                iterEnd = cmds[0].positionBegin()
-            else:
-                # get next point with negative distance for open Profile
-                cmds = self.cutTravelEnd(
-                    self.source[self.firstMillIndex : self.lastMillIndex + 1], abs(distance)
-                )
-                iterEnd = cmds[-1].positionEnd()
-
-            iterEnd.z = begin.z + radius * (1 - math.cos(angle))
-            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-            commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-            iterBegin = copy.copy(iterEnd)
-            angle += stepAngle
-
         return commands
 
     def getLeadStart(self, obj, move, first, inInstrPrev, outInstrPrev):
