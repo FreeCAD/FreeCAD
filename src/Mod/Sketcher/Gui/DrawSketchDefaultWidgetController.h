@@ -159,8 +159,8 @@ public:
         // extended cycle before calling passFocusToNextParameter().
         if (parameterindex >= SketcherToolDefaultWidget::nParameters) {
             int cbIdx = parameterindex - SketcherToolDefaultWidget::nParameters;
-            ControllerBase::parameterWithFocus =
-                static_cast<int>(ControllerBase::onViewParameters.size()) + nParameter + cbIdx;
+            ControllerBase::parameterWithFocus
+                = static_cast<int>(ControllerBase::onViewParameters.size()) + nParameter + cbIdx;
             // The queued setFocus to a spinbox may cause its Tab KeyRelease to arrive at the
             // spinbox's keyboard manager, triggering a spurious second tabShortcut() call.
             // Suppress that Tab KeyRelease so focus lands correctly on the first spinbox.
@@ -335,8 +335,7 @@ protected:
 
         // Start from the parameter after the currently focused one.
         // parameterWithFocus may be -1 (no focus yet) or in the extended range.
-        unsigned int index =
-            (ControllerBase::parameterWithFocus < 0)
+        unsigned int index = (ControllerBase::parameterWithFocus < 0)
             ? 0u
             : static_cast<unsigned int>(ControllerBase::parameterWithFocus) + 1u;
 
