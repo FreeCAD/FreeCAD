@@ -36,6 +36,7 @@ try:
 
     if FreeCADGui.getMainWindow() is not None:
         from SketcherTests.TestPlacementUpdate import TestSketchPlacementUpdate
+        from SketcherTests.TestAttachmentSupport import TestSketchAttachmentSupport
 except (ImportError, AttributeError):
     pass  # GUI not available, skip GUI tests
 
