@@ -81,7 +81,7 @@ AssemblyLink::AssemblyLink()
         (1.0f),
         "General",
         (App::PropertyType)(App::Prop_None),
-        "The scale factor applied to the assembly link."
+        "The scale factor applied to the assembly link"
     );
 }
 
