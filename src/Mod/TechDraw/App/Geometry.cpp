@@ -58,7 +58,6 @@
 # include <gp_Vec.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <Precision.hxx>
-# include <ShapeAnalysis.hxx>
 # include <Standard_Version.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
@@ -1847,14 +1846,6 @@ std::vector<FacePtr> GeometryUtils::removeNestedHoles(const std::vector<FacePtr>
     return unNestedFaces;
 }
 
-//! method for std::sort when arranging faces by size (bounding rect diagonal).  Use ShapeAnalysis::ContourArea
-//! for more accuracy in sizes.
-bool GeometryUtils::FaceCompare(const TopoDS_Face& face0, const TopoDS_Face& face1)
-{
-    Part::FaceMakerCheese::Wire_Compare wc;
-    return wc(ShapeAnalysis::OuterWire(face0),
-              ShapeAnalysis::OuterWire(face1));
-}
 
 //! returns (unique) indices of holes contained within another hole.
 std::vector<int> GeometryUtils::findNestedFaceIndices(const std::vector<FacePtr>& holes)
