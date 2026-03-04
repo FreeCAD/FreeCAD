@@ -215,7 +215,7 @@ class CAMWorkbench(Workbench):
         )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            prepcmdlist.append("CAM_PathShapeTC")
+            prepcmdlist.extend(["CAM_PathShapeTC", "CAM_PathCompoundTC"])
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
             twodopcmdlist.append("CAM_Slot")
 
