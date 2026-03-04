@@ -49,7 +49,7 @@ public:
     virtual void bind(const App::ObjectIdentifier& _path);
     virtual void bind(const App::Property& prop);
     bool isBound() const;
-    void unbind();
+    virtual void unbind();
     virtual bool apply(const std::string& propName);
     virtual bool apply();
     bool hasExpression() const;
@@ -99,6 +99,7 @@ class GuiExport ExpressionWidget: public ExpressionBinding
 public:
     ExpressionWidget();
     QPixmap getIcon(const char* name, const QSize& size) const;
+    void unbind() override;
 
 protected:
     void makeLabel(QLineEdit* parent);
