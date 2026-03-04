@@ -68,6 +68,8 @@ _setup_logging()
 # Define types
 Values = Dict[str, Any]
 
+POST_TYPE = "machine"
+
 
 class OpenSBPPost(PostProcessor):
     """

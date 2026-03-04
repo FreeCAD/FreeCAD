@@ -46,6 +46,8 @@ else:
 # Define some types that are used throughout this file.
 Values = Dict[str, Any]
 
+POST_TYPE = "machine"
+
 
 class Linuxcnc(PostProcessor):
     """

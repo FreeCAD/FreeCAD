@@ -72,10 +72,10 @@ class TestResolvingPostProcessorName(unittest.TestCase):
 
     def test010(self):
         # Test if post is defined in job
-        self.job.PostProcessor = "linuxcnc"
+        self.job.PostProcessor = "linuxcnc_legacy"
         with patch("Path.Post.Processor.PostProcessor.exists", return_value=True):
             postname = PathCommand._resolve_post_processor_name(self.job)
-            self.assertEqual(postname, "linuxcnc")
+            self.assertEqual(postname, "linuxcnc_legacy")
 
     def test020(self):
         # Test if post is invalid
@@ -87,11 +87,11 @@ class TestResolvingPostProcessorName(unittest.TestCase):
         # Test if post is defined in prefs
         self.job.PostProcessor = ""
         pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-        pref.SetString("PostProcessorDefault", "grbl")
+        pref.SetString("PostProcessorDefault", "grbl_legacy")
 
         with patch("Path.Post.Processor.PostProcessor.exists", return_value=True):
             postname = PathCommand._resolve_post_processor_name(self.job)
-            self.assertEqual(postname, "grbl")
+            self.assertEqual(postname, "grbl_legacy")
 
     def test040(self):
         # Test if user interaction is correctly handled
@@ -127,7 +127,7 @@ class TestPostProcessorFactory(unittest.TestCase):
 
         # Create CAM job programmatically
         cls.job = PathJob.Create("MainJob", [box], None)
-        cls.job.PostProcessor = "linuxcnc"
+        cls.job.PostProcessor = "linuxcnc_legacy"
         cls.job.PostProcessorOutputFile = ""
         cls.job.SplitOutput = False
         cls.job.OrderOutputBy = "Operation"
@@ -146,26 +146,26 @@ class TestPostProcessorFactory(unittest.TestCase):
 
     def test020(self):
         # test creation of postprocessor object
-        post = PostProcessorFactory.get_post_processor(self.job, "generic")
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
         self.assertIsNotNone(post)
         self.assertTrue(hasattr(post, "export"))
         self.assertTrue(hasattr(post, "_buildPostList"))
 
     def test030(self):
         # test wrapping of old school postprocessor scripts
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
         self.assertIsNotNone(post)
         self.assertTrue(hasattr(post, "_buildPostList"))
 
     def test040(self):
         """Test that the __name__ of the postprocessor is correct."""
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc")
+        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
         # Refactored post processors don't have script_module, they are the module
         if hasattr(post, "script_module"):
-            self.assertEqual(post.script_module.__name__, "linuxcnc_post")
+            self.assertEqual(post.script_module.__name__, "linuxcnc_legacy_post")
         else:
             # For refactored posts, check the class module name
-            self.assertEqual(post.__class__.__module__, "linuxcnc_post")
+            self.assertEqual(post.__class__.__module__, "linuxcnc_legacy_post")
 
 
 class TestHeaderBuilder(unittest.TestCase):
@@ -343,3 +343,106 @@ class TestHeaderBuilder(unittest.TestCase):
         # Check note commands
         self.assertEqual(path.Commands[6].Name, "(Note: Note 1)")
         self.assertEqual(path.Commands[7].Name, "(Note: Note 2)")
+
+
+class TestPostProcessorClassification(unittest.TestCase):
+    """Test the POST_TYPE-based postprocessor classification system."""
+
+    def setUp(self):
+        # Clear the classification cache before each test
+        import Path.Preferences
+
+        Path.Preferences._post_type_cache = {}
+        Path.Preferences._post_type_cache_keys = None
+
+    def test010_classify_machine_post(self):
+        """New-style posts with POST_TYPE = 'machine' are classified as 'machine'."""
+        import Path.Preferences
+
+        machine_posts = [
+            "generic",
+            "linuxcnc",
+            "grbl",
+            "centroid",
+            "mach3_mach4",
+            "opensbp",
+            "generic_plasma",
+            "smoothie",
+            "masso_g3",
+        ]
+        for post in machine_posts:
+            result = Path.Preferences.classifyPostProcessor(post)
+            self.assertEqual(result, "machine", f"Expected 'machine' for {post}, got '{result}'")
+
+    def test020_classify_legacy_post(self):
+        """Legacy posts without POST_TYPE are classified as 'legacy'."""
+        import Path.Preferences
+
+        legacy_posts = ["linuxcnc_legacy", "grbl_legacy", "test"]
+        available = Path.Preferences.allAvailablePostProcessors()
+        for post in legacy_posts:
+            if post in available:
+                result = Path.Preferences.classifyPostProcessor(post)
+                self.assertEqual(result, "legacy", f"Expected 'legacy' for {post}, got '{result}'")
+
+    def test030_classify_nonexistent_post(self):
+        """A nonexistent postprocessor is classified as 'unknown'."""
+        import Path.Preferences
+
+        result = Path.Preferences.classifyPostProcessor("nonexistent_xyz_post_that_does_not_exist")
+        self.assertEqual(result, "unknown")
+
+    def test040_legacy_list_excludes_machine(self):
+        """allAvailableLegacyPostProcessors excludes machine-type posts."""
+        import Path.Preferences
+
+        legacy = Path.Preferences.allAvailableLegacyPostProcessors()
+        machine = Path.Preferences.allAvailableMachinePostProcessors()
+
+        # No overlap
+        overlap = set(legacy) & set(machine)
+        self.assertEqual(overlap, set(), f"Unexpected overlap: {overlap}")
+
+        # Machine posts should not appear in legacy list
+        for post in ["generic", "linuxcnc", "grbl"]:
+            self.assertNotIn(post, legacy, f"Machine post '{post}' found in legacy list")
+
+    def test050_machine_list_excludes_legacy(self):
+        """allAvailableMachinePostProcessors excludes legacy-type posts."""
+        import Path.Preferences
+
+        machine = Path.Preferences.allAvailableMachinePostProcessors()
+
+        # Legacy posts should not appear in machine list
+        available = Path.Preferences.allAvailablePostProcessors()
+        for post in available:
+            if "_legacy" in post:
+                self.assertNotIn(post, machine, f"Legacy post '{post}' found in machine list")
+
+    def test060_all_posts_accounted_for(self):
+        """Every available post is classified as either 'machine', 'legacy', or 'unknown'."""
+        import Path.Preferences
+
+        all_posts = Path.Preferences.allAvailablePostProcessors()
+        for post in all_posts:
+            result = Path.Preferences.classifyPostProcessor(post)
+            self.assertIn(
+                result,
+                ["machine", "legacy", "unknown"],
+                f"Unexpected classification '{result}' for {post}",
+            )
+
+    def test070_cache_invalidation(self):
+        """Cache invalidates when available post list changes."""
+        import Path.Preferences
+
+        # Prime the cache
+        Path.Preferences.classifyPostProcessor("generic")
+        self.assertIn("generic", Path.Preferences._post_type_cache)
+
+        # Simulate a change in available posts by modifying the cache key
+        Path.Preferences._post_type_cache_keys = ("fake_post",)
+
+        # Next call should rebuild the cache
+        result = Path.Preferences.classifyPostProcessor("generic")
+        self.assertEqual(result, "machine")

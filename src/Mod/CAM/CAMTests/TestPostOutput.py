@@ -114,7 +114,7 @@ class TestFileNameGenerator(unittest.TestCase):
 
         # Create CAM job programmatically
         cls.job = PathJob.Create("MainJob", [box], None)
-        cls.job.PostProcessor = "linuxcnc"
+        cls.job.PostProcessor = "linuxcnc_legacy"
         cls.job.PostProcessorOutputFile = ""
         cls.job.SplitOutput = False
         cls.job.OrderOutputBy = "Operation"
@@ -432,7 +432,7 @@ class TestExport2Integration(unittest.TestCase):
         box.Height = 20
 
         cls.job = PathJob.Create("Export2TestJob", [box], None)
-        cls.job.PostProcessor = "generic"
+        cls.job.PostProcessor = "linuxcnc_legacy"
         cls.job.PostProcessorOutputFile = ""
         cls.job.SplitOutput = False
         cls.job.OrderOutputBy = "Operation"

@@ -47,6 +47,8 @@ else:
 Values = Dict[str, Any]
 Visible = Dict[str, bool]
 
+POST_TYPE = "machine"
+
 
 class Centroid(PostProcessor):
     """The Centroid post processor class."""

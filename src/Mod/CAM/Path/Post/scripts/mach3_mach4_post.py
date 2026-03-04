@@ -47,6 +47,8 @@ else:
 Values = Dict[str, Any]
 Visible = Dict[str, bool]
 
+POST_TYPE = "machine"
+
 
 class Mach3_Mach4(PostProcessor):
     """The Mach3_Mach4 post processor class."""

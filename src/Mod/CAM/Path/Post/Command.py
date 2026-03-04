@@ -72,7 +72,7 @@ class DlgSelectPostProcessor:
     def __init__(self):
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgSelectPostProcessor.ui")
         firstItem = None
-        for post in Path.Preferences.allEnabledPostProcessors():
+        for post in Path.Preferences.allEnabledLegacyPostProcessors():
             item = QtGui.QListWidgetItem(post)
             item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.dialog.lwPostProcessor.addItem(item)

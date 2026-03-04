@@ -54,6 +54,8 @@ Defaults = Dict[str, bool]
 Values = Dict[str, Any]
 Visible = Dict[str, bool]
 
+POST_TYPE = "machine"
+
 
 class Grbl(PostProcessor):
     """The Grbl post processor class."""

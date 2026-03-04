@@ -425,7 +425,7 @@ class TestBuildPostList(unittest.TestCase):
 
         # Create CAM job programmatically
         cls.job = PathJob.Create("MainJob", [box], None)
-        cls.job.PostProcessor = "generic"
+        cls.job.PostProcessor = "linuxcnc_legacy"
         cls.job.PostProcessorOutputFile = ""
         cls.job.SplitOutput = False
         cls.job.OrderOutputBy = "Operation"
@@ -729,7 +729,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
         # Create job
         cls.job = PathJob.Create("OverrideTestJob", [box], None)
-        cls.job.PostProcessor = "generic"
+        cls.job.PostProcessor = "linuxcnc_legacy"
         cls.job.PostProcessorOutputFile = ""
         cls.job.SplitOutput = False
         cls.job.OrderOutputBy = "Operation"
@@ -980,7 +980,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
         # Test round-trip: save to file and restore
         self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 1500}'
-        self.job.Machine = "RoundTripTestMachine"
+        self.job.Machine = ""  # Use empty machine (no machine) for test
         template_attrs = self.job.Proxy.templateAttrs(self.job)
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
@@ -996,7 +996,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
             self.assertEqual(new_job.PostProcessorPropertyOverrides, '{"pierce_delay": 1500}')
 
             # Verify machine was restored
-            self.assertEqual(new_job.Machine, "RoundTripTestMachine")
+            self.assertEqual(new_job.Machine, "")
 
         finally:
             os.unlink(template_path)

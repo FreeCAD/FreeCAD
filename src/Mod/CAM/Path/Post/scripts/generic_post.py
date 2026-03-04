@@ -39,6 +39,8 @@ else:
 
 Values = Dict[str, Any]
 
+POST_TYPE = "machine"
+
 
 class Generic(PostProcessor):
 

@@ -327,6 +327,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/generic_plasma_post.py
     Path/Post/scripts/heidenhain_legacy_post.py
     Path/Post/scripts/linuxcnc_post.py
+    Path/Post/scripts/linuxcnc_legacy_post.py
     Path/Post/scripts/jtech_legacy_post.py
     Path/Post/scripts/mach3_mach4_legacy_post.py
     Path/Post/scripts/marlin_legacy_post.py

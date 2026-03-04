@@ -47,6 +47,8 @@ else:
 #
 Values = Dict[str, Any]
 
+POST_TYPE = "machine"
+
 
 class Smoothie(PostProcessor):
     """
