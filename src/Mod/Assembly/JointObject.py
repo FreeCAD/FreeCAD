@@ -1081,14 +1081,34 @@ class ViewProviderJoint:
     def redrawJointPlacement(self, jcs, plc, ref):
         if ref:
             jcs.whichChild = coin.SO_SWITCH_ALL
-            jcs.set_marker_placement(plc, ref)
+            assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+            if assembly:
+                asm_global_plc = assembly.getGlobalPlacement()
+                if asm_global_plc != App.Placement():
+                    global_plc = UtilsAssembly.getJcsGlobalPlc(plc, ref)
+                    local_plc = asm_global_plc.inverse() * global_plc
+                    jcs.set_marker_placement(local_plc, None)
+                else:
+                   jcs.set_marker_placement(plc, ref)
+            else:
+                jcs.set_marker_placement(plc, ref)
         else:
             jcs.whichChild = coin.SO_SWITCH_NONE
 
     def showPreviewJCS(self, visible, placement=None, ref=None):
         if visible:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_ALL
-            self.switch_JCS_preview.set_marker_placement(placement, ref)
+            assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+            if assembly and ref and placement:
+                asm_global_plc = assembly.getGlobalPlacement()
+                if asm_global_plc != App.Placement():
+                    global_plc = UtilsAssembly.getJcsGlobalPlc(placement, ref)
+                    local_plc = asm_global_plc.inverse() * global_plc
+                    self.switch_JCS_preview.set_marker_placement(local_plc, None)
+                else:
+                    self.switch_JCS_preview.set_marker_placement(placement, ref)
+            else:
+                self.switch_JCS_preview.set_marker_placement(placement, ref)
         else:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_NONE
 
