@@ -1748,7 +1748,9 @@ bool StdCmdPlacement::isActive()
         nullptr,
         ResolveMode::FollowLink
     );
-    return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) { return obj->isFreezed(); }));
+    return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) {
+                 return obj->isFreezed() || obj->getPlacementProperty()->isReadOnly();
+             }));
 }
 
 //===========================================================================
@@ -1791,7 +1793,10 @@ bool StdCmdTransformManip::isActive()
         nullptr,
         ResolveMode::FollowLink
     );
-    return (sel.size() == 1 && !sel.front()->isFreezed());
+    return (
+        sel.size() == 1 && !sel.front()->isFreezed()
+        && !sel.front()->getPlacementProperty()->isReadOnly()
+    );
 }
 
 //===========================================================================
@@ -2237,3 +2242,4 @@ void CreateDocCommands()
 }
 
 }  // namespace Gui
+
