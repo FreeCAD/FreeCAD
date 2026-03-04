@@ -1776,7 +1776,9 @@ void StdCmdTransformManip::activated(int iMsg)
         getActiveGuiDocument()->resetEdit();
     }
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
-        App::GeoFeature::getClassTypeId()
+        App::GeoFeature::getClassTypeId(),
+        nullptr,
+        ResolveMode::FollowLink
     );
     Gui::ViewProvider* vp = Application::Instance->getViewProvider(sel.front());
     // FIXME: Need a way to force 'Transform' edit mode
