@@ -266,7 +266,9 @@ void Part::FaceMaker::postBuild()
             std::vector<std::string> edgeIDs;
             
             int count = wire.countSubShapes(TopAbs_EDGE);
-            for (int edgeIndex = 1; edgeIndex <= count; ++edgeIndex) {
+
+            // cap the number of names and IDs to 10 to improve performance and document size.
+            for (int edgeIndex = 1; (edgeIndex <= count && edgeIndex <= 10); ++edgeIndex) {
                 Data::MappedName name
                     = face.getMappedName(Data::IndexedName::fromConst("Edge", edgeIndex), false);
                 
@@ -291,7 +293,7 @@ void Part::FaceMaker::postBuild()
                                 ss << ":";
                                 ss << index;
                             }
-
+                            
                             edgeIDs.push_back(ss.str());
 
                             ss.str("");

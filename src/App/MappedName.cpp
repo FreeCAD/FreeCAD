@@ -161,7 +161,6 @@ std::string MappedName::escapeString(const std::string stringToEscape) {
     std::unordered_set<char> charsToEscape {
         (*Data::NAME_SECTION_DELIMINATOR),
         (*Data::SECTION_SUB_DELIMINATOR),
-        (*Data::SECTION_DATA_DELIMINATOR),
         (*Data::SUB_SECTION_LIST_DELIMINATOR)
     };
 

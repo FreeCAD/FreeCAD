@@ -2231,12 +2231,15 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
         }
 
-        const std::map<std::string, TopAbs_ShapeEnum> ancestorTypeMap {{"Edge", TopAbs_FACE}, {"Face", TopAbs_EDGE}, {"Vertex", TopAbs_EDGE}};
+        const std::map<std::string, TopAbs_ShapeEnum> ancestorTypeMap {{"Edge", TopAbs_FACE}, {"Face", TopAbs_EDGE}, {"Vertex", TopAbs_FACE}};
         std::set<std::vector<Data::MappedName>> usedAncestorNames { };
         std::set<Data::MappedName> usedPartnerNames { };
+        std::array<ShapeInfo*, 3> ancestorInfos = {&faceInfo, &edgeInfo, &vertexInfo};
 
         // Now let's map any unmapped shapes with the IsPartner and ancestor method.
-        for (const auto& info : infos) {
+        for (const auto& info : ancestorInfos) {
+            auto it = ancestorTypeMap.find(std::string(info->shapetype));
+
             for (int mainI = 1; mainI <= info->count(); mainI++) {
                 bool wasMapped = false;
                 const auto& mainElement = info->find(mainI);
@@ -2262,13 +2265,13 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             Data::MappedName incomingShapeMapName = incomingShape.getMappedName(incomingShapeIndexedName);
 
                             Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
-                                                                                                    {incomingShapeMapName},
-                                                                                                    masterTag,
-                                                                                                    op,
-                                                                                                    usedPartnerNames.count(incomingShapeMapName),
-                                                                                                    (*info->shapetype),
-                                                                                                    0,
-                                                                                                    "PTN").c_str());
+                                                                                                      {incomingShapeMapName},
+                                                                                                      masterTag,
+                                                                                                      op,
+                                                                                                      usedPartnerNames.count(incomingShapeMapName),
+                                                                                                      (*info->shapetype),
+                                                                                                      0,
+                                                                                                      "PTN").c_str());
                             
                             usedPartnerNames.insert(incomingShapeMapName);
 
@@ -2278,33 +2281,61 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         }
                     }
                 }
-
-                auto it = ancestorTypeMap.find(std::string(info->shapetype));
            
                 if (!wasMapped && it != ancestorTypeMap.end()) {
                     std::vector<int> ancestors = findAncestors(mainElement, it->second);
-                    std::vector<Data::MappedName> ancestorNames { };
+                    std::vector<Data::MappedName> linkedNames { };
 
                     for (const auto &ancestorIndex : ancestors) {
-                        Data::IndexedName ancestorIndexName = Data::IndexedName::fromConst(info->shapetype, ancestorIndex);
+                        Data::IndexedName ancestorIndexName = Data::IndexedName::fromConst(shapeName(it->second).c_str(), ancestorIndex);
                         Data::MappedName ancestorMappedName = getMappedName(ancestorIndexName);
 
                         if (ancestorMappedName) {
-                            ancestorNames.push_back(ancestorMappedName);
+                            linkedNames.push_back(ancestorMappedName);
                         }
                     }
 
-                    if (ancestorNames.size()) {
+                    TopExp_Explorer xp;
+                    if (info->shapetype == "Face") {
+                        // just explore thru the outer wire of a face.
+                        xp.Init(BRepTools::OuterWire(TopoDS::Face(mainElement)), it->second);
+                    } else {
+                        xp.Init(mainElement, it->second);
+                    }
+
+                    for (; xp.More(); xp.Next()) {
+                        TopoDS_Shape foundSubshape = xp.Current();
+                        Data::IndexedName subshapeIndexName { };
+                        const char* subshapeType = shapeName(it->second).c_str();
+
+                        if (strcmp(subshapeType, "Face") == 0) {
+                            subshapeIndexName = Data::IndexedName::fromConst(subshapeType, faceInfo.find(foundSubshape));
+                        } else if (strcmp(subshapeType, "Edge") == 0) {
+                            subshapeIndexName = Data::IndexedName::fromConst(subshapeType, edgeInfo.find(foundSubshape));
+                        } else if (strcmp(subshapeType, "Vertex") == 0) {
+                            subshapeIndexName = Data::IndexedName::fromConst(subshapeType, vertexInfo.find(foundSubshape));
+                        }
+
+                        if (subshapeIndexName) {
+                            Data::MappedName subshapeName = getMappedName(subshapeIndexName);
+
+                            if (subshapeName) {
+                                linkedNames.push_back(subshapeName);
+                            }
+                        }
+                    }
+
+                    if (linkedNames.size()) {
                         Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
-                                                                                                ancestorNames,
-                                                                                                masterTag,
-                                                                                                op,
-                                                                                                usedAncestorNames.count(ancestorNames),
-                                                                                                (*info->shapetype),
-                                                                                                0,
-                                                                                                "ANC").c_str());
+                                                                                                  linkedNames,
+                                                                                                  masterTag,
+                                                                                                  op,
+                                                                                                  usedAncestorNames.count(linkedNames),
+                                                                                                  (*info->shapetype),
+                                                                                                  0,
+                                                                                                  "ANC").c_str());
                         
-                        usedAncestorNames.insert(ancestorNames);
+                        usedAncestorNames.insert(linkedNames);
                         ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
                     }
                 }
