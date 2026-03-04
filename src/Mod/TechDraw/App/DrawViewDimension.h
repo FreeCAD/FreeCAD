@@ -97,6 +97,9 @@ public:
     App::PropertyVectorList BoxCorners;
     App::PropertyBool UseActualArea;
 
+    App::PropertyBool UseAreaLeaderPoint;
+    App::PropertyVector AreaLeaderPoint;
+
     App::PropertyBool ShowUnits;
 //NOLINTEND
 
