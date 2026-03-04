@@ -79,6 +79,23 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
 
         auto keyEvent = static_cast<QKeyEvent*>(event);
 
+        if (keyEvent->key() == Qt::Key_Tab) {
+            if (event->type() == QEvent::KeyPress) {
+                tabPressReceived = true;
+            }
+            else {
+                // KeyRelease: only forward to the viewport if we also received the KeyPress.
+                // If Tab was pressed on a checkbox (no keyboard manager there), the KeyRelease
+                // may arrive here after a queued focus transfer; suppressing it prevents a
+                // spurious second tabShortcut() / passFocusToNextParameter() call.
+                bool hadPress = tabPressReceived;
+                tabPressReceived = false;
+                if (!hadPress) {
+                    return false;
+                }
+            }
+        }
+
         detectKeyboardEventHandlingMode(keyEvent);  // determine the handler
 
         if (vpViewer && isMode(KeyboardEventHandlingMode::ViewProvider)) {

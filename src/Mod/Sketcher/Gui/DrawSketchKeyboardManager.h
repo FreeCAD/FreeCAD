@@ -98,6 +98,11 @@ private:
     QTimer timer;
 
     int timeOutValue = 2000;
+    // Only forward a Tab KeyRelease to the viewport if this manager also saw the Tab KeyPress.
+    // When Tab is pressed on a checkbox (no keyboard manager), the subsequent KeyRelease may
+    // arrive at a spinbox that just received focus; ignoring it prevents a spurious second
+    // passFocusToNextParameter() call.
+    bool tabPressReceived = false;
 };
 
 }  // namespace SketcherGui
