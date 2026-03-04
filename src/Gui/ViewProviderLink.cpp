@@ -88,6 +88,20 @@ FC_LOG_LEVEL_INIT("App::Link", true, true)
 using namespace Gui;
 using namespace Base;
 
+namespace
+{
+void updateDoubleSide(Gui::LinkView* linkView, App::LinkBaseExtension* ext)
+{
+    Base::Matrix4D mat = ext->getTransform(false);
+    ext->getTrueLinkedObject(true, &mat, 0, false);
+    // Calculate 3x3 determinant directly from Matrix4D
+    double det3 = mat[0][0] * (mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1])
+        - mat[0][1] * (mat[1][0] * mat[2][2] - mat[1][2] * mat[2][0])
+        + mat[0][2] * (mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0]);
+    linkView->renderDoubleSide(det3 < 0.0);
+}
+}  // namespace
+
 using CharRange = boost::iterator_range<const char*>;
 ////////////////////////////////////////////////////////////////////////////
 
@@ -1161,18 +1175,18 @@ void LinkView::setDrawStyle(int style, double lineWidth, double pointSize)
 
 void LinkView::renderDoubleSide(bool enable)
 {
+    if (!pcShapeHints) {
+        pcShapeHints = new SoShapeHints;
+        pcShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+        pcLinkRoot->insertChild(pcShapeHints, 0);
+    }
     if (enable) {
-        if (!pcShapeHints) {
-            pcShapeHints = new SoShapeHints;
-            pcShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
-            pcShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-            pcLinkRoot->insertChild(pcShapeHints, 0);
-        }
-        pcShapeHints->setOverride(true);
+        pcShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
     }
-    else if (pcShapeHints) {
-        pcShapeHints->setOverride(false);
+    else {
+        pcShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     }
+    pcShapeHints->setOverride(true);
 }
 
 void LinkView::setMaterial(int index, const App::Material* material)
@@ -2192,6 +2206,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
         }
         applyColors();
         checkIcon(ext);
+        updateDoubleSide(linkView, ext);
     }
     else if (prop == ext->getColoredElementsProperty()) {
         if (!prop->testStatus(App::Property::User3)) {
@@ -2204,8 +2219,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
             if (canScale(v)) {
                 pcTransform->scaleFactor.setValue(v.x, v.y, v.z);
             }
-            SbMatrix matrix = convert(ext->getTransform(false));
-            linkView->renderDoubleSide(matrix.det3() < 1e-7);
+            updateDoubleSide(linkView, ext);
         }
     }
     else if (prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
@@ -2215,8 +2229,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
             if (canScale(v)) {
                 pcTransform->scaleFactor.setValue(v.x, v.y, v.z);
             }
-            SbMatrix matrix = convert(ext->getTransform(false));
-            linkView->renderDoubleSide(matrix.det3() < 1e-7);
+            updateDoubleSide(linkView, ext);
         }
     }
     else if (prop == ext->getLinkCopyOnChangeGroupProperty()) {
@@ -2267,6 +2280,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
 
             // applyColors();
             signalChangeIcon();
+            updateDoubleSide(linkView, ext);
         }
     }
     else if (prop == ext->getLinkTransformProperty()) {
@@ -2310,8 +2324,8 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
                     }
                     overrideMaterial = overrideMaterial || vp->OverrideMaterial.getValue();
                     hasMaterial = overrideMaterial || hasMaterial
-                        || vp->ShapeMaterial.getValue() != ShapeMaterial.getValue();
-                    materials.push_back(vp->ShapeMaterial.getValue());
+                        || vp->ShapeAppearance[0] != ShapeAppearance[0];
+                    materials.push_back(vp->ShapeAppearance[0]);
                     overrideMaterials[i] = vp->OverrideMaterial.getValue();
                 }
                 if (!overrideMaterial) {
@@ -2531,6 +2545,7 @@ void ViewProviderLink::finishRestoring()
     updateDataPrivate(ext, ext->_getElementListProperty());
     applyMaterial();
     applyColors();
+    updateDoubleSide(linkView, ext);
 
     // TODO: notify the tree. This is ugly, any other way?
     getDocument()->signalChangedObject(*this, ext->_LinkTouched);
