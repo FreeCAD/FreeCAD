@@ -1222,9 +1222,13 @@ class GroundedJoint:
             locked=True,
         )
         joint.ObjectToGround = obj_to_ground
+        obj_to_ground.setPropertyStatus("Placement", "ReadOnly")
 
     def onDocumentRestored(self, joint):
         self.migrationScript(joint)
+        
+        if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
+            joint.ObjectToGround.setPropertyStatus("Placement", "ReadOnly")
 
     def migrationScript(self, joint):
         if (
@@ -1243,10 +1247,22 @@ class GroundedJoint:
     def loads(self, state):
         return None
 
-    def onChanged(self, fp, prop):
+    def onChanged(self, joint, prop):
         """Do something when a property has changed"""
-        # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
+        if prop == "ObjectToGround":
+            if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
+                joint.ObjectToGround.setPropertyStatus("Placement", "ReadOnly")
         pass
+        
+    def onBeforeChange(self, joint, prop):
+        if prop == "ObjectToGround":
+            if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
+                joint.ObjectToGround.setPropertyStatus("Placement", "-ReadOnly")
+            
+    def onDelete(self, joint, args):        
+        if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
+            joint.ObjectToGround.setPropertyStatus("Placement", "-ReadOnly")
+        return True
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
