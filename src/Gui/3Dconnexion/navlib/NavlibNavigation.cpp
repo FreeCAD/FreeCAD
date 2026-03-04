@@ -47,6 +47,11 @@
 #include <Gui/WorkbenchManager.h>
 
 #include <Base/BoundBox.h>
+#include <Base/Console.h>
+
+#if defined(Q_OS_MAC)
+#include <CoreFoundation/CFBundle.h>
+#endif
 
 NavlibInterface::NavlibInterface()
     : CNavigation3D(false, navlib::nlOptions_t::no_ui),
@@ -152,8 +157,17 @@ void NavlibInterface::onViewChanged(const Gui::MDIView* view)
         navlib::box_t extents;
         navlib::matrix_t camera;
 
-        GetModelExtents(extents);
-        GetCameraMatrix(camera);
+        static unsigned long error_count = 0;  // Limit the number of error messages emitted.
+        long error = GetModelExtents(extents);
+        if (error && error_count <= 20) {
+            Base::Console().error("NavlibInterface::GetModelExtents error %ld\n", error);
+            error_count++;
+        }
+        error = GetCameraMatrix(camera);
+        if (error && error_count <= 20) {
+            Base::Console().error("NavlibInterface::GetCameraMatrix error %ld\n", error);
+            error_count++;
+        }
 
         Write(navlib::model_extents_k, extents);
         Write(navlib::view_affine_k, camera);
@@ -174,10 +188,23 @@ void NavlibInterface::onViewChanged(const Gui::MDIView* view)
 
 void NavlibInterface::enableNavigation()
 {
+#if defined(Q_OS_MAC)
+    if (!CFBundleGetIdentifier(CFBundleGetMainBundle())) {
+        // As of 3DxWare version 10.8.11, EnableNavigation will silently fail if there's
+        // no bundle identifier. This happens when executing the binary directly rather
+        // than opening the .app. If future versions of the driver report the error,
+        // this special case can be removed.
+        Base::Console().error("3Dconnexion Navigation Framework does not support running apart from an .app!\n");
+        return;
+    }
+#endif
+
     PutProfileHint("FreeCAD");
     CNav3D::EnableNavigation(true, errorCode);
-    if (errorCode)
+    if (errorCode) {
+        Base::Console().error("NavlibInterface::EnableNavigation error %d\n", errorCode.value());
         return;
+    }
 
     PutFrameTimingSource(TimingSource::SpaceMouse);
 
@@ -375,12 +402,18 @@ long NavlibInterface::SetViewExtents(const navlib::box_t& extents)
             return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
         navlib::box_t oldExtents;
-        GetViewExtents(oldExtents);
-
-        pCamera->scaleHeight(extents.max.x / oldExtents.max.x);
-        orthoNearDistance = pCamera->nearDistance.getValue();
-
-        return 0;
+        static unsigned long error_count = 0;  // Limit the number of error messages emitted.
+        long error = GetViewExtents(oldExtents);
+        if (error) {
+            if (error_count <= 10) {
+                Base::Console().error("NavlibInterface::GetViewExtents error %ld\n", error);
+                error_count++;
+            }
+        } else {
+            pCamera->scaleHeight(extents.max.x / oldExtents.max.x);
+            orthoNearDistance = pCamera->nearDistance.getValue();
+        }
+        return error;
     }
 
     return navlib::make_result_code(navlib::navlib_errc::no_data_available);

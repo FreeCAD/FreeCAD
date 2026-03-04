@@ -123,17 +123,17 @@ public:
 #if defined(_DEBUG) && defined(TRACE_NAVLIB)
     catch (const std::system_error &e) {
       ec = e.code();
-      std::cerr << "system_error exception thrown in EnableNavigation(" << value << ") 0x"
+      std::cerr << "system_error exception thrown in PutEnable(" << value << ") 0x"
                 << std::hex << ec.value() << std::dec << ", " << ec.message() << ", " << e.what()
                 << "\n";
     } catch (const std::invalid_argument &e) {
       ec = std::make_error_code(std::errc::invalid_argument);
-      std::cerr << "invalid_argument exception thrown in EnableNavigation(" << value << ") 0x"
+      std::cerr << "invalid_argument exception thrown in PutEnable(" << value << ") 0x"
                 << std::hex << ec.value() << std::dec << ", " << ec.message() << ", " << e.what()
                 << "\n";
     } catch (const std::exception &e) {
       ec = std::make_error_code(std::errc::io_error);
-      std::cerr << "exception thrown in EnableNavigation(" << value << ") 0x" << std::hex
+      std::cerr << "exception thrown in PutEnable(" << value << ") 0x" << std::hex
                 << ec.value() << std::dec << ", " << ec.message() << ", " << e.what() << "\n";
     }
 #else
