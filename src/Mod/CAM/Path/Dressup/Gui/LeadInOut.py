@@ -3,6 +3,7 @@
 
 import FreeCAD as App
 import FreeCADGui
+import Part
 import Path
 
 from Path.Base import Language as PathLanguage
@@ -159,8 +160,8 @@ class ObjectDressup:
     def setup(self, obj):
         obj.LeadIn = True
         obj.LeadOut = True
-        obj.AngleIn = 90
-        obj.AngleOut = 90
+        obj.AngleIn = 45
+        obj.AngleOut = 45
         obj.InvertIn = False
         obj.InvertOut = False
         obj.RapidPlunge = False
@@ -540,14 +541,10 @@ class ObjectDressup:
 
         return stepAngle
 
-    # Create line with move Down and follow profile
-    def createLineZIn(self, obj, begin, end, feedRate):
-        z = begin.z
-        length = begin.distanceToPoint(end)
-        angle = math.asin((begin.z - end.z) / length)
-        distance = length * math.cos(angle)
-        offset = obj.OffsetIn.Value
+    # Get commands from original path for follow lead in
+    def getCommandsFollowIn(self, obj, distance):
         cmds = []
+        offset = obj.OffsetIn.Value
         if distance + offset > 0:
             cmds.extend([copy.deepcopy(cmd) for cmd in self.extendTravelIn(distance + offset)])
             if offset > 0:
@@ -558,6 +555,31 @@ class ObjectDressup:
             if distance + offset < 0:
                 cmds = self.cutTravelBegin(cmds, abs(distance + offset))
 
+        return cmds
+
+    # Get commands from original path for follow lead out
+    def getCommandsFollowOut(self, obj, distance):
+        offset = obj.OffsetOut.Value
+        cmds = []
+        if offset < 0:
+            # need process as closed profile even if profile is open
+            cmds.extend([copy.deepcopy(cmd) for cmd in self.extendTravelIn(abs(offset), True)])
+            if distance + offset < 0:
+                cmds = self.cutTravelEnd(cmds, abs(distance + offset))
+        if distance + offset > 0:
+            cmds.extend([copy.deepcopy(cmd) for cmd in self.extendTravelOut(distance + offset)])
+            if offset > 0:
+                cmds = self.cutTravelBegin(cmds, offset)
+
+        return cmds
+
+    # Create lead-in line which follows profile
+    def createLineZFollowIn(self, obj, begin, end, feedRate):
+        z = begin.z
+        length = begin.distanceToPoint(end)
+        angle = math.asin((begin.z - end.z) / length)
+        distance = length * math.cos(angle)
+        cmds = self.getCommandsFollowIn(obj, distance)
         for i, cmd in enumerate(cmds):
             distance -= cmd.pathLength()
             cmd.begin.z = z
@@ -571,24 +593,13 @@ class ObjectDressup:
             cmd.param["Z"] = z
         return cmds
 
-    # Create line with move Up and follow profile
-    def createLineZOut(self, obj, begin, end, feedRate):
+    # Create lead-out line which follows profile
+    def createLineZFollowOut(self, obj, begin, end, feedRate):
         z = begin.z
         length = begin.distanceToPoint(end)
         angle = math.asin((end.z - begin.z) / length)
         distance = length * math.cos(angle)
-        offset = obj.OffsetOut.Value
-        cmds = []
-        if offset < 0:
-            # need process as closed profile even if profile is open
-            cmds.extend([copy.deepcopy(cmd) for cmd in self.extendTravelIn(abs(offset), True)])
-            if distance + offset < 0:
-                cmds = self.cutTravelEnd(cmds, abs(distance + offset))
-        if distance + offset > 0:
-            cmds.extend([copy.deepcopy(cmd) for cmd in self.extendTravelOut(distance + offset)])
-            if offset > 0:
-                cmds = self.cutTravelBegin(cmds, offset)
-
+        cmds = self.getCommandsFollowOut(obj, distance)
         dist = 0
         for i, cmd in enumerate(cmds):
             dist += cmd.pathLength()
@@ -626,8 +637,87 @@ class ObjectDressup:
 
         return commands
 
+    # Create vertical arc with move Up by line segments
+    def createArcZOut(self, begin, end, radius, feedRate):
+        commands = []
+        angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
+        stepAngle = self.getStepAngleArcZ(angleMax, radius, div=20)
+        iterBegin = copy.copy(begin)  # start point of short segment
+        v = end - begin
+        n = math.hypot(v.x, v.y)
+        u = v / n
+        angle = stepAngle  # start angle
+        while angle < angleMax and not Path.Geom.isRoughly(angle, angleMax):
+            distance = radius * math.sin(angle)
+            iterEnd = begin + u * distance
+            iterEnd.z = begin.z + radius * (1 - math.cos(angle))
+            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
+            commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
+            iterBegin = copy.copy(iterEnd)
+            angle += stepAngle
+
+        # last move to end point
+        param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
+        commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
+
+        return commands
+
     # Create vertical arc with move Down and follow profile
     def createArcZFollowIn(self, obj, begin, end, radius, feedRate):
+        p1 = App.Vector(begin.x, begin.y, 0)
+        p2 = App.Vector(end.x, end.y, 0)
+        distance = p1.distanceToPoint(p2)
+        cmds = self.getCommandsFollowIn(obj, distance)
+        edges = [Path.Geom.edgeForCmd(cmd.toCommand(), cmd.positionBegin()) for cmd in cmds]
+        wire = Part.Wire(Part.__sortEdges__(edges))
+        points = []
+        for edge in wire.Edges:
+            # skip first point of each edge
+            points.extend(edge.discretize(Distance=self.job.GeometryTolerance.Value * 10)[1:])
+        points.insert(0, wire.OrderedVertexes[0].Point)
+
+        prevZ = begin.z
+        commands = []
+        for i, p in enumerate(points):
+            distance -= p.distanceToPoint(points[i + 1])
+            nextZ = end.z + radius - math.sqrt(radius**2 - distance**2)
+            param = {"X": points[i + 1].x, "Y": points[i + 1].y, "Z": nextZ, "F": feedRate}
+            commands.append(PathLanguage.MoveStraight(App.Vector(p.x, p.y, prevZ), "G1", param))
+            if i == len(points) - 2:
+                break
+            prevZ = nextZ
+
+        return commands
+
+    # Create vertical arc with move Down and follow profile
+    def createArcZFollowOut(self, obj, begin, end, radius, feedRate):
+        p1 = App.Vector(begin.x, begin.y, 0)
+        p2 = App.Vector(end.x, end.y, 0)
+        distance = p1.distanceToPoint(p2)
+        cmds = self.getCommandsFollowOut(obj, distance)
+        edges = [Path.Geom.edgeForCmd(cmd.toCommand(), cmd.positionBegin()) for cmd in cmds]
+        wire = Part.Wire(Part.__sortEdges__(edges))
+        points = []
+        for edge in wire.Edges:
+            # skip first point of each edge
+            points.extend(edge.discretize(Distance=self.job.GeometryTolerance.Value * 10)[1:])
+        points.insert(0, wire.OrderedVertexes[0].Point)
+        prevZ = begin.z
+        commands = []
+        distance = 0
+        for i, p in enumerate(points):
+            distance += p.distanceToPoint(points[i + 1])
+            nextZ = begin.z + radius - math.sqrt(radius**2 - distance**2)
+            param = {"X": points[i + 1].x, "Y": points[i + 1].y, "Z": nextZ, "F": feedRate}
+            commands.append(PathLanguage.MoveStraight(App.Vector(p.x, p.y, prevZ), "G1", param))
+            if i == len(points) - 2:
+                break
+            prevZ = nextZ
+        return commands
+
+    # Create vertical arc with move Down and follow profile
+    # TODO first implimentation
+    def _createArcZFollowIn(self, obj, begin, end, radius, feedRate):
         commands = []
         angle = math.acos((radius - begin.z + end.z) / radius)  # arc start angle
         stepAngle = self.getStepAngleArcZ(angle, radius)
@@ -662,33 +752,9 @@ class ObjectDressup:
 
         return commands
 
-    # Create vertical arc with move Up by line segments
-    def createArcZOut(self, begin, end, radius, feedRate):
-        commands = []
-        angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
-        stepAngle = self.getStepAngleArcZ(angleMax, radius, div=20)
-        iterBegin = copy.copy(begin)  # start point of short segment
-        v = end - begin
-        n = math.hypot(v.x, v.y)
-        u = v / n
-        angle = stepAngle  # start angle
-        while angle < angleMax and not Path.Geom.isRoughly(angle, angleMax):
-            distance = radius * math.sin(angle)
-            iterEnd = begin + u * distance
-            iterEnd.z = begin.z + radius * (1 - math.cos(angle))
-            param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-            commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-            iterBegin = copy.copy(iterEnd)
-            angle += stepAngle
-
-        # last move to end point
-        param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
-        commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
-
-        return commands
-
     # Create vertical arc with move Up and follow profile
-    def createArcZFollowOut(self, obj, begin, end, radius, feedRate):
+    # TODO first implimentation
+    def _createArcZFollowOut(self, obj, begin, end, radius, feedRate):
         commands = []
         angleMax = math.acos((radius - end.z + begin.z) / radius)  # finish angle
         stepAngle = self.getStepAngleArcZ(angleMax, radius)
@@ -800,7 +866,7 @@ class ObjectDressup:
                 if styleIn == "LineZ":
                     lead.append(self.createStraightMove(lineBegin, begin, self.entranceFeed))
                 else:
-                    lead.extend(self.createLineZIn(obj, lineBegin, begin, self.entranceFeed))
+                    lead.extend(self.createLineZFollowIn(obj, lineBegin, begin, self.entranceFeed))
 
             # prepend "ArcZ" style lead-in - vertical Arc
             # Should be applied only on straight Path segment or open profile
@@ -942,7 +1008,7 @@ class ObjectDressup:
                 if obj.StyleOut == "LineZ":
                     lead.append(self.createStraightMove(end, lineEnd, self.exitFeed))
                 else:
-                    lead.extend(self.createLineZOut(obj, end, lineEnd, self.exitFeed))
+                    lead.extend(self.createLineZFollowOut(obj, end, lineEnd, self.exitFeed))
 
             # prepend "ArcZ" style lead-out - vertical Arc
             # Should be apply only on straight Path segment

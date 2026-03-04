@@ -108,6 +108,10 @@ class Instruction(object):
             s = [fmt.format(k, v) for k, v in self.param.items()]
         return f"{self.cmd}{{{', '.join(s)}}}"
 
+    def toCommand(self):
+        """toCmd(instr) ... return Path.Command object"""
+        return Path.Command(self.cmd, self.param)
+
 
 class MoveStraight(Instruction):
     def anglesOfTangents(self):
@@ -231,7 +235,7 @@ class Maneuver(object):
         self.instr.extend(coll)
 
     def toPath(self):
-        return Path.Path([instruction_to_command(instr) for instr in self.instr])
+        return Path.Path([instr.toCommand() for instr in self.instr])
 
     def __repr__(self):
         if self.instr:
@@ -266,7 +270,3 @@ class Maneuver(object):
     @classmethod
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)
-
-
-def instruction_to_command(instr):
-    return Path.Command(instr.cmd, instr.param)
