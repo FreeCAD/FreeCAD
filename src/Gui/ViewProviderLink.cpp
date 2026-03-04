@@ -2324,8 +2324,8 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
                     }
                     overrideMaterial = overrideMaterial || vp->OverrideMaterial.getValue();
                     hasMaterial = overrideMaterial || hasMaterial
-                        || vp->ShapeAppearance[0] != ShapeAppearance[0];
-                    materials.push_back(vp->ShapeAppearance[0]);
+                        || vp->ShapeMaterial.getValue() != ShapeMaterial.getValue();
+                    materials.push_back(vp->ShapeMaterial.getValue());
                     overrideMaterials[i] = vp->OverrideMaterial.getValue();
                 }
                 if (!overrideMaterial) {
