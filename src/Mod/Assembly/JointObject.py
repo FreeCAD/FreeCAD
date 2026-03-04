@@ -1226,7 +1226,7 @@ class GroundedJoint:
 
     def onDocumentRestored(self, joint):
         self.migrationScript(joint)
-        
+
         if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
             joint.ObjectToGround.setPropertyStatus("Placement", "ReadOnly")
 
@@ -1253,13 +1253,13 @@ class GroundedJoint:
             if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
                 joint.ObjectToGround.setPropertyStatus("Placement", "ReadOnly")
         pass
-        
+
     def onBeforeChange(self, joint, prop):
         if prop == "ObjectToGround":
             if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
                 joint.ObjectToGround.setPropertyStatus("Placement", "-ReadOnly")
-            
-    def onDelete(self, joint, args):        
+
+    def onDelete(self, joint, args):
         if hasattr(joint, "ObjectToGround") and joint.ObjectToGround:
             joint.ObjectToGround.setPropertyStatus("Placement", "-ReadOnly")
         return True
