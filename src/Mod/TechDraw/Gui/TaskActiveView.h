@@ -73,6 +73,7 @@ protected:
 
 private Q_SLOTS:
     void onCropChanged();
+    void onBgTypeChanged(int index);
     void updatePreview();
 
 private:
