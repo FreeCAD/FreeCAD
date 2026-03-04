@@ -470,6 +470,9 @@ class TechDrawExport GeometryUtils
                                       Base::Vector3d D,
                                       double tolerance);
 
+        static std::vector<FacePtr> removeNestedHoles(const std::vector<FacePtr>& holes);
+        static bool FaceCompare(const TopoDS_Face& face0, const TopoDS_Face& face1);
+        static std::vector<int> findNestedFaceIndices(const std::vector<FacePtr>& holes);
 };
 
 } //end namespace TechDraw

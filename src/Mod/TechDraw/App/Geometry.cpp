@@ -58,6 +58,7 @@
 # include <gp_Vec.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <Precision.hxx>
+# include <ShapeAnalysis.hxx>
 # include <Standard_Version.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
@@ -1777,7 +1778,8 @@ TopoDS_Face GeometryUtils::makePerforatedFace(FacePtr bigCheese,  const std::vec
 }
 
 
-//! find faces within the bounds of the input face
+//! Find faces within the bounds of the input face.  For area dimensions, we only want the first
+//! "level" (term?) of holes.
 std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, const std::string& bigCheeseSubRef)
 {
     if (!dvp || bigCheeseSubRef.empty()) {
@@ -1796,7 +1798,7 @@ std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, con
 
     auto bigCheeseFace = facesAll.at(bigCheeseIndex);
     auto bigCheeseOCCFace = bigCheeseFace->toOccFace();
-    auto bigCheeseArea = bigCheeseFace->getArea();
+    TopoDS_Wire bigCheeseWire = facesAll.at(bigCheeseIndex)->wires.front()->toOccWire();
 
     int iFace{0};
     for (auto& face : facesAll) {
@@ -1804,24 +1806,83 @@ std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, con
             iFace++;
             continue;
         }
-        if (face->getArea() > bigCheeseArea) {
+        TopoDS_Wire faceWire = face->wires.front()->toOccWire();
+        if (!Part::FaceMakerCheese::isInside(bigCheeseWire, faceWire)) {
             iFace++;
             continue;
         }
-        auto faceCenter = Base::convertTo<gp_Pnt>(face->getCenter());
-        auto faceCenterVertex = BRepBuilderAPI_MakeVertex(faceCenter);
-        auto distance = DU::simpleMinDist(faceCenterVertex, bigCheeseOCCFace);
-        if (distance > EWTOLERANCE) {
-            // hole center not within outer contour.  not the best test but cheese maker handles it
-            // for us?
-            // FaceMakerCheese does not support partial overlaps and just ignores them?
-            iFace++;
-            continue;
-        }
+
         holes.push_back(face);
         iFace++;
     }
 
-    return holes;
+    return removeNestedHoles(holes);
+}
+
+//! Remove level 2+ faces.  Expects holes to be sorted by size?
+std::vector<FacePtr> GeometryUtils::removeNestedHoles(const std::vector<FacePtr>& holes)
+{
+    if (holes.empty()) {
+        return {};
+    }
+
+    std::vector<FacePtr> unNestedFaces;
+    if (holes.size() == 1) {
+        // no nesting present
+        unNestedFaces.push_back(holes.front());
+        return unNestedFaces;
+    }
+
+    std::vector<int> nestedFaceIndices = findNestedFaceIndices(holes);
+
+    std::reverse(nestedFaceIndices.begin(), nestedFaceIndices.end());
+
+    int ihole{0};
+    for (auto& hole : holes) {
+        if (std::find(nestedFaceIndices.begin(), nestedFaceIndices.end(), ihole) == nestedFaceIndices.end()) {
+            unNestedFaces.push_back(hole);
+        }
+        ihole++;
+    }
+    return unNestedFaces;
+}
+
+//! method for std::sort when arranging faces by size (bounding rect diagonal).  Use ShapeAnalysis::ContourArea
+//! for more accuracy in sizes.
+bool GeometryUtils::FaceCompare(const TopoDS_Face& face0, const TopoDS_Face& face1)
+{
+    Part::FaceMakerCheese::Wire_Compare wc;
+    return wc(ShapeAnalysis::OuterWire(face0),
+              ShapeAnalysis::OuterWire(face1));
+}
+
+//! returns (unique) indices of holes contained within another hole.
+std::vector<int> GeometryUtils::findNestedFaceIndices(const std::vector<FacePtr>& holes)
+{
+    int iouter{0};
+    std::vector<int> nestedFaceIndices;
+    for (auto& outer : holes) {
+        TopoDS_Wire outerWire = outer->wires.front()->toOccWire();
+        int iinner{0};
+        for (auto& inner : holes) {
+             if (iouter == iinner) {
+                 iinner++;
+                 continue;
+             }
+             TopoDS_Wire innerWire = inner->wires.front()->toOccWire();
+             if (Part::FaceMakerCheese::isInside(outerWire, innerWire)) {
+                nestedFaceIndices.push_back(iinner);
+             }
+             iinner++;
+        }
+        iouter++;
+    }
+
+    std::sort(nestedFaceIndices.begin(), nestedFaceIndices.end());
+    auto last = std::unique(nestedFaceIndices.begin(), nestedFaceIndices.end());
+    if (last != nestedFaceIndices.end()) {
+        nestedFaceIndices.erase(last, nestedFaceIndices.end());
+    }
+    return nestedFaceIndices;
 }
 
