@@ -83,6 +83,11 @@ public:
     // returns the current timeout amount
     int timeOut();
 
+    /// Suppress the very next Tab KeyRelease event from being forwarded to the 3D viewport.
+    /// Call this when Tab is handled by a checkbox so its queued focus transfer to a spinbox
+    /// does not cause a spurious second passFocusToNextParameter() call.
+    void suppressNextTabRelease();
+
 private:
     /// This function decides whether events should be send to the ViewProvider
     /// or to the UI control of DSH.
@@ -98,6 +103,7 @@ private:
     QTimer timer;
 
     int timeOutValue = 2000;
+    bool suppressTabRelease = false;
 };
 
 }  // namespace SketcherGui
