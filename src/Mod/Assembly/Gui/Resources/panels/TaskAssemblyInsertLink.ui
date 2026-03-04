@@ -94,7 +94,7 @@ You can change this behavior at any time by either right-clicking the sub-assemb
    <item row="5" column="0">
     <widget class="Gui::PrefCheckBox" name="CheckBox_Mirror">
      <property name="toolTip">
-      <string>Insert a mirrored version of the selected component.</string>
+      <string>Inserts the selected objects as mirrored version</string>
      </property>
      <property name="text">
       <string>Mirror</string>
