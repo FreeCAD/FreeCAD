@@ -1089,7 +1089,7 @@ class ViewProviderJoint:
                     local_plc = asm_global_plc.inverse() * global_plc
                     jcs.set_marker_placement(local_plc, None)
                 else:
-                   jcs.set_marker_placement(plc, ref)
+                    jcs.set_marker_placement(plc, ref)
             else:
                 jcs.set_marker_placement(plc, ref)
         else:
