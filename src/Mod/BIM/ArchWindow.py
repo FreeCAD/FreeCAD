@@ -105,6 +105,10 @@ def recolorize(attr):  # names is [docname,objname]
 class _Window(ArchComponent.Component):
     "The Window object"
 
+    # Configure App::Link shadowing, so that linked windows can have independent Hosts properties
+    # without triggering a deep copy of the geometry. See ArchComponent.Component.appLinkExecute()
+    LinkOverrideProperties = ["Hosts"]
+
     def __init__(self, obj):
 
         ArchComponent.Component.__init__(self, obj)
@@ -112,26 +116,6 @@ class _Window(ArchComponent.Component):
         self.setProperties(obj)
         obj.IfcType = "Window"
         obj.MoveWithHost = True
-
-        # Add features in the SketchArch External Add-on
-        self.addSketchArchFeatures(obj)
-
-    def addSketchArchFeatures(self, obj, linkObj=None, mode=None):
-        """
-        To add features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
-        -  import ArchSketchObject module, and
-        -  set properties that are common to ArchObjects (including Links) and ArchSketch
-           to support the additional features
-
-        To install SketchArch External Add-on, see https://github.com/paullee0/FreeCAD_SketchArch#iv-install
-        """
-
-        try:
-            import ArchSketchObject
-
-            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, obj, linkObj, mode)
-        except:
-            pass
 
     def setProperties(self, obj, mode=None):
 
@@ -312,9 +296,6 @@ class _Window(ArchComponent.Component):
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj, mode="ODR")
-
-        # Add features in the SketchArch External Add-on
-        self.addSketchArchFeatures(obj, mode="ODR")
 
         # During the v1.1 dev cycle an experiment with a new SillHeight handling was
         # undertaken. This did not work out as intended and was therefore reverted.
@@ -751,19 +732,6 @@ class _Window(ArchComponent.Component):
             ArchSketchObject.updateAttachmentOffset(obj, linkObj)
         except:
             pass
-
-    def appLinkExecute(self, obj, linkObj, index, linkElement):
-        """
-        Default Link Execute method() -
-        See https://forum.freecad.org/viewtopic.php?f=22&t=42184&start=10#p361124
-        @realthunder added support to Links to run Linked Scripted Object's methods()
-        """
-
-        # Add features in the SketchArch External Add-on
-        self.addSketchArchFeatures(obj, linkObj)
-
-        # Execute features in the SketchArch External Add-on
-        self.executeSketchArchFeatures(obj, linkObj)
 
     def getSubFace(self):
         "returns a subface for creation of subvolume for cutting in a base object"
