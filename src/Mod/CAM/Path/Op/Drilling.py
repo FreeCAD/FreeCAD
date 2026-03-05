@@ -91,7 +91,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         """circularHoleFeatures(obj) ... drilling works on anything, turn on all Base geometries and Locations."""
         return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
-    def onDocumentRestored(self, obj):
+    def opOnDocumentRestored(self, obj):
         if hasattr(obj, "chipBreakEnabled"):
             obj.renameProperty("chipBreakEnabled", "ChipBreakEnabled")
         elif not hasattr(obj, "ChipBreakEnabled"):
