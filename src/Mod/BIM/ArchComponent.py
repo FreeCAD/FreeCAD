@@ -2147,6 +2147,8 @@ class ComponentTaskPanel:
         self.grid.addWidget(self.tree, 1, 0, 1, 2)
         self.tree.setColumnCount(1)
         self.tree.header().hide()
+        self.tree.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.tree.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
 
         # buttons
         self.addButton = QtGui.QPushButton(self.baseform)
@@ -2200,6 +2202,9 @@ class ComponentTaskPanel:
         QtCore.QObject.connect(
             self.tree, QtCore.SIGNAL("itemDoubleClicked(QTreeWidgetItem *,int)"), self.editObject
         )
+        # Use direct signal connections to reliably catch expand/collapse updates.
+        self.tree.itemExpanded.connect(self._onTreeGeometryChanged)
+        self.tree.itemCollapsed.connect(self._onTreeGeometryChanged)
         self.update()
 
         self.doc = FreeCAD.ActiveDocument
@@ -2318,6 +2323,12 @@ class ComponentTaskPanel:
                         if attrib == "Base":
                             Oattrib = [Oattrib]
                         for o in Oattrib:
+                            # Base and similar links can be stored as (obj, subelements).
+                            # Normalize to the linked object so tree entries are created.
+                            if isinstance(o, (tuple, list)) and o:
+                                o = o[0]
+                            if not hasattr(o, "Label"):
+                                continue
                             item = QtGui.QTreeWidgetItem()
                             item.setText(0, o.Label)
                             item.setToolTip(0, o.Name)
@@ -2328,6 +2339,40 @@ class ComponentTaskPanel:
                 if isinstance(self.obj.IfcProperties, dict):
                     self.ifcButton.show()
         self.retranslateUi(self.baseform)
+        self.adjustTreeHeight()
+
+    def adjustTreeHeight(self):
+        """Fit the tree height to currently visible rows to avoid ghost blank space."""
+
+        def count_visible_rows(item):
+            if item.isHidden():
+                return 0
+            count = 1
+            if item.isExpanded():
+                for i in range(item.childCount()):
+                    count += count_visible_rows(item.child(i))
+            return count
+
+        rows = 0
+        for i in range(self.tree.topLevelItemCount()):
+            rows += count_visible_rows(self.tree.topLevelItem(i))
+
+        visible_rows = min(max(rows, 1), 6)
+
+        row_height = self.tree.sizeHintForRow(0)
+        if row_height <= 0:
+            row_height = self.tree.fontMetrics().height() + 6
+
+        margins = self.tree.contentsMargins()
+        frame = self.tree.frameWidth() * 2
+        total_height = frame + margins.top() + margins.bottom() + (visible_rows * row_height) + 2
+        self.tree.setFixedHeight(total_height)
+
+    def _onTreeGeometryChanged(self, item):
+        """Recompute tree height when folders are expanded/collapsed."""
+
+        _ = item
+        self.adjustTreeHeight()
 
     def addElement(self):
         """This method is run as a callback when the user selects the add button.

@@ -55,6 +55,50 @@
 using namespace Gui::TaskView;
 namespace sp = std::placeholders;
 
+namespace
+{
+void setVerticalPolicy(QWidget* widget, QSizePolicy::Policy policy)
+{
+    if (!widget) {
+        return;
+    }
+    QSizePolicy sp = widget->sizePolicy();
+    if (sp.verticalPolicy() != policy) {
+        sp.setVerticalPolicy(policy);
+        widget->setSizePolicy(sp);
+    }
+}
+
+void setTaskContentVerticalPolicy(QWidget* widget, QSizePolicy::Policy policy)
+{
+    if (!widget) {
+        return;
+    }
+
+    if (auto taskBox = qobject_cast<TaskBox*>(widget)) {
+        // Keep the outer ActionGroup behavior unchanged to avoid fold/unfold regressions.
+        setVerticalPolicy(taskBox, QSizePolicy::Preferred);
+        if (auto groupWidget = taskBox->groupLayout()->parentWidget()) {
+            setVerticalPolicy(groupWidget, policy);
+        }
+        // Also apply policy to direct content widgets inside the task box.
+        // This prevents inner forms from consuming extra vertical slack.
+        if (auto layout = taskBox->groupLayout()) {
+            for (int i = 0; i < layout->count(); ++i) {
+                if (auto item = layout->itemAt(i)) {
+                    if (auto content = item->widget()) {
+                        setVerticalPolicy(content, policy);
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+    setVerticalPolicy(widget, policy);
+}
+}  // namespace
+
 
 //**************************************************************************
 //**************************************************************************
@@ -656,6 +700,11 @@ void TaskView::showDialog(TaskDialog* dlg)
         dialogLayout->addWidget(ActiveCtrl);
     }
 
+    const auto verticalPolicy = dlg->needsFullSpace() ? QSizePolicy::Preferred : QSizePolicy::Maximum;
+    for (const auto& it : cont) {
+        setTaskContentVerticalPolicy(it, verticalPolicy);
+    }
+
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
     if (!dlg->needsFullSpace()) {
@@ -830,6 +879,7 @@ void TaskView::addTaskWatcher()
     for (TaskWatcher* tw : ActiveWatcher) {
         std::vector<QWidget*>& cont = tw->getWatcherContent();
         for (QWidget* w : cont) {
+            setTaskContentVerticalPolicy(w, QSizePolicy::Maximum);
             taskPanel->addWidget(w);
         }
     }
