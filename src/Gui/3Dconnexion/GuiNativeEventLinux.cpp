@@ -67,6 +67,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
 void Gui::GuiNativeEvent::pollSpacenav()
 {
     spnav_event ev;
+    bool hasMotion = false;
     while (spnav_poll_event(&ev)) {
         switch (ev.type) {
             case SPNAV_EVENT_MOTION: {
@@ -76,7 +77,7 @@ void Gui::GuiNativeEvent::pollSpacenav()
                 motionDataArray[3] = -ev.motion.rx;
                 motionDataArray[4] = -ev.motion.rz;
                 motionDataArray[5] = -ev.motion.ry;
-                mainApp->postMotionEvent(motionDataArray);
+                hasMotion = true;
                 break;
             }
             case SPNAV_EVENT_BUTTON: {
@@ -84,6 +85,9 @@ void Gui::GuiNativeEvent::pollSpacenav()
                 break;
             }
         }
+    }
+    if (hasMotion) {
+        mainApp->postMotionEvent(motionDataArray);
     }
 }
 
