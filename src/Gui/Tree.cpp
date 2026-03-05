@@ -571,6 +571,18 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const
         return;
     }
 
+    // Hidden (non-visible) objects have Qt::ForegroundRole set to exactly the
+    // palette's disabled text color. Marking the option as disabled here allows
+    // QSS :disabled rules to override the item color in overlay mode, where a
+    // blanket ::item { color: ... } rule would otherwise suppress the faded
+    // appearance. We compare against the actual disabled color so that items
+    // with any other custom foreground (links, highlights, etc.) are unaffected.
+    QColor fgColor = index.data(Qt::ForegroundRole).value<QBrush>().color();
+    QColor disabledColor = option->palette.color(QPalette::Disabled, QPalette::Text);
+    if (fgColor.isValid() && fgColor.toRgb() == disabledColor.toRgb()) {
+        option->state &= ~QStyle::State_Enabled;
+    }
+
     option->textElideMode = Qt::ElideMiddle;
     auto mousePos = option->widget->mapFromGlobal(QCursor::pos());
     auto isHovered = option->rect.contains(mousePos);
