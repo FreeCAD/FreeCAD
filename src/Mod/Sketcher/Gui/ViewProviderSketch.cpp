@@ -1437,7 +1437,7 @@ void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
             break;
         }
     }
-    
+
     if (itClicked != candidateEdges.end()) {
         connectedEdges.push_back(*itClicked);
         candidateEdges.erase(itClicked);
@@ -1449,7 +1449,7 @@ void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
     bool partHasBeenAdded = true;
     while (partHasBeenAdded) {
         partHasBeenAdded = false;
-        
+
         for (auto it = candidateEdges.begin(); it != candidateEdges.end(); ++it) {
             bool connected = false;
             for (const auto& conEdge : connectedEdges) {
