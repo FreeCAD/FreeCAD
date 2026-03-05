@@ -2169,7 +2169,7 @@ int SelectionSingleton::checkSelection(
     return 0;
 }
 
-const char* SelectionSingleton::getSelectedElement(App::DocumentObject* obj, const char* pSubName) const
+std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, const char* pSubName) const
 {
     if (!obj) {
         return nullptr;
@@ -2185,12 +2185,12 @@ const char* SelectionSingleton::getSelectedElement(App::DocumentObject* obj, con
             if (pSubName
                 && strncmp(pSubName, selected.SubName.c_str(), selected.SubName.length()) == 0) {
                 if (pSubName[len] == 0 || pSubName[len - 1] == '.') {
-                    return selected.SubName.c_str();
+                    return selected.SubName;
                 }
             }
         }
     }
-    return nullptr;
+    return "";
 }
 
 void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
