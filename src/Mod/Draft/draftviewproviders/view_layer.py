@@ -420,63 +420,12 @@ class ViewProviderLayer:
 
         The function processes the parent group data stored in the
         old_parent_data dictionary by canDragObject and canDropObject.
+
+        Previously this restored old parent Group contents after a drag/drop,
+        but that caused tree duplication when moving objects between Layers
+        and Groups. The dragObject()/dropObject() pair already handles the
+        move correctly, so we just clear the saved state.
         """
-
-        # The function can be called multiple times, old_parent_data will be
-        # empty after the first call.
-        if (not hasattr(self, "old_parent_data")) or (not self.old_parent_data):
-            return
-
-        # List to collect parents whose Group must be updated.
-        # This has to happen later in a separate loop as we need the unmodified
-        # InList properties of the children in the main loop.
-        parents_to_update = []
-
-        # Main loop:
-        for child, old_data in self.old_parent_data.items():
-
-            # We assume a single old and a single new layer...
-
-            old_layer = None
-            for old_parent, old_parent_group in old_data:
-                if utils.get_type(old_parent) == "Layer":
-                    old_layer = old_parent
-                    break
-
-            new_layer = get_layer(child)
-            if new_layer == old_layer:
-                continue
-
-            elif new_layer is None:
-                # An object was dragged out of a layer.
-                # We need to check if it was put in a new group. If that is
-                # the case the content of old_layer should be restored.
-                # If the object was not put in a new group it was dropped on
-                # the document node, in that case we do nothing.
-                old_parents = [sub[0] for sub in old_data]
-                for new_parent in child.InList:
-                    if (
-                        hasattr(new_parent, "Group") and new_parent not in old_parents
-                    ):  # New group check.
-                        for old_parent, old_parent_group in old_data:
-                            if old_parent == old_layer:
-                                parents_to_update.append([old_parent, old_parent_group])
-                                break
-                        break
-
-            else:
-                # A new layer was assigned.
-                # The content of all `non-layer` groups should be restored.
-                for old_parent, old_parent_group in old_data:
-                    if utils.get_type(old_parent) != "Layer":
-                        parents_to_update.append([old_parent, old_parent_group])
-
-        # Update parents:
-        if parents_to_update:
-            for old_parent, old_parent_group in parents_to_update:
-                old_parent.Group = old_parent_group
-            App.ActiveDocument.recompute()
-
         self.old_parent_data = {}
 
     def replaceObject(self, old_obj, new_obj):

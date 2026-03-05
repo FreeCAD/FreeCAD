@@ -155,15 +155,28 @@ def moveToGroup(group):
     """
     Place the selected objects in the chosen group.
     """
+    from draftobjects.layer import get_layer
 
+    layer_for_group = None
     for obj in Gui.Selection.getSelection():
         try:
-            # retrieve group's visibility
             obj.ViewObject.Visibility = group.ViewObject.Visibility
-            group.addObject(obj)
 
+            # Remove from Layer first — C++ GroupExtension doesn't know
+            # about Python-based Layer containers
+            lyr = get_layer(obj)
+            if lyr is not None:
+                lyr.Proxy.removeObject(lyr, obj)
+                if layer_for_group is None:
+                    layer_for_group = lyr
+
+            group.addObject(obj)
         except Exception:
             pass
+
+    # Place the Group itself on the Layer the objects came from
+    if layer_for_group is not None:
+        layer_for_group.Proxy.addObject(layer_for_group, group)
 
 
 class SelectGroup(gui_base.GuiCommandNeedsSelection):
