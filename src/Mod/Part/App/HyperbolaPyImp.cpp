@@ -98,14 +98,17 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
 
-        // remove when gce_MakeHypr::gce_MakeHypr(const gp_Pnt& S1, const gp_Pnt& S2, const gp_Pnt&
-        // Center) does not have major < minor condition
-
+        
+        // This is a workaround do to fault in OCCT.
+        // It is fixed in OCCT 8.0.0,
+        // so when FreeCAD uses that version or grater this can be removed:
         gp_Pnt S1(v1.x, v1.y, v1.z);
         gp_Pnt S2(v2.x, v2.y, v2.z);
         gp_Pnt Center(v3.x, v3.y, v3.z);
 
-        if (S1.Distance(Center) < gp::Resolution() || S2.Distance(Center) < gp::Resolution()) {
+        if (S1.Distance(Center) < gp::Resolution() 
+            || S2.Distance(Center) < gp::Resolution()
+            || S1.Distance(S2) < gp::Resolution()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(gce_ConfusedPoints));
             return -1;
         }
@@ -122,13 +125,15 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         GC_MakeHyperbola me(gp_Ax2(Center, norm, XAxis), majorRadius, minorRadius);
 
 
-        // then uncomment ths and verify that a hyperbola with major < minor can be successfully
-        // created using this code path
+        // When the above workaround is removed this can be uncommented:
         // GC_MakeHyperbola me(
         //    gp_Pnt(v1.x, v1.y, v1.z),
         //    gp_Pnt(v2.x, v2.y, v2.z),
         //    gp_Pnt(v3.x, v3.y, v3.z)
         //);
+        // Then verify that hyperbolas can be created using this constructor.
+        // This can be done in the sketcher mod using the arc of hyperbola tool.
+
         if (!me.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(me.Status()));
             return -1;
