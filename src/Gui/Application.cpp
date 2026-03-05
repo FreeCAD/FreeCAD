@@ -1524,11 +1524,14 @@ void Application::unsetEditDocument(Gui::Document* pcDocument)
 }
 void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
 {
-    for (auto editDoc : d->editDocuments) {
-        if (eval(editDoc)) {
-            unsetEditDocument(editDoc);
+    std::erase_if(d->editDocuments, [&](Gui::Document* doc) {
+        if (eval(doc)) {
+            doc->_resetEdit();
+            return true;
         }
-    }
+        return false;
+    });
+    updateActions();
 }
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const
 {

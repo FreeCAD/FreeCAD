@@ -286,7 +286,8 @@ struct DocumentP
     {
         _editingObject = sobj;
         _editMode = ModNum;
-        _editViewProvider = svp;  // Helps the viewprovider find the correct in editDocument
+        _editViewProvider = svp;  // Used to resolve start editing (find the document in edit from
+                                  // within the viewprovider)
         _editViewProvider = svp->startEditing(ModNum);
         if (!_editViewProvider) {
             _editViewProviderParent = nullptr;
@@ -1078,17 +1079,6 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
             return editdoc->d->_editViewProvider == viewProvider
                 || editdoc->d->_editViewProviderParent == viewProvider;
         });
-    }
-
-    if (d->_editViewProvider == viewProvider || d->_editViewProviderParent == viewProvider) {
-        _resetEdit();
-    }
-    else if (Application::Instance->editDocument()) {
-        auto editDoc = Application::Instance->editDocument();
-        if (editDoc->d->_editViewProvider == viewProvider
-            || editDoc->d->_editViewProviderParent == viewProvider) {
-            Application::Instance->setEditDocument(nullptr);
-        }
     }
 
     handleChildren3D(viewProvider, true);

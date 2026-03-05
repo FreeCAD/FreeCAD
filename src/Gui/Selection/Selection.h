@@ -287,20 +287,6 @@ public:
     std::string notAllowedReason;
 };
 
-/** SelectionGateFilterExternal
- * The selection gate disallows any external object
- */
-class GuiExport SelectionGateFilterExternal: public SelectionGate
-{
-public:
-    explicit SelectionGateFilterExternal(const char* docName, const char* objName = nullptr);
-    bool allow(App::Document*, App::DocumentObject*, const char*) override;
-
-private:
-    std::string DocName;
-    std::string ObjName;
-};
-
 /** The Selection class
  *  The selection singleton keeps track of the selection state of
  *  the whole application. It gets messages from all entities which can
