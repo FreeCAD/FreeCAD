@@ -11780,12 +11780,28 @@ App::ElementNamePair SketchObject::getElementName(
     index.appendToStringBuffer(ret.oldName);
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
-        if (mapped)
-            mappedElement = InternalShape.getShape().getElementName(name);
-        else if (type == ElementNameType::Export)
+        if (mapped) {
+            const Part::TopoShape internalShape = InternalShape.getShape();
+            mappedElement = internalShape.getElementName(name);
+
+            // let's attempt to find the right mapped name before marking this as missing by running findSimilarNames.
+            // We could use getExportElementName to do the same thing, but this is more direct and should be more performant
+            if (!mappedElement.index && type == ElementNameType::Export && isInternalFace) {
+                std::vector<Data::MappedName> foundNames = findSimilarNames(mappedElement.name, internalShape);
+
+                if (foundNames.size()) {
+                    // just grab the first name.
+                    mappedElement.name = foundNames[0];
+                    mappedElement.index = internalShape.getIndexedName(mappedElement.name);
+                }
+            }
+        }
+        else if (type == ElementNameType::Export) {
             ret.newName = getExportElementName(InternalShape.getShape(), realName).newName;
-        else
+        }
+        else {
             mappedElement = InternalShape.getShape().getElementName(realName);
+        }
 
         if (mapped || type != ElementNameType::Export) {
             if (mappedElement.index) {
@@ -11802,7 +11818,7 @@ App::ElementNamePair SketchObject::getElementName(
 
         if (ret.newName.size()) {
             if (auto dot = strrchr(ret.newName.c_str(), '.'))
-                ret.newName.resize(dot+1-ret.newName.c_str());
+                ret.newName.resize(dot + 1 - ret.newName.c_str());
             else
                 ret.newName += ".";
             ret.newName += ret.oldName;
