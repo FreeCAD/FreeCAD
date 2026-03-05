@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <FCConfig.h>
+#include <array>
 #include <App/Application.h>
 
 #include "GuiNativeEventLinux.h"
@@ -90,7 +91,7 @@ void Gui::GuiNativeEvent::pollSpacenav()
     if (hasMotion) {
         // Per-axis deadzone: zero out axes below their individual threshold.
         // Configured via user.cfg BaseApp/Spaceball/Motion/{Axis}Deadzone.
-        static const char* axisDeadzoneKeys[] = {
+        static const std::array<const char*, 6> axisDeadzoneKeys = {
             "PanLRDeadzone",
             "PanUDDeadzone",
             "ZoomDeadzone",
@@ -101,7 +102,7 @@ void Gui::GuiNativeEvent::pollSpacenav()
         auto hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Spaceball/Motion"
         );
-        for (int i = 0; i < 6; i++) {
+        for (size_t i = 0; i < axisDeadzoneKeys.size(); i++) {
             int dz = static_cast<int>(hGrp->GetInt(axisDeadzoneKeys[i], 0));
             if (dz > 0 && motionDataArray[i] > -dz && motionDataArray[i] < dz) {
                 motionDataArray[i] = 0;
