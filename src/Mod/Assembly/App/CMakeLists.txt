@@ -59,6 +59,10 @@ SET(Assembly_SRCS
     ViewGroup.h
     SimulationGroup.cpp
     SimulationGroup.h
+    Solver.cpp
+    Solver.h
+    OndselSolver.cpp
+    OndselSolver.h
     ${Module_SRCS}
     ${Python_SRCS}
 )
