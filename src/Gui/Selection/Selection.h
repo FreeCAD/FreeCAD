@@ -398,7 +398,7 @@ public:
         ResolveMode resolve = ResolveMode::OldStyleElement
     ) const;
 
-    const char* getSelectedElement(App::DocumentObject*, const char* pSubName) const;
+    std::string getSelectedElement(App::DocumentObject*, const char* pSubName) const;
 
     /// set the preselected object (mostly by the 3D view)
     int setPreselect(
