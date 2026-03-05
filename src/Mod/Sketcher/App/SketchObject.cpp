@@ -11755,11 +11755,28 @@ App::ElementNamePair SketchObject::getElementName(
     App::ElementNamePair ret;
     if(!name) return ret;
 
-    if(hasSketchMarker(name))
+    // If this is an InternalFace then don't check the MappedName, because that would cause
+    // the wrong element to be selected.
+    const char *mapped = Data::isMappedElement(name);
+    const char* indexedSubname = mapped;
+    bool isInternalFace = false;
+
+    if (mapped) {
+        const char* dot = strchr(mapped, '.');
+        
+        if (dot) {
+            indexedSubname = dot + 1; 
+
+            if (indexedSubname == strstr(indexedSubname, "InternalFace")) {
+                isInternalFace = true;
+            }
+        }
+    }
+
+    if(hasSketchMarker(name) && !isInternalFace)
         return Part2DObject::getElementName(name,type);
 
-    const char *mapped = Data::isMappedElement(name);
-    Data::IndexedName index = checkSubName(name);
+    Data::IndexedName index = isInternalFace ? Data::IndexedName(indexedSubname, {"InternalFace"}, false) : checkSubName(name);
     index.appendToStringBuffer(ret.oldName);
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
@@ -11882,8 +11899,6 @@ Data::IndexedName SketchObject::checkSubName(const char *subname) const
         "H_Axis",
         "V_Axis",
         "Constraint",
-
-        // other feature from LS3 not related to TNP
         "InternalEdge",
         "InternalFace",
         "InternalVertex",

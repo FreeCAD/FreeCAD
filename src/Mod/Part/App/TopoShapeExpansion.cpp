@@ -2296,7 +2296,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     }
 
                     TopExp_Explorer xp;
-                    if (info->shapetype == "Face") {
+                    if (strcmp(info->shapetype, "Face") == 0) {
                         // just explore thru the outer wire of a face.
                         xp.Init(BRepTools::OuterWire(TopoDS::Face(mainElement)), it->second);
                     } else {
