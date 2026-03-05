@@ -45,6 +45,7 @@ public:
 
     void bind(const App::ObjectIdentifier& _path) override;
     void setExpression(std::shared_ptr<App::Expression> expr) override;
+    int getMargin();
 
 protected:
     /*! Expression handling */
@@ -65,7 +66,6 @@ protected:
     virtual void showIcon();
     virtual void validateInput();
     void resizeWidget();
-    int getMargin();
 
     bool handleKeyEvent(const QString&);
     virtual void openFormulaDialog();
