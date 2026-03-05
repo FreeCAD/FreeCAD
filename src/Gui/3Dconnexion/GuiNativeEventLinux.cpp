@@ -22,17 +22,74 @@
 
 #include <FCConfig.h>
 #include <array>
+#include <cmath>
+#include <cstring>
 #include <App/Application.h>
 
 #include "GuiNativeEventLinux.h"
 
 #include "GuiApplicationNativeEventAware.h"
 #include <Base/Console.h>
+#include <Base/Parameter.h>
 #include <QMainWindow>
 
 #include <QSocketNotifier>
 
 #include <spnav.h>
+
+namespace
+{
+
+// Cached per-axis deadzone values, auto-updated via Observer when user.cfg changes.
+class DeadzoneCache: public ParameterGrp::ObserverType
+{
+public:
+    static constexpr std::array<const char*, 6> keys = {
+        "PanLRDeadzone",
+        "PanUDDeadzone",
+        "ZoomDeadzone",
+        "TiltDeadzone",
+        "RollDeadzone",
+        "SpinDeadzone",
+    };
+
+    std::array<int, 6> values {};
+
+    explicit DeadzoneCache(ParameterGrp::handle hGrp)
+        : hGrp(std::move(hGrp))
+    {
+        loadAll();
+        this->hGrp->Attach(this);
+    }
+
+    ~DeadzoneCache() override
+    {
+        hGrp->Detach(this);
+    }
+
+    void OnChange(ParameterGrp::SubjectType& /*rCaller*/,
+                  ParameterGrp::MessageType reason) override
+    {
+        for (size_t i = 0; i < keys.size(); i++) {
+            if (std::strcmp(reason, keys[i]) == 0) {
+                values[i] = static_cast<int>(hGrp->GetInt(keys[i], 0));
+                return;
+            }
+        }
+    }
+
+private:
+    void loadAll()
+    {
+        for (size_t i = 0; i < keys.size(); i++) {
+            values[i] = static_cast<int>(hGrp->GetInt(keys[i], 0));
+        }
+    }
+
+    ParameterGrp::handle hGrp;
+};
+
+}  // namespace
 
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware* app)
     : GuiAbstractNativeEvent(app)
@@ -90,21 +147,15 @@ void Gui::GuiNativeEvent::pollSpacenav()
     }
     if (hasMotion) {
         // Per-axis deadzone: zero out axes below their individual threshold.
-        // Configured via user.cfg BaseApp/Spaceball/Motion/{Axis}Deadzone.
-        static const std::array<const char*, 6> axisDeadzoneKeys = {
-            "PanLRDeadzone",
-            "PanUDDeadzone",
-            "ZoomDeadzone",
-            "TiltDeadzone",
-            "RollDeadzone",
-            "SpinDeadzone"
-        };
-        auto hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Spaceball/Motion"
+        // Values cached and auto-updated via Observer when user.cfg changes.
+        static DeadzoneCache dzCache(
+            App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Spaceball/Motion"
+            )
         );
-        for (size_t i = 0; i < axisDeadzoneKeys.size(); i++) {
-            int dz = static_cast<int>(hGrp->GetInt(axisDeadzoneKeys[i], 0));
-            if (dz > 0 && motionDataArray[i] > -dz && motionDataArray[i] < dz) {
+        for (size_t i = 0; i < dzCache.values.size(); i++) {
+            int dz = dzCache.values[i];
+            if (dz > 0 && std::abs(motionDataArray[i]) < dz) {
                 motionDataArray[i] = 0;
             }
         }
