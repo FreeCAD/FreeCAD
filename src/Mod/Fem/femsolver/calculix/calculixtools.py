@@ -27,11 +27,13 @@ __url__ = "https://www.freecad.org"
 
 
 from PySide.QtCore import QProcess, QThread, QProcessEnvironment
-import tempfile
 import os
 import shutil
 
 from vtkmodules.util import numpy_support as vtk_np
+from vtkmodules.vtkIOXML import vtkXMLMultiBlockDataReader
+from vtkmodules.vtkCommonDataModel import vtkMultiBlockDataSet
+import numpy as np
 
 import FreeCAD
 import Fem
@@ -174,18 +176,28 @@ class CalculiXTools(ObjectTools):
         for f in files:
             if f.endswith(".vtm"):
                 vtm_file = os.path.join(self.obj.WorkingDirectory, f)
-                pipeline.read(vtm_file)
-                pipeline.renameArrays(self.frd_var_conversion(self.obj.AnalysisType))
+                reader = vtkXMLMultiBlockDataReader()
+                reader.SetFileName(vtm_file)
+                reader.Update()
+                multi_block = reader.GetOutput()
+                multi_block = self._generate_derived_result(multi_block)
                 if self.obj.DisplaceMesh:
-                    self._generate_disp_mesh(pipeline)
-                self._set_time_info(pipeline)
+                    multi_block = self._generate_disp_mesh(multi_block)
+                pipeline.Data = multi_block
                 break
 
-        if create:
+        pipeline.renameArrays(self.frd_var_conversion(self.obj.AnalysisType))
+        self._set_time_info(pipeline)
+
+        if create and FreeCAD.GuiUp:
             # default display mode
-            pipeline.ViewObject.DisplayMode = "Surface"
-            pipeline.ViewObject.SelectionStyle = "BoundBox"
-            pipeline.ViewObject.Field = self._get_default_field()
+            view_obj = pipeline.ViewObject
+            view_obj.DisplayMode = "Surface"
+            view_obj.SelectionStyle = "BoundBox"
+            enum_field = view_obj.getEnumerationsOfProperty("Field")
+            default_field = self._get_default_field()
+            if default_field in enum_field:
+                view_obj.Field = default_field
 
     def frd_var_conversion(self, analysis_type):
         common = {
@@ -223,23 +235,110 @@ class CalculiXTools(ObjectTools):
             case _:
                 return "None"
 
-    def _generate_disp_mesh(self, pipeline):
+    def _generate_disp_mesh(self, mb):
         try:
-            mb = pipeline.Data
             for i in range(mb.GetNumberOfBlocks()):
                 grid = mb.GetBlock(i)
-                if not grid.GetPointData().HasArray("Displacement"):
-                    return
+                if grid is None:
+                    continue
+                pd = grid.GetPointData()
+                if (pd is None) or not pd.HasArray("DISP"):
+                    continue
                 points = grid.GetPoints()
-                pd = points.GetData()
-                disp = grid.GetPointData().GetAbstractArray("Displacement")
-                disp_points = vtk_np.vtk_to_numpy(pd) + vtk_np.vtk_to_numpy(disp)
+                pos = points.GetData()
+                disp = pd.GetAbstractArray("DISP")
+                disp_points = vtk_np.vtk_to_numpy(pos) + vtk_np.vtk_to_numpy(disp)
                 disp_points = vtk_np.numpy_to_vtk(disp_points)
                 points.SetData(disp_points)
 
-            pipeline.Data = mb
+            mb_out = vtkMultiBlockDataSet()
+            mb_out.DeepCopy(mb)
+
+            return mb_out
+
         except Exception as e:
-            pass
+            # return original data
+            FreeCAD.Console.PrintWarning("Displaced mesh not generated\n")
+            return mb
+
+    def _generate_derived_result(self, mb):
+        try:
+            for i in range(mb.GetNumberOfBlocks()):
+                grid = mb.GetBlock(i)
+                if grid is None:
+                    continue
+                pd = grid.GetPointData()
+                if (pd is None) or not pd.HasArray("STRESS"):
+                    continue
+
+                stress = pd.GetAbstractArray("STRESS")
+                s_xx, s_yy, s_zz, s_xy, s_yz, s_xz = vtk_np.vtk_to_numpy(stress).transpose()
+                # create symmetric matrix from [Sxx, Syy, Szz, Sxy, Syz, Sxz]
+                sym_stress = (
+                    np.array([s_xx, s_xy, s_xz, s_xy, s_yy, s_yz, s_xz, s_yz, s_zz])
+                    .transpose()
+                    .reshape(-1, 3, 3)
+                )
+                prin_val, prin_axes = np.linalg.eigh(sym_stress)
+
+                sigma_1 = prin_val[:, 2]
+                sigma_3 = prin_val[:, 0]
+                sigma_2 = prin_val[:, 1]
+                sigma_1_axis = prin_axes[:, :, 2]
+                sigma_3_axis = prin_axes[:, :, 0]
+                sigma_2_axis = prin_axes[:, :, 1]
+
+                sigma_1_vtk = vtk_np.numpy_to_vtk(sigma_1)
+                sigma_1_vtk.SetName("Major Principal Stress")
+                sigma_3_vtk = vtk_np.numpy_to_vtk(sigma_3)
+                sigma_3_vtk.SetName("Minor Principal Stress")
+                sigma_2_vtk = vtk_np.numpy_to_vtk(sigma_2)
+                sigma_2_vtk.SetName("Intermediate Principal Stress")
+                sigma_1_axis_vtk = vtk_np.numpy_to_vtk(sigma_1_axis)
+                sigma_1_axis_vtk.SetName("Major Principal Stress Direction")
+                sigma_3_axis_vtk = vtk_np.numpy_to_vtk(sigma_3_axis)
+                sigma_3_axis_vtk.SetName("Minor Principal Stress Direction")
+                sigma_2_axis_vtk = vtk_np.numpy_to_vtk(sigma_2_axis)
+                sigma_2_axis_vtk.SetName("Intermediate Principal Stress Direction")
+
+                # add principal stress
+                pd.AddArray(sigma_1_vtk)
+                pd.AddArray(sigma_3_vtk)
+                pd.AddArray(sigma_2_vtk)
+                # add principal directions
+                pd.AddArray(sigma_1_axis_vtk)
+                pd.AddArray(sigma_3_axis_vtk)
+                pd.AddArray(sigma_2_axis_vtk)
+
+                sigma_diff = np.array([sigma_1 - sigma_2, sigma_2 - sigma_3, sigma_3 - sigma_1])
+
+                # von Mises stress
+                von_mises = np.linalg.norm(sigma_diff, axis=0) / np.sqrt(2)
+                von_mises_vtk = vtk_np.numpy_to_vtk(von_mises)
+                von_mises_vtk.SetName("von Mises Stress")
+                pd.AddArray(von_mises_vtk)
+
+                # max shear stress
+                max_shear = 1 / 2 * np.max(np.abs(sigma_diff), axis=0)
+                max_shear_vtk = vtk_np.numpy_to_vtk(max_shear)
+                max_shear_vtk.SetName("Tresca Stress")
+                pd.AddArray(max_shear_vtk)
+
+                # max abs principal stress
+                max_abs_sigma = np.max(np.abs(np.array([sigma_1, sigma_2, sigma_3])), axis=0)
+                max_abs_sigma_vtk = vtk_np.numpy_to_vtk(max_abs_sigma)
+                max_abs_sigma_vtk.SetName("Maximum Absolute Principal Stress")
+                pd.AddArray(max_abs_sigma_vtk)
+
+            mb_out = vtkMultiBlockDataSet()
+            mb_out.DeepCopy(mb)
+
+            return mb_out
+
+        except Exception as e:
+            # return original data
+            FreeCAD.Console.PrintWarning("Derived result not generated\n")
+            return mb
 
     def _set_time_info(self, pipeline):
         match self.obj.AnalysisType:
