@@ -1098,12 +1098,9 @@ class ViewProviderJoint:
             asm_global_plc = assembly.getGlobalPlacement()
             if asm_global_plc != App.Placement():
                 global_plc = UtilsAssembly.getJcsGlobalPlc(plc, ref)
-                local_plc = asm_global_plc.inverse() * global_plc
-                jcs.set_marker_placement(local_plc, None)
-            else:
-                jcs.set_marker_placement(plc, ref)
-        else:
-            jcs.set_marker_placement(plc, ref)
+                 plc = asm_global_plc.inverse() * global_plc
+                 ref = None
+        jcs.set_marker_placement(plc, rdf)
 
     def setPickableState(self, state: bool):
         """Set JCS selectable or unselectable in 3D view"""
