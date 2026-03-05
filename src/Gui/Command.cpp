@@ -735,7 +735,8 @@ void Command::resetTransactionID()
 }
 bool Command::hasPendingCommand()
 {
-    return App::GetApplication().getActiveDocument()->getBookedTransactionID() != 0;
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    return doc && doc->getBookedTransactionID() != App::NullTransaction;
 }
 
 bool Command::_blockCmd = false;
