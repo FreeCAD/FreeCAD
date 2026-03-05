@@ -82,6 +82,8 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
     ui->qsbLineWidth->setSingleStep(0.100);
     ui->qsbLineWidth->setMinimum(0);
 
+    ui->gbLeader->setChecked(balloonVP->LineVisible.getValue() != 0);
+
     // negative kink length is allowed, thus no minimum
     ui->qsbKinkLength->setUnit(Base::Unit::Length);
 
@@ -89,17 +91,17 @@ TaskBalloon::TaskBalloon(QGIViewBalloon *parent, ViewProviderBalloon *balloonVP)
         ui->textColor->setColor(balloonVP->Color.getValue().asValue<QColor>());
         connect(ui->textColor, &ColorButton::changed, this, &TaskBalloon::onColorChanged);
         ui->qsbFontSize->setValue(balloonVP->Fontsize.getValue());
-        ui->comboLineVisible->setCurrentIndex(balloonVP->LineVisible.getValue());
         ui->qsbLineWidth->setValue(balloonVP->LineWidth.getValue());
     }
     // new balloons have already the preferences BalloonKink length
     ui->qsbKinkLength->setValue(parent->getBalloonFeat()->KinkLength.getValue());
 
     connect(ui->qsbFontSize, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onFontsizeChanged);
-    connect(ui->comboLineVisible, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskBalloon::onLineVisibleChanged);
+    connect(ui->gbLeader,&QGroupBox::toggled, this, &TaskBalloon::onLineVisibleChanged);
     connect(ui->qsbLineWidth, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onLineWidthChanged);
     connect(ui->qsbKinkLength, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskBalloon::onKinkLengthChanged);
 
+    onLineVisibleChanged(ui->gbLeader->isChecked());
 }
 
 TaskBalloon::~TaskBalloon()
@@ -201,9 +203,9 @@ void TaskBalloon::onEndSymbolScaleChanged()
     recomputeFeature();
 }
 
-void TaskBalloon::onLineVisibleChanged()
+void TaskBalloon::onLineVisibleChanged(bool isVisible)
 {
-    m_balloonVP->LineVisible.setValue(ui->comboLineVisible->currentIndex());
+    m_balloonVP->LineVisible.setValue(isVisible ? 1 : 0);
     recomputeFeature();
 }
 
