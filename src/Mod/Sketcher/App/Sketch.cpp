@@ -5570,4 +5570,3 @@ void Sketch::Save(Writer&) const
 
 void Sketch::Restore(XMLReader&)
 {}
-
