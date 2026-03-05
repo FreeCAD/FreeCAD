@@ -23,11 +23,14 @@
  ***************************************************************************/
 
 
+#include <cctype>
+
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
 #include <App/Range.h>
 #include <Base/Tools.h>
 #include <Gui/CommandT.h>
+#include <QCoreApplication>
 
 #include "PropertiesDialog.h"
 #include "ui_PropertiesDialog.h"
@@ -36,6 +39,49 @@
 using namespace App;
 using namespace Spreadsheet;
 using namespace SpreadsheetGui;
+
+namespace
+{
+bool hasValidAliasSyntax(const std::string& candidate)
+{
+    if (candidate.empty()) {
+        return false;
+    }
+
+    const unsigned char first = static_cast<unsigned char>(candidate[0]);
+    if (!std::isalpha(first)) {
+        return false;
+    }
+
+    for (char ch : candidate) {
+        const unsigned char uch = static_cast<unsigned char>(ch);
+        if (!(std::isalnum(uch) || ch == '_')) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+QString aliasHelpTooltip()
+{
+    return QCoreApplication::translate(
+        "PropertiesDialog",
+        "Refer to cell by alias, for example\n"
+        "Spreadsheet.my_alias_name instead of Spreadsheet.B1"
+    );
+}
+
+QString reservedAliasTooltip()
+{
+    return QCoreApplication::translate(
+        "PropertiesDialog",
+        "Cannot use a unit/constant name as alias. Reserved examples: m = meters, "
+        "s = seconds, e = Euler's number, A = amperes, T = tesla, G = gauss/giga, "
+        "H = henry, L = liter. Try 'myM', 'LenM', 'Sec' etc. instead."
+    );
+}
+}  // namespace
 
 PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ranges, QWidget* parent)
     : QDialog(parent)
@@ -147,9 +193,10 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
 
     // Alias
     connect(ui->alias, &QLineEdit::textEdited, this, &PropertiesDialog::aliasChanged);
+    ui->aliasStatus->setVisible(false);
+    ui->alias->setToolTip(aliasHelpTooltip());
 
     ui->tabWidget->setCurrentIndex(0);
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
 
 void PropertiesDialog::foregroundColorChanged(const QColor& color)
@@ -249,12 +296,52 @@ void PropertiesDialog::displayUnitChanged(const QString& text)
 void PropertiesDialog::aliasChanged(const QString& text)
 {
     QPalette palette = ui->alias->palette();
+    const std::string aliasText = text.toStdString();
+    QString tooltip = aliasHelpTooltip();
+    QString statusText;
 
-    aliasOk = text.isEmpty() || sheet->isValidAlias(text.toStdString());
+    aliasOk = text.isEmpty() || sheet->isValidAlias(aliasText);
+    if (!text.isEmpty() && !aliasOk) {
+        if (ExpressionParser::isTokenAUnit(aliasText)) {
+            tooltip = tr("Alias conflicts with a reserved unit token used by expressions.");
+            statusText = tr("Invalid: reserved unit token");
+        }
+        else if (ExpressionParser::isTokenAConstant(aliasText)) {
+            tooltip = tr("Alias conflicts with a reserved constant token used by expressions.");
+            statusText = tr("Invalid: reserved constant token");
+        }
+        else if (sheet->isReservedAliasName(aliasText)) {
+            tooltip = reservedAliasTooltip();
+            statusText = tr("Invalid: reserved unit or constant name");
+        }
+        else if (!sheet->getAddressFromAlias(aliasText).empty()) {
+            tooltip = tr("Alias already defined.");
+            statusText = tr("Invalid: alias already exists");
+        }
+        else if (sheet->getCells()->isValidCellAddressName(aliasText)) {
+            tooltip = tr("Alias cannot look like a cell address such as A1 or C12.");
+            statusText = tr("Invalid: alias matches cell address pattern");
+        }
+        else if (sheet->getPropertyByName(aliasText.c_str())) {
+            tooltip = tr("Alias conflicts with an existing spreadsheet property name.");
+            statusText = tr("Invalid: conflicts with existing property name");
+        }
+        else if (!hasValidAliasSyntax(aliasText)) {
+            tooltip = tr("Alias must start with a letter and contain only letters, digits, and '_'.");
+            statusText = tr("Invalid: bad alias syntax");
+        }
+        else {
+            tooltip = tr("Alias is not valid in this spreadsheet context.");
+            statusText = tr("Invalid alias");
+        }
+    }
 
-    alias = aliasOk ? text.toStdString() : "";
+    alias = aliasOk ? aliasText : "";
     palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);
     ui->alias->setPalette(palette);
+    ui->alias->setToolTip(tooltip);
+    ui->aliasStatus->setText(statusText);
+    ui->aliasStatus->setVisible(!statusText.isEmpty());
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
 
