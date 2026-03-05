@@ -320,6 +320,21 @@ PyObject* FemPostPipelinePy::getOutputAlgorithm([[maybe_unused]] PyObject* args)
 #endif
 }
 
+PyObject* FemPostPipelinePy::setTimeInfo(PyObject* args)
+{
+    const char* frameType;
+    PyObject* unitPy;
+
+    if (!PyArg_ParseTuple(args, "sO!", &frameType, &(Base::UnitPy::Type), &unitPy)) {
+        return nullptr;
+    }
+
+    Base::Unit unit = *(static_cast<Base::UnitPy*>(unitPy)->getUnitPtr());
+    getFemPostPipelinePtr()->setTimeInfo(std::string(frameType), unit);
+
+    Py_Return;
+}
+
 PyObject* FemPostPipelinePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;

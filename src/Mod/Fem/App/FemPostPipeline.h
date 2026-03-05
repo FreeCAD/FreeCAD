@@ -93,6 +93,7 @@ public:
     bool hasFrames();
     std::string getFrameType();
     Base::Unit getFrameUnit();
+    void setTimeInfo(const std::string& frameType, const Base::Unit& unit);
     unsigned int getFrameNumber();
     std::vector<double> getFrameValues();
 
@@ -123,6 +124,7 @@ private:
     bool m_block_property = false;
     bool m_data_updated = false;
     void updateData();
+    void updateFrameValues();
 
 
     template<class TReader>
