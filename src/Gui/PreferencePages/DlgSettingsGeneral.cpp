@@ -108,9 +108,10 @@ public:
         const QRect contentRect
             = view->style()->subElementRect(QStyle::SE_ItemViewItemText, &probeOpt, view);
         const int vertPadding = qMax(0, (probeSize - contentRect.height()) / 2);
+        const int horizPadding = qMax(0, probeSize - contentRect.width());
 
         const QSize buttonSize = widget->sizeHint();
-        return QSize(buttonSize.width(), buttonSize.height() + 2 * vertPadding);
+        return QSize(buttonSize.width() + horizPadding, buttonSize.height() + 2 * vertPadding);
     }
 
     void updateEditorGeometry(
@@ -138,7 +139,7 @@ public:
         editor->setGeometry(QRect(
             contentRect.left(),
             contentRect.top() + vertOffset,
-            contentRect.width(),
+            naturalSize.width(),
             naturalSize.height()
         ));
     }

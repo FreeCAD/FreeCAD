@@ -36,6 +36,7 @@
 #include <QProxyStyle>
 #include <QEvent>
 #include <QPushButton>
+#include <QToolButton>
 
 namespace Gui
 {
@@ -115,13 +116,34 @@ public:
      * resolveBoxBackground({"ButtonPressedPrimary", "ButtonPressed", "Button"})
      * @endcode
      */
-    static BoxBackground resolveBoxBackground(std::initializer_list<std::string_view> prefixes);
+    BoxBackground resolveBoxBackground(std::initializer_list<std::string_view> prefixes) const;
 
 protected:
     void drawPrimitive(
         PrimitiveElement element,
         const QStyleOption* option,
         QPainter* painter,
+        const QWidget* widget = nullptr
+    ) const override;
+
+    void drawControl(
+        ControlElement element,
+        const QStyleOption* option,
+        QPainter* painter,
+        const QWidget* widget = nullptr
+    ) const override;
+
+    QSize sizeFromContents(
+        ContentsType type,
+        const QStyleOption* option,
+        const QSize& size,
+        const QWidget* widget = nullptr
+    ) const override;
+
+    QRect subControlRect(
+        ComplexControl complexControl,
+        const QStyleOptionComplex* option,
+        SubControl subControl,
         const QWidget* widget = nullptr
     ) const override;
 
@@ -141,6 +163,39 @@ protected:
     bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
+    /**
+     * @brief Resolves a single named parameter from the application's StyleParameterManager.
+     *
+     * Returns nullopt if the manager is unavailable or the parameter is not defined.
+     */
+    std::optional<StyleParameters::Value> resolve(std::string_view name) const;
+
+    /**
+     * @brief Tries each name in order and returns the first match.
+     *
+     * Useful for resolved-with-fallback patterns, e.g.:
+     * @code{.cpp}
+     * resolve({"ToolButtonSmallPadding", "ToolButtonPadding"})
+     * @endcode
+     */
+    std::optional<StyleParameters::Value> resolve(std::initializer_list<std::string_view> names) const;
+
+    /**
+     * @brief Tries resolving each @p prefix concatenated with @p suffix, in order.
+     *
+     * Useful for the prefix-fallback pattern used in resolveBoxBackground:
+     * @code{.cpp}
+     * resolve({"ButtonHoverPrimary", "ButtonHover", "Button"}, "Background")
+     * @endcode
+     */
+    std::optional<StyleParameters::Value> resolve(
+        std::initializer_list<std::string_view> prefixes,
+        std::string_view suffix
+    ) const;
+
+
+    static std::string controlSizeSuffix(const QWidget* widget);
+
     static QColor toQColor(const Base::Color& color);
     static QBrush toBackgroundBrush(const StyleParameters::Value& value);
     static CornerRadii toCornerRadii(const StyleParameters::Corners& corners);

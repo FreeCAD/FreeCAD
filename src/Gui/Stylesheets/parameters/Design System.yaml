@@ -52,7 +52,7 @@ Background:
 BaseTextColor: "@Contrast.700"
 
 BaseHoverOverlay: "#ffffff"
-BaseHoverOverlayOpacity: 40%
+BaseHoverOverlayOpacity: 50%
 
 BasePressedOverlay: "@Contrast.800"
 BasePressedOverlayOpacity: 10%
@@ -70,11 +70,14 @@ ButtonHeight: "@FormControlHeight"
 ButtonBorderThickness: "@FormControlBorderThickness"
 ButtonBorderRadius: "@FormControlBorderRadius"
 ButtonPadding: "padding(horizontal: @Spacing.300, vertical: @Spacing.100)"
-ButtonIconSpacing: "@Spacing.300"
+ButtonIconSpacing: "@Spacing.150"
 ButtonIconSize: 16px
 ButtonFontSize: 12px
 ButtonFontWeight: 500
 ButtonContentBox: "content_box((width: @ButtonMinWidth, height: @ButtonHeight), @ButtonPadding, @ButtonBorderThickness)"
+
+ButtonSmallFontSize: 11px
+ButtonSmallFontWeight: 500
 
 ButtonSpacing: "@Spacing.250"
 
@@ -93,7 +96,11 @@ ButtonCheckedInnerShadow: "inner_shadow(color: rgba(0, 0, 0, 50), y: 2px, blur: 
 ButtonPrimaryBackground: "blend(@ButtonBackground, @Accent.500, 15%)"
 ButtonPrimaryBorderColor: "blend(@ButtonBorderColor, @Accent.500, 25%)"
 
-ToolButtonPadding: "padding(@Spacing.150)"
+ToolButtonPadding: "padding(horizontal: @Spacing.100, vertical: @Spacing.050)"
+ToolButtonSmallPadding: "padding(horizontal: @Spacing.100, vertical: @Spacing.050)"
+
+ToolButtonHeight: "@FormControlHeight"
+ToolButtonSmallHeight: "@FormControlSmallHeight"
 
 DialogBackground: "@Background.050"
 
