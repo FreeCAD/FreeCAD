@@ -67,8 +67,7 @@ public:
         hGrp->Detach(this);
     }
 
-    void OnChange(ParameterGrp::SubjectType& /*rCaller*/,
-                  ParameterGrp::MessageType reason) override
+    void OnChange(ParameterGrp::SubjectType& /*rCaller*/, ParameterGrp::MessageType reason) override
     {
         for (size_t i = 0; i < keys.size(); i++) {
             if (std::strcmp(reason, keys[i]) == 0) {
@@ -149,9 +148,7 @@ void Gui::GuiNativeEvent::pollSpacenav()
         // Per-axis deadzone: zero out axes below their individual threshold.
         // Values cached and auto-updated via Observer when user.cfg changes.
         static DeadzoneCache dzCache(
-            App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Spaceball/Motion"
-            )
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Spaceball/Motion")
         );
         for (size_t i = 0; i < dzCache.values.size(); i++) {
             int dz = dzCache.values[i];
