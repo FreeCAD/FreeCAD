@@ -84,24 +84,21 @@ int UnitHelper::getSchemaIndex(int comboIndex, int preferredSchemaIndex)
 {
     const auto names = Base::UnitsApi::getNames();
 
+    const char* schemaName = "Internal";
     switch (comboIndex) {
-        case 1: {
-            auto it = std::find(names.begin(), names.end(), "MKS");
-            return it != names.end() ? static_cast<int>(std::distance(names.begin(), it)) : preferredSchemaIndex;
-        }
-        case 2: {
-            auto it = std::find(names.begin(), names.end(), "Imperial");
-            return it != names.end() ? static_cast<int>(std::distance(names.begin(), it)) : preferredSchemaIndex;
-        }
-        case 3: {
-            auto it = std::find(names.begin(), names.end(), "ImperialCivil");
-            return it != names.end() ? static_cast<int>(std::distance(names.begin(), it)) : preferredSchemaIndex;
-        }
-        default: {
-            auto it = std::find(names.begin(), names.end(), "Internal");
-            return it != names.end() ? static_cast<int>(std::distance(names.begin(), it)) : preferredSchemaIndex;
-        }
+        case 1:
+            schemaName = "MKS";
+            break;
+        case 2:
+            schemaName = "Imperial";
+            break;
+        case 3:
+            schemaName = "ImperialCivil";
+            break;
     }
+
+    auto it = std::find(names.begin(), names.end(), schemaName);
+    return it != names.end() ? static_cast<int>(std::distance(names.begin(), it)) : preferredSchemaIndex;
 }
 
 std::string UnitHelper::translate(const Base::Quantity& quantity, int schemaIndex)

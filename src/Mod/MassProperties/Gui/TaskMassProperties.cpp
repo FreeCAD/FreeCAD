@@ -33,6 +33,8 @@
 #include <unordered_set>
 #include <sstream>
 #include <iomanip>
+#include <tuple>
+#include <vector>
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -79,9 +81,7 @@ using namespace MassPropertiesGui;
 MassPropertiesData currentInfo;
 std::string currentMode = "Center of gravity";
 App::DocumentObject* currentDatum = nullptr;
-
-std::vector<double> centerOfGravity;
-std::vector<double> centerOfVolume;
+std::vector<std::tuple<std::string, std::string, std::string>> savedSelection;
 
 TaskMassProperties::TaskMassProperties()
     : Gui::SelectionObserver(true)
@@ -939,7 +939,20 @@ void TaskMassProperties::tryupdate()
                 currentDatumPlacement = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
                 hasCurrentDatumPlacement = true;
                 selectingCustomCoordSystem = false;
-                break;
+
+                isUpdating = true;
+                Gui::Selection().clearSelection();
+                for (const auto& sel : savedSelection) {
+                    if (std::get<2>(sel).empty()) {
+                        Gui::Selection().addSelection(std::get<0>(sel).c_str(), std::get<1>(sel).c_str());
+                    } else {
+                        Gui::Selection().addSelection(std::get<0>(sel).c_str(), std::get<1>(sel).c_str(), std::get<2>(sel).c_str());
+                    }
+                }
+                savedSelection.clear();
+                isUpdating = false;
+                tryupdate();
+                return;
             }
         }
     }
@@ -1075,19 +1088,7 @@ void TaskMassProperties::tryupdate()
 
     currentInfo = info;
 
-    if (currentMode == "Center of gravity") {
-        info.cogX = 0.0;
-        info.cogY = 0.0;
-        info.cogZ = 0.0;
-
-        info.covX -= currentInfo.cogX;
-        info.covY -= currentInfo.cogY;
-        info.covZ -= currentInfo.cogZ;
-
-        centerOfGravity = {info.cogX, info.cogY, info.cogZ};
-        centerOfVolume = {info.covX, info.covY, info.covZ};
-    }
-    else if (currentMode == "Custom" && referenceDatum) {
+    if (currentMode == "Custom" && referenceDatum) {
         auto applyOriginOffset = [&](const Base::Vector3d& originPos) {
             info.cogX -= originPos.x;
             info.cogY -= originPos.y;
@@ -1096,9 +1097,6 @@ void TaskMassProperties::tryupdate()
             info.covX -= originPos.x;
             info.covY -= originPos.y;
             info.covZ -= originPos.z;
-
-            centerOfGravity = {info.cogX, info.cogY, info.cogZ};
-            centerOfVolume = {info.covX, info.covY, info.covZ};
         };
 
 
@@ -1296,6 +1294,16 @@ void TaskMassProperties::onLcsButtonPressed()
 void TaskMassProperties::onSelectCustomCoordinateSystem()
 {
     selectingCustomCoordSystem = true;
+    savedSelection.clear();
+
+    auto guiSelection = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
+    for (const auto& sel : guiSelection) {
+        if (!sel.pObject || !sel.pObject->getDocument()) continue;
+        std::string docName = sel.pObject->getDocument()->getName();
+        std::string objName = sel.pObject->getNameInDocument();
+        std::string subName = (sel.SubName && sel.SubName[0]) ? sel.SubName : "";
+        savedSelection.emplace_back(docName, objName, subName);
+    }
 }
 
 void TaskMassProperties::onCoordinateSystemChanged(std::string coordSystem)
@@ -1348,12 +1356,12 @@ void TaskMassProperties::saveResult()
         if (value < Base::Precision::Confusion() && value > -Base::Precision::Confusion()) {
             value = 0.0;
         }
-        auto* prop = dynamic_cast<App::PropertyQuantity*>(
-            obj->addDynamicProperty("App::PropertyQuantity", name, "MassProperties")
+        auto* prop = dynamic_cast<App::PropertyString*>(
+            obj->addDynamicProperty("App::PropertyString", name, "MassProperties")
         );
         if (prop) {
-            prop->setUnit(unit);
-            prop->setValue(value);
+            Base::Quantity q(value, unit);
+            prop->setValue(UnitHelper::translate(q, unitsSchemaIndex).c_str());
             prop->setReadOnly(true);
         }
     };
@@ -1390,12 +1398,12 @@ void TaskMassProperties::saveResult()
     setQuantity("Density", currentInfo.density, Base::Unit::Density);
     setQuantity("SurfaceArea", currentInfo.surfaceArea, Base::Unit::Area);
 
-    setQuantity("CenterOfGravityX", centerOfGravity[0], Base::Unit::Length);
-    setQuantity("CenterOfGravityY", centerOfGravity[1], Base::Unit::Length);
-    setQuantity("CenterOfGravityZ", centerOfGravity[2], Base::Unit::Length);
-    setQuantity("CenterOfVolumeX", centerOfVolume[0], Base::Unit::Length);
-    setQuantity("CenterOfVolumeY", centerOfVolume[1], Base::Unit::Length);
-    setQuantity("CenterOfVolumeZ", centerOfVolume[2], Base::Unit::Length);
+    setQuantity("CenterOfGravityX", currentInfo.cogX, Base::Unit::Length);
+    setQuantity("CenterOfGravityY", currentInfo.cogY, Base::Unit::Length);
+    setQuantity("CenterOfGravityZ", currentInfo.cogZ, Base::Unit::Length);
+    setQuantity("CenterOfVolumeX", currentInfo.covX, Base::Unit::Length);
+    setQuantity("CenterOfVolumeY", currentInfo.covY, Base::Unit::Length);
+    setQuantity("CenterOfVolumeZ", currentInfo.covZ, Base::Unit::Length);
 
     if (currentInfo.axisInertia != 0.0) {
         setQuantity("AxisInertia", currentInfo.axisInertia, Base::Unit::Inertia);
