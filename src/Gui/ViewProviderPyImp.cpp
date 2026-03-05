@@ -699,6 +699,33 @@ PyObject* ViewProviderPy::doubleClicked(PyObject* args)
     PY_CATCH;
 }
 
+PyObject* ViewProviderPy::onDelete(PyObject* args)
+{
+    PyObject* subNames;
+    if (!PyArg_ParseTuple(args, "O!", &PyList_Type, &subNames)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        std::vector<std::string> sub;
+        Py::List list(subNames);
+        for (Py::List::size_type i = 0; i < list.size(); ++i) {
+            Py::Object item = list.getItem(i);
+            if (item.isString()) {
+                sub.push_back(Py::String(item));
+            }
+            else {
+                throw Py::TypeError("subNames must be a list of strings");
+            }
+        }
+
+        bool ret = getViewProviderPtr()->onDelete(sub);
+        return Py::new_reference_to(Py::Boolean(ret));
+    }
+    PY_CATCH;
+}
+
 PyObject* ViewProviderPy::getCustomAttributes(const char* attr) const
 {
     // search for dynamic property

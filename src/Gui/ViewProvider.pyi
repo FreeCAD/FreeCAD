@@ -169,6 +169,23 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
+    def onDelete(self, subNames: List[str], /) -> bool:
+        """
+        Called when the object is about to be deleted.
+
+        This allows the view provider to perform cleanup, show confirmation dialogs,
+        or prevent deletion by returning False.
+
+        subNames : List[str]
+            List of selected subelements
+
+        Returns
+        -------
+        bool
+            True if deletion should proceed, False to prevent deletion
+        """
+        ...
+
     def addDisplayMode(self, obj: Any, mode: str, /) -> None:
         """
         Add a new display mode to the view provider.
