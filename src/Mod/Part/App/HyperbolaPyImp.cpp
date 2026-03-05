@@ -98,7 +98,7 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
 
-        
+
         // This is a workaround do to fault in OCCT.
         // It is fixed in OCCT 8.0.0,
         // so when FreeCAD uses that version or grater this can be removed:
@@ -106,8 +106,7 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         gp_Pnt S2(v2.x, v2.y, v2.z);
         gp_Pnt Center(v3.x, v3.y, v3.z);
 
-        if (S1.Distance(Center) < gp::Resolution() 
-            || S2.Distance(Center) < gp::Resolution()
+        if (S1.Distance(Center) < gp::Resolution() || S2.Distance(Center) < gp::Resolution()
             || S1.Distance(S2) < gp::Resolution()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(gce_ConfusedPoints));
             return -1;
