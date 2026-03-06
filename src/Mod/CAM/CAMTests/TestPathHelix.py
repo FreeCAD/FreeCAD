@@ -146,7 +146,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
 
         def check(start_side, cut_mode, expected_direction):
             with self.subTest(f"({start_side}, {cut_mode}) => {expected_direction}"):
-                helix.StartSide = start_side
+                helix.StartAt = start_side
                 helix.CutMode = cut_mode
 
                 self.assertSuccessfulRecompute(self.doc, helix)
@@ -187,9 +187,9 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                     msg=f"Direction does not match fixture for {helix.Name} {created_with}",
                 )
                 self.assertEqual(
-                    helix.StartSide,
+                    helix.StartAt,
                     start_side,
-                    msg=f"StartSide does not match fixture for {helix.Name} {created_with}",
+                    msg=f"StartAt does not match fixture for {helix.Name} {created_with}",
                 )
 
                 # now see whether we can recompute the object from the old document
@@ -203,9 +203,9 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                     msg=f"Direction changed after recomputing {helix.Name} {created_with}",
                 )
                 self.assertEqual(
-                    helix.StartSide,
+                    helix.StartAt,
                     start_side,
-                    msg=f"StartSide changed after recomputing {helix.Name} {created_with}",
+                    msg=f"StartAt changed after recomputing {helix.Name} {created_with}",
                 )
                 self.assertEqual(
                     helix.CutMode,

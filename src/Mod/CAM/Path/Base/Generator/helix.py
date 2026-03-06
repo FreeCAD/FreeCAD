@@ -2,6 +2,23 @@
 # SPDX-FileCopyrightText: 2021 sliptonic <shopinthewoods@gmail.com>
 # SPDX-FileNotice: Part of the FreeCAD project.
 
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 from numpy import linspace
 import FreeCAD
 import math
@@ -50,9 +67,11 @@ def generate(
 
     import Path.Base.Generator.helix as helix
     helixCommands = helix.generate(**args)
-    helixCommands[0]  # move to retract height
-    helixCommands[1]  # move to start point
-    helixCommands[2:] # all other commands
+    helixCommands[0]    # rapid vertical move to retract height (G0 Z...)
+    helixCommands[1]    # rapid horizontal move to start point (G0 X... Y...)
+    helixCommands[2]    # feed move down to first helix start point (G1 Z...)
+    helixCommands[3:-1] # helices (G2 ...) or (G3 ...)
+    helixCommands[-1]   # final retract move (can be inclined) (G0 Z...) or (G0 X... Y... Z...)
     """
 
     if not isinstance(edge, Part.Edge):
@@ -171,8 +190,8 @@ def generate(
     turncount = math.ceil(helixHeight / step_down)
     zsteps = linspace(topCenterPoint.z, bottomCenterPoint.z, 2 * turncount + 1)
 
-    # simple vertical helix
     def helix_vertical(r):
+        """helix_vertical(r) ... returns list of commands, which forms simple helix"""
         commandlist = []
         arc_cmd = "G2" if direction == "CW" else "G3"
         dx = r * math.cos(dir_angle_rad)
@@ -237,8 +256,9 @@ def generate(
 
         return commandlist
 
-    # cone helix inclined by angle
     def helix_cone(bottomRadius):
+        """helix_cone(bottomRadius) ... returns list of moves,
+        which forms cone helix inclined by angle"""
         topRadius = bottomRadius + math.tan(cone_angle_rad) * helixHeight
         commandlist = []
         arcCmdName = "G2" if direction == "CW" else "G3"
@@ -294,8 +314,9 @@ def generate(
         return commandlist
 
     def getArcCenter(p1, p2, p3):
-        # Calculate arc center by three points on arc
-        # https://paulbourke.net/geometry/circlesphere
+        """getArcCenter(p1, p2, p3) ... returns arc center calculated by three points on arc
+        https://paulbourke.net/geometry/circlesphere
+        """
         ma = (p2.y - p1.y) / (p2.x - p1.x)
         mb = (p3.y - p2.y) / (p3.x - p2.x)
         arcCenter = FreeCAD.Vector()
@@ -307,7 +328,7 @@ def generate(
         return arcCenter
 
     def retract(r, last_step):
-        retractcommands = []
+        """retract(r, last_step) ... returns retract move"""
         retract_offset = 0
         if not last_step and r <= tool_radius:
             # this is first helix which clearing center
@@ -322,22 +343,12 @@ def generate(
         if retract_offset:
             # move from wall and to retract height
             dx = (r + retract_offset) * math.cos(dir_angle_rad)
+            x = bottomCenterPoint.x + dx
             dy = (r + retract_offset) * math.sin(dir_angle_rad)
-            retractcommands.append(
-                Path.Command(
-                    "G0",
-                    {
-                        "X": bottomCenterPoint.x + dx,
-                        "Y": bottomCenterPoint.y + dy,
-                        "Z": retract_height,
-                    },
-                )
-            )
+            y = bottomCenterPoint.y + dy
+            return Path.Command("G0", {"X": x, "Y": y, "Z": retract_height})
         else:
-            # move to retract height
-            retractcommands.append(Path.Command("G0", {"Z": retract_height}))
-
-        return retractcommands
+            return Path.Command("G0", {"Z": retract_height})
 
     commands = []
     commands.append(Path.Command("G0", {"Z": retract_height}))
@@ -350,6 +361,6 @@ def generate(
         # last real step over to limit horizontal move while retract
         last_step = abs(radii[i] - radii[i - 1]) if i > 0 else 0
 
-        commands.extend(retract(r, last_step))
+        commands.append(retract(r, last_step))
 
     return commands

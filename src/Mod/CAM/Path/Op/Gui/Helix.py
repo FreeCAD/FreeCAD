@@ -1,25 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 import FreeCAD
 import FreeCADGui
@@ -52,7 +33,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """getForm() ... return UI"""
 
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
-        comboToPropertyMap = [("startSide", "StartSide"), ("cutMode", "CutMode")]
+        comboToPropertyMap = [("startAt", "StartAt"), ("cutMode", "CutMode")]
 
         enumTups = PathHelix.ObjectHelix.helixOpPropertyEnumerations(dataType="raw")
 
@@ -64,8 +45,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         Path.Log.track()
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
-        if obj.StartSide != str(self.form.startSide.currentData()):
-            obj.StartSide = str(self.form.startSide.currentData())
+        if obj.StartAt != str(self.form.startAt.currentData()):
+            obj.StartAt = str(self.form.startAt.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
         PathGuiUtil.updateInputField(
@@ -81,7 +62,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.form.stepOverPercent.setValue(obj.StepOver)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
-        self.selectInComboBox(obj.StartSide, self.form.startSide)
+        self.selectInComboBox(obj.StartAt, self.form.startAt)
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
@@ -99,7 +80,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.stepOverPercent.editingFinished)
         signals.append(self.form.RadialStockToLeaveOuter.editingFinished)
         signals.append(self.form.cutMode.currentIndexChanged)
-        signals.append(self.form.startSide.currentIndexChanged)
+        signals.append(self.form.startAt.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
 
