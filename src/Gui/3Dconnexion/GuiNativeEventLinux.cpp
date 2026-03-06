@@ -37,11 +37,8 @@
 
 #include <spnav.h>
 
-namespace
-{
-
 // Cached per-axis deadzone values, auto-updated via Observer when user.cfg changes.
-class DeadzoneCache: public ParameterGrp::ObserverType
+class Gui::DeadzoneCache: public ParameterGrp::ObserverType
 {
 public:
     static constexpr std::array<const char*, 6> keys = {
@@ -88,8 +85,6 @@ private:
     ParameterGrp::handle hGrp;
 };
 
-}  // namespace
-
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware* app)
     : GuiAbstractNativeEvent(app)
 {}
@@ -118,6 +113,11 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
         QSocketNotifier* SpacenavNotifier
             = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
         connect(SpacenavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav()));
+        dzCache = std::make_unique<DeadzoneCache>(
+            App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Spaceball/Motion"
+            )
+        );
         mainApp->setSpaceballPresent(true);
     }
 }
@@ -147,13 +147,12 @@ void Gui::GuiNativeEvent::pollSpacenav()
     if (hasMotion) {
         // Per-axis deadzone: zero out axes below their individual threshold.
         // Values cached and auto-updated via Observer when user.cfg changes.
-        static DeadzoneCache dzCache(
-            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Spaceball/Motion")
-        );
-        for (size_t i = 0; i < dzCache.values.size(); i++) {
-            int dz = dzCache.values[i];
-            if (dz > 0 && std::abs(motionDataArray[i]) < dz) {
-                motionDataArray[i] = 0;
+        if (dzCache) {
+            for (size_t i = 0; i < dzCache->values.size(); i++) {
+                int dz = dzCache->values[i];
+                if (dz > 0 && std::abs(motionDataArray[i]) < dz) {
+                    motionDataArray[i] = 0;
+                }
             }
         }
         mainApp->postMotionEvent(motionDataArray);
