@@ -51,6 +51,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
+#include "Utils.h"
 
 #include <Mod/Part/App/Datums.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -972,7 +973,8 @@ void CmdPartCompound::activated(int iMsg)
     str << "]";
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Compound"));
-    doCommand(Doc, "App.activeDocument().addObject(\"Part::Compound\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "obj = App.activeDocument().addObject(\"Part::Compound\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
     runCommand(Doc, str.str().c_str());
     updateActive();
     commitCommand();
@@ -1023,7 +1025,7 @@ void CmdPartSection::activated(int iMsg)
     std::string ToolName = Sel[1].getFeatName();
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Section"));
-    doCommand(Doc, "App.activeDocument().addObject(\"Part::Section\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "obj = App.activeDocument().addObject(\"Part::Section\",\"%s\")", FeatName.c_str());
     doCommand(
         Doc,
         "App.activeDocument().%s.Base = App.activeDocument().%s",
@@ -1044,6 +1046,7 @@ void CmdPartSection::activated(int iMsg)
         FeatName.c_str(),
         BaseName.c_str()
     );
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     updateActive();
     commitCommand();
 }
@@ -1526,12 +1529,14 @@ void CmdPartMakeFace::activated(int iMsg)
     try {
         App::DocumentT doc(sketches.front()->getDocument());
         std::stringstream str;
-        str << doc.getDocumentPython() << R"(.addObject("Part::Face", "Face").Sources = ()";
+        str << "obj = " << doc.getDocumentPython()
+            << R"(.addObject("Part::Face", "Face").Sources = ()";
         for (auto& obj : sketches) {
             str << App::DocumentObjectT(obj).getObjectPython() << ", ";
         }
-
         str << ")";
+
+        str << PartGui::getAutoGroupCommandStr(false).toStdString();
 
         runCommand(Doc, str.str().c_str());
         commitCommand();
@@ -1828,7 +1833,7 @@ void CmdPartOffset::activated(int iMsg)
     std::string offset = getUniqueObjectName("Offset");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make Offset"));
-    doCommand(Doc, "App.ActiveDocument.addObject(\"Part::Offset\",\"%s\")", offset.c_str());
+    doCommand(Doc, "obj = App.ActiveDocument.addObject(\"Part::Offset\",\"%s\")", offset.c_str());
     doCommand(
         Doc,
         "App.ActiveDocument.%s.Source = App.ActiveDocument.%s",
@@ -1836,6 +1841,9 @@ void CmdPartOffset::activated(int iMsg)
         shape->getNameInDocument()
     );
     doCommand(Doc, "App.ActiveDocument.%s.Value = 1.0", offset.c_str());
+
+    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
+
     updateActive();
 
     doCommand(Gui, "Gui.ActiveDocument.setEdit('%s')", offset.c_str());
@@ -1896,7 +1904,7 @@ void CmdPartOffset2D::activated(int iMsg)
     std::string offset = getUniqueObjectName("Offset2D");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make 2D Offset"));
-    doCommand(Doc, "App.ActiveDocument.addObject(\"Part::Offset2D\",\"%s\")", offset.c_str());
+    doCommand(Doc, "obj = App.ActiveDocument.addObject(\"Part::Offset2D\",\"%s\")", offset.c_str());
     doCommand(
         Doc,
         "App.ActiveDocument.%s.Source = App.ActiveDocument.%s",
@@ -1904,6 +1912,8 @@ void CmdPartOffset2D::activated(int iMsg)
         shape->getNameInDocument()
     );
     doCommand(Doc, "App.ActiveDocument.%s.Value = 1.0", offset.c_str());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
+
     updateActive();
     doCommand(Gui, "Gui.ActiveDocument.setEdit('%s')", offset.c_str());
 
@@ -2105,9 +2115,11 @@ void CmdPartThickness::activated(int iMsg)
     std::string thick = getUniqueObjectName("Thickness");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Make Thickness"));
-    doCommand(Doc, "App.ActiveDocument.addObject(\"Part::Thickness\",\"%s\")", thick.c_str());
+    doCommand(Doc, "obj = App.ActiveDocument.addObject(\"Part::Thickness\",\"%s\")", thick.c_str());
     doCommand(Doc, "App.ActiveDocument.%s.Faces = %s", thick.c_str(), selection.c_str());
     doCommand(Doc, "App.ActiveDocument.%s.Value = 1.0", thick.c_str());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
+
     updateActive();
     if (isActiveObjectValid()) {
         doCommand(
@@ -2294,7 +2306,7 @@ void CmdPartRuledSurface::activated(int iMsg)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create ruled surface"));
-    doCommand(Doc, "FreeCAD.ActiveDocument.addObject('Part::RuledSurface', 'Ruled Surface')");
+    doCommand(Doc, "obj = FreeCAD.ActiveDocument.addObject('Part::RuledSurface', 'Ruled Surface')");
     doCommand(
         Doc,
         "FreeCAD.ActiveDocument.ActiveObject.Curve1=(FreeCAD.ActiveDocument.%s,['%s'])",
@@ -2307,6 +2319,7 @@ void CmdPartRuledSurface::activated(int iMsg)
         obj2.c_str(),
         link2.c_str()
     );
+    doCommand(Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
     commitCommand();
     updateActive();
 }
@@ -2506,29 +2519,6 @@ bool CmdPartSectionCut::isActive()
 // Part_CoordinateSystem
 //===========================================================================
 
-namespace
-{
-QString getAutoGroupCommandStr()
-// Helper function to get the python code to add the newly created object to the active Part/Body
-// object if present
-{
-    App::GeoFeature* activeObj
-        = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(PDBODYKEY);
-    if (!activeObj) {
-        activeObj = Gui::Application::Instance->activeView()->getActiveObject<App::GeoFeature*>(
-            PARTKEY
-        );
-    }
-
-    if (activeObj) {
-        QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
-        return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
-    }
-
-    return QStringLiteral("# Object created at document root.");
-}
-}  // namespace
-
 DEF_STD_CMD_A(CmdPartCoordinateSystem)
 
 CmdPartCoordinateSystem::CmdPartCoordinateSystem()
@@ -2554,8 +2544,8 @@ void CmdPartCoordinateSystem::activated(int iMsg)
         "obj = App.activeDocument().addObject('Part::LocalCoordinateSystem','%s')",
         name.c_str()
     );
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.Visibility = True");
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
@@ -2588,7 +2578,7 @@ void CmdPartDatumPlane::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPlane");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPlane','%s')", name.c_str());
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
@@ -2621,8 +2611,8 @@ void CmdPartDatumLine::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumLine");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumLine','%s')", name.c_str());
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
 }
 
 bool CmdPartDatumLine::isActive()
@@ -2654,7 +2644,7 @@ void CmdPartDatumPoint::activated(int iMsg)
 
     std::string name = getUniqueObjectName("DatumPoint");
     doCommand(Doc, "obj = App.activeDocument().addObject('Part::DatumPoint','%s')", name.c_str());
-    doCommand(Doc, getAutoGroupCommandStr().toUtf8());
+    doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
     doCommand(Doc, "obj.ViewObject.doubleClicked()");
 }
 
