@@ -79,6 +79,9 @@ ButtonContentBox: "content_box((width: @ButtonMinWidth, height: @ButtonHeight), 
 ButtonSmallFontSize: 11px
 ButtonSmallFontWeight: 500
 
+ButtonFocusedBorderColor: "@Accent.500"
+ButtonPrimaryFocusedBorderColor: "@Accent.500"
+
 ButtonSpacing: "@Spacing.250"
 
 ButtonTextColor: "@BaseTextColor"
