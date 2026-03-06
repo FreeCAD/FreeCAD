@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_NOTIFICATIONAREA_H
-#define GUI_NOTIFICATIONAREA_H
+#pragma once
 
 #include <QPushButton>
 #include <QString>
@@ -89,5 +88,3 @@ private:
 
 
 }  // namespace Gui
-
-#endif  // GUI_NOTIFICATIONAREA_H

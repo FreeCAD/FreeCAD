@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERATTACHEXTENSION_H
-#define GUI_VIEWPROVIDERATTACHEXTENSION_H
+#pragma once
 
 #include <Gui/ViewProviderExtensionPython.h>
 #include <Mod/Part/PartGlobal.h>
@@ -53,5 +52,3 @@ using ViewProviderAttachExtensionPython
     = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderAttachExtension>;
 
 }  // namespace PartGui
-
-#endif  // GUI_VIEWPROVIDERATTACHMENTEXTENSION_H

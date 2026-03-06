@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DOCKWINDOW_H
-#define GUI_DOCKWINDOW_H
+#pragma once
 
 #include <Gui/View.h>
 #include <QWidget>
@@ -94,5 +93,3 @@ Q_SIGNALS:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_DOCKWINDOW_H

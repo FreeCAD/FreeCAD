@@ -23,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureMultiTransform_H
-#define PARTDESIGN_FeatureMultiTransform_H
+#pragma once
 
 #include "FeatureTransformed.h"
 
@@ -66,6 +65,3 @@ protected:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureMultiTransform_H

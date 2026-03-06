@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYSTANDARD_H
-#define APP_PROPERTYSTANDARD_H
+#pragma once
 
 #include <list>
 #include <memory>
@@ -1343,5 +1342,3 @@ protected:
 };
 
 }  // namespace App
-
-#endif  // APP_PROPERTYSTANDARD_H

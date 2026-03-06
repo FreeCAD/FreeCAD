@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SketcherGui_DrawSketchKeyboardManager_H
-#define SketcherGui_DrawSketchKeyboardManager_H
+#pragma once
 
 
 #include <QEvent>
@@ -102,5 +101,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SketcherGui_DrawSketchKeyboardManager_H

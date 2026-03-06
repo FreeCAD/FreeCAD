@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPrimitive_H
-#define PARTGUI_ViewProviderPrimitive_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -51,6 +50,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderBoolean_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArc_H
-#define SKETCHERGUI_DrawSketchHandlerArc_H
+#pragma once
 
 #include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
@@ -991,6 +990,3 @@ void DSHArcController::doConstructionMethodChanged()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArc_H

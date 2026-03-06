@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef UTILS_H_CS5LK2ZQ
-#define UTILS_H_CS5LK2ZQ
+#pragma once
 
 /** \file PartDesign/Gui/Utils.h
  *  This file contains some utility function used over PartDesignGui module
@@ -124,5 +123,3 @@ std::vector<App::DocumentObject*> collectMovableDependencies(
 void relinkToOrigin(App::DocumentObject* feature, PartDesign::Body* body);
 
 }  // namespace PartDesignGui
-
-#endif /* end of include guard: UTILS_H_CS5LK2ZQ */

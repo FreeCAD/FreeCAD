@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __millsimulation__h__
-#define __millsimulation__h__
+#pragma once
 
 #include "MillMotion.h"
 #include "GCodeParser.h"
@@ -114,6 +113,8 @@ protected:
     void RemoveTool(int toolId);
 
 protected:
+    bool simulationInitiated = false;
+
     std::vector<EndMill*> mToolTable;
     GCodeParser mCodeParser;
     GuiDisplay guiDisplay;
@@ -150,5 +151,3 @@ protected:
 };
 
 }  // namespace MillSim
-
-#endif

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTOBJECT_H
-#define FEM_VIEWPROVIDERFEMPOSTOBJECT_H
+#pragma once
 
 #include <Base/Observer.h>
 #include <Gui/ViewProviderGeometryObject.h>
@@ -171,6 +170,3 @@ private:
 };
 
 }  // namespace FemGui
-
-
-#endif  // FEM_VIEWPROVIDERFEMPOSTOBJECT_H

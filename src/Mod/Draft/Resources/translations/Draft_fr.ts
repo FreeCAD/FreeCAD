@@ -2270,7 +2270,7 @@ l'extension « dxf-library » à partir du gestionnaire des extensions.</transla
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench. </source>
-      <translation>Crée des objets Draft entièrement paramétriques. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés de Part)
+      <translation>Crée des objets Draft entièrement paramétriques. Les définitions de blocs sont importées en tant qu'objets réutilisables (Part Composite)
 et les instances deviennent des objets « App::Link » conservant ainsi la structure du bloc. Cela convient parfaitement pour une intégration
 complète avec l'atelier Draft.</translation>
     </message>
@@ -2294,7 +2294,7 @@ definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing and Part workbench integration.</source>
       <translation>Crée des objets Part paramétriques (par exemple, Part::Line, Part::Circle). Les définitions de blocs sont importées en tant qu'objets
-réutilisables (composés de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour le
+réutilisables (Part Composite) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour le
 post-traitement basé sur des scripts et l'intégration de l'atelier Part.</translation>
     </message>
     <message>
@@ -2307,8 +2307,7 @@ post-traitement basé sur des scripts et l'intégration de l'atelier Part.</tran
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés
-de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
+      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (Part Composite) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -3168,8 +3167,8 @@ placée précédemment.</translation>
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1664"/>
-      <location filename="../../DraftGui.py" line="1682"/>
+      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1706"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Aucun</translation>
@@ -3306,12 +3305,12 @@ Décocher pour utiliser le système de coordonnées du plan de travail.</transla
       <translation>Termine l'opération de dessin ou de l'édition en cours</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1889"/>
+      <location filename="../../DraftGui.py" line="1913"/>
       <source>Modify Objects</source>
       <translation>Éditer des objets</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2046"/>
+      <location filename="../../DraftGui.py" line="2070"/>
       <source>Facebinder Elements</source>
       <translation>Éléments de la surface liée</translation>
     </message>
@@ -3404,8 +3403,8 @@ préférence « Créer des primitives de Part si possible » est activée.</tran
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1670"/>
-      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1694"/>
+      <location filename="../../DraftGui.py" line="1712"/>
       <source>Autogroup off</source>
       <translation>Groupement automatique désactivé</translation>
     </message>
@@ -3474,12 +3473,12 @@ préférence « Créer des primitives de Part si possible » est activée.</tran
       <translation>Ajuster ou prolonger</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1054"/>
-      <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1057"/>
-      <location filename="../../DraftGui.py" line="1059"/>
-      <location filename="../../DraftGui.py" line="1060"/>
-      <location filename="../../DraftGui.py" line="1061"/>
+      <location filename="../../DraftGui.py" line="1078"/>
+      <location filename="../../DraftGui.py" line="1080"/>
+      <location filename="../../DraftGui.py" line="1081"/>
+      <location filename="../../DraftGui.py" line="1083"/>
+      <location filename="../../DraftGui.py" line="1084"/>
+      <location filename="../../DraftGui.py" line="1085"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3487,12 +3486,12 @@ préférence « Créer des primitives de Part si possible » est activée.</tran
       <translation>{} local</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1063"/>
-      <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1065"/>
-      <location filename="../../DraftGui.py" line="1067"/>
-      <location filename="../../DraftGui.py" line="1068"/>
-      <location filename="../../DraftGui.py" line="1069"/>
+      <location filename="../../DraftGui.py" line="1087"/>
+      <location filename="../../DraftGui.py" line="1088"/>
+      <location filename="../../DraftGui.py" line="1089"/>
+      <location filename="../../DraftGui.py" line="1091"/>
+      <location filename="../../DraftGui.py" line="1092"/>
+      <location filename="../../DraftGui.py" line="1093"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3500,22 +3499,22 @@ préférence « Créer des primitives de Part si possible » est activée.</tran
       <translation>{} global</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1678"/>
+      <location filename="../../DraftGui.py" line="1702"/>
       <source>Autogroup:</source>
       <translation>Groupement automatique :</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2067"/>
       <source>Faces</source>
       <translation>Faces</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2044"/>
+      <location filename="../../DraftGui.py" line="2068"/>
       <source>Remove</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2045"/>
+      <location filename="../../DraftGui.py" line="2069"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
@@ -5471,7 +5470,7 @@ Utiliser 0 à la place.</translation>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="408"/>
       <source>Found 1 multi-solids compound: exploding it</source>
-      <translation>Un composé multi-solides a été trouvé : l'exploser.</translation>
+      <translation>Un composite multi-solides a été trouvé : l'exploser.</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/downgrade.py" line="402"/>
@@ -5577,7 +5576,7 @@ Utiliser 0 à la place.</translation>
       <location filename="../../draftfunctions/upgrade.py" line="629"/>
       <location filename="../../draftfunctions/upgrade.py" line="666"/>
       <source>Found several non-treatable objects: creating compound</source>
-      <translation>Plusieurs objets non traitables ont été trouvés : créer un composé.</translation>
+      <translation>Plusieurs objets non traitables ont été trouvés : créer un composite.</translation>
     </message>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="670"/>
@@ -5598,7 +5597,7 @@ Utiliser 0 à la place.</translation>
     <message>
       <location filename="../../draftfunctions/upgrade.py" line="660"/>
       <source>Found points: creating compound</source>
-      <translation>Plusieurs points ont été trouvés : créer un composé.</translation>
+      <translation>Plusieurs points ont été trouvés : créer un composite.</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_text.py" line="180"/>
@@ -6075,12 +6074,12 @@ pour permettre à FreeCAD de télécharger ces bibliothèques. Répondre Oui.</t
       <translation>_BSpline.createGeometry : fermé avec le même premier/dernier point. La géométrie n'est pas mise à jour.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="104"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="105"/>
       <source>Writing camera position</source>
       <translation>Enregistrer la position de la caméra</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="122"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="123"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Écrire l'état afficher/masquer des objets</translation>
     </message>
@@ -6787,12 +6786,12 @@ Il s'agit d'une liste de chaînes de caractères. Chaque élément de la liste s
       <location filename="../../draftobjects/clone.py" line="62"/>
       <source>If Clones includes several objects,
 set True for fusion or False for compound</source>
-      <translation>Si les clones incluent plusieurs objets. Mettre à vrai pour la fusion ou faux pour un composé.</translation>
+      <translation>Si les clones incluent plusieurs objets. Mettre à vrai pour la fusion ou faux pour un composite.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/clone.py" line="65"/>
       <source>Always create a compound</source>
-      <translation>Toujours créer un composé</translation>
+      <translation>Toujours créer un composite</translation>
     </message>
     <message>
       <location filename="../../draftobjects/circle.py" line="47"/>
@@ -7692,34 +7691,34 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>Couleur des textes</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="76"/>
+      <location filename="../../draftviewproviders/view_label.py" line="77"/>
       <location filename="../../draftviewproviders/view_text.py" line="60"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Interligne (par rapport à la taille de la police)</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="59"/>
+      <location filename="../../draftviewproviders/view_label.py" line="60"/>
       <source>Vertical alignment</source>
       <translation>Alignement vertical</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="67"/>
+      <location filename="../../draftviewproviders/view_label.py" line="68"/>
       <source>Maximum number of characters on each line of the text box</source>
       <translation>Nombre maximum de caractères par ligne dans la boîte de texte</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="71"/>
+      <location filename="../../draftviewproviders/view_label.py" line="72"/>
       <location filename="../../draftviewproviders/view_text.py" line="55"/>
       <source>Horizontal alignment</source>
       <translation>Alignement horizontal</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="89"/>
+      <location filename="../../draftviewproviders/view_label.py" line="90"/>
       <source>The type of frame around the text of this object</source>
       <translation>Le type de cadre autour du texte de cet objet</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="94"/>
+      <location filename="../../draftviewproviders/view_label.py" line="95"/>
       <source>Display a leader line or not</source>
       <translation>Afficher une ligne d'attache ou non</translation>
     </message>
@@ -7890,12 +7889,12 @@ beyond the dimension line</source>
       <translation>Afficher la ligne de la dimension et les flèches</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="50"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="51"/>
       <source>The display length of this section plane</source>
       <translation>La longueur d'affichage de ce plan de coupe</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="53"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="54"/>
       <source>The size of the arrows of this section plane</source>
       <translation>La taille des flèches de ce plan de coupe</translation>
     </message>
@@ -8681,7 +8680,7 @@ mettre à l'échelle.</translation>
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench.</source>
-      <translation>Crée des objets Draft entièrement paramétriques. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés de Part)
+      <translation>Crée des objets Draft entièrement paramétriques. Les définitions de blocs sont importées en tant qu'objets réutilisables (Part Composite)
 et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Cela convient parfaitement pour une intégration
 complète avec l'atelier Draft.</translation>
     </message>
@@ -8697,7 +8696,7 @@ definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing.</source>
       <translation>Crée des objets paramétriques (par exemple, Part::Line, Part::Circle). Les définitions de blocs sont importées en tant qu'objets réutilisables
-(composés de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Cela convient parfaitement
+(Part Composite) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Cela convient parfaitement
 pour une intégration complète avec l'atelier Draft.</translation>
     </message>
     <message>
@@ -8710,8 +8709,7 @@ pour une intégration complète avec l'atelier Draft.</translation>
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (composés
-de Part) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
+      <translation>Crée une forme non paramétrique pour chaque entité DXF. Les définitions de blocs sont importées en tant qu'objets réutilisables (Part Composite) et les instances deviennent des objets « App::Link », conservant ainsi la structure du bloc. Idéal pour référencer et mesurer.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="57"/>

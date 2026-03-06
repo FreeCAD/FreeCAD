@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SPINBOX_H
-#define GUI_SPINBOX_H
+#pragma once
 
 #include <QSpinBox>
 #include <QValidator>
@@ -212,5 +211,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SPINBOX_H

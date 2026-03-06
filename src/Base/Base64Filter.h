@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_BASE_BASE64FILTER_H
-#define FREECAD_BASE_BASE64FILTER_H
+#pragma once
 
 
 #include "Base64.h"
@@ -346,5 +345,3 @@ inline std::unique_ptr<std::istream> create_base64_decoder(
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic,
 // cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers,
 // readability-magic-numbers)
-
-#endif  // FREECAD_BASE_BASE64FILTER_H

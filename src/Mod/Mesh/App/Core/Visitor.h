@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VISITOR_H
-#define VISITOR_H
+#pragma once
 
 #include "MeshKernel.h"
 #include <vector>
@@ -221,5 +220,3 @@ public:
 };
 
 }  // namespace MeshCore
-
-#endif  // VISITOR_H

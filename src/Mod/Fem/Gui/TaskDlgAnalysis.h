@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_TaskDlgAnalysis_H
-#define FEMGUI_TaskDlgAnalysis_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -71,5 +70,3 @@ protected:
 
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_TaskDlgAnalysis_H

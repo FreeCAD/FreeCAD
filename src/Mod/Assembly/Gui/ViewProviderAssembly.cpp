@@ -131,7 +131,7 @@ ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
 
-    removeTaskSolver();
+    updateTaskPanel(false);
 };
 
 QIcon ViewProviderAssembly::getIcon() const
@@ -301,12 +301,7 @@ bool ViewProviderAssembly::setEdit(int mode)
 
         attachSelection();
 
-        Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
-        if (taskView) {
-            // Waiting for the solver to support reporting information.
-            taskSolver = new TaskAssemblyMessages(this);
-            taskView->addContextualPanel(taskSolver);
-        }
+        updateTaskPanel(true);
 
         auto* assembly = getObject<AssemblyObject>();
         connectSolverUpdate = assembly->signalSolverUpdate.connect([this] {
@@ -320,6 +315,12 @@ bool ViewProviderAssembly::setEdit(int mode)
                 std::placeholders::_1,
                 std::placeholders::_2
             )
+        );
+
+        workbenchConnection = QObject::connect(
+            Gui::getMainWindow(),
+            &Gui::MainWindow::workbenchActivated,
+            [this](const QString& name) { this->onWorkbenchActivated(name); }
         );
 
         assembly->solve();
@@ -356,7 +357,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
             );
         }
 
-        removeTaskSolver();
+        updateTaskPanel(false);
 
         connectSolverUpdate.disconnect();
         connectActivatedVP.disconnect();
@@ -364,15 +365,6 @@ void ViewProviderAssembly::unsetEdit(int mode)
         return;
     }
     ViewProviderPart::unsetEdit(mode);
-}
-
-void ViewProviderAssembly::removeTaskSolver()
-{
-    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
-    if (taskView) {
-        // Waiting for the solver to support reporting information.
-        taskView->removeContextualPanel(taskSolver);
-    }
 }
 
 void ViewProviderAssembly::slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name)
@@ -525,9 +517,7 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
 
         for (auto& objToMove : docsToMove) {
             App::DocumentObject* obj = objToMove.obj;
-            auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-                obj->getPropertyByName("Placement")
-            );
+            auto* propPlacement = obj->getPlacementProperty();
             if (propPlacement) {
                 Base::Placement plc = objToMove.plc;
 
@@ -728,7 +718,7 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
         return false;
     }
 
-    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+    auto* propPlacement = obj->getPlacementProperty();
     if (!propPlacement) {
         return false;
     }
@@ -828,7 +818,7 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
             }
 
             if (!alreadyIn) {
-                auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+                auto* pPlc = obj->getPlacementProperty();
                 if (!ctrlPressed && !moveOnlyPreselected) {
                     docsToMove.clear();
                 }
@@ -890,7 +880,7 @@ void ViewProviderAssembly::collectMovableObjects(
     }
 
     if (canDragObjectIn3d(part)) {
-        auto* pPlc = dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
+        auto* pPlc = part->getPlacementProperty();
         if (pPlc) {
             docsToMove.emplace_back(part, pPlc->getValue(), selRoot, subNamePrefix);
         }
@@ -907,7 +897,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
                 continue;
             }
 
-            auto pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            auto* pPlc = obj->getPlacementProperty();
             if (!pPlc) {
                 continue;
             }
@@ -957,7 +947,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
                 return DragMode::None;
             }
 
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(upPart->getPropertyByName("Placement"));
+            auto* pPlc = upPart->getPlacementProperty();
             if (pPlc) {
                 auto* ref = dynamic_cast<App::PropertyXLinkSub*>(
                     movingJoint->getPropertyByName(pName.c_str())
@@ -1207,7 +1197,7 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
     for (auto& movingObj : sudoThis->docsToMove) {
         App::DocumentObject* obj = movingObj.obj;
 
-        auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+        auto* pPlc = obj->getPlacementProperty();
         if (pPlc) {
             pPlc->setValue(movePlc * movingObj.plc);
         }
@@ -1867,5 +1857,29 @@ void ViewProviderAssembly::UpdateSolverInformation()
     }
     else {
         signalSetUp(QStringLiteral("fully_constrained"), tr("Fully constrained"), QString(), QString());
+    }
+}
+
+void ViewProviderAssembly::onWorkbenchActivated(const QString& name)
+{
+    bool isAssemblyWb = (name == QLatin1String("AssemblyWorkbench"));
+    updateTaskPanel(isAssemblyWb);
+}
+
+void ViewProviderAssembly::updateTaskPanel(bool show)
+{
+    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+    if (!taskView) {
+        return;
+    }
+
+    if (show && !taskSolver) {
+        taskSolver = new TaskAssemblyMessages(this);
+        taskView->addContextualPanel(taskSolver);
+        UpdateSolverInformation();
+    }
+    else if (!show && taskSolver) {
+        taskView->removeContextualPanel(taskSolver);
+        taskSolver = nullptr;
     }
 }

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef LINEEDIT_H
-#define LINEEDIT_H
+#pragma once
 
 #include <Gui/ExpressionCompleter.h>
 #include <QListView>
@@ -69,5 +68,3 @@ protected:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // LINEEDIT_H

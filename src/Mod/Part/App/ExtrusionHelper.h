@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_EXTRUSIONHELPER_H
-#define PART_EXTRUSIONHELPER_H
+#pragma once
 
 #include <cstdint>
 #include <list>
@@ -121,5 +120,3 @@ public:
 };
 
 }  // namespace Part
-
-#endif  // PART_EXTRUSIONHELPER_H

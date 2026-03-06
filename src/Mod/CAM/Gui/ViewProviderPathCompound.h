@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PATH_ViewProviderPathCompound_H
-#define PATH_ViewProviderPathCompound_H
+#pragma once
 
 #include "ViewProviderPath.h"
 
@@ -51,6 +50,3 @@ protected:
 using ViewProviderPathCompoundPython = Gui::ViewProviderFeaturePythonT<ViewProviderPathCompound>;
 
 }  // namespace PathGui
-
-
-#endif  // PATH_ViewProviderPathCompound_H

@@ -34,15 +34,18 @@
 #  define WINVER 0x502 // needed for SetDllDirectory
 #  include <Windows.h>
 # endif
+
 # include <boost/algorithm/string.hpp>
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
+# include <optional>
 # include <random>
 # include <memory>
 # include <utility>
 # include <set>
+# include <string>
 # include <list>
 # include <algorithm>
 # include <iostream>
@@ -93,6 +96,7 @@
 #include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
 #include <Base/UniqueNameManager.h>
+#include <Base/SystemHandler.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
 #include <Base/Type.h>
@@ -161,17 +165,37 @@
 
 #include "SafeMode.h"
 
-#ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
-# pragma warning( disable : 4535 )
-# if !defined(_DEBUG) && defined(HAVE_SEH)
-# define FC_SE_TRANSLATOR
-# endif
-
-# include <new.h>
-# include <eh.h> // VC exception handling
-#else // Ansi C/C++ new handler
-# include <new>
+#ifdef FC_OS_WIN32
+#include <windows.h>
 #endif
+
+std::optional<std::string> getenvUTF8(const char* name) {
+#ifdef FC_OS_WIN32
+    int wideLength = MultiByteToWideChar(CP_UTF8, 0, name, -1, nullptr, 0);
+    std::wstring wideName(wideLength ? wideLength - 1 : 0, L'\0');
+    if (wideLength) {
+        MultiByteToWideChar(CP_UTF8, 0, name, -1, wideName.data(), wideLength);
+    }
+
+    DWORD needed = GetEnvironmentVariableW(wideName.c_str(), nullptr, 0);
+    if (needed == 0) {
+        return std::nullopt;
+    }
+
+    std::wstring wideValue(needed, L'\0');
+    DWORD written = GetEnvironmentVariableW(wideName.c_str(), wideValue.data(), needed);
+    if (written == 0) {
+        return std::nullopt;
+    }
+    wideValue.resize(written);
+    return Base::Tools::wstringToString(wideValue);
+#else
+    if (const char* v = std::getenv(name)) {
+        return std::string(v);
+    }
+    return std::nullopt;
+#endif
+}
 
 FC_LOG_LEVEL_INIT("App", true, true)
 
@@ -510,6 +534,11 @@ Document* Application::newDocument(const char * proposedName, const char * propo
         setActiveDocument(oldActiveDoc);
     }
     return doc;
+}
+
+bool Application::closeDocument(const Document* doc)
+{
+    return closeDocument(doc->getName());
 }
 
 bool Application::closeDocument(const char* name)
@@ -957,7 +986,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // add it to _pendingDocsReopen to delay reloading.
                         for(auto obj2 : doc->getObjects())
                             objNames.emplace_back(obj2->getNameInDocument());
-                        _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
+                        _pendingDocMap[doc->FileName.getValue()] = objNames;
                         break;
                     }
                 }
@@ -1734,175 +1763,59 @@ void Application::destructObserver()
     }
 }
 
-/** freecadNewHandler()
- * prints an error message and throws an exception
- */
-#ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
-int __cdecl freecadNewHandler(size_t size )
+namespace
 {
-    // throw an exception
-    throw Base::MemoryException();
-    return 0;
-}
-#else // Ansi C/C++ new handler
-static void freecadNewHandler ()
+void initExceptions()
 {
-    // throw an exception
-    throw Base::MemoryException();
+    // register exception producer types
+    // NOLINTBEGIN
+    new Base::ExceptionProducer<Base::AbortException>;
+    new Base::ExceptionProducer<Base::XMLBaseException>;
+    new Base::ExceptionProducer<Base::XMLParseException>;
+    new Base::ExceptionProducer<Base::XMLAttributeError>;
+    new Base::ExceptionProducer<Base::FileException>;
+    new Base::ExceptionProducer<Base::FileSystemError>;
+    new Base::ExceptionProducer<Base::BadFormatError>;
+    new Base::ExceptionProducer<Base::MemoryException>;
+    new Base::ExceptionProducer<Base::AccessViolation>;
+    new Base::ExceptionProducer<Base::AbnormalProgramTermination>;
+    new Base::ExceptionProducer<Base::UnknownProgramOption>;
+    new Base::ExceptionProducer<Base::ProgramInformation>;
+    new Base::ExceptionProducer<Base::TypeError>;
+    new Base::ExceptionProducer<Base::ValueError>;
+    new Base::ExceptionProducer<Base::IndexError>;
+    new Base::ExceptionProducer<Base::NameError>;
+    new Base::ExceptionProducer<Base::ImportError>;
+    new Base::ExceptionProducer<Base::AttributeError>;
+    new Base::ExceptionProducer<Base::RuntimeError>;
+    new Base::ExceptionProducer<Base::BadGraphError>;
+    new Base::ExceptionProducer<Base::NotImplementedError>;
+    new Base::ExceptionProducer<Base::ZeroDivisionError>;
+    new Base::ExceptionProducer<Base::ReferenceError>;
+    new Base::ExceptionProducer<Base::ExpressionError>;
+    new Base::ExceptionProducer<Base::ParserError>;
+    new Base::ExceptionProducer<Base::UnicodeError>;
+    new Base::ExceptionProducer<Base::OverflowError>;
+    new Base::ExceptionProducer<Base::UnderflowError>;
+    new Base::ExceptionProducer<Base::UnitsMismatchError>;
+    new Base::ExceptionProducer<Base::CADKernelError>;
+    new Base::ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::PropertyError>;
+    // NOLINTEND
 }
-#endif
-
-#if defined(FC_OS_LINUX)
-#include <execinfo.h>
-#include <dlfcn.h>
-#include <cxxabi.h>
-
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <sstream>
-
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-// This function produces a stack backtrace with demangled function & method names.
-void printBacktrace(size_t skip=0)
-{
-#if defined HAVE_BACKTRACE_SYMBOLS
-    void *callstack[128];
-    size_t nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
-    size_t nFrames = backtrace(callstack, nMaxFrames);
-    char **symbols = backtrace_symbols(callstack, nFrames);
-
-    for (size_t i = skip; i < nFrames; i++) {
-        char *demangled = nullptr;
-        int status = -1;
-        Dl_info info;
-        if (dladdr(callstack[i], &info) && info.dli_sname && info.dli_fname) {
-            if (info.dli_sname[0] == '_') {
-                demangled = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, &status);
-            }
-        }
-
-        std::stringstream str;
-        if (status == 0) {
-            void* offset = (void*)((char*)callstack[i] - (char*)info.dli_saddr);
-            str << "#" << (i-skip) << "  " << callstack[i] << " in " << demangled << " from " << info.dli_fname << "+" << offset << '\n';
-            free(demangled);
-        }
-        else {
-            str << "#" << (i-skip) << "  " << symbols[i] << '\n';
-        }
-
-        // cannot directly print to cerr when using --write-log
-        std::cerr << str.str();
-    }
-
-    free(symbols);
-#else //HAVE_BACKTRACE_SYMBOLS
-    (void)skip;
-    std::cerr << "Cannot print the stacktrace because the C runtime library doesn't provide backtrace or backtrace_symbols\n";
-#endif
 }
-#endif
-
-void segmentation_fault_handler(int sig)
-{
-#if defined(FC_OS_LINUX)
-    (void)sig;
-    std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
-    printBacktrace(2);
-#if defined(FC_DEBUG)
-    abort();
-#else
-    _exit(1);
-#endif
-#else
-    switch (sig) {
-        case SIGSEGV:
-            std::cerr << "Illegal storage access..." << '\n';
-#if !defined(_DEBUG)
-            throw Base::AccessViolation("Illegal storage access! Please save your work under a new file name and restart the application!");
-#endif
-            break;
-        case SIGABRT:
-            std::cerr << "Abnormal program termination..." << '\n';
-#if !defined(_DEBUG)
-            throw Base::AbnormalProgramTermination("Break signal occurred");
-#endif
-            break;
-        default:
-            std::cerr << "Unknown error occurred..." << '\n';
-            break;
-    }
-#endif // FC_OS_LINUX
-}
-
-void unhandled_exception_handler()
-{
-    std::cerr << "Terminating..." << '\n';
-}
-
-void unexpection_error_handler()
-{
-    std::cerr << "Unexpected error occurred..." << '\n';
-    // try to throw an exception and give the user chance to save their work
-#if !defined(_DEBUG)
-    throw Base::AbnormalProgramTermination("Unexpected error occurred! Please save your work under a new file name and restart the application!");
-#else
-    terminate();
-#endif
-}
-
-#if defined(FC_SE_TRANSLATOR) // Microsoft compiler
-void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
-{
-    Q_UNUSED(pExp)
-    switch (code)
-    {
-    case EXCEPTION_ACCESS_VIOLATION:
-        throw Base::AccessViolation();
-    case EXCEPTION_FLT_DIVIDE_BY_ZERO:
-    case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        Base::Console().error("SEH exception (%u): Division by zero\n", code);
-        return;
-    }
-
-    std::stringstream str;
-    str << "SEH exception of type: " << code;
-    // general C++ SEH exception for things we don't need to handle separately....
-    throw Base::RuntimeError(str.str());
-}
-#endif
 
 void Application::init(int argc, char ** argv)
 {
     try {
-        // install our own new handler
-#ifdef _MSC_VER // Microsoft compiler
-        _set_new_handler ( freecadNewHandler ); // Setup new handler
-        _set_new_mode( 1 ); // Re-route malloc failures to new handler !
-#else   // Ansi compiler
-        std::set_new_handler (freecadNewHandler); // ANSI new handler
-#endif
-        // if an unexpected crash occurs we can install a handler function to
-        // write some additional information
-#if defined (_MSC_VER) // Microsoft compiler
-        std::signal(SIGSEGV,segmentation_fault_handler);
-        std::signal(SIGABRT,segmentation_fault_handler);
-        std::set_terminate(unhandled_exception_handler);
-           ::set_unexpected(unexpection_error_handler);
-#elif defined(FC_OS_LINUX)
-        std::signal(SIGSEGV,segmentation_fault_handler);
-#endif
-#if defined(FC_SE_TRANSLATOR)
-        _set_se_translator(my_se_translator_filter);
-#endif
+        Base::SystemHandler::installNewHandler();
+        Base::SystemHandler::installSegfaultHandler();
+
         initTypes();
 
         initConfig(argc,argv);
         initApplication();
+        initExceptions();
     }
     catch (...) {
         // force the log to flush
@@ -2142,6 +2055,7 @@ void Application::initTypes()
             (DocumentObject::getClassTypeId());
 
     // register exception producer types
+    // NOLINTBEGIN
     new Base::ExceptionProducer<Base::AbortException>;
     new Base::ExceptionProducer<Base::XMLBaseException>;
     new Base::ExceptionProducer<Base::XMLParseException>;
@@ -2174,6 +2088,7 @@ void Application::initTypes()
     new Base::ExceptionProducer<Base::CADKernelError>;
     new Base::ExceptionProducer<Base::RestoreError>;
     new Base::ExceptionProducer<Base::PropertyError>;
+    // NOLINTEND
 
     Base::registerServiceImplementation<CenterOfMassProvider>(new NullCenterOfMass);
 }
@@ -2737,9 +2652,9 @@ void Application::initConfig(int argc, char ** argv)
 
 void Application::SaveEnv(const char* s)
 {
-    const char *c = getenv(s);
-    if (c)
-        mConfig[s] = c;
+    if (auto c = getenvUTF8(s)) {
+        mConfig[s] = c.value();
+    }
 }
 
 void Application::initApplication()
@@ -3416,9 +3331,9 @@ std::string Application::FindHomePath(const char* sCall)
     }
 
     // should be an absolute path now
-    std::string::size_type pos = absPath.find_last_of("/");
+    std::string::size_type pos = absPath.find_last_of('/');
     homePath.assign(absPath,0,pos);
-    pos = homePath.find_last_of("/");
+    pos = homePath.find_last_of('/');
     homePath.assign(homePath,0,pos+1);
 
     return homePath;

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_TOOLS_H
-#define PART_TOOLS_H
+#pragma once
 
 #include <Base/Converter.h>
 #include <Base/Placement.h>
@@ -365,6 +364,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_TOOLS_H

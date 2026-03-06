@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_Trajectory_H
-#define ROBOT_Trajectory_H
+#pragma once
 
 #include <vector>
 
@@ -96,6 +95,3 @@ protected:
 };
 
 }  // namespace Robot
-
-
-#endif  // PART_TOPOSHAPE_H

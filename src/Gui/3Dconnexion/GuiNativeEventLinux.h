@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+#pragma once
 
 #include "GuiAbstractNativeEvent.h"
 
@@ -47,5 +46,3 @@ private Q_SLOTS:
     void pollSpacenav();
 };
 }  // namespace Gui
-
-#endif  // GUINATIVEEVENT_H

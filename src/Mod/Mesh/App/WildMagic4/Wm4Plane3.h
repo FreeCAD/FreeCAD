@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4PLANE3_H
-#define WM4PLANE3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector3.h"
@@ -77,5 +76,3 @@ namespace Wm4
 typedef Plane3<float> Plane3f;
 typedef Plane3<double> Plane3d;
 }
-
-#endif

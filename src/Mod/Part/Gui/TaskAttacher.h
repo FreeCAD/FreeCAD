@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskAttacher_H
-#define GUI_TASKVIEW_TaskAttacher_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/DocumentObserver.h>
@@ -238,5 +237,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

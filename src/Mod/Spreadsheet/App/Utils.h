@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef UTILS_H
-#define UTILS_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -47,5 +46,3 @@ SpreadsheetExport std::string quote(const std::string& input);
 SpreadsheetExport std::string unquote(const std::string& input);
 
 }  // namespace Spreadsheet
-
-#endif  // UTILS_H

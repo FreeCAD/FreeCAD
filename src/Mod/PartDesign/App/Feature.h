@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Feature_H
-#define PARTDESIGN_Feature_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/SuppressibleExtension.h>
@@ -159,6 +158,3 @@ protected:
 using FeaturePython = App::FeaturePythonT<Feature>;
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_Feature_H

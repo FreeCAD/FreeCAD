@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskBooleanParameters_H
-#define GUI_TASKVIEW_TaskBooleanParameters_H
+#pragma once
 
 #include "TaskFeatureParameters.h"
 
@@ -132,5 +131,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

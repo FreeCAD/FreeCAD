@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYLINKS_H
-#define APP_PROPERTYLINKS_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -296,7 +295,7 @@ public:
 
     /// Helper function to return linked objects using an std::inserter
     template<class T>
-    void getLinkedObjects(T& inserter, bool all = false) const
+    void getLinkedObjects(T inserter, bool all = false) const
     {
         std::vector<App::DocumentObject*> ret;
         getLinks(ret, all);
@@ -1657,6 +1656,3 @@ private:
 };
 
 }  // namespace App
-
-
-#endif  // APP_PROPERTYLINKS_H

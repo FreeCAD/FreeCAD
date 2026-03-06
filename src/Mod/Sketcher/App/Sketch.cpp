@@ -2084,8 +2084,19 @@ int Sketch::addConstraint(const Constraint* constraint)
             rtn = addParallelConstraint(constraint->First, constraint->Second);
             break;
         case Perpendicular:
-            if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                && constraint->Third == GeoEnum::GeoUndef) {
+            if (constraint->FirstPos != PointPos::none && constraint->SecondPos != PointPos::none
+                && constraint->Third != GeoEnum::GeoUndef) {
+                // point point line perpendicularity
+                rtn = addPerpendicularConstraint(
+                    constraint->First,
+                    constraint->FirstPos,
+                    constraint->Second,
+                    constraint->SecondPos,
+                    constraint->Third
+                );
+            }
+            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
+                     && constraint->Third == GeoEnum::GeoUndef) {
                 // simple perpendicularity
                 rtn = addPerpendicularConstraint(constraint->First, constraint->Second);
             }
@@ -2900,6 +2911,31 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
 
     Base::Console().warning(
         "Perpendicular constraints between %s and %s are not supported.\n",
+        nameByType(Geoms[geoId1].type),
+        nameByType(Geoms[geoId2].type)
+    );
+    return -1;
+}
+
+int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3)
+{
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+    geoId3 = checkGeoId(geoId3);
+    int pointId1 = getPointId(geoId1, pos1);
+    int pointId2 = getPointId(geoId2, pos2);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size()) && pointId2 >= 0
+        && pointId2 < int(Points.size()) && Geoms[geoId3].type == Line) {
+        GCS::Point& p1 = Points[pointId1];
+        GCS::Point& p2 = Points[pointId2];
+        GCS::Line& l = Lines[geoId3];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintPerpendicular(p1, p2, l, tag);
+        return ConstraintsCounter;
+    }
+    Base::Console().warning(
+        "Perpendicular constraints need a line.\n",
         nameByType(Geoms[geoId1].type),
         nameByType(Geoms[geoId2].type)
     );
@@ -4724,33 +4760,6 @@ bool Sketch::updateNonDrivingConstraints()
         else if (constrDef.constr->Type == Angle) {
 
             constrDef.constr->setValue(std::fmod(*(constrDef.value), 2.0 * std::numbers::pi));
-        }
-        else if (constrDef.constr->Type == Diameter && constrDef.constr->First >= 0) {
-
-            // two cases, the geometry parameter is fixed or it is not
-            // NOTE: This is different from being blocked, as new block constraint may fix
-            // the parameter or not depending on whether other driving constraints are present
-            int geoId = constrDef.constr->First;
-
-            geoId = checkGeoId(geoId);
-
-            double* rad = nullptr;
-
-            if (Geoms[geoId].type == Circle) {
-                GCS::Circle& c = Circles[Geoms[geoId].index];
-                rad = c.rad;
-            }
-            else if (Geoms[geoId].type == Arc) {
-                GCS::Arc& a = Arcs[Geoms[geoId].index];
-                rad = a.rad;
-            }
-
-            if (auto pos = std::ranges::find(FixParameters, rad); pos != FixParameters.end()) {
-                constrDef.constr->setValue(*(constrDef.value));
-            }
-            else {
-                constrDef.constr->setValue(2.0 * *(constrDef.value));
-            }
         }
         else {
             constrDef.constr->setValue(*(constrDef.value));

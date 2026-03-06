@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef FC_OVERLAYWIDGETS_H
-#define FC_OVERLAYWIDGETS_H
+#pragma once
 
 #include <QTabWidget>
 #include <QTimer>
@@ -747,5 +746,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // FC_OVERLAYWIDGETS_H

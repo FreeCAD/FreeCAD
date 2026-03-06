@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskHoleParameters_H
-#define GUI_TASKVIEW_TaskHoleParameters_H
+#pragma once
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
@@ -173,5 +172,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

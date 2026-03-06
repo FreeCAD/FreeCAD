@@ -26,7 +26,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="66"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>Dath líne</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="76"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="122"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Socruithe</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="134"/>
@@ -288,7 +288,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="139"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="147"/>
@@ -298,12 +298,12 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="155"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Limistéar</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="163"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
   </context>
 </TS>

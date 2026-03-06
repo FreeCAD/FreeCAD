@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_BASE_WRITER_H_
-#define SRC_BASE_WRITER_H_
+#pragma once
 
 
 #include <set>
@@ -330,6 +329,3 @@ protected:
 
 
 }  // namespace Base
-
-
-#endif  // SRC_BASE_WRITER_H_

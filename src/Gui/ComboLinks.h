@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_COMBOLINKS_H
-#define GUI_COMBOLINKS_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -176,5 +175,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_COMBOLINKS_H

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_ARRAY3D_H
-#define MATGUI_ARRAY3D_H
+#pragma once
 
 #include <QAction>
 #include <QDialog>
@@ -86,5 +85,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_ARRAY3D_H

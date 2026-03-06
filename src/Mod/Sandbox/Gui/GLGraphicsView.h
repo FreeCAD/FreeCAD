@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_GRAPHICSVIEW_H
-#define GUI_GRAPHICSVIEW_H
+#pragma once
 
 #include <QGraphicsScene>
 #include <QTime>
@@ -162,6 +161,3 @@ private:
 };
 
 } // namespace Gui
-
-#endif  // GUI_GRAPHICSVIEW_H
-

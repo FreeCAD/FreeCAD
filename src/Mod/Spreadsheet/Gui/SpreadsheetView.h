@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SpreadsheetView_H
-#define SpreadsheetView_H
+#pragma once
 
 #include <QHeaderView>
 
@@ -174,5 +173,3 @@ protected:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // SpreadsheetView_H

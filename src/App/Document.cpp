@@ -3280,6 +3280,14 @@ bool Document::containsObject(const DocumentObject* pcObject) const
 }
 
 /// Remove an object out of the document
+void Document::removeObject(const DocumentObject* object)
+{
+    if (object->getDocument() == this) {
+        removeObject(object->getNameInDocument());
+    }
+}
+
+/// Remove an object out of the document
 void Document::removeObject(const char* sName)
 {
     auto pos = d->objectMap.find(sName);

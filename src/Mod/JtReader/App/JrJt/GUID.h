@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUID_HEADER
-#define GUID_HEADER
+#pragma once
 
 #include <iostream>
 #include <sstream>
@@ -124,6 +123,3 @@ struct GUID
     U8 _C7;
     U8 _C8;
 };
-
-
-#endif

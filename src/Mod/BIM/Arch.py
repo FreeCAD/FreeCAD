@@ -394,7 +394,7 @@ def makeEquipment(baseobj=None, placement=None, name=None):
     # Initialize all relevant properties
     if baseobj:
         if baseobj.isDerivedFrom("Mesh::Feature"):
-            equipment.Mesh = baseobj
+            equipment.HiRes = baseobj
         else:
             equipment.Base = baseobj
     if placement:

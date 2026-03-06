@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="48"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Limistéar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="49"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>Teimpléad</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
@@ -131,12 +131,12 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
       <source>Solids</source>
-      <translation type="unfinished">Solids</translation>
+      <translation>Solaid</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="34"/>
       <source>2D</source>
-      <translation type="unfinished">2D</translation>
+      <translation>2T</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="44"/>
@@ -161,7 +161,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="73"/>
       <source>Setup Sheet</source>
-      <translation type="unfinished">Setup Sheet</translation>
+      <translation>Bileog Socraithe</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
@@ -507,7 +507,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../../DlgProcessorChooser.ui" line="33"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Argóintí</translation>
     </message>
   </context>
   <context>
@@ -600,7 +600,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="175"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="182"/>
@@ -621,7 +621,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="209"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="216"/>
@@ -631,7 +631,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="223"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="230"/>
@@ -1159,7 +1159,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="152"/>
       <source>Depth</source>
-      <translation type="unfinished">Depth</translation>
+      <translation>Doimhneacht</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="162"/>
@@ -1180,7 +1180,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="25"/>
@@ -1331,7 +1331,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="139"/>
       <source>Disable</source>
-      <translation type="unfinished">Disable</translation>
+      <translation>Díchumasaigh</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="70"/>
@@ -1350,24 +1350,24 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
       <source>Cut Mode</source>
-      <translation type="unfinished">Cut Mode</translation>
+      <translation>Mód Gearrtha</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="105"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Dreap</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="111"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="110"/>
       <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
+      <translation>Traidisiúnta</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>Patrún</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
@@ -1796,12 +1796,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="373"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Ilphas</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="397"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Ingearach</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="405"/>
@@ -2037,7 +2037,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="113"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Imréiteach</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="120"/>
@@ -2088,12 +2088,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="186"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Luasanna Tapa</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="192"/>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Cothrománach</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="205"/>
@@ -2103,7 +2103,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="212"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Ingearach</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="53"/>
@@ -2129,12 +2129,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="106"/>
       <source>Major diameter</source>
-      <translation type="unfinished">Major diameter</translation>
+      <translation>Trastomhas mór</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="120"/>
       <source>Minor diameter</source>
-      <translation type="unfinished">Minor diameter</translation>
+      <translation>Trastomhas beag</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="198"/>
@@ -2144,7 +2144,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Páirc</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="36"/>
@@ -2250,12 +2250,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PropertyBag.ui" line="55"/>
       <source>Modify</source>
-      <translation type="unfinished">Modify</translation>
+      <translation>Modhnaigh</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="20"/>
       <source>Tool</source>
-      <translation type="unfinished">Tool</translation>
+      <translation>Uirlis</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="26"/>
@@ -2306,7 +2306,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/ToolEditor.ui" line="308"/>
       <source>Image</source>
-      <translation type="unfinished">Image</translation>
+      <translation>Íomhá</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="20"/>
@@ -2411,12 +2411,12 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="38"/>
       <source>Defaults</source>
-      <translation type="unfinished">Defaults</translation>
+      <translation>Réamhshocruithe</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="55"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>Teimpléad</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="44"/>
@@ -2434,7 +2434,7 @@ If left empty no template will be preselected.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="72"/>
       <source>Geometry</source>
-      <translation type="unfinished">Geometry</translation>
+      <translation>Geoiméadracht</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="256"/>
@@ -2627,7 +2627,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="458"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="468"/>
@@ -2638,12 +2638,12 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="484"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="494"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="530"/>
@@ -2658,7 +2658,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="552"/>
       <source>Axis</source>
-      <translation type="unfinished">Axis</translation>
+      <translation>Ais</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="580"/>
@@ -2700,7 +2700,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="123"/>
       <source>The default color for new shapes</source>
-      <translation type="unfinished">The default color for new shapes</translation>
+      <translation>An dath réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="169"/>
@@ -2745,7 +2745,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="42"/>
       <source>The default line thickness for new shapes</source>
-      <translation type="unfinished">The default line thickness for new shapes</translation>
+      <translation>An tiús líne réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="228"/>
@@ -2760,7 +2760,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
       <location filename="../../DlgSettingsPathColor.ui" line="268"/>
       <location filename="../../DlgSettingsPathColor.ui" line="288"/>
       <source>The default line color for new shapes</source>
-      <translation type="unfinished">The default line color for new shapes</translation>
+      <translation>An dath líne réamhshocraithe do chruthanna nua</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="36"/>
@@ -2805,7 +2805,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/Advanced.ui" line="14"/>
       <source>Advanced</source>
-      <translation type="unfinished">Advanced</translation>
+      <translation>Ardleibhéil</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="20"/>
@@ -2906,7 +2906,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
       <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="27"/>
@@ -2962,7 +2962,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
       <location filename="../panels/ZCorrectEdit.ui" line="35"/>
       <location filename="../panels/DogboneEdit.ui" line="35"/>
       <source>Dressup</source>
-      <translation type="unfinished">Dressup</translation>
+      <translation>Gléasadh suas</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="41"/>
@@ -2977,7 +2977,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="52"/>
       <source>Dogbone</source>
-      <translation type="unfinished">Dogbone</translation>
+      <translation>Cnámh madra</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="57"/>
@@ -3037,12 +3037,12 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="126"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Saincheaptha</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="131"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Seasta</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>
@@ -3057,7 +3057,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="165"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="14"/>
@@ -3102,7 +3102,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="26"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="33"/>
@@ -3157,7 +3157,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="143"/>
       <source>Auto Generate</source>
-      <translation type="unfinished">Auto Generate</translation>
+      <translation>Giniúint Uathoibríoch</translation>
     </message>
     <message>
       <location filename="../panels/HoldingTagsEdit.ui" line="159"/>
@@ -3183,7 +3183,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="47"/>
       <source>File Name</source>
-      <translation type="unfinished">File Name</translation>
+      <translation>Ainm Comhaid</translation>
     </message>
     <message>
       <location filename="../panels/ZCorrectEdit.ui" line="54"/>
@@ -3332,7 +3332,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="884"/>
       <source>Description</source>
-      <translation type="unfinished">Description</translation>
+      <translation>Cur síos</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="915"/>
@@ -3400,7 +3400,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="976"/>
       <source>Arguments</source>
-      <translation type="unfinished">Arguments</translation>
+      <translation>Argóintí</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="996"/>
@@ -3479,7 +3479,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="1022"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Ordú de réir</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1184"/>
@@ -3529,7 +3529,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="198"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="208"/>
@@ -3540,17 +3540,17 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="224"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="234"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="260"/>
       <source>Alignment</source>
-      <translation type="unfinished">Alignment</translation>
+      <translation>Ailíniú</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="266"/>
@@ -3756,7 +3756,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="718"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Imréiteach</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="734"/>
@@ -3827,12 +3827,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1348"/>
       <source>Rapid Speeds</source>
-      <translation type="unfinished">Rapid Speeds</translation>
+      <translation>Luasanna Tapa</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1357"/>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Cothrománach</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1370"/>
@@ -3842,7 +3842,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1377"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Ingearach</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1390"/>
@@ -3959,7 +3959,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Main/Gui/Job.py" line="753"/>
       <source>V</source>
       <comment>V is vertical feed rate. Must be as short as possible</comment>
-      <translation type="unfinished">V</translation>
+      <translation>V</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="756"/>
@@ -5760,7 +5760,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="186"/>
       <source>Round</source>
-      <translation type="unfinished">Round</translation>
+      <translation>Babhta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="187"/>
@@ -5805,12 +5805,12 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="218"/>
       <source>Round</source>
-      <translation type="unfinished">Round</translation>
+      <translation>Babhta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="219"/>
       <source>Square</source>
-      <translation type="unfinished">Square</translation>
+      <translation>Cearnóg</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="220"/>
@@ -6000,7 +6000,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="101"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>Bosca Bunteoranta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="102"/>
@@ -6025,7 +6025,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="108"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Saincheaptha</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="111"/>
@@ -6036,7 +6036,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Waterline.py" line="112"/>
       <location filename="../../../Path/Op/Waterline.py" line="125"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>Ciorclach</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="113"/>
@@ -6071,12 +6071,12 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="120"/>
       <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
+      <translation>Traidisiúnta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="121"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Dreap</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="124"/>
@@ -6101,7 +6101,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="138"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Ilphas</translation>
     </message>
   </context>
   <context>
@@ -6184,7 +6184,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="640"/>
       <source>Base Geometry</source>
-      <translation type="unfinished">Base Geometry</translation>
+      <translation>Geoiméadracht Bonn</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="759"/>
@@ -6446,7 +6446,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1395"/>
       <source>Lead In/Out</source>
-      <translation type="unfinished">Lead In/Out</translation>
+      <translation>Luaidhe Isteach/Amach</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
@@ -6456,7 +6456,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Ingearach</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
@@ -6496,7 +6496,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="64"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Ingearach</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="251"/>
@@ -6567,7 +6567,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/TagPreferences.py" line="83"/>
       <source>Holding Tag</source>
-      <translation type="unfinished">Holding Tag</translation>
+      <translation>Clib Sealbhaíochta</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Tags.py" line="558"/>
@@ -6629,7 +6629,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="331"/>
       <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="1323"/>
       <source>Dogbone</source>
-      <translation type="unfinished">Dogbone</translation>
+      <translation>Cnámh madra</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="335"/>
@@ -6726,7 +6726,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="262"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Saincheaptha</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="775"/>
@@ -6765,7 +6765,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="288"/>
       <location filename="../../../Path/Op/Gui/Probe.py" line="107"/>
       <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
+      <translation>Gach Comhad (*.*)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="105"/>
@@ -6806,7 +6806,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="255"/>
       <source>Tool</source>
-      <translation type="unfinished">Tool</translation>
+      <translation>Uirlis</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="256"/>
@@ -6817,7 +6817,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Main/Job.py" line="259"/>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="64"/>
       <source>2D</source>
-      <translation type="unfinished">2D</translation>
+      <translation>2T</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="260"/>
@@ -6852,7 +6852,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1058"/>
       <source>All Files (*.*)</source>
-      <translation type="unfinished">All Files (*.*)</translation>
+      <translation>Gach Comhad (*.*)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1401"/>
@@ -6872,7 +6872,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Rabhadh</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1664"/>
@@ -6902,7 +6902,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="63"/>
       <source>Solids</source>
-      <translation type="unfinished">Solids</translation>
+      <translation>Solaid</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="65"/>
@@ -6992,7 +6992,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="349"/>
       <source>Count</source>
-      <translation type="unfinished">Count</translation>
+      <translation>Líon</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="431"/>
@@ -7115,7 +7115,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
       <source>Fixtures</source>
-      <translation type="unfinished">Fixtures</translation>
+      <translation>Daingneáin</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
@@ -7150,7 +7150,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="72"/>
       <source>Description</source>
-      <translation type="unfinished">Description</translation>
+      <translation>Cur síos</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="84"/>
@@ -7175,7 +7175,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="108"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="80"/>
@@ -7397,7 +7397,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="54"/>
       <source>Sanity Check</source>
-      <translation type="unfinished">Sanity Check</translation>
+      <translation>Seiceáil Meabhairshláinte</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="56"/>
@@ -7759,7 +7759,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="97"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Airíonna</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/selector.py" line="40"/>
@@ -7841,7 +7841,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="621"/>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="630"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Rabhadh</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="547"/>
@@ -7949,7 +7949,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="221"/>
       <source>Drilling</source>
-      <translation type="unfinished">Drilling</translation>
+      <translation>Druileáil</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="225"/>
@@ -7982,12 +7982,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="109"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Dreap</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="110"/>
       <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
+      <translation>Traidisiúnta</translation>
     </message>
   </context>
   <context>
@@ -7995,7 +7995,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="69"/>
       <source>Boundbox</source>
-      <translation type="unfinished">Boundbox</translation>
+      <translation>Bosca Teoranta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="70"/>
@@ -8025,17 +8025,17 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="63"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Dreap</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="64"/>
       <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
+      <translation>Traidisiúnta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="67"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="68"/>
@@ -8070,7 +8070,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="180"/>
       <source>Normal</source>
-      <translation type="unfinished">Normal</translation>
+      <translation>Gnáth</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="181"/>
@@ -8118,7 +8118,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="258"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Ilphas</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="261"/>
@@ -8128,7 +8128,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="262"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Ingearach</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="265"/>
@@ -8284,7 +8284,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="436"/>
       <source>BaseBoundBox</source>
-      <translation type="unfinished">BaseBoundBox</translation>
+      <translation>Bosca Bunteoranta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="437"/>
@@ -8309,22 +8309,22 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="443"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Saincheaptha</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="446"/>
       <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
+      <translation>Traidisiúnta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="447"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Dreap</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="450"/>
       <source>Circular</source>
-      <translation type="unfinished">Circular</translation>
+      <translation>Ciorclach</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="451"/>
@@ -8381,7 +8381,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="467"/>
       <source>Multi-pass</source>
-      <translation type="unfinished">Multi-pass</translation>
+      <translation>Ilphas</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="470"/>
@@ -8484,12 +8484,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="294"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Dreap</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="298"/>
       <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
+      <translation>Traidisiúnta</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="253"/>
@@ -8574,7 +8574,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Custom.py" line="73"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Saincheaptha</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Custom.py" line="74"/>
@@ -8613,7 +8613,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="75"/>
       <source>Face</source>
-      <translation type="unfinished">Face</translation>
+      <translation>Aghaidh</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="76"/>
@@ -9018,7 +9018,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../CAMTests/TestPathToolShapeClasses.py" line="37"/>
       <source>Parameter 1</source>
-      <translation type="unfinished">Parameter 1</translation>
+      <translation>Paraiméadar 1</translation>
     </message>
   </context>
   <context>
@@ -9026,7 +9026,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../CAMTests/TestPathToolShapeClasses.py" line="41"/>
       <source>Parameter 2</source>
-      <translation type="unfinished">Parameter 2</translation>
+      <translation>Paraiméadar 2</translation>
     </message>
   </context>
   <context>
@@ -9086,7 +9086,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="119"/>
       <source>Warning</source>
-      <translation type="unfinished">Warning</translation>
+      <translation>Rabhadh</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="120"/>
@@ -9207,7 +9207,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="69"/>
       <source>Chamfer</source>
-      <translation type="unfinished">Chamfer</translation>
+      <translation>Seaimféaráil</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="67"/>
@@ -9235,7 +9235,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="49"/>
       <source>Major diameter</source>
-      <translation type="unfinished">Major diameter</translation>
+      <translation>Trastomhas mór</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="53"/>
@@ -9416,7 +9416,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/tablecell.py" line="111"/>
       <source>Pocket</source>
-      <translation type="unfinished">Pocket</translation>
+      <translation>Póca</translation>
     </message>
   </context>
   <context>

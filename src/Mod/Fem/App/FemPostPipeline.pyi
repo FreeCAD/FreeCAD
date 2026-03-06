@@ -101,3 +101,7 @@ class FemPostPipeline(FemPostObject):
         Note that the output algorithm may change depending on pipeline settings.
         """
         ...
+
+    def setTimeInfo(self, frame_type: str, unit: Unit, /) -> None:
+        """Set pipeline frame information."""
+        ...

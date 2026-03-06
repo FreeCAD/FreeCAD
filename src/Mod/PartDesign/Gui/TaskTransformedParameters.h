@@ -23,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTransformedParameters_H
-#define GUI_TASKVIEW_TaskTransformedParameters_H
+#pragma once
 
 #include <Gui/ComboLinks.h>
 #include <Gui/DocumentObserver.h>
@@ -243,5 +242,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

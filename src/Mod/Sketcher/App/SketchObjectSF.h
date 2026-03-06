@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCH_SKETCHOBJECTSF_H
-#define SKETCH_SKETCHOBJECTSF_H
+#pragma once
 
 #include <App/PropertyFile.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -59,6 +58,3 @@ public:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCH_SKETCHOBJECTSF_H

@@ -71,7 +71,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         for base in op.Base:
             model = base[0]
             for sub in base[1]:
-                pos = proxy.holePosition(op, model, sub)
+                pos = proxy.holePosition(model, sub)
                 self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub))
 
     def test02(self):
@@ -86,7 +86,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             for base in op.Base:
                 model = base[0]
                 for sub in base[1]:
-                    pos = proxy.holePosition(op, model, sub)
+                    pos = proxy.holePosition(model, sub)
                     # Path.Log.track(deg, pos, pos.Length)
                     self.assertRoughly(
                         round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
@@ -110,7 +110,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             for base in op.Base:
                 model = base[0]
                 for sub in base[1]:
-                    pos = proxy.holePosition(op, model, sub)
+                    pos = proxy.holePosition(model, sub)
                     # Path.Log.track(deg, pos, pos.Length)
                     self.assertRoughly(
                         round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
@@ -134,7 +134,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             for base in op.Base:
                 model = base[0]
                 for sub in base[1]:
-                    pos = proxy.holePosition(op, model, sub)
+                    pos = proxy.holePosition(model, sub)
                     # Path.Log.track(deg, pos, pos.Length)
                     self.assertRoughly(
                         round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)

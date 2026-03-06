@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSetElementNodesObject_H
-#define Fem_FemSetElementNodesObject_H
+#pragma once
 
 #include "FemSetObject.h"
 #include <App/DocumentObject.h>
@@ -60,6 +59,3 @@ public:
 };
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemSetElementNodesObject_H

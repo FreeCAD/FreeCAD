@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MAINWINDOW_H
-#define GUI_MAINWINDOW_H
+#pragma once
 
 #include <QEvent>
 #include <QMainWindow>
@@ -464,5 +463,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MAINWINDOW_H

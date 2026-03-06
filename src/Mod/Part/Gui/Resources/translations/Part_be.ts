@@ -5989,7 +5989,7 @@ Continue?</source>
       <translation>Сродак праўкі прымацавання</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1003"/>
+      <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
       <translation>Знешні выгляд для кожнай грані</translation>
     </message>

@@ -58,8 +58,12 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
-MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) {
+MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QFrame(parent) {
     setupUi(this);
+
+    f_fontsize->setEditable(true);
+    f_fontsize->setMinimumContentsLength(3);
+
     m_lastBlockList = nullptr;
     f_textedit->setTabStopDistance(40);
     setDefFontSize(TechDrawGui::PreferencesGui::labelFontSizePX());
@@ -228,8 +232,6 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
         int intSize = round(currSize);
         QString qsSize = QString::number(intSize);
         addFontSize(qsSize);
-        int fSize = f_fontsize->findText(qsSize);
-        f_fontsize  ->setCurrentIndex(fSize);
     } else {
         QTextCursor cursor = f_textedit->textCursor();
         cursor.movePosition(QTextCursor::Start);
@@ -239,10 +241,9 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) 
         fmt.setFontPointSize(getDefFontSizeNum());
 
         addFontSize(getDefFontSize());
-
-        f_fontsize->setCurrentIndex(f_fontsize->findText(getDefFontSize()));
     }
 
+    updateFontSizeDisplay();
 }
 
 
@@ -486,14 +487,15 @@ void MRichTextEdit::list(bool checked, QTextListFormat::Style style) {
         QTextBlockFormat bfmt;
         bfmt.setIndent(obfmt.indent());
         cursor.setBlockFormat(bfmt);
-      } else {
+    }
+    else {
         QTextListFormat listFmt;
         if (cursor.currentList()) {
             listFmt = cursor.currentList()->format();
             }
         listFmt.setStyle(style);
         cursor.createList(listFmt);
-        }
+    }
     cursor.endEditBlock();
 }
 
@@ -507,17 +509,15 @@ void MRichTextEdit::mergeFormatOnWordOrSelection(const QTextCharFormat &format) 
     f_textedit->setFocus(Qt::TabFocusReason);
 }
 
-void MRichTextEdit::slotCursorPositionChanged() {
+void MRichTextEdit::slotCursorPositionChanged()
+{
+    updateFontSizeDisplay();
+
     //why do we change text style when selecting text?
     QTextCursor cursor = f_textedit->textCursor();
     if (cursor.hasSelection()) {                       //let selection logic handle this
         return;
     }
-    //set font size widget to match curr char size
-    QTextCharFormat fmt = cursor.charFormat();
-    double currSize = fmt.fontPointSize();
-    int fSize = f_fontsize->findText(QString::number(currSize));
-    f_fontsize  ->setCurrentIndex(fSize);
 
     QTextList *l = f_textedit->textCursor().currentList();
 
@@ -704,18 +704,23 @@ void MRichTextEdit::onExit()
     Q_EMIT editorFinished();
 }
 
-void MRichTextEdit::onSelectionChanged()
+void MRichTextEdit::updateFontSizeDisplay()
 {
     if (hasMultipleSizes()) {
         f_fontsize->setEditText(QString());
         f_fontsize->setCurrentIndex(-1);
-    } else {
+    }
+    else {
         QTextCursor cursor = f_textedit->textCursor();
         QTextCharFormat fmt = cursor.charFormat();
         double currSize = fmt.fontPointSize();
-        int fSize = f_fontsize->findText(QString::number(currSize));
-        f_fontsize  ->setCurrentIndex(fSize);
+        f_fontsize->setEditText(QString::number(currSize, 'g', 4));
     }
+}
+
+void MRichTextEdit::onSelectionChanged()
+{
+    updateFontSizeDisplay();
 }
 
 //does selection have multiple sizes?
@@ -801,33 +806,55 @@ QFont MRichTextEdit::getDefFont()
 // if the conversion factor is float, will generate non-standard sizes
 void MRichTextEdit::addFontSize(QString fontSize)
 {
+    bool ok;
+    const double newSize = fontSize.toDouble(&ok);
+    if (!ok) {
+        return;  // Ignore invalid numbers
+    }
+
+    // 1. Collect all existing sizes as doubles
+    QList<double> sizes;
+    for (int i = 0; i < f_fontsize->count(); ++i) {
+        sizes.append(f_fontsize->itemText(i).toDouble());
+    }
+
+    // 2. Check if the new size is already in the list (using fuzzy comparison for doubles)
+    for (double existingSize : qAsConst(sizes)) {
+        if (qFuzzyCompare(existingSize, newSize)) {
+            // Already exists, just make sure it's the current text
+            f_fontsize->setCurrentText(QString::number(newSize, 'g', 4));
+            return;
+        }
+    }
+
+    // 3. Add the new size and re-sort
+    sizes.append(newSize);
+    std::sort(sizes.begin(), sizes.end());
+
+    // 4. Repopulate the combobox with the sorted, correctly formatted list
     QStringList newList;
-    int fsVal = fontSize.toInt();
-    int size = f_fontsize->count();
-    bool added = false;
-    for (int i = 0; i < size; i++) {
-        QString item = f_fontsize->itemText(i);
-        int itemVal = item.toInt();
-        if (added) {
-            newList << item;
-            continue;
-        }
-        if (itemVal < fsVal) {
-            newList << item;
-        } else if (itemVal == fsVal) {  // already in list
-            newList << item;
-            added = true;
-        } else {             //item > fs, add both
-            newList << fontSize;
-            newList << item;
-            added = true;
-        }
+    for (double size : qAsConst(sizes)) {
+        newList << QString::number(size, 'g', 4);
     }
-    if (!added) {   //bigger than all choices, add to end of list
-        newList << fontSize;
-    }
+
+    const QString currentText = f_fontsize->currentText();  // Save current text
+    f_fontsize->blockSignals(true);
     f_fontsize->clear();
     f_fontsize->addItems(newList);
+    f_fontsize->setCurrentText(currentText);  // Restore current text
+    f_fontsize->blockSignals(false);
+
+    // 5. Set the new size as the current item
+    f_fontsize->setCurrentText(fontSize);
+}
+
+void MRichTextEdit::setMinimalMode(bool on)
+{
+    f_save->setVisible(!on);
+    f_exit->setVisible(!on);
+    f_cut->setVisible(!on);
+    f_copy->setVisible(!on);
+    f_paste->setVisible(!on);
 }
 
 #include <Mod/TechDraw/Gui/moc_mrichtextedit.cpp>

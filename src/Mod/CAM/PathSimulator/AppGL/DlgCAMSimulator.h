@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATHSIMULATOR_CAMSimulatorGui_H
-#define PATHSIMULATOR_CAMSimulatorGui_H
+#pragma once
 
 #ifdef _MSC_VER
 # pragma warning(disable : 4251)
@@ -140,5 +139,3 @@ private:
 };
 
 }  // namespace CAMSimulator
-
-#endif  // PATHSIMULATOR_PathSim_H

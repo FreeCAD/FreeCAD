@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef STARTGUI_DLGSTARTPREFERENCESIMP_H
-#define STARTGUI_DLGSTARTPREFERENCESIMP_H
+#pragma once
 
 #include <memory>
 #include <Gui/PropertyPage.h>
@@ -50,5 +49,3 @@ private:
 };
 
 }  // namespace StartGui
-
-#endif  // STARTGUI_DLGSTARTPREFERENCESIMP_H

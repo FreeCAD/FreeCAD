@@ -1191,12 +1191,12 @@ Lehenespenak: %V = %A
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>New zoom level:</source>
       <translation type="unfinished">New zoom level:</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>Zoom Level</source>
       <translation type="unfinished">Zoom Level</translation>
     </message>

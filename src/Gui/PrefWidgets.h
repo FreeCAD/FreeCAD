@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PREFWIDGETS_H
-#define GUI_PREFWIDGETS_H
+#pragma once
 
 #include <QCheckBox>
 #include <QComboBox>
@@ -512,5 +511,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PREFWIDGETS_H

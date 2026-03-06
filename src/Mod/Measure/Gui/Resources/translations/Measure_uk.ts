@@ -157,12 +157,12 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="323"/>
       <source>Center axis distance: %1</source>
-      <translation type="unfinished">Center axis distance: %1</translation>
+      <translation>Відстань до центру осей: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="326"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
-      <translation type="unfinished">Center axis distance: %1, Axis angle: %2</translation>
+      <translation>Відстань до центру осей: %1, Кут осей: %2</translation>
     </message>
   </context>
   <context>
@@ -184,7 +184,7 @@
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Вимірювати характеристику</translation>
     </message>
   </context>
   <context>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="98"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
-      <translation type="unfinished">Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</translation>
+      <translation>Автозбереження останнього вимірювання при створенні нового вимірювання. Використовуйте Shift для тимчасового інвертування поведінки.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="103"/>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="109"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation type="unfinished">If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</translation>
+      <translation>Якщо позначено, то нові пункти будуть додані до вимірювання. Якщо не позначено, то натисніть клавішу Ctrl для додавання обраного виміру в іншому випадку почнеться нове вимірювання</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="122"/>
@@ -278,7 +278,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="123"/>
       <source>Distance Free</source>
-      <translation type="unfinished">Distance Free</translation>
+      <translation>Вільна відстань</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="131"/>

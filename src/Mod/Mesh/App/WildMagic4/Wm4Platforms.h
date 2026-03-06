@@ -16,8 +16,7 @@
 //
 // Version: 4.0.1 (2006/11/14)
 
-#ifndef WM4PLATFORMS_H
-#define WM4PLATFORMS_H
+#pragma once
 
 // Platform-specific information goes in this header file.  The defines to
 // control which platform is included are:
@@ -121,8 +120,5 @@ typedef int64_t Integer64;
 
 #include <cstdint>
 typedef int64_t Integer64;
-
-#endif
-//----------------------------------------------------------------------------
 
 #endif

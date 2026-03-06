@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_MATERIAL_H
-#define APP_MATERIAL_H
+#pragma once
 
 #include <Base/Color.h>
 
@@ -169,5 +168,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // APP_MATERIAL_H

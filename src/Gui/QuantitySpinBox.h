@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_QUANTITYSPINBOX_H
-#define GUI_QUANTITYSPINBOX_H
+#pragma once
 
 #include <Gui/MetaTypes.h>
 #include <Gui/SpinBox.h>
@@ -216,5 +215,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_QUANTITYSPINBOX_H

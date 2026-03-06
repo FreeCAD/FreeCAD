@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTINITIALTEMPERATURE_H
-#define FEM_CONSTRAINTINITIALTEMPERATURE_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -64,6 +63,3 @@ protected:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTINITIALTEMPERATURE_H

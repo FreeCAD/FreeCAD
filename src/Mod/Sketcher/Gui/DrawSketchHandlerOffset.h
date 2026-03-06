@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
-#define SKETCHERGUI_DrawSketchHandlerOffset_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -398,11 +397,16 @@ private:
 
     void drawOffsetPreview()
     {
-        std::vector<Part::Geometry*> geometriesToAdd;
-        std::vector<int> listOfOffsetGeoIds;
-        getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
+        try {
+            std::vector<Part::Geometry*> geometriesToAdd;
+            std::vector<int> listOfOffsetGeoIds;
+            getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
-        drawEdit(geometriesToAdd);
+            drawEdit(geometriesToAdd);
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+        }
     }
 
     void createOffset()
@@ -1332,6 +1336,3 @@ void DSHOffsetController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerOffset_H

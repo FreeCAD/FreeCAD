@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchController_H
-#define SKETCHERGUI_DrawSketchController_H
+#pragma once
 
 #include <Base/Console.h>
 #include <Base/Tools2D.h>
@@ -890,6 +889,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchController_H

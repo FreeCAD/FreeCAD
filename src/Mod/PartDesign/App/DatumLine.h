@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMLINE_H
-#define PARTDESIGN_DATUMLINE_H
+#pragma once
 
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -58,6 +57,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_DATUMLINE_H

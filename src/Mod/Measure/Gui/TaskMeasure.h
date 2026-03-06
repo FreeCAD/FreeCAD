@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MEASURE_TASKMEASURE_H
-#define MEASURE_TASKMEASURE_H
+#pragma once
 
 #include <qcolumnview.h>
 #include <QString>
@@ -68,6 +67,7 @@ public:
     bool apply(bool reset);
     bool reject() override;
     void reset();
+    void closed() override;
 
     bool hasSelection();
     void clearSelection();
@@ -120,5 +120,3 @@ private:
 };
 
 }  // namespace MeasureGui
-
-#endif  // MEASURE_TASKMEASURE_H

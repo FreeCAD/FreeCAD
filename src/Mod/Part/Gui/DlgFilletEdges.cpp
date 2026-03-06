@@ -48,6 +48,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
@@ -674,8 +675,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         for (size_t i = 0; i < e.size(); ++i) {
             auto& sub = subs[i];
             if (sub.newName.empty()) {
-                int idx = 0;
-                sscanf(sub.oldName.c_str(), "Edge%d", &idx);
+                int idx = Data::indexOfElement(sub.oldName, "Edge");
                 if (idx == 0) {
                     FC_WARN("missing element reference: " << sub.oldName);
                 }

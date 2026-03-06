@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_XMLTOOLS_H
-#define BASE_XMLTOOLS_H
+#pragma once
 
 #include <memory>
 #include <ostream>
@@ -257,5 +256,3 @@ inline const XMLCh* XUTF8Str::unicodeForm() const
 {
     return str.c_str();
 }
-
-#endif  // BASE_XMLTOOLS_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Revolution_H
-#define PARTDESIGN_Revolution_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
@@ -152,6 +151,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Revolution_H

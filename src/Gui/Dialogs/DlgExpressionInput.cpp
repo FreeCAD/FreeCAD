@@ -669,7 +669,7 @@ void DlgExpressionInput::acceptWithVarSet()
 
     // Create a new expression that refers to the property in the VarSet
     // for the original property that is the target of this dialog.
-    expression.reset(ExpressionParser::parse(path.getDocumentObject(), prop->getFullName().c_str()));
+    expression = ExpressionParser::parse(path.getDocumentObject(), prop->getFullName().c_str());
 
     storePreferences(nameDoc.toStdString(), nameVarSet.toStdString(), group);
 }

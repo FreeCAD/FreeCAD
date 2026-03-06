@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawLeaderLine_h_
-#define TechDraw_DrawLeaderLine_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -103,4 +102,3 @@ private:
 using DrawLeaderLinePython = App::FeaturePythonT<DrawLeaderLine>;
 
 } //namespace TechDraw
-#endif

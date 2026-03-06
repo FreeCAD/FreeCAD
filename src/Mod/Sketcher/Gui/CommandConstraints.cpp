@@ -6270,96 +6270,117 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
         return;
     }
 
-    if (SubNames.size() == 3) {// perpendicular via point
+    if (SubNames.size() == 3) {
         getIdsFromName(SubNames[2], Obj, GeoId3, PosId3);
-        // let's sink the point to be GeoId3. We want to keep the order the two curves have been
-        // selected in.
-        if (isVertex(GeoId1, PosId1)) {
-            std::swap(GeoId1, GeoId2);
-            std::swap(PosId1, PosId2);
-        }
-        if (isVertex(GeoId2, PosId2)) {
-            std::swap(GeoId2, GeoId3);
-            std::swap(PosId2, PosId3);
-        }
-
-        if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
-
-            if (isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("Select an edge that is not a B-spline weight."));
-                return;
-            }
-
+        if (isVertex(GeoId1, PosId1) && isVertex(GeoId2, PosId2) && isEdge(GeoId3, PosId3)) {
+            // point point line perpendicularity
             openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+            Gui::cmdAppObjectArgs(
+                selection[0].getObject(),
+                "addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d,%d,%d))",
+                GeoId1,
+                static_cast<int>(PosId1),
+                GeoId2,
+                static_cast<int>(PosId2),
+                GeoId3);
 
-            bool safe = addConstraintSafely(Obj, [&]() {
-                // add missing point-on-object constraints
-                if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
-                    const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
-                    if (!(geom1 && isBSplineCurve(*geom1))) {
-                        Gui::cmdAppObjectArgs(
-                            selection[0].getObject(),
-                            "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                            GeoId3,
-                            static_cast<int>(PosId3),
-                            GeoId1);
-                    }
+            removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
+            commitCommand();
+            tryAutoRecompute(Obj);
+            getSelection().clearSelection();
+            return;
+        } else {
+            // perpendicular via point
+            // let's sink the point to be GeoId3. We want to keep the order the two curves have been
+            // selected in.
+            if (isVertex(GeoId1, PosId1)) {
+                std::swap(GeoId1, GeoId2);
+                std::swap(PosId1, PosId2);
+            }
+            if (isVertex(GeoId2, PosId2)) {
+                std::swap(GeoId2, GeoId3);
+                std::swap(PosId2, PosId3);
+            }
+
+            if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
+
+                if (isBsplinePole(Obj, GeoId1) || isBsplinePole(Obj, GeoId2)) {
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Select an edge that is not a B-spline weight."));
+                    return;
                 }
 
-                if (!IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)) {
-                    const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
-                    if (!(geom2 && isBSplineCurve(*geom2))) {
-                        Gui::cmdAppObjectArgs(
-                            selection[0].getObject(),
-                            "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                            GeoId3,
-                            static_cast<int>(PosId3),
-                            GeoId2);
-                    }
-                }
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
 
-                if (!IsPointAlreadyOnCurve(
+                bool safe = addConstraintSafely(Obj, [&]() {
+                    // add missing point-on-object constraints
+                    if (!IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)) {
+                        const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                        if (!(geom1 && isBSplineCurve(*geom1))) {
+                            Gui::cmdAppObjectArgs(
+                                selection[0].getObject(),
+                                "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                                GeoId3,
+                                static_cast<int>(PosId3),
+                                GeoId1);
+                        }
+                    }
+
+                    if (!IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)) {
+                        const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+                        if (!(geom2 && isBSplineCurve(*geom2))) {
+                            Gui::cmdAppObjectArgs(
+                                selection[0].getObject(),
+                                "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                                GeoId3,
+                                static_cast<int>(PosId3),
+                                GeoId2);
+                        }
+                    }
+
+                    if (!IsPointAlreadyOnCurve(
+                            GeoId1,
+                            GeoId3,
+                            PosId3,
+                            Obj)) {
+                        // FIXME: it's a good idea to add a check if the sketch is solved
+                        const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+                        if (!(geom1 && isBSplineCurve(*geom1))) {
+                            Gui::cmdAppObjectArgs(
+                                selection[0].getObject(),
+                                "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
+                                GeoId3,
+                                static_cast<int>(PosId3),
+                                GeoId1);
+                        }
+                    }
+
+                    Gui::cmdAppObjectArgs(
+                        selection[0].getObject(),
+                        "addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
                         GeoId1,
+                        GeoId2,
                         GeoId3,
-                        PosId3,
-                        Obj)) {
-                    // FIXME: it's a good idea to add a check if the sketch is solved
-                    const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
-                    if (!(geom1 && isBSplineCurve(*geom1))) {
-                        Gui::cmdAppObjectArgs(
-                            selection[0].getObject(),
-                            "addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d))",
-                            GeoId3,
-                            static_cast<int>(PosId3),
-                            GeoId1);
-                    }
+                        static_cast<int>(PosId3));
+
+                    removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
+                });
+
+                if (!safe) {
+                    return;
+                }
+                else {
+                    commitCommand();
+                    tryAutoRecompute(Obj);
                 }
 
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(),
-                    "addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
-                    GeoId1,
-                    GeoId2,
-                    GeoId3,
-                    static_cast<int>(PosId3));
+                getSelection().clearSelection();
 
-                removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
-            });
-
-            if (!safe) {
                 return;
             }
-            else {
-                commitCommand();
-                tryAutoRecompute(Obj);
-            }
 
-            getSelection().clearSelection();
-
-            return;
         }
 
         Gui::TranslatedUserWarning(

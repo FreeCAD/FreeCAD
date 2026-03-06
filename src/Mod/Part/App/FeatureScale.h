@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATURESCALE_H
-#define PART_FEATURESCALE_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -89,6 +88,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATURESCALE_H
