@@ -402,64 +402,20 @@ class PathGeometryGenerator:
         wires = []
         shape = self.shape
         offset = 0.0  # Start right at the edge of cut area
-        direction = 0
-        loop_cnt = 0
-
-        def _get_direction(w):
-            if PathOpUtil._isWireClockwise(w):
-                return 1
-            return -1
-
-        def _reverse_wire(w):
-            rev_list = []
-            for e in w.Edges:
-                rev_list.append(PathUtils.reverseEdge(e))
-            rev_list.reverse()
-            # return Part.Wire(Part.__sortEdges__(rev_list))
-            return Part.Wire(rev_list)
 
         while True:
-            offsetArea = PathUtils.getOffsetArea(shape, offset, plane=self.wpc)
+            offsetArea = PathUtils.getOffsetArea(
+                shape, offset, plane=self.wpc, tolerance=self.obj.LinearDeflection.Value
+            )
             if not offsetArea:
                 # Area fully consumed
                 break
 
-            # set initial cut direction
-            if direction == 0:
-                first_face_wire = offsetArea.Faces[0].Wires[0]
-                direction = _get_direction(first_face_wire)
-                if self.obj.CutMode == "Climb":
-                    if direction == 1:
-                        direction = -1
-                else:
-                    if direction == -1:
-                        direction = 1
-
-            # Correct cut direction for `Conventional` cuts
-            if self.obj.CutMode == "Conventional":
-                if loop_cnt == 1:
-                    direction = direction * -1
-
             # process each wire within face
             for f in offsetArea.Faces:
-                wire_cnt = 0
-                for w in f.Wires:
-                    use_direction = direction
-                    if wire_cnt > 0:
-                        # swap direction for internal features
-                        use_direction = direction * -1
-                    wire_direction = _get_direction(w)
-                    # Process wire
-                    if wire_direction == use_direction:
-                        # direction is correct
-                        wires.append(w)
-                    else:
-                        # incorrect direction, so reverse wire
-                        rw = _reverse_wire(w)
-                        wires.append(rw)
-
+                wires.extend(f.Wires)
             offset -= self.cutOut
-            loop_cnt += 1
+
         return wires
 
 
@@ -923,7 +879,9 @@ class ProcessSelectedFaces:
 
         if cont:
             ofstVal = self._calculateOffsetValue(isHole)
-            faceOffsetShape = PathUtils.getOffsetArea(csFaceShape, ofstVal, plane=self.wpc)
+            faceOffsetShape = PathUtils.getOffsetArea(
+                csFaceShape, ofstVal, plane=self.wpc, tolerance=self.obj.LinearDeflection.Value
+            )
             if faceOffsetShape is False:
                 Path.Log.debug("getOffsetArea() failed for entire base.")
             else:
@@ -1169,7 +1127,9 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
     """_makeSafeSTL(JOB, obj, mdlIdx, faceShapes, voidShapes)...
     Creates and OCL.stl object with combined data with waste stock,
     model, and avoided faces.  Travel lines can be checked against this
-    STL object to determine minimum travel height to clear stock and model."""
+    STL object to determine minimum travel height to clear stock and model.
+    Optimized with "hollowing" strategy. Creates a lightweight,
+    hollow shell of the safety model to significantly speed up transition path collision checks."""
     Path.Log.debug("_makeSafeSTL()")
 
     fuseShapes = []
@@ -1177,48 +1137,24 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
     mBB = Mdl.Shape.BoundBox
     sBB = JOB.Stock.Shape.BoundBox
 
-    # add Model shape to safeSTL shape
+    # Add the main model shape first
     fuseShapes.append(Mdl.Shape)
 
     if obj.BoundBox == "BaseBoundBox":
-        cont = False
-        extFwd = sBB.ZLength
-        zmin = mBB.ZMin
-        zmax = mBB.ZMin + extFwd
-        stpDwn = (zmax - zmin) / 4.0
-        dep_par = PathUtils.depth_params(zmax + 5.0, zmax + 3.0, zmax, stpDwn, 0.0, zmin)
-
+        # Using the FAST method
         try:
-            envBB = PathUtils.getEnvelope(
-                partshape=Mdl.Shape, depthparams=dep_par
-            )  # Produces .Shape
-            cont = True
-        except Exception as ee:
-            Path.Log.error(str(ee))
-            shell = Mdl.Shape.Shells[0]
-            solid = Part.makeSolid(shell)
-            try:
-                envBB = PathUtils.getEnvelope(
-                    partshape=solid, depthparams=dep_par
-                )  # Produces .Shape
-                cont = True
-            except Exception as eee:
-                Path.Log.error(str(eee))
+            padding = self.cutter.getDiameter()
+        except Exception:
+            padding = obj.ToolController.Tool.Diameter
 
-        if cont:
-            stckWst = JOB.Stock.Shape.cut(envBB)
-            if obj.BoundaryAdjustment > 0.0:
-                cmpndFS = Part.makeCompound(faceShapes)
-                baBB = PathUtils.getEnvelope(
-                    partshape=cmpndFS, depthparams=self.depthParams
-                )  # Produces .Shape
-                adjStckWst = stckWst.cut(baBB)
-            else:
-                adjStckWst = stckWst
-            fuseShapes.append(adjStckWst)
-        else:
-            msg = "Path transitions might not avoid the model. Verify paths.\n"
-            FreeCAD.Console.PrintWarning(msg)
+        xMin = mBB.XMin - padding
+        yMin = mBB.YMin - padding
+        bL = mBB.XLength + (2 * padding)
+        bW = mBB.YLength + (2 * padding)
+        bH = 1.0
+        crnr = FreeCAD.Vector(xMin, yMin, mBB.ZMin - 1.0)
+        B = Part.makeBox(bL, bW, bH, crnr, FreeCAD.Vector(0, 0, 1))
+        fuseShapes.append(B)
     else:
         # If boundbox is Job.Stock, add hidden pad under stock as base plate
         toolDiam = self.cutter.getDiameter()
@@ -1241,13 +1177,27 @@ def _makeSafeSTL(self, JOB, obj, mdlIdx, faceShapes, voidShapes, ocl):
 
     fused = Part.makeCompound(fuseShapes)
 
+    # Instead of meshing the entire solid, we extract only its outer shells.
+    # This discards all unnecessary internal faces, resulting in a much
+    # smaller and faster-to-process STL for collision checking.
+    shape_to_mesh = fused  # Default to the original solid
+    try:
+        if fused.Shells:
+            # Create a new compound shape containing only the outer shells
+            hollow_shape = Part.makeCompound(fused.Shells)
+            if not hollow_shape.isNull():
+                shape_to_mesh = hollow_shape
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Failed to hollow safety model: {e}. Using original model.\n")
+
     if self.showDebugObjects:
         T = FreeCAD.ActiveDocument.addObject("Part::Feature", "safeSTLShape")
-        T.Shape = fused
+        T.Shape = shape_to_mesh
         T.purgeTouched()
         self.tempGroup.addObject(T)
 
-    self.safeSTLs[mdlIdx] = _makeSTL(fused, obj, ocl)
+    # Pass the final, potentially hollow, shape to the mesher
+    self.safeSTLs[mdlIdx] = _makeSTL(shape_to_mesh, obj, ocl)
 
 
 def _makeSTL(model, obj, ocl, model_type=None):
@@ -1277,6 +1227,41 @@ def _makeSTL(model, obj, ocl, model_type=None):
             shape = model.Shape
         else:
             shape = model
+
+        # Clipping shape for Planar Scan Type to final depth to reduce the volume of STL file
+        # Disabled only for Rotational Scan Type on 3D Surface operation (Maintain compatibility with Waterline operation).
+        should_clip = not (hasattr(obj, "ScanType") and obj.ScanType == "Rotational")
+
+        if should_clip:
+            try:
+                final_depth = obj.FinalDepth.Value
+                bbox = shape.BoundBox
+                padding = 1.0
+
+                # Define the "volume to keep" based on the final_depth.
+                # Its bottom face is at the final_depth, ensuring everything below is removed.
+                box_len = bbox.XLength + (2 * padding)
+                box_width = bbox.YLength + (2 * padding)
+                box_height = bbox.ZMax - final_depth + padding
+                box_corner = FreeCAD.Vector(bbox.XMin - padding, bbox.YMin - padding, final_depth)
+
+                volume_to_keep = Part.makeBox(box_len, box_width, box_height, box_corner)
+
+                # Perform the boolean intersection to get the final, optimized shape.
+                clipped_shape = shape.common(volume_to_keep)
+
+                if not clipped_shape.isNull() and (clipped_shape.Solids or clipped_shape.Shells):
+                    shape = clipped_shape
+                else:
+                    FreeCAD.Console.PrintWarning(
+                        "Clipping resulted in an empty shape. Using original shape.\n"
+                    )
+
+            except Exception as e:
+                FreeCAD.Console.PrintError(
+                    f"Failed to apply pre-tessellation clip: {e}. Using original shape.\n"
+                )
+
         # vertices, facet_indices = shape.tessellate(obj.LinearDeflection.Value) # tessellate workaround
         # Workaround for tessellate bug
         mesh = MeshPart.meshFromShape(
@@ -1284,6 +1269,28 @@ def _makeSTL(model, obj, ocl, model_type=None):
             LinearDeflection=lin_def,
             AngularDeflection=ang_def,
         )
+
+        # If the user has set a simplification value, we reduce the mesh density here.
+        if hasattr(obj, "MeshSimplification") and obj.MeshSimplification > 0:
+            allowed_max = 99.0
+            reduction_percent = min(obj.MeshSimplification, allowed_max)
+
+            reduction_decimal = reduction_percent / 100.0
+            tolerance = 0.001
+
+            FreeCAD.Console.PrintMessage(
+                f"Simplifying mesh. Original triangle count: {len(mesh.Facets)}\n"
+            )
+
+            # This is the core decimation command
+            try:
+                mesh.decimate(tolerance, reduction_decimal)
+            except Exception as ee:
+                FreeCAD.Console.PrintError(f"Mesh decimation failed: {ee}. Using original shape.\n")
+
+            FreeCAD.Console.PrintMessage(
+                f"Decimation complete. New triangle count: {len(mesh.Facets)}\n"
+            )
         vertices = [point.Vector for point in mesh.Points]
         facet_indices = [facet.PointIndices for facet in mesh.Facets]
         facets = ((vertices[f[0]], vertices[f[1]], vertices[f[2]]) for f in facet_indices)
