@@ -347,7 +347,7 @@ std::string_view variantSlotString(VariantSlot slot, uint8_t value)
             switch (static_cast<ControlSize>(value)) {
                 case ControlSize::Small:
                     return "Small";
-                case ControlSize::Large:
+                case ControlSize::Big:
                     return "Large";
                 default:
                     return "";
@@ -644,12 +644,8 @@ QSize FreeCADStyle::sizeFromContents(
                 || tbOption->toolButtonStyle == Qt::ToolButtonTextUnderIcon);
 
         QMarginsF paddingF;
-        if (const auto paddingValue = resolve(context, StyleProperty::Padding)) {
-            try {
-                paddingF = Base::convertTo<QMarginsF>(StyleParameters::Insets(*paddingValue));
-            }
-            catch (const Base::Exception&) {
-            }
+        if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
+            paddingF = Base::convertTo<QMarginsF>(*padding);
         }
 
         int width = size.width() + static_cast<int>(paddingF.left() + paddingF.right());
@@ -657,10 +653,9 @@ QSize FreeCADStyle::sizeFromContents(
 
         if (needsCustomLayout) {
             int iconSpacing = 4;  // Qt's built-in default (see QToolButton::sizeHint)
-            if (const auto spacingValue = resolve(context, StyleProperty::IconSpacing)) {
-                if (spacingValue->holds<StyleParameters::Numeric>()) {
-                    iconSpacing = static_cast<int>(spacingValue->get<StyleParameters::Numeric>().value);
-                }
+            if (const auto spacing
+                = resolve<StyleParameters::Numeric>(context, StyleProperty::IconSpacing)) {
+                iconSpacing = static_cast<int>(spacing->value);
             }
 
             // Qt hardcodes +4 as the icon-text gap in QToolButton::sizeHint's content size.
@@ -671,10 +666,8 @@ QSize FreeCADStyle::sizeFromContents(
             }
         }
 
-        if (const auto heightValue = resolve(context, StyleProperty::Height)) {
-            if (heightValue->holds<StyleParameters::Numeric>()) {
-                height = static_cast<int>(heightValue->get<StyleParameters::Numeric>().value);
-            }
+        if (const auto height_ = resolve<StyleParameters::Numeric>(context, StyleProperty::Height)) {
+            height = static_cast<int>(height_->value);
         }
 
         return QSize(width, height);
@@ -705,12 +698,8 @@ void FreeCADStyle::drawControl(
             const StyleContext context = contextOf(widget, option);
 
             QMarginsF paddingF;
-            if (const auto paddingValue = resolve(context, StyleProperty::Padding)) {
-                try {
-                    paddingF = Base::convertTo<QMarginsF>(StyleParameters::Insets(*paddingValue));
-                }
-                catch (const Base::Exception&) {
-                }
+            if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
+                paddingF = Base::convertTo<QMarginsF>(*padding);
             }
 
             const QRect contentRect = toolButtonOption->rect.adjusted(
@@ -736,10 +725,9 @@ void FreeCADStyle::drawControl(
             }
 
             int iconSpacing = 4;  // matches Qt's built-in default
-            if (const auto spacingValue = resolve(context, StyleProperty::IconSpacing)) {
-                if (spacingValue->holds<StyleParameters::Numeric>()) {
-                    iconSpacing = static_cast<int>(spacingValue->get<StyleParameters::Numeric>().value);
-                }
+            if (const auto spacing
+                = resolve<StyleParameters::Numeric>(context, StyleProperty::IconSpacing)) {
+                iconSpacing = static_cast<int>(spacing->value);
             }
 
             // Apply pressed/checked shift — we manage layout so we do this ourselves.
@@ -929,8 +917,8 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
         if (sizeName == u"small") {
             context.variant.set(VariantSlot::ControlSize, ControlSize::Small);
         }
-        else if (sizeName == u"large") {
-            context.variant.set(VariantSlot::ControlSize, ControlSize::Large);
+        else if (sizeName == u"big") {
+            context.variant.set(VariantSlot::ControlSize, ControlSize::Big);
         }
     }
 
@@ -989,46 +977,27 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(const StyleContex
         result.background = Base::convertTo<QBrush>(*backgroundValue);
     }
 
-    if (const auto overlayValue = resolve(context, StyleProperty::Overlay)) {
-        if (overlayValue->holds<Base::Color>()) {
-            result.overlay = overlayValue->get<Base::Color>().asValue<QColor>();
-        }
+    if (const auto overlay = resolve<Base::Color>(context, StyleProperty::Overlay)) {
+        result.overlay = overlay->asValue<QColor>();
     }
 
-    if (const auto borderColorValue = resolve(context, StyleProperty::BorderColor)) {
-        if (borderColorValue->holds<Base::Color>()) {
-            result.borderColor = borderColorValue->get<Base::Color>().asValue<QColor>();
-        }
+    if (const auto borderColor = resolve<Base::Color>(context, StyleProperty::BorderColor)) {
+        result.borderColor = borderColor->asValue<QColor>();
     }
 
-    if (const auto borderThicknessValue = resolve(context, StyleProperty::BorderThickness)) {
-        try {
-            result.borderThickness = Base::convertTo<QMarginsF>(
-                StyleParameters::Insets(*borderThicknessValue)
-            );
-        }
-        catch (const Base::Exception&) {
-        }
+    if (const auto borderThickness
+        = resolve<StyleParameters::Insets>(context, StyleProperty::BorderThickness)) {
+        result.borderThickness = Base::convertTo<QMarginsF>(*borderThickness);
     }
 
-    if (const auto borderRadiusValue = resolve(context, StyleProperty::BorderRadius)) {
-        try {
-            result.borderRadius = Base::convertTo<CornerRadii>(
-                StyleParameters::Corners(*borderRadiusValue)
-            );
-        }
-        catch (const Base::Exception&) {
-        }
+    if (const auto borderRadius
+        = resolve<StyleParameters::Corners>(context, StyleProperty::BorderRadius)) {
+        result.borderRadius = Base::convertTo<CornerRadii>(*borderRadius);
     }
 
-    if (const auto innerShadowValue = resolve(context, StyleProperty::InnerShadow)) {
-        try {
-            result.innerShadow = Base::convertTo<FreeCADStyle::InnerShadow>(
-                StyleParameters::InnerShadow(*innerShadowValue)
-            );
-        }
-        catch (const Base::Exception&) {
-        }
+    if (const auto innerShadow
+        = resolve<StyleParameters::InnerShadow>(context, StyleProperty::InnerShadow)) {
+        result.innerShadow = Base::convertTo<FreeCADStyle::InnerShadow>(*innerShadow);
     }
 
     return result;
@@ -1037,61 +1006,6 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(const StyleContex
 void FreeCADStyle::clearTokenCache()
 {
     tokenCache.clear();
-}
-
-FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(
-    std::initializer_list<std::string_view> prefixes
-) const
-{
-    BoxBackground result;
-
-    if (auto backgroundValue = resolve(prefixes, "Background")) {
-        result.background = Base::convertTo<QBrush>(*backgroundValue);
-    }
-
-    if (auto overlayValue = resolve(prefixes, "Overlay")) {
-        if (overlayValue->holds<Base::Color>()) {
-            result.overlay = overlayValue->get<Base::Color>().asValue<QColor>();
-        }
-    }
-
-    if (auto borderColorValue = resolve(prefixes, "BorderColor")) {
-        if (borderColorValue->holds<Base::Color>()) {
-            result.borderColor = borderColorValue->get<Base::Color>().asValue<QColor>();
-        }
-    }
-
-    if (auto borderThicknessValue = resolve(prefixes, "BorderThickness")) {
-        try {
-            result.borderThickness = Base::convertTo<QMarginsF>(
-                StyleParameters::Insets(*borderThicknessValue)
-            );
-        }
-        catch (const Base::Exception&) {
-        }
-    }
-
-    if (auto borderRadiusValue = resolve(prefixes, "BorderRadius")) {
-        try {
-            result.borderRadius = Base::convertTo<CornerRadii>(
-                StyleParameters::Corners(*borderRadiusValue)
-            );
-        }
-        catch (const Base::Exception&) {
-        }
-    }
-
-    if (auto innerShadowValue = resolve(prefixes, "InnerShadow")) {
-        try {
-            result.innerShadow = Base::convertTo<FreeCADStyle::InnerShadow>(
-                StyleParameters::InnerShadow(*innerShadowValue)
-            );
-        }
-        catch (const Base::Exception&) {
-        }
-    }
-
-    return result;
 }
 
 bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
@@ -1113,12 +1027,9 @@ bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
         }
 
         if (auto* toolButton = qobject_cast<QToolButton*>(obj)) {
-            if (const auto heightValue = resolve(contextOf(toolButton), StyleProperty::Height)) {
-                if (heightValue->holds<StyleParameters::Numeric>()) {
-                    toolButton->setFixedHeight(
-                        static_cast<int>(heightValue->get<StyleParameters::Numeric>().value)
-                    );
-                }
+            if (const auto height
+                = resolve<StyleParameters::Numeric>(contextOf(toolButton), StyleProperty::Height)) {
+                toolButton->setFixedHeight(static_cast<int>(height->value));
             }
         }
     }

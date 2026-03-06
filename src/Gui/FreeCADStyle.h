@@ -38,18 +38,11 @@
 #include <QEvent>
 #include <QPushButton>
 #include <QToolButton>
+#include "StyleParameters/Value.h"
 #include "StyleToken.h"
 
 namespace Gui
 {
-
-namespace StyleParameters
-{
-class Corners;
-class Insets;
-class InnerShadow;
-struct Value;
-}  // namespace StyleParameters
 
 class GuiExport FreeCADStyle: public QProxyStyle
 {
@@ -97,28 +90,6 @@ public:
         std::optional<QColor> overlay;
         std::optional<InnerShadow> innerShadow;
     };
-
-    /**
-     * @brief Resolves style parameters from an ordered list of prefixes into a BoxBackground.
-     *
-     * Reads the following parameters (with each prefix prepended) from the global ParameterManager:
-     *   - @c {prefix}Background      — solid colour or gradient brush
-     *   - @c {prefix}Overlay         — semi-transparent colour composited on top of background
-     * (optional)
-     *   - @c {prefix}BorderColor     — border fill colour (optional)
-     *   - @c {prefix}BorderThickness — per-side border widths as QMarginsF (optional)
-     *   - @c {prefix}BorderRadius    — per-corner radii as CornerRadii
-     *   - @c {prefix}InnerShadow     — inward shadow (optional)
-     *
-     * For each property the prefixes are tried in order; the first match wins.
-     * Parameters that are absent under all prefixes or carry an incompatible
-     * type are silently ignored; their fields retain BoxBackground defaults.
-     *
-     * @code{.cpp}
-     * resolveBoxBackground({"ButtonPressedPrimary", "ButtonPressed", "Button"})
-     * @endcode
-     */
-    BoxBackground resolveBoxBackground(std::initializer_list<std::string_view> prefixes) const;
 
 protected:
     void drawPrimitive(
@@ -209,6 +180,51 @@ private:
         const StyleContext& context,
         StyleProperty property
     ) const;
+
+    /**
+     * @brief Typed variants of each resolve() overload.
+     *
+     * Wraps the corresponding untyped resolve() with StyleParameters::valueAs<T>,
+     * so call sites obtain a specific domain type (Numeric, Insets, Corners, …)
+     * directly as an optional without explicit holds<>/get<> checks or try/catch:
+     *
+     * @code{.cpp}
+     * if (const auto height = resolve<Numeric>(context, StyleProperty::Height)) {
+     *     widget->setFixedHeight(static_cast<int>(height->value));
+     * }
+     * if (const auto padding = resolve<Insets>(context, StyleProperty::Padding)) {
+     *     paddingF = Base::convertTo<QMarginsF>(*padding);
+     * }
+     * @endcode
+     *
+     * For variant member types (Numeric, Base::Color, std::string, Tuple) the
+     * value is returned only when it holds exactly T.  For domain wrapper types
+     * constructible from Value (Insets, Corners, InnerShadow, …) construction is
+     * attempted and nullopt is returned on failure.
+     */
+    template<typename T>
+    std::optional<T> resolve(std::string_view name) const
+    {
+        return StyleParameters::valueAs<T>(resolve(name));
+    }
+
+    template<typename T>
+    std::optional<T> resolve(std::initializer_list<std::string_view> names) const
+    {
+        return StyleParameters::valueAs<T>(resolve(names));
+    }
+
+    template<typename T>
+    std::optional<T> resolve(std::initializer_list<std::string_view> prefixes, std::string_view suffix) const
+    {
+        return StyleParameters::valueAs<T>(resolve(prefixes, suffix));
+    }
+
+    template<typename T>
+    std::optional<T> resolve(const StyleContext& context, StyleProperty property) const
+    {
+        return StyleParameters::valueAs<T>(resolve(context, property));
+    }
 
     /**
      * @brief Resolves a BoxBackground from a @p context using the token cache.
