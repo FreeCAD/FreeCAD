@@ -26,6 +26,9 @@
 #include <algorithm>
 #include <cmath>
 #include <map>
+#include <span>
+#include <string>
+#include <vector>
 #include <QGroupBox>
 #include <QImage>
 #include <QLayout>
@@ -35,6 +38,7 @@
 #include <QStyleOption>
 
 #include <Base/Color.h>
+#include <Base/Converter.h>
 #include <Base/Exception.h>
 
 #include "Application.h"
@@ -56,6 +60,102 @@ extern Q_WIDGETS_EXPORT void qt_blurImage(
 QT_END_NAMESPACE
 
 using namespace Gui;
+
+// ─── Base::convertTo specializations ──────────────────────────────────────
+// These teach Base::convertTo how to convert StyleParameters domain types
+// into Qt/FreeCADStyle types. Placed here (not in Base/) because the target
+// types (QMarginsF, QBrush, FreeCADStyle structs) live in the Gui layer.
+
+namespace Base
+{
+
+template<>
+FreeCADStyle::CornerRadii convertTo<FreeCADStyle::CornerRadii, StyleParameters::Corners>(
+    const StyleParameters::Corners& corners
+)
+{
+    return {
+        .topLeft = corners.topLeft().value,
+        .topRight = corners.topRight().value,
+        .bottomRight = corners.bottomRight().value,
+        .bottomLeft = corners.bottomLeft().value,
+    };
+}
+
+template<>
+QMarginsF convertTo<QMarginsF, StyleParameters::Insets>(const StyleParameters::Insets& insets)
+{
+    return QMarginsF(insets.left().value, insets.top().value, insets.right().value, insets.bottom().value);
+}
+
+template<>
+FreeCADStyle::InnerShadow convertTo<FreeCADStyle::InnerShadow, StyleParameters::InnerShadow>(
+    const StyleParameters::InnerShadow& shadow
+)
+{
+    return {
+        .color = shadow.color().asValue<QColor>(),
+        .x = shadow.x(),
+        .y = shadow.y(),
+        .blur = shadow.blur(),
+    };
+}
+
+template<>
+QBrush convertTo<QBrush, StyleParameters::Value>(const StyleParameters::Value& value)
+{
+    using namespace StyleParameters;
+
+    if (value.holds<::Base::Color>()) {
+        return QBrush(value.get<::Base::Color>().asValue<QColor>());
+    }
+
+    if (!value.holds<Tuple>()) {
+        return Qt::NoBrush;
+    }
+
+    const Tuple& tuple = value.get<Tuple>();
+
+    if (tuple.kind == TupleKind::LinearGradient) {
+        try {
+            const LinearGradient gradient(tuple);
+            QLinearGradient qGradient(gradient.x1(), gradient.y1(), gradient.x2(), gradient.y2());
+            qGradient.setCoordinateMode(QGradient::ObjectMode);
+            for (const auto& stop : gradient.colorStops()) {
+                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
+            }
+            return QBrush(qGradient);
+        }
+        catch (const ::Base::Exception&) {
+            return Qt::NoBrush;
+        }
+    }
+
+    if (tuple.kind == TupleKind::RadialGradient) {
+        try {
+            const RadialGradient gradient(tuple);
+            QRadialGradient qGradient(
+                gradient.cx(),
+                gradient.cy(),
+                gradient.radius(),
+                gradient.fx(),
+                gradient.fy()
+            );
+            qGradient.setCoordinateMode(QGradient::ObjectMode);
+            for (const auto& stop : gradient.colorStops()) {
+                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
+            }
+            return QBrush(qGradient);
+        }
+        catch (const ::Base::Exception&) {
+            return Qt::NoBrush;
+        }
+    }
+
+    return Qt::NoBrush;
+}
+
+}  // namespace Base
 
 namespace
 {
@@ -204,6 +304,227 @@ const QImage& getCachedShadowImage(
     return cache.emplace(key, buildShadowImage(rect, radii, shadow)).first->second;
 }
 
+// ─── StyleToken string tables ──────────────────────────────────────────────
+// These functions convert enum values to the string fragments used in token
+// names such as "ButtonPrimaryHoveredBackground".
+
+// Returns the inheritance chain for a component, ordered from most-specific to
+// most-abstract. Each entry is the token name prefix for that level.
+// To add a new component: add a StyleComponent enum entry and a chain array here.
+// To add a new abstract base: add an entry to the relevant chains — no enum change needed.
+std::span<const std::string_view> componentChain(StyleComponent component)
+{
+    static constexpr auto pushButton = std::to_array<std::string_view>({"Button", "FormControl"});
+    static constexpr auto toolButton = std::to_array<std::string_view>(
+        {"ToolButton", "Button", "FormControl"}
+    );
+
+    switch (component) {
+        case StyleComponent::PushButton:
+            return pushButton;
+        case StyleComponent::ToolButton:
+            return toolButton;
+        default:
+            return {};
+    }
+}
+
+// Returns the token string for a single VariantSlot value.
+// Add a case here whenever a new VariantSlot is added.
+std::string_view variantSlotString(VariantSlot slot, uint8_t value)
+{
+    switch (slot) {
+        case VariantSlot::ButtonType:
+            switch (static_cast<ButtonType>(value)) {
+                case ButtonType::Primary:
+                    return "Primary";
+                case ButtonType::Link:
+                    return "Link";
+                default:
+                    return "";
+            }
+        case VariantSlot::ControlSize:
+            switch (static_cast<ControlSize>(value)) {
+                case ControlSize::Small:
+                    return "Small";
+                case ControlSize::Large:
+                    return "Large";
+                default:
+                    return "";
+            }
+        default:
+            return "";
+    }
+}
+
+// Concatenates the string fragments of all non-default variant slots.
+// e.g. ButtonType=Primary, ControlSize=Default → "Primary"
+std::string variantString(const VariantKey& variant)
+{
+    std::string result;
+    for (size_t index = 0; index < variant.slots.size(); ++index) {
+        result += variantSlotString(VariantSlot(index), variant.slots.at(index));
+    }
+    return result;
+}
+
+std::string_view stateString(StyleState state)
+{
+    switch (state) {
+        case StyleState::Pressed:
+            return "Pressed";
+        case StyleState::Hovered:
+            return "Hovered";
+        case StyleState::Checked:
+            return "Checked";
+        case StyleState::Focused:
+            return "Focused";
+        default:
+            return "";
+    }
+}
+
+std::string_view propertyString(StyleProperty property)
+{
+    switch (property) {
+        case StyleProperty::Width:
+            return "Width";
+        case StyleProperty::MinWidth:
+            return "MinWidth";
+        case StyleProperty::MaxWidth:
+            return "MaxWidth";
+        case StyleProperty::Height:
+            return "Height";
+        case StyleProperty::MinHeight:
+            return "MinHeight";
+        case StyleProperty::MaxHeight:
+            return "MaxHeight";
+        case StyleProperty::BorderThickness:
+            return "BorderThickness";
+        case StyleProperty::BorderRadius:
+            return "BorderRadius";
+        case StyleProperty::BorderColor:
+            return "BorderColor";
+        case StyleProperty::Padding:
+            return "Padding";
+        case StyleProperty::Margin:
+            return "Margin";
+        case StyleProperty::IconSize:
+            return "IconSize";
+        case StyleProperty::IconSpacing:
+            return "IconSpacing";
+        case StyleProperty::FontSize:
+            return "FontSize";
+        case StyleProperty::FontWeight:
+            return "FontWeight";
+        case StyleProperty::Background:
+            return "Background";
+        case StyleProperty::TextColor:
+            return "TextColor";
+        case StyleProperty::Overlay:
+            return "Overlay";
+        case StyleProperty::OverlayOpacity:
+            return "OverlayOpacity";
+        case StyleProperty::InnerShadow:
+            return "InnerShadow";
+        default:
+            return "";
+    }
+}
+
+// ─── Prefix list builder ────────────────────────────────────────────────────
+//
+// Produces the ordered fallback prefix list for a StyleContext.
+//
+// Given component="Button", variant="Primary", active states={Hovered, Focused}
+// the result is:
+//   "ButtonPrimaryHovered"   ← variant + highest-priority state
+//   "ButtonPrimaryFocused"   ← variant + next state
+//   "ButtonPrimary"          ← variant, no state
+//   "ButtonHovered"          ← no variant, highest-priority state
+//   "ButtonFocused"          ← no variant, next state
+//   "Button"                 ← baseline
+
+// Priority order — highest first. Mirrors the enum declaration order (Pressed > Hovered > …).
+constexpr std::array<StyleState, 4> statePriorityOrder = {
+    StyleState::Pressed,
+    StyleState::Hovered,
+    StyleState::Checked,
+    StyleState::Focused,
+};
+
+std::vector<std::string> buildPrefixes(const StyleContext& context)
+{
+    const std::string variantSuffix = variantString(context.variant);
+
+    std::vector<StyleState> activeStates;
+    for (const StyleState stateFlag : statePriorityOrder) {
+        if (hasFlag(context.state, stateFlag)) {
+            activeStates.push_back(stateFlag);
+        }
+    }
+
+    std::vector<std::string> prefixes;
+
+    for (const std::string_view componentPrefix : componentChain(context.component)) {
+        if (!variantSuffix.empty()) {
+            for (const StyleState stateFlag : activeStates) {
+                prefixes.push_back(
+                    std::string(componentPrefix) + variantSuffix + std::string(stateString(stateFlag))
+                );
+            }
+            prefixes.push_back(std::string(componentPrefix) + variantSuffix);
+        }
+
+        for (const StyleState stateFlag : activeStates) {
+            prefixes.push_back(std::string(componentPrefix) + std::string(stateString(stateFlag)));
+        }
+
+        prefixes.push_back(std::string(componentPrefix));
+    }
+
+    return prefixes;
+}
+
+// ─── Cache key packing ─────────────────────────────────────────────────────
+//
+// Packs a (StyleContext, StyleProperty) pair into a uint32_t for use as an
+// unordered_map key. Bit layout:
+//
+//   bits  0– 4 : StyleComponent  (5 bits, up to 32 values)
+//   bits  5– 8 : StyleState      (4-bit bitmask)
+//   bits  9–14 : StyleProperty   (6 bits, up to 64 values)
+//   bits 15–.. : VariantSlots    (4 bits each, starting at bit 15)
+//
+// Adding a new VariantSlot or enum value does not require changing this function.
+
+uint32_t packVariant(const VariantKey& variant)
+{
+    uint32_t packed = 0;
+    for (size_t index = 0; index < variant.slots.size(); ++index) {
+        packed |= uint32_t(variant.slots.at(index)) << (index * 4);
+    }
+    return packed;
+}
+
+// clang-format off
+// Bit offsets within the packed cache key.
+constexpr uint32_t componentBitOffset = 0;
+constexpr uint32_t stateBitOffset     = 5;   // component (5 bits) ends at bit 4
+constexpr uint32_t propertyBitOffset  = 9;   // state (4-bit bitmask) ends at bit 8
+constexpr uint32_t variantBitOffset   = 15;  // property (6 bits) ends at bit 14
+// clang-format on
+
+uint32_t packCacheKey(const StyleContext& context, StyleProperty property)
+{
+    // clang-format off
+    return (static_cast<uint32_t>(context.component)        << componentBitOffset)
+         | (static_cast<uint32_t>(uint8_t(context.state))   << stateBitOffset)
+         | (static_cast<uint32_t>(property)                 << propertyBitOffset)
+         | (packVariant(context.variant)                    << variantBitOffset);
+    // clang-format on
+}
+
 }  // namespace
 
 void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const BoxBackground& rule)
@@ -286,42 +607,7 @@ void FreeCADStyle::drawPrimitive(
 ) const
 {
     if (element == PE_PanelButtonCommand) {
-
-        const std::string state = [&option]() -> std::string {
-            if (option->state & State_Sunken) {
-                return "Pressed";
-            }
-
-            if (option->state & State_On) {
-                return "Checked";
-            }
-
-            if (option->state & State_MouseOver) {
-                return "Hover";
-            }
-
-            return "";
-        }();
-
-        const std::string type = [&option]() -> std::string {
-            if (auto* styleOptionButton = qstyleoption_cast<const QStyleOptionButton*>(option);
-                styleOptionButton && styleOptionButton->features & QStyleOptionButton::DefaultButton) {
-                return "Primary";
-            }
-
-            return "";
-        }();
-
-        drawBoxBackground(
-            painter,
-            option->rect,
-            resolveBoxBackground(
-                {fmt::format("Button{}{}", type, state),
-                 fmt::format("Button{}", type),
-                 fmt::format("Button{}", state),
-                 "Button"}
-            )
-        );
+        drawBoxBackground(painter, option->rect, resolveBoxBackground(contextOf(widget, option)));
         return;
     }
 
@@ -348,7 +634,7 @@ QSize FreeCADStyle::sizeFromContents(
 ) const
 {
     if (type == CT_ToolButton) {
-        const std::string sizedPrefix = fmt::format("ToolButton{}", controlSizeSuffix(widget));
+        const StyleContext context = contextOf(widget, option);
 
         const auto* tbOption = qstyleoption_cast<const QStyleOptionToolButton*>(option);
         const bool hasIconOrArrow = tbOption
@@ -358,9 +644,9 @@ QSize FreeCADStyle::sizeFromContents(
                 || tbOption->toolButtonStyle == Qt::ToolButtonTextUnderIcon);
 
         QMarginsF paddingF;
-        if (const auto paddingValue = resolve({sizedPrefix, "ToolButton"}, "Padding")) {
+        if (const auto paddingValue = resolve(context, StyleProperty::Padding)) {
             try {
-                paddingF = toMarginsF(StyleParameters::Padding(*paddingValue));
+                paddingF = Base::convertTo<QMarginsF>(StyleParameters::Insets(*paddingValue));
             }
             catch (const Base::Exception&) {
             }
@@ -370,10 +656,8 @@ QSize FreeCADStyle::sizeFromContents(
         int height = size.height() + static_cast<int>(paddingF.top() + paddingF.bottom());
 
         if (needsCustomLayout) {
-            // ToolButton{Size}IconSpacing → ToolButtonIconSpacing → ButtonIconSpacing
             int iconSpacing = 4;  // Qt's built-in default (see QToolButton::sizeHint)
-            if (const auto spacingValue
-                = resolve({sizedPrefix, "ToolButton", "Button"}, "IconSpacing")) {
+            if (const auto spacingValue = resolve(context, StyleProperty::IconSpacing)) {
                 if (spacingValue->holds<StyleParameters::Numeric>()) {
                     iconSpacing = static_cast<int>(spacingValue->get<StyleParameters::Numeric>().value);
                 }
@@ -387,7 +671,7 @@ QSize FreeCADStyle::sizeFromContents(
             }
         }
 
-        if (const auto heightValue = resolve({sizedPrefix, "ToolButton"}, "Height")) {
+        if (const auto heightValue = resolve(context, StyleProperty::Height)) {
             if (heightValue->holds<StyleParameters::Numeric>()) {
                 height = static_cast<int>(heightValue->get<StyleParameters::Numeric>().value);
             }
@@ -418,12 +702,12 @@ void FreeCADStyle::drawControl(
 {
     if (element == CE_ToolButtonLabel) {
         if (const auto* toolButtonOption = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
-            const std::string sizedPrefix = fmt::format("ToolButton{}", controlSizeSuffix(widget));
+            const StyleContext context = contextOf(widget, option);
 
             QMarginsF paddingF;
-            if (const auto paddingValue = resolve({sizedPrefix, "ToolButton"}, "Padding")) {
+            if (const auto paddingValue = resolve(context, StyleProperty::Padding)) {
                 try {
-                    paddingF = toMarginsF(StyleParameters::Padding(*paddingValue));
+                    paddingF = Base::convertTo<QMarginsF>(StyleParameters::Insets(*paddingValue));
                 }
                 catch (const Base::Exception&) {
                 }
@@ -451,10 +735,8 @@ void FreeCADStyle::drawControl(
                 return;
             }
 
-            // ToolButton{Size}IconSpacing → ToolButtonIconSpacing → ButtonIconSpacing
             int iconSpacing = 4;  // matches Qt's built-in default
-            if (const auto spacingValue
-                = resolve({sizedPrefix, "ToolButton", "Button"}, "IconSpacing")) {
+            if (const auto spacingValue = resolve(context, StyleProperty::IconSpacing)) {
                 if (spacingValue->holds<StyleParameters::Numeric>()) {
                     iconSpacing = static_cast<int>(spacingValue->get<StyleParameters::Numeric>().value);
                 }
@@ -614,85 +896,147 @@ std::optional<StyleParameters::Value> FreeCADStyle::resolve(
     return std::nullopt;
 }
 
-QColor FreeCADStyle::toQColor(const Base::Color& color)
+StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* option)
 {
-    return QColor::fromRgbF(color.r, color.g, color.b, color.a);
-}
+    StyleContext context;
 
-FreeCADStyle::CornerRadii FreeCADStyle::toCornerRadii(const StyleParameters::Corners& corners)
-{
-    return {
-        .topLeft = corners.topLeft().value,
-        .topRight = corners.topRight().value,
-        .bottomRight = corners.bottomRight().value,
-        .bottomLeft = corners.bottomLeft().value,
-    };
-}
-
-QMarginsF FreeCADStyle::toMarginsF(const StyleParameters::Insets& insets)
-{
-    return QMarginsF(insets.left().value, insets.top().value, insets.right().value, insets.bottom().value);
-}
-
-FreeCADStyle::InnerShadow FreeCADStyle::toInnerShadow(const StyleParameters::InnerShadow& shadow)
-{
-    return {
-        .color = shadow.color().asValue<QColor>(),
-        .x = shadow.x(),
-        .y = shadow.y(),
-        .blur = shadow.blur(),
-    };
-}
-
-QBrush FreeCADStyle::toBackgroundBrush(const StyleParameters::Value& value)
-{
-    if (value.holds<Base::Color>()) {
-        return QBrush(value.get<Base::Color>().asValue<QColor>());
+    if (qobject_cast<const QToolButton*>(widget)) {
+        context.component = StyleComponent::ToolButton;
+    }
+    else if (qobject_cast<const QPushButton*>(widget)) {
+        context.component = StyleComponent::PushButton;
     }
 
-    if (!value.holds<StyleParameters::Tuple>()) {
-        return Qt::NoBrush;
+    // ButtonType — derived from style option features first, then widget properties.
+    const auto* buttonOption = qstyleoption_cast<const QStyleOptionButton*>(option);
+    if (buttonOption && (buttonOption->features & QStyleOptionButton::DefaultButton)) {
+        context.variant.set(VariantSlot::ButtonType, ButtonType::Primary);
+    }
+    else if (buttonOption && (buttonOption->features & QStyleOptionButton::Flat)) {
+        context.variant.set(VariantSlot::ButtonType, ButtonType::Link);
+    }
+    else if (const auto* toolButton = qobject_cast<const QToolButton*>(widget);
+             toolButton && toolButton->autoRaise()) {
+        context.variant.set(VariantSlot::ButtonType, ButtonType::Link);
+    }
+    else if (widget && widget->property("flat").toBool()) {
+        context.variant.set(VariantSlot::ButtonType, ButtonType::Link);
     }
 
-    const auto& tuple = value.get<StyleParameters::Tuple>();
-
-    if (tuple.kind == StyleParameters::TupleKind::LinearGradient) {
-        try {
-            const StyleParameters::LinearGradient gradient(tuple);
-            QLinearGradient qGradient(gradient.x1(), gradient.y1(), gradient.x2(), gradient.y2());
-            qGradient.setCoordinateMode(QGradient::ObjectMode);
-            for (const auto& stop : gradient.colorStops()) {
-                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
-            }
-            return QBrush(qGradient);
+    // ControlSize — derived from the "controlSize" widget property.
+    if (widget) {
+        const QString sizeName = widget->property("controlSize").toString();
+        if (sizeName == u"small") {
+            context.variant.set(VariantSlot::ControlSize, ControlSize::Small);
         }
-        catch (const Base::Exception&) {
-            return Qt::NoBrush;
+        else if (sizeName == u"large") {
+            context.variant.set(VariantSlot::ControlSize, ControlSize::Large);
         }
     }
 
-    if (tuple.kind == StyleParameters::TupleKind::RadialGradient) {
+    // State — all active flags captured as a bitmask.
+    if (option) {
+        StyleState state = StyleState::Normal;
+        if (option->state & QStyle::State_Sunken) {
+            state = state | StyleState::Pressed;
+        }
+        if (option->state & QStyle::State_MouseOver) {
+            state = state | StyleState::Hovered;
+        }
+        if (option->state & QStyle::State_On) {
+            state = state | StyleState::Checked;
+        }
+        if (option->state & QStyle::State_HasFocus) {
+            state = state | StyleState::Focused;
+        }
+        context.state = state;
+    }
+
+    return context;
+}
+
+std::optional<StyleParameters::Value> FreeCADStyle::resolve(
+    const StyleContext& context,
+    StyleProperty property
+) const
+{
+    const uint32_t key = packCacheKey(context, property);
+
+    if (const auto found = tokenCache.find(key); found != tokenCache.end()) {
+        return found->second;
+    }
+
+    const std::vector<std::string> prefixes = buildPrefixes(context);
+    const std::string_view propertySuffix = propertyString(property);
+
+    std::optional<StyleParameters::Value> result;
+    for (const std::string& prefix : prefixes) {
+        result = resolve(prefix + std::string(propertySuffix));
+        if (result) {
+            break;
+        }
+    }
+
+    tokenCache.emplace(key, result);
+    return result;
+}
+
+FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(const StyleContext& context) const
+{
+    BoxBackground result;
+
+    if (const auto backgroundValue = resolve(context, StyleProperty::Background)) {
+        result.background = Base::convertTo<QBrush>(*backgroundValue);
+    }
+
+    if (const auto overlayValue = resolve(context, StyleProperty::Overlay)) {
+        if (overlayValue->holds<Base::Color>()) {
+            result.overlay = overlayValue->get<Base::Color>().asValue<QColor>();
+        }
+    }
+
+    if (const auto borderColorValue = resolve(context, StyleProperty::BorderColor)) {
+        if (borderColorValue->holds<Base::Color>()) {
+            result.borderColor = borderColorValue->get<Base::Color>().asValue<QColor>();
+        }
+    }
+
+    if (const auto borderThicknessValue = resolve(context, StyleProperty::BorderThickness)) {
         try {
-            const StyleParameters::RadialGradient gradient(tuple);
-            QRadialGradient qGradient(
-                gradient.cx(),
-                gradient.cy(),
-                gradient.radius(),
-                gradient.fx(),
-                gradient.fy()
+            result.borderThickness = Base::convertTo<QMarginsF>(
+                StyleParameters::Insets(*borderThicknessValue)
             );
-            qGradient.setCoordinateMode(QGradient::ObjectMode);
-            for (const auto& stop : gradient.colorStops()) {
-                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
-            }
-            return QBrush(qGradient);
         }
         catch (const Base::Exception&) {
-            return Qt::NoBrush;
         }
     }
 
-    return Qt::NoBrush;
+    if (const auto borderRadiusValue = resolve(context, StyleProperty::BorderRadius)) {
+        try {
+            result.borderRadius = Base::convertTo<CornerRadii>(
+                StyleParameters::Corners(*borderRadiusValue)
+            );
+        }
+        catch (const Base::Exception&) {
+        }
+    }
+
+    if (const auto innerShadowValue = resolve(context, StyleProperty::InnerShadow)) {
+        try {
+            result.innerShadow = Base::convertTo<FreeCADStyle::InnerShadow>(
+                StyleParameters::InnerShadow(*innerShadowValue)
+            );
+        }
+        catch (const Base::Exception&) {
+        }
+    }
+
+    return result;
+}
+
+void FreeCADStyle::clearTokenCache()
+{
+    tokenCache.clear();
 }
 
 FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(
@@ -702,7 +1046,7 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(
     BoxBackground result;
 
     if (auto backgroundValue = resolve(prefixes, "Background")) {
-        result.background = toBackgroundBrush(*backgroundValue);
+        result.background = Base::convertTo<QBrush>(*backgroundValue);
     }
 
     if (auto overlayValue = resolve(prefixes, "Overlay")) {
@@ -719,8 +1063,8 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(
 
     if (auto borderThicknessValue = resolve(prefixes, "BorderThickness")) {
         try {
-            result.borderThickness = toMarginsF(
-                StyleParameters::BorderThickness(*borderThicknessValue)
+            result.borderThickness = Base::convertTo<QMarginsF>(
+                StyleParameters::Insets(*borderThicknessValue)
             );
         }
         catch (const Base::Exception&) {
@@ -729,7 +1073,9 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(
 
     if (auto borderRadiusValue = resolve(prefixes, "BorderRadius")) {
         try {
-            result.borderRadius = toCornerRadii(StyleParameters::Corners(*borderRadiusValue));
+            result.borderRadius = Base::convertTo<CornerRadii>(
+                StyleParameters::Corners(*borderRadiusValue)
+            );
         }
         catch (const Base::Exception&) {
         }
@@ -737,7 +1083,9 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(
 
     if (auto innerShadowValue = resolve(prefixes, "InnerShadow")) {
         try {
-            result.innerShadow = toInnerShadow(StyleParameters::InnerShadow(*innerShadowValue));
+            result.innerShadow = Base::convertTo<FreeCADStyle::InnerShadow>(
+                StyleParameters::InnerShadow(*innerShadowValue)
+            );
         }
         catch (const Base::Exception&) {
         }
@@ -765,8 +1113,7 @@ bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
         }
 
         if (auto* toolButton = qobject_cast<QToolButton*>(obj)) {
-            const std::string sizedPrefix = fmt::format("ToolButton{}", controlSizeSuffix(toolButton));
-            if (const auto heightValue = resolve({sizedPrefix, "ToolButton"}, "Height")) {
+            if (const auto heightValue = resolve(contextOf(toolButton), StyleProperty::Height)) {
                 if (heightValue->holds<StyleParameters::Numeric>()) {
                     toolButton->setFixedHeight(
                         static_cast<int>(heightValue->get<StyleParameters::Numeric>().value)

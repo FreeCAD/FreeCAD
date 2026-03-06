@@ -27,6 +27,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <unordered_map>
 #include <FCGlobal.h>
 #include <Base/Color.h>
 #include <QBrush>
@@ -37,6 +38,7 @@
 #include <QEvent>
 #include <QPushButton>
 #include <QToolButton>
+#include "StyleToken.h"
 
 namespace Gui
 {
@@ -193,14 +195,47 @@ private:
         std::string_view suffix
     ) const;
 
+    /**
+     * @brief Resolves a style token from a @p context and @p property with caching.
+     *
+     * Builds the token prefix fallback chain from the context (component, variant,
+     * active state flags in priority order) and caches the result so subsequent
+     * calls for the same (context, property) tuple avoid all string operations.
+     *
+     * The cache is invalidated by calling clearTokenCache(), which should be done
+     * whenever the active theme changes.
+     */
+    std::optional<StyleParameters::Value> resolve(
+        const StyleContext& context,
+        StyleProperty property
+    ) const;
+
+    /**
+     * @brief Resolves a BoxBackground from a @p context using the token cache.
+     *
+     * Calls resolve(context, property) for each BoxBackground field, so all
+     * per-property lookups are individually cached.
+     */
+    BoxBackground resolveBoxBackground(const StyleContext& context) const;
+
+    /**
+     * @brief Builds a StyleContext from a widget and its current style option.
+     *
+     * Derives component from the widget type, variant slots from widget properties
+     * (controlSize, isDefault, isFlat, autoRaise, property("flat")), and state
+     * from option->state flags. Passing @p option as nullptr yields Normal state.
+     */
+    static StyleContext contextOf(const QWidget* widget, const QStyleOption* option = nullptr);
+
+    /** @brief Clears the token resolution cache; call when the active theme changes. */
+    void clearTokenCache();
 
     static std::string controlSizeSuffix(const QWidget* widget);
 
-    static QColor toQColor(const Base::Color& color);
-    static QBrush toBackgroundBrush(const StyleParameters::Value& value);
-    static CornerRadii toCornerRadii(const StyleParameters::Corners& corners);
-    static QMarginsF toMarginsF(const StyleParameters::Insets& insets);
-    static InnerShadow toInnerShadow(const StyleParameters::InnerShadow& shadow);
+    // Cache for resolve(StyleContext, StyleProperty). Key is a bit-packed uint32_t;
+    // value is the resolved result including nullopt for confirmed misses.
+    // Mutable so const draw methods can populate the cache.
+    mutable std::unordered_map<uint32_t, std::optional<StyleParameters::Value>> tokenCache;
 };
 
 }  // namespace Gui
