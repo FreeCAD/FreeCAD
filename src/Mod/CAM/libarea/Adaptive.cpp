@@ -1425,14 +1425,13 @@ Adaptive2d::Adaptive2d()
 //         subtract from other shapes
 // 4) Return accumulated area
 double Adaptive2d::CalcCutArea(
-    Clipper& clip,
+    Clipper& /* clip */,
     const IntPoint& c1,
     const IntPoint& c2,
     ClearedArea& clearedArea,
-    bool preventConventional
+    bool /* preventConventional */
 )
 {
-
     double dist = sqrt(DistanceSqrd(c1, c2));
     if (dist < NTOL) {
         return 0;
@@ -1467,24 +1466,24 @@ double Adaptive2d::CalcCutArea(
 
         vector<DoublePoint> polygon;
         for (const auto p : path) {
-            polygon.push_back({(double)p.X, (double)p.Y});
+            polygon.emplace_back((double)p.X, (double)p.Y);
         }
         polygons.push_back(polygon);
     }
 
     // 1) Find all x-coordinates of interest:
     vector<double> xs;
-    for (const auto polygon : polygons) {
+    for (const auto& polygon : polygons) {
         // 1.a) All polygon vertices
-        for (const auto p : polygon) {
+        for (const auto& p : polygon) {
             xs.push_back(p.X);
         }
 
         // 1.b) Intersection of all polygons with c1
         // 1.c) Intersection of all polygons with c2
-        for (int i = 0; i < polygon.size(); i++) {
-            const auto p0 = polygon[i];
-            const auto p1 = polygon[(i + 1) % polygon.size()];
+        for (size_t i = 0; i < polygon.size(); i++) {
+            const auto& p0 = polygon[i];
+            const auto& p1 = polygon[(i + 1) % polygon.size()];
             if (Line2CircleIntersect(c1, toolRadiusScaled, p0, p1, inters)) {
                 for (const auto p : inters) {
                     xs.push_back(p.X);
@@ -1530,14 +1529,14 @@ double Adaptive2d::CalcCutArea(
 
     const auto interpX = [](const DoublePoint p0, const DoublePoint p1, double x) {
         const double interp = (x - p0.X) / (p1.X - p0.X);
-        const double y = p1.Y * interp + p0.Y * (1 - interp);
+        const double y = (p1.Y * interp) + (p0.Y * (1 - interp));
         return y;
     };
 
     // 3) For each non-empty range in x, construct a vertical line through its midpoint
     const vector<DoublePoint> circles = {c2, c1};
     double area = 0;
-    for (int ix = 0; ix < xs.size() - 1; ix++) {
+    for (size_t ix = 0; ix + 1 < xs.size(); ix++) {
         const double x0 = xs[ix];
         const double x1 = xs[ix + 1];
         if (x0 == x1) {
@@ -1552,26 +1551,26 @@ double Adaptive2d::CalcCutArea(
         // y, polygon index (or polygons.size() + circle index), edge index (or 0/1 for top/bottom half)
         vector<tuple<double, int, int>> ys;
 
-        for (int ipolygon = 0; ipolygon < polygons.size(); ipolygon++) {
-            const auto polygon = polygons[ipolygon];
-            for (int iedge = 0; iedge < polygon.size(); iedge++) {
-                const auto p0 = polygon[iedge];
-                const auto p1 = polygon[(iedge + 1) % polygon.size()];
+        for (size_t ipolygon = 0; ipolygon < polygons.size(); ipolygon++) {
+            const auto& polygon = polygons[ipolygon];
+            for (size_t iedge = 0; iedge < polygon.size(); iedge++) {
+                const auto& p0 = polygon[iedge];
+                const auto& p1 = polygon[(iedge + 1) % polygon.size()];
                 // note: we skip if the edge is vertical, p0.X == p1.X == xtest
                 if (min(p0.X, p1.X) < xtest && max(p0.X, p1.X) > xtest) {
                     const double y = interpX(p0, p1, xtest);
-                    ys.push_back({y, ipolygon, iedge});
+                    ys.emplace_back(y, ipolygon, iedge);
                 }
             }
         }
 
-        for (int icircle = 0; icircle < circles.size(); icircle++) {
+        for (size_t icircle = 0; icircle < circles.size(); icircle++) {
             const DoublePoint c = circles[icircle];
             const double dx = abs(xtest - c.X);
             if (dx < toolRadiusScaled) {  // skip tangent; xtest can't be a tangent anyway
-                const double dy = sqrt(toolRadiusScaled * toolRadiusScaled - dx * dx);
-                ys.push_back({c.Y + dy, polygons.size() + icircle, 0});
-                ys.push_back({c.Y - dy, polygons.size() + icircle, 1});
+                const double dy = sqrt((toolRadiusScaled * toolRadiusScaled) - (dx * dx));
+                ys.emplace_back(c.Y + dy, polygons.size() + icircle, 0);
+                ys.emplace_back(c.Y - dy, polygons.size() + icircle, 1);
             }
         }
 
@@ -1588,14 +1587,12 @@ double Adaptive2d::CalcCutArea(
         // that crossing:
         //     Init (i.e. y=-inf): outsideCount = 1 (outside c2 and inside all other shapes)
         std::vector<bool> outside;
-        for (int i = 0; i < polygons.size() + circles.size(); i++) {
-            outside.push_back(i == (polygons.size()));  // poly_0, ..., poly_n-1, c2, c1
+        outside.reserve(polygons.size() + circles.size());
+        for (size_t i = 0; i < polygons.size() + circles.size(); i++) {
+            outside.push_back(i == polygons.size());  // poly_0, ..., poly_n-1, c2, c1
         }
         int outsideCount = 1;
-        for (int iy = 0; iy < ys.size(); iy++) {
-            const int ishape = std::get<1>(ys[iy]);
-            const int ipart = std::get<2>(ys[iy]);
-
+        for (auto& [_, ishape, ipart] : ys) {
             const bool prevOutside = outside[ishape];
             const int prevCount = outsideCount;
             outside[ishape] = !outside[ishape];
@@ -1609,9 +1606,9 @@ double Adaptive2d::CalcCutArea(
             if (outsideCount == 0 || prevCount == 0) {
                 if (ishape < polygons.size()) {
                     // crossed a polygon
-                    const auto polygon = polygons[ishape];
-                    const auto p0 = polygon[ipart];
-                    const auto p1 = polygon[(ipart + 1) % polygon.size()];
+                    const auto& polygon = polygons[ishape];
+                    const auto& p0 = polygon[ipart];
+                    const auto& p1 = polygon[(ipart + 1) % polygon.size()];
                     const auto y0 = interpX(p0, p1, x0);
                     const auto y1 = interpX(p0, p1, x1);
                     const double newArea = (y0 + y1) / 2 * (x1 - x0);
@@ -1642,7 +1639,7 @@ double Adaptive2d::CalcCutArea(
                     const double tmidx = (x0 + x1) / 2;
                     const double tmidy = (y0 + y1) / 2;
                     const double th = sqrt(
-                        (tmidx - c.X) * (tmidx - c.X) + (tmidy - c.Y) * (tmidy - c.Y)
+                        ((tmidx - c.X) * (tmidx - c.X)) + ((tmidy - c.Y) * (tmidy - c.Y))
                     );
                     const double areaTriangle = tbase * th / 2;
                     const double areaSegment = areaSector - areaTriangle;
@@ -1651,7 +1648,7 @@ double Adaptive2d::CalcCutArea(
                     // the sign of the segment area is negative for bottom half of the circle,
                     // positive for top half
                     const double areaTrapezoid = (x1 - x0) * (y0 + y1) / 2;
-                    const double newArea = circleSign * areaSegment + areaTrapezoid;
+                    const double newArea = (circleSign * areaSegment) + areaTrapezoid;
                     area += entranceExitSign * newArea;
                 }
             }
