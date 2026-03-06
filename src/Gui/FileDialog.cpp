@@ -44,6 +44,7 @@
 #include <Base/Parameter.h>
 #include <App/Application.h>
 
+#include "CustomTitleBar.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "Tools.h"
@@ -61,11 +62,21 @@ struct ActionDisabler
         if (!mainWin) {
             return;
         }
-        QMenuBar* menuBar = mainWin->menuBar();
-        if (!menuBar) {
-            return;
+
+        QList<QAction*> actions;
+        // If frameless, get actions from CustomTitleBar to avoid mainWin->menuBar()
+        // overwriting the custom widget with a default QMenuBar.
+        if (mainWin->isFrameless()) {
+            if (auto* ctb = qobject_cast<CustomTitleBar*>(mainWin->menuWidget())) {
+                actions = ctb->mainMenu()->actions();
+            }
         }
-        auto actions = menuBar->actions();
+        else {
+            if (QMenuBar* menuBar = mainWin->menuBar()) {
+                actions = menuBar->actions();
+            }
+        }
+
         actionsToReenable.reserve(actions.size());
         for (auto action : actions) {
             if (action->isEnabled()) {
