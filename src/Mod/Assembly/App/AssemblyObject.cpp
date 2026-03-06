@@ -47,6 +47,7 @@
 #include "AssemblyObjectPy.h"
 #include "AssemblyUtils.h"
 #include "JointGroup.h"
+#include "ChronoSolver.h"
 #include "OndselSolver.h"
 #include "ViewGroup.h"
 
@@ -72,7 +73,7 @@ AssemblyObject::AssemblyObject()
     , lastSolverStatus(0)
 {
     // TODO: replace with user/addon configuration to support alternative solvers
-    solver = std::make_shared<Solver::OndselSolver>(this);
+    solver = std::make_shared<Solver::ChronoSolver>(this);
     assembly = solver->makeAssembly();
 
     lastDoF = numberOfComponents() * 6;
