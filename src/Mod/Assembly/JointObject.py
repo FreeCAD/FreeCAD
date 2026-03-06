@@ -1098,8 +1098,8 @@ class ViewProviderJoint:
             asm_global_plc = assembly.getGlobalPlacement()
             if asm_global_plc != App.Placement():
                 global_plc = UtilsAssembly.getJcsGlobalPlc(plc, ref)
-                 plc = asm_global_plc.inverse() * global_plc
-                 ref = None
+                plc = asm_global_plc.inverse() * global_plc
+                ref = None
         jcs.set_marker_placement(plc, ref)
 
     def setPickableState(self, state: bool):
