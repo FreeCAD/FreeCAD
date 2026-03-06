@@ -24,9 +24,9 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
+import Path.Dressup.Utils as PathDressup
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
-
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -257,14 +257,13 @@ class ObjectOp(PathOp.ObjectOp):
                 z = bbox.ZMin
                 sectionClearedAreas = []
                 for op in self.job.Operations.Group:
-                    if self in [x.Proxy for x in [op] + op.OutListRecursive if hasattr(x, "Proxy")]:
+                    baseOp = PathDressup.baseOp(op)
+                    if baseOp.Name == obj.Name:
                         break
-                    if hasattr(op, "Active") and op.Active and op.Path:
-                        tool = (
-                            op.Proxy.tool
-                            if hasattr(op.Proxy, "tool")
-                            else op.ToolController.Proxy.getTool(op.ToolController)
-                        )
+                    if not getattr(op, "ApplyToRestMachining", None):
+                        op = baseOp
+                    if getattr(baseOp, "Active", None) and op.Path:
+                        tool = baseOp.ToolController.Tool
                         diameter = tool.Diameter.getValueAs("mm")
                         dz = (
                             0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
