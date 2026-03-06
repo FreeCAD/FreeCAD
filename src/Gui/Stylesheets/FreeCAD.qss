@@ -63,12 +63,6 @@ FOLLOWING CODES ARE CHANGED IN THE SETTINGS:
 
 --------------------------------------------------------------------------- */
 
-/* Reset elements ------------------------------------------------------------
-
-Resetting everything helps to unify styles across different operating systems
-
---------------------------------------------------------------------------- */
-
 /* fix for column items background when a link is present */
 Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
   background-color: @AccentColor;/* same as focused background color */}
@@ -761,14 +755,6 @@ QAbstractSpinBox:selected {
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qpushbutton
 
 --------------------------------------------------------------------------- */
-QPushButton {
-  color: @ButtonTextColor;
-  font-size: @ButtonFontSize;
-  font-weight: @ButtonFontWeight;
-  padding: @ButtonPadding;
-  height: @{@ButtonContentBox.height};
-  min-width: @{@ButtonContentBox.width};
-}
 
 QAbstractButton[flat="true"] {
   background-color: transparent;
@@ -777,31 +763,6 @@ QAbstractButton[flat="true"] {
 
 Gui--FileChooser QPushButton {
   min-width: 0;
-}
-
-QPushButton:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  color: @TextDisabledColor;
-  border: 1px solid @ButtonBorderColor;
-}
-
-QPushButton:checked:disabled {
-  border: 1px solid @AccentColor;
-  color: @TextDisabledColor;
-  outline: none;
-}
-
-QPushButton:checked:selected {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
-  border: 1px solid  @AccentColor;
-}
-
-QAbstractButton[flat="true"]:hover {
-  border: 1px solid @ButtonBorderColor;
-}
-
-QPushButton:selected, QAbstractButton[flat="true"]:selected {
-  border: 1px solid  @GeneralBorderHoverColor;
 }
 
 QPushButton::menu-indicator {

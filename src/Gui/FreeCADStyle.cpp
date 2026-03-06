@@ -685,6 +685,36 @@ QSize FreeCADStyle::sizeFromContents(
     const QWidget* widget
 ) const
 {
+    if (type == CT_PushButton) {
+        const StyleContext context = contextOf(widget, option);
+        const auto* btnOption = qstyleoption_cast<const QStyleOptionButton*>(option);
+
+        QMarginsF paddingF;
+        if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
+            paddingF = Base::convertTo<QMarginsF>(*padding);
+        }
+
+        int width = size.width() + static_cast<int>(paddingF.left() + paddingF.right());
+        int height = size.height() + static_cast<int>(paddingF.top() + paddingF.bottom());
+
+        // Fix icon-text spacing contribution (Qt hardcodes 4 px).
+        if (btnOption && !btnOption->icon.isNull() && !btnOption->text.isEmpty()) {
+            constexpr int qtBuiltInIconGap = 4;
+            width += resolveIconSpacing(context) - qtBuiltInIconGap;
+        }
+
+        if (const auto resolvedHeight
+            = resolve<StyleParameters::Numeric>(context, StyleProperty::Height)) {
+            height = static_cast<int>(resolvedHeight->value);
+        }
+
+        if (const auto minWidth = resolve<StyleParameters::Numeric>(context, StyleProperty::MinWidth)) {
+            width = std::max(width, static_cast<int>(minWidth->value));
+        }
+
+        return QSize(width, height);
+    }
+
     if (type == CT_ToolButton) {
         const StyleContext context = contextOf(widget, option);
 
@@ -742,6 +772,13 @@ void FreeCADStyle::drawControl(
     const QWidget* widget
 ) const
 {
+    if (element == CE_PushButtonLabel) {
+        if (const auto* btnOption = qstyleoption_cast<const QStyleOptionButton*>(option)) {
+            drawPushButtonLabel(painter, btnOption, widget);
+            return;
+        }
+    }
+
     if (element == CE_ToolButtonLabel) {
         if (const auto* tbOption = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
             drawToolButtonLabel(painter, tbOption, widget);
@@ -899,6 +936,99 @@ void FreeCADStyle::drawToolButtonLabel(
         );
     }
 
+    painter->restore();
+}
+
+void FreeCADStyle::drawPushButtonLabel(
+    QPainter* painter,
+    const QStyleOptionButton* option,
+    const QWidget* widget
+) const
+{
+    const StyleContext context = contextOf(widget, option);
+
+    QMarginsF paddingF;
+    if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
+        paddingF = Base::convertTo<QMarginsF>(*padding);
+    }
+
+    // option->rect at this point is SE_PushButtonContents from Fusion (inset by its own frame
+    // width), which doesn't reflect our token-based padding. Use widget->rect() — the true
+    // button rect — as the base, then apply token padding to derive the content area.
+    // This is consistent with CT_PushButton in sizeFromContents, which also computes the total
+    // size as content + token padding (not Fusion's frame).
+    const QRect buttonRect = widget ? widget->rect() : option->rect;
+    const QRect contentRect = buttonRect.adjusted(
+        static_cast<int>(paddingF.left()),
+        static_cast<int>(paddingF.top()),
+        -static_cast<int>(paddingF.right()),
+        -static_cast<int>(paddingF.bottom())
+    );
+
+    // For icon-only or text-only, delegate to parent with the token-padded content rect.
+    // The parent centers the content within this rect; press-state shift is left to the parent.
+    if (option->icon.isNull() || option->text.isEmpty()) {
+        QStyleOptionButton adjustedOption = *option;
+        adjustedOption.rect = contentRect;
+        QProxyStyle::drawControl(CE_PushButtonLabel, &adjustedOption, painter, widget);
+        return;
+    }
+
+    // Icon + text: custom layout with token icon spacing.
+    QRect shiftedContentRect = contentRect;
+    if (option->state & (State_Sunken | State_On)) {
+        shiftedContentRect.translate(
+            proxy()->pixelMetric(PM_ButtonShiftHorizontal, option, widget),
+            proxy()->pixelMetric(PM_ButtonShiftVertical, option, widget)
+        );
+    }
+
+    const int iconSpacing = resolveIconSpacing(context);
+
+    const QIcon::State iconState = (option->state & State_On) ? QIcon::On : QIcon::Off;
+    const QIcon::Mode iconMode = (option->state & State_Enabled) ? QIcon::Normal : QIcon::Disabled;
+    const QPixmap pixmap = option->icon.pixmap(
+        shiftedContentRect.size().boundedTo(option->iconSize),
+        painter->device()->devicePixelRatio(),
+        iconMode,
+        iconState
+    );
+    const QSize pixmapSize = pixmap.size() / painter->device()->devicePixelRatio();
+
+    // Center the icon+text group horizontally in the content rect.
+    const int textWidth = option->fontMetrics.horizontalAdvance(option->text);
+    const int groupWidth = pixmapSize.width() + iconSpacing + textWidth;
+    const int groupLeft = shiftedContentRect.left() + (shiftedContentRect.width() - groupWidth) / 2;
+
+    const QRect iconRect(
+        groupLeft,
+        shiftedContentRect.top() + (shiftedContentRect.height() - pixmapSize.height()) / 2,
+        pixmapSize.width(),
+        pixmapSize.height()
+    );
+    const QRect textRect(
+        groupLeft + pixmapSize.width() + iconSpacing,
+        shiftedContentRect.top(),
+        shiftedContentRect.right() - (groupLeft + pixmapSize.width() + iconSpacing),
+        shiftedContentRect.height()
+    );
+
+    int textFlags = Qt::TextShowMnemonic | Qt::AlignVCenter | Qt::AlignLeft;
+    if (!proxy()->styleHint(SH_UnderlineShortcut, option, widget)) {
+        textFlags |= Qt::TextHideMnemonic;
+    }
+
+    painter->save();
+    proxy()->drawItemPixmap(painter, iconRect, Qt::AlignCenter, pixmap);
+    proxy()->drawItemText(
+        painter,
+        QStyle::visualRect(option->direction, shiftedContentRect, textRect),
+        textFlags,
+        option->palette,
+        option->state & State_Enabled,
+        option->text,
+        QPalette::ButtonText
+    );
     painter->restore();
 }
 
@@ -1064,16 +1194,14 @@ int FreeCADStyle::resolveIconSpacing(const StyleContext& context) const
 
 bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
 {
-    // This is a hacky fix for https://github.com/FreeCAD/FreeCAD/issues/23607
-    // Basically after widget is shown or polished we enforce it's minimum size to at least cover
-    // the minimum size hint - something that QSS ignores if min-width is specified
-    if (event->type() == QEvent::Polish || event->type() == QEvent::Show) {
+    if (event->type() == QEvent::Polish) {
         if (auto* btn = qobject_cast<QPushButton*>(obj)) {
+            // QSS min-width sets a content-area constraint that layouts may not fully honour
+            // when a stylesheet is present (issue #23607). Synchronise the Qt-level minimum
+            // width so that layouts always allocate enough room for the button's contents.
             btn->setMinimumWidth(std::max(btn->minimumSizeHint().width(), btn->minimumWidth()));
         }
-    }
 
-    if (event->type() == QEvent::Polish) {
         if (auto* groupBox = qobject_cast<QGroupBox*>(obj)) {
             if (auto* layout = groupBox->layout()) {
                 layout->setContentsMargins(0, 0, 0, 0);
