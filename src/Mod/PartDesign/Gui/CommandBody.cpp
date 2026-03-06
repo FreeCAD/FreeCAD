@@ -668,60 +668,105 @@ CmdPartDesignMoveTip::CmdPartDesignMoveTip()
 void CmdPartDesignMoveTip::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(
-        Part::Feature::getClassTypeId()
+
+    // Get all selected objects without type filtering
+    std::vector<App::DocumentObject*> allSelObj = getSelection().getObjectsOfType(
+        App::DocumentObject::getClassTypeId()
     );
-    App::DocumentObject* selFeature;
-    PartDesign::Body* body = nullptr;
 
-    if (features.size() == 1) {
-        selFeature = features.front();
-        if (selFeature->isDerivedFrom<PartDesign::Body>()) {
-            body = static_cast<PartDesign::Body*>(selFeature);
-        }
-        else {
-            body = PartDesignGui::getBodyFor(selFeature, /* messageIfNot =*/false);
-        }
-    }
-    else {
-        selFeature = nullptr;
-    }
-
-    if (!selFeature) {
+    // Guard against invalid selection size
+    if (allSelObj.size() != 1) {
         QMessageBox::warning(
             nullptr,
             QObject::tr("Selection error"),
-            QObject::tr("Select exactly one Part Design feature or a body.")
+            QObject::tr("Select exactly one Part Design feature, origin, or body.")
         );
         return;
     }
-    else if (!body) {
+
+    App::DocumentObject* selFeature = allSelObj.front();
+    PartDesign::Body* body = nullptr;
+
+    /*
+     * Determine the selected DocumentObjects body if it has any.
+     * If the selected object is a body, then it will be used directly.
+     * Otherwise it will try to find the body.
+     */
+    if (selFeature->isDerivedFrom<PartDesign::Body>()) {
+        body = static_cast<PartDesign::Body*>(selFeature);
+    }
+    else {
+        body = PartDesignGui::getBodyFor(selFeature, /* messageIfNot =*/false);
+    }
+
+    // Guard for invalid selection without a body
+    if (!body) {
         QMessageBox::warning(
             nullptr,
             QObject::tr("Selection error"),
             QObject::tr(
-                "Could not determine a body for the selected feature '%s'.",
+                "Could not determine a body for the current selection '%s'.",
                 selFeature->Label.getValue()
             )
         );
         return;
     }
-    else if (!selFeature->isDerivedFrom(PartDesign::Feature::getClassTypeId()) && selFeature != body
-             && body->BaseFeature.getValue() != selFeature) {
-        QMessageBox::warning(
-            nullptr,
-            QObject::tr("Selection error"),
-            QObject::tr("Only a solid feature can be the tip of a body.")
-        );
-        return;
-    }
 
-    App::DocumentObject* oldTip = body->Tip.getValue();
-    if (oldTip == selFeature) {  // it's not generally an error, so print only a console message
+    // Early exit if the selected object is already the current tip
+    if (selFeature == body->Tip.getValue()) {
         Base::Console().message("%s is already the tip of the body\n", selFeature->getNameInDocument());
         return;
     }
 
+    /*
+     * Check if the selected object is a valid tip for the determined body.
+     * Valid tips are:
+     * - The body itself
+     * - The Origin of the body
+     * - A PartDesign feature belonging to the body
+     * - The BaseFeature of the body
+     */
+    bool isTipValid = false;
+
+    if (selFeature == body) {
+        isTipValid = true;
+    }
+
+    else if (selFeature->isDerivedFrom<App::Origin>()) {
+        // Make sure that this Origin is part of the body
+        if (body->getOrigin() == selFeature) {
+            isTipValid = true;
+        }
+
+        else {
+            QMessageBox::warning(
+                nullptr,
+                QObject::tr("Selection error"),
+                QObject::tr("The selected origin does not belong to this body.")
+            );
+            return;
+        }
+    }
+
+    else if (selFeature->isDerivedFrom<PartDesign::Feature>()) {
+        isTipValid = true;
+    }
+
+    else if (selFeature == body->BaseFeature.getValue()) {
+        isTipValid = true;
+    }
+
+    // If tip is determined invalid, then show warning
+    if (!isTipValid) {
+        QMessageBox::warning(
+            nullptr,
+            QObject::tr("Selection error"),
+            QObject::tr("Only a solid feature, origin, or base feature can be the tip of a body.")
+        );
+        return;
+    }
+
+    // Move tip to selected feature
     openCommand(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
 
     if (selFeature == body) {
