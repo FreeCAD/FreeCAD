@@ -186,6 +186,12 @@ DrawViewDimension::DrawViewDimension()
                       App::Prop_Output,
                       "The dimensional value is displayed inverted");
 
+    ADD_PROPERTY_TYPE(ShowSupplementary, 
+                      (false), 
+                      "", 
+                      App::Prop_Output, 
+                      "Toggle supplementary angle\nAngle displayed is dependent on selection order");
+
     ADD_PROPERTY_TYPE(AngleOverride,
                       (false),
                       "Override",
@@ -678,6 +684,11 @@ double DrawViewDimension::getDimValue()
     }
 
     result = fabs(result);
+
+    if (ShowSupplementary.getValue() && (Type.isValue("Angle") || Type.isValue("Angle3Pt"))) {
+        result = CircleDegrees/2.0 - result;
+    }
+
     if (Inverted.getValue()) {
         if (Type.isValue("Angle") || Type.isValue("Angle3Pt")) {
             result = CircleDegrees - result;
