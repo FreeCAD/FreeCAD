@@ -57,6 +57,24 @@ else:
 # module functions ###############################################
 
 
+def is_type_or_link(obj, type_name):
+    """Checks if the given object or its linked object is of the specified type.
+
+    Parameters
+    ----------
+    obj: <App::DocumentObject>
+        The object to check.
+    type_name: str
+        The type to check against (e.g., 'Window', 'Wall').
+    """
+    if not obj:
+        return False
+
+    target = obj.getLinkedObject() if hasattr(obj, "getLinkedObject") else obj
+
+    return Draft.getType(target) == type_name
+
+
 def getStringList(objects):
     """getStringList(objects): returns a string defining a list
     of objects"""
@@ -136,12 +154,10 @@ def addComponents(objectsList, host):
         x = getattr(host, "Axes", [])
         for o in objectsList:
             if hasattr(o, "Shape"):
-                if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                if is_type_or_link(o, "Window"):
+                    ensure_link_overrides(o)
+                    if hasattr(o, "Hosts") and host not in o.Hosts:
+                        o.Hosts += [host]
                 elif o in outList:
                     FreeCAD.Console.PrintWarning(
                         translate(
@@ -206,12 +222,10 @@ def removeComponents(objectsList, host=None):
                 host.Axes = a
             s = host.Subtractions
             for o in objectsList:
-                if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                if is_type_or_link(o, "Window"):
+                    ensure_link_overrides(o)
+                    if hasattr(o, "Hosts") and host not in o.Hosts:
+                        o.Hosts += [host]
                 elif not o in s:
                     s.append(o)
                     if FreeCAD.GuiUp:
@@ -281,8 +295,13 @@ def removeComponents(objectsList, host=None):
                     if o in a:
                         a.remove(o)
                         h.Objects = a
-            if hasattr(o, "Hosts") and Draft.getType(o) == "Window":
+            if hasattr(o, "Hosts") and is_type_or_link(o, "Window"):
+                ensure_link_overrides(o)
+                # Ensure the hosts are recomputed upon window removal
+                old_hosts = o.Hosts[:]
                 o.Hosts = []
+                for old_host in old_hosts:
+                    old_host.touch()
 
 
 def makeComponent(baseobj=None, name=None, delete=False):
