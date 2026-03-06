@@ -541,8 +541,13 @@ const App::PropertyAngle::Constraints Hole::floatAngle = {
     1.0
 };
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
+// In practice less than 170nm will result in failure
 const App::PropertyQuantityConstraint::Constraints diameterRange
-    = {10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0};
+    = {1700 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0};
+
+// Custom clearance can be negative or positive to adjust for manufacturing
+const App::PropertyQuantityConstraint::Constraints clearanceRange
+    = {std::numeric_limits<float>::lowest(), std::numeric_limits<float>::max(), 0.1};
 
 Hole::Hole()
 {
@@ -636,6 +641,7 @@ Hole::Hole()
         App::Prop_None,
         "Custom thread clearance (overrides ThreadClass)"
     );
+    CustomThreadClearance.setConstraints(&clearanceRange);
 
     // Defaults to circles & arcs so that older files are kept intact
     // while new file get points, circles and arcs set in setupObject()
@@ -1729,6 +1735,11 @@ App::DocumentObjectExecReturn* Hole::execute()
     }
 
     try {
+        if (Diameter.getValue() < diameterRange.LowerBound) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Diameter too small")
+            );
+        }
         std::string method(DepthType.getValueAsString());
         double length = 0.0;
 
