@@ -291,8 +291,8 @@ public:
     {
         return ExternalGeo.getSize();
     }
-    /// Ensure ExternalGeo contains H and V axis.
-    void fixCorruptedExternalGeo();
+    /// Ensure ExternalGeo contains H/V axis. Must be called when rebuilding external or restoring.
+    void fixMissingAxisInExternalGeo();
     /// auto fix external geometry references
     void fixExternalGeometry(const std::vector<int>& geoIds = {});
 
@@ -1270,3 +1270,4 @@ using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 
 
 #endif  // SKETCHER_SKETCHOBJECT_H
+
