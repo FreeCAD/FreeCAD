@@ -202,6 +202,17 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "and disabled UseStartPoint",
                 ),
             ),
+            (
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Order processing of the shapes"
+                    "\nAutomatic: uses nearest neighbour algorithm to sort shapes"
+                    "\nManual: uses order of shapes selection",
+                ),
+            ),
         ]
 
     @classmethod
@@ -234,6 +245,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "Outside"), "Outside"),
                 (translate("PathProfile", "Inside"), "Inside"),
             ],  # side of profile that cutter is on in relation to direction of profile
+            "SortingMode": [
+                (translate("PathProfile", "Automatic"), "Automatic"),
+                (translate("PathProfile", "Manual"), "Manual"),
+            ],
         }
 
         if dataType == "raw":
@@ -308,6 +323,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         useLongestEdgeMode = (
             0 if obj.HandleMultipleFeatures == "Individually" and not obj.UseStartPoint else 2
         )
+        sortingMode = 0 if obj.HandleMultipleFeatures == "Individually" else 2
 
         obj.setEditorMode("JoinType", 2)
         obj.setEditorMode("MiterLimit", 2)  # ml
@@ -317,6 +333,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("processHoles", fc)
         obj.setEditorMode("processPerimeter", fc)
         obj.setEditorMode("UseLongestEdge", useLongestEdgeMode)
+        obj.setEditorMode("SortingMode", sortingMode)
 
     def _getOperationType(self, obj):
         if len(obj.Base) == 0:
