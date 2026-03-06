@@ -693,10 +693,11 @@ PyObject* SketchObjectPy::delExternals(PyObject* args)
     if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         std::vector<int> extGeoIdList;
         Py::Sequence list(pcObj);
-        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            if (PyLong_Check((*it).ptr())) {
-                extGeoIdList.push_back(PyLong_AsLong((*it).ptr()));
+        for (const auto& item : list) {
+            if (!PyLong_Check(item.ptr())) {                                                                                   
+                throw Py::TypeError("list elements must be int"); 
             }
+            extGeoIdList.push_back(PyLong_AsLong(item.ptr()));
         }
 
         if (this->getSketchObjectPtr()->delExternal(extGeoIdList)) {
@@ -2762,3 +2763,4 @@ int SketchObjectPy::setCustomAttributes(const char* attr, PyObject* obj)
 
     return 0;
 }
+
