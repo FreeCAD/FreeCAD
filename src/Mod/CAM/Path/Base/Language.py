@@ -1,24 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2022 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 import FreeCAD
 import Path
@@ -29,8 +11,6 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
-CmdMoveStraight = Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveRapid
-
 
 class Instruction(object):
     """An Instruction is a pure python replacement of Path.Command which also tracks its begin position."""
@@ -38,8 +18,8 @@ class Instruction(object):
     def __init__(self, begin, cmd, param=None):
         self.begin = begin
         if isinstance(cmd, Path.Command):
-            self.cmd = Path.Name
-            self.param = Path.Parameters
+            self.cmd = cmd.Name
+            self.param = cmd.Parameters
         else:
             self.cmd = cmd
             if param is None:
@@ -52,6 +32,11 @@ class Instruction(object):
 
     def setPositionBegin(self, begin):
         self.begin = begin
+
+    def setPositionEnd(self, end):
+        self.param["X"] = end.x
+        self.param["Y"] = end.y
+        self.param["Z"] = end.z
 
     def positionBegin(self):
         """positionBegin() ... returns a Vector of the begin position"""
@@ -122,6 +107,10 @@ class Instruction(object):
             fmt = f"{{}}: {{:.{digits}}}"
             s = [fmt.format(k, v) for k, v in self.param.items()]
         return f"{self.cmd}{{{', '.join(s)}}}"
+
+    def toCommand(self):
+        """toCmd(instr) ... return Path.Command object"""
+        return Path.Command(self.cmd, self.param)
 
 
 class MoveStraight(Instruction):
@@ -246,7 +235,7 @@ class Maneuver(object):
         self.instr.extend(coll)
 
     def toPath(self):
-        return Path.Path([instruction_to_command(instr) for instr in self.instr])
+        return Path.Path([instr.toCommand() for instr in self.instr])
 
     def __repr__(self):
         if self.instr:
@@ -258,7 +247,7 @@ class Maneuver(object):
         if not begin:
             begin = FreeCAD.Vector(0, 0, 0)
 
-        if cmd.Name in CmdMoveStraight:
+        if cmd.Name in Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveRapid:
             return MoveStraight(begin, cmd.Name, cmd.Parameters)
         if cmd.Name in Path.Geom.CmdMoveCW:
             return MoveArcCW(begin, cmd.Name, cmd.Parameters)
@@ -281,7 +270,3 @@ class Maneuver(object):
     @classmethod
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)
-
-
-def instruction_to_command(instr):
-    return Path.Command(instr.cmd, instr.param)
