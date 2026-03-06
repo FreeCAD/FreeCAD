@@ -344,6 +344,46 @@ private:
     std::vector<ParamDef> params_;
 };
 
+/**
+ * @brief Extracts a typed value from an optional Value without explicit casting.
+ *
+ * Provides a uniform interface for the two common extraction patterns:
+ *
+ * - For domain wrapper types constructible from `const Value&` (Insets, Corners,
+ *   InnerShadow, …): constructs `T` from the value and returns nullopt if the
+ *   constructor throws Base::Exception (i.e. the value has the wrong structure).
+ *
+ * - For variant member types (Numeric, Base::Color, std::string, Tuple): returns
+ *   the value only if it holds exactly `T`, nullopt otherwise.
+ *
+ * This function is the shared building block for ParameterManager::resolve(definition)
+ * and FreeCADStyle::resolve<T>(), ensuring both use identical dispatch logic.
+ */
+template<typename T>
+    requires std::is_constructible_v<T, const Value&>
+std::optional<T> valueAs(const std::optional<Value>& value)
+{
+    if (!value) {
+        return std::nullopt;
+    }
+    try {
+        return T(*value);
+    }
+    catch (const Base::Exception&) {
+        return std::nullopt;
+    }
+}
+
+template<typename T>
+    requires(!std::is_constructible_v<T, const Value&>)
+std::optional<T> valueAs(const std::optional<Value>& value)
+{
+    if (!value || !value->holds<T>()) {
+        return std::nullopt;
+    }
+    return value->get<T>();
+}
+
 }  // namespace Gui::StyleParameters
 
 #endif  // STYLEPARAMETERS_VALUE_H

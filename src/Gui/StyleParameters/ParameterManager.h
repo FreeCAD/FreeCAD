@@ -430,34 +430,9 @@ public:
      * @return The resolved value
      */
     template<typename T>
-        requires std::is_constructible_v<T, const Value&>
     T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
     {
-        auto value = resolve(definition.name, std::move(context));
-
-        if (!value) {
-            return definition.defaultValue;
-        }
-
-        try {
-            return T(*value);
-        }
-        catch (const Base::Exception&) {
-            return definition.defaultValue;
-        }
-    }
-
-    template<typename T>
-        requires(!std::is_constructible_v<T, const Value&>)
-    T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
-    {
-        auto value = resolve(definition.name, std::move(context));
-
-        if (!value || !std::holds_alternative<T>(*value)) {
-            return definition.defaultValue;
-        }
-
-        return std::get<T>(*value);
+        return valueAs<T>(resolve(definition.name, std::move(context))).value_or(definition.defaultValue);
     }
 
     /**
