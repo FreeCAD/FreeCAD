@@ -9190,7 +9190,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
-    fixCorruptedExternalGeo();
+    fixMissingAxisInExternalGeo();
 
     // Analyze the state of existing external geometries to infer the desired state for new ones.
     // If any geometry from a source link is "defining", we'll treat the whole link as "defining".
@@ -9618,7 +9618,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
     }
 }
 
-void SketchObject::fixCorruptedExternalGeo()
+void SketchObject::fixMissingAxisInExternalGeo()
 {
     //Make sure the H/V axis are still in ExternalGeo. See 27693
     bool corrupted = false;
@@ -11044,7 +11044,7 @@ void SketchObject::onSketchRestore()
 
         updateGeometryRefs();
 
-        fixCorruptedExternalGeo();
+        fixMissingAxisInExternalGeo();
 
         if(ExternalGeo.getSize()<=2) {
             for(auto &key : externalGeoRef) {
