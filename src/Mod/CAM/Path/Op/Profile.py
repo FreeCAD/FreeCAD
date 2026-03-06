@@ -308,7 +308,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         useLongestEdgeMode = (
             0 if obj.HandleMultipleFeatures == "Individually" and not obj.UseStartPoint else 2
         )
+        multiPassMode = 0 if obj.NumPasses > 1 else 2
 
+        obj.setEditorMode("Stepover", multiPassMode)
         obj.setEditorMode("JoinType", 2)
         obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
