@@ -1,5 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+"""
+
+CAM post processor for CNC machines with a Fanuc controller.
+
+"""
+
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2021 shadowbane1000 <tyler@colberts.us>                 *
@@ -33,7 +39,7 @@ import shlex
 import os.path
 import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 from builtins import open as pyopen
 
 TOOLTIP = """
@@ -79,7 +85,8 @@ parser.add_argument(
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="'
+    help="set commands to be issued after the last command, "
+    + 'default="'
     + DEFAULT_POSTAMBLE.replace("\n", "\\n")
     + '"',
 )
@@ -155,8 +162,17 @@ TOOL_CHANGE = """G28 G91 Z0
 DRILL_OPERATION = ("G73", "G81", "G82", "G83", "G85")
 DRILL_PARAM_REQ = ("L", "P", "Q", "R", "Z")
 
+# The settings shared between methods
+PREAMBLE = None
+POSTAMBLE = None
+
 
 def processArguments(argstring):
+    """
+    Apply default values and command line arguments before
+    processing commands.
+
+    """
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
@@ -265,9 +281,16 @@ def export(objectslist, filename, argstring):
         major = int(FreeCAD.ConfigGet("BuildVersionMajor"))
         minor = int(FreeCAD.ConfigGet("BuildVersionMinor"))
 
-        # the filename variable always contain "-", so unable to
-        # provide more accurate information.
-        gcode += "(" + "FREECAD-FILENAME-GOES-HERE" + ", " + "JOB-NAME-GOES-HERE" + ")\n"
+        # the filename variable always contain "-", use more relevant
+        # information
+        job = PathUtils.findParentJob(objectslist[0])
+        if job:
+            body, job = job.FullName.split("#")
+        else:
+            # Workaround for the TestFanucPost code, where there is no
+            # job returned by findParentJob
+            body, job = ("FREECAD-FILENAME-GOES-HERE", "JOB-NAME-GOES-HERE")
+        gcode += "(" + body.upper() + ", " + job.upper() + ")\n"
         gcode += (
             linenumber() + "(POST PROCESSOR: FANUC USING FREECAD %d.%d" % (major, minor) + ")\n"
         )
@@ -365,13 +388,7 @@ def export(objectslist, filename, argstring):
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-
-        # Workaround for 1.1 while we wait for
-        # https://github.com/FreeCAD/FreeCAD/pull/26008 to be merged.
-        if hasattr(dia.editor, "setPlainText"):
-            dia.editor.setPlainText(gcode)
-        else:
-            dia.editor.setText(gcode)
+        dia.editor.setText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()
