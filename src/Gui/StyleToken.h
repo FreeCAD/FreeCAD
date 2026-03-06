@@ -25,6 +25,7 @@
 
 #include <array>
 #include <cstdint>
+#include <Base/Bitmask.h>
 
 namespace Gui
 {
@@ -71,7 +72,7 @@ enum class ControlSize : uint8_t
 {
     Default,
     Small,
-    Large,
+    Big,
     // Add new sizes before COUNT
     COUNT
 };
@@ -90,16 +91,6 @@ enum class StyleState : uint8_t
     Hovered = 1 << 2,
     Pressed = 1 << 3,
 };
-
-inline StyleState operator|(StyleState lhs, StyleState rhs)
-{
-    return StyleState(uint8_t(lhs) | uint8_t(rhs));
-}
-
-inline bool hasFlag(StyleState state, StyleState flag)
-{
-    return (uint8_t(state) & uint8_t(flag)) != 0;
-}
 
 /**
  * @brief Style properties that can be resolved from tokens.
@@ -186,9 +177,11 @@ struct StyleContext
 {
     StyleComponent component = StyleComponent::PushButton;
     VariantKey variant = {};
-    StyleState state = StyleState::Normal;
+    Base::Flags<StyleState> state;
 
     bool operator==(const StyleContext&) const = default;
 };
 
 }  // namespace Gui
+
+ENABLE_BITMASK_OPERATORS(Gui::StyleState)

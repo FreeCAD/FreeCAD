@@ -116,15 +116,21 @@ QBrush convertTo<QBrush, StyleParameters::Value>(const StyleParameters::Value& v
 
     const Tuple& tuple = value.get<Tuple>();
 
+    const auto applyStopsAndBuild = [](auto qGradient, const auto& gradient) -> QBrush {
+        qGradient.setCoordinateMode(QGradient::ObjectMode);
+        for (const auto& stop : gradient.colorStops()) {
+            qGradient.setColorAt(stop.position.value, stop.color.template asValue<QColor>());
+        }
+        return QBrush(qGradient);
+    };
+
     if (tuple.kind == TupleKind::LinearGradient) {
         try {
             const LinearGradient gradient(tuple);
-            QLinearGradient qGradient(gradient.x1(), gradient.y1(), gradient.x2(), gradient.y2());
-            qGradient.setCoordinateMode(QGradient::ObjectMode);
-            for (const auto& stop : gradient.colorStops()) {
-                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
-            }
-            return QBrush(qGradient);
+            return applyStopsAndBuild(
+                QLinearGradient(gradient.x1(), gradient.y1(), gradient.x2(), gradient.y2()),
+                gradient
+            );
         }
         catch (const ::Base::Exception&) {
             return Qt::NoBrush;
@@ -134,18 +140,16 @@ QBrush convertTo<QBrush, StyleParameters::Value>(const StyleParameters::Value& v
     if (tuple.kind == TupleKind::RadialGradient) {
         try {
             const RadialGradient gradient(tuple);
-            QRadialGradient qGradient(
-                gradient.cx(),
-                gradient.cy(),
-                gradient.radius(),
-                gradient.fx(),
-                gradient.fy()
+            return applyStopsAndBuild(
+                QRadialGradient(
+                    gradient.cx(),
+                    gradient.cy(),
+                    gradient.radius(),
+                    gradient.fx(),
+                    gradient.fy()
+                ),
+                gradient
             );
-            qGradient.setCoordinateMode(QGradient::ObjectMode);
-            for (const auto& stop : gradient.colorStops()) {
-                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
-            }
-            return QBrush(qGradient);
         }
         catch (const ::Base::Exception&) {
             return Qt::NoBrush;
@@ -348,7 +352,7 @@ std::string_view variantSlotString(VariantSlot slot, uint8_t value)
                 case ControlSize::Small:
                     return "Small";
                 case ControlSize::Big:
-                    return "Large";
+                    return "Big";
                 default:
                     return "";
             }
@@ -459,7 +463,7 @@ std::vector<std::string> buildPrefixes(const StyleContext& context)
 
     std::vector<StyleState> activeStates;
     for (const StyleState stateFlag : statePriorityOrder) {
-        if (hasFlag(context.state, stateFlag)) {
+        if (context.state.testFlag(stateFlag)) {
             activeStates.push_back(stateFlag);
         }
     }
@@ -518,10 +522,10 @@ constexpr uint32_t variantBitOffset   = 15;  // property (6 bits) ends at bit 14
 uint32_t packCacheKey(const StyleContext& context, StyleProperty property)
 {
     // clang-format off
-    return (static_cast<uint32_t>(context.component)        << componentBitOffset)
-         | (static_cast<uint32_t>(uint8_t(context.state))   << stateBitOffset)
-         | (static_cast<uint32_t>(property)                 << propertyBitOffset)
-         | (packVariant(context.variant)                    << variantBitOffset);
+    return (static_cast<uint32_t>(context.component)                << componentBitOffset)
+         | (static_cast<uint32_t>(context.state.toUnderlyingType()) << stateBitOffset)
+         | (static_cast<uint32_t>(property)                         << propertyBitOffset)
+         | (packVariant(context.variant)                            << variantBitOffset);
     // clang-format on
 }
 
@@ -541,42 +545,35 @@ void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const
 
     const bool hasBorder = rule.borderColor.has_value() && rule.borderThickness.has_value();
 
+    QRect backgroundRect = rect;
+    CornerRadii backgroundRadii = rule.borderRadius;
+
     if (hasBorder) {
         const QMarginsF& thickness = *rule.borderThickness;
 
         // Snap each border side to the nearest integer pixel.
-        const QRect innerRect = rect.adjusted(
-            qRound(thickness.left()),
-            qRound(thickness.top()),
-            -qRound(thickness.right()),
-            -qRound(thickness.bottom())
-        );
-        // Rounded margins used for inner corner radius computation.
         const QMarginsF snappedThickness(
             qRound(thickness.left()),
             qRound(thickness.top()),
             qRound(thickness.right()),
             qRound(thickness.bottom())
         );
-        const CornerRadii innerRadiusValues = innerRadii(rule.borderRadius, snappedThickness);
+        backgroundRect = rect.adjusted(
+            qRound(thickness.left()),
+            qRound(thickness.top()),
+            -qRound(thickness.right()),
+            -qRound(thickness.bottom())
+        );
+        backgroundRadii = innerRadii(rule.borderRadius, snappedThickness);
 
-        // 1. Fill outer rect with border colour.
+        // Fill outer rect with border colour.
         painter->fillPath(roundedRectPath(QRectF(rect), rule.borderRadius), QBrush(*rule.borderColor));
-
-        // 2. Fill inner rect with background.
-        painter->fillPath(roundedRectPath(QRectF(innerRect), innerRadiusValues), rule.background);
-
-        // 3. Fill inner rect with overlay (background only, not border).
-        if (rule.overlay) {
-            painter->fillPath(roundedRectPath(QRectF(innerRect), innerRadiusValues), *rule.overlay);
-        }
     }
-    else {
-        painter->fillPath(roundedRectPath(QRectF(rect), rule.borderRadius), rule.background);
 
-        if (rule.overlay) {
-            painter->fillPath(roundedRectPath(QRectF(rect), rule.borderRadius), *rule.overlay);
-        }
+    painter->fillPath(roundedRectPath(QRectF(backgroundRect), backgroundRadii), rule.background);
+
+    if (rule.overlay) {
+        painter->fillPath(roundedRectPath(QRectF(backgroundRect), backgroundRadii), *rule.overlay);
     }
 
     painter->restore();
@@ -614,18 +611,6 @@ void FreeCADStyle::drawPrimitive(
     QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 
-std::string FreeCADStyle::controlSizeSuffix(const QWidget* widget)
-{
-    if (!widget) {
-        return {};
-    }
-    const QString sizeName = widget->property("controlSize").toString();
-    if (sizeName.isEmpty()) {
-        return {};
-    }
-    return (sizeName.left(1).toUpper() + sizeName.mid(1)).toStdString();
-}
-
 QSize FreeCADStyle::sizeFromContents(
     ContentsType type,
     const QStyleOption* option,
@@ -652,11 +637,7 @@ QSize FreeCADStyle::sizeFromContents(
         int height = size.height() + static_cast<int>(paddingF.top() + paddingF.bottom());
 
         if (needsCustomLayout) {
-            int iconSpacing = 4;  // Qt's built-in default (see QToolButton::sizeHint)
-            if (const auto spacing
-                = resolve<StyleParameters::Numeric>(context, StyleProperty::IconSpacing)) {
-                iconSpacing = static_cast<int>(spacing->value);
-            }
+            const int iconSpacing = resolveIconSpacing(context);
 
             // Qt hardcodes +4 as the icon-text gap in QToolButton::sizeHint's content size.
             // Replace that with our spacing so the widget is wide enough.
@@ -666,8 +647,9 @@ QSize FreeCADStyle::sizeFromContents(
             }
         }
 
-        if (const auto height_ = resolve<StyleParameters::Numeric>(context, StyleProperty::Height)) {
-            height = static_cast<int>(height_->value);
+        if (const auto resolvedHeight
+            = resolve<StyleParameters::Numeric>(context, StyleProperty::Height)) {
+            height = static_cast<int>(resolvedHeight->value);
         }
 
         return QSize(width, height);
@@ -694,164 +676,163 @@ void FreeCADStyle::drawControl(
 ) const
 {
     if (element == CE_ToolButtonLabel) {
-        if (const auto* toolButtonOption = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
-            const StyleContext context = contextOf(widget, option);
-
-            QMarginsF paddingF;
-            if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
-                paddingF = Base::convertTo<QMarginsF>(*padding);
-            }
-
-            const QRect contentRect = toolButtonOption->rect.adjusted(
-                static_cast<int>(paddingF.left()),
-                static_cast<int>(paddingF.top()),
-                -static_cast<int>(paddingF.right()),
-                -static_cast<int>(paddingF.bottom())
-            );
-
-            const Qt::ToolButtonStyle tbStyle = toolButtonOption->toolButtonStyle;
-            const bool hasIconOrArrow = !toolButtonOption->icon.isNull()
-                || toolButtonOption->arrowType != Qt::NoArrow;
-            const bool needsCustomLayout = hasIconOrArrow && !toolButtonOption->text.isEmpty()
-                && (tbStyle == Qt::ToolButtonTextBesideIcon
-                    || tbStyle == Qt::ToolButtonTextUnderIcon);
-
-            if (!needsCustomLayout) {
-                // Icon-only, text-only, FollowStyle, etc.: delegate to parent unchanged.
-                // The parent handles its own internal spacing; we must not inset the rect
-                // because the button may be parent-sized (not padded) and inset would go negative.
-                QProxyStyle::drawControl(element, option, painter, widget);
-                return;
-            }
-
-            int iconSpacing = 4;  // matches Qt's built-in default
-            if (const auto spacing
-                = resolve<StyleParameters::Numeric>(context, StyleProperty::IconSpacing)) {
-                iconSpacing = static_cast<int>(spacing->value);
-            }
-
-            // Apply pressed/checked shift — we manage layout so we do this ourselves.
-            QRect shiftedContentRect = contentRect;
-            if (toolButtonOption->state & (State_Sunken | State_On)) {
-                shiftedContentRect.translate(
-                    proxy()->pixelMetric(PM_ButtonShiftHorizontal, option, widget),
-                    proxy()->pixelMetric(PM_ButtonShiftVertical, option, widget)
-                );
-            }
-
-            const bool hasArrow = toolButtonOption->arrowType != Qt::NoArrow;
-
-            QPixmap pixmap;
-            QSize pixmapSize = toolButtonOption->iconSize;
-            if (!hasArrow && !toolButtonOption->icon.isNull()) {
-                const QIcon::State iconState = (toolButtonOption->state & State_On) ? QIcon::On
-                                                                                    : QIcon::Off;
-                QIcon::Mode iconMode = QIcon::Normal;
-                if (!(toolButtonOption->state & State_Enabled)) {
-                    iconMode = QIcon::Disabled;
-                }
-                else if ((toolButtonOption->state & State_MouseOver)
-                         && (toolButtonOption->state & State_AutoRaise)) {
-                    iconMode = QIcon::Active;
-                }
-                pixmap = toolButtonOption->icon.pixmap(
-                    shiftedContentRect.size().boundedTo(toolButtonOption->iconSize),
-                    painter->device()->devicePixelRatio(),
-                    iconMode,
-                    iconState
-                );
-                pixmapSize = pixmap.size() / painter->device()->devicePixelRatio();
-            }
-
-            const auto drawArrowInRect = [&](const QRect& arrowRect) {
-                QStyleOption arrowOpt(*option);
-                arrowOpt.rect = arrowRect;
-                PrimitiveElement primitive = PE_IndicatorArrowDown;
-                switch (toolButtonOption->arrowType) {
-                    case Qt::LeftArrow:
-                        primitive = PE_IndicatorArrowLeft;
-                        break;
-                    case Qt::RightArrow:
-                        primitive = PE_IndicatorArrowRight;
-                        break;
-                    case Qt::UpArrow:
-                        primitive = PE_IndicatorArrowUp;
-                        break;
-                    default:
-                        break;
-                }
-                proxy()->drawPrimitive(primitive, &arrowOpt, painter, widget);
-            };
-
-            int textFlags = Qt::TextShowMnemonic;
-            if (!proxy()->styleHint(SH_UnderlineShortcut, option, widget)) {
-                textFlags |= Qt::TextHideMnemonic;
-            }
-
-            painter->save();
-            painter->setFont(toolButtonOption->font);
-
-            if (tbStyle == Qt::ToolButtonTextBesideIcon) {
-                const QRect iconRect(
-                    shiftedContentRect.left(),
-                    shiftedContentRect.top() + (shiftedContentRect.height() - pixmapSize.height()) / 2,
-                    pixmapSize.width(),
-                    pixmapSize.height()
-                );
-                const QRect textRect
-                    = shiftedContentRect.adjusted(pixmapSize.width() + iconSpacing, 0, 0, 0);
-
-                if (hasArrow) {
-                    drawArrowInRect(iconRect);
-                }
-                else {
-                    proxy()->drawItemPixmap(painter, iconRect, Qt::AlignCenter, pixmap);
-                }
-                proxy()->drawItemText(
-                    painter,
-                    QStyle::visualRect(option->direction, shiftedContentRect, textRect),
-                    textFlags | Qt::AlignLeft | Qt::AlignVCenter,
-                    toolButtonOption->palette,
-                    toolButtonOption->state & State_Enabled,
-                    toolButtonOption->text,
-                    QPalette::ButtonText
-                );
-            }
-            else {
-                // Qt::ToolButtonTextUnderIcon
-                const int fontHeight = toolButtonOption->fontMetrics.height();
-                const QRect iconRect
-                    = shiftedContentRect.adjusted(0, 0, 0, -(fontHeight + iconSpacing));
-                const QRect textRect(
-                    shiftedContentRect.left(),
-                    iconRect.bottom() + 1 + iconSpacing,
-                    shiftedContentRect.width(),
-                    fontHeight
-                );
-
-                if (hasArrow) {
-                    drawArrowInRect(iconRect);
-                }
-                else {
-                    proxy()->drawItemPixmap(painter, iconRect, Qt::AlignCenter, pixmap);
-                }
-                proxy()->drawItemText(
-                    painter,
-                    QStyle::visualRect(option->direction, shiftedContentRect, textRect),
-                    textFlags | Qt::AlignHCenter | Qt::AlignTop,
-                    toolButtonOption->palette,
-                    toolButtonOption->state & State_Enabled,
-                    toolButtonOption->text,
-                    QPalette::ButtonText
-                );
-            }
-
-            painter->restore();
+        if (const auto* tbOption = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
+            drawToolButtonLabel(painter, tbOption, widget);
             return;
         }
     }
 
     QProxyStyle::drawControl(element, option, painter, widget);
+}
+
+void FreeCADStyle::drawToolButtonLabel(
+    QPainter* painter,
+    const QStyleOptionToolButton* option,
+    const QWidget* widget
+) const
+{
+    const StyleContext context = contextOf(widget, option);
+
+    QMarginsF paddingF;
+    if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
+        paddingF = Base::convertTo<QMarginsF>(*padding);
+    }
+
+    const QRect contentRect = option->rect.adjusted(
+        static_cast<int>(paddingF.left()),
+        static_cast<int>(paddingF.top()),
+        -static_cast<int>(paddingF.right()),
+        -static_cast<int>(paddingF.bottom())
+    );
+
+    const Qt::ToolButtonStyle tbStyle = option->toolButtonStyle;
+    const bool hasIconOrArrow = !option->icon.isNull() || option->arrowType != Qt::NoArrow;
+    const bool needsCustomLayout = hasIconOrArrow && !option->text.isEmpty()
+        && (tbStyle == Qt::ToolButtonTextBesideIcon || tbStyle == Qt::ToolButtonTextUnderIcon);
+
+    if (!needsCustomLayout) {
+        // Icon-only, text-only, FollowStyle, etc.: delegate to parent unchanged.
+        // The parent handles its own internal spacing; we must not inset the rect
+        // because the button may be parent-sized (not padded) and inset would go negative.
+        QProxyStyle::drawControl(CE_ToolButtonLabel, option, painter, widget);
+        return;
+    }
+
+    const int iconSpacing = resolveIconSpacing(context);
+
+    // Apply pressed/checked shift — we manage layout so we do this ourselves.
+    QRect shiftedContentRect = contentRect;
+    if (option->state & (State_Sunken | State_On)) {
+        shiftedContentRect.translate(
+            proxy()->pixelMetric(PM_ButtonShiftHorizontal, option, widget),
+            proxy()->pixelMetric(PM_ButtonShiftVertical, option, widget)
+        );
+    }
+
+    const bool hasArrow = option->arrowType != Qt::NoArrow;
+
+    QPixmap pixmap;
+    QSize pixmapSize = option->iconSize;
+    if (!hasArrow && !option->icon.isNull()) {
+        const QIcon::State iconState = (option->state & State_On) ? QIcon::On : QIcon::Off;
+        QIcon::Mode iconMode = QIcon::Normal;
+        if (!(option->state & State_Enabled)) {
+            iconMode = QIcon::Disabled;
+        }
+        else if ((option->state & State_MouseOver) && (option->state & State_AutoRaise)) {
+            iconMode = QIcon::Active;
+        }
+        pixmap = option->icon.pixmap(
+            shiftedContentRect.size().boundedTo(option->iconSize),
+            painter->device()->devicePixelRatio(),
+            iconMode,
+            iconState
+        );
+        pixmapSize = pixmap.size() / painter->device()->devicePixelRatio();
+    }
+
+    const auto drawArrowInRect = [&](const QRect& arrowRect) {
+        QStyleOption arrowOpt(*option);
+        arrowOpt.rect = arrowRect;
+        PrimitiveElement primitive = PE_IndicatorArrowDown;
+        switch (option->arrowType) {
+            case Qt::LeftArrow:
+                primitive = PE_IndicatorArrowLeft;
+                break;
+            case Qt::RightArrow:
+                primitive = PE_IndicatorArrowRight;
+                break;
+            case Qt::UpArrow:
+                primitive = PE_IndicatorArrowUp;
+                break;
+            default:
+                break;
+        }
+        proxy()->drawPrimitive(primitive, &arrowOpt, painter, widget);
+    };
+
+    int textFlags = Qt::TextShowMnemonic;
+    if (!proxy()->styleHint(SH_UnderlineShortcut, option, widget)) {
+        textFlags |= Qt::TextHideMnemonic;
+    }
+
+    painter->save();
+    painter->setFont(option->font);
+
+    if (tbStyle == Qt::ToolButtonTextBesideIcon) {
+        const QRect iconRect(
+            shiftedContentRect.left(),
+            shiftedContentRect.top() + (shiftedContentRect.height() - pixmapSize.height()) / 2,
+            pixmapSize.width(),
+            pixmapSize.height()
+        );
+        const QRect textRect = shiftedContentRect.adjusted(pixmapSize.width() + iconSpacing, 0, 0, 0);
+
+        if (hasArrow) {
+            drawArrowInRect(iconRect);
+        }
+        else {
+            proxy()->drawItemPixmap(painter, iconRect, Qt::AlignCenter, pixmap);
+        }
+        proxy()->drawItemText(
+            painter,
+            QStyle::visualRect(option->direction, shiftedContentRect, textRect),
+            textFlags | Qt::AlignLeft | Qt::AlignVCenter,
+            option->palette,
+            option->state & State_Enabled,
+            option->text,
+            QPalette::ButtonText
+        );
+    }
+    else {
+        // Qt::ToolButtonTextUnderIcon
+        const int fontHeight = option->fontMetrics.height();
+        const QRect iconRect = shiftedContentRect.adjusted(0, 0, 0, -(fontHeight + iconSpacing));
+        const QRect textRect(
+            shiftedContentRect.left(),
+            iconRect.bottom() + 1 + iconSpacing,
+            shiftedContentRect.width(),
+            fontHeight
+        );
+
+        if (hasArrow) {
+            drawArrowInRect(iconRect);
+        }
+        else {
+            proxy()->drawItemPixmap(painter, iconRect, Qt::AlignCenter, pixmap);
+        }
+        proxy()->drawItemText(
+            painter,
+            QStyle::visualRect(option->direction, shiftedContentRect, textRect),
+            textFlags | Qt::AlignHCenter | Qt::AlignTop,
+            option->palette,
+            option->state & State_Enabled,
+            option->text,
+            QPalette::ButtonText
+        );
+    }
+
+    painter->restore();
 }
 
 std::optional<StyleParameters::Value> FreeCADStyle::resolve(std::string_view name) const
@@ -924,20 +905,18 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
 
     // State — all active flags captured as a bitmask.
     if (option) {
-        StyleState state = StyleState::Normal;
         if (option->state & QStyle::State_Sunken) {
-            state = state | StyleState::Pressed;
+            context.state |= StyleState::Pressed;
         }
         if (option->state & QStyle::State_MouseOver) {
-            state = state | StyleState::Hovered;
+            context.state |= StyleState::Hovered;
         }
         if (option->state & QStyle::State_On) {
-            state = state | StyleState::Checked;
+            context.state |= StyleState::Checked;
         }
         if (option->state & QStyle::State_HasFocus) {
-            state = state | StyleState::Focused;
+            context.state |= StyleState::Focused;
         }
-        context.state = state;
     }
 
     return context;
@@ -1006,6 +985,14 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(const StyleContex
 void FreeCADStyle::clearTokenCache()
 {
     tokenCache.clear();
+}
+
+int FreeCADStyle::resolveIconSpacing(const StyleContext& context) const
+{
+    if (const auto spacing = resolve<StyleParameters::Numeric>(context, StyleProperty::IconSpacing)) {
+        return static_cast<int>(spacing->value);
+    }
+    return 4;  // Qt's built-in default (see QToolButton::sizeHint)
 }
 
 bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)

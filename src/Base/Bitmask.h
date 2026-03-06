@@ -162,6 +162,13 @@ public:
         return ~i;
     }
 
+    constexpr bool operator==(const Flags<Enum>& other) const {
+        return i == other.i;
+    }
+    constexpr bool operator!=(const Flags<Enum>& other) const {
+        return i != other.i;
+    }
+
     constexpr bool operator!() const {
         return !i;
     }
