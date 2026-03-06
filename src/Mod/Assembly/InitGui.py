@@ -86,6 +86,7 @@ class AssemblyWorkbench(Workbench):
         cmdListMenuOnly = [
             "Assembly_LinkSelectLinked",
             "Assembly_ExportASMT",
+            "Assembly_SelectJointsOfComponent",
         ]
 
         cmdListJoints = [
@@ -126,7 +127,22 @@ class AssemblyWorkbench(Workbench):
         FreeCADGui.Control.clearTaskWatcher()
 
     def ContextMenu(self, recipient):
-        pass
+        import UtilsAssembly
+
+        assembly = UtilsAssembly.activeAssembly()
+        if assembly is None:
+            return
+
+        selection = Gui.Selection.getSelectionEx("*", 0)
+        if not selection:
+            return
+
+        for sel in selection:
+            for sub_name in sel.SubElementNames:
+                comp, new_sub = UtilsAssembly.getComponentReference(assembly, sel.Object, sub_name)
+                if comp:
+                    self.appendContextMenu("", ["Assembly_SelectJointsOfComponent"])
+                    return
 
     def setWatchers(self):
         import UtilsAssembly
