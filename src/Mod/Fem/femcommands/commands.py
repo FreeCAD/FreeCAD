@@ -1166,6 +1166,33 @@ class _PostFilterGlyph(CommandManager):
         self.do_activated = "add_filter_set_edit"
 
 
+class _CompSolvers(CommandManager):
+    def __init__(self):
+        super().__init__()
+        self.pixmap = ""
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_CompSolvers", "Solvers")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_CompSolvers", "Creates a FEM solver")
+        self.is_active = "with_analysis"
+        self.commands = [
+            "FEM_SolverCalculiX",
+            "FEM_SolverElmer",
+            "FEM_SolverMystran",
+            "FEM_SolverZ88",
+        ]
+
+    def Activated(self, i):
+        FreeCADGui.runCommand(self.commands[i])
+
+    def GetCommands(self):
+        return self.commands
+
+    def GetDefaultCommand(self):
+        gen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        # DefaultSolver == 0 is "None"
+        index = gen_prefs.GetInt("DefaultSolver", 0)
+        return (index - 1) if index > 0 else 0
+
+
 # the string in add command will be the page name on FreeCAD wiki
 FreeCADGui.addCommand("FEM_Analysis", _Analysis())
 FreeCADGui.addCommand("FEM_ClippingPlaneAdd", _ClippingPlaneAdd())
@@ -1220,6 +1247,7 @@ FreeCADGui.addCommand("FEM_SolverElmer", _SolverElmer())
 FreeCADGui.addCommand("FEM_SolverMystran", _SolverMystran())
 FreeCADGui.addCommand("FEM_SolverRun", _SolverRun())
 FreeCADGui.addCommand("FEM_SolverZ88", _SolverZ88())
+FreeCADGui.addCommand("FEM_CompSolvers", _CompSolvers())
 
 if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
     FreeCADGui.addCommand("FEM_PostFilterGlyph", _PostFilterGlyph())
