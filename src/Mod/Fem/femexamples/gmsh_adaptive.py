@@ -73,7 +73,7 @@ def create_analysis(doc, name, part_obj):
     analysis = ObjectsFem.makeAnalysis(doc, name)
     gmsh = ObjectsFem.makeMeshGmsh(doc)
     gmsh.Shape = part_obj
-    gmsh.CharacteristicLengthMax = 3
+    gmsh.CharacteristicLengthMax = 6
     gmsh.ParallelProcessing = False
     analysis.addObject(gmsh)
 
@@ -148,10 +148,13 @@ def setup(doc=None, solver=None):
     # math refinement
     math = ObjectsFem.makeMeshAdvanced(doc, gmsh, "Math")
     math.Type = "MathEval"
-    math.Equation = "3/(F1/1e8)"
+    math.Equation = "10/(F1/1e8)"
     math.Refinements = [mean]
 
     gmsh.MeshRefinementList = [math]
+
+    # translate to the side for beter visibility
+    gmsh.Placement.translate(FreeCAD.Vector(0,0,20))
 
     return doc
 
