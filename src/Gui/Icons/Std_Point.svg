@@ -4,7 +4,7 @@
    height="64px"
    id="svg5821"
    sodipodi:version="0.32"
-   inkscape:version="1.1-beta1 (77e7b44db3, 2021-03-28)"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
    sodipodi:docname="Std_Point.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
@@ -125,16 +125,6 @@
          offset="1"
          id="stop3840-1-6" />
     </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient1530"
-       id="linearGradient942"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(-1.3205209,-1.173929,1.1308617,-1.370812,611.06435,1891.457)"
-       x1="-8.3306789"
-       y1="464.56976"
-       x2="99.098846"
-       y2="465.54099" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -143,17 +133,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="25.442888"
-     inkscape:cx="16.409301"
-     inkscape:cy="27.021304"
+     inkscape:zoom="12.721444"
+     inkscape:cx="19.612553"
+     inkscape:cy="37.063403"
      inkscape:current-layer="g3360-3"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="3840"
-     inkscape:window-height="1571"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="false"
      inkscape:snap-nodes="true"
@@ -161,14 +151,21 @@
      objecttolerance="10.0"
      gridtolerance="10.0"
      guidetolerance="10.0"
-     inkscape:pagecheckerboard="0">
+     inkscape:pagecheckerboard="0"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1">
     <inkscape:grid
        type="xygrid"
        id="grid2997"
        empspacing="2"
        visible="true"
        enabled="true"
-       snapvisiblegridlinesonly="true" />
+       snapvisiblegridlinesonly="true"
+       originx="0"
+       originy="0"
+       spacingy="1"
+       spacingx="1"
+       units="px" />
   </sodipodi:namedview>
   <metadata
      id="metadata5826">
@@ -183,7 +180,6 @@
             <dc:title>[wmayer]</dc:title>
           </cc:Agent>
         </dc:creator>
-        <dc:title>Sketcher_Sketch</dc:title>
         <dc:date>2011-10-10</dc:date>
         <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -223,11 +219,11 @@
          inkscape:export-ydpi="3.2478156"
          transform="translate(-2.96179e-7,2.9614273e-6)">
         <path
-           style="fill:#473f3f;fill-opacity:0;stroke:#2d2d2d;stroke-width:14.6213;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:#473f3f;fill-opacity:0;stroke:#204a87;stroke-width:22.10471407;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="path4250"
            d="m 1049.501,1172.3639 a 73.129685,73.126388 0.00486482 1 1 111.0905,95.1309 73.129685,73.126388 0.00486482 1 1 -111.0905,-95.1309 z" />
         <path
-           style="fill:url(#linearGradient942);fill-opacity:1;stroke:#d7d1d1;stroke-width:14.6213;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:#729fcf;fill-opacity:1;stroke:#3465a4;stroke-width:14.62134731;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="path4250-7"
            d="m 1056.9297,1178.8015 a 63.558602,63.564387 89.934636 1 1 96.56,82.684 63.558602,63.564387 89.934636 0 1 -96.56,-82.684 z" />
       </g>
