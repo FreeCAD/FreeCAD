@@ -1096,23 +1096,14 @@ public:
         guard.tryInvoke();
     }
 
-    template<class F>
+    template<std::predicate<const T&> F>
     int removeIf(F f) {
-        ListT vals;
-        int count=0;
-        for(auto it=_lValueList.cbegin();it!=_lValueList.cend();++it) {
-            const T &v = *it;
-            if(f(v)) {
-                if(!count)
-                    vals.insert(vals.end(),_lValueList.cbegin(),it);
-                ++count;
-            } else if (count) {
-                vals.push_back(v);
-            }
-        }
-        if(count)
+        ListT vals = _lValueList;
+        size_t removed = std::erase_if(vals, f);
+        if (removed > 0) {
             setValues(std::move(vals));
-        return count;
+        }
+        return static_cast<int>(removed);
     }
 
 protected:
