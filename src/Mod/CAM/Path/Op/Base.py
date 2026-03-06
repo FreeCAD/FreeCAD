@@ -719,10 +719,10 @@ class ObjectOp(object):
                 for o, sublist in obj.Base:
                     for sub in sublist:
                         o.Shape.getElement(sub)
-            except Part.OCCError:
+            except Exception:
                 Path.Log.error("{} - stale base geometry detected - clearing.".format(obj.Label))
-                obj.Base = []
                 return True
+
         return False
 
     @waiting_effects
