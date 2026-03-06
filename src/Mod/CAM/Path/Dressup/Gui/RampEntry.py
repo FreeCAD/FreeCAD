@@ -756,20 +756,9 @@ class CommandPathDressupRampEntry:
         return False
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            Path.Log.error(translate("CAM_DressupRampEntry", "Select one toolpath object") + "\n")
-            return
-        baseObject = selection[0]
-        if not baseObject.isDerivedFrom("Path::Feature"):
-            Path.Log.error(
-                translate("CAM_DressupRampEntry", "The selected object is not a toolpath") + "\n"
-            )
-            return
-        if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(translate("CAM_DressupRampEntry", "Select a Profile object"))
+        baseOp = PathDressup.selection(verbose=True)
+        if not baseOp:
             return
 
         # everything ok!
@@ -780,7 +769,7 @@ class CommandPathDressupRampEntry:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "RampEntryDressup")'
         )
         FreeCADGui.doCommand("dbo = Path.Dressup.Gui.RampEntry.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + baseOp.Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
