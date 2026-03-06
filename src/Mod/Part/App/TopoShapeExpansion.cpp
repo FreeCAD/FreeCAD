@@ -2004,10 +2004,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         // This algorithm has some edgecase detection from the V1 Algorithm, which is why it looks a little bit copypasted.
 
         std::unordered_map<TopoDS_Shape, ReverseMapBase> reverseGeneratedMap { };
-
-        // Data::IndexedName mapElementIndexName;
-        // TopoDS_Shape mapElementShape;
-        // TopoShape mapParentShape;
+        std::unordered_map<std::string, std::vector<TopoDS_Shape>> normalGeneratedMap { };
 
         auto addToReverseMap = [](std::unordered_map<TopoDS_Shape, ReverseMapBase> &map,
                                   TopoDS_Shape newShape,
@@ -2047,6 +2044,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
         // These loops generate names with the Modified and Generated methods of the Maker class.
         // This will miss some shapes, so in the next stage we will find names with the IsPartner method.
+
+        std::set<Data::IndexedName> allGeneratedShapes { };
+
         for (auto& info : infos) {
             for (const auto& incomingShape : shapes) {
                 if (!canMapElement(incomingShape)) {
@@ -2189,6 +2189,18 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         }
 
                         addToReverseMap(reverseGeneratedMap, generatedShape, element, incomingShapeIndexedName, otherElement, incomingShape);
+                        
+                        std::string otherElementMapName = incomingShape.getMappedName(incomingShapeIndexedName).toString();
+
+                        if (otherElementMapName.size()) {
+                            if (normalGeneratedMap.find(otherElementMapName) == normalGeneratedMap.end()) {
+                                normalGeneratedMap.insert({otherElementMapName, {}});
+                            }
+
+                            normalGeneratedMap[otherElementMapName].push_back(generatedShape);
+                        }
+
+                        allGeneratedShapes.insert(element);
                     }
                 }
             }
@@ -2215,6 +2227,46 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
 
             if (linkedNames.size()) {
+                if (linkedNames.size() == 1) {
+                    Data::IndexedName linkedIndexName = getIndexedName(linkedNames[0]);
+                    auto it = normalGeneratedMap.find(linkedNames[0].toString());
+
+                    if (linkedIndexName
+                        && it != normalGeneratedMap.end()
+                        && it->second.size() >= 2
+                        && (generatedShapeKey.first.ShapeType() >= TopAbs_FACE && generatedShapeKey.first.ShapeType() < TopAbs_VERTEX)) 
+                    {
+                        auto lowerElementType = static_cast<TopAbs_ShapeEnum>(generatedShapeKey.first.ShapeType() + 1);
+                        const char* lowerElementTypeName = shapeName(lowerElementType).c_str();
+
+                        TopExp_Explorer xp(generatedShapeKey.first, lowerElementType);
+
+                        for (; xp.More(); xp.Next()) {
+                            TopoDS_Shape foundSubshape = xp.Current();
+                            Data::IndexedName subshapeIndexName { };
+
+                            if (strcmp(lowerElementTypeName, "Face") == 0) {
+                                subshapeIndexName = Data::IndexedName::fromConst(lowerElementTypeName, faceInfo.find(foundSubshape));
+                            } else if (strcmp(lowerElementTypeName, "Edge") == 0) {
+                                subshapeIndexName = Data::IndexedName::fromConst(lowerElementTypeName, edgeInfo.find(foundSubshape));
+                            } else if (strcmp(lowerElementTypeName, "Vertex") == 0) {
+                                subshapeIndexName = Data::IndexedName::fromConst(lowerElementTypeName, vertexInfo.find(foundSubshape));
+                            }
+
+                            if (subshapeIndexName) {
+                                Data::MappedName subShapeName = getMappedName(subshapeIndexName);
+
+                                if (subShapeName
+                                    && std::find(linkedNames.begin(), linkedNames.end(), subShapeName) == linkedNames.end()
+                                    && allGeneratedShapes.count(subshapeIndexName) == 0) 
+                                {
+                                    linkedNames.push_back(subShapeName);
+                                }
+                            }
+                        }
+                    }
+                }
+
                 Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
                                                                                           linkedNames,
                                                                                           masterTag,

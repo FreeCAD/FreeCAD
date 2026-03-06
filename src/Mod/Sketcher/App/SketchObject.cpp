@@ -11755,7 +11755,7 @@ App::ElementNamePair SketchObject::getElementName(
     App::ElementNamePair ret;
     if(!name) return ret;
 
-    // If this is an InternalFace then don't check the MappedName, because that would cause
+    // If this is an InternalFace then don't check the MappedName below, as that would cause
     // the wrong element to be selected.
     const char *mapped = Data::isMappedElement(name);
     const char* indexedSubname = mapped;
