@@ -231,7 +231,7 @@ void TaskRichAnno::finishSetup()
     // setDocument() may call document->setDefaultFont(widgetFont); restore osifont.
     if (m_qgiAnno) {
         QFont labelFont = m_toolbar->getDefFont();
-        labelFont.setPointSize(qRound(Preferences::labelFontSizeMM() * 72.0 / 25.4));
+        labelFont.setPointSize(qRound(Preferences::dimFontSizeMM() * 2.0));
         m_qgiAnno->document()->setDefaultFont(labelFont);
     }
 
@@ -930,3 +930,4 @@ void TaskDlgRichAnno::autoClosedOnTransactionChange()
 }
 
 #include <Mod/TechDraw/Gui/moc_TaskRichAnno.cpp>
+

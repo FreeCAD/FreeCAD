@@ -147,6 +147,7 @@ protected:
     static const double MinTextWidthDocument;     // Minimum resizable width (document units)
 
     bool m_isEditing;
+    bool m_restoringFont;  // Guard against reentrancy in onContentsChanged
     double m_textScaleFactor;
     double m_lastGoodWidthScene;
 

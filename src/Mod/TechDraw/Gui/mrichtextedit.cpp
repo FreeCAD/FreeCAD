@@ -66,7 +66,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QFrame(parent) {
 
     m_lastBlockList = nullptr;
     f_textedit->setTabStopDistance(40);
-    setDefFontSize(TechDrawGui::PreferencesGui::labelFontSizePX());
+    setDefFontSize(qRound(Preferences::dimFontSizeMM() * 2.0));
     m_defFont = getDefFont().family();
     f_textedit->setFont(getDefFont());
 
