@@ -62,7 +62,7 @@ def check_collision(
     # Create direct path wire
     wire = Part.Wire([Part.makeLine(start_position, target_position)])
     distance = wire.distToShape(collision_model)[0]
-    return distance < tolerance
+    return distance < tolerance and not Path.Geom.isRoughly(distance, tolerance)
 
 
 def get_linking_moves(
@@ -74,6 +74,7 @@ def get_linking_moves(
     solids: Optional[List[Part.Shape]] = None,
     retract_height_offset: Optional[float] = None,
     skip_if_no_collision: bool = False,
+    tolerance: float = 0.001,
 ) -> list:
     """
     Generate linking moves from start to target position.
@@ -121,7 +122,7 @@ def get_linking_moves(
     # Try each height
     for height in heights:
         wire = make_linking_wire(start_position, target_position, height)
-        if is_wire_collision_free(wire, collision_model):
+        if is_wire_collision_free(wire, collision_model, tolerance):
             cmds = Path.fromShape(wire).Commands
             # Ensure all commands have complete XYZ coordinates
             # Path.fromShape() may omit coordinates that don't change
@@ -170,4 +171,4 @@ def is_wire_collision_free(
     if not solid:
         return True
     distance = wire.distToShape(solid)[0]
-    return distance >= tolerance
+    return distance >= tolerance or Path.Geom.isRoughly(distance, tolerance)
