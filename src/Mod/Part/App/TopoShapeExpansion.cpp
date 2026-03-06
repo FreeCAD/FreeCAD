@@ -990,7 +990,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 ss.str("");
 
                 ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
-                elementMap()->setElementName(element, name, Tag, &sids);
+                ensureElementMap()->setElementName(element, name, Tag, &sids);
             }
         }
     }
