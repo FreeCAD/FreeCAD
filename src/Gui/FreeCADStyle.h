@@ -81,7 +81,7 @@ public:
      * All border fields must be set together (borderColor + borderThickness)
      * for a border to be drawn; partial specification is silently ignored.
      */
-    struct BoxBackground
+    struct BoxStyleDefinition
     {
         QBrush background;
         std::optional<QColor> borderColor;
@@ -89,6 +89,44 @@ public:
         CornerRadii borderRadius;  // default: all zero (sharp corners)
         std::optional<QColor> overlay;
         std::optional<InnerShadow> innerShadow;
+    };
+
+    /**
+     * @brief Describes the spatial layout properties of a box-shaped widget.
+     *
+     * Resolved from Design System tokens (Padding, Height, MinWidth, IconSpacing).
+     * Used in both sizeFromContents (to compute the total widget size) and draw
+     * methods (to derive the content rect from the widget rect).
+     */
+    struct BoxGeometryDefinition
+    {
+        QMarginsF padding;
+        std::optional<int> height;
+        std::optional<int> minWidth;
+        int iconSpacing = 4;  // fallback to Qt's built-in default
+
+        /** @brief Total horizontal padding (left + right), in pixels. */
+        [[nodiscard]] int paddingH() const
+        {
+            return static_cast<int>(padding.left() + padding.right());
+        }
+
+        /** @brief Total vertical padding (top + bottom), in pixels. */
+        [[nodiscard]] int paddingV() const
+        {
+            return static_cast<int>(padding.top() + padding.bottom());
+        }
+
+        /** @brief Returns @p rect inset by this geometry's padding. */
+        [[nodiscard]] QRect contentRect(const QRect& rect) const
+        {
+            return rect.adjusted(
+                static_cast<int>(padding.left()),
+                static_cast<int>(padding.top()),
+                -static_cast<int>(padding.right()),
+                -static_cast<int>(padding.bottom())
+            );
+        }
     };
 
     void polish(QPalette& palette) override;
@@ -133,7 +171,7 @@ protected:
      *
      * The painter state (pen, brush, render hints) is saved and restored.
      */
-    static void drawBoxBackground(QPainter* painter, const QRect& rect, const BoxBackground& rule);
+    static void drawBoxBackground(QPainter* painter, const QRect& rect, const BoxStyleDefinition& style);
 
     bool eventFilter(QObject* obj, QEvent* event) override;
 
@@ -229,12 +267,20 @@ private:
     }
 
     /**
-     * @brief Resolves a BoxBackground from a @p context using the token cache.
+     * @brief Resolves a BoxStyleDefinition from a @p context using the token cache.
      *
-     * Calls resolve(context, property) for each BoxBackground field, so all
+     * Calls resolve(context, property) for each visual property, so all
      * per-property lookups are individually cached.
      */
-    BoxBackground resolveBoxBackground(const StyleContext& context) const;
+    BoxStyleDefinition resolveBoxStyle(const StyleContext& context) const;
+
+    /**
+     * @brief Resolves a BoxGeometryDefinition from a @p context using the token cache.
+     *
+     * Calls resolve(context, property) for Padding, Height, MinWidth, and IconSpacing.
+     * All per-property lookups are individually cached.
+     */
+    BoxGeometryDefinition resolveBoxGeometry(const StyleContext& context) const;
 
     /**
      * @brief Builds a StyleContext from a widget and its current style option.
@@ -247,13 +293,6 @@ private:
 
     /** @brief Clears the token resolution cache; call when the active theme changes. */
     void clearTokenCache();
-
-    /**
-     * @brief Returns the resolved icon-to-text spacing in pixels.
-     *
-     * Falls back to Qt's built-in default of 4 px when no IconSpacing token is defined.
-     */
-    int resolveIconSpacing(const StyleContext& context) const;
 
     /**
      * @brief Paints the label (icon + text) of a push button.

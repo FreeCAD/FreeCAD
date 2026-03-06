@@ -531,7 +531,7 @@ uint32_t packCacheKey(const StyleContext& context, StyleProperty property)
 
 }  // namespace
 
-void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const BoxBackground& rule)
+void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const BoxStyleDefinition& rule)
 {
     if (rule.background.style() == Qt::NoBrush) {
         return;
@@ -671,7 +671,7 @@ void FreeCADStyle::drawPrimitive(
 ) const
 {
     if (element == PE_PanelButtonCommand) {
-        drawBoxBackground(painter, option->rect, resolveBoxBackground(contextOf(widget, option)));
+        drawBoxBackground(painter, option->rect, resolveBoxStyle(contextOf(widget, option)));
         return;
     }
 
@@ -688,68 +688,53 @@ QSize FreeCADStyle::sizeFromContents(
     if (type == CT_PushButton) {
         const StyleContext context = contextOf(widget, option);
         const auto* btnOption = qstyleoption_cast<const QStyleOptionButton*>(option);
+        const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
 
-        QMarginsF paddingF;
-        if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
-            paddingF = Base::convertTo<QMarginsF>(*padding);
-        }
-
-        int width = size.width() + static_cast<int>(paddingF.left() + paddingF.right());
-        int height = size.height() + static_cast<int>(paddingF.top() + paddingF.bottom());
+        int width = size.width() + geometry.paddingH();
+        int height = size.height() + geometry.paddingV();
 
         // Fix icon-text spacing contribution (Qt hardcodes 4 px).
         if (btnOption && !btnOption->icon.isNull() && !btnOption->text.isEmpty()) {
             constexpr int qtBuiltInIconGap = 4;
-            width += resolveIconSpacing(context) - qtBuiltInIconGap;
+            width += geometry.iconSpacing - qtBuiltInIconGap;
         }
 
-        if (const auto resolvedHeight
-            = resolve<StyleParameters::Numeric>(context, StyleProperty::Height)) {
-            height = static_cast<int>(resolvedHeight->value);
+        if (geometry.height) {
+            height = *geometry.height;
+        }
+        if (geometry.minWidth) {
+            width = std::max(width, *geometry.minWidth);
         }
 
-        if (const auto minWidth = resolve<StyleParameters::Numeric>(context, StyleProperty::MinWidth)) {
-            width = std::max(width, static_cast<int>(minWidth->value));
-        }
-
-        return QSize(width, height);
+        return {width, height};
     }
 
     if (type == CT_ToolButton) {
         const StyleContext context = contextOf(widget, option);
-
         const auto* tbOption = qstyleoption_cast<const QStyleOptionToolButton*>(option);
+        const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+
         const bool hasIconOrArrow = tbOption
             && (!tbOption->icon.isNull() || tbOption->arrowType != Qt::NoArrow);
         const bool needsCustomLayout = hasIconOrArrow && tbOption && !tbOption->text.isEmpty()
             && (tbOption->toolButtonStyle == Qt::ToolButtonTextBesideIcon
                 || tbOption->toolButtonStyle == Qt::ToolButtonTextUnderIcon);
 
-        QMarginsF paddingF;
-        if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
-            paddingF = Base::convertTo<QMarginsF>(*padding);
-        }
+        int width = size.width() + geometry.paddingH();
+        int height = size.height() + geometry.paddingV();
 
-        int width = size.width() + static_cast<int>(paddingF.left() + paddingF.right());
-        int height = size.height() + static_cast<int>(paddingF.top() + paddingF.bottom());
-
-        if (needsCustomLayout) {
-            const int iconSpacing = resolveIconSpacing(context);
-
+        if (needsCustomLayout && tbOption->toolButtonStyle == Qt::ToolButtonTextBesideIcon) {
             // Qt hardcodes +4 as the icon-text gap in QToolButton::sizeHint's content size.
             // Replace that with our spacing so the widget is wide enough.
-            if (tbOption->toolButtonStyle == Qt::ToolButtonTextBesideIcon) {
-                constexpr int qtBuiltInIconGap = 4;
-                width += iconSpacing - qtBuiltInIconGap;
-            }
+            constexpr int qtBuiltInIconGap = 4;
+            width += geometry.iconSpacing - qtBuiltInIconGap;
         }
 
-        if (const auto resolvedHeight
-            = resolve<StyleParameters::Numeric>(context, StyleProperty::Height)) {
-            height = static_cast<int>(resolvedHeight->value);
+        if (geometry.height) {
+            height = *geometry.height;
         }
 
-        return QSize(width, height);
+        return {width, height};
     }
 
     return QProxyStyle::sizeFromContents(type, option, size, widget);
@@ -796,18 +781,8 @@ void FreeCADStyle::drawToolButtonLabel(
 ) const
 {
     const StyleContext context = contextOf(widget, option);
-
-    QMarginsF paddingF;
-    if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
-        paddingF = Base::convertTo<QMarginsF>(*padding);
-    }
-
-    const QRect contentRect = option->rect.adjusted(
-        static_cast<int>(paddingF.left()),
-        static_cast<int>(paddingF.top()),
-        -static_cast<int>(paddingF.right()),
-        -static_cast<int>(paddingF.bottom())
-    );
+    const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+    const QRect contentRect = geometry.contentRect(option->rect);
 
     const Qt::ToolButtonStyle tbStyle = option->toolButtonStyle;
     const bool hasIconOrArrow = !option->icon.isNull() || option->arrowType != Qt::NoArrow;
@@ -822,7 +797,7 @@ void FreeCADStyle::drawToolButtonLabel(
         return;
     }
 
-    const int iconSpacing = resolveIconSpacing(context);
+    const int iconSpacing = geometry.iconSpacing;
 
     // Apply pressed/checked shift — we manage layout so we do this ourselves.
     QRect shiftedContentRect = contentRect;
@@ -946,11 +921,7 @@ void FreeCADStyle::drawPushButtonLabel(
 ) const
 {
     const StyleContext context = contextOf(widget, option);
-
-    QMarginsF paddingF;
-    if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
-        paddingF = Base::convertTo<QMarginsF>(*padding);
-    }
+    const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
 
     // option->rect at this point is SE_PushButtonContents from Fusion (inset by its own frame
     // width), which doesn't reflect our token-based padding. Use widget->rect() — the true
@@ -958,12 +929,7 @@ void FreeCADStyle::drawPushButtonLabel(
     // This is consistent with CT_PushButton in sizeFromContents, which also computes the total
     // size as content + token padding (not Fusion's frame).
     const QRect buttonRect = widget ? widget->rect() : option->rect;
-    const QRect contentRect = buttonRect.adjusted(
-        static_cast<int>(paddingF.left()),
-        static_cast<int>(paddingF.top()),
-        -static_cast<int>(paddingF.right()),
-        -static_cast<int>(paddingF.bottom())
-    );
+    const QRect contentRect = geometry.contentRect(buttonRect);
 
     // For icon-only or text-only, delegate to parent with the token-padded content rect.
     // The parent centers the content within this rect; press-state shift is left to the parent.
@@ -983,7 +949,7 @@ void FreeCADStyle::drawPushButtonLabel(
         );
     }
 
-    const int iconSpacing = resolveIconSpacing(context);
+    const int iconSpacing = geometry.iconSpacing;
 
     const QIcon::State iconState = (option->state & State_On) ? QIcon::On : QIcon::Off;
     const QIcon::Mode iconMode = (option->state & State_Enabled) ? QIcon::Normal : QIcon::Disabled;
@@ -1145,9 +1111,9 @@ std::optional<StyleParameters::Value> FreeCADStyle::resolve(
     return result;
 }
 
-FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(const StyleContext& context) const
+FreeCADStyle::BoxStyleDefinition FreeCADStyle::resolveBoxStyle(const StyleContext& context) const
 {
-    BoxBackground result;
+    BoxStyleDefinition result;
 
     if (const auto backgroundValue = resolve(context, StyleProperty::Background)) {
         result.background = Base::convertTo<QBrush>(*backgroundValue);
@@ -1179,17 +1145,32 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(const StyleContex
     return result;
 }
 
+FreeCADStyle::BoxGeometryDefinition FreeCADStyle::resolveBoxGeometry(const StyleContext& context) const
+{
+    BoxGeometryDefinition result;
+
+    if (const auto padding = resolve<StyleParameters::Insets>(context, StyleProperty::Padding)) {
+        result.padding = Base::convertTo<QMarginsF>(*padding);
+    }
+
+    if (const auto height = resolve<StyleParameters::Numeric>(context, StyleProperty::Height)) {
+        result.height = static_cast<int>(height->value);
+    }
+
+    if (const auto minWidth = resolve<StyleParameters::Numeric>(context, StyleProperty::MinWidth)) {
+        result.minWidth = static_cast<int>(minWidth->value);
+    }
+
+    if (const auto spacing = resolve<StyleParameters::Numeric>(context, StyleProperty::IconSpacing)) {
+        result.iconSpacing = static_cast<int>(spacing->value);
+    }
+
+    return result;
+}
+
 void FreeCADStyle::clearTokenCache()
 {
     tokenCache.clear();
-}
-
-int FreeCADStyle::resolveIconSpacing(const StyleContext& context) const
-{
-    if (const auto spacing = resolve<StyleParameters::Numeric>(context, StyleProperty::IconSpacing)) {
-        return static_cast<int>(spacing->value);
-    }
-    return 4;  // Qt's built-in default (see QToolButton::sizeHint)
 }
 
 bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
