@@ -99,7 +99,10 @@ class ViewProvider(object):
     def setEdit(self, vobj=None, mode=0):
         """setEdit(vobj, mode=0) ... initiate editing of receivers model."""
         Path.Log.track()
-        if 0 == mode:
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+            return True
+        elif mode == 0:
             if vobj is None:
                 vobj = self.vobj
             page = self.getTaskPanelOpPage(vobj.Object)
@@ -133,8 +136,8 @@ class ViewProvider(object):
         if job:
             job.ViewObject.Proxy.resetEditVisibility(job)
 
-    def unsetEdit(self, arg1, arg2):
-        if self.panel:
+    def unsetEdit(self, vobj, mode):
+        if mode == 0 and self.panel:
             self.panel.reject(False)
 
     def dumps(self):
