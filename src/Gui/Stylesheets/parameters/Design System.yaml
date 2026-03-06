@@ -51,6 +51,37 @@ Background:
 
 BaseTextColor: "@Contrast.700"
 
+# ── Semantic surface tokens (drive QPalette) ─────────────────────────────────
+# Window / panel backgrounds
+BaseWindowBackground:    "@Background.050"
+BaseAlternateBackground: "@Background.100"
+BaseInputBackground:     "@Background.000"
+
+# Selection
+BaseHighlightBackground: "blend(@Background.100, @Accent.500, 75%)"
+BaseHighlightTextColor:  "@Neutral.000"
+
+# Disabled
+BaseDisabledTextColor:   "@Contrast.300"
+BaseDisabledBackground:  "@Neutral.200"
+
+# Placeholder text in inputs
+BasePlaceholderTextColor: "@Contrast.400"
+
+# Links / URLs
+BaseLinkColor: "@Accent.600"
+
+# Tooltips
+BaseTooltipBackground: "@Contrast.800"
+BaseTooltipTextColor:  "@Neutral.050"
+
+# 3D shading (QPalette Light / Midlight / Mid / Dark / Shadow)
+BaseShadingLight:    "@Neutral.100"
+BaseShadingMidlight: "@Neutral.200"
+BaseShadingMid:      "@Neutral.400"
+BaseShadingDark:     "@Neutral.600"
+BaseShadingShadow:   "@Neutral.800"
+
 BaseHoveredOverlay: "#ffffff"
 BaseHoveredOverlayOpacity: 50%
 

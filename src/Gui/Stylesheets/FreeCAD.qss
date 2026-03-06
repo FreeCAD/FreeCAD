@@ -68,26 +68,6 @@ FOLLOWING CODES ARE CHANGED IN THE SETTINGS:
 Resetting everything helps to unify styles across different operating systems
 
 --------------------------------------------------------------------------- */
-* {
-  outline: none;
-  background: transparent;
-  color: @BaseTextColor;
-  selection-background-color: @TextSelectBackgroundColor;
-  selection-color: @TextForegroundColor;
-  gridline-color: @GeneralGridLinesColor;
-  font-family: 'Noto Sans';
-}
-
-QFrame {
-  border-style: none;
-  border-image: none;
-  border-radius: 0px;
-  border-color: @GeneralBorderColor;
-  border-style: none;
-}
-
-/* specific reset for elements inside QToolBar */
-QToolBar * {}/*hacks */
 
 /* fix for column items background when a link is present */
 Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
@@ -116,14 +96,6 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
 /*==================================================================================================
 Main window
 ==================================================================================================*/
-QMainWindow,
-QDockWidget {
-  background-color: @{@Background.100};/* main background color */
-}
-
-QDialog {
-  background-color: @DialogBackground;
-}
 
 Gui--Dialog--DlgPreferencesImp #sidebar {
   background-color: @{@Background.200};
@@ -133,24 +105,10 @@ QTreeView::item {
   padding: @{padding(horizontal: @Spacing.150, vertical: @Spacing.100)};
 }
 
-/* QDialog#Gui__Dialog__DlgPreferences { /*Preferences dialog her if you need it*/
-  /* background-color: @ButtonTopBackgroundColor;
-}
- */
-
 /*navgation src/Mod/Tux/NavigationIndicatorGui.py */
 Gui--NavigationIndicatorGui--BlenderNavigationStyle {
   qproperty-icon: url(:/icons/icons/NavigationBlender_light.svg);
 }
-
-Gui--MDIView QLabel{
-  border-style: none;
-  background-color: transparent;
-}
-
-Gui--MDIView QScrollArea{
-  border: 1px solid @GeneralBorderColor;
-  background-color: transparent;/* Added to maintain consistency */}
 
 /* QWidget ----------------------------------------------------------------
 This causes much load time. DONT USE "QWidget { " This causes a lot of lag.
@@ -175,43 +133,6 @@ QColorDialog QLabel {
 }
 */
 
-QFrame[class="popup"] {
-  background-color: @DialogBackgroundColor;
-  border: 1px solid @GeneralBorderColor;
-}
-
-/* QMainWindow ------------------------------------------------------------
-
-This adjusts the splitter in the dock widget, not qsplitter
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qmainwindow
-
---------------------------------------------------------------------------- */
-QMainWindow::separator {
-  border-style: none;
-  spacing: 0px;
-  padding: 1px;
-}
-
-QMainWindow::separator:vertical:hover {
-  image: url(qss:@IconsLocationFolderName/splitter_vertical-lightgray.svg);
-}
-
-QMainWindow::separator:horizontal:hover {
-  image: url(qss:@IconsLocationFolderName/splitter_horizontal-lightgray.svg);
-}
-
-QMainWindow::separator:horizontal {
-  width: 4px;
-  margin-top: 0.1px;
-  margin-bottom: 0.1px;
-}
-
-QMainWindow::separator:vertical {
-  height: 4px;
-  margin-left: 0.1px;
-  margin-right: 0.1px;
-}
-
 /* QToolTip ---------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtooltip
@@ -231,33 +152,6 @@ QToolTip {
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qstatusbar
 
 --------------------------------------------------------------------------- */
-QStatusBar {
-  border-style: none;
-  background-color: @PrimaryColor;
-}
-
-QStatusBar::item {
-  border-style: none;
-}
-
-QStatusBar QToolTip {
-  background-color: @PrimaryColor;
-  border: 1px solid @GeneralBorderColor;
-  /* Remove padding, for fix combo box tooltip */
-
-  /* Reducing transparency to read better */
-  opacity: 230;
-}
-
-QStatusBar QLabel {
-  background-color: transparent;
-}
-
-QStatusBar QPushButton {
-    min-width: 0;
-    padding-left: 8px;
-    padding-right: 8px;
-}
 
 /* QCheckBox --------------------------------------------------------------
 
@@ -654,172 +548,6 @@ QMenu::right-arrow {
   background-color: transparent;
 }
 
-/* QAbstractItemView ------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qcombobox
-
---------------------------------------------------------------------------- */
-QAbstractItemView {
-  alternate-background-color: @GeneralAlternateBackgroundColor;
-  border-style: none;
-}
-
-QAbstractItemView QLineEdit {
-  padding: 0 2px;
-}
-
-/* QAbstractScrollArea ----------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qabstractscrollarea
-
---------------------------------------------------------------------------- */
-QAbstractScrollArea {
-  background-color: transparent;
-}
-
-QAbstractScrollArea:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-}
-
-/* QScrollArea ------------------------------------------------------------
-
----------------------------------------------------------------------------
-text input field disabled!!!!*/
-QScrollArea QWidget:disabled {
-  color: @TextDisabledColor;
-}
-
-/* QScrollBar -------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qscrollbar
-
---------------------------------------------------------------------------- */
-
-QScrollBar:horizontal {
-  border-right: 14px solid @GeneralBorderColor;
-  border-left: 14px solid @GeneralBorderColor;
-  border-top: 1px solid @GeneralBorderColor;
-  border-bottom: 1px solid @GeneralBorderColor;
-  background-color: @ScrollbarBackgroundColor;
-  padding: 0;
-  margin: 0;
-}
-
-QScrollBar:vertical {
-  border-top: 14px solid @GeneralBorderColor;
-  border-bottom: 14px solid @GeneralBorderColor;
-  border-left: 1px solid @GeneralBorderColor;
-  border-right: 1px solid @GeneralBorderColor;
-  background-color: @ScrollbarBackgroundColor;
-  padding: 0;
-  margin: 0;
-}
-
-QScrollBar::handle:horizontal {
-  border-left: 1px solid @GeneralBorderColor;
-  border-right: 1px solid @GeneralBorderColor;
-  min-width: 20px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
-}
-
-QScrollBar::handle:horizontal:hover {
-  background-color: @GeneralBackgroundHoverColor;
-  border: 1px @ButtonTopBackgroundColor;
-}
-
-QScrollBar::handle:horizontal:focus {
-  border: 1px solid @AccentColor;
-}
-
-QScrollBar::handle:vertical {
-  border-top: 1px solid @GeneralBorderColor;
-  border-bottom: 1px solid @GeneralBorderColor;
-  min-height: 20px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
-}
-
-QScrollBar::handle:vertical:focus {
-  border: 1px solid @AccentColor;
-}
-
-QScrollBar::handle:vertical:hover {
-  background-color: @GeneralBackgroundHoverColor;
-  border: 1px @ButtonTopBackgroundColor;
-}
-
-QScrollBar::add-line, QScrollBar::sub-line {
-  height: 12px;
-  width: 12px;
-  subcontrol-origin: margin;
-  border: 1px solid @GeneralBorderColor;
-}
-
-QScrollBar::handle:hover,
-QScrollBar::add-line:vertical:hover, QScrollBar::sub-line:vertical:hover ,
-QScrollBar::add-line:horizontal:hover, QScrollBar::sub-line:horizontal:hover {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QScrollBar::right-arrow, QScrollBar::left-arrow, QScrollBar::up-arrow, QScrollBar::down-arrow {
-  margin: 2px;
-}
-
-QScrollBar::left-arrow {
-  border-image: url(qss:@IconsLocationFolderName/arrow-left-lightgray.svg);
-}
-
-QScrollBar::right-arrow {
-  border-image: url(qss:@IconsLocationFolderName/arrow-right-lightgray.svg);
-}
-
-QScrollBar::up-arrow {
-  border-image: url(qss:@IconsLocationFolderName/arrow-up-lightgray.svg);
-}
-
-QScrollBar::down-arrow {
-  border-image: url(qss:@IconsLocationFolderName/arrow-down-lightgray.svg);
-}
-
-QScrollBar::left-arrow:hover {
-  border-image: url(qss:@IconsLocationFolderName/arrow-left-@StylesheetIconsColor.svg);
-}
-
-QScrollBar::right-arrow:hover {
-  border-image: url(qss:@IconsLocationFolderName/arrow-right-@StylesheetIconsColor.svg);
-}
-
-QScrollBar::up-arrow:hover {
-  border-image: url(qss:@IconsLocationFolderName/arrow-up-@StylesheetIconsColor.svg);
-}
-
-QScrollBar::down-arrow:hover {
-  border-image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-}
-
-QScrollBar::add-line:horizontal {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
-  subcontrol-position: right;
-}
-
-QScrollBar::add-line:vertical {
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
-  subcontrol-position: bottom;
-}
-
-QScrollBar::sub-line:horizontal {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
-  subcontrol-position: left;
-}
-
-QScrollBar::sub-line:vertical {
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
-  subcontrol-position: top;
-}
-
-QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal,
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
-  background-color: none;
-}
 
 /* QTextEdit --------------------------------------------------------------
 
@@ -838,44 +566,6 @@ QTextEdit:focus {
 
 QTextEdit:selected {
   background-color: @AccentColor;
-}
-
-/* QPlainTextEdit ---------------------------------------------------------
-Python
---------------------------------------------------------------------------- */
-
-QPlainTextEdit {
-  background-color: @TextEditFieldBackgroundColor;
-  border-top: 1px solid @GeneralBorderColor;
-  border-radius: @InputFieldBorderRadius;
-}
-
-QPlainTextEdit:focus {
-  border: 1px solid @AccentColor;
-}
-
-QPlainTextEdit:selected {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-/* QSizeGrip --------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qsizegrip
-
---------------------------------------------------------------------------- */
-QSizeGrip {
-  background-color: transparent;
-  width: 12px;
-  height: 12px;
-  image:url(qss:@IconsLocationFolderName/sizegrip-lightgray.svg);
-}
-
-/* QStackedWidget ---------------------------------------------------------
-
---------------------------------------------------------------------------- */
-QStackedWidget {
-
-  border-style: none;
 }
 
 /* QToolBar ---------------------------------------------------------------
@@ -1064,117 +754,6 @@ QAbstractSpinBox:selected {
 }
 
 /* ------------------------------------------------------------------------ */
-/* DISPLAYS --------------------------------------------------------------- */
-/* ------------------------------------------------------------------------ */
-/* QLabel -----------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qframe
-
---------------------------------------------------------------------------- */
-QLabel {}
-QLabel:disabled {
-  color: @TextDisabledColor;
-}
-
-QLabel[haslink="true"] {
-  color: #71b6fb;
-}
-
-/* QTextBrowser -----------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qabstractscrollarea
-
---------------------------------------------------------------------------- */
-QTextBrowser {
-  background-color: @PrimaryColor;
-  border: 1px solid @GeneralBorderColor;
-
-}
-
-QTextBrowser:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  border: 1px solid @GeneralBorderColor;
-  color: @TextDisabledColor;
-}
-
-QTextBrowser:hover, QTextBrowser:!hover, QTextBrowser:selected, QTextBrowser:pressed {}
-
-/* QGraphicsView ----------------------------------------------------------
---------------------------------------------------------------------------- */
-
-QGraphicsView {
-  background-color: transparent;
-  border-style: none;
-}
-
-QGraphicsView:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  border-style: none;
-  color: @TextDisabledColor;
-
-}
-
-QGraphicsView:hover, QGraphicsView:!hover, QGraphicsView:selected, QGraphicsView:pressed {
-  border-style: none;
-}
-
-/* QCalendarWidget --------------------------------------------------------
---------------------------------------------------------------------------- */
-
-QCalendarWidget {
-  border: 1px solid @GeneralBorderColor;
-  border-radius: @InputFieldBorderRadius;
-}
-
-QCalendarWidget:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  color: @TextDisabledColor;
-}
-
-/* QLCDNumber -------------------------------------------------------------
-
---------------------------------------------------------------------------- */
-QLCDNumber {
-  background-color: #1aff00;
-}
-
-QLCDNumber:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  color: @TextDisabledColor;
-}
-
-/* QProgressBar -----------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qprogressbar
-
---------------------------------------------------------------------------- */
-QProgressBar {
-  background-color: @PrimaryColor;
-  border: 1px solid @GeneralBorderColor;
-  border-radius: @InputFieldBorderRadius;
-  text-align: center;
-}
-
-QProgressBar:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  border: 1px solid @GeneralBorderColor;
-  color:  @TextDisabledColor;
-  border-radius: @InputFieldBorderRadius;
-  text-align: center;
-}
-
-QProgressBar::chunk {
-  background-color: @AccentColor;
-  color: @PrimaryColor;
-  border-radius: @InputFieldBorderRadius;
-}
-
-QProgressBar::chunk:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  border-radius: @InputFieldBorderRadius;
-}
-
-/* ------------------------------------------------------------------------ */
 /* BUTTONS ---------------------------------------------------------------- */
 /* ------------------------------------------------------------------------ */
 /* QPushButton ------------------------------------------------------------
@@ -1263,111 +842,6 @@ Gui--SplitButton QToolButton[splitRole="menu"] {
 Gui--SplitButton QToolButton::menu-indicator {
     image: none;
     border-image: none;
-}
-
-/* QCommandLinkButton -----------------------------------------------------
-
---------------------------------------------------------------------------- */
-QCommandLinkButton {
-  background-color: transparent;
-  border: 1px solid @GeneralBorderColor;
-  border-radius: @InputFieldBorderRadius;
-}
-QCommandLinkButton:disabled {
-  background-color: transparent;
-  color: @TextDisabledColor;
-}
-
-/* ------------------------------------------------------------------------ */
-/* INPUTS - NO FIELDS ----------------------------------------------------- */
-/* ------------------------------------------------------------------------ */
-/* QComboBox --------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qcombobox
-
---------------------------------------------------------------------------- */
-
-QComboBox {
-  border: 1px solid @GeneralBorderColor;
-  border-radius: @InputFieldBorderRadius;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
-  padding-left: 4px;
-  padding-right: 18px; /* 18px for the check-mark that says which item is active */
-  height: @{@FormControlHeight - 2px};
-}
-
-QComboBox:editable {
-  background-color: @TextEditFieldBackgroundColor;
-}
-
-
-QComboBox QAbstractItemView:selected {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QComboBox QAbstractItemView:alternate {
-  background-color: @ButtonTopBackgroundColor;
-}
-
-QComboBox:checked {}
-QComboBox:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  color: @TextDisabledColor;
-}
-
-QComboBox:hover {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QComboBox:focus {
-  border: 1px solid @AccentColor;
-}
-
-QComboBox:on {
-}
-
-/* QComboBox::indicator { */
-/* is not used in classic there fore it causes issues */
-/* } */
-
-QComboBox::item {
-  background-color: @TextEditFieldBackgroundColor;
-}
-/* Background color of popup-list.*/
-
-/* Needed to complete the rule set. */
-QComboBox::item:alternate {
-  background-color: @GeneralAlternateBackgroundColor;
-}
-
-/* Color of the selected list item. */
-QComboBox::item:selected {
-  /* border: 1px solid @GeneralBorderColor; */
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QComboBox::item:checked {
-  background-color: @PrimaryColor;
-}
-
-QComboBox::drop-down {
-  subcontrol-origin: padding;
-  subcontrol-position: top right;
-  width: 20px;
-  border-right: 1px solid transparent;
-  padding-right: 2px;
-  padding-left: 12px;
-}
-
-QComboBox::drop-down:hover {}
-
-QComboBox::down-arrow {
-  image: url(qss:@IconsLocationFolderName/arrow-down-lightgray.svg);
-  width: 10px;
-}
-
-QComboBox::down-arrow:on, QComboBox::down-arrow:hover, QComboBox::down-arrow:focus {
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
 }
 
 /*==================================================================================================
@@ -2504,40 +1978,8 @@ Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
 }
 
 /*==================================================================================================
-Forming windows below are the border settings. See also https://forum.freecad.org/viewtopic.php?p=439797#p439797
-==================================================================================================*/
-QMdiSubWindow {
-  border:2px solid @ButtonBottomBackgroundColor;
-  border-radius: 3px;
-  border-top-right-radius: 7px;
-  border-top-left-radius: 7px;
-  background-color: @PrimaryColor;
-}
-
-QMdiSubWindow:hover {
-  border:2px solid @GeneralBorderColor;
-}
-
-QMdiSubWindow:active {
-  border:2px solid @AccentColor;
-}
-
-/*==================================================================================================
 Start page
 ==================================================================================================*/
-QWidget#thumbnailWidget {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
-  border-radius: 8px;
-  border: 1px solid @GeneralBorderColor;
-}
-
-QWidget#thumbnailWidget[state="hovered"] {
-  border: 1px solid @AccentColor;
-}
-
-QWidget#thumbnailWidget[state="pressed"] {
-  border: 1px solid @AccentColor;
-}
 
 /**
  * Special handling for WB Tab Bar

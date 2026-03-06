@@ -596,6 +596,73 @@ void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const
     }
 }
 
+void FreeCADStyle::polish(QPalette& palette)
+{
+    QProxyStyle::polish(palette);
+
+    // Sets role in both Active and Inactive groups; leaves Disabled unchanged.
+    const auto set = [&](QPalette::ColorRole role, std::string_view token) {
+        if (const auto color = resolve<Base::Color>(token)) {
+            palette.setColor(QPalette::Active, role, color->asValue<QColor>());
+            palette.setColor(QPalette::Inactive, role, color->asValue<QColor>());
+        }
+    };
+
+    // Sets role only in the Disabled group.
+    const auto setDisabled = [&](QPalette::ColorRole role, std::string_view token) {
+        if (const auto color = resolve<Base::Color>(token)) {
+            palette.setColor(QPalette::Disabled, role, color->asValue<QColor>());
+        }
+    };
+
+    // ── Active / Inactive ────────────────────────────────────────────────────
+
+    // Window surfaces
+    set(QPalette::Window, "BaseWindowBackground");
+    set(QPalette::WindowText, "BaseTextColor");
+
+    // Input / item-view surfaces
+    set(QPalette::Base, "BaseInputBackground");
+    set(QPalette::AlternateBase, "BaseAlternateBackground");
+    set(QPalette::Text, "BaseTextColor");
+    set(QPalette::PlaceholderText, "BasePlaceholderTextColor");
+
+    // Buttons
+    set(QPalette::Button, "BaseButtonBackground");
+    set(QPalette::ButtonText, "ButtonTextColor");
+
+    // Selection
+    set(QPalette::Highlight, "BaseHighlightBackground");
+    set(QPalette::HighlightedText, "BaseHighlightTextColor");
+    set(QPalette::BrightText, "BaseHighlightTextColor");
+
+    // Links
+    set(QPalette::Link, "BaseLinkColor");
+    set(QPalette::LinkVisited, "BaseLinkColor");  // themes can override if needed
+
+    // Tooltips
+    set(QPalette::ToolTipBase, "BaseTooltipBackground");
+    set(QPalette::ToolTipText, "BaseTooltipTextColor");
+
+    // 3D shading (used by non-custom widgets for borders and shadows)
+    set(QPalette::Light, "BaseShadingLight");
+    set(QPalette::Midlight, "BaseShadingMidlight");
+    set(QPalette::Mid, "BaseShadingMid");
+    set(QPalette::Dark, "BaseShadingDark");
+    set(QPalette::Shadow, "BaseShadingShadow");
+
+    // ── Disabled ─────────────────────────────────────────────────────────────
+
+    setDisabled(QPalette::WindowText, "BaseDisabledTextColor");
+    setDisabled(QPalette::Text, "BaseDisabledTextColor");
+    setDisabled(QPalette::ButtonText, "BaseDisabledTextColor");
+    setDisabled(QPalette::PlaceholderText, "BaseDisabledTextColor");
+    setDisabled(QPalette::Base, "BaseWindowBackground");
+    setDisabled(QPalette::Button, "BaseDisabledBackground");
+    setDisabled(QPalette::Highlight, "BaseShadingMid");
+    setDisabled(QPalette::HighlightedText, "BaseDisabledTextColor");
+}
+
 void FreeCADStyle::drawPrimitive(
     PrimitiveElement element,
     const QStyleOption* option,
@@ -976,7 +1043,7 @@ FreeCADStyle::BoxBackground FreeCADStyle::resolveBoxBackground(const StyleContex
 
     if (const auto innerShadow
         = resolve<StyleParameters::InnerShadow>(context, StyleProperty::InnerShadow)) {
-        result.innerShadow = Base::convertTo<FreeCADStyle::InnerShadow>(*innerShadow);
+        result.innerShadow = Base::convertTo<InnerShadow>(*innerShadow);
     }
 
     return result;

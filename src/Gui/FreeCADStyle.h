@@ -91,6 +91,8 @@ public:
         std::optional<InnerShadow> innerShadow;
     };
 
+    void polish(QPalette& palette) override;
+
 protected:
     void drawPrimitive(
         PrimitiveElement element,
