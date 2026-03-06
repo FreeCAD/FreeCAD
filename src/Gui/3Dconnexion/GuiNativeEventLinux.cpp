@@ -114,9 +114,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
             = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
         connect(SpacenavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav()));
         dzCache = std::make_unique<DeadzoneCache>(
-            App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Spaceball/Motion"
-            )
+            App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Spaceball/Motion")
         );
         mainApp->setSpaceballPresent(true);
     }
