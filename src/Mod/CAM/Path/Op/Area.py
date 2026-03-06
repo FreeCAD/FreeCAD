@@ -351,7 +351,7 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.debug("depths: {}".format(heights))
         for i in range(0, len(heights)):
             for baseShape in edgeList:
-                hWire = Part.Wire(Part.__sortEdges__(baseShape.Edges))
+                hWire = Part.Compound([Part.Wire(se) for se in Part.sortEdges(baseShape.Edges)])
                 hWire.translate(FreeCAD.Vector(0, 0, heights[i] - hWire.BoundBox.ZMin))
 
                 pathParams = {}
@@ -433,6 +433,29 @@ class ObjectOp(PathOp.ObjectOp):
                 shapes.append(tup)
             else:
                 shapes.append(shp)
+
+        # prepare Collectively HandleMultipleFeatures for Profile operation
+        if (
+            obj.Proxy.__module__ == "Path.Op.Profile"
+            and len(shapes) > 1
+            and getattr(obj, "HandleMultipleFeatures", False) == "Collectively"
+        ):
+            # TODO this a experimental implementation of HandleMultipleFeatures
+
+            iH = shapes[0][1]
+            if any(ih != iH for _, ih, _ in shapes):
+                Path.Log.error("Error Collectively: 'isHole' should be identical for all shapes")
+
+            desc = shapes[0][2]
+            if any(d != desc for _, _, d in shapes):
+                Path.Log.error("Error Collectively: 'desc' should be identical for all shapes")
+
+            if desc == "OpenEdge":
+                fc = [Part.makeCompound([fc for fcs, _, _ in shapes for fc in fcs])]
+            else:
+                fc = Part.makeCompound([fc for fc, _, _ in shapes])
+
+            shapes = [(fc, iH, desc)]
 
         if len(shapes) > 1:
             locations = []
