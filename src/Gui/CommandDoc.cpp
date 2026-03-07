@@ -1596,7 +1596,34 @@ void StdCmdDelete::activated(int iMsg)
 
 bool StdCmdDelete::isActive()
 {
-    return !Selection().getCompleteSelection().empty();
+    // Check if there's anything selected
+    if (Selection().getCompleteSelection().empty()) {
+        return false;
+    }
+
+    // If there's an active task dialog that doesn't allow document alterations,
+    // only allow deletion of sub-elements of the currently edited object.
+    // Note: acceptDeletionsInEdit() is intentionally NOT used to bypass this
+    // restriction here, because activated() falls to the unrestricted full-object
+    // deletion path when acceptDeletionsInEdit() is true, which would bypass the
+    // isAllowedAlterDocument() guard.
+    if (!Gui::Control().isAllowedAlterDocument()) {
+        auto editDoc = Application::Instance->editDocument();
+        if (editDoc) {
+            auto vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+            if (vpedit && !vpedit->acceptDeletionsInEdit()) {
+                // Only allow if sub-elements of the edited object are selected
+                for (auto& sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
+                    if (sel.getObject() == vpedit->getObject() && !sel.getSubNames().empty()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    return true;
 }
 
 //===========================================================================
