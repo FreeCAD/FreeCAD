@@ -210,6 +210,8 @@ SET(Features_SRCS
     FeatureRevolution.h
     FeatureOffset.cpp
     FeatureOffset.h
+    OCCTMessagePrinter.cpp
+    OCCTMessagePrinter.h
     PartFeatures.cpp
     PartFeatures.h
     PartFeature.cpp
