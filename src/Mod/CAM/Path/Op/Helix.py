@@ -597,7 +597,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "local_clearance": safeHeight,
             "global_clearance": clearanceHeight,
             "solids": solids,
-            "tool_shape": self.tool.Shape,
+            "tool_diameter": tooldiameter,
             "tolerance": abs(safeHeight - obj.StartDepth.Value),
         }
 

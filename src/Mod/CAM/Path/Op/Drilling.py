@@ -297,6 +297,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         solids = []
         for base in self.job.Model.Group:
             solids.append(base.Shape)
+        tolerance = abs(safe_height - obj.StartDepth.Value)
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
 
@@ -343,8 +344,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     target_position=target_at_safe_height,
                     local_clearance=safe_height,
                     global_clearance=obj.ClearanceHeight.Value,
-                    tool_shape=self.tool.Shape,
                     solids=solids,
+                    tool_diameter=self.tool.Diameter,
+                    tolerance=tolerance,
                 )
                 """if linking_moves contains only 2 commands this means
                 it not contains vertical moves to clearance height
