@@ -154,7 +154,18 @@ public:
 
     void parameterTabOrEnterPressed(int parameterindex)
     {
-        Q_UNUSED(parameterindex);
+        // If the signal came from a checkbox (encoded as nParameters + cbIdx),
+        // update parameterWithFocus to reflect the checkbox's position in the
+        // extended cycle before calling passFocusToNextParameter().
+        if (parameterindex >= SketcherToolDefaultWidget::nParameters) {
+            int cbIdx = parameterindex - SketcherToolDefaultWidget::nParameters;
+            ControllerBase::parameterWithFocus
+                = static_cast<int>(ControllerBase::onViewParameters.size()) + nParameter + cbIdx;
+            // The queued setFocus to a spinbox may cause its Tab KeyRelease to arrive at the
+            // spinbox's keyboard manager, triggering a spurious second tabShortcut() call.
+            // Suppress that Tab KeyRelease so focus lands correctly on the first spinbox.
+            ControllerBase::getKeyManager()->suppressNextTabRelease();
+        }
         passFocusToNextParameter();
     }
 
@@ -315,17 +326,28 @@ protected:
         }
     }
 
-    /// Here we can pass focus to either OVP or widget parameters.
+    /// Here we can pass focus to either OVP, widget spinboxes, or widget checkboxes.
     void passFocusToNextParameter()
     {
-        unsigned int index = ControllerBase::parameterWithFocus + 1;
+        const unsigned int ovpSize = static_cast<unsigned int>(ControllerBase::onViewParameters.size());
+        const unsigned int spinboxEnd = ovpSize + static_cast<unsigned int>(nParameter);
+        const unsigned int total = spinboxEnd + static_cast<unsigned int>(nCheckbox);
 
-        if (index >= ControllerBase::onViewParameters.size() + nParameter) {
+        // Start from the parameter after the currently focused one.
+        // parameterWithFocus may be -1 (no focus yet) or in the extended range.
+        unsigned int index = (ControllerBase::parameterWithFocus < 0)
+            ? 0u
+            : static_cast<unsigned int>(ControllerBase::parameterWithFocus) + 1u;
+
+        if (index >= total) {
             index = 0;
         }
 
-        auto trySetFocus = [this](unsigned int& idx) -> bool {
-            while (idx < ControllerBase::onViewParameters.size()) {
+        // Tries to set focus to the next available focusable item starting at idx.
+        // Cycles through: on-view parameters → spinboxes → checkboxes.
+        auto trySetFocus = [this, ovpSize, spinboxEnd, total](unsigned int& idx) -> bool {
+            // On-view parameters
+            while (idx < ovpSize) {
                 if (ControllerBase::isOnViewParameterOfCurrentMode(idx)
                     && ControllerBase::isOnViewParameterVisible(idx)) {
                     setFocusToParameter(idx);
@@ -333,21 +355,31 @@ protected:
                 }
                 idx++;
             }
-            if (idx < ControllerBase::onViewParameters.size() + nParameter) {
+            // Widget spinboxes
+            if (idx < spinboxEnd) {
                 setFocusToParameter(idx);
                 return true;
+            }
+            // Widget checkboxes
+            while (idx < total) {
+                int cbIdx = static_cast<int>(idx - spinboxEnd);
+                if (toolWidget->isCheckboxVisible(cbIdx)) {
+                    toolWidget->setCheckboxFocus(cbIdx);
+                    ControllerBase::parameterWithFocus = static_cast<int>(idx);
+                    return true;
+                }
+                idx++;
             }
             return false;
         };
 
         if (!trySetFocus(index)) {
-            // We have not found a parameter in this mode after current.
-            // So we go back to start and retry.
+            // Nothing found from the current position forward; wrap to the start.
             index = 0;
             trySetFocus(index);
         }
 
-        // At that point if no onViewParameter is found, there is none.
+        // At that point if no focusable item is found, there is none.
     }
     //@}
 
