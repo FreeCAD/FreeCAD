@@ -1,5 +1,10 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+BISON_TARGET(QuantityParser Quantity.y Quantity.tab.c
+    DEFINES_FILE Quantity.tab.h)
+FLEX_TARGET(QuantityLexer Quantity.l Quantity.lex.c)
+ADD_FLEX_BISON_DEPENDENCY(QuantityLexer QuantityParser)
+
 add_library(FreeCADBase SHARED)
 
 if(WIN32)
@@ -348,6 +353,11 @@ endif(FREECAD_USE_PCH)
 
 target_sources(FreeCADBase PRIVATE ${FreeCADBase_SRCS})
 target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
+
+add_custom_target(GenerateQuantityParser DEPENDS
+    ${BISON_QuantityParser_OUTPUTS}
+    ${FLEX_QuantityLexer_OUTPUTS})
+add_dependencies(FreeCADBase GenerateQuantityParser)
 
 if (MSVC)
     target_compile_definitions(FreeCADBase PRIVATE WIN32_LEAN_AND_MEAN)
