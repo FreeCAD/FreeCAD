@@ -1678,7 +1678,6 @@ StdCmdTransform::StdCmdTransform()
     sToolTipText = QT_TR_NOOP("Transforms the selected object");
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_Transform";
-    sAccel = "Ctrl+Shift+T";
 }
 
 void StdCmdTransform::activated(int iMsg)
