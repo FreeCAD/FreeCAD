@@ -32,25 +32,89 @@
 #include <Base/ServiceProvider.h>
 #include <Base/Tools.h>
 
+#include <StyleParameters/Gradient.h>
+
 #include <ranges>
+#include <QGraphicsEffect>
+#include <QGraphicsItem>
+#include <QGraphicsScene>
 #include <QImageReader>
+#include <QLinearGradient>
 #include <QPainter>
+#include <QRadialGradient>
 #include <QStyledItemDelegate>
 #include <QTimer>
 
+QPixmap applyDropShadow(const QPixmap& source)
+{
+    auto* effect = new QGraphicsDropShadowEffect;
+    effect->setBlurRadius(4);
+    effect->setOffset(QPointF(0.0, 2.0));
+    effect->setColor(QColor(0, 0, 0, 90));
+
+    auto* item = new QGraphicsPixmapItem;
+    item->setPixmap(source);
+    item->setGraphicsEffect(effect);
+
+    QGraphicsScene scene;
+    scene.addItem(item);
+
+    QPixmap result(source.size());
+    result.fill(Qt::transparent);
+    QPainter painter(&result);
+    scene.render(&painter, QRectF(QPointF(), source.size()), QRectF(QPointF(), source.size()));
+    return result;
+}
+
 QPixmap colorPreview(const QColor& color)
 {
-    constexpr qsizetype size = 16;
+    constexpr qsizetype iconSize = 24;
+    constexpr qsizetype shapeSize = 16;
+    constexpr qsizetype shapeX = 4;
+    constexpr qsizetype shapeY = 4;
 
-    QPixmap preview = Gui::BitmapFactory().empty({size, size});
+    QPixmap preview = Gui::BitmapFactory().empty({iconSize, iconSize});
 
-    QPainter painter(&preview);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(color);
-    painter.drawEllipse(QRect {0, 0, size, size});
+    {
+        QPainter painter(&preview);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(color);
+        painter.drawEllipse(QRect {shapeX, shapeY, shapeSize, shapeSize});
+    }
 
-    return preview;
+    return applyDropShadow(preview);
+}
+
+QPixmap gradientPreview(const Gui::StyleParameters::Tuple& tuple)
+{
+    constexpr qsizetype iconSize = 24;
+    constexpr qsizetype shapeSize = 16;
+    constexpr qsizetype shapeX = 4;
+    constexpr qsizetype shapeY = 4;
+    constexpr int cornerRadius = 3;
+
+    QPixmap preview = Gui::BitmapFactory().empty({iconSize, iconSize});
+
+    // convertTo<QBrush> uses QGradient::ObjectMode so gradient coords [0,1]
+    // map to the bounding rect of the painted shape — equivalent to the
+    // explicit pixel scaling this function previously performed.
+    try {
+        const QBrush brush = Base::convertTo<QBrush>(Gui::StyleParameters::Value(tuple));
+        if (brush.style() == Qt::NoBrush) {
+            return preview;
+        }
+
+        QPainter painter(&preview);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(brush);
+        painter.drawRoundedRect(QRect {shapeX, shapeY, shapeSize, shapeSize}, cornerRadius, cornerRadius);
+    }
+    catch (...) {
+    }
+
+    return applyDropShadow(preview);
 }
 
 QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
@@ -67,8 +131,15 @@ QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
             [](const Base::Color&) {
                 return QWidget::tr("Color");
             },
-            [](const Gui::StyleParameters::Tuple&) {
-                return QWidget::tr("Tuple");
+            [](const Gui::StyleParameters::Tuple& tuple) {
+                switch (tuple.kind) {
+                    case Gui::StyleParameters::TupleKind::LinearGradient:
+                        return QWidget::tr("Linear Gradient");
+                    case Gui::StyleParameters::TupleKind::RadialGradient:
+                        return QWidget::tr("Radial Gradient");
+                    default:
+                        return QWidget::tr("Tuple");
+                }
             }
         },
         value
@@ -302,6 +373,27 @@ public:
         painter->drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, tr("New parameter…"));
     }
 
+    void paintGradientPreview(
+        QPainter* painter,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index
+    ) const
+    {
+        // Draw background and selection highlight, suppressing text and icon.
+        QStyleOptionViewItem bgOnly(option);
+        bgOnly.text.clear();
+        bgOnly.icon = QIcon();
+        bgOnly.features.setFlag(QStyleOptionViewItem::HasDecoration, false);
+        bgOnly.features.setFlag(QStyleOptionViewItem::HasDisplay, false);
+        QStyledItemDelegate::paint(painter, bgOnly, index);
+
+        // Overlay the gradient bar stretched to the cell with a small margin.
+        constexpr int margin = 3;
+        const QRect drawRect = option.rect.adjusted(margin, margin, -margin, -margin);
+        const QPixmap gradientPixmap = index.data(Qt::UserRole).value<QPixmap>();
+        painter->drawPixmap(drawRect, gradientPixmap, gradientPixmap.rect());
+    }
+
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
     {
         auto model = dynamic_cast<const StyleParametersModel*>(index.model());
@@ -329,6 +421,10 @@ public:
 
             painter->fillRect(option.rect, headerBackgroundColor);
             QStyledItemDelegate::paint(painter, option, index);
+        }
+        else if (index.column() == StyleParametersModel::ParameterPreview
+                 && !index.data(Qt::UserRole).value<QPixmap>().isNull()) {
+            paintGradientPreview(painter, opt, index);
         }
         else {
             QStyledItemDelegate::paint(painter, option, index);
@@ -405,20 +501,11 @@ std::list<StyleParameters::Parameter> StyleParametersModel::all() const
 
 std::optional<StyleParameters::Parameter> StyleParametersModel::get(const std::string& name) const
 {
-    std::optional<StyleParameters::Parameter> result = std::nullopt;
+    if (auto it = parameterIndex.find(name); it != parameterIndex.end()) {
+        return it->second->token;
+    }
 
-    QtTools::walkTreeModel(this, [this, &name, &result](const QModelIndex& index) {
-        if (auto parameterItem = item<ParameterItem>(index)) {
-            if (parameterItem->token.name == name) {
-                result = parameterItem->token;
-                return true;
-            }
-        }
-
-        return false;
-    });
-
-    return result;
+    return std::nullopt;
 }
 
 void StyleParametersModel::removeItem(const QModelIndex& index)
@@ -431,6 +518,7 @@ void StyleParametersModel::removeItem(const QModelIndex& index)
         }
 
         groupItem->deleted.insert(parameterItem->token.name);
+        parameterIndex.erase(parameterItem->token.name);
 
         beginRemoveRows(index.parent(), index.row(), index.row());
         node(index.parent())->removeChild(index.row());
@@ -469,8 +557,19 @@ void StyleParametersModel::reset()
 
     // Expand tuples. We need to do this in a separate pass because resolution might require
     // parameters that are not yet added to the model if we do it in a single pass.
+    rebuildIndex();
     manager->reload();
     QtTools::walkTreeModel(this, [this](const QModelIndex& index) { expandTupleIfNeeded(index); });
+}
+
+void StyleParametersModel::rebuildIndex()
+{
+    parameterIndex.clear();
+    QtTools::walkTreeModel(this, [this](const QModelIndex& index) {
+        if (auto* parameterItem = item<ParameterItem>(index)) {
+            parameterIndex.emplace(parameterItem->token.name, parameterItem);
+        }
+    });
 }
 
 void StyleParametersModel::flush()
@@ -603,9 +702,16 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
             }
         }
 
-        if (role == Qt::DecorationRole) {
-            if (index.column() == ParameterPreview && std::holds_alternative<Base::Color>(*value)) {
+        if (role == Qt::DecorationRole && index.column() == ParameterPreview) {
+            if (std::holds_alternative<Base::Color>(*value)) {
                 return colorPreview(std::get<Base::Color>(*value).asValue<QColor>());
+            }
+            if (value->holds<StyleParameters::Tuple>()) {
+                const auto& tuple = value->get<StyleParameters::Tuple>();
+                if (tuple.kind == StyleParameters::TupleKind::LinearGradient
+                    || tuple.kind == StyleParameters::TupleKind::RadialGradient) {
+                    return gradientPreview(tuple);
+                }
             }
         }
     }
@@ -632,9 +738,16 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
             }
         }
 
-        if (role == Qt::DecorationRole) {
-            if (index.column() == ParameterPreview && tupleElementItem->value.holds<Base::Color>()) {
+        if (role == Qt::DecorationRole && index.column() == ParameterPreview) {
+            if (tupleElementItem->value.holds<Base::Color>()) {
                 return colorPreview(tupleElementItem->value.get<Base::Color>().asValue<QColor>());
+            }
+            if (tupleElementItem->value.holds<StyleParameters::Tuple>()) {
+                const auto& tuple = tupleElementItem->value.get<StyleParameters::Tuple>();
+                if (tuple.kind == StyleParameters::TupleKind::LinearGradient
+                    || tuple.kind == StyleParameters::TupleKind::RadialGradient) {
+                    return gradientPreview(tuple);
+                }
             }
         }
     }
@@ -659,9 +772,13 @@ bool StyleParametersModel::setData(
 
             // there is no rename operation, so we need to mark the previous token as deleted
             groupItem->deleted.insert(parameterItem->token.name);
+            parameterIndex.erase(parameterItem->token.name);
 
             parameterItem->name = newName;
             parameterItem->token = newToken;
+            // Use insert_or_assign so that renaming to a name that already exists in
+            // a lower-priority source correctly updates the index to this entry.
+            parameterIndex.insert_or_assign(newToken.name, parameterItem);
         }
 
         if (index.column() == ParameterExpression) {
@@ -687,9 +804,14 @@ bool StyleParametersModel::setData(
             int start = rowCount(index.parent());
 
             beginInsertRows(index.parent(), start, start + 1);
-            auto item = std::make_unique<Node>(std::make_unique<ParameterItem>(newName, token));
-            node(index.parent())->appendChild(std::move(item));
+            auto newNode = std::make_unique<Node>(std::make_unique<ParameterItem>(newName, token));
+            auto* newParameterItem = newNode->data<ParameterItem>();
+            node(index.parent())->appendChild(std::move(newNode));
             endInsertRows();
+            // Use insert_or_assign so that adding an override for a name that already
+            // exists in a lower-priority source correctly updates the index to point
+            // to this (higher-priority, user-editable) entry.
+            parameterIndex.insert_or_assign(token.name, newParameterItem);
 
             // this must be queued to basically next frame so widget has a chance to update
             QTimer::singleShot(0, [this, index]() { this->newParameterAdded(index); });
@@ -698,7 +820,10 @@ bool StyleParametersModel::setData(
 
     this->manager->reload();
 
-    expandTupleIfNeeded(index);
+    // Re-expand ALL tuples, not just the edited one: any token that references
+    // the changed token may produce a different tuple, so its ValueItem children
+    // need to be rebuilt with fresh resolved values.
+    QtTools::walkTreeModel(this, [this](const QModelIndex& index) { expandTupleIfNeeded(index); });
 
     QtTools::walkTreeModel(this, [this](const QModelIndex& index) {
         const QModelIndex previewColumnIndex = index.siblingAtColumn(ParameterPreview);
@@ -816,7 +941,10 @@ DlgThemeEditor::DlgThemeEditor(QWidget* parent)
     }
 
     ui->tokensTreeView->setColumnWidth(StyleParametersModel::ParameterName, nameColumnWidth);
-    ui->tokensTreeView->expandAll();
+
+    for (int row = 0; row < model->rowCount(QModelIndex()); ++row) {
+        ui->tokensTreeView->expand(model->index(row, 0, QModelIndex()));
+    }
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
@@ -831,7 +959,9 @@ DlgThemeEditor::DlgThemeEditor(QWidget* parent)
     );
 
     connect(model.get(), &StyleParametersModel::modelReset, ui->tokensTreeView, [this] {
-        ui->tokensTreeView->expandAll();
+        for (int row = 0; row < model->rowCount(QModelIndex()); ++row) {
+            ui->tokensTreeView->expand(model->index(row, 0, QModelIndex()));
+        }
     });
     connect(model.get(), &StyleParametersModel::newParameterAdded, this, [this](const QModelIndex& index) {
         const auto newParameterExpressionIndex = index.siblingAtColumn(
