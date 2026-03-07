@@ -104,29 +104,6 @@ Gui--NavigationIndicatorGui--BlenderNavigationStyle {
   qproperty-icon: url(:/icons/icons/NavigationBlender_light.svg);
 }
 
-/* QWidget ----------------------------------------------------------------
-This causes much load time. DONT USE "QWidget { " This causes a lot of lag.
-*/
-
-QColorDialog {
-  background-color: @DialogBackgroundColor;
-  border: 1px solid @GeneralBorderColor;
-}
-
-QColorDialog QWidget {
-  border: 1px solid @GeneralBorderColor;
-}
-
-QColorDialog QLabel {
-  border-style: none;
-}
-
-/* Causes issue with colorselector.
-  QWidget::item:hover:!selected {
-  background-color: @AccentColor;
-}
-*/
-
 /* QToolTip ---------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtooltip
@@ -542,26 +519,6 @@ QMenu::right-arrow {
   background-color: transparent;
 }
 
-
-/* QTextEdit --------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-specific-widgets
-
-report view
---------------------------------------------------------------------------- */
-QTextEdit {
-  background-color: @TextEditFieldBackgroundColor;
-  border-top: 1px solid @GeneralBorderColor;
-}
-
-QTextEdit:focus {
-  border-top: 2px solid @AccentColor;
-}
-
-QTextEdit:selected {
-  background-color: @AccentColor;
-}
-
 /* QToolBar ---------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbar
@@ -664,113 +621,6 @@ QToolBar[objectName="Edit"] > QToolButton::menu-arrow:open {
   image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
 }
 
-/* QAbstractSpinBox -------------------------------------------------------
-
---------------------------------------------------------------------------- */
-QAbstractSpinBox,
-QSpinBox {
-  background-color:  @TextEditFieldBackgroundColor;
-  border: 1px solid @GeneralBorderColor;
-  border-radius: @InputFieldBorderRadius;
-  padding-left: 4px;
-  padding-right: 4px;
-  height: @{@FormControlHeight - 5px};
-}
-
-QAbstractSpinBox:up-button {
-  subcontrol-origin: border;
-  subcontrol-position: top right;
-  border: none;
-  background: transparent;
-  margin-top: 2px;
-  margin-right: 2px;
-}
-
-QAbstractSpinBox:up-button:hover{
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QAbstractSpinBox:up-button:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-}
-
-QAbstractSpinBox::up-arrow:disabled, QAbstractSpinBox::up-arrow:off {
-  image: url(qss:@IconsLocationFolderName/arrow-up-lightgray.svg);
-}
-
-QAbstractSpinBox::up-arrow {
-  image: url(qss:@IconsLocationFolderName/arrow-up-lightgray.svg);
-  height: 8px;
-  width: 8px;
-}
-
-QAbstractSpinBox::up-arrow:hover {
-  image: url(qss:@IconsLocationFolderName/arrow-up-@StylesheetIconsColor.svg);
-}
-
-QAbstractSpinBox:down-button {
-  subcontrol-origin: border;
-  subcontrol-position: bottom right;
-  border: none;
-  background: transparent;
-  margin-bottom: 2px;
-  margin-right: 2px;
-}
-
-QAbstractSpinBox:down-button:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-}
-
-QAbstractSpinBox::down-arrow, QAbstractSpinBox::down-arrow:disabled, QAbstractSpinBox::down-arrow:off {
-  image: url(qss:@IconsLocationFolderName/arrow-down-lightgray.svg);
-  height: 8px;
-  width: 8px;
-}
-
-QAbstractSpinBox::down-arrow:hover {
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-  height: 8px;
-  width: 8px;
-}
-
-QAbstractSpinBox:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-}
-
-QAbstractSpinBox:hover {}
-
-QAbstractSpinBox:focus {
-  border: 1px solid @AccentColor;
-}
-
-QAbstractSpinBox:selected {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-/* ------------------------------------------------------------------------ */
-/* BUTTONS ---------------------------------------------------------------- */
-/* ------------------------------------------------------------------------ */
-/* QPushButton ------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qpushbutton
-
---------------------------------------------------------------------------- */
-
-QAbstractButton[flat="true"] {
-  background-color: transparent;
-  border: 1px solid transparent;
-}
-
-Gui--FileChooser QPushButton {
-  min-width: 0;
-}
-
-QPushButton::menu-indicator {
-  subcontrol-origin: padding;
-  subcontrol-position: bottom right;
-  bottom: 4px;
-}
-
 /* QToolButton ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
@@ -820,17 +670,6 @@ QSint--ActionGroup {
 /* if not reset, it might create problems with QPushButtons and other elements */
   border-radius: @InputFieldBorderRadius;
 }
-
-/* QSint--ActionGroup QGroupBox {
-  border: 1px solid @GeneralBorderColor;
-  background-color: @ButtonTopBackgroundColor;
-  padding-bottom: 3px;
-} */
-
-/* QSint--ActionGroup QGroupBox::title {
-  top: -18px;
-  left: 3px;
-} */
 
 /* Separator line */
 QSint--ActionGroup QFrame[height="1"],
@@ -1063,36 +902,6 @@ QSlider::handle:vertical:hover {
 
 QSlider::handle:vertical:focus {
   border: 1px solid @AccentColor;
-}
-
-/* QLineEdit --------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qlineedit
-
---------------------------------------------------------------------------- */
-QLineEdit, QTextEdit, QPlainTextEdit {
-  background-color: @TextEditFieldBackgroundColor;
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
-  border-style: solid;
-  border: 1px solid @GeneralBorderColor;
-  border-radius: @InputFieldBorderRadius;
-  height: @FormControlHeight;
-}
-
-QLineEdit:disabled, QTextEdit:disabled, QPlainTextEdit:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  color @TextDisabledColor;
-}
-
-QLineEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
-  border: 1px solid @AccentColor;
-}
-
-QLineEdit:selected, QTextEdit:selected, QPlainTextEdit:selected {
-  background-color: @GeneralBackgroundHoverColor;
 }
 
 /* QTabWiget --------------------------------------------------------------
@@ -1635,75 +1444,6 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
 QTableCornerButton::section {
   background-color: @PrimaryColor;
   border-radius: 0px;/*if you remove this line it breaks it */}
-QHeaderView {
-  background-color: transparent;
-  margin-top -1px;/* fix for misalignment*/}
-QHeaderView:disabled {
-  color: @TextDisabledColor;
-}
-
-QHeaderView::section {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
-  padding: 4px;
-}
-
-QHeaderView::section:hover {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QHeaderView::section::horizontal {
-  border-bottom: 1px solid @GeneralBorderColor;
-  border-right: 1px solid @GeneralBorderColor;
-  border-top: 1px solid @GeneralBorderColor;
-  border-left: 1px solid transparent;
-}
-
-QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-one {
-  border-left: 1px solid @GeneralBorderColor;
-}
-
-QHeaderView::section::horizontal:disabled {
-  color: @TextDisabledColor;
-}
-
-QHeaderView::section::vertical {
-  border-bottom: 1px solid transparent;
-  border-right: 1px solid @GeneralBorderColor;
-  border-top: 1px solid @GeneralBorderColor;
-  border-left: 1px solid @GeneralBorderColor;
-  margin-left: 1px;
-  margin-right: 1px;
-}
-
-QHeaderView::section::vertical::first, QHeaderView::section::vertical::only-one {
- border-top: 1px solid @GeneralBorderColor;
-}
-
-QHeaderView::section::vertical:disabled {
-  border-top: 1px solid @GeneralBorderColor;
-}
-
-QHeaderView::down-arrow {
-  /* Those settings (border/width/height/background-color) solve bug */
-  /* transparent arrow background and size */
-  background-color: transparent;
-  border-style: none;
-  height: 12px;
-  width: 12px;
-  padding-left: 2px;
-  padding-right: 2px;
-  image: url(qss:@IconsLocationFolderName/arrow-down-lightgray.svg);
-}
-
-QHeaderView::up-arrow {
-  background-color: transparent;
-  border-style: none;
-  height: 12px;
-  width: 12px;
-  padding-left: 2px;
-  padding-right: 2px;
-  image: url(qss:@IconsLocationFolderName/arrow-up-lightgray.svg);
-}
 
 /* QToolBox --------------------------------------------------------------
 
@@ -1852,10 +1592,6 @@ QTreeView, QListView, QTableView {
   border-radius: @FormControlBorderRadius;
 }
 
-QHeaderView::section {
-  border: none;
-}
-
 QAbstractView:hover {
   border: 1px solid @AccentColor;
 }
@@ -1980,16 +1716,6 @@ QMainWindow QListView {
   background-color: @PrimaryColor;/* background of the workbenches listview used in the settings*/
   /* border: 1px solid @GeneralBorderColor; */
   /* border-radius: 3px; */}
-
-QMainWindow QHeaderView::section::horizontal {
-  border-style: none;
-  border-bottom: 1px solid @GeneralBorderColor;
-  border-left: 1px solid @GeneralBorderColor;
-}
-
-QMainWindow QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-one {
-  border-left: 0px solid transparent;
-}
 
 Gui--Dialog--DocumentRecovery QTreeView {
   border: 1px solid @GeneralBorderColor;
