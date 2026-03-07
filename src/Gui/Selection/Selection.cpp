@@ -521,6 +521,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(
             if (subelement && *subelement) {
                 temp.back().SubNames.emplace_back(subelement);
                 temp.back().SelPoses.emplace_back(sel.x, sel.y, sel.z);
+                temp.back().evaluateLinkParent(Base::Tools::splitSubName(sel.SubName));
                 if (resolve != ResolveMode::NoResolve) {
                     temp.back()._SubNameSet.insert(subelement);
                 }
