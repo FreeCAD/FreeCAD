@@ -38,7 +38,7 @@ Source0:        freecad-sources.tar.gz
 %global bundled_smesh_version 7.7.1.0
 # See /src/3rdParty/PyCXX/CXX/Version.h to find this out.
 %global bundled_pycxx_version 7.1.9
-# See /src/3rdParty/OndselSolver/CMakeLists.txt to find this out.k
+# See /src/3rdParty/OndselSolver/CMakeLists.txt to find this out.
 %global bundled_ondsel_solver_version 1.0.1
 
 # Utilities
