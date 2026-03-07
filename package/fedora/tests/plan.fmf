@@ -3,7 +3,7 @@ summary:
 prepare:
     how: install
     package: 
-    - xwayland-run 
+    - xwayland-run
     - weston
 discover:
     how: fmf
