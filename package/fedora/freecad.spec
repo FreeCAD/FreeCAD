@@ -220,7 +220,7 @@ Development file for OndselSolver
     else
         echo "**** Failed ctest ****"
         touch %{buildroot}%tests_resultdir/ctest.failed
-    fi    
+    fi
 %endif
 
     desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop
