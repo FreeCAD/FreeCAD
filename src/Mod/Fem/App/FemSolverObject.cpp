@@ -39,7 +39,7 @@ FemSolverObject::FemSolverObject()
     ADD_PROPERTY_TYPE(
         Results,
         (nullptr),
-        "Solver",
+        "Base",
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
         "Solver results list"
     );
@@ -53,7 +53,7 @@ FemSolverObject::FemSolverObject()
     ADD_PROPERTY_TYPE(
         Tool,
         (Py::Object()),
-        "Solver",
+        "Base",
         App::PropertyType(
             App::Prop_Transient | App::Prop_Hidden | App::Prop_ReadOnly | App::Prop_Output
         ),
