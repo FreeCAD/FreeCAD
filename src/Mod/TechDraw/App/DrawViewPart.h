@@ -77,6 +77,7 @@ class GeomFormat;
 namespace TechDraw
 {
 class DrawViewSection;
+enum class FaceFinderVersion;
 
 
 enum class ProjDirection {
@@ -102,6 +103,12 @@ enum class RotationMotion {
 enum class SpinDirection {
     CW,
     CCW
+};
+
+enum class FaceRepresentation {
+    Failed = -1,
+    Hollow =  0,
+    Opaque = +1
 };
 
 class TechDrawExport DrawViewPart: public DrawView, public CosmeticExtension
@@ -176,6 +183,9 @@ public:
     //returns a compound of all the visible projected edges
     TopoDS_Shape getEdgeCompound() const;
 
+    // Attempt to decide whether each face represents either the material or a hole
+    std::vector<FaceRepresentation> getFaceRepresentations(const std::vector<TopoDS_Face>& faces) const;
+
     // projected geometry measurements
     virtual Base::BoundBox3d getBoundingBox() const;
     double getBoxX() const;
@@ -208,7 +218,8 @@ public:
 
     // switches
     bool handleFaces();
-    bool newFaceFinder();
+    FaceFinderVersion faceFinderVersion();
+    bool identifyVoids();
     bool isUnsetting() { return nowUnsetting; }
 
     virtual TopoDS_Shape getSourceShape(bool fuse = false, bool allow2d = true) const;
@@ -266,8 +277,9 @@ protected:
     virtual void addPoints(void);
 
     void extractFaces();
-    void findFacesNew(const std::vector<TechDraw::BaseGeomPtr>& goEdges);
-    void findFacesOld(const std::vector<TechDraw::BaseGeomPtr>& goEdges);
+    void findFacesV1_2(const std::vector<TechDraw::BaseGeomPtr>& goEdges);
+    void findFacesV0_21(const std::vector<TechDraw::BaseGeomPtr>& goEdges);
+    void findFacesV0_17(const std::vector<TechDraw::BaseGeomPtr>& goEdges);
 
     Base::Vector3d shapeCentroid;
 

@@ -92,6 +92,8 @@ public:
                                               const Base::Vector3d& direction);
     static Base::Vector3d findCentroidVec(const TopoDS_Shape& shape, const gp_Ax2& cs);
 
+//! Tries to find a point inside the given face
+    static std::optional<gp_Pnt> findPointInsideFace(const TopoDS_Face& face);
 
 //! creates a RH coordinate system with the origin at origin and the Z axis along direction.
 //  the flip will cause the Z axis to be the reversed of direction
@@ -112,6 +114,7 @@ public:
 
     static bool edgesAreParallel(TopoDS_Edge edge0, TopoDS_Edge edge1);
 
+    static gp_Pnt fromQt(gp_Pnt point);
     static TopoDS_Shape fromQt(const TopoDS_Shape& inShape);
     static TopoDS_Shape toQt(const TopoDS_Shape& inShape);
     static TopoDS_Wire fromQtAsWire(const TopoDS_Shape& inShape);
