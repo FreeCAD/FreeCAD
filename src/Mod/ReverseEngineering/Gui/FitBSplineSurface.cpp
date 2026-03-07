@@ -157,17 +157,17 @@ void FitBSplineSurfaceWidget::onMakePlacementClicked()
                     )
                                           .arg(document, argument);
 
-                    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Placement"));
+                    d->obj.getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Placement"));
                     Gui::Command::runCommand(Gui::Command::Doc, "from FreeCAD import Base");
                     Gui::Command::runCommand(Gui::Command::Doc, command.toLatin1());
-                    Gui::Command::commitCommand();
+                    d->obj.getDocument()->commitTransaction();
                     Gui::Command::updateActive();
                 }
             }
         }
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        d->obj.getDocument()->abortTransaction();
         QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
     }
 }
@@ -239,13 +239,13 @@ bool FitBSplineSurfaceWidget::accept()
 
         Gui::WaitCursor wc;
         Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
+        d->obj.getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Fit B-spline"));
         Gui::Command::runCommand(Gui::Command::Doc, command.toLatin1());
-        Gui::Command::commitCommand();
+        d->obj.getDocument()->commitTransaction();
         Gui::Command::updateActive();
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        d->obj.getDocument()->abortTransaction();
         QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }

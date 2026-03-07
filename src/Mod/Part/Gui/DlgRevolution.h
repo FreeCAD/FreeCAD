@@ -83,6 +83,7 @@ private:
     std::unique_ptr<Ui_DlgRevolution> ui;
     class EdgeSelection;
     EdgeSelection* filter;
+    bool filterSelection;
 };
 
 class TaskRevolution: public Gui::TaskView::TaskDialog

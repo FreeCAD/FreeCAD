@@ -197,7 +197,7 @@ void TaskHatch::createHatch()
     const std::string objectName("Hatch");
     std::string FeatName = doc->getUniqueObjectName(objectName.c_str());
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
+    int tid = Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
 
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawHatch', '%s')", FeatName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawHatch', 'Hatch', '%s')",
@@ -226,7 +226,7 @@ void TaskHatch::createHatch()
     } else {
         Base::Console().error("TaskHatch - hatch has no ViewProvider\n");
     }
-    Command::commitCommand();
+    Command::commitCommand(tid);
 }
 
 void TaskHatch::updateHatch()
@@ -234,7 +234,7 @@ void TaskHatch::updateHatch()
 //    Base::Console().message("TH::updateHatch()\n");
     std::string FeatName = m_hatch->getNameInDocument();
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
+    int tid = Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
 
     auto filespec = ui->fcFile->fileName().toStdString();
     filespec = DU::cleanFilespecBackslash(filespec);
@@ -249,7 +249,7 @@ void TaskHatch::updateHatch()
     m_vp->HatchRotation.setValue(ui->dsbRotation->value());
     Base::Vector3d offset(ui->dsbOffsetX->value(), ui->dsbOffsetY->value(), 0.0);
     m_vp->HatchOffset.setValue(offset);
-    Command::commitCommand();
+    Command::commitCommand(tid);
 }
 
 bool TaskHatch::accept()

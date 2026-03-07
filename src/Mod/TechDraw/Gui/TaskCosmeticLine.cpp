@@ -172,7 +172,7 @@ void TaskCosmeticLine::setUiEdit()
 void TaskCosmeticLine::createCosmeticLine()
 {
 //    Base::Console().message("TCL::createCosmeticLine()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
 
     // ui 2d points are interpreted as unscaled, unrotated, uninverted
     double x = ui->qsbx1->value().getValue();
@@ -200,7 +200,7 @@ void TaskCosmeticLine::createCosmeticLine()
     m_ce = m_partFeat->getCosmeticEdge(m_tag);
     m_ce->setFormat(LineFormat::getCurrentLineFormat());
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 }
 
 void TaskCosmeticLine::updateCosmeticLine()
@@ -248,12 +248,12 @@ bool TaskCosmeticLine::accept()
         m_partFeat->requestPaint();
     } else {
         //update mode
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Cosmetic Line"));
+        int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Update Cosmetic Line"));
         updateCosmeticLine();
         m_partFeat->refreshCEGeoms();
         m_partFeat->requestPaint();
         Gui::Command::updateActive();
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
 
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");

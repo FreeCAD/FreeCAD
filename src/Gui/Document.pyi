@@ -187,6 +187,31 @@ class Document(Persistence):
         obj : Gui.ViewProvider
         """
         ...
+
+    def openCommand(self, name: str) -> int:
+        """
+        openCommand(name) -> int
+
+        Opens a named transaction for the document and returns it's
+        id or 0 on failure
+        """
+        ...
+
+    def commitCommand(self) -> None:
+        """
+        commitCommand() -> None
+
+        Commits the current transaction of the document
+        """
+        ...
+
+    def abortCommand(self) -> None:
+        """
+        abortCommand() -> None
+
+        Aborts the current transaction of the document
+        """
+        ...
     ActiveObject: Any = ...
     """The active object of the document."""
 

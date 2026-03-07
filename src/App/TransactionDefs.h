@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2026 Théo Veilleux-Trinh <theo.veilleux.trinh@proton.me>*
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,55 +22,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#pragma once
 
-#include <QObject>
-#include <memory>
+#ifndef APP_TRANSACTIONDEFS_H_
+#define APP_TRANSACTIONDEFS_H_
 
+#include <string>
 
-namespace Sketcher
-{
-class Constraint;
-class SketchObject;
-}  // namespace Sketcher
+namespace App {
 
-namespace SketcherGui
-{
-class ViewProviderSketch;
-class Ui_InsertDatum;
+class Document;
 
-bool checkConstraintName(const Sketcher::SketchObject* sketch, std::string constraintName);
+constexpr int NullTransaction = 0;
 
-class EditDatumDialog: public QObject
-{
-    Q_OBJECT
-
-public:
-    EditDatumDialog(int tid, ViewProviderSketch* vp, int ConstrNbr);
-    EditDatumDialog(int tid, Sketcher::SketchObject* pcSketch, int ConstrNbr);
-    ~EditDatumDialog() override;
-
-    int exec(bool atCursor = true);
-    bool isSuccess();
-
-private:
-    Sketcher::SketchObject* sketch;
-    Sketcher::Constraint* Constr;
-    int ConstrNbr;
-    bool success;
-    std::unique_ptr<Ui_InsertDatum> ui_ins_datum;
-    int transactionID;
-
-private Q_SLOTS:
-    void accepted();
-    void rejected();
-    void drivingToggled(bool);
-    void datumChanged();
-    void formEditorOpened(bool);
-    void typeChanged(bool);
-
-private:
-    void performAutoScale(double newDatum);
+struct TransactionName {
+    // Name of the transaction as it will appear in the GUI
+    std::string name;
+    
+    // If true, the transaction is allowed to be renamed
+    bool temporary { false };
 };
 
-}  // namespace SketcherGui
+struct TransactionDescription {
+    // Document on which the transaction was first created
+    // useful for mass transaction (e.g. delete from an assembly)
+    // where other documents may use the same transaction id
+    Document* initiator { nullptr };
+    TransactionName name;
+};
+
+enum class TransactionCloseMode {
+    Commit = 0,
+    Abort = 1,
+};
+}
+
+#endif

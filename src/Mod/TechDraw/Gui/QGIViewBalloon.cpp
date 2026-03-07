@@ -35,6 +35,8 @@
 #include <App/Application.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Tools.h>
 #include <Mod/TechDraw/App/ArrowPropEnum.h>
@@ -503,7 +505,9 @@ void QGIViewBalloon::balloonLabelDragFinished()
     //set feature position (x, y) from graphic position
     double x = Rez::appX(balloonLabel->getCenterX() / scale);
     double y = Rez::appX(balloonLabel->getCenterY() / scale);
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Balloon"));
+
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Drag Balloon"));
+
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
                             dvb->getNameInDocument(), x);
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
@@ -527,7 +531,7 @@ void QGIViewBalloon::balloonLabelDragFinished()
                                 dvb->getNameInDocument(), originAppUnrotated.y);
     }
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     m_dragInProgress = false;
     m_originDragged = false;

@@ -490,7 +490,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 
     std::string baseName = m_base->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Section View"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Section View"));
     if (!m_section) {
         const std::string objectName("SectionView");
         m_sectionName = m_base->getDocument()->getUniqueObjectName(objectName.c_str());
@@ -555,7 +555,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Rotation = %.6f",
                            m_sectionName.c_str(), rotation);
     }
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     return m_section;
 }
 
@@ -569,7 +569,7 @@ void TaskSectionView::updateSectionView()
     const std::string objectName("SectionView");
     std::string baseName = m_base->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(), m_dirName.c_str());
@@ -618,7 +618,7 @@ void TaskSectionView::updateSectionView()
             directionChanged(false);
         }
     }
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 }
 
 std::string TaskSectionView::makeSectionLabel(QString symbol)
