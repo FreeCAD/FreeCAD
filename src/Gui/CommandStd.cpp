@@ -41,6 +41,7 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "CommandPalette.h"
 #include "Dialogs/DlgAbout.h"
 #include "Dialogs/DlgCustomizeImp.h"
 #include "Dialogs/DlgParameterImp.h"
@@ -1044,6 +1045,40 @@ void StdCmdAnnotationLabel::activated(int)
     commitCommand();
 }
 
+//===========================================================================
+// Std_CommandPalette
+//===========================================================================
+DEF_STD_CMD_A(StdCmdCommandPalette)
+
+StdCmdCommandPalette::StdCmdCommandPalette()
+    : Command("Std_CommandPalette")
+{
+    sGroup = "Tools";
+    sMenuText = QT_TR_NOOP("Command &Palette...");
+    sToolTipText = QT_TR_NOOP("Open the command palette to search and execute commands");
+    sWhatsThis = "Std_CommandPalette";
+    sStatusTip = sToolTipText;
+    sAccel = "Ctrl+Shift+P";
+    sPixmap = "accessories-text-editor";
+    eType = 0;
+}
+
+void StdCmdCommandPalette::activated(int)
+{
+    static QPointer<CommandPalette> palette;
+
+    if (!palette) {
+        palette = new CommandPalette(getMainWindow());
+    }
+
+    palette->showPalette();
+}
+
+bool StdCmdCommandPalette::isActive()
+{
+    return true;
+}
+
 namespace Gui
 {
 
@@ -1075,6 +1110,7 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
     rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
+    rcCmdMgr.addCommand(new StdCmdCommandPalette());
     rcCmdMgr.addCommand(new StdCmdDevHandbook());
     // rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     // rcCmdMgr.addCommand(new StdCmdDescription());
