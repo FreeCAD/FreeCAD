@@ -37,6 +37,15 @@ Origin::Origin()
 {
     // App::Origin is a LCS for which placement is fixed to identity.
     Placement.setStatus(Property::Hidden, true);
+    Placement.setStatus(Property::ReadOnly, true);
 }
 
 Origin::~Origin() = default;
+
+void Origin::onDocumentRestored()
+{
+    LocalCoordinateSystem::onDocumentRestored();
+
+    // Make existing origin placements read only.
+    Placement.setStatus(Property::ReadOnly, true);
+}
