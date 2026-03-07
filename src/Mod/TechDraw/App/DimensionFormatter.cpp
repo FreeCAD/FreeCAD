@@ -125,10 +125,7 @@ std::string DimensionFormatter::formatValue(const qreal value,
 
     // convert ^2 to superscript 2 for display
     if (areaMeasure) {
-        size_t tagPosition = unitText.find(squareTag);
-        if (tagPosition != std::string::npos) {
-            unitText = unitText.replace(tagPosition, 2, super2);
-        }
+        unitText = Base::UnitsApi::toUnicodeSuperscript(unitText);
     }
 
     QString formattedValue = formatValueToSpec(userVal, formatSpecifier);

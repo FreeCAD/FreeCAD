@@ -42,6 +42,7 @@
 
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/UnitsApi.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/ViewParams.h>
@@ -286,7 +287,8 @@ void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
 
 void ViewProviderMeasureBase::setLabelValue(const QString& value)
 {
-    auto lines = value.split(QStringLiteral("\n"));
+    const auto userString = Base::UnitsApi::toUnicodeSuperscript(value.toStdString());
+    const auto lines = QString::fromStdString(userString).split(QStringLiteral("\n"));
 
     int i = 0;
     for (auto& it : lines) {

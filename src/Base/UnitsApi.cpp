@@ -134,3 +134,62 @@ std::string UnitsApi::schemaTranslate(const Quantity& quant)
     std::string dummy2;
     return schemas->currentSchema()->translate(quant, dummy1, dummy2);
 }
+
+std::string UnitsApi::toUnicodeSuperscript(const std::string& str)
+{
+    static const char* superscripts[] = {
+        "\xe2\x81\xb0",  // ⁰ U+2070
+        "\xc2\xb9",      // ¹ U+00B9
+        "\xc2\xb2",      // ² U+00B2
+        "\xc2\xb3",      // ³ U+00B3
+        "\xe2\x81\xb4",  // ⁴ U+2074
+        "\xe2\x81\xb5",  // ⁵ U+2075
+        "\xe2\x81\xb6",  // ⁶ U+2076
+        "\xe2\x81\xb7",  // ⁷ U+2077
+        "\xe2\x81\xb8",  // ⁸ U+2078
+        "\xe2\x81\xb9",  // ⁹ U+2079
+    };
+
+    static const char* superscriptMinus = "\xe2\x81\xbb";  // ⁻ U+207B
+
+    std::string result;
+    bool superscript = false;
+    bool minus = false;
+
+    auto flushPending = [&] {
+        if (superscript) {
+            result += '^';
+            if (minus) {
+                result += '-';
+            }
+            superscript = false;
+            minus = false;
+        }
+    };
+
+    for (char ch : str) {
+        if (ch == '^') {
+            flushPending();
+            superscript = true;
+        }
+        else if (superscript && ch == '-' && !minus) {
+            minus = true;
+        }
+        else if (superscript && ch >= '0' && ch <= '9') {
+            if (minus) {
+                result += superscriptMinus;
+            }
+            result += superscripts[ch - '0'];
+            superscript = false;
+            minus = false;
+        }
+        else {
+            flushPending();
+            result += ch;
+        }
+    }
+
+    flushPending();
+
+    return result;
+}

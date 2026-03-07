@@ -1910,12 +1910,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     asQuantity.setValue(totalArea);
     asQuantity.setUnit(Base::Unit::Area);
 
-    QString qUserString = QString::fromStdString(asQuantity.getUserString());
-    if (qUserString.endsWith(QStringLiteral("^2"))) {
-        qUserString.chop(2);
-        qUserString.append(QStringLiteral("²"));
-    }
-    std::string sUserString = qUserString.toStdString();
+    std::string sUserString = Base::UnitsApi::toUnicodeSuperscript(asQuantity.getUserString());
 
     // set the attributes in the data tab's fields
     //    balloon->SourceView.setValue(objFeat);
