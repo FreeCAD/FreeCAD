@@ -1966,11 +1966,50 @@ void PropertyMap::setValue(const std::string& key, const std::string& value)
     hasSetValue();
 }
 
+void PropertyMap::setValue(const char *key, const char *value)
+{
+    if (!key) {
+        return;
+    }
+    if (!value) {
+        auto it = _lValueList.find(key);
+        if (it == _lValueList.end()) {
+            return;
+        }
+        aboutToSetValue();
+        _lValueList.erase(it);
+        hasSetValue();
+        return;
+    }
+
+    aboutToSetValue();
+    _lValueList[key] = value;
+    hasSetValue();
+}
+
 void PropertyMap::setValues(const std::map<std::string, std::string>& map)
 {
     aboutToSetValue();
     _lValueList = map;
     hasSetValue();
+}
+
+void PropertyMap::setValues(std::map<std::string,std::string>&& map)
+{
+    aboutToSetValue();
+    _lValueList=std::move(map);
+    hasSetValue();
+}
+
+const char* PropertyMap::getValue(const char *key) const {
+    if (!key) {
+        return 0;
+    }
+    auto it = _lValueList.find(key);
+    if (it == _lValueList.end()) {
+        return 0;
+    }
+    return it->second.c_str();
 }
 
 const std::string& PropertyMap::operator[](const std::string& key) const
@@ -3628,3 +3667,4 @@ void PropertyPersistentObject::setValue(const char* type)
     }
     hasSetValue();
 }
+
