@@ -25,7 +25,6 @@
 #include <iomanip>
 
 #include <CXX/WrapPython.h>
-#include <QString>
 
 #include "Exception.h"
 #include "UnitsApi.h"
@@ -134,11 +133,6 @@ std::string UnitsApi::schemaTranslate(const Quantity& quant)
     double dummy1 {};  // to satisfy GCC
     std::string dummy2;
     return schemas->currentSchema()->translate(quant, dummy1, dummy2);
-}
-
-QString UnitsApi::toUnicodeSuperscript(const QString& str)
-{
-    return QString::fromStdString(toUnicodeSuperscript(str.toStdString()));
 }
 
 std::string UnitsApi::toUnicodeSuperscript(const std::string& str)

@@ -287,7 +287,8 @@ void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
 
 void ViewProviderMeasureBase::setLabelValue(const QString& value)
 {
-    auto lines = Base::UnitsApi::toUnicodeSuperscript(value).split(QStringLiteral("\n"));
+    const auto userString = Base::UnitsApi::toUnicodeSuperscript(value.toStdString());
+    const auto lines = QString::fromStdString(userString).split(QStringLiteral("\n"));
 
     int i = 0;
     for (auto& it : lines) {
