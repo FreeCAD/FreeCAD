@@ -700,7 +700,9 @@ void ViewProviderMeasure::redrawAnnotation()
     Base::Vector3d basePos = getBasePosition();
     pcTransform->translation.setValue(SbVec3f(basePos.x, basePos.y, basePos.z));
 
-    setLabelValue(getMeasureObject()->getResultString());
+    QString labelText = getMeasureObject()->getResultString();
+    labelText.replace(QLatin1String("^2"), QChar(UnicodeSuperscript2));
+    setLabelValue(labelText);
 
     ViewProviderMeasureBase::redrawAnnotation();
     ViewProviderDocumentObject::updateView();

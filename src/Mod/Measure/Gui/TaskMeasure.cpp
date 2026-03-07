@@ -49,6 +49,7 @@
 #include <QSignalBlocker>
 
 #include <Base/Quantity.h>
+#include <Base/UnitsApi.h>
 #include <array>
 
 using namespace MeasureGui;
@@ -59,6 +60,7 @@ constexpr auto taskMeasureSettingsGroup = "TaskMeasure";
 constexpr auto taskMeasureShowDeltaSettingsName = "ShowDelta";
 constexpr auto taskMeasureAutoSaveSettingsName = "AutoSave";
 constexpr auto taskMeasureGreedySelection = "GreedySelection";
+constexpr char32_t UnicodeSuperscript2 = 0x00B2;
 
 using SelectionStyle = Gui::SelectionSingleton::SelectionStyle;
 
@@ -86,7 +88,9 @@ QString extractUnitFromResultString(const QString& resultString)
     auto lastSpace = str.find_last_of(' ');
 
     if (lastSpace != std::string::npos && lastSpace < str.length() - 1) {
-        return QString::fromStdString(str.substr(lastSpace + 1));
+        QString unit = QString::fromStdString(str.substr(lastSpace + 1));
+        unit.replace(QLatin1String("^2"), QChar(UnicodeSuperscript2));
+        return unit;
     }
 
     return QString();
@@ -476,23 +480,40 @@ void TaskMeasure::updateResultWithUnit()
 
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
         Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
+        QString unitForParse = currentUnit;
+        unitForParse.replace(QChar(UnicodeSuperscript2), QLatin1String("^2"));
         // Parse unit string like "1 mm" to get the target quantity
         Base::Quantity targetUnit = Base::Quantity::parse(
-            (QLatin1String("1 ") + currentUnit).toStdString()
+            (QLatin1String("1 ") + unitForParse).toStdString()
         );
         double convertedValue = resultQty.getValueAs(targetUnit);
 
-        QString formattedValue;
-        // 4 decimal places, if between -1 and 1: 4 significant digits
-        if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
-            formattedValue = QString::number(convertedValue, 'g', 4);
-        }
-        else {
-            formattedValue = QString::number(convertedValue, 'f', 4);
-        }
+        // format the value to respect decimal scheme in prefrences
+        const Base::QuantityFormat& fmt = resultQty.getFormat();
+        char formatChar = fmt.toFormat();
+        int decimals = Base::UnitsApi::getDecimals();
+        QString formattedValue = QString::number(convertedValue, formatChar, decimals);
 
         QString formattedResult = formattedValue + QLatin1String(" ") + currentUnit;
         valueResult->setText(formattedResult);
+
+        // Keep 3D label in sync with task panel
+        Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
+        if (!guiDoc) {
+            return;
+        }
+
+        Gui::ViewProvider* viewObject = guiDoc->getViewProvider(_mMeasureObject);
+        if (!viewObject) {
+            return;
+        }
+
+        auto* measureVp = dynamic_cast<ViewProviderMeasureBase*>(viewObject);
+        if (!measureVp) {
+            return;
+        }
+
+        measureVp->setLabelValue(formattedResult);
     }
     else {
         valueResult->setText(resultString);
