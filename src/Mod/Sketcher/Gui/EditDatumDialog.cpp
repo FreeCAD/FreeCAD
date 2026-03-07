@@ -454,8 +454,10 @@ void EditDatumDialog::performAutoScale(double newDatum)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
     );
-    long autoScaleMode
-        = hGrp->GetInt("AutoScaleMode", static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible));
+    long autoScaleMode = hGrp->GetInt(
+        "AutoScaleMode",
+        static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
+    );
 
     // There is a single constraint in the sketch so it can
     // be used as a reference to scale the geometries around the origin
