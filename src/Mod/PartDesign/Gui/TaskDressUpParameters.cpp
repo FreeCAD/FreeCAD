@@ -374,7 +374,7 @@ void TaskDressUpParameters::keyPressEvent(QKeyEvent* ke)
 
 const std::vector<std::string> TaskDressUpParameters::getReferences() const
 {
-    PartDesign::DressUp* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
+    auto* pcDressUp = DressUpView->getObject<PartDesign::DressUp>();
     std::vector<std::string> result = pcDressUp->Base.getSubValues();
     return result;
 }
@@ -481,6 +481,15 @@ TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp* DressUpV
     if (changed) {
         pcDressUp->Base.setValue(base, newSubList);
     }
+
+    auto baseObj = pcDressUp->Base.getValue();
+    auto subValues = pcDressUp->Base.getSubValues();
+    if (baseObj && !subValues.empty()) {
+        m_hadPreSelection = true;
+        m_savedDocName = baseObj->getDocument()->getName();
+        m_savedObjName = baseObj->getNameInDocument();
+        m_savedSubNames = subValues;
+    }
 }
 
 TaskDlgDressUpParameters::~TaskDlgDressUpParameters() = default;
@@ -505,7 +514,27 @@ bool TaskDlgDressUpParameters::accept()
 bool TaskDlgDressUpParameters::reject()
 {
     getViewObject<ViewProviderDressUp>()->highlightReferences(false);
-    return TaskDlgFeatureParameters::reject();
+
+    // capture saved state before reject potentially destroys things
+    bool hadPreSel = m_hadPreSelection;
+    std::string docName = m_savedDocName;
+    std::string objName = m_savedObjName;
+    std::vector<std::string> subNames = m_savedSubNames;
+
+    bool result = TaskDlgFeatureParameters::reject();
+
+    // restore user's selection if they had pre-selected
+    // ie. edges before invoking the tool
+    // and restore it on the next event loop tick, after cleanup is done
+    if (hadPreSel) {
+        QTimer::singleShot(0, [docName, objName, subNames]() {
+            for (const auto& sub : subNames) {
+                Gui::Selection().addSelection(docName.c_str(), objName.c_str(), sub.c_str());
+            }
+        });
+    }
+
+    return result;
 }
 
 #include "moc_TaskDressUpParameters.cpp"
