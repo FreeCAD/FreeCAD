@@ -167,8 +167,9 @@ def run_mesh_generation(doc, analysis=None):
         tool.create_mesh()
 
         # make geometry invisible, and mesh visible, like in the other examples
-        gmsh.ViewObject.Visibility=True
-        gmsh.Shape.ViewObject.Visibility=False
+        if FreeCAD.GuiUp:
+            gmsh.ViewObject.Visibility=True
+            gmsh.Shape.ViewObject.Visibility=False
 
     for netgen in netgen_generators:
         if netgen.FemMesh.NodeCount > 0:
