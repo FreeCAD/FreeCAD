@@ -61,6 +61,9 @@ def check_collision(
 
     # Create direct path wire
     wire = Part.Wire([Part.makeLine(start_position, target_position)])
+    if wire.BoundBox.ZMin - collision_model.BoundBox.ZMax > tolerance:
+        # attempt to skip long time comptation for simple model
+        return True
     distance = wire.distToShape(collision_model)[0]
     return distance < tolerance
 
@@ -168,6 +171,9 @@ def is_wire_collision_free(
     wire: Part.Wire, solid: Optional[Part.Shape], tolerance: float = 0.001
 ) -> bool:
     if not solid:
+        return True
+    if wire.BoundBox.ZMin - solid.BoundBox.ZMax > tolerance:
+        # attempt to skip long time comptation for simple model
         return True
     distance = wire.distToShape(solid)[0]
     return distance >= tolerance
