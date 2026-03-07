@@ -36,8 +36,7 @@
 #include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/Utilities.h>
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
-#include <Mod/PartDesign/App/FeatureRevolution.h>
-#include <Mod/PartDesign/App/FeatureGroove.h>
+#include <Mod/PartDesign/App/FeatureRevolved.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "ui_TaskRevolutionParameters.h"
@@ -45,8 +44,6 @@
 #include "ViewProviderGroove.h"
 #include "ViewProviderRevolution.h"
 #include "ReferenceSelection.h"
-
-#include <QStandardItemModel>
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -71,18 +68,8 @@ TaskRevolutionParameters::TaskRevolutionParameters(
     this->groupLayout()->addWidget(proxy);
 
     // bind property mirrors
-    if (auto rev = getObject<PartDesign::Revolution>()) {
-        this->propAngle = &(rev->Angle);
-        this->propAngle2 = &(rev->Angle2);
-        this->propMidPlane = &(rev->Midplane);
-        this->propReferenceAxis = &(rev->ReferenceAxis);
-        this->propReversed = &(rev->Reversed);
-        this->propUpToFace = &(rev->UpToFace);
-        ui->revolveAngle->bind(rev->Angle);
-        ui->revolveAngle2->bind(rev->Angle2);
-    }
-    else if (auto rev = getObject<PartDesign::Groove>()) {
-        isGroove = true;
+    if (auto rev = getObject<PartDesign::Revolved>()) {
+        isGroove = rev->getAddSubType() == PartDesign::Revolved::Subtractive;
         this->propAngle = &(rev->Angle);
         this->propAngle2 = &(rev->Angle2);
         this->propMidPlane = &(rev->Midplane);
@@ -172,23 +159,12 @@ void TaskRevolutionParameters::setupDialog()
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
     int index = 0;
 
-    // TODO: This should also be implemented for groove
-    if (!isGroove) {
-        auto rev = getObject<PartDesign::Revolution>();
-        ui->revolveAngle2->setValue(propAngle2->getValue());
-        ui->revolveAngle2->setMaximum(propAngle2->getMaximum());
-        ui->revolveAngle2->setMinimum(propAngle2->getMinimum());
+    auto rev = getObject<PartDesign::Revolved>();
+    ui->revolveAngle2->setValue(propAngle2->getValue());
+    ui->revolveAngle2->setMaximum(propAngle2->getMaximum());
+    ui->revolveAngle2->setMinimum(propAngle2->getMinimum());
 
-        index = int(rev->Type.getValue());
-    }
-    else {
-        auto rev = getObject<PartDesign::Groove>();
-        ui->revolveAngle2->setValue(propAngle2->getValue());
-        ui->revolveAngle2->setMaximum(propAngle2->getMaximum());
-        ui->revolveAngle2->setMinimum(propAngle2->getMinimum());
-
-        index = int(rev->Type.getValue());
-    }
+    index = int(rev->Type.getValue());
 
     translateModeList(index);
 }
@@ -204,16 +180,6 @@ void TaskRevolutionParameters::translateModeList(int index)
         ui->changeMode->addItem(tr("Through all"));
     }
     ui->changeMode->addItem(tr("To first"));
-
-    // "To first" is not available for revolutions right now, but if we just don't add it, the index
-    // will be wrong. So disable it instead. Messy workaround for #27403
-    auto toFirstIndex = ui->changeMode->count() - 1;
-    auto* model = qobject_cast<QStandardItemModel*>(ui->changeMode->model());
-    if (model) {
-        QStandardItem* item = model->item(toFirstIndex);
-        item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
-    }
-
     ui->changeMode->addItem(tr("Up to face"));
     ui->changeMode->addItem(tr("Two angles"));
     ui->changeMode->setCurrentIndex(index);
@@ -631,8 +597,7 @@ void TaskRevolutionParameters::onReversed(bool on)
 
 void TaskRevolutionParameters::onModeChanged(int index)
 {
-    App::PropertyEnumeration* propEnum = isGroove ? &(getObject<PartDesign::Groove>()->Type)
-                                                  : &(getObject<PartDesign::Revolution>()->Type);
+    App::PropertyEnumeration* propEnum = &(getObject<PartDesign::Revolved>()->Type);
 
     switch (static_cast<PartDesign::Revolution::RevolMethod>(index)) {
         case PartDesign::Revolution::RevolMethod::Angle:

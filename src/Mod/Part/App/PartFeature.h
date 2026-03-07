@@ -309,6 +309,12 @@ PartExport std::vector<cutTopoShapeFaces> findAllFacesCutBy(
     const gp_Dir& dir
 );
 
+PartExport std::vector<cutTopoShapeFaces> findAllFacesCutBy(
+    const TopoShape& shape,
+    const TopoShape& face,
+    const gp_Ax1& axis
+);
+
 /**
  * Check for intersection between the two shapes. Only solids are guaranteed to work properly
  * There are two modes:
