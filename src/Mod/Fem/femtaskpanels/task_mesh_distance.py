@@ -52,7 +52,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshDistance.ui"
         )
-        self.parameter_widget.setWindowTitle("Distance threshold settings")
+        self.parameter_widget.setWindowTitle("Distance Threshold Settings")
         self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
         self._init_parameter_widget()
 
@@ -61,7 +61,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         self.selection_widget = selection_widgets.GeometryElementsSelection(
             obj.References, ["Face", "Edge", "Vertex"], True, False
         )
-        self.selection_widget.setWindowTitle("Reference geometries")
+        self.selection_widget.setWindowTitle("Reference Geometries")
         self.selection_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
         self.selection_widget.referencesUpdated.connect(self.referencesUpdated)
 

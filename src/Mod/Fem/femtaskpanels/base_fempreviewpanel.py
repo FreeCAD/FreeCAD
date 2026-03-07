@@ -57,7 +57,7 @@ class SettingsDialog(QtGui.QDialog):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Preview preferences")
+        self.setWindowTitle("Preview Preferences")
 
         QBtn = QtGui.QDialogButtonBox.Ok
 

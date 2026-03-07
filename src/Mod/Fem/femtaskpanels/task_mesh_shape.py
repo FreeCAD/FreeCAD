@@ -53,7 +53,7 @@ class _TaskPanelShape(base_femtaskpanel._BaseTaskPanel):
 
         # shape definition widget
         self.shape_widget = obj.ViewObject.createControlWidget()
-        self.parameter_widget.setWindowTitle("Shape definition")
+        self.parameter_widget.setWindowTitle("Shape Definition")
         self.shape_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshShape.svg"))
         self._init_shape_widget()
 

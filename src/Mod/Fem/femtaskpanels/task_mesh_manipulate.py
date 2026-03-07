@@ -52,7 +52,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshManipulate.ui"
         )
-        self.parameter_widget.setWindowTitle("Manipulation settings")
+        self.parameter_widget.setWindowTitle("Manipulation Settings")
         self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshManipulate.svg"))
         self._init_parameter_widget()
 
@@ -61,7 +61,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         self.selection_widget = selection_widgets.GeometryElementsSelection(
             obj.References, ["Face", "Edge", "Vertex", "Solid"], True, False
         )
-        self.selection_widget.setWindowTitle("Reference geometries for restriction")
+        self.selection_widget.setWindowTitle("Reference Geometries for Restriction")
         self.selection_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshManipulate.svg"))
         self.selection_widget.referencesUpdated.connect(self.referencesUpdated)
 

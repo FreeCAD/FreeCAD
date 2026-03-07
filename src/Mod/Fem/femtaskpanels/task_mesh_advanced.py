@@ -52,7 +52,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshAdvanced.ui"
         )
-        self.parameter_widget.setWindowTitle("Advanced refinement settings")
+        self.parameter_widget.setWindowTitle("Advanced Refinement Settings")
         self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshAdvanced.svg"))
         self._init_parameter_widget()
 
@@ -61,7 +61,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         self.selection_widget = selection_widgets.GeometryElementsSelection(
             obj.References, ["Face", "Edge", "Vertex"], True, False
         )
-        self.selection_widget.setWindowTitle("Reference geometries for AnisoCurve and Distance")
+        self.selection_widget.setWindowTitle("Reference Geometries for AnisoCurve and Distance")
         self.selection_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshAdvanced.svg"))
         self.selection_widget.referencesUpdated.connect(self.referencesUpdated)
 

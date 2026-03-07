@@ -49,7 +49,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshTransfiniteVolume.ui"
         )
-        self.parameter_widget.setWindowTitle("Structured transfinite volume")
+        self.parameter_widget.setWindowTitle("Structured Transfinite Volume")
         self.parameter_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
         self._init_parameter_widget()
 
@@ -60,7 +60,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         self.selection_widget = selection_widgets.GeometryElementsSelection(
             obj.References, ["Solid"], True, False
         )
-        self.selection_widget.setWindowTitle("Reference geometries")
+        self.selection_widget.setWindowTitle("Reference Geometries")
         self.selection_widget.setWindowIcon(FreeCADGui.getIcon(":icons/FEM_MeshDistance.svg"))
 
         # form made from param and selection widget
