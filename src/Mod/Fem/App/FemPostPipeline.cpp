@@ -571,6 +571,9 @@ void FemPostPipeline::setTimeInfo(const std::string& frameType, const Base::Unit
         fd_block->AddArray(timeInfo);
         for (unsigned int i = 0; i < multiblock->GetNumberOfBlocks(); ++i) {
             vtkDataObject* grid = multiblock->GetBlock(i);
+            if (!grid) {
+                continue;
+            }
             auto fd_grid = grid->GetFieldData();
             if (fd_grid) {
                 // add time info to each grid
