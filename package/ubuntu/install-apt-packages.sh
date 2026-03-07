@@ -1,4 +1,6 @@
 #!/bin/bash
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 set -euo pipefail
 
 # Add the KDE Neon repository for up-to-date and matching Qt6 and PySide packages

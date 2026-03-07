@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 macro(ConfigureCMakeVariables)
     # ================================================================================
     # Output directories for install target

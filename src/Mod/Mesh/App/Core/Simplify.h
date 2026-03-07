@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 // clang-format off
 // http://voxels.blogspot.de/2014/05/quadric-mesh-simplification-with-source.html

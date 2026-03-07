@@ -1,3 +1,5 @@
+/* SPDX-FileNotice: Part of the FreeCAD project. */
+
 Gui--DockWnd--ReportOutput,
 Gui--TaskView--TaskView QScrollArea {
   border: none;

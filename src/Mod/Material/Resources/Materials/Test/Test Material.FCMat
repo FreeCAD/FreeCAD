@@ -1,5 +1,6 @@
 ---
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 # File created by FreeCAD 0.22.0 Revision: 34863 (Git)
 General:
   UUID: "c6c64159-19c1-40b5-859c-10561f20f979"

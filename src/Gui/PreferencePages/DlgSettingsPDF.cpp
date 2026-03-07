@@ -1,3 +1,4 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 #include <App/Application.h>
 #include <Base/Console.h>

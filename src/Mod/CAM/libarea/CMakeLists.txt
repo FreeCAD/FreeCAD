@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Turn compiler warnings on for gcc
 if (CMAKE_BUILD_TOOL MATCHES "make")

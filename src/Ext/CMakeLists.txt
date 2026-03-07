@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # this directory is the entry point for namespace modules. Any package
 # installed to a directory "freecad" which is in sys.path can be imported
