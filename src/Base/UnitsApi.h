@@ -50,6 +50,9 @@ public:
 
     static std::string schemaTranslate(const Quantity& quant);
 
+    static QString toUnicodeSuperscript(const QString& str);
+    static std::string toUnicodeSuperscript(const std::string& str);
+
     static double toDouble(PyObject* args, const Base::Unit& u = Base::Unit());
 
     static void setDecimals(int);

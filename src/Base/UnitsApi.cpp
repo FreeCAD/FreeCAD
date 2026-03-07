@@ -25,6 +25,7 @@
 #include <iomanip>
 
 #include <CXX/WrapPython.h>
+#include <QString>
 
 #include "Exception.h"
 #include "UnitsApi.h"
@@ -133,4 +134,46 @@ std::string UnitsApi::schemaTranslate(const Quantity& quant)
     double dummy1 {};  // to satisfy GCC
     std::string dummy2;
     return schemas->currentSchema()->translate(quant, dummy1, dummy2);
+}
+
+QString UnitsApi::toUnicodeSuperscript(const QString& str)
+{
+    return QString::fromStdString(toUnicodeSuperscript(str.toStdString()));
+}
+
+std::string UnitsApi::toUnicodeSuperscript(const std::string& str)
+{
+    static const char* superscripts[] = {
+        "\xe2\x81\xb0",  // ⁰ U+2070
+        "\xc2\xb9",      // ¹ U+00B9
+        "\xc2\xb2",      // ² U+00B2
+        "\xc2\xb3",      // ³ U+00B3
+        "\xe2\x81\xb4",  // ⁴ U+2074
+        "\xe2\x81\xb5",  // ⁵ U+2075
+        "\xe2\x81\xb6",  // ⁶ U+2076
+        "\xe2\x81\xb7",  // ⁷ U+2077
+        "\xe2\x81\xb8",  // ⁸ U+2078
+        "\xe2\x81\xb9",  // ⁹ U+2079
+    };
+
+    std::string result;
+
+    bool superscript = false;
+
+    for (std::size_t i = 0; i < str.size(); ++i) {
+        char ch = str[i];
+
+        if (ch == '^') {
+            superscript = true;
+        }
+        else if (ch >= '0' && ch <= '9' && superscript) {
+            result += superscripts[ch - '0'];
+            superscript = false;
+        }
+        else {
+            result += ch;
+        }
+    }
+
+    return result;
 }
