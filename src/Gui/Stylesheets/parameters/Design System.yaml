@@ -82,6 +82,8 @@ BaseShadingMid:      "@Neutral.400"
 BaseShadingDark:     "@Neutral.600"
 BaseShadingShadow:   "@Neutral.800"
 
+BaseBorderColor: "@Neutral.400"
+
 BaseHoveredOverlay: "#ffffff"
 BaseHoveredOverlayOpacity: 50%
 
@@ -96,7 +98,7 @@ FormControlBigHeight: 32px
 FormControlPadding: "padding(horizontal: @Spacing.150, vertical: @Spacing.100)"
 FormControlBorderThickness: 1px
 FormControlBorderRadius: 3px
-FormControlBorderColor: "@Neutral.400"
+FormControlBorderColor: "@BaseBorderColor"
 FormControlTextColor: "@BaseTextColor"
 
 ButtonBackground: "linear_gradient(x1: 0, y1: 0, x2: 0, y2: 1, @Background.100, @Background.200)"
@@ -168,3 +170,6 @@ GroupBoxTitlePadding: "padding(horizontal: @Spacing.150, vertical: 0)"
 GroupBoxTitleFontSize: 10px
 GroupBoxTitleFontWeight: 600
 GroupBoxTitleTextColor: "@Contrast.500"
+
+SeparatorThickness: 1px
+SeparatorColor: "@BaseBorderColor"

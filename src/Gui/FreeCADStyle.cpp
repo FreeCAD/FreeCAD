@@ -30,6 +30,7 @@
 #include <string>
 #include <vector>
 #include <QAbstractSpinBox>
+#include <QFrame>
 #include <QGroupBox>
 #include <QImage>
 #include <QLayout>
@@ -716,6 +717,33 @@ void FreeCADStyle::drawPrimitive(
         }
     }
 
+    if (element == PE_IndicatorToolBarSeparator) {
+        int thickness = 1;
+        if (const auto numeric = resolve<StyleParameters::Numeric>("SeparatorThickness")) {
+            thickness = static_cast<int>(numeric->value);
+        }
+        if (const auto color = resolve<Base::Color>("SeparatorColor")) {
+            // In a horizontal toolbar the buttons are side-by-side, so the separator
+            // is a vertical line; in a vertical toolbar it is a horizontal line.
+            const bool toolbarIsHorizontal = option->state & QStyle::State_Horizontal;
+            const QRect lineRect = toolbarIsHorizontal
+                ? QRect(
+                      option->rect.center().x() - (thickness / 2),
+                      option->rect.top(),
+                      thickness,
+                      option->rect.height()
+                  )
+                : QRect(
+                      option->rect.left(),
+                      option->rect.center().y() - (thickness / 2),
+                      option->rect.width(),
+                      thickness
+                  );
+            painter->fillRect(lineRect, color->asValue<QColor>());
+        }
+        return;
+    }
+
     QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 
@@ -1016,6 +1044,35 @@ void FreeCADStyle::drawControl(
         if (const auto* tbOption = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
             drawToolButtonLabel(painter, tbOption, widget);
             return;
+        }
+    }
+
+    if (element == CE_ShapedFrame) {
+        if (const auto* frameOption = qstyleoption_cast<const QStyleOptionFrame*>(option)) {
+            const QFrame::Shape shape = frameOption->frameShape;
+            if (shape == QFrame::HLine || shape == QFrame::VLine) {
+                int thickness = 1;
+                if (const auto numeric = resolve<StyleParameters::Numeric>("SeparatorThickness")) {
+                    thickness = static_cast<int>(numeric->value);
+                }
+                if (const auto color = resolve<Base::Color>("SeparatorColor")) {
+                    const QRect lineRect = (shape == QFrame::HLine)
+                        ? QRect(
+                              option->rect.left(),
+                              option->rect.center().y() - (thickness / 2),
+                              option->rect.width(),
+                              thickness
+                          )
+                        : QRect(
+                              option->rect.center().x() - (thickness / 2),
+                              option->rect.top(),
+                              thickness,
+                              option->rect.height()
+                          );
+                    painter->fillRect(lineRect, color->asValue<QColor>());
+                }
+                return;
+            }
         }
     }
 
