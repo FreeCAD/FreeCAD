@@ -36,6 +36,7 @@
 #include <QPainter>
 #include <QProxyStyle>
 #include <QEvent>
+#include <QComboBox>
 #include <QPushButton>
 #include <QToolButton>
 #include "StyleParameters/Value.h"
