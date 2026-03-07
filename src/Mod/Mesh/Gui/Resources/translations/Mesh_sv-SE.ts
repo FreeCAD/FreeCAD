@@ -615,7 +615,7 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Unifies the selected meshes</source>
-      <translation type="unfinished">Unifies the selected meshes</translation>
+      <translation>Förenar de valda näten</translation>
     </message>
   </context>
   <context>
@@ -679,7 +679,7 @@
     <message>
       <location filename="../../Command.cpp" line="603"/>
       <source>Mesh VertexCurvature</source>
-      <translation type="unfinished">Mesh VertexCurvature</translation>
+      <translation>Nätvertexkrökning</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.cpp" line="169"/>
@@ -1530,7 +1530,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu</source>
-      <translation type="unfinished">Mu</translation>
+      <translation>Mu</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1553,7 +1553,7 @@ till ett mjukare utseende.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal</source>
-      <translation type="unfinished">Frontal</translation>
+      <translation>Frontal</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="106"/>

@@ -45,7 +45,7 @@
     <message>
       <location filename="../../../InitGui.py" line="74"/>
       <source>Assembly</source>
-      <translation>Ihopsättning</translation>
+      <translation>Montering</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssembly.cpp" line="143"/>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
       <source>Turn rigid</source>
-      <translation>Gör solid</translation>
+      <translation>Gör stel</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation>Ditt underaggregat är för närvarande flexibelt. Detta kommer att göra den stel istället.</translation>
+      <translation>Din underenhet är för närvarande flexibel. Detta kommer att göra den stel istället.</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="287"/>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1777"/>
+      <location filename="../../../JointObject.py" line="1793"/>
       <source>Distance</source>
       <translation>Distans</translation>
     </message>
@@ -175,22 +175,22 @@
       <translation>Trasig länk i:</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1596"/>
+      <location filename="../../../JointObject.py" line="1612"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Välj 2 element från 2 separata delar</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1779"/>
+      <location filename="../../../JointObject.py" line="1795"/>
       <source>Radius 1</source>
       <translation>Radie 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1781"/>
+      <location filename="../../../JointObject.py" line="1797"/>
       <source>Thread pitch</source>
       <translation>Gängstigning</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1783"/>
+      <location filename="../../../JointObject.py" line="1799"/>
       <source>Pitch radius</source>
       <translation>Stigningsradie</translation>
     </message>
@@ -267,7 +267,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation>Only parts: lägger endast till detaljbehållare och underenheter i materialförteckningen. Solider som partdesignkroppar, fästelement eller primitiver för partarbetsbänken ignoreras.</translation>
+      <translation>Enbart delar: lägger endast till delbehållare och underenheter i materialförteckningen. Solider som partdesignkroppar, fästelement eller primitiver för partarbetsbänken ignoreras.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="385"/>
@@ -627,7 +627,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
       <translation>Ledens {order}-referens för fogen</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1218"/>
+      <location filename="../../../JointObject.py" line="1221"/>
       <source>The object to ground</source>
       <translation>Objektet till marken</translation>
     </message>
@@ -747,7 +747,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
-      <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
+      <source>Sets the attachment offset of the joint's first marker (coordinate system)</source>
       <translation>Ställer in fästförskjutning för fogens första markör (koordinatsystem)</translation>
     </message>
     <message>
@@ -839,7 +839,7 @@ You can change this behavior at any time by either right-clicking the sub-assemb
 Styv innebär att den underenhet som läggs till betraktas som en solid enhet i den överordnade enheten.
 Flexibel innebär att den tillagda underenheten tillåter rörelse av de enskilda komponenternas leder inom den överordnade enheten.
 Du kan ändra detta beteende när som helst genom att antingen högerklicka på underenheten i dokumentträdet och växla mellan
-"Gör solid"/"Gör flexibel" där, eller genom att redigera egenskapen Solid i egenskapsredigeraren.</translation>
+"Gör stel"/"Gör flexibel" där, eller genom att redigera egenskapen Solid i egenskapsredigeraren.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
@@ -862,7 +862,7 @@ Du kan ändra detta beteende när som helst genom att antingen högerklicka på 
     <message>
       <location filename="../preferences/Assembly.ui" line="39"/>
       <source>Log the dragging steps of the solver. Useful to report a bug.
-The files are named "runPreDrag.asmt" and "dragging.log" and are located in the default directory of std::ofstream (on Windows it's the desktop)</source>
+The files are named "runPreDrag.asmt" and "dragging.log" and are located in the standard directory of std::ofstream (on Windows it's the desktop)</source>
       <translation>Loggar lösarens dragningssteg. Användbart för att rapportera en bugg.
 Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen för std::ofstream (på Windows är det skrivbordet)</translation>
     </message>
@@ -884,69 +884,69 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../preferences/Assembly.ui" line="43"/>
       <source>Log dragging steps</source>
-      <translation>Steg för timmerdragning</translation>
+      <translation>Logga dragningssteg</translation>
     </message>
   </context>
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="210"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="211"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Objektet är kopplat till en eller flera fogar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="212"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vill du flytta objektet och ta bort tillhörande fogar?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1057"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1085"/>
       <source>Move part</source>
       <translation>Flytta del</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1679"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1652"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1696"/>
       <source>Empty Assembly</source>
-      <translation>Tomt montage</translation>
+      <translation>Tom montering</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1657"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1701"/>
       <source>Over-constrained:</source>
-      <translation>Överbelastad:</translation>
+      <translation>Överbegränsad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1709"/>
       <source>Malformed joints:</source>
       <translation>Felformade fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1673"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1717"/>
       <source>Redundant joints:</source>
       <translation>Redundanta fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1681"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1725"/>
       <source>Partially redundant:</source>
       <translation>Delvis överflödig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1689"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>Solver failed to converge</source>
       <translation>Lösaren lyckades inte konvergera</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1697"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1741"/>
       <source>Under-constrained:</source>
       <translation>Underbegränsad:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grader av frihet</numerusform>
@@ -954,7 +954,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1703"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1747"/>
       <source>Fully constrained</source>
       <translation>Fullständigt begränsad</translation>
     </message>
@@ -1076,6 +1076,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>Assembly_CreateBom</name>
     <message>
+
       <location filename="../../../CommandCreateBom.py" line="69"/>
       <source>Bill of Materials</source>
       <translation>Materialförteckning</translation>
@@ -1083,7 +1084,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>
       <source>&lt;p&gt;Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.&lt;/p&gt;&lt;p&gt;The BOM object is a document object that stores the settings of your BOM. It is also a spreadsheet object so you can easily visualize the BOM. If you do not need the BOM object to be saved as a document object, you can simply export and cancel the task.&lt;/p&gt;&lt;p&gt;The columns 'Index', 'Name', 'File Name' and 'Quantity' are automatically generated on recompute. The 'Description' and custom columns are not overwritten.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Skapar en materialförteckning för den aktuella sammansättningen. Om en sammansättning är aktiv blir det en materialförteckning för denna sammansättning. Annars blir det en materialförteckning för hela dokumentet.&lt;/p&gt;&lt;p&gt;Materialförteckningsobjektet är ett dokumentobjekt som lagrar inställningarna för din materialförteckning. Det är också ett kalkylbladsobjekt så att du enkelt kan visualisera materialförteckningen. Om du inte behöver spara BOM-objektet som ett dokumentobjekt kan du helt enkelt exportera och avbryta uppgiften.&lt;/p&gt;&lt;p&gt;Kolumnerna ”Index”, ”Namn”, ”Filnamn” och ”Kvantitet” genereras automatiskt vid omberäkning. Kolumnerna ”Beskrivning” och anpassade kolumner skrivs inte över.&lt;/p&gt;</translation>
+      <translation>&lt;p&gt;Skapar en materialförteckning för den aktuella sammansättningen. Om en sammansättning är aktiv blir det en materialförteckning för denna sammansättning. Annars blir det en materialförteckning för hela dokumentet.&lt;/p&gt;&lt;p&gt;Materialförteckningsobjektet är ett dokumentobjekt som lagrar inställningarna för din materialförteckning. Det är också ett kalkylbladsobjekt så att du enkelt kan visualisera materialförteckningen. Om du inte behöver spara BOM-objektet som ett dokumentobjekt kan du helt enkelt exportera och avbryta uppgiften.&lt;/p&gt;&lt;p&gt;Kolumnerna "Index", "Namn", "Filnamn" och "Kvantitet" genereras automatiskt vid omberäkning. Kolumnerna "Beskrivning" och anpassade kolumner skrivs inte över.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
@@ -1107,12 +1108,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>New Part</source>
-      <translation>Ny artikel</translation>
+      <translation>Ny del</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="59"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation>Infoga en ny del i den aktiva enheten. Den nya delens ursprung kan positioneras i enheten.</translation>
+      <translation>Infoga en ny del i den aktiva montering. Den nya delens ursprung kan positioneras i monteringen.</translation>
     </message>
   </context>
   <context>
@@ -1242,7 +1243,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="49"/>
       <source>New Assembly</source>
-      <translation>Ny församling</translation>
+      <translation>Ny montering</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="54"/>
@@ -1261,7 +1262,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="106"/>
       <source>Select an assembly to activate:</source>
-      <translation>Välj en enhet som ska aktiveras:</translation>
+      <translation>Välj en montering som ska aktiveras:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="138"/>
@@ -1477,7 +1478,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       <translation>Delvis inläst</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="573"/>
+      <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
       <translation>Fullständigt inläst dokument</translation>
     </message>
@@ -1502,7 +1503,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation>Enheten har obegränsade komponenter som ger upphov till dessa frihetsgrader. Klicka för att välja dessa obegränsade komponenter.</translation>
+      <translation>Monteringen har obegränsade komponenter som ger upphov till dessa frihetsgrader. Klicka för att välja dessa obegränsade komponenter.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="68"/>

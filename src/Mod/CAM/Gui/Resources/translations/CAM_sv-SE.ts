@@ -873,7 +873,7 @@ Reset raderar alla aktuella objekt från listan och fyller på listan med alla c
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="54"/>
       <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
-      <translation>Den höjd över vilken det är säkert att flytta verktygsbiten med snabba rörelser. Under denna höjd utförs alla rörelser i sidled och nedåt med matningshastigheter.</translation>
+      <translation>Den höjd över vilken det är säkert att flytta verktygsbiten med snabba rörelser. Under denna höjd utförs alla rörelser i sidled och nedåt med matning.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
@@ -1218,12 +1218,12 @@ Större värden (längre till höger) ger snabbare beräkningar; mindre värden 
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="183"/>
       <source>Feed retract</source>
-      <translation>Matningsretract</translation>
+      <translation>Matningsreträtt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="186"/>
       <source>G85: Retract from the hole at the given feedrate instead of rapid move</source>
-      <translation>G85: Dra tillbaka från hålet med den angivna matningshastigheten istället för snabbdragning</translation>
+      <translation>G85: Dra tillbaka från hålet med angiven matning istället för snabbförflyttning</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
@@ -1429,7 +1429,7 @@ Det senare kan användas för att platta av hela ämnesområdet för att säkers
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="148"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>Sicksack-förskjutning</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="153"/>
@@ -1597,12 +1597,12 @@ Det senare kan användas för att platta av hela ämnesområdet för att säkers
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="138"/>
       <source>The number of passes to do. If more than one, requires a non-zero value for &apos;Pass stepover&apos;.</source>
-      <translation>Antalet passeringar som ska göras. Om det är fler än ett, krävs ett värde som inte är noll för "Pass stepover".</translation>
+      <translation>Antalet passeringar som ska göras. Om det är fler än ett, krävs ett värde som inte är noll för "Pass stegöverlapp".</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="145"/>
       <source>Pass stepover</source>
-      <translation>Passera övergången</translation>
+      <translation>Stegöverlapp för pass</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="158"/>
@@ -1927,7 +1927,7 @@ Det senare kan användas för att platta av hela ämnesområdet för att säkers
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="297"/>
       <source>Optimize stepover transitions</source>
-      <translation>Optimera övergången till stepover</translation>
+      <translation>Optimera stegöverlapp-övergångar</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="251"/>
@@ -2735,7 +2735,7 @@ Se policyn för filsparande nedan om hur du hanterar namnkonflikter.</translatio
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="391"/>
       <source>Multi-panel</source>
-      <translation type="unfinished">Multi-panel</translation>
+      <translation>Flerpanel</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsPathColor.ui" line="396"/>
@@ -5028,7 +5028,7 @@ Använd egenskapen KeepToolDown för att ändra detta</translation>
       <location filename="../../../Path/Op/PocketBase.py" line="187"/>
       <location filename="../../../Path/Op/PocketBase.py" line="256"/>
       <source>Last Stepover Radius.  If 0, 50% of cutter is used. Tuning this can be used to improve stepover for some shapes</source>
-      <translation>Radie för sista stegövergången.  Om 0 används skäret 50% of. Inställning av detta kan användas för att förbättra stepover för vissa former</translation>
+      <translation>Radie för sista stegöverlappet. Om 0 används 50% av skäret. Inställning av detta kan användas för att förbättra stegöverlappar för vissa former</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="196"/>
@@ -5298,7 +5298,7 @@ Använd egenskapen KeepToolDown för att ändra detta</translation>
       <location filename="../../../Path/Op/Surface.py" line="301"/>
       <location filename="../../../Path/Op/Waterline.py" line="345"/>
       <source>Reverse the cut order of the stepover paths. For circular cut patterns, begin at the outside and work toward the center.</source>
-      <translation>Vänd på klippordningen för stepover-stigarna. För cirkulära snittmönster börjar du på utsidan och arbetar dig mot mitten.</translation>
+      <translation>Vänd på skärordningen för stegöverlapp-banorna. För cirkulära snittmönster börjar du på utsidan och arbetar dig mot mitten.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="310"/>
@@ -8055,7 +8055,7 @@ Detta kommer inte att radera verktygsbitarna som finns i det.</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="73"/>
       <source>ZigZagOffset</source>
-      <translation type="unfinished">ZigZagOffset</translation>
+      <translation>Sicksack-förskjutning</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="74"/>
