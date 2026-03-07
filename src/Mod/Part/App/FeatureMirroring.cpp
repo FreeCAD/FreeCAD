@@ -169,7 +169,7 @@ App::DocumentObjectExecReturn* Mirroring::execute()
         if (refObject->isDerivedFrom<Part::Plane>() || refObject->isDerivedFrom<App::Plane>()
             || (strstr(refObject->getNameInDocument(), "Plane")
                 && refObject->isDerivedFrom<Part::Datum>())) {
-            Part::Feature* plane = static_cast<Part::Feature*>(refObject);
+            auto* plane = static_cast<Part::Feature*>(refObject);
             Base::Vector3d base = plane->Placement.getValue().getPosition();
             axbase = gp_Pnt(base.x, base.y, base.z);
             Base::Rotation rot = plane->Placement.getValue().getRotation();
@@ -216,8 +216,8 @@ App::DocumentObjectExecReturn* Mirroring::execute()
 
             // if there is only 1 face or 1 edge, then we don't need to force the user to select
             // that face or edge instead we can infer what was intended
-            int faceCount = Part::TopoShape(shape).countSubShapes(TopAbs_FACE);
-            int edgeCount = Part::TopoShape(shape).countSubShapes(TopAbs_EDGE);
+            auto faceCount = Part::TopoShape(shape).countSubShapes(TopAbs_FACE);
+            auto edgeCount = Part::TopoShape(shape).countSubShapes(TopAbs_EDGE);
 
             TopoDS_Face face;
             TopoDS_Edge edge;
@@ -312,35 +312,25 @@ App::DocumentObjectExecReturn* Mirroring::execute()
         // get shape without transform
         auto shape = Feature::getTopoShape(link, ShapeOption::ResolveLink);
 
-        // manually apply placement via setPlacement() before mirroring
-        if (link->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            App::GeoFeature* geo = static_cast<App::GeoFeature*>(link);
-            Base::Placement placement = geo->Placement.getValue();
+        // check for placement property no matter the type hieararchy
+        // App:Link does not get its placement via GeoFeature inheritance
+        auto propPlacement = dynamic_cast<App::PropertyPlacement*>(
+            link->getPropertyByName("Placement")
+        );
+        if (propPlacement) {
+            Base::Placement placement = propPlacement->getValue();
 
             if (!placement.isIdentity()) {
-                // Convert Placement to gp_Trsf
                 gp_Trsf trsf;
-                Base::Matrix4D mat = placement.toMatrix();
-                trsf.SetValues(
-                    mat[0][0],
-                    mat[0][1],
-                    mat[0][2],
-                    mat[0][3],
-                    mat[1][0],
-                    mat[1][1],
-                    mat[1][2],
-                    mat[1][3],
-                    mat[2][0],
-                    mat[2][1],
-                    mat[2][2],
-                    mat[2][3]
-                );
+                TopoShape::convertTogpTrsf(placement.toMatrix(), trsf);
 
-                // actually transform the geometry (copy=true to create new shape)
                 BRepBuilderAPI_Transform mkTrf(shape.getShape(), trsf, Standard_True);
                 shape = TopoShape(mkTrf.Shape());
             }
         }
+        else {
+        }
+
 
         gp_Ax2 ax2(gp_Pnt(base.x, base.y, base.z), gp_Dir(norm.x, norm.y, norm.z));
 
