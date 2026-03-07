@@ -588,7 +588,6 @@ class ObjectMillFacing(PathOp.ObjectOp):
                             target_position=first_position,
                             local_clearance=obj.SafeHeight.Value,
                             global_clearance=obj.ClearanceHeight.Value,
-                            tool_shape=obj.ToolController.Tool.Shape,
                         )
                         # Append linking moves, ensuring full XYZ continuity
                         current = last_position
