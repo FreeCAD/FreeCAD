@@ -134,12 +134,13 @@ def generate_model_code(objname):
 def generate_view_code(objname, data, field, view_tag):
     # Returns the code required to use the mesh file and node data
 
-    name = objname + "_"  + field.replace(" ", "_")
+    field_replaced = field.replace(" ", "_")
+    name = objname + "_"  + field_replaced
 
 
-    code  = f"view_tag = gmsh.view.add('{field.replace(" ", "_")}', {view_tag});\n"   # open view
-    code += f"Include {name}.geo;\n"                                # data array
-    code += f"nodes[] = {{0:{data.GetNumberOfPoints()-1}}};\n"    # node array
+    code  = f"view_tag = gmsh.view.add('{field_replaced}', {view_tag});\n"  # open view
+    code += f"Include {name}.geo;\n"                                        # data array
+    code += f"nodes[] = {{0:{data.GetNumberOfPoints()-1}}};\n"              # node array
 
     # add data to view
     code += f"gmsh.view.addHomogeneousModelData(view_tag, 0, {objname}, 'NodeData', nodes, {name}, 0, components);\n"
