@@ -216,8 +216,10 @@ QGroupBox {
   border-radius: @GroupBoxBorderRadius;
   border-color: @GroupBoxBorderColor;
   border: 1px solid @GroupBoxBorderColor;
+  border-width: @GroupBoxBorderThickness;
   padding: @GroupBoxPadding;
   margin-top: 9px;
+  font-weight: @GroupBoxTitleFontWeight;
 }
 
 QGroupBox::title {

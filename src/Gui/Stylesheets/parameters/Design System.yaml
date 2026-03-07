@@ -120,7 +120,7 @@ ButtonPrimaryFocusedBorderColor: "@Accent.500"
 ButtonSpacing: "@Spacing.250"
 
 ButtonTextColor: "@BaseTextColor"
-ButtonBorderColor: "@Neutral.400"
+ButtonBorderColor: "@BaseBorderColor"
 
 ButtonHoveredOverlay: "opacity(@BaseHoveredOverlay, @BaseHoveredOverlayOpacity)"
 
@@ -146,7 +146,7 @@ SelectBigPadding: "@FormControlBigPadding"
 
 # ── Line Edit / Input fields ──────────────────────────────────────────────
 LineEditBackground:          "@Background.000"
-LineEditBorderColor:         "@Neutral.400"
+LineEditBorderColor:         "@FormControlBorderColor"
 LineEditBorderRadius:        "@FormControlBorderRadius"
 LineEditBorderThickness:     "@FormControlBorderThickness"
 LineEditPadding:             "@FormControlPadding"
