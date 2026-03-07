@@ -37,6 +37,7 @@ struct Parameters
     float minLightness = 0.17F;
     float maxLightness = 0.97F;
     float pivot = 0.5F;
+    float chromaExponent = 0.5F;
 };
 
 /**

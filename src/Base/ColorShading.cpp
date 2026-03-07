@@ -78,7 +78,7 @@ OkLch computeShade(float position, const OkLch& anchor, const Parameters& parame
     float lightScale = (anchor.lightness < 1.0F)
         ? (1.0F - targetLightness) / (1.0F - anchor.lightness)
         : 0.0F;
-    float chromaScale = std::pow(std::min(darkScale, lightScale), 0.9);
+    float chromaScale = std::pow(std::min(darkScale, lightScale), parameters.chromaExponent);
     return OkLch {
         .lightness = targetLightness,
         .chroma = anchor.chroma * chromaScale,

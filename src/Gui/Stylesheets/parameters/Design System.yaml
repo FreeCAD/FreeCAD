@@ -35,8 +35,8 @@ SpacingFactors:
 
 Spacing: "@BaseSpacing * @SpacingFactors"
 
-Neutral: "shades(#adb5bd, (000: 0.00, 150: 0.15) + @BaseShades, range: 0.6, max: 1.0)"
-Contrast: "shades(#495057, @BaseShades, range: 0.6)"
+Neutral: "shades(#adb5bd, (000: 0.00, 150: 0.15) + @BaseShades, range: 0.6, max: 1.0, q: 1.0)"
+Contrast: "shades(#495057, @BaseShades, range: 0.6, q: 1.0)"
 
 Blue: "shades(#418fde, @BaseShades)"
 Orange: "shades(#ff922b, @BaseShades)"
