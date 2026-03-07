@@ -26,6 +26,7 @@
 
 #include "../../SketcherGlobal.h"
 #include "Geo.h"
+#include <optional>
 
 // This enables debugging code intended to extract information to file bug reports against Eigen,
 // not for production code
@@ -503,6 +504,8 @@ public:
 class ConstraintP2LDistance: public Constraint
 {
 private:
+    bool ccw;
+
     double* p0x()
     {
         return pvec[0];
@@ -532,9 +535,10 @@ private:
         return pvec[6];
     }
     double value();
+    double signed_value();
 
 public:
-    ConstraintP2LDistance(Point& p, Line& l, double* d);
+    ConstraintP2LDistance(Point& p, Line& l, double* d, bool ccw);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintP2LDistance()
     {}
@@ -1307,9 +1311,12 @@ public:
 
 class ConstraintC2CDistance: public Constraint
 {
+public:
 private:
     Circle c1;
     Circle c2;
+    std::optional<bool> c1Bigger;
+
     double* distance()
     {
         return pvec[0];
@@ -1320,7 +1327,7 @@ private:
     void evaluate() override;
 
 public:
-    ConstraintC2CDistance(Circle& c1, Circle& c2, double* d);
+    ConstraintC2CDistance(Circle& c1, Circle& c2, double* d, std::optional<bool> c1Bigger);
     ConstraintType getTypeId() override;
 };
 
@@ -1330,6 +1337,9 @@ class ConstraintC2LDistance: public Constraint
 private:
     Circle circle;
     Line line;
+    bool ccw;
+    bool internal;
+
     double* distance()
     {
         return pvec[0];
@@ -1337,12 +1347,12 @@ private:
     // writes pointers in pvec to the parameters of c, l
     void ReconstructGeomPointers();
 
-    double value(double& deriValue, double* param);
+    double signed_value(double& deriValue, double* param);
     void errorgrad(double* err, double* grad, double* param) override;
     void evaluate() override;
 
 public:
-    ConstraintC2LDistance(Circle& c, Line& l, double* d);
+    ConstraintC2LDistance(Circle& c, Line& l, double* d, bool ccw, bool internal);
     ConstraintType getTypeId() override;
 };
 
