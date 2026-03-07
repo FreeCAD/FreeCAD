@@ -24,6 +24,7 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QDialogButtonBox>
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPushButton>
@@ -66,6 +67,7 @@ DlgExpressionInput::DlgExpressionInput(
     , expression(_expression ? _expression->copy() : nullptr)
     , path(_path)
     , discarded(false)
+    , cleared(false)
     , impliedUnit(_impliedUnit)
     , varSetsVisible(false)
     , comboBoxGroup(this)
@@ -76,13 +78,17 @@ DlgExpressionInput::DlgExpressionInput(
     ui->setupUi(this);
     okBtn = ui->buttonBox->button(QDialogButtonBox::Ok);
     discardBtn = ui->buttonBox->button(QDialogButtonBox::Reset);
+    clearBtn = ui->buttonBox->addButton(tr("Clear"), QDialogButtonBox::ResetRole);
+    discardBtn->setText(tr("Unbind"));
     discardBtn->setToolTip(tr("Revert to last calculated value (as constant)"));
+    clearBtn->setToolTip(tr("Remove expression and clear the input"));
 
     initializeVarSets();
 
     // Connect signal(s)
     connect(ui->expression, &ExpressionTextEdit::textChanged, this, &DlgExpressionInput::textChanged);
     connect(discardBtn, &QPushButton::clicked, this, &DlgExpressionInput::setDiscarded);
+    connect(clearBtn, &QPushButton::clicked, this, &DlgExpressionInput::setCleared);
 
     if (expression) {
         ui->expression->setPlainText(QString::fromStdString(expression->toString()));
@@ -445,6 +451,14 @@ void DlgExpressionInput::textChanged()
 void DlgExpressionInput::setDiscarded()
 {
     discarded = true;
+    reject();
+}
+
+void DlgExpressionInput::setCleared()
+{
+    cleared = true;
+    discarded = true;
+    ui->expression->setPlainText(QString());
     reject();
 }
 

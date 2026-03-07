@@ -660,6 +660,18 @@ void QuantitySpinBox::openFormulaDialog()
         if (box->result() == QDialog::Accepted) {
             setExpression(box->getExpression());
         }
+        else if (box->clearedFormula()) {
+            setExpression(std::shared_ptr<Expression>());
+            Q_D(QuantitySpinBox);
+            double value = 0.0;
+            if (value < d->minimum) {
+                value = d->minimum;
+            }
+            else if (value > d->maximum) {
+                value = d->maximum;
+            }
+            setValue(value);
+        }
         else if (box->discardedFormula()) {
             setExpression(std::shared_ptr<Expression>());
         }
