@@ -65,11 +65,6 @@ void SetOperations::Do()
     float saveMinMeshDistance = MeshDefinitions::_fMinPointDistance;
     MeshDefinitions::SetMinPointDistance(0.000001F);
 
-    //  Base::Sequencer().start("set operation", 5);
-
-    // _builder.clear();
-
-    // Base::Sequencer().next();
     std::set<FacetIndex> facetsCuttingEdge0, facetsCuttingEdge1;
     Cut(facetsCuttingEdge0, facetsCuttingEdge1);
 
@@ -110,10 +105,8 @@ void SetOperations::Do()
         }
     }
 
-    // Base::Sequencer().next();
     TriangulateMesh(_cutMesh0, 0);
 
-    // Base::Sequencer().next();
     TriangulateMesh(_cutMesh1, 1);
 
     float mult0 {}, mult1 {};
@@ -144,9 +137,7 @@ void SetOperations::Do()
             break;
     }
 
-    // Base::Sequencer().next();
     CollectFacets(0, mult0);
-    // Base::Sequencer().next();
     CollectFacets(1, mult1);
 
     std::vector<MeshGeomFacet> facets;
@@ -166,10 +157,6 @@ void SetOperations::Do()
     }
 
     _resultMesh = facets;
-
-    // Base::Sequencer().stop();
-    // _builder.saveToFile("c:/temp/vdbg.iv");
-
     MeshDefinitions::SetMinPointDistance(saveMinMeshDistance);
 }
 
@@ -265,20 +252,11 @@ void SetOperations::Cut(std::set<FacetIndex>& facetsCuttingEdge0, std::set<Facet
                                         std::pair<std::set<MeshPoint>::iterator, bool> pit
                                             = _cutPoints.insert(mp0);
 
-                                        // do not insert a facet when only one corner point cuts the
-                                        // edge if (!((mp0 == f1._aclPoints[0]) || (mp0 ==
-                                        // f1._aclPoints[1]) || (mp0 == f1._aclPoints[2])))
-                                        {
-                                            facetsCuttingEdge0.insert(fidx1);
-                                            _facet2points[0][fidx1].push_back(pit.first);
-                                        }
+                                        facetsCuttingEdge0.insert(fidx1);
+                                        _facet2points[0][fidx1].push_back(pit.first);
 
-                                        // if (!((mp0 == f2._aclPoints[0]) || (mp0 ==
-                                        // f2._aclPoints[1]) || (mp0 == f2._aclPoints[2])))
-                                        {
-                                            facetsCuttingEdge1.insert(fidx2);
-                                            _facet2points[1][fidx2].push_back(pit.first);
-                                        }
+                                        facetsCuttingEdge1.insert(fidx2);
+                                        _facet2points[1][fidx2].push_back(pit.first);
                                     }
                                 }
                             }
@@ -300,10 +278,6 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
 
         FacetIndex fidx = it1->first;
         MeshGeomFacet f = cutMesh.GetFacet(fidx);
-
-        // if (side == 1)
-        //     _builder.addSingleTriangle(f._aclPoints[0], f._aclPoints[1], f._aclPoints[2], 3, 0,
-        //     1, 1);
 
         // facet corner points
         // const MeshFacet& mf = cutMesh._aclFacetArray[fidx];
@@ -354,15 +328,6 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
                 points[it._aulPoints[2]]
             );
 
-            // if (side == 1)
-            //  _builder.addSingleTriangle(facet._aclPoints[0], facet._aclPoints[1],
-            //  facet._aclPoints[2], true, 3, 0, 1, 1);
-
-            // if (facet.Area() < 0.0001f)
-            //{ // too small facet
-            //   continue;
-            // }
-
             float dist0 = facet._aclPoints[0].DistanceToLine(
                 facet._aclPoints[1],
                 facet._aclPoints[1] - facet._aclPoints[2]
@@ -381,16 +346,6 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
                 continue;
             }
 
-            // dist0 = (facet._aclPoints[0] - facet._aclPoints[1]).Length();
-            // dist1 = (facet._aclPoints[1] - facet._aclPoints[2]).Length();
-            // dist2 = (facet._aclPoints[2] - facet._aclPoints[3]).Length();
-
-            // if ((dist0 < _minDistanceToPoint) || (dist1 < _minDistanceToPoint) || (dist2 <
-            // _minDistanceToPoint))
-            //{
-            //   continue;
-            // }
-
             facet.CalcNormal();
             if ((facet.GetNormal() * f.GetNormal()) < 0.0F) {  // adjust normal
                 std::swap(facet._aclPoints[0], facet._aclPoints[1]);
@@ -404,9 +359,6 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
                 if (eit != _edges.end()) {
 
                     if (eit->second.fcounter[side] < 2) {
-                        // if (side == 0)
-                        //    _builder.addSingleTriangle(facet._aclPoints[0], facet._aclPoints[1],
-                        //    facet._aclPoints[2], true, 3, 0, 1, 1);
 
                         eit->second.facet[side] = fidx;
                         eit->second.facets[side][eit->second.fcounter[side]] = facet;
@@ -423,19 +375,12 @@ void SetOperations::TriangulateMesh(const MeshKernel& cutMesh, int side)
 
 void SetOperations::CollectFacets(int side, float mult)
 {
-    // float distSave = MeshDefinitions::_fMinPointDistance;
-    // MeshDefinitions::SetMinPointDistance(1.0e-4f);
 
     MeshKernel mesh;
     MeshBuilder mb(mesh);
     mb.Initialize(_newMeshFacets[side].size());
     std::vector<MeshGeomFacet>::iterator it;
     for (it = _newMeshFacets[side].begin(); it != _newMeshFacets[side].end(); ++it) {
-        // if (it->IsFlag(MeshFacet::MARKED))
-        //{
-        //   _builder.addSingleTriangle(it->_aclPoints[0], it->_aclPoints[1], it->_aclPoints[2],
-        //   true, 3.0, 0.0, 1.0, 1.0);
-        // }
         mb.AddFacet(*it, true);
     }
     mb.Finish();
@@ -443,7 +388,6 @@ void SetOperations::CollectFacets(int side, float mult)
     MeshAlgorithm algo(mesh);
     algo.ResetFacetFlag(static_cast<MeshFacet::TFlagType>(MeshFacet::VISIT | MeshFacet::TMP0));
 
-    // bool hasFacetsNotVisited = true; // until facets not visited
     // search for facet not visited
     MeshFacetArray::_TConstIterator itf;
     const MeshFacetArray& rFacets = mesh.GetFacets();
@@ -466,8 +410,6 @@ void SetOperations::CollectFacets(int side, float mult)
             _facetsOf[side].push_back(mesh.GetFacet(*itf));
         }
     }
-
-    // MeshDefinitions::SetMinPointDistance(distSave);
 }
 
 SetOperations::CollectFacetVisitor::CollectFacetVisitor(
@@ -527,7 +469,6 @@ bool SetOperations::CollectFacetVisitor::AllowVisit(
                                                                              // from same edge and
                                                                              // other mesh
                 Vector3f normalOther = facetOther.GetNormal();
-                // Vector3f normal = facet.GetNormal();
 
                 Vector3f edgeDir = it->first.pt1 - it->first.pt2;
                 Vector3f ocDir = (edgeDir % (facet.GetGravityPoint() - it->first.pt1)) % edgeDir;
@@ -536,75 +477,8 @@ bool SetOperations::CollectFacetVisitor::AllowVisit(
                     % edgeDir;
                 ocDirOther.Normalize();
 
-                // Vector3f dir = ocDir % normal;
-                // Vector3f dirOther = ocDirOther % normalOther;
-
                 bool match = ((ocDir * normalOther) * _mult) < 0.0F;
 
-                // if (matchCounter == 1)
-                //{
-                //   // _builder.addSingleArrow(it->second.pt1, it->second.pt1 + edgeDir, 3,
-                //   0.0, 1.0, 0.0);
-
-                //  _builder.addSingleTriangle(facet._aclPoints[0], facet._aclPoints[1],
-                //  facet._aclPoints[2], true, 3.0, 1.0, 0.0, 0.0);
-                //  // _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() +
-                //  ocDir, 3, 1.0, 0.0, 0.0); _builder.addSingleArrow(facet.GetGravityPoint(),
-                //  facet.GetGravityPoint() + normal, 3, 1.0, 0.5, 0.0);
-                //  // _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() +
-                //  dir, 3, 1.0, 1.0, 0.0);
-
-                //  _builder.addSingleTriangle(facetOther._aclPoints[0], facetOther._aclPoints[1],
-                //  facetOther._aclPoints[2], true, 3.0, 0.0, 0.0, 1.0);
-                //  // _builder.addSingleArrow(facetOther.GetGravityPoint(),
-                //  facetOther.GetGravityPoint() + ocDirOther, 3, 0.0, 0.0, 1.0);
-                //  _builder.addSingleArrow(facetOther.GetGravityPoint(),
-                //  facetOther.GetGravityPoint() + normalOther, 3, 0.0, 0.5, 1.0);
-                //  // _builder.addSingleArrow(facetOther.GetGravityPoint(),
-                //  facetOther.GetGravityPoint() + dirOther, 3, 0.0, 1.0, 1.0);
-
-                //}
-
-                // float scalar = dir * dirOther * _mult;
-                // bool match = scalar > 0.0f;
-
-
-                // MeshPoint pt0 = it->first.pt1;
-                // MeshPoint pt1 = it->first.pt2;
-
-                // int i, n0 = -1, n1 = -1, m0 = -1, m1 = -1;
-                // for (i = 0; i < 3; i++)
-                //{
-                //   if ((n0 == -1) && (facet._aclPoints[i] == pt0))
-                //     n0 = i;
-                //   if ((n1 == -1) && (facet._aclPoints[i] == pt1))
-                //     n1 = i;
-                //   if ((m0 == -1) && (facetOther._aclPoints[i] == pt0))
-                //     m0 = i;
-                //   if ((m1 == -1) && (facetOther._aclPoints[i] == pt1))
-                //     m1 = i;
-                // }
-
-                // if ((n0 != -1) && (n1 != -1) && (m0 != -1) && (m1 != -1))
-                //{
-                //   bool orient_n = n1 > n0;
-                //   bool orient_m = m1 > m0;
-
-                //  Vector3f dirN = facet._aclPoints[n1] - facet._aclPoints[n0];
-                //  Vector3f dirM = facetOther._aclPoints[m1] - facetOther._aclPoints[m0];
-
-                //  if (matchCounter == 1)
-                //  {
-                //    _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() +
-                //    dirN, 3, 1.0, 1.0, 0.0); _builder.addSingleArrow(facetOther.GetGravityPoint(),
-                //    facetOther.GetGravityPoint() + dirM, 3, 0.0, 1.0, 1.0);
-                //  }
-
-                //  if (_mult > 0.0)
-                //    match = orient_n == orient_m;
-                //  else
-                //    match = orient_n != orient_m;
-                //}
 
                 if (match) {
                     _addFacets = 0;
@@ -623,18 +497,6 @@ bool SetOperations::CollectFacetVisitor::AllowVisit(
     return true;
 }
 
-// ----------------------------------------------------------------------------
-
-bool MeshIntersection::hasIntersection() const
-{
-    Base::BoundBox3f bbox1 = kernel1.GetBoundBox();
-    Base::BoundBox3f bbox2 = kernel2.GetBoundBox();
-    if (!(bbox1 && bbox2)) {
-        return false;
-    }
-
-    return (testIntersection(kernel1, kernel2));
-}
 
 void MeshIntersection::getIntersection(std::list<MeshIntersection::Tuple>& intsct) const
 {
@@ -691,54 +553,46 @@ void MeshIntersection::getIntersection(std::list<MeshIntersection::Tuple>& intsc
     }
 }
 
-bool MeshIntersection::testIntersection(const MeshKernel& k1, const MeshKernel& k2)
-{
-    // Contains bounding boxes for every facet of 'k1'
-    std::vector<Base::BoundBox3f> boxes1;
-    MeshFacetIterator cMFI1(k1);
-    for (cMFI1.Begin(); cMFI1.More(); cMFI1.Next()) {
-        boxes1.push_back((*cMFI1).GetBoundBox());
-    }
 
-    // Contains bounding boxes for every facet of 'k2'
-    std::vector<Base::BoundBox3f> boxes2;
-    MeshFacetIterator cMFI2(k2);
-    for (cMFI2.Begin(); cMFI2.More(); cMFI2.Next()) {
-        boxes2.push_back((*cMFI2).GetBoundBox());
-    }
+// Contains bounding boxes for every facet of 'k2'
+std::vector<Base::BoundBox3f> boxes2;
+MeshFacetIterator cMFI2(k2);
+for (cMFI2.Begin(); cMFI2.More(); cMFI2.Next()) {
+    boxes2.push_back((*cMFI2).GetBoundBox());
+}
 
-    // Splits the mesh using grid for speeding up the calculation
-    MeshFacetGrid cMeshFacetGrid(k1);
+// Splits the mesh using grid for speeding up the calculation
+MeshFacetGrid cMeshFacetGrid(k1);
 
-    const MeshFacetArray& rFaces2 = k2.GetFacets();
-    Base::SequencerLauncher seq("Checking for intersections...", rFaces2.size());
-    int index = 0;
-    MeshGeomFacet facet1, facet2;
-    Base::Vector3f pt1, pt2;
+const MeshFacetArray& rFaces2 = k2.GetFacets();
+Base::SequencerLauncher seq("Checking for intersections...", rFaces2.size());
+int index = 0;
+MeshGeomFacet facet1, facet2;
+Base::Vector3f pt1, pt2;
 
-    // Iterate over the facets of the 2nd mesh and find the grid elements of the 1st mesh
-    for (auto it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
-        seq.next();
-        std::vector<FacetIndex> elements;
-        cMeshFacetGrid.Inside(boxes2[index], elements, true);
+// Iterate over the facets of the 2nd mesh and find the grid elements of the 1st mesh
+for (auto it = rFaces2.begin(); it != rFaces2.end(); ++it, index++) {
+    seq.next();
+    std::vector<FacetIndex> elements;
+    cMeshFacetGrid.Inside(boxes2[index], elements, true);
 
-        cMFI2.Set(index);
-        facet2 = *cMFI2;
+    cMFI2.Set(index);
+    facet2 = *cMFI2;
 
-        for (FacetIndex element : elements) {
-            if (boxes2[index] && boxes1[element]) {
-                cMFI1.Set(element);
-                facet1 = *cMFI1;
-                int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
-                if (ret == 2) {
-                    // abort after the first detected self-intersection
-                    return true;
-                }
+    for (FacetIndex element : elements) {
+        if (boxes2[index] && boxes1[element]) {
+            cMFI1.Set(element);
+            facet1 = *cMFI1;
+            int ret = facet1.IntersectWithFacet(facet2, pt1, pt2);
+            if (ret == 2) {
+                // abort after the first detected self-intersection
+                return true;
             }
         }
     }
+}
 
-    return false;
+return false;
 }
 
 void MeshIntersection::connectLines(
