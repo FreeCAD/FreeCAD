@@ -132,6 +132,9 @@ public:
 
     void polish(QPalette& palette) override;
 
+    /** @brief Clears the token resolution cache; call when the active theme changes. */
+    void clearTokenCache();
+
 protected:
     void drawPrimitive(
         PrimitiveElement element,
@@ -304,9 +307,6 @@ private:
      * from option->state flags. Passing @p option as nullptr yields Normal state.
      */
     static StyleContext contextOf(const QWidget* widget, const QStyleOption* option = nullptr);
-
-    /** @brief Clears the token resolution cache; call when the active theme changes. */
-    void clearTokenCache();
 
     /**
      * @brief Paints the label (icon + text) of a push button.
