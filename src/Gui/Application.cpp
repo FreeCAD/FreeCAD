@@ -145,6 +145,7 @@
 #include "QtWidgets.h"
 
 #include <FreeCADStyle.h>
+#include <ThemeReloadEvent.h>
 #include <OverlayManager.h>
 #include <ParamHandler.h>
 #include <Base/ServiceProvider.h>
@@ -200,6 +201,43 @@ public:
     }
 };
 
+/**
+ * @brief QObject event filter that performs the actual theme reload when ThemeReloadEvent
+ * is received on qApp.
+ *
+ * Installed on qApp so that all callers can trigger a full theme reload simply by sending
+ * a ThemeReloadEvent, without needing a direct reference to Application.
+ * FreeCADStyle (installed earlier, therefore called later in LIFO order) handles the
+ * style-specific part (token cache invalidation + widget repaints) after this handler
+ * reloads the parameters and re-applies the stylesheet.
+ */
+class ThemeReloadHandler: public QObject
+{
+public:
+    explicit ThemeReloadHandler()
+        : QObject(qApp)
+    {
+        qApp->installEventFilter(this);
+    }
+
+    bool eventFilter(QObject*, QEvent* event) override
+    {
+        if (event->type() == ThemeReloadEvent::registeredType()) {
+            const auto hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/MainWindow"
+            );
+            const QString qssFile = QString::fromStdString(hGrp->GetASCII("StyleSheet"));
+            const bool tiledBackground = hGrp->GetBool("TiledBackground", false);
+
+            Application::Instance->styleParameterManager()->reload();
+            Application::Instance->setStyleSheet(qssFile, tiledBackground);
+            OverlayManager::instance()->refresh(nullptr, true);
+        }
+
+        return false;
+    }
+};
+
 // Pimpl class
 struct ApplicationP
 {
@@ -234,6 +272,7 @@ struct ApplicationP
     MacroManager* macroMngr;
     PreferencePackManager* prefPackManager;
     StyleParameters::ParameterManager* styleParameterManager;
+    ThemeReloadHandler* themeReloadHandler {nullptr};
 
     /// List of all registered views
     std::list<Gui::BaseView*> passive;
@@ -414,14 +453,13 @@ void Application::initStyleParameterManager()
     auto reloadStylesheetHandler = handlers.addDelayedHandler(
         "BaseApp/Preferences/MainWindow",
         {"ThemeStyleParametersFiles", "Theme", "StyleSheet"},
-        [themeParametersSource, deduceParametersFilePath, this](ParameterGrp::handle hGrp) {
+        [themeParametersSource, deduceParametersFilePath]([[maybe_unused]] ParameterGrp::handle) {
+            // Update the theme parameters file path before triggering the reload so the
+            // handler picks up the new path when it calls styleParameterManager()->reload().
             themeParametersSource->changeFilePath(deduceParametersFilePath());
-            styleParameterManager()->reload();
 
-            std::string sheet = hGrp->GetASCII("StyleSheet");
-            bool tiledBG = hGrp->GetBool("TiledBackground", false);
-
-            setStyleSheet(QString::fromStdString(sheet), tiledBG);
+            ThemeReloadEvent event;
+            QApplication::sendEvent(qApp, &event);
         }
     );
 
@@ -454,6 +492,10 @@ void Application::initStyleParameterManager()
     }
 
     Base::registerServiceImplementation(d->styleParameterManager);
+
+    // Install the handler that performs the actual reload when ThemeReloadEvent is received.
+    // Must be installed after FreeCADStyle (if already set) so this handler runs first (LIFO).
+    d->themeReloadHandler = new ThemeReloadHandler();
 }
 // clang-format off
 Application::Application(bool GUIenabled)
@@ -2770,19 +2812,8 @@ void Application::setStyleSheet(const QString& qssFile, bool tiledBackground)
 
 void Application::reloadStyleSheet()
 {
-    const MainWindow* mw = getMainWindow();
-
-    const QString qssFile = mw->property("fc_currentStyleSheet").toString();
-    const bool tiledBackground = mw->property("fc_tiledBackground").toBool();
-
-    d->styleParameterManager->reload();
-
-    if (auto* freeCADStyle = qobject_cast<FreeCADStyle*>(qApp->style())) {
-        freeCADStyle->clearTokenCache();
-    }
-
-    setStyleSheet(qssFile, tiledBackground);
-    OverlayManager::instance()->refresh(nullptr, true);
+    ThemeReloadEvent event;
+    QApplication::sendEvent(qApp, &event);
 }
 
 QString Application::replaceVariablesInQss(const QString& qssText)

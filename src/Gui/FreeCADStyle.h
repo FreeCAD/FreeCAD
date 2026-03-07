@@ -35,7 +35,6 @@
 #include <QMarginsF>
 #include <QPainter>
 #include <QProxyStyle>
-#include <QEvent>
 #include <QComboBox>
 #include <QPushButton>
 #include <QToolButton>
@@ -131,9 +130,6 @@ public:
     };
 
     void polish(QPalette& palette) override;
-
-    /** @brief Clears the token resolution cache; call when the active theme changes. */
-    void clearTokenCache();
 
 protected:
     void drawPrimitive(
@@ -333,6 +329,9 @@ private:
         const QStyleOptionToolButton* option,
         const QWidget* widget
     ) const;
+
+    /** @brief Clears the token resolution cache; called from the ThemeReloadEvent handler. */
+    void clearTokenCache();
 
     // Cache for resolve(StyleContext, StyleProperty). Key is a bit-packed uint32_t;
     // value is the resolved result including nullopt for confirmed misses.

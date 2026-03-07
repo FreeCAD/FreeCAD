@@ -29,6 +29,7 @@
 #include <span>
 #include <string>
 #include <vector>
+#include <QApplication>
 #include <QAbstractSpinBox>
 #include <QFrame>
 #include <QGroupBox>
@@ -47,6 +48,7 @@
 #include <Base/Exception.h>
 
 #include "Application.h"
+#include "ThemeReloadEvent.h"
 #include "StyleParameters/Corners.h"
 #include "StyleParameters/Gradient.h"
 #include "StyleParameters/InnerShadow.h"
@@ -1523,6 +1525,14 @@ void FreeCADStyle::clearTokenCache()
 
 bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
 {
+    if (event->type() == ThemeReloadEvent::registeredType()) {
+        clearTokenCache();
+        for (QWidget* widget : QApplication::allWidgets()) {
+            widget->update();
+        }
+        return false;  // Let ThemeReloadHandler in Application also process the event
+    }
+
     if (event->type() == QEvent::Polish) {
         if (auto* groupBox = qobject_cast<QGroupBox*>(obj)) {
             if (auto* layout = groupBox->layout()) {
