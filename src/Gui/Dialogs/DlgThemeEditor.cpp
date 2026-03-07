@@ -532,20 +532,11 @@ std::list<StyleParameters::Parameter> StyleParametersModel::all() const
 
 std::optional<StyleParameters::Parameter> StyleParametersModel::get(const std::string& name) const
 {
-    std::optional<StyleParameters::Parameter> result = std::nullopt;
+    if (auto it = parameterIndex.find(name); it != parameterIndex.end()) {
+        return it->second->token;
+    }
 
-    QtTools::walkTreeModel(this, [this, &name, &result](const QModelIndex& index) {
-        if (auto parameterItem = item<ParameterItem>(index)) {
-            if (parameterItem->token.name == name) {
-                result = parameterItem->token;
-                return true;
-            }
-        }
-
-        return false;
-    });
-
-    return result;
+    return std::nullopt;
 }
 
 void StyleParametersModel::removeItem(const QModelIndex& index)
@@ -558,6 +549,7 @@ void StyleParametersModel::removeItem(const QModelIndex& index)
         }
 
         groupItem->deleted.insert(parameterItem->token.name);
+        parameterIndex.erase(parameterItem->token.name);
 
         beginRemoveRows(index.parent(), index.row(), index.row());
         node(index.parent())->removeChild(index.row());
@@ -596,8 +588,19 @@ void StyleParametersModel::reset()
 
     // Expand tuples. We need to do this in a separate pass because resolution might require
     // parameters that are not yet added to the model if we do it in a single pass.
+    rebuildIndex();
     manager->reload();
     QtTools::walkTreeModel(this, [this](const QModelIndex& index) { expandTupleIfNeeded(index); });
+}
+
+void StyleParametersModel::rebuildIndex()
+{
+    parameterIndex.clear();
+    QtTools::walkTreeModel(this, [this](const QModelIndex& index) {
+        if (auto* parameterItem = item<ParameterItem>(index)) {
+            parameterIndex.emplace(parameterItem->token.name, parameterItem);
+        }
+    });
 }
 
 void StyleParametersModel::flush()
@@ -800,9 +803,13 @@ bool StyleParametersModel::setData(
 
             // there is no rename operation, so we need to mark the previous token as deleted
             groupItem->deleted.insert(parameterItem->token.name);
+            parameterIndex.erase(parameterItem->token.name);
 
             parameterItem->name = newName;
             parameterItem->token = newToken;
+            // Use insert_or_assign so that renaming to a name that already exists in
+            // a lower-priority source correctly updates the index to this entry.
+            parameterIndex.insert_or_assign(newToken.name, parameterItem);
         }
 
         if (index.column() == ParameterExpression) {
@@ -828,9 +835,14 @@ bool StyleParametersModel::setData(
             int start = rowCount(index.parent());
 
             beginInsertRows(index.parent(), start, start + 1);
-            auto item = std::make_unique<Node>(std::make_unique<ParameterItem>(newName, token));
-            node(index.parent())->appendChild(std::move(item));
+            auto newNode = std::make_unique<Node>(std::make_unique<ParameterItem>(newName, token));
+            auto* newParameterItem = newNode->data<ParameterItem>();
+            node(index.parent())->appendChild(std::move(newNode));
             endInsertRows();
+            // Use insert_or_assign so that adding an override for a name that already
+            // exists in a lower-priority source correctly updates the index to point
+            // to this (higher-priority, user-editable) entry.
+            parameterIndex.insert_or_assign(token.name, newParameterItem);
 
             // this must be queued to basically next frame so widget has a chance to update
             QTimer::singleShot(0, [this, index]() { this->newParameterAdded(index); });
@@ -839,7 +851,10 @@ bool StyleParametersModel::setData(
 
     this->manager->reload();
 
-    expandTupleIfNeeded(index);
+    // Re-expand ALL tuples, not just the edited one: any token that references
+    // the changed token may produce a different tuple, so its ValueItem children
+    // need to be rebuilt with fresh resolved values.
+    QtTools::walkTreeModel(this, [this](const QModelIndex& index) { expandTupleIfNeeded(index); });
 
     QtTools::walkTreeModel(this, [this](const QModelIndex& index) {
         const QModelIndex previewColumnIndex = index.siblingAtColumn(ParameterPreview);
