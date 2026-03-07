@@ -76,13 +76,13 @@ class TestObjectCreate(unittest.TestCase):
         # https://forum.freecad.org/viewtopic.php?t=25283
         # thus they should not be counted
         # solver children: equations --> 10
-        # gmsh mesh children: group, region, boundary layer --> 3
+        # gmsh mesh children: group, region, boundary layer etc. --> 10
         # result children: mesh result --> 1
         # analysis itself is not in analysis group --> 1
         # vtk post pipeline children: region, scalar, cut, wrap, contour --> 5
         # vtk python post objects: glyph, 6x data extraction --> 7
 
-        subtraction = 15
+        subtraction = 22
         if vtk_objects_used:
             subtraction += 12
             if not ("BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__):
@@ -260,6 +260,23 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertEqual("Fem::MeshGroup", type_of_obj(ObjectsFem.makeMeshGroup(doc, mesh)))
         self.assertEqual("Fem::MeshRegion", type_of_obj(ObjectsFem.makeMeshRegion(doc, mesh)))
+        self.assertEqual("Fem::MeshDistance", type_of_obj(ObjectsFem.makeMeshDistance(doc, mesh)))
+        self.assertEqual("Fem::MeshShape", type_of_obj(ObjectsFem.makeMeshShape(doc, mesh)))
+        self.assertEqual(
+            "Fem::MeshManipulate", type_of_obj(ObjectsFem.makeMeshManipulate(doc, mesh))
+        )
+        self.assertEqual("Fem::MeshAdvanced", type_of_obj(ObjectsFem.makeMeshAdvanced(doc, mesh)))
+        self.assertEqual(
+            "Fem::MeshTransfiniteCurve", type_of_obj(ObjectsFem.makeMeshTransfiniteCurve(doc, mesh))
+        )
+        self.assertEqual(
+            "Fem::MeshTransfiniteSurface",
+            type_of_obj(ObjectsFem.makeMeshTransfiniteSurface(doc, mesh)),
+        )
+        self.assertEqual(
+            "Fem::MeshTransfiniteVolume",
+            type_of_obj(ObjectsFem.makeMeshTransfiniteVolume(doc, mesh)),
+        )
         self.assertEqual("Fem::FemMeshNetgen", type_of_obj(ObjectsFem.makeMeshNetgen(doc)))
         self.assertEqual(
             "Fem::FemMeshShapeNetgenObject", type_of_obj(ObjectsFem.makeMeshNetgenLegacy(doc))
@@ -440,6 +457,23 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertTrue(is_of_type(ObjectsFem.makeMeshGroup(doc, mesh), "Fem::MeshGroup"))
         self.assertTrue(is_of_type(ObjectsFem.makeMeshRegion(doc, mesh), "Fem::MeshRegion"))
+        self.assertTrue(is_of_type(ObjectsFem.makeMeshDistance(doc, mesh), "Fem::MeshDistance"))
+        self.assertTrue(is_of_type(ObjectsFem.makeMeshShape(doc, mesh), "Fem::MeshShape"))
+        self.assertTrue(is_of_type(ObjectsFem.makeMeshManipulate(doc, mesh), "Fem::MeshManipulate"))
+        self.assertTrue(is_of_type(ObjectsFem.makeMeshAdvanced(doc, mesh), "Fem::MeshAdvanced"))
+        self.assertTrue(
+            is_of_type(ObjectsFem.makeMeshTransfiniteCurve(doc, mesh), "Fem::MeshTransfiniteCurve")
+        )
+        self.assertTrue(
+            is_of_type(
+                ObjectsFem.makeMeshTransfiniteSurface(doc, mesh), "Fem::MeshTransfiniteSurface"
+            )
+        )
+        self.assertTrue(
+            is_of_type(
+                ObjectsFem.makeMeshTransfiniteVolume(doc, mesh), "Fem::MeshTransfiniteVolume"
+            )
+        )
         self.assertTrue(is_of_type(ObjectsFem.makeMeshNetgen(doc), "Fem::FemMeshNetgen"))
         self.assertTrue(
             is_of_type(ObjectsFem.makeMeshNetgenLegacy(doc), "Fem::FemMeshShapeNetgenObject")
@@ -794,6 +828,48 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(mesh_region, "Fem::FeaturePython"))
         self.assertTrue(is_derived_from(mesh_region, "Fem::MeshRegion"))
 
+        # MeshDistance
+        mesh_region = ObjectsFem.makeMeshDistance(doc, mesh_gmsh)
+        self.assertTrue(is_derived_from(mesh_region, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::FeaturePython"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::MeshDistance"))
+
+        # MeshShape
+        mesh_region = ObjectsFem.makeMeshShape(doc, mesh_gmsh)
+        self.assertTrue(is_derived_from(mesh_region, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::FeaturePython"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::MeshShape"))
+
+        # MeshManipulate
+        mesh_region = ObjectsFem.makeMeshManipulate(doc, mesh_gmsh)
+        self.assertTrue(is_derived_from(mesh_region, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::FeaturePython"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::MeshManipulate"))
+
+        # MeshAdvanced
+        mesh_region = ObjectsFem.makeMeshAdvanced(doc, mesh_gmsh)
+        self.assertTrue(is_derived_from(mesh_region, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::FeaturePython"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::MeshAdvanced"))
+
+        # MeshTransfiniteCurve
+        mesh_region = ObjectsFem.makeMeshTransfiniteCurve(doc, mesh_gmsh)
+        self.assertTrue(is_derived_from(mesh_region, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::FeaturePython"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::MeshTransfiniteCurve"))
+
+        # MeshTransfiniteSurface
+        mesh_region = ObjectsFem.makeMeshTransfiniteSurface(doc, mesh_gmsh)
+        self.assertTrue(is_derived_from(mesh_region, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::FeaturePython"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::MeshTransfiniteSurface"))
+
+        # MeshTransfiniteVolume
+        mesh_region = ObjectsFem.makeMeshTransfiniteVolume(doc, mesh_gmsh)
+        self.assertTrue(is_derived_from(mesh_region, "App::DocumentObject"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::FeaturePython"))
+        self.assertTrue(is_derived_from(mesh_region, "Fem::MeshTransfiniteVolume"))
+
         # FemMeshShapeNetgenObject
         mesh_netgen = ObjectsFem.makeMeshNetgen(doc)
         self.assertTrue(is_derived_from(mesh_netgen, "App::DocumentObject"))
@@ -1037,6 +1113,21 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertTrue(ObjectsFem.makeMeshGroup(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
         self.assertTrue(ObjectsFem.makeMeshRegion(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
+        self.assertTrue(ObjectsFem.makeMeshDistance(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
+        self.assertTrue(ObjectsFem.makeMeshShape(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
+        self.assertTrue(
+            ObjectsFem.makeMeshManipulate(doc, mesh).isDerivedFrom("Fem::FeaturePython")
+        )
+        self.assertTrue(ObjectsFem.makeMeshAdvanced(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
+        self.assertTrue(
+            ObjectsFem.makeMeshTransfiniteCurve(doc, mesh).isDerivedFrom("Fem::FeaturePython")
+        )
+        self.assertTrue(
+            ObjectsFem.makeMeshTransfiniteSurface(doc, mesh).isDerivedFrom("Fem::FeaturePython")
+        )
+        self.assertTrue(
+            ObjectsFem.makeMeshTransfiniteVolume(doc, mesh).isDerivedFrom("Fem::FeaturePython")
+        )
         self.assertTrue(
             ObjectsFem.makeMeshNetgen(doc).isDerivedFrom("Fem::FemMeshShapeBaseObjectPython")
         )
@@ -1157,6 +1248,13 @@ def create_all_fem_objects_doc(doc):
     ObjectsFem.makeMeshBoundaryLayer(doc, msh)
     ObjectsFem.makeMeshGroup(doc, msh)
     ObjectsFem.makeMeshRegion(doc, msh)
+    ObjectsFem.makeMeshDistance(doc, msh)
+    ObjectsFem.makeMeshShape(doc, msh)
+    ObjectsFem.makeMeshManipulate(doc, msh)
+    ObjectsFem.makeMeshAdvanced(doc, msh)
+    ObjectsFem.makeMeshTransfiniteCurve(doc, msh)
+    ObjectsFem.makeMeshTransfiniteSurface(doc, msh)
+    ObjectsFem.makeMeshTransfiniteVolume(doc, msh)
     analysis.addObject(ObjectsFem.makeMeshNetgen(doc))
     analysis.addObject(ObjectsFem.makeMeshNetgenLegacy(doc))
     rm = ObjectsFem.makeMeshResult(doc)

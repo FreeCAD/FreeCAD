@@ -65,6 +65,16 @@
         <file>icons/FEM_MeshGroup.svg</file>
         <file>icons/FEM_MeshNetgenFromShape.svg</file>
         <file>icons/FEM_MeshRegion.svg</file>
+        <file>icons/FEM_MeshDistance.svg</file>
+        <file>icons/FEM_MeshManipulate.svg</file>
+        <file>icons/FEM_MeshAdvanced.svg</file>
+        <file>icons/FEM_MeshShape.svg</file>
+        <file>icons/FEM_MeshSphere.svg</file>
+        <file>icons/FEM_MeshBox.svg</file>
+        <file>icons/FEM_MeshCylinder.svg</file>
+        <file>icons/FEM_MeshTransfiniteCurve.svg</file>
+        <file>icons/FEM_MeshTransfiniteSurface.svg</file>
+        <file>icons/FEM_MeshTransfiniteVolume.svg</file>
 
         <!-- gui command icons: materials -->
         <file>icons/FEM_MaterialFluid.svg</file>
@@ -152,11 +162,23 @@
         <file>ui/MeshGroup.ui</file>
         <file>ui/MeshGroupXDMFExport.ui</file>
         <file>ui/MeshRegion.ui</file>
+        <file>ui/MeshDistance.ui</file>
         <file>ui/ResultHints.ui</file>
         <file>ui/ResultShow.ui</file>
         <file>ui/SolverCalculiX.ui</file>
         <file>ui/SolverCcxTools.ui</file>
         <file>ui/SolverElmer.ui</file>
         <file>ui/TaskPostGlyph.ui</file>
+
+        <!-- images -->
+        <file>images/FEM_MeshDistanceThresholdDark.svg</file>
+        <file>images/FEM_MeshDistanceThresholdLight.svg</file>
+        <file>images/FEM_MeshTransfiniteVolumeLight.svg</file>
+        <file>images/FEM_MeshTransfiniteVolumeDark.svg</file>
+        <file>images/FEM_MeshTransfiniteSurfaceLight.svg</file>
+        <file>images/FEM_MeshTransfiniteSurfaceDark.svg</file>
+        <file>images/FEM_MeshTransfiniteCurveLight.svg</file>
+        <file>images/FEM_MeshTransfiniteCurveDark.svg</file>
+
     </qresource>
 </RCC>
