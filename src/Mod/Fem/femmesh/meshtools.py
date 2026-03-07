@@ -197,8 +197,8 @@ def get_femnodes_ele_table(femnodes_mesh, femelement_table):
         for ele_node in ele_list:
             femnodes_ele_table[ele_node].append([ele, pos])
             pos = pos << 1
-    FreeCAD.Console.PrintLog(f"len femnodes_ele_table: {len(femnodes_ele_table)}\n")
-    FreeCAD.Console.PrintLog(f"femnodes_ele_table: {femnodes_ele_table}\n")
+    # FreeCAD.Console.PrintLog(f"len femnodes_ele_table: {len(femnodes_ele_table)}\n")
+    # FreeCAD.Console.PrintLog(f"femnodes_ele_table: {femnodes_ele_table}\n")
     return femnodes_ele_table
 
 
@@ -225,9 +225,9 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     The corresponding bit is set, if the node of the node_set is contained in the element.
     """
     # print("BIT PATTERN", femelement_table, femnodes_ele_table, node_set)
-    FreeCAD.Console.PrintLog("len femnodes_ele_table: " + str(len(femnodes_ele_table)) + "\n")
-    FreeCAD.Console.PrintLog("len node_set: " + str(len(node_set)) + "\n")
-    FreeCAD.Console.PrintLog(f"node_set: {node_set}\n")
+    # FreeCAD.Console.PrintLog("len femnodes_ele_table: " + str(len(femnodes_ele_table)) + "\n")
+    # FreeCAD.Console.PrintLog("len node_set: " + str(len(node_set)) + "\n")
+    # FreeCAD.Console.PrintLog(f"node_set: {node_set}\n")
     bit_pattern_dict = get_copy_of_empty_femelement_table(femelement_table)
     # # initializing the bit_pattern_dict
     for ele in femelement_table:
@@ -236,7 +236,7 @@ def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
     for node in node_set:
         for nList in femnodes_ele_table[node]:
             bit_pattern_dict[nList[0]][1] += nList[1]
-    FreeCAD.Console.PrintLog("len bit_pattern_dict: " + str(len(bit_pattern_dict)) + "\n")
+    # FreeCAD.Console.PrintLog("len bit_pattern_dict: " + str(len(bit_pattern_dict)) + "\n")
     # FreeCAD.Console.PrintMessage("bit_pattern_dict: {}\n".format(bit_pattern_dict))
     return bit_pattern_dict
 
@@ -264,7 +264,7 @@ def get_ccxelement_volumes_elements_from_binary_search(bit_pattern_dict):
             if (key & bit_pattern_dict[ele][1]) == key:
                 volumes.append(ele)
     # print("VOLUMES:", volumes)
-    FreeCAD.Console.PrintLog(f"found Volumes: {len(volumes)}\n")
+    # FreeCAD.Console.PrintLog(f"found Volumes: {len(volumes)}\n")
     # FreeCAD.Console.PrintMessage("faces: {}\n".format(faces))
     return volumes
 
@@ -286,8 +286,8 @@ def get_ccxelement_faces_elements_from_binary_search(bit_pattern_dict):
         for key in mask_dict:
             if (key & bit_pattern_dict[ele][1]) == key:
                 faces.append(ele)
-    # print("CARAS:", faces)
-    FreeCAD.Console.PrintMessage(f"found Edges: {len(faces)}\n")
+    # print("FACES:", faces)
+    # FreeCAD.Console.PrintMessage(f"found Edges: {len(faces)}\n")
     return faces
 
 
@@ -311,7 +311,7 @@ def get_ccxelement_edges_from_binary_search(bit_pattern_dict, sets_getter):
             if (key & bit_pattern_dict[ele][1]) == key:
                 faces.append([ele, mask_dict[key] + offset])
     # print("EDGES:", faces)
-    FreeCAD.Console.PrintMessage(f"found Edges: {len(faces)}\n")
+    # FreeCAD.Console.PrintMessage(f"found Edges: {len(faces)}\n")
 
     return faces
 
@@ -364,7 +364,7 @@ def get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, node_l
     # search
     ele_list = []  # The ele_list contains the result of the search.
     for ele in bit_pattern_dict:
-        FreeCAD.Console.PrintLog(f"bit_pattern_dict[ele][0]: {bit_pattern_dict[ele][0]}\n")
+        # FreeCAD.Console.PrintLog(f"bit_pattern_dict[ele][0]: {bit_pattern_dict[ele][0]}\n")
         if bit_pattern_dict[ele][1] == vol_masks[bit_pattern_dict[ele][0]]:
             ele_list.append(ele)
     FreeCAD.Console.PrintMessage(f"found Volumes: {len(ele_list)}\n")
