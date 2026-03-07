@@ -42,6 +42,7 @@ exclude: |
     (?x)^(
         .*vcproj.*|
         .*vcxproj.*|
+        .github/ISSUE_TEMPLATE|
         src/App/ExpressionParser.tab.c|
         src/App/ExpressionParser.tab.h|
         src/App/ExpressionParser.y|
