@@ -28,6 +28,7 @@ Processor entries in PathJob"""
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Dressup.Utils as PathDressup
 from PathScripts import PathUtils
 from Path.Post.Utils import FilenameGenerator
 import os
@@ -46,6 +47,66 @@ else:
 
 
 translate = FreeCAD.Qt.translate
+
+
+def _resolve_operations(job, operations=None):
+    if operations is not None:
+        return operations
+    if hasattr(job, "Operations") and hasattr(job.Operations, "Group"):
+        return job.Operations.Group
+    return []
+
+
+def _get_zero_spindle_tool_controllers(job, operations=None):
+    zero_spindle_tool_controllers = []
+    seen_tool_controllers = set()
+
+    for operation in _resolve_operations(job, operations):
+        base_operation = PathDressup.baseOp(operation)
+        tool_controller = getattr(base_operation, "ToolController", None)
+        if not tool_controller:
+            continue
+        if tool_controller.Name in seen_tool_controllers:
+            continue
+        seen_tool_controllers.add(tool_controller.Name)
+
+        spindle_speed = getattr(tool_controller, "SpindleSpeed", None)
+        spindle_direction = getattr(tool_controller, "SpindleDir", None)
+        if spindle_speed == 0.0 and spindle_direction in ("Forward", "Reverse"):
+            zero_spindle_tool_controllers.append(tool_controller)
+
+    return zero_spindle_tool_controllers
+
+
+def _confirm_post_process_with_zero_spindle_speed(job, operations=None):
+    zero_spindle_tool_controllers = _get_zero_spindle_tool_controllers(job, operations)
+    if not zero_spindle_tool_controllers:
+        return True
+
+    if not FreeCAD.GuiUp:
+        return True
+
+    tool_controller_labels = "\n".join(
+        f" - {tool_controller.Label}" for tool_controller in zero_spindle_tool_controllers
+    )
+
+    warning_text = translate(
+        "CAM_Post",
+        "One or more Tool Controllers have spindle speed set to 0 RPM:\n"
+        "{tool_controllers}\n\n"
+        "Post processing may generate G-code without spindle start/speed commands "
+        "(for example M3/S).\n\n"
+        "Do you want to continue?",
+    ).format(tool_controllers=tool_controller_labels)
+
+    response = QtGui.QMessageBox.warning(
+        None,
+        translate("CAM_Post", "Post Process"),
+        warning_text,
+        QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+        QtGui.QMessageBox.No,
+    )
+    return response == QtGui.QMessageBox.Yes
 
 
 def _resolve_post_processor_name(job):
@@ -200,8 +261,11 @@ class CommandPathPost:
         on user selection and document context.
         """
         Path.Log.debug(self.candidate.Name)
-        FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
 
+        if not _confirm_post_process_with_zero_spindle_speed(self.candidate):
+            return
+
+        FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
         postprocessor_name = _resolve_post_processor_name(self.candidate)
         Path.Log.debug(f"Post Processor: {postprocessor_name}")
 
@@ -281,8 +345,6 @@ class CommandPathPostSelected(CommandPathPost):
         Handles the activation of post processing, initiating the process based
         on user selection and document context.
         """
-        FreeCAD.ActiveDocument.openTransaction("Post Process the Selected operations")
-
         selection = FreeCADGui.Selection.getSelection()
         job = PathUtils.findParentJob(selection[0])
         if (
@@ -296,7 +358,7 @@ class CommandPathPostSelected(CommandPathPost):
             job = PathUtils.findParentJob(baseOp)
 
         opCandidates = [op for op in selection if hasattr(op, "Path") and "Job" not in op.Name]
-        operations = []
+        operations = None
         if opCandidates and job.Operations.Group != opCandidates:
             msgBox = QtGui.QMessageBox()
             msgBox.setWindowTitle("Post Process")
@@ -316,6 +378,10 @@ class CommandPathPostSelected(CommandPathPost):
                 )
                 operations = opCandidates
 
+        if not _confirm_post_process_with_zero_spindle_speed(job, operations):
+            return
+
+        FreeCAD.ActiveDocument.openTransaction("Post Process the Selected operations")
         postprocessor_name = _resolve_post_processor_name(job)
         Path.Log.debug(f"Post Processor: {postprocessor_name}")
 
