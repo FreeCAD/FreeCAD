@@ -53,14 +53,6 @@ void ActionGroup::init(bool hasHeader)
 
     layout->addWidget(myHeader);
 
-    auto *separator = new QFrame(this);
-    separator->setFrameShape(QFrame::HLine);
-    separator->setFrameShadow(QFrame::Raised);
-    separator->setFixedHeight(separatorHeight);
-    separator->setContentsMargins(8, 0, 8, 0);
-    separator->setProperty("class", "separator");
-    layout->addWidget(separator);
-
     myGroup = new TaskGroup(this, hasHeader);
     layout->addWidget(myGroup);
 
