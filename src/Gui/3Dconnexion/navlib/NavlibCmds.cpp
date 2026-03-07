@@ -167,8 +167,12 @@ long NavlibInterface::SetActiveCommand(std::string commandId)
             }
         }
     }
-    else
-        commandManager.runCommandByName(parsedData.commandName.c_str());
+    else {
+        Gui::Command* cmd = commandManager.getCommandByName(parsedData.commandName.c_str());
+        if (cmd) {
+            cmd->invoke(1);
+        }
+    }
 
     return 0;
 }
