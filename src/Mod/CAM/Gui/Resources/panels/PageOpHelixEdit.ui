@@ -72,7 +72,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QComboBox" name="startSide">
+       <widget class="QComboBox" name="startAt">
         <property name="toolTip">
          <string>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center</string>
         </property>
@@ -141,12 +141,12 @@
       <item row="5" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Extra offset</string>
+         <string>Stock to leave (outer radial)</string>
         </property>
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="Gui::InputField" name="extraOffset">
+       <widget class="Gui::InputField" name="RadialStockToLeaveOuter">
         <property name="unit" stdset="0">
          <string notr="true"/>
         </property>

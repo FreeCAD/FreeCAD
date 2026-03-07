@@ -432,6 +432,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/helix.py
     Path/Base/Generator/linking.py
     Path/Base/Generator/rotation.py
+    Path/Base/Generator/spiral.py
     Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
     Path/Base/Generator/toolchange.py
@@ -550,6 +551,7 @@ SET(Tests_SRCS
     CAMTests/TestPathPropertyBag.py
     CAMTests/TestPathRotationGenerator.py
     CAMTests/TestPathSetupSheet.py
+    CAMTests/TestPathSpiralGenerator.py
     CAMTests/TestPathStock.py
     CAMTests/TestPathTapGenerator.py
     CAMTests/TestPathToolChangeGenerator.py
