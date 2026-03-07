@@ -906,38 +906,41 @@ int System::addConstraintArcLength(Arc& a, double* distance, int tagId, bool dri
 
 int System::addConstraintP2PCoincident(Point& p1, Point& p2, int tagId, bool driving)
 {
-    addConstraintEqual(p1.x, p2.x, tagId, driving);
-    return addConstraintEqual(p1.y, p2.y, tagId, driving);
+    int out = 0;
+    for (int i = 0; i < GCS::Constants::n_dimensions; ++i) {
+        out = addConstraintEqual(p1.coords[i], p2.coords[i], tagId, driving);
+    }
+    return out;
 }
 
 int System::addConstraintHorizontal(Line& l, int tagId, bool driving)
 {
-    return addConstraintEqual(l.p1.y, l.p2.y, tagId, driving);
+    return addConstraintEqual(l.p1.y(), l.p2.y(), tagId, driving);
 }
 
 int System::addConstraintHorizontal(Point& p1, Point& p2, int tagId, bool driving)
 {
-    return addConstraintEqual(p1.y, p2.y, tagId, driving);
+    return addConstraintEqual(p1.y(), p2.y(), tagId, driving);
 }
 
 int System::addConstraintVertical(Line& l, int tagId, bool driving)
 {
-    return addConstraintEqual(l.p1.x, l.p2.x, tagId, driving);
+    return addConstraintEqual(l.p1.x(), l.p2.x(), tagId, driving);
 }
 
 int System::addConstraintVertical(Point& p1, Point& p2, int tagId, bool driving)
 {
-    return addConstraintEqual(p1.x, p2.x, tagId, driving);
+    return addConstraintEqual(p1.x(), p2.x(), tagId, driving);
 }
 
 int System::addConstraintCoordinateX(Point& p, double* x, int tagId, bool driving)
 {
-    return addConstraintEqual(p.x, x, tagId, driving);
+    return addConstraintEqual(p.x(), x, tagId, driving);
 }
 
 int System::addConstraintCoordinateY(Point& p, double* y, int tagId, bool driving)
 {
-    return addConstraintEqual(p.y, y, tagId, driving);
+    return addConstraintEqual(p.y(), y, tagId, driving);
 }
 
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)
@@ -977,15 +980,14 @@ int System::addConstraintPointOnParabolicArc(Point& p, ArcOfParabola& e, int tag
 
 int System::addConstraintPointOnBSpline(Point& p, BSpline& b, double* pointparam, int tagId, bool driving)
 {
-    Constraint* constr = new ConstraintPointOnBSpline(p.x, pointparam, 0, b);
-    constr->setTag(tagId);
-    constr->setDriving(driving);
-    addConstraint(constr);
-
-    constr = new ConstraintPointOnBSpline(p.y, pointparam, 1, b);
-    constr->setTag(tagId);
-    constr->setDriving(driving);
-    return addConstraint(constr);
+    int out = 0;
+    for (int i = 0; i < GCS::Constants::n_dimensions; ++i) {
+        Constraint* constr = new ConstraintPointOnBSpline(p.coords[i], pointparam, i, b);
+        constr->setTag(tagId);
+        constr->setDriving(driving);
+        out = addConstraint(constr);
+    }
+    return out;
 }
 
 int System::addConstraintArcOfEllipseRules(ArcOfEllipse& a, int tagId, bool driving)
@@ -996,14 +998,14 @@ int System::addConstraintArcOfEllipseRules(ArcOfEllipse& a, int tagId, bool driv
 
 int System::addConstraintCurveValue(Point& p, Curve& a, double* u, int tagId, bool driving)
 {
-    Constraint* constr = new ConstraintCurveValue(p, p.x, a, u);
-    constr->setTag(tagId);
-    constr->setDriving(driving);
-    addConstraint(constr);
-    constr = new ConstraintCurveValue(p, p.y, a, u);
-    constr->setTag(tagId);
-    constr->setDriving(driving);
-    return addConstraint(constr);
+    int out = 0;
+    for (int i = 0; i < GCS::Constants::n_dimensions; ++i) {
+        Constraint* constr = new ConstraintCurveValue(p, p.coords[i], a, u);
+        constr->setTag(tagId);
+        constr->setDriving(driving);
+        out = addConstraint(constr);
+    }
+    return out;
 }
 
 int System::addConstraintArcOfHyperbolaRules(ArcOfHyperbola& a, int tagId, bool driving)
@@ -1028,9 +1030,8 @@ int System::addConstraintPerpendicularLine2Arc(Point& p1, Point& p2, Arc& a, int
     using std::numbers::pi;
 
     addConstraintP2PCoincident(p2, a.start, tagId, driving);
-    double dx = *(p2.x) - *(p1.x);
-    double dy = *(p2.y) - *(p1.y);
-    if (dx * cos(*(a.startAngle)) + dy * sin(*(a.startAngle)) > 0) {
+    Distance dist = p2.distance(p1);
+    if (dist.dx() * cos(*(a.startAngle)) + dist.dy() * sin(*(a.startAngle)) > 0) {
         return addConstraintP2PAngle(p1, p2, a.startAngle, 0, tagId, driving);
     }
     else {
@@ -1043,9 +1044,8 @@ int System::addConstraintPerpendicularArc2Line(Arc& a, Point& p1, Point& p2, int
     using std::numbers::pi;
 
     addConstraintP2PCoincident(p1, a.end, tagId, driving);
-    double dx = *(p2.x) - *(p1.x);
-    double dy = *(p2.y) - *(p1.y);
-    if (dx * cos(*(a.endAngle)) + dy * sin(*(a.endAngle)) > 0) {
+    Distance dist = p2.distance(p1);
+    if (dist.dx() * cos(*(a.endAngle)) + dist.dy() * sin(*(a.endAngle)) > 0) {
         return addConstraintP2PAngle(p1, p2, a.endAngle, 0, tagId, driving);
     }
     else {
@@ -1060,9 +1060,8 @@ int System::addConstraintPerpendicularCircle2Arc(Point& center, double* radius, 
     addConstraintP2PDistance(a.start, center, radius, tagId, driving);
     double incrAngle = *(a.startAngle) < *(a.endAngle) ? pi / 2 : -pi / 2;
     double tangAngle = *a.startAngle + incrAngle;
-    double dx = *(a.start.x) - *(center.x);
-    double dy = *(a.start.y) - *(center.y);
-    if (dx * cos(tangAngle) + dy * sin(tangAngle) > 0) {
+    Distance dist = a.start.distance(center);
+    if (dist.dx() * cos(tangAngle) + dist.dy() * sin(tangAngle) > 0) {
         return addConstraintP2PAngle(center, a.start, a.startAngle, incrAngle, tagId, driving);
     }
     else {
@@ -1077,9 +1076,8 @@ int System::addConstraintPerpendicularArc2Circle(Arc& a, Point& center, double* 
     addConstraintP2PDistance(a.end, center, radius, tagId, driving);
     double incrAngle = *(a.startAngle) < *(a.endAngle) ? -pi / 2 : pi / 2;
     double tangAngle = *a.endAngle + incrAngle;
-    double dx = *(a.end.x) - *(center.x);
-    double dy = *(a.end.y) - *(center.y);
-    if (dx * cos(tangAngle) + dy * sin(tangAngle) > 0) {
+    Distance dist = a.end.distance(center);
+    if (dist.dx() * cos(tangAngle) + dist.dy() * sin(tangAngle) > 0) {
         return addConstraintP2PAngle(center, a.end, a.endAngle, incrAngle, tagId, driving);
     }
     else {
@@ -1122,9 +1120,7 @@ int System::addConstraintTangent(Line& l, Arc& a, int tagId, bool driving)
 
 int System::addConstraintTangent(Circle& c1, Circle& c2, int tagId, bool driving)
 {
-    double dx = *(c2.center.x) - *(c1.center.x);
-    double dy = *(c2.center.y) - *(c1.center.y);
-    double d = sqrt(dx * dx + dy * dy);
+    double d = c2.center.distance(c1.center).value();
     return addConstraintTangentCircumf(
         c1.center,
         c2.center,
@@ -1138,9 +1134,7 @@ int System::addConstraintTangent(Circle& c1, Circle& c2, int tagId, bool driving
 
 int System::addConstraintTangent(Arc& a1, Arc& a2, int tagId, bool driving)
 {
-    double dx = *(a2.center.x) - *(a1.center.x);
-    double dy = *(a2.center.y) - *(a1.center.y);
-    double d = sqrt(dx * dx + dy * dy);
+    double d = a2.center.distance(a1.center).value();
     return addConstraintTangentCircumf(
         a1.center,
         a2.center,
@@ -1154,9 +1148,7 @@ int System::addConstraintTangent(Arc& a1, Arc& a2, int tagId, bool driving)
 
 int System::addConstraintTangent(Circle& c, Arc& a, int tagId, bool driving)
 {
-    double dx = *(a.center.x) - *(c.center.x);
-    double dy = *(a.center.y) - *(c.center.y);
-    double d = sqrt(dx * dx + dy * dy);
+    double d = a.center.distance(c.center).value();
     return addConstraintTangentCircumf(
         c.center,
         a.center,
@@ -1308,14 +1300,14 @@ int System::addConstraintInternalAlignmentEllipseMajorDiameter(
     bool driving
 )
 {
-    double X_1 = *p1.x;
-    double Y_1 = *p1.y;
-    double X_2 = *p2.x;
-    double Y_2 = *p2.y;
-    double X_c = *e.center.x;
-    double Y_c = *e.center.y;
-    double X_F1 = *e.focus1.x;
-    double Y_F1 = *e.focus1.y;
+    double X_1 = *p1.x();
+    double Y_1 = *p1.y();
+    double X_2 = *p2.x();
+    double Y_2 = *p2.y();
+    double X_c = *e.center.x();
+    double Y_c = *e.center.y();
+    double X_F1 = *e.focus1.x();
+    double Y_F1 = *e.focus1.y();
     double b = *e.radmin;
 
     double closertopositivemajor
@@ -1360,14 +1352,14 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(
     bool driving
 )
 {
-    double X_1 = *p1.x;
-    double Y_1 = *p1.y;
-    double X_2 = *p2.x;
-    double Y_2 = *p2.y;
-    double X_c = *e.center.x;
-    double Y_c = *e.center.y;
-    double X_F1 = *e.focus1.x;
-    double Y_F1 = *e.focus1.y;
+    double X_1 = *p1.x();
+    double Y_1 = *p1.y();
+    double X_2 = *p2.x();
+    double Y_2 = *p2.y();
+    double X_c = *e.center.x();
+    double Y_c = *e.center.y();
+    double X_F1 = *e.focus1.x();
+    double Y_F1 = *e.focus1.y();
     double b = *e.radmin;
 
     double closertopositiveminor
@@ -1392,8 +1384,17 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(
 
 int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse& e, Point& p1, int tagId, bool driving)
 {
-    addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
+    int out = 0;
+    for (int i = 0; i < Constants::n_dimensions; ++i) {
+        out = addConstraintEqual(
+            e.focus1.coords[i],
+            p1.coords[i],
+            tagId,
+            driving,
+            Constraint::Alignment::InternalAlignment
+        );
+    }
+    return out;
 }
 
 int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse& e, Point& p1, int tagId, bool driving)
@@ -1410,14 +1411,14 @@ int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(
     bool driving
 )
 {
-    double X_1 = *p1.x;
-    double Y_1 = *p1.y;
-    double X_2 = *p2.x;
-    double Y_2 = *p2.y;
-    double X_c = *e.center.x;
-    double Y_c = *e.center.y;
-    double X_F1 = *e.focus1.x;
-    double Y_F1 = *e.focus1.y;
+    double X_1 = *p1.x();
+    double Y_1 = *p1.y();
+    double X_2 = *p2.x();
+    double Y_2 = *p2.y();
+    double X_c = *e.center.x();
+    double Y_c = *e.center.y();
+    double X_F1 = *e.focus1.x();
+    double Y_F1 = *e.focus1.y();
     double b = *e.radmin;
 
     double closertopositivemajor = pow(-X_1 + X_c
@@ -1462,14 +1463,14 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(
     bool driving
 )
 {
-    double X_1 = *p1.x;
-    double Y_1 = *p1.y;
-    double X_2 = *p2.x;
-    double Y_2 = *p2.y;
-    double X_c = *e.center.x;
-    double Y_c = *e.center.y;
-    double X_F1 = *e.focus1.x;
-    double Y_F1 = *e.focus1.y;
+    double X_1 = *p1.x();
+    double Y_1 = *p1.y();
+    double X_2 = *p2.x();
+    double Y_2 = *p2.y();
+    double X_c = *e.center.x();
+    double Y_c = *e.center.y();
+    double X_F1 = *e.focus1.x();
+    double Y_F1 = *e.focus1.y();
     double b = *e.radmin;
 
     double closertopositiveminor
@@ -1506,14 +1507,32 @@ int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(
 
 int System::addConstraintInternalAlignmentHyperbolaFocus(Hyperbola& e, Point& p1, int tagId, bool driving)
 {
-    addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
+    int out = 0;
+    for (int i = 0; i < Constants::n_dimensions; ++i) {
+        out = addConstraintEqual(
+            e.focus1.coords[i],
+            p1.coords[i],
+            tagId,
+            driving,
+            Constraint::Alignment::InternalAlignment
+        );
+    }
+    return out;
 }
 
 int System::addConstraintInternalAlignmentParabolaFocus(Parabola& e, Point& p1, int tagId, bool driving)
 {
-    addConstraintEqual(e.focus1.x, p1.x, tagId, driving, Constraint::Alignment::InternalAlignment);
-    return addConstraintEqual(e.focus1.y, p1.y, tagId, driving, Constraint::Alignment::InternalAlignment);
+    int out = 0;
+    for (int i = 0; i < Constants::n_dimensions; ++i) {
+        out = addConstraintEqual(
+            e.focus1.coords[i],
+            p1.coords[i],
+            tagId,
+            driving,
+            Constraint::Alignment::InternalAlignment
+        );
+    }
+    return out;
 }
 
 int System::addConstraintInternalAlignmentBSplineControlPoint(
@@ -1524,20 +1543,16 @@ int System::addConstraintInternalAlignmentBSplineControlPoint(
     bool driving
 )
 {
-    addConstraintEqual(
-        b.poles[poleindex].x,
-        c.center.x,
-        tagId,
-        driving,
-        Constraint::Alignment::InternalAlignment
-    );
-    addConstraintEqual(
-        b.poles[poleindex].y,
-        c.center.y,
-        tagId,
-        driving,
-        Constraint::Alignment::InternalAlignment
-    );
+    for (int i = 0; i < Constants::n_dimensions; ++i) {
+        addConstraintEqual(
+            b.poles[poleindex].coords[i],
+            c.center.coords[i],
+            tagId,
+            driving,
+            Constraint::Alignment::InternalAlignment
+        );
+    }
+
     return addConstraintEqual(
         b.weights[poleindex],
         c.rad,
@@ -1568,8 +1583,6 @@ int System::addConstraintInternalAlignmentKnotPoint(
 
     // `startpole` is the first pole affecting the knot with `knotindex`
     size_t startpole = 0;
-    std::vector<double*> pvec;
-    pvec.push_back(p.x);
 
     std::vector<double> factors(numpoles, 1.0 / numpoles);
 
@@ -1605,33 +1618,27 @@ int System::addConstraintInternalAlignmentKnotPoint(
 
     // The mod operation is to adjust for periodic B-splines.
     // This can be separated for performance reasons but it will be less readable.
-    for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].x);
-    }
-    for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.weights[(startpole + i) % b.poles.size()]);
-    }
+    std::vector<double*> pvec;
+    pvec.reserve(numpoles * 2);
 
-    Constraint* constr = new ConstraintWeightedLinearCombination(numpoles, pvec, factors);
-    constr->setTag(tagId);
-    constr->setDriving(driving);
-    constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
-    addConstraint(constr);
+    int out = 0;
+    for (int i = 0; i < Constants::n_dimensions; ++i) {
+        pvec.clear();
+        pvec.push_back(p.coords[i]);
 
-    pvec.clear();
-    pvec.push_back(p.y);
-    for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.poles[(startpole + i) % b.poles.size()].y);
-    }
-    for (size_t i = 0; i < numpoles; ++i) {
-        pvec.push_back(b.weights[(startpole + i) % b.poles.size()]);
-    }
+        for (size_t i = 0; i < numpoles; ++i) {
+            pvec.push_back(b.poles[(startpole + i) % b.poles.size()].coords[i]);
+        }
+        for (size_t i = 0; i < numpoles; ++i) {
+            pvec.push_back(b.weights[(startpole + i) % b.poles.size()]);
+        }
 
-    constr = new ConstraintWeightedLinearCombination(numpoles, pvec, factors);
-    constr->setTag(tagId);
-    constr->setDriving(driving);
-    constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
-    return addConstraint(constr);
+        Constraint* constr = new ConstraintWeightedLinearCombination(numpoles, pvec, factors);
+        constr->setTag(tagId);
+        constr->setDriving(driving);
+        constr->setInternalAlignment(Constraint::Alignment::InternalAlignment);
+    }
+    return out;
 }
 
 // calculates angle between two curves at point of their intersection p. If two

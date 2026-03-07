@@ -27,6 +27,7 @@
 #include "Util.h"
 #include <boost/math/constants/constants.hpp>
 #include "../../SketcherGlobal.h"
+#include <array>
 
 #ifdef _MSC_VER
 # pragma warning(disable : 4251)
@@ -36,21 +37,48 @@
 // NOLINTBEGIN(readability-math-missing-parentheses)
 namespace GCS
 {
+struct SketcherExport Constants
+{
+    static constexpr int n_dimensions = 2;
+};
+
+struct SketcherExport Distance
+{
+    std::array<double, Constants::n_dimensions> deltas;
+    double value2;
+
+    Distance(std::array<double, Constants::n_dimensions> deltas_);
+
+    double value() const;
+    double dx() const;
+    double dy() const;
+};
+
 class SketcherExport Point
 {
 public:
-    Point()
-        : x(nullptr)
-        , y(nullptr)
-    {}
-    Point(double* px, double* py)
-        : x(px)
-        , y(py)
-    {}
-    double* x;
-    double* y;
+    std::array<double*, Constants::n_dimensions> coords;
+
+public:
+    Point(double* px, double* py);
+    Point() = default;
+    void copyValue(const Point& other);
+
+    double* x() const
+    {
+        return coords[0];
+    }
+    double* y() const
+    {
+        return coords[1];
+    }
     int PushOwnParams(VEC_pD& pvec) const;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt);
+
+    // Returns true if x or y is the same as param
+    bool hasParam(double* param);
+
+    Distance distance(const Point& other) const;
 };
 
 using VEC_P = std::vector<Point>;
@@ -204,6 +232,9 @@ public:
 class SketcherExport Line: public Curve
 {
 public:
+    Line(Point p1_, Point p2_);
+    Line() = default;
+
     Point p1;
     Point p2;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
@@ -211,11 +242,15 @@ public:
     int PushOwnParams(VEC_pD& pvec) override;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
     Line* Copy() override;
+    Distance length() const;
 };
 
 class SketcherExport Circle: public Curve
 {
 public:
+    Circle(Point center_, double* rad_);
+    Circle() = default;
+
     Point center;
     double* rad {nullptr};
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
@@ -259,6 +294,9 @@ public:
 class SketcherExport Ellipse: public MajorRadiusConic
 {
 public:
+    Ellipse(Point center_, Point focus1_, double* radmin_);
+    Ellipse() = default;
+
     Point center;
     Point focus1;
     double* radmin {nullptr};
@@ -333,6 +371,9 @@ public:
 class SketcherExport Parabola: public Curve
 {
 public:
+    Parabola(Point vertex_, Point focus1_);
+    Parabola() = default;
+
     Point vertex;
     Point focus1;
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;

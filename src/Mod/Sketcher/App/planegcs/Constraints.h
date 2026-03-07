@@ -425,35 +425,25 @@ public:
 class ConstraintP2PDistance: public Constraint
 {
 private:
-    double* p1x()
+    Point p1;
+    Point p2;
+
+    double* distance() const
     {
-        return pvec[0];
+        return pvec.back();
     }
-    double* p1y()
-    {
-        return pvec[1];
-    }
-    double* p2x()
-    {
-        return pvec[2];
-    }
-    double* p2y()
-    {
-        return pvec[3];
-    }
-    double* distance()
-    {
-        return pvec[4];
-    }
+
     double value();
 
 public:
-    ConstraintP2PDistance(Point& p1, Point& p2, double* d);
+    ConstraintP2PDistance(const Point& p1, const Point& p2, double* d);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintP2PDistance()
     {}
 #endif
     ConstraintType getTypeId() override;
+
+    void reconstructGeomPointers();
     double error() override;
     double grad(double*) override;
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
