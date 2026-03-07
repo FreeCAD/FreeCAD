@@ -696,7 +696,7 @@ void FreeCADStyle::drawPrimitive(
 ) const
 {
     if (element == PE_PanelButtonCommand) {
-        drawBoxBackground(painter, option->rect, resolveBoxStyle(contextOf(widget, option)));
+        drawComponent(painter, option->rect, widget, option);
         return;
     }
 
@@ -710,7 +710,7 @@ void FreeCADStyle::drawPrimitive(
             QProxyStyle::drawPrimitive(element, option, painter, widget);
             return;
         }
-        drawBoxBackground(painter, option->rect, resolveBoxStyle(contextOf(widget, option)));
+        drawComponent(painter, option->rect, widget, option);
         return;
     }
 
@@ -718,36 +718,17 @@ void FreeCADStyle::drawPrimitive(
         if (qobject_cast<const QTextEdit*>(widget) || qobject_cast<const QPlainTextEdit*>(widget)) {
             const auto* frameOption = qstyleoption_cast<const QStyleOptionFrame*>(option);
             if (frameOption && frameOption->lineWidth > 0) {
-                drawBoxBackground(painter, option->rect, resolveBoxStyle(contextOf(widget, option)));
+                drawComponent(painter, option->rect, widget, option);
                 return;
             }
         }
     }
 
     if (element == PE_IndicatorToolBarSeparator) {
-        int thickness = 1;
-        if (const auto numeric = resolve<StyleParameters::Numeric>("SeparatorThickness")) {
-            thickness = static_cast<int>(numeric->value);
-        }
-        if (const auto color = resolve<Base::Color>("SeparatorColor")) {
-            // In a horizontal toolbar the buttons are side-by-side, so the separator
-            // is a vertical line; in a vertical toolbar it is a horizontal line.
-            const bool toolbarIsHorizontal = option->state & QStyle::State_Horizontal;
-            const QRect lineRect = toolbarIsHorizontal
-                ? QRect(
-                      option->rect.center().x() - (thickness / 2),
-                      option->rect.top(),
-                      thickness,
-                      option->rect.height()
-                  )
-                : QRect(
-                      option->rect.left(),
-                      option->rect.center().y() - (thickness / 2),
-                      option->rect.width(),
-                      thickness
-                  );
-            painter->fillRect(lineRect, color->asValue<QColor>());
-        }
+        // In a horizontal toolbar the buttons are side-by-side, so the separator
+        // is a vertical line; in a vertical toolbar it is a horizontal line.
+        const bool toolbarIsHorizontal = option->state & QStyle::State_Horizontal;
+        drawSeparatorLine(painter, option->rect, !toolbarIsHorizontal);
         return;
     }
 
@@ -785,29 +766,12 @@ QSize FreeCADStyle::sizeFromContents(
         return {width, height};
     }
 
-    if (type == CT_ComboBox) {
-        const StyleContext context = contextOf(widget, option);
-        const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
-
+    if (type == CT_ComboBox || type == CT_LineEdit || type == CT_SpinBox) {
+        const BoxGeometryDefinition geometry = resolveBoxGeometry(contextOf(widget, option));
         QSize result = QProxyStyle::sizeFromContents(type, option, size, widget);
-
         if (geometry.height) {
             result.setHeight(*geometry.height);
         }
-
-        return result;
-    }
-
-    if (type == CT_LineEdit || type == CT_SpinBox) {
-        const StyleContext context = contextOf(widget, option);
-        const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
-
-        QSize result = QProxyStyle::sizeFromContents(type, option, size, widget);
-
-        if (geometry.height) {
-            result.setHeight(*geometry.height);
-        }
-
         return result;
     }
 
@@ -870,20 +834,12 @@ QRect FreeCADStyle::subControlRect(
     if (complexControl == CC_ComboBox) {
         const auto* comboOption = qstyleoption_cast<const QStyleOptionComboBox*>(option);
         if (comboOption) {
-            const StyleContext context = contextOf(widget, option);
-            const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+            const BoxGeometryDefinition geometry = resolveBoxGeometry(contextOf(widget, option));
             const QRect outerRect = option->rect;
-
-            const int leftPad = static_cast<int>(geometry.padding.left());
-            const int rightPad = static_cast<int>(geometry.padding.right());
-            const int topPad = static_cast<int>(geometry.padding.top());
-            const int bottomPad = static_cast<int>(geometry.padding.bottom());
-
-            const int innerTop = outerRect.top() + topPad;
-            const int innerHeight = outerRect.height() - topPad - bottomPad;
+            const QRect contentRect = geometry.contentRect(outerRect);
             const int arrowWidth = proxy()->pixelMetric(PM_MenuButtonIndicator, option, widget);
 
-            const int arrowLeft = outerRect.right() - rightPad - arrowWidth + 1;
+            const int arrowLeft = contentRect.right() - arrowWidth + 1;
             const int editRight = arrowLeft - 1;
 
             switch (subControl) {
@@ -891,13 +847,13 @@ QRect FreeCADStyle::subControlRect(
                     return outerRect;
                 case SC_ComboBoxEditField:
                     return QRect(
-                        outerRect.left() + leftPad,
-                        innerTop,
-                        editRight - (outerRect.left() + leftPad) + 1,
-                        innerHeight
+                        contentRect.left(),
+                        contentRect.top(),
+                        editRight - contentRect.left() + 1,
+                        contentRect.height()
                     );
                 case SC_ComboBoxArrow:
-                    return QRect(arrowLeft, innerTop, arrowWidth, innerHeight);
+                    return QRect(arrowLeft, contentRect.top(), arrowWidth, contentRect.height());
                 default:
                     break;
             }
@@ -907,17 +863,9 @@ QRect FreeCADStyle::subControlRect(
     if (complexControl == CC_SpinBox) {
         const auto* spinOption = qstyleoption_cast<const QStyleOptionSpinBox*>(option);
         if (spinOption) {
-            const StyleContext context = contextOf(widget, option);
-            const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+            const BoxGeometryDefinition geometry = resolveBoxGeometry(contextOf(widget, option));
             const QRect outerRect = option->rect;
-
-            const int leftPad = static_cast<int>(geometry.padding.left());
-            const int rightPad = static_cast<int>(geometry.padding.right());
-            const int topPad = static_cast<int>(geometry.padding.top());
-            const int bottomPad = static_cast<int>(geometry.padding.bottom());
-
-            const int innerTop = outerRect.top() + topPad;
-            const int innerHeight = outerRect.height() - topPad - bottomPad;
+            const QRect contentRect = geometry.contentRect(outerRect);
 
             // Borrow the button width from the base style; only the position changes.
             const bool hasButtons = spinOption->buttonSymbols != QAbstractSpinBox::NoButtons;
@@ -925,32 +873,37 @@ QRect FreeCADStyle::subControlRect(
                 ? QProxyStyle::subControlRect(complexControl, option, SC_SpinBoxUp, widget).width()
                 : 0;
 
-            const int buttonLeft = outerRect.right() - rightPad - buttonWidth + 1;
-            const int editRight = hasButtons ? buttonLeft - 1 : outerRect.right() - rightPad;
+            const int buttonLeft = contentRect.right() - buttonWidth + 1;
+            const int editRight = hasButtons ? buttonLeft - 1 : contentRect.right();
 
             switch (subControl) {
                 case SC_SpinBoxFrame:
                     return outerRect;
                 case SC_SpinBoxEditField:
                     return QRect(
-                        outerRect.left() + leftPad,
-                        innerTop,
-                        editRight - (outerRect.left() + leftPad) + 1,
-                        innerHeight
+                        contentRect.left(),
+                        contentRect.top(),
+                        editRight - contentRect.left() + 1,
+                        contentRect.height()
                     );
                 case SC_SpinBoxUp: {
                     if (!hasButtons) {
                         return {};
                     }
-                    const int halfHeight = innerHeight / 2;
-                    return QRect(buttonLeft, innerTop, buttonWidth, halfHeight);
+                    const int halfHeight = contentRect.height() / 2;
+                    return QRect(buttonLeft, contentRect.top(), buttonWidth, halfHeight);
                 }
                 case SC_SpinBoxDown: {
                     if (!hasButtons) {
                         return {};
                     }
-                    const int halfHeight = innerHeight / 2;
-                    return QRect(buttonLeft, innerTop + halfHeight, buttonWidth, innerHeight - halfHeight);
+                    const int halfHeight = contentRect.height() / 2;
+                    return QRect(
+                        buttonLeft,
+                        contentRect.top() + halfHeight,
+                        buttonWidth,
+                        contentRect.height() - halfHeight
+                    );
                 }
                 default:
                     break;
@@ -974,7 +927,7 @@ void FreeCADStyle::drawComplexControl(
             if (spinOption->frame && (spinOption->subControls & SC_SpinBoxFrame)) {
                 const QRect frameRect
                     = proxy()->subControlRect(CC_SpinBox, option, SC_SpinBoxFrame, widget);
-                drawBoxBackground(painter, frameRect, resolveBoxStyle(contextOf(widget, option)));
+                drawComponent(painter, frameRect, widget, option);
             }
 
             // Draw spin button arrows on a transparent background (Breeze-style: no
@@ -1014,7 +967,7 @@ void FreeCADStyle::drawComplexControl(
     if (control == CC_ComboBox) {
         if (const auto* comboOption = qstyleoption_cast<const QStyleOptionComboBox*>(option)) {
             // Draw our styled background + border for the full frame.
-            drawBoxBackground(painter, option->rect, resolveBoxStyle(contextOf(widget, option)));
+            drawComponent(painter, option->rect, widget, option);
 
             // Draw the dropdown arrow indicator over the transparent button area.
             // QComboBox::paintEvent draws CE_ComboBoxLabel separately; it uses our
@@ -1058,26 +1011,7 @@ void FreeCADStyle::drawControl(
         if (const auto* frameOption = qstyleoption_cast<const QStyleOptionFrame*>(option)) {
             const QFrame::Shape shape = frameOption->frameShape;
             if (shape == QFrame::HLine || shape == QFrame::VLine) {
-                int thickness = 1;
-                if (const auto numeric = resolve<StyleParameters::Numeric>("SeparatorThickness")) {
-                    thickness = static_cast<int>(numeric->value);
-                }
-                if (const auto color = resolve<Base::Color>("SeparatorColor")) {
-                    const QRect lineRect = (shape == QFrame::HLine)
-                        ? QRect(
-                              option->rect.left(),
-                              option->rect.center().y() - (thickness / 2),
-                              option->rect.width(),
-                              thickness
-                          )
-                        : QRect(
-                              option->rect.center().x() - (thickness / 2),
-                              option->rect.top(),
-                              thickness,
-                              option->rect.height()
-                          );
-                    painter->fillRect(lineRect, color->asValue<QColor>());
-                }
+                drawSeparatorLine(painter, option->rect, shape == QFrame::HLine);
                 return;
             }
         }
@@ -1516,6 +1450,35 @@ FreeCADStyle::BoxGeometryDefinition FreeCADStyle::resolveBoxGeometry(const Style
     }
 
     return result;
+}
+
+void FreeCADStyle::drawComponent(QPainter* painter, const QRect& rect, const StyleContext& context) const
+{
+    drawBoxBackground(painter, rect, resolveBoxStyle(context));
+}
+
+void FreeCADStyle::drawComponent(
+    QPainter* painter,
+    const QRect& rect,
+    const QWidget* widget,
+    const QStyleOption* option
+) const
+{
+    drawComponent(painter, rect, contextOf(widget, option));
+}
+
+void FreeCADStyle::drawSeparatorLine(QPainter* painter, const QRect& rect, bool isHorizontal) const
+{
+    int thickness = 1;
+    if (const auto numeric = resolve<StyleParameters::Numeric>("SeparatorThickness")) {
+        thickness = static_cast<int>(numeric->value);
+    }
+    if (const auto color = resolve<Base::Color>("SeparatorColor")) {
+        const QRect lineRect = isHorizontal
+            ? QRect(rect.left(), rect.center().y() - (thickness / 2), rect.width(), thickness)
+            : QRect(rect.center().x() - (thickness / 2), rect.top(), thickness, rect.height());
+        painter->fillRect(lineRect, color->asValue<QColor>());
+    }
 }
 
 void FreeCADStyle::clearTokenCache()
