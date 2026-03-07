@@ -369,3 +369,38 @@ else(WIN32)
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 endif(WIN32)
+
+if(PARSER_TOOLS_FOUND)
+    # BISON_TARGET adds '-d' command option by default, so its command needs to be redefined
+    bison_target(QuantityParser
+        Quantity.y
+        Quantity.tab.c-
+        COMPILE_FLAGS "-l"
+    )
+    # Above custom rule has intentionally appended '-' to the output file to avoid the
+    # error of having two custom rules having the same output. Lets specify correct
+    # source file here:
+    set(BISON_QuantityParser_OUTPUT_SOURCE Quantity.tab.c)
+    set(BISON_QuantityParser_OUTPUTS ${BISON_QuantityParser_OUTPUT_SOURCE})
+    add_custom_command(OUTPUT ${BISON_QuantityParser_OUTPUTS}
+        COMMAND ${BISON_EXECUTABLE} -l -o ${BISON_QuantityParser_OUTPUT_SOURCE} ${BISON_QuantityParser_INPUT}
+        VERBATIM
+        DEPENDS ${BISON_QuantityParser_INPUT}
+        COMMENT "[BISON][QuantityParser] Building parser with bison ${BISON_VERSION}"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
+    flex_target(QuantityScanner
+        Quantity.l
+        Quantity.lex.c
+        COMPILE_FLAGS "-L"
+    )
+    add_flex_bison_dependency(QuantityScanner QuantityParser)
+    add_custom_target(quantity-parser
+        DEPENDS ${BISON_QuantityParser_OUTPUTS} ${FLEX_QuantityScanner_OUTPUTS}
+        COMMAND ${CMAKE_COMMAND}
+            -D DEST_PARSER_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
+            -D COPY_PARSER_FILES="Quantity.tab.c Quantity.lex.c"
+            -P ${CMAKE_SOURCE_DIR}/cMake/FreeCAD_Helpers/SetupParser.cmake
+        VERBATIM
+    )
+endif()
