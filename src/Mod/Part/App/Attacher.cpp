@@ -1726,6 +1726,12 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 Handle(Geom_Curve) hCurve = BRep_Tool::Curve(path, u1, u2);
 
                 GeomAPI_ProjectPointOnCurve projector(p_in, hCurve);
+                if (projector.NbPoints() < 1) {
+                    throw Base::ValueError(
+                        "AttachEngine3D::calculateAttachedPlacement: projecting "
+                        "point onto curve failed."
+                    );
+                }
                 u = projector.LowerDistanceParameter();
             }
             else {
