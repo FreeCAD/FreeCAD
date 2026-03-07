@@ -135,12 +135,11 @@ private:
 enum class AutoScaleMode : int
 {
     Always = 1,
-    Never = 2
+    Never = 2,
 
-        // Attempts to find scale reference objects int the viewport
-        // (such as a 3d body) and disable the feature if it finds one
-        WhenNoScaleFeatureIsVisible
-        = 0,
+    // Attempts to find scale reference objects int the viewport
+    // (such as a 3d body) and disable the feature if it finds one
+    WhenNoScaleFeatureIsVisible = 3
 };
 
 }  // namespace SketcherGui
