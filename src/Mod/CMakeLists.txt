@@ -94,10 +94,6 @@ if(BUILD_ROBOT)
     endif(EIGEN3_FOUND)
 endif(BUILD_ROBOT)
 
-if(BUILD_SANDBOX)
-    add_subdirectory(Sandbox)
-endif(BUILD_SANDBOX)
-
 if(BUILD_SHOW)
     add_subdirectory(Show)
 endif(BUILD_SHOW)
