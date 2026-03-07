@@ -27,6 +27,7 @@ Simulation
   Coordinate Mapping(3) = Integer 1 2 3
   Coordinate Scaling = Real 0.001
   Coordinate System = String "Cartesian"
+  Max Output Level = Integer 10
   Simulation Type = String "Steady State"
   Steady State Max Iterations = Integer 1
   Steady State Min Iterations = Integer 0
