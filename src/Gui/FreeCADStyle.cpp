@@ -34,6 +34,8 @@
 #include <QImage>
 #include <QLayout>
 #include <QLineEdit>
+#include <QPlainTextEdit>
+#include <QTextEdit>
 #include <QLinearGradient>
 #include <QPainterPath>
 #include <QRadialGradient>
@@ -327,6 +329,9 @@ std::span<const std::string_view> componentChain(StyleComponent component)
         "FormControl",
     });
     static constexpr auto lineEdit = std::to_array<std::string_view>({"LineEdit", "FormControl"});
+    static constexpr auto textEdit = std::to_array<std::string_view>(
+        {"TextEdit", "LineEdit", "FormControl"}
+    );
     static constexpr auto select = std::to_array<std::string_view>({"Select", "Button", "FormControl"});
 
     switch (component) {
@@ -336,6 +341,8 @@ std::span<const std::string_view> componentChain(StyleComponent component)
             return toolButton;
         case StyleComponent::LineEdit:
             return lineEdit;
+        case StyleComponent::TextEdit:
+            return textEdit;
         case StyleComponent::Select:
             return select;
         default:
@@ -697,6 +704,16 @@ void FreeCADStyle::drawPrimitive(
         }
         drawBoxBackground(painter, option->rect, resolveBoxStyle(contextOf(widget, option)));
         return;
+    }
+
+    if (element == PE_Frame) {
+        if (qobject_cast<const QTextEdit*>(widget) || qobject_cast<const QPlainTextEdit*>(widget)) {
+            const auto* frameOption = qstyleoption_cast<const QStyleOptionFrame*>(option);
+            if (frameOption && frameOption->lineWidth > 0) {
+                drawBoxBackground(painter, option->rect, resolveBoxStyle(contextOf(widget, option)));
+                return;
+            }
+        }
     }
 
     QProxyStyle::drawPrimitive(element, option, painter, widget);
@@ -1272,6 +1289,9 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
     else if (qobject_cast<const QLineEdit*>(widget) || qobject_cast<const QAbstractSpinBox*>(widget)) {
         context.component = StyleComponent::LineEdit;
     }
+    else if (qobject_cast<const QTextEdit*>(widget) || qobject_cast<const QPlainTextEdit*>(widget)) {
+        context.component = StyleComponent::TextEdit;
+    }
     else if (qobject_cast<const QComboBox*>(widget)) {
         context.component = StyleComponent::Select;
     }
@@ -1434,6 +1454,22 @@ bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
             if (auto* layout = groupBox->layout()) {
                 layout->setContentsMargins(0, 0, 0, 0);
             }
+        }
+
+        // Apply token padding to QTextEdit / QPlainTextEdit via the document margin.
+        // This pads the text content relative to the viewport while leaving scrollbars
+        // flush with the frame edge (unlike viewport-margin approaches).
+        const auto applyTextEditDocumentMargin = [this](QWidget* widget, QTextDocument* document) {
+            const StyleContext context = contextOf(widget);
+            const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+            document->setDocumentMargin(geometry.padding.left());
+        };
+
+        if (auto* textEdit = qobject_cast<QTextEdit*>(obj)) {
+            applyTextEditDocumentMargin(textEdit, textEdit->document());
+        }
+        else if (auto* plainTextEdit = qobject_cast<QPlainTextEdit*>(obj)) {
+            applyTextEditDocumentMargin(plainTextEdit, plainTextEdit->document());
         }
     }
 

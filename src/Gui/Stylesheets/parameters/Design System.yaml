@@ -137,6 +137,11 @@ ToolButtonSmallPadding: "padding(horizontal: @Spacing.100, vertical: @Spacing.05
 ToolButtonHeight: "@FormControlHeight"
 ToolButtonSmallHeight: "@FormControlSmallHeight"
 
+# ── Select Padding overrides
+SelectPadding: "padding(horizontal: @Spacing.200, vertical: @Spacing.100)"
+SelectSmallPadding: "@FormControlSmallPadding"
+SelectBigPadding: "@FormControlBigPadding"
+
 # ── Line Edit / Input fields ──────────────────────────────────────────────
 LineEditBackground:          "@Background.000"
 LineEditBorderColor:         "@Neutral.400"
@@ -149,6 +154,8 @@ LineEditSmallHeight:         "@FormControlSmallHeight"
 LineEditFocusedBorderColor:  "@Accent.500"
 
 InputBackground: "@Background.000"
+
+TextEditPadding: "padding(@FormControlPadding.left)"
 
 DialogBackground: "@Background.050"
 
