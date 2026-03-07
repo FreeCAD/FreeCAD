@@ -1,0 +1,653 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+/****************************************************************************
+ *                                                                          *
+ *   Copyright (c) 2025 Jacob Oursland <jacob.oursland[at]gmail.com>        *
+ *                                                                          *
+ *   This file is part of FreeCAD.                                          *
+ *                                                                          *
+ *   FreeCAD is free software: you can redistribute it and/or modify it     *
+ *   under the terms of the GNU Lesser General Public License as            *
+ *   published by the Free Software Foundation, either version 2.1 of the   *
+ *   License, or (at your option) any later version.                        *
+ *                                                                          *
+ *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
+ *   Lesser General Public License for more details.                        *
+ *                                                                          *
+ *   You should have received a copy of the GNU Lesser General Public       *
+ *   License along with FreeCAD. If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                       *
+ *                                                                          *
+ ***************************************************************************/
+
+#include "ChronoSolver.h"
+
+// The rest of this file is only meaningful when Chrono is available.
+#ifdef HAVE_CHRONO
+
+# include <Base/Console.h>
+# include <Base/Placement.h>
+
+// Chrono headers
+# include <chrono/physics/ChBody.h>
+# include <chrono/physics/ChLinkDistance.h>
+# include <chrono/physics/ChLinkLockGear.h>
+# include <chrono/physics/ChLinkLockPulley.h>
+# include <chrono/physics/ChLinkLockScrew.h>
+# include <chrono/physics/ChLinkMate.h>
+# include <chrono/physics/ChSystemNSC.h>
+# include <chrono/timestepper/ChAssemblyAnalysis.h>
+
+FC_LOG_LEVEL_INIT("ChronoSolver", true, true, true)
+
+using namespace Assembly;
+using namespace Assembly::Solver;
+
+// ============================================================================
+// Conversion helpers between FreeCAD Base::Placement and Chrono ChFrame
+// ============================================================================
+
+// FreeCAD stores quaternion as (x, y, z, w) — i.e., getValue(q0,q1,q2,q3) gives (x,y,z,w).
+// Chrono ChQuaternion stores as (e0=w, e1=x, e2=y, e3=z).
+
+static chrono::ChFrame<double> placementToChFrame(const Base::Placement& plc)
+{
+    const Base::Vector3d& p = plc.getPosition();
+    double qx, qy, qz, qw;
+    plc.getRotation().getValue(qx, qy, qz, qw);
+    return chrono::ChFrame<double>(
+        chrono::ChVector3d(p.x, p.y, p.z),
+        chrono::ChQuaternion<double>(qw, qx, qy, qz)
+    );
+}
+
+static Base::Placement chFrameToPlacement(const chrono::ChFrame<double>& frame)
+{
+    const auto& pos = frame.GetPos();
+    const auto& rot = frame.GetRot();
+    // rot: e0=w, e1=x, e2=y, e3=z → FreeCAD Rotation(x,y,z,w)
+    return Base::Placement(
+        Base::Vector3d(pos.x(), pos.y(), pos.z()),
+        Base::Rotation(rot.e1(), rot.e2(), rot.e3(), rot.e0())
+    );
+}
+
+// ============================================================================
+// MarkerRef parsing
+// The separator '|' is used between part name and marker name.
+// Ground marker refs use the prefix "__ground__|".
+// ============================================================================
+
+static constexpr char kSep = '|';
+static const std::string kGroundPrefix = "__ground__";
+
+static MarkerRef makePartMarkerRef(const std::string& partName, const std::string& markerName)
+{
+    return partName + kSep + markerName;
+}
+
+static MarkerRef makeGroundMarkerRef(const std::string& markerName)
+{
+    return kGroundPrefix + kSep + markerName;
+}
+
+// Split a MarkerRef into (prefix, markerName).
+// Returns false if the separator is not found.
+static bool splitMarkerRef(const MarkerRef& ref, std::string& prefix, std::string& markerName)
+{
+    const auto sep = ref.find(kSep);
+    if (sep == std::string::npos) {
+        return false;
+    }
+    prefix = ref.substr(0, sep);
+    markerName = ref.substr(sep + 1);
+    return true;
+}
+
+// ============================================================================
+// ChronoPart
+// ============================================================================
+
+ChronoPart::ChronoPart()
+{
+    body = std::make_shared<chrono::ChBody>();
+}
+
+void ChronoPart::setPlacement(Base::Placement plc)
+{
+    Part::setPlacement(plc);
+    auto frame = placementToChFrame(plc);
+    body->SetPos(frame.GetPos());
+    body->SetRot(frame.GetRot());
+}
+
+void ChronoPart::pushPlacement(Base::Placement plc)
+{
+    auto frame = placementToChFrame(plc);
+    body->SetPos(frame.GetPos());
+    body->SetRot(frame.GetRot());
+}
+
+MarkerRef ChronoPart::addMarker(std::string name, Base::Placement plc)
+{
+    localMarkers[name] = placementToChFrame(plc);
+    return makePartMarkerRef(getName(), name);
+}
+
+Base::Placement ChronoPart::getPlacement() const
+{
+    chrono::ChFrame<double> frame(body->GetPos(), body->GetRot());
+    return chFrameToPlacement(frame);
+}
+
+std::shared_ptr<chrono::ChBody> ChronoPart::getBody() const
+{
+    return body;
+}
+
+bool ChronoPart::getMarkerFrame(const std::string& markerName, chrono::ChFrame<double>& outFrame) const
+{
+    auto it = localMarkers.find(markerName);
+    if (it == localMarkers.end()) {
+        return false;
+    }
+    outFrame = it->second;
+    return true;
+}
+
+// ============================================================================
+// ChronoAssembly
+// ============================================================================
+
+ChronoAssembly::ChronoAssembly()
+{
+    sys = std::make_unique<chrono::ChSystemNSC>();
+    sys->SetGravitationalAcceleration(chrono::ChVector3d(0, 0, 0));
+
+    // Create a fixed ground body at the world origin
+    groundBody = std::make_shared<chrono::ChBody>();
+    groundBody->SetFixed(true);
+    groundBody->SetName("__ground__");
+    sys->AddBody(groundBody);
+}
+
+void ChronoAssembly::addPart(std::shared_ptr<Part> part)
+{
+    auto chronoPart = std::static_pointer_cast<ChronoPart>(part);
+
+    // Configure the body
+    auto body = chronoPart->getBody();
+    body->SetName(part->getName());
+    body->SetMass(part->getMass());
+    double ixx, iyy, izz;
+    part->getMomentOfInertias(ixx, iyy, izz);
+    body->SetInertiaXX(chrono::ChVector3d(ixx, iyy, izz));
+
+    // Initial placement was already set via setPlacement(); sync to body coords.
+    auto frame = placementToChFrame(part->getPlacement());
+    body->SetPos(frame.GetPos());
+    body->SetRot(frame.GetRot());
+
+    sys->AddBody(body);
+    parts.push_back(chronoPart);
+}
+
+MarkerRef ChronoAssembly::addGroundMarker(std::string name, Base::Placement plc)
+{
+    groundMarkers[name] = placementToChFrame(plc);
+    return makeGroundMarkerRef(name);
+}
+
+bool ChronoAssembly::resolveMarker(
+    const MarkerRef& ref,
+    std::shared_ptr<chrono::ChBody>& outBody,
+    chrono::ChFrame<double>& outFrame
+) const
+{
+    // Check cache first
+    {
+        auto it = markerRegistry.find(ref);
+        if (it != markerRegistry.end()) {
+            outBody = it->second.body;
+            outFrame = it->second.localFrame;
+            return true;
+        }
+    }
+
+    std::string prefix, markerName;
+    if (!splitMarkerRef(ref, prefix, markerName)) {
+        FC_ERR("ChronoSolver: malformed MarkerRef: " << ref);
+        return false;
+    }
+
+    if (prefix == kGroundPrefix) {
+        auto it = groundMarkers.find(markerName);
+        if (it == groundMarkers.end()) {
+            FC_ERR("ChronoSolver: ground marker not found: " << markerName);
+            return false;
+        }
+        outBody = groundBody;
+        outFrame = it->second;
+        // Cache
+        const_cast<ChronoAssembly*>(this)->markerRegistry[ref] = {outBody, outFrame};
+        return true;
+    }
+
+    // Search parts by name
+    for (const auto& part : parts) {
+        if (part->getName() == prefix) {
+            chrono::ChFrame<double> frame;
+            if (!part->getMarkerFrame(markerName, frame)) {
+                FC_ERR(
+                    "ChronoSolver: marker '" << markerName << "' not found on part '" << prefix << "'"
+                );
+                return false;
+            }
+            outBody = part->getBody();
+            outFrame = frame;
+            // Cache
+            const_cast<ChronoAssembly*>(this)->markerRegistry[ref] = {outBody, outFrame};
+            return true;
+        }
+    }
+
+    FC_ERR("ChronoSolver: part not found for MarkerRef: " << ref);
+    return false;
+}
+
+void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
+{
+    std::shared_ptr<chrono::ChBody> body1, body2;
+    chrono::ChFrame<double> frame1, frame2;
+
+    if (!resolveMarker(joint->getMarkerI(), body1, frame1)) {
+        FC_WARN("ChronoSolver: skipping joint '" << joint->getName() << "': cannot resolve markerI");
+        return;
+    }
+    if (!resolveMarker(joint->getMarkerJ(), body2, frame2)) {
+        FC_WARN("ChronoSolver: skipping joint '" << joint->getName() << "': cannot resolve markerJ");
+        return;
+    }
+
+    // Helper: Initialize a ChLinkMate-based joint with body-relative frames
+    auto initMate = [&](auto link) {
+        link->SetName(joint->getName());
+        link->Initialize(body1, body2, true, frame1, frame2);
+        sys->AddLink(link);
+    };
+
+    // Helper: Initialize a ChLinkMarkers-based joint (ChLinkLock family)
+    auto initLock = [&](auto link) {
+        link->SetName(joint->getName());
+        link->Initialize(body1, body2, true, frame1, frame2);
+        sys->AddLink(link);
+    };
+
+    switch (joint->getJointClass()) {
+        case JointClass::FIXED_JOINT:
+            // If one body is the ground, mark the other as truly fixed in Chrono
+            // instead of adding a constraint.  SetFixed(true) removes the body from
+            // the solver's degrees of freedom entirely, which is more robust than a
+            // ChLinkMateFix whose Newton-Raphson residual can cause tiny drift.
+            if (body1 == groundBody) {
+                body2->SetFixed(true);
+            }
+            else if (body2 == groundBody) {
+                body1->SetFixed(true);
+            }
+            else {
+                initMate(std::make_shared<chrono::ChLinkMateFix>());
+            }
+            break;
+
+        case JointClass::REVOLUTE_JOINT:
+            initMate(std::make_shared<chrono::ChLinkMateRevolute>());
+            break;
+
+        case JointClass::CYLINDRICAL_JOINT:
+            initMate(std::make_shared<chrono::ChLinkMateCylindrical>());
+            break;
+
+        case JointClass::TRANSLATIONAL_JOINT:
+            initMate(std::make_shared<chrono::ChLinkMatePrismatic>());
+            break;
+
+        case JointClass::SPHERICAL_JOINT:
+            initMate(std::make_shared<chrono::ChLinkMateSpherical>());
+            break;
+
+        case JointClass::PARALLEL_AXES_JOINT: {
+            // ChLinkMateParallel::Initialize hides the base 5-arg form; use its own
+            // 7-arg Initialize(body1, body2, rel, pt1, pt2, dir1, dir2).
+            auto link = std::make_shared<chrono::ChLinkMateParallel>();
+            link->SetName(joint->getName());
+            link->Initialize(
+                body1,
+                body2,
+                true,
+                frame1.GetPos(),
+                frame2.GetPos(),
+                frame1.GetRot().GetAxisZ(),
+                frame2.GetRot().GetAxisZ()
+            );
+            sys->AddLink(link);
+            break;
+        }
+
+        case JointClass::PERPENDICULAR_JOINT: {
+            // ChLinkMateOrthogonal::Initialize hides the base 5-arg form; use its own
+            // 7-arg Initialize(body1, body2, rel, pt1, pt2, dir1, dir2).
+            auto link = std::make_shared<chrono::ChLinkMateOrthogonal>();
+            link->SetName(joint->getName());
+            link->Initialize(
+                body1,
+                body2,
+                true,
+                frame1.GetPos(),
+                frame2.GetPos(),
+                frame1.GetRot().GetAxisZ(),
+                frame2.GetRot().GetAxisZ()
+            );
+            sys->AddLink(link);
+            break;
+        }
+
+        case JointClass::PLANAR_JOINT: {
+            // ChLinkMatePlanar::Initialize hides the base 5-arg form; use its own
+            // 7-arg Initialize(body1, body2, rel, pt1, pt2, norm1, norm2).
+            // The plane normal is the Z-axis of each marker frame.
+            auto link = std::make_shared<chrono::ChLinkMatePlanar>();
+            link->SetName(joint->getName());
+            link->Initialize(
+                body1,
+                body2,
+                true,
+                frame1.GetPos(),
+                frame2.GetPos(),
+                frame1.GetRot().GetAxisZ(),
+                frame2.GetRot().GetAxisZ()
+            );
+            sys->AddLink(link);
+            break;
+        }
+
+        case JointClass::POINT_IN_PLANE_JOINT:
+            // Constrain only z (normal to plane), leave x/y free; no rotational constraints.
+            initMate(
+                std::make_shared<chrono::ChLinkMateGeneric>(false, false, true, false, false, false)
+            );
+            break;
+
+        case JointClass::POINT_IN_LINE_JOINT:
+            // Constrain y and z, leave x (along the line) free; no rotational constraints.
+            initMate(
+                std::make_shared<chrono::ChLinkMateGeneric>(false, true, true, false, false, false)
+            );
+            break;
+
+        case JointClass::LINE_IN_PLANE_JOINT:
+            // Constrain z (normal), rx and ry (line must stay parallel to the plane);
+            // leave x, y, and rz free.
+            initMate(
+                std::make_shared<chrono::ChLinkMateGeneric>(false, false, true, true, true, false)
+            );
+            break;
+
+        case JointClass::RACK_PINION_JOINT: {
+            auto solverJoint = std::static_pointer_cast<RackPinionJoint>(joint);
+            auto link = std::make_shared<chrono::ChLinkMateRackPinion>();
+            link->SetPinionRadius(solverJoint->getPitchRadius());
+            initMate(link);
+            break;
+        }
+
+        case JointClass::SCREW_JOINT: {
+            auto solverJoint = std::static_pointer_cast<ScrewJoint>(joint);
+            auto link = std::make_shared<chrono::ChLinkLockScrew>();
+            // Chrono thread = pitch * 2*pi → SetThread(pitch)
+            link->SetThread(solverJoint->getPitch());
+            initLock(link);
+            break;
+        }
+
+        case JointClass::GEAR_JOINT: {
+            auto solverJoint = std::static_pointer_cast<GearJoint>(joint);
+            auto link = std::make_shared<chrono::ChLinkLockGear>();
+            link->SetTransmissionRatio(solverJoint->getRadiusI(), solverJoint->getRadiusJ());
+            initLock(link);
+            break;
+        }
+
+        case JointClass::BELT_JOINT: {
+            auto solverJoint = std::static_pointer_cast<BeltJoint>(joint);
+            auto link = std::make_shared<chrono::ChLinkLockPulley>();
+            link->SetRadius1(solverJoint->getRadiusI());
+            link->SetRadius2(solverJoint->getRadiusJ());
+            initLock(link);
+            break;
+        }
+
+        case JointClass::SPH_SPH_JOINT: {
+            // Enforce a fixed distance between the two marker origins.
+            auto solverJoint = std::static_pointer_cast<SphSphJoint>(joint);
+            auto link = std::make_shared<chrono::ChLinkDistance>();
+            link->SetName(joint->getName());
+            // Marker positions in body-local coords
+            link->Initialize(
+                body1,
+                body2,
+                true,
+                frame1.GetPos(),
+                frame2.GetPos(),
+                false,
+                solverJoint->getDistance()
+            );
+            sys->AddLink(link);
+            break;
+        }
+
+        case JointClass::ANGLE_JOINT:
+            FC_WARN(
+                "ChronoSolver: AngleJoint not directly supported; joint '" << joint->getName()
+                                                                           << "' skipped"
+            );
+            break;
+
+        case JointClass::REV_CYL_JOINT:
+            FC_WARN(
+                "ChronoSolver: RevCylJoint not supported; joint '" << joint->getName() << "' skipped"
+            );
+            break;
+
+        case JointClass::CYL_SPH_JOINT:
+            FC_WARN(
+                "ChronoSolver: CylSphJoint not supported; joint '" << joint->getName() << "' skipped"
+            );
+            break;
+
+        case JointClass::JOINT:
+        default:
+            FC_WARN(
+                "ChronoSolver: unknown joint type " << static_cast<int>(joint->getJointClass())
+                                                    << "; joint '" << joint->getName() << "' skipped"
+            );
+            break;
+    }
+}
+
+void ChronoAssembly::addLimit(std::shared_ptr<Limit> /*limit*/)
+{
+    FC_WARN("ChronoSolver: joint limits are not yet implemented; limit ignored");
+}
+
+void ChronoAssembly::addMotion(std::shared_ptr<Motion> /*motion*/)
+{
+    FC_WARN("ChronoSolver: joint motions are not yet implemented; motion ignored");
+}
+
+int ChronoAssembly::solveStatic()
+{
+    // Satisfy all position-level constraints via Newton-Raphson iteration.
+    bool ok = sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+    if (ok) {
+        solved = true;
+        return 0;
+    }
+    FC_WARN("ChronoSolver: DoAssembly did not converge");
+    return 1;
+}
+
+int ChronoAssembly::runKinematic()
+{
+    if (!simulationParameters) {
+        FC_ERR("ChronoSolver: runKinematic called without simulation parameters");
+        return 1;
+    }
+
+    kinematicFrames.clear();
+
+    const double tStart = simulationParameters->getTimeStart();
+    const double tEnd = simulationParameters->getTimeEnd();
+    const double dt = simulationParameters->getTimeStepOutput();
+
+    sys->SetChTime(tStart);
+
+    for (double t = tStart; t <= tEnd + dt * 0.5; t += dt) {
+        sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+
+        // Snapshot current body positions
+        std::vector<BodyFrameSnapshot> snapshot;
+        for (const auto& part : parts) {
+            auto body = part->getBody();
+            snapshot.push_back({body, chrono::ChFrame<double>(body->GetPos(), body->GetRot())});
+        }
+        kinematicFrames.push_back(std::move(snapshot));
+
+        sys->SetChTime(t + dt);
+    }
+
+    solved = true;
+    return 0;
+}
+
+void ChronoAssembly::preDrag()
+{
+    sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+}
+
+void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts)
+{
+    // Mark dragged bodies as fixed during this solve step so Chrono
+    // treats them as anchors and moves all other bodies to satisfy constraints.
+    std::vector<std::shared_ptr<chrono::ChBody>> frozenBodies;
+    for (const auto& part : draggedParts) {
+        auto chronoPart = std::static_pointer_cast<ChronoPart>(part);
+        auto body = chronoPart->getBody();
+        if (!body->IsFixed()) {
+            body->SetFixed(true);
+            frozenBodies.push_back(body);
+        }
+    }
+
+    sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+
+    // Restore
+    for (auto& body : frozenBodies) {
+        body->SetFixed(false);
+    }
+}
+
+void ChronoAssembly::postDrag()
+{
+    // Nothing to do: Chrono does not have a separate post-drag phase.
+}
+
+void ChronoAssembly::setSimulationParameters(std::shared_ptr<SimulationParameters> params)
+{
+    simulationParameters = params;
+}
+
+std::shared_ptr<SimulationParameters> ChronoAssembly::getSimulationParameters() const
+{
+    return simulationParameters;
+}
+
+size_t ChronoAssembly::numberOfFrames() const
+{
+    return kinematicFrames.size();
+}
+
+void ChronoAssembly::updateForFrame(size_t index)
+{
+    if (index >= kinematicFrames.size()) {
+        return;
+    }
+    for (const auto& snap : kinematicFrames[index]) {
+        snap.body->SetPos(snap.frame.GetPos());
+        snap.body->SetRot(snap.frame.GetRot());
+    }
+}
+
+bool ChronoAssembly::hasSolvedSystem() const
+{
+    return solved;
+}
+
+SolveStatus ChronoAssembly::querySolveStatus()
+{
+    SolveStatus status;
+
+    if (!solved) {
+        return status;
+    }
+
+    // Count bilateral constraints contributed by each link.
+    for (const auto& link : sys->GetLinks()) {
+        if (!link) {
+            continue;
+        }
+        SolveStatus::JointInfo info;
+        info.name = link->GetName();
+        info.isRedundant = false;
+
+        const unsigned int ncon = link->GetNumConstraintsBilateral();
+        status.constraintsApplied += static_cast<int>(ncon);
+        status.joints.push_back(info);
+    }
+
+    return status;
+}
+
+void ChronoAssembly::exportFile(std::string /*filename*/)
+{
+    FC_WARN("ChronoSolver: exportFile is not supported");
+}
+
+void ChronoAssembly::setDebug(bool debug)
+{
+    debugLogging = debug;
+}
+
+// ============================================================================
+// ChronoSolver
+// ============================================================================
+
+ChronoSolver::ChronoSolver(AssemblyObject* asmObj)
+    : assemblyObject(asmObj)
+{}
+
+
+std::shared_ptr<Solver::Assembly> ChronoSolver::makeAssembly()
+{
+    auto assembly = std::make_shared<ChronoAssembly>();
+    assembly->setName("ChronoAssembly");
+    return assembly;
+}
+
+std::shared_ptr<Solver::Part> ChronoSolver::makePart()
+{
+    return std::make_shared<ChronoPart>();
+}
+
+#endif  // HAVE_CHRONO
