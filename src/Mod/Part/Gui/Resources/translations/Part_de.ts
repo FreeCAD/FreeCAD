@@ -1222,7 +1222,7 @@
     <message>
       <location filename="../../Command.cpp" line="2364"/>
       <source>Appearance per &amp;Face</source>
-      <translation>Aussehen per Fläche</translation>
+      <translation>Aussehen &amp;flächenweise festlegen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2365"/>
@@ -5980,7 +5980,7 @@ Fortfahren?</translation>
       <translation>Befestigungs-Editor</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1003"/>
+      <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
       <translation>Aussehen per Fläche</translation>
     </message>

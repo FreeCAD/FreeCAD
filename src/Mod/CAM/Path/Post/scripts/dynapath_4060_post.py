@@ -50,6 +50,22 @@ import delta_4060_post
 delta_4060_post.export(object,"/path/to/file.ncc","")
 """
 
+# Preamble text will appear at the beginning of the GCODE output file.
+PREAMBLE = """G17
+G90
+G80
+G40
+"""
+
+# Postamble text will appear following the last operation.
+POSTAMBLE = """M05
+G80
+G40
+G17
+G90
+M30
+"""
+
 parser = argparse.ArgumentParser(prog="delta_4060", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
 parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
@@ -62,11 +78,17 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17\\nG90\\nG80\\nG40\\n"',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
+    default=PREAMBLE,
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M09\\nM05\\nG80\\nG40\\nG17\\nG90\\nM30\\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
+    default=POSTAMBLE,
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G70)"
@@ -129,21 +151,6 @@ GCODE_MAP = {
     "G59": "E06",
 }
 
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """G17
-G90
-G80
-G40
-"""
-
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M05
-G80
-G40
-G17
-G90
-M30
-"""
 # Create following variable for use with the 2nd reference plane.
 clearanceHeight = None
 

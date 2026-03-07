@@ -126,6 +126,11 @@ public:
     virtual double getLineWidth();
     virtual double getVertexSize();
 
+    bool isExporting() const;
+    bool hideCenterMarks() const;
+
+
+
 protected:
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
@@ -142,14 +147,13 @@ protected:
     void removePrimitives();
     void removeDecorations();
     bool prefFaceEdges();
-    bool prefPrintCenters();
     Base::Color prefBreaklineColor();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
-    bool showCenterMarks();
-    bool showVertices();
+    bool showCenterMarks() const;
+    bool showVertices() const;
 
 private:
     QList<QGraphicsItem*> deleteItems;

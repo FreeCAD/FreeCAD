@@ -250,7 +250,7 @@
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
       <location filename="../../Blending/TaskBlendCurve.ui" line="119"/>
       <source>Edge</source>
-      <translation type="unfinished">Edge</translation>
+      <translation>Linje</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="43"/>
@@ -428,7 +428,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>

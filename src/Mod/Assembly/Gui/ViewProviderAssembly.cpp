@@ -142,7 +142,7 @@ void ViewProviderAssembly::setupContextMenu(QMenu* menu, QObject* receiver, cons
 
     QAction* act = menu->addAction(QObject::tr("Active object"));
     act->setCheckable(true);
-    act->setChecked(isActivePart());
+    act->setChecked(isActivePart(ASSEMBLYKEY));
     func->trigger(act, [this]() { this->doubleClicked(); });
 
     ViewProviderDragger::setupContextMenu(menu, receiver, member);  // NOLINT
@@ -152,6 +152,7 @@ bool ViewProviderAssembly::doubleClicked()
 {
     if (isInEditMode()) {
         autoCollapseOnDeactivation = true;
+        getDocument()->setEditRestore(false);
         getDocument()->resetEdit();
     }
     else {
@@ -289,7 +290,7 @@ bool ViewProviderAssembly::setEdit(int mode)
             "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', "
             "appDoc.getObject('%s'))",
             this->getObject()->getDocument()->getName(),
-            PARTKEY,
+            ASSEMBLYKEY,
             this->getObject()->getNameInDocument()
         );
 
@@ -308,6 +309,17 @@ bool ViewProviderAssembly::setEdit(int mode)
         connectSolverUpdate = assembly->signalSolverUpdate.connect(
             boost::bind(&ViewProviderAssembly::UpdateSolverInformation, this)
         );
+
+        connectActivatedVP = getDocument()->signalActivatedViewProvider.connect(
+            std::bind(
+                &ViewProviderAssembly::slotActivatedVP,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2
+            )
+        );
+
+        assembly->solve();
 
         return true;
     }
@@ -331,13 +343,15 @@ void ViewProviderAssembly::unsetEdit(int mode)
         }
 
         // Set the part as not 'Activated' ie not bold in the tree.
-        Gui::Command::doCommand(
-            Gui::Command::Gui,
-            "appDoc = App.getDocument('%s')\n"
-            "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
-            this->getObject()->getDocument()->getName(),
-            PARTKEY
-        );
+        if (isActivePart(ASSEMBLYKEY)) {
+            Gui::Command::doCommand(
+                Gui::Command::Gui,
+                "appDoc = App.getDocument('%s')\n"
+                "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
+                this->getObject()->getDocument()->getName(),
+                ASSEMBLYKEY
+            );
+        }
 
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
@@ -346,10 +360,24 @@ void ViewProviderAssembly::unsetEdit(int mode)
         }
 
         connectSolverUpdate.disconnect();
+        connectActivatedVP.disconnect();
 
         return;
     }
     ViewProviderPart::unsetEdit(mode);
+}
+
+void ViewProviderAssembly::slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name)
+{
+    if (name && strcmp(name, ASSEMBLYKEY) == 0) {
+
+        // If the new active VP is NOT this assembly (meaning we lost activation or it was cleared)
+        if (vp != this && isInEditMode()) {
+            autoCollapseOnDeactivation = true;
+            getDocument()->setEditRestore(false);
+            getDocument()->resetEdit();
+        }
+    }
 }
 
 void ViewProviderAssembly::setDragger()
@@ -401,7 +429,7 @@ App::DocumentObject* ViewProviderAssembly::getActivePart() const
     if (!activeView) {
         return nullptr;
     }
-    return activeView->getActiveObject<App::DocumentObject*>(PARTKEY);
+    return activeView->getActiveObject<App::DocumentObject*>(ASSEMBLYKEY);
 }
 
 bool ViewProviderAssembly::keyPressed(bool pressed, int key)
@@ -1177,6 +1205,14 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
 
 void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // onSelectionChanged is called from both Selection.cpp and SelectionObserver.
+    // In the case where you have nested assemblies, that would cause issues. See #27532
+    bool singleAssembly
+        = getDocument()->getDocument()->getObjectsOfType<Assembly::AssemblyObject>().size() == 1;
+    if (!isInEditMode() && !singleAssembly) {
+        return;
+    }
+
     // Joint components isolation
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         auto selection = Gui::Selection().getSelection();
@@ -1298,20 +1334,24 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
                     continue;
                 }
 
-                if (dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"))) {
-                    objToDel.push_back(parent);
+                if (parent->getPropertyByName("ObjectToGround")) {
+                    if (std::ranges::find(objToDel, parent) == objToDel.end()) {
+                        objToDel.push_back(parent);
+                    }
                 }
             }
         }
 
         // Deletes them.
         for (auto* joint : objToDel) {
-            Gui::Command::doCommand(
-                Gui::Command::Doc,
-                "App.getDocument(\"%s\").removeObject(\"%s\")",
-                joint->getDocument()->getName(),
-                joint->getNameInDocument()
-            );
+            if (joint && joint->getNameInDocument() != nullptr) {
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.getDocument(\"%s\").removeObject(\"%s\")",
+                    joint->getDocument()->getName(),
+                    joint->getNameInDocument()
+                );
+            }
         }
     }
     return res;
@@ -1375,6 +1415,7 @@ void ViewProviderAssembly::applyIsolationRecursively(
         for (auto* child : group->Group.getValues()) {
             applyIsolationRecursively(child, isolateSet, mode, visited);
         }
+        return;
     }
     else if (auto* part = dynamic_cast<App::Part*>(current)) {
         // As App::Part currently don't have material override
@@ -1390,6 +1431,7 @@ void ViewProviderAssembly::applyIsolationRecursively(
         for (auto* child : part->Group.getValues()) {
             applyIsolationRecursively(child, isolateSet, mode, visited);
         }
+        return;
     }
 
     auto* vp = Gui::Application::Instance->getViewProvider(current);
@@ -1463,6 +1505,8 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
     if (!joint || isolatedJoint == joint) {
         return;
     }
+
+    clearIsolate();
 
     App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
     App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");

@@ -5982,7 +5982,7 @@ Da li želiš da nastaviš?</translation>
       <translation>Uređivač pridruživanja</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1003"/>
+      <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
       <translation>Ofarbaj pojedinačne stranice</translation>
     </message>

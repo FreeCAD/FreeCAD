@@ -265,7 +265,7 @@
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="61"/>
       <source>Flip Y/Z</source>
-      <translation>Αντιστρέψτε Υ/Ζ</translation>
+      <translation>Αναστροφή Y/Z</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="22"/>
@@ -329,13 +329,13 @@
       <location filename="../Dialogs/DlgExpressionInput.ui" line="183"/>
       <source>Store the expression in a newly created property in the selected Variable Set.
 The property of this object will refer to the property of the Variable Set.</source>
-      <translation type="unfinished">Store the expression in a newly created property in the selected Variable Set.
-The property of this object will refer to the property of the Variable Set.</translation>
+      <translation>Αποθήκευση της έκφρασης σε μια νέα ιδιότητα μέσα στο επιλεγμένο Σύνολο Μεταβλητών. 
+Η ιδιότητα αυτού του αντικειμένου θα αναφέρεται πλέον στην ιδιότητα του Συνόλου Μεταβλητών.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
       <source>Store in Variable Set...</source>
-      <translation type="unfinished">Store in Variable Set...</translation>
+      <translation>Αποθήκευση στο Σύνολο Μεταβλητών...</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
@@ -345,7 +345,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="284"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Σύνολο Μεταβλητών</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="301"/>
@@ -381,7 +381,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Application.h" line="288"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>&amp;Προεπιλογή</translation>
     </message>
     <message>
       <location filename="../Application.h" line="289"/>
@@ -391,12 +391,12 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Application.h" line="297"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Μετασχηματισμός</translation>
     </message>
     <message>
       <location filename="../Application.h" line="306"/>
       <source>Cu&amp;tting</source>
-      <translation type="unfinished">Cu&amp;tting</translation>
+      <translation>Αποκοπή</translation>
     </message>
     <message>
       <location filename="../Application.h" line="315"/>
@@ -1408,7 +1408,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="177"/>
       <source>Move Up</source>
-      <translation type="unfinished">Move Up</translation>
+      <translation>Μετακίνηση Πάνω</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="180"/>
@@ -1418,7 +1418,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="203"/>
       <source>Move Down</source>
-      <translation type="unfinished">Move Down</translation>
+      <translation>Μετακίνηση Κάτω</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="206"/>
@@ -1715,56 +1715,56 @@ same time. The one with the highest priority will be triggered.</source>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="121"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="794"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="809"/>
       <source>Macros</source>
       <translation>Μακροεντολές</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="471"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="486"/>
       <source>Macro file</source>
       <translation>Αρχείο μακροεντολής</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="497"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="907"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1070"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="512"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="922"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1085"/>
       <source>Existing file</source>
       <translation>Υπάρχον αρχείο</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="498"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="513"/>
       <source>'%1'.
 This file already exists.</source>
       <translation>'%1'.
 Αυτό το αρχείο υπάρχει ήδη.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="506"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="521"/>
       <source>Cannot create file</source>
       <translation>Αδύνατη η δημιουργία αρχείου</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="507"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="522"/>
       <source>Creation of file '%1' failed.</source>
       <translation>Η δημιουργία του αρχείου '% 1' απέτυχε.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="548"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="563"/>
       <source>Delete macro</source>
       <translation>Διαγραφή μακροεντολής</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="583"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="598"/>
       <source>Do not show again</source>
       <translation>Να μην εμφανιστεί ξανά</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="584"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="599"/>
       <source>Guided Walkthrough</source>
       <translation>Καθοδήγηση - Περιήγηση</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="586"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="601"/>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
@@ -1775,93 +1775,93 @@ Note: your changes will be applied when you next switch workbenches
 </translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="667"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="682"/>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
       <translation>Οδηγίες περιγραφή: Συμπληρώστε τα πεδία που λείπουν (προαιρετικά) και μετά κάντε κλικ στην επιλογή Προσθήκη, έπειτα Κλείσιμο</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="745"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="760"/>
       <source>Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</source>
       <translation type="unfinished">Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="769"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="784"/>
       <source>Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</source>
       <translation type="unfinished">Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="885"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="900"/>
       <source>Renaming Macro File</source>
       <translation>Πραγματοποιείται μετονομασία του Αρχείου Μακροεντολής</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="452"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="467"/>
       <source>Read-Only</source>
       <translation type="unfinished">Read-Only</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="472"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="487"/>
       <source>Enter a file name:</source>
       <translation type="unfinished">Enter a file name:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="549"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="564"/>
       <source>Delete the macro '%1'?</source>
       <translation type="unfinished">Delete the macro '%1'?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="641"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="656"/>
       <source>Walkthrough, Dialog 1 of 2</source>
       <translation type="unfinished">Walkthrough, Dialog 1 of 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 1 of 1</source>
       <translation type="unfinished">Walkthrough, Dialog 1 of 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 2 of 2</source>
       <translation type="unfinished">Walkthrough, Dialog 2 of 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="886"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1051"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="901"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1066"/>
       <source>Enter new name</source>
       <translation type="unfinished">Enter new name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="908"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1071"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="923"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1086"/>
       <source>'%1'
  already exists.</source>
       <translation>Το '%1'
  υπάρχει ήδη.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="914"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="929"/>
       <source>Rename Failed</source>
       <translation>Η Μετονομασία Απέτυχε</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="915"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="930"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Αποτυχία μετονομασίας σε '%1'.
 Ίσως υπάρχει κάποιο σφάλμα άδειας αρχείου;</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1050"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1065"/>
       <source>Duplicate Macro</source>
       <translation>Διπλογραφή της Μακροεντολής</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1077"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1092"/>
       <source>Duplicate Failed</source>
       <translation>Αποτυχία Κατά τη Διπλογραφή</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1078"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1093"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Αποτυχία κατά την διπλογραφή στο '%1'.
@@ -1976,12 +1976,12 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="78"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>Χρώμα περιβάλλοντος</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="114"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>Χρώμα λάμψης</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="131"/>
@@ -1991,7 +1991,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="148"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>Χρώμα εκπομπής (αυτοφωτισμού)</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="155"/>
@@ -4777,7 +4777,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DocumentRecovery.ui" line="60"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Όνομα εγγράφου</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="65"/>
@@ -6565,7 +6565,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="974"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Προσθήκη Ιδιότητας</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="982"/>
@@ -6586,7 +6586,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1008"/>
       <source>Delete Property</source>
-      <translation type="unfinished">Delete Property</translation>
+      <translation>Διαγραφή Ιδιότητας</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1172"/>
@@ -7004,12 +7004,12 @@ Specify another directory?</translation>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="37"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>Παράθυρο εγγράφου</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="60"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>Λειτουργία Εκτύπωσης</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="84"/>
@@ -7967,47 +7967,47 @@ Check the report view for more details.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="372"/>
+      <location filename="../StartupProcess.cpp" line="373"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="383"/>
+      <location filename="../StartupProcess.cpp" line="384"/>
       <source>Invalid OpenGL Version</source>
       <translation type="unfinished">Invalid OpenGL Version</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="321"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="396"/>
       <source>Migrating</source>
       <translation type="unfinished">Migrating</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="382"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="457"/>
       <source>Restarting</source>
       <translation type="unfinished">Restarting</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="336"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="411"/>
       <source>Migration failed</source>
       <translation type="unfinished">Migration failed</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="304"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="374"/>
       <source>Estimated size of data to copy: %1</source>
       <translation type="unfinished">Estimated size of data to copy: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="322"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="397"/>
       <source>Migrating configuration data and addons…</source>
       <translation type="unfinished">Migrating configuration data and addons…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="337"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="412"/>
       <source>Migration failed. See the Report View for details.</source>
       <translation type="unfinished">Migration failed. See the Report View for details.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="381"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="456"/>
       <source> → Restarting…</source>
       <translation type="unfinished"> → Restarting…</translation>
     </message>
@@ -8600,12 +8600,12 @@ Choose 'Abort' to abort</source>
       <translation>Αδυναμία ανοίγματος του πλοηγού διαδικτύου του συστήματός σου.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2562"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Μνήμη πλήρης</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2563"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Δεν υπάρχει αρκετή μνήμη διαθέσιμη για την προβολή των δεδομένων.</translation>
     </message>
@@ -8654,7 +8654,7 @@ Choose 'Abort' to abort</source>
     <message>
       <location filename="../MainWindow.cpp" line="895"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>Διαφορετικά, όλες οι αλλαγές θα χαθούν.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1021"/>
@@ -8667,12 +8667,12 @@ Choose 'Abort' to abort</source>
       <translation type="unfinished">Some documents could not be saved. Cancel closing?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="539"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="554"/>
       <source>Delete macro</source>
       <translation>Διαγραφή μακροεντολής</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="540"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="555"/>
       <source>Not allowed to delete system-wide macros</source>
       <translation>Δεν επιτρέπεται να διαγράψετε μακροεντολές συστήματος</translation>
     </message>
@@ -9030,7 +9030,7 @@ the current copy will be lost.
       <translation type="unfinished">Active Object</translation>
     </message>
     <message>
-      <location filename="../ViewProviderTextDocument.cpp" line="105"/>
+      <location filename="../ViewProviderTextDocument.cpp" line="107"/>
       <source>Edit Text</source>
       <translation type="unfinished">Edit Text</translation>
     </message>
@@ -9073,7 +9073,7 @@ the current copy will be lost.
       <translation>Δεν επιτρέπεται:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Η επιλογή δεν επιτρέπεται λόγω χρήσης φίλτρου</translation>
     </message>
@@ -12264,7 +12264,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1758"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Μετασχηματισμός</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1759"/>
@@ -13514,7 +13514,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="193"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Σύνολο Μεταβλητών</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="195"/>
@@ -14348,7 +14348,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14356,7 +14356,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14433,27 +14433,27 @@ This makes the docked panel stay transparent at all times.</translation>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="510"/>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="924"/>
       <source>the name cannot be empty</source>
-      <translation type="unfinished">the name cannot be empty</translation>
+      <translation>το όνομα δεν μπορεί να είναι κενό</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
       <source>%1 is a unit</source>
-      <translation type="unfinished">%1 is a unit</translation>
+      <translation>%1 είναι μια μονάδα</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="525"/>
       <source>%1 is a constant</source>
-      <translation type="unfinished">%1 is a constant</translation>
+      <translation>Το %1 είναι μια σταθερά</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="531"/>
       <source>%1 already exists</source>
-      <translation type="unfinished">%1 already exists</translation>
+      <translation>%1 υπάρχει ήδη</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="920"/>
       <source>Invalid group name: %1</source>
-      <translation type="unfinished">Invalid group name: %1</translation>
+      <translation>Μη έγκυρο όνομα ομάδας: %1</translation>
     </message>
   </context>
   <context>
@@ -14461,12 +14461,12 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="62"/>
       <source>Generic</source>
-      <translation type="unfinished">Generic</translation>
+      <translation>Γενικά</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="65"/>
       <source>Numeric</source>
-      <translation type="unfinished">Numeric</translation>
+      <translation>Αριθμητικά</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="68"/>
@@ -14479,7 +14479,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="281"/>
       <source>New parameter...</source>
-      <translation type="unfinished">New parameter...</translation>
+      <translation>Νέα παράμετρος...</translation>
     </message>
   </context>
   <context>
@@ -14487,12 +14487,12 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="355"/>
       <source>All Theme Editor Parameters</source>
-      <translation type="unfinished">All Theme Editor Parameters</translation>
+      <translation>Όλες οι παράμετροι του επεξεργαστή θέματος</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="425"/>
       <source>Root</source>
-      <translation type="unfinished">Root</translation>
+      <translation>Ρίζα</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="500"/>
@@ -14502,7 +14502,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="502"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Έκφραση</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="504"/>
@@ -14521,7 +14521,7 @@ This makes the docked panel stay transparent at all times.</translation>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="881"/>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="890"/>
       <source>Toolbox Bars</source>
-      <translation type="unfinished">Toolbox Bars</translation>
+      <translation>Γραμμές Εργαλειοθηκών</translation>
     </message>
   </context>
   <context>
@@ -14534,7 +14534,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="425"/>
       <source>Press middle+right click</source>
-      <translation type="unfinished">Press middle+right click</translation>
+      <translation>Πατήστε μεσαίο+δεξί κλικ</translation>
     </message>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="427"/>
@@ -14544,7 +14544,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="429"/>
       <source>Scroll mouse wheel</source>
-      <translation type="unfinished">Scroll mouse wheel</translation>
+      <translation>Κύλιση ρόδας ποντικιού</translation>
     </message>
   </context>
   <context>
@@ -14552,18 +14552,18 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4615"/>
       <source>Changes the linked object</source>
-      <translation type="unfinished">Changes the linked object</translation>
+      <translation>Αλλάζει το συνδεδεμένο αντικείμενο</translation>
     </message>
   </context>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Ναι</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Όχι</translation>
     </message>
@@ -14638,42 +14638,42 @@ This makes the docked panel stay transparent at all times.</translation>
       <translation>Βοήθεια</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="160"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="161"/>
       <source>Copy Configuration (Recommended)</source>
       <translation type="unfinished">Copy Configuration (Recommended)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="139"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="140"/>
       <source>Welcome to %1 %2.%3</source>
       <translation type="unfinished">Welcome to %1 %2.%3</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="142"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="143"/>
       <source>Calculating size…</source>
       <translation type="unfinished">Calculating size…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="146"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="147"/>
       <source>Share configuration between versions</source>
       <translation type="unfinished">Share configuration between versions</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="170"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
       <source>Share configuration with previous version</source>
       <translation type="unfinished">Share configuration with previous version</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="172"/>
       <source>Use a new default configuration</source>
       <translation type="unfinished">Use a new default configuration</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="331"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="406"/>
       <source>Migration complete</source>
       <translation type="unfinished">Migration complete</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="368"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="443"/>
       <source>New default configuration created</source>
       <translation type="unfinished">New default configuration created</translation>
     </message>

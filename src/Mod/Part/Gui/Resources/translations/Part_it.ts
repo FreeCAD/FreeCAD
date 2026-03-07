@@ -1848,10 +1848,10 @@
 onto a face of another shape.
 The camera view determines the direction
 of the projection.</source>
-      <translation type="unfinished">Projects edges, wires, or faces of one shape
-onto a face of another shape.
-The camera view determines the direction
-of the projection.</translation>
+      <translation>Proietta bordi, fili o facce di una forma
+su una faccia di un'altra forma.
+La vista della telecamera determina la direzione
+della proiezione.</translation>
     </message>
   </context>
   <context>
@@ -3795,7 +3795,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="147"/>
       <source>Get Current Camera Direction</source>
-      <translation>Ottieni Direzione Fotocamera Corrente</translation>
+      <translation>Ottieni direzione attuale della telecamera</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
@@ -5982,7 +5982,7 @@ Continue?</translation>
       <translation type="unfinished">Attachment Editor</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1003"/>
+      <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
       <translation type="unfinished">Appearance per Face</translation>
     </message>

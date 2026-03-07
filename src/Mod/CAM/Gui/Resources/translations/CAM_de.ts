@@ -434,32 +434,32 @@ Für Rohmaterial aus dem Begrenzungsrahmen des Basis-Objekts bedeutet es zusätz
       <translation>Werkzeugbit Parameter Editor</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="65"/>
+      <location filename="../panels/ToolBitEditor.ui" line="50"/>
       <source>Toolbit</source>
       <translation>Werkzeugbit</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="90"/>
+      <location filename="../panels/ToolBitEditor.ui" line="75"/>
       <source>Notes</source>
       <translation>Anmerkungen</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="107"/>
+      <location filename="../panels/ToolBitEditor.ui" line="92"/>
       <source>Coating</source>
       <translation>Beschichtung</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="117"/>
+      <location filename="../panels/ToolBitEditor.ui" line="102"/>
       <source>Hardness</source>
       <translation>Härte</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="127"/>
+      <location filename="../panels/ToolBitEditor.ui" line="112"/>
       <source>Materials</source>
       <translation>Werkstoffe</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="140"/>
+      <location filename="../panels/ToolBitEditor.ui" line="125"/>
       <source>Supplier</source>
       <translation>Lieferant</translation>
     </message>
@@ -5719,7 +5719,7 @@ Die Eigenschaft KeepToolDown verwenden, um dies zu ändern</translation>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="106"/>
       <source>Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</source>
-      <translation>Ausgangsmaterialeigenschaften sind veraltet. Materialeigenschaft entfernen. Bitte das native Materialsystem verwenden, um ein ShapeMaterial zuzuweisenEntfernen</translation>
+      <translation>Die Eigenschaft Stock Material ist veraltet. Die Eigenschaft Material wird entfernt. Bitte das native Materialsystem verwenden, um ein ShapeMaterial zuzuweisen</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="599"/>
@@ -5906,22 +5906,22 @@ Die Eigenschaft KeepToolDown verwenden, um dies zu ändern</translation>
       <translation>Keine Scandaten zum Konvertieren in G-Code.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2675"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2676"/>
       <source>Failed to identify tool for operation.</source>
       <translation>Das Werkzeug für die Operation konnte nicht identifiziert werden.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2685"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2686"/>
       <source>Failed to map selected tool to an OCL tool type.</source>
       <translation>Fehler bei der Zuordnung des ausgewählten Werkzeugs zu einem OCL-Werkzeugtyp.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2697"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2698"/>
       <source>Failed to translate active tool to OCL tool type.</source>
       <translation>Fehler beim Übersetzen des aktiven Werkzeugs in einen OCL Werkzeugtyp.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2709"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2710"/>
       <source>OCL tool not available. Cannot determine is cutter has tilt available.</source>
       <translation>OCL-Werkzeug nicht verfügbar. Kann nicht ermitteln, ob das Fräswerkzeug mit Neigung verfügbar ist.</translation>
     </message>
@@ -7649,7 +7649,7 @@ Abbruch der OP-Erstellung</translation>
       <translation>SVG-Postprozessor</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="60"/>
+      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="67"/>
       <source>Camotics Tool Library</source>
       <translation>Camotics-Werkzeugbibliothek</translation>
     </message>
@@ -7724,7 +7724,7 @@ Abbruch der OP-Erstellung</translation>
       <translation>{diameter} {cutting_edge_angle} V-Bit, {flutes}-Rillen</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="63"/>
+      <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="69"/>
       <source>Camotics Tool</source>
       <translation>Camotics-Werkzeug</translation>
     </message>
@@ -7904,6 +7904,11 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
       <location filename="../../../Path/Tool/toolbit/models/tap.py" line="75"/>
       <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
       <translation>{diameter} {pitch} {rotation} Gewindebohrer, {flutes}-Rillen, {cutting_edge_length} Schnittkante</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="47"/>
+      <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
+      <translation>{diameter} Spitze, {taper_angle} Formschräge, {flutes}-Flachfräser mit konischer Kugelspitze, {cutting_edge_height} Schnittkante</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="555"/>
@@ -8818,12 +8823,12 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
   <context>
     <name>CAM_Camotics</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="315"/>
       <source>CAMotics</source>
       <translation>CAMotics</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="317"/>
       <source>Simulates using CAMotics</source>
       <translation>Mit CAMotics simulieren</translation>
     </message>
@@ -9107,6 +9112,7 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="43"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="41"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="35"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="37"/>
@@ -9121,6 +9127,7 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="39"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="41"/>
@@ -9135,6 +9142,7 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="43"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="45"/>
@@ -9152,6 +9160,7 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="47"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="57"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="53"/>
@@ -9166,6 +9175,7 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="57"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="51"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="69"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="53"/>
@@ -9351,6 +9361,21 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
       <source>Radius Mill</source>
       <translation>Radiusfräser</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="55"/>
+      <source>Included Taper angle</source>
+      <translation>Enthaltener Schrägungswinkel</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="59"/>
+      <source>Diameter at top of Taper</source>
+      <translation>Durchmesser an der Spitze der Formschräge</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="67"/>
+      <source>Tapered Ball Nose</source>
+      <translation>Konische Kugelspitze</translation>
     </message>
   </context>
   <context>

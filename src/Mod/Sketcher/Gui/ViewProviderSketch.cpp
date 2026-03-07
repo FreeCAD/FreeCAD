@@ -1630,7 +1630,14 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             // 2 cases : either the edge was added or a point of it.
             // If its a point then we replace it by the edge.
             // If it's the edge it's replaced by itself so it's ok.
-            drag.Dragged[0].Pos = Sketcher::PointPos::none;
+
+            // for arcs preserve mid point drags for rigid movement
+            const Part::Geometry* geo = getSketchObject()->getGeometry(geoIdi);
+            bool isArcMidDrag = (pos == Sketcher::PointPos::mid) && isArcOfCircle(*geo);
+
+            if (!isArcMidDrag) {
+                drag.Dragged[0].Pos = Sketcher::PointPos::none;
+            }
         }
         else {
             // For group dragging, we skip the internal geos.
@@ -1749,7 +1756,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             }
         }
 
-        if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()) {
+        if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()
+            || isEllipse(*geo) || isArcOfEllipse(*geo)
+            || isArcOfHyperbola(*geo) || isArcOfParabola(*geo)) {
             setRelative();
         }
 
@@ -3570,9 +3579,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
         viewProviderParameters.recalculateInitialSolutionWhileDragging);
 
     // intercept del key press from main app
-    listener = new ShortcutListener(this);
+    listener = std::make_unique<ShortcutListener>(this);
 
-    Gui::getMainWindow()->installEventFilter(listener);
+    Gui::getMainWindow()->installEventFilter(listener.get());
 
     Workbench::enterEditMode();
 
@@ -3727,8 +3736,8 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     Workbench::leaveEditMode();
 
     if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener);
-        delete listener;
+        Gui::getMainWindow()->removeEventFilter(listener.get());
+        listener.reset();
     }
 
     if (isInEditMode()) {

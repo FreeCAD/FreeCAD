@@ -37,6 +37,7 @@ import csv
 import codecs
 from fractions import Fraction
 import os.path
+import TechDraw
 
 CreatedByChkLst = []
 ScaleChkLst = []
@@ -196,31 +197,11 @@ class TaskFillTemplateFields:
                         self.checkBoxList.append(self.cb2)
                         self.lineTextList.append(self.s2)
                         self.cb2.clicked.connect(self.on_cb2_clicked)
-                        if projgrp_view.Scale < 1:
-                            fracScale = Fraction(projgrp_view.Scale).limit_denominator()
-                            self.s2.setText(
-                                str(fracScale.numerator)
+                        fracScale = TechDraw.nearestFraction(projgrp_view.Scale)
+                        self.s2.setText(
+                                str(fracScale[0])
                                 + " : "
-                                + str(fracScale.denominator)
-                            )
-                        elif int(projgrp_view.Scale) == 1 or (
-                            projgrp_view.Scale > 1
-                            and int(projgrp_view.Scale) == projgrp_view.Scale
-                        ):
-                            self.s2.setText(str(int(projgrp_view.Scale)) + " : 1")
-                        else:  # must be something like 2.5 = 5 : 2
-                            for x in range(2, 10):
-                                if (
-                                    int(projgrp_view.Scale * x)
-                                    == projgrp_view.Scale * x
-                                ):
-                                    fracScale = Fraction(projgrp_view.Scale)
-                                    self.s2.setText(
-                                        str(fracScale.numerator)
-                                        + " : "
-                                        + str(fracScale.denominator)
-                                    )
-                                    break
+                                + str(fracScale[1]))
                         dialogRow += 1
                     if str(key).lower() in LabelChkLst:
                         t3 = QtGui.QLabel(value)

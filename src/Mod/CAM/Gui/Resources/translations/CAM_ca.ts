@@ -434,32 +434,32 @@ Per al brut a partir de la capsa delimitadora de l'objecte base significa el mat
       <translation>Editor de paràmetres de l'eina de broca</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="65"/>
+      <location filename="../panels/ToolBitEditor.ui" line="50"/>
       <source>Toolbit</source>
       <translation>Eina de broca</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="90"/>
+      <location filename="../panels/ToolBitEditor.ui" line="75"/>
       <source>Notes</source>
       <translation>Notes</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="107"/>
+      <location filename="../panels/ToolBitEditor.ui" line="92"/>
       <source>Coating</source>
       <translation>Recobriment</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="117"/>
+      <location filename="../panels/ToolBitEditor.ui" line="102"/>
       <source>Hardness</source>
       <translation>Duresa</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="127"/>
+      <location filename="../panels/ToolBitEditor.ui" line="112"/>
       <source>Materials</source>
       <translation>Materials</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="140"/>
+      <location filename="../panels/ToolBitEditor.ui" line="125"/>
       <source>Supplier</source>
       <translation>Proveïdor</translation>
     </message>
@@ -5909,22 +5909,22 @@ Per defecte = 10,0.</translation>
       <translation>No hi ha dades d'escaneig per convertir a G-code.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2675"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2676"/>
       <source>Failed to identify tool for operation.</source>
       <translation>No s'ha pogut identificar l'eina per a l'operació.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2685"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2686"/>
       <source>Failed to map selected tool to an OCL tool type.</source>
       <translation>No s'ha pogut mapar l'eina seleccionada a cap mena d'eina de l'OCL.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2697"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2698"/>
       <source>Failed to translate active tool to OCL tool type.</source>
       <translation>No s'ha pogut traduir l'eina activa a cap mena d'eina de l'OCL.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2709"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2710"/>
       <source>OCL tool not available. Cannot determine is cutter has tilt available.</source>
       <translation>No hi ha cap eina OCL disponible. No es pot determinar si el cúter té cap inclinació.</translation>
     </message>
@@ -7651,7 +7651,7 @@ S'està avortant la creació de l'operació</translation>
       <translation>Postprocessador SVG</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="60"/>
+      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="67"/>
       <source>Camotics Tool Library</source>
       <translation>Biblioteca d'eines de Camotics</translation>
     </message>
@@ -7726,7 +7726,7 @@ S'està avortant la creació de l'operació</translation>
       <translation>fresa en V de {diameter} {cutting_edge_angle}, {flutes} talls</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="63"/>
+      <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="69"/>
       <source>Camotics Tool</source>
       <translation>Eina de Camotics</translation>
     </message>
@@ -7906,6 +7906,11 @@ Això no suprimirà les broques que conté.</translation>
       <location filename="../../../Path/Tool/toolbit/models/tap.py" line="75"/>
       <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
       <translation>mascle de roscar de {diameter} {pitch} {rotation}, {flutes} talls, {cutting_edge_length} de tall</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="47"/>
+      <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
+      <translation>{diameter} punta, {taper_angle} angle cònic, {flutes}-talls de cònica arrodonida, {cutting_edge_height} aresta de tall</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="555"/>
@@ -8820,12 +8825,12 @@ Això no suprimirà les broques que conté.</translation>
   <context>
     <name>CAM_Camotics</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="315"/>
       <source>CAMotics</source>
       <translation>CAMotics</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="317"/>
       <source>Simulates using CAMotics</source>
       <translation>Simula utilitzant CAMotics</translation>
     </message>
@@ -9109,6 +9114,7 @@ Això no suprimirà les broques que conté.</translation>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="43"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="41"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="35"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="37"/>
@@ -9123,6 +9129,7 @@ Això no suprimirà les broques que conté.</translation>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="39"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="41"/>
@@ -9137,6 +9144,7 @@ Això no suprimirà les broques que conté.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="43"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="45"/>
@@ -9154,6 +9162,7 @@ Això no suprimirà les broques que conté.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="47"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="57"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="53"/>
@@ -9168,6 +9177,7 @@ Això no suprimirà les broques que conté.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="57"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="51"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="69"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="53"/>
@@ -9353,6 +9363,21 @@ Això no suprimirà les broques que conté.</translation>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
       <source>Radius Mill</source>
       <translation>Fresa de radi</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="55"/>
+      <source>Included Taper angle</source>
+      <translation>Angle de la cònica inclòs</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="59"/>
+      <source>Diameter at top of Taper</source>
+      <translation>Diàmetre superior de la cònica</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="67"/>
+      <source>Tapered Ball Nose</source>
+      <translation>Punta esfèrica cònica</translation>
     </message>
   </context>
   <context>

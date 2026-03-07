@@ -41,32 +41,21 @@ import Fem
 from . import meshtools
 from femtools import femutils
 from femtools import geomtools
+from femtools.objecttools import ObjectTools
 
 
 class GmshError(Exception):
     pass
 
 
-class GmshTools:
+class GmshTools(ObjectTools):
 
     name = "Gmsh"
 
-    def __init__(self, gmsh_mesh_obj, analysis=None):
-
-        # mesh obj
-        self.mesh_obj = gmsh_mesh_obj
-
-        self.process = QProcess()
-        # analysis
-        self.analysis = None
-        if analysis:
-            self.analysis = analysis
-        else:
-            for i in self.mesh_obj.InList:
-                if i.isDerivedFrom("Fem::FemAnalysis"):
-                    self.analysis = i
-                    break
-
+    def __init__(self, obj):
+        super().__init__(obj)
+        self.mesh_obj = obj
+        self.analysis = obj.getParentGroup()
         self.load_properties()
         self.error = False
 
@@ -232,10 +221,8 @@ class GmshTools:
         self.rename_groups()
 
     def create_mesh(self):
-        self.prepare()
-        p = self.compute()
-        p.waitForFinished()
-        self.update_properties()
+        # for backward compatibility only
+        self.run(True)
 
     def start_logs(self):
         Console.PrintLog("\nGmsh FEM mesh run is being started.\n")

@@ -95,7 +95,7 @@ def InitApplications():
     if (os.path.exists(LibPyDir)):
         libpaths.append(LibPyDir)
     LibFcDir = FreeCAD.getLibraryDir()
-    LibFcDir = os.path.realpath(LibFcDir)
+    LibFcDir = os.path.normpath(os.path.abspath(LibFcDir))
     if (os.path.exists(LibFcDir) and not LibFcDir in libpaths):
         libpaths.append(LibFcDir)
     AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";") + \

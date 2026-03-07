@@ -42,6 +42,7 @@ public:
     ~FemSolverObject() override;
 
     App::PropertyLinkList Results;
+    App::PropertyPythonObject Tool;
     App::PropertyPath WorkingDirectory;
     // Attributes are implemented in the FemSolverObjectPython
 

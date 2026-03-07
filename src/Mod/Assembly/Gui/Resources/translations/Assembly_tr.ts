@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation>&lt;p&gt;Etkin montaja bir bileşen ekler. Bu işlem parçalara, gövdelere, primitiflere ve montajlara dinamik bağlantılar oluşturur. Harici bileşen eklemek için dosyanın &lt;b&gt;geçerli oturumda açık&lt;/b&gt; olduğundan emin olun.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Listeden bir öğeye sol tıklayarak ekleyin.&lt;/li&gt;&lt;li&gt;Listeden bir öğeye sağ tıklayarak kaldırın.&lt;/li&gt;&lt;li&gt;Görünümde tıklarken Shift tuşunu basılı tutarak bileşenin birden fazla örneğini ekleyin.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Etkin montaja bir bileşen ekler. Bu işlem parçalara, gövdelere, temel şekillere ve montajlara dinamik bağlantılar oluşturur. Harici bileşen eklemek için dosyanın &lt;b&gt;geçerli oturumda açık&lt;/b&gt; olduğundan emin olun.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Listeden bir öğeye sol tıklayarak ekleyin.&lt;/li&gt;&lt;li&gt;Listeden bir öğeye sağ tıklayarak kaldırın.&lt;/li&gt;&lt;li&gt;Görünümde tıklarken Shift tuşunu basılı tutarak bileşenin birden fazla örneğini ekleyin.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
@@ -60,22 +60,22 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
-      <translation>Alt montajınız şu anda rijit. Bu işlem onu esnek yapacak.</translation>
+      <translation>Alt montajınız şu an katı. Bu işlem onu esnek hale getirecektir.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
       <source>Turn rigid</source>
-      <translation>Rijit yap</translation>
+      <translation>Katı yap</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation>Alt montajınız şu anda esnek. Bu işlem onu rijit yapacak.</translation>
+      <translation>Alt montajınız şu an esnek. Bu işlem onu katı hale getirecektir.</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="287"/>
       <source>N/A</source>
-      <translation>Uygun Değil</translation>
+      <translation>Yok</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="311"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../../JointObject.py" line="51"/>
       <source>Revolute</source>
-      <translation>Döner</translation>
+      <translation>Dönel</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1793"/>
       <source>Distance</source>
       <translation>Uzaklık</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>Kemer</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="757"/>
+      <location filename="../../../JointObject.py" line="812"/>
       <source>Broken link in: </source>
       <translation>Bozuk bağlantı: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1529"/>
+      <location filename="../../../JointObject.py" line="1612"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>İki ayrı parçadan 2 öğe seçin</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1702"/>
+      <location filename="../../../JointObject.py" line="1795"/>
       <source>Radius 1</source>
       <translation>Yarıçap 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1797"/>
       <source>Thread pitch</source>
       <translation>Vida adımı</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1706"/>
+      <location filename="../../../JointObject.py" line="1799"/>
       <source>Pitch radius</source>
       <translation>Hatve yarıçapı</translation>
     </message>
@@ -515,119 +515,119 @@ SLOPE, sırasıyla time = T1 civarında 0 ile H1 arasındaki ve time = T2 civar�
       <translation>Bağlantının türü</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="370"/>
       <source>The first reference of the joint</source>
       <translation>Bağlantının birinci referansı</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="223"/>
+      <location filename="../../../JointObject.py" line="218"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Bu, bağlantıda kullanılacak olan Reference1 nesnesi içindeki yerel koordinat sistemidir.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="235"/>
+      <location filename="../../../JointObject.py" line="230"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>Bu, Placement1'in yeniden hesaplanmasını engeller ve konumlandırmanın özel olarak ayarlanmasına izin verir.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="247"/>
-      <location filename="../../../JointObject.py" line="556"/>
+      <location filename="../../../JointObject.py" line="242"/>
+      <location filename="../../../JointObject.py" line="563"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Bu, bağlantının birinci bağlayıcısının ek ofsetidir.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="269"/>
+      <location filename="../../../JointObject.py" line="258"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Bu, bağlantıda kullanılacak olan Reference2 nesnesi içindeki yerel koordinat sistemidir.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="281"/>
+      <location filename="../../../JointObject.py" line="270"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>Bu, Placement2'nin yeniden hesaplanmasını engeller ve konumlandırmanın özel olarak ayarlanmasına izin verir.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="293"/>
-      <location filename="../../../JointObject.py" line="567"/>
+      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="574"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Bu, bağlantının ikinci bağlayıcısının ek ofsetidir.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="315"/>
+      <location filename="../../../JointObject.py" line="304"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Bağlantının asgari uzunluk sınırını etkinleştir</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Bağlantının azami uzunluk sınırını etkinleştir</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Bağlantının asgari açı sınırını etkinleştir</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Bağlantının azami açı sınırını etkinleştir</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="384"/>
+      <location filename="../../../JointObject.py" line="391"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>Bu, bağlantının açısıdır. Yalnızca Açı Bağlantısında kullanılır.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="427"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Bu, iki koordinat sistemi arasındaki uzunluğun (z eksenleri boyunca) asgari sınırıdır.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="432"/>
+      <location filename="../../../JointObject.py" line="439"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Bu, iki koordinat sistemi arasındaki uzunluğun (z eksenleri boyunca) azami sınırıdır.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="444"/>
+      <location filename="../../../JointObject.py" line="451"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Bu, iki koordinat sistemi arasındaki açının (x eksenleri arasındaki) asgari sınırıdır.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="456"/>
+      <location filename="../../../JointObject.py" line="463"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Bu, iki koordinat sistemi arasındaki açının (x eksenleri arasındaki) azami sınırıdır.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="257"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>The second reference of the joint</source>
       <translation>Bağlantının ikinci referansı</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="475"/>
+      <location filename="../../../JointObject.py" line="482"/>
       <source>The first object of the joint</source>
       <translation>Bağlantının birinci nesnesi</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="495"/>
+      <location filename="../../../JointObject.py" line="502"/>
       <source>The second object of the joint</source>
       <translation>Bağlantının ikinci nesnesi</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="396"/>
+      <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Bu, bağlantının mesafesidir. Yalnızca Mesafe bağlantısı ile Kremayer ve Pinyon (hatve yarıçapı), Vida ve Dişli/Kayış (radius1) bağlantılarında kullanılır.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="408"/>
+      <location filename="../../../JointObject.py" line="415"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Bu, bağlantının ikinci mesafesidir. Yalnızca dişli bağlantısında ikinci yarıçapı saklamak için kullanılır.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="509"/>
+      <location filename="../../../JointObject.py" line="516"/>
       <source>The {order} reference of the joint</source>
       <translation>Bağlantının {order}. referansı</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1151"/>
+      <location filename="../../../JointObject.py" line="1221"/>
       <source>The object to ground</source>
       <translation>Zemine sabitlenecek nesne</translation>
     </message>
@@ -889,63 +889,63 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="210"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="211"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Nesne bir veya daha fazla bağlantıyla ilişkilendirilmiş.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="212"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Nesneyi taşımak ve ilişkili bağlantıları silmek istiyor musunuz?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1056"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1085"/>
       <source>Move part</source>
       <translation>Parçayı taşı</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1679"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1652"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1696"/>
       <source>Empty Assembly</source>
       <translation>Boş Montaj</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1657"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1701"/>
       <source>Over-constrained:</source>
       <translation>Aşırı kısıtlı:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1709"/>
       <source>Malformed joints:</source>
       <translation>Bozuk bağlantılar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1673"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1717"/>
       <source>Redundant joints:</source>
       <translation>Gereksiz bağlantılar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1681"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1725"/>
       <source>Partially redundant:</source>
       <translation>Kısmen gereksiz:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1689"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>Solver failed to converge</source>
       <translation>Çözücü yakınsamadı</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1697"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1741"/>
       <source>Under-constrained:</source>
       <translation>Yetersiz kısıtlı:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Serbestlik Derecesi</numerusform>
@@ -953,7 +953,7 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1703"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1747"/>
       <source>Fully constrained</source>
       <translation>Tam kısıtlı</translation>
     </message>
@@ -1088,7 +1088,7 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Bağlantılar</translation>
     </message>
@@ -1427,12 +1427,12 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="429"/>
+      <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
       <translation>Zemine Sabitlemeyi Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="435"/>
+      <location filename="../../../CommandCreateJoint.py" line="437"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
       <translation>&lt;p&gt;Bir parçanın zemine sabitlenmesini açar/kapatır.&lt;/p&gt;&lt;p&gt;Bir parçayı zemine sabitlemek, montaj içinde konumunu kalıcı olarak kilitler ve herhangi bir hareketi veya dönmeyi engeller. Montaj yapmaya başlamadan önce en az bir zemine sabit parça gerekir.</translation>
     </message>
@@ -1476,7 +1476,7 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
       <translation>Kısmen yüklü</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="573"/>
+      <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
       <translation>Belgeyi tamamen yükle</translation>
     </message>

@@ -489,7 +489,7 @@ class _Space(ArchComponent.Component):
         if shape:
             if shape.Solids:
                 # print("setting objects shape")
-                shape = shape.Solids[0]
+                shape = self.processSubShapes(obj, shape.Solids[0], pl)
                 self.applyShape(obj, shape, pl)
                 if hasattr(obj.HorizontalArea, "Value"):
                     if hasattr(obj, "AreaCalculationType"):

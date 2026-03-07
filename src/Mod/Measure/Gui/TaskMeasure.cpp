@@ -348,6 +348,7 @@ void TaskMeasure::tryUpdate()
         // Initialite the measurement's viewprovider
         initViewObject(_mMeasureObject);
     }
+    _mMeasureObject->purgeTouched();
 }
 
 
@@ -402,6 +403,7 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
     }
 
     group->addObject(measurement);
+    group->purgeTouched();
 }
 
 
@@ -438,6 +440,11 @@ bool TaskMeasure::reject()
     // Abort transaction
     App::GetApplication().closeActiveTransaction(true);
     return false;
+}
+
+void TaskMeasure::closed()
+{
+    reject();
 }
 
 void TaskMeasure::reset()

@@ -53,6 +53,8 @@ public:
     {
         return Visibility.getValue();
     }
+    /// A list of all possible display modes
+    std::vector<std::string> getDisplayModes() const override;
 
     // handling when object is deleted
     bool onDelete(const std::vector<std::string>&) override;

@@ -610,7 +610,7 @@
     <message>
       <location filename="../../Command.cpp" line="87"/>
       <source>Union</source>
-      <translation type="unfinished">Union</translation>
+      <translation>Forbind</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
@@ -1826,7 +1826,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation type="unfinished">Plane</translation>
+      <translation>Plan</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -1878,7 +1878,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
       <source>Sphere</source>
-      <translation type="unfinished">Sphere</translation>
+      <translation>Kugle</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="226"/>
@@ -1891,7 +1891,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="20"/>
       <source>Plane</source>
-      <translation type="unfinished">Plane</translation>
+      <translation>Plan</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
@@ -1927,7 +1927,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="126"/>
       <source>Sphere</source>
-      <translation type="unfinished">Sphere</translation>
+      <translation>Kugle</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="376"/>

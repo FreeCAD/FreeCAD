@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Approximates a cylinder</source>
-      <translation type="unfinished">Approximates a cylinder</translation>
+      <translation>Approssima un cilindro</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Approximates a plane</source>
-      <translation type="unfinished">Approximates a plane</translation>
+      <translation>Approssima un piano</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>Polynomial Surface</source>
-      <translation type="unfinished">Polynomial Surface</translation>
+      <translation>Superficie Polinomiale</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Approximates a polynomial surface</source>
-      <translation type="unfinished">Approximates a polynomial surface</translation>
+      <translation>Approssima una superficie polinomiale</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Approximates a sphere</source>
-      <translation type="unfinished">Approximates a sphere</translation>
+      <translation>Approssima una sfera</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-Spline Surface…</source>
-      <translation type="unfinished">Approximate B-Spline Surface…</translation>
+      <translation>Approssima superficie B-Spline…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximates a B-spline surface</source>
-      <translation type="unfinished">Approximates a B-spline surface</translation>
+      <translation>Approssima una superficie B-spline</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Wire From Mesh Boundary…</source>
-      <translation type="unfinished">Wire From Mesh Boundary…</translation>
+      <translation>Polilinea dai bordi della mesh…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Creates a wire from mesh boundaries</source>
-      <translation type="unfinished">Creates a wire from mesh boundaries</translation>
+      <translation>Crea una polilinea dai limiti delle mesh</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Performs Poisson surface reconstruction</source>
-      <translation type="unfinished">Performs Poisson surface reconstruction</translation>
+      <translation>Esegue la ricostruzione della superficie di Poisson</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="420"/>
       <source>Mesh Segmentation…</source>
-      <translation type="unfinished">Mesh Segmentation…</translation>
+      <translation>Segmentazione della mesh…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="421"/>
       <source>Creates separate mesh segments based on surface types</source>
-      <translation type="unfinished">Creates separate mesh segments based on surface types</translation>
+      <translation>Crea segmenti di maglie separati in base ai tipi di superficie</translation>
     </message>
   </context>
   <context>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>From Components</source>
-      <translation type="unfinished">From Components</translation>
+      <translation>Da componenti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="483"/>
