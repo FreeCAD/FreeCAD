@@ -790,59 +790,6 @@ public:
     /// @}
 
     /**
-     * @name Verbosity Information
-     *
-     * @{
-     */
-
-    /**
-     * @brief Get verbose information about the application.
-     *
-     * @param[in,out] str The text stream to write the information to.
-     * @param[in] mConfig The application configuration.
-     */
-    static void getVerboseCommonInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
-
-    /**
-     * @brief Get verbose information about add-ons.
-     *
-     * @copydetails getVerboseCommonInfo
-     */
-    static void getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
-
-    /**
-     * @brief Add module info to the verbose output.
-     *
-     * This function is used to add information about a single add-on.
-     *
-     * @param[in,out] str The text stream to write the information to.
-     * @param[in] modPath The path of the module.
-     * @param[in,out] firstMod Whether this is the first module being added.
-     */
-    static void addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod);
-
-    /// Get a pretty formatted product information string.
-    static QString prettyProductInfoWrapper();
-
-    /**
-     * @brief Get a value from a map or an empty string.
-     *
-     * @param[in] map The map to search.
-     * @param[in] key The key to search for.
-     * @return Returns the value if found, or an empty string otherwise.
-     */
-    static QString getValueOrEmpty(const std::map<std::string, std::string>& map, const std::string& key);
-
-    /**
-     * Constant that request verbose version information to be printed.
-     *
-     * If an exception has this message, it means that we will print verbosee
-     * version information.
-     */
-    static constexpr const char* verboseVersionEmitMessage{"verbose_version"};
-    /// @}
-
-    /**
      * @name Link handling
      *
      * @{
