@@ -1934,9 +1934,14 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
     newRotation.multVec(SbVec3f(0.0, 0.0, -1.0), newDirection);
     newPosition = center - (newDirection * camera->focalDistance.getValue());
 
+    newRotation.multVec(dir, dir);
+    SbVec3f finalPosition = newPosition + (dir * translationFactor);
+
+    camera->enableNotify(false);
     camera->orientation.setValue(newRotation);
-    camera->orientation.getValue().multVec(dir, dir);
-    camera->position = newPosition + (dir * translationFactor);
+    camera->position = finalPosition;
+    camera->enableNotify(true);
+    camera->touch();
 
     return true;
 }
