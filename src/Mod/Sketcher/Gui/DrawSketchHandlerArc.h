@@ -313,6 +313,25 @@ private:
         auto& ac3 = sugConstraints[2];
 
         if (constructionMethod() == ConstructionMethod::Center) {
+            // Prevent overconstraining when the arc center is placed symmetrically (at the midpoint)
+            // of a line and the arc endpoints are coincident with the endpoints of the same line.
+            for (auto& centerAC : ac1) {
+                if (centerAC.Type == Sketcher::ConstraintType::Symmetric) {
+                    bool startCoincident
+                        = std::any_of(ac2.begin(), ac2.end(), [&centerAC](const auto& ac) {
+                              return ac.Type == Sketcher::ConstraintType::Coincident;
+                          });
+                    bool endCoincident
+                        = std::any_of(ac3.begin(), ac3.end(), [&centerAC](const auto& ac) {
+                              return ac.Type == Sketcher::ConstraintType::Coincident;
+                          });
+
+                    if (startCoincident && endCoincident) {
+                        centerAC.Type = Sketcher::ConstraintType::PointOnObject;
+                    }
+                }
+            }
+
             generateAutoConstraintsOnElement(
                 ac1,
                 ArcGeoId,
