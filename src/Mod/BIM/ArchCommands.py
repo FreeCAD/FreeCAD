@@ -97,6 +97,19 @@ def getDefaultColor(objectType):
     return (r, g, b, alpha)
 
 
+def _check_and_setup_window(obj):
+    """Returns `True` of obj is a (Link to a) Window. The function ensures that
+    a Link has its own Hosts property. Used by addComponents and removeComponents."""
+    if Draft.getType(obj) == "Window":
+        return True
+    if hasattr(obj, "getLinkedObject") and Draft.getType(obj.getLinkedObject()) == "Window":
+        # Make sure the link has its own Hosts property to override the inherited property
+        # (required if Link has not been recomputed):
+        obj.getLinkedObject().Proxy.addSketchArchFeatures(obj)
+        return True
+    return False
+
+
 def _usedForAttachment(host, obj):
     if not getattr(obj, "AttachmentSupport", []):
         return False
@@ -136,12 +149,9 @@ def addComponents(objectsList, host):
         x = getattr(host, "Axes", [])
         for o in objectsList:
             if hasattr(o, "Shape"):
-                if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                if _check_and_setup_window(o):
+                    if hasattr(o, "Hosts") and host not in o.Hosts:
+                        o.Hosts += [host]
                 elif o in outList:
                     FreeCAD.Console.PrintWarning(
                         translate(
@@ -206,12 +216,9 @@ def removeComponents(objectsList, host=None):
                 host.Axes = a
             s = host.Subtractions
             for o in objectsList:
-                if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                if _check_and_setup_window(o):
+                    if hasattr(o, "Hosts") and host not in o.Hosts:
+                        o.Hosts += [host]
                 elif not o in s:
                     s.append(o)
                     if FreeCAD.GuiUp:
