@@ -196,9 +196,11 @@ class TestGMSHBase(unittest.TestCase):
             f"Generated mesh does not have the same polyhedra count as the golden sample: {name}"
         )
 
-    def compare_fuzzy_mesh_to_sample(self, mesh_obj):
+    def compare_fuzzy_mesh_to_sample(self, mesh_obj, allowed_diff=0.05):
         # compare generated mesh to sample to be the roughly the same. This accounts for sligth variations between
         # gmsh versions. The meshes do not to be the exact same, but can varie sligthly.
+        #
+        # allowed_diff is given as relation to 1 (5% = 0.05)
 
         # load the sample mesh we want to compare to
         name = mesh_obj.getParentGroup().Label
@@ -217,8 +219,6 @@ class TestGMSHBase(unittest.TestCase):
                     return 1
 
             return abs(1-val1/val2)
-
-        allowed_diff = 0.05 # 5% diff allowed
 
         self.assertLess(
             diff(mesh.NodeCount, sample.NodeCount),
@@ -361,7 +361,8 @@ class TestGMSHRefinements(TestGMSHBase):
             self.load_and_run_example_file("gmsh_adaptive")
             gmshs = self.get_gmsh_objects()
             for gmsh in gmshs:
-                self.compare_fuzzy_mesh_to_sample(gmsh)
+                # increased fuzzy factor, as man refinements mean small differences add up
+                self.compare_fuzzy_mesh_to_sample(gmsh, 0.1)
         except gmshtools.GmshError:
             # this exception is thrown if gmsh is not available. We pass in this case
             pass
