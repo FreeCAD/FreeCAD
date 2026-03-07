@@ -29,9 +29,11 @@
 #include <span>
 #include <string>
 #include <vector>
+#include <QAbstractSpinBox>
 #include <QGroupBox>
 #include <QImage>
 #include <QLayout>
+#include <QLineEdit>
 #include <QLinearGradient>
 #include <QPainterPath>
 #include <QRadialGradient>
@@ -319,15 +321,20 @@ const QImage& getCachedShadowImage(
 std::span<const std::string_view> componentChain(StyleComponent component)
 {
     static constexpr auto pushButton = std::to_array<std::string_view>({"Button", "FormControl"});
-    static constexpr auto toolButton = std::to_array<std::string_view>(
-        {"ToolButton", "Button", "FormControl"}
-    );
+    static constexpr auto toolButton = std::to_array<std::string_view>({
+        "ToolButton",
+        "Button",
+        "FormControl",
+    });
+    static constexpr auto lineEdit = std::to_array<std::string_view>({"LineEdit", "FormControl"});
 
     switch (component) {
         case StyleComponent::PushButton:
             return pushButton;
         case StyleComponent::ToolButton:
             return toolButton;
+        case StyleComponent::LineEdit:
+            return lineEdit;
         default:
             return {};
     }
@@ -675,6 +682,20 @@ void FreeCADStyle::drawPrimitive(
         return;
     }
 
+    if (element == PE_PanelLineEdit) {
+        // Qt sets lineWidth = 0 on the inner QLineEdit embedded inside QAbstractSpinBox
+        // (via setFrame(false)). Respect that: the spinbox outer frame is drawn separately
+        // via CC_SpinBox → PE_PanelLineEdit with the spinbox widget, so the inner edit
+        // panel must not draw a second border.
+        const auto* frameOption = qstyleoption_cast<const QStyleOptionFrame*>(option);
+        if (frameOption && frameOption->lineWidth == 0) {
+            QProxyStyle::drawPrimitive(element, option, painter, widget);
+            return;
+        }
+        drawBoxBackground(painter, option->rect, resolveBoxStyle(contextOf(widget, option)));
+        return;
+    }
+
     QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 
@@ -709,6 +730,19 @@ QSize FreeCADStyle::sizeFromContents(
         return {width, height};
     }
 
+    if (type == CT_LineEdit || type == CT_SpinBox) {
+        const StyleContext context = contextOf(widget, option);
+        const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+
+        QSize result = QProxyStyle::sizeFromContents(type, option, size, widget);
+
+        if (geometry.height) {
+            result.setHeight(*geometry.height);
+        }
+
+        return result;
+    }
+
     if (type == CT_ToolButton) {
         const StyleContext context = contextOf(widget, option);
         const auto* tbOption = qstyleoption_cast<const QStyleOptionToolButton*>(option);
@@ -740,6 +774,24 @@ QSize FreeCADStyle::sizeFromContents(
     return QProxyStyle::sizeFromContents(type, option, size, widget);
 }
 
+QRect FreeCADStyle::subElementRect(SubElement element, const QStyleOption* option, const QWidget* widget) const
+{
+    if (element == SE_LineEditContents) {
+        // Qt sets lineWidth = 0 on the inner QLineEdit of QAbstractSpinBox (setFrame(false)).
+        // In that case, the spinbox itself manages the edit field rect — do not apply our
+        // padding on top of it.
+        const auto* frameOption = qstyleoption_cast<const QStyleOptionFrame*>(option);
+        if (frameOption && frameOption->lineWidth == 0) {
+            return QProxyStyle::subElementRect(element, option, widget);
+        }
+        const StyleContext context = contextOf(widget, option);
+        const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+        return geometry.contentRect(option->rect);
+    }
+
+    return QProxyStyle::subElementRect(element, option, widget);
+}
+
 QRect FreeCADStyle::subControlRect(
     ComplexControl complexControl,
     const QStyleOptionComplex* option,
@@ -747,7 +799,114 @@ QRect FreeCADStyle::subControlRect(
     const QWidget* widget
 ) const
 {
+    if (complexControl == CC_SpinBox) {
+        const auto* spinOption = qstyleoption_cast<const QStyleOptionSpinBox*>(option);
+        if (spinOption) {
+            const StyleContext context = contextOf(widget, option);
+            const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+            const QRect outerRect = option->rect;
+
+            const int leftPad = static_cast<int>(geometry.padding.left());
+            const int rightPad = static_cast<int>(geometry.padding.right());
+            const int topPad = static_cast<int>(geometry.padding.top());
+            const int bottomPad = static_cast<int>(geometry.padding.bottom());
+
+            const int innerTop = outerRect.top() + topPad;
+            const int innerHeight = outerRect.height() - topPad - bottomPad;
+
+            // Borrow the button width from the base style; only the position changes.
+            const bool hasButtons = spinOption->buttonSymbols != QAbstractSpinBox::NoButtons;
+            const int buttonWidth = hasButtons
+                ? QProxyStyle::subControlRect(complexControl, option, SC_SpinBoxUp, widget).width()
+                : 0;
+
+            const int buttonLeft = outerRect.right() - rightPad - buttonWidth + 1;
+            const int editRight = hasButtons ? buttonLeft - 1 : outerRect.right() - rightPad;
+
+            switch (subControl) {
+                case SC_SpinBoxFrame:
+                    return outerRect;
+                case SC_SpinBoxEditField:
+                    return QRect(
+                        outerRect.left() + leftPad,
+                        innerTop,
+                        editRight - (outerRect.left() + leftPad) + 1,
+                        innerHeight
+                    );
+                case SC_SpinBoxUp: {
+                    if (!hasButtons) {
+                        return {};
+                    }
+                    const int halfHeight = innerHeight / 2;
+                    return QRect(buttonLeft, innerTop, buttonWidth, halfHeight);
+                }
+                case SC_SpinBoxDown: {
+                    if (!hasButtons) {
+                        return {};
+                    }
+                    const int halfHeight = innerHeight / 2;
+                    return QRect(buttonLeft, innerTop + halfHeight, buttonWidth, innerHeight - halfHeight);
+                }
+                default:
+                    break;
+            }
+        }
+    }
+
     return QProxyStyle::subControlRect(complexControl, option, subControl, widget);
+}
+
+void FreeCADStyle::drawComplexControl(
+    ComplexControl control,
+    const QStyleOptionComplex* option,
+    QPainter* painter,
+    const QWidget* widget
+) const
+{
+    if (control == CC_SpinBox) {
+        if (const auto* spinOption = qstyleoption_cast<const QStyleOptionSpinBox*>(option)) {
+            // Draw our styled background + border for the full frame.
+            if (spinOption->frame && (spinOption->subControls & SC_SpinBoxFrame)) {
+                const QRect frameRect
+                    = proxy()->subControlRect(CC_SpinBox, option, SC_SpinBoxFrame, widget);
+                drawBoxBackground(painter, frameRect, resolveBoxStyle(contextOf(widget, option)));
+            }
+
+            // Draw spin button arrows on a transparent background (Breeze-style: no
+            // separate button fill). We do not delegate to the base style at all — it
+            // would re-draw its own frame and button backgrounds on top of ours.
+            if (spinOption->buttonSymbols != QAbstractSpinBox::NoButtons) {
+                const bool isPlusMinus = spinOption->buttonSymbols == QAbstractSpinBox::PlusMinus;
+
+                const auto drawSpinButton = [&](SubControl subControl,
+                                                PrimitiveElement arrowIndicator,
+                                                PrimitiveElement plusMinusIndicator) {
+                    if (!(spinOption->subControls & subControl)) {
+                        return;
+                    }
+                    QStyleOptionSpinBox buttonOption = *spinOption;
+                    buttonOption.rect = proxy()->subControlRect(CC_SpinBox, option, subControl, widget);
+                    // Clear the sunken flag unless this specific button is active.
+                    if (!(spinOption->activeSubControls & subControl)) {
+                        buttonOption.state &= ~State_Sunken;
+                    }
+                    proxy()->drawPrimitive(
+                        isPlusMinus ? plusMinusIndicator : arrowIndicator,
+                        &buttonOption,
+                        painter,
+                        widget
+                    );
+                };
+
+                drawSpinButton(SC_SpinBoxUp, PE_IndicatorSpinUp, PE_IndicatorSpinPlus);
+                drawSpinButton(SC_SpinBoxDown, PE_IndicatorSpinDown, PE_IndicatorSpinMinus);
+            }
+
+            return;
+        }
+    }
+
+    QProxyStyle::drawComplexControl(control, option, painter, widget);
 }
 
 void FreeCADStyle::drawControl(
@@ -1038,6 +1197,9 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
     else if (qobject_cast<const QPushButton*>(widget)) {
         context.component = StyleComponent::PushButton;
     }
+    else if (qobject_cast<const QLineEdit*>(widget) || qobject_cast<const QAbstractSpinBox*>(widget)) {
+        context.component = StyleComponent::LineEdit;
+    }
 
     // ButtonType — derived from style option features first, then widget properties.
     const auto* buttonOption = qstyleoption_cast<const QStyleOptionButton*>(option);
@@ -1068,7 +1230,12 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
 
     // State — all active flags captured as a bitmask.
     if (option) {
-        if (option->state & QStyle::State_Sunken) {
+        // State_Sunken means "button is being pressed" for buttons, but "has a sunken
+        // frame appearance" for input widgets (QLineEdit always sets it). Only map it
+        // to Pressed for button components to avoid masking the Focused state on inputs.
+        const bool isButton = context.component == StyleComponent::PushButton
+            || context.component == StyleComponent::ToolButton;
+        if (isButton && (option->state & QStyle::State_Sunken)) {
             context.state |= StyleState::Pressed;
         }
         if (option->state & QStyle::State_MouseOver) {
@@ -1079,6 +1246,17 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
         }
         if (option->state & QStyle::State_HasFocus) {
             context.state |= StyleState::Focused;
+        }
+    }
+
+    // QAbstractSpinBox delegates keyboard focus to an inner QLineEdit child, so
+    // the spinbox widget's hasFocus() returns false and State_HasFocus is absent
+    // from its style option. Supplement the state by checking the inner edit directly.
+    if (qobject_cast<const QAbstractSpinBox*>(widget)) {
+        if (const QLineEdit* innerEdit = widget->findChild<QLineEdit*>()) {
+            if (innerEdit->hasFocus()) {
+                context.state |= StyleState::Focused;
+            }
         }
     }
 
@@ -1176,23 +1354,9 @@ void FreeCADStyle::clearTokenCache()
 bool FreeCADStyle::eventFilter(QObject* obj, QEvent* event)
 {
     if (event->type() == QEvent::Polish) {
-        if (auto* btn = qobject_cast<QPushButton*>(obj)) {
-            // QSS min-width sets a content-area constraint that layouts may not fully honour
-            // when a stylesheet is present (issue #23607). Synchronise the Qt-level minimum
-            // width so that layouts always allocate enough room for the button's contents.
-            btn->setMinimumWidth(std::max(btn->minimumSizeHint().width(), btn->minimumWidth()));
-        }
-
         if (auto* groupBox = qobject_cast<QGroupBox*>(obj)) {
             if (auto* layout = groupBox->layout()) {
                 layout->setContentsMargins(0, 0, 0, 0);
-            }
-        }
-
-        if (auto* toolButton = qobject_cast<QToolButton*>(obj)) {
-            if (const auto height
-                = resolve<StyleParameters::Numeric>(contextOf(toolButton), StyleProperty::Height)) {
-                toolButton->setFixedHeight(static_cast<int>(height->value));
             }
         }
     }
