@@ -1151,7 +1151,8 @@ bool MainWindow::event(QEvent* e)
             }
             else {
                 Command* cmd = Application::Instance->commandManager().getCommandByName(
-                    commandName.c_str());
+                    commandName.c_str()
+                );
                 if (cmd) {
                     cmd->invoke(1);
                 }
