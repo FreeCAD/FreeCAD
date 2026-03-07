@@ -32,7 +32,7 @@
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
+#include <Bnd_B2.hxx>
 //#include <GCPnts_AbscissaPoint.hxx>
 #include <GCPnts_TangentialDeflection.hxx>
 // #include <GCPnts_UniformAbscissa.hxx>
