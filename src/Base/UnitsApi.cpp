@@ -150,24 +150,46 @@ std::string UnitsApi::toUnicodeSuperscript(const std::string& str)
         "\xe2\x81\xb9",  // ⁹ U+2079
     };
 
+    static const char* superscriptMinus = "\xe2\x81\xbb";  // ⁻ U+207B
+
     std::string result;
-
     bool superscript = false;
+    bool minus = false;
 
-    for (std::size_t i = 0; i < str.size(); ++i) {
-        char ch = str[i];
+    auto flushPending = [&] {
+        if (superscript) {
+            result += '^';
+            if (minus) {
+                result += '-';
+            }
+            superscript = false;
+            minus = false;
+        }
+    };
 
+    for (char ch : str) {
         if (ch == '^') {
+            flushPending();
             superscript = true;
         }
-        else if (ch >= '0' && ch <= '9' && superscript) {
+        else if (superscript && ch == '-' && !minus) {
+            minus = true;
+        }
+        else if (superscript && ch >= '0' && ch <= '9') {
+            if (minus) {
+                result += superscriptMinus;
+            }
             result += superscripts[ch - '0'];
             superscript = false;
+            minus = false;
         }
         else {
+            flushPending();
             result += ch;
         }
     }
+
+    flushPending();
 
     return result;
 }
