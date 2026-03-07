@@ -29,8 +29,6 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
-CmdMoveStraight = Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveRapid
-
 
 class Instruction(object):
     """An Instruction is a pure python replacement of Path.Command which also tracks its begin position."""
@@ -38,8 +36,8 @@ class Instruction(object):
     def __init__(self, begin, cmd, param=None):
         self.begin = begin
         if isinstance(cmd, Path.Command):
-            self.cmd = Path.Name
-            self.param = Path.Parameters
+            self.cmd = cmd.Name
+            self.param = cmd.Parameters
         else:
             self.cmd = cmd
             if param is None:
@@ -127,6 +125,10 @@ class Instruction(object):
             fmt = f"{{}}: {{:.{digits}}}"
             s = [fmt.format(k, v) for k, v in self.param.items()]
         return f"{self.cmd}{{{', '.join(s)}}}"
+
+    def toCommand(self):
+        """toCommand(instr) ... return Path.Command object"""
+        return Path.Command(self.cmd, self.param)
 
 
 class MoveStraight(Instruction):
@@ -251,7 +253,7 @@ class Maneuver(object):
         self.instr.extend(coll)
 
     def toPath(self):
-        return Path.Path([instruction_to_command(instr) for instr in self.instr])
+        return Path.Path([instr.toCommand() for instr in self.instr])
 
     def __repr__(self):
         if self.instr:
@@ -263,7 +265,7 @@ class Maneuver(object):
         if not begin:
             begin = FreeCAD.Vector(0, 0, 0)
 
-        if cmd.Name in CmdMoveStraight:
+        if cmd.Name in Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveRapid:
             return MoveStraight(begin, cmd.Name, cmd.Parameters)
         if cmd.Name in Path.Geom.CmdMoveCW:
             return MoveArcCW(begin, cmd.Name, cmd.Parameters)
@@ -286,7 +288,3 @@ class Maneuver(object):
     @classmethod
     def FromGCode(cls, gcode, begin=None):
         return cls.FromPath(Path.Path(gcode), begin)
-
-
-def instruction_to_command(instr):
-    return Path.Command(instr.cmd, instr.param)
