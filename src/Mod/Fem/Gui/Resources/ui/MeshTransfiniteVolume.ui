@@ -202,7 +202,7 @@
    <item>
     <widget class="QGroupBox" name="Automation">
      <property name="toolTip">
-      <string>If activated all edges and surface belonging to the selected volumes, that do not have a transfinite definitions already, become transfinite automatically. 
+      <string>If activated all edges and surface belonging to the selected volumes, that do not have a transfinite definitions already, become transfinite automatically.
 Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
 
 Notes:

@@ -1,5 +1,5 @@
 # vtk DataFile Version 2.0
-shape2mesh, Created by Gmsh 4.15.0-git-d85c0cc 
+shape2mesh, Created by Gmsh 4.15.0-git-d85c0cc
 ASCII
 DATASET UNSTRUCTURED_GRID
 POINTS 183 double

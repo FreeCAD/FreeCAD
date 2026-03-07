@@ -699,7 +699,8 @@ class _MeshBoundaryLayer(CommandManager):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshBoundaryLayer", "2D Boundary Layer")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MeshBoundaryLayer", "Adds a structured layer of mesh elmenets on 2D model boundaries"
+            "FEM_MeshBoundaryLayer",
+            "Adds a structured layer of mesh elmenets on 2D model boundaries",
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -874,15 +875,19 @@ class _MeshRegion(CommandManager):
         self.is_active = "with_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
+
 class _MeshDistance(CommandManager):
     "The FEM_MeshRefinement command definition"
 
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshDistance", "Distance-Based Refinement")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshDistance", "Sets mesh size based on the distance to vertices, edges, and faces")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_MeshDistance", "Sets mesh size based on the distance to vertices, edges, and faces"
+        )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
+
 
 class _MeshManipulate(CommandManager):
     "The FEM_MeshManipulate command definition"
@@ -890,9 +895,12 @@ class _MeshManipulate(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshManipulate", "Manipulate Refinement")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshManipulate", "Allows to manipulate the output of a refinement in various ways")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_MeshManipulate", "Allows to manipulate the output of a refinement in various ways"
+        )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
+
 
 class _MeshAdvanced(CommandManager):
     "The FEM_MeshAdvanced command definition"
@@ -900,9 +908,12 @@ class _MeshAdvanced(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshAdvanced", "Advanced Refinement Types")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshAdvanced", "Allows to define the mesh size by various advanced means")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_MeshAdvanced", "Allows to define the mesh size by various advanced means"
+        )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
+
 
 class _MeshShape(CommandManager):
     "The FEM_MeshRefinement command definition"
@@ -910,59 +921,84 @@ class _MeshShape(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshShape", "Shape-Based Refinement")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshSphere", "Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_MeshSphere",
+            "Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)",
+        )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
+
 
 class _MeshTransfiniteCurve(CommandManager):
     "The FEM_MeshTransfiniteCurve command definition"
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshTransfiniteCurve", "Structured Transfinite Curve")
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_MeshTransfiniteCurve", "Structured Transfinite Curve"
+        )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MeshTransfiniteCurve", "Creates a fixed amount of nodes on an endge with a structured algorithm"
+            "FEM_MeshTransfiniteCurve",
+            "Creates a fixed amount of nodes on an endge with a structured algorithm",
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
+
 
 class _MeshTransfiniteSurface(CommandManager):
     "The FEM_MeshTransfiniteSurface command definition"
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshTransfiniteSurface", "Structured Transfinite Surface")
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_MeshTransfiniteSurface", "Structured Transfinite Surface"
+        )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshTransfiniteSurface", "Creates a structured mesh on a face"
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
+
 class _MeshTransfiniteVolume(CommandManager):
     "The FEM_MeshTransfiniteVolume command definition"
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshTransfiniteVolume", "Structured Transfinite Volume")
+        self.menutext = Qt.QT_TRANSLATE_NOOP(
+            "FEM_MeshTransfiniteVolume", "Structured Transfinite Volume"
+        )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MeshTransfiniteVolume", "Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces"
+            "FEM_MeshTransfiniteVolume",
+            "Creates a structured mesh in a 4 or 5 sided volume bounded by transfinite surfaces",
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
-class _GMSHRefine():
+
+class _GMSHRefine:
     # Group command for all gmsh special refinements
 
     def GetCommands(self):
-        return ["FEM_MeshDistance", "FEM_MeshBoundaryLayer",
-                "FEM_MeshShape", "FEM_MeshManipulate", "FEM_MeshAdvanced",
-                "FEM_MeshTransfiniteCurve", "FEM_MeshTransfiniteSurface", "FEM_MeshTransfiniteVolume"]
+        return [
+            "FEM_MeshDistance",
+            "FEM_MeshBoundaryLayer",
+            "FEM_MeshShape",
+            "FEM_MeshManipulate",
+            "FEM_MeshAdvanced",
+            "FEM_MeshTransfiniteCurve",
+            "FEM_MeshTransfiniteSurface",
+            "FEM_MeshTransfiniteVolume",
+        ]
 
     def GetDefaultCommand(self):
         return 0
 
     def GetResources(self):
-        return { 'MenuText': 'GMSH Refinements', 'ToolTip': 'Mesh refinements for the GMSH mesh generation'}
+        return {
+            "MenuText": "GMSH Refinements",
+            "ToolTip": "Mesh refinements for the GMSH mesh generation",
+        }
 
     def IsActive(self):
         if not FreeCADGui.ActiveDocument:

@@ -262,11 +262,21 @@ class TestObjectType(unittest.TestCase):
         self.assertEqual("Fem::MeshRegion", type_of_obj(ObjectsFem.makeMeshRegion(doc, mesh)))
         self.assertEqual("Fem::MeshDistance", type_of_obj(ObjectsFem.makeMeshDistance(doc, mesh)))
         self.assertEqual("Fem::MeshShape", type_of_obj(ObjectsFem.makeMeshShape(doc, mesh)))
-        self.assertEqual("Fem::MeshManipulate", type_of_obj(ObjectsFem.makeMeshManipulate(doc, mesh)))
+        self.assertEqual(
+            "Fem::MeshManipulate", type_of_obj(ObjectsFem.makeMeshManipulate(doc, mesh))
+        )
         self.assertEqual("Fem::MeshAdvanced", type_of_obj(ObjectsFem.makeMeshAdvanced(doc, mesh)))
-        self.assertEqual("Fem::MeshTransfiniteCurve", type_of_obj(ObjectsFem.makeMeshTransfiniteCurve(doc, mesh)))
-        self.assertEqual("Fem::MeshTransfiniteSurface", type_of_obj(ObjectsFem.makeMeshTransfiniteSurface(doc, mesh)))
-        self.assertEqual("Fem::MeshTransfiniteVolume", type_of_obj(ObjectsFem.makeMeshTransfiniteVolume(doc, mesh)))
+        self.assertEqual(
+            "Fem::MeshTransfiniteCurve", type_of_obj(ObjectsFem.makeMeshTransfiniteCurve(doc, mesh))
+        )
+        self.assertEqual(
+            "Fem::MeshTransfiniteSurface",
+            type_of_obj(ObjectsFem.makeMeshTransfiniteSurface(doc, mesh)),
+        )
+        self.assertEqual(
+            "Fem::MeshTransfiniteVolume",
+            type_of_obj(ObjectsFem.makeMeshTransfiniteVolume(doc, mesh)),
+        )
         self.assertEqual("Fem::FemMeshNetgen", type_of_obj(ObjectsFem.makeMeshNetgen(doc)))
         self.assertEqual(
             "Fem::FemMeshShapeNetgenObject", type_of_obj(ObjectsFem.makeMeshNetgenLegacy(doc))
@@ -451,9 +461,19 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_of_type(ObjectsFem.makeMeshShape(doc, mesh), "Fem::MeshShape"))
         self.assertTrue(is_of_type(ObjectsFem.makeMeshManipulate(doc, mesh), "Fem::MeshManipulate"))
         self.assertTrue(is_of_type(ObjectsFem.makeMeshAdvanced(doc, mesh), "Fem::MeshAdvanced"))
-        self.assertTrue(is_of_type(ObjectsFem.makeMeshTransfiniteCurve(doc, mesh), "Fem::MeshTransfiniteCurve"))
-        self.assertTrue(is_of_type(ObjectsFem.makeMeshTransfiniteSurface(doc, mesh), "Fem::MeshTransfiniteSurface"))
-        self.assertTrue(is_of_type(ObjectsFem.makeMeshTransfiniteVolume(doc, mesh), "Fem::MeshTransfiniteVolume"))
+        self.assertTrue(
+            is_of_type(ObjectsFem.makeMeshTransfiniteCurve(doc, mesh), "Fem::MeshTransfiniteCurve")
+        )
+        self.assertTrue(
+            is_of_type(
+                ObjectsFem.makeMeshTransfiniteSurface(doc, mesh), "Fem::MeshTransfiniteSurface"
+            )
+        )
+        self.assertTrue(
+            is_of_type(
+                ObjectsFem.makeMeshTransfiniteVolume(doc, mesh), "Fem::MeshTransfiniteVolume"
+            )
+        )
         self.assertTrue(is_of_type(ObjectsFem.makeMeshNetgen(doc), "Fem::FemMeshNetgen"))
         self.assertTrue(
             is_of_type(ObjectsFem.makeMeshNetgenLegacy(doc), "Fem::FemMeshShapeNetgenObject")
@@ -1095,11 +1115,19 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(ObjectsFem.makeMeshRegion(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
         self.assertTrue(ObjectsFem.makeMeshDistance(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
         self.assertTrue(ObjectsFem.makeMeshShape(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
-        self.assertTrue(ObjectsFem.makeMeshManipulate(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
+        self.assertTrue(
+            ObjectsFem.makeMeshManipulate(doc, mesh).isDerivedFrom("Fem::FeaturePython")
+        )
         self.assertTrue(ObjectsFem.makeMeshAdvanced(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
-        self.assertTrue(ObjectsFem.makeMeshTransfiniteCurve(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
-        self.assertTrue(ObjectsFem.makeMeshTransfiniteSurface(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
-        self.assertTrue(ObjectsFem.makeMeshTransfiniteVolume(doc, mesh).isDerivedFrom("Fem::FeaturePython"))
+        self.assertTrue(
+            ObjectsFem.makeMeshTransfiniteCurve(doc, mesh).isDerivedFrom("Fem::FeaturePython")
+        )
+        self.assertTrue(
+            ObjectsFem.makeMeshTransfiniteSurface(doc, mesh).isDerivedFrom("Fem::FeaturePython")
+        )
+        self.assertTrue(
+            ObjectsFem.makeMeshTransfiniteVolume(doc, mesh).isDerivedFrom("Fem::FeaturePython")
+        )
         self.assertTrue(
             ObjectsFem.makeMeshNetgen(doc).isDerivedFrom("Fem::FemMeshShapeBaseObjectPython")
         )

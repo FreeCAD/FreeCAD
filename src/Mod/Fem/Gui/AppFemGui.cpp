@@ -69,12 +69,12 @@
 #include "Workbench.h"
 
 #ifdef FC_USE_VTK
-#include "ViewProviderFemPostFilter.h"
-#include "ViewProviderFemPostFunction.h"
-#include "ViewProviderFemPostObject.h"
-#include "ViewProviderFemPostPipeline.h"
-#include "ViewProviderFemPostBranchFilter.h"
-#include "ViewProviderShapeExtension.h"
+# include "ViewProviderFemPostFilter.h"
+# include "ViewProviderFemPostFunction.h"
+# include "ViewProviderFemPostObject.h"
+# include "ViewProviderFemPostPipeline.h"
+# include "ViewProviderFemPostBranchFilter.h"
+# include "ViewProviderShapeExtension.h"
 #endif
 
 

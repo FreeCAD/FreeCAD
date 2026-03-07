@@ -47,13 +47,13 @@ class VPMeshShape(view_base_femmeshelement.VPBaseFemMeshElement):
     def setEdit(self, vobj, mode=0):
         return super().setEdit(vobj, mode, task_mesh_shape._TaskPanelShape)
 
-    def getDisplayModes(self,obj):
-        '''Return a list of display modes.'''
-        modes=["Box", "Sphere", "Cylinder"]
+    def getDisplayModes(self, obj):
+        """Return a list of display modes."""
+        modes = ["Box", "Sphere", "Cylinder"]
         return modes
 
     def getDefaultDisplayMode(self):
-        '''Return the name of the default display mode. It must be defined in getDisplayModes.'''
+        """Return the name of the default display mode. It must be defined in getDisplayModes."""
         return "Box"
 
     def updateData(self, obj, prop):

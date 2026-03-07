@@ -94,7 +94,9 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         ui.Type.currentTextChanged.connect(self.typeChanged)
 
         # AttractorAnisoCurve
-        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString("StyleSheet")
+        stylesheet = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
+            "StyleSheet"
+        )
         if "dark" in stylesheet.lower():
             lightness = "Light"
         elif "light" in stylesheet.lower():
@@ -102,7 +104,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         else:
             # use the qt style background and text color to detect the image to use
             palette = ui.palette()
-            if palette.color(QtGui.QPalette.Text).lightness() > palette.color(QtGui.QPalette.Window).lightness():
+            if (
+                palette.color(QtGui.QPalette.Text).lightness()
+                > palette.color(QtGui.QPalette.Window).lightness()
+            ):
                 lightness = "Light"
             else:
                 lightness = "Dark"
@@ -139,18 +144,18 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         ui.Sampling_Aniso.valueChanged.connect(self.samplingChanged)
 
         warning = FreeCADGui.getIcon("Warning.svg")
-        ui.WarnIcon_Curve.setPixmap(warning.pixmap(QtCore.QSize(32,32)))
+        ui.WarnIcon_Curve.setPixmap(warning.pixmap(QtCore.QSize(32, 32)))
 
         # math
         ui.Equation.setText(self.obj.Equation)
         ui.Equation.editingFinished.connect(self.equationChanged)
 
         info = FreeCADGui.getIcon("info.svg")
-        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32,32)))
-        ui.EqIcon.setPixmap(info.pixmap(QtCore.QSize(32,32)))
+        ui.Icon.setPixmap(info.pixmap(QtCore.QSize(32, 32)))
+        ui.EqIcon.setPixmap(info.pixmap(QtCore.QSize(32, 32)))
 
         # math ansio
-        ui.Icon_Aniso.setPixmap(info.pixmap(QtCore.QSize(32,32)))
+        ui.Icon_Aniso.setPixmap(info.pixmap(QtCore.QSize(32, 32)))
 
         ui.M11.setText(self.obj.M11)
         ui.M11.editingFinished.connect(self.anisoEquationChanged)
@@ -166,14 +171,13 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         ui.M33.setText(self.obj.M33)
         ui.M33.editingFinished.connect(self.anisoEquationChanged)
 
-        ui.WarnIcon_Math.setPixmap(warning.pixmap(QtCore.QSize(32,32)))
+        ui.WarnIcon_Math.setPixmap(warning.pixmap(QtCore.QSize(32, 32)))
         self._update_field_list()
 
         # Distance
         ui.Sampling_Dist.setProperty("value", self.obj.Sampling)
         FreeCADGui.ExpressionBinding(ui.Sampling_Dist).bind(self.obj, "Sampling")
         ui.Sampling_Dist.valueChanged.connect(self.samplingChanged)
-
 
         # Result
 
@@ -187,18 +191,18 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
         # set selection
         if self.obj.ResultObject:
             ui.ResultObject.setCurrentText(self.obj.ResultObject.Label)
-            ui.ResultField.addItems(self.obj.ResultObject.ViewObject.getEnumerationsOfProperty("Field"))
+            ui.ResultField.addItems(
+                self.obj.ResultObject.ViewObject.getEnumerationsOfProperty("Field")
+            )
             ui.ResultField.setCurrentText(self.obj.ResultField)
         else:
             ui.ResultField.addItem(FreeCADGui.getIcon("button_invalid.svg"), "No object selected")
-
 
         ui.ResultObject.currentIndexChanged.connect(self.resultObjectChanged)
         ui.ResultField.currentTextChanged.connect(self.resultFieldChanged)
 
         # add the preview widget
         ui.layout().addWidget(self.preview_widget())
-
 
     def slotChangedObject(self, obj, prop):
         # callback of document observer for changed property
@@ -306,4 +310,3 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel, base_fempreviewpanel._TaskPan
     def referencesUpdated(self, references):
         self.obj.References = references
         self.update_preview()
-

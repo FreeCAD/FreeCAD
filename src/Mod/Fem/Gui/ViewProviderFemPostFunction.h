@@ -93,7 +93,8 @@ private:
 };
 
 // ***************************************************************************
-class FemGuiExport ViewProviderFemPostBoxFunction: public ViewProviderFemPostFunction, public ViewProviderBoxExtension
+class FemGuiExport ViewProviderFemPostBoxFunction: public ViewProviderFemPostFunction,
+                                                   public ViewProviderBoxExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostBoxFunction);
 
@@ -104,7 +105,8 @@ public:
 
 
 // ***************************************************************************
-class FemGuiExport ViewProviderFemPostCylinderFunction: public ViewProviderFemPostFunction, public ViewProviderCylinderExtension
+class FemGuiExport ViewProviderFemPostCylinderFunction: public ViewProviderFemPostFunction,
+                                                        public ViewProviderCylinderExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostCylinderFunction);
 
@@ -114,9 +116,8 @@ public:
 };
 
 
-
-
-class FemGuiExport ViewProviderFemPostPlaneFunction: public ViewProviderFemPostFunction, public ViewProviderPlaneExtension
+class FemGuiExport ViewProviderFemPostPlaneFunction: public ViewProviderFemPostFunction,
+                                                     public ViewProviderPlaneExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostPlaneFunction);
 
@@ -127,7 +128,8 @@ public:
 
 
 // ***************************************************************************
-class FemGuiExport ViewProviderFemPostSphereFunction: public ViewProviderFemPostFunction, public ViewProviderSphereExtension
+class FemGuiExport ViewProviderFemPostSphereFunction: public ViewProviderFemPostFunction,
+                                                      public ViewProviderSphereExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(FemGui::ViewProviderFemPostSphereFunction);
 

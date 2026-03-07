@@ -37,10 +37,18 @@ from PySide import QtGui
 from femtaskpanels import task_mesh_gmsh
 from femtools.femutils import is_of_type, type_of_obj
 
-_supported_definitions = ["Fem::MeshRegion", "Fem::MeshBoundaryLayer", "Fem::MeshDistance",
-                          "Fem::MeshSphape", "Fem::MeshManipulate", "Fem::MeshAdvanced",
-                          "Fem::MeshTransfiniteCurve", "Fem::MeshTransfiniteSurface",
-                          "Fem::MeshTransfiniteVolume"]
+_supported_definitions = [
+    "Fem::MeshRegion",
+    "Fem::MeshBoundaryLayer",
+    "Fem::MeshDistance",
+    "Fem::MeshSphape",
+    "Fem::MeshManipulate",
+    "Fem::MeshAdvanced",
+    "Fem::MeshTransfiniteCurve",
+    "Fem::MeshTransfiniteSurface",
+    "Fem::MeshTransfiniteVolume",
+]
+
 
 # TODO use VPBaseFemObject from view_base_femobject
 # class VPMeshGmsh(view_base_femobject.VPBaseFemObject):
@@ -242,8 +250,10 @@ class VPMeshGmsh:
     def canDropObject(self, incoming_object):
 
         # only accept allowed objects
-        if is_of_type(incoming_object, "Fem::MeshGroup") or \
-           type_of_obj(incoming_object) in _supported_definitions:
+        if (
+            is_of_type(incoming_object, "Fem::MeshGroup")
+            or type_of_obj(incoming_object) in _supported_definitions
+        ):
 
             return True
 
