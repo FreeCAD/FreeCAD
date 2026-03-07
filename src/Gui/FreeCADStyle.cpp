@@ -1001,8 +1001,8 @@ void FreeCADStyle::drawComplexControl(
                     );
                 };
 
-                drawSpinButton(SC_SpinBoxUp, PE_IndicatorSpinUp, PE_IndicatorSpinPlus);
-                drawSpinButton(SC_SpinBoxDown, PE_IndicatorSpinDown, PE_IndicatorSpinMinus);
+                drawSpinButton(SC_SpinBoxUp, PE_IndicatorArrowUp, PE_IndicatorSpinPlus);
+                drawSpinButton(SC_SpinBoxDown, PE_IndicatorArrowDown, PE_IndicatorSpinMinus);
             }
 
             return;
