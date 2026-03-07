@@ -33,5 +33,6 @@ constexpr auto mi {1760 * yd};
 constexpr auto lb {0.45359237};
 constexpr auto lbf {9.80665 * lb};
 constexpr auto psi {lbf / (in * in) * 1000};
+constexpr auto rad {180.0 / std::numbers::pi};
 
 }  // namespace Base::UnitsConvData
