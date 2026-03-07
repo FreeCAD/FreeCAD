@@ -313,7 +313,7 @@ void TaskRichAnno::onViewTransformed()
     // When the view pans, the item's scene position hasn't changed.
     // We just need to re-run the position calculation with its current scenePos.
     if (m_qgiAnno) {
-        onViewPositionChanged(m_qgiAnno->scenePos());
+        onViewPositionChanged();
     }
 }
 
@@ -336,7 +336,7 @@ void TaskRichAnno::onViewSelectionChanged()
 
 }
 
-void TaskRichAnno::onViewPositionChanged(const QPointF& scenePos)
+void TaskRichAnno::onViewPositionChanged()
 {
     // Make sure you have a local variable for the QGVPage to make the code cleaner
     QGVPage* graphicsView = nullptr;

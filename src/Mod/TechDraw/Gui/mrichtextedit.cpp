@@ -822,7 +822,7 @@ void MRichTextEdit::addFontSize(QString fontSize)
     }
 
     // 2. Check if the new size is already in the list (using fuzzy comparison for doubles)
-    for (double existingSize : qAsConst(sizes)) {
+    for (double existingSize : std::as_const(sizes)) {
         if (qFuzzyCompare(existingSize, newSize)) {
             // Already exists, just make sure it's the current text
             f_fontsize->setCurrentText(QString::number(newSize, 'g', 4));
@@ -836,7 +836,7 @@ void MRichTextEdit::addFontSize(QString fontSize)
 
     // 4. Repopulate the combobox with the sorted, correctly formatted list
     QStringList newList;
-    for (double size : qAsConst(sizes)) {
+    for (double size : std::as_const(sizes)) {
         newList << QString::number(size, 'g', 4);
     }
 

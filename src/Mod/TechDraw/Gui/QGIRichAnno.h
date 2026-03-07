@@ -113,7 +113,7 @@ public:
     void widthChanged();
     void textChanged();
     void selectionChanged();
-    void positionChanged(const QPointF& scenePos);
+    void positionChanged();
 
 protected:
     void draw() override;

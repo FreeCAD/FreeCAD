@@ -175,5 +175,5 @@ void* XStrMemoryManager::allocate(XMLSize_t size)
 
 void XStrMemoryManager::deallocate(void* p)
 {
-    ::operator delete(p);
+    ::operator delete(p, static_cast<std::align_val_t>(alignof(XMLCh)));
 }

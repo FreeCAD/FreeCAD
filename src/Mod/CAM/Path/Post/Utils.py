@@ -40,6 +40,7 @@ import Path
 import os
 import re
 
+translate = FreeCAD.Qt.translate
 
 debug = False
 if debug:
@@ -231,32 +232,22 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.editor.setPlainText(text)
         layout.addWidget(self.editor)
 
+        buttonBox = QtGui.QDialogButtonBox
+        self.buttons = buttonBox()
+        ok_button = self.buttons.addButton(buttonBox.Ok)
+        ok_button.setText(translate("CAM", "Save With Changes"))
+        cancel_button = self.buttons.addButton(buttonBox.Cancel)
         # buttons depending on the post processor used
         if refactored:
-            self.buttons = QtGui.QDialogButtonBox(
-                QtGui.QDialogButtonBox.Ok
-                | QtGui.QDialogButtonBox.Discard
-                | QtGui.QDialogButtonBox.Cancel,
-                QtCore.Qt.Horizontal,
-                self,
-            )
             # Swap the button text as to not change the old cancel behaviour for the user
-            self.buttons.button(QtGui.QDialogButtonBox.Discard).setIcon(
-                self.buttons.button(QtGui.QDialogButtonBox.Cancel).icon()
-            )
-            self.buttons.button(QtGui.QDialogButtonBox.Discard).setText(
-                self.buttons.button(QtGui.QDialogButtonBox.Cancel).text()
-            )
-            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setIcon(QtGui.QIcon())
-            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setText("Abort")
+            discard_button = self.buttons.addButton(buttonBox.Discard)
+            discard_button.setIcon(QtGui.QIcon())
+            discard_button.setText(translate("CAM", "Save Without Changes"))
+            cancel_button.setText(translate("CAM", "Abort"))
         else:
-            self.buttons = QtGui.QDialogButtonBox(
-                QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
-                QtCore.Qt.Horizontal,
-                self,
-            )
+            cancel_button.setText(translate("CAM", "Save Without Changes"))
 
-        self.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
+        ok_button.setDisabled(True)
         layout.addWidget(self.buttons)
 
         # restore placement and size

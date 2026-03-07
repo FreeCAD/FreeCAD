@@ -220,7 +220,7 @@ void QGIRichAnno::setTextItem()
     }
 
     if (m_isEditing) {
-        Q_EMIT positionChanged(scenePos());
+        Q_EMIT positionChanged();
     }
 }
 
@@ -488,7 +488,7 @@ void QGIRichAnno::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
         QTimer::singleShot(0, this, [this]() {
             if (this && scene()) {
-                Q_EMIT positionChanged(scenePos());
+                Q_EMIT positionChanged();
             }
         });
 
@@ -519,7 +519,7 @@ void QGIRichAnno::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
         // Ensure focus returns to the text item after the resize handle is released
         refocusAnnotation();
 
-        Q_EMIT positionChanged(scenePos());
+        Q_EMIT positionChanged();
 
         if (!isUnderMouse()) {
             QGraphicsSceneHoverEvent leaveEvent(QEvent::GraphicsSceneHoverLeave);
@@ -579,6 +579,7 @@ void QGIRichAnno::setEditMode(bool enable)
         m_text->setTextCursor(cursor);
         refocusAnnotation();
 
+
         // refocusAnnotation() may reset defaultFont to the application font; restore it.
         QFont docFont = prefFont();
         docFont.setPointSize(pointSize);
@@ -593,6 +594,7 @@ void QGIRichAnno::setEditMode(bool enable)
         }
 
         Q_EMIT positionChanged(scenePos());
+
     }
     else {
         m_text->setTextInteractionFlags(Qt::NoTextInteraction);
@@ -661,7 +663,7 @@ QVariant QGIRichAnno::itemChange(GraphicsItemChange change, const QVariant& valu
 {
     if (change == QGraphicsItem::ItemScenePositionHasChanged
         && scene()) {
-        Q_EMIT positionChanged(scenePos());
+        Q_EMIT positionChanged();
     }
     return QGIView::itemChange(change, value);
 }
@@ -685,7 +687,7 @@ void QGIRichAnno::updateLayout()
     update();
 
     if (scene()) {
-        Q_EMIT positionChanged(scenePos());
+        Q_EMIT positionChanged();
     }
     drawBorder();
 }
