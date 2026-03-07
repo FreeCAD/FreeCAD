@@ -604,6 +604,22 @@ public:
     void addExportType(const char* filter, const char* moduleName);
 
     /**
+     * @brief Register an export filetype with a translatable description
+     *
+     * @param[in] description A translatable string describing the file type. Must not contain the
+     * list of extensions.
+     * @param[in] extensions A list of supported extensions. Do not include the "*.", only the
+     * extension itself. For example, "txt", not "*.txt".
+     * @param[in] moduleName The name of the module handling the export.
+     */
+    void addTranslatableExportType(const std::string &description,
+                                   const std::vector<std::string> &extensions,
+                                   const std::string &moduleName);
+
+    /// Intended to be called when the language is changed, this retranslates the export type.
+    void retranslateExportTypes();
+
+    /**
      * @copydoc changeImportModule
      */
     void changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName);
@@ -995,6 +1011,7 @@ private:
         std::string filter;
         std::string module;
         std::vector<std::string> types;
+        bool translatable = false;
     };
 
     // open ending information
