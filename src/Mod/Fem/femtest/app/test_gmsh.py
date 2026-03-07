@@ -111,7 +111,10 @@ class TestGMSHBase(unittest.TestCase):
         tool.create_mesh()
 
     # ********************************************************************************************
-    def compare_mesh_to_sample(self, mesh_obj):
+    def compare_exact_mesh_to_sample(self, mesh_obj):
+        # compare generated mesh to sample to be the exact same. This should only be used for
+        # meshing algorithms that gurantee to define exact node counts and locations, as well as
+        # elements. If things can vary over gmsh versions this should not be used.
 
         # load the sample mesh we want to compare to
         name = mesh_obj.getParentGroup().Label
@@ -193,6 +196,96 @@ class TestGMSHBase(unittest.TestCase):
             f"Generated mesh does not have the same polyhedra count as the golden sample: {name}"
         )
 
+    def compare_fuzzy_mesh_to_sample(self, mesh_obj):
+        # compare generated mesh to sample to be the roughly the same. This accounts for sligth variations between
+        # gmsh versions. The meshes do not to be the exact same, but can varie sligthly.
+
+        # load the sample mesh we want to compare to
+        name = mesh_obj.getParentGroup().Label
+        path = join(testtools.get_fem_test_home_dir(), "gmsh", name+".vtk")
+        sample = Fem.FemMesh()
+        sample.read(path)
+
+        # test reading the test mesh
+        mesh = mesh_obj.FemMesh
+
+        def diff(val1, val2):
+            if val2 == 0:
+                if val1 == 0:
+                    return 0
+                else:
+                    return 1
+
+            return abs(1-val1/val2)
+
+        allowed_diff = 0.05 # 5% diff allowed
+
+        self.assertLess(
+            diff(mesh.NodeCount, sample.NodeCount),
+            allowed_diff,
+            f"Generated mesh does not have the same Node count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.EdgeCount, sample.EdgeCount),
+            allowed_diff,
+            f"Generated mesh does not have the same edge count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.TriangleCount, sample.TriangleCount),
+            allowed_diff,
+            f"Generated mesh does not have the same triangle count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.QuadrangleCount, sample.QuadrangleCount),
+            allowed_diff,
+            f"Generated mesh does not have the same quadrangle count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.PolygonCount, sample.PolygonCount),
+            allowed_diff,
+            f"Generated mesh does not have the same polygon count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.VolumeCount, sample.VolumeCount),
+            allowed_diff,
+            f"Generated mesh does not have the same volume count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.TetraCount, sample.TetraCount),
+            allowed_diff,
+            f"Generated mesh does not have the same tetrahedra count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.HexaCount, sample.HexaCount),
+            allowed_diff,
+            f"Generated mesh does not have the same hexahedra count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.PyramidCount, sample.PyramidCount),
+            allowed_diff,
+            f"Generated mesh does not have the same pyramid count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.PrismCount, sample.PrismCount),
+            allowed_diff,
+            f"Generated mesh does not have the same prism count as the golden sample: {name}"
+        )
+
+        self.assertLess(
+            diff(mesh.PolyhedronCount, sample.PolyhedronCount),
+            allowed_diff,
+            f"Generated mesh does not have the same polyhedra count as the golden sample: {name}"
+        )
+
 
 # ************************************************************************************************
 # ************************************************************************************************
@@ -219,7 +312,7 @@ class TestGMSHTransfinite(TestGMSHBase):
             gmshs = self.get_gmsh_objects()
             for gmsh in gmshs:
                 self.execute_gmsh(gmsh)
-                self.compare_mesh_to_sample(gmsh)
+                self.compare_exact_mesh_to_sample(gmsh)
 
                 if FreeCAD.GuiUp:
                     import FreeCADGui
@@ -235,7 +328,7 @@ class TestGMSHTransfinite(TestGMSHBase):
             gmshs = self.get_gmsh_objects()
             for gmsh in gmshs:
                 self.execute_gmsh(gmsh)
-                self.compare_mesh_to_sample(gmsh)
+                self.compare_exact_mesh_to_sample(gmsh)
 
                 if FreeCAD.GuiUp:
                     import FreeCADGui
@@ -268,7 +361,7 @@ class TestGMSHRefinements(TestGMSHBase):
             self.load_and_run_example_file("gmsh_adaptive")
             gmshs = self.get_gmsh_objects()
             for gmsh in gmshs:
-                self.compare_mesh_to_sample(gmsh)
+                self.compare_fuzzy_mesh_to_sample(gmsh)
         except gmshtools.GmshError:
             # this exception is thrown if gmsh is not available. We pass in this case
             pass
