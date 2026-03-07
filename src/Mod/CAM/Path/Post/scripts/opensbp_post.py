@@ -167,7 +167,7 @@ class Opensbp(PostProcessor):
                 "LINE_INCREMENT": 1,
                 "OUTPUT_PATH_LABELS": True,
                 "OUTPUT_TOOL_CHANGE": False,
-                "OUTPUT_BLANK_LINES" : False,
+                "OUTPUT_BLANK_LINES": False,
                 # 'PARAMETER_ORDER' : don't care about order, we aren't gcode
                 "POSTAMBLE": "",
                 "POSTPROCESSOR_FILE_NAME": __name__,
@@ -189,8 +189,8 @@ class Opensbp(PostProcessor):
                 "SPEED_PRECISION": 2,  # updated at process_arguments
                 "MIN_SPEED": 0.05,  # updated at process_arguments
                 # these seem safe defaults
-                "MODAL" : True, # --modal
-                "OUTPUT_DOUBLES" : False, # --axis-modal
+                "MODAL": True,  # --modal
+                "OUTPUT_DOUBLES": False,  # --axis-modal
             }
         )
         # FIXME: should be done by PostProcessor, isn't there yet in 1.0.
@@ -219,15 +219,15 @@ class Opensbp(PostProcessor):
         # argument_defaults['metric_inches'] = True if From doc
         argument_defaults["wait-for-spindle"] = self.values["SPINDLE_WAIT"]
         defaults = {
-            "tlo" : False,
-            "translate_drill" : True,
-            "tool_change" : False,
+            "tlo": False,
+            "translate_drill": True,
+            "tool_change": False,
             "modal": True,
             "no_modal": False,
             "axis_modal": True,
             "no_axis_modal": False,
         }
-        for arg,v in defaults.items():
+        for arg, v in defaults.items():
             argument_defaults[arg] = v
 
     def init_arguments_visible(self, arguments_visible: Visible) -> None:
