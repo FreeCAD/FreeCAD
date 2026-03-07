@@ -95,7 +95,6 @@ public:
     App::PropertyBool ShowDelta;
 
     void redrawAnnotation() override;
-    void positionAnno(const Measure::MeasureBase* measureObject) override;
 
 protected:
     Base::Vector3d getTextDirection(

@@ -105,6 +105,13 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
         App::Prop_None,
         "Size of measurement text"
     );
+    ADD_PROPERTY_TYPE(
+        LabelPosition,
+        (Base::Vector3d(0.0, 0.0, 0.0)),
+        agroup,
+        App::Prop_None,
+        "Saved label offset for the measurement"
+    );
     // NOLINTEND
 
     pGlobalSeparator = new SoSeparator();
@@ -269,6 +276,9 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
         pLabel->size = FontSize.getValue();
         fieldFontSize.setValue(FontSize.getValue());
     }
+    else if (prop == &LabelPosition) {
+        setLabelTranslation(toSbVec3f(LabelPosition.getValue()));
+    }
 
     ViewProviderDocumentObject::onChanged(prop);
 }
@@ -277,6 +287,16 @@ void ViewProviderMeasureBase::draggerChangedCallback(void* data, SoDragger*)
 {
     auto me = static_cast<ViewProviderMeasureBase*>(data);
     me->onLabelMoved();
+}
+
+void ViewProviderMeasureBase::onLabelMoved()
+{
+    if (!pDragger) {
+        return;
+    }
+
+    const SbVec3f pos = pDragger->translation.getValue();
+    LabelPosition.setValue(Base::Vector3d(pos[0], pos[1], pos[2]));
 }
 
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
@@ -332,6 +352,10 @@ SoSeparator* ViewProviderMeasureBase::getSoSeparatorText()
 void ViewProviderMeasureBase::positionAnno(const Measure::MeasureBase* measureObject)
 {
     (void)measureObject;
+    if (LabelPosition.getValue().Length() < defaultTolerance) {
+        LabelPosition.setValue(Base::Vector3d(0, 0.1 * getViewScale(), 0));
+    }
+    setLabelTranslation(toSbVec3f(LabelPosition.getValue()));
 }
 
 
@@ -655,31 +679,35 @@ void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject
 {
     (void)measureObject;
 
-    // Initialize the text position
-    Base::Vector3d textPos = getTextPosition();
-    auto srcVec = SbVec3f(textPos.x, textPos.y, textPos.z);
+    if (LabelPosition.getValue().Length() < defaultTolerance) {
+        // Initialize the text position
+        Base::Vector3d textPos = getTextPosition();
+        auto srcVec = SbVec3f(textPos.x, textPos.y, textPos.z);
 
-    // Translate the position by the local dragger matrix (pDraggerOrientation)
-    Gui::View3DInventor* view = nullptr;
-    try {
-        view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
+        // Translate the position by the local dragger matrix (pDraggerOrientation)
+        Gui::View3DInventor* view = nullptr;
+        try {
+            view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
+        }
+        catch (const Base::RuntimeError&) {
+            Base::Console().log("ViewProviderMeasure::positionAnno: Could not get active view\n");
+        }
+
+        if (!view) {
+            return;
+        }
+
+        Gui::View3DInventorViewer* viewer = view->getViewer();
+        auto gma = SoGetMatrixAction(viewer->getSoRenderManager()->getViewportRegion());
+        gma.apply(pDraggerOrientation);
+        auto mat = gma.getMatrix();
+        SbVec3f destVec(0, 0, 0);
+        mat.multVecMatrix(srcVec, destVec);
+
+        LabelPosition.setValue(Base::Vector3d(destVec[0], destVec[1], destVec[2]));
     }
-    catch (const Base::RuntimeError&) {
-        Base::Console().log("ViewProviderMeasure::positionAnno: Could not get active view\n");
-    }
 
-    if (!view) {
-        return;
-    }
-
-    Gui::View3DInventorViewer* viewer = view->getViewer();
-    auto gma = SoGetMatrixAction(viewer->getSoRenderManager()->getViewportRegion());
-    gma.apply(pDraggerOrientation);
-    auto mat = gma.getMatrix();
-    SbVec3f destVec(0, 0, 0);
-    mat.multVecMatrix(srcVec, destVec);
-
-    setLabelTranslation(destVec);
+    setLabelTranslation(toSbVec3f(LabelPosition.getValue()));
     updateView();
 }
 

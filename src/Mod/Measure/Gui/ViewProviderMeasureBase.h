@@ -87,6 +87,7 @@ public:
     App::PropertyColor TextBackgroundColor;
     App::PropertyColor LineColor;
     App::PropertyInteger FontSize;
+    App::PropertyVector LabelPosition;
     // NOLINTEND
 
     // Fields
@@ -134,7 +135,7 @@ public:
 protected:
     static void draggerChangedCallback(void* data, SoDragger*);
     void onChanged(const App::Property* prop) override;
-    virtual void onLabelMoved() {};
+    virtual void onLabelMoved();
     void setLabelValue(const Base::Quantity& value);
     void setLabelValue(const QString& value);
     void setLabelTranslation(const SbVec3f& position);
