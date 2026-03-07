@@ -93,13 +93,15 @@ FormControlSmallHeight: 22px
 FormControlHeight: 26px
 FormControlBigHeight: 32px
 
+FormControlPadding: "padding(horizontal: @Spacing.150, vertical: @Spacing.100)"
 FormControlBorderThickness: 1px
 FormControlBorderRadius: 3px
+FormControlBorderColor: "@Neutral.400"
+FormControlTextColor: "@BaseTextColor"
 
+ButtonBackground: "linear_gradient(x1: 0, y1: 0, x2: 0, y2: 1, @Background.100, @Background.200)"
 ButtonMinWidth: 100px
 ButtonHeight: "@FormControlHeight"
-ButtonBorderThickness: "@FormControlBorderThickness"
-ButtonBorderRadius: "@FormControlBorderRadius"
 ButtonPadding: "padding(horizontal: @Spacing.300, vertical: @Spacing.100)"
 ButtonIconSpacing: "@Spacing.150"
 ButtonIconSize: 16px
@@ -117,7 +119,6 @@ ButtonSpacing: "@Spacing.250"
 
 ButtonTextColor: "@BaseTextColor"
 ButtonBorderColor: "@Neutral.400"
-ButtonBackground: "linear_gradient(x1: 0, y1: 0, x2: 0, y2: 1, @Background.100, @Background.200)"
 
 ButtonHoveredOverlay: "opacity(@BaseHoveredOverlay, @BaseHoveredOverlayOpacity)"
 
@@ -135,6 +136,19 @@ ToolButtonSmallPadding: "padding(horizontal: @Spacing.100, vertical: @Spacing.05
 
 ToolButtonHeight: "@FormControlHeight"
 ToolButtonSmallHeight: "@FormControlSmallHeight"
+
+# ── Line Edit / Input fields ──────────────────────────────────────────────
+LineEditBackground:          "@Background.000"
+LineEditBorderColor:         "@Neutral.400"
+LineEditBorderRadius:        "@FormControlBorderRadius"
+LineEditBorderThickness:     "@FormControlBorderThickness"
+LineEditPadding:             "@FormControlPadding"
+LineEditHeight:              "@FormControlHeight"
+LineEditSmallHeight:         "@FormControlSmallHeight"
+
+LineEditFocusedBorderColor:  "@Accent.500"
+
+InputBackground: "@Background.000"
 
 DialogBackground: "@Background.050"
 

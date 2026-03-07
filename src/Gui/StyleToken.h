@@ -40,6 +40,7 @@ enum class StyleComponent : uint8_t
 {
     PushButton,
     ToolButton,
+    LineEdit,  // QLineEdit + QAbstractSpinBox edit frame
     // Add new components before COUNT
     COUNT
 };
