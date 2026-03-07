@@ -61,6 +61,12 @@ def check_collision(
 
     # Create direct path wire
     wire = Part.Wire([Part.makeLine(start_position, target_position)])
+
+    bbDistance = wire.BoundBox.ZMin - collision_model.BoundBox.ZMax
+    if bbDistance >= tolerance or Path.Geom.isRoughly(bbDistance, tolerance):
+        # attempt to skip long time computation for simple model
+        return False
+
     distance = wire.distToShape(collision_model)[0]
     return distance < tolerance and not Path.Geom.isRoughly(distance, tolerance)
 
@@ -168,7 +174,17 @@ def make_linking_wire(start: Vector, target: Vector, z: float) -> Part.Wire:
 def is_wire_collision_free(
     wire: Part.Wire, solid: Optional[Part.Shape], tolerance: float = 0.001
 ) -> bool:
+    """
+    Check if a horizontal edge of wire would not collide with solids.
+    Returns True if path is clear, False if collision detected.
+    """
     if not solid:
         return True
+
+    bbDistance = wire.BoundBox.ZMax - solid.BoundBox.ZMax
+    if bbDistance >= tolerance or Path.Geom.isRoughly(bbDistance, tolerance):
+        # attempt to skip long time computation for simple model
+        return True
+
     distance = wire.distToShape(solid)[0]
     return distance >= tolerance or Path.Geom.isRoughly(distance, tolerance)
