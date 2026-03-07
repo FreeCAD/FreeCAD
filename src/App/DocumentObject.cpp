@@ -1608,4 +1608,31 @@ App::PropertyPlacement* DocumentObject::getPlacementProperty() const
     return getPropertyByName<App::PropertyPlacement>("Placement");
 }
 
+void DocumentObject::getPropertyNamedList(std::vector<std::pair<const char*, Property*>>& List) const
+{
+    TransactionalObject::getPropertyNamedList(List);
+
+    // Get all properties for a linked object if it exists
+    if (this->canLinkProperties()) {
+        auto linked = this->getLinkedObject(true);
+        if (linked && linked != this && linked->isAttachedToDocument()) {
+            std::vector<std::pair<const char*, App::Property*>> linkedProps;
+            linked->getPropertyNamedList(linkedProps);
+
+            for (const auto& lp : linkedProps) {
+                auto it = std::find_if(
+                    List.begin(),
+                    List.end(),
+                    [&](const std::pair<const char*, Property*>& p) {
+                        return std::strcmp(p.first, lp.first) == 0;
+                    }
+                );
+                if (it == List.end()) {
+                    List.push_back(lp);
+                }
+            }
+        }
+    }
+}
+
 

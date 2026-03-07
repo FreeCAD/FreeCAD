@@ -1252,6 +1252,9 @@ public:
     /// Returns the Placement property to use if any.
     virtual App::PropertyPlacement* getPlacementProperty() const;
 
+    /// Get a list of all properties of the object with their names.
+    void getPropertyNamedList(std::vector<std::pair<const char*, Property*> > &List) const override;
+
 protected:
     /// Recompute only this object.
     virtual App::DocumentObjectExecReturn* recompute();
