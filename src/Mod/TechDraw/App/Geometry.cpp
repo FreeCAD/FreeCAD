@@ -1795,8 +1795,6 @@ std::vector<FacePtr> GeometryUtils::findHolesInFace(const DrawViewPart* dvp, con
         throw Base::RuntimeError("GU::findHolesInFace - no holes to find!!");
     }
 
-    auto bigCheeseFace = facesAll.at(bigCheeseIndex);
-    auto bigCheeseOCCFace = bigCheeseFace->toOccFace();
     TopoDS_Wire bigCheeseWire = facesAll.at(bigCheeseIndex)->wires.front()->toOccWire();
 
     int iFace{0};
