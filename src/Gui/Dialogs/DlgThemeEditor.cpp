@@ -96,51 +96,20 @@ QPixmap gradientPreview(const Gui::StyleParameters::Tuple& tuple)
 
     QPixmap preview = Gui::BitmapFactory().empty({iconSize, iconSize});
 
+    // convertTo<QBrush> uses QGradient::ObjectMode so gradient coords [0,1]
+    // map to the bounding rect of the painted shape — equivalent to the
+    // explicit pixel scaling this function previously performed.
     try {
-        QBrush brush;
-
-        if (tuple.kind == Gui::StyleParameters::TupleKind::LinearGradient) {
-            const Gui::StyleParameters::LinearGradient lg(tuple);
-            QLinearGradient qGradient(
-                shapeX + lg.x1() * shapeSize,
-                shapeY + lg.y1() * shapeSize,
-                shapeX + lg.x2() * shapeSize,
-                shapeY + lg.y2() * shapeSize
-            );
-            for (const auto& stop : lg.colorStops()) {
-                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
-            }
-            brush = QBrush(qGradient);
-        }
-        else if (tuple.kind == Gui::StyleParameters::TupleKind::RadialGradient) {
-            const Gui::StyleParameters::RadialGradient rg(tuple);
-            QRadialGradient qGradient(
-                shapeX + rg.cx() * shapeSize,
-                shapeY + rg.cy() * shapeSize,
-                rg.radius() * shapeSize,
-                shapeX + rg.fx() * shapeSize,
-                shapeY + rg.fy() * shapeSize
-            );
-            for (const auto& stop : rg.colorStops()) {
-                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
-            }
-            brush = QBrush(qGradient);
-        }
-        else {
+        const QBrush brush = Base::convertTo<QBrush>(Gui::StyleParameters::Value(tuple));
+        if (brush.style() == Qt::NoBrush) {
             return preview;
         }
 
-        {
-            QPainter painter(&preview);
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setPen(Qt::NoPen);
-            painter.setBrush(brush);
-            painter.drawRoundedRect(
-                QRect {shapeX, shapeY, shapeSize, shapeSize},
-                cornerRadius,
-                cornerRadius
-            );
-        }
+        QPainter painter(&preview);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(brush);
+        painter.drawRoundedRect(QRect {shapeX, shapeY, shapeSize, shapeSize}, cornerRadius, cornerRadius);
     }
     catch (...) {
     }

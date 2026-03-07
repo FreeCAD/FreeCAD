@@ -49,6 +49,7 @@
 
 #include "Application.h"
 #include "ThemeReloadEvent.h"
+#include "Utilities.h"
 #include "StyleParameters/Corners.h"
 #include "StyleParameters/Gradient.h"
 #include "StyleParameters/InnerShadow.h"
@@ -69,9 +70,10 @@ QT_END_NAMESPACE
 using namespace Gui;
 
 // ─── Base::convertTo specializations ──────────────────────────────────────
-// These teach Base::convertTo how to convert StyleParameters domain types
-// into Qt/FreeCADStyle types. Placed here (not in Base/) because the target
-// types (QMarginsF, QBrush, FreeCADStyle structs) live in the Gui layer.
+// Conversions for FreeCADStyle-specific types (CornerRadii, InnerShadow) that
+// cannot live in Utilities.h because they depend on types declared in this
+// header. General-purpose StyleParameters↔Qt conversions (QMarginsF, QBrush,
+// QLinearGradient, QRadialGradient) are defined in Utilities.h.
 
 namespace Base
 {
@@ -90,12 +92,6 @@ FreeCADStyle::CornerRadii convertTo<FreeCADStyle::CornerRadii, StyleParameters::
 }
 
 template<>
-QMarginsF convertTo<QMarginsF, StyleParameters::Insets>(const StyleParameters::Insets& insets)
-{
-    return QMarginsF(insets.left().value, insets.top().value, insets.right().value, insets.bottom().value);
-}
-
-template<>
 FreeCADStyle::InnerShadow convertTo<FreeCADStyle::InnerShadow, StyleParameters::InnerShadow>(
     const StyleParameters::InnerShadow& shadow
 )
@@ -106,64 +102,6 @@ FreeCADStyle::InnerShadow convertTo<FreeCADStyle::InnerShadow, StyleParameters::
         .y = shadow.y(),
         .blur = shadow.blur(),
     };
-}
-
-template<>
-QBrush convertTo<QBrush, StyleParameters::Value>(const StyleParameters::Value& value)
-{
-    using namespace StyleParameters;
-
-    if (value.holds<::Base::Color>()) {
-        return QBrush(value.get<::Base::Color>().asValue<QColor>());
-    }
-
-    if (!value.holds<Tuple>()) {
-        return Qt::NoBrush;
-    }
-
-    const Tuple& tuple = value.get<Tuple>();
-
-    const auto applyStopsAndBuild = [](auto qGradient, const auto& gradient) -> QBrush {
-        qGradient.setCoordinateMode(QGradient::ObjectMode);
-        for (const auto& stop : gradient.colorStops()) {
-            qGradient.setColorAt(stop.position.value, stop.color.template asValue<QColor>());
-        }
-        return QBrush(qGradient);
-    };
-
-    if (tuple.kind == TupleKind::LinearGradient) {
-        try {
-            const LinearGradient gradient(tuple);
-            return applyStopsAndBuild(
-                QLinearGradient(gradient.x1(), gradient.y1(), gradient.x2(), gradient.y2()),
-                gradient
-            );
-        }
-        catch (const ::Base::Exception&) {
-            return Qt::NoBrush;
-        }
-    }
-
-    if (tuple.kind == TupleKind::RadialGradient) {
-        try {
-            const RadialGradient gradient(tuple);
-            return applyStopsAndBuild(
-                QRadialGradient(
-                    gradient.cx(),
-                    gradient.cy(),
-                    gradient.radius(),
-                    gradient.fx(),
-                    gradient.fy()
-                ),
-                gradient
-            );
-        }
-        catch (const ::Base::Exception&) {
-            return Qt::NoBrush;
-        }
-    }
-
-    return Qt::NoBrush;
 }
 
 }  // namespace Base
