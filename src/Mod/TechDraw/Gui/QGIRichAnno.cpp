@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (c) 2019 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -76,6 +77,7 @@ QGIRichAnno::QGIRichAnno() :
     m_initialItemScenePos(),
     m_initialTextWidthScene(0.0),
     m_isEditing(false),
+    m_restoringFont(false),
     m_textScaleFactor(1.0),
     m_lastGoodWidthScene(0.0)
 {
@@ -89,6 +91,10 @@ QGIRichAnno::QGIRichAnno() :
     m_text = new QGCustomText();
     m_text->setTextInteractionFlags(Qt::NoTextInteraction);
     m_text->setDefaultTextColor(PreferencesGui::normalQColor());
+    // Default to TechDraw label font (osifont) so new annotations match other drawing elements.
+    QFont docFont = prefFont();
+    docFont.setPointSize(qRound(Preferences::dimFontSizeMM() * 2.0));
+    m_text->document()->setDefaultFont(docFont);
     addToGroup(m_text);
     m_text->setZValue(ZVALUE::DIMENSION);
 
@@ -167,7 +173,11 @@ void QGIRichAnno::setTextItem()
 
     // convert the text size
     if (!m_isEditing) {
-        m_text->setHtml(QString::fromUtf8(annoFeat->AnnoText.getValue()));
+        const QString annoText = QString::fromUtf8(annoFeat->AnnoText.getValue());
+        if (!annoText.isEmpty()) {
+            m_text->setHtml(annoText);
+        }
+        // Skip setHtml("") for empty annotations: Qt's HTML parser resets defaultFont to the system default.
     }
 
     // 1. Get the bounding rectangle of the text in its own local coordinates.
@@ -553,37 +563,33 @@ void QGIRichAnno::setEditMode(bool enable)
     m_isEditing = enable;
     if (enable) {
         m_text->setTextInteractionFlags(Qt::TextEditorInteraction);
-        
+
         QTextCursor cursor = m_text->textCursor();
 
-        // Check if the document is empty. If so, create a default format.
-        if (m_text->document()->isEmpty()) {
-            // Document is empty, so we need to create a default style from scratch.
-            // Let's use the default label font from preferences.
-            QFont font = PreferencesGui::labelFontQFont();
+        // Always prime cursor with TechDraw font defaults so new text is consistent.
+        QFont font = prefFont();
+        int pointSize = qRound(Preferences::dimFontSizeMM() * 2.0);
+        QTextCharFormat defaultFormat;
+        defaultFormat.setFontFamily(font.family());
+        defaultFormat.setFontPointSize(pointSize);
+        cursor.movePosition(QTextCursor::End);
+        cursor.setCharFormat(defaultFormat);
 
-            QTextCharFormat defaultFormat;
-            defaultFormat.setFontPointSize(font.pointSizeF());
-            cursor.setCharFormat(defaultFormat);
-        }
-        else {
-            // Document has content. Let's use the format of the first character
-            // as the default for any new text.
-            cursor.setPosition(0);
-            QTextCharFormat formatAtStart = cursor.charFormat();
-
-            // Move the cursor back to its original position (or end of document)
-            cursor.movePosition(QTextCursor::End);
-
-            // Apply the format from the start of the document to the current cursor position.
-            // This sets the "default" format for subsequent typing.
-            cursor.setCharFormat(formatAtStart);
-        }
-
-        // IMPORTANT: Apply the modified cursor back to the text item.
         m_text->setTextCursor(cursor);
-
         refocusAnnotation();
+
+        // refocusAnnotation() may reset defaultFont to the application font; restore it.
+        QFont docFont = prefFont();
+        docFont.setPointSize(pointSize);
+        m_text->document()->setDefaultFont(docFont);
+        {
+            QTextCursor cur = m_text->textCursor();
+            QTextCharFormat fmt;
+            fmt.setFontFamily(docFont.family());
+            fmt.setFontPointSize(pointSize);
+            cur.setCharFormat(fmt);
+            m_text->setTextCursor(cur);
+        }
 
         Q_EMIT positionChanged();
     }
@@ -625,11 +631,28 @@ void QGIRichAnno::onContentsChanged()
 {
     // Only process changes when in edit mode to avoid loops during setup
     if (m_isEditing) {
-        // Update the feature property in real-time
+        // Restore defaultFont if Qt scene propagation reset it, so toHtml() serializes the correct font.
+        QFont docFont = prefFont();
+        int pointSize = qRound(Preferences::dimFontSizeMM() * 2.0);
+        docFont.setPointSize(pointSize);
+        if (m_text->document()->defaultFont().family() != docFont.family()) {
+            m_text->document()->setDefaultFont(docFont);
+        }
+        // When all text is deleted, the block retains its old char format (e.g. from loaded HTML).
+        // Use setBlockCharFormat so cursor.charFormat() returns the correct size for the next keystroke.
+        if (!m_restoringFont && m_text->document()->isEmpty()) {
+            m_restoringFont = true;
+            QTextCursor cur = m_text->textCursor();
+            QTextCharFormat fmt;
+            fmt.setFontFamily(docFont.family());
+            fmt.setFontPointSize(pointSize);
+            cur.setBlockCharFormat(fmt);
+            m_text->setTextCursor(cur);
+            m_restoringFont = false;
+        }
         getFeature()->AnnoText.setValue(m_text->toHtml().toUtf8());
-        // Emit signal for the task panel
         Q_EMIT textChanged();
-        drawBorder(); // Make sure view frame is updated.
+        drawBorder();
     }
 }
 

@@ -66,7 +66,7 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QFrame(parent) {
 
     m_lastBlockList = nullptr;
     f_textedit->setTabStopDistance(40);
-    setDefFontSize(TechDrawGui::PreferencesGui::labelFontSizePX());
+    setDefFontSize(qRound(Preferences::dimFontSizeMM() * 2.0));
     m_defFont = getDefFont().family();
     f_textedit->setFont(getDefFont());
 
@@ -235,10 +235,13 @@ MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QFrame(parent) {
     } else {
         QTextCursor cursor = f_textedit->textCursor();
         cursor.movePosition(QTextCursor::Start);
-        f_textedit->setTextCursor(cursor);
 
-        QTextCharFormat fmt = cursor.charFormat();
+        QTextCharFormat fmt;
+        fmt.setFontFamily(m_defFont);
         fmt.setFontPointSize(getDefFontSizeNum());
+        cursor.setCharFormat(fmt);
+        f_textedit->setTextCursor(cursor);
+        f_textedit->setCurrentCharFormat(fmt);
 
         addFontSize(getDefFontSize());
     }
