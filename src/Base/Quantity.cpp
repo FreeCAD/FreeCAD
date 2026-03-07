@@ -359,6 +359,8 @@ const Quantity Quantity::Minute                 ( 60.0                  , Unit::
 const Quantity Quantity::Hour                   ( 3600.0                , Unit::TimeSpan                );
 
 const Quantity Quantity::Ampere                 ( 1.0                   , Unit::ElectricCurrent         );
+const Quantity Quantity::NanoAmpere             ( 1.0e-9                , Unit::ElectricCurrent         );
+const Quantity Quantity::MicroAmpere            ( 1.0e-6                , Unit::ElectricCurrent         );
 const Quantity Quantity::MilliAmpere            ( 0.001                 , Unit::ElectricCurrent         );
 const Quantity Quantity::KiloAmpere             ( 1000.0                , Unit::ElectricCurrent         );
 const Quantity Quantity::MegaAmpere             ( 1.0e6                 , Unit::ElectricCurrent         );
@@ -367,6 +369,8 @@ const Quantity Quantity::Kelvin                 ( 1.0                   , Unit::
 const Quantity Quantity::MilliKelvin            ( 0.001                 , Unit::Temperature             );
 const Quantity Quantity::MicroKelvin            ( 0.000001              , Unit::Temperature             );
 
+const Quantity Quantity::NanoMole               ( 1e-9                  , Unit::AmountOfSubstance       );
+const Quantity Quantity::MicroMole              ( 1e-6                  , Unit::AmountOfSubstance       );
 const Quantity Quantity::MilliMole              ( 0.001                 , Unit::AmountOfSubstance       );
 const Quantity Quantity::Mole                   ( 1.0                   , Unit::AmountOfSubstance       );
 
@@ -417,6 +421,8 @@ const Quantity Quantity::KSI                    ( psi * 1000            , Unit::
 const Quantity Quantity::MPSI                   ( psi * 1000000         , Unit::Pressure                );
 
 const Quantity Quantity::Watt                   ( 1e+6                  , Unit::Power                   );  // Watt (kg*m^2/s^3)
+const Quantity Quantity::NanoWatt               ( 1e-3                  , Unit::Power                   );
+const Quantity Quantity::MicroWatt              ( 1.0                   , Unit::Power                   );
 const Quantity Quantity::MilliWatt              ( 1e+3                  , Unit::Power                   );
 const Quantity Quantity::KiloWatt               ( 1e+9                  , Unit::Power                   );
 const Quantity Quantity::VoltAmpere             ( 1e+6                  , Unit::Power                   );  // VoltAmpere (kg*m^2/s^3)
