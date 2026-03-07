@@ -27,6 +27,8 @@
 #include <QImage>
 #include <QPainter>
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/actions/SoHandleEventAction.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoAsciiText.h>
 #include <Inventor/nodes/SoBaseColor.h>
@@ -55,6 +57,7 @@
 #include "Tools.h"
 #include "Window.h"
 
+#include "Utilities.h"
 
 using namespace Gui;
 
@@ -416,26 +419,47 @@ void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 }
 
 
-void ViewProviderAnnotationLabel::dragStartCallback(void*, SoDragger*)
+void ViewProviderAnnotationLabel::dragStartCallback(void* data, SoDragger* dragger)
 {
     // This is called when a manipulator is about to manipulating
+    auto vp = static_cast<ViewProviderAnnotationLabel*>(data);
+    const SoEvent* event = dragger->getEvent();
+    const auto* mbe = dynamic_cast<const SoMouseButtonEvent*>(event);
+    if (mbe && vp->doubleClickData.isDoubleClick(mbe)) {
+        dragger->isActive.setValue(false);  // cancel the dragger action
+        vp->isDragging = false;
+        Gui::Application::Instance->activeDocument()->abortCommand();
+        vp->labelDoubleClicked();
+        return;
+    }
+
+    vp->isDragging = true;
     Gui::Application::Instance->activeDocument()->openCommand(
         QT_TRANSLATE_NOOP("Command", "Transform")
     );
 }
 
-void ViewProviderAnnotationLabel::dragFinishCallback(void*, SoDragger*)
+void ViewProviderAnnotationLabel::dragFinishCallback(void* data, SoDragger* /*dragger*/)
 {
     // This is called when a manipulator has done manipulating
-    Gui::Application::Instance->activeDocument()->commitCommand();
+
+    auto vp = static_cast<ViewProviderAnnotationLabel*>(data);
+    if (vp->isDragging) {
+        Gui::Application::Instance->activeDocument()->commitCommand();
+        vp->isDragging = false;
+    }
 }
 
 void ViewProviderAnnotationLabel::dragMotionCallback(void* data, SoDragger* drag)
 {
     auto that = static_cast<ViewProviderAnnotationLabel*>(data);
+    if (!that->isDragging) {
+        return;
+    }
+
     const SbMatrix& mat = drag->getMotionMatrix();
     App::DocumentObject* obj = that->getObject();
-    if (obj && obj->is<App::AnnotationLabel>()) {
+    if (obj && obj->isDerivedFrom<App::AnnotationLabel>()) {
         static_cast<App::AnnotationLabel*>(obj)->TextPosition.setValue(mat[3][0], mat[3][1], mat[3][2]);
     }
 }

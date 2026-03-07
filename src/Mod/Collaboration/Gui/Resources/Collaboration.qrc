@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/task_topic_dialog.ui</file>
+    </qresource>
+</RCC>
