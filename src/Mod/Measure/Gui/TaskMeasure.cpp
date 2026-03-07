@@ -31,6 +31,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
 #include <Mod/Measure/App/MeasureDistance.h>
+#include <App/PropertyUnits.h>
 #include <App/PropertyStandard.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
@@ -475,6 +476,49 @@ void TaskMeasure::updateResultWithUnit()
     QString currentUnit = unitSwitch->currentText();
 
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
+        if (resultString.contains(QLatin1String("X:")) && resultString.contains(QLatin1String("Y:"))
+            && resultString.contains(QLatin1String("Z:"))) {
+
+            Base::Quantity targetUnit = Base::Quantity::parse(
+                (QLatin1String("1 ") + currentUnit).toStdString()
+            );
+
+            QStringList lines = resultString.split(QLatin1Char('\n'));
+
+            for (QString& line : lines) {
+                std::string text = line.toStdString();
+
+                std::string valuePart = text.substr(2);
+
+                auto first = valuePart.find_first_not_of(" \t");
+                if (first == std::string::npos) {
+                    continue;
+                }
+
+                auto last = valuePart.find_last_not_of(" \t");
+                valuePart = valuePart.substr(first, last - first + 1);
+
+                try {
+                    Base::Quantity qty = Base::Quantity::parse(valuePart);
+                    double convertedValue = qty.getValueAs(targetUnit);
+
+                    QString formattedValue;
+                    if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
+                        formattedValue = QString::number(convertedValue, 'g', 4);
+                    }
+                    else {
+                        formattedValue = QString::number(convertedValue, 'f', 4);
+                    }
+                    line = QString::fromLatin1("%1: %2 %3")
+                               .arg(QChar::fromLatin1(text[0]), formattedValue, currentUnit);
+                }
+                catch (const Base::Exception&) {
+                }
+            }
+            valueResult->setText(lines.join(QLatin1Char('\n')));
+            return;
+        }
+
         Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
         // Parse unit string like "1 mm" to get the target quantity
         Base::Quantity targetUnit = Base::Quantity::parse(
