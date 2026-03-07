@@ -43,6 +43,7 @@ enum class StyleComponent : uint8_t
     LineEdit,  // QLineEdit + QAbstractSpinBox edit frame
     TextEdit,  // QPlainTextEdit, QTextEdit and derivatives
     Select,    // QComboBox (non-editable), inherits Button styles
+    ComboBox,  // QComboBox (editable), inherits LineEdit styles
     // Add new components before COUNT
     COUNT
 };

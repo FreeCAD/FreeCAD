@@ -155,6 +155,10 @@ LineEditSmallHeight:         "@FormControlSmallHeight"
 
 LineEditFocusedBorderColor:  "@Accent.500"
 
+# ── ComboBox / Editable combo fields ─────────────────────────────────────
+# Editable QComboBox uses the chain: ComboBox → LineEdit → FormControl.
+# Add ComboBox* overrides here when the editable combo needs to differ from LineEdit.
+
 InputBackground: "@Background.000"
 
 TextEditPadding: "padding(@FormControlPadding.left)"

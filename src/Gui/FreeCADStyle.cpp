@@ -334,6 +334,9 @@ std::span<const std::string_view> componentChain(StyleComponent component)
         {"TextEdit", "LineEdit", "FormControl"}
     );
     static constexpr auto select = std::to_array<std::string_view>({"Select", "Button", "FormControl"});
+    static constexpr auto comboBox = std::to_array<std::string_view>(
+        {"ComboBox", "LineEdit", "FormControl"}
+    );
 
     switch (component) {
         case StyleComponent::PushButton:
@@ -346,6 +349,8 @@ std::span<const std::string_view> componentChain(StyleComponent component)
             return textEdit;
         case StyleComponent::Select:
             return select;
+        case StyleComponent::ComboBox:
+            return comboBox;
         default:
             return {};
     }
@@ -1349,8 +1354,9 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
     else if (qobject_cast<const QTextEdit*>(widget) || qobject_cast<const QPlainTextEdit*>(widget)) {
         context.component = StyleComponent::TextEdit;
     }
-    else if (qobject_cast<const QComboBox*>(widget)) {
-        context.component = StyleComponent::Select;
+    else if (const auto* comboBox = qobject_cast<const QComboBox*>(widget)) {
+        context.component = comboBox->isEditable() ? StyleComponent::ComboBox
+                                                   : StyleComponent::Select;
     }
 
     // ButtonType — derived from style option features first, then widget properties.
@@ -1408,6 +1414,17 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
     if (qobject_cast<const QAbstractSpinBox*>(widget)) {
         if (const QLineEdit* innerEdit = widget->findChild<QLineEdit*>()) {
             if (innerEdit->hasFocus()) {
+                context.state |= StyleState::Focused;
+            }
+        }
+    }
+
+    // An editable QComboBox also delegates keyboard focus to its inner QLineEdit.
+    // Same pattern as QAbstractSpinBox: supplement state from the inner edit.
+    if (const auto* comboBox = qobject_cast<const QComboBox*>(widget);
+        comboBox && comboBox->isEditable()) {
+        if (const QLineEdit* lineEdit = comboBox->lineEdit()) {
+            if (lineEdit->hasFocus()) {
                 context.state |= StyleState::Focused;
             }
         }
