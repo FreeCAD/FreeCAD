@@ -34,9 +34,11 @@
 #include "Action.h"
 #include "Application.h"
 #include "Command.h"
+#include "Control.h"
 #include "Document.h"
 #include "MainWindow.h"
 #include "Selection.h"
+#include "TaskCommandLink.h"
 #include "Tree.h"
 #include "ViewProviderDocumentObject.h"
 #include "WaitCursor.h"
@@ -280,6 +282,51 @@ void StdCmdLinkMake::activated(int)
         return;
     }
 
+    auto exec = [=](std::vector<App::DocumentObject*> objs) {
+        doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Make link"));
+        try {
+            if (objs.empty()) {
+                std::string name = doc->getUniqueObjectName("Link");
+                Command::doCommand(
+                    Command::Doc,
+                    "App.getDocument('%s').addObject('App::Link','%s')",
+                    doc->getName(),
+                    name.c_str()
+                );
+                Selection().addSelection(doc->getName(), name.c_str());
+            }
+            else {
+                for (auto obj : objs) {
+                    std::string name = doc->getUniqueObjectName("Link");
+                    Command::doCommand(
+                        Command::Doc,
+                        "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument("
+                        "'%s'"
+                        ").%s)",
+                        doc->getName(),
+                        name.c_str(),
+                        obj->getDocument()->getName(),
+                        obj->getNameInDocument()
+                    );
+                    setLinkLabel(obj, doc->getName(), name.c_str());
+                    Selection().addSelection(doc->getName(), name.c_str());
+                }
+            }
+            Selection().selStackPush();
+            doc->commitTransaction();
+        }
+        catch (const Base::Exception& e) {
+            doc->abortTransaction();
+            QMessageBox::critical(
+                getMainWindow(),
+                QObject::tr("Create link failed"),
+                QString::fromLatin1(e.what())
+            );
+            e.reportException();
+        }
+    };
+
+
     std::set<App::DocumentObject*> objs;
     for (auto& sel : Selection().getCompleteSelection()) {
         if (sel.pObject && sel.pObject->isAttachedToDocument()) {
@@ -287,48 +334,13 @@ void StdCmdLinkMake::activated(int)
         }
     }
 
-    Selection().selStackPush();
-    Selection().clearCompleteSelection();
-
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make link"));
-    try {
-        if (objs.empty()) {
-            std::string name = doc->getUniqueObjectName("Link");
-            Command::doCommand(
-                Command::Doc,
-                "App.getDocument('%s').addObject('App::Link','%s')",
-                doc->getName(),
-                name.c_str()
-            );
-            Selection().addSelection(doc->getName(), name.c_str());
-        }
-        else {
-            for (auto obj : objs) {
-                std::string name = doc->getUniqueObjectName("Link");
-                Command::doCommand(
-                    Command::Doc,
-                    "App.getDocument('%s').addObject('App::Link','%s').setLink(App.getDocument('%s'"
-                    ").%s)",
-                    doc->getName(),
-                    name.c_str(),
-                    obj->getDocument()->getName(),
-                    obj->getNameInDocument()
-                );
-                setLinkLabel(obj, doc->getName(), name.c_str());
-                Selection().addSelection(doc->getName(), name.c_str());
-            }
-        }
-        Selection().selStackPush();
-        Command::commitCommand();
+    if (objs.empty()) {
+        Gui::Control().showDialog(new TaskCommandLinkDialog(exec));
     }
-    catch (const Base::Exception& e) {
-        Command::abortCommand();
-        QMessageBox::critical(
-            getMainWindow(),
-            QObject::tr("Create link failed"),
-            QString::fromLatin1(e.what())
-        );
-        e.reportException();
+    else {
+        Selection().selStackPush();
+        Selection().clearCompleteSelection();
+        exec(std::vector<App::DocumentObject*>(objs.begin(), objs.end()));
     }
 }
 
