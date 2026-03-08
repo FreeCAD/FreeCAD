@@ -570,23 +570,18 @@ void ViewProviderBody::show()
     }
 
     bool foundVisible = false;
-    for (auto f : features) {
-        if (!f) {
+    for (const auto feature : features) {
+        if (!feature) {
             continue;
         }
 
-        // Retrieve the ViewProvider for this feature
-        auto vp = Gui::Application::Instance->getViewProvider(f);
+        auto vp = Gui::Application::Instance->getViewProvider(feature);
         if (!vp) {
             continue;
         }
 
-        // Get the class name of the ViewProvider
-        const char* vpType = vp->getTypeId().getName();
-
-        // Only consider PartDesign features
         if (vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
-            if (f->Visibility.getValue()) {
+            if (feature->Visibility.getValue()) {
                 foundVisible = true;
                 break;
             }
