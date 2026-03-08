@@ -4,7 +4,7 @@ General:
   UUID: "e321248b-de79-4573-b68b-53df020052b0"
   Name: "cross"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"
