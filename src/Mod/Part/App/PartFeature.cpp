@@ -175,7 +175,7 @@ App::ElementNamePair Feature::getElementName(const char* name, ElementNameType t
 }
 
 // This is the name matching algorithms used for the V2 algorithm.
-bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName &name2)
+bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName &name2, bool log)
 {
     if (!name1 || !name2)
         return false;
@@ -208,6 +208,7 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
             for (const auto &checkSections : pairedCheckSections) {
                 // first we need to check reference IDs
                 int refIDInterference = 0;
+                size_t linkedNameInterference = 0;
 
                 for (const std::string &largeListID : std::max(checkSections.first[0], checkSections.second[0])) {
                     for (const std::string &smallListID : std::min(checkSections.first[0], checkSections.second[0])) {
@@ -217,22 +218,37 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
                     }
                 }
 
-                if (checkSections.first[1].size() && checkSections.second[1].size() == checkSections.first[1].size()) {
-                    for (const std::string &firstListName : checkSections.first[1]) {
-                        for (const std::string &secondListName : checkSections.second[1]) {
-                            if ((firstListName == "_" && firstListName != secondListName)
-                                || (firstListName != secondListName
-                                && (!doNamesMatch(Data::MappedName(firstListName), Data::MappedName(secondListName))))
-                            ) {
-                                return false;
-                            }
+                for (const std::string &largeListName : std::max(checkSections.first[1], checkSections.second[1])) {
+                    for (const std::string &smallListName : std::min(checkSections.first[1], checkSections.second[1])) {
+                        if ((largeListName == smallListName)
+                            || (largeListName != "_" 
+                                && smallListName != "_" 
+                                && doNamesMatch(Data::MappedName(largeListName), Data::MappedName(smallListName), false)))
+                        {
+                            linkedNameInterference++;
                         }
                     }
-                } else {
-                    return false;
                 }
 
-                if (refIDInterference >= 2 || checkSections.first[0] == checkSections.second[0]) {
+                bool linkedNamePass = false;
+
+                if (checkSections.first[7][0] == "ANC" && checkSections.first[7][0] == checkSections.second[7][0]) {
+                    if (linkedNameInterference != 0 
+                        && (linkedNameInterference >= checkSections.first[1].size() 
+                            || linkedNameInterference >= checkSections.second[1].size()))
+                    {
+                        linkedNamePass = true;
+                    }
+                }
+
+                if (linkedNameInterference == checkSections.first[1].size() && linkedNameInterference == checkSections.second[1].size()) {
+                    linkedNamePass = true;
+                }
+
+                if (linkedNamePass
+                     && (refIDInterference >= 2
+                         || checkSections.first[0] == checkSections.second[0]))
+                {
                     auto modifiedFirstSection = checkSections.first;
                     auto modifiedSecondSection = checkSections.second;
 
@@ -245,6 +261,9 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
 
                     if (modifiedFirstSection != modifiedSecondSection) {
                         return false;
+                    } else {
+                        if (log)
+                            Base::Console().log("Name match resolved name %s as equivelent to %s", name1.toString(), name2.toString());
                     }
                 } else {
                     return false;
@@ -261,13 +280,13 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
 }
 
 // This is the name matching algorithms used for the V2 algorithm.
-std::vector<Data::MappedName> Feature::findSimilarNames(const Data::MappedName &searchName, const TopoShape &searchShape) const
+std::vector<Data::MappedName> Feature::findSimilarNames(const Data::MappedName &searchName, const TopoShape &searchShape)
 {
     std::vector<Data::MappedName> ret { };
 
     if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2 && searchName.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         for (const Data::MappedElement &loopNamePair : searchShape.getElementMap()) {
-            if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name)) {
+            if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
                 ret.push_back(loopNamePair.name);
             }
         }
