@@ -53,6 +53,7 @@ public:
 
     bool doubleClicked() override;
     bool setEdit(int ModNum) override;
+    void unsetEdit(int ModNum) override;
 };
 
 }// namespace TechDrawGui

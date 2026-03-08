@@ -21,11 +21,16 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QTimer>
 #include <QPushButton>
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Application.h>
 #include <Gui/ComboView.h>
 #include <Gui/DockWindowManager.h>
+#include <Gui/Document.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/propertyeditor/PropertyEditor.h>
 #include <Gui/propertyeditor/PropertyModel.h>
 #include <Mod/TechDraw/App/DrawLeaderLine.h>
@@ -137,5 +142,19 @@ bool ViewProviderAnnotation::setEdit(int ModNum)
     if (button) {
         button->click();
     }
+    // reset edit mode on the next event loop iteration, after the framework sets it up
+    std::string docName = pcObject->getDocument()->getName();
+    QTimer::singleShot(0, [docName]() {
+        auto* doc = Gui::Application::Instance->getDocument(docName.c_str());
+        if (doc) {
+            doc->resetEdit();
+        }
+    });
     return true;
+}
+
+void ViewProviderAnnotation::unsetEdit(int ModNum)
+{
+    Gui::Selection().clearSelection();
+    ViewProviderDrawingView::unsetEdit(ModNum);
 }
