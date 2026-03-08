@@ -168,6 +168,7 @@ def read(filename):
     if FreeCAD.GuiUp:
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
+
 def get_global_placement(obj):
     """
     Compute the global placement of an object by accumulating
@@ -183,6 +184,7 @@ def get_global_placement(obj):
         parent = parent.getParentGeoFeatureGroup()
 
     return pl
+
 
 def export(
     exports: list[FreeCAD.DocumentObject],
