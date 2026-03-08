@@ -44,6 +44,8 @@ enum class StyleComponent : uint8_t
     TextEdit,  // QPlainTextEdit, QTextEdit and derivatives
     Select,    // QComboBox (non-editable), inherits Button styles
     ComboBox,  // QComboBox (editable), inherits LineEdit styles
+    ListItem,  // QListView / QListWidget items
+    TreeItem,  // QTreeView / QTreeWidget items; TableItem is a follow-up
     // Add new components before COUNT
     COUNT
 };

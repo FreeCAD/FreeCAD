@@ -197,3 +197,9 @@ ScrollBarThumbHoveredBackground: "@Neutral.600"
 ScrollBarThumbBorderRadius: "@BaseRadius.medium"
 ScrollBarThumbMargin: "padding(@Spacing.100)"
 ScrollBarThumbMinLength: 50px
+
+# ── List Item ──────────────────────────────────────────────────────────────
+ListItemPadding: "padding(horizontal: @Spacing.150, vertical: @Spacing.100)"
+
+# ── Tree Item ──────────────────────────────────────────────────────────────
+TreeItemPadding: "padding(horizontal: @Spacing.150, vertical: @Spacing.100)"

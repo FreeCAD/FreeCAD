@@ -80,9 +80,6 @@ Gui--Dialog--DlgPreferencesImp #sidebar {
   background-color: @{@Background.200};
 }
 
-QAbstractItemView::item {
-  padding: @{padding(horizontal: @Spacing.150, vertical: @Spacing.100)};
-}
 
 /*navgation src/Mod/Tux/NavigationIndicatorGui.py */
 Gui--NavigationIndicatorGui--BlenderNavigationStyle {

@@ -25,7 +25,6 @@
 
 #include <cmath>
 #include <limits>
-#include <QAbstractItemView>
 #include <QApplication>
 #include <QFileDialog>
 #include <QLocale>
@@ -71,12 +70,12 @@ namespace
 /**
  * @brief Delegate for the button column in the PreferencePacks tree widget.
  *
- * sizeHint() is called at layout time (after the button is parented and polished),
- * so it returns the button's true QSS-aware height plus the QTreeView::item cell
- * padding via CT_ItemViewItem.
+ * sizeHint() is handled by QStyledItemDelegate, which calls CT_ItemViewItem.
+ * FreeCADStyle's CT_ItemViewItem detects the registered index widget and adds
+ * TreeItemPadding around it automatically.
  *
- * updateEditorGeometry() keeps the button at its natural height and centers it
- * vertically inside the padded cell, matching the behaviour of other tree items.
+ * updateEditorGeometry() keeps the button at its natural size and centers it
+ * vertically within the padded cell.
  */
 class PreferencePackButtonDelegate: public QStyledItemDelegate
 {
@@ -85,35 +84,6 @@ public:
         : QStyledItemDelegate(parent)
     {}
 
-    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override
-    {
-        const auto* view = qobject_cast<const QAbstractItemView*>(option.widget);
-        if (!view) {
-            return QStyledItemDelegate::sizeHint(option, index);
-        }
-
-        auto* widget = view->indexWidget(index);
-        if (!widget) {
-            return QStyledItemDelegate::sizeHint(option, index);
-        }
-
-        widget->ensurePolished();
-
-        // Probe SE_ItemViewItemText with a large test rect to find the vertical
-        // cell padding from QTreeView::item { padding: ... } in the QSS.
-        // The padding is absolute (px), so the probe result is rect-size-independent.
-        QStyleOptionViewItem probeOpt = option;
-        constexpr int probeSize = 1000;
-        probeOpt.rect = QRect(0, 0, probeSize, probeSize);
-        const QRect contentRect
-            = view->style()->subElementRect(QStyle::SE_ItemViewItemText, &probeOpt, view);
-        const int vertPadding = qMax(0, (probeSize - contentRect.height()) / 2);
-        const int horizPadding = qMax(0, probeSize - contentRect.width());
-
-        const QSize buttonSize = widget->sizeHint();
-        return QSize(buttonSize.width() + horizPadding, buttonSize.height() + 2 * vertPadding);
-    }
-
     void updateEditorGeometry(
         QWidget* editor,
         const QStyleOptionViewItem& option,
@@ -121,21 +91,14 @@ public:
     ) const override
     {
         Q_UNUSED(index)
-        if (!option.widget) {
-            QStyledItemDelegate::updateEditorGeometry(editor, option, index);
-            return;
-        }
-
         editor->ensurePolished();
         const QSize naturalSize = editor->sizeHint();
-
-        // Derive the content rect (cell rect minus QSS padding) from the actual
-        // cell rect so the button is inset by the same padding as text items.
-        QStyleOptionViewItem opt = option;
-        const QRect contentRect
-            = option.widget->style()->subElementRect(QStyle::SE_ItemViewItemText, &opt, option.widget);
-
-        const int vertOffset = qMax(0, (contentRect.height() - naturalSize.height()) / 2);
+        // SE_ItemViewItemText returns the content rect inset by the style's item padding
+        // (FreeCADStyle overrides this for TreeItem to apply TreeItemPadding).
+        const QRect contentRect = option.widget
+            ? option.widget->style()->subElementRect(QStyle::SE_ItemViewItemText, &option, option.widget)
+            : option.rect;
+        const int vertOffset = (contentRect.height() - naturalSize.height()) / 2;
         editor->setGeometry(QRect(
             contentRect.left(),
             contentRect.top() + vertOffset,

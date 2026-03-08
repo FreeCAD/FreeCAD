@@ -27,6 +27,7 @@
 #include <QLabel>
 #include <QMenu>
 #include <QPushButton>
+#include <QToolButton>
 #include <sstream>
 
 #include <Gui/Application.h>
@@ -76,7 +77,7 @@ private:
     QLabel* textLabel;
     QLabel* shortcutLabel;
     QLabel* loadLabel;
-    QPushButton* loadButton;
+    QToolButton* loadButton;
 };
 }  // namespace Gui::Dialog
 
@@ -111,14 +112,15 @@ wbListItem::wbListItem(
     QWidget* subWidget = new QWidget(this);
     // 2: Workbench Icon
     auto wbIcon = Application::Instance->workbenchIcon(wbName);
-    iconLabel = new QLabel(wbDisplayName, this);
+    iconLabel = new QLabel(this);
     iconLabel->setPixmap(wbIcon.scaled(
         QSize(20, 20),
         Qt::AspectRatioMode::KeepAspectRatio,
         Qt::TransformationMode::SmoothTransformation
     ));
+    iconLabel->setFixedSize(20, 20);
+    iconLabel->setAlignment(Qt::AlignCenter);
     iconLabel->setToolTip(wbTooltip);
-    iconLabel->setContentsMargins(5, 0, 0, 5);  // Left, top, right, bottom
     iconLabel->setEnabled(enableCheckBox->isChecked());
 
     // 3: Workbench Display Name
@@ -140,7 +142,7 @@ wbListItem::wbListItem(
     subLayout->addWidget(textLabel);
     subLayout->addWidget(shortcutLabel);
     subLayout->setAlignment(Qt::AlignLeft);
-    subLayout->setContentsMargins(5, 0, 0, 5);
+    subLayout->setContentsMargins(5, 0, 0, 0);
     subWidget->setMinimumSize(250, 0);
     subWidget->setAttribute(Qt::WA_TranslucentBackground);
 
@@ -163,13 +165,17 @@ wbListItem::wbListItem(
     loadLabel = new QLabel(tr("Loaded"), this);
     loadLabel->setAlignment(Qt::AlignCenter);
     loadLabel->setEnabled(enableCheckBox->isChecked());
-    loadButton = new QPushButton(tr("Load"), this);
+    loadButton = new QToolButton(this);
+    loadButton->setText(tr("Load"));
+    loadButton->setIcon(QIcon(QStringLiteral(":/icons/view-refresh.svg")));
+    loadButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    loadButton->setProperty("controlSize", "small");
     loadButton->setToolTip(
         tr("To preserve resources, FreeCAD does not load workbenches until they are used. Loading "
            "them may provide access to additional preferences related to their functionality.")
     );
     loadButton->setEnabled(enableCheckBox->isChecked());
-    connect(loadButton, &QPushButton::clicked, this, [this]() { onLoadClicked(); });
+    connect(loadButton, &QToolButton::clicked, this, [this]() { onLoadClicked(); });
     if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
         loadButton->setVisible(false);
     }
@@ -459,7 +465,6 @@ void DlgSettingsWorkbenchesImp::addWorkbench(const QString& wbName, bool enabled
         = new wbListItem(wbName, enabled, isStartupWb, autoLoad, ui->wbList->count(), this);
     connect(widget, &wbListItem::wbToggled, this, &DlgSettingsWorkbenchesImp::wbToggled);
     const auto wItem = new QListWidgetItem();
-    wItem->setSizeHint(widget->sizeHint());
     ui->wbList->addItem(wItem);
     ui->wbList->setItemWidget(wItem, widget);
 }
