@@ -10,7 +10,8 @@
  *   published by the Free Software Foundation, either version 2.1 of the   *
  *   License, or (at your option) any later version.                        *
  *                                                                          *
- *   FreeCAD is distributed in the hope that it will be useful, but         *
+ *   FreeCAD is distributed in the hope that it will be us
+ *   eful, but         *
  *   WITHOUT ANY WARRANTY; without even the implied warranty of             *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU       *
  *   Lesser General Public License for more details.                        *
@@ -680,10 +681,9 @@ QSize FreeCADStyle::sizeFromContents(
         int width = size.width() + geometry.paddingH();
         int height = size.height() + geometry.paddingV();
 
-        // Fix icon-text spacing contribution (Qt hardcodes 4 px).
+        // Fix icon-text spacing contribution (Qt hardcodes qtBuiltInIconGap px).
         if (btnOption && !btnOption->icon.isNull() && !btnOption->text.isEmpty()) {
-            constexpr int qtBuiltInIconGap = 4;
-            width += geometry.iconSpacing - qtBuiltInIconGap;
+            width += geometry.iconGapDelta();
         }
 
         if (geometry.height) {
@@ -696,7 +696,26 @@ QSize FreeCADStyle::sizeFromContents(
         return {width, height};
     }
 
-    if (type == CT_ComboBox || type == CT_LineEdit || type == CT_SpinBox) {
+    if (type == CT_ComboBox) {
+        const StyleContext context = contextOf(widget, option);
+        const auto* comboOption = qstyleoption_cast<const QStyleOptionComboBox*>(option);
+        const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+        QSize result = QProxyStyle::sizeFromContents(type, option, size, widget);
+
+        // QComboBox::sizeHint bakes iconSize.width() + qtBuiltInIconGap into the content
+        // size it passes here when the current item has an icon.  Replace that gap with
+        // the token value, matching the layout used in drawComboBoxLabel.
+        if (comboOption && !comboOption->currentIcon.isNull()) {
+            result.rwidth() += geometry.iconGapDelta();
+        }
+
+        if (geometry.height) {
+            result.setHeight(*geometry.height);
+        }
+        return result;
+    }
+
+    if (type == CT_LineEdit || type == CT_SpinBox) {
         const BoxGeometryDefinition geometry = resolveBoxGeometry(contextOf(widget, option));
         QSize result = QProxyStyle::sizeFromContents(type, option, size, widget);
         if (geometry.height) {
@@ -720,10 +739,9 @@ QSize FreeCADStyle::sizeFromContents(
         int height = size.height() + geometry.paddingV();
 
         if (needsCustomLayout && tbOption->toolButtonStyle == Qt::ToolButtonTextBesideIcon) {
-            // Qt hardcodes +4 as the icon-text gap in QToolButton::sizeHint's content size.
+            // Qt hardcodes qtBuiltInIconGap px as the icon-text gap in QToolButton::sizeHint.
             // Replace that with our spacing so the widget is wide enough.
-            constexpr int qtBuiltInIconGap = 4;
-            width += geometry.iconSpacing - qtBuiltInIconGap;
+            width += geometry.iconGapDelta();
         }
 
         if (geometry.height) {
@@ -933,6 +951,13 @@ void FreeCADStyle::drawControl(
     if (element == CE_ToolButtonLabel) {
         if (const auto* tbOption = qstyleoption_cast<const QStyleOptionToolButton*>(option)) {
             drawToolButtonLabel(painter, tbOption, widget);
+            return;
+        }
+    }
+
+    if (element == CE_ComboBoxLabel) {
+        if (const auto* comboOption = qstyleoption_cast<const QStyleOptionComboBox*>(option)) {
+            drawComboBoxLabel(painter, comboOption, widget);
             return;
         }
     }
@@ -1169,6 +1194,76 @@ void FreeCADStyle::drawPushButtonLabel(
         option->palette,
         option->state & State_Enabled,
         option->text,
+        QPalette::ButtonText
+    );
+    painter->restore();
+}
+
+void FreeCADStyle::drawComboBoxLabel(
+    QPainter* painter,
+    const QStyleOptionComboBox* option,
+    const QWidget* widget
+) const
+{
+    // For editable combos, the text is drawn by the embedded QLineEdit and the
+    // icon–QLineEdit gap is hardcoded inside QComboBoxPrivate::updateLineEditGeometry()
+    // (not overridable from a style), so delegate unchanged.
+    if (option->editable) {
+        QProxyStyle::drawControl(CE_ComboBoxLabel, option, painter, widget);
+        return;
+    }
+
+    const QRect editFieldRect
+        = proxy()->subControlRect(CC_ComboBox, option, SC_ComboBoxEditField, widget);
+
+    // Icon-only or text-only: delegate to parent unchanged — Qt's CE_ComboBoxLabel
+    // calls subControlRect(SC_ComboBoxEditField) internally, so it already uses our
+    // overridden rect.  Replacing option->rect here would cause double-padding.
+    if (option->currentIcon.isNull() || option->currentText.isEmpty()) {
+        QProxyStyle::drawControl(CE_ComboBoxLabel, option, painter, widget);
+        return;
+    }
+
+    const BoxGeometryDefinition geometry = resolveBoxGeometry(contextOf(widget, option));
+    const int iconSpacing = geometry.iconSpacing;
+
+    const QIcon::Mode iconMode = (option->state & State_Enabled) ? QIcon::Normal : QIcon::Disabled;
+    const QPixmap pixmap = option->currentIcon.pixmap(
+        editFieldRect.size().boundedTo(option->iconSize),
+        painter->device()->devicePixelRatio(),
+        iconMode,
+        QIcon::Off
+    );
+    const QSize pixmapSize = pixmap.size() / painter->device()->devicePixelRatio();
+
+    const QRect iconRect(
+        editFieldRect.left(),
+        editFieldRect.top() + (editFieldRect.height() - pixmapSize.height()) / 2,
+        pixmapSize.width(),
+        pixmapSize.height()
+    );
+    const QRect textRect(
+        editFieldRect.left() + pixmapSize.width() + iconSpacing,
+        editFieldRect.top(),
+        editFieldRect.width() - pixmapSize.width() - iconSpacing,
+        editFieldRect.height()
+    );
+
+    int textFlags = Qt::TextShowMnemonic | Qt::AlignVCenter | Qt::AlignLeft;
+    if (!proxy()->styleHint(SH_UnderlineShortcut, option, widget)) {
+        textFlags |= Qt::TextHideMnemonic;
+    }
+
+    painter->save();
+    painter->setClipRect(editFieldRect);
+    proxy()->drawItemPixmap(painter, iconRect, Qt::AlignCenter, pixmap);
+    proxy()->drawItemText(
+        painter,
+        QStyle::visualRect(option->direction, editFieldRect, textRect),
+        textFlags,
+        option->palette,
+        option->state & State_Enabled,
+        option->currentText,
         QPalette::ButtonText
     );
     painter->restore();

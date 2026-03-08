@@ -103,7 +103,22 @@ public:
         QMarginsF padding;
         std::optional<int> height;
         std::optional<int> minWidth;
-        int iconSpacing = 4;  // fallback to Qt's built-in default
+        /** Qt hardcodes this many pixels between an icon and its label text. */
+        static constexpr int qtBuiltInIconGap = 4;
+
+        int iconSpacing = qtBuiltInIconGap;  // fallback matches Qt's built-in
+
+        /**
+         * @brief Width delta to replace Qt's hardcoded icon–text gap with the token spacing.
+         *
+         * Add this to a width computed by Qt (sizeHint, sizeFromContents) when Qt has already
+         * baked in qtBuiltInIconGap pixels for the icon–text gap and you want the token value.
+         * Returns 0 when the token matches Qt's default, so it is always safe to apply.
+         */
+        [[nodiscard]] int iconGapDelta() const
+        {
+            return iconSpacing - qtBuiltInIconGap;
+        }
 
         /** @brief Total horizontal padding (left + right), in pixels. */
         [[nodiscard]] int paddingH() const
@@ -327,6 +342,20 @@ private:
     void drawToolButtonLabel(
         QPainter* painter,
         const QStyleOptionToolButton* option,
+        const QWidget* widget
+    ) const;
+
+    /**
+     * @brief Paints the label (icon + text) of a non-editable combo box.
+     *
+     * Overrides CE_ComboBoxLabel to apply the SelectIconSpacing token as the
+     * icon-to-text gap (Qt hardcodes 4 px). Editable combos are delegated to
+     * the parent because their icon–QLineEdit gap is fixed inside QComboBox
+     * internals and cannot be overridden from a style.
+     */
+    void drawComboBoxLabel(
+        QPainter* painter,
+        const QStyleOptionComboBox* option,
         const QWidget* widget
     ) const;
 
