@@ -788,19 +788,42 @@ QSize FreeCADStyle::sizeFromContents(
 
 QRect FreeCADStyle::subElementRect(SubElement element, const QStyleOption* option, const QWidget* widget) const
 {
-    if (element == SE_ItemViewItemText) {
-        const StyleContext context = contextOf(widget, option);
+    // QProxyStyle sets baseStyle->proxy = this, so the base style's drawControl(CE_ItemViewItem)
+    // calls proxy()->subElementRect() which reaches OUR overrides below.  We therefore only need
+    // to override SE_ItemViewItemDecoration and SE_ItemViewItemText — the inset propagates into
+    // both drawing (via the base-style drawControl callback) and editor/widget placement (via
+    // updateEditorGeometry).  We delegate to QProxyStyle with the already-inset rect so
+    // viewItemLayout positions the icon within the inset area and the text rect after it.
+    const auto itemViewInsetRect = [&](SubElement el) -> QRect {
+        const auto* vopt = qstyleoption_cast<const QStyleOptionViewItem*>(option);
+        // option->widget is the view; widget may be the viewport during some repaints.
+        const QWidget* effectiveWidget = widget;
+        if (!effectiveWidget && vopt) {
+            effectiveWidget = vopt->widget;
+        }
+        const StyleContext context = contextOf(effectiveWidget, option);
         const bool isItemComponent = context.component == StyleComponent::ListItem
             || context.component == StyleComponent::TreeItem;
-        if (isItemComponent && option) {
-            const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
-            return option->rect.adjusted(
-                static_cast<int>(geometry.padding.left()),
-                static_cast<int>(geometry.padding.top()),
-                -static_cast<int>(geometry.padding.right()),
-                -static_cast<int>(geometry.padding.bottom())
-            );
+        if (!isItemComponent || !vopt) {
+            return QProxyStyle::subElementRect(el, option, widget);
         }
+        const BoxGeometryDefinition geometry = resolveBoxGeometry(context);
+        QStyleOptionViewItem adjustedOption = *vopt;
+        adjustedOption.rect = vopt->rect.adjusted(
+            static_cast<int>(geometry.padding.left()),
+            static_cast<int>(geometry.padding.top()),
+            -static_cast<int>(geometry.padding.right()),
+            -static_cast<int>(geometry.padding.bottom())
+        );
+        return QProxyStyle::subElementRect(el, &adjustedOption, widget);
+    };
+
+    if (element == SE_ItemViewItemDecoration) {
+        return itemViewInsetRect(SE_ItemViewItemDecoration);
+    }
+
+    if (element == SE_ItemViewItemText) {
+        return itemViewInsetRect(SE_ItemViewItemText);
     }
 
     if (element == SE_LineEditContents) {

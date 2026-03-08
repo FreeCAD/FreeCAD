@@ -167,7 +167,7 @@ wbListItem::wbListItem(
     loadLabel->setEnabled(enableCheckBox->isChecked());
     loadButton = new QToolButton(this);
     loadButton->setText(tr("Load"));
-    loadButton->setIcon(QIcon(QStringLiteral(":/icons/view-refresh.svg")));
+    loadButton->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
     loadButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     loadButton->setProperty("controlSize", "small");
     loadButton->setToolTip(
