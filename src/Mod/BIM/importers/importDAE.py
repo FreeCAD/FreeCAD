@@ -168,6 +168,24 @@ def read(filename):
     if FreeCAD.GuiUp:
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
+<<<<<<< HEAD
+=======
+def get_global_placement(obj):
+    """
+    Compute the global placement of an object by accumulating
+    placements from its parent containers.
+    """
+    pl = obj.Placement
+
+    parent = obj.getParentGeoFeatureGroup()
+
+    while parent:
+        if hasattr(parent, "Placement"):
+            pl = parent.Placement.multiply(pl)
+        parent = parent.getParentGeoFeatureGroup()
+
+    return pl
+>>>>>>> a66371a001 (Arch: fix placement handling for App::Link and primitives in Collada export)
 
 def export(
     exports: list[FreeCAD.DocumentObject],
@@ -225,7 +243,13 @@ def export(
         if is_link:
             real_obj = obj.getLinkedObject(True)
         else:
-            real_obj = obj
+            real_obj = obj 
+        if is_link:
+            global_pl = get_global_placement(obj)
+        elif hasattr(obj, "getGlobalPlacement"):
+            global_pl = obj.getGlobalPlacement()
+        else:
+            global_pl = obj.Placement          
         findex = np.array([])
         m: Optional[Mesh.Mesh] = None
         if real_obj.isDerivedFrom("Part::Feature"):
@@ -233,22 +257,14 @@ def export(
                 f'Exporting shape of object {obj.Name} ("{obj.Label}")' + "\n"
             )
             shape = real_obj.Shape.copy()
-            if is_link:
-                shape.Placement = obj.Placement
-            else:
-                shape.Placement = obj.getGlobalPlacement()
+            shape.Placement = global_pl
             m = Mesh.Mesh(triangulate(shape))
         elif real_obj.isDerivedFrom("Mesh::Feature"):
             FreeCAD.Console.PrintMessage(
                 f'Exporting mesh of object {obj.Name} ("{obj.Label}")' + "\n"
             )
             m = real_obj.Mesh.copy()
-
-            if is_link:
-                m.Placement = obj.Placement
-            else:
-                m.Placement = obj.getGlobalPlacement()
-
+            m.transform(global_pl.toMatrix())
         elif obj.isDerivedFrom("App::Part"):
             for child in obj.OutList:
                 objects.append(child)
