@@ -194,10 +194,10 @@ class DraftWorkbench(FreeCADGui.Workbench):
         FreeCAD.Console.PrintLog("Draft workbench activated.\n")
 
     def Deactivated(self):
-        
+
         import WorkingPlane
         from draftutils import grid_observer
-        
+
         """When quitting the workbench."""
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
