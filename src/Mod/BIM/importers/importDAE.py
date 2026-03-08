@@ -243,13 +243,13 @@ def export(
         if is_link:
             real_obj = obj.getLinkedObject(True)
         else:
-            real_obj = obj 
+            real_obj = obj
         if is_link:
             global_pl = get_global_placement(obj)
         elif hasattr(obj, "getGlobalPlacement"):
             global_pl = obj.getGlobalPlacement()
         else:
-            global_pl = obj.Placement          
+            global_pl = obj.Placement
         findex = np.array([])
         m: Optional[Mesh.Mesh] = None
         if real_obj.isDerivedFrom("Part::Feature"):
