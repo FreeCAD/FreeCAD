@@ -28,6 +28,9 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepLib.hxx>
 #include <BSplCLib.hxx>
 #include <GC_MakeArcOfCircle.hxx>
 #include <GC_MakeArcOfEllipse.hxx>
@@ -37,6 +40,7 @@
 #include <GC_MakeEllipse.hxx>
 #include <GC_MakeHyperbola.hxx>
 #include <GC_MakeSegment.hxx>
+#include <GCE2d_MakeSegment.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <gce_ErrorType.hxx>
 #include <gce_MakeParab.hxx>
@@ -63,6 +67,8 @@
 #include <Geom_SurfaceOfRevolution.hxx>
 #include <Geom_ToroidalSurface.hxx>
 #include <Geom_TrimmedCurve.hxx>
+#include <Geom2d_BezierCurve.hxx>
+#include <Geom2d_TrimmedCurve.hxx>
 #include <GeomAPI_ExtremaCurveCurve.hxx>
 #include <GeomAPI_Interpolate.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
@@ -86,6 +92,8 @@
 #include <gp_Pnt.hxx>
 #include <gp_Sphere.hxx>
 #include <gp_Torus.hxx>
+#include <gp_Trsf.hxx>
+#include <gp_Vec.hxx>
 #include <LProp_NotDefined.hxx>
 #include <Precision.hxx>
 #include <ShapeConstruct_Curve.hxx>
@@ -96,6 +104,8 @@
 #include <TColgp_HArray1OfPnt.hxx>
 #include <TColStd_Array1OfReal.hxx>
 #include <TColStd_HArray1OfBoolean.hxx>
+#include <TopExp_Explorer.hxx>
+#include <ShapeFix_Wire.hxx>
 
 #if OCC_VERSION_HEX < 0x070600
 # include <GeomAdaptor_HSurface.hxx>
@@ -105,11 +115,31 @@
 #include <boost/random.hpp>
 #include <cmath>
 #include <ctime>
+#include <fstream>
+#include <iterator>
 #include <limits>
+#include <memory>
+#include <vector>
 
+// FreeType Headers
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_GLYPH_H
+#include FT_OUTLINE_H
+#include <codecvt>
+#include <locale>
+
+// headers to scale text correctly
+#include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
+
+#include <App/Application.h>
+#include <App/PropertyStandard.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/FileInfo.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Base/Writer.h>
 #include <BRep_Tool.hxx>
 #include <TopoDS.hxx>
@@ -7303,6 +7333,390 @@ std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve& adapt, bo
     }
 
     return geoCurve;
+}
+
+
+// ===== TEXT TO EDGES (adapted from FT2FC.cpp) =====
+namespace
+{
+// Context for FreeType decomposition callbacks
+struct FTDC_Ctx
+{
+    std::vector<TopoDS_Wire> Wires;
+    std::vector<TopoDS_Edge> Edges;
+    FT_Vector LastVert;
+    FT_Vector StartVert;
+    Handle(Geom_Surface) surf;
+};
+
+// Make a TopoDS_Wire from a list of TopoDS_Edges
+TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge>& Edges)
+{
+    if (Edges.empty()) {
+        return TopoDS_Wire();
+    }
+    BRepBuilderAPI_MakeWire mkWire;
+    for (const auto& edge : Edges) {
+        mkWire.Add(edge);
+    }
+    if (mkWire.IsDone()) {
+        TopoDS_Wire wire = mkWire.Wire();
+        BRepLib::BuildCurves3d(wire);
+        // Ensure the wire is topologically closed and valid
+        ShapeFix_Wire sfw;
+        sfw.Load(wire);
+        sfw.FixClosed();
+        wire = sfw.Wire();
+        return wire;
+    }
+    else {
+        Base::Console().warning("edgesToWire: Failed to build a valid wire from edges.\n");
+        return TopoDS_Wire();
+    }
+}
+// Helper to close the current contour if needed and flush to Wires list
+void flushContour(FTDC_Ctx* dc)
+{
+    if (dc->Edges.empty()) {
+        return;
+    }
+
+    // Check if the contour is geometrically closed.
+    // If not, add a closing segment from LastVert to StartVert.
+    gp_Pnt2d pStart(dc->StartVert.x, dc->StartVert.y);
+    gp_Pnt2d pEnd(dc->LastVert.x, dc->LastVert.y);
+
+    if (!pStart.IsEqual(pEnd, Precision::Confusion())) {
+        Handle(Geom2d_TrimmedCurve) lseg = GCE2d_MakeSegment(pEnd, pStart);
+        TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(lseg, dc->surf);
+        dc->Edges.push_back(edge);
+    }
+
+    TopoDS_Wire newWire = edgesToWire(dc->Edges);
+    if (!newWire.IsNull()) {
+        dc->Wires.push_back(newWire);
+    }
+    dc->Edges.clear();
+}
+
+// FT Decompose callbacks
+int move_cb(const FT_Vector* pt, void* p)
+{
+    FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
+    flushContour(dc);
+    dc->StartVert = *pt;
+    dc->LastVert = *pt;
+    return 0;
+}
+
+int line_cb(const FT_Vector* pt, void* p)
+{
+    FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
+    gp_Pnt2d v1(dc->LastVert.x, dc->LastVert.y);
+    gp_Pnt2d v2(pt->x, pt->y);
+    if (!v1.IsEqual(v2, Precision::Confusion())) {
+        Handle(Geom2d_TrimmedCurve) lseg = GCE2d_MakeSegment(v1, v2);
+        TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(lseg, dc->surf);
+        dc->Edges.push_back(edge);
+    }
+    dc->LastVert = *pt;
+    return 0;
+}
+
+int quad_cb(const FT_Vector* pt0, const FT_Vector* pt1, void* p)
+{
+    FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
+    TColgp_Array1OfPnt2d Poles(1, 3);
+    Poles.SetValue(1, gp_Pnt2d(dc->LastVert.x, dc->LastVert.y));
+    Poles.SetValue(2, gp_Pnt2d(pt0->x, pt0->y));
+    Poles.SetValue(3, gp_Pnt2d(pt1->x, pt1->y));
+    Handle(Geom2d_BezierCurve) bcseg = new Geom2d_BezierCurve(Poles);
+    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(bcseg, dc->surf);
+    dc->Edges.push_back(edge);
+    dc->LastVert = *pt1;
+    return 0;
+}
+
+int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector* pt2, void* p)
+{
+    FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
+    TColgp_Array1OfPnt2d Poles(1, 4);
+    Poles.SetValue(1, gp_Pnt2d(dc->LastVert.x, dc->LastVert.y));
+    Poles.SetValue(2, gp_Pnt2d(pt0->x, pt0->y));
+    Poles.SetValue(3, gp_Pnt2d(pt1->x, pt1->y));
+    Poles.SetValue(4, gp_Pnt2d(pt2->x, pt2->y));
+    Handle(Geom2d_BezierCurve) bcseg = new Geom2d_BezierCurve(Poles);
+    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(bcseg, dc->surf);
+    dc->Edges.push_back(edge);
+    dc->LastVert = *pt2;
+    return 0;
+}
+
+
+}  // end anonymous namespace
+
+/**
+ * @brief Takes a set of base shapes, transforms them to fit a two-point
+ * definition, and converts them to a vector of Part::Geometry.
+ *
+ * This is the core transformation logic shared by textToEdges and the Symbol tool.
+ *
+ * @param geos              Output vector of unique_ptr to Part::Geometry.
+ * @param baseShapes        Input vector of raw TopoDS_Shape objects at origin.
+ * @param p1                The start point (typically bottom-left) of placement.
+ * @param p2                The end point, which defines the size and orientation.
+ * @param height            If true, the distance p1-p2 defines the height.
+ *                          If false, it defines the width.
+ */
+void transformAndConvertToGeometry(
+    std::vector<std::unique_ptr<Part::Geometry>>& geos,
+    const std::vector<TopoDS_Shape>& baseShapes,
+    const Base::Vector3d& p1,
+    const Base::Vector3d& p2,
+    bool height
+)
+{
+    if (baseShapes.empty()) {
+        return;
+    }
+
+    Base::Vector3d dir = p2 - p1;
+    double length = dir.Length();
+    if (length < Precision::Confusion()) {
+        return;
+    }
+
+    // 1. Calculate the bounding box of the base shapes
+    Bnd_Box bndBox;
+    for (const auto& shape : baseShapes) {
+        if (!shape.IsNull()) {
+            BRepBndLib::Add(shape, bndBox);
+        }
+    }
+
+    if (bndBox.IsVoid()) {
+        Base::Console().warning(
+            "transformAndConvertToGeometry: Could not determine bounds of generated geometry.\n"
+        );
+        return;
+    }
+
+    Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+    bndBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+    double baseWidth = xmax - xmin;
+    double baseHeight = ymax - ymin;
+
+    // This transform will move the geometry's bottom-left corner to the origin (0,0,0)
+    gp_Vec initialTranslationVec(-xmin, -ymin, 0.0);
+
+    // 2. Determine scale and rotation
+    double angle;
+    double scale;
+
+    if (height) {
+        if (baseHeight < Precision::Confusion()) {
+            return;
+        }
+        scale = length / baseHeight;
+        angle = std::atan2(dir.y, dir.x) - 0.5 * M_PI;
+    }
+    else {  // Width mode
+        if (baseWidth < Precision::Confusion()) {
+            return;
+        }
+        scale = length / baseWidth;
+        angle = std::atan2(dir.y, dir.x);
+    }
+
+    // 3. Construct the final transformation matrix
+    gp_Trsf initialTranslate;
+    initialTranslate.SetTranslation(initialTranslationVec);
+    gp_Trsf scaleTrsf;
+    scaleTrsf.SetScale(gp::Origin(), scale);
+    gp_Trsf rotateTrsf;
+    rotateTrsf.SetRotation(gp::XOY().Axis(), angle);
+    gp_Trsf finalTranslate;
+    finalTranslate.SetTranslation(gp_Vec(p1.x, p1.y, 0.0));
+    gp_Trsf finalTrsf = finalTranslate * rotateTrsf * scaleTrsf * initialTranslate;
+
+    // 4. Apply transformation and convert to Sketcher geometry
+    for (const auto& shape : baseShapes) {
+        BRepBuilderAPI_Transform performer(shape, finalTrsf, true);
+        if (!performer.IsDone()) {
+            continue;
+        }
+
+        for (TopExp_Explorer explorer(performer.Shape(), TopAbs_EDGE); explorer.More();
+             explorer.Next()) {
+            Standard_Real first, last;
+            const TopoDS_Edge& edge = TopoDS::Edge(explorer.Current());
+            Handle(Geom_Curve) curve = BRep_Tool::Curve(edge, first, last);
+            if (curve.IsNull()) {
+                continue;
+            }
+
+            std::unique_ptr<Part::GeomCurve> newGeo;
+
+            if (BRep_Tool::IsClosed(edge)) {
+                newGeo = Part::makeFromCurve(curve);
+            }
+            else {
+                if (curve->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+                    Handle(Geom_TrimmedCurve) trc = Handle(Geom_TrimmedCurve)::DownCast(curve);
+                    curve = trc->BasisCurve();
+                }
+
+                if (curve->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+                    Handle(Geom_TrimmedCurve) tcurve
+                        = new Geom_TrimmedCurve(curve, first, last, true, false);
+                    Part::GeomTrimmedCurve geomcurve(tcurve);
+                    newGeo.reset(geomcurve.toBSpline(first, last));
+                }
+                else {
+                    newGeo = Part::makeFromTrimmedCurve(curve, first, last);
+                }
+            }
+
+            if (!newGeo) {
+                Base::Console().warning(
+                    "transformAndConvertToGeometry: Could not create geometry from curve.\n"
+                );
+                continue;
+            }
+
+            try {
+                geos.emplace_back(std::move(newGeo));
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().warning("BSpline conversion failed: %s\n", e.what());
+            }
+        }
+    }
+}
+
+// The core logic, refactored from FT2FC to be Python-independent
+std::vector<TopoDS_Shape> makeTextWires(
+    std::string& text,
+    std::string& fontFile,
+    double height,
+    double tracking
+)
+{
+    if (text.empty()) {
+        return {};
+    }
+
+    if (fontFile.empty()) {
+#if defined(FC_OS_LINUX)
+        fontFile = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf";
+#elif defined(FC_OS_WIN32)
+        fontFile = "C:/Windows/Fonts/Arial.ttf";
+#elif defined(FC_OS_MAC)
+        fontFile = "/System/Library/Fonts/Helvetica.ttc";  // Common system default
+#endif
+    }
+
+    std::vector<TopoDS_Shape> allWires;
+    FT_Library ftLib;
+    if (FT_Init_FreeType(&ftLib) != 0) {
+        Base::Console().error("makeTextWires: Could not initialize FreeType library\n");
+        return allWires;
+    }
+
+    std::ifstream fontStream(fontFile, std::ios::binary);
+    if (!fontStream) {
+        Base::Console().error("makeTextWires: Cannot open font file: %s\n", fontFile.c_str());
+        FT_Done_FreeType(ftLib);
+        return allWires;
+    }
+    std::vector<char> fontBuffer(
+        (std::istreambuf_iterator<char>(fontStream)),
+        std::istreambuf_iterator<char>()
+    );
+
+    FT_Face ftFace;
+    if (FT_New_Memory_Face(
+            ftLib,
+            reinterpret_cast<const FT_Byte*>(fontBuffer.data()),
+            fontBuffer.size(),
+            0,
+            &ftFace
+        )
+        != 0) {
+        Base::Console().error("makeTextWires: Failed to load font face from %s\n", fontFile.c_str());
+        FT_Done_FreeType(ftLib);
+        return allWires;
+    }
+
+    // Use the font's native units for maximum precision
+    double unitsPerEM = static_cast<double>(ftFace->units_per_EM);
+    if (unitsPerEM < 1.0) {
+        unitsPerEM = 2048.0;  // Fallback
+    }
+
+    // We want a nominal height of 1.0 for the base shapes
+    double scaleFactor = (height / unitsPerEM);
+    FT_Outline_Funcs ftCallbacks = {move_cb, line_cb, quad_cb, cubic_cb, 0, 0};
+    FT_UInt ftLoadFlags = FT_LOAD_NO_SCALE | FT_LOAD_NO_BITMAP;
+
+    double penPos = 0.0;
+    double currentTracking = 0.0;
+    FT_ULong prevCharcode = 0;
+
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
+    std::u32string wide_text = converter.from_bytes(text);
+
+    for (size_t i = 0; i < wide_text.length(); ++i) {
+        FT_ULong charcode = wide_text[i];
+
+        if (FT_Load_Char(ftFace, charcode, ftLoadFlags) != 0) {
+            continue;
+        }
+
+        if (prevCharcode != 0 && FT_HAS_KERNING(ftFace)) {
+            FT_Vector kern;
+            FT_Get_Kerning(
+                ftFace,
+                FT_Get_Char_Index(ftFace, prevCharcode),
+                FT_Get_Char_Index(ftFace, charcode),
+                FT_KERNING_UNSCALED,
+                &kern
+            );
+            penPos += kern.x;
+        }
+
+        if (ftFace->glyph->format == FT_GLYPH_FORMAT_OUTLINE
+            && ftFace->glyph->outline.n_contours > 0) {
+            FTDC_Ctx ctx;
+            ctx.surf = new Geom_Plane(gp::Origin(), gp::DZ());
+            FT_Outline_Decompose(&ftFace->glyph->outline, &ftCallbacks, &ctx);
+
+            flushContour(&ctx);
+
+            if (!ctx.Wires.empty()) {
+                gp_Trsf charTransform;
+                charTransform.SetScale(gp::Origin(), scaleFactor);
+                gp_Vec translation(penPos * scaleFactor + currentTracking, 0.0, 0.0);
+                charTransform.SetTranslationPart(translation);
+
+                for (const auto& wire : ctx.Wires) {
+                    BRepBuilderAPI_Transform performer(charTransform);
+                    performer.Perform(wire, true);  // true = create a copy
+                    if (performer.IsDone()) {
+                        allWires.push_back(performer.Shape());
+                    }
+                }
+            }
+        }
+
+        penPos += ftFace->glyph->advance.x;
+        currentTracking += tracking;
+        prevCharcode = charcode;
+    }
+
+    FT_Done_Face(ftFace);
+    FT_Done_FreeType(ftLib);
+    return allWires;
 }
 
 }  // namespace Part

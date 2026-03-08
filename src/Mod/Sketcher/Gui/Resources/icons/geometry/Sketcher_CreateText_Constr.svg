@@ -7,7 +7,7 @@
    id="svg2869"
    version="1.1"
    viewBox="0 0 64 64"
-   sodipodi:docname="Sketcher_CreateText.svg"
+   sodipodi:docname="Sketcher_CreateText_Constr.svg"
    inkscape:version="1.4 (86a8ad7, 2024-10-11)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -27,8 +27,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="10.570313"
-     inkscape:cx="2.9327421"
-     inkscape:cy="33.537324"
+     inkscape:cx="-24.691795"
+     inkscape:cy="23.509238"
      inkscape:window-width="3840"
      inkscape:window-height="1571"
      inkscape:window-x="-9"
@@ -242,13 +242,13 @@
   <path
      id="text2714"
      d="M 43.000006,43.000004 H 25 l -5.520727,6.720094 c -0.579794,0.858972 -0.393368,0.786011 -0.479275,1.279915 0,0.999994 0.647131,1.634938 2.000006,1.999989 v 2.000006 H 5.0000041 V 53.000002 C 5.9019207,52.828221 7.4631562,52.429493 8.0000051,52.000007 8.536854,51.570522 8.9999999,51.000013 10.000011,50.000001 L 32.999992,17.000006 C 33.730078,15.926342 33.871118,15.644262 34.000003,15 c 0.21471,-0.987758 0.159577,-1.570471 -1.000011,-1.999989 v -2.000007 h 16 v 2.000007 c -1.99999,0 -2.828253,0.09813 -3.000001,0.999994 -0.128869,0.622789 -0.10771,1.039609 0.150028,1.834097 l 9.953177,33.885996 c 0.429436,1.438766 0.467269,1.743077 0.896804,2.279909 0.42942,0.515393 1.140969,0.828214 2.000006,0.999995 v 2.000006 h -16 v -2.000006 c 1.481645,-0.236199 1.785214,-0.904819 1.99999,-1.999989 0.08587,-0.450959 0.257655,-1.119563 0,-2.000007 l -1.99999,-6.000002 m 0,-6.000002 -4.000012,-16 -11.999988,16 h 16"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, Bold';fill:url(#linearGradient3009);fill-opacity:1;stroke:#2e0000;stroke-width:2.00001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, Bold';fill:#3465a4;fill-opacity:1;stroke:#2e0000;stroke-width:2.00001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   <path
      id="text2714-1"
      d="M 44.276919,40.999998 H 24.148153 l -5.964082,7.216455 c -1.480672,1.914033 -1.084253,2.914242 -1.253082,3.124467 0,0.931816 1.519016,1.409822 2.746634,1.749986 l 0.204551,-0.02274 -12.8821638,-0.06818 -0.6136358,0.477279 c 0.818401,-0.160071 3.8487146,-0.895254 4.3358566,-1.295449 0.487142,-0.400213 1.225573,-1.386371 2.019368,-2.545481 L 32.066493,21.909093 c 0.662485,-1.000473 2.608645,-3.695124 3.134675,-4.704552 0.55847,-0.920405 1.508461,-3.713398 0.456236,-4.113626 l -1.681842,-0.09092 H 48.016819 L 45.857714,12.88638 c -1.814784,0 -1.770899,0.86415 -1.904039,1.52271 -0.116912,0.580339 0.106819,1.286907 0.340709,2.027235 l 9.167925,31.189218 c 0.389674,1.340655 0.401268,1.601493 0.631975,2.465379 0.594192,1.639325 0.217134,2.044469 0.996614,2.20454 l 2.909097,0.70454 H 44.000001 l 2.068168,-1.022721 c 0.821749,-1.4701 0.851418,-1.070415 1.046321,-2.09091 0.07791,-0.420217 -0.42533,-2.088667 -0.659121,-2.90908 l -2.132998,-5.84092 m 0.735776,-3.036333 -5.501761,-20.213667 -14.812359,20.190941 20.125154,0.004"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, Bold';fill:none;stroke:#ffffff;stroke-width:2.00001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, Bold';fill:none;stroke:#729fcf;stroke-width:2.00001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
   <path
      id="text2714-7"
      d="M 43.000006,43.000004 H 25 l -5.520727,6.720094 c -0.579794,0.858972 -0.393368,0.786011 -0.479275,1.279915 0,0.999994 0.647131,1.634938 2.000006,1.999989 v 2.000006 H 5.0000041 V 53.000002 C 5.9019207,52.828221 7.4631562,52.429493 8.0000051,52.000007 8.536854,51.570522 8.9999999,51.000013 10.000011,50.000001 L 32.999992,17.000006 C 33.730078,15.926342 33.871118,15.644262 34.000003,15 c 0.21471,-0.987758 0.159577,-1.570471 -1.000011,-1.999989 v -2.000007 h 16 v 2.000007 c -1.99999,0 -2.828253,0.09813 -3.000001,0.999994 -0.128869,0.622789 -0.10771,1.039609 0.150028,1.834097 l 9.953177,33.885996 c 0.429436,1.438766 0.467269,1.743077 0.896804,2.279909 0.42942,0.515393 1.140969,0.828214 2.000006,0.999995 v 2.000006 h -16 v -2.000006 c 1.481645,-0.236199 1.785214,-0.904819 1.99999,-1.999989 0.08586,-0.450959 0.257655,-1.119563 0,-2.000007 l -1.99999,-6.000002 m 0,-6.000002 -4.000012,-16 -11.999988,16 h 16"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, Bold';fill:none;stroke:#280000;stroke-width:2.00001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:40px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, Bold';fill:none;stroke:#091425;stroke-width:2.00001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
 </svg>
