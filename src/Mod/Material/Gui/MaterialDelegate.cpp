@@ -259,8 +259,7 @@ bool MaterialDelegate::editorEvent(QEvent* event,
 
 void MaterialDelegate::showColorModal(const QString& propertyName, QStandardItem* item)
 {
-    QColor currentColor;  // = d->col;
-    currentColor.setRgba(parseColor(item->text()));
+    auto currentColor = parseColor(item->text()).asValue<QColor>();
     auto dlg = new QColorDialog(currentColor);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);

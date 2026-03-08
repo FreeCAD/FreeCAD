@@ -45,7 +45,7 @@ Base::Placement AttacherSubObjectPlacement::calculate(
 
 std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentObject* object) const
 {
-    if (const auto feature = dynamic_cast<Part::Feature*>(object)) {
+    if (const auto* feature = freecad_cast<Part::Feature*>(object)) {
         const auto shape = feature->Shape.getShape();
 
         if (const auto cog = shape.centerOfGravity()) {
@@ -56,4 +56,9 @@ std::optional<Base::Vector3d> PartCenterOfMass::ofDocumentObject(App::DocumentOb
     }
 
     return {};
+}
+
+bool PartCenterOfMass::supports(App::DocumentObject* object) const
+{
+    return object->isDerivedFrom<Part::Feature>();
 }

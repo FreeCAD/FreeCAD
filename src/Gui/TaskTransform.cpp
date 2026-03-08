@@ -173,7 +173,7 @@ void TaskTransform::loadPlacementModeItems() const
         QVariant::fromValue(PlacementMode::ObjectOrigin)
     );
 
-    if (centerOfMassProvider->ofDocumentObject(vp->getObject()).has_value()) {
+    if (centerOfMassProvider->supports(vp->getObject())) {
         ui->placementComboBox->addItem(
             tr("Center of mass / centroid"),
             QVariant::fromValue(PlacementMode::Centroid)

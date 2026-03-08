@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -552,6 +554,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             intArg5 = PyLong_AsLong(oNumArg5);
             if (strcmp("Symmetric", ConstraintType) == 0) {
                 constraint->Type = Symmetric;
+                constraint->First = intArg1;
+                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
+                constraint->Second = intArg3;
+                constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->Third = intArg5;
+                return true;
+            }
+            if (strcmp("Perpendicular", ConstraintType) == 0) {
+                constraint->Type = Perpendicular;
                 constraint->First = intArg1;
                 constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
                 constraint->Second = intArg3;

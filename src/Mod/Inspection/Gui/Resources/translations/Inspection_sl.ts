@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection…</source>
-      <translation type="unfinished">Inspection…</translation>
+      <translation>Inšpekcija …</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Inspects distance information</source>
-      <translation type="unfinished">Inspects distance information</translation>
+      <translation>Pregled oddaljenih informacij</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Visual Inspection…</source>
-      <translation type="unfinished">Visual Inspection…</translation>
+      <translation>Vizualni pregled…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Inspects the objects visually</source>
-      <translation type="unfinished">Inspects the objects visually</translation>
+      <translation>Vizualni pregled predmetov</translation>
     </message>
   </context>
   <context>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
       <source>Parameter</source>
-      <translation>Določilka</translation>
+      <translation>Parameter</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="572"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Zapustite informacijski način</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="708"/>

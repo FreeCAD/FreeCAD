@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_DOCUMENTPROTECTORPY_H
-#define SANDBOX_DOCUMENTPROTECTORPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
@@ -82,6 +83,3 @@ private:
 };
 
 }
-
-#endif // SANDBOX_DOCUMENTPROTECTORPY_H
-

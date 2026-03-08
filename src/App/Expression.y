@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -78,8 +80,8 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
 %%
 
 
-input:     exp                                  { ScanResult = $1; valueExpression = true;                                        }
-     |     unit_exp                             { ScanResult = $1; unitExpression = true;                                         }
+input:     exp                                  { ScanResult = std::unique_ptr<Expression>($1); valueExpression = true;                                        }
+     |     unit_exp                             { ScanResult = std::unique_ptr<Expression>($1); unitExpression = true;                                         }
      ;
 
 unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }

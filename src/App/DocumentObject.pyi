@@ -325,3 +325,10 @@ class DocumentObject(ExtensionContainer):
         Return true if the object is part of a document, false otherwise.
         """
         ...
+
+    def getPlacementOf(self, subname: str, target: DocumentObject = None, /) -> Any:
+        """
+        Return the placement of the sub-object relative to the link object.
+        getPlacementOf(subname, [targetObj]) -> Base.Placement
+        """
+        ...

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef PART_SERVICES_H
-#define PART_SERVICES_H
+#pragma once
 
 #include <Attacher.h>
 #include <App/Services.h>
@@ -42,6 +41,5 @@ class PartCenterOfMass final: public App::CenterOfMassProvider
 {
 public:
     std::optional<Base::Vector3d> ofDocumentObject(App::DocumentObject* object) const override;
+    bool supports(App::DocumentObject* object) const override;
 };
-
-#endif  // PART_SERVICES_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_DOCUMENTTHREAD_H
-#define SANDBOX_DOCUMENTTHREAD_H
+#pragma once
 
 #include <QThread>
 #include <Base/Mutex.h>
@@ -127,6 +128,3 @@ private:
 };
 
 }
-
-#endif // SANDBOX_DOCUMENTTHREAD_H
-

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Thomas Anderson <blobfish[at]gmx.com>              *
  *                                                                         *
@@ -396,6 +398,14 @@ void SoRotationDraggerContainer::setArcNormalDirection(const SbVec3f& dir)
     SbVec3f currentNormal = {0, 0, 1};
     auto currentRot = rotation.getValue();
     currentRot.multVec(currentNormal, currentNormal);
+
+    // If the two directions are collinear and opposite then ensure that the
+    // dragger is rotated along the pointer axis
+    if (dir.equals(-currentNormal, 1e-5)) {
+        SbRotation rot {getPointerDirection(), std::numbers::pi_v<float>};
+        rotation = currentRot * rot;
+        return;
+    }
 
     SbRotation rot {currentNormal, dir};
     rotation = currentRot * rot;

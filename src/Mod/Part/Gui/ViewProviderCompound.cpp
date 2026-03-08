@@ -26,6 +26,7 @@
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <QMessageBox>
+#include <algorithm>
 
 #include <App/Document.h>
 #include <Gui/Application.h>
@@ -94,7 +95,23 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string>& subNames)
         }
 
         for (auto pLink : pLinks) {
-            if (pLink) {
+            if (!pLink) {
+                continue;
+            }
+
+            bool hasOtherParent = false;
+            for (auto parent : pLink->getInList()) {
+                if (parent && parent != pComp && parent->isDerivedFrom<Part::Compound>()) {
+                    auto otherCompound = static_cast<Part::Compound*>(parent);
+                    auto otherLinks = otherCompound->Links.getValues();
+                    if (std::ranges::find(otherLinks, pLink) != otherLinks.end()) {
+                        hasOtherParent = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasOtherParent) {
                 Gui::Application::Instance->showViewProvider(pLink);
             }
         }

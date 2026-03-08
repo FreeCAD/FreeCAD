@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -365,12 +367,6 @@ void Sketch::fixParametersAndDiagnose(std::vector<double*>& params_to_block)
         GCSsys.declareUnknowns(Parameters);
         GCSsys.declareDrivenParams(DrivenParameters);
         GCSsys.initSolution(defaultSolverRedundant);
-        /*GCSsys.getConflicting(Conflicting);
-        GCSsys.getRedundant(Redundant);
-        GCSsys.getPartlyRedundant(PartiallyRedundant);
-        GCSsys.getDependentParams(pDependentParametersList);
-
-        calculateDependentParametersElements();*/
     }
 }
 
@@ -494,7 +490,6 @@ void Sketch::calculateDependentParametersElements()
 
     for (auto param : pDependentParametersList) {
 
-        // auto element = param2geoelement.at(param);
         auto element = param2geoelement.find(param);
 
         if (element != param2geoelement.end()) {
@@ -1698,7 +1693,6 @@ int Sketch::addEllipse(const Part::GeomEllipse& elip, bool fixed)
     double dist_C_F = sqrt(radmaj * radmaj - radmin * radmin);
     // solver parameters
     Base::Vector3d focus1 = center + dist_C_F * radmajdir;  //+x
-    // double *radmin;
 
     GCS::Point c;
 
@@ -2082,8 +2076,19 @@ int Sketch::addConstraint(const Constraint* constraint)
             rtn = addParallelConstraint(constraint->First, constraint->Second);
             break;
         case Perpendicular:
-            if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                && constraint->Third == GeoEnum::GeoUndef) {
+            if (constraint->FirstPos != PointPos::none && constraint->SecondPos != PointPos::none
+                && constraint->Third != GeoEnum::GeoUndef) {
+                // point point line perpendicularity
+                rtn = addPerpendicularConstraint(
+                    constraint->First,
+                    constraint->FirstPos,
+                    constraint->Second,
+                    constraint->SecondPos,
+                    constraint->Third
+                );
+            }
+            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
+                     && constraint->Third == GeoEnum::GeoUndef) {
                 // simple perpendicularity
                 rtn = addPerpendicularConstraint(constraint->First, constraint->Second);
             }
@@ -2898,6 +2903,31 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
 
     Base::Console().warning(
         "Perpendicular constraints between %s and %s are not supported.\n",
+        nameByType(Geoms[geoId1].type),
+        nameByType(Geoms[geoId2].type)
+    );
+    return -1;
+}
+
+int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3)
+{
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+    geoId3 = checkGeoId(geoId3);
+    int pointId1 = getPointId(geoId1, pos1);
+    int pointId2 = getPointId(geoId2, pos2);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size()) && pointId2 >= 0
+        && pointId2 < int(Points.size()) && Geoms[geoId3].type == Line) {
+        GCS::Point& p1 = Points[pointId1];
+        GCS::Point& p2 = Points[pointId2];
+        GCS::Line& l = Lines[geoId3];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintPerpendicular(p1, p2, l, tag);
+        return ConstraintsCounter;
+    }
+    Base::Console().warning(
+        "Perpendicular constraints need a line.\n",
         nameByType(Geoms[geoId1].type),
         nameByType(Geoms[geoId2].type)
     );
@@ -4555,12 +4585,6 @@ void Sketch::updateLineSegment(const GeoDef& def)
 void Sketch::updateArcOfCircle(const GeoDef& def)
 {
     GCS::Arc& myArc = Arcs[def.index];
-    // the following 4 lines are redundant since these equations are already included in
-    // the arc constraints *myArc.start.x = *myArc.center.x + *myArc.rad *
-    // cos(*myArc.startAngle); *myArc.start.y = *myArc.center.y + *myArc.rad *
-    // sin(*myArc.startAngle); *myArc.end.x = *myArc.center.x + *myArc.rad *
-    // cos(*myArc.endAngle); *myArc.end.y = *myArc.center.y + *myArc.rad *
-    // sin(*myArc.endAngle);
     GeomArcOfCircle* aoc = static_cast<GeomArcOfCircle*>(def.geo);
     aoc->setCenter(Vector3d(*Points[def.midPointId].x, *Points[def.midPointId].y, 0.0));
     aoc->setRadius(*myArc.rad);
@@ -4722,33 +4746,6 @@ bool Sketch::updateNonDrivingConstraints()
         else if (constrDef.constr->Type == Angle) {
 
             constrDef.constr->setValue(std::fmod(*(constrDef.value), 2.0 * std::numbers::pi));
-        }
-        else if (constrDef.constr->Type == Diameter && constrDef.constr->First >= 0) {
-
-            // two cases, the geometry parameter is fixed or it is not
-            // NOTE: This is different from being blocked, as new block constraint may fix
-            // the parameter or not depending on whether other driving constraints are present
-            int geoId = constrDef.constr->First;
-
-            geoId = checkGeoId(geoId);
-
-            double* rad = nullptr;
-
-            if (Geoms[geoId].type == Circle) {
-                GCS::Circle& c = Circles[Geoms[geoId].index];
-                rad = c.rad;
-            }
-            else if (Geoms[geoId].type == Arc) {
-                GCS::Arc& a = Arcs[Geoms[geoId].index];
-                rad = a.rad;
-            }
-
-            if (auto pos = std::ranges::find(FixParameters, rad); pos != FixParameters.end()) {
-                constrDef.constr->setValue(*(constrDef.value));
-            }
-            else {
-                constrDef.constr->setValue(2.0 * *(constrDef.value));
-            }
         }
         else {
             constrDef.constr->setValue(*(constrDef.value));
@@ -5417,23 +5414,6 @@ TopoShape Sketch::toShape() const
     TopoShape result;
     std::vector<GeoDef>::const_iterator it = Geoms.begin();
 
-#if 0
-
-    bool first = true;
-    for (; it!=Geoms.end(); ++it) {
-        if (!it->geo->Construction) {
-            TopoDS_Shape sh = it->geo->toShape();
-            if (first) {
-                first = false;
-                result.setShape(sh);
-            }
-            else {
-                result.setShape(result.fuse(sh));
-            }
-        }
-    }
-    return result;
-#else
     std::list<TopoDS_Edge> edge_list;
     std::list<TopoDS_Vertex> vertex_list;
     std::list<TopoDS_Wire> wires;
@@ -5517,7 +5497,6 @@ TopoShape Sketch::toShape() const
         }
         result.setShape(comp);
     }
-#endif
 
     return result;
 }

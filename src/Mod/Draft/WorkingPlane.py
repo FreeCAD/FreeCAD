@@ -478,6 +478,21 @@ class PlaneBase:
 
         return True
 
+    def align_to_rotation(self, rot):
+        """Align the WP to a rotation.
+
+        Parameter
+        ---------
+        rot: Base.Rotation
+            Rotation.
+
+        Returns
+        -------
+        `True`
+        """
+        self.u, self.v, self.axis = self._axes_from_rotation(rot)
+        return True
+
     def get_global_coords(self, point, as_vector=False):
         """Translate a point or vector from the local (WP) coordinate system to
         the global coordinate system.
@@ -1040,7 +1055,7 @@ class Plane(PlaneBase):
         if rebase:
             super().align_to_placement(place)
         else:
-            super()._axes_from_rotation(place.Rotation)
+            super().align_to_rotation(place.Rotation)
 
     def inverse(self):
         """Invert the direction of the plane.

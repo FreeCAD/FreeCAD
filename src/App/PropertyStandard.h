@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYSTANDARD_H
-#define APP_PROPERTYSTANDARD_H
+#pragma once
 
 #include <list>
 #include <memory>
@@ -336,6 +337,9 @@ public:
         return "Gui::PropertyEditor::PropertyIntegerConstraintItem";
     }
     void setPyObject(PyObject* py) override;
+
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
 protected:
     const Constraints* _ConstStruct {nullptr};
@@ -670,6 +674,9 @@ public:
     }
 
     void setPyObject(PyObject* py) override;
+
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
 protected:
     const Constraints* _ConstStruct {nullptr};
@@ -1335,5 +1342,3 @@ protected:
 };
 
 }  // namespace App
-
-#endif  // APP_PROPERTYSTANDARD_H

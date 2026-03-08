@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TrajectorySimulate_H
-#define GUI_TASKVIEW_TrajectorySimulate_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -82,5 +83,3 @@ private:
 };
 
 }  // namespace RobotGui
-
-#endif  // GUI_TASKVIEW_TrajectorySimulate_H

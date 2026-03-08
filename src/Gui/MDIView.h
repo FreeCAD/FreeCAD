@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_MDIVIEW_H
-#define GUI_MDIVIEW_H
+#pragma once
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <QMainWindow>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/View.h>
@@ -207,12 +206,10 @@ private:
     Qt::WindowStates wstate;
     // list of active objects of this view
     ActiveObjectList ActiveObjects;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectDelObject;  // remove active object upon delete.
 
     friend class MainWindow;
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MDIVIEW_H

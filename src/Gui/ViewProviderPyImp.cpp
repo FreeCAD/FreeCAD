@@ -20,7 +20,6 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <Inventor/SbRotation.h>
 #include <Inventor/SoFullPath.h>
 #include <Inventor/details/SoDetail.h>
@@ -29,27 +28,26 @@
 #include <QByteArray>
 #include <QDataStream>
 
-
-#include <Base/BoundBoxPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
-
-#include "PythonWrapper.h"
-#include "SoFCDB.h"
-
-// inclusion of the generated files (generated out of ViewProviderPy.pyi)
-#include <Gui/ViewProviderPy.h>
-#include <Gui/ViewProviderPy.cpp>
 #include <Gui/View3DPy.h>
 #include <Gui/View3DInventor.h>
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
-#include <Base/MatrixPy.h>
 #include <Base/Placement.h>
-#include <Base/PlacementPy.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/DocumentObjectPy.h>
 
+#include "PythonWrapper.h"
+#include "SoFCDB.h"
+
+// generated out of ViewProvider.pyi
+#include "ViewProviderPy.h"
+#include "ViewProviderPy.cpp"
+
+#include <Base/BoundBoxPy.h>
+#include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
+#include <App/DocumentObjectPy.h>
 
 using namespace Gui;
 

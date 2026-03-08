@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2024 Kacper Donat <kacper@kadet.net>                     *
@@ -27,4 +28,9 @@ std::optional<Base::Vector3d>
 App::NullCenterOfMass::ofDocumentObject([[maybe_unused]] DocumentObject* object) const
 {
     return std::nullopt;
+}
+
+bool App::NullCenterOfMass::supports(DocumentObject* /*object*/) const
+{
+    return false;
 }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYPYTHONOBJECT_H
-#define APP_PROPERTYPYTHONOBJECT_H
+#pragma once
 
 #include <string>
 #include <CXX/Objects.hxx>
@@ -82,5 +83,3 @@ private:
 
 
 }  // namespace App
-
-#endif  // APP_PROPERTYPYTHONOBJECT_H

@@ -174,7 +174,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyInteger",
+                "App::PropertyIntegerConstraint",
                 "NumPasses",
                 "Profile",
                 QT_TRANSLATE_NOOP(
@@ -189,6 +189,17 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "If doing multiple passes, the extra offset of each additional pass",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "UseLongestEdge",
+                "Start Point",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Override start point"
+                    "\nShoud be used only with Individually HandleMultipleFeatures"
+                    "and disabled UseStartPoint",
                 ),
             ),
         ]
@@ -255,7 +266,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "processHoles": False,
             "processPerimeter": True,
             "Stepover": 0,
-            "NumPasses": 1,
+            "NumPasses": (1, 1, 99999, 1),
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
@@ -294,6 +305,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         elif opType == "Edge":
             pass
 
+        useLongestEdgeMode = (
+            0 if obj.HandleMultipleFeatures == "Individually" and not obj.UseStartPoint else 2
+        )
+
         obj.setEditorMode("JoinType", 2)
         obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
@@ -301,6 +316,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("processCircles", fc)
         obj.setEditorMode("processHoles", fc)
         obj.setEditorMode("processPerimeter", fc)
+        obj.setEditorMode("UseLongestEdge", useLongestEdgeMode)
 
     def _getOperationType(self, obj):
         if len(obj.Base) == 0:
@@ -312,38 +328,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpOnDocumentRestored(self, obj):
         self.propertiesReady = False
-
-        if not hasattr(obj, "NumPasses"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "NumPasses",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "The number of passes to do. Requires a non-zero value for Stepover",
-                ),
-            )
-
-        if not hasattr(obj, "Stepover"):
-            obj.addProperty(
-                "App::PropertyDistance",
-                "Stepover",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "If doing multiple passes, the extra offset of each additional pass",
-                ),
-            )
-
         self.initAreaOpProperties(obj, warn=True)
         self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
         self.setOpEditorProperties(obj)
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""
-        if prop in ["UseComp", "JoinType", "Base"]:
-            if hasattr(self, "propertiesReady") and self.propertiesReady:
-                self.setOpEditorProperties(obj)
+        if hasattr(self, "propertiesReady") and self.propertiesReady:
+            self.setOpEditorProperties(obj)
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
@@ -357,7 +349,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         num_passes = max(1, obj.NumPasses)
         stepover = obj.Stepover.Value
         if num_passes > 1 and stepover == 0:
-            # This check is important because C++ code has a default value for stepover if it's 0 and extra passes are requested
+            # This check is important because C++ code has a default value for stepover
+            # if it's 0 and extra passes are requested
             num_passes = 1
             Path.Log.warning(
                 "Multipass profile requires a non-zero stepover. Reducing to a single pass."
@@ -582,9 +575,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 FreeCADGui.ActiveDocument.getObject(tmpGrpNm).Visibility = False
             self.tmpGrp.purgeTouched()
 
-        # for shape in shapes:
-        #     Part.show(shape[0])
-        #     print(shape)
         return shapes
 
     # Method to handle each model as a whole, when no faces are selected
@@ -778,6 +768,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Cut model(selected edges) from extended edges boundbox
         cutArea = extBndboxEXT.cut(base.Shape)
+        cutArea.tessellate(tolerance)
         self._addDebugObject("CutArea", cutArea)
 
         # Get top and bottom faces of cut area (CA), and combine faces when necessary
@@ -1059,9 +1050,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         part0 = Part.Wire(Part.__sortEdges__(edgs0))
         part1 = Part.Wire(Part.__sortEdges__(edgs1))
 
-        # Determine which part is nearest original edge(s)
-        distToPart0 = self._distMidToMid(wire.Wires[0], part0.Wires[0])
-        distToPart1 = self._distMidToMid(wire.Wires[0], part1.Wires[0])
+        # Determine which part is nearest original edge(s) using middle points of wires
+        point = wire.Wires[0].discretize(3)[1]
+        distToPart0 = point.sub(part0.Wires[0].discretize(3)[1]).Length
+        distToPart1 = point.sub(part1.Wires[0].discretize(3)[1]).Length
         if distToPart0 < distToPart1:
             rtnWIRES.append(part0)
         else:
@@ -1449,28 +1441,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         factor = dist / toEnd.Length
         perp = FreeCAD.Vector(-1 * toEnd.y, toEnd.x, 0.0).multiply(factor)
         return p1.add(toEnd.add(perp))
-
-    def _distMidToMid(self, wireA, wireB):
-        mpA = self._findWireMidpoint(wireA)
-        mpB = self._findWireMidpoint(wireB)
-        return mpA.sub(mpB).Length
-
-    def _findWireMidpoint(self, wire):
-        midPnt = None
-        dist = 0.0
-        wL = wire.Length
-        midW = wL / 2
-
-        for E in Part.sortEdges(wire.Edges)[0]:
-            elen = E.Length
-            d_ = dist + elen
-            if dist < midW and midW <= d_:
-                dtm = midW - dist
-                midPnt = E.valueAt(E.getParameterByLength(dtm))
-                break
-            else:
-                dist += elen
-        return midPnt
 
     # Method to add temporary debug object
     def _addDebugObject(self, objName, objShape):

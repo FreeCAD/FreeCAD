@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerSlot_H
-#define SKETCHERGUI_DrawSketchHandlerSlot_H
+#pragma once
 
 #include <sstream>
 
@@ -65,6 +66,8 @@ using DrawSketchHandlerSlotBase = DrawSketchControllableHandler<DSHSlotControlle
 
 class DrawSketchHandlerSlot: public DrawSketchHandlerSlotBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSlot)
+
     friend DSHSlotController;
     friend DSHSlotControllerBase;
 
@@ -713,6 +716,3 @@ void DSHSlotController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerSlot_H

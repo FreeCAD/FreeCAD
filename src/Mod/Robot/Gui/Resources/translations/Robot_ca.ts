@@ -308,22 +308,22 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Select VRML file for Robot</source>
-      <translation type="unfinished">Select VRML file for Robot</translation>
+      <translation>Seleccioneu un fitxer VRML per al robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>VRML Files (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML Files (*.wrl *.vrml)</translation>
+      <translation>Fitxers VRML (*.wrl *.vrml)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="66"/>
       <source>Select Kinematic CSV file for Robot</source>
-      <translation type="unfinished">Select Kinematic CSV file for Robot</translation>
+      <translation>Seleccioneu el fitxer CSV cinemàtic per al robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>CSV Files (*.csv)</source>
-      <translation type="unfinished">CSV Files (*.csv)</translation>
+      <translation>Fitxers CSV (*.csv)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>

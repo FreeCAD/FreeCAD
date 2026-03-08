@@ -295,8 +295,8 @@ class CommandCreateJointRackPinion:
             "Accel": "Q",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointRackPinion",
-                "<p>Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</p>"
-                "<p>Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</p>",
+                "<p>Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint</p>"
+                "<p>Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.</p>",
             ),
             "CmdType": "ForEdit",
         }
@@ -319,8 +319,8 @@ class CommandCreateJointScrew:
             "Accel": "W",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointScrew",
-                "<p>Creates a screw joint that links a part with a sliding joint to a part with a revolute joint</p>"
-                "<p>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</p>",
+                "<p>Creates a screw joint that links a part with a slider joint to a part with a revolute joint</p>"
+                "<p>Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</p>",
             ),
             "CmdType": "ForEdit",
         }
@@ -416,6 +416,8 @@ def createGroundedJoint(obj):
     )
     Gui.doCommand(commands)
     Gui.doCommandGui("JointObject.ViewProviderGroundedJoint(ground.ViewObject)")
+
+    Gui.doCommand("UtilsAssembly.activeAssembly().Document.recompute()")
     return Gui.doCommandEval("ground")
 
 
@@ -431,7 +433,7 @@ class CommandToggleGrounded:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_ToggleGrounded",
                 "<p>Toggles the grounding of a part.</p>"
-                "<p>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.",
+                "<p>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.",
             ),
             "CmdType": "ForEdit",
         }
@@ -471,8 +473,11 @@ class CommandToggleGrounded:
                         Gui.doCommand(commands)
                         continue
 
-                ref = [sel.Object, [sub, sub]]
-                moving_part = UtilsAssembly.getMovingPart(assembly, ref)
+                moving_part, new_sub = UtilsAssembly.getComponentReference(
+                    assembly, sel.Object, sub
+                )
+                if not moving_part:
+                    continue
 
                 # Only objects within the assembly.
                 if moving_part is None:

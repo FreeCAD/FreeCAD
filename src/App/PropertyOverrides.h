@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2025 Kacper Donat <kacper@kadet.net>                     *
@@ -21,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_PROPERTYOVERRIDES_H
-#define FREECAD_PROPERTYOVERRIDES_H
+#pragma once
 
 #include <ranges>
 #include <type_traits>
@@ -291,4 +291,3 @@ private:
     std::vector<std::function<void()>> _guards;
 };
 }  // namespace App
-#endif  // FREECAD_PROPERTYOVERRIDES_H

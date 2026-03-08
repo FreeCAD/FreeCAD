@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  * Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>        *
  *                                                                          *
@@ -19,8 +21,7 @@
  * Suite 330, Boston, MA 02111-1307, USA                                    *
  *                                                                          *
  ***************************************************************************/
-#ifndef PROPERTYCONSTRAINTLISTITEM_H
-#define PROPERTYCONSTRAINTLISTITEM_H
+#pragma once
 
 #include <QObject>
 #include <vector>
@@ -63,6 +64,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif

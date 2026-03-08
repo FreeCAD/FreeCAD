@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArc_H
-#define SKETCHERGUI_DrawSketchHandlerArc_H
+#pragma once
 
 #include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
@@ -71,6 +72,8 @@ using DrawSketchHandlerArcBase = DrawSketchControllableHandler<DSHArcController>
 
 class DrawSketchHandlerArc: public DrawSketchHandlerArcBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArc)
+
     friend DSHArcController;
     friend DSHArcControllerBase;
 
@@ -987,6 +990,3 @@ void DSHArcController::doConstructionMethodChanged()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArc_H

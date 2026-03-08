@@ -48,6 +48,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/ElementNamingUtils.h>
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
@@ -220,7 +221,7 @@ public:
     std::vector<int> edge_ids;
     TopTools_IndexedMapOfShape all_edges;
     TopTools_IndexedMapOfShape all_faces;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectApplicationDeletedObject;
     Connection connectApplicationDeletedDocument;
 
@@ -289,7 +290,7 @@ DlgFilletEdges::DlgFilletEdges(
     if (d->filletType == DlgFilletEdges::CHAMFER) {
         ui->parameterName->setTitle(tr("Chamfer parameters"));
         ui->labelfillet->setText(tr("Chamfer type"));
-        ui->labelRadius->setText(tr("Length:"));
+        ui->labelRadius->setText(tr("Length"));
         ui->filletType->setItemText(0, tr("Equal distance"));
         ui->filletType->setItemText(1, tr("Two distances"));
 
@@ -674,8 +675,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         for (size_t i = 0; i < e.size(); ++i) {
             auto& sub = subs[i];
             if (sub.newName.empty()) {
-                int idx = 0;
-                sscanf(sub.oldName.c_str(), "Edge%d", &idx);
+                int idx = Data::indexOfElement(sub.oldName, "Edge");
                 if (idx == 0) {
                     FC_WARN("missing element reference: " << sub.oldName);
                 }

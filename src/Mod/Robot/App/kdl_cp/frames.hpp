@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
                         frames.hpp `-  description
                        -------------------------
@@ -121,8 +123,7 @@
  *      Erwin Aertbelien, Div. PMA, Dep. of Mech. Eng., K.U.Leuven
  *
  ****************************************************************************/
-#ifndef KDL_FRAMES_H
-#define KDL_FRAMES_H
+#pragma once
 
 
 #include "utilities/kdl-config.h"
@@ -1261,8 +1262,4 @@ IMETHOD Wrench addDelta(const Wrench& a,const Wrench&da,double dt=1);
     //#include "rotation2.inl"
     //#include "frame2.inl"
 #include "frames.inl"
-#endif
-
-
-
 #endif

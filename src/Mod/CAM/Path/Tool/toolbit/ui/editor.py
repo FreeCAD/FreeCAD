@@ -27,9 +27,12 @@ from typing import Optional
 from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
+import os
+from Path.Preferences import getAssetPath
 from ...shape.ui.shapewidget import ShapeWidget
 from ...docobject.ui import DocumentObjectEditorWidget
 from ..models.base import ToolBit
+from ..util import setToolBitSchema
 
 translate = FreeCAD.Qt.translate
 
@@ -54,19 +57,18 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         self._toolbit = None
         self._show_shape = icon
         self._tool_no = tool_no
-
-        # Set schema to user preference if no document is open
-        # TODO: Add a preference for toolbit unit schema.
-        # We probably want to look at making it possible to have a toolbit be metric
-        # or imperial regardless of document settings / or user preferences, but for now this is sufficient.
-        if FreeCAD.ActiveDocument is None:
-            pref_schema = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
-                "UserSchema", 0
-            )
-            FreeCAD.Units.setSchema(pref_schema)
+        setToolBitSchema()
 
         # UI Elements
         self._label_edit = QtGui.QLineEdit()
+        self._toolbit_type_container = QtGui.QWidget()
+        container_layout = QtGui.QHBoxLayout(self._toolbit_type_container)
+        container_layout.setContentsMargins(0, 0, 0, 0)
+        self._toolbit_type_edit = QtGui.QLineEdit()
+        self._toolbit_type_edit.setReadOnly(True)
+        self._toolbit_type_combo = QtGui.QComboBox()
+        container_layout.addWidget(self._toolbit_type_edit)
+        container_layout.addWidget(self._toolbit_type_combo)
         self._id_label = QtGui.QLabel()  # Read-only ID
         self._id_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
 
@@ -82,7 +84,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         toolbit_group_box = QtGui.QGroupBox(translate("CAM", "Toolbit"))
         form_layout = QtGui.QFormLayout(toolbit_group_box)
         form_layout.addRow(translate("CAM", "Label:"), self._label_edit)
-        form_layout.addRow(translate("CAM", "ID:"), self._id_label)
+        form_layout.addRow(translate("CAM", "Toolbit Type:"), self._toolbit_type_container)
 
         # Optional tool number edit field.
         self._tool_no_edit = QtGui.QSpinBox()
@@ -107,8 +109,6 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         properties_layout.setStretchFactor(self._property_editor, 1)
 
         main_layout.addWidget(properties_group_box)
-
-        # Add stretch before shape widget to push it towards the bottom
         main_layout.addStretch(1)
 
         # Layout for centering the shape widget (created later)
@@ -122,6 +122,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         # Connections
         self._label_edit.editingFinished.connect(self._on_label_changed)
         self._tool_no_edit.valueChanged.connect(self._on_tool_no_changed)
+        self._toolbit_type_combo.currentIndexChanged.connect(self._on_toolbit_type_changed)
         self._property_editor.propertyChanged.connect(self.toolBitChanged)
 
         if toolbit:
@@ -141,13 +142,37 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
             self._tool_no = value
             self.toolNoChanged.emit(value)
 
+    def _on_toolbit_type_changed(self, index):
+        """Update the toolbit's type when the combo changes."""
+        if self._toolbit:
+            selected = self._toolbit_type_combo.itemData(index)
+            self._toolbit._shape_type = selected  # Save the user's selection
+            self._toolbit.obj.ShapeType = selected
+            self.toolBitChanged.emit()
+
     def load_toolbit(self, toolbit: ToolBit):
         """Load a ToolBit object into the editor."""
+        # Set schema based on the toolbit's Units property if available
+        toolbit_units = None
+        if toolbit and hasattr(toolbit.obj, "Units"):
+            toolbit_units = getattr(toolbit.obj, "Units", None)
+            # If Units is an enumeration, get the value
+            if isinstance(toolbit_units, (list, tuple)) and len(toolbit_units) > 0:
+                toolbit_units = toolbit_units[0]
+        if toolbit_units in ("Metric", "Imperial"):
+            setToolBitSchema(toolbit_units)
+        elif FreeCAD.ActiveDocument is None:
+            setToolBitSchema()
+
         self._toolbit = toolbit
         if not self._toolbit or not self._toolbit.obj:
             # Clear or disable fields if toolbit is invalid
             self._label_edit.clear()
             self._label_edit.setEnabled(False)
+            self._toolbit_type_edit.clear()
+            self._toolbit_type_edit.hide()
+            self._toolbit_type_combo.clear()
+            self._toolbit_type_combo.hide()
             self._id_label.clear()
             self._tool_no_edit.clear()
             self._property_editor.setObject(None)
@@ -164,6 +189,63 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         self._label_edit.setEnabled(True)
         self._label_edit.setText(self._toolbit.obj.Label)
         self._id_label.setText(self._toolbit.get_id())
+
+        # Set toolbit type
+        shape_class = self._toolbit._tool_bit_shape.__class__
+        base = shape_class.name
+        subtypes = shape_class.subtypes
+        current_type = (
+            self._toolbit._shape_type
+            if hasattr(self._toolbit, "_shape_type")
+            else shape_class.name.lower()
+        )
+        shape_dir = os.path.join(getAssetPath(), "Tools", "Shape")
+
+        has_file = (
+            bool(current_type)
+            and current_type != base.lower()
+            and os.path.isfile(os.path.join(shape_dir, f"{current_type}.fcstd"))
+        )
+
+        editable_types = [base.lower()]
+        for subtype in subtypes:
+            if not os.path.isfile(os.path.join(shape_dir, f"{subtype}.fcstd")):
+                editable_types.append(subtype)
+
+        is_readonly = has_file or len(editable_types) <= 1
+
+        if is_readonly:
+            # Read-only
+            raw_text = current_type or base.lower()
+            display_text = raw_text.replace("_", " ").replace("-", " ").title()
+            self._toolbit_type_edit.setText(display_text)
+            self._toolbit_type_edit.show()
+            self._toolbit_type_combo.hide()
+        else:
+            # Editable - populate combo with aliases that don't have independent shape files
+            self._toolbit_type_combo.clear()
+            for type_name in editable_types:
+                display = type_name.replace("_", " ").replace("-", " ").title()
+                self._toolbit_type_combo.addItem(display, type_name)
+
+            for i in range(self._toolbit_type_combo.count()):
+                if self._toolbit_type_combo.itemData(i) == current_type:
+                    self._toolbit_type_combo.setCurrentIndex(i)
+                    break
+            else:
+                # No match found - check if current_type is the base class name
+                if self._toolbit_type_combo.count() > 0:
+                    if current_type == base or current_type == base.lower():
+                        # It's using the class name (e.g., "Endmill") - keep it
+                        # Set to first item in combo for display but don't change _shape_type
+                        self._toolbit_type_combo.setCurrentIndex(0)
+                    else:
+                        # Unknown type - default to first item (class name)
+                        self._toolbit_type_combo.setCurrentIndex(0)
+                        self._toolbit._shape_type = editable_types[0] if editable_types else base
+            self._toolbit_type_edit.hide()
+            self._toolbit_type_combo.show()
+
         self._tool_no_edit.setValue(int(self._tool_no or 1))
 
         # Get properties and suffixes
@@ -266,16 +348,42 @@ class ToolBitEditor(QtGui.QWidget):
         self.tool_no = tool_no
         self.default_title = self.form.windowTitle()
 
-        # Get first tab from the form, add the shape widget at the top.
-        tool_tab_layout = self.form.toolTabLayout
-        widget = ShapeWidget(toolbit._tool_bit_shape)
-        tool_tab_layout.addWidget(widget)
+        # Store the original schema to restore on close
+        self._original_schema = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+            "UserSchema", 6
+        )
+        self._tab_closed = False
 
-        # Add tool properties editor to the same tab.
-        props = ToolBitPropertiesWidget(toolbit, tool_no, self, icon=icon)
-        props.toolBitChanged.connect(self._update)
-        props.toolNoChanged.connect(self._on_tool_no_changed)
-        tool_tab_layout.addWidget(props)
+        # Get first tab from the form, add the shape widget to the right.
+        tool_tab_layout = self.form.toolTabLayout
+
+        # Create a horizontal layout for the tab content
+        tab_content_layout = QtGui.QHBoxLayout()
+
+        # Add tool properties editor to the left with stretch
+        self._props = ToolBitPropertiesWidget(toolbit, tool_no, self, icon=icon)
+        self._last_units_value = self._get_units_value(self._props)
+        self._props.toolBitChanged.connect(self._on_toolbit_changed)
+        self._props.toolBitChanged.connect(self._update)
+        self._props.toolNoChanged.connect(self._on_tool_no_changed)
+
+        # Wrap properties in a scroll area for vertical scrolling
+        scroll_area = QtGui.QScrollArea()
+        scroll_area.setWidget(self._props)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        scroll_area.setMinimumHeight(550)  # Set minimum height for the scroll area
+        scroll_area.setMaximumHeight(600)  # Set maximum height to prevent excessive growth
+
+        tab_content_layout.addWidget(scroll_area, 1)
+
+        # Add shape widget to the right without stretch
+        widget = ShapeWidget(toolbit._tool_bit_shape)
+        tab_content_layout.addWidget(widget, 0)
+
+        # Add the horizontal layout to the tab layout
+        tool_tab_layout.addLayout(tab_content_layout)
 
         self.form.tabWidget.setCurrentIndex(0)
         self.form.tabWidget.currentChanged.connect(self._on_tab_switched)
@@ -306,6 +414,66 @@ class ToolBitEditor(QtGui.QWidget):
         self.form.plainTextEditNotes.setPlainText(tool.get_notes())
         self.form.plainTextEditNotes.textChanged.connect(self._on_notes_changed)
         """
+
+        self._update()
+
+    def _get_units_value(self, props):
+        """
+        Helper to extract the Units value from the toolbit properties.
+        """
+        if props and hasattr(props._toolbit.obj, "Units"):
+            units_value = getattr(props._toolbit.obj, "Units", None)
+            if isinstance(units_value, (list, tuple)) and len(units_value) > 0:
+                units_value = units_value[0]
+            return units_value
+        return None
+
+    def _on_toolbit_changed(self):
+        """
+        Slot called when the toolbit is changed. If the Units value has changed,
+        refreshes the property editor widget to update the schema and UI.
+        """
+        units_value = self._get_units_value(self._props)
+        if units_value in ("Metric", "Imperial") and units_value != self._last_units_value:
+            self._refresh_property_editor()
+        self._last_units_value = units_value
+
+    def _refresh_property_editor(self):
+        """
+        Refreshes the property editor widget in the tab.
+        Removes the current ToolBitPropertiesWidget, restores the original units schema,
+        recreates the widget, and reconnects all signals. This ensures the UI and schema
+        are in sync with the current toolbit's units, and user changes are preserved
+        because the ToolBit object is always up to date.
+        """
+        # Get the horizontal layout and scroll area
+        tool_tab_layout = self.form.toolTabLayout
+        tab_content_layout = tool_tab_layout.itemAt(0).layout()  # Get the QHBoxLayout
+        scroll_area = tab_content_layout.itemAt(0).widget()  # Get the scroll area
+
+        # Remove the current property editor widget from scroll area
+        scroll_area.takeWidget()
+        self._props.deleteLater()
+
+        # Restore the original schema
+        FreeCAD.Units.setSchema(self._original_schema)
+
+        # Recreate the property editor with the current toolbit
+        self._props = ToolBitPropertiesWidget(self.toolbit, self.tool_no, self, icon=False)
+        self._last_units_value = self._get_units_value(self._props)
+        self._props.toolBitChanged.connect(self._on_toolbit_changed)
+        self._props.toolBitChanged.connect(self._update)
+        self._props.toolNoChanged.connect(self._on_tool_no_changed)
+
+        # Set the new widget in the scroll area
+        scroll_area.setWidget(self._props)
+        self.form.tabWidget.setCurrentIndex(0)
+
+    def _restore_original_schema(self):
+        """
+        Restores the original units schema that was active before the ToolBit editor was opened.
+        """
+        FreeCAD.Units.setSchema(self._original_schema)
 
     def _update(self):
         title = self.default_title

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
@@ -131,9 +133,11 @@ void TaskFeatureParameters::onUpdateView(bool on)
 void TaskFeatureParameters::recomputeFeature()
 {
     if (!blockUpdate) {
-        App::DocumentObject* obj = getObject();
-        assert(obj);
-        obj->recomputeFeature();
+        auto* feature = getObject<PartDesign::Feature>();
+        assert(feature);
+
+        feature->recomputeFeature();
+        feature->recomputePreview();
     }
 }
 

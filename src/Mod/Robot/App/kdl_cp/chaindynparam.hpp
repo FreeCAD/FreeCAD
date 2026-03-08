@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Copyright  (C)  2009  Dominick Vanthienen <dominick dot vanthienen at mech dot kuleuven dot be>
 
 // Version: 1.0
@@ -19,8 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDLCHAINDYNPARAM_HPP
-#define KDLCHAINDYNPARAM_HPP
+#pragma once
 
 #include "chainidsolver_recursive_newton_euler.hpp"
 #include "articulatedbodyinertia.hpp"
@@ -74,5 +75,3 @@ namespace KDL {
     };
 
 }
-
-#endif

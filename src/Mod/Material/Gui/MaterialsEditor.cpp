@@ -995,28 +995,28 @@ bool MaterialsEditor::updateMaterialPreview() const
 {
     if (_material->hasAppearanceProperty(QStringLiteral("AmbientColor"))) {
         QString color = _material->getAppearanceValueString(QStringLiteral("AmbientColor"));
-        _rendered->setAmbientColor(getColorHash(color, 255));
+        _rendered->setAmbientColor(getColorHash(color));
     }
     else {
         _rendered->resetAmbientColor();
     }
     if (_material->hasAppearanceProperty(QStringLiteral("DiffuseColor"))) {
         QString color = _material->getAppearanceValueString(QStringLiteral("DiffuseColor"));
-        _rendered->setDiffuseColor(getColorHash(color, 255));
+        _rendered->setDiffuseColor(getColorHash(color));
     }
     else {
         _rendered->resetDiffuseColor();
     }
     if (_material->hasAppearanceProperty(QStringLiteral("SpecularColor"))) {
         QString color = _material->getAppearanceValueString(QStringLiteral("SpecularColor"));
-        _rendered->setSpecularColor(getColorHash(color, 255));
+        _rendered->setSpecularColor(getColorHash(color));
     }
     else {
         _rendered->resetSpecularColor();
     }
     if (_material->hasAppearanceProperty(QStringLiteral("EmissiveColor"))) {
         QString color = _material->getAppearanceValueString(QStringLiteral("EmissiveColor"));
-        _rendered->setEmissiveColor(getColorHash(color, 255));
+        _rendered->setEmissiveColor(getColorHash(color));
     }
     else {
         _rendered->resetEmissiveColor();
@@ -1047,7 +1047,7 @@ void MaterialsEditor::updatePreview() const
     updateMaterialPreview();
 }
 
-QString MaterialsEditor::getColorHash(const QString& colorString, int colorRange)
+QString MaterialsEditor::getColorHash(const QString& colorString)
 {
     /*
         returns a '#000000' string from a '(0.1,0.2,0.3)' string. Optionally the string
@@ -1071,11 +1071,9 @@ QString MaterialsEditor::getColorHash(const QString& colorString, int colorRange
         stream >> alpha;
     }
 
-    QColor color(static_cast<int>(red * colorRange),
-                 static_cast<int>(green * colorRange),
-                 static_cast<int>(blue * colorRange),
-                 static_cast<int>(alpha * colorRange));
-    return color.name();
+    Base::Color color(red, green, blue, alpha);
+    QColor qcolor = color.asValue<QColor>();
+    return qcolor.name();
 }
 
 void MaterialsEditor::updateMaterialAppearance()

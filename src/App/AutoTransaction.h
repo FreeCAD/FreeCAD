@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2019 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -20,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef APP_AUTOTRANSACTION_H
-#define APP_AUTOTRANSACTION_H
+#pragma once
 
 #include <cstddef>
 #include <FCGlobal.h>
@@ -156,5 +157,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // APP_AUTOTRANSACTION_H

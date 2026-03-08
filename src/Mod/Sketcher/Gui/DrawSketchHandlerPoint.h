@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerPoint_H
-#define SKETCHERGUI_DrawSketchHandlerPoint_H
+#pragma once
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
@@ -56,6 +57,8 @@ using DrawSketchHandlerPointBase = DrawSketchControllableHandler<DSHPointControl
 
 class DrawSketchHandlerPoint: public DrawSketchHandlerPointBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPoint)
+
     // Allow specialisations of controllers access to private members
     friend DSHPointController;
 
@@ -300,6 +303,3 @@ void DSHPointController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerPoint_H

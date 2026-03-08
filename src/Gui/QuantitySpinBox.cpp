@@ -453,6 +453,9 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
     const auto isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
 
     if (d->normalize && isEnter && !isNormalized()) {
+        // ensure that input is up to date
+        handlePendingEmit();
+
         normalize();
         return;
     }
@@ -883,6 +886,7 @@ void QuantitySpinBox::stepBy(int steps)
     }
 
     Quantity quant(val, d->unitStr.toStdString());
+    quant.setFormat(d->quantity.getFormat());
     updateText(quant);
     updateFromCache(true);
     update();

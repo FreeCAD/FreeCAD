@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -94,7 +96,6 @@ void DrawSketchKeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent* keyEv
     QRegularExpression rx(QStringLiteral("^[0-9]$"));
     auto match = rx.match(keyEvent->text());
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
-        || keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab
         || keyEvent->key() == Qt::Key_Minus || keyEvent->key() == Qt::Key_Period
         || keyEvent->key() == Qt::Key_Comma
         || match.hasMatch()

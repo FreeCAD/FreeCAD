@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -67,7 +66,7 @@
 
 // Boost
 #include <boost_graph_adjacency_list.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/core/ignore_unused.hpp>
@@ -90,5 +89,3 @@
 #if defined(FC_OS_WIN32)
 # include <windows.h>
 #endif
-
-#endif  // GUI_PRECOMPILED_H

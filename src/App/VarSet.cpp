@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2024 Ondsel <development@ondsel.com>                     *
  *                                                                          *

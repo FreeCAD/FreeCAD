@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2025 The FreeCAD Project Association AISBL               *
@@ -21,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketcherTransformationExpressionHelper_H
-#define SKETCHERGUI_SketcherTransformationExpressionHelper_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -117,5 +117,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SketcherTransformationExpressionHelper_H

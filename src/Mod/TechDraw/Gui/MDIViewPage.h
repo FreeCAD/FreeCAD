@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_MDIVIEWPAGE_H
-#define TECHDRAWGUI_MDIVIEWPAGE_H
+#pragma once
 
 #include <QPrinter>
 
@@ -116,6 +115,7 @@ public Q_SLOTS:
     void saveSVG();
     void saveDXF();
     void savePDF();
+    void toggleFrame();
     void toggleKeepUpdated();
     void sceneSelectionChanged();
     void printAll();
@@ -135,9 +135,10 @@ protected:
     void sceneSelectionManager();
 
 private:
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectDeletedObject;
 
+    QAction *m_toggleFrameAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;
@@ -182,5 +183,3 @@ protected:
 
 
 } // namespace MDIViewPageGui
-
-#endif // TECHDRAWGUI_MDIVIEWPAGE_H

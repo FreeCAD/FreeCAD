@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_GCS_H
-#define PLANEGCS_GCS_H
+#pragma once
 
 #include <Eigen/QR>
 
@@ -118,6 +119,7 @@ private:
     std::vector<std::vector<double*>> pDependentParametersGroups;
 
     std::vector<Constraint*> clist;
+    std::vector<Constraint*> drivenConstraints;
     std::map<Constraint*, VEC_pD> c2p;                // constraint to parameter adjacency list
     std::map<double*, std::vector<Constraint*>> p2c;  // parameter to constraint adjacency list
 
@@ -237,6 +239,8 @@ public:
     double convergence;
     double convergenceRedundant;
     QRAlgorithm qrAlgorithm;
+    bool autoChooseAlgorithm;
+    int autoQRThreshold;
     DogLegGaussStep dogLegGaussStep;
     double qrpivotThreshold;
     DebugMode debugMode;
@@ -317,6 +321,7 @@ public:
         int tagId = 0,
         bool driving = true
     );
+    int addConstraintPerpendicular(Point& l1p1, Point& l1p2, Line& l2, int tagId = 0, bool driving = true);
     int addConstraintL2LAngle(Line& l1, Line& l2, double* angle, int tagId = 0, bool driving = true);
     int addConstraintL2LAngle(
         Point& l1p1,
@@ -592,6 +597,8 @@ public:
     int solve(SubSystem* subsysA, SubSystem* subsysB, bool isFine = true, bool isRedundantsolving = false);
 
     void applySolution();
+    void evaluateDrivenConstraints();
+
     void undoSolution();
     // FIXME: looks like XconvergenceFine is not the solver precision, at least in DogLeg
     // solver.
@@ -671,5 +678,3 @@ void deleteAllContent(std::vector<Constraint*>& constrvec);
 void deleteAllContent(std::vector<SubSystem*>& subsysvec);
 
 }  // namespace GCS
-
-#endif  // PLANEGCS_GCS_H

@@ -1151,13 +1151,7 @@ void SelectionSingleton::_SelObj::log(bool remove, bool clearPreselect)
     ss << "Gui.Selection." << (remove ? "removeSelection" : "addSelection") << "('" << DocName
        << "','" << FeatName << "'";
     if (!SubName.empty()) {
-        if (!elementName.oldName.empty() && !elementName.newName.empty()) {
-            ss << ",'" << SubName.substr(0, SubName.size() - elementName.newName.size())
-               << elementName.oldName << "'";
-        }
-        else {
-            ss << ",'" << SubName << "'";
-        }
+        ss << "," << getSubString();
     }
     if (!remove && (x || y || z || !clearPreselect)) {
         if (SubName.empty()) {
@@ -1170,6 +1164,18 @@ void SelectionSingleton::_SelObj::log(bool remove, bool clearPreselect)
     }
     ss << ')';
     Application::Instance->macroManager()->addLine(MacroManager::Cmt, ss.str().c_str());
+}
+
+std::string SelectionSingleton::_SelObj::getSubString() const
+{
+    if (!SubName.empty()) {
+        if (!elementName.oldName.empty() && !elementName.newName.empty()) {
+            return "'" + SubName.substr(0, SubName.size() - elementName.newName.size())
+                + elementName.oldName + "'";
+        }
+        return "'" + SubName + "'";
+    }
+    return "";
 }
 
 bool SelectionSingleton::addSelection(
@@ -1440,6 +1446,14 @@ bool SelectionSingleton::addSelections(
         notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
+    std::ostringstream ss;
+    bool anyLogged = false;
+
+    if (!logDisabled) {
+        ss << "Gui.Selection.addSelection(App.getDocument('" << pDocName << "').getObject('"
+           << pObjectName << "'),[";
+    }
+
     bool update = false;
     for (const auto& pSubName : pSubNames) {
         _SelObj temp;
@@ -1451,6 +1465,16 @@ bool SelectionSingleton::addSelections(
         temp.x = 0;
         temp.y = 0;
         temp.z = 0;
+
+        if (!logDisabled && !temp.SubName.empty()) {
+            temp.logged = true;
+            if (anyLogged) {
+                ss << ",";
+            }
+            anyLogged = true;
+
+            ss << temp.getSubString();
+        }
 
         _SelList.push_back(temp);
         _SelStackForward.clear();
@@ -1467,6 +1491,11 @@ bool SelectionSingleton::addSelections(
 
         notify(std::move(Chng));
         update = true;
+    }
+
+    if (!logDisabled && anyLogged) {
+        ss << "])";
+        Application::Instance->macroManager()->addLine(MacroManager::Cmt, ss.str().c_str());
     }
 
     if (update) {

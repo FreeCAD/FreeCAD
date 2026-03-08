@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MAINWINDOW_H
-#define GUI_MAINWINDOW_H
+#pragma once
 
 #include <QEvent>
 #include <QMainWindow>
@@ -314,6 +313,8 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
+    bool checkFirstRun();
+    void moveToDefaultPosition(QRect rect, QPoint pos);
     void setupDockWindows();
     bool setupTaskView();
     bool setupSelectionView();
@@ -368,6 +369,12 @@ private Q_SLOTS:
      * \internal
      */
     void delayedStartup();
+#ifdef Q_OS_MAC
+    /**
+     * \internal
+     */
+    void registerQuickLookExtensions();
+#endif
     /**
      * \internal
      */
@@ -456,5 +463,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MAINWINDOW_H

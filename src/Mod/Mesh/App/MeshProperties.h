@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_MESHPROPERTIES_H
-#define MESH_MESHPROPERTIES_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -328,5 +327,3 @@ private:
 };
 
 }  // namespace Mesh
-
-#endif  // MESH_MESHPROPERTIES_H

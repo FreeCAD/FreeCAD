@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -436,7 +438,7 @@ public:
                 }
                 else {
                     if ((geoGroup && geoGroup->hasObject(plane, true))
-                        || !App::GeoFeatureGroupExtension::getGroupOfObject(plane)) {
+                        || App::GeoFeatureGroupExtension::getGroupOfObject(plane)) {
                         status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
                     }
                     else {

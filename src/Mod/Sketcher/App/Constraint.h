@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_CONSTRAINT_H
-#define SKETCHER_CONSTRAINT_H
+#pragma once
 
 #include <array>
 
@@ -247,6 +248,3 @@ protected:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_CONSTRAINT_H

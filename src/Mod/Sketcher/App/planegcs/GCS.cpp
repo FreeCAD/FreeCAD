@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
@@ -484,6 +486,8 @@ System::System()
     , convergence(1e-10)
     , convergenceRedundant(1e-10)
     , qrAlgorithm(EigenSparseQR)
+    , autoChooseAlgorithm(true)
+    , autoQRThreshold(1000)
     , dogLegGaussStep(FullPivLU)
     , qrpivotThreshold(1E-13)
     , debugMode(Minimal)
@@ -532,6 +536,7 @@ void System::clear()
     reference.clear();
     clearSubSystems();
     deleteAllContent(clist);
+    drivenConstraints.clear();
     c2p.clear();
     p2c.clear();
 }
@@ -562,6 +567,9 @@ int System::addConstraint(Constraint* constr)
     if (constr->getTag() >= 0) {  // negatively tagged constraints have no impact
         hasDiagnosis = false;     // on the diagnosis
     }
+    if (!constr->isDriving()) {
+        drivenConstraints.push_back(constr);
+    }
 
     clist.push_back(constr);
     VEC_pD constr_params = constr->params();
@@ -575,13 +583,11 @@ int System::addConstraint(Constraint* constr)
 
 void System::removeConstraint(Constraint* constr)
 {
-    std::vector<Constraint*>::iterator it;
-    it = std::ranges::find(clist, constr);
-    if (it == clist.end()) {
+    if (std::erase(clist, constr) == 0) {
         return;
     }
+    std::erase(drivenConstraints, constr);
 
-    clist.erase(it);
     if (constr->getTag() >= 0) {
         hasDiagnosis = false;
     }
@@ -715,6 +721,14 @@ int System::addConstraintPerpendicular(
 )
 {
     Constraint* constr = new ConstraintPerpendicular(l1p1, l1p2, l2p1, l2p2);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    return addConstraint(constr);
+}
+
+int System::addConstraintPerpendicular(Point& l1p1, Point& l1p2, Line& l2, int tagId, bool driving)
+{
+    Constraint* constr = new ConstraintPerpendicular(l1p1, l1p2, l2);
     constr->setTag(tagId);
     constr->setDriving(driving);
     return addConstraint(constr);
@@ -1739,11 +1753,13 @@ void System::initSolution(Algorithm alg)
     std::vector<Constraint*> clistR;
     if (!redundant.empty()) {
         std::ranges::copy_if(clist, std::back_inserter(clistR), [this](auto constr) {
-            return this->redundant.count(constr) == 0;
+            return this->redundant.count(constr) == 0 && constr->isDriving();
         });
     }
     else {
-        clistR = clist;
+        std::ranges::copy_if(clist, std::back_inserter(clistR), [this](auto constr) {
+            return constr->isDriving();
+        });
     }
 
     // partitioning into decoupled components
@@ -1830,7 +1846,7 @@ void System::initSolution(Algorithm alg)
             clists[cid],
             std::back_inserter(clist0),
             std::back_inserter(clist1),
-            [](auto constr) { return constr->getTag() >= 0 && constr->isDriving(); }
+            [](auto constr) { return constr->getTag() >= 0; }
         );
 
         if (!clist0.empty()) {
@@ -4679,6 +4695,13 @@ void System::applySolution()
             *(it->first) = *(it->second);
         }
     }
+    evaluateDrivenConstraints();
+}
+void System::evaluateDrivenConstraints()
+{
+    for (auto dconstr : drivenConstraints) {
+        dconstr->evaluate();
+    }
 }
 
 void System::undoSolution()
@@ -4805,6 +4828,15 @@ int System::diagnose(Algorithm alg)
     // DoFs
     hasDiagnosis = true;
     dofs = pdiagnoselist.size();
+
+    // Use DenseQR for small to medium systems to avoid SparseQR rank issues.
+    // SparseQR is known to fail rank detection on specific geometric structures (e.g. aligned slots).
+    // 200 parameters roughly corresponds to ~100 points/curves, covering most complex sketches
+    // where stability is preferred over pure O(N) performance.
+    // See: https://github.com/FreeCAD/FreeCAD/issues/10903
+    if (autoChooseAlgorithm) {
+        qrAlgorithm = dofs < autoQRThreshold ? EigenDenseQR : EigenSparseQR;
+    }
 
     // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
     // consideration taken in that decisions. I see that:
@@ -5399,12 +5431,12 @@ void System::eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd& 
         // eliminate non zeros above pivot
         assert(R(i, i) != 0);
         for (int row = 0; row < i; row++) {
-            if (R(row, i) != 0) {
+            if (fabs(R(row, i)) > 1e-10) {
                 double coef = R(row, i) / R(i, i);
                 R.block(row, i + 1, 1, R.cols() - i - 1) -= coef
                     * R.block(i, i + 1, 1, R.cols() - i - 1);
-                R(row, i) = 0;
             }
+            R(row, i) = 0;
         }
     }
 }

@@ -33,13 +33,22 @@ try:
     matplotlib.use("QtAgg")
 
     # Force matplotlib to use PySide backend by temporarily unloading PyQt
+    pyqt5_unloaded = False
+    pyqt6_unloaded = False
     if "PyQt5.QtCore" in sys.modules:
         del sys.modules["PyQt5.QtCore"]
-        import matplotlib.pyplot as plt
+        pyqt5_unloaded = True
+    if "PyQt6.QtCore" in sys.modules:
+        del sys.modules["PyQt6.QtCore"]
+        pyqt6_unloaded = True
+
+    import matplotlib.pyplot as plt
+
+    # restore PyQt if unloaded
+    if pyqt5_unloaded:
         import PyQt5.QtCore
-    else:
-        print("default matplotlib import")
-        import matplotlib.pyplot as plt
+    if pyqt6_unloaded:
+        import PyQt6.QtCore
 
     from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
     from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar

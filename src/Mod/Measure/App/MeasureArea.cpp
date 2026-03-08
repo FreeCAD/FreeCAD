@@ -57,7 +57,8 @@ bool MeasureArea::isSupported(App::MeasureElementType type)
     return (type == App::MeasureElementType::PLANE) ||
            (type == App::MeasureElementType::CYLINDER) ||
            (type == App::MeasureElementType::SURFACE) ||
-           (type == App::MeasureElementType::VOLUME);
+           (type == App::MeasureElementType::VOLUME) ||
+           (type == App::MeasureElementType::DISC);
     // clang-format on
 }
 
@@ -139,7 +140,7 @@ void MeasureArea::onChanged(const App::Property* prop)
 }
 
 
-Base::Placement MeasureArea::getPlacement()
+Base::Placement MeasureArea::getPlacement() const
 {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_EDGECLUSTER_H
-#define PART_EDGECLUSTER_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -89,5 +88,3 @@ private:
 };
 
 }  // namespace Part
-
-#endif  // PART_EDGECLUSTER_H

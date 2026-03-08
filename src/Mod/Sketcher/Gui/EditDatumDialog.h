@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditDatumDialog_H
-#define SKETCHERGUI_EditDatumDialog_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -65,10 +66,10 @@ private Q_SLOTS:
     void drivingToggled(bool);
     void datumChanged();
     void formEditorOpened(bool);
+    void typeChanged(bool);
 
 private:
     void performAutoScale(double newDatum);
 };
 
 }  // namespace SketcherGui
-#endif  // SKETCHERGUI_DrawSketchHandler_H

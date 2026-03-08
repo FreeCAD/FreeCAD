@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_CommandConstraints_H
-#define SKETCHERGUI_CommandConstraints_H
+#pragma once
 
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -137,4 +138,3 @@ void doEndpointToEdgeTangency(
 void notifyConstraintSubstitutions(const QString& message);
 
 }  // namespace SketcherGui
-#endif  // SKETCHERGUI_CommandConstraints_H

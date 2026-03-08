@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_UNITSSCHEMA_H
-#define BASE_UNITSSCHEMA_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -50,7 +49,6 @@ public:
     [[nodiscard]] std::string getName() const;
     [[nodiscard]] std::string getDescription() const;
     [[nodiscard]] int getNum() const;
-    [[nodiscard]] std::string getUnitText(const Quantity& quant) const;
 
     std::string translate(const Quantity& quant) const;
     std::string translate(const Quantity& quant, double& factor, std::string& unitString) const;
@@ -67,4 +65,3 @@ private:
 
 
 }  // namespace Base
-#endif  // BASE_UNITSSCHEMA_H

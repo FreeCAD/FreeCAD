@@ -272,24 +272,35 @@ class Tag:
 
 
 class MapWireToTag:
-    def __init__(self, edge, tag, i, maxZ, hSpeed, vSpeed):
+    def __init__(self, edge, tag, i, maxZ, hSpeed, vSpeed, tolerance):
         debugEdge(edge, "MapWireToTag(%.2f, %.2f, %.2f)" % (i.x, i.y, i.z))
         self.tag = tag
         self.maxZ = maxZ
         self.hSpeed = hSpeed
         self.vSpeed = vSpeed
+        self.tolerance = tolerance
         if Path.Geom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
             tail = edge
             self.commands = []
             debugEdge(tail, ".........=")
         elif Path.Geom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
             debugEdge(edge, "++++++++ .")
-            self.commands = Path.Geom.cmdsForEdge(edge, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+            self.commands = Path.Geom.cmdsForEdge(
+                edge,
+                hSpeed=self.hSpeed,
+                vSpeed=self.vSpeed,
+                tol=tolerance,
+            )
             tail = None
         else:
             e, tail = Path.Geom.splitEdgeAt(edge, i)
             debugEdge(e, "++++++++ .")
-            self.commands = Path.Geom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+            self.commands = Path.Geom.cmdsForEdge(
+                e,
+                hSpeed=self.hSpeed,
+                vSpeed=self.vSpeed,
+                tol=tolerance,
+            )
             debugEdge(tail, ".........-")
             self.initialEdge = edge
         self.tail = tail
@@ -555,9 +566,9 @@ class MapWireToTag:
                         commands.extend(
                             Path.Geom.cmdsForEdge(
                                 e,
-                                False,
                                 hSpeed=self.hSpeed,
                                 vSpeed=self.vSpeed,
+                                tol=self.tolerance,
                             )
                         )
                 if rapid:
@@ -573,7 +584,12 @@ class MapWireToTag:
                 commands = []
                 for e in self.edges:
                     commands.extend(
-                        Path.Geom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
+                        Path.Geom.cmdsForEdge(
+                            e,
+                            hSpeed=self.hSpeed,
+                            vSpeed=self.vSpeed,
+                            tol=self.tolerance,
+                        )
                     )
                 return commands
         return []
@@ -1028,6 +1044,8 @@ class ObjectTagDressup:
         self.mappers = []
         mapper = None
 
+        job = PathUtils.findParentJob(obj)
+        tol = job.GeometryTolerance.Value
         tc = PathDressup.toolController(obj.Base)
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
@@ -1062,6 +1080,7 @@ class ObjectTagDressup:
                         pathData.maxZ,
                         hSpeed=horizFeed,
                         vSpeed=vertFeed,
+                        tolerance=tol,
                     )
                     self.mappers.append(mapper)
                     edge = mapper.tail
@@ -1086,7 +1105,7 @@ class ObjectTagDressup:
                             )
                     else:
                         commands.extend(
-                            Path.Geom.cmdsForEdge(edge, hSpeed=horizFeed, vSpeed=vertFeed)
+                            Path.Geom.cmdsForEdge(edge, hSpeed=horizFeed, vSpeed=vertFeed, tol=tol)
                         )
                 edge = None
                 t = 0

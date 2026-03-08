@@ -23,28 +23,16 @@
  ***************************************************************************/
 
 
-#ifndef SRC_BASE_TOOLS_H_
-#define SRC_BASE_TOOLS_H_
+#pragma once
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
+#include <algorithm>
 #include <cmath>
 #include <numbers>
 #include <ostream>
 #include <string>
 #include <vector>
-
-#include <boost/signals2/shared_connection_block.hpp>
-
-namespace boost
-{
-namespace signals2
-{
-class connection;
-}
-}  // namespace boost
-
+#include <fastsignals/signal.h>
 
 class QString;
 
@@ -332,12 +320,10 @@ private:
 
 class ConnectionBlocker
 {
-    using Connection = boost::signals2::connection;
-    using ConnectionBlock = boost::signals2::shared_connection_block;
-    ConnectionBlock blocker;
+    fastsignals::shared_connection_block blocker;
 
 public:
-    ConnectionBlocker(Connection& c)
+    ConnectionBlocker(fastsignals::advanced_connection& c)
         : blocker(c)
     {}
     ~ConnectionBlocker() = default;
@@ -357,7 +343,23 @@ struct BaseExport Tools
      */
     static std::string getIdentifier(const std::string& name);
     static std::wstring widen(const std::string& str);
+
+    /**
+     * Locale-dependent, per-character "narrowing" of a std::wstring into a std::string using the
+     * C++ locale facet std::ctype<char>. Characters outside the locale's representable set get
+     * replaced with 0, producing embedded NULs (and corrupt the string). Use with caution! Most
+     * code should prefer wstringToString().
+     */
     static std::string narrow(const std::wstring& str);
+
+#ifdef FC_OS_WIN32
+    /**
+     * True UTF-16 to UTF-8 conversion. Handles full Unicode range, including surrogate pairs. Only
+     * needed on Windows, and internally uses a Win32 API call to do its work.
+     */
+    static std::string wstringToString(const std::wstring& str);
+#endif
+
     static std::string escapedUnicodeFromUtf8(const char* s);
     static std::string escapedUnicodeToUtf8(const std::string& s);
     static std::string escapeQuotesFromString(const std::string& s);
@@ -439,6 +441,3 @@ template<class... Ts>
 Overloads(Ts...) -> Overloads<Ts...>;
 
 }  // namespace Base
-
-
-#endif  // SRC_BASE_TOOLS_H_

@@ -301,6 +301,18 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def setAllowUnaligned(self, state: bool, /) -> None:
+        """
+        Set whether unaligned geometry is allowed in the sketch.
+
+        setAllowUnaligned(state:bool)
+
+            Args:
+                state: `True` allows unaligned geometry,
+                    `False` enforces aligned geometry.
+        """
+        ...
+
     def carbonCopy(self, objName: str, asConstruction: bool = True, /) -> None:
         """
         Copy another sketch's geometry and constraints into this sketch.
@@ -338,6 +350,17 @@ class SketchObject(Part2DObject):
 
             Args:
                 extGeoId: The zero-based index of the external geometry to remove.
+        """
+        ...
+
+    def delExternals(self, extGeoIds: List[int], /) -> None:
+        """
+        Delete a list of external geometry links from the sketch.
+
+        delExternals(extGeoIds:List(int))
+
+            Args:
+                extGeoIds: A list of zero-based indices of the external geometry to remove.
         """
         ...
 

@@ -1,5 +1,6 @@
-#ifndef KDLPV_TRAITS_H 
-#define KDLPV_TRAITS_H 
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#pragma once
 
 #include "utility.h"
 
@@ -102,10 +103,3 @@ struct Traits<KDL::VectorVel> {
 	typedef KDL::Vector valueType;
 	typedef KDL::VectorVel derivType;
 };
-
-
-
-#endif
-
-
-

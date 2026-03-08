@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TRANSLATOR_H
-#define GUI_TRANSLATOR_H
+#pragma once
 
 #include <QObject>
 #include <list>
@@ -108,5 +109,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TRANSLATOR_H

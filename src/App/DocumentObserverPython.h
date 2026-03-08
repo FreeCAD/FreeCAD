@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,11 +23,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBSERVERPYTHON_H
-#define APP_DOCUMENTOBSERVERPYTHON_H
+#pragma once
 
 #include <FCGlobal.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <CXX/Objects.hxx>
 #include <string>
 #include <vector>
@@ -123,7 +124,7 @@ private:
 
     using Connection = struct PythonObject
     {
-        boost::signals2::scoped_connection slot;
+        fastsignals::scoped_connection slot;
         Py::Object py;
         PyObject* ptr()
         {
@@ -163,5 +164,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // APP_DOCUMENTOBSERVERPYTHON_H

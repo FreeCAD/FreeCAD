@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -200,7 +202,6 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const
 }
 TopoShape ProfileBased::getTopoShapeVerifiedFace(
     bool silent,
-    [[maybe_unused]] bool doFit,  // TODO: Remove parameter
     bool allowOpen,
     const App::DocumentObject* profile,
     const std::vector<std::string>& _subs
@@ -235,6 +236,9 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
 
 
                     if (subshape.isNull()) {
+                        if (silent) {
+                            return {};
+                        }
                         FC_THROWM(
                             Base::CADKernelError,
                             "Sub shape not found: " << obj->getFullName() << "." << sub
@@ -622,7 +626,7 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
     TopoShape shape;
     const Part::Part2DObject* sketch = getVerifiedSketch(true);
     if (!sketch) {
-        shape = getTopoShapeVerifiedFace();
+        shape = getTopoShapeVerifiedFace(true);
     }
     else if (sketch->MapMode.getValue() == Attacher::mmFlatFace
              && sketch->AttachmentSupport.getValue()) {
@@ -1052,15 +1056,6 @@ bool ProfileBased::checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& f
     return false;
 }
 
-void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
-{
-    (void)newShape;
-    // Realthunder: with the new topological naming, I don't think this function
-    // is necessary. A missing element will cause an explicitly error, and the
-    // user will be force to manually select the element. Various editors, such
-    // as dress up editors, can perform element guessing when activated.
-}
-
 namespace PartDesign
 {
 struct gp_Pnt_Less
@@ -1369,10 +1364,10 @@ Base::Vector3d ProfileBased::getProfileNormal() const
         return SketchVector;
     }
 
-    // For newer version, do not do fitting, as it may flip the face normal for
-    // some reason.
-    TopoShape shape = getTopoShapeVerifiedFace(true, true, true);  //, _ProfileBasedVersion.getValue()
-                                                                   //<= 0);
+    TopoShape shape = getTopoShapeVerifiedFace(true, true);
+    if (shape.isNull()) {
+        return SketchVector;
+    }
 
     gp_Pln pln;
     if (shape.findPlane(pln)) {

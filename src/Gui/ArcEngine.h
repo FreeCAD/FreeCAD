@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ARCENGINE_H
-#define GUI_ARCENGINE_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <Inventor/fields/SoMFColor.h>
@@ -73,5 +72,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_ARCENGINE_H

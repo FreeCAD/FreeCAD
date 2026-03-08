@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewSpreadsheet_h_
-#define DrawViewSpreadsheet_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -77,6 +76,3 @@ using DrawViewSpreadsheetPython = App::FeaturePythonT<DrawViewSpreadsheet>;
 
 
 } //namespace TechDraw
-
-
-#endif

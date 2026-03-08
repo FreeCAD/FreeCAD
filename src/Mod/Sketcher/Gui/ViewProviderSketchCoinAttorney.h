@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_ViewProviderSketchCoinAttorney_H
-#define SKETCHERGUI_ViewProviderSketchCoinAttorney_H
+#pragma once
 
 #include <QFont>
 #include <vector>
@@ -292,6 +293,3 @@ inline void ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_ViewProviderSketchCoinAttorney_H

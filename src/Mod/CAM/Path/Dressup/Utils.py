@@ -22,7 +22,6 @@
 # ***************************************************************************
 
 import FreeCAD
-import Path.Main.Job as PathJob
 
 
 def selection():
@@ -31,7 +30,7 @@ def selection():
         import FreeCADGui
 
         sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 1 and sel[0].Object.isDerivedFrom("Path::Feature") and PathJob.Instances():
+        if len(sel) == 1 and sel[0].Object.isDerivedFrom("Path::Feature"):
             return sel[0].Object
     return None
 

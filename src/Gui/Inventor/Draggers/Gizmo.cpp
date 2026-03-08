@@ -179,7 +179,9 @@ void LinearGizmo::setDragLength(double dragLength)
 void LinearGizmo::setGeometryScale(float scale)
 {
     dragger->geometryScale = SbVec3f(scale, scale, scale);
-    dragger->translationIncrement = std::pow(10.0f, std::floor(std::log10(scale)));
+    // Scales the dragger increment in exponents of 10 based on the zoom level (scale)
+    constexpr float base = 10.0F;
+    dragger->translationIncrement = multFactor * std::pow(base, std::floor(std::log10(scale)));
 }
 
 SoLinearDraggerContainer* LinearGizmo::getDraggerContainer()
@@ -459,13 +461,13 @@ void RotationGizmo::draggingContinued()
 
 void RotationGizmo::orientAlongCamera(SoCamera* camera)
 {
-    if (linearGizmo == nullptr || automaticOrientation == false) {
+    if (!automaticOrientation) {
         return;
     }
 
     SbVec3f cameraDir {0, 0, 1};
     camera->orientation.getValue().multVec(cameraDir, cameraDir);
-    SbVec3f pointerDir = linearGizmo->getDraggerContainer()->getPointerDirection();
+    SbVec3f pointerDir = getDraggerContainer()->getPointerDirection();
 
     pointerDir.normalize();
     auto proj = cameraDir - cameraDir.dot(pointerDir) * pointerDir;

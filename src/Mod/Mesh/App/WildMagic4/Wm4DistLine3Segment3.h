@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DISTLINE3SEGMENT3_H
-#define WM4DISTLINE3SEGMENT3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Distance.h"
@@ -69,5 +68,3 @@ typedef DistLine3Segment3<float> DistLine3Segment3f;
 typedef DistLine3Segment3<double> DistLine3Segment3d;
 
 }
-
-#endif

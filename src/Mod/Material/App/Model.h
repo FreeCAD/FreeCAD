@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MODEL_H
-#define MATERIAL_MODEL_H
+#pragma once
 
 #include <memory>
 
@@ -322,5 +321,3 @@ private:
 typedef FolderTreeNode<Model> ModelTreeNode;
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MODEL_H

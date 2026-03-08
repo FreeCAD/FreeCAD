@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SKETCHERSETTINGS_H
-#define SKETCHERGUI_SKETCHERSETTINGS_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -142,5 +143,3 @@ enum class AutoScaleMode : int
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SKETCHERSETTINGS_H

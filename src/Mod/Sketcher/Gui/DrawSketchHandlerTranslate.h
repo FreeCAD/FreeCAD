@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerTranslate_H
-#define SKETCHERGUI_DrawSketchHandlerTranslate_H
+#pragma once
 
 #include <QApplication>
 #include <map>
@@ -67,6 +68,8 @@ using DrawSketchHandlerTranslateBase = DrawSketchControllableHandler<DSHTranslat
 
 class DrawSketchHandlerTranslate: public DrawSketchHandlerTranslateBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerTranslate)
+
     friend DSHTranslateController;
     friend DSHTranslateControllerBase;
 
@@ -792,6 +795,3 @@ void DSHTranslateController::computeNextDrawSketchHandlerMode()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerTranslate_H

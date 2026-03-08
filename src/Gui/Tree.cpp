@@ -251,7 +251,7 @@ public:
     std::string label2;
     std::string internalName;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
 
     Connection connectIcon;
     Connection connectTool;
@@ -812,6 +812,9 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->preselectTimer, &QTimer::timeout, this, &TreeWidget::onPreSelectTimer);
     connect(this->selectTimer, &QTimer::timeout, this, &TreeWidget::onSelectTimer);
     preselectTime.start();
+
+    visibilityIconDoubleClickTimer.setSingleShot(true);
+    visibilityIconDoubleClickTimer.setInterval(QApplication::doubleClickInterval());
 
     setupText();
     if (!documentPixmap) {
@@ -1981,6 +1984,7 @@ void TreeWidget::mousePressEvent(QMouseEvent* event)
                     visible = obj->Visibility.getValue();
                     obj->Visibility.setValue(!visible);
                 }
+                visibilityIconDoubleClickTimer.start();
 
                 // to prevent selection of the item via QTreeWidget::mousePressEvent
                 event->accept();
@@ -1996,6 +2000,11 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
 {
     QTreeWidgetItem* item = itemAt(event->pos());
     if (!item) {
+        return;
+    }
+
+    if (visibilityIconDoubleClickTimer.isActive()) {
+        TreeWidget::mousePressEvent(event);
         return;
     }
 
@@ -5451,7 +5460,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
         item->setCheckState(false);
     }
 
-    if ((selected && item->selected > 0) || (!selected && !item->selected)) {
+    if (!selected && !item->selected) {
         return;
     }
     if (item->selected != -1) {
@@ -5484,7 +5493,38 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
 #endif
 
     if (!selected) {
-        Gui::Selection().rmvSelection(docname, objname, subname.c_str());
+        // Handles deselection for same name object and subname
+        bool keep = false;
+        auto items = getTree()->selectedItems();
+        for (auto it : items) {
+            if (it->type() == TreeWidget::ObjectType) {
+                auto docitem = static_cast<DocumentObjectItem*>(it);
+                auto obj2 = docitem->object()->getObject();
+                if (!obj2 || !obj2->isAttachedToDocument()) {
+                    continue;
+                }
+
+                std::ostringstream str2;
+                App::DocumentObject* topParent2 = nullptr;
+                docitem->getSubName(str2, topParent2);
+
+                if (topParent2) {
+                    if (!obj2->redirectSubName(str2, topParent2, nullptr)) {
+                        str2 << obj2->getNameInDocument() << '.';
+                    }
+                    obj2 = topParent2;
+                }
+
+                if (obj2 == obj && str2.str() == subname) {
+                    keep = true;
+                    break;
+                }
+            }
+        }
+
+        if (!keep) {
+            Gui::Selection().rmvSelection(docname, objname, subname.c_str());
+        }
         return;
     }
 
@@ -5492,14 +5532,16 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     selected = false;
     if (!item->mySubs.empty()) {
         for (auto& sub : item->mySubs) {
-            if (Gui::Selection().addSelection(docname, objname, (subname + sub).c_str())) {
+            if (Gui::Selection().isSelected(docname, objname, (subname + sub).c_str())
+                || Gui::Selection().addSelection(docname, objname, (subname + sub).c_str())) {
                 selected = true;
             }
         }
     }
     if (!selected) {
         item->mySubs.clear();
-        if (!Gui::Selection().addSelection(docname, objname, subname.c_str())) {
+        if (!Gui::Selection().isSelected(docname, objname, subname.c_str())
+            && !Gui::Selection().addSelection(docname, objname, subname.c_str())) {
             // Safely re-access the item
             DocumentObjectItem* item2 = findItem(vobj->getObject(), subname);
             if (item2) {
@@ -5838,7 +5880,7 @@ void DocumentItem::selectAllInstances(const ViewProviderDocumentObject& vpd)
 {
     ViewParentMap parentMap;
     auto pObject = vpd.getObject();
-    if (ObjectMap.find(pObject) == ObjectMap.end()) {
+    if (!ObjectMap.contains(pObject)) {
         return;
     }
 
@@ -5875,7 +5917,9 @@ void DocumentItem::selectAllInstances(const ViewProviderDocumentObject& vpd)
     getTree()->blockSelection(lock);
     if (first) {
         treeWidget()->scrollToItem(first);
-        updateSelection();
+        // updateSelection();  // commented out - it was incorrectly deselecting
+        // ...newly selected items because their qt selection state wasn't
+        // ...yet synchronized when updateItemSelection() checked them
     }
 }
 

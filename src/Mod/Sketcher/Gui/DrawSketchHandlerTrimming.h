@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerTrimming_H
-#define SKETCHERGUI_DrawSketchHandlerTrimming_H
+#pragma once
 
 #include <QApplication>
 #include <Base/Tools.h>
@@ -82,6 +83,8 @@ public:
 
 class DrawSketchHandlerTrimming: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerTrimming)
+
 public:
     DrawSketchHandlerTrimming() = default;
     ~DrawSketchHandlerTrimming() override
@@ -227,5 +230,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerTrimming_H

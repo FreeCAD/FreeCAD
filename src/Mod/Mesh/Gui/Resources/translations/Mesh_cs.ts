@@ -2273,7 +2273,7 @@ Visit https://openscad.org/ to install it.</translation>
       <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Opustit informační režim</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1771"/>

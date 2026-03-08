@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DRAGGER_H
-#define GUI_VIEWPROVIDER_DRAGGER_H
+#pragma once
 
 #include "ViewProviderDocumentObject.h"
 #include <Base/Placement.h>
@@ -128,9 +127,6 @@ protected:
 
     bool forwardToLink();
 
-    /// Gets placement property of the object
-    App::PropertyPlacement* getPlacementProperty() const;
-
     /**
      * Returns a newly create dialog for the part to be placed in the task view
      * Must be reimplemented in subclasses.
@@ -165,5 +161,3 @@ private:
 }  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::ViewProviderDragger::DraggerComponent)
-
-#endif  // GUI_VIEWPROVIDER_DRAGGER_H

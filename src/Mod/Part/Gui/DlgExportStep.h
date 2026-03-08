@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGEXPORTSTEP_H
-#define PARTGUI_DLGEXPORTSTEP_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 #include <Gui/PropertyPage.h>
@@ -107,5 +106,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGEXPORTSTEP_H

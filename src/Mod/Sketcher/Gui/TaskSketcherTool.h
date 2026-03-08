@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Pierre-Louis Boyer <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -21,13 +23,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketcherTool_H
-#define GUI_TASKVIEW_TaskSketcherTool_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Selection/Selection.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 namespace App
 {
@@ -61,7 +62,7 @@ public:
     void toolChanged(const std::string& toolname);
 
     template<typename F>
-    boost::signals2::connection registerToolWidgetChanged(F&& f)
+    fastsignals::connection registerToolWidgetChanged(F&& f)
     {
         return signalToolWidgetChanged.connect(std::forward<F>(f));
     }
@@ -69,11 +70,9 @@ public:
 private:
     ViewProviderSketch* sketchView;
     std::unique_ptr<QWidget> widget;
-    boost::signals2::scoped_connection changedSketchView;
+    fastsignals::scoped_connection changedSketchView;
 
-    boost::signals2::signal<void(QWidget* newwidget)> signalToolWidgetChanged;
+    fastsignals::signal<void(QWidget* newwidget)> signalToolWidgetChanged;
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TaskSketcherTool_H

@@ -35,6 +35,7 @@ WindowPresets = [
     "Sash 2-pane",
     "Sliding 2-pane",
     "Simple door",
+    "Sliding door",
     "Glass door",
     "Sliding 4-pane",
     "Awning",
@@ -42,9 +43,7 @@ WindowPresets = [
 ]
 
 
-def makeWindowPreset(
-    windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, placement=None, window_sill=None
-):
+def makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, placement=None):
     """makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,[placement]): makes a
     window object based on the given data. windowtype must be one of the names
     defined in Arch.WindowPresets"""
@@ -487,6 +486,15 @@ def makeWindowPreset(
             wp = doorFrame(s, width, height, h1, w1, o1)
             wp.extend(["Door", "Solid panel", "Wire1,Edge8,Mode1", str(w2), str(o2) + "+V"])
 
+        elif windowtype == "Sliding door":
+            wp = doorFrame(s, width, height, h1, w1, o1)
+            # Use Wire1 (inner frame boundary) as the door leaf profile to be extruded
+            # Use Edge 7 (the top edge of the inner frame) as the track. Edge5 (bottom edge) could
+            # be an alternative, but it's difficult to select in the window editor, as the outer
+            # frame's bottom edge is drawn on top.
+            # Use Mode 9 (Sliding) to open from left to right.
+            wp.extend(["Door", "Solid panel", "Wire1,Edge7,Mode9", str(w2), str(o2) + "+V"])
+
         elif windowtype == "Glass door":
 
             wp = doorFrame(s, width, height, h1, w1, o1)
@@ -550,13 +558,6 @@ def makeWindowPreset(
             obj.Frame = w2
             obj.Offset = o1
             obj.Placement = FreeCAD.Placement()  # unable to find where this bug comes from...
-            # If window_sill is provided, set obj.Sill (and trigger onChanged()
-            # codes to track and adjust disposition of the Window object).
-            # Do not set the property (to 0) and not trigger onChanged()
-            # if otherwise.
-            # obj.Sill = window_sill if window_sill is not None else 0
-            if window_sill is not None:
-                obj.Sill = window_sill
             if "door" in windowtype.lower():
                 obj.IfcType = "Door"
                 obj.Label = translate("Arch", "Door")

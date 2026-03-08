@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerLine_H
-#define SKETCHERGUI_DrawSketchHandlerLine_H
+#pragma once
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
@@ -79,6 +80,8 @@ using DrawSketchHandlerLineBase = DrawSketchControllableHandler<DSHLineControlle
 
 class DrawSketchHandlerLine: public DrawSketchHandlerLineBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerLine)
+
     friend DSHLineController;
     friend DSHLineControllerBase;
 
@@ -885,6 +888,3 @@ void DSHLineController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerLine_H

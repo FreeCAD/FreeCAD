@@ -198,12 +198,6 @@ void MeasureBase::onDocumentRestored()
     recompute();
 }
 
-Base::Placement MeasureBase::getPlacement()
-{
-    return this->Placement.getValue();
-}
-
-
 // Python Drawing feature ---------------------------------------------------------
 
 namespace App

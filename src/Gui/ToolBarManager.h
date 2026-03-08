@@ -21,11 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TOOLBARMANAGER_H
-#define GUI_TOOLBARMANAGER_H
+#pragma once
 
 #include <string>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <QStringList>
 #include <QPointer>
@@ -226,7 +225,7 @@ private:
     QTimer menuBarTimer;
     QTimer sizeTimer;
     QTimer resizeTimer;
-    boost::signals2::scoped_connection connParam;
+    fastsignals::advanced_scoped_connection connParam;
     ToolBarAreaWidget* statusBarAreaWidget = nullptr;
     ToolBarAreaWidget* menuBarLeftAreaWidget = nullptr;
     ToolBarAreaWidget* menuBarRightAreaWidget = nullptr;
@@ -243,6 +242,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_TOOLBARMANAGER_H

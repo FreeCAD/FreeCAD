@@ -83,7 +83,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="45"/>
       <source>Kuka Compact Subroutine</source>
-      <translation>Kompaktes Kuka-Unterprogramm</translation>
+      <translation>Kuka-Compact-Unterprogramm</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="46"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="126"/>
       <source>Kuka Full Subroutine</source>
-      <translation>Vollständiges Kuka-Unterprogramm</translation>
+      <translation>Kuka-Vollständiges-Unterprogramm</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="127"/>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="441"/>
       <source>Dress-Up Trajectory</source>
-      <translation>Überlagerungs-Trajektorie</translation>
+      <translation>Bewegungsbahn anpassen</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="442"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
-      <translation>Erstellt ein Überlagerungs-Objekt das Teile der Trajektorie überschreibt</translation>
+      <translation>Erstellt ein Anpassungs-Objekt das Teile der Trajektorie überschreibt</translation>
     </message>
   </context>
   <context>
@@ -308,22 +308,22 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Select VRML file for Robot</source>
-      <translation type="unfinished">Select VRML file for Robot</translation>
+      <translation>VRML-Datei für Roboter auswählen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>VRML Files (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML Files (*.wrl *.vrml)</translation>
+      <translation>VRML-Dateien (*.wrl, *.vrml)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="66"/>
       <source>Select Kinematic CSV file for Robot</source>
-      <translation type="unfinished">Select Kinematic CSV file for Robot</translation>
+      <translation>CSV-Kinematikdatei für Roboter auswählen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>CSV Files (*.csv)</source>
-      <translation type="unfinished">CSV Files (*.csv)</translation>
+      <translation>CSV-Dateien (*.csv)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>

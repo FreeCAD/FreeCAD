@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECTFILEINCLUDED_H
-#define APP_DOCUMENTOBJECTFILEINCLUDED_H
+#pragma once
 
 #include "DocumentObject.h"
 #include "PropertyFile.h"
@@ -52,6 +53,3 @@ public:
 };
 
 }  // namespace App
-
-
-#endif  // APP_DOCUMENTOBJECTFILEINCLUDED_H

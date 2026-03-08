@@ -20,14 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include <sstream>
 
+#include "ViewProviderDocumentObject.h"
 
-// inclusion of the generated files (generated out of PropertyContainerPy.pyi)
+// generated out of ViewProviderExtension.pyi
 #include "ViewProviderExtensionPy.h"
 #include "ViewProviderExtensionPy.cpp"
-#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerExternal_H
-#define SKETCHERGUI_DrawSketchHandlerExternal_H
+#pragma once
 
 #include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
@@ -100,7 +101,8 @@ public:
         // return false;
         //}
 
-        if (pObj->isDerivedFrom<Part::DatumLine>() || pObj->isDerivedFrom<Part::DatumPoint>()) {
+        if (pObj->isDerivedFrom<Part::DatumLine>() || pObj->isDerivedFrom<Part::DatumPoint>()
+            || pObj->isDerivedFrom<App::Line>() || pObj->isDerivedFrom<App::Point>()) {
             return true;
         }
 
@@ -125,6 +127,8 @@ public:
 
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerExternal)
+
 public:
     DrawSketchHandlerExternal(bool alwaysReference, bool intersection)
         : alwaysReference {alwaysReference}
@@ -169,8 +173,10 @@ public:
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             }
             std::string subName(msg.pSubName);
+
             if (obj->isDerivedFrom<App::Plane>() || obj->isDerivedFrom<Part::Datum>()
                 || obj->isDerivedFrom<Part::DatumLine>() || obj->isDerivedFrom<Part::DatumPoint>()
+                || obj->isDerivedFrom<App::Line>() || obj->isDerivedFrom<App::Point>()
                 || (subName.size() > 4 && subName.substr(0, 4) == "Edge")
                 || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
                 || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {
@@ -260,6 +266,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerExternal_H

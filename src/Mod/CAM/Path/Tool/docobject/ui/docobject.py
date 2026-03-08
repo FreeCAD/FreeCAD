@@ -28,16 +28,24 @@ from PySide import QtGui, QtCore
 from .property import BasePropertyEditorWidget
 
 
-def _get_label_text(prop_name):
+def _get_label_text(prop_name, keep_case=False, preserve_consecutive_caps=False):
     """Generate a human-readable label from a property name."""
     # Add space before capital letters (CamelCase splitting)
-    s1 = re.sub(r"([A-Z][a-z]+)", r" \1", prop_name)
-    # Add space before sequences of capitals (e.g., ID) followed by lowercase
-    s2 = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", s1)
+    if preserve_consecutive_caps:
+        s1 = re.sub(r"(?<![A-Z])([A-Z][a-z]+)", r" \1", prop_name)
+        # Skip splitting short capital sequences (e.g., VBit stays VBit)
+        s2 = re.sub(r"([A-Z]{3,})([A-Z][a-z])", r"\1 \2", s1)
+    else:
+        s1 = re.sub(r"([A-Z][a-z]+)", r" \1", prop_name)
+        # Add space before sequences of capitals (e.g., ID) followed by lowercase
+        s2 = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", s1)
     # Add space before sequences of capitals followed by end of string
     s3 = re.sub(r"([A-Z]+)$", r" \1", s2)
-    # Remove leading/trailing spaces and capitalize
-    return s3.strip().capitalize()
+    # Remove leading/trailing spaces
+    result = s3.strip()
+    if not keep_case:
+        return result.capitalize()
+    return result.title()
 
 
 class DocumentObjectEditorWidget(QtGui.QWidget):

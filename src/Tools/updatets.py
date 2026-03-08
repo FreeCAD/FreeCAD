@@ -142,6 +142,11 @@ directories = [
         "tsdir": "Gui/Resources/translations",
     },
     {
+        "tsname": "Surface",
+        "workingdir": "./src/Mod/Surface/",
+        "tsdir": "Gui/Resources/translations",
+    },
+    {
         "tsname": "TechDraw",
         "workingdir": "./src/Mod/TechDraw/",
         "tsdir": "Gui/Resources/translations",

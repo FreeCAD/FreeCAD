@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /*****************************************************************************
  * \file
  *      This file contains the definition of classes for a
@@ -27,8 +29,7 @@
  ****************************************************************************/
 // clazy:excludeall=rule-of-two-soft
 
-#ifndef RRFRAMES_H
-#define RRFRAMES_H
+#pragma once
 
 
 #include "utilities/rall2d.h"
@@ -266,12 +267,4 @@ public:
 
 #ifdef KDL_INLINE
 #include "frameacc.inl"
-#endif
-
-
-
-
-
-
-
 #endif

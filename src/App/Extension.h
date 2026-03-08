@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SRC_APP_EXTENSION_H_
-#define SRC_APP_EXTENSION_H_
+#pragma once
 
 #include <map>
 #include <string>
@@ -365,5 +366,3 @@ private:
 
 
 } // namespace App
-
-#endif // SRC_APP_EXTENSION_H_

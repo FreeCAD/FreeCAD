@@ -134,7 +134,7 @@ void MeasureLength::onChanged(const App::Property* prop)
 }
 
 
-Base::Placement MeasureLength::getPlacement()
+Base::Placement MeasureLength::getPlacement() const
 {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
     const std::vector<std::string>& subElements = Elements.getSubValues();

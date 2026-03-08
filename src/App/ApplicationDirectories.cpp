@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************************************
  *                                                                                                 *
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>                                      *
@@ -137,7 +138,10 @@ fs::path ApplicationDirectories::findPath(const fs::path& stdHome, const fs::pat
     // If a custom user home path is given, then don't modify it
     if (customHome.empty()) {
         for (const auto& it : subdirs) {
-            appData = appData / it;
+            if (!it.empty()) {
+                // Refuse to add an empty directory path component
+                appData = appData / it;
+            }
         }
     }
 
@@ -630,6 +634,9 @@ fs::path ApplicationDirectories::findHomePath(const char* sCall)
 #include <cstdio>
 #include <cstdlib>
 #include <sys/param.h>
+#if defined(__FreeBSD__)
+#include <sys/sysctl.h>
+#endif
 
 fs::path ApplicationDirectories::findHomePath(const char* sCall)
 {

@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef APP_MEASUREPOSITION_H
-#define APP_MEASUREPOSITION_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -74,7 +73,7 @@ public:
     }
     QString getResultString() override;
 
-    Base::Placement getPlacement() override;
+    Base::Placement getPlacement() const override;
 
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;
@@ -84,6 +83,3 @@ private:
 };
 
 }  // namespace Measure
-
-
-#endif  // APP_MEASUREPOSITION_H

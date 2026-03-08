@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
-#define DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -145,5 +144,3 @@ private:
 };
 
 }// namespace TechDrawGui
-
-#endif// DRAWINGGUI_QGRAPHICSITEMLEADERLINE_H

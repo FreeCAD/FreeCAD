@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Peter Soetens  Fri Feb 11 15:59:12 CET 2005  velocityprofile_dirac.h
 
@@ -26,8 +28,7 @@
  ***************************************************************************/
 
 
-#ifndef MOTIONPROFILE_DIRAC_H
-#define MOTIONPROFILE_DIRAC_H
+#pragma once
 
 #include "velocityprofile.hpp"
 
@@ -66,6 +67,3 @@ namespace KDL {
 	};
 
 }
-
-
-#endif

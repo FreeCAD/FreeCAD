@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerBSpline_H
-#define SKETCHERGUI_DrawSketchHandlerBSpline_H
+#pragma once
 
 #include <QApplication>
 
@@ -74,6 +75,8 @@ using DrawSketchHandlerBSplineBase = DrawSketchControllableHandler<DSHBSplineCon
 
 class DrawSketchHandlerBSpline: public DrawSketchHandlerBSplineBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerBSpline)
+
     friend DSHBSplineController;
     friend DSHBSplineControllerBase;
 
@@ -1310,6 +1313,3 @@ void DSHBSplineController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerBSpline_H

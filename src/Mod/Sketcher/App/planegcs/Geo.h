@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_GEO_H
-#define PLANEGCS_GEO_H
+#pragma once
 
 #include "Util.h"
 #include <boost/math/constants/constants.hpp>
@@ -414,5 +415,3 @@ public:
 
 }  // namespace GCS
 // NOLINTEND(readability-math-missing-parentheses)
-
-#endif  // PLANEGCS_GEO_H

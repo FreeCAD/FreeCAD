@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:39 CET 2005  path_point.h
 
@@ -43,8 +45,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_PATH_POINT_H
-#define KDL_MOTION_PATH_POINT_H
+#pragma once
 
 #include "path.hpp"
 #include "rotational_interpolation.hpp"
@@ -84,6 +85,3 @@ class Path_Point : public Path
 	};
 
 }
-
-
-#endif

@@ -87,6 +87,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
 
+        PathGuiUtil.updateInputField(obj, "MinSampleInterval", self.form.minSampleInterval)
         PathGuiUtil.updateInputField(obj, "SampleInterval", self.form.sampleInterval)
 
         if obj.OptimizeLinearPaths != self.form.optimizeEnabled.isChecked():
@@ -104,6 +105,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             FreeCAD.Units.Quantity(obj.BoundaryAdjustment.Value, FreeCAD.Units.Length).UserString
         )
         self.form.stepOver.setValue(obj.StepOver)
+        self.form.minSampleInterval.setText(
+            FreeCAD.Units.Quantity(obj.MinSampleInterval.Value, FreeCAD.Units.Length).UserString
+        )
         self.form.sampleInterval.setText(
             FreeCAD.Units.Quantity(obj.SampleInterval.Value, FreeCAD.Units.Length).UserString
         )
@@ -126,7 +130,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.cutPattern.currentIndexChanged)
         signals.append(self.form.boundaryAdjustment.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
+        signals.append(self.form.minSampleInterval.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
+
         if hasattr(self.form.optimizeEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.optimizeEnabled.checkStateChanged)
         else:  # Qt version < 6.7.0
@@ -140,15 +146,36 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.optimizeEnabled.hide()  # Has no independent QLabel object
 
         if Algorithm == "OCL Dropcutter":
+            self.form.boundBoxSelect.show()
+            self.form.boundBoxSelect_label.show()
             self.form.cutPattern.hide()
             self.form.cutPattern_label.hide()
             self.form.boundaryAdjustment.hide()
             self.form.boundaryAdjustment_label.hide()
             self.form.stepOver.hide()
             self.form.stepOver_label.hide()
+            self.form.minSampleInterval.hide()
+            self.form.minSampleInterval_label.hide()
             self.form.sampleInterval.show()
             self.form.sampleInterval_label.show()
+            self.form.optimizeEnabled.hide()
+        elif Algorithm == "OCL Adaptive":
+            self.form.boundBoxSelect.hide()
+            self.form.boundBoxSelect_label.hide()
+            self.form.cutPattern.hide()
+            self.form.cutPattern_label.hide()
+            self.form.boundaryAdjustment.hide()
+            self.form.boundaryAdjustment_label.hide()
+            self.form.stepOver.hide()
+            self.form.stepOver_label.hide()
+            self.form.minSampleInterval.show()
+            self.form.minSampleInterval_label.show()
+            self.form.sampleInterval.show()
+            self.form.sampleInterval_label.show()
+            self.form.optimizeEnabled.show()
         elif Algorithm == "Experimental":
+            self.form.boundBoxSelect.show()
+            self.form.boundBoxSelect_label.show()
             self.form.cutPattern.show()
             self.form.boundaryAdjustment.show()
             self.form.cutPattern_label.show()
@@ -159,8 +186,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             else:
                 self.form.stepOver.show()
                 self.form.stepOver_label.show()
+            self.form.minSampleInterval.hide()
+            self.form.minSampleInterval_label.hide()
             self.form.sampleInterval.hide()
             self.form.sampleInterval_label.hide()
+            self.form.optimizeEnabled.hide()
 
     def registerSignalHandlers(self, obj):
         self.form.algorithmSelect.currentIndexChanged.connect(self.updateVisibility)

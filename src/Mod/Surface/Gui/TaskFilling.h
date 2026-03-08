@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKFILLING_H
-#define SURFACEGUI_TASKFILLING_H
+#pragma once
 
 #include <App/DocumentObserver.h>
 #include <Gui/DocumentObserver.h>
@@ -154,5 +153,3 @@ private:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_TASKFILLING_H

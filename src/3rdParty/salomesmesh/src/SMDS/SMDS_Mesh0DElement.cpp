@@ -146,7 +146,6 @@ bool SMDS_Mesh0DElement::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbN
   if ( nbNodes == 1 )
   {
     vtkUnstructuredGrid* grid = SMDS_Mesh::_meshList[myMeshId]->getGrid();
-#ifdef VTK_CELL_ARRAY_V2
     vtkNew<vtkIdList> cellPoints;
     grid->GetCellPoints(myVtkID, cellPoints.GetPointer());
     if (nbNodes != cellPoints->GetNumberOfIds())
@@ -156,18 +155,6 @@ bool SMDS_Mesh0DElement::ChangeNodes(const SMDS_MeshNode* nodes[], const int nbN
     }
     myNode = nodes[0];
     cellPoints->SetId(0, myNode->getVtkId());
-#else
-    vtkIdType npts = 0;
-    vtkIdType* pts = 0;
-    grid->GetCellPoints(myVtkID, npts, pts);
-    if (nbNodes != npts)
-    {
-      MESSAGE("ChangeNodes problem: not the same number of nodes " << npts << " -> " << nbNodes);
-      return false;
-    }
-    myNode = nodes[0];
-    pts[0] = myNode->getVtkId();
-#endif
 
     SMDS_Mesh::_meshList[myMeshId]->setMyModified();
     return true;

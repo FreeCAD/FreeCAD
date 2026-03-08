@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskAttacher_H
-#define GUI_TASKVIEW_TaskAttacher_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/DocumentObserver.h>
@@ -89,6 +88,9 @@ public:
     {
         return completed;
     }
+
+Q_SIGNALS:
+    void placementUpdated();
 
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
@@ -174,7 +176,7 @@ private:
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectDelObject;
     Connection connectDelDocument;
 
@@ -235,5 +237,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

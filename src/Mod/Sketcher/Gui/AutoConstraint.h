@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_AutoConstraint_H
-#define SKETCHERGUI_AutoConstraint_H
+#pragma once
 
 #include <Mod/Sketcher/App/Constraint.h>
 
@@ -44,6 +45,3 @@ struct AutoConstraint
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_AutoConstraint_H

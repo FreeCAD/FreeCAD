@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -920,8 +922,6 @@ void DrawSketchHandler::createAutoConstraints(
             if (createowncommand) {
                 Gui::Command::commitCommand();
             }
-            // Gui::Command::updateActive(); // There is already an recompute in each command
-            // creation, this is redundant.
         }
     }
 }

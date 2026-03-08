@@ -23,16 +23,13 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLGSMOOTHING_H
-#define MESHGUI_DLGSMOOTHING_H
+#pragma once
 
 #include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
 
 class QButtonGroup;
 
@@ -142,5 +139,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLGSMOOTHING_H

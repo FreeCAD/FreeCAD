@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef QUANTITYSPINBOX_P_H
-#define QUANTITYSPINBOX_P_H
+#pragma once
 
 #include <QLabel>
 #include <QMouseEvent>
@@ -71,5 +70,3 @@ private:
     const QString genericExpressionEditorTooltip = tr("Enter expression… (=)");
     const QString expressionEditorTooltipPrefix = tr("Expression:") + QStringLiteral(" ");
 };
-
-#endif  // QUANTITYSPINBOX_P_H

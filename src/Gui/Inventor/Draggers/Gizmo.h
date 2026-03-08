@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_GIZMO_H
-#define GUI_GIZMO_H
+#pragma once
 
 #include <initializer_list>
 #include <memory>
@@ -140,6 +139,9 @@ public:
 
     // Distance between the linear gizmo base and rotation gizmo
     double sepDistance = 0;
+    // Controls if the gizmo is automatically rotated around the pointer in the
+    // to always face the camera
+    bool automaticOrientation = false;
 
     // Returns the position and rotation of the base of the dragger
     GizmoPlacement getDraggerPlacement() override;
@@ -164,7 +166,6 @@ private:
     SoRotationDraggerContainer* draggerContainer = nullptr;
     SoFieldSensor translationSensor;
     LinearGizmo* linearGizmo = nullptr;
-    bool automaticOrientation = false;
     QMetaObject::Connection quantityChangedConnection;
     QMetaObject::Connection formulaDialogConnection;
 
@@ -255,5 +256,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif /* GUI_GIZMO_H */

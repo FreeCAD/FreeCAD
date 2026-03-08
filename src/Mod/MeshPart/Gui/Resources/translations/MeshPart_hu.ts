@@ -430,7 +430,7 @@ A legkisebb érték 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="335"/>
       <source>Elements per curvature radius</source>
-      <translation>Ív sugáronkénti elemek</translation>
+      <translation>Elemek görbületi sugaranként</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="279"/>

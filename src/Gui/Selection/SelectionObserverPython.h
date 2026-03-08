@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SELECTIONOBSERVERPYTHON_H
-#define GUI_SELECTIONOBSERVERPYTHON_H
+#pragma once
 
 #include <CXX/Objects.hxx>
 #include "Selection.h"
@@ -98,5 +97,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SELECTIONOBSERVERPYTHON_H

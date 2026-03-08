@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <werner.wm.mayer@gmx.de>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_WORKBENCH_H
-#define ROBOT_WORKBENCH_H
+#pragma once
 
 #include <Gui/TaskView/TaskWatcher.h>
 #include <Gui/Workbench.h>
@@ -56,6 +57,3 @@ protected:
 };
 
 }  // namespace RobotGui
-
-
-#endif  // ROBOT_WORKBENCH_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerPolygon_H
-#define SKETCHERGUI_DrawSketchHandlerPolygon_H
+#pragma once
 
 #include <QApplication>
 
@@ -65,6 +66,8 @@ using DrawSketchHandlerPolygonBase = DrawSketchControllableHandler<DSHPolygonCon
 
 class DrawSketchHandlerPolygon: public DrawSketchHandlerPolygonBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPolygon)
+
     friend DSHPolygonController;
     friend DSHPolygonControllerBase;
 
@@ -574,6 +577,3 @@ void DSHPolygonController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerPolygon_H

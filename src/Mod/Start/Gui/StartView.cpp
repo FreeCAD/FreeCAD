@@ -195,6 +195,8 @@ StartView::StartView(QWidget* parent)
         }
     });
 
+    isInitialized = true;
+
     retranslateUi();
 }
 
@@ -438,6 +440,10 @@ void StartView::firstStartWidgetDismissed()
 
 void StartView::changeEvent(QEvent* event)
 {
+    if (!isInitialized) {
+        return;
+    }
+
     _openFirstStart->setEnabled(true);
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {

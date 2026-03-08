@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKDLGRELOCATE_H
-#define GUI_TASKDLGRELOCATE_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -102,5 +101,3 @@ protected:
 
 
 }  // namespace Gui
-
-#endif  // ROBOTGUI_TASKDLGSIMULATE_H

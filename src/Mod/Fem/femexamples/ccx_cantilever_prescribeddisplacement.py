@@ -58,7 +58,7 @@ See forum topic post:
     )
 
 
-def setup(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     if solvertype == "z88":
         # constraint displacement is not supported for Z88
@@ -75,7 +75,7 @@ def setup(doc=None, solvertype="ccxtools"):
 
     # setup CalculiX cantilever
     # apply a prescribed displacement of 250 mm in -z on the front end face
-    doc = setup_cantilever_base_solid(doc, solvertype)
+    doc = setup_cantilever_base_solid(doc, solvertype, test_mode)
     analysis = doc.Analysis
     geom_obj = doc.Box
 

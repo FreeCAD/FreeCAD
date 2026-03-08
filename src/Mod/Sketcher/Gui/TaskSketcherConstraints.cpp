@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -27,10 +29,12 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QString>
+#include <QTimer>
 #include <QStyledItemDelegate>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
+#include <cstring>
 #include <limits>
 
 #include <App/Application.h>
@@ -103,6 +107,88 @@ public:
     }
     ~ConstraintItem() override
     {}
+
+    QString getName() const
+    {
+        const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
+
+        if (!constraint->Name.empty()) {
+            return QString::fromStdString(constraint->Name);
+        }
+
+        QString type;
+        switch (constraint->Type) {
+            case Sketcher::Horizontal:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Horizontal");
+                break;
+            case Sketcher::Vertical:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Vertical");
+                break;
+            case Sketcher::Coincident:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Coincident");
+                break;
+            case Sketcher::PointOnObject:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "PointOnObject");
+                break;
+            case Sketcher::Parallel:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Parallel");
+                break;
+            case Sketcher::Perpendicular:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Perpendicular");
+                break;
+            case Sketcher::Tangent:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Tangent");
+                break;
+            case Sketcher::Equal:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Equal");
+                break;
+            case Sketcher::Symmetric:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Symmetric");
+                break;
+            case Sketcher::Block:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Lock");
+                break;
+            case Sketcher::Distance:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Distance");
+                break;
+            case Sketcher::DistanceX:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "DistanceX");
+                break;
+            case Sketcher::DistanceY:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "DistanceY");
+                break;
+            case Sketcher::Radius:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Radius");
+                break;
+            case Sketcher::Diameter:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Diameter");
+                break;
+            case Sketcher::Angle:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Angle");
+                break;
+            case Sketcher::Weight:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Weight");
+                break;
+            case Sketcher::SnellsLaw:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Snell");
+                break;
+            case Sketcher::InternalAlignment:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Alignment");
+                break;
+            /*case Sketcher::Group:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Group");
+                break;
+            case Sketcher::Text:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Text");
+                break;*/
+            default:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Constraint");
+                break;
+        }
+
+        return QStringLiteral("%1-%2").arg(ConstraintNbr + 1).arg(type);
+    }
+
     void setData(int role, const QVariant& value) override
     {
         if (role == Qt::EditRole)
@@ -133,9 +219,7 @@ public:
                                                                         ConstraintNbr));
         }
         else if (role == Qt::DisplayRole) {
-            QString name =
-                QString::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
-                    constraint->Name, ConstraintNbr));
+            QString name = getName();
 
             switch (constraint->Type) {
                 case Sketcher::Horizontal:
@@ -978,7 +1062,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     //NOLINTBEGIN
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(
-        std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2));
+        std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2), fastsignals::advanced_tag());
     //NOLINTEND
 
     updateList();
@@ -1333,39 +1417,23 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         return;
     }
 
-    QRegularExpression rx(QStringLiteral("^Constraint(\\d+)$"));
-    QRegularExpressionMatch match;
-    QString expr = QString::fromLatin1(msg.pSubName);
-    boost::ignore_unused(expr.indexOf(rx, 0, &match));
-    if (match.hasMatch()) {// is a constraint
-        bool ok;
-        int ConstrId = match.captured(1).toInt(&ok) - 1;
-        if (ok) {
-            int countItems = ui->listWidgetConstraints->count();
-            for (int i = 0; i < countItems; i++) {
-                ConstraintItem* item =
-                    static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
-                if (item->ConstraintNbr == ConstrId) {
-                    auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
-                    item->setSelected(select);
-                    ui->listWidgetConstraints->blockSignals(tmpBlock);
-                    SketcherGui::scrollTo(ui->listWidgetConstraints, i, select);
-                    break;
-                }
-            }
+    if (std::strncmp(msg.pSubName, "Constraint", 10) == 0) {
+        int id = std::atoi(msg.pSubName + 10) - 1;
 
-            if (specialFilterMode == SpecialFilterType::Selected) {
-                updateSelectionFilter();
-                bool block =
-                    this->blockSelection(true);// avoid to be notified by itself
-                updateList();
-                this->blockSelection(block);
+        auto it = constraintMap.find(id);
+        if (it != constraintMap.end()) {
+            selectionBuffer.push_back({it->second, select});
+
+            if (!selectionUpdateTimerPending) {
+                selectionUpdateTimerPending = true;
+                QTimer::singleShot(0, this, &TaskSketcherConstraints::processSelectionBuffer);
             }
         }
     }
     else if (ui->filterBox->checkState() == Qt::Checked && specialFilterMode == SpecialFilterType::Associated) {
         int geoid = Sketcher::GeoEnum::GeoUndef;
         Sketcher::PointPos pointpos = Sketcher::PointPos::none;
+        QString expr = QString::fromLatin1(msg.pSubName);
         getSelectionGeoId(expr, geoid, pointpos);
 
         if (geoid != Sketcher::GeoEnum::GeoUndef
@@ -1380,6 +1448,43 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
             }
         }
     }
+}
+
+void TaskSketcherConstraints::processSelectionBuffer()
+{
+    selectionUpdateTimerPending = false;
+    if (selectionBuffer.empty()) {
+        return;
+    }
+
+    QSignalBlocker block(ui->listWidgetConstraints);
+
+    QItemSelection selectionObj;
+    for (const auto& update : selectionBuffer) {
+        // NOTE: We trust the buffer has valid pointers (lifetime matches widget)
+        if (update.select) {
+            QModelIndex idx = ui->listWidgetConstraints->model()->index(ui->listWidgetConstraints->row(update.item), 0);
+            selectionObj.select(idx, idx);
+        } else {
+            update.item->setSelected(false);
+        }
+    }
+    ui->listWidgetConstraints->selectionModel()->select(selectionObj, QItemSelectionModel::Select);
+
+    // Scroll only if single item selected
+    if (selectionBuffer.size() == 1 && selectionBuffer[0].select) {
+        SketcherGui::scrollTo(ui->listWidgetConstraints, ui->listWidgetConstraints->row(selectionBuffer[0].item), true);
+    }
+
+    if (specialFilterMode == SpecialFilterType::Selected) {
+        updateSelectionFilter();
+        // avoid to be notified by itself
+        bool block = this->blockSelection(true);
+        updateList();
+        this->blockSelection(block);
+    }
+
+    selectionBuffer.clear();
 }
 
 void TaskSketcherConstraints::deferredUpdateList()
@@ -1681,19 +1786,13 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
 void TaskSketcherConstraints::slotConstraintsChanged()
 {
     assert(sketchView);
+
+    constraintMap.clear();
+    selectionBuffer.clear();
+
     // Build up ListView with the constraints
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
     const std::vector<Sketcher::Constraint*>& vals = sketch->Constraints.getValues();
-
-    /* Update constraint number and virtual space check status */
-    for (int i = 0; i < ui->listWidgetConstraints->count(); ++i) {
-        ConstraintItem* it = dynamic_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
-
-        assert(it);
-
-        it->ConstraintNbr = i;
-        it->value = QVariant();
-    }
 
     /* Remove entries, if any */
     for (std::size_t i = ui->listWidgetConstraints->count(); i > vals.size(); --i)
@@ -1706,7 +1805,10 @@ void TaskSketcherConstraints::slotConstraintsChanged()
     /* Update the states */
     auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
     for (int i = 0; i < ui->listWidgetConstraints->count(); ++i) {
-        ConstraintItem* it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+        auto* it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
+        it->ConstraintNbr = i;
+        it->value = QVariant();
+        constraintMap[it->ConstraintNbr] = it;
         it->updateVirtualSpaceStatus();
     }
     ui->listWidgetConstraints->blockSignals(tmpBlock);

@@ -117,12 +117,13 @@ struct DocumentP
     std::map<std::string, ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
+    using AdvancedConnection = fastsignals::advanced_connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectCngObject;
     Connection connectRenObject;
-    Connection connectActObject;
+    AdvancedConnection connectActObject;
     Connection connectSaveDocument;
     Connection connectRestDocument;
     Connection connectStartLoadDocument;
@@ -141,9 +142,9 @@ struct DocumentP
     Connection connectTransactionRemove;
     Connection connectTouchedObject;
     Connection connectChangePropertyEditor;
-    Connection connectChangeDocument;
+    AdvancedConnection connectChangeDocument;
 
-    using ConnectionBlock = boost::signals2::shared_connection_block;
+    using ConnectionBlock = fastsignals::shared_connection_block;
     ConnectionBlock connectActObjectBlocker;
     ConnectionBlock connectChangeDocumentBlocker;
 
@@ -458,9 +459,10 @@ Document::Document(App::Document* pcDocument, Application* app)
         std::bind(&Gui::Document::slotRelabelObject, this, sp::_1)
     );
     d->connectActObject = pcDocument->signalActivatedObject.connect(
-        std::bind(&Gui::Document::slotActivatedObject, this, sp::_1)
+        std::bind(&Gui::Document::slotActivatedObject, this, sp::_1),
+        fastsignals::advanced_tag()
     );
-    d->connectActObjectBlocker = boost::signals2::shared_connection_block(d->connectActObject, false);
+    d->connectActObjectBlocker = fastsignals::shared_connection_block(d->connectActObject, false);
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect(
         std::bind(&Gui::Document::Save, this, sp::_1)
     );
@@ -482,9 +484,10 @@ Document::Document(App::Document* pcDocument, Application* app)
     );
     d->connectChangeDocument
         = d->_pcDocument->signalChanged.connect  // use the same slot function
-          (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2));
+          (std::bind(&Gui::Document::slotChangePropertyEditor, this, sp::_1, sp::_2),
+           fastsignals::advanced_tag());
     d->connectChangeDocumentBlocker
-        = boost::signals2::shared_connection_block(d->connectChangeDocument, true);
+        = fastsignals::shared_connection_block(d->connectChangeDocument, true);
     d->connectFinishRestoreObject = pcDocument->signalFinishRestoreObject.connect(
         std::bind(&Gui::Document::slotFinishRestoreObject, this, sp::_1)
     );
@@ -648,8 +651,6 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
 {
     auto vp = DocumentP::throwIfCastFails(p);
 
-    resetIfEditing();
-
     auto obj = DocumentP::tryGetObject(vp);
 
     std::string _subname = subname ? subname : "";
@@ -660,10 +661,19 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
             obj = finder.getObject();
             vp = finder.getViewProvider();
             if (vp->getDocument() != this) {
+                resetIfEditing();
+
                 return vp->getDocument()->setEdit(vp, ModNum, _subname.c_str());
             }
         }
     }
+
+    // Fix for #13852: When switching edit directly between sketches, resetIfEditing()
+    // triggers unsetEdit() on the previous sketch which restores its selection.
+    // This clobbers the selection of the new sketch that ParentFinder relies on.
+    // Moving resetIfEditing() after ParentFinder ensures we resolve the parent context correctly
+    // using the current selection before closing the previous edit.
+    resetIfEditing();
 
     d->throwIfNotInMap(obj, getDocument());
 

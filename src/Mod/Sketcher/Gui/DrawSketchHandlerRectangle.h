@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerRectangle_H
-#define SKETCHERGUI_DrawSketchHandlerRectangle_H
+#pragma once
 
 #include <QApplication>
 
@@ -78,6 +79,8 @@ using DrawSketchHandlerRectangleBase = DrawSketchControllableHandler<DSHRectangl
 
 class DrawSketchHandlerRectangle: public DrawSketchHandlerRectangleBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerRectangle)
+
     // Allow specialisations of controllers access to private members
     friend DSHRectangleController;
     friend DSHRectangleControllerBase;
@@ -3153,6 +3156,3 @@ void DSHRectangleController::doConstructionMethodChanged()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerRectangle_H

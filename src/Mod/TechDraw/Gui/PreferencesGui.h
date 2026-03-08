@@ -20,12 +20,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PreferencesGui_h_
-#define PreferencesGui_h_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <QColor>
+
+#include "QGIView.h"
 
 class QColor;
 class QString;
@@ -95,7 +96,10 @@ static QColor       templateClickBoxColor();
 
 static int          get3dMarkerSize();
 
+static ViewFrameMode getViewFrameMode();
+static void setViewFrameMode(ViewFrameMode newMode);
+
+
 };
 
 } //end namespace TechDrawGui
-#endif

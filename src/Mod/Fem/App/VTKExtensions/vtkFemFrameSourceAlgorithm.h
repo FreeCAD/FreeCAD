@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef Fem_VTK_vtkFemFrameSourceAlgorithm_H
-#define Fem_VTK_vtkFemFrameSourceAlgorithm_H
+#pragma once
 
 #include <vtkSmartPointer.h>
 #include <vtkUnstructuredGridAlgorithm.h>
@@ -65,6 +64,3 @@ protected:
 };
 
 }  // namespace Fem
-
-
-#endif  // Fem_VTK_vtkFemFrameSourceAlgorithm_H

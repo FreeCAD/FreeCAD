@@ -76,14 +76,20 @@ if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+    Path.Log.setLevel(Path.Log.Level.ERROR, Path.Log.thisModule())
 
 
 class ToolBit(Asset, ABC):
     asset_type: str = "toolbit"
     SHAPE_CLASS: Type[ToolBitShape]  # Abstract class attribute
 
-    def __init__(self, tool_bit_shape: ToolBitShape, id: Optional[str] = None):
+    def __init__(
+        self,
+        tool_bit_shape: ToolBitShape,
+        id: Optional[str] = None,
+        attrs: Optional[Mapping] = None,
+    ):
+        super().__init__()
         Path.Log.track("ToolBit __init__ called")
         self.id = id if id is not None else str(uuid.uuid4())
         self.obj = DetachedDocumentObject()
@@ -96,9 +102,13 @@ class ToolBit(Asset, ABC):
         self.obj.ShapeID = tool_bit_shape.get_id()
         self.obj.ShapeType = tool_bit_shape.name
         self.obj.Label = tool_bit_shape.label or f"New {tool_bit_shape.name}"
-
         # Initialize properties
         self._update_tool_properties()
+
+        # Preserve the original shape-type from attrs (e.g., "compression", "roughing")
+        # This is what the user selected and should be saved back to disk
+        # If not provided, default to the class name (e.g., "Endmill")
+        self._shape_type = attrs.get("shape-type") if attrs else tool_bit_shape.name
 
     def __eq__(self, other):
         """Compare ToolBit objects based on their unique ID."""
@@ -133,6 +143,14 @@ class ToolBit(Asset, ABC):
             attrs["shape-type"] = attrs["shape"]
         shape_type = attrs.get("shape-type")
         shape_class = ToolBitShape.get_shape_class_from_id(shape_id, shape_type)
+
+        if shape_class and shape_type:
+            shape_type_lower = shape_type.lower()
+            # Normalize aliases to canonical name, but preserve subtypes
+            if shape_type_lower in shape_class.aliases:
+                attrs["shape-type"] = shape_class.name
+            # If it's a subtype, keep it as-is (already set in attrs)
+
         if not shape_class:
             Path.Log.debug(
                 f"Failed to find usable shape for ID '{shape_id}'"
@@ -149,7 +167,8 @@ class ToolBit(Asset, ABC):
                 Path.Log.debug(f"ToolBit.from_dict: Shape asset {shape_asset_uri} not found.")
                 # Rely on the fallback below
             else:
-                return cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
+                toolbit = cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
+                return toolbit
 
         # Ending up here means we either could not load the shape asset,
         # or we are in shallow mode and do not want to load it.
@@ -162,7 +181,9 @@ class ToolBit(Asset, ABC):
         )
 
         # Now that we have a shape, create the toolbit instance.
-        return cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
+        toolbit = cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
+
+        return toolbit
 
     @classmethod
     def from_shape(
@@ -172,7 +193,7 @@ class ToolBit(Asset, ABC):
         id: Optional[str] = None,
     ) -> "ToolBit":
         selected_toolbit_subclass = cls._find_subclass_for_shape(tool_bit_shape)
-        toolbit = selected_toolbit_subclass(tool_bit_shape, id=id)
+        toolbit = selected_toolbit_subclass(tool_bit_shape, id=id, attrs=attrs)
         toolbit.label = attrs.get("name") or tool_bit_shape.label
 
         # Get params and attributes.
@@ -307,6 +328,16 @@ class ToolBit(Asset, ABC):
         self.obj.setEditorMode("Shape", 2)
 
         # Create the ToolBit properties that are shared by all tool bits
+
+        if not hasattr(self.obj, "Units"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Units",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Measurement units for the tool bit"),
+            )
+            self.obj.Units = ["Metric", "Imperial"]
+            self.obj.Units = "Metric"  # Default value
         if not hasattr(self.obj, "SpindleDirection"):
             self.obj.addProperty(
                 "App::PropertyEnumeration",
@@ -670,7 +701,7 @@ class ToolBit(Asset, ABC):
         self, name: str, default: str | None = None, precision: int | None = None
     ) -> str | None:
         value = self.get_property(name)
-        return format_value(value, precision=precision) if value else default
+        return format_value(value, precision=precision, units=self.obj.Units) if value else default
 
     def set_property(self, name: str, value: Any):
         return self.obj.setPropertyByName(name, value)
@@ -781,7 +812,23 @@ class ToolBit(Asset, ABC):
                 PathUtil.setProperty(self.obj, name, value)
             self.obj.setEditorMode(name, 0)
 
-        # 3. Ensure SpindleDirection property exists and is set
+        # 3. Ensure Units property exists and is set
+        if not hasattr(self.obj, "Units"):
+            Path.Log.debug("Adding Units property")
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Units",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Measurement units for the tool bit"),
+            )
+            self.obj.Units = ["Metric", "Imperial"]
+            self.obj.Units = "Metric"  # Default value
+
+        units_value = self._tool_bit_shape.get_parameters().get("Units")
+        if units_value in ("Metric", "Imperial") and self.obj.Units != units_value:
+            PathUtil.setProperty(self.obj, "Units", units_value)
+
+        # 4. Ensure SpindleDirection property exists and is set
         # Maybe this could be done with a global schema or added to each
         # shape schema?
         if not hasattr(self.obj, "SpindleDirection"):
@@ -802,7 +849,7 @@ class ToolBit(Asset, ABC):
             # self.obj.SpindleDirection = spindle_value
             PathUtil.setProperty(self.obj, "SpindleDirection", spindle_value)
 
-        # 4. Ensure Material property exists and is set
+        # 5. Ensure Material property exists and is set
         if not hasattr(self.obj, "Material"):
             self.obj.addProperty(
                 "App::PropertyEnumeration",
@@ -888,6 +935,9 @@ class ToolBit(Asset, ABC):
             )
             raise
 
+        # clear the touched state since visual updates shouldn't require recompute
+        self.obj.purgeTouched()
+
     def to_dict(self):
         """
         Returns a dictionary representation of the tool bit.
@@ -959,6 +1009,14 @@ class ToolBit(Asset, ABC):
         return state
 
     def get_spindle_direction(self) -> toolchange.SpindleDirection:
+        """
+        Returns the spindle direction for this toolbit.
+        The direction is determined by the ToolBit's properties and safety rules:
+        - Returns SpindleDirection.OFF if the tool cannot rotate (e.g., a probe).
+        - Returns SpindleDirection.CW for clockwise or 'forward' spindle direction.
+        - Returns SpindleDirection.CCW for counterclockwise or any other value.
+        - Defaults to SpindleDirection.OFF if not specified.
+        """
         # To be safe, never allow non-rotatable shapes (such as probes) to rotate.
         if not self.can_rotate():
             return toolchange.SpindleDirection.OFF
@@ -979,3 +1037,10 @@ class ToolBit(Asset, ABC):
         This mostly exists as a safe-hold for probes, which should never rotate.
         """
         return True
+
+    def get_subtype(self) -> Optional[str]:
+        """Returns the alias/subtype used to instantiate this toolbit, if any."""
+        # Only return the subtype if it differs from the class name
+        if self._shape_type.lower() != self._tool_bit_shape.name.lower():
+            return self._shape_type.lower()
+        return None

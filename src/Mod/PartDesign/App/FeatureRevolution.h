@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,14 +23,19 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Revolution_H
-#define PARTDESIGN_Revolution_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
 
 namespace PartDesign
 {
+
+enum FuseOrder : std::uint8_t
+{
+    BaseFirst,
+    FeatureFirst,
+};
 
 class PartDesignExport Revolution: public ProfileBased
 {
@@ -48,6 +55,12 @@ public:
      */
     App::PropertyLinkSub ReferenceAxis;
 
+    /**
+     * Compatibility property that is required to preserve behavior from 1.0, that while incorrect
+     * may have an impact over user files.
+     */
+    App::PropertyEnumeration FuseOrder;
+
     /** @name methods override feature */
     //@{
     /** Recalculate the feature
@@ -65,6 +78,8 @@ public:
         return "PartDesignGui::ViewProviderRevolution";
     }
     //@}
+
+    void Restore(Base::XMLReader& reader) override;
 
     /// suggests a value for Reversed flag so that material is always added to the support
     bool suggestReversed();
@@ -132,9 +147,7 @@ protected:
 
 private:
     static const char* TypeEnums[];
+    static const char* FuseOrderEnums[];
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Revolution_H

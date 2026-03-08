@@ -37,7 +37,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Tapping Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Path Tapping operation."
 __contributors__ = "luvtofish (Dan Henderson)"
 
@@ -97,6 +97,13 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add tapping specific properties to obj."""
+        # DEPRECATED: This operation is deprecated. Use Drilling operation with Strategy=Tapping instead.
+        Path.Log.warning(
+            "DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. "
+            "Please use the Drilling operation with Strategy set to 'Tapping' instead. "
+            "Existing Tapping operations will continue to work but you cannot create new ones."
+        )
+
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",

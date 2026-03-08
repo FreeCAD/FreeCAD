@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
+
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
@@ -39,13 +41,12 @@
 #include <QTextStream>
 #include <QTimer>
 #include <QWindow>
+#include <QStyleFactory>
 
 #include <QLoggingCategory>
 #include <fmt/format.h>
 #include <list>
 #include <ranges>
-
-#include <FCConfig.h>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -141,6 +142,7 @@
 #include "Inventor/SoFCPlacementIndicatorKit.h"
 #include "QtWidgets.h"
 
+#include <FreeCADStyle.h>
 #include <OverlayManager.h>
 #include <ParamHandler.h>
 #include <Base/ServiceProvider.h>
@@ -2448,7 +2450,6 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
     Base::FileInfo fi(out.str());
     Base::ofstream lock(fi);
 
-    // In case the file_lock cannot be created start FreeCAD without IPC support.
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
     std::string filename = out.str();
 #else
@@ -2473,17 +2474,21 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
             fi.deleteFile();
         }
         else {
-            Base::Console().warning(
+            Base::Console().error(
                 "Failed to create a file lock for the IPC.\n"
-                "The application will be terminated\n"
+                "The application will be terminated.\n"
+                "Attempted lock file: %s",
+                fi.filePath().c_str()
             );
         }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().warning(
-            "Failed to create a file lock for the IPC: %s\n",
-            msg.toUtf8().constData()
+        Base::Console().error(
+            "Failed to create a file lock for the IPC: %s\n"
+            "Attempted lock file: %s\n",
+            msg.toUtf8().constData(),
+            fi.filePath().c_str()
         );
     }
 }
@@ -2766,6 +2771,38 @@ void Application::reloadStyleSheet()
 QString Application::replaceVariablesInQss(const QString& qssText)
 {
     return QString::fromStdString(d->styleParameterManager->replacePlaceholders(qssText.toStdString()));
+}
+
+void Application::setStyle(const QString& name)
+{
+    const auto createStyleFromName = [](const QString& name) -> QStyle* {
+        if (name == QStringLiteral("FreeCAD")) {
+            return new FreeCADStyle();
+        }
+
+        if (name.compare(QStringLiteral("System"), Qt::CaseInsensitive) == 0) {
+            return nullptr;
+        }
+
+        return QStyleFactory::create(name);
+    };
+
+    const auto requiresEventFilter = [](QStyle* style) {
+        // for now only FreeCAD style requires additional event processing
+        return qobject_cast<FreeCADStyle*>(style) != nullptr;
+    };
+
+    if (auto* current = qApp->style(); current != nullptr && requiresEventFilter(current)) {
+        qApp->removeEventFilter(current);
+    }
+
+    if (auto* style = createStyleFromName(name)) {
+        qApp->setStyle(style);
+
+        if (requiresEventFilter(style)) {
+            qApp->installEventFilter(style);
+        }
+    }
 }
 
 void Application::checkForDeprecatedSettings()

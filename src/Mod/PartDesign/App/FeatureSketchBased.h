@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_SketchBased_H
-#define PARTDESIGN_SketchBased_H
+#pragma once
 
 #include <Mod/Part/App/Part2DObject.h>
 #include "FeatureAddSub.h"
@@ -110,14 +111,12 @@ public:
      * @param silent: if profile property is malformed and the parameter is true
      *                silently returns nullptr, otherwise throw a Base::Exception.
      *                Default is false.
-     * @param doFit: Whether to fitting according to the 'Fit' property
      * @param allowOpen: Whether allow open wire
      * @param profile: optional profile object, if not given then use 'Profile' property
      * @param subs: optional profile sub-object names, if not given then use 'Profile' property
      */
     TopoShape getTopoShapeVerifiedFace(
         bool silent = false,
-        bool doFit = true,
         bool allowOpen = false,
         const App::DocumentObject* profile = nullptr,
         const std::vector<std::string>& subs = {}
@@ -159,8 +158,6 @@ public:
     double getThroughAllLength() const;
 
 protected:
-    void remapSupportShape(const TopoDS_Shape&);
-
     TopoDS_Face getSupportFace(const Part::Part2DObject*) const;
     TopoDS_Face getSupportFace(const App::PropertyLinkSub& link) const;
 
@@ -217,6 +214,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_SketchBased_H

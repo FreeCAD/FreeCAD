@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Werner Mayer <wmayer@users.sourceforge.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_GUI_PRECOMPILED_H
-#define SANDBOX_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -54,5 +55,3 @@
 #include <qapplication.h>
 #include <qmainwindow.h>
 #include <qworkspace.h>
-
-#endif // GUI_PRECOMPILED_H

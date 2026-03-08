@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:39 CET 2005  path_circle.h
 
@@ -42,8 +44,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_PATHCIRCLE_H
-#define KDL_MOTION_PATHCIRCLE_H
+#pragma once
 
 #include "path.hpp"
 #include "rotational_interpolation.hpp"
@@ -113,6 +114,3 @@ class Path_Circle : public Path
 
 
 }
-
-
-#endif

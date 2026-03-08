@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_SMOOTHING_H
-#define MESH_SMOOTHING_H
+#pragma once
 
 #include <limits>
 #include <vector>
@@ -164,6 +163,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_SMOOTHING_H

@@ -1,0 +1,5 @@
+{
+    "name": "All Walls",
+    "description": "Selects all Wall objects in the document.",
+    "query": "SELECT * FROM document WHERE IfcType = 'Wall'"
+}

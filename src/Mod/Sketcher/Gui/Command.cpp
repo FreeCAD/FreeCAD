@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -234,8 +236,6 @@ void CmdSketcherNewSketch::activated(int iMsg)
     if (bAttach) {
 
         std::vector<Gui::SelectionObject> objects = Gui::Selection().getSelectionEx();
-        // assert (objects.size() == 1); //should have been filtered out by SuggestAutoMapMode
-        // Gui::SelectionObject &sel_support = objects[0];
         App::PropertyLinkSubList support;
         Gui::Selection().getAsPropertyLinkSubList(support);
         std::string supportString = support.getPyReprString();
@@ -1614,7 +1614,7 @@ void RenderingOrderAction::updateWidget()
     int midid = hGrp->GetInt("MidRenderGeometryId", 2);
     int lowid = hGrp->GetInt("LowRenderGeometryId", 3);
 
-    auto idToText = [this](int id) -> QString {
+    auto idToText = [](int id) -> QString {
         switch (id) {
         case 1:
             return tr("Normal geometry");

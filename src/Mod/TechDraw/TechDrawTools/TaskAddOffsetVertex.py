@@ -42,7 +42,7 @@ class TaskAddOffsetVertex():
         self._uiPath = App.getHomePath()
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskAddOffsetVertex.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
-        self.form.setWindowTitle(translate("TechDraw_AddOffsetVertex", "Add offset vertex"))
+        self.form.setWindowTitle(translate("TechDraw_AddOffsetVertex", "Offset Vertex"))
         self.view = view
         self.vertex = vertex
 

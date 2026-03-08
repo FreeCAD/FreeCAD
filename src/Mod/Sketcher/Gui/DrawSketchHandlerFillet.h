@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerFillet_H
-#define SKETCHERGUI_DrawSketchHandlerFillet_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -120,6 +121,8 @@ using DrawSketchHandlerFilletBase = DrawSketchControllableHandler<DSHFilletContr
 
 class DrawSketchHandlerFillet: public DrawSketchHandlerFilletBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerFillet)
+
     friend DSHFilletController;
     friend DSHFilletControllerBase;
 
@@ -500,5 +503,3 @@ void DSHFilletController::adaptDrawingToCheckboxChange(int checkboxindex, bool v
 }
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerFillet_H

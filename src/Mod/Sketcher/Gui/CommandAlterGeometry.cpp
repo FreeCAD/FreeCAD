@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -44,9 +46,8 @@ bool isAlterGeoActive(Gui::Document* doc)
 {
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
-            return true;
-        }
+        auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        return (vp && vp->isInEditMode());
     }
 
     return false;

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_GRAPHICSVIEW_H
-#define GUI_GRAPHICSVIEW_H
+#pragma once
 
 #include <QGraphicsScene>
 #include <QTime>
@@ -160,6 +161,3 @@ private:
 };
 
 } // namespace Gui
-
-#endif  // GUI_GRAPHICSVIEW_H
-

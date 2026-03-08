@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _ImportStep_h_
-#define _ImportStep_h_
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -51,6 +50,3 @@ inline std::list<std::string> supportedSTEPSchemes()
 }
 
 }  // namespace Part
-
-
-#endif

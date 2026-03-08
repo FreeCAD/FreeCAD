@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_GUI_TOOLS_H
-#define FEM_GUI_TOOLS_H
+#pragma once
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SbRotation.h>
@@ -70,6 +69,3 @@ void updateFixed(
 }  // namespace GuiTools
 
 }  // namespace FemGui
-
-
-#endif  // FEM_GUI_TOOLS_H

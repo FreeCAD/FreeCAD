@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
-#define SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
+#pragma once
 
 #include <boost/math/special_functions/fpclassify.hpp>
 
@@ -46,6 +47,8 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerArcOfHyperbola: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcOfHyperbola)
+
 public:
     DrawSketchHandlerArcOfHyperbola()
         : Mode(STATUS_SEEK_First)
@@ -460,6 +463,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H

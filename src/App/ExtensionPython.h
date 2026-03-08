@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_EXTENSIONPYTHON_H
-#define APP_EXTENSIONPYTHON_H
+#pragma once
 
 #include <Base/Interpreter.h>
 #include "Extension.h"
@@ -119,5 +120,3 @@ using ExtensionPython = ExtensionPythonT<App::Extension>;
     };
 
 }  // namespace App
-
-#endif  // APP_EXTENSIONPYTHON_H

@@ -24,12 +24,12 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FILEINFO_H
-#define BASE_FILEINFO_H
+#pragma once
 
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <optional>
 
 #include <FCGlobal.h>
 
@@ -125,6 +125,8 @@ public:
     bool isFile() const;
     /// Checks if it is a directory (not a file)
     bool isDir() const;
+    /// Checks if it is a symbolic link (returns false if the file doesn't exist)
+    bool isSymlink() const;
     /// The size of the file
     unsigned int size() const;
     /// Returns the time when the file was last modified.
@@ -153,6 +155,11 @@ public:
     /// Rename the file
     bool copyTo(const char* NewName) const;
 
+    /// Returns the folder or directory the symlink points
+    std::optional<std::string> getSymlinkTarget();
+    /// Returns the absolute path without any "..", "." or symlinks
+    std::optional<std::string> getCannonicalPath();
+
     /** @name Tools */
     //@{
     /// Get a unique File Name in the given or (if 0) in the temp path
@@ -170,6 +177,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif  // BASE_FILEINFO_H

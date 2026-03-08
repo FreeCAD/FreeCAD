@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_UNITSAPI_H
-#define BASE_UNITSAPI_H
+#pragma once
 
 #include "UnitsSchema.h"
 #include "UnitsSchemas.h"
@@ -67,7 +66,6 @@ public:
     static bool isMultiUnitAngle();
     static bool isMultiUnitLength();
     static std::string getBasicLengthUnit();
-    static std::string getUnitText(const Quantity& quant);
 
     static std::size_t getDefSchemaNum()
     {
@@ -91,5 +89,3 @@ protected:
 };
 
 }  // namespace Base
-
-#endif  // BASE_UNITSAPI_H

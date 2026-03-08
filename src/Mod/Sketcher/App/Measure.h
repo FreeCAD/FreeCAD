@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Wandererfan <wandererfan@gmail.com>                *
  *                                                                         *
@@ -21,8 +23,7 @@
 
 //! a class for establishing our connection with the unified measurement facility
 
-#ifndef SKETCHER_MEASURE_H
-#define SKETCHER_MEASURE_H
+#pragma once
 
 #include <Mod/Sketcher/SketcherGlobal.h>
 
@@ -39,5 +40,3 @@ public:
 
 
 }  // namespace Sketcher
-
-#endif

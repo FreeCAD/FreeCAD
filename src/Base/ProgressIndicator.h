@@ -20,8 +20,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef BASE_PROGRESSINDICATOR_H
-#define BASE_PROGRESSINDICATOR_H
+#pragma once
 
 #include "FCGlobal.h"
 
@@ -92,5 +91,3 @@ public:
 };
 
 }  // namespace Base
-
-#endif

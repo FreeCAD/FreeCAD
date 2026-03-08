@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_COLORMODEL_H
-#define APP_COLORMODEL_H
+#pragma once
 
 #include "Material.h"
 #include <Base/Bitmask.h>
@@ -701,5 +702,3 @@ inline const ColorModel& ColorGradient::getColorModel() const
 }
 
 }  // namespace App
-
-#endif  // APP_COLORMODEL_H

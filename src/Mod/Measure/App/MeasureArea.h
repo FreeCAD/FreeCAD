@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef MEASURE_MEASUREAREA_H
-#define MEASURE_MEASUREAREA_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -74,7 +73,7 @@ public:
     }
 
     // Return a placement for the viewprovider, just use the first element for now
-    Base::Placement getPlacement() override;
+    Base::Placement getPlacement() const override;
 
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;
@@ -86,6 +85,3 @@ private:
 };
 
 }  // namespace Measure
-
-
-#endif  // MEASURE_MEASUREAREA_H

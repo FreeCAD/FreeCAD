@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 #include <limits>
-#include <boost/signals2.hpp>
-#include <boost/signals2/connection.hpp>
+#include <fastsignals/signal.h>
+#include <fastsignals/connection.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -31,6 +31,7 @@
 #include <App/Metadata.h>
 #include <Base/Color.h>
 #include <Base/Console.h>
+#include <Base/ProgramVersion.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
@@ -65,6 +66,7 @@ ViewProviderDrawingView::ViewProviderDrawingView() :
     static const char *group = "Base";
 
     auto showLabel = Preferences::alwaysShowLabel();
+    // TODO: KeepLabel is not used. Make it ReadOnly or Hidden?
     ADD_PROPERTY_TYPE(KeepLabel ,(showLabel), group, App::Prop_None, "Keep Label on Page even if toggled off");
     ADD_PROPERTY_TYPE(StackOrder,(0),group,App::Prop_None,"Over or under lap relative to other views");
 
@@ -111,14 +113,9 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
             return;
     }
 
-    if (prop == &Visibility) {
-        //handled by ViewProviderDocumentObject
-    } else if (prop == &KeepLabel) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        }
-    }
+    // if (prop == &Visibility) {
+    //     //handled by ViewProviderDocumentObject
+    // }
 
     if (prop == &StackOrder) {
         QGIView* qgiv = getQView();
@@ -528,7 +525,7 @@ std::vector<App::DocumentObject*> ViewProviderDrawingView::claimChildren() const
 void ViewProviderDrawingView::fixColorAlphaValues()
 {
     if (!Preferences::fixColorAlphaOnLoad() ||
-        checkMiniumumDocumentVersion(1, 1)) {
+        checkMinimumDocumentVersion(Base::Version::v1_1)) {
         return;
     }
 
@@ -554,27 +551,12 @@ void ViewProviderDrawingView::fixColorAlphaValues()
     }
 }
 
-
-//! true if document toBeChecked was written by a program with version >= minMajor.minMinor.
-//! note that we can not check point releases as only the major and minor are recorded in the Document.xml
-//! file.
-//! (ex <Document SchemaVersion="4" ProgramVersion="1.2R44322 +1 (Git)" FileVersion="1" StringHasher="1">)
-bool ViewProviderDrawingView::checkMiniumumDocumentVersion(App::Document* toBeChecked,
-                                                           int minMajor,
-                                                           int minMinor)
+bool ViewProviderDrawingView::checkMinimumDocumentVersion(App::Document* toBeChecked,
+                                                           Base::Version minVersion)
 {
     const char* docVersionText = toBeChecked->getProgramVersion();
-    int docMajor{0};
-    int docMinor{0};
-    // stole this bit from App::AttachExtension.
-    // NOLINTNEXTLINE
-    if (sscanf(docVersionText, "%d.%d", &docMajor, &docMinor) != 2) {
-        Base::Console().warning("Failed to retrieve document version number for %s\n",
-                    toBeChecked ? toBeChecked->getName() : "noname");
-        return false;   // ?? should we fail here? the file appears broken.
-    }
-
-    return std::tie(docMajor, docMinor) >= std::tie(minMajor, minMinor);
+    Base::Version documentVersion = Base::getVersion(docVersionText);
+    return documentVersion >= minVersion;
 }
 
 

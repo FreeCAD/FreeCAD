@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -121,11 +123,9 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this](const std::string& param) { updateConstraintPresentationParameters(param); }},
         {"DimensionalStringFormat",
          [this](const std::string& param) { updateConstraintPresentationParameters(param); }},
-        {"ViewScalingFactor",
-         [this](const std::string& param) { Client.updateElementSizeParameters(); }},
-        {"MarkerSize", [this](const std::string& param) { Client.updateElementSizeParameters(); }},
-        {"EditSketcherFontSize",
-         [this](const std::string& param) { Client.updateElementSizeParameters(); }},
+        {"ViewScalingFactor", [this](const std::string&) { Client.updateElementSizeParameters(); }},
+        {"MarkerSize", [this](const std::string&) { Client.updateElementSizeParameters(); }},
+        {"EditSketcherFontSize", [this](const std::string&) { Client.updateElementSizeParameters(); }},
         {"EdgeWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.CurveWidth, param, 2);
@@ -1108,6 +1108,15 @@ void EditModeCoinManager::updateElementSizeParameters()
     auto const it = std::lower_bound(supportedsizes.begin(), supportedsizes.end(), scaledMarkerSize);
     if (it != supportedsizes.end()) {
         scaledMarkerSize = *it;
+    }
+    else {
+        // This is a quick and dirty fix for https://github.com/FreeCAD/FreeCAD/issues/22010
+        //
+        // Basically if we want to use a bigger marker size than available, we use the biggest one
+        // available. This is not a good way to fix the issue - we should ensure that the marker
+        // size that the user requests is actually available - this, however, requires more
+        // significant changes to the code.
+        scaledMarkerSize = *supportedsizes.rbegin();
     }
     drawingParameters.markerSize = scaledMarkerSize;
 

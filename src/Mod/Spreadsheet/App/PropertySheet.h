@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYSHEET_H
-#define PROPERTYSHEET_H
+#pragma once
 
 #ifdef _MSC_VER
 # ifdef PropertySheet
@@ -353,11 +352,10 @@ private:
     /*! The associated python object */
     Py::SmartPtr PythonObject;
 
-    std::map<const App::DocumentObject*, boost::signals2::scoped_connection> depConnections;
+    std::map<const App::DocumentObject*, fastsignals::scoped_connection> depConnections;
 
     int updateCount = 0;
     bool restoring = false;
 };
 
 }  // namespace Spreadsheet
-#endif  // PROPERTYSHEET_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcOfParabola_H
-#define SKETCHERGUI_DrawSketchHandlerArcOfParabola_H
+#pragma once
 
 #include <boost/math/special_functions/fpclassify.hpp>
 
@@ -46,6 +47,8 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerArcOfParabola: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcOfParabola)
+
 public:
     DrawSketchHandlerArcOfParabola()
         : Mode(STATUS_SEEK_First)
@@ -375,5 +378,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcOfParabola_H

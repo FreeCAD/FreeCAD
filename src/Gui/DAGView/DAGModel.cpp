@@ -496,9 +496,6 @@ void Model::updateSlot()
     // sync scene items for graph edge.
     BGL_FORALL_EDGES(currentEdge, *theGraph, Graph)
     {
-        Vertex source = boost::source(currentEdge, *theGraph);
-        Vertex target = boost::target(currentEdge, *theGraph);
-
         if (!(*theGraph)[currentEdge].connector->scene()) {
             this->addItem((*theGraph)[currentEdge].connector.get());
         }

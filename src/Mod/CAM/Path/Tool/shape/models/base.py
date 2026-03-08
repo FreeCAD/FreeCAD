@@ -46,7 +46,7 @@ if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
 else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+    Path.Log.setLevel(Path.Log.Level.ERROR, Path.Log.thisModule())
 
 
 class ToolBitShape(Asset):
@@ -67,6 +67,11 @@ class ToolBitShape(Asset):
     # be found, then we can attempt to find a shape class from the string
     # "v-bit", "vbit", etc.
     aliases: Tuple[str, ...] = tuple()
+
+    # Subtypes are shape variants (e.g., "roughing" for endmill).
+    # Unlike aliases, subtypes preserve their identity and don't normalize.
+    # NOTE: Subtypes are set dynamically from the shape_aliases.json file.
+    subtypes: Tuple[str, ...] = tuple()
 
     def __init__(self, id: str, **kwargs: Any):
         """
@@ -501,7 +506,8 @@ class ToolBitShape(Asset):
         cls, name: str, default: Optional[Type["ToolBitShape"]] = None
     ) -> Optional[Type["ToolBitShape"]]:
         """
-        Retrieves a ToolBitShape class by its name or alias.
+        Retrieves a ToolBitShape class by its name, alias, or subtype.
+        Note: Both aliases and subtypes return the parent class.
         """
         name = name.lower()
         for thecls in cls.__subclasses__():
@@ -509,6 +515,7 @@ class ToolBitShape(Asset):
                 thecls.name.lower() == name
                 or thecls.__name__.lower() == name
                 or name in thecls.aliases
+                or name in thecls.subtypes
             ):
                 return thecls
         return default
@@ -518,7 +525,7 @@ class ToolBitShape(Asset):
         cls, name: str, default: Optional[Type["ToolBitShape"]] = None
     ) -> Optional[Type["ToolBitShape"]]:
         """
-        Retrieves a ToolBitShape class by its name or alias.
+        Retrieves a ToolBitShape class by its name, alias, or subtype.
         """
         name = name.lower()
         for thecls in cls.__subclasses__():
@@ -526,6 +533,9 @@ class ToolBitShape(Asset):
                 return thecls
             for alias in thecls.aliases:
                 if alias.lower() in name:
+                    return thecls
+            for subtype in thecls.subtypes:
+                if subtype.lower() in name:
                     return thecls
         return default
 
@@ -718,8 +728,23 @@ class ToolBitShape(Asset):
             # Recompute the document to apply property changes
             tmp_doc.recompute()
 
-            # Copy the body to the given document without immediate compute.
-            return doc.copyObject(shape, True)
+            # Temporarily disable duplicate labels to let FreeCAD automatically
+            # make labels unique during the copy operation
+
+            param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
+            original_setting = param.GetBool("DuplicateLabels", False)
+
+            try:
+                # Disable duplicate labels temporarily
+                param.SetBool("DuplicateLabels", False)
+
+                # Copy the body - FreeCAD will now automatically make labels unique
+                copied_shape = doc.copyObject(shape, True)
+
+                return copied_shape
+            finally:
+                # Restore the original setting
+                param.SetBool("DuplicateLabels", original_setting)
 
         """
         Retrieves the thumbnail data for the tool bit shape in PNG format.

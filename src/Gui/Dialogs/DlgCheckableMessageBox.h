@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
 **
 ** This file is part of Qt Creator
@@ -27,8 +29,7 @@
 **
 **************************************************************************/
 
-#ifndef CHECKABLEMESSAGEBOX_H
-#define CHECKABLEMESSAGEBOX_H
+#pragma once
 
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -148,5 +149,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // CHECKABLEMESSAGEBOX_H

@@ -533,12 +533,12 @@ void DlgRevolution::onSelectLineClicked()
     if (!filter) {
         filter = new EdgeSelection();
         Gui::Selection().addSelectionGate(filter);
-        ui->selectLine->setText(tr("Selecting… (line or arc)"));
+        ui->selectLine->setText(tr("Selecting… (Line or Arc)"));
     }
     else {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
-        ui->selectLine->setText(tr("Select reference"));
+        ui->selectLine->setText(tr("Select Reference"));
     }
 }
 

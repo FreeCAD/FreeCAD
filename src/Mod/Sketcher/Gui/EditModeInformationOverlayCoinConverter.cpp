@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -477,7 +479,6 @@ void EditModeInformationOverlayCoinConverter::addNode(const Result& result)
 
         SoSwitch* sw = new SoSwitch();
 
-        // hGrpsk->GetBool("BSplineControlPolygonVisible", true)
         sw->whichChild = isVisible<Result::calculationType>() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
 
         SoSeparator* sep = new SoSeparator();

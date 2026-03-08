@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef DLGTHEMEEDITOR_H
-#define DLGTHEMEEDITOR_H
+#pragma once
 
 
 #include "StyleParameters/ParameterManager.h"
@@ -94,7 +93,7 @@ public:
     std::optional<StyleParameters::Parameter> get(const std::string& name) const override;
 
     void reset();
-    void flush();
+    void flush() override;
 
     int rowCount(const QModelIndex& index) const override;
     int columnCount(const QModelIndex& index) const override;
@@ -153,5 +152,3 @@ private:
     std::unique_ptr<StyleParametersModel> model;
 };
 }  // namespace Gui
-
-#endif  // DLGTHEMEEDITOR_H

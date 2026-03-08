@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Copyright  (C)  2011  PAL Robotics S.L.  All rights reserved.
 // Copyright  (C)  2007-2008  Ruben Smits <ruben dot smits at mech dot kuleuven dot be>
 // Copyright  (C)  2008  Mikael Mayer

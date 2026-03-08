@@ -13,6 +13,10 @@ if(BUILD_TRACY_FRAME_PROFILER)
     add_definitions(-DBUILD_TRACY_FRAME_PROFILER)
 endif()
 
+if(FREECAD_RELEASE_SEH)
+    add_definitions(-DHAVE_SEH)
+endif(FREECAD_RELEASE_SEH)
+
 target_include_directories(
     FreeCADBase
     PRIVATE
@@ -84,7 +88,7 @@ endif()
 
 list(APPEND FreeCADBase_LIBS ${QtCore_LIBRARIES})
 
-list(APPEND FreeCADBase_LIBS fmt::fmt)
+list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
@@ -225,6 +229,7 @@ SET(FreeCADBase_CPP_SRCS
     Stream.cpp
     Swap.cpp
     ${SWIG_SRCS}
+    SystemHandler.cpp
     Tools.cpp
     Tools2D.cpp
     Tools3D.cpp
@@ -291,6 +296,7 @@ SET(FreeCADBase_HPP_SRCS
     Stream.h
     Swap.h
     ${SWIG_HEADERS}
+    SystemHandler.h
     TimeInfo.h
     Tools.h
     Tools2D.h

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -129,7 +130,32 @@ bool FeatureExtrude::hasTaperedAngle() const
         || fabs(TaperAngle2.getValue()) > Base::toRadians(Precision::Angular());
 }
 
-TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir)
+void FeatureExtrude::onChanged(const App::Property* prop)
+{
+    if (!isRestoring() && prop == &Midplane) {
+        // Deprecation notice: Midplane property is deprecated and has been replaced by SideType in
+        // FreeCAD 1.1 when FeatureExtrude was refactored.
+        App::DocumentObject* obj = Profile.getValue();
+        auto baseName = obj ? obj->getNameInDocument() : "";
+        Base::Console().warning(
+            "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
+            "been replaced by the 'SideType' property in FeatureExtrude. Please update your script,"
+            " this property will be removed in a future version.\n",
+            baseName
+        );
+        if (Midplane.getValue()) {
+            SideType.setValue("Symmetric");
+        }
+        else {
+            Base::Console()
+                .warning("Deprecated Midplane property was explicitly set to False: assuming SideType='One side'\n");
+            SideType.setValue("One side");
+        }
+    }
+    ProfileBased::onChanged(prop);
+}
+
+TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir& dir)
 {
 
     // Find nearest/furthest face
@@ -469,7 +495,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 dir,
                 offset1,
                 makeface,
-                base
+                base,
+                invObjLoc
             );
             prisms.push_back(prism1);
         }
@@ -492,7 +519,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                         dir,
                         offset1,
                         makeface,
-                        base
+                        base,
+                        invObjLoc
                     );
                     if (!prism1.isNull() && !prism1.getShape().IsNull()) {
                         prisms.push_back(prism1);
@@ -510,7 +538,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                         dir2,
                         offset1,
                         makeface,
-                        base
+                        base,
+                        invObjLoc
                     );
                     if (!prism2.isNull() && !prism2.getShape().IsNull()) {
                         prisms.push_back(prism2);
@@ -536,7 +565,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                         dir,
                         offset1,
                         makeface,
-                        base
+                        base,
+                        invObjLoc
                     );
                     if (!prism1.isNull() && !prism1.getShape().IsNull()) {
                         prisms.push_back(prism1);
@@ -555,7 +585,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     dir,
                     offset1,
                     makeface,
-                    base
+                    base,
+                    invObjLoc
                 );
                 prisms.push_back(prism1);
 
@@ -599,7 +630,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     dir2,
                     offset2,
                     makeface,
-                    base
+                    base,
+                    invObjLoc
                 );
                 if (!prism.isNull() && !prism.getShape().IsNull()) {
                     prisms.push_back(prism);
@@ -621,7 +653,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     dir,
                     offset1,
                     makeface,
-                    base
+                    base,
+                    invObjLoc
                 );
                 if (!prism.isNull() && !prism.getShape().IsNull()) {
                     prisms.push_back(prism);
@@ -638,7 +671,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     dir,
                     offset1,
                     makeface,
-                    base
+                    base,
+                    invObjLoc
                 );
                 if (!prism1.isNull() && !prism1.getShape().IsNull()) {
                     prisms.push_back(prism1);
@@ -655,7 +689,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     dir2,
                     offset2,
                     makeface,
-                    base
+                    base,
+                    invObjLoc
                 );
                 if (!prism2.isNull() && !prism2.getShape().IsNull()) {
                     prisms.push_back(prism2);
@@ -805,7 +840,8 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
     gp_Dir dir,
     double offsetVal,
     bool makeFace,
-    const TopoShape& base
+    const TopoShape& base,
+    TopLoc_Location& invObjLoc
 )
 {
     TopoShape prism(0, getDocument()->getStringHasher());
@@ -814,7 +850,6 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         || method == "UpToShape") {
         // Note: This will return an unlimited planar face if support is a datum plane
         TopoShape supportface = getTopoShapeSupportFace();
-        auto invObjLoc = getLocation().Inverted();
         supportface.move(invObjLoc);
 
         if (!supportface.hasSubShape(TopAbs_WIRE)) {
@@ -877,6 +912,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
 
         Part::ExtrusionParameters params;
         params.taperAngleFwd = Base::toRadians(taperAngleDeg);
+        params.innerWireTaper = Part::InnerWireTaper::SameAsOuter;
 
         if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
             || std::fabs(params.taperAngleRev) >= Precision::Angular()) {

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -566,6 +568,18 @@ PyObject* SketchObjectPy::getIndexByName(PyObject* args) const
     return nullptr;
 }
 
+PyObject* SketchObjectPy::setAllowUnaligned(PyObject* args)
+{
+    PyObject* allowObj;
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &allowObj)) {
+        return nullptr;
+    }
+    bool allow = Base::asBoolean(allowObj);
+    this->getSketchObjectPtr()->setAllowUnaligned(allow);
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::carbonCopy(PyObject* args)
 {
     char* ObjectName;
@@ -667,6 +681,38 @@ PyObject* SketchObjectPy::delExternal(PyObject* args)
     }
 
     Py_Return;
+}
+
+PyObject* SketchObjectPy::delExternals(PyObject* args)
+{
+    PyObject* pcObj;
+    if (!PyArg_ParseTuple(args, "O", &pcObj)) {
+        return nullptr;
+    }
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<int> extGeoIdList;
+        Py::Sequence list(pcObj);
+        for (const auto& item : list) {
+            if (!PyLong_Check(item.ptr())) {
+                throw Py::TypeError("list elements must be int");
+            }
+            extGeoIdList.push_back(PyLong_AsLong(item.ptr()));
+        }
+
+        if (this->getSketchObjectPtr()->delExternal(extGeoIdList)) {
+            std::stringstream str;
+            str << "Not able to delete external geometries";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return nullptr;
+        }
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of External GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
 }
 
 PyObject* SketchObjectPy::delConstraintOnPoint(PyObject* args)

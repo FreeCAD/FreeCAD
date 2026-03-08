@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:38 CET 2005  path_roundedcomposite.h
 
@@ -41,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_ROUNDEDCOMPOSITE_H
-#define KDL_MOTION_ROUNDEDCOMPOSITE_H
+#pragma once
 
 #include "path.hpp"
 #include "path_composite.hpp"
@@ -198,6 +199,3 @@ class Path_RoundedComposite : public Path
 
 
 }
-
-
-#endif

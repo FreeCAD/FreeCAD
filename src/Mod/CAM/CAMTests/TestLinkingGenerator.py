@@ -82,6 +82,63 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 solids=[blocking_box],
             )
 
+    def test_plunge_to_zero_depth(self):
+        """Test that plunge moves correctly go to Z=0 (regression test for depth==0 bug)"""
+        start = FreeCAD.Vector(0, 0, 1)  # Start below clearance
+        target = FreeCAD.Vector(10, 10, 0)  # Target depth is 0
+
+        cmds = generator.get_linking_moves(
+            start_position=start,
+            target_position=target,
+            local_clearance=self.local_clearance,
+            global_clearance=self.global_clearance,
+            tool_shape=self.tool,
+            solids=[],
+        )
+
+        # Verify we got commands
+        self.assertGreater(len(cmds), 0)
+
+        # All commands should have complete XYZ coordinates
+        for cmd in cmds:
+            self.assertIn("X", cmd.Parameters, "Command missing X coordinate")
+            self.assertIn("Y", cmd.Parameters, "Command missing Y coordinate")
+            self.assertIn("Z", cmd.Parameters, "Command missing Z coordinate")
+
+        # The last command should be the plunge to target depth (Z=0)
+        last_cmd = cmds[-1]
+        self.assertAlmostEqual(last_cmd.Parameters["X"], target.x, places=5)
+        self.assertAlmostEqual(last_cmd.Parameters["Y"], target.y, places=5)
+        self.assertAlmostEqual(
+            last_cmd.Parameters["Z"],
+            target.z,
+            places=5,
+            msg="Final plunge should go to target Z=0, not clearance height",
+        )
+
+    def test_plunge_to_negative_depth(self):
+        """Test that plunge moves correctly go to negative Z depths"""
+        start = FreeCAD.Vector(0, 0, 1)  # Start below clearance
+        target = FreeCAD.Vector(10, 10, -2)  # Target depth is negative
+
+        cmds = generator.get_linking_moves(
+            start_position=start,
+            target_position=target,
+            local_clearance=self.local_clearance,
+            global_clearance=self.global_clearance,
+            tool_shape=self.tool,
+            solids=[],
+        )
+
+        # The last command should be the plunge to target depth (Z=-2)
+        last_cmd = cmds[-1]
+        self.assertAlmostEqual(
+            last_cmd.Parameters["Z"],
+            target.z,
+            places=5,
+            msg="Final plunge should go to target Z=-2",
+        )
+
     @unittest.skip("not yet implemented")
     def test_zero_retract_offset_uses_local_clearance(self):
         cmds = generator.get_linking_moves(

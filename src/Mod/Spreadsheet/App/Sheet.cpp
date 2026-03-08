@@ -34,6 +34,9 @@
 #include <set>
 #include <vector>
 
+#include <boost_graph_adjacency_list.hpp>
+#include <boost/graph/topological_sort.hpp>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
@@ -412,6 +415,17 @@ Cell* Sheet::getCell(CellAddress address)
 }
 
 /**
+ * Get contents of the cell specified by \a address, or 0 if it is not defined
+ *
+ * @returns A CellContent object or 0.
+ */
+
+const Cell* Sheet::getCell(CellAddress address) const
+{
+    return cells.getValue(address);
+}
+
+/**
  * Get cell contents specified by \a address.
  *
  * @param address
@@ -777,7 +791,7 @@ void Sheet::updateProperty(CellAddress key)
 
         if (input) {
             CurrentAddressLock lock(currentRow, currentCol, key);
-            output.reset(input->eval());
+            output = input->eval();
         }
         else {
             std::string s;

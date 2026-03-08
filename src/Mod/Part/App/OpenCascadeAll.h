@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __OpenCascadeAll__
-#define __OpenCascadeAll__
+#pragma once
 
 // OpenCASCADE
 
@@ -150,6 +149,7 @@
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_ListIteratorOfListOfStatus.hxx>
 #include <BRepCheck_Result.hxx>
+#include <BRepCheck_Solid.hxx>
 #include <BRepClass_FaceClassifier.hxx>
 #include <BRepClass3d.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
@@ -515,5 +515,3 @@
 #include <XSControl_TransferReader.hxx>
 #include <XSControl_TransferWriter.hxx>
 #include <XSControl_WorkSession.hxx>
-
-#endif  // __OpenCascadeAll__

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_SUBSYSTEM_H
-#define PLANEGCS_SUBSYSTEM_H
+#pragma once
 
 #undef min
 #undef max
@@ -94,5 +95,3 @@ public:
 double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir);
 
 }  // namespace GCS
-
-#endif  // PLANEGCS_SUBSYSTEM_H

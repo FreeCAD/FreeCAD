@@ -11,7 +11,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="326"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation>МКС (м, кг, с, градус)</translation>
+      <translation>МКС (м, кг, сек, градус)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="593"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, lb, mph)</translation>
+      <translation>Імперська для цивільних інженерів (фути, фунти, милі/год)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="75"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Будівництво США (ft-in, sqft, cft)</translation>
+      <translation>Будівництво США (фути-дюйми, фути², фути³)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="53"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="581"/>
       <source>FEM (mm, N, s)</source>
-      <translation>МСЕ (мм, Н, с)</translation>
+      <translation>Механічна система одиниць (мм, Н, сек)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="62"/>

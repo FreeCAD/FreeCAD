@@ -144,15 +144,9 @@ class _ProfileC(_Profile):
         import Part
 
         pl = obj.Placement
-        c1 = Part.Circle()
-        c1.Radius = obj.OutDiameter.Value / 2
-        c2 = Part.Circle()
-        c2.Radius = obj.OutDiameter.Value / 2 - obj.Thickness.Value
-        cs1 = c1.toShape()
-        cs2 = c2.toShape()
-        p = Part.makeRuledSurface(cs2, cs1)
-        p.reverse()
-        obj.Shape = p
+        c1 = Part.makeCircle(obj.OutDiameter.Value / 2)
+        c2 = Part.makeCircle(obj.OutDiameter.Value / 2 - obj.Thickness.Value)
+        obj.Shape = Part.makeFace([c1, c2], "Part::FaceMakerCheese").Faces[0]
         obj.Placement = pl
 
 
@@ -214,9 +208,7 @@ class _ProfileH(_Profile):
         )
         p12 = Vector(-obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -250,9 +242,7 @@ class _ProfileR(_Profile):
         p3 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p4 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -312,12 +302,7 @@ class _ProfileRH(_Profile):
         )
         p = Part.makePolygon([p1, p2, p3, p4, p1])
         q = Part.makePolygon([q1, q2, q3, q4, q1])
-        # r = Part.Face([p,q])
-        # r.reverse()
-        p = Part.Face(p)
-        q = Part.Face(q)
-        r = p.cut(q)
-        obj.Shape = r
+        obj.Shape = Part.makeFace([p, q], "Part::FaceMakerCheese").Faces[0]
         obj.Placement = pl
 
 
@@ -377,9 +362,7 @@ class _ProfileU(_Profile):
         p7 = Vector(-obj.Width.Value / 2 + obj.FlangeThickness.Value, obj.Height.Value / 2, 0)
         p8 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -426,9 +409,7 @@ class _ProfileL(_Profile):
         )
         p6 = Vector(-obj.Width.Value / 2 + obj.Thickness.Value, obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -482,9 +463,7 @@ class _ProfileT(_Profile):
         )
         p8 = Vector(-obj.WebThickness.Value / 2, -obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p1])
-        p = Part.Face(p)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.Face(p)
         obj.Placement = pl
 
 
@@ -598,12 +577,8 @@ class _ProfileTSLOT(_Profile):
         templist = templist + templist2
         templist.append(templist[0])
         poly = Part.makePolygon(templist)
-        pf = Part.Face(poly)
         hole = Part.makeCircle(obj.HoleDiameter / 2, FreeCAD.Vector(0, 0, 0))
-        cf = Part.Face(Part.Wire(hole))
-        p = pf.cut(cf)
-        # p.reverse()
-        obj.Shape = p
+        obj.Shape = Part.makeFace([poly, hole], "Part::FaceMakerCheese").Faces[0]
         obj.Placement = pl
 
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCBACKGROUNDGRADIENT_H
-#define GUI_SOFCBACKGROUNDGRADIENT_H
+#pragma once
 
 #include <Inventor/SbColor.h>
 #include <Inventor/nodes/SoNode.h>
@@ -67,6 +68,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_SOFCBACKGROUNDGRADIENT_H

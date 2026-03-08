@@ -20,15 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_H
-#define GUI_VIEWPROVIDER_H
+#pragma once
 
 #include <bitset>
 #include <map>
 #include <string>
 #include <vector>
 #include <QIcon>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/Material.h>
@@ -445,17 +444,22 @@ public:
     {
         return true;
     }
+    /** Tell if the tree item should be auto collapsed*/
+    bool isAutoCollapseOnDeactivation() const
+    {
+        return autoCollapseOnDeactivation;
+    }
 
     /** @name Signals of the view provider */
     //@{
     /// signal on icon change
-    boost::signals2::signal<void()> signalChangeIcon;
+    fastsignals::signal<void()> signalChangeIcon;
     /// signal on tooltip change
-    boost::signals2::signal<void(const QString&)> signalChangeToolTip;
+    fastsignals::signal<void(const QString&)> signalChangeToolTip;
     /// signal on status tip change
-    boost::signals2::signal<void(const QString&)> signalChangeStatusTip;
+    fastsignals::signal<void(const QString&)> signalChangeStatusTip;
     /// signal on highlight change
-    boost::signals2::signal<void(bool, Gui::HighlightMode)> signalChangeHighlight;
+    fastsignals::signal<void(bool, Gui::HighlightMode)> signalChangeHighlight;
     //@}
 
     /** update the content of the ViewProvider
@@ -707,6 +711,7 @@ protected:
     /// The root separator for annotations
     SoSeparator* pcAnnotation {nullptr};
     ViewProviderPy* pyViewObject {nullptr};
+    bool autoCollapseOnDeactivation {true};
     std::string overrideMode;
     std::bitset<32> StatusBits;
     /// whether visibility can toggled
@@ -723,5 +728,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_H

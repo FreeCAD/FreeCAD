@@ -21,8 +21,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PARAMS_HELPER_H
-#define PARAMS_HELPER_H
+#pragma once
 
 /** \page ParamPage Parameter helper macros
  * \ingroup PATH
@@ -1032,5 +1031,3 @@
  * \ingroup ParamProperty
  */
 #define PARAM_PROP_TOUCHED(_seq) PARAM_FOREACH(PARAM_PROP_TOUCHED_, _seq)
-
-#endif  // PARAMS_HELPER_H

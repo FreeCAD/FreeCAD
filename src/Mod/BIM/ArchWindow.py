@@ -308,37 +308,6 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("HorizontalArea", 2)
         obj.setEditorMode("PerimeterLength", 2)
 
-        # Sill change related properties
-        self.setSillProperties(obj)
-
-    def setSillProperties(self, orgObj, linkObj=None):
-        """Set properties which support Sill change.
-        Support both Arch Window and Link of Arch Window.
-        """
-
-        if linkObj:
-            obj = linkObj
-        else:
-            obj = orgObj
-
-        prop = obj.PropertiesList
-
-        # 'Sill' support
-        if not "Sill" in prop:
-            obj.addProperty(
-                "App::PropertyLength",
-                "Sill",
-                "Window",
-                QT_TRANSLATE_NOOP("App::Property", "The height of this window's sill"),
-                locked=True,
-            )
-
-        # Link has no Proxy, so needs to use PropertyPythonObject
-        sillProp = ["baseSill", "basePosZ", "atthOffZ"]
-        for i in sillProp:
-            if i not in prop:
-                obj.addProperty("App::PropertyPythonObject", i)
-
     def onDocumentRestored(self, obj):
 
         ArchComponent.Component.onDocumentRestored(self, obj)
@@ -347,13 +316,23 @@ class _Window(ArchComponent.Component):
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, mode="ODR")
 
-        # TODO 2025.6.27 : Seems Sill already triggered onChanged() upon document restored - NO need codes below in onDocumentRestored()
-        # Need to restore 'initial' settings as corresponding codes in onChanged() does upon object creation
-        # self.baseSill = obj.Sill.Value
-        # self.basePos = obj.Base.Placement.Base
-        # self.atthOff = None
-        # if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
-        #    self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+        # During the v1.1 dev cycle an experiment with a new SillHeight handling was
+        # undertaken. This did not work out as intended and was therefore reverted.
+        # Related PRs:
+        #     https://github.com/FreeCAD/FreeCAD/pull/21005
+        #     https://github.com/FreeCAD/FreeCAD/pull/23014
+        # The properties that were added are removed here. Note that we do not check
+        # for "SillHeight" so that it is safe to use that property name in the future.
+        if (
+            hasattr(obj, "Sill")
+            or hasattr(obj, "baseSill")
+            or hasattr(obj, "basePosZ")
+            or hasattr(obj, "atthOffZ")
+        ):
+            for prop in ("Sill", "SillHeight", "baseSill", "basePosZ", "atthOffZ"):
+                if hasattr(obj, prop):
+                    obj.setPropertyStatus(prop, "-LockDynamic")
+                    obj.removeProperty(prop)
 
     def loads(self, state):
 
@@ -369,10 +348,7 @@ class _Window(ArchComponent.Component):
     def onChanged(self, obj, prop):
 
         self.hideSubobjects(obj, prop)
-        if prop == "Sill":
-            self.setSillProperties(obj)  # Can't wait until onDocumentRestored
-            self.onSillChanged(obj)
-        elif not "Restore" in obj.State:
+        if not "Restore" in obj.State:
             if prop in [
                 "Base",
                 "WindowParts",
@@ -418,6 +394,7 @@ class _Window(ArchComponent.Component):
         self.vshapes = []
         shapes = []
         rotdata = None
+        transdata = None
         for i in range(int(len(obj.WindowParts) / 5)):
             wires = []
             hinge = None
@@ -463,7 +440,11 @@ class _Window(ArchComponent.Component):
                             FreeCAD.Vector(0, 0, 1)
                         )
                         norm = norm.negative()
-                if hinge and omode:
+                if hinge is not None and omode:
+                    # A new movement is defined for this part, clear any inherited sticky movement
+                    # data
+                    rotdata = None
+                    transdata = None
                     opening = None
                     if hasattr(obj, "Opening"):
                         if obj.Opening:
@@ -471,8 +452,21 @@ class _Window(ArchComponent.Component):
                     e = obj.Base.Shape.Edges[hinge]
                     ev1 = e.Vertexes[0].Point
                     ev2 = e.Vertexes[-1].Point
-                    # choose the one with lowest z to draw the symbol
-                    if ev2.z < ev1.z:
+                    # To draw the symbol choose the point with the lowest global Z.
+                    # If the global Z-coordinates are equal compare the local
+                    # Z-, Y- or X-coordinates instead.
+                    tol = 1e-5
+                    if math.isclose(ev1.z, ev2.z, abs_tol=tol):
+                        # vector in LCS
+                        vec = obj.Base.Placement.Rotation.inverted().multVec(ev2 - ev1)
+                        # go through coords in reversed order (z-y-x)
+                        for coord in list(vec)[::-1]:
+                            if math.isclose(coord, 0, abs_tol=tol):
+                                continue
+                            if coord < 0:
+                                ev1, ev2 = ev2, ev1
+                            break
+                    elif ev2.z < ev1.z:
                         ev1, ev2 = ev2, ev1
                     # find the point most distant from the hinge
                     p = None
@@ -565,10 +559,42 @@ class _Window(ArchComponent.Component):
                             vsymbols.append(Part.LineSegment(v4, ev2).toShape())
                             if opening:
                                 rotdata = [v1, ev2.sub(ev1), -90 * opening]
-                        elif omode == 9:  # sliding
-                            pass
-                        elif omode == 10:  # -sliding
-                            pass
+                        elif omode in [9, 10]:  # Sliding or -Sliding
+                            # Sort points by coordinate (X, then Y, then Z) to ensure consistent
+                            # sliding direction regardless of edge direction in the base sketch
+                            # Ensure the sliding direction is relative to the door's local
+                            # coordinate system, rather than the global world space.
+                            inv_placement = obj.Base.Placement.inverse()
+
+                            # Pair the calculated local vectors with their original global vectors
+                            pts = [
+                                (inv_placement.multVec(ev1), ev1),
+                                (inv_placement.multVec(ev2), ev2),
+                            ]
+
+                            # Sort by local coordinates
+                            pts.sort(
+                                key=lambda p: (round(p[0].x, 3), round(p[0].y, 3), round(p[0].z, 3))
+                            )
+
+                            global_min = pts[0][1]
+                            global_max = pts[1][1]
+
+                            # Mode 9: Slide Min -> Max. Mode 10: Slide Max -> Min.
+                            p_start, p_end = (
+                                (global_min, global_max) if omode == 9 else (global_max, global_min)
+                            )
+
+                            travel = p_end.sub(p_start)
+
+                            if opening:
+                                # Travel is exactly % of width, but clamped to (width - 80mm)
+                                # so the door handle is left exposed at 100% opening.
+                                width = travel.Length
+                                dist = min(width * opening, max(0.0, width - 80.0))
+                                travel.normalize()
+                                transdata = [travel.multiply(dist)]
+
                 exv = FreeCAD.Vector()
                 zov = FreeCAD.Vector()
                 V = 0
@@ -630,7 +656,12 @@ class _Window(ArchComponent.Component):
                                 )
                                 shape = shape.cut(self.boxes)
                 if rotdata:
+                    # Apply rotation for hinged parts if it exists
                     shape.rotate(rotdata[0], rotdata[1], rotdata[2])
+                elif transdata:
+                    # Apply translation for sliding parts if it exists
+                    shape.translate(transdata[0])
+
                 shapes.append(shape)
                 self.sshapes.extend(ssymbols)
                 self.vshapes.extend(vsymbols)
@@ -728,71 +759,11 @@ class _Window(ArchComponent.Component):
         @realthunder added support to Links to run Linked Scripted Object's methods()
         """
 
-        # Sill change support
-        self.setSillProperties(obj, linkObj)
-
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, linkObj)
 
         # Execute features in the SketchArch External Add-on
         self.executeSketchArchFeatures(obj, linkObj)
-
-        # Sill change feature
-        self.onSillChanged(obj, linkObj)
-
-    def onSillChanged(self, orgObj, linkObj=None, index=None, linkElement=None):
-
-        if linkObj:
-            obj = linkObj
-        else:
-            obj = orgObj
-
-        val = getattr(obj, "Sill").Value
-        if (
-            getattr(obj, "baseSill", None) is None
-            and getattr(obj, "basePosZ", None) is None
-            and getattr(obj, "atthOffZ", None) is None
-        ):  # TODO Any cases only 1 or 2 are not None?
-            obj.baseSill = val
-            # Not to change Base's Placement, would change all Clones and
-            # Link's disposition unexpectedly to users, undesirable.
-            #
-            # self.basePos = obj.Base.Placement.Base
-            obj.basePosZ = obj.Placement.Base.z
-            obj.atthOffZ = None
-            if hasattr(obj, "AttachmentOffsetXyzAndRotation"):
-                obj.atthOffZ = obj.AttachmentOffsetXyzAndRotation.Base.z
-            return
-
-        import ArchSketchObject  # Need to import per method
-
-        host = None
-        if obj.Hosts:
-            host = obj.Hosts[0]
-        if (
-            hasattr(obj, "AttachToAxisOrSketch")
-            and obj.AttachToAxisOrSketch == "Host"
-            and host
-            and Draft.getType(host.Base) == "ArchSketch"
-            and hasattr(ArchSketchObject, "updateAttachmentOffset")
-        ):
-            SketchArch = True
-        else:
-            SketchArch = False
-
-        # Keep track of change whether SketchArch is True or False (i.e.
-        # even Window object is not currently parametrically attached to
-        # a Wall or other Arch object at the moment).
-        #
-        # SketchArch or Not
-        if hasattr(obj, "AttachmentOffsetXyzAndRotation"):
-            objAttOff = obj.AttachmentOffsetXyzAndRotation
-            objAttOff.Base.z = obj.atthOffZ + (obj.Sill.Value - obj.baseSill)
-            obj.AttachmentOffsetXyzAndRotation = objAttOff
-        if not SketchArch:
-            # Not to change Base's Placement
-            # obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
-            obj.Placement.Base.z = obj.basePosZ + (obj.Sill.Value - obj.baseSill)
 
     def getSubFace(self):
         "returns a subface for creation of subvolume for cutting in a base object"
@@ -1167,7 +1138,11 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             )
             menu.addAction(actionInvertOpening)
 
-        if len(hingeIdxs) == 1:
+        # Check if this is a sliding window/door
+        parts_str = "".join(vobj.Object.WindowParts)
+        is_sliding = "Mode9" in parts_str or "Mode10" in parts_str
+
+        if len(hingeIdxs) == 1 and not is_sliding:
             actionInvertHinge = QtGui.QAction(
                 QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
                 translate("Arch", "Invert Hinge Position"),
@@ -1218,15 +1193,15 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if hasattr(self, "Object"):
             windowparts = self.Object.WindowParts
             nparts = []
+
+            # Build a bidirectional pair lookup map
+            swap_map = {p[0]: p[1] for p in pairs}
+            swap_map.update({p[1]: p[0] for p in pairs})
+
             for part in windowparts:
-                for pair in pairs:
-                    if pair[0] in part:
-                        part = part.replace(pair[0], pair[1])
-                        break
-                    elif pair[1] in part:
-                        part = part.replace(pair[1], pair[0])
-                        break
-                nparts.append(part)
+                # Split to tokens to ensure exact matching (e.g. avoid Mode1 matching inside Mode10)
+                new_tokens = [swap_map.get(t, t) for t in part.split(",")]
+                nparts.append(",".join(new_tokens))
             if nparts != self.Object.WindowParts:
                 self.Object.WindowParts = nparts
                 FreeCAD.ActiveDocument.recompute()
@@ -1242,6 +1217,24 @@ class _ArchWindowTaskPanel:
     def __init__(self):
 
         self.obj = None
+
+        # Window options task box
+        self.optionsform = QtGui.QWidget()
+        self.optionsform.setWindowTitle(
+            QtGui.QApplication.translate("Arch", "Window Options", None)
+        )
+        optLayout = QtGui.QFormLayout(self.optionsform)
+        loader = FreeCADGui.UiLoader()
+
+        self.widthWidget = loader.createWidget("Gui::QuantitySpinBox")
+        optLayout.addRow(QtGui.QApplication.translate("Arch", "Width", None), self.widthWidget)
+
+        self.heightWidget = loader.createWidget("Gui::QuantitySpinBox")
+        optLayout.addRow(QtGui.QApplication.translate("Arch", "Height", None), self.heightWidget)
+
+        self.openingWidget = loader.createWidget("Gui::IntSpinBox")
+        optLayout.addRow(QtGui.QApplication.translate("Arch", "Opening", None), self.openingWidget)
+
         self.baseform = QtGui.QWidget()
         self.baseform.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.baseform)
@@ -1249,7 +1242,7 @@ class _ArchWindowTaskPanel:
         self.title = QtGui.QLabel(self.baseform)
         self.grid.addWidget(self.title, 0, 0, 1, 7)
         self.basepanel = ArchComponent.ComponentTaskPanel()
-        self.form = [self.baseform, self.basepanel.baseform]
+        self.form = [self.optionsform, self.baseform, self.basepanel.baseform]
 
         # base object
         self.tree = QtGui.QTreeWidget(self.baseform)
@@ -1406,7 +1399,7 @@ class _ArchWindowTaskPanel:
 
     def getStandardButtons(self):
 
-        return QtGui.QDialogButtonBox.Close
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def check(self, wid, col):
 
@@ -1484,6 +1477,23 @@ class _ArchWindowTaskPanel:
         self.wiretree.clear()
         self.comptree.clear()
         if self.obj:
+
+            FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
+            self.widthWidget.setProperty("value", self.obj.Width)
+
+            FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
+            self.heightWidget.setProperty("value", self.obj.Height)
+
+            FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
+            # Opening is a scalar property, as opposed to a quantity property. It appears to have
+            # no "preferred unit" metadata. We cannot set the suffix manually either, but at least
+            # we can set some safe limits. These limits are hardcoded: the Property Editor clamps
+            # the property to these, so it must be reading them from metadata, but they might not
+            # be queryable via Python.
+            self.openingWidget.setProperty("minimum", 0)
+            self.openingWidget.setProperty("maximum", 100)
+            self.openingWidget.setProperty("value", self.obj.Opening)
+
             if self.obj.Base:
                 item = QtGui.QTreeWidgetItem(self.tree)
                 item.setText(0, self.obj.Base.Name)
@@ -1509,11 +1519,15 @@ class _ArchWindowTaskPanel:
             self.retranslateUi(self.baseform)
             self.basepanel.obj = self.obj
             self.basepanel.update()
+            has_movement = False
+            is_sliding = False
             for wp in self.obj.WindowParts:
                 if ("Edge" in wp) and ("Mode" in wp):
-                    self.invertOpeningButton.setEnabled(True)
-                    self.invertHingeButton.setEnabled(True)
-                    break
+                    has_movement = True
+                    if "Mode9" in wp or "Mode10" in wp:
+                        is_sliding = True
+            self.invertOpeningButton.setEnabled(has_movement)
+            self.invertHingeButton.setEnabled(has_movement and not is_sliding)
 
     def addElement(self):
         "opens the component creation dialog"
@@ -1713,7 +1727,7 @@ class _ArchWindowTaskPanel:
 
     def retranslateUi(self, TaskPanel):
 
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window elements", None))
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window Elements", None))
         self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
         self.holeNumber.setToolTip(
             QtGui.QApplication.translate(
@@ -1738,7 +1752,7 @@ class _ArchWindowTaskPanel:
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None))
         self.new4.setText(QtGui.QApplication.translate("Arch", "Frame depth", None))
         self.new5.setText(QtGui.QApplication.translate("Arch", "Offset", None))
-        self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None))
+        self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge/Track", None))
         self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None))
         self.addp4.setText(QtGui.QApplication.translate("Arch", "+ Frame property", None))
         self.addp4.setToolTip(
@@ -1774,6 +1788,14 @@ class _ArchWindowTaskPanel:
             self.field7.setItemText(
                 i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None)
             )
+
+    def accept(self):
+        if self.obj:
+            self.obj.Width = self.widthWidget.property("value")
+            self.obj.Height = self.heightWidget.property("value")
+            self.obj.Opening = self.openingWidget.property("value")
+        self.basepanel.obj = self.obj
+        return self.basepanel.accept()
 
     def invertOpening(self):
 

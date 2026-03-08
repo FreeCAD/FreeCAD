@@ -879,7 +879,7 @@ long ViewProviderPath::findFirstFeedMoveIndex(const Path::Toolpath& path) const
 
 QIcon ViewProviderPath::getIcon() const
 {
-    return Gui::BitmapFactory().pixmap("Path-ToolPath");
+    return Gui::BitmapFactory().pixmap("CAM_Toolpath");
 }
 
 // Python object -----------------------------------------------------------------------

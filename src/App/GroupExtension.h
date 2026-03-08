@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_GROUPEXTENSION_H
-#define APP_GROUPEXTENSION_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectExtension.h>
@@ -152,7 +153,7 @@ private:
 
     // for tracking children visibility
     void slotChildChanged(const App::DocumentObject&, const App::Property&);
-    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
+    std::unordered_map<const App::DocumentObject*, fastsignals::scoped_connection> _Conns;
 };
 
 
@@ -193,6 +194,3 @@ public:
 using GroupExtensionPython = ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
 
 }  // namespace App
-
-
-#endif  // APP_GROUPEXTENSION_H

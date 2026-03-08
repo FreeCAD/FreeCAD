@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_STREAM_H
-#define BASE_STREAM_H
+#pragma once
 
 #ifdef __GNUC__
 # include <cstdint>
@@ -655,5 +654,3 @@ public:
 };
 
 }  // namespace Base
-
-#endif  // BASE_STREAM_H

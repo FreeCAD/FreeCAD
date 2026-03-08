@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -472,7 +474,11 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         // to version change, i.e. 'reverse', try search by geometry first
         const char* oldElement = Data::findElementName(shadow.oldName.c_str());
         if (!Data::hasMissingElement(oldElement)) {
-            const auto& names = geo->searchElementCache(oldElement);
+            auto names = geo->searchElementCache(oldElement);
+            if (names.empty()) {
+                // try floating point tolerance
+                names = geo->searchElementCache(oldElement, Data::SearchOptions());
+            }
             if (names.size()) {
                 missing = false;
                 std::string newsub(subname, strlen(subname) - strlen(element));
@@ -3298,7 +3304,7 @@ DocInfoMap _DocInfoMap;
 class App::DocInfo: public std::enable_shared_from_this<App::DocInfo>
 {
 public:
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connFinishRestoreDocument;
     Connection connPendingReloadDocument;
     Connection connDeleteDocument;
@@ -3343,7 +3349,8 @@ public:
             throw Base::RuntimeError("Owner document not saved");
         }
 
-        QDir docDir(QFileInfo(QString::fromUtf8(docPath)).absoluteDir());
+        QFileInfo docFileInfo{QString::fromUtf8(docPath)};
+        QDir docDir(docFileInfo.canonicalPath());
         if (!absolute) {
             path = QDir::cleanPath(docDir.absoluteFilePath(path));
             if (fullPath) {
@@ -4275,14 +4282,12 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
         name = reader.getAttribute<const char*>("name");
     }
 
-    assert(getContainer()->isDerivedFrom<App::DocumentObject>());
     DocumentObject* object = nullptr;
     if (!name.empty() && file.empty()) {
-        DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        Document* document = parent->getDocument();
-        object = document ? document->getObject(name.c_str()) : nullptr;
-        if (!object) {
-            if (reader.isVerbose()) {
+        if (auto parent = freecad_cast<DocumentObject*>(getContainer())) {
+            Document* document = parent->getDocument();
+            object = document ? document->getObject(name.c_str()) : nullptr;
+            if (!object && reader.isVerbose()) {
                 FC_WARN("Lost link to '" << name
                                          << "' while loading, maybe "
                                             "an object was not loaded correctly");
@@ -4546,7 +4551,7 @@ PropertyXLink::getDocumentInList(App::Document* doc)
 {
     std::map<App::Document*, std::set<App::Document*>> ret;
     for (auto& v : _DocInfoMap) {
-        if (!v.second->pcDoc || (doc && doc != v.second->pcDoc)) {
+        if (!v.second->pcDoc || (doc && doc != v.second->pcDoc) || v.second->links.empty()) {
             continue;
         }
         auto& docs = ret[v.second->pcDoc];

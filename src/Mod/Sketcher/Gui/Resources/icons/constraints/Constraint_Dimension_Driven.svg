@@ -232,7 +232,7 @@
           </cc:Agent>
         </dc:creator>
         <dc:date>2011-10-10</dc:date>
-        <dc:relation>https://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

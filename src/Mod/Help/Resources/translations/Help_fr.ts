@@ -77,7 +77,9 @@ FreeCADwiki at https://wiki.freecad.org</source>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation>Les pages de documentation seront récupérées à partir d'une conversion automatique de Markdown du wiki FreeCAD, hébergé sur le compte GitHub de FreeCAD. Elles peuvent être personnalisées à l'aide d'une feuille de style ci-dessous et peuvent être plus agréables que l'option wiki. Le module Python « Markdown » ou « Pandoc » doit être installé pour obtenir des résultats optimaux.</translation>
+      <translation>Les pages de documentation seront récupérées à partir d'une conversion automatique de Markdown du wiki FreeCAD, hébergé sur le
+compte GitHub de FreeCAD. Elles peuvent être personnalisées à l'aide d'une feuille de style ci-dessous et peuvent être plus agréables que
+l'option wiki. Le module Python « Markdown » ou « Pandoc » doit être installé pour obtenir des résultats optimaux.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
@@ -165,7 +167,8 @@ sélectionné ci-dessus.</translation>
     <message>
       <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation>Le moteur de rendu Markdown n'est pas installé sur votre système, cette page d'aide est donc rendue telle quelle. Installer les modules Python "Markdown" ou "Pandoc" pour améliorer le rendu de cette page.</translation>
+      <translation>Le moteur de rendu Markdown n'est pas installé sur votre système, cette page d'aide est donc affichée telle quelle. Installez les modules
+Python de Markdown ou de Pandoc pour améliorer le rendu de cette page.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="119"/>

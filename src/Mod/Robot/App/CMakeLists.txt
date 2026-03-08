@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_library(Robot SHARED)
 
 target_include_directories(

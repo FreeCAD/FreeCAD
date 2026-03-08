@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -36,6 +38,8 @@
 #include "FeatureRevolution.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
 
+#include <Base/ProgramVersion.h>
+
 using namespace PartDesign;
 
 namespace PartDesign
@@ -45,6 +49,8 @@ namespace PartDesign
 
 const char* Revolution::TypeEnums[]
     = {"Angle", "UpToLast", "UpToFirst", "UpToFace", "TwoAngles", nullptr};
+
+const char* Revolution::FuseOrderEnums[] = {"BaseFirst", "FeatureFirst", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::ProfileBased)
 
@@ -82,12 +88,21 @@ Revolution::Revolution()
         (App::Prop_None),
         "Reference axis of revolution"
     );
+
+    ADD_PROPERTY_TYPE(
+        FuseOrder,
+        (BaseFirst),
+        "Compatibility",
+        App::Prop_Hidden,
+        "Order of fuse operation to preserve compatibility with filest created using FreeCAD 1.0"
+    );
+    FuseOrder.setEnums(FuseOrderEnums);
 }
 
 short Revolution::mustExecute() const
 {
     if (Placement.isTouched() || ReferenceAxis.isTouched() || Axis.isTouched() || Base.isTouched()
-        || UpToFace.isTouched() || Angle.isTouched() || Angle2.isTouched()) {
+        || UpToFace.isTouched() || Angle.isTouched() || Angle2.isTouched() || FuseOrder.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -201,9 +216,8 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 upToFace.move(invObjLoc);
             }
             else {
-                throw Base::RuntimeError(
-                    "ProfileBased: Revolution up to first/last is not yet supported"
-                );
+                // TODO: Implement finding the first face this revolution would intersect with
+                return new App::DocumentObjectExecReturn("Revolve up to first is not yet supported");
             }
 
             if (Reversed.getValue()) {
@@ -254,7 +268,16 @@ App::DocumentObjectExecReturn* Revolution::execute()
             this->AddSubShape.setValue(result);
 
             if (!base.isNull()) {
-                result = result.makeElementFuse(base);
+                // In 1.0 there was a bug that caused the order of operations to be reversed.
+                // Changing the order may impact geometry order and the results of refine operation,
+                // hence we need to support both ways to ensure compatibility.
+                if (FuseOrder.getValue() == FeatureFirst) {
+                    result = result.makeElementFuse(base);
+                }
+                else {
+                    result = base.makeElementFuse(result);
+                }
+
                 // store shape before refinement
                 this->rawShape = result;
                 result = refineShapeIfActive(result);
@@ -294,6 +317,16 @@ App::DocumentObjectExecReturn* Revolution::execute()
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+}
+
+void Revolution::Restore(Base::XMLReader& reader)
+{
+    ProfileBased::Restore(reader);
+
+    // For 1.0 and 1.0 only the order was feature first due to a bug
+    if (Base::getVersion(reader.ProgramVersion) == Base::Version::v1_0) {
+        FuseOrder.setValue(FeatureFirst);
     }
 }
 
@@ -393,7 +426,7 @@ void Revolution::generateRevolution(
 
         // revolve the face to a solid
         // BRepPrimAPI is the only option that allows use of this shape for patterns.
-        // See https://forum.freecadweb.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
+        // See https://forum.freecad.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
         revol = from;
         revol = revol.makeElementRevolve(revolAx, angleTotal);
         revol.Tag = -getID();

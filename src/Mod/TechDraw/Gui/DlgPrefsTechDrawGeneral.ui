@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>676</width>
-    <height>1200</height>
+    <height>1302</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -189,10 +189,10 @@ for ProjectionGroups</string>
         <item row="0" column="1">
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::Preferred</enum>
+           <enum>QSizePolicy::Policy::Preferred</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -220,7 +220,7 @@ for ProjectionGroups</string>
            <string>Font for labels</string>
           </property>
           <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToContents</enum>
+           <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
           </property>
           <property name="currentFont">
            <font/>
@@ -243,7 +243,7 @@ for ProjectionGroups</string>
         <item row="1" column="1">
          <spacer name="horizontalSpacer_6">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -303,7 +303,7 @@ for ProjectionGroups</string>
         <item row="0" column="1">
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -332,7 +332,7 @@ for ProjectionGroups</string>
            <string>Use first or third-angle multiview projection convention</string>
           </property>
           <property name="sizeAdjustPolicy">
-           <enum>QComboBox::AdjustToContents</enum>
+           <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ProjectionAngle</cstring>
@@ -423,7 +423,7 @@ for ProjectionGroups</string>
         <item row="1" column="1" rowspan="2">
          <spacer name="horizontalSpacer_7">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -643,7 +643,7 @@ for ProjectionGroups</string>
            <string>Diamond</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>NamePattern</cstring>
@@ -693,7 +693,7 @@ for ProjectionGroups</string>
         <item row="1" column="1">
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -815,8 +815,8 @@ for ProjectionGroups</string>
      <property name="title">
       <string>View Defaults</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_8">
-      <item>
+     <layout class="QGridLayout" name="gridLayout_9">
+      <item row="1" column="0">
        <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_useCameraDirection">
@@ -845,28 +845,47 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="Gui::PrefCheckBox" name="cb_alwaysShowLabel">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Displays view labels even when frames are suppressed</string>
-          </property>
-          <property name="text">
-           <string>Always Show Label</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AlwaysShowLabel</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/General</cstring>
-          </property>
-         </widget>
-        </item>
        </layout>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefComboBox" name="cb_viewFramesVisibility">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ViewFrameMode</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/TechDraw/View</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Auto</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>On</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Off</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Manual</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>View frames mode</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -884,7 +903,7 @@ for ProjectionGroups</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_9">
       <item>
-       <layout class="QGridLayout" name="gridLayout_8" columnstretch="1,0,2,0">
+       <layout class="QGridLayout" name="gridLayout_8" columnstretch="1,0,2">
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_SnapViews">
           <property name="toolTip">
@@ -929,7 +948,7 @@ for ProjectionGroups</string>
            <string>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
           <property name="value">
            <double>0.050000000000000</double>
@@ -945,7 +964,7 @@ for ProjectionGroups</string>
         <item row="1" column="1">
          <spacer name="horizontalSpacer_4">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -975,7 +994,7 @@ for ProjectionGroups</string>
            <string>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
           <property name="value">
            <double>0.600000000000000</double>
@@ -986,7 +1005,6 @@ for ProjectionGroups</string>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/General</cstring>
           </property>
-
          </widget>
         </item>
        </layout>

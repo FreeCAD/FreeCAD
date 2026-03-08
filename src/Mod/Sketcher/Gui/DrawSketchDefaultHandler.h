@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchDefaultHandler_H
-#define SKETCHERGUI_DrawSketchDefaultHandler_H
+#pragma once
 
 #include <Inventor/events/SoKeyboardEvent.h>
 
@@ -975,6 +976,7 @@ protected:
 
         if (sketchobject->getLastHasRedundancies()) {
             Base::Console().warning(
+                sketchobject->getFullLabel(),
                 QT_TRANSLATE_NOOP("Notifications", "Autoconstraints cause redundancy. Removing them") "\n"
             );
 
@@ -1295,6 +1297,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchDefaultHandler_H

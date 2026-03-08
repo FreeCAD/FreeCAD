@@ -24,6 +24,7 @@
 
 
 #include <Base/Console.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
 
 #include <App/Document.h>
@@ -522,12 +523,8 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
     }
 
     // check stored document program version (applies to v1.0 and earlier only)
-    int major, minor;
-    if (sscanf(getExtendedObject()->getDocument()->getProgramVersion(), "%d.%d", &major, &minor)
-        != 2) {
-        return;
-    }
-    if (major > 1 || (major == 1 && minor > 0)) {
+    if (Base::getVersion(getExtendedObject()->getDocument()->getProgramVersion())
+        > Base::Version::v1_0) {
         return;
     }
 
@@ -607,9 +604,34 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
         }
 
         // convert placement and expressions according to the dominant axis
-        App::Expression* newExprX = nullptr;
-        App::Expression* newExprY = nullptr;
-        App::Expression* newExprYaw = nullptr;
+        auto makeRotatedExpression =
+            [owner](const App::Expression* expr, double angle) -> App::ExpressionPtr {
+            if (!expr) {
+                return nullptr;
+            }
+
+            std::string unitSafeExprStr = "(" + expr->toString() + ")";
+            if (angle >= 0) {
+                unitSafeExprStr += " + " + std::to_string(angle);
+            }
+            else {
+                unitSafeExprStr += " - " + std::to_string(-angle);
+            }
+
+            if (App::ExpressionPtr simple = expr->eval(); simple) {
+                if (auto ue = dynamic_cast<const App::UnitExpression*>(simple.get())) {
+                    const auto& q = ue->getQuantity();
+                    if (q.getUnit() == Base::Unit::Angle) {
+                        unitSafeExprStr += " deg";
+                    }
+                }
+            }
+
+            return App::ExpressionParser::parse(owner, unitSafeExprStr.c_str());
+        };
+        App::ExpressionPtr newExprX {};
+        App::ExpressionPtr newExprY {};
+        App::ExpressionPtr newExprYaw {};
         if (axis == 0) {  // normal mostly X
             // values
             std::swap(position.x, position.y);
@@ -625,8 +647,12 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
                 newExprX = App::ExpressionParser::parse(owner, expr.c_str());
             }
             if (exprYaw) {
-                std::string expr = "(" + exprYaw->toString() + ") + 90 deg";
-                newExprYaw = App::ExpressionParser::parse(owner, expr.c_str());
+                if (yaw > 90) {
+                    newExprYaw = makeRotatedExpression(exprYaw, -270);
+                }
+                else {
+                    newExprYaw = makeRotatedExpression(exprYaw, 90);
+                }
             }
         }
         else if (axis == 1) {  // normal mostly Y
@@ -644,8 +670,12 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
                 newExprX = App::ExpressionParser::parse(owner, exprY->toString().c_str());
             }
             if (exprYaw) {
-                std::string expr = "(" + exprYaw->toString() + ") - 90 deg";
-                newExprYaw = App::ExpressionParser::parse(owner, expr.c_str());
+                if (yaw < -90) {
+                    newExprYaw = makeRotatedExpression(exprYaw, 270);
+                }
+                else {
+                    newExprYaw = makeRotatedExpression(exprYaw, -90);
+                }
             }
         }
         else {
@@ -656,9 +686,9 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
         // store updated placement and expressions back to the document object
 
         // expressions
-        owner->ExpressionEngine.setValue(oidX, App::ExpressionPtr(newExprX));
-        owner->ExpressionEngine.setValue(oidY, App::ExpressionPtr(newExprY));
-        owner->ExpressionEngine.setValue(oidYaw, App::ExpressionPtr(newExprYaw));
+        owner->ExpressionEngine.setValue(oidX, std::move(newExprX));
+        owner->ExpressionEngine.setValue(oidY, std::move(newExprY));
+        owner->ExpressionEngine.setValue(oidYaw, std::move(newExprYaw));
 
         // values
         placement.setPosition(position);

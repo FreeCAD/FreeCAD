@@ -21,8 +21,7 @@
  *                                                                      *
  ************************************************************************/
 
-#ifndef BASE_UNITSSCHEMASDATA_H
-#define BASE_UNITSSCHEMASDATA_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -96,7 +95,7 @@ inline const UnitsSchemaSpec s3
             { 1e4             , "mm"         , 1.0             },
             { 1e7             , "m"          , 1e3             },
             { 1e10            , "km"         , 1e6             },
-            { 0               , "m"          , 1.0             }}
+            { 0               , "m"          , 1e3             }}
         },
         { "Area", {
             { 1e2             , "mm^2"       , 1.0             },
@@ -113,8 +112,14 @@ inline const UnitsSchemaSpec s3
         { "Angle", {
             { 0               , "°"          , 1.0             }}
         },
+        { "ElectricCurrent", {
+            { 1e-6            , "nA"         , 1e-9            },
+            { 1e-3            , "\xC2\xB5""A", 1e-6            },
+            { 1               , "mA"         , 1e-3            },
+            { 0               , "A"          , 1.0             }}
+        },
         { "Mass", {
-            { 1e-6            , "\xC2\xB5g"  , 1.0             },
+            { 1e-6            , "\xC2\xB5g"  , 1e-9            },
             { 1e-3            , "mg"         , 1e-6            },
             { 1.0             , "g"          , 1e-3            },
             { 1e3             , "kg"         , 1.0             },
@@ -125,9 +130,20 @@ inline const UnitsSchemaSpec s3
             { 1.0             , "kg/cm^3"    , 1e-3            },
             { 0               , "kg/mm^3"    , 1.0             }}
         },
+        { "Concentration", {
+            { 1e-9            , "\xC2\xB5mol/l", 1e-12         },
+            { 1e-6            , "mmol/l"     , 1e-9            },
+            { 0               , "mol/l"      , 1e-6            }}
+        },
+        { "AmountOfSubstance", {
+            { 1e-6            , "nmol"       , 1e-9            },
+            { 1e-3            , "\xC2\xB5mol", 1e-6            },
+            { 1               , "mmol"       , 1e-3            },
+            { 0               , "mol"        , 1.0             }}
+        },
         { "ThermalConductivity", {
-            { 0               , "W/m/K"      , 1e3             },
-            { 1e6             , "W/mm/K"     , 1e6             }}
+            { 1e6             , "W/m/K"      , 1e3             },
+            { 0               , "W/mm/K"     , 1e6             }}
         },
         { "ThermalExpansionCoefficient", {
             { 1e-3            , "\xC2\xB5m/m/K" , 1e-6         },
@@ -176,6 +192,8 @@ inline const UnitsSchemaSpec s3
             { 0               , "MN"         , 1e9             }}
         },
         { "Power", {
+            { 1               , "nW"         , 1e-3            },
+            { 1e3             , "\xC2\xB5W"  , 1               },
             { 1e6             , "mW"         , 1e3             },
             { 1e9             , "W"          , 1e6             },
             { 0               , "kW"         , 1e9             }}
@@ -209,22 +227,22 @@ inline const UnitsSchemaSpec s3
             { 0               , "C"          , 1.0             }}
         },
         { "SurfaceChargeDensity", {
-            { 1e-4            , "C/m^2"      , 1e-6            },
-            { 1e-2            , "C/cm^2"     , 1e-2            },
+            { 1e-2            , "C/m^2"      , 1e-6            },
+            { 1.0             , "C/cm^2"     , 1e-2            },
             { 0               , "C/mm^2"     , 1.0             }}
         },
         { "VolumeChargeDensity", {
-            { 1e-4            , "C/m^3"      , 1e-9            },
-            { 1e-2            , "C/cm^3"     , 1e-3            },
+            { 1e-3            , "C/m^3"      , 1e-9            },
+            { 1.0             , "C/cm^3"     , 1e-3            },
             { 0               , "C/mm^3"     , 1.0             }}
         },
         { "CurrentDensity", {
-            { 1e-4            , "A/m^2"      , 1e-6            },
-            { 1e-2            , "A/cm^2"     , 1e-2            },
+            { 1e-2            , "A/m^2"      , 1e-6            },
+            { 1.0             , "A/cm^2"     , 1e-2            },
             { 0               , "A/mm^2"     , 1               }}
         },
         { "MagneticFluxDensity", {
-            { 1e-3            , "G"          , 1e-4            },
+            { 1.0             , "mT"         , 1e-3            },
             { 0               , "T"          , 1.0             }}
         },
         { "MagneticFieldStrength", {
@@ -250,10 +268,10 @@ inline const UnitsSchemaSpec s3
             { 0               , "MOhm"       , 1e12            }}
         },
         { "ElectricalConductivity", {
-            { 0               , "MS/m"       , 1e-3            },
-            { 1e-3            , "mS/m"       , 1e-12           },
-            { 1.0             , "S/m"        , 1e-9            },
-            { 1e3             , "kS/m"       , 1e-6            }}
+            { 1e-9            , "mS/m"       , 1e-12           },
+            { 1e-6            , "S/m"        , 1e-9            },
+            { 1e-3            , "kS/m"       , 1e-6            },
+            { 0               , "MS/m"       , 1e-3            }}
         },
         { "ElectricalCapacitance", {
             { 1e-15           , "pF"         , 1e-18           },
@@ -366,7 +384,7 @@ inline const UnitsSchemaSpec s4
             { 10'000.0         , "kPa"       , 1.0             },
             { 10'000'000.0     , "MPa"       , 1'000.0         },
             { 10'000'000'000.0 , "GPa"       , 1'000'000.0     },
-            { 0                , "Pa"        , 1000.0          }}
+            { 0                , "Pa"        , 0.001           }}
         },
         { "Stress", {
             { 10.0             , "Pa"        , 0.001           },
@@ -388,8 +406,8 @@ inline const UnitsSchemaSpec s4
             { 0               , "GPa/m"      , 1e3             }}
         },
         { "ThermalConductivity", {
-            { 1'000'000       , "W/mm/K"     , 1'000'000.0     },
-            { 0               , "W/m/K"      , 1'000.0         }}
+            { 1'000'000       , "W/m/K"      , 1'000.0         },
+            { 0               , "W/mm/K"     , 1'000'000.0     }}
         },
         { "ThermalExpansionCoefficient", {
             { 0.001           , "\xC2\xB5m/m/K" , 0.000001     },
@@ -432,11 +450,11 @@ inline const UnitsSchemaSpec s4
             { 0               , "C/m^3"      , 1e-9            }}
         },
         { "CurrentDensity", {
-            { 1e3             , "A/m^2"      , 1e-6            },
+            { 1.0             , "A/m^2"      , 1e-6            },
             { 0               , "A/mm^2"     , 1.0             }}
         },
         { "MagneticFluxDensity", {
-            { 1e-3            , "G"          , 1e-4            },
+            { 1.0             , "mT"         , 1e-3            },
             { 0               , "T"          , 1.0             }}
         },
         { "MagneticFieldStrength", {
@@ -462,9 +480,9 @@ inline const UnitsSchemaSpec s4
             { 0               , "MOhm"       , 1e12            }}
         },
         { "ElectricalConductivity", {
-            { 1e-3            , "mS/m"       , 1e-12           },
-            { 1.0             , "S/m"        , 1e-9            },
-            { 1e3             , "kS/m"       , 1e-6            },
+            { 1e-9            , "mS/m"       , 1e-12           },
+            { 1e-6            , "S/m"        , 1e-9            },
+            { 1e-3            , "kS/m"       , 1e-6            },
             { 0               , "MS/m"       , 1e-3            }}
         },
         { "ElectricalCapacitance", {
@@ -475,9 +493,9 @@ inline const UnitsSchemaSpec s4
             { 0               , "F"          , 1e-6            }}
         },
         { "ElectricalInductance", {
-            { 1e-6            , "nH"         , 1e-3            },
-            { 1e-3            , "\xC2\xB5H"  , 1.0             },
-            { 1.0             , "mH"         , 1e3             },
+            { 1.0             , "nH"         , 1e-3            },
+            { 1e3             , "\xC2\xB5H"  , 1.0             },
+            { 1e6             , "mH"         , 1e3             },
             { 0               , "H"          , 1e6             }}
         },
         { "VacuumPermittivity", {
@@ -795,4 +813,3 @@ inline const UnitsSchemasDataPack unitSchemasDataPack {schemaSpecs, defDecimals,
 
 
 }  // namespace Base::UnitsSchemasData
-#endif  // BASE_UNITSSCHEMASDATA_H

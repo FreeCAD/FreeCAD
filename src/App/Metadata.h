@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /**************************************************************************
  *                                                                         *
  *   Copyright (c) 2021-2023 FreeCAD Project Association                   *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_METADATAREADER_H
-#define BASE_METADATAREADER_H
+#pragma once
 
 #include "FCConfig.h"
 
@@ -400,5 +401,3 @@ private:
 };
 
 }  // namespace App
-
-#endif

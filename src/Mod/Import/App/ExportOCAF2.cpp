@@ -52,8 +52,6 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
-#include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
 
 #include "ExportOCAF2.h"
 
@@ -391,21 +389,7 @@ TDF_Label ExportOCAF2::exportObject(
     const char* name
 )
 {
-    App::DocumentObject* obj = nullptr;
-    // keep a copy of the original object for naming purposes
-    App::DocumentObject* originalObj = parentObj;
-
-    // check if this is a body and get its tip before getting the shape
-    if (parentObj && parentObj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        // if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        auto* body = static_cast<PartDesign::Body*>(parentObj);
-        App::DocumentObject* tip = body->Tip.getValue();
-        if (tip) {
-            // obj = tip;
-            parentObj = tip;
-        }
-    }
-
+    App::DocumentObject* obj;
     auto shape = Part::Feature::getTopoShape(
         parentObj,
         (sub ? Part::ShapeOption::NoFlag : Part::ShapeOption::Transform),
@@ -418,21 +402,6 @@ TDF_Label ExportOCAF2::exportObject(
             FC_WARN(obj->getFullName() << " has null shape");
         }
         return {};
-    }
-
-    // after resolution, check if obj is a body accessed via sub path and get the tip shape
-    if (sub && obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        auto* body = static_cast<PartDesign::Body*>(obj);
-        App::DocumentObject* tip = body->Tip.getValue();
-        if (tip) {
-            // reget shape from tip to ensure latest feature is included
-            auto tipShape = Part::Feature::getTopoShape(tip, Part::ShapeOption::Transform);
-            if (!tipShape.isNull()) {
-                shape = tipShape;
-            }
-            // use tip for colors (will be handled later in setupObject)
-            obj = tip;
-        }
     }
 
     // sub may contain more than one hierarchy, e.g. Assembly container may use
@@ -493,9 +462,7 @@ TDF_Label ExportOCAF2::exportObject(
             else {
                 label = aShapeTool->AddShape(shape.getShape(), Standard_False, Standard_False);
             }
-
-            // use originalObj to preserve name
-            setupObject(label, name ? parentObj : originalObj, shape, prefix, name);
+            setupObject(label, name ? parentObj : obj, shape, prefix, name);
             return label;
         }
         auto next = linked->getLinkedObject(false, nullptr, false, depth++);
@@ -508,12 +475,7 @@ TDF_Label ExportOCAF2::exportObject(
 
     auto subs = obj->getSubObjects();
     // subs empty means obj is not a container.
-    // treat as non container if:
-    // 1. no subobjects (subs.empty())
-    // 2. is a partdesign feature ie. pad, pocket, boolean
-    // 3. is a partdesign body, should export as single shape via its tip, not as assembly
-    if (subs.empty() || obj->isDerivedFrom(PartDesign::Feature::getClassTypeId())
-        || obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+    if (subs.empty()) {
 
         if (!parent.IsNull()) {
             // Search for non-located shape to see if we've stored the original shape before
@@ -523,14 +485,11 @@ TDF_Label ExportOCAF2::exportObject(
                 baseShape.setShape(baseShape.getShape().Located(TopLoc_Location()));
                 label = aShapeTool->NewShape();
                 aShapeTool->SetShape(label, baseShape.getShape());
-                if (originalObj != linked) {
-                    setupObject(label, linked, baseShape, prefix, nullptr, false);
-                }
-                setupObject(label, originalObj, baseShape, prefix, nullptr, false);
+                setupObject(label, linked, baseShape, prefix);
             }
 
             label = aShapeTool->AddComponent(parent, shape.getShape(), Standard_False);
-            setupObject(label, name ? parentObj : originalObj, shape, prefix, name);
+            setupObject(label, name ? parentObj : obj, shape, prefix, name);
         }
         else {
             // Here means we are exporting a single non-assembly object. We must
@@ -550,7 +509,7 @@ TDF_Label ExportOCAF2::exportObject(
                 shape.setShape(shape.getShape().Located(TopLoc_Location()));
             }
             label = aShapeTool->AddShape(shape.getShape(), Standard_False, Standard_False);
-            auto o = name ? parentObj : originalObj;
+            auto o = name ? parentObj : obj;
             if (o != linked) {
                 setupObject(label, linked, shape, prefix, nullptr, true);
             }
@@ -560,10 +519,6 @@ TDF_Label ExportOCAF2::exportObject(
         myObjects.emplace(obj, label);
         for (auto link : links) {
             myObjects.emplace(link, label);
-        }
-        // also cache the body if it's different from obj (the tip)
-        if (originalObj != obj) {
-            myObjects.emplace(originalObj, label);
         }
         return label;
     }
@@ -666,29 +621,19 @@ TDF_Label ExportOCAF2::exportObject(
         myObjects.emplace(link, label);
     }
 
-    if (originalObj != obj) {
-        myObjects.emplace(originalObj, label);
-    }
-
     if (!parent.IsNull() && !links.empty()) {
         linked = links.back();
     }
     else {
         linked = obj;
     }
-    // use the originalObj for naming if we changed obj to tip
-    App::DocumentObject* setupObj = (originalObj != obj) ? originalObj : linked;
-    setupObject(label, setupObj, baseShape, prefix);
-
-#ifdef FC_DEBUG
-    Base::Console().warning("assembly name set to: %s\n", linked->Label.getValue());
-#endif
+    setupObject(label, linked, baseShape, prefix);
 
     if (!parent.IsNull()) {
         // If we are a component, swap in the base shape but keep our location.
         shape.setShape(baseShape.getShape().Located(shape.getShape().Location()));
         label = aShapeTool->AddComponent(parent, label, shape.getShape().Location());
-        setupObject(label, name ? parentObj : originalObj, shape, prefix, name);
+        setupObject(label, name ? parentObj : obj, shape, prefix, name);
     }
     return label;
 }

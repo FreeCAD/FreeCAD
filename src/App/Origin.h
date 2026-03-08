@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
@@ -22,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_Origin_H
-#define APP_Origin_H
+#pragma once
 
 #include "Datums.h"
 
@@ -55,5 +56,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_Origin_H

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2020 Adam Spontarelli <adam@vector-space.org>
 #
 #   This program is free software; you can redistribute it and/or modify

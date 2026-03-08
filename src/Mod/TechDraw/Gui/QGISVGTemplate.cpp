@@ -36,6 +36,8 @@
 #include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
+#include <Mod/TechDraw/App/DrawPage.h>
+// #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/XMLQuery.h>
 
@@ -147,8 +149,12 @@ using namespace TechDraw;
 
 QGISVGTemplate::QGISVGTemplate(QGSPage* scene) : QGITemplate(scene),
     m_svgItem(new QGraphicsSvgItem(this)),
-    m_svgRender(new QSvgRenderer())
+    m_svgRender(new QSvgRenderer()),
+    m_pageRectangle(new QGraphicsRectItem(this))
 {
+    m_pageRectangle->setZValue(ZVALUE::BACKGROUND);
+
+
     m_svgItem->setSharedRenderer(m_svgRender);
 
     m_svgItem->setFlags(QGraphicsItem::ItemClipsToShape);
@@ -166,6 +172,7 @@ void QGISVGTemplate::openFile(const QFile& file) { Q_UNUSED(file); }
 
 void QGISVGTemplate::load(QByteArray svgCode)
 {
+    prepareGeometryChange();
     applyWorkaround(svgCode);
     m_svgRender->load(svgCode);
 
@@ -198,7 +205,7 @@ void QGISVGTemplate::load(QByteArray svgCode)
     }
 }
 
-TechDraw::DrawSVGTemplate* QGISVGTemplate::getSVGTemplate()
+TechDraw::DrawSVGTemplate* QGISVGTemplate::getSVGTemplate() const
 {
     if (pageTemplate && pageTemplate->isDerivedFrom<TechDraw::DrawSVGTemplate>()) {
         return static_cast<TechDraw::DrawSVGTemplate*>(pageTemplate);
@@ -213,9 +220,35 @@ void QGISVGTemplate::draw()
     if (!tmplte) {
         throw Base::RuntimeError("Template Feature not set for QGISVGTemplate");
     }
+
+    drawPageRectangle();
+
     QString templateSvg = tmplte->processTemplate();
     load(templateSvg.toUtf8());
 }
+
+void QGISVGTemplate::drawPageRectangle()
+{
+    // Draw the white page
+    // Default to A3 landscape, though this is currently relevant
+    // only for opening corrupt docs, etc.
+    constexpr double PageWidthDefault{420.0};
+    double pageWidth{PageWidthDefault};
+    constexpr double PageHeightDefault{297.0};
+    double pageHeight{PageHeightDefault};
+
+    DrawTemplate* ourTemplate = getTemplate();
+    DrawPage* ourPage = ourTemplate ? ourTemplate->getParentPage() : nullptr;
+    if (ourTemplate && ourPage) {
+        pageWidth = Rez::guiX(ourPage->getPageWidth());
+        pageHeight = Rez::guiX(ourPage->getPageHeight());
+    }
+    QRectF paperRect(0, -pageHeight, pageWidth, pageHeight);
+    QBrush pageBrush(PreferencesGui::pageQColor());
+    m_pageRectangle->setRect(paperRect);
+    m_pageRectangle->setBrush(pageBrush);
+}
+
 
 void QGISVGTemplate::updateView(bool update)
 {
@@ -342,5 +375,6 @@ void QGISVGTemplate::createClickHandles()
         addToGroup(item);
     }
 }
+
 
 #include <Mod/TechDraw/Gui/moc_QGISVGTemplate.cpp>

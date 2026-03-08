@@ -487,9 +487,9 @@ def getCutVolume(cutplane, shapes, clip=False, depth=None):
     if not isinstance(shapes, list):
         shapes = [shapes]
     # building boundbox
-    bb = shapes[0].BoundBox
+    bb = shapes[0].optimalBoundingBox()
     for sh in shapes[1:]:
-        bb.add(sh.BoundBox)
+        bb.add(sh.optimalBoundingBox())
     bb.enlarge(1)
     # building cutplane space
     um = vm = wm = 0

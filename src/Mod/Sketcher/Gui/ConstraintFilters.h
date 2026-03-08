@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_ConstraintFilters_H
-#define SKETCHERGUI_ConstraintFilters_H
+#pragma once
 
 #include <array>
 #include <bitset>
@@ -194,5 +195,3 @@ constexpr std::array<FilterValueBitset, FilterValueLength> filterAggregates {
 }  // namespace ConstraintFilter
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_ConstraintFilters_H

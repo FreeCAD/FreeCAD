@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="Measurement-Diameter.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showguides="true"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="52.149126"
+     inkscape:cy="65.318989"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <path
+     id="path1"
+     style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;stroke-width:0.675201;stroke-linecap:round;stroke-linejoin:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1;fill:#000000;fill-opacity:1"
+     d="m 32.001977,5.024927 c -14.858561,0 -26.9750725,12.116512 -26.9750725,26.975072 0,6.171636 2.090432,11.87 5.5994215,16.423737 l -5.6033765,5.603378 4.947957,4.947959 5.6033775,-5.602059 c 4.55445,3.510985 10.254116,5.602059 16.427693,5.602059 14.858561,0 26.975073,-12.116514 26.975073,-26.975074 0,-6.173318 -2.09134,-11.873338 -5.602058,-16.427693 L 58.974413,9.972884 54.026455,5.024927 48.427034,10.624348 C 43.8732,7.115091 38.173872,5.024927 32.001977,5.024927 Z m 0,6.686073 c 4.352042,0 8.374885,1.354663 11.670955,3.667449 L 15.380427,43.669636 c -2.312595,-3.295987 -3.66745,-7.317792 -3.66745,-11.669637 0,-11.244665 9.044334,-20.288999 20.289,-20.288999 z m 16.618913,8.615406 c 2.314251,3.296709 3.670087,7.320043 3.670087,11.673593 0,11.244666 -9.044334,20.289001 -20.289,20.289001 -4.353747,0 -8.378119,-1.355646 -11.674911,-3.670087 z" />
+</svg>

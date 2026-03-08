@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerRotate_H
-#define SKETCHERGUI_DrawSketchHandlerRotate_H
+#pragma once
 
 #include <QApplication>
 
@@ -60,6 +61,8 @@ using DrawSketchHandlerRotateBase = DrawSketchControllableHandler<DSHRotateContr
 
 class DrawSketchHandlerRotate: public DrawSketchHandlerRotateBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerRotate)
+
     friend DSHRotateController;
     friend DSHRotateControllerBase;
 
@@ -670,6 +673,3 @@ void DSHRotateController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerRotate_H

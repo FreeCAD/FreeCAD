@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -137,7 +139,7 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
                                            bool append,
                                            ElementNameType type,
                                            const DocumentObject* filter,
-                                           const char** _element,
+                                           const char** element,
                                            GeoFeature** geoFeature)
 {
     elementName.newName.clear();
@@ -148,11 +150,11 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
     if (!subname) {
         subname = "";
     }
-    const char* element = Data::findElementName(subname);
-    if (_element) {
-        *_element = element;
+    const char* foundElement = Data::findElementName(subname);
+    if (element) {
+        *element = foundElement;
     }
-    auto sobj = obj->getSubObject(std::string(subname, element).c_str());
+    auto sobj = obj->getSubObject(std::string(subname, foundElement).c_str());
     if (!sobj) {
         return nullptr;
     }
@@ -170,16 +172,16 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
     if (filter && geo != filter) {
         return nullptr;
     }
-    if (!element || !element[0]) {
+    if (!foundElement || !foundElement[0]) {
         if (append) {
             elementName.oldName = Data::oldElementName(subname);
         }
         return sobj;
     }
 
-    if (!geo || hasHiddenMarker(element)) {
+    if (!geo || hasHiddenMarker(foundElement)) {
         if (!append) {
-            elementName.oldName = element;
+            elementName.oldName = foundElement;
         }
         else {
             elementName.oldName = Data::oldElementName(subname);
@@ -187,11 +189,11 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
         return sobj;
     }
     if (!append) {
-        elementName = geo->getElementName(element, type);
+        elementName = geo->getElementName(foundElement, type);
     }
     else {
-        const auto& names = geo->getElementName(element, type);
-        std::string prefix(subname, element - subname);
+        const auto& names = geo->getElementName(foundElement, type);
+        std::string prefix(subname, foundElement - subname);
         if (!names.newName.empty()) {
             elementName.newName = prefix + names.newName;
         }
@@ -316,42 +318,11 @@ Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
                                                App::DocumentObject* rootObj,
                                                const std::string& sub)
 {
-    if (!targetObj || !rootObj) {
+    if (!rootObj) {
         return Base::Placement();
     }
-    std::vector<std::string> names = Base::Tools::splitSubName(sub);
 
-    App::Document* doc = rootObj->getDocument();
-    Base::Placement plc = getPlacementFromProp(rootObj, "Placement");
-
-    if (targetObj == rootObj) {
-        return plc;
-    }
-
-    if (rootObj->isLink()) {
-        // Update doc in case its an external link.
-        doc = rootObj->getLinkedObject()->getDocument();
-    }
-
-    for (auto& name : names) {
-        App::DocumentObject* obj = doc->getObject(name.c_str());
-        if (!obj) {
-            return Base::Placement();
-        }
-
-        plc = plc * getPlacementFromProp(obj, "Placement");
-
-        if (obj == targetObj) {
-            return plc;
-        }
-        if (obj->isLink()) {
-            // Update doc in case its an external link.
-            doc = obj->getLinkedObject()->getDocument();
-        }
-    }
-
-    // If targetObj has not been found there's a problem
-    return Base::Placement();
+    return rootObj->getPlacementOf(sub, targetObj);
 }
 
 Base::Placement GeoFeature::getGlobalPlacement(App::DocumentObject* targetObj,
