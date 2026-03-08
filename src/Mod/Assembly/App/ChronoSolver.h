@@ -149,6 +149,9 @@ private:
     // Log full assembly structure (bodies, markers, joints) to the FreeCAD console.
     void dumpStructure() const;
 
+    // Snapshot current body positions into dragStepStart (called by preDrag and dragStep).
+    void saveDragStepStart();
+
     // Look up the ChBody and body-local frame for a MarkerRef.
     // Returns false if the ref is not found.
     bool resolveMarker(
@@ -182,6 +185,16 @@ private:
         chrono::ChFrame<double> frame;
     };
     std::vector<std::vector<BodyFrameSnapshot>> kinematicFrames;
+
+    // Body positions saved at the start of each drag sub-step.
+    // Used to interpolate dragged bodies across multiple sub-steps so that
+    // Newton-Raphson stays close to the correct kinematic branch.
+    struct BodyDragStart
+    {
+        chrono::ChVector3d pos;
+        chrono::ChQuaternion<double> rot;
+    };
+    std::map<chrono::ChBody*, BodyDragStart> dragStepStart;
 
     bool solved = false;
     bool debugLogging = false;

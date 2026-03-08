@@ -662,26 +662,116 @@ int ChronoAssembly::runKinematic()
 void ChronoAssembly::preDrag()
 {
     sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+
+    // Snapshot all body positions so the first drag step has a known-good start.
+    saveDragStepStart();
 }
 
-void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> /*draggedParts*/)
+void ChronoAssembly::saveDragStepStart()
 {
-    // Do NOT freeze dragged bodies.  Fixing a dragged body at an arbitrary
-    // translated position over-constrains the system: the body's own joint
-    // constraints (e.g. a revolute joint to the grounded part) can no longer
-    // be satisfied, causing other bodies to drift incorrectly.
-    //
-    // Instead, the dragged body's suggested position (already pushed via
-    // pushPlacement) is used as the Newton-Raphson starting point.  The solver
-    // then finds the nearest valid configuration on the constraint manifold —
-    // for a revolute joint this means the body rotates around its pivot rather
-    // than translating away from it.
-    sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+    dragStepStart.clear();
+    for (const auto& part : parts) {
+        auto body = part->getBody();
+        dragStepStart[body.get()] = {body->GetPos(), body->GetRot()};
+    }
+}
+
+void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts)
+{
+    // Sub-step the drag to prevent Newton-Raphson from jumping to a different
+    // kinematic branch.  pushPlacement() has already moved each dragged body to
+    // its final target position.  We interpolate each dragged body linearly
+    // from its position at the start of this drag event step to its target
+    // across N sub-steps, calling DoAssembly for each.  This keeps each
+    // Newton-Raphson solve close to the previous solution, so the solver tracks
+    // the correct branch through the constraint manifold.
+    static constexpr int kSubSteps = 5;
+
+    // Collect dragged bodies and their target positions (already set by pushPlacement).
+    struct BodyTarget
+    {
+        std::shared_ptr<chrono::ChBody> body;
+        chrono::ChVector3d targetPos;
+        chrono::ChQuaternion<double> targetRot;
+        chrono::ChVector3d startPos;
+        chrono::ChQuaternion<double> startRot;
+    };
+    std::vector<BodyTarget> targets;
+    for (const auto& part : draggedParts) {
+        auto chronoPart = std::static_pointer_cast<ChronoPart>(part);
+        auto body = chronoPart->getBody();
+        BodyTarget t;
+        t.body = body;
+        t.targetPos = body->GetPos();
+        t.targetRot = body->GetRot();
+        auto it = dragStepStart.find(body.get());
+        if (it != dragStepStart.end()) {
+            t.startPos = it->second.pos;
+            t.startRot = it->second.rot;
+        }
+        else {
+            t.startPos = t.targetPos;
+            t.startRot = t.targetRot;
+        }
+        targets.push_back(t);
+    }
+
+    if (debugLogging) {
+        FC_MSG("=== dragStep: " << kSubSteps << " sub-steps, " << targets.size() << " dragged body/bodies ===");
+        for (const auto& t : targets) {
+            auto delta = (t.targetPos - t.startPos).Length();
+            FC_MSG(
+                "  dragged '" << t.body->GetName() << "'"
+                << "  start=(" << t.startPos.x() << "," << t.startPos.y() << "," << t.startPos.z() << ")"
+                << "  target=(" << t.targetPos.x() << "," << t.targetPos.y() << "," << t.targetPos.z() << ")"
+                << "  delta=" << delta
+            );
+        }
+    }
+
+    for (int k = 1; k <= kSubSteps; k++) {
+        const double alpha = static_cast<double>(k) / kSubSteps;
+
+        // Move each dragged body to the interpolated position for this sub-step.
+        for (const auto& t : targets) {
+            t.body->SetPos(t.startPos + (t.targetPos - t.startPos) * alpha);
+            // Normalized linear interpolation (NLERP) of the rotation.
+            // For the small per-step rotations involved in interactive drag this
+            // is a good approximation of SLERP and avoids relying on a
+            // quaternion slerp API that Chrono does not expose directly.
+            chrono::ChQuaternion<double> q(
+                t.startRot.e0() + (t.targetRot.e0() - t.startRot.e0()) * alpha,
+                t.startRot.e1() + (t.targetRot.e1() - t.startRot.e1()) * alpha,
+                t.startRot.e2() + (t.targetRot.e2() - t.startRot.e2()) * alpha,
+                t.startRot.e3() + (t.targetRot.e3() - t.startRot.e3()) * alpha
+            );
+            q.Normalize();
+            t.body->SetRot(q);
+        }
+
+        bool ok = sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+
+        if (debugLogging) {
+            FC_MSG("  sub-step " << k << "/" << kSubSteps << " converged=" << (ok ? "true" : "false"));
+        }
+    }
+
+    if (debugLogging) {
+        FC_MSG("=== dragStep complete: post-solve structure ===");
+        dumpStructure();
+    }
+
+    // Save current body positions as the start for the next drag step.
+    saveDragStepStart();
 }
 
 void ChronoAssembly::postDrag()
 {
-    // Nothing to do: Chrono does not have a separate post-drag phase.
+    if (debugLogging) {
+        FC_MSG("=== postDrag: final assembly structure ===");
+        dumpStructure();
+    }
+    dragStepStart.clear();
 }
 
 void ChronoAssembly::setSimulationParameters(std::shared_ptr<SimulationParameters> params)
