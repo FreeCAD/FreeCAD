@@ -134,12 +134,12 @@ private:
 // scale defining constraint is set
 enum class AutoScaleMode : int
 {
-    Always = 0,
-    Never = 1,
+    Always = 1,
+    Never = 2,
 
     // Attempts to find scale reference objects int the viewport
     // (such as a 3d body) and disable the feature if it finds one
-    WhenNoScaleFeatureIsVisible = 2
+    WhenNoScaleFeatureIsVisible = 3
 };
 
 }  // namespace SketcherGui
