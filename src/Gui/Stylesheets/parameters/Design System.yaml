@@ -91,8 +91,8 @@ BasePressedOverlay: "@Contrast.800"
 BasePressedOverlayOpacity: 10%
 BaseHalfPressedOverlayOpacity: 7%
 
-FormControlSmallHeight: 22px
-FormControlHeight: 26px
+FormControlSmallHeight: 24px
+FormControlHeight: 28px
 FormControlBigHeight: 32px
 
 FormControlPadding: "padding(horizontal: @Spacing.150, vertical: @Spacing.100)"
@@ -130,6 +130,10 @@ ButtonPressedInnerShadow: "inner_shadow(color: rgba(0, 0, 0, 50), y: 2px, blur: 
 ButtonCheckedOverlay: "opacity(@BasePressedOverlay, @BaseHalfPressedOverlayOpacity)"
 ButtonCheckedInnerShadow: "inner_shadow(color: rgba(0, 0, 0, 50), y: 2px, blur: 6px)"
 
+ButtonDisabledBackground: "@BaseDisabledBackground"
+ButtonDisabledTextColor: "@BaseDisabledTextColor"
+ButtonDisabledBorderColor: "@BaseBorderColor"
+
 ButtonPrimaryBackground: "blend(@ButtonBackground, @Accent.500, 15%)"
 ButtonPrimaryBorderColor: "blend(@ButtonBorderColor, @Accent.500, 25%)"
 
@@ -138,6 +142,7 @@ ToolButtonSmallPadding: "padding(horizontal: @Spacing.100, vertical: @Spacing.05
 
 ToolButtonHeight: "@FormControlHeight"
 ToolButtonSmallHeight: "@FormControlSmallHeight"
+ToolButtonBigHeight: "@FormControlBigHeight"
 
 # ── Select Padding overrides
 SelectPadding: "padding(horizontal: @Spacing.200, vertical: @Spacing.100)"
@@ -154,6 +159,9 @@ LineEditHeight: "@FormControlHeight"
 LineEditSmallHeight: "@FormControlSmallHeight"
 
 LineEditFocusedBorderColor: "@Accent.500"
+
+LineEditDisabledBackground: "@BaseDisabledBackground"
+LineEditDisabledTextColor: "@BaseDisabledTextColor"
 
 # ── ComboBox / Editable combo fields ─────────────────────────────────────
 # Editable QComboBox uses the chain: ComboBox → LineEdit → FormControl.

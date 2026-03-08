@@ -42,6 +42,7 @@
 #include <QPainterPath>
 #include <QRadialGradient>
 #include <QStyleOption>
+#include <QToolBar>
 
 #include <Base/Color.h>
 #include <Base/Converter.h>
@@ -330,6 +331,7 @@ std::string variantString(const VariantKey& variant)
 // ── State strings ────────────────────────────────────────────────────────────
 
 const std::map<StyleState, std::string_view> stateNames = {
+    {StyleState::Disabled, "Disabled"},
     {StyleState::Pressed, "Pressed"},
     {StyleState::Hovered, "Hovered"},
     {StyleState::Checked, "Checked"},
@@ -386,8 +388,9 @@ std::string_view propertyString(StyleProperty property)
 //   "ButtonFocused"          ← no variant, next state
 //   "Button"                 ← baseline
 
-// Priority order — highest first. Mirrors the enum declaration order (Pressed > Hovered > …).
+// Priority order — highest first. Mirrors the enum declaration order (Disabled > Pressed > Hovered > …).
 constexpr auto statePriorityOrder = std::to_array({
+    StyleState::Disabled,
     StyleState::Pressed,
     StyleState::Hovered,
     StyleState::Checked,
@@ -433,9 +436,9 @@ std::vector<std::string> buildPrefixes(const StyleContext& context)
 // unordered_map key. Bit layout:
 //
 //   bits  0– 4 : StyleComponent  (5 bits, up to 32 values)
-//   bits  5– 8 : StyleState      (4-bit bitmask)
-//   bits  9–14 : StyleProperty   (6 bits, up to 64 values)
-//   bits 15–.. : VariantSlots    (4 bits each, starting at bit 15)
+//   bits  5– 9 : StyleState      (5-bit bitmask)
+//   bits 10–15 : StyleProperty   (6 bits, up to 64 values)
+//   bits 16–.. : VariantSlots    (4 bits each, starting at bit 16)
 //
 // Adding a new VariantSlot or enum value does not require changing this function.
 
@@ -452,8 +455,8 @@ uint32_t packVariant(const VariantKey& variant)
 // Bit offsets within the packed cache key.
 constexpr uint32_t componentBitOffset = 0;
 constexpr uint32_t stateBitOffset     = 5;   // component (5 bits) ends at bit 4
-constexpr uint32_t propertyBitOffset  = 9;   // state (4-bit bitmask) ends at bit 8
-constexpr uint32_t variantBitOffset   = 15;  // property (6 bits) ends at bit 14
+constexpr uint32_t propertyBitOffset  = 10;  // state (5-bit bitmask) ends at bit 9
+constexpr uint32_t variantBitOffset   = 16;  // property (6 bits) ends at bit 15
 // clang-format on
 
 uint32_t packCacheKey(const StyleContext& context, StyleProperty property)
@@ -623,7 +626,9 @@ void FreeCADStyle::drawPrimitive(
         // panel must not draw a second border.
         const auto* frameOption = qstyleoption_cast<const QStyleOptionFrame*>(option);
         if (frameOption && frameOption->lineWidth == 0) {
-            QProxyStyle::drawPrimitive(element, option, painter, widget);
+            // The spinbox outer frame was already drawn by drawComplexControl(CC_SpinBox).
+            // Do not repaint the inner QLineEdit panel — it would cover our background
+            // with the system-palette colour (especially wrong in the disabled state).
             return;
         }
         drawComponent(painter, option->rect, widget, option);
@@ -1240,6 +1245,10 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
 
     // State — all active flags captured as a bitmask.
     if (option) {
+        if (!(option->state & QStyle::State_Enabled)) {
+            context.state |= StyleState::Disabled;
+        }
+
         // State_Sunken means "button is being pressed" for buttons, but "has a sunken
         // frame appearance" for input widgets (QLineEdit always sets it). Only map it
         // to Pressed for button components to avoid masking the Focused state on inputs.
