@@ -613,10 +613,7 @@ int ChronoAssembly::solveStatic()
         dumpStructure();
     }
 
-    // Satisfy all position-level constraints via Newton-Raphson iteration.
-    // Use 50 iterations (vs the default 6) for better convergence on complex
-    // assemblies with closed kinematic chains and cylindrical joints.
-    bool ok = sys->DoAssembly(chrono::AssemblyLevel::POSITION, 50);
+    bool ok = sys->DoAssembly(chrono::AssemblyLevel::POSITION);
     if (debugLogging) {
         FC_MSG("=== Post-solve (converged=" << (ok ? "true" : "false") << ") ===");
         dumpStructure();
@@ -645,7 +642,7 @@ int ChronoAssembly::runKinematic()
     sys->SetChTime(tStart);
 
     for (double t = tStart; t <= tEnd + dt * 0.5; t += dt) {
-        sys->DoAssembly(chrono::AssemblyLevel::POSITION, 50);
+        sys->DoAssembly(chrono::AssemblyLevel::POSITION);
 
         // Snapshot current body positions
         std::vector<BodyFrameSnapshot> snapshot;
@@ -664,7 +661,7 @@ int ChronoAssembly::runKinematic()
 
 void ChronoAssembly::preDrag()
 {
-    sys->DoAssembly(chrono::AssemblyLevel::POSITION, 50);
+    sys->DoAssembly(chrono::AssemblyLevel::POSITION);
 }
 
 void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> /*draggedParts*/)
@@ -679,7 +676,7 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> /*draggedParts*
     // then finds the nearest valid configuration on the constraint manifold —
     // for a revolute joint this means the body rotates around its pivot rather
     // than translating away from it.
-    sys->DoAssembly(chrono::AssemblyLevel::POSITION, 50);
+    sys->DoAssembly(chrono::AssemblyLevel::POSITION);
 }
 
 void ChronoAssembly::postDrag()
