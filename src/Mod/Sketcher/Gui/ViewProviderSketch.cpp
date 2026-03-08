@@ -1123,7 +1123,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     setSketchMode(STATUS_NONE);
                     return true;
                 case STATUS_SELECT_Wire: {
-                    toggleWireSelelection(preselection.PreselectCurve);
+                    toggleWireSelection(preselection.PreselectCurve);
                     setSketchMode(STATUS_NONE);
                     return true;
                 }
@@ -1354,7 +1354,7 @@ void ViewProviderSketch::editDoubleClicked()
         Base::Console().log("double click point:%d\n", preselection.PreselectPoint);
     }
     else if (preselection.isPreselectCurveValid()) {
-        // We cannot do toggleWireSelelection directly here because the released event with
+        // We cannot do toggleWireSelection directly here because the released event with
         //STATUS_NONE return false which clears the selection.
         setSketchMode(STATUS_SELECT_Wire);
     }
@@ -1383,7 +1383,7 @@ void ViewProviderSketch::editDoubleClicked()
     }
 }
 
-void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
+void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
 {
     Sketcher::SketchObject* obj = getSketchObject();
 
