@@ -66,6 +66,11 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget(QWidget* parent)
     ui->parameterFive->installEventFilter(this);
     ui->parameterSix->installEventFilter(this);
 
+    ui->checkBoxTS1->installEventFilter(this);
+    ui->checkBoxTS2->installEventFilter(this);
+    ui->checkBoxTS3->installEventFilter(this);
+    ui->checkBoxTS4->installEventFilter(this);
+
     reset();
 }
 
@@ -176,6 +181,18 @@ bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
             for (int i = 0; i < nParameters; i++) {
                 if (object == getParameterSpinBox(i)) {
                     signalParameterTabOrEnterPressed(i);
+                    return true;
+                }
+            }
+        }
+        // Intercept Tab from a visible checkbox so the controller can move focus
+        // to the next checkbox or wrap back to the first spinbox.
+        if (ke->key() == Qt::Key_Tab) {
+            for (int i = 0; i < nCheckbox; i++) {
+                if (object == getCheckBox(i) && getCheckBox(i)->isVisible()) {
+                    // Encode the checkbox index as (nParameters + i) so the controller
+                    // can distinguish it from a spinbox index.
+                    signalParameterTabOrEnterPressed(nParameters + i);
                     return true;
                 }
             }
@@ -573,6 +590,33 @@ void SketcherToolDefaultWidget::updateVisualValue(int parameterindex, double val
     }
 
     THROWM(Base::IndexError, QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+}
+
+bool SketcherToolDefaultWidget::focusFirstVisibleCheckbox()
+{
+    for (int i = 0; i < nCheckbox; i++) {
+        auto* cb = getCheckBox(i);
+        if (cb->isVisible()) {
+            cb->setFocus(Qt::TabFocusReason);
+            return true;
+        }
+    }
+    return false;
+}
+
+bool SketcherToolDefaultWidget::isCheckboxVisible(int checkboxindex)
+{
+    if (checkboxindex < nCheckbox) {
+        return getCheckBox(checkboxindex)->isVisible();
+    }
+    return false;
+}
+
+void SketcherToolDefaultWidget::setCheckboxFocus(int checkboxindex)
+{
+    if (checkboxindex < nCheckbox) {
+        getCheckBox(checkboxindex)->setFocus(Qt::TabFocusReason);
+    }
 }
 
 // checkbox functions
