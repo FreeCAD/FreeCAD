@@ -606,6 +606,24 @@ def get_svg(
         if vobj is not None and hasattr(vobj, "DrawStyle"):
             lstyle = get_line_style(vobj.DrawStyle, scale)
 
+    linked_axis_obj = None
+    if obj and obj.isDerivedFrom("App::Link") and obj.LinkedObject:
+        source = obj.LinkedObject
+        if source and utils.get_type(source) == "Axis":
+            linked_axis_obj = source
+        else:
+            try:
+                source = obj.getLinkedObject(True)
+            except (AttributeError, RuntimeError, TypeError) as err:
+                _wrn(
+                    "Unable to resolve linked object for '{}': {}".format(
+                        getattr(obj, "Label", obj.Name), err
+                    )
+                )
+                source = None
+            if source and utils.get_type(source) == "Axis":
+                linked_axis_obj = source
+
     if not obj:
         pass
 
@@ -824,16 +842,17 @@ def get_svg(
             j = vobj.Justification
             svg += svgtext.get_text(plane, techdraw, tstroke, fontsize, n, r, p, t, linespacing, j)
 
-    elif utils.get_type(obj) == "Axis":
+    elif utils.get_type(obj) == "Axis" or linked_axis_obj is not None:
         # returns the SVG representation of an Arch Axis system
         if not App.GuiUp:
             _wrn("Export of axes to SVG is only available in GUI mode")
 
         if App.GuiUp:
-            fn = vobj.FontName
+            is_linked_axis = linked_axis_obj is not None
+            axis_obj = linked_axis_obj if is_linked_axis else obj
+            axis_vobj = _get_view_object(axis_obj)
+            fn = axis_vobj.FontName if axis_vobj is not None else vobj.FontName
             fill = "none"
-            rad = vobj.BubbleSize.Value / 2
-            n = 0
             for e in obj.Shape.Edges:
                 svg += get_path(
                     obj,
@@ -846,14 +865,38 @@ def get_svg(
                     fill_opacity=None,
                     edges=[e],
                 )
-            for t in vobj.Proxy.getTextData():
-                pos = t[1].add(App.Vector(0, -fontsize / 2, 0))
+
+            if is_linked_axis:
+                try:
+                    import ArchAxis
+
+                    bubble_shapes, bubble_texts = ArchAxis.get_axis_bubble_data(obj, axis_vobj)
+                except ImportError as err:
+                    _wrn("Unable to import ArchAxis for '{}': {}".format(obj.Label, err))
+                    bubble_shapes = []
+                    bubble_texts = []
+                except (AttributeError, RuntimeError, TypeError, ValueError) as err:
+                    _wrn("Unable to compute Axis bubble data for '{}': {}".format(obj.Label, err))
+                    bubble_shapes = []
+                    bubble_texts = []
+            else:
+                bubble_shapes = []
+                bubble_texts = []
+
+            if not bubble_shapes and axis_vobj and hasattr(axis_vobj, "Proxy") and axis_vobj.Proxy:
+                bubble_texts = axis_vobj.Proxy.getTextData()
+                bubble_shapes = axis_vobj.Proxy.getShapeData()
+
+            for t in bubble_texts:
+                text_pos = t[1]
+                pos = text_pos.add(App.Vector(0, -fontsize / 2, 0))
                 svg += svgtext.get_text(
                     plane, techdraw, tstroke, fontsize, fn, 0.0, pos, t[0], 1.0, "center"
                 )
-            for b in vobj.Proxy.getShapeData():
-                if hasattr(b, "Curve") and isinstance(b.Curve, Part.Circle):
-                    svg += get_circle(plane, fill, stroke, linewidth, "none", b)
+            for b in bubble_shapes:
+                shape = b
+                if hasattr(shape, "Curve") and isinstance(shape.Curve, Part.Circle):
+                    svg += get_circle(plane, fill, stroke, linewidth, "none", shape)
                 else:
                     sfill = stroke
                     svg += get_path(
@@ -865,7 +908,7 @@ def get_svg(
                         linewidth,
                         "none",
                         fill_opacity=None,
-                        edges=b.Edges,
+                        edges=shape.Edges,
                     )
 
     elif utils.get_type(obj) == "Pipe":
