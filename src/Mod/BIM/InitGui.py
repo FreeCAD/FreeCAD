@@ -623,8 +623,20 @@ class BIMWorkbench(Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.show()
-        WorkingPlane._view_observer_start()
-        grid_observer._view_observer_setup()
+        if hasattr(WorkingPlane, "_view_observer_start"):
+            WorkingPlane._view_observer_start()
+        else:
+            FreeCAD.Console.PrintWarning(
+                "Improper loading of WorkingPlane code. "
+                "The BIM Workbench will not work correctly.\n"
+            )
+        if hasattr(grid_observer, "_view_observer_setup"):
+            grid_observer._view_observer_setup()
+        else:
+            FreeCAD.Console.PrintWarning(
+                "Improper loading of grid_observer code. "
+                "The BIM Workbench will not work correctly.\n"
+            )
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
@@ -710,8 +722,10 @@ class BIMWorkbench(Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
-        WorkingPlane._view_observer_stop()
-        grid_observer._view_observer_setup()
+        if hasattr(WorkingPlane, "_view_observer_stop"):
+            WorkingPlane._view_observer_stop()
+        if hasattr(grid_observer, "_view_observer_setup"):
+            grid_observer._view_observer_setup()
 
         # print("Deactivating status icon")
         todo.ToDo.delay(BimStatus.setStatusIcons, False)
