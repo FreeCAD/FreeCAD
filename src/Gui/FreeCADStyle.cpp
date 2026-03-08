@@ -254,74 +254,66 @@ const QImage& getCachedShadowImage(
 }
 
 // ─── StyleToken string tables ──────────────────────────────────────────────
-// These functions convert enum values to the string fragments used in token
+// Data-driven mappings from enum values to the string fragments used in token
 // names such as "ButtonPrimaryHoveredBackground".
+//
+// All tables use std::map with explicit enum keys so that entries are
+// self-documenting and order-independent.  Default values (empty string) are
+// absent from the maps; the lookup functions return "" on a miss.
+//
+// To add a new component: add a StyleComponent entry and insert its chain here.
+// To add a new property/variant/state: add the enum entry and insert its
+// string here — there is no ordering constraint to worry about.
 
-// Returns the inheritance chain for a component, ordered from most-specific to
-// most-abstract. Each entry is the token name prefix for that level.
-// To add a new component: add a StyleComponent enum entry and a chain array here.
-// To add a new abstract base: add an entry to the relevant chains — no enum change needed.
-std::span<const std::string_view> componentChain(StyleComponent component)
+// Returns a const reference to map[key] if present, or to a static empty
+// default otherwise.  Returning by reference avoids copies and is safe to
+// wrap in std::span since the default outlives the call.
+template<typename Map>
+auto lookup(const Map& map, const typename Map::key_type& key) -> const typename Map::mapped_type&
 {
-    static constexpr auto pushButton = std::to_array<std::string_view>({"Button", "FormControl"});
-    static constexpr auto toolButton = std::to_array<std::string_view>({
-        "ToolButton",
-        "Button",
-        "FormControl",
-    });
-    static constexpr auto lineEdit = std::to_array<std::string_view>({"LineEdit", "FormControl"});
-    static constexpr auto textEdit = std::to_array<std::string_view>(
-        {"TextEdit", "LineEdit", "FormControl"}
-    );
-    static constexpr auto select = std::to_array<std::string_view>({"Select", "Button", "FormControl"});
-    static constexpr auto comboBox = std::to_array<std::string_view>(
-        {"ComboBox", "LineEdit", "FormControl"}
-    );
-
-    switch (component) {
-        case StyleComponent::PushButton:
-            return pushButton;
-        case StyleComponent::ToolButton:
-            return toolButton;
-        case StyleComponent::LineEdit:
-            return lineEdit;
-        case StyleComponent::TextEdit:
-            return textEdit;
-        case StyleComponent::Select:
-            return select;
-        case StyleComponent::ComboBox:
-            return comboBox;
-        default:
-            return {};
-    }
+    static const typename Map::mapped_type empty {};
+    const auto found = map.find(key);
+    return found != map.end() ? found->second : empty;
 }
 
-// Returns the token string for a single VariantSlot value.
-// Add a case here whenever a new VariantSlot is added.
+// ── Component inheritance chains ────────────────────────────────────────────
+// Each component maps to an ordered chain of token prefixes, most-specific first.
+// To add a new abstract base: edit the relevant chain — no enum change needed.
+// clang-format off
+const std::map<StyleComponent, std::vector<std::string_view>> componentChains = {
+    {StyleComponent::PushButton, {"Button", "FormControl"}},
+    {StyleComponent::ToolButton, {"ToolButton", "Button", "FormControl"}},
+    {StyleComponent::LineEdit,   {"LineEdit", "FormControl"}},
+    {StyleComponent::TextEdit,   {"TextEdit", "LineEdit", "FormControl"}},
+    {StyleComponent::Select,     {"Select", "Button", "FormControl"}},
+    {StyleComponent::ComboBox,   {"ComboBox", "LineEdit", "FormControl"}},
+};
+// clang-format on
+
+std::span<const std::string_view> componentChain(StyleComponent component)
+{
+    return std::span<const std::string_view>(lookup(componentChains, component));
+}
+
+// ── Variant slot string tables ───────────────────────────────────────────────
+// Default (0) is absent from each inner map; variantSlotString returns "" for it.
+
+// clang-format off
+const std::map<VariantSlot, std::map<uint8_t, std::string_view>> variantSlotNames = {
+    {VariantSlot::ButtonType, {
+        {static_cast<uint8_t>(ButtonType::Primary), "Primary"},
+        {static_cast<uint8_t>(ButtonType::Link),    "Link"},
+    }},
+    {VariantSlot::ControlSize, {
+        {static_cast<uint8_t>(ControlSize::Small), "Small"},
+        {static_cast<uint8_t>(ControlSize::Big),   "Big"},
+    }},
+};
+// clang-format on
+
 std::string_view variantSlotString(VariantSlot slot, uint8_t value)
 {
-    switch (slot) {
-        case VariantSlot::ButtonType:
-            switch (static_cast<ButtonType>(value)) {
-                case ButtonType::Primary:
-                    return "Primary";
-                case ButtonType::Link:
-                    return "Link";
-                default:
-                    return "";
-            }
-        case VariantSlot::ControlSize:
-            switch (static_cast<ControlSize>(value)) {
-                case ControlSize::Small:
-                    return "Small";
-                case ControlSize::Big:
-                    return "Big";
-                default:
-                    return "";
-            }
-        default:
-            return "";
-    }
+    return lookup(lookup(variantSlotNames, slot), value);
 }
 
 // Concatenates the string fragments of all non-default variant slots.
@@ -330,73 +322,55 @@ std::string variantString(const VariantKey& variant)
 {
     std::string result;
     for (size_t index = 0; index < variant.slots.size(); ++index) {
-        result += variantSlotString(VariantSlot(index), variant.slots.at(index));
+        result += variantSlotString(static_cast<VariantSlot>(index), variant.slots.at(index));
     }
     return result;
 }
 
+// ── State strings ────────────────────────────────────────────────────────────
+
+const std::map<StyleState, std::string_view> stateNames = {
+    {StyleState::Pressed, "Pressed"},
+    {StyleState::Hovered, "Hovered"},
+    {StyleState::Checked, "Checked"},
+    {StyleState::Focused, "Focused"},
+};
+
 std::string_view stateString(StyleState state)
 {
-    switch (state) {
-        case StyleState::Pressed:
-            return "Pressed";
-        case StyleState::Hovered:
-            return "Hovered";
-        case StyleState::Checked:
-            return "Checked";
-        case StyleState::Focused:
-            return "Focused";
-        default:
-            return "";
-    }
+    return lookup(stateNames, state);
 }
+
+// ── Property strings ─────────────────────────────────────────────────────────
+
+// clang-format off
+const std::map<StyleProperty, std::string_view> propertyNames = {
+    {StyleProperty::Width,           "Width"},
+    {StyleProperty::MinWidth,        "MinWidth"},
+    {StyleProperty::MaxWidth,        "MaxWidth"},
+    {StyleProperty::Height,          "Height"},
+    {StyleProperty::MinHeight,       "MinHeight"},
+    {StyleProperty::MaxHeight,       "MaxHeight"},
+    {StyleProperty::BorderThickness, "BorderThickness"},
+    {StyleProperty::BorderRadius,    "BorderRadius"},
+    {StyleProperty::BorderColor,     "BorderColor"},
+    {StyleProperty::Padding,         "Padding"},
+    {StyleProperty::Margin,          "Margin"},
+    {StyleProperty::IconSize,        "IconSize"},
+    {StyleProperty::IconSpacing,     "IconSpacing"},
+    {StyleProperty::FontSize,        "FontSize"},
+    {StyleProperty::FontWeight,      "FontWeight"},
+    {StyleProperty::Background,      "Background"},
+    {StyleProperty::TextColor,       "TextColor"},
+    {StyleProperty::Overlay,         "Overlay"},
+    {StyleProperty::OverlayOpacity,  "OverlayOpacity"},
+    {StyleProperty::InnerShadow,     "InnerShadow"},
+};
+// clang-format on
 
 std::string_view propertyString(StyleProperty property)
 {
-    switch (property) {
-        case StyleProperty::Width:
-            return "Width";
-        case StyleProperty::MinWidth:
-            return "MinWidth";
-        case StyleProperty::MaxWidth:
-            return "MaxWidth";
-        case StyleProperty::Height:
-            return "Height";
-        case StyleProperty::MinHeight:
-            return "MinHeight";
-        case StyleProperty::MaxHeight:
-            return "MaxHeight";
-        case StyleProperty::BorderThickness:
-            return "BorderThickness";
-        case StyleProperty::BorderRadius:
-            return "BorderRadius";
-        case StyleProperty::BorderColor:
-            return "BorderColor";
-        case StyleProperty::Padding:
-            return "Padding";
-        case StyleProperty::Margin:
-            return "Margin";
-        case StyleProperty::IconSize:
-            return "IconSize";
-        case StyleProperty::IconSpacing:
-            return "IconSpacing";
-        case StyleProperty::FontSize:
-            return "FontSize";
-        case StyleProperty::FontWeight:
-            return "FontWeight";
-        case StyleProperty::Background:
-            return "Background";
-        case StyleProperty::TextColor:
-            return "TextColor";
-        case StyleProperty::Overlay:
-            return "Overlay";
-        case StyleProperty::OverlayOpacity:
-            return "OverlayOpacity";
-        case StyleProperty::InnerShadow:
-            return "InnerShadow";
-        default:
-            return "";
-    }
+    return lookup(propertyNames, property);
 }
 
 // ─── Prefix list builder ────────────────────────────────────────────────────
@@ -413,12 +387,12 @@ std::string_view propertyString(StyleProperty property)
 //   "Button"                 ← baseline
 
 // Priority order — highest first. Mirrors the enum declaration order (Pressed > Hovered > …).
-constexpr std::array<StyleState, 4> statePriorityOrder = {
+constexpr auto statePriorityOrder = std::to_array({
     StyleState::Pressed,
     StyleState::Hovered,
     StyleState::Checked,
     StyleState::Focused,
-};
+});
 
 std::vector<std::string> buildPrefixes(const StyleContext& context)
 {
@@ -469,7 +443,7 @@ uint32_t packVariant(const VariantKey& variant)
 {
     uint32_t packed = 0;
     for (size_t index = 0; index < variant.slots.size(); ++index) {
-        packed |= uint32_t(variant.slots.at(index)) << (index * 4);
+        packed |= static_cast<uint32_t>(variant.slots.at(index)) << (index * 4);
     }
     return packed;
 }
@@ -496,7 +470,11 @@ uint32_t packCacheKey(const StyleContext& context, StyleProperty property)
 
 void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const BoxStyleDefinition& rule)
 {
-    if (rule.background.style() == Qt::NoBrush) {
+    const bool hasBorder = rule.borderColor.has_value() && rule.borderThickness.has_value();
+    const bool hasBackground = rule.background.style() != Qt::NoBrush;
+    const bool hasInnerShadow = rule.innerShadow.has_value();
+
+    if (!hasBackground && !hasBorder && !hasInnerShadow) {
         return;
     }
 
@@ -505,8 +483,6 @@ void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const
     painter->setPen(Qt::NoPen);
     // Clip to the outer rect so antialiased arc pixels cannot bleed outside.
     painter->setClipRect(rect, Qt::IntersectClip);
-
-    const bool hasBorder = rule.borderColor.has_value() && rule.borderThickness.has_value();
 
     QRect backgroundRect = rect;
     CornerRadii backgroundRadii = rule.borderRadius;
@@ -533,15 +509,17 @@ void FreeCADStyle::drawBoxBackground(QPainter* painter, const QRect& rect, const
         painter->fillPath(roundedRectPath(QRectF(rect), rule.borderRadius), QBrush(*rule.borderColor));
     }
 
-    painter->fillPath(roundedRectPath(QRectF(backgroundRect), backgroundRadii), rule.background);
+    if (hasBackground) {
+        painter->fillPath(roundedRectPath(QRectF(backgroundRect), backgroundRadii), rule.background);
 
-    if (rule.overlay) {
-        painter->fillPath(roundedRectPath(QRectF(backgroundRect), backgroundRadii), *rule.overlay);
+        if (rule.overlay) {
+            painter->fillPath(roundedRectPath(QRectF(backgroundRect), backgroundRadii), *rule.overlay);
+        }
     }
 
     painter->restore();
 
-    if (rule.innerShadow) {
+    if (hasInnerShadow) {
         const int padding = static_cast<int>(std::ceil(rule.innerShadow->blur)) + 1;
         const QImage& shadowImage = getCachedShadowImage(rect, rule.borderRadius, *rule.innerShadow);
 

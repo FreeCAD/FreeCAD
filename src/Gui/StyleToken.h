@@ -134,8 +134,8 @@ enum class StyleProperty : uint8_t
  * Each slot corresponds to one enum dimension (ButtonType, ControlSize, …).
  * Adding a new variant dimension requires:
  *   1. Adding a slot entry before COUNT here.
- *   2. Defining the values enum.
- *   3. Adding a string mapping in FreeCADStyle.cpp::variantSlotString().
+ *   2. Defining the values enum with Default = 0 and COUNT as the last value.
+ *   3. Adding a string table and entry in FreeCADStyle.cpp::variantSlotNames.
  *   4. Setting the slot in FreeCADStyle.cpp::contextOf().
  */
 enum class VariantSlot : uint8_t
