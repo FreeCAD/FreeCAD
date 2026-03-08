@@ -3949,6 +3949,31 @@ int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointP
         GCS::Point& p1 = Points[pointId1];
         GCS::Point& p2 = Points[pointId2];
         GCS::Line& l = Lines[Geoms[geoId3].index];
+
+        // Check if both P1 and P2 currently lie exactly on the symmetry line
+        double dx = *l.p2.x - *l.p1.x;
+        double dy = *l.p2.y - *l.p1.y;
+        double line_len_sq = dx * dx + dy * dy;
+
+        if (line_len_sq > Precision::SquareConfusion()) {
+            // Cross product to find distance from point to line (area of parallelogram)
+            double area1 = (*p1.x - *l.p1.x) * dy - (*p1.y - *l.p1.y) * dx;
+            double area2 = (*p2.x - *l.p1.x) * dy - (*p2.y - *l.p1.y) * dx;
+
+            double dist1 = std::abs(area1) / sqrt(line_len_sq);
+            double dist2 = std::abs(area2) / sqrt(line_len_sq);
+
+            if (dist1 < Precision::Confusion() && dist2 < Precision::Confusion()) {
+                // Both points lie on the symmetry axis.
+                // In this state, Symmetry mathematically forces them to be coincident.
+                // Applying full Symmetry causes Jacobian rank deficiency.
+                // We degrade this safely to a Coincident constraint.
+                int tag = ++ConstraintsCounter;
+                GCSsys.addConstraintP2PCoincident(p1, p2, tag);
+                return ConstraintsCounter;
+            }
+        }
+
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintP2PSymmetric(p1, p2, l, tag);
         return ConstraintsCounter;
