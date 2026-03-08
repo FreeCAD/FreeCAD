@@ -168,8 +168,6 @@ def read(filename):
     if FreeCAD.GuiUp:
         FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
-<<<<<<< HEAD
-=======
 def get_global_placement(obj):
     """
     Compute the global placement of an object by accumulating
@@ -185,7 +183,6 @@ def get_global_placement(obj):
         parent = parent.getParentGeoFeatureGroup()
 
     return pl
->>>>>>> a66371a001 (Arch: fix placement handling for App::Link and primitives in Collada export)
 
 def export(
     exports: list[FreeCAD.DocumentObject],
