@@ -49,7 +49,7 @@ class MeasureExport MeasureAngle: public Measure::MeasureBaseExtendable<Part::Me
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureAngle);
 
 public:
-    enum MeasurementCase
+    enum class MeasurementCase
     {
         FaceFace,
         EdgeEdge,
@@ -112,9 +112,9 @@ private:
     gp_Vec direction1;
     gp_Vec direction2;
     gp_Pnt outOrigin;
-    MeasurementCase mCase;
+    MeasurementCase mCase {MeasurementCase::EdgeEdge};
     // if no common vertex/edge found, use imaginary origin by extending
-    bool _isImgOrigin;
+    bool _isImgOrigin {false};
 
     bool setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2);
     bool computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2);

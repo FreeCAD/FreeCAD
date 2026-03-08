@@ -25,17 +25,26 @@
 #ifndef MEASUREGUI_SOSCREENSPACESCALE_H
 #define MEASUREGUI_SOSCREENSPACESCALE_H
 
+#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoTransformation.h>
 
-#include <Inventor/actions/SoGLRenderAction.h>
-
-#include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/actions/SoPickAction.h>
-#include <Inventor/actions/SoGetPrimitiveCountAction.h>
+class SoAction;
+class SoGLRenderAction;
+class SoCallbackAction;
+class SoGetBoundingBoxAction;
+class SoPickAction;
+class SoGetPrimitiveCountAction;
 
 namespace MeasureGui
 {
+
+// NOTE: Gui::SoAutoZoomTranslation provides similar functionality uses diff
+// scale (divided by 5*aspectRatio, anchored to origin and not pixel perfect).
+// This node is separate because it computes a pixel perfect
+// screen space scale anchored to the focal distance point.
+// which is required for measurement annotations to render at a stable,
+// predictable size. It also exposes finalScale as a connectable field for
+// use with SoCalculator.
 
 class SoScreenSpaceScale: public SoTransformation
 {

@@ -22,7 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/actions/SoCallbackAction.h>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoPickAction.h>
+#include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>

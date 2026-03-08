@@ -587,6 +587,8 @@ bool TaskMeasure::reject()
     closeDialog();
 
     // Commit transaction
+    // this will apply the label drag and sector change logic only
+    // so no need to abort
     App::GetApplication().closeActiveTransaction();
     return false;
 }
