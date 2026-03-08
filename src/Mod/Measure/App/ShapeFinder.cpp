@@ -107,11 +107,10 @@ ResolveResult ShapeFinder::resolveSelection(
 TopoDS_Shape ShapeFinder::getLocatedShape(const App::DocumentObject& rootObject, const std::string& leafSub)
 {
     // point objects are weird.
-    const std::string VertexTag{"Vertex"};
-    const std::string PointTag{"Point"};
-    std::string objName{rootObject.getNameInDocument()};
-    if (objName.find(VertexTag) != std::string::npos ||
-        objName.find(PointTag) != std::string::npos) {
+    const std::string VertexTag {"Vertex"};
+    const std::string PointTag {"Point"};
+    std::string objName {rootObject.getNameInDocument()};
+    if (objName.find(VertexTag) != std::string::npos || objName.find(PointTag) != std::string::npos) {
         return Part::Feature::getShape(&rootObject, Part::ShapeOption::Transform);
     }
 
