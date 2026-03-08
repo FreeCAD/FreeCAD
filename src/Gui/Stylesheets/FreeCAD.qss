@@ -72,21 +72,6 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
   /* border-radius: @InputFieldBorderRadius; */
 }
 
-/* Pushbutton style for "..." inside Placement cell which launches Placement tool */
-Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QPushButton,
-Gui--PropertyEditor--PropertyEditor > QWidget > PushButton {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
-  border: 1px solid @GeneralBorderColor;
-  min-width: 16px; /* reset it due to larger value on regular QPushButton, same or bigger value as regular QPushButton min-height */
-  border-radius: @InputFieldBorderRadius;
-  margin: 0px; /* reset */
-  padding: 0px; /* reset */
-}
-
-Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {
-    text-align:left;
-    padding-left: 2px;
-}
 /*==================================================================================================
 Main window
 ==================================================================================================*/
@@ -103,26 +88,6 @@ QTreeView::item {
 Gui--NavigationIndicatorGui--BlenderNavigationStyle {
   qproperty-icon: url(:/icons/icons/NavigationBlender_light.svg);
 }
-
-/* QToolTip ---------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtooltip
-
---------------------------------------------------------------------------- */
-QToolTip {
-  background-color: @PrimaryColor;
-  /* If you remove the border property, background stops working on Windows */
-  border: 1.5px solid @GeneralBorderColor;
-  font-weight:bolder;
-  padding: 0 2px 0 2px;
-  border-radius: 5px;
-}
-
-/* QStatusBar -------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qstatusbar
-
---------------------------------------------------------------------------- */
 
 /* QCheckBox --------------------------------------------------------------
 
@@ -731,13 +696,6 @@ QSint--ActionGroup QFrame[class="content"] {
 
 /* Fixs for tabs inside Task Panel */
 
-/* Fix for buttons with icons that showed cropped (still not happy with result) */
-QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
-  padding: 2px;/* bigger padding crops text and icons... */
-
-  border-radius: @InputFieldBorderRadius;
-}
-
 /* Fix for lists inside task panels */ /* sketcher constraints list */
 QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
@@ -817,9 +775,6 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
   background-color: @GeneralBackgroundHoverColor;
 }
 
-QFrame[class="panel"] QPushButton {
-  padding: 3px;
-}
 
 /* QSlider ----------------------------------------------------------------
 

@@ -95,6 +95,8 @@ FormControlSmallHeight: 24px
 FormControlHeight: 28px
 FormControlBigHeight: 32px
 
+FormControlIconSpacing: "@Spacing.150"
+
 FormControlPadding: "padding(horizontal: @Spacing.150, vertical: @Spacing.100)"
 FormControlBorderThickness: 1px
 FormControlBorderRadius: 3px
@@ -105,7 +107,7 @@ ButtonBackground: "linear_gradient(x1: 0, y1: 0, x2: 0, y2: 1, @Background.100, 
 ButtonMinWidth: 100px
 ButtonHeight: "@FormControlHeight"
 ButtonPadding: "padding(horizontal: @Spacing.300, vertical: @Spacing.100)"
-ButtonIconSpacing: "@Spacing.150"
+ButtonIconSpacing: "@FormControlIconSpacing"
 ButtonIconSize: 16px
 ButtonFontSize: 12px
 ButtonFontWeight: 500
