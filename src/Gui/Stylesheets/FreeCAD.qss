@@ -80,7 +80,7 @@ Gui--Dialog--DlgPreferencesImp #sidebar {
   background-color: @{@Background.200};
 }
 
-QTreeView::item {
+QAbstractItemView::item {
   padding: @{padding(horizontal: @Spacing.150, vertical: @Spacing.100)};
 }
 
@@ -569,24 +569,6 @@ QToolButton#qt_toolbar_ext_button:on {
   border-color: @GeneralBackgroundHoverColor;
 }
 
-/* undo button */
-
-QToolBar[objectName="Edit"] > QToolButton {
-  padding-right:14px;
-}
-
-QToolBar[objectName="Edit"] > QToolButton::menu-arrow {
-  image: url(qss:@IconsLocationFolderName/arrow-down-lightgray.svg);
-  height: 13px;
-}
-
-QToolBar[objectName="Edit"] > QToolButton::menu-arrow:hover {
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-}
-
-QToolBar[objectName="Edit"] > QToolButton::menu-arrow:open {
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-}
 
 /* QToolButton ------------------------------------------------------------
 
@@ -695,86 +677,6 @@ QSint--ActionGroup QFrame[class="content"] {
 }
 
 /* Fixs for tabs inside Task Panel */
-
-/* Fix for lists inside task panels */ /* sketcher constraints list */
-QSint--ActionGroup QFrame[class="content"] QTreeView,
-QSint--ActionGroup QFrame[class="content"] QListView,
-QSint--ActionGroup QFrame[class="content"] QTableView {
-  background-color: @PrimaryColor;
-}
-
-/* Fix for tables inside task panels, see https://github.com/FreeCAD/FreeCAD/issues/22957
-Reverted due to regression https://github.com/FreeCAD/FreeCAD/issues/24604
-QSint--ActionGroup QFrame[class="content"] QTableView {
-  min-height: 300px;
-} */
-
-/* found inside Part Design Workbench and "make a draft on a face" Task panel options */
-QSint--ActionGroup QFrame[class="content"] QToolButton {
-  text-align: center;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
-  border: 1px solid @GeneralBorderColor;
-  padding: 1px 1px;/* different than regular QPushButton */
-/* different than regular QPushButton */
-  min-height: 16px;/* same as QTabBar QPushButton min-width */
-  border-radius: @InputFieldBorderRadius;
-}
-
-QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
-  background-color: qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 @CheckedButtonTopBackgroundColor, stop:1 @CheckedButtonBottomBackgroundColor);
-}
-
-/* hide the empty line between header and content */
-QSint--ActionGroup QFrame[class="separator"] {
-  min-height: 0;
-  max-height: 0;
-}
-
-/* QToolButtons with a menu found in Sketcher task panel*/
-QSint--ActionGroup QToolButton::menu-button {
-  border-left: 1px solid @GeneralBorderColor;
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-
-  width: 19px;/* 16px width + 4px for border = 20px allocated above */
-  outline: none;
-  background-color: transparent;
-}
-
-QSint--ActionGroup QToolButton#settingsButton,
-QSint--ActionGroup QToolButton#filterButton,
-QSint--ActionGroup QToolButton#manualUpdate {
-  padding-right: 20px;/* make way for the popup button */}
-/* to give widget inside the menu same look as regular menu */
-QSint--ActionGroup QToolButton#filterButton QListWidget {
-  background-color: @PrimaryColor;
-  border: 1px solid @GeneralBorderColor;
-}
-
-QSint--ActionGroup QFrame[class="content"] QToolButton:hover{
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QSint--ActionGroup QFrame[class="content"] QToolButton:focus {
-  border: 1px solid  @AccentColor;
-}
-
-QSint--ActionGroup QFrame[class="content"] QToolButton:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
-  color: @TextDisabledColor;
-  border: 1px solid @GeneralBorderColor;
-}
-
-QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
-  border: 1px solid @GeneralBorderColor;
-  color: @TextDisabledColor;
-  outline: none;
-}
-
-QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
 
 /* QSlider ----------------------------------------------------------------
 
@@ -1306,44 +1208,6 @@ QColumnView::indicator:indeterminate:pressed {
   image: url(qss:@IconsLocationFolderName/indeterminate-mark-@StylesheetIconsColor.svg);
   background-color: @GeneralBackgroundHoverColor;
   border: 1px solid @GeneralBorderColor;
-  }
-
-
-QTableView,
-QColumnView {
-  background-color: @PrimaryColor;/* background of a lot of stuff including spreadsheets.*/
-  /* gridline-color: @GeneralBorderColor; */
-  show-decoration-selected: 1;
-  alternate-background-color: @GeneralAlternateBackgroundColor;
-  selection-background-color: @AccentBackgroundColor;
-}
-
-QListView {
-  background-color:   @PrimaryColor;
-  border: 1px solid @GeneralBorderColor;
-  show-decoration-selected: 1;
-  alternate-background-color: @GeneralAlternateBackgroundColor;
-  selection-background-color: @AccentBackgroundColor;
-}
-
-QTreeView {
-  show-decoration-selected: 1;
-  selection-background-color: @AccentBackgroundColor;
-  qproperty-indentation: 12;
-}
-
-QTreeView:disabled,
-QListView:disabled,
-QTableView:disabled,
-QColumnView:disabled {
-  color: @TextDisabledColor;
-}
-
-QTreeView:disabled,
-QListView:disabled,
-QTableView:disabled,
-QColumnView:disabled {
-  color: @TextDisabledColor;
 }
 
 QListView:selected,
@@ -1383,20 +1247,6 @@ QTreeView::item:!selected:hover{
   color:@TextForegroundColor;
   background-color: @AccentHoverColor;
 }
-
-/* QTreeView::item,
-QTableView::item, removed to fix Issue 24246 */
-QListView::item,
-QColumnView::item {
-  /* border: 1px solid @GeneralBorderColor;  we got gridlines so we do not need this*/
-  background-color: transparent;
-}
-
-/* QHeaderView ------------------------------------------------------------
-
-https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
-
---------------------------------------------------------------------------- */
 
 QTableCornerButton::section {
   background-color: @PrimaryColor;
@@ -1575,7 +1425,7 @@ QDateEdit QAbstractItemView, QDateTimeEdit QAbstractItemView {
 /* QAbstractView ----------------------------------------------------------
 
 --------------------------------------------------------------------------- */
-QTreeView, QListView, QTableView {
+QTreeView, QListView, QTableView, QAbstractItemView {
   background-color: @{@Background.000};
   border: 1px solid @GeneralBorderColor;
   border-radius: @FormControlBorderRadius;
@@ -1593,7 +1443,6 @@ QAbstractView:selected {
 
 --------------------------------------------------------------------------- */
 PlotWidget {
-
   color: @TextDisabledColor;
 }
 
@@ -1682,7 +1531,6 @@ QGroupBox[objectName="matOpsGrpBox"] QPushButton {
   min-width: 235px;
 }
 
-
 Gui--WorkbenchComboBox {
 padding-right: -10px;
 }
@@ -1696,18 +1544,15 @@ QTreeView::item#groupsTreeView {
   /* background-color: @AccentColor; */
 }
 
-QMainWindow QTableView {
-  background-color: @PrimaryColor;/* background of the tables used in the settings*/
-  border: 1px solid @GeneralBorderColor;
+QHeaderView {
+    border: none;
+    border-bottom: 1px @BaseBorderColor solid;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
 
-  /* gridline-color: rgb(255, 255, 255); */}
-QMainWindow QListView {
-  background-color: @PrimaryColor;/* background of the workbenches listview used in the settings*/
-  /* border: 1px solid @GeneralBorderColor; */
-  /* border-radius: 3px; */}
-
-Gui--Dialog--DocumentRecovery QTreeView {
-  border: 1px solid @GeneralBorderColor;
+QHeaderView::section {
+    padding: @{padding(horizontal: @Spacing.200, vertical: @Spacing.100)};
 }
 
 /*==================================================================================================
