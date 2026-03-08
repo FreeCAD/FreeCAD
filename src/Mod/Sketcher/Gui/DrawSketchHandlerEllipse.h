@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerEllipse_H
-#define SKETCHERGUI_DrawSketchHandlerEllipse_H
+#pragma once
 
 #include <cmath>
 
@@ -395,7 +394,7 @@ private:
         auto lprojy = projy.Length();  // Py = b sin t
 
         if (lprojx > firstRadius) {
-            secondRadius = 0.0;
+            secondRadius = lprojy;
         }
         else {
             double t = std::acos(lprojx / firstRadius);
@@ -1047,6 +1046,3 @@ void DSHEllipseController::addConstraints()
     // No constraint possible for 3 rim ellipse.
 }
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerEllipse_H

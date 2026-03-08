@@ -47,7 +47,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>切換可見性</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
@@ -1726,7 +1726,7 @@ pattern definitions to be added to the standard patterns</source>
       <location filename="../ui/preferences-drafttexts.ui" line="653"/>
       <location filename="../ui/preferences-drafttexts.ui" line="682"/>
       <location filename="../ui/preferences-drafttexts.ui" line="711"/>
-      <location filename="../ui/preferences-dxf.ui" line="560"/>
+      <location filename="../ui/preferences-dxf.ui" line="557"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -2159,12 +2159,12 @@ This value is the maximum segment length.</source>
       <translation>匯入</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="586"/>
+      <location filename="../ui/preferences-dxf.ui" line="583"/>
       <source>All objects containing faces will be exported as 3D polyface meshes</source>
       <translation type="unfinished">All objects containing faces will be exported as 3D polyface meshes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="636"/>
+      <location filename="../ui/preferences-dxf.ui" line="633"/>
       <source>Project exported objects along current view direction</source>
       <translation>沿著目前視圖方向投影匯出的物件</translation>
     </message>
@@ -2446,33 +2446,33 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
       <translation type="unfinished">Export Options</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="544"/>
+      <location filename="../ui/preferences-dxf.ui" line="541"/>
       <source>Maximum spline segment</source>
       <translation type="unfinished">Maximum spline segment</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="554"/>
+      <location filename="../ui/preferences-dxf.ui" line="551"/>
       <source>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</source>
       <translation type="unfinished">Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="589"/>
+      <location filename="../ui/preferences-dxf.ui" line="586"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>以聚合面網格匯出3D物件</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="606"/>
+      <location filename="../ui/preferences-dxf.ui" line="603"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>工程製圖視圖將以區塊匯出。這可能在 DXF R12 之後的模板中失敗。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="610"/>
+      <location filename="../ui/preferences-dxf.ui" line="607"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>將工程製圖檢視以區塊匯出</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="633"/>
+      <location filename="../ui/preferences-dxf.ui" line="630"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>匯出的物件將被投影以反映當前的視圖方向</translation>
     </message>
@@ -3069,86 +3069,86 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="891"/>
+      <location filename="../../WorkingPlane.py" line="906"/>
       <location filename="../../draftmake/make_sketch.py" line="121"/>
       <location filename="../../draftmake/make_sketch.py" line="137"/>
       <source>All shapes must be coplanar</source>
       <translation type="unfinished">All shapes must be coplanar</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="898"/>
+      <location filename="../../WorkingPlane.py" line="913"/>
       <source>Selected shapes must define a plane</source>
       <translation type="unfinished">Selected shapes must define a plane</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="984"/>
-      <location filename="../../WorkingPlane.py" line="1560"/>
-      <location filename="../../WorkingPlane.py" line="1561"/>
+      <location filename="../../WorkingPlane.py" line="999"/>
+      <location filename="../../WorkingPlane.py" line="1575"/>
+      <location filename="../../WorkingPlane.py" line="1576"/>
       <source>Top</source>
       <translation>上視圖</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="996"/>
-      <location filename="../../WorkingPlane.py" line="1582"/>
-      <location filename="../../WorkingPlane.py" line="1583"/>
+      <location filename="../../WorkingPlane.py" line="1011"/>
+      <location filename="../../WorkingPlane.py" line="1597"/>
+      <location filename="../../WorkingPlane.py" line="1598"/>
       <source>Front</source>
       <translation>前視圖</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1015"/>
-      <location filename="../../WorkingPlane.py" line="1604"/>
-      <location filename="../../WorkingPlane.py" line="1605"/>
+      <location filename="../../WorkingPlane.py" line="1030"/>
+      <location filename="../../WorkingPlane.py" line="1619"/>
+      <location filename="../../WorkingPlane.py" line="1620"/>
       <source>Side</source>
       <translation>側面</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1238"/>
-      <location filename="../../WorkingPlane.py" line="1538"/>
-      <location filename="../../WorkingPlane.py" line="1539"/>
+      <location filename="../../WorkingPlane.py" line="1253"/>
+      <location filename="../../WorkingPlane.py" line="1553"/>
+      <location filename="../../WorkingPlane.py" line="1554"/>
       <source>Auto</source>
       <translation>自動</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1239"/>
+      <location filename="../../WorkingPlane.py" line="1254"/>
       <source>Current working plane: Auto</source>
       <translation type="unfinished">Current working plane: Auto</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1721"/>
+      <location filename="../../WorkingPlane.py" line="1736"/>
       <source>Current working plane:</source>
       <translation>目前工作平面：</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1316"/>
-      <location filename="../../WorkingPlane.py" line="1345"/>
+      <location filename="../../WorkingPlane.py" line="1331"/>
+      <location filename="../../WorkingPlane.py" line="1360"/>
       <source>Selected shapes do not define a plane</source>
       <translation>選取的形狀沒有定義出一個平面</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1685"/>
+      <location filename="../../WorkingPlane.py" line="1700"/>
       <source>No previous working plane</source>
       <translation>沒有前一個工作平面</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1696"/>
+      <location filename="../../WorkingPlane.py" line="1711"/>
       <source>No next working plane</source>
       <translation>沒有下一個工作平面</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1725"/>
+      <location filename="../../WorkingPlane.py" line="1740"/>
       <source>Axes:</source>
       <translation>軸:</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1732"/>
+      <location filename="../../WorkingPlane.py" line="1747"/>
       <source>Position:</source>
       <translation>位置：</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1664"/>
-      <location filename="../../DraftGui.py" line="1682"/>
+      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1706"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>無</translation>
@@ -3284,12 +3284,12 @@ Uncheck to use working plane coordinate system</source>
       <translation>完成目前繪圖或編輯操作</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1913"/>
       <source>Modify Objects</source>
       <translation type="unfinished">Modify Objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2070"/>
       <source>Facebinder Elements</source>
       <translation type="unfinished">Facebinder Elements</translation>
     </message>
@@ -3382,8 +3382,8 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1670"/>
-      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1694"/>
+      <location filename="../../DraftGui.py" line="1712"/>
       <source>Autogroup off</source>
       <translation>關閉自動群組</translation>
     </message>
@@ -3452,12 +3452,12 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>修剪及延伸</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1054"/>
-      <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1057"/>
-      <location filename="../../DraftGui.py" line="1059"/>
-      <location filename="../../DraftGui.py" line="1060"/>
-      <location filename="../../DraftGui.py" line="1061"/>
+      <location filename="../../DraftGui.py" line="1078"/>
+      <location filename="../../DraftGui.py" line="1080"/>
+      <location filename="../../DraftGui.py" line="1081"/>
+      <location filename="../../DraftGui.py" line="1083"/>
+      <location filename="../../DraftGui.py" line="1084"/>
+      <location filename="../../DraftGui.py" line="1085"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3465,12 +3465,12 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>區域 {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1063"/>
-      <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1065"/>
-      <location filename="../../DraftGui.py" line="1067"/>
-      <location filename="../../DraftGui.py" line="1068"/>
-      <location filename="../../DraftGui.py" line="1069"/>
+      <location filename="../../DraftGui.py" line="1087"/>
+      <location filename="../../DraftGui.py" line="1088"/>
+      <location filename="../../DraftGui.py" line="1089"/>
+      <location filename="../../DraftGui.py" line="1091"/>
+      <location filename="../../DraftGui.py" line="1092"/>
+      <location filename="../../DraftGui.py" line="1093"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3478,22 +3478,22 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>全域 {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1678"/>
+      <location filename="../../DraftGui.py" line="1702"/>
       <source>Autogroup:</source>
       <translation>自動群組：</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2067"/>
       <source>Faces</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2068"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2069"/>
       <source>Add</source>
       <translation>新增</translation>
     </message>
@@ -3558,10 +3558,10 @@ or try saving to a lower DWG version.</source>
 請將DWG文件移動到不包含空格和非英語字母的目錄路徑，或者嘗試保存為更低版本的DWG文件。</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1351"/>
-      <location filename="../../WorkingPlane.py" line="1352"/>
-      <location filename="../../WorkingPlane.py" line="1631"/>
-      <location filename="../../WorkingPlane.py" line="1632"/>
+      <location filename="../../WorkingPlane.py" line="1366"/>
+      <location filename="../../WorkingPlane.py" line="1367"/>
+      <location filename="../../WorkingPlane.py" line="1646"/>
+      <location filename="../../WorkingPlane.py" line="1647"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="67"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="82"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="96"/>
@@ -3618,43 +3618,43 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_patharray.py" line="327"/>
       <location filename="../../draftutils/utils.py" line="1073"/>
       <location filename="../../draftutils/groups.py" line="100"/>
-      <location filename="../../draftutils/gui_utils.py" line="906"/>
+      <location filename="../../draftutils/gui_utils.py" line="915"/>
       <source>No active document. Aborting.</source>
       <translation>無活動中文件。中止。</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="136"/>
-      <location filename="../../draftutils/gui_utils.py" line="914"/>
+      <location filename="../../draftutils/gui_utils.py" line="923"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>錯誤輸入：物件 {} 不在文件中。</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="166"/>
+      <location filename="../../draftutils/gui_utils.py" line="175"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>無法將新物件插入到已縮放的零件中</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="274"/>
+      <location filename="../../draftutils/gui_utils.py" line="283"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>符號尚未被實作出來。使用一預設符號。</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="788"/>
+      <location filename="../../draftutils/gui_utils.py" line="797"/>
       <source>image is Null</source>
       <translation>影像為空</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="796"/>
+      <location filename="../../draftutils/gui_utils.py" line="805"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>檔名在系統中或資源檔案中不存在</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="855"/>
+      <location filename="../../draftutils/gui_utils.py" line="864"/>
       <source>unable to load texture</source>
       <translation>無法載入紋理</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="922"/>
+      <location filename="../../draftutils/gui_utils.py" line="931"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>沒有 'ViewObject.RootNode' 屬性。</translation>
     </message>
@@ -6053,12 +6053,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>_BSpline.createGeometry：以第一/最終點來封閉。幾何形狀未更新。</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="104"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="105"/>
       <source>Writing camera position</source>
       <translation>寫下相機位置</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="122"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="123"/>
       <source>Writing objects shown/hidden state</source>
       <translation>寫下物件顯示/隱藏狀態</translation>
     </message>
@@ -7662,34 +7662,34 @@ the 'First Angle' and 'Last Angle' properties.</source>
       <translation>文字顏色</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="76"/>
+      <location filename="../../draftviewproviders/view_label.py" line="77"/>
       <location filename="../../draftviewproviders/view_text.py" line="60"/>
       <source>Line spacing (relative to font size)</source>
       <translation>行距（相對於字體大小）</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="59"/>
+      <location filename="../../draftviewproviders/view_label.py" line="60"/>
       <source>Vertical alignment</source>
       <translation>垂直對齊</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="67"/>
+      <location filename="../../draftviewproviders/view_label.py" line="68"/>
       <source>Maximum number of characters on each line of the text box</source>
       <translation>文字框每行的最大字元數</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="71"/>
+      <location filename="../../draftviewproviders/view_label.py" line="72"/>
       <location filename="../../draftviewproviders/view_text.py" line="55"/>
       <source>Horizontal alignment</source>
       <translation>水平對齊</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="89"/>
+      <location filename="../../draftviewproviders/view_label.py" line="90"/>
       <source>The type of frame around the text of this object</source>
       <translation>此物件文字周圍的框架類型</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="94"/>
+      <location filename="../../draftviewproviders/view_label.py" line="95"/>
       <source>Display a leader line or not</source>
       <translation>顯示或不顯示指線</translation>
     </message>
@@ -7860,12 +7860,12 @@ beyond the dimension line</source>
       <translation>顯示標註線與箭頭</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="50"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="51"/>
       <source>The display length of this section plane</source>
       <translation>此平剖面的顯示長度</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="53"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="54"/>
       <source>The size of the arrows of this section plane</source>
       <translation>此剖面箭頭的大小</translation>
     </message>

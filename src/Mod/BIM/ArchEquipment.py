@@ -54,96 +54,17 @@ else:
     # \endcond
 
 
-def createMeshView(obj, direction=FreeCAD.Vector(0, 0, -1), outeronly=False, largestonly=False):
-    """createMeshView(obj,[direction,outeronly,largestonly]): creates a flat shape that is the
-    projection of the given mesh object in the given direction (default = on the XY plane). If
-    outeronly is True, only the outer contour is taken into consideration, discarding the inner
-    holes. If largestonly is True, only the largest segment of the given mesh will be used."""
+if FreeCAD.GuiUp:
 
-    import math
-    import DraftGeomUtils
-    import Mesh
-    import Part
+    class EquipmentTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
+        """A task panel for Arch Equipment using the generic options box"""
 
-    if not obj.isDerivedFrom("Mesh::Feature"):
-        return
-    mesh = obj.Mesh
-
-    # 1. Flattening the mesh
-    proj = []
-    for f in mesh.Facets:
-        nf = []
-        for v in f.Points:
-            v = FreeCAD.Vector(v)
-            a = v.negative().getAngle(direction)
-            l = math.cos(a) * v.Length
-            p = v.add(FreeCAD.Vector(direction).multiply(l))
-            p = DraftVecUtils.rounded(p)
-            nf.append(p)
-        proj.append(nf)
-    flatmesh = Mesh.Mesh(proj)
-
-    # 2. Removing wrong faces
-    facets = []
-    for f in flatmesh.Facets:
-        if f.Normal.getAngle(direction) < math.pi:
-            facets.append(f)
-    cleanmesh = Mesh.Mesh(facets)
-
-    # Mesh.show(cleanmesh)
-
-    # 3. Getting the bigger mesh from the planar segments
-    if largestonly:
-        c = cleanmesh.getSeparateComponents()
-        # print(c)
-        cleanmesh = c[0]
-        segs = cleanmesh.getPlanarSegments(1)
-        meshes = []
-        for s in segs:
-            f = [cleanmesh.Facets[i] for i in s]
-            meshes.append(Mesh.Mesh(f))
-        a = 0
-        for m in meshes:
-            if m.Area > a:
-                boundarymesh = m
-                a = m.Area
-        # Mesh.show(boundarymesh)
-        cleanmesh = boundarymesh
-
-    # 4. Creating a Part and getting the contour
-
-    shape = None
-    for f in cleanmesh.Facets:
-        p = Part.makePolygon(f.Points + [f.Points[0]])
-        # print(p,len(p.Vertexes),p.isClosed())
-        try:
-            p = Part.Face(p)
-            if shape:
-                shape = shape.fuse(p)
-            else:
-                shape = p
-        except Part.OCCError:
-            pass
-    shape = shape.removeSplitter()
-
-    # 5. Extracting the largest wire
-
-    if outeronly:
-        count = 0
-        largest = None
-        for w in shape.Wires:
-            if len(w.Vertexes) > count:
-                count = len(w.Vertexes)
-                largest = w
-        if largest:
-            try:
-                f = Part.Face(w)
-            except Part.OCCError:
-                print("Unable to produce a face from the outer wire.")
-            else:
-                shape = f
-
-    return shape
+        def __init__(self, obj):
+            property_definitions = [
+                {"prop": "Model", "label": translate("Arch", "Model")},
+                {"prop": "EquipmentPower", "label": translate("Arch", "Equipment Power")},
+            ]
+            super().__init__(obj, property_definitions)
 
 
 class _Equipment(ArchComponent.Component):
@@ -347,3 +268,11 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                 self.coords.point.deleteValues(0)
         else:
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        taskd = EquipmentTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskd)
+        return True

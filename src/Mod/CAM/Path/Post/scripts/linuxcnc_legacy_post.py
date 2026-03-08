@@ -45,6 +45,16 @@ import linuxcnc_legacy_post
 linuxcnc_legacy_post.export(object,"/path/to/file.ncc","")
 """
 
+# Preamble text will appear at the beginning of the GCODE output file.
+PREAMBLE = """G17 G54 G40 G49 G80 G90
+"""
+
+# Postamble text will appear following the last operation.
+POSTAMBLE = """M05
+G17 G54 G90 G80 G40
+M2
+"""
+
 now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(prog="linuxcnc", add_help=False)
@@ -59,11 +69,15 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17 G54 G40 G49 G80 G90\\n"',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM2\\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -106,16 +120,6 @@ PRECISION = 3
 
 RIGID_TAP = False
 
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """G17 G54 G40 G49 G80 G90
-"""
-
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M05
-G17 G54 G90 G80 G40
-M2
-"""
-
 # Pre operation text will be inserted before every operation
 PRE_OPERATION = """"""
 
@@ -152,7 +156,7 @@ def processArguments(argstring):
             OUTPUT_LINE_NUMBERS = True
         if args.no_show_editor:
             SHOW_EDITOR = False
-        print("Show editor = %d" % SHOW_EDITOR)
+        # print("Show editor = %d" % SHOW_EDITOR)  # Commented to reduce test noise
         PRECISION = args.precision
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
@@ -193,7 +197,7 @@ def export(objectslist, filename, argstring):
             )
             return None
 
-    print("postprocessing...")
+    # print("postprocessing...")  # Commented to reduce test noise
     gcode = ""
 
     # write header
@@ -267,7 +271,7 @@ def export(objectslist, filename, argstring):
     else:
         final = gcode
 
-    print("done postprocessing.")
+    # print("done postprocessing.")  # Commented to reduce test noise
 
     if not filename == "-":
         gfile = pyopen(filename, "w")

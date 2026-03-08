@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GUI_PRECOMPILED_H
-#define SKETCHER_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -70,5 +69,3 @@
 
 // all of Inventor
 #include <Gui/InventorAll.h>
-
-#endif  // SKETCHER_GUI_PRECOMPILED_H

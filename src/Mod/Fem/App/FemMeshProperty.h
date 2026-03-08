@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef Fem_PropertyFemMesh_H
-#define Fem_PropertyFemMesh_H
+#pragma once
 
 #include "FemMesh.h"
 #include <App/PropertyGeo.h>
@@ -96,6 +95,3 @@ private:
 
 
 }  // namespace Fem
-
-
-#endif  // PROPERTYTOPOSHAPE_H

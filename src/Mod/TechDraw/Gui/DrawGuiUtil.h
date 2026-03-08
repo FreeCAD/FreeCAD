@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawGuiUtil_h_
-#define DrawGuiUtil_h_
+#pragma once
 
 #include <string>
 #include <QCoreApplication>
@@ -111,4 +110,3 @@ class TechDrawGuiExport DrawGuiUtil {
 };
 
 } //end namespace TechDrawGui
-#endif

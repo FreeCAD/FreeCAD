@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEW3DINVENTORVIEWER_H
-#define GUI_VIEW3DINVENTORVIEWER_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -249,6 +248,7 @@ public:
     ViewProvider* getEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
+    SoNode* getEditingRoot() const;
     void setupEditingRoot(SoNode* node = nullptr, const Base::Matrix4D* mat = nullptr);
     void resetEditingRoot(bool updateLinks = true);
     void setEditingTransform(const Base::Matrix4D& mat);
@@ -633,5 +633,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW3DINVENTORVIEWER_H

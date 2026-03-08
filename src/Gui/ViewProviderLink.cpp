@@ -121,7 +121,7 @@ class Gui::LinkInfo
 public:
     std::atomic<int> ref;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connChangeIcon;
 
     ViewProviderDocumentObject* pcLinked;

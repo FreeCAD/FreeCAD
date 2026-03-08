@@ -21,15 +21,14 @@
  ***************************************************************************/
 
 
-#ifndef GUI_AUTOSAVER_H
-#define GUI_AUTOSAVER_H
+#pragma once
 
 #include <QObject>
 
 #include <map>
 #include <set>
 #include <string>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <Base/Writer.h>
 
 namespace App
@@ -56,7 +55,7 @@ public:
 private:
     void slotNewObject(const App::DocumentObject&);
     void slotChangePropertyData(const App::Property&);
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection documentNew;
     Connection documentMod;
 };
@@ -119,6 +118,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_AUTOSAVER_H

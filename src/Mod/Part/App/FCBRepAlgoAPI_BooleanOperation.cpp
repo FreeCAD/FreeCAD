@@ -35,6 +35,7 @@
 #include <TopoDS_Iterator.hxx>
 #include <Precision.hxx>
 #include <FuzzyHelper.h>
+#include <SignalException.h>
 #include <Base/Console.h>
 
 FCBRepAlgoAPI_BooleanOperation::FCBRepAlgoAPI_BooleanOperation()
@@ -103,6 +104,7 @@ void FCBRepAlgoAPI_BooleanOperation::Build()
 
 void FCBRepAlgoAPI_BooleanOperation::Build(const Message_ProgressRange& progressRange)
 {
+    Part::SignalException sig;
     if (progressRange.UserBreak()) {
         Standard_ConstructionError::Raise("User aborted");
     }

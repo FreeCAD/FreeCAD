@@ -28,10 +28,6 @@ from .base import ToolBitShape
 
 class ToolBitShapeRadius(ToolBitShape):
     name = "Radius"
-    aliases = (
-        "radius",
-        "fillet",
-    )
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

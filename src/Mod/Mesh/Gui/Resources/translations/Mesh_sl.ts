@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="755"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Dodaj trikotnik</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="756"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation type="unfinished">Adds a triangle manually to a mesh</translation>
+      <translation>Ročno dodaj trikotnik na ploskovje</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="1494"/>
       <source>Bounding Box Info</source>
-      <translation type="unfinished">Bounding Box Info</translation>
+      <translation>Očrtni kvader informacij</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
+      <translation>Prikaži očrtni kvader koordinat izbranega ploskovja</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="999"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Prečni prerezi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
       <source>Creates cross-sections of the mesh</source>
-      <translation type="unfinished">Creates cross-sections of the mesh</translation>
+      <translation>Ustvari prečne prereze ploskovja</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="1384"/>
       <source>Decimate</source>
-      <translation type="unfinished">Decimate</translation>
+      <translation>Zdesetkanje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
       <source>Decimates a mesh</source>
-      <translation>Zdesetka ploskovje</translation>
+      <translation>Zdesetkaj ploskovje</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation type="unfinished">Creates a boolean difference of the selected meshes</translation>
+      <translation>Ustvari razliko logične operacije ploskovja</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="1132"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>Ploskev informacij</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1133"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>Prikaži informacije o izbrani ploski</translation>
     </message>
   </context>
   <context>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../Command.cpp" line="1313"/>
       <source>Evaluate Solid</source>
-      <translation type="unfinished">Evaluate Solid</translation>
+      <translation>Oceni telo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1314"/>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="1087"/>
       <source>Evaluate and Repair</source>
-      <translation type="unfinished">Evaluate and Repair</translation>
+      <translation>Oceni in Popravi</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1088"/>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>Export Mesh…</source>
-      <translation type="unfinished">Export Mesh…</translation>
+      <translation>Izvozi ploskovje...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Exports a mesh to a file</source>
-      <translation type="unfinished">Exports a mesh to a file</translation>
+      <translation>Izvozi ploskovje do datoteke</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1636"/>
       <source>Close Hole</source>
-      <translation type="unfinished">Close Hole</translation>
+      <translation>Zapri Luknjo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1637"/>
       <source>Closes a hole interactively in the mesh</source>
-      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
+      <translation>Zapre luknjo interaktivno v ploskovju</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1581"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>Zapolni luknje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1582"/>
       <source>Fills holes in the mesh</source>
-      <translation type="unfinished">Fills holes in the mesh</translation>
+      <translation>Zapolni luknje v ploskovju</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Flip Normals</source>
-      <translation type="unfinished">Flip Normals</translation>
+      <translation>Preobrni normale</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1456"/>
       <source>Flips the normals of the selected mesh</source>
-      <translation type="unfinished">Flips the normals of the selected mesh</translation>
+      <translation>Preobrni normale od izbranih ploskovij</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Mesh From Geometry</source>
-      <translation type="unfinished">Mesh From Geometry</translation>
+      <translation>Ploskovje iz geometrije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Creates a mesh from the selected geometry</source>
-      <translation type="unfinished">Creates a mesh from the selected geometry</translation>
+      <translation>Ustvari ploskovje iz izbrane geometrije</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="560"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Ploskovje iz oblike</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="561"/>
@@ -1597,7 +1597,7 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Dodaj trikotnik</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="394"/>
@@ -2233,7 +2233,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Command.cpp" line="1596"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>Zapolni luknje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1597"/>
@@ -2274,7 +2274,7 @@ Visit https://openscad.org/ to install it.</translation>
       <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Zapustite informacijski način</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1771"/>

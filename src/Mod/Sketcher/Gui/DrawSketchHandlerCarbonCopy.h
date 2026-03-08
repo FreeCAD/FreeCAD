@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerCarbonCopy_H
-#define SKETCHERGUI_DrawSketchHandlerCarbonCopy_H
+#pragma once
 
 #include <QApplication>
 
@@ -249,6 +248,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerCarbonCopy_H

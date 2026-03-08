@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_WORKBENCH_H
-#define SKETCHER_WORKBENCH_H
+#pragma once
 
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
@@ -73,5 +72,3 @@ SketcherGuiExport void addSketcherWorkbenchBSplines(Gui::ToolBarItem& bspline);
 SketcherGuiExport void addSketcherWorkbenchVisual(Gui::ToolBarItem& visual);
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHER_WORKBENCH_H

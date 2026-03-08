@@ -35,7 +35,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <cmath>
 
 
@@ -447,7 +447,9 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
         menu.addAction(m_exportDXFAction);
         menu.addAction(m_exportPDFAction);
         menu.addAction(m_printAllAction);
-        if (PreferencesGui::getViewFrameMode() != ViewFrameMode::Manual) {
+        if (PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
+            m_toggleFrameAction->setEnabled(true);
+        } else {
             m_toggleFrameAction->setEnabled(false);
         }
         menu.exec(event->globalPos());

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMEDGE_H
-#define DRAWINGGUI_QGRAPHICSITEMEDGE_H
+#pragma once
 
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -79,5 +78,3 @@ private:
 };
 
 }
-
-#endif // DRAWINGGUI_QGRAPHICSITEMEDGE_H

@@ -21,8 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_TREE_HPP
-#define KDL_TREE_HPP
+#pragma once
 
 // This file comes along with oce but not with occ.
 //#include "config.h"
@@ -214,9 +213,3 @@ namespace KDL
 
     };
 }
-#endif
-
-
-
-
-

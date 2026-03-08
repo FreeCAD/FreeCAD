@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_DLGSETTINGSMATERIAL_H
-#define MATGUI_DLGSETTINGSMATERIAL_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -50,5 +49,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DLGSETTINGSMATERIAL_H

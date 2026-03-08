@@ -22,7 +22,7 @@ requirements:
     - noqt5
     - python>=3.11,<3.12
     - qt6-main>=6.8,<6.9
-    - swig
+    - swig>=4.3,<4.4
 
     - if: linux and x86_64
       then:
@@ -52,6 +52,7 @@ requirements:
         - pixman-cos7-x86_64
         - sed
         - sysroot_linux-64
+        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
         - xorg-x11-server-common-cos7-x86_64
         - xorg-x11-server-xvfb-cos7-x86_64
         - xorg-xproto
@@ -84,6 +85,7 @@ requirements:
         - pixman-cos7-aarch64
         - sed
         - sysroot_linux-aarch64
+        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
         - xorg-x11-server-common-cos7-aarch64
         - xorg-x11-server-xvfb-cos7-aarch64
         - xorg-xproto
@@ -176,3 +178,5 @@ requirements:
     - if: linux
       then:
         - libspnav
+        - qt6-wayland
+        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726

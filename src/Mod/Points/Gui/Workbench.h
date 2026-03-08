@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef POINTS_WORKBENCH_H
-#define POINTS_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 #include <Mod/Points/PointsGlobal.h>
@@ -50,6 +49,3 @@ protected:
 };
 
 }  // namespace PointsGui
-
-
-#endif  // POINTS_WORKBENCH_H

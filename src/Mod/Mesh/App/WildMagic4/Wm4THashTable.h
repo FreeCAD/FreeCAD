@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4THASHTABLE_H
-#define WM4THASHTABLE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 
@@ -97,5 +96,3 @@ private:
 }
 
 #include "Wm4THashTable.inl"
-
-#endif

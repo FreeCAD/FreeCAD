@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_MEASUREMENTBASE_H
-#define GUI_VIEWPROVIDER_MEASUREMENTBASE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -140,6 +139,7 @@ protected:
     void setLabelValue(const QString& value);
     void setLabelTranslation(const SbVec3f& position);
     void updateIcon();
+    void syncDraggerOrientationToView();
 
     SoPickStyle* getSoPickStyle();
     SoDrawStyle* getSoLineStylePrimary();
@@ -168,7 +168,7 @@ protected:
     SoSeparator* pLineSeparatorSecondary;
 
 private:
-    boost::signals2::connection _mVisibilityChangedConnection;
+    fastsignals::connection _mVisibilityChangedConnection;
 };
 
 
@@ -269,5 +269,3 @@ public:
 
 
 }  // namespace MeasureGui
-
-#endif  // GUI_VIEWPROVIDER_MEASUREMENTBASE_H

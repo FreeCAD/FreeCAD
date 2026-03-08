@@ -31,8 +31,7 @@
  * 3rd party Xerces-C++ XML parser is used to parse and write the XML.
  */
 
-#ifndef BASE_PARAMETER_H
-#define BASE_PARAMETER_H
+#pragma once
 
 // Python stuff
 using PyObject = struct _object;
@@ -51,7 +50,7 @@ using PyObject = struct _object;
 
 #include <map>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <xercesc/util/XercesDefs.hpp>
 
 #include "Handle.h"
@@ -565,7 +564,7 @@ public:
      *  - Group removal: both 'name' and 'value' are empty
      *  - Group rename: 'name' is the new name, and 'value' is the old name
      */
-    boost::signals2::signal<
+    fastsignals::signal<
         void(ParameterGrp* /*param*/, ParamType /*type*/, const char* /*name*/, const char* /*value*/)>
         signalParamChanged;
 
@@ -629,6 +628,3 @@ public:
 /** python wrapper function
  */
 BaseExport PyObject* GetPyObject(const Base::Reference<ParameterGrp>& hcParamGrp);
-
-
-#endif  // BASE_PARAMETER_H

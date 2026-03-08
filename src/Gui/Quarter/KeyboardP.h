@@ -1,5 +1,4 @@
-#ifndef QUARTER_KEYBOARDHANDLERP_H
-#define QUARTER_KEYBOARDHANDLERP_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -62,5 +61,3 @@ public:
 };
 
 }}} // namespace
-
-#endif // QUARTER_KEYBOARDHANDLERP_H

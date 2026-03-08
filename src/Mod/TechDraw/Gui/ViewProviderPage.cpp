@@ -28,8 +28,8 @@
 # include <QPointer>
 # include <QTextStream>
 
-# include <boost/signals2.hpp>
-# include <boost/signals2/connection.hpp>
+#include <fastsignals/signal.h>
+#include <fastsignals/connection.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>

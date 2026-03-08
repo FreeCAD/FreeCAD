@@ -34,6 +34,7 @@
 
 #include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
+#include <vtkCellData.h>
 #include <vtkDataArray.h>
 #include <vtkDataSetReader.h>
 #include <vtkDataSetWriter.h>
@@ -1252,7 +1253,7 @@ void valueFromLine<double>(const std::string_view::iterator& it, int digits, dou
 
 // add cell from sorted nodes
 template<typename T>
-void addCell(vtkSmartPointer<vtkCellArray>& cellArray, const std::vector<int>& topoElem)
+void addCell(vtkCellArray* cellArray, const std::vector<int>& topoElem)
 {
     vtkSmartPointer<T> cell = vtkSmartPointer<T>::New();
     cell->GetPointIds()->SetNumberOfIds(topoElem.size());
@@ -1265,7 +1266,7 @@ void addCell(vtkSmartPointer<vtkCellArray>& cellArray, const std::vector<int>& t
 
 // fill cell array
 void fillCell(
-    vtkSmartPointer<vtkCellArray>& cellArray,
+    vtkCellArray* cellArray,
     std::vector<int>& topoElem,
     std::vector<int>& vtkType,
     ElementType elemType
@@ -1438,7 +1439,9 @@ std::vector<int> readElements(
     std::ifstream& ifstr,
     const std::string& lines,
     const std::map<int, int>& mapNodes,
-    vtkSmartPointer<vtkCellArray>& cellArray
+    vtkCellArray* cellArray,
+    vtkIntArray* material,
+    vtkIntArray* group
 )
 {
     std::string line;
@@ -1454,6 +1457,12 @@ std::vector<int> readElements(
     std::map<int, int> mapElem;
     std::vector<int> topoElem;
     std::vector<int> vtkType;
+
+    material->SetNumberOfComponents(1);
+    material->SetName("Material");
+
+    group->SetNumberOfComponents(1);
+    group->SetName("Group");
 
     std::string_view view {lines};
 
@@ -1487,6 +1496,8 @@ std::vector<int> readElements(
             // add cell to cellArray
             if (topoElem.size() == mapCcxTypeNodes[static_cast<ElementType>(info[0])]) {
                 fillCell(cellArray, topoElem, vtkType, static_cast<ElementType>(info[0]));
+                group->InsertNextValue(info[1]);
+                material->InsertNextValue(info[2]);
                 topoElem.clear();
                 mapElem[elem] = elemID++;
             }
@@ -1496,18 +1507,12 @@ std::vector<int> readElements(
 }
 
 // read parameter header (not used)
-void readParameter(std::ifstream& ifstr, const std::string& line)
-{
-    // do nothing
-    (void)ifstr;
-    (void)line;
-}
+void readParameter([[maybe_unused]] std::ifstream& ifstr, [[maybe_unused]] const std::string& line)
+{}
 
 // read first header from nodal result block
-void readResultInfo(std::ifstream& ifstr, const std::string& lines, FRDResultInfo& info)
+void readResultInfo([[maybe_unused]] std::ifstream& ifstr, const std::string& lines, FRDResultInfo& info)
 {
-    (void)ifstr;
-
     std::string keyCode = "  100C";
 
     std::string_view view {lines};
@@ -1534,14 +1539,13 @@ void readResultInfo(std::ifstream& ifstr, const std::string& lines, FRDResultInf
 // read result from nodal result block and add result array to grid
 void readResults(
     std::ifstream& ifstr,
-    const std::string& lines,
+    [[maybe_unused]] const std::string& lines,
     const std::map<int, int>& mapNodes,
     const FRDResultInfo& info,
     vtkSmartPointer<vtkUnstructuredGrid>& grid
 )
 {
     int digits = getDigits(info.indicator);
-    (void)lines;
 
     // get dataset info, start with " -4"
     std::string line;
@@ -1739,6 +1743,8 @@ vtkSmartPointer<vtkMultiBlockDataSet> readFRD(std::ifstream& ifstr)
     std::string line;
     std::map<int, int> mapNodes;
     std::vector<int> cellTypes;
+    auto materialArray = vtkSmartPointer<vtkIntArray>::New();
+    auto groupArray = vtkSmartPointer<vtkIntArray>::New();
 
     while (std::getline(ifstr, line)) {
         std::string keyCode = "    2C";
@@ -1751,7 +1757,7 @@ vtkSmartPointer<vtkMultiBlockDataSet> readFRD(std::ifstream& ifstr)
         keyCode = "    3C";
         if (view.rfind(keyCode, 0) == 0) {
             // read elements block
-            cellTypes = readElements(ifstr, line, mapNodes, cells);
+            cellTypes = readElements(ifstr, line, mapNodes, cells, materialArray, groupArray);
         }
         keyCode = "    1P";
         if (view.rfind(keyCode, 0) == 0) {
@@ -1781,6 +1787,8 @@ vtkSmartPointer<vtkMultiBlockDataSet> readFRD(std::ifstream& ifstr)
                 grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
                 grid->SetPoints(points);
                 grid->SetCells(cellTypes.data(), cells);
+                grid->GetCellData()->AddArray(materialArray);
+                grid->GetCellData()->AddArray(groupArray);
 
                 // create TimeValue metadata
                 auto stepValue = createTimeValue(info.value);

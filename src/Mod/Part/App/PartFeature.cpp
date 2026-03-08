@@ -1987,9 +1987,8 @@ void FilletBase::onUpdateElementReference(const App::Property* prop)
             FC_WARN("fillet edge count mismatch in object " << getFullName());
             break;
         }
-        int idx = 0;
-        sscanf(subs[i].c_str(), "Edge%d", &idx);
-        if (idx) {
+        int idx = Data::indexOfElement(subs[i], "Edge");
+        if (idx != 0) {
             values[i].edgeid = idx;
         }
         else {
@@ -2029,53 +2028,6 @@ PyObject* Part::FeaturePython::getPyObject()
 // explicit template instantiation
 template class PartExport FeaturePythonT<Part::Feature>;
 }  // namespace App
-
-// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-std::vector<Part::cutFaces> Part::findAllFacesCutBy(
-    const TopoDS_Shape& shape,
-    const TopoDS_Shape& face,
-    const gp_Dir& dir
-)
-{
-    // Find the centre of gravity of the face
-    GProp_GProps props;
-    BRepGProp::SurfaceProperties(face, props);
-    gp_Pnt cog = props.CentreOfMass();
-
-    // create a line through the centre of gravity
-    gp_Lin line = gce_MakeLin(cog, dir);
-
-    // Find intersection of line with all faces of the shape
-    std::vector<cutFaces> result;
-    BRepIntCurveSurface_Inter mkSection;
-    // TODO: Less precision than Confusion() should be OK?
-
-    for (mkSection.Init(shape, line, Precision::Confusion()); mkSection.More(); mkSection.Next()) {
-        gp_Pnt iPnt = mkSection.Pnt();
-        double dsq = cog.SquareDistance(iPnt);
-
-        if (dsq < Precision::Confusion()) {
-            continue;  // intersection with original face
-        }
-
-        // Find out which side of the original face the intersection is on
-        gce_MakeDir mkDir(cog, iPnt);
-        if (!mkDir.IsDone()) {
-            continue;  // some error (appears highly unlikely to happen, though...)
-        }
-
-        if (mkDir.Value().IsOpposite(dir, Precision::Confusion())) {
-            continue;  // wrong side of face (opposite to extrusion direction)
-        }
-
-        cutFaces newF;
-        newF.face = mkSection.Face();
-        newF.distsq = dsq;
-        result.push_back(newF);
-    }
-
-    return result;
-}
 
 std::vector<Part::cutTopoShapeFaces> Part::findAllFacesCutBy(
     const TopoShape& shape,

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_PRECOMPILED_H
-#define MESHGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -49,5 +48,3 @@
 #if defined(FC_OS_WIN32)
 # include <Windows.h>
 #endif
-
-#endif  // MESHGUI_PRECOMPILED_H

@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H
+#pragma once
 
 #include <memory>
 
@@ -59,5 +58,3 @@ private:
 };
 
 } // namespace TechDrawGui
-
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPDIMENSIONS_H

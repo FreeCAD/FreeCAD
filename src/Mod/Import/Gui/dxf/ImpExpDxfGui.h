@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMPEXPDXFGUI_H
-#define IMPEXPDXFGUI_H
+#pragma once
 
 #include <gp_Pnt.hxx>
 
@@ -51,5 +50,3 @@ private:
     int GetDrawStyle() const;
 };
 }  // namespace ImportGui
-
-#endif  // IMPEXPDXFGUI_H

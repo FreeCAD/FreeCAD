@@ -406,6 +406,9 @@ class CommandManager:
         FreeCADGui.doCommand(
             'FreeCAD.ActiveDocument.ActiveObject.ViewObject.SelectionStyle = "BoundBox"'
         )
+        FreeCADGui.doCommand(
+            f"FreeCAD.ActiveDocument.ActiveObject.ViewObject.NoneFieldColor = {self.selobj.ViewObject.NoneFieldColor}"
+        )
 
         # hide selected filter
         FreeCADGui.doCommand(

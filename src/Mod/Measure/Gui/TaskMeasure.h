@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MEASURE_TASKMEASURE_H
-#define MEASURE_TASKMEASURE_H
+#pragma once
 
 #include <qcolumnview.h>
 #include <QString>
@@ -43,7 +42,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection/Selection.h>
 
-#include <boost/signals2/connection.hpp>
+#include <fastsignals/connection.h>
 
 namespace MeasureGui
 {
@@ -68,6 +67,7 @@ public:
     bool apply(bool reset);
     bool reject() override;
     void reset();
+    void closed() override;
 
     bool hasSelection();
     void clearSelection();
@@ -75,6 +75,8 @@ public:
 private:
     void setupShortcuts(QWidget* parent);
     void tryUpdate();
+    void updateUnitDropdown(const App::MeasureType* measureType);
+    void setUnitFromResultString();
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void onObjectDeleted(const App::DocumentObject& obj);
     void saveMeasurement();
@@ -84,16 +86,18 @@ private:
 
     QLineEdit* valueResult {nullptr};
     QComboBox* modeSwitch {nullptr};
+    QComboBox* unitSwitch {nullptr};
     QCheckBox* showDelta {nullptr};
     QLabel* showDeltaLabel {nullptr};
     QAction* autoSaveAction {nullptr};
     QAction* newMeasurementBehaviourAction {nullptr};
     QToolButton* mSettings {nullptr};
 
-    boost::signals2::connection m_deletedConnection;
+    fastsignals::connection m_deletedConnection;
 
     void removeObject();
     void onModeChanged(int index);
+    void onUnitChanged(int index);
     void showDeltaChanged(int checkState);
     void autoSaveChanged(bool checked);
     void newMeasurementBehaviourChanged(bool checked);
@@ -104,6 +108,7 @@ private:
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
     void initViewObject(Measure::MeasureBase* measure);
+    void updateResultWithUnit();
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
@@ -111,8 +116,7 @@ private:
     // Stores if delta measures shall be shown
     bool delta = true;
     bool mAutoSave = false;
+    QString mLastUnitSelection = QLatin1String("-");
 };
 
 }  // namespace MeasureGui
-
-#endif  // MEASURE_TASKMEASURE_H

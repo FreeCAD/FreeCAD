@@ -50,13 +50,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def initPage(self, obj):
         self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(self.form.peckDepth, obj, "PeckDepth")
-        self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
-            self.form.peckRetractHeight, obj, "RetractHeight"
-        )
         self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(self.form.dwellTime, obj, "DwellTime")
         self.form.chipBreakEnabled.setEnabled(False)
 
     def registerSignalHandlers(self, obj):
+        # Strategy selector handler
+        if hasattr(self.form, "Strategy"):
+            self.form.Strategy.currentIndexChanged.connect(self.onStrategyChanged)
+
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
         self.form.peckEnabled.toggled.connect(self.form.feedRetractEnabled.setDisabled)
@@ -74,9 +75,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.dwellEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
         self.form.dwellEnabled.toggled.connect(self.form.feedRetractEnabled.setDisabled)
         self.form.dwellEnabled.toggled.connect(self.setChipBreakControl)
-
-        self.form.peckRetractHeight.setEnabled(True)
-        self.form.retractLabel.setEnabled(True)
 
         if self.form.peckEnabled.isChecked():
             self.form.dwellEnabled.setEnabled(False)
@@ -97,11 +95,59 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def setChipBreakControl(self):
         self.form.chipBreakEnabled.setEnabled(self.form.peckEnabled.isChecked())
 
+    def onStrategyChanged(self):
+        """Handle strategy selector changes - update property visibility"""
+        if not hasattr(self.form, "Strategy"):
+            return
+
+        strategy = str(self.form.Strategy.currentData())
+        self.updateStrategyVisibility(None, strategy)
+
+        # Validate tool for tapping strategy
+        if strategy == "Tapping":
+            self.validateTappingTool()
+
+    def updateStrategyVisibility(self, obj, strategy=None):
+        """Show/hide properties based on selected strategy"""
+        if not hasattr(self.form, "Strategy"):
+            return
+
+        if strategy is None:
+            if obj and hasattr(obj, "Strategy"):
+                strategy = obj.Strategy
+            else:
+                strategy = str(self.form.Strategy.currentData())
+
+        # Drilling-specific controls
+        drilling_controls = [
+            self.form.peckEnabled,
+            self.form.peckDepth,
+            self.form.peckDepthLabel,
+            self.form.chipBreakEnabled,
+            self.form.feedRetractEnabled,
+        ]
+
+        # Show/hide based on strategy
+        is_drilling = strategy == "Drilling"
+        for control in drilling_controls:
+            if hasattr(self.form, control.objectName()):
+                control.setVisible(is_drilling)
+
+        # Tapping note/info (if we add UI elements for it in future)
+        # For now, both strategies share: DwellEnabled, DwellTime, KeepToolDown, ExtraOffset
+
+    def validateTappingTool(self):
+        """Validate that selected tool is appropriate for tapping"""
+        # This will be called when strategy changes to Tapping
+        # Could show warning if tool doesn't have Pitch property
+        # For now, just log - actual validation happens at execution time
+        Path.Log.debug("Tapping strategy selected - tool will be validated at execution")
+
     def getForm(self):
         """getForm() ... return UI"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
 
-        comboToPropertyMap = [("ExtraOffset", "ExtraOffset")]
+        comboToPropertyMap = [("Strategy", "Strategy"), ("ExtraOffset", "ExtraOffset")]
         enumTups = PathDrilling.ObjectDrilling.propertyEnumerations(dataType="raw")
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
@@ -109,15 +155,17 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def updateQuantitySpinBoxes(self, index=None):
         self.peckDepthSpinBox.updateWidget()
-        self.peckRetractSpinBox.updateWidget()
         self.dwellTimeSpinBox.updateWidget()
 
     def getFields(self, obj):
         """setFields(obj) ... update obj's properties with values from the UI"""
         Path.Log.track()
         self.peckDepthSpinBox.updateProperty()
-        self.peckRetractSpinBox.updateProperty()
         self.dwellTimeSpinBox.updateProperty()
+
+        if hasattr(self.form, "Strategy") and hasattr(obj, "Strategy"):
+            if obj.Strategy != str(self.form.Strategy.currentData()):
+                obj.Strategy = str(self.form.Strategy.currentData())
 
         if obj.KeepToolDown != self.form.KeepToolDownEnabled.isChecked():
             obj.KeepToolDown = self.form.KeepToolDownEnabled.isChecked()
@@ -125,10 +173,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
         if obj.PeckEnabled != self.form.peckEnabled.isChecked():
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
-        if obj.feedRetractEnabled != self.form.feedRetractEnabled.isChecked():
-            obj.feedRetractEnabled = self.form.feedRetractEnabled.isChecked()
-        if obj.chipBreakEnabled != self.form.chipBreakEnabled.isChecked():
-            obj.chipBreakEnabled = self.form.chipBreakEnabled.isChecked()
+        if obj.FeedRetractEnabled != self.form.feedRetractEnabled.isChecked():
+            obj.FeedRetractEnabled = self.form.feedRetractEnabled.isChecked()
+        if obj.ChipBreakEnabled != self.form.chipBreakEnabled.isChecked():
+            obj.ChipBreakEnabled = self.form.chipBreakEnabled.isChecked()
         if obj.ExtraOffset != str(self.form.ExtraOffset.currentData()):
             obj.ExtraOffset = str(self.form.ExtraOffset.currentData())
 
@@ -140,6 +188,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         Path.Log.track()
         self.updateQuantitySpinBoxes()
 
+        # Set Strategy selector
+        if hasattr(self.form, "Strategy") and hasattr(obj, "Strategy"):
+            self.selectInComboBox(obj.Strategy, self.form.Strategy)
+            self.updateStrategyVisibility(obj)
+
         if not hasattr(obj, "KeepToolDown"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -147,7 +200,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
                 "Drill",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
+                    "Apply G99 retraction: only retract to StartDepth between holes in this operation",
                 ),
             )
 
@@ -167,12 +220,12 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
             self.form.chipBreakEnabled.setEnabled(False)
 
-        if obj.chipBreakEnabled:
+        if obj.ChipBreakEnabled:
             self.form.chipBreakEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.chipBreakEnabled.setCheckState(QtCore.Qt.Unchecked)
 
-        if obj.feedRetractEnabled:
+        if obj.FeedRetractEnabled:
             self.form.feedRetractEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.feedRetractEnabled.setCheckState(QtCore.Qt.Unchecked)
@@ -186,7 +239,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model"""
         signals = []
 
-        signals.append(self.form.peckRetractHeight.editingFinished)
+        if hasattr(self.form, "Strategy"):
+            signals.append(self.form.Strategy.currentIndexChanged)
+
         signals.append(self.form.peckDepth.editingFinished)
         signals.append(self.form.dwellTime.editingFinished)
         if hasattr(self.form.dwellEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
@@ -209,7 +264,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return signals
 
     def updateData(self, obj, prop):
-        if prop in ["PeckDepth", "RetractHeight"] and not prop in ["Base", "Disabled"]:
+        if prop in ["PeckDepth"] and not prop in ["Base", "Disabled"]:
             self.updateQuantitySpinBoxes()
 
 

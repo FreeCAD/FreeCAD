@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef WEB_SERVER_H
-#define WEB_SERVER_H
+#pragma once
 
 #include <QByteArray>
 #include <QEvent>
@@ -104,5 +103,3 @@ private:
 };
 
 }  // namespace Web
-
-#endif  // Web_SERVER_H

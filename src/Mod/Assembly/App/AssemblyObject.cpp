@@ -132,15 +132,21 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
         "User parameter:BaseApp/Preferences/Mod/Assembly"
     );
     if (hGrp->GetBool("SolveOnRecompute", true)) {
-        solve();
+        solve(false, false);  // No need to update jcs since recompute updated them.
     }
     return ret;
 }
 
+void AssemblyObject::onChanged(const App::Property* prop)
+{
+    if (prop == &Group) {
+        updateSolveStatus();
+    }
+    App::Part::onChanged(prop);
+}
+
 int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 {
-    lastDoF = numberOfComponents() * 6;
-
     ensureIdentityPlacements();
 
     mbdAssembly = makeMbdAssembly();
@@ -165,13 +171,18 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 
     try {
         mbdAssembly->runPreDrag();
+        lastSolverStatus = 0;
     }
     catch (const std::exception& e) {
         FC_ERR("Solve failed: " << e.what());
+        lastSolverStatus = -1;
+        updateSolveStatus();
         return -1;
     }
     catch (...) {
         FC_ERR("Solve failed: unhandled exception");
+        lastSolverStatus = -1;
+        updateSolveStatus();
         return -1;
     }
 
@@ -179,9 +190,85 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 
     redrawJointPlacements(joints);
 
-    signalSolverUpdate();
+    updateSolveStatus();
 
     return 0;
+}
+
+void AssemblyObject::updateSolveStatus()
+{
+    lastRedundantJoints.clear();
+    lastHasRedundancies = false;
+    //+1 because there's a grounded joint to origin
+    lastDoF = (1 + numberOfComponents()) * 6;
+
+    if (!mbdAssembly || !mbdAssembly->mbdSystem) {
+        solve();
+    }
+
+    if (!mbdAssembly || !mbdAssembly->mbdSystem) {
+        return;
+    }
+
+    // Helper lambda to clean up the joint name from the solver
+    auto cleanJointName = [](const std::string& rawName) -> std::string {
+        // rawName is like : /OndselAssembly/ground_moves#Joint001
+        size_t hashPos = rawName.find_last_of('#');
+        if (hashPos != std::string::npos) {
+            // Return the substring after the '#'
+            return rawName.substr(hashPos + 1);
+        }
+        return rawName;
+    };
+
+
+    // Iterate through all joints and motions in the MBD system
+    mbdAssembly->mbdSystem->jointsMotionsDo([&](std::shared_ptr<MbD::Joint> jm) {
+        if (!jm) {
+            return;
+        }
+        // Base::Console().warning("jm->name %s\n", jm->name);
+        bool isJointRedundant = false;
+
+        jm->constraintsDo([&](std::shared_ptr<MbD::Constraint> con) {
+            if (!con) {
+                return;
+            }
+
+            std::string spec = con->constraintSpec();
+            // A constraint is redundant if its spec starts with "Redundant"
+            if (spec.rfind("Redundant", 0) == 0) {
+                isJointRedundant = true;
+            }
+            // Base::Console().warning("    - %s\n", spec);
+            --lastDoF;
+        });
+
+        const std::string fullName = cleanJointName(jm->name);
+        App::DocumentObject* docObj = getDocument()->getObject(fullName.c_str());
+
+        // We only care about objects that are actual joints in the FreeCAD document.
+        // This effectively filters out the grounding joints, which are named after parts.
+        if (!docObj || !docObj->getPropertyByName("Reference1")) {
+            return;
+        }
+
+        if (isJointRedundant) {
+            // Check if this joint is already in the list to avoid duplicates
+            std::string objName = docObj->getNameInDocument();
+            if (std::find(lastRedundantJoints.begin(), lastRedundantJoints.end(), objName)
+                == lastRedundantJoints.end()) {
+                lastRedundantJoints.push_back(objName);
+            }
+        }
+    });
+
+    // Update the summary boolean flag
+    if (!lastRedundantJoints.empty()) {
+        lastHasRedundancies = true;
+    }
+
+    signalSolverUpdate();
 }
 
 int AssemblyObject::generateSimulation(App::DocumentObject* sim)
@@ -368,9 +455,7 @@ bool AssemblyObject::validateNewPlacements()
     // First we check if a grounded object has moved. It can happen that they flip.
     auto groundedParts = getGroundedParts();
     for (auto* obj : groundedParts) {
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (propPlacement) {
             Base::Placement oldPlc = propPlacement->getValue();
 
@@ -401,6 +486,7 @@ bool AssemblyObject::validateNewPlacements()
 void AssemblyObject::postDrag()
 {
     mbdAssembly->runPostDrag();  // Do this after last drag
+    purgeTouched();
 }
 
 void AssemblyObject::savePlacementsForUndo()
@@ -417,7 +503,7 @@ void AssemblyObject::savePlacementsForUndo()
         savePair.first = obj;
 
         // Check if the object has a "Placement" property
-        auto* propPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+        auto* propPlc = obj->getPlacementProperty();
         if (!propPlc) {
             continue;
         }
@@ -440,9 +526,7 @@ void AssemblyObject::undoSolve()
         }
 
         // Check if the object has a "Placement" property
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (!propPlacement) {
             continue;
         }
@@ -484,9 +568,7 @@ void AssemblyObject::setNewPlacements()
         }
 
         // Check if the object has a "Placement" property
-        auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(
-            obj->getPropertyByName("Placement")
-        );
+        auto* propPlacement = obj->getPlacementProperty();
         if (!propPlacement) {
             continue;
         }
@@ -520,48 +602,27 @@ void AssemblyObject::redrawJointPlacement(App::DocumentObject* joint)
         return;
     }
 
-    // Notify the joint object that the transform of the coin object changed.
-    auto* pPlc = dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement1"));
-    if (pPlc) {
-        pPlc->setValue(pPlc->getValue());
-    }
-    pPlc = dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement2"));
-    if (pPlc) {
-        pPlc->setValue(pPlc->getValue());
-    }
-    joint->purgeTouched();
-}
-
-void AssemblyObject::recomputeJointPlacements(std::vector<App::DocumentObject*> joints)
-{
-    // The Placement1 and Placement2 of each joint needs to be updated as the parts moved.
     Base::PyGILStateLocker lock;
-    for (auto* joint : joints) {
-        if (!joint) {
-            continue;
-        }
 
-        App::PropertyPythonObject* proxy = joint
-            ? dynamic_cast<App::PropertyPythonObject*>(joint->getPropertyByName("Proxy"))
-            : nullptr;
+    App::PropertyPythonObject* proxy = joint
+        ? dynamic_cast<App::PropertyPythonObject*>(joint->getPropertyByName("Proxy"))
+        : nullptr;
 
-        if (!proxy) {
-            continue;
-        }
+    if (!proxy) {
+        return;
+    }
 
-        Py::Object jointPy = proxy->getValue();
+    Py::Object jointPy = proxy->getValue();
 
-        if (!jointPy.hasAttr("updateJCSPlacements")) {
-            continue;
-        }
+    if (!jointPy.hasAttr("redrawJointPlacements")) {
+        return;
+    }
 
-        Py::Object attr = jointPy.getAttr("updateJCSPlacements");
-        if (attr.ptr() && attr.isCallable()) {
-            Py::Tuple args(1);
-            args.setItem(0, Py::asObject(joint->getPyObject()));
-            Py::Callable(attr).apply(args);
-            joint->purgeTouched();
-        }
+    Py::Object attr = jointPy.getAttr("redrawJointPlacements");
+    if (attr.ptr() && attr.isCallable()) {
+        Py::Tuple args(1);
+        args.setItem(0, Py::asObject(joint->getPyObject()));
+        Py::Callable(attr).apply(args);
     }
 }
 
@@ -600,8 +661,8 @@ App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(
             continue;
         }
 
-        App::DocumentObject* part1 = getMovingPartFromRef(this, joint, "Reference1");
-        App::DocumentObject* part2 = getMovingPartFromRef(this, joint, "Reference2");
+        App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
         if (!part1 || !part2) {
             continue;
         }
@@ -677,8 +738,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool
             continue;
         }
 
-        auto* part1 = getMovingPartFromRef(this, joint, "Reference1");
-        auto* part2 = getMovingPartFromRef(this, joint, "Reference2");
+        auto* part1 = getMovingPartFromRef(joint, "Reference1");
+        auto* part2 = getMovingPartFromRef(joint, "Reference2");
         if (!part1 || !part2 || part1->getFullName() == part2->getFullName()) {
             // Remove incomplete joints. Left-over when the user deletes a part.
             // Remove incoherent joints (self-pointing joints)
@@ -702,11 +763,6 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS, bool
             auto subJoints = assembly->getJoints();
             joints.insert(joints.end(), subJoints.begin(), subJoints.end());
         }
-    }
-
-    // Make sure the joints are up to date.
-    if (updateJCS) {
-        recomputeJointPlacements(joints);
     }
 
     return joints;
@@ -747,8 +803,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfObj(App::DocumentOb
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
-        App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
-        App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
+        App::DocumentObject* obj1 = getObjFromJointRef(joint, "Reference1");
+        App::DocumentObject* obj2 = getObjFromJointRef(joint, "Reference2");
         if (obj == obj1 || obj == obj2) {
             jointsOf.push_back(joint);
         }
@@ -767,8 +823,8 @@ std::vector<App::DocumentObject*> AssemblyObject::getJointsOfPart(App::DocumentO
     std::vector<App::DocumentObject*> jointsOf;
 
     for (auto joint : joints) {
-        App::DocumentObject* part1 = getMovingPartFromRef(this, joint, "Reference1");
-        App::DocumentObject* part2 = getMovingPartFromRef(this, joint, "Reference2");
+        App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
         if (part == part1 || part == part2) {
             jointsOf.push_back(joint);
         }
@@ -874,7 +930,7 @@ bool AssemblyObject::isJointConnectingPartToGround(App::DocumentObject* joint, c
         return false;
     }
 
-    App::DocumentObject* part = getMovingPartFromRef(this, joint, propname);
+    App::DocumentObject* part = getMovingPartFromRef(joint, propname);
     if (!part) {
         return false;
     }
@@ -968,8 +1024,8 @@ void AssemblyObject::removeUnconnectedJoints(
             joints.begin(),
             joints.end(),
             [&](App::DocumentObject* joint) {
-                App::DocumentObject* obj1 = getMovingPartFromRef(this, joint, "Reference1");
-                App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
+                App::DocumentObject* obj1 = getMovingPartFromRef(joint, "Reference1");
+                App::DocumentObject* obj2 = getMovingPartFromRef(joint, "Reference2");
                 return (
                     !isObjInSetOfObjRefs(obj1, connectedParts)
                     || !isObjInSetOfObjRefs(obj2, connectedParts)
@@ -1013,8 +1069,8 @@ std::vector<ObjRef> AssemblyObject::getConnectedParts(
             continue;
         }
 
-        App::DocumentObject* obj1 = getMovingPartFromRef(this, joint, "Reference1");
-        App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
+        App::DocumentObject* obj1 = getMovingPartFromRef(joint, "Reference1");
+        App::DocumentObject* obj2 = getMovingPartFromRef(joint, "Reference2");
 
         if (!obj1 || !obj2) {
             continue;
@@ -1587,12 +1643,12 @@ std::string AssemblyObject::handleOneSideOfJoint(
     const char* propPlcName
 )
 {
-    App::DocumentObject* part = getMovingPartFromRef(this, joint, propRefName);
-    App::DocumentObject* obj = getObjFromRef(joint, propRefName);
+    App::DocumentObject* part = getMovingPartFromRef(joint, propRefName);
+    App::DocumentObject* obj = getObjFromJointRef(joint, propRefName);
 
     if (!part || !obj) {
         Base::Console()
-            .warning("The property %s of Joint %s is bad.", propRefName, joint->getFullName());
+            .warning("The property %s of Joint %s is bad.\n", propRefName, joint->getFullName());
         return "";
     }
 
@@ -1648,15 +1704,15 @@ void AssemblyObject::getRackPinionMarkers(
         swapJCS(joint);  // make sure that rack is first.
     }
 
-    App::DocumentObject* part1 = getMovingPartFromRef(this, joint, "Reference1");
-    App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
+    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+    App::DocumentObject* obj1 = getObjFromJointRef(joint, "Reference1");
     Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
 
-    App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
+    App::DocumentObject* obj2 = getObjFromJointRef(joint, "Reference2");
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     if (!part1 || !obj1) {
-        Base::Console().warning("Reference1 of Joint %s is bad.", joint->getFullName());
+        Base::Console().warning("Reference1 of Joint %s is bad.\n", joint->getFullName());
         return;
     }
 
@@ -1722,21 +1778,21 @@ void AssemblyObject::getRackPinionMarkers(
 
 int AssemblyObject::slidingPartIndex(App::DocumentObject* joint)
 {
-    App::DocumentObject* part1 = getMovingPartFromRef(this, joint, "Reference1");
-    App::DocumentObject* obj1 = getObjFromRef(joint, "Reference1");
+    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+    App::DocumentObject* obj1 = getObjFromJointRef(joint, "Reference1");
     boost::ignore_unused(obj1);
     Base::Placement plc1 = getPlacementFromProp(joint, "Placement1");
 
-    App::DocumentObject* part2 = getMovingPartFromRef(this, joint, "Reference2");
-    App::DocumentObject* obj2 = getObjFromRef(joint, "Reference2");
+    App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
+    App::DocumentObject* obj2 = getObjFromJointRef(joint, "Reference2");
     boost::ignore_unused(obj2);
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     int slidingFound = 0;
     for (auto* jt : getJoints(false, false)) {
         if (getJointType(jt) == JointType::Slider) {
-            App::DocumentObject* jpart1 = getMovingPartFromRef(this, jt, "Reference1");
-            App::DocumentObject* jpart2 = getMovingPartFromRef(this, jt, "Reference2");
+            App::DocumentObject* jpart1 = getMovingPartFromRef(jt, "Reference1");
+            App::DocumentObject* jpart2 = getMovingPartFromRef(jt, "Reference2");
             int found = 0;
             Base::Placement plcjt, plci;
             if (jpart1 == part1 || jpart1 == part2) {
@@ -1770,8 +1826,8 @@ bool AssemblyObject::isMbDJointValid(App::DocumentObject* joint)
     // When dragging a part, we are bundling fixed parts together.
     // This may lead to a conflicting joint that is self referencing a MbD part.
     // The solver crash when fed such a bad joint. So we make sure it does not happen.
-    App::DocumentObject* part1 = getMovingPartFromRef(this, joint, "Reference1");
-    App::DocumentObject* part2 = getMovingPartFromRef(this, joint, "Reference2");
+    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+    App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
     if (!part1 || !part2) {
         return false;
     }
@@ -1811,8 +1867,8 @@ AssemblyObject::MbDPartData AssemblyObject::getMbDData(App::DocumentObject* part
             for (auto* joint : joints) {
                 JointType jointType = getJointType(joint);
                 if (jointType == JointType::Fixed) {
-                    App::DocumentObject* part1 = getMovingPartFromRef(this, joint, "Reference1");
-                    App::DocumentObject* part2 = getMovingPartFromRef(this, joint, "Reference2");
+                    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+                    App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
                     App::DocumentObject* partToAdd = currentPart == part1 ? part2 : part1;
 
                     if (objectPartMap.find(partToAdd) != objectPartMap.end()) {
@@ -1943,7 +1999,7 @@ App::DocumentObject* AssemblyObject::getUpstreamMovingPart(
         return part;
     }
 
-    part = getMovingPartFromRef(this, joint, name == "Reference1" ? "Reference2" : "Reference1");
+    part = getMovingPartFromRef(joint, name == "Reference1" ? "Reference2" : "Reference1");
 
     return getUpstreamMovingPart(part, joint, name);
 }
@@ -1992,7 +2048,7 @@ void AssemblyObject::ensureIdentityPlacements()
         // When used in assembly, link groups must have identity placements.
         if (obj->isLinkGroup()) {
             auto* link = dynamic_cast<App::Link*>(obj);
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            auto* pPlc = obj->getPlacementProperty();
             if (!pPlc || !link) {
                 continue;
             }
@@ -2008,7 +2064,7 @@ void AssemblyObject::ensureIdentityPlacements()
             // To keep the LinkElement positions, we apply plc to their placements
             std::vector<App::DocumentObject*> elts = link->ElementList.getValues();
             for (auto* elt : elts) {
-                pPlc = dynamic_cast<App::PropertyPlacement*>(elt->getPropertyByName("Placement"));
+                pPlc = elt->getPlacementProperty();
                 pPlc->setValue(plc * pPlc->getValue());
                 elt->purgeTouched();
             }
@@ -2018,46 +2074,7 @@ void AssemblyObject::ensureIdentityPlacements()
 
 int AssemblyObject::numberOfComponents() const
 {
-    int count = 0;
-    const std::vector<App::DocumentObject*> objects = Group.getValues();
-
-    for (auto* obj : objects) {
-        if (!obj) {
-            continue;
-        }
-
-        if (obj->isLinkGroup()) {
-            auto* link = static_cast<const App::Link*>(obj);
-            count += link->ElementCount.getValue();
-            continue;
-        }
-
-        if (obj->isDerivedFrom(Assembly::AssemblyLink::getClassTypeId())) {
-            auto* subAssembly = static_cast<const AssemblyLink*>(obj);
-            count += subAssembly->numberOfComponents();
-            continue;
-        }
-
-        // Resolve standard App::Links to their target object
-        if (obj->isDerivedFrom(App::Link::getClassTypeId())) {
-            obj = static_cast<const App::Link*>(obj)->getLinkedObject();
-            if (!obj) {
-                continue;
-            }
-        }
-
-        if (!obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            continue;
-        }
-
-        if (obj->isDerivedFrom(App::LocalCoordinateSystem::getClassTypeId())) {
-            continue;
-        }
-
-        count++;
-    }
-
-    return count;
+    return getAssemblyComponents(this).size();
 }
 
 bool AssemblyObject::isEmpty() const

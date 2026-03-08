@@ -922,6 +922,12 @@ QToolBar::separator:vertical {
   background-color: @GeneralBorderColor;
 }
 
+MRichTextEdit[floating="true"] {
+  border: 1px solid @GeneralBorderColor;
+  border-radius: 2px;
+  padding: 1px;
+}
+
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working
 Qproperty works but breaks when you move the toolbar*/
 
@@ -1272,14 +1278,14 @@ QToolButton:disabled {
 }
 
 QToolButton:checked {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonBottomBackgroundColor, stop:0.7 @ButtonTopBackgroundColor, stop:1 @ButtonTopBackgroundColor);
+  background-color: @ToolButtonCheckedBackground;
   border-radius: @InputFieldBorderRadius;
-  border: 1px solid @AccentColor;
+  border: 1px solid @ToolButtonCheckedBorderColor;
 }
 
 QToolButton:checked:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  color: @AccentColor;
+  border: 1px solid @ButtonBorderColor;
 }
 
 QToolButton:checked:hover {

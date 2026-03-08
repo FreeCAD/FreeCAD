@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
-#define GUI_VIEWPROVIDER_GEOMETRYOBJECT_H
+#pragma once
 
 #include "ViewProviderDragger.h"
 #include <Inventor/lists/SoPickedPointList.h>
@@ -127,6 +126,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_VIEWPROVIDER_GEOMETRYOBJECT_H

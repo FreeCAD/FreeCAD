@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_MDIVIEWPAGE_H
-#define TECHDRAWGUI_MDIVIEWPAGE_H
+#pragma once
 
 #include <QPrinter>
 
@@ -136,7 +135,7 @@ protected:
     void sceneSelectionManager();
 
 private:
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectDeletedObject;
 
     QAction *m_toggleFrameAction;
@@ -184,5 +183,3 @@ protected:
 
 
 } // namespace MDIViewPageGui
-
-#endif // TECHDRAWGUI_MDIVIEWPAGE_H

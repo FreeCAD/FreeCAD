@@ -22,13 +22,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_APPROXIMATION_H
-#define MESH_APPROXIMATION_H
+#pragma once
 
 #include <Mod/Mesh/App/WildMagic4/Wm4QuadricSurface.h>
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
+
 #include <algorithm>
 #include <limits>
 #include <list>
@@ -736,5 +734,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESH_APPROXIMATION_H

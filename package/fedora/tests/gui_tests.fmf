@@ -57,8 +57,6 @@
         test: xvfb-run  /usr/bin/FreeCAD -t  TestPartGui
     /TestPartDesignGui     :
         test: xvfb-run  /usr/bin/FreeCAD -t  TestPartDesignGui
-    /TestSketcherGui       :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestSketcherGui
     /TestTechDrawGui       :
         test: xvfb-run  /usr/bin/FreeCAD -t  TestTechDrawGui
     /Workbench             :

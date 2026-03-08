@@ -628,7 +628,7 @@ class BIM_Setup:
             else:
                 reply = QtGui.QMessageBox.question(
                     None,
-                    translate("BIM", "IfcOpenShell not found"),
+                    translate("BIM", "IfcOpenShell Not Found"),
                     translate(
                         "BIM",
                         "IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.",

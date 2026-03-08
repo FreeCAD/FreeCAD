@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_DIALOG_DLGSETTINGSADVANCED_H
-#define GUI_DIALOG_DLGSETTINGSADVANCED_H
+#pragma once
 
 class QTimer;
 class QPropertyAnimation;
@@ -143,4 +142,3 @@ private:
 }  // namespace Dialog
 }  // namespace Gui
 //[[[end]]]
-#endif  // GUI_DIALOG_DLGSETTINGSADVANCED_H

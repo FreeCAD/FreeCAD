@@ -23,11 +23,10 @@
  ***************************************************************************/
 
 
-#ifndef APP_MERGEDOCUMENTS_H
-#define APP_MERGEDOCUMENTS_H
+#pragma once
 
 #include <Base/Persistence.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 namespace zipios
 {
@@ -72,11 +71,9 @@ private:
     App::Document* appdoc {nullptr};
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectExport;
     Connection connectImport;
 };
 
 }  // namespace App
-
-#endif  // APP_MERGEDOCUMENTS_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -214,14 +216,12 @@ App::DocumentObjectExecReturn* Draft::execute()
                 if (!intersector.IsDone() || intersector.NbLines() < 1) {
                     continue;
                 }
-                Handle(Geom_Curve) icurve = intersector.Line(1);
+                const Handle(Geom_Curve) & icurve = intersector.Line(1);
                 if (!icurve->IsKind(STANDARD_TYPE(Geom_Line))) {
                     continue;
                 }
-                // TODO: How to extract the line from icurve without creating an edge first?
-                TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(icurve);
-                BRepAdaptor_Curve c(edge);
-                neutralPlane = gp_Pln(pm, c.Line().Direction());
+                Handle(Geom_Line) line = Handle(Geom_Line)::DownCast(icurve);
+                neutralPlane = gp_Pln(pm, line->Lin().Direction());
                 found = true;
                 break;
             }
@@ -311,6 +311,8 @@ App::DocumentObjectExecReturn* Draft::execute()
     if (reversed) {
         angle *= -1.0;
     }
+
+    computeProps = {pullDirection, neutralPlane};
 
     this->positionByBaseFeature();
     // create an untransformed copy of the base shape

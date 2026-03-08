@@ -127,7 +127,7 @@ def setup_all():
     run_example("thermomech_bimetal")
 
 
-def run_analysis(doc, base_name, filepath="", run_solver=False):
+def run_analysis(doc, base_name, filepath="", run_solver=False, blocking=True):
 
     from os.path import join, exists
     from os import makedirs
@@ -168,13 +168,13 @@ def run_analysis(doc, base_name, filepath="", run_solver=False):
     from femsolver.run import run_fem_solver
 
     if run_solver is True:
-        run_fem_solver(solver, working_dir)
+        run_fem_solver(solver, working_dir, blocking=blocking)
 
     # save doc once again with results
     doc.save()
 
 
-def run_example(example, solver=None, base_name=None, run_solver=False):
+def run_example(example, solver=None, base_name=None, run_solver=False, blocking=True):
 
     from importlib import import_module
 
@@ -192,7 +192,7 @@ def run_example(example, solver=None, base_name=None, run_solver=False):
         base_name = example
         if solver is not None:
             base_name += "_" + solver
-    run_analysis(doc, base_name, run_solver=run_solver)
+    run_analysis(doc, base_name, run_solver=run_solver, blocking=blocking)
     doc.recompute()
 
     return doc

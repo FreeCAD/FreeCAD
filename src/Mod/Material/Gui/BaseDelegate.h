@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_BASEDELEGATE_H
-#define MATGUI_BASEDELEGATE_H
+#pragma once
 
 #include <QDialog>
 #include <QDir>
@@ -102,5 +101,3 @@ protected:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_BASEDELEGATE_H

@@ -1746,7 +1746,7 @@ mönsterdefinitioner som ska läggas till standardmönstren</translation>
       <location filename="../ui/preferences-drafttexts.ui" line="653"/>
       <location filename="../ui/preferences-drafttexts.ui" line="682"/>
       <location filename="../ui/preferences-drafttexts.ui" line="711"/>
-      <location filename="../ui/preferences-dxf.ui" line="560"/>
+      <location filename="../ui/preferences-dxf.ui" line="557"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -2179,12 +2179,12 @@ Detta värde är den maximala segmentlängden.</translation>
       <translation>Importera</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="586"/>
+      <location filename="../ui/preferences-dxf.ui" line="583"/>
       <source>All objects containing faces will be exported as 3D polyface meshes</source>
       <translation>Alla objekt som innehåller ytor kommer att exporteras som 3D-polyfacemeshes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="636"/>
+      <location filename="../ui/preferences-dxf.ui" line="633"/>
       <source>Project exported objects along current view direction</source>
       <translation>Projicera exporterade objekt längs aktuell vyriktning</translation>
     </message>
@@ -2466,34 +2466,34 @@ istället för Draft- eller Part-objekt. Detta åsidosätter inställningen "Imp
       <translation>Exportalternativ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="544"/>
+      <location filename="../ui/preferences-dxf.ui" line="541"/>
       <source>Maximum spline segment</source>
       <translation>Maximalt splinesegment</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="554"/>
+      <location filename="../ui/preferences-dxf.ui" line="551"/>
       <source>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</source>
       <translation>Maximal längd för varje polylinjesegment. '0' behandlar hela splinen som ett rakt segment.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="589"/>
+      <location filename="../ui/preferences-dxf.ui" line="586"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>Exportera 3D-objekt som polyface-mesh</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="606"/>
+      <location filename="../ui/preferences-dxf.ui" line="603"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>TechDraw Views kommer att exporteras som block.
 Detta kan misslyckas för post DXF R12-mallar.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="610"/>
+      <location filename="../ui/preferences-dxf.ui" line="607"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>Exportera TechDraw-vyer som block</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="633"/>
+      <location filename="../ui/preferences-dxf.ui" line="630"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Exporterade objekt kommer att projiceras för att återspegla den aktuella visningsriktningen</translation>
     </message>
@@ -3090,86 +3090,86 @@ om de matchar X-, Y- eller Z-axeln i det globala koordinatsystemet</translation>
       <translation>Rensa</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="891"/>
+      <location filename="../../WorkingPlane.py" line="906"/>
       <location filename="../../draftmake/make_sketch.py" line="121"/>
       <location filename="../../draftmake/make_sketch.py" line="137"/>
       <source>All shapes must be coplanar</source>
       <translation>Alla former måste vara koplanära</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="898"/>
+      <location filename="../../WorkingPlane.py" line="913"/>
       <source>Selected shapes must define a plane</source>
       <translation>Valda former måste definiera ett plan</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="984"/>
-      <location filename="../../WorkingPlane.py" line="1560"/>
-      <location filename="../../WorkingPlane.py" line="1561"/>
+      <location filename="../../WorkingPlane.py" line="999"/>
+      <location filename="../../WorkingPlane.py" line="1575"/>
+      <location filename="../../WorkingPlane.py" line="1576"/>
       <source>Top</source>
       <translation>Topp</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="996"/>
-      <location filename="../../WorkingPlane.py" line="1582"/>
-      <location filename="../../WorkingPlane.py" line="1583"/>
+      <location filename="../../WorkingPlane.py" line="1011"/>
+      <location filename="../../WorkingPlane.py" line="1597"/>
+      <location filename="../../WorkingPlane.py" line="1598"/>
       <source>Front</source>
       <translation>Framsida</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1015"/>
-      <location filename="../../WorkingPlane.py" line="1604"/>
-      <location filename="../../WorkingPlane.py" line="1605"/>
+      <location filename="../../WorkingPlane.py" line="1030"/>
+      <location filename="../../WorkingPlane.py" line="1619"/>
+      <location filename="../../WorkingPlane.py" line="1620"/>
       <source>Side</source>
       <translation>Sida</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1238"/>
-      <location filename="../../WorkingPlane.py" line="1538"/>
-      <location filename="../../WorkingPlane.py" line="1539"/>
+      <location filename="../../WorkingPlane.py" line="1253"/>
+      <location filename="../../WorkingPlane.py" line="1553"/>
+      <location filename="../../WorkingPlane.py" line="1554"/>
       <source>Auto</source>
       <translation>Automatisk</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1239"/>
+      <location filename="../../WorkingPlane.py" line="1254"/>
       <source>Current working plane: Auto</source>
       <translation>Aktuellt arbetsplan: Auto</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1721"/>
+      <location filename="../../WorkingPlane.py" line="1736"/>
       <source>Current working plane:</source>
       <translation>Nuvarande arbetsplan:</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1316"/>
-      <location filename="../../WorkingPlane.py" line="1345"/>
+      <location filename="../../WorkingPlane.py" line="1331"/>
+      <location filename="../../WorkingPlane.py" line="1360"/>
       <source>Selected shapes do not define a plane</source>
       <translation>Valda former definierar inte ett plan</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1685"/>
+      <location filename="../../WorkingPlane.py" line="1700"/>
       <source>No previous working plane</source>
       <translation>Inget tidigare arbetsplan</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1696"/>
+      <location filename="../../WorkingPlane.py" line="1711"/>
       <source>No next working plane</source>
       <translation>Inget nästa arbetsplan</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1725"/>
+      <location filename="../../WorkingPlane.py" line="1740"/>
       <source>Axes:</source>
       <translation>Axlar:</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1732"/>
+      <location filename="../../WorkingPlane.py" line="1747"/>
       <source>Position:</source>
       <translation>Position:</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1664"/>
-      <location filename="../../DraftGui.py" line="1682"/>
+      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1706"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Ingen</translation>
@@ -3306,12 +3306,12 @@ Avmarkera för att använda koordinatsystemet för arbetsplanet</translation>
       <translation>Avslutar den aktuella ritnings- eller redigeringsoperationen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1913"/>
       <source>Modify Objects</source>
       <translation>Modifiera objekt</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2070"/>
       <source>Facebinder Elements</source>
       <translation>Ytbindarelement</translation>
     </message>
@@ -3404,8 +3404,8 @@ Ej tillgängligt om inställningen "Använd delprimitiver" är aktiverad</transl
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1670"/>
-      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1694"/>
+      <location filename="../../DraftGui.py" line="1712"/>
       <source>Autogroup off</source>
       <translation>Autogruppen av</translation>
     </message>
@@ -3474,12 +3474,12 @@ Ej tillgängligt om inställningen "Använd delprimitiver" är aktiverad</transl
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1054"/>
-      <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1057"/>
-      <location filename="../../DraftGui.py" line="1059"/>
-      <location filename="../../DraftGui.py" line="1060"/>
-      <location filename="../../DraftGui.py" line="1061"/>
+      <location filename="../../DraftGui.py" line="1078"/>
+      <location filename="../../DraftGui.py" line="1080"/>
+      <location filename="../../DraftGui.py" line="1081"/>
+      <location filename="../../DraftGui.py" line="1083"/>
+      <location filename="../../DraftGui.py" line="1084"/>
+      <location filename="../../DraftGui.py" line="1085"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3487,12 +3487,12 @@ Ej tillgängligt om inställningen "Använd delprimitiver" är aktiverad</transl
       <translation>Lokal {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1063"/>
-      <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1065"/>
-      <location filename="../../DraftGui.py" line="1067"/>
-      <location filename="../../DraftGui.py" line="1068"/>
-      <location filename="../../DraftGui.py" line="1069"/>
+      <location filename="../../DraftGui.py" line="1087"/>
+      <location filename="../../DraftGui.py" line="1088"/>
+      <location filename="../../DraftGui.py" line="1089"/>
+      <location filename="../../DraftGui.py" line="1091"/>
+      <location filename="../../DraftGui.py" line="1092"/>
+      <location filename="../../DraftGui.py" line="1093"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3500,22 +3500,22 @@ Ej tillgängligt om inställningen "Använd delprimitiver" är aktiverad</transl
       <translation>Global {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1678"/>
+      <location filename="../../DraftGui.py" line="1702"/>
       <source>Autogroup:</source>
       <translation>Gruppera automatiskt:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2067"/>
       <source>Faces</source>
       <translation>Ytor</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2068"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2069"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
@@ -3581,10 +3581,10 @@ Försök flytta DWG-filen till en katalogväg utan mellanslag och icke-engelska 
 eller försök spara till en lägre DWG-version.</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1351"/>
-      <location filename="../../WorkingPlane.py" line="1352"/>
-      <location filename="../../WorkingPlane.py" line="1631"/>
-      <location filename="../../WorkingPlane.py" line="1632"/>
+      <location filename="../../WorkingPlane.py" line="1366"/>
+      <location filename="../../WorkingPlane.py" line="1367"/>
+      <location filename="../../WorkingPlane.py" line="1646"/>
+      <location filename="../../WorkingPlane.py" line="1647"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="67"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="82"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="96"/>
@@ -3641,43 +3641,43 @@ eller försök spara till en lägre DWG-version.</translation>
       <location filename="../../draftmake/make_patharray.py" line="327"/>
       <location filename="../../draftutils/utils.py" line="1073"/>
       <location filename="../../draftutils/groups.py" line="100"/>
-      <location filename="../../draftutils/gui_utils.py" line="906"/>
+      <location filename="../../draftutils/gui_utils.py" line="915"/>
       <source>No active document. Aborting.</source>
       <translation>Inget aktivt dokument. Avbryter.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="136"/>
-      <location filename="../../draftutils/gui_utils.py" line="914"/>
+      <location filename="../../draftutils/gui_utils.py" line="923"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Fel inmatning: objekt {} finns inte i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="166"/>
+      <location filename="../../draftutils/gui_utils.py" line="175"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Det går inte att infoga ett nytt objekt i en skalad del</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="274"/>
+      <location filename="../../draftutils/gui_utils.py" line="283"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Symbolen är inte implementerad. Använd en standardsymbol.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="788"/>
+      <location filename="../../draftutils/gui_utils.py" line="797"/>
       <source>image is Null</source>
       <translation>bilden är noll</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="796"/>
+      <location filename="../../draftutils/gui_utils.py" line="805"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>filnamnet finns inte på systemet eller i resursfilen</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="855"/>
+      <location filename="../../draftutils/gui_utils.py" line="864"/>
       <source>unable to load texture</source>
       <translation>kan inte läsa in textur</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="922"/>
+      <location filename="../../draftutils/gui_utils.py" line="931"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Har inte 'ViewObject.RootNode'.</translation>
     </message>
@@ -5921,7 +5921,7 @@ För att aktivera FreeCAD för att ladda ner dessa bibliotek, svara Ja.</transla
     <message>
       <location filename="../../InitGui.py" line="128"/>
       <source>&amp;Drafting</source>
-      <translation>&amp;Släppning</translation>
+      <translation>&amp;Drafting</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="130"/>
@@ -6077,12 +6077,12 @@ För att aktivera FreeCAD för att ladda ner dessa bibliotek, svara Ja.</transla
       <translation>_BSpline.createGeometry: Avslutad med samma första/ sista punkt. Geometrin är inte uppdaterad.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="104"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="105"/>
       <source>Writing camera position</source>
       <translation>Skriva kameraposition</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="122"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="123"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Skrivande objekt visas/döljs tillstånd</translation>
     </message>
@@ -7709,34 +7709,34 @@ egenskaperna "First Angle" och "Last Angle".</translation>
       <translation>Textfärg</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="76"/>
+      <location filename="../../draftviewproviders/view_label.py" line="77"/>
       <location filename="../../draftviewproviders/view_text.py" line="60"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Radavstånd (i förhållande till teckenstorlek)</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="59"/>
+      <location filename="../../draftviewproviders/view_label.py" line="60"/>
       <source>Vertical alignment</source>
       <translation>Vertikal anpassning</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="67"/>
+      <location filename="../../draftviewproviders/view_label.py" line="68"/>
       <source>Maximum number of characters on each line of the text box</source>
       <translation>Maximalt antal tecken på varje rad i textrutan</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="71"/>
+      <location filename="../../draftviewproviders/view_label.py" line="72"/>
       <location filename="../../draftviewproviders/view_text.py" line="55"/>
       <source>Horizontal alignment</source>
       <translation>Horisontell justering</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="89"/>
+      <location filename="../../draftviewproviders/view_label.py" line="90"/>
       <source>The type of frame around the text of this object</source>
       <translation>Typen av ram runt texten i detta objekt</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="94"/>
+      <location filename="../../draftviewproviders/view_label.py" line="95"/>
       <source>Display a leader line or not</source>
       <translation>Visa en ledarlinje eller inte</translation>
     </message>
@@ -7909,12 +7909,12 @@ bortom dimensionslinjen</translation>
       <translation>Visar dimensionslinjen och pilarna</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="50"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="51"/>
       <source>The display length of this section plane</source>
       <translation>Visningslängden för detta sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="53"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="54"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Storleken på pilarna i detta sektionsplan</translation>
     </message>
@@ -7942,7 +7942,7 @@ bortom dimensionslinjen</translation>
       <location filename="../../InitGui.py" line="156"/>
       <location filename="../../InitGui.py" line="159"/>
       <source>Draft</source>
-      <translation>Släppning</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="237"/>

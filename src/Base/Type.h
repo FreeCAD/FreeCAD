@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TYPE_H
-#define BASE_TYPE_H
+#pragma once
 
 // Std. configurations
 
@@ -32,9 +31,7 @@
 #include <map>
 #include <set>
 #include <vector>
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 namespace Base
 {
@@ -202,6 +199,3 @@ inline bool Type::isBad() const
 }
 
 }  // namespace Base
-
-
-#endif  // BASE_TYPE_H

@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKVIEW_H
-#define GUI_TASKVIEW_TASKVIEW_H
+#pragma once
 
 #include <vector>
 #include <QScrollArea>
@@ -51,7 +50,7 @@ class ComboView;
 namespace TaskView
 {
 
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 class TaskEditControl;
 class TaskDialog;
 
@@ -243,5 +242,3 @@ protected:
 
 }  // namespace TaskView
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TASKVIEW_H

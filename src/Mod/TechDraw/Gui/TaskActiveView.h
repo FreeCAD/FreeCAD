@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKACTIVEVIEW_H
-#define TECHDRAWGUI_TASKACTIVEVIEW_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -122,5 +121,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef TECHDRAWGUI_TASKACTIVEVIEW_H

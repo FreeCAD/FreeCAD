@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TRANSFORM_DRAGGER_H
-#define GUI_TRANSFORM_DRAGGER_H
+#pragma once
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -203,5 +202,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif /* GUI_TRANSFORM_DRAGGER_H */

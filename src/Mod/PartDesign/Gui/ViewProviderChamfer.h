@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderChamfer_H
-#define PARTGUI_ViewProviderChamfer_H
+#pragma once
 
 #include "ViewProviderDressUp.h"
 
@@ -54,6 +55,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderChamfer_H

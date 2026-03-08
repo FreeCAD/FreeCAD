@@ -27,7 +27,7 @@
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="345"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
@@ -141,7 +141,7 @@
       <translation>Comutare elemente matrice</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Editare imagine</translation>
@@ -924,7 +924,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="509"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
       <translation type="unfinished">Add Property</translation>
     </message>
@@ -954,37 +954,37 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Nume</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="537"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
       <source>Add</source>
       <translation>Adaugă</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="599"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="664"/>
       <source>Invalid group name</source>
       <translation type="unfinished">Invalid group name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="667"/>
       <source>Invalid type name</source>
       <translation type="unfinished">Invalid type name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="608"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="673"/>
       <source>Invalid property name '%1'</source>
       <translation type="unfinished">Invalid property name '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="611"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="676"/>
       <source>Property '%1' already exists</source>
       <translation type="unfinished">Property '%1' already exists</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="614"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="679"/>
       <source>'%1' is a constant</source>
       <translation type="unfinished">'%1' is a constant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="617"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="682"/>
       <source>'%1' is a unit</source>
       <translation type="unfinished">'%1' is a unit</translation>
     </message>
@@ -1718,56 +1718,56 @@ acelasi timp. Va fi declanșat cel cu cea mai mare prioritate.</translation>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="121"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="794"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="809"/>
       <source>Macros</source>
       <translation>Macro-uri</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="471"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="486"/>
       <source>Macro file</source>
       <translation>Fişier macro</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="497"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="907"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1070"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="512"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="922"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1085"/>
       <source>Existing file</source>
       <translation>Fișier existent</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="498"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="513"/>
       <source>'%1'.
 This file already exists.</source>
       <translation>'%1'.
 Acest fişier există deja.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="506"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="521"/>
       <source>Cannot create file</source>
       <translation>Imposibil de creat fisierul</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="507"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="522"/>
       <source>Creation of file '%1' failed.</source>
       <translation>Crearea fisierului '%1' nu a reusit.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="548"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="563"/>
       <source>Delete macro</source>
       <translation>Ştergeţi macrocomanda</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="583"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="598"/>
       <source>Do not show again</source>
       <translation>Nu mai arăta din nou</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="584"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="599"/>
       <source>Guided Walkthrough</source>
       <translation>Walkthrough ghidat</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="586"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="601"/>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
@@ -1778,91 +1778,91 @@ Notă: modificările dvs. vor fi aplicate la schimbarea următoare a bancului de
 </translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="667"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="682"/>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
       <translation>Instrucțiuni walkthrough: Completați câmpurile lipsă (opțional) apoi apăsați „Adăugați”, apoi Închide</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="745"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="760"/>
       <source>Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</source>
       <translation>Instrucțiuni: Selectați macro-ul din listă, apoi faceți clic pe butonul săgeată dreapta (-&gt;), apoi Închideți.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="769"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="784"/>
       <source>Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</source>
       <translation>Instrucțiuni: Click pe Nou, selectează macro-ul, apoi clic pe săgeata la dreapta (-&gt;), apoi Închidere.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="885"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="900"/>
       <source>Renaming Macro File</source>
       <translation>Redenumirea fişierului Macro</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="452"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="467"/>
       <source>Read-Only</source>
       <translation type="unfinished">Read-Only</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="472"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="487"/>
       <source>Enter a file name:</source>
       <translation type="unfinished">Enter a file name:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="549"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="564"/>
       <source>Delete the macro '%1'?</source>
       <translation type="unfinished">Delete the macro '%1'?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="641"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="656"/>
       <source>Walkthrough, Dialog 1 of 2</source>
       <translation type="unfinished">Walkthrough, Dialog 1 of 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 1 of 1</source>
       <translation type="unfinished">Walkthrough, Dialog 1 of 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 2 of 2</source>
       <translation type="unfinished">Walkthrough, Dialog 2 of 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="886"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1051"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="901"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1066"/>
       <source>Enter new name</source>
       <translation type="unfinished">Enter new name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="908"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1071"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="923"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1086"/>
       <source>'%1'
  already exists.</source>
       <translation>'%1' există deja.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="914"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="929"/>
       <source>Rename Failed</source>
       <translation>Redenumirea a eșuat</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="915"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="930"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Nu a reușit să redenumească ca '%1'. Probabil că este o eroare de permisiuni atașate fișierului?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1050"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1065"/>
       <source>Duplicate Macro</source>
       <translation>Fațete duplicate</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1077"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1092"/>
       <source>Duplicate Failed</source>
       <translation>Dublare eșuată</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1078"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1093"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Nu a reușit să redenumească ca '%1'. Probabil că este o eroare de permisiuni atașate fișierului?</translation>
@@ -7969,47 +7969,47 @@ Check the report view for more details.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="359"/>
+      <location filename="../StartupProcess.cpp" line="373"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="370"/>
+      <location filename="../StartupProcess.cpp" line="384"/>
       <source>Invalid OpenGL Version</source>
       <translation>Versiune OpenGL invalidă</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="321"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="396"/>
       <source>Migrating</source>
       <translation type="unfinished">Migrating</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="382"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="457"/>
       <source>Restarting</source>
       <translation type="unfinished">Restarting</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="336"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="411"/>
       <source>Migration failed</source>
       <translation type="unfinished">Migration failed</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="304"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="374"/>
       <source>Estimated size of data to copy: %1</source>
       <translation type="unfinished">Estimated size of data to copy: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="322"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="397"/>
       <source>Migrating configuration data and addons…</source>
       <translation type="unfinished">Migrating configuration data and addons…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="337"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="412"/>
       <source>Migration failed. See the Report View for details.</source>
       <translation type="unfinished">Migration failed. See the Report View for details.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="381"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="456"/>
       <source> → Restarting…</source>
       <translation type="unfinished"> → Restarting…</translation>
     </message>
@@ -8375,7 +8375,7 @@ Continue?</translation>
       <translation>Prea multe notificări neintruzive deschise. Notificările sunt omise!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1412"/>
+      <location filename="../Document.cpp" line="1419"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8384,44 +8384,44 @@ Continue?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1413"/>
+      <location filename="../Document.cpp" line="1420"/>
       <source>Are you sure you want to continue?</source>
       <translation>Ești sigur că vrei să continui?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1439"/>
+      <location filename="../Document.cpp" line="1446"/>
       <source>Check report view for more…</source>
       <translation type="unfinished">Check report view for more…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1443"/>
+      <location filename="../Document.cpp" line="1450"/>
       <source>Physical path:</source>
       <translation>Calea fizică:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1444"/>
       <location filename="../Document.cpp" line="1451"/>
+      <location filename="../Document.cpp" line="1458"/>
       <source>Document:</source>
       <translation>Documentul:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1445"/>
       <location filename="../Document.cpp" line="1452"/>
+      <location filename="../Document.cpp" line="1459"/>
       <source>Path:</source>
       <translation>Cale:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1463"/>
+      <location filename="../Document.cpp" line="1470"/>
       <source>Identical physical path</source>
       <translation>Cale fizică identică</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1475"/>
+      <location filename="../Document.cpp" line="1482"/>
       <source>Could not save document</source>
       <translation>Documentul nu a putut fi salvat</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1476"/>
+      <location filename="../Document.cpp" line="1483"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8434,107 +8434,107 @@ Would you like to save the file with a different name?</source>
 Doriți să salvați fișierul cu alt nume?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1490"/>
-      <location filename="../Document.cpp" line="1648"/>
-      <location filename="../Document.cpp" line="1750"/>
+      <location filename="../Document.cpp" line="1497"/>
+      <location filename="../Document.cpp" line="1655"/>
+      <location filename="../Document.cpp" line="1757"/>
       <source>Saving aborted</source>
       <translation>Salvarea a fost anulată</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1536"/>
+      <location filename="../Document.cpp" line="1543"/>
       <source>Save dependent files</source>
       <translation>Salvează fișierele dependente</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1537"/>
+      <location filename="../Document.cpp" line="1544"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Fișierul conține dependențe externe. Doriți să salvați și fișierele dependente?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1583"/>
-      <location filename="../Document.cpp" line="1641"/>
+      <location filename="../Document.cpp" line="1590"/>
+      <location filename="../Document.cpp" line="1648"/>
       <source>Saving document failed</source>
       <translation>Salvarea documentului a eșuat</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1598"/>
+      <location filename="../Document.cpp" line="1605"/>
       <source>Save document under new filename…</source>
       <translation type="unfinished">Save document under new filename…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1725"/>
+      <location filename="../Document.cpp" line="1732"/>
       <source>Save a copy of the document under new filename…</source>
       <translation type="unfinished">Save a copy of the document under new filename…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1607"/>
-      <location filename="../Document.cpp" line="1730"/>
+      <location filename="../Document.cpp" line="1614"/>
+      <location filename="../Document.cpp" line="1737"/>
       <source>Save %1 Document</source>
       <translation>Salvaţi documentul %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1609"/>
+      <location filename="../Document.cpp" line="1616"/>
       <source>Document</source>
       <translation>Documentul</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1663"/>
-      <location filename="../Document.cpp" line="1713"/>
+      <location filename="../Document.cpp" line="1670"/>
+      <location filename="../Document.cpp" line="1720"/>
       <source>Failed to save document</source>
       <translation>Salvarea documentului nu a reușit</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1664"/>
+      <location filename="../Document.cpp" line="1671"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Documentele conţin dependenţe ciclice. Mai doriţi să le salvaţi?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1732"/>
+      <location filename="../Document.cpp" line="1739"/>
       <source>%1 document (*.FCStd)</source>
       <translation>Documentul %1 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2406"/>
+      <location filename="../Document.cpp" line="2413"/>
       <source>Document not closable</source>
       <translation>Documentul nu se poate închide</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2407"/>
+      <location filename="../Document.cpp" line="2414"/>
       <source>The document is not closable for the moment.</source>
       <translation>Documentul nu se poate închide momentan.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2447"/>
+      <location filename="../Document.cpp" line="2454"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>Salvarea documentului '%1' a eșuat. Doriți să anulați închiderea?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2449"/>
+      <location filename="../Document.cpp" line="2456"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>Salvarea documentului a eșuat. Doriți să anulați închiderea?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2454"/>
+      <location filename="../Document.cpp" line="2461"/>
       <source>Unable to save document</source>
       <translation>Imposibil de salvat documentul</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Undo</source>
       <translation>Anulează</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Redo</source>
       <translation>Reface</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2814"/>
+      <location filename="../Document.cpp" line="2821"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Există tranzacții grupate cu alte tranzacții anterioare în următoarele documente</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2819"/>
+      <location filename="../Document.cpp" line="2826"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8602,12 +8602,12 @@ Alege 'Abandonează' pentru a abandona</translation>
       <translation>Imposibil de deschis browser-ul de sistem.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2555"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Memorie insuficientă</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2556"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Insuficientă memorie disponibilă pentru a afişa datele.</translation>
     </message>
@@ -8669,12 +8669,12 @@ Alege 'Abandonează' pentru a abandona</translation>
       <translation type="unfinished">Some documents could not be saved. Cancel closing?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="539"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="554"/>
       <source>Delete macro</source>
       <translation>Ştergeţi macrocomanda</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="540"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="555"/>
       <source>Not allowed to delete system-wide macros</source>
       <translation>Nu sunteți autorizat să ștergeți macro comenzile sistèmului</translation>
     </message>
@@ -8747,12 +8747,12 @@ Alege 'Abandonează' pentru a abandona</translation>
       <translation>Importul tuturor legăturilor a eșuat</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="926"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
       <source>Add property</source>
       <translation>Adăugaţi o proprietate</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="927"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Nu am putut adăuga proprietatea la '%1': %2</translation>
     </message>
@@ -9032,7 +9032,7 @@ the current copy will be lost.
       <translation type="unfinished">Active Object</translation>
     </message>
     <message>
-      <location filename="../ViewProviderTextDocument.cpp" line="105"/>
+      <location filename="../ViewProviderTextDocument.cpp" line="107"/>
       <source>Edit Text</source>
       <translation type="unfinished">Edit Text</translation>
     </message>
@@ -9075,7 +9075,7 @@ the current copy will be lost.
       <translation>Nu este permis:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Selecție nepermisă de către Filtrul de selecție</translation>
     </message>
@@ -14356,7 +14356,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14364,7 +14364,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14566,12 +14566,12 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Da</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Nu</translation>
     </message>
@@ -14646,42 +14646,42 @@ This makes the docked panel stay transparent at all times.</translation>
       <translation>Ajutor</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="160"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="161"/>
       <source>Copy Configuration (Recommended)</source>
       <translation type="unfinished">Copy Configuration (Recommended)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="139"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="140"/>
       <source>Welcome to %1 %2.%3</source>
       <translation type="unfinished">Welcome to %1 %2.%3</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="142"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="143"/>
       <source>Calculating size…</source>
       <translation type="unfinished">Calculating size…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="146"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="147"/>
       <source>Share configuration between versions</source>
       <translation type="unfinished">Share configuration between versions</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="170"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
       <source>Share configuration with previous version</source>
       <translation type="unfinished">Share configuration with previous version</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="172"/>
       <source>Use a new default configuration</source>
       <translation type="unfinished">Use a new default configuration</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="331"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="406"/>
       <source>Migration complete</source>
       <translation type="unfinished">Migration complete</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="368"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="443"/>
       <source>New default configuration created</source>
       <translation type="unfinished">New default configuration created</translation>
     </message>

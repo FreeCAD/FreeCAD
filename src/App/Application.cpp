@@ -34,14 +34,18 @@
 #  define WINVER 0x502 // needed for SetDllDirectory
 #  include <Windows.h>
 # endif
+
+# include <boost/algorithm/string.hpp>
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
+# include <optional>
 # include <random>
 # include <memory>
 # include <utility>
 # include <set>
+# include <string>
 # include <list>
 # include <algorithm>
 # include <iostream>
@@ -92,6 +96,7 @@
 #include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
 #include <Base/UniqueNameManager.h>
+#include <Base/SystemHandler.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
 #include <Base/Type.h>
@@ -104,6 +109,7 @@
 #include "Application.h"
 #include "ApplicationDirectories.h"
 #include "ApplicationDirectoriesPy.h"
+#include "ApplicationPy.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "Services.h"
@@ -159,17 +165,37 @@
 
 #include "SafeMode.h"
 
-#ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
-# pragma warning( disable : 4535 )
-# if !defined(_DEBUG) && defined(HAVE_SEH)
-# define FC_SE_TRANSLATOR
-# endif
-
-# include <new.h>
-# include <eh.h> // VC exception handling
-#else // Ansi C/C++ new handler
-# include <new>
+#ifdef FC_OS_WIN32
+#include <windows.h>
 #endif
+
+std::optional<std::string> getenvUTF8(const char* name) {
+#ifdef FC_OS_WIN32
+    int wideLength = MultiByteToWideChar(CP_UTF8, 0, name, -1, nullptr, 0);
+    std::wstring wideName(wideLength ? wideLength - 1 : 0, L'\0');
+    if (wideLength) {
+        MultiByteToWideChar(CP_UTF8, 0, name, -1, wideName.data(), wideLength);
+    }
+
+    DWORD needed = GetEnvironmentVariableW(wideName.c_str(), nullptr, 0);
+    if (needed == 0) {
+        return std::nullopt;
+    }
+
+    std::wstring wideValue(needed, L'\0');
+    DWORD written = GetEnvironmentVariableW(wideName.c_str(), wideValue.data(), needed);
+    if (written == 0) {
+        return std::nullopt;
+    }
+    wideValue.resize(written);
+    return Base::Tools::wstringToString(wideValue);
+#else
+    if (const char* v = std::getenv(name)) {
+        return std::string(v);
+    }
+    return std::nullopt;
+#endif
+}
 
 FC_LOG_LEVEL_INIT("App", true, true)
 
@@ -275,7 +301,7 @@ void Application::setupPythonTypes()
     Base::PyGILStateLocker lock;
     PyObject* modules = PyImport_GetModuleDict();
 
-    ApplicationMethods = Application::Methods;
+    ApplicationMethods = ApplicationPy::Methods;
     PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
     if (!pAppModule) {
         PyErr_Clear();
@@ -425,14 +451,6 @@ void Application::setupPythonException(PyObject* module)
 //**************************************************************************
 // Interface
 
-/// get called by the document when the name is changing
-void Application::renameDocument(const char *OldName, const char *NewName)
-{
-    (void)OldName;
-    (void)NewName;
-    throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
-}
-
 Document* Application::newDocument(const char * proposedName, const char * proposedLabel, DocumentInitFlags CreateFlags)
 {
     bool isUsingDefaultName = Base::Tools::isNullOrEmpty(proposedName);
@@ -516,6 +534,11 @@ Document* Application::newDocument(const char * proposedName, const char * propo
         setActiveDocument(oldActiveDoc);
     }
     return doc;
+}
+
+bool Application::closeDocument(const Document* doc)
+{
+    return closeDocument(doc->getName());
 }
 
 bool Application::closeDocument(const char* name)
@@ -651,8 +674,8 @@ struct DocTiming {
 class DocOpenGuard {
 public:
     bool &flag;
-    boost::signals2::signal<void ()> &signal;
-    DocOpenGuard(bool &f, boost::signals2::signal<void ()> &s)
+    fastsignals::signal<void ()> &signal;
+    DocOpenGuard(bool &f, fastsignals::signal<void ()> &s)
         :flag(f),signal(s)
     {
         flag = true;
@@ -932,7 +955,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     if (!File.exists()) {
         std::stringstream str;
         str << "File '" << FileName << "' does not exist!";
-        throw Base::FileSystemError(str.str().c_str());
+        throw Base::FileSystemError(str.str());
     }
 
     // Before creating a new document we check whether the document is already open
@@ -963,7 +986,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
                         // add it to _pendingDocsReopen to delay reloading.
                         for(auto obj2 : doc->getObjects())
                             objNames.emplace_back(obj2->getNameInDocument());
-                        _pendingDocMap[doc->FileName.getValue()] = std::move(objNames);
+                        _pendingDocMap[doc->FileName.getValue()] = objNames;
                         break;
                     }
                 }
@@ -1308,11 +1331,11 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
     return It->second->GetGroup(cName.c_str());
 }
 
-void Application::addImportType(const char* Type, const char* ModuleName)
+void Application::addImportType(const char* filter, const char* moduleName)
 {
     FileTypeItem item;
-    item.filter = Type;
-    item.module = ModuleName;
+    item.filter = filter;
+    item.module = moduleName;
 
     // Extract each filetype from 'Type' literal
     std::string::size_type pos = item.filter.find("*.");
@@ -1325,8 +1348,8 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     }
 
     // Due to branding stuff replace "FreeCAD" with the branded application name
-    if (strncmp(Type, "FreeCAD", 7) == 0) {
-        std::string AppName = Config()["ExeName"];
+    if (strncmp(filter, "FreeCAD", 7) == 0) {
+        std::string AppName = getExecutableName();
         AppName += item.filter.substr(7);
         item.filter = std::move(AppName);
         // put to the front of the array
@@ -1337,28 +1360,25 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     }
 }
 
-void Application::changeImportModule(const char* Type, const char* OldModuleName, const char* NewModuleName)
+void Application::changeImportModule(const char* filter, const char* oldModuleName, const char* newModuleName)
 {
     for (auto& it : _mImportTypes) {
-        if (it.filter == Type && it.module == OldModuleName) {
-            it.module = NewModuleName;
+        if (it.filter == filter && it.module == oldModuleName) {
+            it.module = newModuleName;
             break;
         }
     }
 }
 
-std::vector<std::string> Application::getImportModules(const char* Type) const
+std::vector<std::string> Application::getImportModules(const std::string& extension) const
 {
     std::vector<std::string> modules;
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (boost::iequals(extension, jt)) {
                 modules.push_back(it.module);
+            }
         }
     }
 
@@ -1377,16 +1397,13 @@ std::vector<std::string> Application::getImportModules() const
     return modules;
 }
 
-std::vector<std::string> Application::getImportTypes(const char* Module) const
+std::vector<std::string> Application::getImportTypes(const std::string& Module) const
 {
     std::vector<std::string> types;
     for (const auto & it : _mImportTypes) {
-#ifdef __GNUC__
-        if (strcasecmp(Module,it.module.c_str()) == 0)
-#else
-        if (_stricmp(Module,it.module.c_str()) == 0)
-#endif
+        if (boost::iequals(Module, it.module)) {
             types.insert(types.end(), it.types.begin(), it.types.end());
+        }
     }
 
     return types;
@@ -1405,18 +1422,15 @@ std::vector<std::string> Application::getImportTypes() const
     return types;
 }
 
-std::map<std::string, std::string> Application::getImportFilters(const char* Type) const
+std::map<std::string, std::string> Application::getImportFilters(const std::string& extension) const
 {
     std::map<std::string, std::string> moduleFilter;
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (boost::iequals(extension, jt)) {
                 moduleFilter[it.filter] = it.module;
+            }
         }
     }
 
@@ -1433,11 +1447,11 @@ std::map<std::string, std::string> Application::getImportFilters() const
     return filter;
 }
 
-void Application::addExportType(const char* Type, const char* ModuleName)
+void Application::addExportType(const char* filter, const char* moduleName)
 {
     FileTypeItem item;
-    item.filter = Type;
-    item.module = ModuleName;
+    item.filter = filter;
+    item.module = moduleName;
 
     // Extract each filetype from 'Type' literal
     std::string::size_type pos = item.filter.find("*.");
@@ -1450,8 +1464,8 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     }
 
     // Due to branding stuff replace "FreeCAD" with the branded application name
-    if (strncmp(Type, "FreeCAD", 7) == 0) {
-        std::string AppName = Config()["ExeName"];
+    if (strncmp(filter, "FreeCAD", 7) == 0) {
+        std::string AppName = getExecutableName();
         AppName += item.filter.substr(7);
         item.filter = std::move(AppName);
         // put to the front of the array
@@ -1462,28 +1476,112 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     }
 }
 
-void Application::changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName)
+namespace {
+    // To enable changing languages while the program is running, cache the translatable export type
+    // entries so that their addition can be "replayed" when the language changes (after removing
+    // the originals).
+
+    struct TranslatableTypeCacheEntry {
+        std::string description;
+        const std::vector<std::string> extensions;
+        std::string moduleName;
+    };
+
+    class TranslatableTypeCache {
+    public:
+        TranslatableTypeCache() = default;
+        void addCacheEntry(TranslatableTypeCacheEntry entry) {
+            _cache.push_back(std::move(entry));
+        }
+        std::vector<TranslatableTypeCacheEntry> getCache() const {
+            return _cache;
+        }
+        void clear()
+        {
+            _cache.clear();
+        }
+    private:
+        std::vector<TranslatableTypeCacheEntry> _cache;
+    };
+
+    TranslatableTypeCache translatableExportTypeCache;
+
+    // Given a description string and a list of extensions, construct a type string that Qt's file
+    // dialogs will recognize
+    void appendTypeString(std::string &description, const std::vector<std::string> &extensions) {
+        description = fmt::format("{} (*.{})", description, fmt::join(extensions, " *."));
+    }
+}
+
+void Application::addTranslatableExportType(const std::string &description,
+                                            const std::vector<std::string> &extensions,
+                                            const std::string &moduleName)
+{
+    assert(!extensions.empty());  // Programming error, there must be extensions
+
+    // Branding: replace "FreeCAD" in a file type description with the branded application name
+    auto replaceFreeCAD =
+    [](std::string& s)
+    {
+        constexpr std::string_view freecad = "FreeCAD";
+        if (auto pos = s.find(freecad); pos != std::string::npos) {
+            s.replace(pos, freecad.size(), getExecutableName());
+            return true;  // Contained the app name
+        }
+        return false;  // Did NOT contain the app name
+    };
+
+    translatableExportTypeCache.addCacheEntry({description, extensions, moduleName});
+    auto translatedDescription = QCoreApplication::translate("FileFormat", description.c_str()).toStdString();
+    bool containsAppName = replaceFreeCAD(translatedDescription);  // Run *AFTER* translation
+    appendTypeString(translatedDescription, extensions);
+
+    FileTypeItem item;
+    item.filter = translatedDescription;
+    item.module = moduleName;
+    item.types = extensions;
+    item.translatable = true;
+
+    if (containsAppName) {
+        // put to the front of the array
+        _mExportTypes.insert(_mExportTypes.begin(),std::move(item));
+    }
+    else {
+        _mExportTypes.push_back(std::move(item));
+    }
+}
+
+void Application::retranslateExportTypes()
+{
+    auto cache = translatableExportTypeCache.getCache();
+    translatableExportTypeCache.clear();
+    std::erase_if(_mExportTypes, [](const FileTypeItem& item) {
+        return item.translatable;
+    });
+    for (const auto &cacheEntry : translatableExportTypeCache.getCache()) {
+        addTranslatableExportType(cacheEntry.description, cacheEntry.extensions, cacheEntry.moduleName);
+    }
+}
+
+void Application::changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName)
 {
     for (auto& it : _mExportTypes) {
-        if (it.filter == Type && it.module == OldModuleName) {
-            it.module = NewModuleName;
+        if (it.filter == filter && it.module == oldModuleName) {
+            it.module = newModuleName;
             break;
         }
     }
 }
 
-std::vector<std::string> Application::getExportModules(const char* Type) const
+std::vector<std::string> Application::getExportModules(const std::string& extension) const
 {
     std::vector<std::string> modules;
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (boost::iequals(extension, jt)) {
                 modules.push_back(it.module);
+            }
         }
     }
 
@@ -1502,16 +1600,13 @@ std::vector<std::string> Application::getExportModules() const
     return modules;
 }
 
-std::vector<std::string> Application::getExportTypes(const char* Module) const
+std::vector<std::string> Application::getExportTypes(const std::string& Module) const
 {
     std::vector<std::string> types;
     for (const auto & it : _mExportTypes) {
-#ifdef __GNUC__
-        if (strcasecmp(Module,it.module.c_str()) == 0)
-#else
-        if (_stricmp(Module,it.module.c_str()) == 0)
-#endif
+        if (boost::iequals(Module, it.module)) {
             types.insert(types.end(), it.types.begin(), it.types.end());
+        }
     }
 
     return types;
@@ -1530,18 +1625,15 @@ std::vector<std::string> Application::getExportTypes() const
     return types;
 }
 
-std::map<std::string, std::string> Application::getExportFilters(const char* Type) const
+std::map<std::string, std::string> Application::getExportFilters(const std::string& extension) const
 {
     std::map<std::string, std::string> moduleFilter;
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (boost::iequals(extension, jt)) {
                 moduleFilter[it.filter] = it.module;
+            }
         }
     }
 
@@ -1758,175 +1850,59 @@ void Application::destructObserver()
     }
 }
 
-/** freecadNewHandler()
- * prints an error message and throws an exception
- */
-#ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
-int __cdecl freecadNewHandler(size_t size )
+namespace
 {
-    // throw an exception
-    throw Base::MemoryException();
-    return 0;
-}
-#else // Ansi C/C++ new handler
-static void freecadNewHandler ()
+void initExceptions()
 {
-    // throw an exception
-    throw Base::MemoryException();
+    // register exception producer types
+    // NOLINTBEGIN
+    new Base::ExceptionProducer<Base::AbortException>;
+    new Base::ExceptionProducer<Base::XMLBaseException>;
+    new Base::ExceptionProducer<Base::XMLParseException>;
+    new Base::ExceptionProducer<Base::XMLAttributeError>;
+    new Base::ExceptionProducer<Base::FileException>;
+    new Base::ExceptionProducer<Base::FileSystemError>;
+    new Base::ExceptionProducer<Base::BadFormatError>;
+    new Base::ExceptionProducer<Base::MemoryException>;
+    new Base::ExceptionProducer<Base::AccessViolation>;
+    new Base::ExceptionProducer<Base::AbnormalProgramTermination>;
+    new Base::ExceptionProducer<Base::UnknownProgramOption>;
+    new Base::ExceptionProducer<Base::ProgramInformation>;
+    new Base::ExceptionProducer<Base::TypeError>;
+    new Base::ExceptionProducer<Base::ValueError>;
+    new Base::ExceptionProducer<Base::IndexError>;
+    new Base::ExceptionProducer<Base::NameError>;
+    new Base::ExceptionProducer<Base::ImportError>;
+    new Base::ExceptionProducer<Base::AttributeError>;
+    new Base::ExceptionProducer<Base::RuntimeError>;
+    new Base::ExceptionProducer<Base::BadGraphError>;
+    new Base::ExceptionProducer<Base::NotImplementedError>;
+    new Base::ExceptionProducer<Base::ZeroDivisionError>;
+    new Base::ExceptionProducer<Base::ReferenceError>;
+    new Base::ExceptionProducer<Base::ExpressionError>;
+    new Base::ExceptionProducer<Base::ParserError>;
+    new Base::ExceptionProducer<Base::UnicodeError>;
+    new Base::ExceptionProducer<Base::OverflowError>;
+    new Base::ExceptionProducer<Base::UnderflowError>;
+    new Base::ExceptionProducer<Base::UnitsMismatchError>;
+    new Base::ExceptionProducer<Base::CADKernelError>;
+    new Base::ExceptionProducer<Base::RestoreError>;
+    new Base::ExceptionProducer<Base::PropertyError>;
+    // NOLINTEND
 }
-#endif
-
-#if defined(FC_OS_LINUX)
-#include <execinfo.h>
-#include <dlfcn.h>
-#include <cxxabi.h>
-
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <sstream>
-
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif // HAVE_CONFIG_H
-
-// This function produces a stack backtrace with demangled function & method names.
-void printBacktrace(size_t skip=0)
-{
-#if defined HAVE_BACKTRACE_SYMBOLS
-    void *callstack[128];
-    size_t nMaxFrames = sizeof(callstack) / sizeof(callstack[0]);
-    size_t nFrames = backtrace(callstack, nMaxFrames);
-    char **symbols = backtrace_symbols(callstack, nFrames);
-
-    for (size_t i = skip; i < nFrames; i++) {
-        char *demangled = nullptr;
-        int status = -1;
-        Dl_info info;
-        if (dladdr(callstack[i], &info) && info.dli_sname && info.dli_fname) {
-            if (info.dli_sname[0] == '_') {
-                demangled = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, &status);
-            }
-        }
-
-        std::stringstream str;
-        if (status == 0) {
-            void* offset = (void*)((char*)callstack[i] - (char*)info.dli_saddr);
-            str << "#" << (i-skip) << "  " << callstack[i] << " in " << demangled << " from " << info.dli_fname << "+" << offset << '\n';
-            free(demangled);
-        }
-        else {
-            str << "#" << (i-skip) << "  " << symbols[i] << '\n';
-        }
-
-        // cannot directly print to cerr when using --write-log
-        std::cerr << str.str();
-    }
-
-    free(symbols);
-#else //HAVE_BACKTRACE_SYMBOLS
-    (void)skip;
-    std::cerr << "Cannot print the stacktrace because the C runtime library doesn't provide backtrace or backtrace_symbols\n";
-#endif
 }
-#endif
-
-void segmentation_fault_handler(int sig)
-{
-#if defined(FC_OS_LINUX)
-    (void)sig;
-    std::cerr << "Program received signal SIGSEGV, Segmentation fault.\n";
-    printBacktrace(2);
-#if defined(FC_DEBUG)
-    abort();
-#else
-    _exit(1);
-#endif
-#else
-    switch (sig) {
-        case SIGSEGV:
-            std::cerr << "Illegal storage access..." << '\n';
-#if !defined(_DEBUG)
-            throw Base::AccessViolation("Illegal storage access! Please save your work under a new file name and restart the application!");
-#endif
-            break;
-        case SIGABRT:
-            std::cerr << "Abnormal program termination..." << '\n';
-#if !defined(_DEBUG)
-            throw Base::AbnormalProgramTermination("Break signal occurred");
-#endif
-            break;
-        default:
-            std::cerr << "Unknown error occurred..." << '\n';
-            break;
-    }
-#endif // FC_OS_LINUX
-}
-
-void unhandled_exception_handler()
-{
-    std::cerr << "Terminating..." << '\n';
-}
-
-void unexpection_error_handler()
-{
-    std::cerr << "Unexpected error occurred..." << '\n';
-    // try to throw an exception and give the user chance to save their work
-#if !defined(_DEBUG)
-    throw Base::AbnormalProgramTermination("Unexpected error occurred! Please save your work under a new file name and restart the application!");
-#else
-    terminate();
-#endif
-}
-
-#if defined(FC_SE_TRANSLATOR) // Microsoft compiler
-void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
-{
-    Q_UNUSED(pExp)
-    switch (code)
-    {
-    case EXCEPTION_ACCESS_VIOLATION:
-        throw Base::AccessViolation();
-    case EXCEPTION_FLT_DIVIDE_BY_ZERO:
-    case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        Base::Console().error("SEH exception (%u): Division by zero\n", code);
-        return;
-    }
-
-    std::stringstream str;
-    str << "SEH exception of type: " << code;
-    // general C++ SEH exception for things we don't need to handle separately....
-    throw Base::RuntimeError(str.str());
-}
-#endif
 
 void Application::init(int argc, char ** argv)
 {
     try {
-        // install our own new handler
-#ifdef _MSC_VER // Microsoft compiler
-        _set_new_handler ( freecadNewHandler ); // Setup new handler
-        _set_new_mode( 1 ); // Re-route malloc failures to new handler !
-#else   // Ansi compiler
-        std::set_new_handler (freecadNewHandler); // ANSI new handler
-#endif
-        // if an unexpected crash occurs we can install a handler function to
-        // write some additional information
-#if defined (_MSC_VER) // Microsoft compiler
-        std::signal(SIGSEGV,segmentation_fault_handler);
-        std::signal(SIGABRT,segmentation_fault_handler);
-        std::set_terminate(unhandled_exception_handler);
-           ::set_unexpected(unexpection_error_handler);
-#elif defined(FC_OS_LINUX)
-        std::signal(SIGSEGV,segmentation_fault_handler);
-#endif
-#if defined(FC_SE_TRANSLATOR)
-        _set_se_translator(my_se_translator_filter);
-#endif
+        Base::SystemHandler::installNewHandler();
+        Base::SystemHandler::installSegfaultHandler();
+
         initTypes();
 
         initConfig(argc,argv);
         initApplication();
+        initExceptions();
     }
     catch (...) {
         // force the log to flush
@@ -2166,6 +2142,7 @@ void Application::initTypes()
             (DocumentObject::getClassTypeId());
 
     // register exception producer types
+    // NOLINTBEGIN
     new Base::ExceptionProducer<Base::AbortException>;
     new Base::ExceptionProducer<Base::XMLBaseException>;
     new Base::ExceptionProducer<Base::XMLParseException>;
@@ -2198,6 +2175,7 @@ void Application::initTypes()
     new Base::ExceptionProducer<Base::CADKernelError>;
     new Base::ExceptionProducer<Base::RestoreError>;
     new Base::ExceptionProducer<Base::PropertyError>;
+    // NOLINTEND
 
     Base::registerServiceImplementation<CenterOfMassProvider>(new NullCenterOfMass);
 }
@@ -2600,7 +2578,7 @@ void Application::initConfig(int argc, char ** argv)
 
         auto moduleName = "FreeCAD";
         PyImport_AddModule(moduleName);
-        ApplicationMethods = Application::Methods;
+        ApplicationMethods = ApplicationPy::Methods;
         PyObject *pyModule = init_freecad_module();
         PyDict_SetItemString(sysModules, moduleName, pyModule);
         Py_DECREF(pyModule);
@@ -2761,9 +2739,9 @@ void Application::initConfig(int argc, char ** argv)
 
 void Application::SaveEnv(const char* s)
 {
-    const char *c = getenv(s);
-    if (c)
-        mConfig[s] = c;
+    if (auto c = getenvUTF8(s)) {
+        mConfig[s] = c.value();
+    }
 }
 
 void Application::initApplication()
@@ -2828,7 +2806,18 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
     std::list<std::string> processed;
     Base::Console().log("Init: Processing command line files\n");
     for (const auto & it : files) {
+
         Base::FileInfo file(it);
+        // Can we safely remove the isSymlink check and directly query the canonical
+        // path for every string? The reason for avoiding it currently is that
+        // getCannonicalPath will log an error if the file doesn't exist
+        if (file.isSymlink()) {
+            if (auto cannonicalPath = file.getCannonicalPath()) {
+                file = Base::FileInfo(*cannonicalPath);
+            } else {
+                Base::Console().error("Failed to process symlink file: %s\n", file.filePath());
+            }
+        }
 
         Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
 
@@ -2855,8 +2844,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                 }
             }
             else {
-                std::string ext = file.extension();
-                std::vector<std::string> mods = GetApplication().getImportModules(ext.c_str());
+                std::vector<std::string> mods = GetApplication().getImportModules(file.extension());
                 if (!mods.empty()) {
                     std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.filePath().c_str());
                     escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
@@ -2889,7 +2877,6 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
 
 void Application::processCmdLineFiles()
 {
-    // process files passed to command line
     const std::list<std::string> files = getCmdLineFiles();
     const std::list<std::string> processed = processFiles(files);
 
@@ -2914,9 +2901,8 @@ void Application::processCmdLineFiles()
         output = Base::Tools::escapeEncodeFilename(output);
 
         const Base::FileInfo fi(output);
-        const std::string ext = fi.extension();
         try {
-            const std::vector<std::string> mods = GetApplication().getExportModules(ext.c_str());
+            const std::vector<std::string> mods = GetApplication().getExportModules(fi.extension());
             if (!mods.empty()) {
                 Base::Interpreter().loadModule(mods.front().c_str());
                 Base::Interpreter().runStringArg("import %s",mods.front().c_str());
@@ -3432,9 +3418,9 @@ std::string Application::FindHomePath(const char* sCall)
     }
 
     // should be an absolute path now
-    std::string::size_type pos = absPath.find_last_of("/");
+    std::string::size_type pos = absPath.find_last_of('/');
     homePath.assign(absPath,0,pos);
-    pos = homePath.find_last_of("/");
+    pos = homePath.find_last_of('/');
     homePath.assign(homePath,0,pos+1);
 
     return homePath;
@@ -3584,14 +3570,18 @@ void Application::addModuleInfo(QTextStream& str, const QString& modPath, bool& 
         firstMod = false;
         str << "Installed mods: \n";
     }
-    str << "  * " << (mod.isDir() ? QDir(modPath).dirName() : mod.fileName());
+    QString addonName = mod.isDir() ? QDir(modPath).dirName() : mod.fileName();
+    QString versionString;
     try {
         auto metadataFile =
             std::filesystem::path(mod.absoluteFilePath().toStdString()) / "package.xml";
         if (std::filesystem::exists(metadataFile)) {
             App::Metadata metadata(metadataFile);
+            if (!metadata.name().empty()) {
+                addonName = QString::fromStdString(metadata.name());
+            }
             if (metadata.version() != App::Meta::Version()) {
-                str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());
+                versionString = QString::fromStdString(" " + metadata.version().str());
             }
         }
     }
@@ -3600,6 +3590,7 @@ void Application::addModuleInfo(QTextStream& str, const QString& modPath, bool& 
                                                                   QChar::fromLatin1(' '));
         str << " (Malformed metadata: " << what << ")";
     }
+    str << "  * " << addonName << versionString;
     QFileInfo disablingFile(mod.absoluteFilePath(), QStringLiteral("ADDON_DISABLED"));
     if (disablingFile.exists()) {
         str << " (Disabled)";
@@ -3622,7 +3613,7 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
     const QString deskSess =
         QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),
                                                     QString());
-  
+
     const QString major = getValueOrEmpty(mConfig, "BuildVersionMajor");
     const QString minor = getValueOrEmpty(mConfig, "BuildVersionMinor");
     const QString point = getValueOrEmpty(mConfig, "BuildVersionPoint");
@@ -3711,24 +3702,23 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
 #endif
     str << "xerces-c " << fcXercescVersion << ", ";
 
-    const char* cmd = "import ifcopenshell\n"
-                  "version = ifcopenshell.version";
-    PyObject * ifcopenshellVer = nullptr;
-
     try {
-        ifcopenshellVer = Base::Interpreter().getValue(cmd, "version");
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().log("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
-    }
-
-    if (ifcopenshellVer) {
-        const char* ifcopenshellVerAsStr = PyUnicode_AsUTF8(ifcopenshellVer);
-
-        if (ifcopenshellVerAsStr) {
-            str << "IfcOpenShell " << ifcopenshellVerAsStr << ", ";
+        Base::PyGILStateLocker lock;
+        Py::Module module(PyImport_ImportModule("ifcopenshell"), true);
+        if (!module.isNull() && module.hasAttr("version")) {
+            Py::String version(module.getAttr("version"));
+            auto ver_str = static_cast<std::string>(version);
+            str << "IfcOpenShell " << ver_str.c_str() << ", ";
         }
-        Py_DECREF(ifcopenshellVer);
+        else {
+            Base::Console().log("Module 'ifcopenshell' not found (safe to ignore, unless using "
+                                "the BIM workbench and IFC).\n");
+        }
+    }
+    catch (const Py::Exception&) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        Base::Console().log("%s\n", e.what());
     }
 
 #if defined(HAVE_OCC_VERSION)

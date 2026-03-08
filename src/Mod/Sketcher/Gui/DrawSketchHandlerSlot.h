@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerSlot_H
-#define SKETCHERGUI_DrawSketchHandlerSlot_H
+#pragma once
 
 #include <sstream>
 
@@ -717,6 +716,3 @@ void DSHSlotController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerSlot_H

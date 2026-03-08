@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESH_PRECOMPILED_H
-#define MESH_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -73,5 +72,3 @@
 #include <xercesc/util/XMLUni.hpp>
 #include <xercesc/util/XMLUniDefs.hpp>
 #include <xercesc/util/XercesVersion.hpp>
-
-#endif

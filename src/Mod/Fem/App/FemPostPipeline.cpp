@@ -349,45 +349,7 @@ void FemPostPipeline::onChanged(const Property* prop)
         m_transform_filter->Update();
 
         // change the frame enum to correct values
-        std::string val;
-        if (Frame.hasEnums() && Frame.getValue() >= 0) {
-            val = Frame.getValueAsString();
-        }
-
-        std::vector<double> frames = m_source_algorithm->getFrameValues();
-        std::vector<std::string> frame_values;
-        if (frames.empty()) {
-            frame_values.push_back("No frames available");
-        }
-        else {
-            auto unit = getFrameUnit();
-            for (const double& frame : frames) {
-                auto quantity = Base::Quantity(frame, unit);
-                frame_values.push_back(quantity.getUserString());
-            }
-        }
-
-        App::Enumeration empty;
-        m_block_property = true;
-        Frame.setValue(empty);
-        m_frameEnum.setEnums(frame_values);
-        Frame.setValue(m_frameEnum);
-        Frame.purgeTouched();
-        m_block_property = false;
-
-        std::vector<std::string>::iterator it
-            = std::find(frame_values.begin(), frame_values.end(), val);
-        if (!val.empty() && it != frame_values.end()) {
-            // frame stays the same
-            m_block_property = true;
-            Frame.setValue(val.c_str());
-            m_block_property = false;
-        }
-        else {
-            // frame gets updated
-            Frame.setValue(long(0));
-        }
-
+        updateFrameValues();
         updateData();
         recomputeChildren();
     }
@@ -491,6 +453,47 @@ void FemPostPipeline::filterPipelineChanged(FemPostFilter*)
     onChanged(&Group);
 }
 
+void FemPostPipeline::updateFrameValues()
+{
+    std::string val;
+    if (Frame.hasEnums() && Frame.getValue() >= 0) {
+        val = Frame.getValueAsString();
+    }
+
+    std::vector<double> frames = m_source_algorithm->getFrameValues();
+    std::vector<std::string> frame_values;
+    if (frames.empty()) {
+        frame_values.push_back("No frames available");
+    }
+    else {
+        auto unit = getFrameUnit();
+        for (const double& frame : frames) {
+            auto quantity = Base::Quantity(frame, unit);
+            frame_values.push_back(quantity.getUserString());
+        }
+    }
+
+    App::Enumeration empty;
+    m_block_property = true;
+    Frame.setValue(empty);
+    m_frameEnum.setEnums(frame_values);
+    Frame.setValue(m_frameEnum);
+    Frame.purgeTouched();
+    m_block_property = false;
+
+    std::vector<std::string>::iterator it = std::find(frame_values.begin(), frame_values.end(), val);
+    if (!val.empty() && it != frame_values.end()) {
+        // frame stays the same
+        m_block_property = true;
+        Frame.setValue(val.c_str());
+        m_block_property = false;
+    }
+    else {
+        // frame gets updated
+        Frame.setValue(long(0));
+    }
+}
+
 bool FemPostPipeline::hasFrames()
 {
     // lazy implementation
@@ -545,6 +548,41 @@ Base::Unit FemPostPipeline::getFrameUnit()
     }
     auto qty = Base::Quantity(0, vtkStringArray::SafeDownCast(TimeInfo)->GetValue(1));
     return qty.getUnit();
+}
+
+void FemPostPipeline::setTimeInfo(const std::string& frameType, const Base::Unit& unit)
+{
+    vtkSmartPointer<vtkDataObject> data = Data.getValue();
+
+    // check if we have frame data
+    if (!data || !data->IsA("vtkMultiBlockDataSet")) {
+        return;
+    }
+
+    auto multiblock = vtkMultiBlockDataSet::SafeDownCast(data);
+    auto timeInfo = vtkSmartPointer<vtkStringArray>::New();
+    timeInfo->SetName("TimeInfo");
+    timeInfo->InsertNextValue(frameType);
+    timeInfo->InsertNextValue(unit.getString());
+
+    auto fd_block = multiblock->GetFieldData();
+    if (fd_block) {
+        // add time info to multiblock
+        fd_block->AddArray(timeInfo);
+        for (unsigned int i = 0; i < multiblock->GetNumberOfBlocks(); ++i) {
+            vtkDataObject* grid = multiblock->GetBlock(i);
+            if (!grid) {
+                continue;
+            }
+            auto fd_grid = grid->GetFieldData();
+            if (fd_grid) {
+                // add time info to each grid
+                fd_grid->AddArray(timeInfo);
+            }
+        }
+    }
+
+    updateFrameValues();
 }
 
 std::vector<double> FemPostPipeline::getFrameValues()

@@ -110,6 +110,11 @@ bool CCurve::CheckForArc(
     Point p2(might_be_an_arc.back()->m_p);
     Circle c(p0, p1, p2);
 
+    const double max_arc_radius = 1.0 / CArea::get_accuracy();
+    if (c.m_radius > max_arc_radius) {
+        return false;
+    }
+
     const CVertex* current_vt = &prev_vt;
     // It seems that ClipperLib's offset ArcTolerance (same as m_accuracy here)
     // is not exactly what's documented at https://goo.gl/4odfQh. Test shows the

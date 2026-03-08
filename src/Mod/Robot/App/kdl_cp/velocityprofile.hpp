@@ -44,8 +44,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_VELOCITYPROFILE_H
-#define KDL_VELOCITYPROFILE_H
+#pragma once
 
 #include "utilities/utility.h"
 #include "utilities/utility_io.h"
@@ -104,6 +103,3 @@ class VelocityProfile
 		virtual ~VelocityProfile() {}
 	};
 }
-
-
-#endif

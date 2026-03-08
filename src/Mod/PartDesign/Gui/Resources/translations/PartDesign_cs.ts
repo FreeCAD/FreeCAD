@@ -947,7 +947,7 @@ aby se zabránilo sebe.</translation>
       <translation type="unfinished">Duplicate a Part Design object</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1105"/>
+      <location filename="../../CommandBody.cpp" line="1110"/>
       <source>Move a feature inside body</source>
       <translation type="unfinished">Move a feature inside body</translation>
     </message>
@@ -1423,12 +1423,12 @@ If zero, it is equal to Radius2</translation>
       <translation>Průnik</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="50"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="51"/>
       <source>Boolean Parameters</source>
       <translation type="unfinished">Boolean Parameters</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="82"/>
       <source>Remove</source>
       <translation>Odstranit</translation>
     </message>
@@ -1543,17 +1543,17 @@ If zero, it is equal to Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>Empty body list</source>
       <translation>Prázdný seznam těles</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>The body list cannot be empty</source>
       <translation>Seznam těles nemůže být prázdný</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="395"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="399"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolean: Přijetí: Chyba vstupu</translation>
     </message>
@@ -2771,19 +2771,19 @@ měřena ve stanoveném směru</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="242"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="254"/>
       <source>Base X-axis</source>
       <translation type="unfinished">Base X-axis</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="255"/>
       <source>Base Y-axis</source>
       <translation type="unfinished">Base Y-axis</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="244"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Base Z-axis</source>
       <translation type="unfinished">Base Z-axis</translation>
     </message>
@@ -2819,20 +2819,20 @@ měřena ve stanoveném směru</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="252"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="264"/>
       <source>Select reference…</source>
       <translation type="unfinished">Select reference…</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="87"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="195"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
       <source>Angle</source>
       <translation>Úhel</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="158"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="160"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="491"/>
       <source>Face</source>
       <translation>Plocha</translation>
     </message>
@@ -2842,32 +2842,32 @@ měřena ve stanoveném směru</translation>
       <translation type="unfinished">Recompute on change</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="199"/>
       <source>To last</source>
       <translation>K poslední</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="200"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
       <source>Through all</source>
       <translation>Skrz vše</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>To first</source>
       <translation>K další</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
       <source>Up to face</source>
       <translation>K ploše</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="216"/>
       <source>Two angles</source>
       <translation type="unfinished">Two angles</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="467"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
       <source>No face selected</source>
       <translation>Nevybrána žádná plocha</translation>
     </message>
@@ -3105,27 +3105,27 @@ měřena ve stanoveném směru</translation>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1090"/>
+      <location filename="../../CommandBody.cpp" line="1095"/>
       <source>Move Feature After…</source>
       <translation type="unfinished">Move Feature After…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1091"/>
+      <location filename="../../CommandBody.cpp" line="1096"/>
       <source>Select a feature from the list</source>
       <translation>Vyberte prvek ze seznamu</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1178"/>
+      <location filename="../../CommandBody.cpp" line="1183"/>
       <source>Move Tip</source>
       <translation type="unfinished">Move Tip</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1184"/>
+      <location filename="../../CommandBody.cpp" line="1189"/>
       <source>Set tip to last feature?</source>
       <translation type="unfinished">Set tip to last feature?</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1179"/>
+      <location filename="../../CommandBody.cpp" line="1184"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>Přesunutý prvek se zobrazí za aktuálně nastavenou špičkou.</translation>
     </message>
@@ -3404,8 +3404,8 @@ To může vést k neočekávaným výsledkům.</translation>
       <location filename="../../CommandBody.cpp" line="691"/>
       <location filename="../../CommandBody.cpp" line="699"/>
       <location filename="../../CommandBody.cpp" line="711"/>
-      <location filename="../../CommandBody.cpp" line="1056"/>
-      <location filename="../../CommandBody.cpp" line="1066"/>
+      <location filename="../../CommandBody.cpp" line="1061"/>
+      <location filename="../../CommandBody.cpp" line="1071"/>
       <source>Selection error</source>
       <translation>Chyba výběru</translation>
     </message>
@@ -3432,27 +3432,27 @@ To může vést k neočekávaným výsledkům.</translation>
       <translation>Žádné další těleso k přesunu</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1057"/>
+      <location filename="../../CommandBody.cpp" line="1062"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>Nelze přesunout základní prvek tělesa.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1067"/>
+      <location filename="../../CommandBody.cpp" line="1072"/>
       <source>Select one or more features from the same body.</source>
       <translation>Vyberte jeden nebo více prvků ze stejného tělesa.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1082"/>
+      <location filename="../../CommandBody.cpp" line="1087"/>
       <source>Beginning of the body</source>
       <translation>Začátek tělesa</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1163"/>
+      <location filename="../../CommandBody.cpp" line="1168"/>
       <source>Dependency violation</source>
       <translation>Porušení závislosti</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1164"/>
+      <location filename="../../CommandBody.cpp" line="1169"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3472,18 +3472,18 @@ To může vést k neočekávaným výsledkům.</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="228"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
       <source>Vertical sketch axis</source>
       <translation>Svislá skicovací osa</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="440"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="229"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
       <source>Horizontal sketch axis</source>
       <translation>Vodorovná skicovací osa</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
       <source>Construction line %1</source>
       <translation>Konstrukční čára %1</translation>
     </message>
@@ -3522,12 +3522,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Pro použití tohoto prvku je potřeba, aby patřil k objektu tělesa v dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Prvek není díl</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Pro použití tohoto prvku je potřebné, aby patřil k objektu díl v dokumentu.</translation>
     </message>
@@ -4427,12 +4427,12 @@ nad 90: větší poloměr díry ve spodní části</translation>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="402"/>
+      <location filename="../../../App/Body.cpp" line="403"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Propojený objekt není PartDesign prvkem</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="411"/>
+      <location filename="../../../App/Body.cpp" line="412"/>
       <source>Tip shape is empty</source>
       <translation>Tvar špičky je prázdný</translation>
     </message>
@@ -4469,18 +4469,18 @@ nad 90: větší poloměr díry ve spodní části</translation>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
       <location filename="../../../App/FeatureLoft.cpp" line="375"/>
       <location filename="../../../App/FeaturePipe.cpp" line="480"/>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="759"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="788"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4495,22 +4495,22 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Nepodporovaná booleovská operace</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="346"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation type="unfinished">Cannot create a pad with a total length of zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation type="unfinished">Cannot create a pocket with a total length of zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
       <translation type="unfinished">No extrusion geometry was generated.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="714"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
@@ -4518,7 +4518,7 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="750"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
       <source>Resulting shape is not a solid</source>
       <translation>Výsledný tvar není plné těleso</translation>
     </message>
@@ -4590,19 +4590,19 @@ nad 90: větší poloměr díry ve spodní části</translation>
   - vybraný náčrt nepatří k aktivnímu tělesu.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="395"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
       <source>Failed to obtain profile shape</source>
       <translation>Nepodařilo se získat tvar profilu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Vytvoření selhalo, protože směr je kolmý k normálovému vektoru náčrtu</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="472"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
       <source>Creating a face from sketch failed</source>
       <translation>Vytvoření plochy z náčrtu selhalo</translation>
     </message>
@@ -4618,14 +4618,14 @@ nad 90: větší poloměr díry ve spodní části</translation>
       <translation>Osa rotace protíná náčrt</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="295"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="264"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="263"/>
       <source>Could not revolve the sketch!</source>
       <translation>Nelze orotovat náčrt!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="307"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="276"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="275"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Nelze vytvořit plochu z náčrtu.
@@ -4843,7 +4843,7 @@ Protínání entit náčrtu nebo několika ploch v náčrtu není povoleno pro v
       <translation>Nepodařilo se vytvořit obal</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Nelze vytvořit plochu z náčrtu.
@@ -5083,7 +5083,7 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
       <translation>Vztažná osa je neplatná</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
       <source>Fusion with base feature failed</source>
       <translation>Sjednocení se základním prvkem selhalo</translation>
     </message>
@@ -5098,17 +5098,17 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
       <translation>S transformovanou funkcí nejsou spojeny žádné originály.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="326"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Nelze transformovat neplatný podpůrný tvar</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="377"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="397"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Tvar přídavného/odečtového prvku je prázdný</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="368"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="388"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Lze transformovat pouze přídavné a odečtové prvky</translation>
     </message>
@@ -5311,7 +5311,7 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="823"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="835"/>
       <source>Revolution Parameters</source>
       <translation type="unfinished">Revolution Parameters</translation>
     </message>
@@ -5319,7 +5319,7 @@ Nejsou povoleny protínající se prvky náčrtu nebo více ploch v náčrtu.</t
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="833"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="845"/>
       <source>Groove Parameters</source>
       <translation type="unfinished">Groove Parameters</translation>
     </message>

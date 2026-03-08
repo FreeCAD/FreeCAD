@@ -91,11 +91,11 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         # Header contains a time stamp that messes up unit testing.
         # Only test length of result.
         gcode = self.post.export()[0][1]
-        self.assertEqual(28, len(gcode.splitlines()))
+        self.assertEqual(27, len(gcode.splitlines()))
         # Test without header
         expected = """%
 (BEGIN PREAMBLE)
-G17 G54 G40 G49 G80 G90
+G17 G54 G40 G49 G80 G90 G94
 G21
 (BEGIN OPERATION: TC: DEFAULT TOOL)
 (MACHINE UNITS: MM/MIN)
@@ -117,7 +117,6 @@ G54
 M05
 G17 G54 G90 G80 G40
 M30
-%
 """
 
         self.profile_op.Path = Path.Path([])
@@ -131,7 +130,7 @@ M30
 
         # test without comments
         expected = """%
-G17 G54 G40 G49 G80 G90
+G17 G54 G40 G49 G80 G90 G94
 G21
 M05
 G28 G91 Z0
@@ -143,7 +142,6 @@ G54
 M05
 G17 G54 G90 G80 G40
 M30
-%
 """
 
         self.profile_op.Path = Path.Path([])
@@ -166,11 +164,11 @@ M30
         # Header contains a time stamp that messes up unit testing.
         # Only test length of result.
         gcode = self.post.export()[0][1]
-        self.assertEqual(32, len(gcode.splitlines()))
+        self.assertEqual(31, len(gcode.splitlines()))
         # Test without header
         expected = """%
 (BEGIN PREAMBLE)
-G17 G54 G40 G49 G80 G90
+G17 G54 G40 G49 G80 G90 G94
 G21
 (BEGIN OPERATION: TC: DEFAULT TOOL)
 (MACHINE UNITS: MM/MIN)
@@ -196,7 +194,6 @@ M6 T0
 M05
 G17 G54 G90 G80 G40
 M30
-%
 """
 
         self.profile_op.Path = Path.Path([])
@@ -210,7 +207,7 @@ M30
 
         # test without comments
         expected = """%
-G17 G54 G40 G49 G80 G90
+G17 G54 G40 G49 G80 G90 G94
 G21
 M05
 G28 G91 Z0
@@ -225,7 +222,6 @@ M6 T0
 M05
 G17 G54 G90 G80 G40
 M30
-%
 """
 
         self.profile_op.Path = Path.Path([])
@@ -290,9 +286,8 @@ M30
             "--no-header --no-comments --postamble='G0 Z50\nM30' --no-show-editor"
         )
         gcode = self.post.export()[0][1]
-        self.assertEqual(gcode.splitlines()[-3], "G0 Z50")
-        self.assertEqual(gcode.splitlines()[-2], "M30")
-        self.assertEqual(gcode.splitlines()[-1], "%")
+        self.assertEqual(gcode.splitlines()[-2], "G0 Z50")
+        self.assertEqual(gcode.splitlines()[-1], "M30")
 
     def test_inches(self):
         """
@@ -341,18 +336,16 @@ M30
         Test threading using drill cycle converted to tapping
         """
 
-        self.tool_controller.Tool.ShapeName = "tap"
+        self.tool_controller.Tool.ShapeType = "tap"
         c = Path.Command("G0 X10 Y10")
-        c2 = Path.Command("G81 X10 Y10 Z-10 R20 F1 P1 Q1")
+        c2 = Path.Command("G84 X10 Y10 Z-10 R20 F1 P1 Q1")
         self.profile_op.Path = Path.Path([c, c2])
         self.job.PostProcessorArgs = "--no-header --no-show-editor"
         gcode = self.post.export()[0][1]
         self.assertEqual(gcode.splitlines()[18], "G0 X10.000 Y10.000")
-        self.assertEqual(gcode.splitlines()[19], "G95")
-        self.assertEqual(gcode.splitlines()[20], "M29 S1000")
-        self.assertEqual(gcode.splitlines()[21], "G84 Z-10.000 R20.000 F1.000 P1.000 Q1.000")
-        self.assertEqual(gcode.splitlines()[22], "G80")
-        self.assertEqual(gcode.splitlines()[23], "G94")
+        self.assertEqual(gcode.splitlines()[19], "M29 S1000")
+        self.assertEqual(gcode.splitlines()[20], "G84 Z-10.000 R20.000 F1000.000 P1.000 Q1.000")
+        self.assertEqual(gcode.splitlines()[21], "G80")
 
     def test_comment(self):
         """

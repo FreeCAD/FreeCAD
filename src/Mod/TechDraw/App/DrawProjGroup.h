@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_FEATUREVIEWGROUP_H_
-#define TECHDRAW_FEATUREVIEWGROUP_H_
+#pragma once
 
 #include <QRectF>
 
@@ -209,5 +208,3 @@ protected:
 };
 
 } //namespace TechDraw
-
-#endif // TECHDRAW_FEATUREVIEWGROUP_H_

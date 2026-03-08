@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHCORE_SEGMENTATION_H
-#define MESHCORE_SEGMENTATION_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -407,5 +406,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESHCORE_SEGMENTATION_H

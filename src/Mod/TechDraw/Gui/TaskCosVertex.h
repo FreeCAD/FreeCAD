@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKCOSVERTEX_H
-#define TECHDRAWGUI_TASKCOSVERTEX_H
+#pragma once
 
 #include "QGTracker.h"
 
@@ -143,5 +142,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef TECHDRAWGUI_TASKCOSVERTEX_H

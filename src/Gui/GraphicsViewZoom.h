@@ -30,8 +30,7 @@
  *
  */
 
-#ifndef GRAPHICSVIEWZOOM_H
-#define GRAPHICSVIEWZOOM_H
+#pragma once
 
 #include <QObject>
 #include <QPointF>
@@ -91,5 +90,3 @@ private:
     QPointF target_scene_pos, target_viewport_pos;
     bool eventFilter(QObject* object, QEvent* event) override;
 };
-
-#endif  // GRAPHICSVIEWZOOM_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VTK_TOOLS_H
-#define FEM_VTK_TOOLS_H
+#pragma once
 
 #include <vtkDataSet.h>
 #include <vtkSmartPointer.h>
@@ -79,5 +78,3 @@ public:
     );
 };
 }  // namespace Fem
-
-#endif  // FEM_VTK_TOOLS_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_GLBUFFER_H
-#define GUI_GLBUFFER_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <map>
@@ -92,5 +91,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_GLBUFFER_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_CROSSSECTION_H
-#define PART_CROSSSECTION_H
+#pragma once
 
 #include <list>
 #include <TopTools_IndexedMapOfShape.hxx>
@@ -74,5 +73,3 @@ private:
 };
 
 }  // namespace Part
-
-#endif  // PART_CROSSSECTION_H

@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DATUMS_H
-#define DATUMS_H
+#pragma once
 
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
@@ -254,5 +253,3 @@ private:
 };
 
 }  // namespace App
-
-#endif /* end of include guard: DATUMS_H */

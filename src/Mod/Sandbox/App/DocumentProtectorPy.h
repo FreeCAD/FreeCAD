@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_DOCUMENTPROTECTORPY_H
-#define SANDBOX_DOCUMENTPROTECTORPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
@@ -84,6 +83,3 @@ private:
 };
 
 }
-
-#endif // SANDBOX_DOCUMENTPROTECTORPY_H
-

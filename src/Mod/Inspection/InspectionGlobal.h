@@ -24,26 +24,23 @@
 
 #include <FCGlobal.h>
 
-#ifndef INSPECTION_GLOBAL_H
-# define INSPECTION_GLOBAL_H
+#pragma once
 
 
 // Inspection
-# ifndef InspectionExport
-#  ifdef Inspection_EXPORTS
-#   define InspectionExport FREECAD_DECL_EXPORT
-#  else
-#   define InspectionExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef InspectionExport
+# ifdef Inspection_EXPORTS
+#  define InspectionExport FREECAD_DECL_EXPORT
+# else
+#  define InspectionExport FREECAD_DECL_IMPORT
 # endif
+#endif
 
 // InspectionGui
-# ifndef InspectionGuiExport
-#  ifdef InspectionGui_EXPORTS
-#   define InspectionGuiExport FREECAD_DECL_EXPORT
-#  else
-#   define InspectionGuiExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef InspectionGuiExport
+# ifdef InspectionGui_EXPORTS
+#  define InspectionGuiExport FREECAD_DECL_EXPORT
+# else
+#  define InspectionGuiExport FREECAD_DECL_IMPORT
 # endif
-
-#endif  // INSPECTION_GLOBAL_H
+#endif

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureBoolean_H
-#define PARTDESIGN_FeatureBoolean_H
+#pragma once
 
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/PropertyStandard.h>
@@ -73,6 +74,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureBoolean_H

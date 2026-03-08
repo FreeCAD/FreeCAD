@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,13 +23,12 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTransformedMessages_H
-#define GUI_TASKVIEW_TaskTransformedMessages_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 
 class Ui_TaskTransformedMessages;
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 
 namespace App
 {
@@ -61,5 +62,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskTransformedMessages_H

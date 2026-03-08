@@ -377,7 +377,7 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="179"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Krivulja na mreži</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="180"/>

@@ -21,12 +21,12 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="65"/>
       <source>Remove Edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="93"/>
@@ -74,12 +74,12 @@
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="83"/>
       <source>Remove Edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="95"/>
@@ -124,12 +124,12 @@
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="59"/>
       <source>Remove Edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
@@ -167,12 +167,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="76"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="95"/>
       <source>Remove Edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="217"/>
@@ -250,7 +250,7 @@
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
       <location filename="../../Blending/TaskBlendCurve.ui" line="119"/>
       <source>Edge</source>
-      <translation type="unfinished">Edge</translation>
+      <translation>Linje</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="43"/>
@@ -289,7 +289,7 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="55"/>
@@ -307,7 +307,7 @@
     <message>
       <location filename="../../Command.cpp" line="112"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="113"/>
@@ -354,7 +354,7 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="149"/>
@@ -372,7 +372,7 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="179"/>
@@ -392,7 +392,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
@@ -410,7 +410,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="286"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
@@ -428,7 +428,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="316"/>
@@ -441,7 +441,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="332"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="333"/>
@@ -496,7 +496,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="661"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>

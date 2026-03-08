@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MOUSESELECTION_H
-#define MOUSESELECTION_H
+#pragma once
 
 #include <bitset>
 #include <vector>
@@ -270,5 +269,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // MOUSESELECTION_H
