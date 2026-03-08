@@ -1262,31 +1262,42 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             IndexedName childIdx(child.indexedName);
             IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
             for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
-                ElementIDRefs sids;
-                MappedName name = child.elementMap->find(childIdx, &sids);
-                if (!name) {
-                    if ((child.tag == 0) || child.tag == masterTag) {
-                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            FC_WARN("unmapped element");  // NOLINT
+                if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                    ElementIDRefs sids;
+                    MappedName name = child.elementMap->find(childIdx, &sids);
+                    if (!name) {
+                        if ((child.tag == 0) || child.tag == masterTag) {
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                FC_WARN("unmapped element");  // NOLINT
+                            }
+                            continue;
                         }
-                        continue;
+                        name = MappedName(childIdx);
                     }
-                    name = MappedName(childIdx);
+                    ss.str("");
+                    encodeElementName(idx[0],
+                                    name,
+                                    ss,
+                                    &sids,
+                                    masterTag,
+                                    child.postfix.constData(),
+                                    child.tag);
+                    setElementName(idx, name, masterTag, &sids);
+                } else if (getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                    std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> names = child.elementMap->findAll(childIdx);
+
+                    for (const auto& name : names) {
+                        if (!name.first)
+                            continue;
+
+                        setElementName(idx, name.first, masterTag);
+                    }
                 }
-                ss.str("");
-                encodeElementName(idx[0],
-                                  name,
-                                  ss,
-                                  &sids,
-                                  masterTag,
-                                  child.postfix.constData(),
-                                  child.tag);
-                setElementName(idx, name, masterTag, &sids);
             }
             continue;
         }
 
-        if (entry->index != 1) {
+        if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1 && entry->index != 1) {
             // There is some ambiguity in child mapping. We need some
             // additional postfix for disambiguation. NOTE: We are not
             // using ComplexGeoData::indexPostfix() so we don't confuse
