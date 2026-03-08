@@ -342,13 +342,7 @@ void AssemblyObject::doDragStep()
         if (validateNewPlacements()) {
             setNewPlacements();
 
-            auto joints = getJoints(false);
-            for (auto* joint : joints) {
-                if (joint->Visibility.getValue()) {
-                    // redraw only the moving joint as its quite slow as its python code.
-                    redrawJointPlacement(joint);
-                }
-            }
+            redrawJointPlacements(getJoints(false));
         }
     }
     catch (...) {
