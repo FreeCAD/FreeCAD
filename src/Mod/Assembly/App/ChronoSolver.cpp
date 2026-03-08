@@ -270,6 +270,20 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
         return;
     }
 
+    // Normalize frame Z-axes: axis-based constraints (revolute, cylindrical,
+    // prismatic, etc.) require the two Z-axes to be parallel, not anti-parallel.
+    // FreeCAD's JCS frames for a pin-hole pair commonly have opposing Z-axes
+    // (one face-normal points "in", the other "out").  If we detect anti-parallel
+    // world Z-axes, flip frame1 by Rx(180°) — quaternion (e0=0,e1=1,e2=0,e3=0)
+    // — which negates its Z and Y axes while keeping X, making the axes parallel.
+    {
+        chrono::ChVector3d z1 = body1->GetRot().Rotate(frame1.GetRot().GetAxisZ());
+        chrono::ChVector3d z2 = body2->GetRot().Rotate(frame2.GetRot().GetAxisZ());
+        if (z1.Dot(z2) < 0.0) {
+            frame1.SetRot(frame1.GetRot() * chrono::ChQuaternion<double>(0.0, 1.0, 0.0, 0.0));
+        }
+    }
+
     // Helper: Initialize a ChLinkMate-based joint with body-relative frames
     auto initMate = [&](auto link) {
         link->SetName(joint->getName());
@@ -305,9 +319,24 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
             initMate(std::make_shared<chrono::ChLinkMateRevolute>());
             break;
 
-        case JointClass::CYLINDRICAL_JOINT:
-            initMate(std::make_shared<chrono::ChLinkMateCylindrical>());
+        case JointClass::CYLINDRICAL_JOINT: {
+            // Use the specialized 7-arg Initialize instead of the generic 5-arg form.
+            // The 7-arg form rebuilds each constraint frame from just the Z-axis
+            // direction (via SetFromAxisZ), producing canonical perpendicular X/Y axes.
+            // This avoids any spin offset in the stored frames that would cause the
+            // positional Jacobian (which projects displacement onto frame2's X/Y) to
+            // be poorly conditioned.  The Z-axes here have already been normalized
+            // (parallel, not anti-parallel) by the block above.
+            auto link = std::make_shared<chrono::ChLinkMateCylindrical>();
+            link->SetName(joint->getName());
+            link->Initialize(
+                body1, body2, true,
+                frame1.GetPos(), frame2.GetPos(),
+                frame1.GetRot().GetAxisZ(), frame2.GetRot().GetAxisZ()
+            );
+            sys->AddLink(link);
             break;
+        }
 
         case JointClass::TRANSLATIONAL_JOINT:
             initMate(std::make_shared<chrono::ChLinkMatePrismatic>());
@@ -489,7 +518,9 @@ void ChronoAssembly::addMotion(std::shared_ptr<Motion> /*motion*/)
 int ChronoAssembly::solveStatic()
 {
     // Satisfy all position-level constraints via Newton-Raphson iteration.
-    bool ok = sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+    // Use 50 iterations (vs the default 6) for better convergence on complex
+    // assemblies with closed kinematic chains and cylindrical joints.
+    bool ok = sys->DoAssembly(chrono::AssemblyLevel::POSITION, 50);
     if (ok) {
         solved = true;
         return 0;
@@ -514,7 +545,7 @@ int ChronoAssembly::runKinematic()
     sys->SetChTime(tStart);
 
     for (double t = tStart; t <= tEnd + dt * 0.5; t += dt) {
-        sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+        sys->DoAssembly(chrono::AssemblyLevel::POSITION, 50);
 
         // Snapshot current body positions
         std::vector<BodyFrameSnapshot> snapshot;
@@ -533,29 +564,22 @@ int ChronoAssembly::runKinematic()
 
 void ChronoAssembly::preDrag()
 {
-    sys->DoAssembly(chrono::AssemblyLevel::POSITION);
+    sys->DoAssembly(chrono::AssemblyLevel::POSITION, 50);
 }
 
-void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts)
+void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> /*draggedParts*/)
 {
-    // Mark dragged bodies as fixed during this solve step so Chrono
-    // treats them as anchors and moves all other bodies to satisfy constraints.
-    std::vector<std::shared_ptr<chrono::ChBody>> frozenBodies;
-    for (const auto& part : draggedParts) {
-        auto chronoPart = std::static_pointer_cast<ChronoPart>(part);
-        auto body = chronoPart->getBody();
-        if (!body->IsFixed()) {
-            body->SetFixed(true);
-            frozenBodies.push_back(body);
-        }
-    }
-
-    sys->DoAssembly(chrono::AssemblyLevel::POSITION);
-
-    // Restore
-    for (auto& body : frozenBodies) {
-        body->SetFixed(false);
-    }
+    // Do NOT freeze dragged bodies.  Fixing a dragged body at an arbitrary
+    // translated position over-constrains the system: the body's own joint
+    // constraints (e.g. a revolute joint to the grounded part) can no longer
+    // be satisfied, causing other bodies to drift incorrectly.
+    //
+    // Instead, the dragged body's suggested position (already pushed via
+    // pushPlacement) is used as the Newton-Raphson starting point.  The solver
+    // then finds the nearest valid configuration on the constraint manifold —
+    // for a revolute joint this means the body rotates around its pivot rather
+    // than translating away from it.
+    sys->DoAssembly(chrono::AssemblyLevel::POSITION, 50);
 }
 
 void ChronoAssembly::postDrag()
