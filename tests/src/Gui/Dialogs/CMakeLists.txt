@@ -1,1 +1,2 @@
 setup_qt_test(DlgVersionMigrator)
+setup_qt_test(DlgExpressionInput)

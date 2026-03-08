@@ -23,8 +23,11 @@
 
 #pragma once
 
+#include <string>
+
 #include <Gui/MetaTypes.h>
 #include <Gui/SpinBox.h>
+#include <Base/Type.h>
 
 #ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Quantity)
@@ -124,6 +127,9 @@ public:
     /// Gets the expression as a string
     QString expressionText() const;
     void evaluateExpression();
+    std::string takeUnboundExpressionText();
+    bool commitInlineExpressionText();
+    bool commitInlineExpressionTextForUi();
 
     /// Set the number portion selected
     void selectNumber();
@@ -175,6 +181,17 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
+    enum class InlineCommitResult
+    {
+        NotHandled,
+        Success,
+        Error
+    };
+
+    InlineCommitResult commitInlineExpression(QString& error);
+    Base::Type determineInlineAssignmentType() const;
+    void emitCommittedUnboundValue();
+    void showInlineExpressionError(const QString& error);
     void validateInput() override;
     void updateText(const Base::Quantity&);
     void updateEdit(const QString& text);

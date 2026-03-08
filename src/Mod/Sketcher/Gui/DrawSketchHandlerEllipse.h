@@ -798,6 +798,11 @@ void DSHEllipseController::addConstraints()
         auto x0 = onViewParameters[OnViewParameter::First]->getValue();
         auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
         auto angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+        auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+        auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+        auto firstRadiusExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+        auto angleExpr = onViewParameters[OnViewParameter::Fourth]->constraintExpression();
+        auto secondRadiusExpr = onViewParameters[OnViewParameter::Fifth]->constraintExpression();
 
         auto x0set = onViewParameters[OnViewParameter::First]->isSet;
         auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
@@ -821,24 +826,41 @@ void DSHEllipseController::addConstraints()
             // always goes with firstRadiusSet.
 
             auto constraintx0 = [&]() {
+                int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 ConstraintToAttachment(
                     GeoElementId(firstCurve, PointPos::mid),
                     GeoElementId::VAxis,
                     x0,
-                    handler->sketchgui->getObject()
+                    handler->sketchgui->getObject(),
+                    !x0Expr.empty()
+                );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    handler->sketchgui->getObject(),
+                    x0Expr
                 );
             };
 
             auto constrainty0 = [&]() {
+                int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 ConstraintToAttachment(
                     GeoElementId(firstCurve, PointPos::mid),
                     GeoElementId::HAxis,
                     y0,
-                    handler->sketchgui->getObject()
+                    handler->sketchgui->getObject(),
+                    !y0Expr.empty()
+                );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    handler->sketchgui->getObject(),
+                    y0Expr
                 );
             };
 
             auto constraintFirstRadius = [&]() {
+                int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 Gui::cmdAppObjectArgs(
                     handler->sketchgui->getObject(),
                     "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
@@ -848,9 +870,16 @@ void DSHEllipseController::addConstraints()
                     1,
                     handler->firstRadius
                 );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    handler->sketchgui->getObject(),
+                    firstRadiusExpr
+                );
             };
 
             auto constraintSecondRadius = [&]() {
+                int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 Gui::cmdAppObjectArgs(
                     handler->sketchgui->getObject(),
                     "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
@@ -860,14 +889,27 @@ void DSHEllipseController::addConstraints()
                     1,
                     handler->secondRadius
                 );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    handler->sketchgui->getObject(),
+                    secondRadiusExpr
+                );
             };
 
             auto constraintAngle = [&]() {
+                int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 Gui::cmdAppObjectArgs(
                     handler->sketchgui->getObject(),
                     "addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     firstLine,
                     angle
+                );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    handler->sketchgui->getObject(),
+                    angleExpr
                 );
             };
 
@@ -958,6 +1000,9 @@ void DSHEllipseController::addConstraints()
 
             auto x0 = toolWidget->getParameter(OnViewParameter::First);
             auto y0 = toolWidget->getParameter(OnViewParameter::Second);
+            auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+            auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+            auto radiusExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
 
             auto x0set = onViewParameters[OnViewParameter::First]->isSet;
             auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
@@ -966,29 +1011,52 @@ void DSHEllipseController::addConstraints()
             using namespace Sketcher;
 
             auto constraintx0 = [&]() {
+                int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 ConstraintToAttachment(
                     GeoElementId(firstCurve, PointPos::mid),
                     GeoElementId::VAxis,
                     x0,
-                    handler->sketchgui->getObject()
+                    handler->sketchgui->getObject(),
+                    !x0Expr.empty()
+                );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    handler->sketchgui->getObject(),
+                    x0Expr
                 );
             };
 
             auto constrainty0 = [&]() {
+                int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 ConstraintToAttachment(
                     GeoElementId(firstCurve, PointPos::mid),
                     GeoElementId::HAxis,
                     y0,
-                    handler->sketchgui->getObject()
+                    handler->sketchgui->getObject(),
+                    !y0Expr.empty()
+                );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    handler->sketchgui->getObject(),
+                    y0Expr
                 );
             };
 
             auto constraintradius = [&]() {
+                int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
                 Gui::cmdAppObjectArgs(
                     handler->sketchgui->getObject(),
                     "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                     firstCurve,
                     handler->firstRadius
+                );
+                applyExpressionToLatestConstraint(
+                    handler->getSketchObject(),
+                    oldConstraintCount,
+                    handler->sketchgui->getObject(),
+                    radiusExpr
                 );
             };
 
