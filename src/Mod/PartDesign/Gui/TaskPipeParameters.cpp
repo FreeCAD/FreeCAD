@@ -81,7 +81,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
             this, &TaskPipeParameters::onDeleteEdge);
 
     // Ctrl+A should select edges list, not tree view
-    QAction* selectAll = new QAction(tr("Select All"), this);
+    auto* selectAll = new QAction(tr("Select All"), this);
     selectAll->setShortcut(QKeySequence::SelectAll);
     selectAll->setShortcutContext(Qt::WidgetShortcut);
     ui->listWidgetReferences->addAction(selectAll);
