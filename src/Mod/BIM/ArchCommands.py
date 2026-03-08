@@ -1727,3 +1727,165 @@ def makeIfcSpreadsheet(archobj=None):
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
     else:
         return ifc_spreadsheet
+
+
+def getFaceName(shape, view_vector=None):
+    """
+    Returns the name of the best candidate face (e.g. 'Face1') for a covering.
+    Heuristics:
+    1. Filter for faces with the largest area (within 5% tolerance).
+    2. Preference for face opposing the view direction (Camera facing).
+    """
+    # Allow passing an App Object directly
+    if hasattr(shape, "Shape"):
+        shape = shape.Shape
+
+    if not hasattr(shape, "Faces") or not shape.Faces:
+        return None
+
+    # 1. Gather Face Data: (Name, FaceObj, Area)
+    faces_data = []
+    for i, f in enumerate(shape.Faces):
+        # Check for planarity
+        if f.findPlane() is None:
+            continue
+        faces_data.append((f"Face{i+1}", f, f.Area))
+
+    # 2. Filter by Area (Keep faces within 95% of max area)
+    if not faces_data:
+        return None
+
+    faces_data.sort(key=lambda x: x[2], reverse=True)
+    max_area = faces_data[0][2]
+    candidates = [x for x in faces_data if x[2] >= max_area * 0.95]
+
+    if not candidates:
+        return None
+
+    # 3. Heuristic: View Direction (Camera facing)
+    if view_vector:
+        # Dot product: Lower value means vectors are opposing (face looks at camera)
+        candidates.sort(key=lambda x: x[1].normalAt(0, 0).dot(view_vector))
+        return candidates[0][0]
+
+    # Default: Return the first large face found
+    return candidates[0][0]
+
+
+def getFaceGeometry(obj, subname=None):
+    """
+    Resolves the 'Base' link to identify and return the target planar face for the covering.
+    Handles sub-element selection, solid top-face detection, and closed-wire conversion.
+    Returns a Part.Face or None if a valid planar surface cannot be determined.
+    """
+    import Part
+
+    if isinstance(obj, tuple):
+        subname = obj[1][0] if obj[1] else None
+        obj = obj[0]
+
+    face = None
+    if subname:
+        try:
+            sub_shape = obj.getSubObject(subname)
+            if sub_shape.ShapeType == "Face":
+                face = sub_shape
+        except Exception as e:
+            FreeCAD.Console.PrintWarning(f"ArchCommands: Unable to retrieve subobject: {e}\n")
+
+    if not face and hasattr(obj, "Shape"):
+        if not obj.Shape or obj.Shape.isNull():
+            pass
+        elif obj.Shape.ShapeType == "Face":
+            face = obj.Shape
+        elif obj.Shape.Solids:
+            best_face_name = getFaceName(obj.Shape)
+            if best_face_name:
+                face = obj.getSubObject(best_face_name)
+        elif obj.Shape.Wires:
+            # Attempt to create a face from any available wires if no face/solid exists
+            try:
+                # Filter for closed wires to ensure makeFace works correctly
+                closed_wires = [w for w in obj.Shape.Wires if w.isClosed()]
+                if closed_wires:
+                    face = makeFace(closed_wires)
+                else:
+                    FreeCAD.Console.PrintWarning(translate("Arch", "No closed wires found.") + "\n")
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(
+                    f"ArchCommands: Unable to create face from wires: {e}\n"
+                )
+
+    if face and face.findPlane() is None:
+        FreeCAD.Console.PrintWarning(translate("Arch", "Face is not planar.") + "\n")
+        return None
+    return face
+
+
+def getFaceUV(face):
+    """
+    Computes a stable, right-handed orthonormal basis for a face.
+
+    The raw tangents from the geometry kernel point in arbitrary directions depending on surface
+    parameterisation, which varies by face origin and modelling history.  This function
+    post-processes them into a predictable convention so that callers (tiling grids, texture
+    mapping) produce consistent results regardless of how the underlying solid was constructed.
+
+    Stabilisation convention
+    ------------------------
+    Each tangent is aligned with the world axis it is most parallel to, and flipped if that axis
+    component is negative.  "Most parallel" is determined by the largest absolute dot product with
+    the world axes, which handles 45-degree faces deterministically (no tie-breaking ambiguity from
+    index order).  The 0.1 threshold guards against nearly degenerate faces where the dominant
+    component is too small to be meaningful.
+
+    After the flip the basis is re-orthonormalised via cross products to enforce strict
+    right-handedness (U × V = N) in case the flip introduced a small angular error.
+
+    Note: the face orientation (Reversed flag) is a topological property that depends on the face's
+    role within a solid, not on the surface geometry.  Callers that need the outward-pointing normal
+    should negate it themselves when ``face.Orientation == "Reversed"``.
+
+    Parameters
+    ----------
+    face : Part.Face
+        The face whose basis is required.
+
+    Returns
+    -------
+    tuple
+        (u_vec, v_vec, normal, center_point) — all unit vectors.
+    """
+    u_p, v_p = face.Surface.parameter(face.BoundBox.Center)
+    u_vec, v_vec = face.Surface.tangent(u_p, v_p)
+
+    normal = u_vec.cross(v_vec)
+    normal.normalize()
+    v_vec = normal.cross(u_vec)
+    v_vec.normalize()
+    u_vec.normalize()
+
+    # Stabilise each tangent: flip it if its dominant world-axis component
+    # is negative.  Using dot products instead of component indexing avoids
+    # the tie-breaking ambiguity that arises for 45-degree faces.
+    world_axes = [
+        FreeCAD.Vector(1, 0, 0),
+        FreeCAD.Vector(0, 1, 0),
+        FreeCAD.Vector(0, 0, 1),
+    ]
+    for vec in [u_vec, v_vec]:
+        dots = [vec.dot(ax) for ax in world_axes]
+        abs_dots = [abs(d) for d in dots]
+        max_abs = max(abs_dots)
+        if max_abs > 0.1:
+            dominant_dot = dots[abs_dots.index(max_abs)]
+            if dominant_dot < 0:
+                vec.multiply(-1)
+
+    # Re-orthonormalise to enforce strict right-handedness after the flip.
+    u_vec.normalize()
+    v_vec = normal.cross(u_vec).normalize()
+    u_vec = v_vec.cross(normal).normalize()
+
+    center_point = face.Surface.value(u_p, v_p)
+    return u_vec, v_vec, normal, center_point
