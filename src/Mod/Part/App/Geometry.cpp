@@ -126,8 +126,8 @@
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 #include FT_OUTLINE_H
-#include <codecvt>
-#include <locale>
+
+#include <hb.h>
 
 // headers to scale text correctly
 #include <BRepBndLib.hxx>
@@ -7659,30 +7659,40 @@ std::vector<TopoDS_Shape> makeTextWires(
     FT_Outline_Funcs ftCallbacks = {move_cb, line_cb, quad_cb, cubic_cb, 0, 0};
     FT_UInt ftLoadFlags = FT_LOAD_NO_SCALE | FT_LOAD_NO_BITMAP;
 
+    // Use HarfBuzz for text shaping. Positions are in font design units (upem),
+    // matching our FT_LOAD_NO_SCALE outline decomposition.
+    auto* hbBlob = hb_blob_create(
+        fontBuffer.data(),
+        static_cast<unsigned int>(fontBuffer.size()),
+        HB_MEMORY_MODE_READONLY,
+        nullptr,
+        nullptr
+    );
+    auto* hbFace = hb_face_create(hbBlob, 0);
+    auto* hbFont = hb_font_create(hbFace);
+
+    auto* hbBuf = hb_buffer_create();
+    hb_buffer_add_utf8(hbBuf, text.c_str(), -1, 0, -1);
+    hb_buffer_guess_segment_properties(hbBuf);
+
+    hb_shape(hbFont, hbBuf, nullptr, 0);
+
+    unsigned int glyphCount = 0;
+    auto* glyphInfos = hb_buffer_get_glyph_infos(hbBuf, &glyphCount);
+    auto* glyphPositions = hb_buffer_get_glyph_positions(hbBuf, &glyphCount);
+
     double penPos = 0.0;
     double currentTracking = 0.0;
-    FT_ULong prevCharcode = 0;
 
-    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
-    std::u32string wide_text = converter.from_bytes(text);
+    for (unsigned int i = 0; i < glyphCount; ++i) {
+        FT_UInt glyphIndex = glyphInfos[i].codepoint;
+        double xOffset = glyphPositions[i].x_offset;
+        double xAdvance = glyphPositions[i].x_advance;
 
-    for (size_t i = 0; i < wide_text.length(); ++i) {
-        FT_ULong charcode = wide_text[i];
-
-        if (FT_Load_Char(ftFace, charcode, ftLoadFlags) != 0) {
+        if (FT_Load_Glyph(ftFace, glyphIndex, ftLoadFlags) != 0) {
+            penPos += xAdvance;
+            currentTracking += tracking;
             continue;
-        }
-
-        if (prevCharcode != 0 && FT_HAS_KERNING(ftFace)) {
-            FT_Vector kern;
-            FT_Get_Kerning(
-                ftFace,
-                FT_Get_Char_Index(ftFace, prevCharcode),
-                FT_Get_Char_Index(ftFace, charcode),
-                FT_KERNING_UNSCALED,
-                &kern
-            );
-            penPos += kern.x;
         }
 
         if (ftFace->glyph->format == FT_GLYPH_FORMAT_OUTLINE
@@ -7696,7 +7706,7 @@ std::vector<TopoDS_Shape> makeTextWires(
             if (!ctx.Wires.empty()) {
                 gp_Trsf charTransform;
                 charTransform.SetScale(gp::Origin(), scaleFactor);
-                gp_Vec translation(penPos * scaleFactor + currentTracking, 0.0, 0.0);
+                gp_Vec translation((penPos + xOffset) * scaleFactor + currentTracking, 0.0, 0.0);
                 charTransform.SetTranslationPart(translation);
 
                 for (const auto& wire : ctx.Wires) {
@@ -7709,10 +7719,14 @@ std::vector<TopoDS_Shape> makeTextWires(
             }
         }
 
-        penPos += ftFace->glyph->advance.x;
+        penPos += xAdvance;
         currentTracking += tracking;
-        prevCharcode = charcode;
     }
+
+    hb_buffer_destroy(hbBuf);
+    hb_font_destroy(hbFont);
+    hb_face_destroy(hbFace);
+    hb_blob_destroy(hbBlob);
 
     FT_Done_Face(ftFace);
     FT_Done_FreeType(ftLib);
