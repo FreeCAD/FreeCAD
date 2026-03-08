@@ -40,7 +40,7 @@ Contrast: "shades(#495057, @BaseShades, range: 0.6, q: 1.0)"
 
 Blue: "shades(#418fde, @BaseShades)"
 Orange: "shades(#ff922b, @BaseShades)"
-Accent: "@Blue"
+Accent: "shades(@ThemeAccentColor1, @BaseShades)"
 
 Background:
   000: "@Neutral.000"
@@ -49,21 +49,21 @@ Background:
   150: "@Neutral.150"
   200: "@Neutral.200"
 
-BaseTextColor: "@Contrast.700"
+BaseTextColor: "@Contrast.800"
 
 # ── Semantic surface tokens (drive QPalette) ─────────────────────────────────
 # Window / panel backgrounds
-BaseWindowBackground:    "@Background.050"
+BaseWindowBackground: "@Background.050"
 BaseAlternateBackground: "@Background.100"
-BaseInputBackground:     "@Background.000"
+BaseInputBackground: "@Background.000"
 
 # Selection
 BaseHighlightBackground: "blend(@Background.100, @Accent.500, 75%)"
-BaseHighlightTextColor:  "@Neutral.000"
+BaseHighlightTextColor: "@Neutral.000"
 
 # Disabled
-BaseDisabledTextColor:   "@Contrast.300"
-BaseDisabledBackground:  "@Neutral.200"
+BaseDisabledTextColor: "@Contrast.300"
+BaseDisabledBackground: "@Neutral.200"
 
 # Placeholder text in inputs
 BasePlaceholderTextColor: "@Contrast.400"
@@ -73,14 +73,14 @@ BaseLinkColor: "@Accent.600"
 
 # Tooltips
 BaseTooltipBackground: "@Contrast.800"
-BaseTooltipTextColor:  "@Neutral.050"
+BaseTooltipTextColor: "@Neutral.050"
 
 # 3D shading (QPalette Light / Midlight / Mid / Dark / Shadow)
-BaseShadingLight:    "@Neutral.100"
+BaseShadingLight: "@Neutral.100"
 BaseShadingMidlight: "@Neutral.200"
-BaseShadingMid:      "@Neutral.400"
-BaseShadingDark:     "@Neutral.600"
-BaseShadingShadow:   "@Neutral.800"
+BaseShadingMid: "@Neutral.400"
+BaseShadingDark: "@Neutral.600"
+BaseShadingShadow: "@Neutral.800"
 
 BaseBorderColor: "@Neutral.400"
 
@@ -145,15 +145,15 @@ SelectSmallPadding: "@FormControlSmallPadding"
 SelectBigPadding: "@FormControlBigPadding"
 
 # ── Line Edit / Input fields ──────────────────────────────────────────────
-LineEditBackground:          "@Background.000"
-LineEditBorderColor:         "@FormControlBorderColor"
-LineEditBorderRadius:        "@FormControlBorderRadius"
-LineEditBorderThickness:     "@FormControlBorderThickness"
-LineEditPadding:             "@FormControlPadding"
-LineEditHeight:              "@FormControlHeight"
-LineEditSmallHeight:         "@FormControlSmallHeight"
+LineEditBackground: "@Background.000"
+LineEditBorderColor: "@FormControlBorderColor"
+LineEditBorderRadius: "@FormControlBorderRadius"
+LineEditBorderThickness: "@FormControlBorderThickness"
+LineEditPadding: "@FormControlPadding"
+LineEditHeight: "@FormControlHeight"
+LineEditSmallHeight: "@FormControlSmallHeight"
 
-LineEditFocusedBorderColor:  "@Accent.500"
+LineEditFocusedBorderColor: "@Accent.500"
 
 # ── ComboBox / Editable combo fields ─────────────────────────────────────
 # Editable QComboBox uses the chain: ComboBox → LineEdit → FormControl.
@@ -177,3 +177,13 @@ GroupBoxTitleTextColor: "@Contrast.500"
 
 SeparatorThickness: 1px
 SeparatorColor: "@BaseBorderColor"
+
+# ── Scroll Bar ───────────────────────────────────────────────────────────
+ScrollBarBackground: transparent
+ScrollBarHoveredBackground: "opacity(@BaseBorderColor, 0.1)"
+
+ScrollBarThumbBackground: "@Neutral.400"
+ScrollBarThumbHoveredBackground: "@Neutral.600"
+ScrollBarThumbBorderRadius: "@BaseRadius.medium"
+ScrollBarThumbMargin: "padding(@Spacing.100)"
+ScrollBarThumbMinLength: 50px

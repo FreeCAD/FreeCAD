@@ -90,6 +90,18 @@ std::string Value::toString() const
 
     if (holds<Base::Color>()) {
         auto color = get<Base::Color>();
+
+        // special case for alpha handling
+        if (color.a < 1.0) {
+            return fmt::format(
+                "rgba({}, {}, {}, {})",
+                static_cast<int>(color.r * 255),
+                static_cast<int>(color.g * 255),
+                static_cast<int>(color.b * 255),
+                static_cast<int>(color.a * 255)
+            );
+        }
+
         return fmt::format("#{:0>6x}", color.getPackedRGB() >> 8);  // NOLINT(*-magic-numbers)
     }
 

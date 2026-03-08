@@ -1501,6 +1501,38 @@ QToolBox > QScrollArea > QWidget > QWidget {
   border-radius: 4px;
 }
 
+QScrollBar {
+  background-color: @ScrollBarBackground;
+}
+
+QScrollBar:hover {
+  background-color: @ScrollBarHoveredBackground;
+}
+
+QScrollBar::handle {
+  background-color: @ScrollBarThumbBackground;
+  margin: @ScrollBarThumbMargin;
+  border-radius: @ScrollBarThumbBorderRadius;
+}
+
+QScrollBar::handle:hover {
+  background-color: @ScrollBarThumbHoveredBackground;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+  background-color: transparent;
+  border: transparent;
+}
+
+QScrollBar::handle:horizontal {
+  min-width: @ScrollBarThumbMinLength;
+}
+
+QScrollBar::handle:vertical {
+  min-height: @ScrollBarThumbMinLength;
+}
+
+
 /* QFrame -----------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qframe
