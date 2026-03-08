@@ -36,33 +36,34 @@ set(PartDesign_OtherScripts
 set(PartDesign_TestScripts
     PartDesignTests/__init__.py
     PartDesignTests/TestActiveObject.py
+    PartDesignTests/TestBoolean.py
+    PartDesignTests/TestChamfer.py
     PartDesignTests/TestDatum.py
-    PartDesignTests/TestShapeBinder.py
-    PartDesignTests/TestPad.py
-    PartDesignTests/TestPocket.py
+    PartDesignTests/TestDraft.py
+    PartDesignTests/TestFillet.py
     PartDesignTests/TestHelix.py
     PartDesignTests/TestHole.py
-    PartDesignTests/TestRevolve.py
-    PartDesignTests/TestLoft.py
-    PartDesignTests/TestPipe.py
-    PartDesignTests/TestPrimitive.py
-    PartDesignTests/TestMirrored.py
+    PartDesignTests/TestInvoluteGear.py
     PartDesignTests/TestLinearPattern.py
-    PartDesignTests/TestPolarPattern.py
+    PartDesignTests/TestLoft.py
+    PartDesignTests/TestMirrored.py
     PartDesignTests/TestMultiTransform.py
-    PartDesignTests/TestBoolean.py
-    PartDesignTests/TestFillet.py
-    PartDesignTests/TestChamfer.py
-    PartDesignTests/TestDraft.py
+    PartDesignTests/TestPad.py
+    PartDesignTests/TestPipe.py
+    PartDesignTests/TestPocket.py
+    PartDesignTests/TestPolarPattern.py
+    PartDesignTests/TestPrimitive.py
+    PartDesignTests/TestRevolve.py
+    PartDesignTests/TestShapeBinder.py
+    PartDesignTests/TestSketch.py
     PartDesignTests/TestThickness.py
     PartDesignTests/TestTopologicalNamingProblem.py
-    PartDesignTests/TestInvoluteGear.py
-    PartDesignTests/TestSketch.py
 )
 
 if(BUILD_GUI)
     list(APPEND PartDesign_TestScripts
         PartDesignTests/TestMaterial.py
+        PartDesignTests/TestSuppressed.py
     )
 endif(BUILD_GUI)
 
