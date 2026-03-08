@@ -645,6 +645,15 @@ void FreeCADStyle::drawPrimitive(
         }
     }
 
+    if (element == PE_FrameFocusRect) {
+        // Fusion draws a semi-transparent rounded fill for focused item view cells
+        // (State_Item is set by QCommonStyle::drawControl(CE_ItemViewItem)). Suppress it —
+        // the selection highlight already provides sufficient focus indication.
+        if (option->state & QStyle::State_Item) {
+            return;
+        }
+    }
+
     if (element == PE_IndicatorToolBarSeparator) {
         // In a horizontal toolbar the buttons are side-by-side, so the separator
         // is a vertical line; in a vertical toolbar it is a horizontal line.
