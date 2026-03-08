@@ -32,6 +32,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 
+#include <QTextDocument>
 #include <QTextTableCell>
 
 #include <App/Application.h>
