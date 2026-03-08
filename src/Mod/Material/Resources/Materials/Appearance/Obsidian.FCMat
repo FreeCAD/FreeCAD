@@ -3,7 +3,7 @@
 General:
   UUID: "a004c270-7d2c-4898-bec6-b1120edacea9"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Obsidian"
   Description: "Defines the Obsidian appearance properties"
 AppearanceModels:
