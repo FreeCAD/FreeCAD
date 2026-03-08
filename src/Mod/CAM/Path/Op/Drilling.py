@@ -344,6 +344,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     start_position=current_pos,
                     target_position=target_at_retract_plane,
                     solids=solids,
+                    tool_diameter=self.tool.Diameter,
                 )
 
                 if collision_detected:
@@ -355,8 +356,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                         target_position=target_at_safe_height,
                         local_clearance=safe_height,
                         global_clearance=obj.ClearanceHeight.Value,
-                        tool_shape=self.tool.Shape,
                         solids=solids,
+                        tool_diameter=self.tool.Diameter,
                     )
                     self.commandlist.extend(linking_moves)
                     for move in linking_moves:

@@ -38,6 +38,7 @@ def check_collision(
     start_position: Vector,
     target_position: Vector,
     solids: Optional[List[Part.Shape]] = None,
+    tool_diameter: float = 0,
     tolerance: float = 0.001,
 ) -> bool:
     """
@@ -61,7 +62,18 @@ def check_collision(
 
     # Create direct path wire
     wire = Part.Wire([Part.makeLine(start_position, target_position)])
-    distance = wire.distToShape(collision_model)[0]
+
+    if wire.BoundBox.ZMin - collision_model.BoundBox.ZMax > tolerance:
+        # attempt to skip long time comptation for simple model
+        return True
+
+    face = None
+    if tool_diameter:
+        face = createHorizontalFace(wire, tool_diameter)
+    if face:
+        distance = face.distToShape(collision_model)[0]
+    else:
+        distance = wire.distToShape(collision_model)[0]
     return distance < tolerance
 
 
@@ -70,10 +82,12 @@ def get_linking_moves(
     target_position: Vector,
     local_clearance: float,
     global_clearance: float,
-    tool_shape: Part.Shape,  # required placeholder
+    tool_shape: Part.Shape = None,
     solids: Optional[List[Part.Shape]] = None,
     retract_height_offset: Optional[float] = None,
     skip_if_no_collision: bool = False,
+    tool_diameter: float = 0,
+    tolerance: float = 0.001,
 ) -> list:
     """
     Generate linking moves from start to target position.
@@ -121,7 +135,7 @@ def get_linking_moves(
     # Try each height
     for height in heights:
         wire = make_linking_wire(start_position, target_position, height)
-        if is_wire_collision_free(wire, collision_model):
+        if is_travel_collision_free(wire, collision_model, tool_shape, tool_diameter, tolerance):
             cmds = Path.fromShape(wire).Commands
             # Ensure all commands have complete XYZ coordinates
             # Path.fromShape() may omit coordinates that don't change
@@ -164,10 +178,64 @@ def make_linking_wire(start: Vector, target: Vector, z: float) -> Part.Wire:
     return Part.Wire(edges) if edges else Part.Wire([Part.makeLine(start, target)])
 
 
-def is_wire_collision_free(
-    wire: Part.Wire, solid: Optional[Part.Shape], tolerance: float = 0.001
+def is_travel_collision_free(
+    wire: Part.Wire,
+    solid: Optional[Part.Shape],
+    tool_shape: Part.Shape = None,
+    tool_diameter: float = 0,
+    tolerance: float = 0.001,
 ) -> bool:
     if not solid:
         return True
-    distance = wire.distToShape(solid)[0]
+    if wire.BoundBox.ZMin - solid.BoundBox.ZMax > tolerance:
+        # attempt to skip long time comptation for simple model
+        return True
+    shape = None
+    if tool_shape:
+        shape = createToolPathShape(wire, tool_shape)
+    elif tool_diameter:
+        shape = createHorizontalFace(wire, tool_diameter)
+    if shape:
+        Part.show(shape)
+        distance = shape.distToShape(solid)[0]
+    else:
+        distance = wire.distToShape(solid)[0]
     return distance >= tolerance
+
+
+def createHorizontalFace(wire, width):
+    edge = None
+    for e in wire.Edges:
+        if Path.Geom.isHorizontal(e):
+            edge = e
+            break
+    if not edge:
+        return
+    p0 = edge.Vertexes[0].Point
+    v0 = edge.Vertexes[1].Point - p0
+    n = v0.cross(Vector(0, 0, 1))
+    o = n.normalize() * width / 2
+    e1 = edge.translated(o)
+    e2 = edge.translated(-o)
+    e3 = Part.makeLine(e1.Vertexes[0].Point, e2.Vertexes[0].Point)
+    e4 = Part.makeLine(e1.Vertexes[1].Point, e2.Vertexes[1].Point)
+    wire = Part.Wire(Part.__sortEdges__([e1, e2, e3, e4]))
+
+    return Part.makeFace(wire)
+
+
+def createToolPathShape(wire, tool_shape):
+    edge = None
+    for e in wire.Edges:
+        if Path.Geom.isHorizontal(e):
+            edge = e
+            break
+    if not edge:
+        return
+    p0 = edge.Vertexes[0].Point
+    p1 = edge.Vertexes[1].Point
+    direction = p1 - p0
+    section = tool_shape.slice(direction, 0)
+    section[0].translate(p0)
+
+    return section[0].extrude(direction)
