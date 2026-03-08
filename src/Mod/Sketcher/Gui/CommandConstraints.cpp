@@ -10671,6 +10671,12 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
         return false;
     }
 
+    // Store canonical geometry for the newly created constraint.
+    // This computes world -> canonical from the current frame line and grouped geometry,
+    // providing the source of truth for zero-drift group transformations.
+    int lastConstrIdx = Obj->Constraints.getSize() - 1;
+    Obj->storeCanonicalGroupGeometry(lastConstrIdx);
+
     // We remove the internal alignment of the geometries that were grouped.
     std::sort(geoIdsWithInternalGeos.begin(), geoIdsWithInternalGeos.end(), std::greater<>());
     for (auto& geoId : geoIdsWithInternalGeos) {

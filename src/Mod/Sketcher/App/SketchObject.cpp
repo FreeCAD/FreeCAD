@@ -959,31 +959,34 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
         return -1;
     }
 
-    // Generate text geos based on new text/font :
-    std::vector<std::unique_ptr<Part::Geometry>> newGeos;
+    // Generate text geometry in canonical form: frame (0,0)->(1,0).
+    // This canonical geometry is stored in the constraint and never modified.
+    // World geometry is always derived from canonical + current frame transform.
+    std::vector<std::unique_ptr<Part::Geometry>> canonicalGeos;
     std::vector<TopoDS_Shape> shapes = Part::makeTextWires(newText, newFont);
-    Part::transformAndConvertToGeometry(newGeos,
+    Part::transformAndConvertToGeometry(canonicalGeos,
                                     shapes,
-                                    line->getStartPoint(),
-                                    line->getEndPoint(),
+                                    Base::Vector3d(0, 0, 0),
+                                    Base::Vector3d(1, 0, 0),
                                     isHeight);
 
-    // Add the geometries to sketch
+    // Compute canonical -> world transform using the actual frame line
+    Base::Matrix4D canonToWorld = Sketch::computeCanonicalToWorldTransform(
+        line->getStartPoint(), line->getEndPoint());
+
+    // Build world geometry by cloning canonical and transforming
     int lastGeoid = getHighestCurveIndex();
     std::vector<Part::Geometry*> newGeosRawPtrs;
-    newGeosRawPtrs.reserve(newGeos.size());
+    newGeosRawPtrs.reserve(canonicalGeos.size());
 
-    // Populate the raw pointer vector and release ownership from the unique_ptrs.
-    for (auto& geo_ptr : newGeos) {
+    for (auto& geo_ptr : canonicalGeos) {
+        Part::Geometry* worldGeo = geo_ptr->clone();
+        worldGeo->transform(canonToWorld);
         if (isConstruction) {
-            Sketcher::GeometryFacade::setConstruction(geo_ptr.get(), isConstruction);
+            Sketcher::GeometryFacade::setConstruction(worldGeo, isConstruction);
         }
-        // Add the raw pointer to the new vector.
-        newGeosRawPtrs.push_back(geo_ptr.get());
-        // Release ownership from the unique_ptr. The SketchObject will now manage this memory.
-        geo_ptr.release();
+        newGeosRawPtrs.push_back(worldGeo);
     }
-    newGeos.clear();
     addGeometry(newGeosRawPtrs);
 
     int newLastGeoid = getHighestCurveIndex();
@@ -1003,6 +1006,16 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     constr->setFont(newFont);
     constr->setIsTextHeight(isHeight);
 
+    // Store canonical geometry in the constraint (source of truth for zero-drift).
+    constr->canonicalGeometry.clear();
+    for (auto& geo_ptr : canonicalGeos) {
+        std::unique_ptr<Part::Geometry> canonClone(geo_ptr->clone());
+        if (isConstruction) {
+            Sketcher::GeometryFacade::setConstruction(canonClone.get(), isConstruction);
+        }
+        constr->canonicalGeometry.push_back(std::move(canonClone));
+    }
+
     if (hasExistingText) {
         addConstraint(constr);
     }
@@ -1016,6 +1029,52 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     }
 
     return err;
+}
+
+void SketchObject::storeCanonicalGroupGeometry(int constraintId)
+{
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+    if (constraintId < 0 || constraintId >= static_cast<int>(vals.size())) {
+        return;
+    }
+
+    auto* constr = vals[constraintId];
+    if ((constr->Type != Group && constr->Type != Text) || !constr->hasElement(1)) {
+        return;
+    }
+
+    constr->canonicalGeometry.clear();
+
+    // Get the frame line to compute world -> canonical transform
+    int frameGeoId = constr->getGeoId(0);
+    auto* frameLine = dynamic_cast<const Part::GeomLineSegment*>(getGeometry(frameGeoId));
+    if (!frameLine) {
+        return;
+    }
+
+    Base::Vector3d start = frameLine->getStartPoint();
+    Base::Vector3d end = frameLine->getEndPoint();
+    if ((end - start).Length() < Precision::Confusion()) {
+        return;  // Zero-length frame, cannot compute inverse transform
+    }
+
+    Base::Matrix4D canonToWorld = Sketch::computeCanonicalToWorldTransform(start, end);
+    Base::Matrix4D worldToCanon = canonToWorld;
+    worldToCanon.inverseGauss();
+
+    for (int i = 1; constr->hasElement(i); ++i) {
+        int geoId = constr->getGeoId(i);
+        if (geoId == GeoEnum::GeoUndef) {
+            continue;
+        }
+        const Part::Geometry* geo = getGeometry(geoId);
+        if (!geo) {
+            continue;
+        }
+        std::unique_ptr<Part::Geometry> canonGeo(geo->clone());
+        canonGeo->transform(worldToCanon);
+        constr->canonicalGeometry.push_back(std::move(canonGeo));
+    }
 }
 
 int SketchObject::setDriving(int ConstrId, bool isdriving)

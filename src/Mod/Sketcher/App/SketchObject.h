@@ -361,6 +361,9 @@ public:
         bool isHeight,
         bool isConstruction = false
     );
+    /// Store canonical geometry for a Group/Text constraint by transforming
+    /// current world geometry into the canonical frame (0,0)->(1,0).
+    void storeCanonicalGroupGeometry(int constraintId);
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);
     /// get the driving status of this constraint
