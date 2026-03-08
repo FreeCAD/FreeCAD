@@ -28,6 +28,7 @@
 
 # include <Base/Console.h>
 # include <Base/Placement.h>
+# include <App/Application.h>
 
 // Chrono headers
 # include <chrono/physics/ChBody.h>
@@ -156,6 +157,15 @@ bool ChronoPart::getMarkerFrame(const std::string& markerName, chrono::ChFrame<d
     return true;
 }
 
+void ChronoPart::forEachMarker(
+    std::function<void(const std::string&, const chrono::ChFrame<double>&)> cb
+) const
+{
+    for (const auto& [name, frame] : localMarkers) {
+        cb(name, frame);
+    }
+}
+
 // ============================================================================
 // ChronoAssembly
 // ============================================================================
@@ -279,8 +289,30 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
     {
         chrono::ChVector3d z1 = body1->GetRot().Rotate(frame1.GetRot().GetAxisZ());
         chrono::ChVector3d z2 = body2->GetRot().Rotate(frame2.GetRot().GetAxisZ());
-        if (z1.Dot(z2) < 0.0) {
+        const double dot = z1.Dot(z2);
+        if (debugLogging) {
+            auto p1 = body1->GetPos() + body1->GetRot().Rotate(frame1.GetPos());
+            auto p2 = body2->GetPos() + body2->GetRot().Rotate(frame2.GetPos());
+            FC_MSG(
+                "  joint '" << joint->getName() << "'"
+                << "  body1='" << body1->GetName() << "'"
+                << "  body2='" << body2->GetName() << "'"
+                << "\n    world_pos1=(" << p1.x() << "," << p1.y() << "," << p1.z() << ")"
+                << "  world_pos2=(" << p2.x() << "," << p2.y() << "," << p2.z() << ")"
+                << "\n    world_z1=(" << z1.x() << "," << z1.y() << "," << z1.z() << ")"
+                << "  world_z2=(" << z2.x() << "," << z2.y() << "," << z2.z() << ")"
+                << "  z_dot=" << dot
+            );
+        }
+        if (dot < 0.0) {
             frame1.SetRot(frame1.GetRot() * chrono::ChQuaternion<double>(0.0, 1.0, 0.0, 0.0));
+            if (debugLogging) {
+                auto z1n = body1->GetRot().Rotate(frame1.GetRot().GetAxisZ());
+                FC_MSG(
+                    "  -> flipped frame1 Z (Rx180); new world_z1=("
+                    << z1n.x() << "," << z1n.y() << "," << z1n.z() << ")"
+                );
+            }
         }
     }
 
@@ -330,9 +362,13 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
             auto link = std::make_shared<chrono::ChLinkMateCylindrical>();
             link->SetName(joint->getName());
             link->Initialize(
-                body1, body2, true,
-                frame1.GetPos(), frame2.GetPos(),
-                frame1.GetRot().GetAxisZ(), frame2.GetRot().GetAxisZ()
+                body1,
+                body2,
+                true,
+                frame1.GetPos(),
+                frame2.GetPos(),
+                frame1.GetRot().GetAxisZ(),
+                frame2.GetRot().GetAxisZ()
             );
             sys->AddLink(link);
             break;
@@ -515,12 +551,76 @@ void ChronoAssembly::addMotion(std::shared_ptr<Motion> /*motion*/)
     FC_WARN("ChronoSolver: joint motions are not yet implemented; motion ignored");
 }
 
+void ChronoAssembly::dumpStructure() const
+{
+    FC_MSG("=== ChronoSolver: Assembly Structure ===");
+
+    // Ground body
+    FC_MSG("[GROUND] fixed=true  pos=(0,0,0)");
+    for (const auto& [name, frame] : groundMarkers) {
+        auto p = frame.GetPos();
+        auto z = frame.GetRot().GetAxisZ();
+        FC_MSG(
+            "  marker '" << name << "'"
+            << "  local_pos=(" << p.x() << "," << p.y() << "," << p.z() << ")"
+            << "  local_z=(" << z.x() << "," << z.y() << "," << z.z() << ")"
+        );
+    }
+
+    // Parts
+    FC_MSG("--- Parts (" << parts.size() << ") ---");
+    for (const auto& part : parts) {
+        auto body = part->getBody();
+        auto pos = body->GetPos();
+        auto rot = body->GetRot();
+        FC_MSG(
+            "[PART] '" << body->GetName() << "'"
+            << "  fixed=" << (body->IsFixed() ? "true" : "false")
+            << "  pos=(" << pos.x() << "," << pos.y() << "," << pos.z() << ")"
+            << "  rot(w,x,y,z)=(" << rot.e0() << "," << rot.e1() << "," << rot.e2() << "," << rot.e3() << ")"
+        );
+        part->forEachMarker([&](const std::string& mname, const chrono::ChFrame<double>& frame) {
+            auto lp = frame.GetPos();
+            auto lz = frame.GetRot().GetAxisZ();
+            auto wz = rot.Rotate(lz);
+            auto wp = pos + rot.Rotate(lp);
+            FC_MSG(
+                "  marker '" << mname << "'"
+                << "  world_pos=(" << wp.x() << "," << wp.y() << "," << wp.z() << ")"
+                << "  world_z=(" << wz.x() << "," << wz.y() << "," << wz.z() << ")"
+            );
+        });
+    }
+
+    // Links
+    FC_MSG("--- Links (" << sys->GetLinks().size() << ") ---");
+    for (const auto& link : sys->GetLinks()) {
+        if (!link) {
+            continue;
+        }
+        FC_MSG(
+            "[LINK] '" << link->GetName() << "'"
+            << "  bilateral_dof=" << link->GetNumConstraintsBilateral()
+        );
+    }
+
+    FC_MSG("=== End Assembly Structure ===");
+}
+
 int ChronoAssembly::solveStatic()
 {
+    if (debugLogging) {
+        dumpStructure();
+    }
+
     // Satisfy all position-level constraints via Newton-Raphson iteration.
     // Use 50 iterations (vs the default 6) for better convergence on complex
     // assemblies with closed kinematic chains and cylindrical joints.
     bool ok = sys->DoAssembly(chrono::AssemblyLevel::POSITION, 50);
+    if (debugLogging) {
+        FC_MSG("=== Post-solve (converged=" << (ok ? "true" : "false") << ") ===");
+        dumpStructure();
+    }
     if (ok) {
         solved = true;
         return 0;
@@ -666,6 +766,12 @@ std::shared_ptr<Solver::Assembly> ChronoSolver::makeAssembly()
 {
     auto assembly = std::make_shared<ChronoAssembly>();
     assembly->setName("ChronoAssembly");
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly"
+    );
+    assembly->setDebug(hGrp->GetBool("LogSolverDebug", false));
+
     return assembly;
 }
 

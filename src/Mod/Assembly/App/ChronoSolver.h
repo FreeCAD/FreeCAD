@@ -33,6 +33,7 @@
 // template definition must be visible here.
 # include <chrono/core/ChFrame.h>
 
+# include <functional>
 # include <map>
 # include <memory>
 # include <string>
@@ -83,6 +84,11 @@ public:
     // Get the local frame of a marker by name.
     // Returns false if the marker is not found.
     bool getMarkerFrame(const std::string& markerName, chrono::ChFrame<double>& outFrame) const;
+
+    // Invoke cb(name, localFrame) for every stored marker.
+    void forEachMarker(
+        std::function<void(const std::string&, const chrono::ChFrame<double>&)> cb
+    ) const;
 
 private:
     std::shared_ptr<chrono::ChBody> body;
@@ -139,6 +145,9 @@ private:
         std::shared_ptr<chrono::ChBody> body;
         chrono::ChFrame<double> localFrame;
     };
+
+    // Log full assembly structure (bodies, markers, joints) to the FreeCAD console.
+    void dumpStructure() const;
 
     // Look up the ChBody and body-local frame for a MarkerRef.
     // Returns false if the ref is not found.
