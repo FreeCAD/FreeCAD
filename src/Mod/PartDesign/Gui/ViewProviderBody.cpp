@@ -554,10 +554,7 @@ void ViewProviderBody::show()
     // Call the base version first to ensure normal behavior
     PartGui::ViewProviderPartExt::show();
 
-    auto body = static_cast<PartDesign::Body*>(getObject());
-    if (!body) {
-        return;
-    }
+    auto* body = static_cast<PartDesign::Body*>(getObject());
 
     auto tip = body->Tip.getValue();
     if (!tip || tip->Visibility.getValue()) {
