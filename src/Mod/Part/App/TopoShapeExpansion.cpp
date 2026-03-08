@@ -2111,7 +2111,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                         // Since indexed names can have multiple MappedNames assigned to them,
                         // we want to make sure we include all of them in the new ElementMap for reliability sake.
-                        for (auto &incomingShapeMappedName : incomingShapeMappedNames) {
+                        for (const auto &incomingShapeMappedName : incomingShapeMappedNames) {
                             std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames = getElementMappedNames(element);
                             Data::MappedName newName = Data::MappedName(incomingShapeMappedName.first);
 
@@ -2285,11 +2285,12 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
         const std::map<std::string, TopAbs_ShapeEnum> ancestorTypeMap {{"Edge", TopAbs_FACE}, {"Face", TopAbs_EDGE}, {"Vertex", TopAbs_FACE}};
         std::set<std::vector<Data::MappedName>> usedAncestorNames { };
+        std::set<std::vector<Data::MappedName>> usedConnectedNames { };
         std::set<Data::MappedName> usedPartnerNames { };
-        std::array<ShapeInfo*, 3> ancestorInfos = {&faceInfo, &edgeInfo, &vertexInfo};
+        std::array<ShapeInfo*, 3> connectedElementInfos = {&faceInfo, &edgeInfo, &vertexInfo};
 
         // Now let's map any unmapped shapes with the IsPartner and ancestor method.
-        for (const auto& info : ancestorInfos) {
+        for (const auto& info : connectedElementInfos) {
             auto it = ancestorTypeMap.find(std::string(info->shapetype));
 
             for (int mainI = 1; mainI <= info->count(); mainI++) {
@@ -2336,16 +2337,33 @@ TopoShape& TopoShape::makeShapeWithElementMap(
            
                 if (!wasMapped && it != ancestorTypeMap.end()) {
                     std::vector<int> ancestors = findAncestors(mainElement, it->second);
-                    std::vector<Data::MappedName> linkedNames { };
+                    std::vector<Data::MappedName> linkedAncestorNames { };
 
                     for (const auto &ancestorIndex : ancestors) {
                         Data::IndexedName ancestorIndexName = Data::IndexedName::fromConst(shapeName(it->second).c_str(), ancestorIndex);
                         Data::MappedName ancestorMappedName = getMappedName(ancestorIndexName);
 
                         if (ancestorMappedName) {
-                            linkedNames.push_back(ancestorMappedName);
+                            linkedAncestorNames.push_back(ancestorMappedName);
                         }
                     }
+
+                    if (linkedAncestorNames.size()) {
+                        Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
+                                                                                                  linkedAncestorNames,
+                                                                                                  masterTag,
+                                                                                                  op,
+                                                                                                  usedAncestorNames.count(linkedAncestorNames),
+                                                                                                  (*info->shapetype),
+                                                                                                  0,
+                                                                                                  "ANC").c_str());
+                        
+                        usedAncestorNames.insert(linkedAncestorNames);
+                        ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
+                        continue;
+                    }
+
+                    std::vector<Data::MappedName> linkedConnectedNames { };
 
                     TopExp_Explorer xp;
                     if (strcmp(info->shapetype, "Face") == 0) {
@@ -2372,28 +2390,31 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             Data::MappedName subshapeName = getMappedName(subshapeIndexName);
 
                             if (subshapeName) {
-                                linkedNames.push_back(subshapeName);
+                                linkedConnectedNames.push_back(subshapeName);
                             }
                         }
                     }
 
-                    if (linkedNames.size()) {
+                    if (linkedConnectedNames.size()) {
                         Data::MappedName newName = Data::MappedName(Data::MappedName::makeSection({},
-                                                                                                  linkedNames,
+                                                                                                  linkedConnectedNames,
                                                                                                   masterTag,
                                                                                                   op,
-                                                                                                  usedAncestorNames.count(linkedNames),
+                                                                                                  usedConnectedNames.count(linkedConnectedNames),
                                                                                                   (*info->shapetype),
                                                                                                   0,
-                                                                                                  "ANC").c_str());
+                                                                                                  "CON").c_str());
                         
-                        usedAncestorNames.insert(linkedNames);
+                        usedConnectedNames.insert(linkedConnectedNames);
                         ensureElementMap()->setElementName(mainElementIndexedName, newName, masterTag);
+                        continue;
                     }
                 }
             }
         }
 
+        allGeneratedShapes.clear();
+        normalGeneratedMap.clear();
         reverseGeneratedMap.clear();
         usedLinkedNames.clear();
     }
