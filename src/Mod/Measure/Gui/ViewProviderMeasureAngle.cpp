@@ -80,9 +80,9 @@
 #include <Gui/Control.h>
 #include <Mod/Measure/App/Preferences.h>
 
-#include "SoScreenSpaceScale.h"
-#include "TaskMeasure.h"
-#include "ViewProviderMeasureAngle.h"
+#include <Mod/Measure/Gui/SoScreenSpaceScale.h>
+#include <Mod/Measure/Gui/TaskMeasure.h>
+#include <Mod/Measure/Gui/ViewProviderMeasureAngle.h>
 
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
@@ -208,80 +208,38 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
     else {
         gp_Pnt dimensionOriginPoint;
         dimensionOriginPoint.SetCoord(0, 0, 0);
-        bool originFound = false;
-        gp_Vec thirdPoint;
         gp_Vec adjustedVector1;
         gp_Vec adjustedVector2;
         measurement->getDirections(adjustedVector1, adjustedVector2);
 
-        auto measurmentCase = measurement->measurementCase();
-
-        originFound = measurement->getOrigin(dimensionOriginPoint);
-
-        // need testing before removethis
-        if (!originFound) {
-            Handle(Geom_Curve) heapLine1 = new Geom_Line(lin1);
-            Handle(Geom_Curve) heapLine2 = new Geom_Line(lin2);
-
-            GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
-
-            if (extrema.NbExtrema() < 1) {
-                throw Base::RuntimeError("Could not get extrema");
-            }
-
-            gp_Pnt extremaPoint1, extremaPoint2;
-            extrema.Points(1, extremaPoint1, extremaPoint2);
-
-            bool linesIntersect = extremaPoint1.Distance(extremaPoint2) < Precision::Confusion();
-
-            if (linesIntersect) {
-                dimensionOriginPoint = extremaPoint1;
-            }
-            else {
-                dimensionOriginPoint.SetXYZ(loc2.XYZ());
-            }
-
-            gp_Vec originVector(dimensionOriginPoint.XYZ());
-            gp_Vec extrema2Vector(extremaPoint2.XYZ());
-            double radiusCalc = (loc1 - originVector).Magnitude();
-            double legOne = (extrema2Vector - originVector).Magnitude();
-            if (linesIntersect && legOne > Precision::Confusion() && radiusCalc > legOne) {
-                double legTwo = sqrt(pow(radiusCalc, 2) - pow(legOne, 2));
-                gp_Vec projectionVector(adjustedVector2);
-                projectionVector.Normalize();
-                projectionVector *= legTwo;
-                thirdPoint = extrema2Vector + projectionVector;
-            }
-            else {
-                thirdPoint = originVector + adjustedVector2.Normalized();
-            }
-        }
+        auto measurementCase = measurement->measurementCase();
+        measurement->getOrigin(dimensionOriginPoint);
 
         gp_Vec originVector(dimensionOriginPoint.XYZ());
-        gp_Vec xAxis = (loc1 - originVector).Normalized();
+        gp_Vec xAxis;
+
+        // prevent FaceEdge case (edge perpendicular to face normal)
+        if ((loc1 - originVector).Magnitude() < Precision::Confusion()) {
+            xAxis = adjustedVector2.Normalized();
+        }
+        else {
+            xAxis = (loc1 - originVector).Normalized();
+        }
         gp_Vec zAxis;
         gp_Vec yAxis;
 
-        // need to review this but works
-        if (originFound) {
-            if (measurmentCase == MeasureAngle::EdgeEdge) {
-                xAxis = adjustedVector1.Normalized();
-            }
-            if (measurmentCase == MeasureAngle::FaceFace) {
-                zAxis = adjustedVector1.Crossed(adjustedVector2);
-            }
-            else {
-                zAxis = adjustedVector2.Crossed(adjustedVector1);
-            }
-            zAxis.Normalize();
-            yAxis = zAxis.Crossed(xAxis).Normalized();
-            xAxis = zAxis.Crossed(yAxis).Normalized();
+        if (measurementCase == MeasureAngle::MeasurementCase::EdgeEdge) {
+            xAxis = adjustedVector1.Normalized();
+        }
+        if (measurementCase == MeasureAngle::MeasurementCase::FaceFace) {
+            zAxis = adjustedVector1.Crossed(adjustedVector2);
         }
         else {
-            gp_Vec fakeYAxis = (thirdPoint - originVector).Normalized();
-            zAxis = (xAxis.Crossed(fakeYAxis)).Normalized();
-            yAxis = zAxis.Crossed(xAxis).Normalized();
+            zAxis = adjustedVector2.Crossed(adjustedVector1);
         }
+        zAxis.Normalize();
+        yAxis = zAxis.Crossed(xAxis).Normalized();
+        xAxis = zAxis.Crossed(yAxis).Normalized();
 
         dimSys = SbMatrix(
             xAxis.X(),
@@ -651,7 +609,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
 
     bool flipped = IsFlipped.getValue();
     isArcFlipped.setValue(flipped);
-    sectorArcRotation.setValue(flipped ? M_PI : 0.0f);
+    sectorArcRotation.setValue(flipped ? std::numbers::pi : 0.0f);
 }
 
 
@@ -678,13 +636,10 @@ void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureO
         }
 
         SbMatrix invMatrix = getMatrix().inverse();
-
-        SbVec3f globalLoc1(loc1.X(), loc1.Y(), loc1.Z());
-        SbVec3f globalLoc2(loc2.X(), loc2.Y(), loc2.Z());
-
-        SbVec3f localLoc1, localLoc2;
-        invMatrix.multVecMatrix(globalLoc1, localLoc1);
-        invMatrix.multVecMatrix(globalLoc2, localLoc2);
+        SbVec3f localLoc1;
+        SbVec3f localLoc2;
+        invMatrix.multVecMatrix(SbVec3f(loc1.X(), loc1.Y(), loc1.Z()), localLoc1);
+        invMatrix.multVecMatrix(SbVec3f(loc2.X(), loc2.Y(), loc2.Z()), localLoc2);
 
         // arc radius = distance to the center of the two edge locations
         SbVec3f center = (localLoc1 + localLoc2) / 2.0f;
@@ -710,12 +665,12 @@ void ViewProviderMeasureAngle::onLabelMoved()
     // Get dragger angle in local coordinate system
     float draggerAngle = std::atan2(trans[1], trans[0]);
     if (draggerAngle < 0) {
-        draggerAngle += 2.0f * M_PI;
+        draggerAngle += 2.0f * std::numbers::pi;
     }
 
     float theta = measuredAngle;
-    if (theta > M_PI) {
-        theta = 2.0f * M_PI - theta;
+    if (theta > std::numbers::pi) {
+        theta = 2.0f * std::numbers::pi - theta;
     }
 
     // sector 1: between 0 and θ
@@ -724,8 +679,8 @@ void ViewProviderMeasureAngle::onLabelMoved()
         isArcFlipped.setValue(false);
     }
     // sector 3: between π and π+θ
-    else if (draggerAngle >= M_PI && draggerAngle < M_PI + theta) {
-        sectorArcRotation.setValue(M_PI);
+    else if (draggerAngle >= std::numbers::pi && draggerAngle < std::numbers::pi + theta) {
+        sectorArcRotation.setValue(std::numbers::pi);
         isArcFlipped.setValue(true);
     }
 }
@@ -744,7 +699,7 @@ void ViewProviderMeasureAngle::onChanged(const App::Property* prop)
     if (prop == &IsFlipped) {
         bool flipped = IsFlipped.getValue();
         isArcFlipped.setValue(flipped);
-        sectorArcRotation.setValue(flipped ? M_PI : 0);
+        sectorArcRotation.setValue(flipped ? std::numbers::pi : 0);
     }
 
     ViewProviderMeasureBase::onChanged(prop);

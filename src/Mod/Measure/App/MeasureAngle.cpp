@@ -234,11 +234,11 @@ bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
     }
 
     switch (mCase) {
-        case FaceFace:
+        case MeasurementCase::FaceFace:
             return computeOriginFaceFace(s1, s2);
-        case EdgeEdge:
+        case MeasurementCase::EdgeEdge:
             return computeOriginEdgeEdge(s1, s2);
-        case FaceEdge:
+        case MeasurementCase::FaceEdge:
             return computeOriginFaceEdge(s1, s2);
     }
 
@@ -347,7 +347,11 @@ bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
     gp_Pnt edgeLoc = gp_Pnt(((faceIsS1) ? location2() : location1()).XYZ());
 
     // projection direction from the edge onto the face
-    gp_Vec projection = edgeDir - (faceNormal * edgeDir.Dot(faceNormal));
+    Base::Vector3d edgeDirVec(edgeDir.X(), edgeDir.Y(), edgeDir.Z());
+    Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
+    edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
+
+    gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
     projection.Normalize();
 
     gp_Lin linEdge(edgeLoc, gp_Dir(edgeDir));
@@ -355,7 +359,14 @@ bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
     gp_Pnt p1, p2;
     Part::closestPointsOnLines(linEdge, linProj, p1, p2);
 
-    outOrigin = (faceIsS1) ? p2 : p1;
+    if (faceIsS1) {
+        outOrigin = p2;
+    }
+    else {
+        gp_Vec facePtToP1(faceLoc, p1);
+        double dist = facePtToP1.Dot(faceNormal);
+        outOrigin = gp_Pnt(p1.XYZ() - dist * faceNormal.XYZ());
+    }
 
     return true;
 }
@@ -378,27 +389,27 @@ bool MeasureAngle::setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2)
 
     // For edges with a common vertex, we need to orient the vectors
     // so they point away from the common vertex
-    if (mCase == EdgeEdge) {
+    if (mCase == MeasurementCase::EdgeEdge) {
 
         if (direction1.Dot(gp_Vec(outOrigin.XYZ()) - loc1) > 0) {
-            direction1 = -direction1;
+            direction1.Reverse();
         }
         if (direction2.Dot(gp_Vec(outOrigin.XYZ()) - loc2) > 0) {
-            direction2 = -direction2;
+            direction2.Reverse();
         }
     }
-    else if (mCase == FaceFace) {
+    else if (mCase == MeasurementCase::FaceFace) {
 
         gp_Vec between = loc2 - loc1;
 
         if (direction1.Dot(between) < 0) {
-            direction1 = -direction1;
+            direction1.Reverse();
         }
         if (direction2.Dot(between) > 0) {
-            direction2 = -direction2;
+            direction2.Reverse();
         }
     }
-    else if (mCase == FaceEdge) {
+    else if (mCase == MeasurementCase::FaceEdge) {
         bool faceIsS1 = (s1.ShapeType() == TopAbs_FACE);
 
         gp_Vec& faceNormal = (faceIsS1 ? direction1 : direction2);
@@ -409,17 +420,24 @@ bool MeasureAngle::setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2)
         edgeDir.Normalize();
 
         // project edge exactly onto the face plane
-        gp_Vec projection = edgeDir - (faceNormal * edgeDir.Dot(faceNormal));
+        Base::Vector3d edgeDirVec(edgeDir.X(), edgeDir.Y(), edgeDir.Z());
+        Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
+        edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
+
+        gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
         projection.Normalize();
 
         if (edgeDir.Dot(gp_Vec(outOrigin.XYZ()) - edgeLoc) > 0) {
             edgeDir.Reverse();
         }
-        if (projection.Dot(edgeDir) < 0) {
-            projection.Reverse();
-        }
 
-        faceNormal = projection;
+        if (!projection.IsParallel(edgeDir, Precision::Angular())) {
+            if (projection.Dot(edgeDir) < 0) {
+                projection.Reverse();
+            }
+
+            faceNormal = projection;
+        }
     }
     else {
         // should not reach here
@@ -477,13 +495,13 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
         subs2.at(0).c_str()
     );
     if (s1.ShapeType() == TopAbs_FACE && s2.ShapeType() == TopAbs_FACE) {
-        mCase = FaceFace;
+        mCase = MeasurementCase::FaceFace;
     }
     else if (s1.ShapeType() == TopAbs_EDGE && s2.ShapeType() == TopAbs_EDGE) {
-        mCase = EdgeEdge;
+        mCase = MeasurementCase::EdgeEdge;
     }
     else {
-        mCase = FaceEdge;
+        mCase = MeasurementCase::FaceEdge;
     }
 
     if (!setOrigin(s1, s2) || !setDirections(s1, s2)) {
@@ -494,7 +512,7 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
     double angleRad = direction1.Angle(direction2);
 
     // because of face normal are perpendicular to face
-    if (mCase == FaceFace) {
+    if (mCase == MeasurementCase::FaceFace) {
         angleRad = std::numbers::pi - angleRad;
     }
 
