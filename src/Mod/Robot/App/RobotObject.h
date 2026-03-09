@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_ROBOTOBJECT_H
-#define ROBOT_ROBOTOBJECT_H
+#pragma once
 
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
@@ -89,6 +88,3 @@ protected:
 };
 
 }  // namespace Robot
-
-
-#endif  // ROBOT_ROBOTOBJECT_H

@@ -27,7 +27,7 @@ jobs:
         copr_url = https://copr.fedorainfracloud.org
         " > ~/.config/copr
     - name: checkout sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         submodules: recursive
         fetch-depth: 500

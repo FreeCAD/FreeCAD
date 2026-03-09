@@ -150,7 +150,7 @@ CmdTechDrawRichTextAnnotation::CmdTechDrawRichTextAnnotation()
     sToolTipText    = QT_TR_NOOP("Inserts a rich text annotation in the current page");
     sWhatsThis      = "TechDraw_RichTextAnnotation";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/TechDraw_RichTextAnnotation";
+    sPixmap         = "actions/TechDraw_Annotation";
 }
 
 void CmdTechDrawRichTextAnnotation::activated(int iMsg)

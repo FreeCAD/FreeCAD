@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_MULTISAMPLE_H
-#define GUI_MULTISAMPLE_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -70,5 +69,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MULTISAMPLE_H

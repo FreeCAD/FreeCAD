@@ -106,7 +106,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="127"/>
       <source>Exports the trajectory as a full KRL subroutine</source>
-      <translation type="unfinished">Exports the trajectory as a full KRL subroutine</translation>
+      <translation>Exporta la trayectoria como una subrutina KRL completa</translation>
     </message>
   </context>
   <context>
@@ -292,20 +292,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="68"/>
-      <location filename="../../CommandExport.cpp" line="61"/>
-      <location filename="../../CommandExport.cpp" line="142"/>
-      <location filename="../../Command.cpp" line="102"/>
-      <location filename="../../Command.cpp" line="165"/>
-      <location filename="../../Command.cpp" line="267"/>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../CommandTrajectory.cpp" line="178"/>
-      <location filename="../../CommandTrajectory.cpp" line="199"/>
-      <location filename="../../CommandTrajectory.cpp" line="484"/>
-      <source>Wrong selection</source>
-      <translation>Selección Incorrecta</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Select VRML file for Robot</source>
       <translation type="unfinished">Select VRML file for Robot</translation>
@@ -313,7 +299,7 @@
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>VRML Files (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML Files (*.wrl *.vrml)</translation>
+      <translation>Archivos VRML (*.wrl *.vrml)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="66"/>
@@ -323,7 +309,21 @@
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>CSV Files (*.csv)</source>
-      <translation type="unfinished">CSV Files (*.csv)</translation>
+      <translation>Archivos CSV (*.csv)</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
+      <location filename="../../CommandTrajectory.cpp" line="178"/>
+      <location filename="../../CommandTrajectory.cpp" line="199"/>
+      <location filename="../../CommandTrajectory.cpp" line="484"/>
+      <location filename="../../CommandInsertRobot.cpp" line="68"/>
+      <location filename="../../CommandExport.cpp" line="61"/>
+      <location filename="../../CommandExport.cpp" line="142"/>
+      <source>Wrong selection</source>
+      <translation>Selección Incorrecta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
@@ -336,10 +336,10 @@
       <translation>Seleccionar un Robot</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="143"/>
       <location filename="../../Command.cpp" line="268"/>
       <location filename="../../CommandTrajectory.cpp" line="108"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="143"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Seleccione un Robot y un objeto de Trayectoria.</translation>
     </message>

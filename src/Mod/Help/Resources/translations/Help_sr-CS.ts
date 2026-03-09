@@ -42,7 +42,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
       <source>GitHub (online)</source>
-      <translation type="unfinished">GitHub (online)</translation>
+      <translation>GitHub(onlajn)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
@@ -67,14 +67,13 @@ automatically search for the help files at the default location
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>Translation suffix</source>
-      <translation type="unfinished">Translation suffix</translation>
+      <translation>Sufiks za prevod</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
       <source>The documentation pages will be fetched from the official
 FreeCADwiki at https://wiki.freecad.org</source>
-      <translation type="unfinished">The documentation pages will be fetched from the official
-FreeCADwiki at https://wiki.freecad.org</translation>
+      <translation>Stranice sa dokumentacijom će biti preuzete sa zvanične FreeCADwiki web stranice: https://wiki.freecad.org</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="139"/>

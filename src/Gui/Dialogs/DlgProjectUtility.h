@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPROJECTUTILITY_H
-#define GUI_DIALOG_DLGPROJECTUTILITY_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -56,6 +55,3 @@ protected:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-
-#endif  // GUI_DIALOG_DLGPROJECTUTILITY_H

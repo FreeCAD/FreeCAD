@@ -16,8 +16,7 @@
  ****************************************************************************/
 
 
-#ifndef TRAJECTORY_COMPOSITE_H
-#define TRAJECTORY_COMPOSITE_H
+#pragma once
 
 #include "trajectory.hpp"
 #include "path_composite.hpp"
@@ -67,5 +66,3 @@ class Trajectory_Composite: public Trajectory
 
 
 }
-
-#endif

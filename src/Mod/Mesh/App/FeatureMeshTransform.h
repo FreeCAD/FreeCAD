@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATURE_MESH_TRANSFORM_H
-#define FEATURE_MESH_TRANSFORM_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 
@@ -62,5 +61,3 @@ public:
 };
 
 }  // namespace Mesh
-
-#endif  // FEATURE_MESH_TRANSFORM_H

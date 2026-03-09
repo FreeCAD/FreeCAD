@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H
-#define DRAWINGGUI_TEMPLATETEXTFIELD_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -83,5 +82,3 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
         QGraphicsPathItem* m_line;
 };
 }   // namespace TechDrawGui
-
-#endif // #ifndef DRAWINGGUI_TEMPLATETEXTFIELD_H

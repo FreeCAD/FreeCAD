@@ -1265,7 +1265,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="115"/>
       <source>Creates a solid cube</source>
-      <translation>Skapar en solid kub</translation>
+      <translation>Skapar en kropp kub</translation>
     </message>
   </context>
   <context>
@@ -1283,7 +1283,7 @@
     <message>
       <location filename="../../Command.cpp" line="135"/>
       <source>Creates a solid box</source>
-      <translation>Skapar en solid låda</translation>
+      <translation>Skapar en kropp låda</translation>
     </message>
   </context>
   <context>
@@ -1465,7 +1465,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="203"/>
       <source>Creates a solid cone</source>
-      <translation>Skapar en solid kon</translation>
+      <translation>Skapar en kropp kon</translation>
     </message>
   </context>
   <context>
@@ -1521,7 +1521,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="71"/>
       <source>Creates a solid cylinder</source>
-      <translation>Skapar en solid cylinder</translation>
+      <translation>Skapar en kropp cylinder</translation>
     </message>
   </context>
   <context>
@@ -2015,7 +2015,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="159"/>
       <source>Creates a solid sphere</source>
-      <translation>Skapar en solid sfär</translation>
+      <translation>Skapar en kropp sfär</translation>
     </message>
   </context>
   <context>
@@ -2081,7 +2081,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="247"/>
       <source>Creates a solid torus</source>
-      <translation>Skapar en solid torus</translation>
+      <translation>Skapar en kropp torus</translation>
     </message>
   </context>
   <context>
@@ -2282,7 +2282,7 @@ för projektionen.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="20"/>
       <source>Selection accepted</source>
-      <translation>Markering accepterad</translation>
+      <translation>Valet accepterat</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="35"/>
@@ -3121,7 +3121,7 @@ Kontrollera först en eller flera kantentiteter.</translation>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="84"/>
       <source>Solids will be exported as manifold solid B-rep object, shells as shell</source>
-      <translation>Solider kommer att exporteras som manifold solid B-rep-objekt, skal som skal</translation>
+      <translation>Solider kommer att exporteras som manifold kropp B-rep-objekt, skal som skal</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="87"/>
@@ -4411,7 +4411,7 @@ kommer skissplanets normalvektor att användas</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="274"/>
       <source>Vertex/Edge/Wire/Face</source>
-      <translation>Hörnpunkt/kant/tråd/yta</translation>
+      <translation>Vertex/kant/tråd/yta</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="275"/>
@@ -5986,7 +5986,7 @@ Fortsättning?</translation>
       <translation>Redigerare för bilaga</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1003"/>
+      <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
       <translation>Utseende per yta</translation>
     </message>

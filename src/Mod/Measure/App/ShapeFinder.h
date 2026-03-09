@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef MEASURE_SHAPEFINDER_H
-#define MEASURE_SHAPEFINDER_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -143,5 +142,3 @@ private:
 };
 
 }  // namespace Measure
-
-#endif  // MEASURE_SHAPEFINDER_H

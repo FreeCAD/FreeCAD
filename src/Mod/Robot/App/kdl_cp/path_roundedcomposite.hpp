@@ -43,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_ROUNDEDCOMPOSITE_H
-#define KDL_MOTION_ROUNDEDCOMPOSITE_H
+#pragma once
 
 #include "path.hpp"
 #include "path_composite.hpp"
@@ -200,6 +199,3 @@ class Path_RoundedComposite : public Path
 
 
 }
-
-
-#endif

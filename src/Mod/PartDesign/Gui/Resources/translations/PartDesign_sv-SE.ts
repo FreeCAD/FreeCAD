@@ -2771,19 +2771,19 @@ mätas längs den angivna riktningen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="242"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="254"/>
       <source>Base X-axis</source>
       <translation>Bas X-axel</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="255"/>
       <source>Base Y-axis</source>
       <translation>Bas Y-axel</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="244"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Base Z-axis</source>
       <translation>Bas Z-axel</translation>
     </message>
@@ -2819,20 +2819,20 @@ mätas längs den angivna riktningen</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="252"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="264"/>
       <source>Select reference…</source>
       <translation>Välj referens..</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="87"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="195"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="158"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="160"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="491"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
@@ -2842,32 +2842,32 @@ mätas längs den angivna riktningen</translation>
       <translation>Omräkning vid ändring</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="199"/>
       <source>To last</source>
       <translation>Till sist</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="200"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
       <source>Through all</source>
       <translation>Genom alla</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>To first</source>
       <translation>För det första</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
       <source>Up to face</source>
       <translation>Upp till yta</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="216"/>
       <source>Two angles</source>
       <translation>Två vinklar</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="467"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
       <source>No face selected</source>
       <translation>Ingen yta vald</translation>
     </message>
@@ -2916,7 +2916,7 @@ mätas längs den angivna riktningen</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="193"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="202"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
@@ -3190,18 +3190,18 @@ mätas längs den angivna riktningen</translation>
       <translation>Inga giltiga plan i detta dokument</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="257"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialogruta är redan öppen i uppgiftspanelen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="992"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation>Det går inte att använda detta kommando eftersom det inte finns någon solid att subtrahera från.</translation>
+      <translation>Det går inte att använda detta kommando eftersom det inte finns någon kropp att subtrahera från.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
@@ -3234,11 +3234,11 @@ mätas längs den angivna riktningen</translation>
       <translation>Ingen skiss finns tillgänglig i dokumentet</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="258"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>Stäng den här dialogen?</translation>
     </message>
@@ -3409,7 +3409,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="712"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Endast en solid funktion kan vara spetsen på en kropp.</translation>
+      <translation>Endast en kropp funktion kan vara spetsen på en kropp.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="846"/>
@@ -3468,24 +3468,24 @@ This may lead to unexpected results.</source>
       <translation>Det är inte möjligt att skapa en subtraktiv funktion utan en tillgänglig basfunktion</translation>
     </message>
     <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="228"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikal skissaxel</translation>
     </message>
     <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
       <location filename="../../TaskTransformedParameters.cpp" line="440"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="229"/>
       <source>Horizontal sketch axis</source>
       <translation>Horisontell skissaxel</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
       <source>Construction line %1</source>
       <translation>Konstruktionslinje %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="85"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="94"/>
       <source>Face</source>
       <translation>Yta</translation>
     </message>
@@ -3519,20 +3519,20 @@ För äldre dokument med Part Design-objekt som saknar en kropp kan du använda 
       <translation>För att kunna använda den här funktionen måste den tillhöra ett body-objekt i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Funktionen är inte i en del</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>För att kunna använda den här funktionen måste den tillhöra ett delobjekt i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProvider.cpp" line="92"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
+      <location filename="../../ViewProvider.cpp" line="92"/>
       <source>Edit %1</source>
       <translation>Redigera %1</translation>
     </message>
@@ -4464,20 +4464,20 @@ under 90: mindre hålradie i botten
       <translation>Kan inte utföra boolesk operation med ogiltig basform</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
       <location filename="../../../App/FeaturePipe.cpp" line="480"/>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="254"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4512,10 +4512,10 @@ under 90: mindre hålradie i botten
       <translation>Den resulterande smälta extruderingen är noll.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>Den resulterande formen är inte en solid</translation>
     </message>
@@ -4597,9 +4597,9 @@ under 90: mindre hålradie i botten
       <translation>Skapandet misslyckades eftersom riktningen är ortogonal mot skissens normalvektor</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>Skapa en yta från skiss misslyckades</translation>
     </message>
@@ -4609,20 +4609,20 @@ under 90: mindre hålradie i botten
       <translation type="unfinished">Angles of groove nullify each other</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <location filename="../../../App/FeatureGroove.cpp" line="171"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Rotationsaxeln skär skissen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="295"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="264"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="263"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
       <source>Could not revolve the sketch!</source>
       <translation>Kunde inte vrida på skissen!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="307"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="276"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="275"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Det gick inte att skapa en yta från en skiss.
@@ -4672,9 +4672,9 @@ Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
       <translation>Fel: Ytan måste vara plan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>Fel: Resultatet är inte en solid</translation>
     </message>
@@ -4789,7 +4789,7 @@ Det är inte tillåtet att korsa skissentiteter i en skiss.</translation>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2054"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
-      <translation>Boolesk operation producerade icke-solid på profil Kant</translation>
+      <translation>Boolesk operation producerade icke-kropp på profil Kant</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="151"/>
@@ -4834,8 +4834,8 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna för att 
       <translation>Loft: Skapa en yta från en skiss misslyckades</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="444"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <source>Loft: Failed to create shell</source>
       <translation>Loft: Misslyckades med att skapa skal</translation>
     </message>
@@ -4947,16 +4947,16 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
       <translation>Kan inte subtrahera primitiv funktion utan basfunktion</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>Okänd operationstyp</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>Misslyckades med att utföra boolesk operation</translation>
     </message>
@@ -5074,8 +5074,8 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
       <translation type="unfinished">Angles of revolution nullify each other</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <source>Reference axis is invalid</source>
       <translation>Referensaxeln är ogiltig</translation>
     </message>
@@ -5308,7 +5308,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="823"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="835"/>
       <source>Revolution Parameters</source>
       <translation>Parametrar för revolution</translation>
     </message>
@@ -5316,7 +5316,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="833"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="845"/>
       <source>Groove Parameters</source>
       <translation>Spårparametrar</translation>
     </message>

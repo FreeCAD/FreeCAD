@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Aligns cell contents to the left</source>
-      <translation type="unfinished">Aligns cell contents to the left</translation>
+      <translation>Poravnaj sadržaj ćelija prema lijevo</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Aligns cell contents to the right</source>
-      <translation type="unfinished">Aligns cell contents to the right</translation>
+      <translation>Poravnaj sadržaj ćelija prema desno</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Aligns cell contents to the top</source>
-      <translation type="unfinished">Aligns cell contents to the top</translation>
+      <translation>Poravnaj sadržaj ćelija prema vrhu</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="572"/>
       <source>Aligns cell contents to the vertical center</source>
-      <translation type="unfinished">Aligns cell contents to the vertical center</translation>
+      <translation>Poravnaj sadržaj ćelija prema okomito središte</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>&amp;Export Spreadsheet</source>
-      <translation type="unfinished">&amp;Export Spreadsheet</translation>
+      <translation>Izv&amp;ezi Proračunsku Tablicu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>Exports the spreadsheet to a CSV file</source>
-      <translation type="unfinished">Exports the spreadsheet to a CSV file</translation>
+      <translation>Izvoz proračunske tablice u CSV datoteku</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="187"/>
       <source>&amp;Import Spreadsheet</source>
-      <translation type="unfinished">&amp;Import Spreadsheet</translation>
+      <translation>Uvez&amp;i Proračunsku Tablicu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Imports a CSV file into a new spreadsheet</source>
-      <translation type="unfinished">Imports a CSV file into a new spreadsheet</translation>
+      <translation>Uvozi CSV datoteke u proračunsku tablicu</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="62"/>
       <source>&amp;Merge Cells</source>
-      <translation type="unfinished">&amp;Merge Cells</translation>
+      <translation>&amp;Spoji ćelije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="63"/>
       <source>Merges the selected cells</source>
-      <translation type="unfinished">Merges the selected cells</translation>
+      <translation>Spajanje odabranih ćelija</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Set Alias</source>
-      <translation type="unfinished">Set Alias</translation>
+      <translation>Postavi pseudonim</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <source>Sets an alias for the selected cell</source>
-      <translation type="unfinished">Sets an alias for the selected cell</translation>
+      <translation>Postavite pseudonim za odabrane ćelije</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="123"/>
       <source>Sp&amp;lit Cell</source>
-      <translation type="unfinished">Sp&amp;lit Cell</translation>
+      <translation>Razdvoji će&amp;lije</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="124"/>
       <source>Splits a previously merged cell</source>
-      <translation type="unfinished">Splits a previously merged cell</translation>
+      <translation>Razdjeli od prije spojene ćelije</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="628"/>
       <source>&amp;Bold Text</source>
-      <translation type="unfinished">&amp;Bold Text</translation>
+      <translation>Pode&amp;bljani tekst</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="629"/>
       <source>Sets the text in the selected cells bold</source>
-      <translation type="unfinished">Sets the text in the selected cells bold</translation>
+      <translation>Postavlja tekst u odabranim ćelijama podebljano</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="713"/>
       <source>&amp;Italic Text</source>
-      <translation type="unfinished">&amp;Italic Text</translation>
+      <translation>Ukošen&amp;i tekst</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="714"/>
       <source>Sets the text in the selected cells italic</source>
-      <translation type="unfinished">Sets the text in the selected cells italic</translation>
+      <translation>Postavlja tekst u odabranim ćelijama ukošeno</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="798"/>
       <source>&amp;Underline Text</source>
-      <translation type="unfinished">&amp;Underline Text</translation>
+      <translation>Pod&amp;crtavanje teksta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="799"/>
       <source>Underlines the text in the selected cells</source>
-      <translation type="unfinished">Underlines the text in the selected cells</translation>
+      <translation>Podcrtava teksta u odabranim ćelijama</translation>
     </message>
   </context>
   <context>
@@ -289,7 +289,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Sp&amp;lit cell</source>
-      <translation type="unfinished">Sp&amp;lit cell</translation>
+      <translation>Razdvoji će&amp;lij</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="307"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="147"/>
       <source>Set text color</source>
-      <translation type="unfinished">Set text color</translation>
+      <translation>Postavi boju teksta</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="182"/>
@@ -365,25 +365,25 @@
       <location filename="../../SheetTableView.cpp" line="347"/>
       <location filename="../../SheetTableView.cpp" line="380"/>
       <source>Insert Rows</source>
-      <translation type="unfinished">Insert Rows</translation>
+      <translation>Umetni redrove</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="400"/>
       <location filename="../../SheetTableView.cpp" line="475"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">Remove Rows</translation>
+      <translation>Ukloni redove</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="422"/>
       <location filename="../../SheetTableView.cpp" line="455"/>
       <source>Insert Columns</source>
-      <translation type="unfinished">Insert Columns</translation>
+      <translation>Umetni stupce</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <location filename="../../SheetTableView.cpp" line="679"/>
+      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <source>Clear Cells</source>
-      <translation type="unfinished">Clear Cells</translation>
+      <translation>Obriši ćelije</translation>
     </message>
   </context>
   <context>
@@ -430,16 +430,16 @@ Izraz mora dati vrijednost nizu neke adrese ćelije.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells</source>
-      <translation type="unfinished">To cells</translation>
+      <translation>Do ćelije</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Završna adresa ćelije za vezanje.
+Upišite '=' za korištenje izraza.
+Izraz mora odnositi na znakovni niz neke adrese ćelije.</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
@@ -449,7 +449,7 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet</source>
-      <translation type="unfinished">Sheet</translation>
+      <translation>List</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -538,7 +538,7 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range</source>
-      <translation type="unfinished">Cell range</translation>
+      <translation>Raspon ćelija</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
@@ -553,7 +553,7 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name</source>
-      <translation type="unfinished">Optional property group name</translation>
+      <translation>Opcionalni naziv grupe svojstava</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -576,7 +576,7 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
       <source>Cell Properties</source>
-      <translation type="unfinished">Cell Properties</translation>
+      <translation>Svojstava ćelija</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="27"/>
@@ -678,8 +678,8 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;All (*)</translation>
     </message>
@@ -712,39 +712,39 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="110"/>
       <source>Export File</source>
-      <translation type="unfinished">Export File</translation>
+      <translation>Izvezi datoteku</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="136"/>
       <source>Show Spreadsheet</source>
-      <translation type="unfinished">Show Spreadsheet</translation>
+      <translation>Pokaži proračunsku tablicu</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="98"/>
       <source>Sets the text color of cells</source>
-      <translation type="unfinished">Sets the text color of cells</translation>
+      <translation>Postavlja boju teksta ćelija</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="99"/>
       <location filename="../../Workbench.cpp" line="100"/>
       <source>Sets the text color of spreadsheet cells</source>
-      <translation type="unfinished">Sets the text color of spreadsheet cells</translation>
+      <translation>Postavlja boju teksta ćelija proračunske tablice</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="121"/>
       <location filename="../../Workbench.cpp" line="123"/>
       <source>Sets the background color of cells</source>
-      <translation type="unfinished">Sets the background color of cells</translation>
+      <translation>Postavlja boju pozadine ćelija</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="122"/>
       <source>Sets the spreadsheet cells background color</source>
-      <translation type="unfinished">Sets the spreadsheet cells background color</translation>
+      <translation>Postavlja boju pozadine ćelija proračunske tablice</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="815"/>
       <source>Copy &amp; Paste Failed</source>
-      <translation type="unfinished">Copy &amp; Paste Failed</translation>
+      <translation>Copy &amp; Paste nije uspjelo</translation>
     </message>
   </context>
   <context>
@@ -863,7 +863,7 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
     <message>
       <location filename="../../Sheet.ui" line="22"/>
       <source>&amp;Content</source>
-      <translation type="unfinished">&amp;Content</translation>
+      <translation>&amp;Sadržaj</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
@@ -981,12 +981,12 @@ Zadano: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level</source>
-      <translation type="unfinished">Default zoom level</translation>
+      <translation>Zadana razina zumiranja</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="131"/>
       <source>Delimiter character</source>
-      <translation type="unfinished">Delimiter character</translation>
+      <translation>Znak za razgraničenje</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="151"/>
@@ -1001,7 +1001,7 @@ Zadano: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
       <source>Quote character</source>
-      <translation type="unfinished">Quote character</translation>
+      <translation>Znak navoda</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="198"/>
@@ -1011,7 +1011,7 @@ Zadano: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="223"/>
       <source>Escape character</source>
-      <translation type="unfinished">Escape character</translation>
+      <translation>Znak za izlaz</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="230"/>
@@ -1030,104 +1030,104 @@ Zadano: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="141"/>
       <source>Insert %n Row(s) Above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Row(s) Above</numerusform>
-        <numerusform>Insert %n Row(s) Above</numerusform>
-        <numerusform>Insert %n Row(s) Above</numerusform>
+      <translation>
+        <numerusform>Umeće %n redak(a) iznad</numerusform>
+        <numerusform>Umeće %n redaka iznad</numerusform>
+        <numerusform>Umetanje %n redak(a) iznad</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="145"/>
       <source>Insert %n Row(s) Below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Row(s) Below</numerusform>
-        <numerusform>Insert %n Row(s) Below</numerusform>
-        <numerusform>Insert %n Row(s) Below</numerusform>
+      <translation>
+        <numerusform>Umeće %n redak ispod</numerusform>
+        <numerusform>Umeće %n redaka ispod</numerusform>
+        <numerusform>Umetanje %n redaka ispod</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="150"/>
       <source>Insert %n Non-Contiguous Rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
+      <translation>
+        <numerusform>Umetnite %n red koji nije u nizu</numerusform>
+        <numerusform>Umetanje %n redova koji nisu u nizu</numerusform>
+        <numerusform>Umetanje %n redova koji nisu u nizu</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">
-        <numerusform>Remove Rows</numerusform>
-        <numerusform>Remove Rows</numerusform>
-        <numerusform>Remove Rows</numerusform>
+      <translation>
+        <numerusform>Ukloni red</numerusform>
+        <numerusform>Ukloni redove</numerusform>
+        <numerusform>Uklanjanje redova</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="167"/>
       <source>Insert %n Column(s) Left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Column(s) Left</numerusform>
-        <numerusform>Insert %n Column(s) Left</numerusform>
-        <numerusform>Insert %n Column(s) Left</numerusform>
+      <translation>
+        <numerusform>Umetni %n kolonu lijevo</numerusform>
+        <numerusform>Umetni %n kolona lijevo</numerusform>
+        <numerusform>Umetanje %n kolona lijevo</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Insert %n Column(s) Right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Column(s) Right</numerusform>
-        <numerusform>Insert %n Column(s) Right</numerusform>
-        <numerusform>Insert %n Column(s) Right</numerusform>
+      <translation>
+        <numerusform>Umetni %n kolonu desno</numerusform>
+        <numerusform>Umetni %n kolona desno</numerusform>
+        <numerusform>Umetanje %n kolona desno</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="178"/>
       <source>Insert %n Non-Contiguous Columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
+      <translation>
+        <numerusform>Umetnite %n red koji nije u nizu</numerusform>
+        <numerusform>Umetnite %n redova koji nisu u nizu</numerusform>
+        <numerusform>Umetanje %n redova koji nisu u nizu</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="181"/>
       <source>Remove Column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove Column(s)</numerusform>
-        <numerusform>Remove Column(s)</numerusform>
-        <numerusform>Remove Column(s)</numerusform>
+      <translation>
+        <numerusform>Ukloni kolonu(e)</numerusform>
+        <numerusform>Ukloni kolone</numerusform>
+        <numerusform>Uklanjanje kolona</numerusform>
       </translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="194"/>
       <location filename="../../SheetTableView.cpp" line="660"/>
       <source>Properties…</source>
-      <translation type="unfinished">Properties…</translation>
+      <translation>Svojstva…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="198"/>
       <location filename="../../SheetTableView.cpp" line="669"/>
       <source>Bind…</source>
-      <translation type="unfinished">Bind…</translation>
+      <translation>Poveži…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="199"/>
       <location filename="../../SheetTableView.cpp" line="662"/>
       <source>Configuration Table…</source>
-      <translation type="unfinished">Configuration Table…</translation>
+      <translation>Konfiguracijska tablica…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
       <location filename="../../SheetTableView.cpp" line="663"/>
       <source>Merge Cells</source>
-      <translation type="unfinished">Merge Cells</translation>
+      <translation>Spoji ćelije</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="208"/>
       <location filename="../../SheetTableView.cpp" line="664"/>
       <source>Split Cell</source>
-      <translation type="unfinished">Split Cell</translation>
+      <translation>Razdvoji ćeliju</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="212"/>
@@ -1202,14 +1202,14 @@ Zadano: %V = %A
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>New zoom level:</source>
-      <translation type="unfinished">New zoom level:</translation>
+      <translation>Nova razina zumiranja:</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>Zoom Level</source>
-      <translation type="unfinished">Zoom Level</translation>
+      <translation>Razina zumiranja</translation>
     </message>
   </context>
   <context>
@@ -1222,7 +1222,7 @@ Zadano: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="349"/>
       <source>Unsetup Configuration Table</source>
-      <translation type="unfinished">Unsetup Configuration Table</translation>
+      <translation>Poništite postavke konfiguracijske tablice</translation>
     </message>
   </context>
 </TS>

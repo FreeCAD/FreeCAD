@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_TaskDlgEditSketch_H
-#define SKETCHERGUI_TaskDlgEditSketch_H
+#pragma once
 
 #include <fastsignals/signal.h>
 
@@ -101,5 +100,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_TaskDlgEditSketch_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_UNITSSCHEMA_H
-#define BASE_UNITSSCHEMA_H
+#pragma once
 
 #include <string>
 #include <memory>
@@ -66,4 +65,3 @@ private:
 
 
 }  // namespace Base
-#endif  // BASE_UNITSSCHEMA_H

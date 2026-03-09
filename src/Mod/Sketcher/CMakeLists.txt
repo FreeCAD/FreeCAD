@@ -25,7 +25,6 @@ set(Sketcher_TestScripts
 if(BUILD_GUI)
     list (APPEND Sketcher_Scripts
           InitGui.py
-          TestSketcherGui.py
     )
     list (APPEND Sketcher_TestScripts
           SketcherTests/TestPlacementUpdate.py

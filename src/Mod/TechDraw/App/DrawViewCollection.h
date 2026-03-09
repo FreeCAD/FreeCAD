@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_FEATUREVIEWCOLLECTION_h_
-#define TECHDRAW_FEATUREVIEWCOLLECTION_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -73,5 +72,3 @@ protected:
 };
 
 } //namespace TechDraw
-
-#endif // TECHDRAW_FEATUREVIEWCOLLECTION_h_

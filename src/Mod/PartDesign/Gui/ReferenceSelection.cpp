@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Konstantinos Poulios <logari81@gmail.com>             *
  *                                                                            *

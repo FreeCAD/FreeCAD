@@ -21,7 +21,7 @@ def checkForBlindHole(baseshape, selectedFace):
     circularFaces = [
         f
         for f in baseshape.Faces
-        if len(f.OuterWire.Edges) == 1 and type(f.OuterWire.Edges[0].Curve) == Part.Circle
+        if len(f.OuterWire.Edges) == 1 and isinstance(f.OuterWire.Edges[0].Curve, Part.Circle)
     ]
 
     circularFaceEdges = [f.OuterWire.Edges[0] for f in circularFaces]
@@ -38,7 +38,9 @@ def checkForBlindHole(baseshape, selectedFace):
     return bottomface
 
 
-def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1)):
+def isDrillableCylinder(
+    obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), allowPartial=False
+):
     """
     checks if a candidate cylindrical face is drillable
     """
@@ -49,25 +51,6 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     Path.Log.debug(
         "\n match tool diameter {} \n match vector {}".format(matchToolDiameter, matchVector)
     )
-
-    def raisedFeature(obj, candidate):
-        # check if the cylindrical 'lids' are inside the base
-        # object.  This eliminates extruded circles but allows
-        # actual holes.
-
-        startLidCenter = App.Vector(
-            candidate.BoundBox.Center.x,
-            candidate.BoundBox.Center.y,
-            candidate.BoundBox.ZMax,
-        )
-
-        endLidCenter = App.Vector(
-            candidate.BoundBox.Center.x,
-            candidate.BoundBox.Center.y,
-            candidate.BoundBox.ZMin,
-        )
-
-        return obj.isInside(startLidCenter, 1e-6, False) or obj.isInside(endLidCenter, 1e-6, False)
 
     def getSeam(candidate):
         # Finds the vertical seam edge in a cylinder
@@ -82,10 +65,10 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     if not isinstance(candidate.Surface, Part.Cylinder):
         raise TypeError("expected a cylinder")
 
-    if len(candidate.Edges) != 3:
+    if not (len(candidate.Edges) == 3 or allowPartial):
         raise TypeError("cylinder does not have 3 edges.  Not supported yet")
 
-    if raisedFeature(obj, candidate):
+    if obj.isInside(candidate.BoundBox.Center, Path.Geom.Tolerance, False):
         Path.Log.debug("The cylindrical face is a raised feature")
         return False
 
@@ -99,7 +82,7 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     bottomface = checkForBlindHole(obj, candidate)
     Path.Log.track("candidate is a blind hole")
 
-    if bottomface is not None and matchVector:  # blind holes only drillable at exact vector
+    if bottomface and matchVector:  # blind holes only drillable at exact vector
         result = compareVecs(bottomface.normalAt(0, 0), vector, exact=True)
         Path.Log.track(result)
         return result
@@ -121,19 +104,18 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
         "\n match tool diameter {} \n match vector {}".format(matchToolDiameter, matchVector)
     )
 
-    if not type(candidate.Surface) == Part.Plane:
+    if not isinstance(candidate.Surface, Part.Plane):
         Path.Log.debug("Drilling on non-planar faces not supported")
         return False
 
-    if (
-        len(candidate.Edges) == 1 and type(candidate.Edges[0].Curve) == Part.Circle
-    ):  # Regular circular face
+    if len(candidate.Edges) == 1 and isinstance(candidate.Edges[0].Curve, Part.Circle):
+        # Regular circular face
         Path.Log.debug("Face is circular - 1 edge")
         edge = candidate.Edges[0]
     elif (
         len(candidate.Edges) == 2
-        and type(candidate.Edges[0].Curve) == Part.Circle
-        and type(candidate.Edges[1].Curve) == Part.Circle
+        and isinstance(candidate.Edges[0].Curve, Part.Circle)
+        and isinstance(candidate.Edges[1].Curve, Part.Circle)
     ):  # process a donut
         Path.Log.debug("Face is a donut - 2 edges")
         e1 = candidate.Edges[0]
@@ -225,7 +207,7 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), a
         )
     )
 
-    if list == type(obj):
+    if isinstance(obj, list):
         for shape in obj:
             if isDrillable(shape, candidate, tooldiameter, vector):
                 return (True, shape)
@@ -237,7 +219,7 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), a
     try:
         if candidate.ShapeType == "Face":
             if isinstance(candidate.Surface, Part.Cylinder):
-                return isDrillableCylinder(obj, candidate, tooldiameter, vector)
+                return isDrillableCylinder(obj, candidate, tooldiameter, vector, allowPartial)
             else:
                 return isDrillableFace(obj, candidate, tooldiameter, vector)
         if candidate.ShapeType == "Edge":
@@ -269,35 +251,100 @@ def compareVecs(vec1, vec2, exact=False):
         )
 
 
-def getDrillableTargets(obj, ToolDiameter=None, vector=App.Vector(0, 0, 1)):
+def getStraightEdge(candidate):
+    # Finds the seam edge in a cylinder
+    for e in candidate.Edges:
+        if isinstance(e.Curve, Part.Line):
+            return e
+    for e in candidate.Edges:
+        if isinstance(e.Curve, Part.BSplineCurve):
+            p0 = e.Vertexes[0].Point
+            p1 = e.Vertexes[-1].Point
+            length = p0.distanceToPoint(p1)
+            if Path.Geom.isRoughly(e.Length, length):
+                return Part.Edge(Part.LineSegment(p0, p1))
+    return App.Vector(0, 0, 1)
+
+
+def getDrillableTargets(obj, toolDiameter=None, vector=App.Vector(0, 0, 1)):
     """
     Returns a list of tuples for drillable subelements from the given object
     [(obj,'Face1'),(obj,'Face3')]
 
     Finds cylindrical faces that are larger than the tool diameter (if provided) and
     oriented with the vector.  If vector is None, all drillables are returned
-
     """
 
-    shp = obj.Shape
+    toolRadius = toolDiameter / 2 if toolDiameter else 0
+    shape = obj.Shape
+    drillables = []
+    candidates = []  # simple holes
+    candidatesExtra = []  # non regular holes
 
-    results = []
-    for i in range(1, len(shp.Faces) + 1):
-        fname = "Face{}".format(i)
-        Path.Log.debug(fname)
-        candidate = obj.getSubObject(fname)
-
-        if not isinstance(candidate.Surface, Part.Cylinder):
+    for face in shape.Faces:
+        if not isinstance(face.Surface, Part.Cylinder):
             continue
-
-        try:
-            drillable = isDrillable(shp, candidate, tooldiameter=ToolDiameter, vector=vector)
-            Path.Log.debug("fname: {} : drillable {}".format(fname, drillable))
-        except Exception as e:
-            Path.Log.debug(e)
+        if toolRadius:
+            cylinderRadius = face.Surface.Radius
+            if toolRadius > cylinderRadius and not Path.Geom.isRoughly(cylinderRadius, toolRadius):
+                continue
+        if face.Volume > 0:  # hole should have negative volume
             continue
+        if len(face.Edges) > 3:
+            candidatesExtra.append(face)
+        else:
+            candidates.append(face)
 
-        if drillable:
-            results.append((obj, fname))
+    while candidatesExtra:
+        faces = [candidatesExtra.pop()]
+        center = faces[0].Surface.Center
+        for face in candidatesExtra:
+            # search faces with identical center point
+            if Path.Geom.pointsCoincide(face.Surface.Center, center):
+                faces.append(face)
 
-    return results
+        # check if faces creates a closed area
+        fzMin = min(e.BoundBox.ZMin for f in faces for e in f.Edges)
+        bottomEdges = [
+            e for f in faces for e in f.Edges if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)
+        ]
+        if bottomEdges:
+            wire = Part.Wire(Part.__sortEdges__(bottomEdges))
+            if wire and wire.isClosed():
+                candidates.append(faces[0])
+                for face in faces[1:]:
+                    candidatesExtra.remove(face)
+
+    circularFaces = []  # faces which can be a bottom of hole
+    for face in shape.Faces:
+        if all(isinstance(e.Curve, Part.Circle) for e in face.OuterWire.Edges):
+            center = face.OuterWire.Edges[0].Curve.Center
+            if all(Path.Geom.pointsCoincide(center, e.Curve.Center) for e in face.OuterWire.Edges):
+                hashList = [e.hashCode() for e in face.OuterWire.Edges]
+                circularFaces.append((face, hashList))
+
+    for candidate in candidates:
+        if vector is None:  # do not check direction
+            drillables.append(candidate)
+            continue
+        bottomFace = None
+        for face, hashList in circularFaces:
+            if any(
+                e.hashCode() in hashList
+                for e in candidate.Edges
+                if isinstance(e.Curve, Part.Circle)
+            ):
+                bottomFace = face
+                break
+        if bottomFace:  # blind holes only drillable at exact vector
+            if compareVecs(bottomFace.normalAt(0, 0), vector, exact=True):
+                drillables.append(candidate)
+        elif compareVecs(getStraightEdge(candidate).Curve.Direction, vector):
+            drillables.append(candidate)
+
+    if drillables:
+        hashList = [f.hashCode() for f in drillables]
+        faces = shape.Faces
+        return [(obj, f"Face{i + 1}") for i, f in enumerate(faces) if f.hashCode() in hashList]
+
+    return []

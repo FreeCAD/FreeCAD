@@ -71,7 +71,7 @@
       <item row="3" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_UseMaterialColor">
         <property name="toolTip">
-         <string>If this is checked, when an BIM object has a material, the object will take the color of the material. This can be overridden for each object.</string>
+         <string>If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</string>
         </property>
         <property name="text">
          <string>Use material color as shape color</string>
@@ -90,7 +90,7 @@
       <item row="4" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_applyconstructionStyle">
         <property name="toolTip">
-         <string>If this is checked, when an object becomes subtraction or addition of an BIM object, it will receive the Draft construction color.</string>
+         <string>If this is checked, when an object becomes subtraction or addition of a BIM object, it will receive the Draft construction color.</string>
         </property>
         <property name="text">
          <string>Apply Draft construction style to subcomponents</string>
@@ -106,13 +106,13 @@
       <item row="5" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_MoveWithHost">
         <property name="toolTip">
-         <string>By default, new objects will have their &quot;Move with host&quot; property set to False, which means they will not move when their host object is moved</string>
+         <string>By default, new objects will have their &quot;Move with host&quot; property set to True, which means they will move when their host object is moved</string>
         </property>
         <property name="text">
          <string>Set &quot;Move with host&quot; property to True by default</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>MoveWithHost</cstring>

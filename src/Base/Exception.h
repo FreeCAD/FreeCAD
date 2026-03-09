@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_EXCEPTION_H
-#define BASE_EXCEPTION_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -663,5 +662,3 @@ private:
 #endif
 
 }  // namespace Base
-
-#endif  // BASE_EXCEPTION_H

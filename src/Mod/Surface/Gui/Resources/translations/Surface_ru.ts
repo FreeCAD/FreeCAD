@@ -134,7 +134,7 @@
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html>&lt;head/>&lt;body>&lt;p>Список может быть переупорядочен, перетаскивая&lt;/p>&lt;/body>&lt;/html> </translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Список может быть переупорядочен перетаскиванием&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -187,7 +187,7 @@
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="378"/>
       <source>Too many edges</source>
-      <translation>Слишком много краев </translation>
+      <translation>Слишком много рёбер</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="379"/>
@@ -489,8 +489,8 @@ This command only works with a mesh object.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <source>Edit Filling</source>
       <translation>Редактировать заполнение </translation>
     </message>

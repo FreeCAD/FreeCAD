@@ -79,7 +79,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
     return shapes2d;
 }
 
-//! get the located and oriented shapes corresponding to the the links. If the shapes are to be
+//! get the located and oriented shapes corresponding to the links. If the shapes are to be
 //! fused, include2d should be false as 2d & 3d shapes may not fuse.
 TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> links, bool include2d)
 {

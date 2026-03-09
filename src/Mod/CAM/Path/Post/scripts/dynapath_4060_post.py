@@ -131,7 +131,7 @@ SPINDLE_SPEED = 0
 UNITS = "G71"  # G71 for metric, G70 for US standard
 UNIT_SPEED_FORMAT = "mm/min"
 UNIT_FORMAT = "mm"
-MACHINE_NAME = "Delta 4060"
+MACHINE_NAME = "Delta_4060"
 CORNER_MIN = {"x": 0, "y": 0, "z": 0}
 CORNER_MAX = {"x": 660, "y": 355, "z": 152}
 PRECISION = 3
@@ -299,7 +299,7 @@ def export(objectslist, filename, argstring):
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setPlainText(gcode)
+        dia.editor.setText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()
@@ -405,7 +405,33 @@ def parse(pathobj):
 
             if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
+            # Handle G84/G74 tapping cycles
+            if command in ("G84", "G74") and "F" in c.Parameters:
+                pitch_mm = float(c.Parameters["F"])
+                c.Parameters.pop("F")  # Remove F from output, we'll handle it
 
+                # Get spindle speed (from S param or last known value)
+                spindle_speed = None
+                if "S" in c.Parameters:
+                    spindle_speed = float(c.Parameters["S"])
+                    c.Parameters.pop("S")
+
+                # Convert pitch to inches if needed
+                if UNITS == "G70":  # imperial
+                    pitch = pitch_mm / 25.4
+                else:
+                    pitch = pitch_mm
+
+                # Calculate feed rate
+                if spindle_speed is not None:
+                    feed_rate = pitch * spindle_speed
+                    speed = Units.Quantity(feed_rate, UNIT_SPEED_FORMAT)
+                    outstring.append(
+                        "F" + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string)
+                    )
+                else:
+                    # No spindle speed found, output pitch as F
+                    outstring.append("F" + format(pitch, precision_string))
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
@@ -425,7 +451,7 @@ def parse(pathobj):
                     # This fixes an error thrown by Dynapath due to missing and
                     # required XYZ move after Tool change.
                     elif param == "Z" and (
-                        c.Parameters["Z"] == clearanceHeight and c.Parameters["Z"] != lastZ
+                        c.Parameters["Z"] == clearanceHeight and command in ["G0", "G00"]
                     ):
                         x = 0
                         y = 0
@@ -505,7 +531,7 @@ def parse(pathobj):
                         )  # First Reference plan (Safe Height)
                     elif param == "P":
                         outstring.append(
-                            "L" + format(c.Parameters[param], precision_string)
+                            "L" + format(c.Parameters[param], ".1f")
                         )  # Converts "P" to "L" for dynapath.
                     else:
                         if (

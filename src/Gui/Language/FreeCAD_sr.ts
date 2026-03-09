@@ -26,8 +26,8 @@
       <translation>Положај</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <source>Enum</source>
       <translation>Наброји</translation>
     </message>
@@ -128,10 +128,10 @@
       <translation>Положај</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
+      <location filename="../Transform.cpp" line="108"/>
       <location filename="../TaskTransform.cpp" line="128"/>
       <location filename="../TaskTransform.cpp" line="808"/>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
       <source>Transform</source>
       <translation>Помери</translation>
     </message>
@@ -1718,55 +1718,55 @@ same time. The one with the highest priority will be triggered.</source>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="121"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="794"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="809"/>
       <source>Macros</source>
       <translation>Макро-и</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="471"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="486"/>
       <source>Macro file</source>
       <translation>Макро датотека</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="497"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="907"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1070"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="512"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="922"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1085"/>
       <source>Existing file</source>
       <translation>Постојећа датотека</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="498"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="513"/>
       <source>'%1'.
 This file already exists.</source>
       <translation>'%1' Ова датотека већ постоји.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="506"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="521"/>
       <source>Cannot create file</source>
       <translation>Не могу направити датотеку</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="507"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="522"/>
       <source>Creation of file '%1' failed.</source>
       <translation>Прављење датотеке '%1' неуcпешно.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="548"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="563"/>
       <source>Delete macro</source>
       <translation>Обриши макро</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="583"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="598"/>
       <source>Do not show again</source>
       <translation>Не показуј поново</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="584"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="599"/>
       <source>Guided Walkthrough</source>
       <translation>Интерактивна тура</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="586"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="601"/>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
@@ -1777,93 +1777,93 @@ Note: your changes will be applied when you next switch workbenches
 </translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="667"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="682"/>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
       <translation>Интерактивни водич: Попуни поља која недостају (необавезно), затим кликни на Додај, а затим на Затвори</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="745"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="760"/>
       <source>Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</source>
       <translation>Упутство: Изабери макро са листе, затим кликни на дугме са стрелицом надесно (-&gt;), а затим Затвори.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="769"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="784"/>
       <source>Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</source>
       <translation>Упутство: Кликни на Нови, изабери макро, затим дугме са стрелицом надесно (-&gt;), а затим Затвори.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="885"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="900"/>
       <source>Renaming Macro File</source>
       <translation>Преименовање датотеке макро-а</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="452"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="467"/>
       <source>Read-Only</source>
       <translation>Само за читање</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="472"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="487"/>
       <source>Enter a file name:</source>
       <translation>Унеси име датотеке:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="549"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="564"/>
       <source>Delete the macro '%1'?</source>
       <translation>Обриши макро '%1'?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="641"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="656"/>
       <source>Walkthrough, Dialog 1 of 2</source>
       <translation>Интерактивни водич, дијалог 1 од 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 1 of 1</source>
       <translation>Интерактивни водич, дијалог 1 од 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 2 of 2</source>
       <translation>Интерактивни водич, дијалог 2 од 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="886"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1051"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="901"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1066"/>
       <source>Enter new name</source>
       <translation>Унеси ново име</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="908"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1071"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="923"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1086"/>
       <source>'%1'
  already exists.</source>
       <translation>'%1'
 већ постоји.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="914"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="929"/>
       <source>Rename Failed</source>
       <translation>Преименовање није успело</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="915"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="930"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Није успело преименовање у „%1“.
 Можда је грешка у нивоу приступу датотеки?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1050"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1065"/>
       <source>Duplicate Macro</source>
       <translation>Дуплирај макро</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1077"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1092"/>
       <source>Duplicate Failed</source>
       <translation>Дуплирање није успело</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1078"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1093"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Није успело дуплирање у „%1“.
@@ -6047,66 +6047,66 @@ Save all changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="157"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="303"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="492"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="135"/>
       <location filename="../InputVector.h" line="160"/>
       <location filename="../InputVector.h" line="281"/>
       <location filename="../InputVector.h" line="306"/>
       <location filename="../InputVector.h" line="479"/>
       <location filename="../InputVector.h" line="495"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Задано корисником…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Погрешан смер</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="242"/>
       <location filename="../InputVector.h" line="377"/>
       <location filename="../InputVector.h" line="566"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>Правац не сме бити нулти вектор</translation>
     </message>
@@ -7967,47 +7967,47 @@ Check the report view for more details.</source>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="372"/>
+      <location filename="../StartupProcess.cpp" line="373"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Овај систем користи OpenGL %1.%2. FreeCAD захтева OpenGL 2.0 или новији. Ажурирај свој графички драјвер и/или картицу.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="383"/>
+      <location filename="../StartupProcess.cpp" line="384"/>
       <source>Invalid OpenGL Version</source>
       <translation>Погрешна OpenGL верзија</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="321"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="396"/>
       <source>Migrating</source>
       <translation>Миграција</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="382"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="457"/>
       <source>Restarting</source>
       <translation>Поновно покретање</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="336"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="411"/>
       <source>Migration failed</source>
       <translation>Миграција није успела</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="304"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="374"/>
       <source>Estimated size of data to copy: %1</source>
       <translation>Процењена величина података за копирање: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="322"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="397"/>
       <source>Migrating configuration data and addons…</source>
       <translation>Миграција подешавања и додатака…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="337"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="412"/>
       <source>Migration failed. See the Report View for details.</source>
       <translation>Миграција није успела. За више детаља погледај Прегледач објава.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="381"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="456"/>
       <source> → Restarting…</source>
       <translation> → Поновно покретање…</translation>
     </message>
@@ -8600,12 +8600,12 @@ Choose 'Abort' to abort</source>
       <translation>Не могу отворити ваш системски прегледач.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2562"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Нема довољно меморије</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2563"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Нема довољно меморије за приказивање података.</translation>
     </message>
@@ -8631,8 +8631,8 @@ Choose 'Abort' to abort</source>
       <translation>Појасни избор</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <source>Transform</source>
       <translation>Помери</translation>
     </message>
@@ -8667,12 +8667,12 @@ Choose 'Abort' to abort</source>
       <translation>Неки документи нису могли бити снимљени. Да ли желиш да откажеш затварање?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="539"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="554"/>
       <source>Delete macro</source>
       <translation>Обриши макро</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="540"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="555"/>
       <source>Not allowed to delete system-wide macros</source>
       <translation>Није дозвољено брисање системских макро-а</translation>
     </message>
@@ -8761,8 +8761,8 @@ Choose 'Abort' to abort</source>
       <translation>Превлачење и отпуштање није успело</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="900"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <source>Apply to all</source>
       <translation>Примени на све</translation>
     </message>
@@ -9030,7 +9030,7 @@ the current copy will be lost.
       <translation>Активни објекат</translation>
     </message>
     <message>
-      <location filename="../ViewProviderTextDocument.cpp" line="105"/>
+      <location filename="../ViewProviderTextDocument.cpp" line="107"/>
       <source>Edit Text</source>
       <translation>Уреди текст</translation>
     </message>
@@ -9073,7 +9073,7 @@ the current copy will be lost.
       <translation>Није дозвољено:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Филтер не дозвољава избор</translation>
     </message>
@@ -14349,7 +14349,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation>Тачно подударање</translation>
     </message>
@@ -14357,7 +14357,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation>Тачно подударање</translation>
     </message>
@@ -14559,12 +14559,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Да</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Не</translation>
     </message>
@@ -14639,42 +14639,42 @@ This makes the docked panel stay transparent at all times.</source>
       <translation>Помоћ</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="160"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="161"/>
       <source>Copy Configuration (Recommended)</source>
       <translation>Копирај конфигурацију (Препоручено)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="139"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="140"/>
       <source>Welcome to %1 %2.%3</source>
       <translation>Добродошли на %1 %2.%3</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="142"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="143"/>
       <source>Calculating size…</source>
       <translation>Прорачунавам величину…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="146"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="147"/>
       <source>Share configuration between versions</source>
       <translation>Подели конфигурацију између верзија</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="170"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
       <source>Share configuration with previous version</source>
       <translation>Подели конфигурацију са претходном верзијом</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="172"/>
       <source>Use a new default configuration</source>
       <translation>Користи унапред задату конфигурацију</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="331"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="406"/>
       <source>Migration complete</source>
       <translation>Миграција је завршена</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="368"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="443"/>
       <source>New default configuration created</source>
       <translation>Направљена је нова унапред задата конфигурација</translation>
     </message>

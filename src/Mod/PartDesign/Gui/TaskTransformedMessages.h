@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskTransformedMessages_H
-#define GUI_TASKVIEW_TaskTransformedMessages_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 
@@ -61,5 +62,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskTransformedMessages_H

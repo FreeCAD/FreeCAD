@@ -9,6 +9,7 @@ if(BUILD_GUI)
 endif(BUILD_GUI)
 
 set(Path_Scripts
+    Constants.py
     Init.py
     PathCommands.py
     TestCAMApp.py
@@ -72,7 +73,6 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/__init__.py
     Path/Dressup/Gui/Array.py
     Path/Dressup/Gui/AxisMap.py
-    Path/Dressup/Gui/Dogbone.py
     Path/Dressup/Gui/DogboneII.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
@@ -235,6 +235,7 @@ SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/toollist.py
     Path/Tool/toolbit/ui/util.py
     Path/Tool/toolbit/ui/view.py
+    Path/Tool/toolbit/ui/typefilter.py
 )
 
 SET(PathPythonToolsLibrary_SRCS
@@ -458,6 +459,7 @@ SET(Tools_Bit_SRCS
     Tools/Bit/6mm_Ball_End.fctb
     Tools/Bit/6mm_Bullnose.fctb
     Tools/Bit/90degree_Vbit.fctb
+    Tools/Bit/M8x1.25_Tap.fctb
     Tools/Bit/probe.fctb
     Tools/Bit/slittingsaw.fctb
 )
@@ -495,6 +497,7 @@ SET(Tools_Shape_SRCS
     Tools/Shape/thread-mill.svg
     Tools/Shape/v-bit.fcstd
     Tools/Shape/v-bit.svg
+    Tools/Shape/shape_aliases.json
 )
 
 SET(Tests_SRCS
@@ -527,7 +530,6 @@ SET(Tests_SRCS
     CAMTests/TestPathCore.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
-    CAMTests/TestPathDressupDogbone.py
     CAMTests/TestPathDressupDogboneII.py
     CAMTests/TestPathDressupHoldingTags.py
     CAMTests/TestPathDrillGenerator.py

@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTRLINE3BOX3_H
-#define WM4INTRLINE3BOX3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Intersector.h"
@@ -74,5 +73,3 @@ typedef IntrLine3Box3<float> IntrLine3Box3f;
 typedef IntrLine3Box3<double> IntrLine3Box3d;
 
 }
-
-#endif

@@ -22,8 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
-#define SKETCHERGUI_VIEWPROVIDERSKETCH_H
+#pragma once
+
+#include <boost/smart_ptr/scoped_ptr.hpp>
 
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
@@ -773,6 +774,7 @@ protected:
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
     void slotSolverUpdate();
+    void slotConstraintAdded(Sketcher::Constraint* constraint);
     void forceUpdateData();
     //@}
 
@@ -972,6 +974,7 @@ private:
     fastsignals::connection connectUndoDocument;
     fastsignals::connection connectRedoDocument;
     fastsignals::connection connectSolverUpdate;
+    fastsignals::connection connectConstraintAdded;
 
     QMetaObject::Connection screenChangeConnection;
 
@@ -1015,6 +1018,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_VIEWPROVIDERSKETCH_H

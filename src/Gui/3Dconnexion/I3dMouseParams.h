@@ -4,8 +4,7 @@ Development tools and related technology provided under license from 3Dconnexion
 (c) 1992 - 2012 3Dconnexion. All rights reserved
 */
 
-#ifndef I3D_MOUSE_PARAMS_H
-#define I3D_MOUSE_PARAMS_H
+#pragma once
 
 /*
    Parameters for the 3D mouse based on the SDK from 3Dconnexion
@@ -84,5 +83,3 @@ public:
     virtual ~I3dMouseParam()
     {}
 };
-
-#endif  // I3D_MOUSE_PARAMS_H

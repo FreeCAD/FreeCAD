@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DlgPartImportIgesImp_H
-#define DlgPartImportIgesImp_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // DlgPartImportIgesImp_H

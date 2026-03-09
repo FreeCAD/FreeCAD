@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTIMPORTIGES_H
-#define PART_FEATUREPARTIMPORTIGES_H
+#pragma once
 
 #include "PartFeature.h"
 
@@ -54,6 +53,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREPARTIMPORTIGES_H

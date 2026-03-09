@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
-#define GUI_DIALOG_DLGTOOLBARS_IMP_H
+#pragma once
 
 #include <fastsignals/connection.h>
 #include "PropertyPage.h"
@@ -156,5 +155,3 @@ protected:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGTOOLBARS_IMP_H

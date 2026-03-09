@@ -1081,16 +1081,26 @@ class ViewProviderJoint:
     def redrawJointPlacement(self, jcs, plc, ref):
         if ref:
             jcs.whichChild = coin.SO_SWITCH_ALL
-            jcs.set_marker_placement(plc, ref)
+            self.setJCSPosition(jcs, plc, ref)
         else:
             jcs.whichChild = coin.SO_SWITCH_NONE
 
     def showPreviewJCS(self, visible, placement=None, ref=None):
         if visible:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_ALL
-            self.switch_JCS_preview.set_marker_placement(placement, ref)
+            self.setJCSPosition(self.switch_JCS_preview, placement, ref)
         else:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_NONE
+
+    def setJCSPosition(self, jcs, plc, ref):
+        assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+        if assembly and ref and plc:
+            asm_global_plc = assembly.getGlobalPlacement()
+            if asm_global_plc != App.Placement():
+                global_plc = UtilsAssembly.getJcsGlobalPlc(plc, ref)
+                plc = asm_global_plc.inverse() * global_plc
+                ref = None
+        jcs.set_marker_placement(plc, ref)
 
     def setPickableState(self, state: bool):
         """Set JCS selectable or unselectable in 3D view"""
@@ -1211,15 +1221,31 @@ class GroundedJoint:
         joint.Proxy = self
         self.joint = joint
 
+        self.createObjectToGroundProperty(joint, obj_to_ground)
+
+    def createObjectToGroundProperty(self, joint, obj_to_ground):
         joint.addProperty(
-            "App::PropertyLink",
+            "App::PropertyLinkGlobal",
             "ObjectToGround",
             "Ground",
             QT_TRANSLATE_NOOP("App::Property", "The object to ground"),
             locked=True,
         )
-
         joint.ObjectToGround = obj_to_ground
+
+    def onDocumentRestored(self, joint):
+        self.migrationScript(joint)
+
+    def migrationScript(self, joint):
+        if (
+            hasattr(joint, "ObjectToGround")
+            and joint.getTypeIdOfProperty("ObjectToGround") == "App::PropertyLink"
+        ):
+            obj_to_ground = joint.ObjectToGround
+            joint.setPropertyStatus("ObjectToGround", "-LockDynamic")
+            joint.removeProperty("ObjectToGround")
+
+            self.createObjectToGroundProperty(joint, obj_to_ground)
 
     def dumps(self):
         return None

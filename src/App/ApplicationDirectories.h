@@ -20,8 +20,7 @@
  *                                                                                                 *
  **************************************************************************************************/
 
-#ifndef SRC_APP_APPLICATIONDIRECTORIES_H_
-#define SRC_APP_APPLICATIONDIRECTORIES_H_
+#pragma once
 
 #include "FCConfig.h"
 #include "FCGlobal.h"
@@ -257,5 +256,3 @@ namespace App {
     };
 
 } // App
-
-#endif //SRC_APP_APPLICATIONDIRECTORIES_H_

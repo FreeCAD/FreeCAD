@@ -40,6 +40,7 @@ import os
 import os.path
 import shutil
 import tempfile
+from PySide import QtCore
 
 # import threading  # not used ATM
 
@@ -48,6 +49,8 @@ import FreeCAD as App
 from . import settings
 from . import signal
 from . import task
+from femsolver.elmer import elmertools
+from femsolver.calculix import calculixtools
 from femtools import femutils
 from femtools import membertools
 from femtools.errors import DirectoryDoesNotExistError
@@ -69,7 +72,7 @@ _machines = {}
 _dirTypes = {}
 
 
-def run_fem_solver(solver, working_dir=None):
+def run_fem_solver(solver, working_dir=None, blocking=False):
     """Execute *solver* of the solver framework.
 
     Uses :meth:`getMachine <femsolver.solverbase.Proxy.getMachine>` to obtain a
@@ -99,6 +102,35 @@ def run_fem_solver(solver, working_dir=None):
         (pre-framework) which behaives differently because it does not
         use a :class:`Machine`.
     """
+
+    tool = None
+    if working_dir:
+        solver.WorkingDirectory = working_dir
+
+    match solver.Proxy.Type:
+        case "Fem::SolverElmer":
+            tool = elmertools.ElmerTools(solver)
+        case "Fem::SolverCalculiX":
+            tool = calculixtools.CalculiXTools(solver)
+
+    if tool is not None:
+        # Redirect process error to report view
+        print_error = lambda: App.Console.PrintError(
+            tool.process.readAllStandardError().data().decode("utf-8")
+        )
+        tool.process.readyReadStandardError.connect(print_error)
+        tool.process.finished.connect(_solver_finish(solver))
+        try:
+            if App.GuiUp:
+                QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+            tool.run(blocking)
+        except Exception as e:
+            if App.GuiUp:
+                QtGui.QApplication.restoreOverrideCursor()
+            raise e
+        return
+
+    # code for old solver implementations
 
     if solver.Proxy.Type == "Fem::SolverCcxTools":
         from femtools.ccxtools import CcxTools as ccx
@@ -190,6 +222,17 @@ def getMachine(solver, path=None):
         # print(m.__dir__())  # document these attributes somewhere
         # print(m.directory)
     return m
+
+
+def _solver_finish(obj):
+    def receiver(code, status):
+        if status != QtCore.QProcess.ExitStatus.NormalExit or code != 0:
+            App.Console.PrintError("Solver finished with errors. Result not updated\n")
+        if App.GuiUp:
+            QtGui.QApplication.restoreOverrideCursor()
+        obj.Document.recompute()
+
+    return receiver
 
 
 def _isPathValid(m, path):

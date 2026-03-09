@@ -2771,19 +2771,19 @@ belirlenen yön boyunca ölçülecek</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="242"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="254"/>
       <source>Base X-axis</source>
       <translation>Temel X ekseni</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="255"/>
       <source>Base Y-axis</source>
       <translation>Temel Y ekseni</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="244"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Base Z-axis</source>
       <translation>Temel Z ekseni</translation>
     </message>
@@ -2819,20 +2819,20 @@ belirlenen yön boyunca ölçülecek</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="252"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="264"/>
       <source>Select reference…</source>
       <translation>Referans seç…</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="87"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="195"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
       <source>Angle</source>
       <translation>Açı</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="158"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="160"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="491"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>
@@ -2842,32 +2842,32 @@ belirlenen yön boyunca ölçülecek</translation>
       <translation>Değişiklikte yeniden hesapla</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="199"/>
       <source>To last</source>
       <translation>Sona kadar</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="200"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
       <source>Through all</source>
       <translation>Tümünün üzerinden</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>To first</source>
       <translation>Birinciye kadar</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
       <source>Up to face</source>
       <translation>Yüze kadar</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="216"/>
       <source>Two angles</source>
       <translation>İki açı</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="467"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
       <source>No face selected</source>
       <translation>Seçili yüz yok</translation>
     </message>
@@ -2916,7 +2916,7 @@ belirlenen yön boyunca ölçülecek</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="193"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="202"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>
@@ -3190,11 +3190,11 @@ belirlenen yön boyunca ölçülecek</translation>
       <translation>Bu belgede geçerli uçaklar yok</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="257"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Araç çubuğunda bir pencere zaten açık</translation>
     </message>
@@ -3234,11 +3234,11 @@ belirlenen yön boyunca ölçülecek</translation>
       <translation>Belgede mevcut bir eskiz yok</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="258"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>Bu iletişim kutusu kapatılsın mı?</translation>
     </message>
@@ -3471,24 +3471,24 @@ Bu, beklenmedik sonuçlara neden olabilir.</translation>
       <translation>Mevcut bir temel özellik olmadan bir çıkarılabilir özellik oluşturmak mümkün değildir</translation>
     </message>
     <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="228"/>
       <source>Vertical sketch axis</source>
       <translation>Dikey taslak ekseni</translation>
     </message>
     <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
       <location filename="../../TaskTransformedParameters.cpp" line="440"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="229"/>
       <source>Horizontal sketch axis</source>
       <translation>Yatay taslak ekseni</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
       <source>Construction line %1</source>
       <translation>Yapı hattı %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="85"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="94"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>
@@ -3522,20 +3522,20 @@ Gövdesiz Part Design nesneleri içeren eski belgeler için, bunları bir gövde
       <translation>Bu özelliği kullanmak için belgede bir gövde nesnesine ait olması gerekir.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Özellik bir parçası değil</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Bu özelliği kullanmak için belgedeki bir parçaya ait olması gerekir.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProvider.cpp" line="92"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
+      <location filename="../../ViewProvider.cpp" line="92"/>
       <source>Edit %1</source>
       <translation>%1'i düzenle</translation>
     </message>
@@ -4467,20 +4467,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Geçersiz temel şekille Boole işlemi yapılamaz</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
       <location filename="../../../App/FeaturePipe.cpp" line="480"/>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="254"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Sonuç birden fazla katı içeriyor: etkin gövdede 'Bileşiğe izin ver' seçeneğini etkinleştirin.</translation>
     </message>
@@ -4515,10 +4515,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>Oluşan birleştirilmiş ekstrüzyon yok (null).</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>Oluşan şekil bir katı değil</translation>
     </message>
@@ -4600,9 +4600,9 @@ over 90: larger hole radius at the bottom</source>
       <translation>Yön, eskizin normal vektörüne dik olduğu için oluşturma başarısız oldu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>Taslakdan yüzey yaratma hatası</translation>
     </message>
@@ -4612,20 +4612,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Oluk açıları birbirini yok ediyor</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <location filename="../../../App/FeatureGroove.cpp" line="171"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Çevirme ekseni taslak ile kesizşiyor</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="295"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="264"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="263"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
       <source>Could not revolve the sketch!</source>
       <translation>Eskiz döndürülemedi!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="307"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="276"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="275"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Eskizden yüz oluşturulamadı.
@@ -4675,9 +4675,9 @@ Eskiz içinde kesişen öğelere izin verilmez.</translation>
       <translation>Hata: yüzey düzlemsel olmalı</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>Hata: Sonuç bir katı değil</translation>
     </message>
@@ -4837,8 +4837,8 @@ Bir yüze kadar cep oluştururken, eskizde kesişen öğelere veya birden fazla 
       <translation>Loft: Eskizden yüz oluşturma başarısız oldu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="444"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <source>Loft: Failed to create shell</source>
       <translation>Loft: Kabuk oluşturulamadı</translation>
     </message>
@@ -4950,16 +4950,16 @@ Eskizde kesişen öğelere veya birden fazla yüze izin verilmez.</translation>
       <translation>Temel özellik olmadan primitif özellik çıkarılamaz</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>Bilinmeyen işlem türü</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>Boole işlemi gerçekleştirilemedi</translation>
     </message>
@@ -5077,8 +5077,8 @@ Eskizde kesişen öğelere veya birden fazla yüze izin verilmez.</translation>
       <translation>Döndürme açıları birbirini geçersiz kılıyor</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <source>Reference axis is invalid</source>
       <translation>Referans ekseni geçersiz</translation>
     </message>
@@ -5311,7 +5311,7 @@ Eskizde kesişen öğelere veya birden fazla yüze izin verilmez.</translation>
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="823"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="835"/>
       <source>Revolution Parameters</source>
       <translation>Döndürme Parametreleri</translation>
     </message>
@@ -5319,7 +5319,7 @@ Eskizde kesişen öğelere veya birden fazla yüze izin verilmez.</translation>
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="833"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="845"/>
       <source>Groove Parameters</source>
       <translation>Oluk Parametreleri</translation>
     </message>

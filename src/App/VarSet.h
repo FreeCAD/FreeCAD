@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef APP_VARSET_H
-#define APP_VARSET_H
+#pragma once
 
 #include "DocumentObject.h"
 
@@ -44,4 +43,3 @@ public:
 };
 
 }  // namespace App
-#endif

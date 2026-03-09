@@ -49,6 +49,7 @@
 #include "BitmapFactory.h"
 #include "Control.h"
 #include "Dialogs/DlgUndoRedo.h"
+#include "PreferencePages/DlgSettingsWorkbenchesImp.h"
 #include "Document.h"
 #include "frameobject.h"
 #include "Macro.h"
@@ -821,8 +822,11 @@ std::string Command::_assureWorkbench(const char* file, int line, const char* sN
         return actName;
     }
 
-    // else - switch to new WB
-    _doCommand(file, line, Gui, "Gui.activateWorkbench('%s')", sName);
+    QStringList disabledWbNames = DlgSettingsWorkbenchesImp::getDisabledWorkbenches();
+    if (!disabledWbNames.contains(QString::fromUtf8(sName))) {
+        // else - switch to new WB
+        _doCommand(file, line, Gui, "Gui.activateWorkbench('%s')", sName);
+    }
 
     return actName;
 }
@@ -1444,12 +1448,8 @@ void PythonCommand::activated(int iMsg)
             }
         }
         catch (const Base::PyException& e) {
-            Base::Console().error(
-                "Running the Python command '%s' failed:\n%s\n%s",
-                sName,
-                e.getStackTrace().c_str(),
-                e.what()
-            );
+            Base::Console().error("Running the Python command '%s' failed:", sName);
+            e.reportException();
         }
         catch (const Base::Exception&) {
             Base::Console().error("Running the Python command '%s' failed, try to resume", sName);
@@ -1697,12 +1697,8 @@ void PythonGroupCommand::activated(int iMsg)
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error(
-            "Running the Python command '%s' failed:\n%s\n%s",
-            sName,
-            e.getStackTrace().c_str(),
-            e.what()
-        );
+        Base::Console().error("Running the Python command '%s' failed:", sName);
+        e.reportException();
     }
 }
 
@@ -1794,12 +1790,8 @@ Action* PythonGroupCommand::createAction()
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error(
-            "createAction() of the Python command '%s' failed:\n%s\n%s",
-            sName,
-            e.getStackTrace().c_str(),
-            e.what()
-        );
+        Base::Console().error("createAction() of the Python command '%s' failed:", sName);
+        e.reportException();
     }
 
     _pcAction = pcAction;

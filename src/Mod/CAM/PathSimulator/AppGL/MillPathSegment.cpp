@@ -39,11 +39,6 @@ constexpr auto pi = std::numbers::pi_v<float>;
 #define PY 1
 #define PZ 2
 
-// Maximum ratio of radius to chord length for treating arc as curved
-// Ratios above this indicate the arc is essentially a straight line
-// and should be treated as linear to avoid numerical precision issues
-constexpr float ARC_LINEARIZATION_THRESHOLD = 100000.0f;
-
 
 namespace MillSim
 {
@@ -76,21 +71,9 @@ MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion
     mXYAngle = atan2f(mDiff[PY], mDiff[PX]);
     endmill = _endmill;
     mStartAngRad = mStepAngRad = 0;
-
-    // Check if this is an arc motion and whether it should be treated as curved
-    bool isArc = IsArcMotion(to);
-    bool treatAsCurved = false;
-
-    if (isArc) {
-        mRadius = sqrtf(to->j * to->j + to->i * to->i);
-
-        // Check if arc is essentially a straight line by comparing radius to chord length
-        // When radius >> chord length, floating-point precision issues occur in angle calculations
-        treatAsCurved = (mRadius <= mXYDistance * ARC_LINEARIZATION_THRESHOLD);
-    }
-
-    if (treatAsCurved) {
+    if (IsArcMotion(to)) {
         mMotionType = MTCurved;
+        mRadius = sqrtf(to->j * to->j + to->i * to->i);
         mSmallRad = mRadius <= endmill->radius;
 
         if (mSmallRad) {

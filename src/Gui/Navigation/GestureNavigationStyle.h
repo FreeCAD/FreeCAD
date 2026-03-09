@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GESTURENAVIGATIONSTYLE2_H
-#define GESTURENAVIGATIONSTYLE2_H
+#pragma once
 
 #include "Navigation/NavigationStyle.h"
 
@@ -120,4 +119,3 @@ public:  // gesture reactions
 };
 
 }  // namespace Gui
-#endif  // GESTURENAVIGATIONSTYLE2_H

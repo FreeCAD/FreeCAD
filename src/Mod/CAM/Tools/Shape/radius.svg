@@ -554,7 +554,7 @@
      d="m 175.2226,135.00003 h 18.38097"
      style="fill:none;stroke:#000000;stroke-width:0.592962;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" /><text
      transform="scale(0.97096033,1.0299082)"
-     id="cutting_edge_height-7"
+     id="cutting_radius"
      y="195.87868"
      x="156.38969"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28.2222px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.28362"
@@ -564,7 +564,7 @@
        id="tspan7855-5"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28.2222px;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal">r</tspan></text><text
      transform="scale(0.97096033,1.0299082)"
-     id="diameter-9"
+     id="tip_diameter"
      y="244.40749"
      x="70.96611"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32.286px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.02681"

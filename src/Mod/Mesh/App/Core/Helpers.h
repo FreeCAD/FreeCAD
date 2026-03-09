@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_HELPERS_H
-#define MESH_HELPERS_H
+#pragma once
 
 #include "Elements.h"
 
@@ -180,5 +179,3 @@ inline void MeshEdgeBuilder::Add(PointIndex ulInd1, PointIndex ulInd2, FacetInde
 }
 
 }  // namespace MeshCore
-
-#endif  // MESH_HELPERS_H

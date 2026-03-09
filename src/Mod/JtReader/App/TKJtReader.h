@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef JT_READER_TKJTREADER_H
-#define JT_READER_TKJTREADER_H
+#pragma once
 
 #ifdef JTREADER_HAVE_TKJT
 # include <JtAttribute_GeometricTransform.hxx>
@@ -72,5 +71,3 @@ private:
 };  // namespace JtReaderNS
 
 #endif  // JTREADER_HAVE_TKJT
-
-#endif  // JT_READER_TKJTREADER_H

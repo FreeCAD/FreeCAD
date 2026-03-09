@@ -27,10 +27,8 @@
  *  This file keeps the makefiles and project files cleaner.
  */
 
-
-#ifndef FC_CONFIG_H
-#define FC_CONFIG_H
-
+#pragma once
+ 
 
 //**************************************************************************
 // switching the operating systems
@@ -196,11 +194,6 @@ typedef unsigned __int64    uint64_t;
 //**************************************************************************
 // Qt
 
-// Make sure to explicitly use the correct conversion
-#ifndef QT_NO_CAST_FROM_ASCII
-# define QT_NO_CAST_FROM_ASCII
-#endif
-
 #ifndef QT_NO_KEYWORDS
 # define QT_NO_KEYWORDS
 #endif
@@ -277,5 +270,3 @@ typedef unsigned __int64    uint64_t;
 #endif
 
 #endif
-
-#endif //FC_CONFIG_H

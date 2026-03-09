@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef APPLICATION_H
-#define APPLICATION_H
+#pragma once
 
 #include <QPixmap>
 #include <map>
@@ -343,5 +342,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PERSISTENCE_H
-#define APP_PERSISTENCE_H
+#pragma once
 
 #include "BaseClass.h"
 
@@ -169,6 +168,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif  // APP_PERSISTENCE_H

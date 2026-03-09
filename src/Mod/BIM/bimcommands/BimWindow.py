@@ -541,17 +541,17 @@ class Arch_Window:
             self.im.show()
             if i == 0:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i in [1, 8]:
+            elif i in [1, 9]:
                 self.im.load(":/ui/ParametersWindowSimple.svg")
-            elif i in [2, 4, 7]:
+            elif i in [2, 4, 8]:
                 self.im.load(":/ui/ParametersWindowDouble.svg")
             elif i == 3:
                 self.im.load(":/ui/ParametersWindowStash.svg")
-            elif i == 5:
+            elif i in [5, 6]:
                 self.im.load(":/ui/ParametersDoorSimple.svg")
-            elif i == 6:
+            elif i == 7:
                 self.im.load(":/ui/ParametersDoorGlass.svg")
-            elif i == 9:
+            elif i == 10:
                 self.im.load(":/ui/ParametersOpening.svg")
             else:
                 # From Library

@@ -90,7 +90,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/hyperframe-6.1.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/icu-75.1-he02047a_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/idna-3.11-pyhd8ed1ab_0.conda
-      - conda: https://prefix.dev/conda-forge/linux-64/ifcopenshell-0.8.2-py311hfea35e5_0.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/ifcopenshell-0.8.4-py311hfa9dd64_2.conda
       - conda: https://prefix.dev/conda-forge/linux-64/imath-3.1.12-h7955e40_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/jasper-4.2.8-he3c4edf_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/jsoncpp-1.9.6-hf42df4d_1.conda
@@ -267,6 +267,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-64/pyyaml-6.0.3-py311h3778330_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/qhull-2020.2-h434a139_5.conda
       - conda: https://prefix.dev/conda-forge/linux-64/qt6-main-6.8.3-h75f3359_4.conda
+      - conda: https://prefix.dev/conda-forge/linux-64/qt6-wayland-6.8.3-hf501273_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/rapidjson-1.1.0.post20240409-h3f2d84a_2.conda
       - conda: https://prefix.dev/conda-forge/linux-64/rav1e-0.7.1-h8fae777_3.conda
       - conda: https://prefix.dev/conda-forge/linux-64/readline-8.3-h853b02a_0.conda
@@ -421,7 +422,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/hyperframe-6.1.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/linux-aarch64/icu-75.1-hf9b3779_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/idna-3.11-pyhd8ed1ab_0.conda
-      - conda: https://prefix.dev/conda-forge/linux-aarch64/ifcopenshell-0.8.2-py311h9a0e4cb_0.conda
+      - conda: https://prefix.dev/conda-forge/linux-aarch64/ifcopenshell-0.8.4-py311h9ffcc0b_2.conda
       - conda: https://prefix.dev/conda-forge/linux-aarch64/imath-3.1.12-hf428078_0.conda
       - conda: https://prefix.dev/conda-forge/linux-aarch64/jasper-4.2.8-h27a9ab5_0.conda
       - conda: https://prefix.dev/conda-forge/linux-aarch64/jsoncpp-1.9.6-h34915d9_1.conda
@@ -592,6 +593,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/linux-aarch64/pyyaml-6.0.3-py311h164a683_0.conda
       - conda: https://prefix.dev/conda-forge/linux-aarch64/qhull-2020.2-h70be974_5.conda
       - conda: https://prefix.dev/conda-forge/linux-aarch64/qt6-main-6.8.3-he176c03_4.conda
+      - conda: https://prefix.dev/conda-forge/linux-aarch64/qt6-wayland-6.8.3-h6948401_0.conda
       - conda: https://prefix.dev/conda-forge/linux-aarch64/rapidjson-1.1.0.post20240409-h5ad3122_2.conda
       - conda: https://prefix.dev/conda-forge/linux-aarch64/rav1e-0.7.1-ha3529ed_3.conda
       - conda: https://prefix.dev/conda-forge/linux-aarch64/readline-8.3-hb682ff5_0.conda
@@ -739,7 +741,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/hyperframe-6.1.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/osx-64/icu-75.1-h120a0e1_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/idna-3.11-pyhd8ed1ab_0.conda
-      - conda: https://prefix.dev/conda-forge/osx-64/ifcopenshell-0.8.2-py311h2fdbcd7_0.conda
+      - conda: https://prefix.dev/conda-forge/osx-64/ifcopenshell-0.8.4-py311hbba92a7_2.conda
       - conda: https://prefix.dev/conda-forge/osx-64/imath-3.1.12-h2016aa1_0.conda
       - conda: https://prefix.dev/conda-forge/osx-64/jasper-4.2.8-h9ce442b_0.conda
       - conda: https://prefix.dev/conda-forge/osx-64/jsoncpp-1.9.6-h466cfd8_1.conda
@@ -1009,7 +1011,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/hyperframe-6.1.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/icu-75.1-hfee45f7_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/idna-3.11-pyhd8ed1ab_0.conda
-      - conda: https://prefix.dev/conda-forge/osx-arm64/ifcopenshell-0.8.2-py311h30f7335_0.conda
+      - conda: https://prefix.dev/conda-forge/osx-arm64/ifcopenshell-0.8.4-py311h5dd451c_2.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/imath-3.1.12-h025cafa_0.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/jasper-4.2.8-hc0e5025_0.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/jsoncpp-1.9.6-h726d253_1.conda
@@ -1272,7 +1274,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/hyperframe-6.1.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/win-64/icu-75.1-he0c23c2_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/idna-3.11-pyhd8ed1ab_0.conda
-      - conda: https://prefix.dev/conda-forge/win-64/ifcopenshell-0.8.2-py311ha1ff2f0_0.conda
+      - conda: https://prefix.dev/conda-forge/win-64/ifcopenshell-0.8.4-py311h5252d0d_2.conda
       - conda: https://prefix.dev/conda-forge/win-64/imath-3.1.12-hbb528cf_0.conda
       - conda: https://prefix.dev/conda-forge/win-64/jasper-4.2.8-h8ad263b_0.conda
       - conda: https://prefix.dev/conda-forge/win-64/jsoncpp-1.9.6-hda1637e_1.conda
@@ -4391,6 +4393,7 @@ packages:
   - vtk
   - xlutils
   - libspnav
+  - qt6-wayland
   - xcb-util-cursor ==0.1.5
   - pcl >=1.15.0,<1.15.1.0a0
   - smesh >=9.9.0.0,<9.9.1.0a0
@@ -4453,6 +4456,7 @@ packages:
   - vtk
   - xlutils
   - libspnav
+  - qt6-wayland
   - xcb-util-cursor ==0.1.5
   - __glibc >=2.17,<3.0.a0
   - smesh >=9.9.0.0,<9.9.1.0a0
@@ -6117,7 +6121,7 @@ packages:
   license_family: BSD
   size: 50721
   timestamp: 1760286526795
-- conda: https://prefix.dev/conda-forge/linux-64/ifcopenshell-0.8.2-py311hfea35e5_0.conda
+- conda: https://prefix.dev/conda-forge/linux-64/ifcopenshell-0.8.4-py311hfa9dd64_2.conda
   sha256: 45ce07c412cb1d4b8bfd0fde785e9f3751381b4e3d6a28686a174559f0628e69
   md5: 25bcf0826fc3b896d07afbe35982a500
   depends:
@@ -6141,7 +6145,7 @@ packages:
   license_family: LGPL
   size: 43852878
   timestamp: 1745412691720
-- conda: https://prefix.dev/conda-forge/linux-aarch64/ifcopenshell-0.8.2-py311h9a0e4cb_0.conda
+- conda: https://prefix.dev/conda-forge/linux-aarch64/ifcopenshell-0.8.4-py311h9ffcc0b_2.conda
   sha256: 5b0d7760899ffa8ae91169bff49c9d6cd435b1cb8957e7622d9bd765a9c2d577
   md5: fc1ebe0deebc32d2d42b8dc257afb836
   depends:
@@ -6164,7 +6168,7 @@ packages:
   license_family: LGPL
   size: 46059599
   timestamp: 1745412697613
-- conda: https://prefix.dev/conda-forge/osx-64/ifcopenshell-0.8.2-py311h2fdbcd7_0.conda
+- conda: https://prefix.dev/conda-forge/osx-64/ifcopenshell-0.8.4-py311hbba92a7_2.conda
   sha256: d52f4bd7cec3cf1cbcd7cf9c6a21ec6d2331425972c4cd7f88d3df64a4a3cd72
   md5: d0352d59f66ec49a974177e1efc749df
   depends:
@@ -6186,7 +6190,7 @@ packages:
   license_family: LGPL
   size: 39452121
   timestamp: 1745412590610
-- conda: https://prefix.dev/conda-forge/osx-arm64/ifcopenshell-0.8.2-py311h30f7335_0.conda
+- conda: https://prefix.dev/conda-forge/osx-arm64/ifcopenshell-0.8.4-py311h5dd451c_2.conda
   sha256: 15d5d080aa54c1b5aeed0e4827d5a6b4521b8a2599e3bc06af5318575d2b7a8f
   md5: b550b7b3c4a8f543fb3c0c15f8ec5967
   depends:
@@ -6209,7 +6213,7 @@ packages:
   license_family: LGPL
   size: 40077397
   timestamp: 1745412613454
-- conda: https://prefix.dev/conda-forge/win-64/ifcopenshell-0.8.2-py311ha1ff2f0_0.conda
+- conda: https://prefix.dev/conda-forge/win-64/ifcopenshell-0.8.4-py311h5252d0d_2.conda
   sha256: 4e3c4d0d3749b761267b9ac9f9c3262c2b690d1908a6a6db734dcd4eecd43b2e
   md5: e178c988f7034d08d27fe14a62bdbe12
   depends:
@@ -15712,6 +15716,61 @@ packages:
   license_family: LGPL
   size: 92900449
   timestamp: 1750923594107
+- conda: https://prefix.dev/conda-forge/linux-64/qt6-wayland-6.8.3-hf501273_0.conda
+  sha256: 82d09a7bd753766f06b3c81696053a24637b9e33e4f32baf32ca071f51273760
+  md5: 984c2eefffc5d3937883b10748d16a34
+  depends:
+  - __glibc >=2.17,<3.0.a0
+  - fontconfig >=2.15.0,<3.0a0
+  - fonts-conda-ecosystem
+  - freetype >=2.13.3,<3.0a0
+  - libegl >=1.7.0,<2.0a0
+  - libgcc >=13
+  - libgl >=1.7.0,<2.0a0
+  - libglib >=2.84.0,<3.0a0
+  - libglx >=1.7.0,<2.0a0
+  - libopengl >=1.7.0,<2.0a0
+  - libstdcxx >=13
+  - libxkbcommon >=1.8.1,<2.0a0
+  - libzlib >=1.3.1,<2.0a0
+  - qt6-main 6.8.3.*
+  - qt6-main >=6.8.3,<6.9.0a0
+  - wayland >=1.23.1,<2.0a0
+  - xorg-libx11 >=1.8.12,<2.0a0
+  - xorg-libxcomposite >=0.4.6,<1.0a0
+  - xorg-libxext >=1.3.6,<2.0a0
+  - xorg-libxrandr >=1.5.4,<2.0a0
+  license: LGPL-3.0-only
+  license_family: LGPL
+  size: 1550598
+  timestamp: 1743159191270
+- conda: https://prefix.dev/conda-forge/linux-aarch64/qt6-wayland-6.8.3-h6948401_0.conda
+  sha256: 775a5615e3f763920f91366014a4111c58907694615c1d03752e0efcb5db2fdc
+  md5: 55b2a18347cd8fc340ecd553c70a8eee
+  depends:
+  - fontconfig >=2.15.0,<3.0a0
+  - fonts-conda-ecosystem
+  - freetype >=2.13.3,<3.0a0
+  - libegl >=1.7.0,<2.0a0
+  - libgcc >=13
+  - libgl >=1.7.0,<2.0a0
+  - libglib >=2.84.0,<3.0a0
+  - libglx >=1.7.0,<2.0a0
+  - libopengl >=1.7.0,<2.0a0
+  - libstdcxx >=13
+  - libxkbcommon >=1.8.1,<2.0a0
+  - libzlib >=1.3.1,<2.0a0
+  - qt6-main 6.8.3.*
+  - qt6-main >=6.8.3,<6.9.0a0
+  - wayland >=1.23.1,<2.0a0
+  - xorg-libx11 >=1.8.12,<2.0a0
+  - xorg-libxcomposite >=0.4.6,<1.0a0
+  - xorg-libxext >=1.3.6,<2.0a0
+  - xorg-libxrandr >=1.5.4,<2.0a0
+  license: LGPL-3.0-only
+  license_family: LGPL
+  size: 1639641
+  timestamp: 1743262388133
 - conda: https://prefix.dev/conda-forge/linux-64/rapidjson-1.1.0.post20240409-h3f2d84a_2.conda
   sha256: f87f265263a1ddbc50b98e2c2bcaa2bac63da3acc09267815dd0f4bd614cd902
   md5: 65e2f30d532b4ae2063a424c185cc678

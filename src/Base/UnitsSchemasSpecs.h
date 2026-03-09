@@ -21,8 +21,7 @@
  *                                                                      *
  ************************************************************************/
 
-#ifndef UNITSCHEMASPECS_H
-#define UNITSCHEMASPECS_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -68,4 +67,3 @@ struct UnitsSchemasDataPack
 
 
 }  // namespace Base
-#endif  // UNITSCHEMASPECS_H

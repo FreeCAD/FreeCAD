@@ -551,6 +551,7 @@ ColorPickerPopup::ColorPickerPopup(int width, bool withColorDialog,
 {
     setFrameStyle(QFrame::StyledPanel);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    setProperty("class", "popup");
 
     setFocusPolicy(Qt::StrongFocus);
     setMouseTracking(true);

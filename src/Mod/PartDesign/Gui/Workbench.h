@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_WORKBENCH_H
-#define PARTDESIGN_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -62,6 +63,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTDESIGN_WORKBENCH_H

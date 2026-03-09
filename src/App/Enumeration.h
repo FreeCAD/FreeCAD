@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_ENUMERATION_H
-#define BASE_ENUMERATION_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -194,5 +193,3 @@ private:
     friend class PropertyEnumeration;
 };  // class Enumeration
 }  // namespace App
-
-#endif  // #ifndef BASE_ENUMERATION_H

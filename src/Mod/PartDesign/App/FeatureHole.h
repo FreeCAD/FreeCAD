@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Hole_H
-#define PARTDESIGN_Hole_H
+#pragma once
 
 #include <optional>
 #include <App/PropertyUnits.h>
@@ -301,6 +302,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Hole_H

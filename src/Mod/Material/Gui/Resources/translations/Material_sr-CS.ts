@@ -688,63 +688,63 @@ Ako nije potvrđeno, biće sortirani po imenima.</translation>
       <translation>Obriši</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="196"/>
+      <location filename="../../MaterialSave.cpp" line="198"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Sačuvati preko originalne datoteke može dovesti do greške u drugim dokumentima. Ovo nije preporučljivo.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="220"/>
+      <location filename="../../MaterialSave.cpp" line="222"/>
       <source>Save as new material</source>
       <translation>Sačuvaj kao novi materijal</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="193"/>
+      <location filename="../../MaterialSave.cpp" line="195"/>
       <source>Save over &apos;%1&apos;?</source>
       <translation>Sačuvaj preko &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="218"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>Confirm Save as New Material</source>
       <translation>Potvrdi opciju Sačuvaj kao novi materijal</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="223"/>
+      <location filename="../../MaterialSave.cpp" line="225"/>
       <source>This material already exists in this library. Save as a new material?</source>
       <translation>Ovaj materijal već postoji u ovoj biblioteci. Da li želiš da ga sačuvaš kao novi materijal?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Confirm Save as Copy</source>
       <translation>Potvrdi opciju Sačuvaj kao kopiju</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="247"/>
+      <location filename="../../MaterialSave.cpp" line="249"/>
       <source>Save as copy</source>
       <translation>Sačuvaj kao kopiju</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="250"/>
+      <location filename="../../MaterialSave.cpp" line="252"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
       <translation>Sačuvati kopiju se ne preporučuje jer može pokvariti druge dokumente. Preporučuje se da sačuvaš kao novi materijal.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="253"/>
+      <location filename="../../MaterialSave.cpp" line="255"/>
       <source>Save Copy</source>
       <translation>Sačuvaj kopiju</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="254"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save As New</source>
       <translation>Sačuvaj kao novi</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="486"/>
-      <location filename="../../MaterialSave.cpp" line="496"/>
+      <location filename="../../MaterialSave.cpp" line="488"/>
+      <location filename="../../MaterialSave.cpp" line="498"/>
       <source>New folder</source>
       <translation>Nova fascikla</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="536"/>
+      <location filename="../../MaterialSave.cpp" line="538"/>
       <source>Context Menu</source>
       <translation>Kontekstualni meni</translation>
     </message>
@@ -1122,23 +1122,23 @@ Ako nije potvrđeno, biće sortirani po imenima.</translation>
       <translation>Materijal</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="190"/>
+      <location filename="../../MaterialSave.cpp" line="192"/>
       <source>Confirm Overwrite</source>
       <translation>Potvrdi prepis preko postojećeg</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="380"/>
-      <location filename="../../MaterialSave.cpp" line="381"/>
+      <location filename="../../MaterialSave.cpp" line="382"/>
+      <location filename="../../MaterialSave.cpp" line="383"/>
       <source>No writeable library</source>
       <translation>Nema biblioteke u koju je moguće pisati</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../MaterialSave.cpp" line="570"/>
       <source>Delete &apos;%1&apos;?</source>
       <translation>Obriši &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="572"/>
+      <location filename="../../MaterialSave.cpp" line="574"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Uklanjanjem ovoga, uklonićeš i sav sadržaj.</translation>
     </message>
@@ -1165,7 +1165,7 @@ Ako nije potvrđeno, biće sortirani po imenima.</translation>
     <message>
       <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="565"/>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Potvrdi brisanje</translation>
     </message>

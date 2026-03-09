@@ -1300,16 +1300,7 @@ std::string PropertyComplexGeoData::getElementMapVersion(bool) const
     if (!data) {
         return std::string();
     }
-    auto owner = freecad_cast<DocumentObject*>(getContainer());
-    std::ostringstream ss;
-    if (owner && owner->getDocument() && data->hasElementMap() && data->getElementMapSize() && owner->getDocument()->getStringHasher() == data->Hasher) {
-        ss << "1.";
-    }
-    else {
-        ss << "0.";
-    }
-    ss << data->getElementMapVersion();
-    return ss.str();
+    return data->getElementMapVersion();
 }
 
 bool PropertyComplexGeoData::checkElementMapVersion(const char* ver) const
@@ -1317,18 +1308,6 @@ bool PropertyComplexGeoData::checkElementMapVersion(const char* ver) const
     auto data = getComplexData();
     if (!data) {
         return false;
-    }
-    auto owner = freecad_cast<DocumentObject*>(getContainer());
-    std::ostringstream ss;
-    const char* prefix;
-    if (owner && owner->getDocument() && owner->getDocument()->getStringHasher() == data->Hasher) {
-        prefix = "1.";
-    }
-    else {
-        prefix = "0.";
-    }
-    if (!boost::starts_with(ver, prefix)) {
-        return true;
     }
     return data->checkElementMapVersion(ver + 2);
 }

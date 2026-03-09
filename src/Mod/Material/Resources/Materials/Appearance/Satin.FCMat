@@ -3,7 +3,7 @@
 General:
   UUID: "951b54ae-86b6-46d2-b452-60bd6a3ba1bb"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Satin"
   Description: "Defines the Satin appearance properties"
 AppearanceModels:

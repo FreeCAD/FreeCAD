@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLGPROPERTYLINK_H
-#define GUI_DIALOG_DLGPROPERTYLINK_H
+#pragma once
 
 #include <QDialog>
 #include <QPointer>
@@ -135,6 +134,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-
-#endif  // GUI_DIALOG_DLGPROPERTYLINK_H

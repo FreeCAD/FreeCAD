@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MERGEDOCUMENTS_H
-#define GUI_MERGEDOCUMENTS_H
+#pragma once
 
 #include <Base/Persistence.h>
 #include <map>
@@ -68,5 +67,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MERGEDOCUMENTS_H

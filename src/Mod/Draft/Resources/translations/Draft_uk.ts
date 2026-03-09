@@ -1089,10 +1089,10 @@ will be moved to the center of the view.</source>
       <translation>Ширина лінії</translation>
     </message>
     <message>
-      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <source> px</source>
       <translation> пікс.</translation>
     </message>
@@ -1907,8 +1907,8 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</transla
       <translation>Типова ширина лінії</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-drafttexts.ui" line="240"/>
       <location filename="../ui/preferences-draft.ui" line="338"/>
+      <location filename="../ui/preferences-drafttexts.ui" line="240"/>
       <source> px</source>
       <translation> пікс.</translation>
     </message>
@@ -3081,9 +3081,9 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="698"/>
-      <location filename="../../draftguitools/gui_scale.py" line="222"/>
       <location filename="../../draftguitools/gui_rotate.py" line="284"/>
       <location filename="../../draftguitools/gui_move.py" line="214"/>
+      <location filename="../../draftguitools/gui_scale.py" line="222"/>
       <source>Copy</source>
       <translation>Копіювати</translation>
     </message>
@@ -3171,8 +3171,8 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1664"/>
-      <location filename="../../DraftGui.py" line="1682"/>
+      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1706"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Немає</translation>
@@ -3309,12 +3309,12 @@ Uncheck to use working plane coordinate system</source>
       <translation>Завершує поточну операцію малювання або редагування</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1889"/>
+      <location filename="../../DraftGui.py" line="1913"/>
       <source>Modify Objects</source>
       <translation type="unfinished">Modify Objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2046"/>
+      <location filename="../../DraftGui.py" line="2070"/>
       <source>Facebinder Elements</source>
       <translation type="unfinished">Facebinder Elements</translation>
     </message>
@@ -3407,8 +3407,8 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1670"/>
-      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1694"/>
+      <location filename="../../DraftGui.py" line="1712"/>
       <source>Autogroup off</source>
       <translation>Автогрупування вимкнено</translation>
     </message>
@@ -3477,12 +3477,12 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>Тримекс</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1054"/>
-      <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1057"/>
-      <location filename="../../DraftGui.py" line="1059"/>
-      <location filename="../../DraftGui.py" line="1060"/>
-      <location filename="../../DraftGui.py" line="1061"/>
+      <location filename="../../DraftGui.py" line="1078"/>
+      <location filename="../../DraftGui.py" line="1080"/>
+      <location filename="../../DraftGui.py" line="1081"/>
+      <location filename="../../DraftGui.py" line="1083"/>
+      <location filename="../../DraftGui.py" line="1084"/>
+      <location filename="../../DraftGui.py" line="1085"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3490,12 +3490,12 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>Локально {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1063"/>
-      <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1065"/>
-      <location filename="../../DraftGui.py" line="1067"/>
-      <location filename="../../DraftGui.py" line="1068"/>
-      <location filename="../../DraftGui.py" line="1069"/>
+      <location filename="../../DraftGui.py" line="1087"/>
+      <location filename="../../DraftGui.py" line="1088"/>
+      <location filename="../../DraftGui.py" line="1089"/>
+      <location filename="../../DraftGui.py" line="1091"/>
+      <location filename="../../DraftGui.py" line="1092"/>
+      <location filename="../../DraftGui.py" line="1093"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3503,22 +3503,22 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>Глобально {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1678"/>
+      <location filename="../../DraftGui.py" line="1702"/>
       <source>Autogroup:</source>
       <translation>Автогрупування:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2067"/>
       <source>Faces</source>
       <translation>Грані</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2044"/>
+      <location filename="../../DraftGui.py" line="2068"/>
       <source>Remove</source>
       <translation>Видалити</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2045"/>
+      <location filename="../../DraftGui.py" line="2069"/>
       <source>Add</source>
       <translation>Додати</translation>
     </message>
@@ -3628,59 +3628,59 @@ or try saving to a lower DWG version.</source>
       <translation>Встановити власний масштаб анотації у форматі x:x, x=x</translation>
     </message>
     <message>
-      <location filename="../../draftfunctions/cut.py" line="59"/>
-      <location filename="../../draftmake/make_label.py" line="200"/>
+      <location filename="../../draftutils/gui_utils.py" line="915"/>
+      <location filename="../../draftutils/utils.py" line="1073"/>
+      <location filename="../../draftutils/groups.py" line="100"/>
+      <location filename="../../draftmake/make_patharray.py" line="178"/>
+      <location filename="../../draftmake/make_patharray.py" line="327"/>
       <location filename="../../draftmake/make_array.py" line="84"/>
+      <location filename="../../draftmake/make_label.py" line="200"/>
       <location filename="../../draftmake/make_pointarray.py" line="91"/>
       <location filename="../../draftmake/make_dimension.py" line="265"/>
       <location filename="../../draftmake/make_dimension.py" line="354"/>
       <location filename="../../draftmake/make_dimension.py" line="482"/>
       <location filename="../../draftmake/make_dimension.py" line="603"/>
-      <location filename="../../draftmake/make_text.py" line="94"/>
-      <location filename="../../draftmake/make_text.py" line="177"/>
       <location filename="../../draftmake/make_layer.py" line="55"/>
       <location filename="../../draftmake/make_layer.py" line="145"/>
-      <location filename="../../draftmake/make_patharray.py" line="178"/>
-      <location filename="../../draftmake/make_patharray.py" line="327"/>
-      <location filename="../../draftutils/utils.py" line="1073"/>
-      <location filename="../../draftutils/groups.py" line="100"/>
-      <location filename="../../draftutils/gui_utils.py" line="906"/>
+      <location filename="../../draftmake/make_text.py" line="94"/>
+      <location filename="../../draftmake/make_text.py" line="177"/>
+      <location filename="../../draftfunctions/cut.py" line="59"/>
       <source>No active document. Aborting.</source>
       <translation>Немає активного документа. Відмінити.</translation>
     </message>
     <message>
+      <location filename="../../draftutils/gui_utils.py" line="923"/>
       <location filename="../../draftutils/groups.py" line="136"/>
-      <location filename="../../draftutils/gui_utils.py" line="914"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Неправильне введення: об'єкт {} не в документі.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="166"/>
+      <location filename="../../draftutils/gui_utils.py" line="175"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Неможливо вставити новий об'єкт у масштабовану деталь</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="274"/>
+      <location filename="../../draftutils/gui_utils.py" line="283"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Символ не реалізовано. Використовується типовий символ.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="788"/>
+      <location filename="../../draftutils/gui_utils.py" line="797"/>
       <source>image is Null</source>
       <translation>зображення пусте</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="796"/>
+      <location filename="../../draftutils/gui_utils.py" line="805"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>ім'я файлу не існує в системі або у файлі ресурсів</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="855"/>
+      <location filename="../../draftutils/gui_utils.py" line="864"/>
       <source>unable to load texture</source>
       <translation>неможливо завантажити текстуру</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="922"/>
+      <location filename="../../draftutils/gui_utils.py" line="931"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Не має 'ViewObject.RootNode'.</translation>
     </message>
@@ -3788,10 +3788,10 @@ or try saving to a lower DWG version.</source>
       <translation>Вказати положення тексту</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="93"/>
-      <location filename="../../draftguitools/gui_dimensions.py" line="128"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="70"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="75"/>
+      <location filename="../../draftguitools/gui_lines.py" line="93"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="70"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="128"/>
       <source>Pick first point</source>
       <translation>Вказати першу точку</translation>
     </message>
@@ -3831,15 +3831,15 @@ or try saving to a lower DWG version.</source>
       <translation>Ламана лінія</translation>
     </message>
     <message>
+      <location filename="../../draftguitools/gui_splines.py" line="151"/>
+      <location filename="../../draftguitools/gui_splines.py" line="156"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="159"/>
+      <location filename="../../draftguitools/gui_beziers.py" line="162"/>
       <location filename="../../draftguitools/gui_lines.py" line="237"/>
       <location filename="../../draftguitools/gui_lines.py" line="247"/>
       <location filename="../../draftguitools/gui_lines.py" line="254"/>
       <location filename="../../draftguitools/gui_lines.py" line="262"/>
       <location filename="../../draftguitools/gui_lines.py" line="273"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="159"/>
-      <location filename="../../draftguitools/gui_beziers.py" line="162"/>
-      <location filename="../../draftguitools/gui_splines.py" line="151"/>
-      <location filename="../../draftguitools/gui_splines.py" line="156"/>
       <source>Pick next point</source>
       <translation>Вказати наступну точку</translation>
     </message>
@@ -3916,9 +3916,9 @@ or try saving to a lower DWG version.</source>
       <translation>Вибрати кінцеву точку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_scale.py" line="123"/>
       <location filename="../../draftguitools/gui_rotate.py" line="240"/>
       <location filename="../../draftguitools/gui_move.py" line="191"/>
+      <location filename="../../draftguitools/gui_scale.py" line="123"/>
       <source>No valid subelements selected</source>
       <translation type="unfinished">No valid subelements selected</translation>
     </message>
@@ -3928,18 +3928,18 @@ or try saving to a lower DWG version.</source>
       <translation>Переміщення</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="86"/>
       <location filename="../../draftguitools/gui_arcs.py" line="91"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="86"/>
       <source>Pick center point</source>
       <translation type="unfinished">Pick center point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="206"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="217"/>
-      <location filename="../../draftguitools/gui_polygons.py" line="280"/>
       <location filename="../../draftguitools/gui_arcs.py" line="268"/>
       <location filename="../../draftguitools/gui_arcs.py" line="285"/>
       <location filename="../../draftguitools/gui_arcs.py" line="429"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="206"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="217"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="280"/>
       <source>Pick radius</source>
       <translation>Вказати радіус</translation>
     </message>
@@ -4001,14 +4001,14 @@ or try saving to a lower DWG version.</source>
       <translation type="unfinished">%1 toggle continue</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="310"/>
       <location filename="../../draftguitools/gui_arcs.py" line="487"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="310"/>
       <source>%1 pick center</source>
       <translation type="unfinished">%1 pick center</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_polygons.py" line="312"/>
       <location filename="../../draftguitools/gui_arcs.py" line="489"/>
+      <location filename="../../draftguitools/gui_polygons.py" line="312"/>
       <source>%1 pick radius</source>
       <translation type="unfinished">%1 pick radius</translation>
     </message>
@@ -4059,16 +4059,16 @@ or try saving to a lower DWG version.</source>
       <translation type="unfinished">Create Arc From 3 Points</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="306"/>
-      <location filename="../../draftguitools/gui_rectangles.py" line="218"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="220"/>
       <location filename="../../draftguitools/gui_arcs.py" line="655"/>
+      <location filename="../../draftguitools/gui_lines.py" line="306"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="218"/>
       <source>%1 pick first point</source>
       <translation type="unfinished">%1 pick first point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_lines.py" line="310"/>
       <location filename="../../draftguitools/gui_arcs.py" line="659"/>
+      <location filename="../../draftguitools/gui_lines.py" line="310"/>
       <source>%1 pick second point</source>
       <translation type="unfinished">%1 pick second point</translation>
     </message>
@@ -4614,14 +4614,14 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Створити Еліпс</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="207"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="209"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="207"/>
       <source>Pick opposite point</source>
       <translation type="unfinished">Pick opposite point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_rectangles.py" line="222"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="224"/>
+      <location filename="../../draftguitools/gui_rectangles.py" line="222"/>
       <source>%1 pick opposite point</source>
       <translation type="unfinished">%1 pick opposite point</translation>
     </message>
@@ -4806,12 +4806,12 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Понизити</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="171"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="305"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="234"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="405"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="192"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="343"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="171"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="305"/>
       <source>Object:</source>
       <translation>Об'єкт:</translation>
     </message>
@@ -4841,9 +4841,9 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Create Polar Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="276"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="376"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="314"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="276"/>
       <source>Fuse:</source>
       <translation type="unfinished">Fuse:</translation>
     </message>
@@ -4863,8 +4863,8 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Polar angle:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="350"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
       <source>Center of rotation:</source>
       <translation>Центр обертання:</translation>
     </message>
@@ -4889,8 +4889,8 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Create Orthogonal Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="289"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="389"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="289"/>
       <source>Create link array:</source>
       <translation type="unfinished">Create link array:</translation>
     </message>
@@ -4988,9 +4988,9 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Circular Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="163"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="222"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="180"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="163"/>
       <source>At least 1 element must be selected</source>
       <translation type="unfinished">At least 1 element must be selected</translation>
     </message>
@@ -5000,9 +5000,9 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Number of layers must be at least 2</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="170"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="233"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="191"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="170"/>
       <source>Selection is not suitable for array</source>
       <translation type="unfinished">Selection is not suitable for array</translation>
     </message>
@@ -5170,12 +5170,12 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Не можна створити форму:</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_pointarray.py" line="96"/>
-      <location filename="../../draftmake/make_circulararray.py" line="132"/>
-      <location filename="../../draftmake/make_polararray.py" line="97"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="148"/>
       <location filename="../../draftmake/make_patharray.py" line="183"/>
       <location filename="../../draftmake/make_patharray.py" line="332"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="148"/>
+      <location filename="../../draftmake/make_polararray.py" line="97"/>
+      <location filename="../../draftmake/make_pointarray.py" line="96"/>
+      <location filename="../../draftmake/make_circulararray.py" line="132"/>
       <source>Wrong input: base_object not in document.</source>
       <translation type="unfinished">Wrong input: base_object not in document.</translation>
     </message>
@@ -5186,20 +5186,23 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Неправильний вхід: path_object не в документі.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_label.py" line="316"/>
-      <location filename="../../draftmake/make_layer.py" line="184"/>
-      <location filename="../../draftmake/make_polararray.py" line="109"/>
-      <location filename="../../draftmake/make_orthoarray.py" line="138"/>
       <location filename="../../draftmake/make_patharray.py" line="194"/>
       <location filename="../../draftmake/make_patharray.py" line="265"/>
       <location filename="../../draftmake/make_patharray.py" line="272"/>
       <location filename="../../draftmake/make_patharray.py" line="342"/>
+      <location filename="../../draftmake/make_orthoarray.py" line="138"/>
+      <location filename="../../draftmake/make_label.py" line="316"/>
+      <location filename="../../draftmake/make_polararray.py" line="109"/>
+      <location filename="../../draftmake/make_layer.py" line="184"/>
       <source>Wrong input: must be a number.</source>
       <translation>Неправильний вхід: має бути число.</translation>
     </message>
     <message>
+      <location filename="../../draftmake/make_patharray.py" line="201"/>
+      <location filename="../../draftmake/make_patharray.py" line="252"/>
+      <location filename="../../draftmake/make_patharray.py" line="259"/>
       <location filename="../../draftmake/make_label.py" line="208"/>
-      <location filename="../../draftmake/make_circulararray.py" line="156"/>
+      <location filename="../../draftmake/make_polararray.py" line="115"/>
       <location filename="../../draftmake/make_dimension.py" line="271"/>
       <location filename="../../draftmake/make_dimension.py" line="277"/>
       <location filename="../../draftmake/make_dimension.py" line="284"/>
@@ -5209,10 +5212,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_dimension.py" line="609"/>
       <location filename="../../draftmake/make_dimension.py" line="634"/>
       <location filename="../../draftmake/make_dimension.py" line="641"/>
-      <location filename="../../draftmake/make_polararray.py" line="115"/>
-      <location filename="../../draftmake/make_patharray.py" line="201"/>
-      <location filename="../../draftmake/make_patharray.py" line="252"/>
-      <location filename="../../draftmake/make_patharray.py" line="259"/>
+      <location filename="../../draftmake/make_circulararray.py" line="156"/>
       <source>Wrong input: must be a vector.</source>
       <translation>Неправильний вхід: має бути вектор.</translation>
     </message>
@@ -5239,9 +5239,9 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Вхідні дані: одиночне значення, розгорнуте у вектор.</translation>
     </message>
     <message>
-      <location filename="../../draftmake/make_circulararray.py" line="150"/>
-      <location filename="../../draftmake/make_polararray.py" line="103"/>
       <location filename="../../draftmake/make_orthoarray.py" line="112"/>
+      <location filename="../../draftmake/make_polararray.py" line="103"/>
+      <location filename="../../draftmake/make_circulararray.py" line="150"/>
       <source>Wrong input: must be an integer number.</source>
       <translation>Неправильний ввід: має бути ціле число.</translation>
     </message>
@@ -5449,16 +5449,16 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Неправильний вхід: має бути число від 0 до 100.</translation>
     </message>
     <message>
+      <location filename="../../draftviewproviders/view_base.py" line="469"/>
+      <location filename="../../draftviewproviders/view_hatch.py" line="86"/>
       <location filename="../../draftviewproviders/view_clone.py" line="70"/>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="283"/>
-      <location filename="../../draftviewproviders/view_hatch.py" line="86"/>
-      <location filename="../../draftviewproviders/view_base.py" line="469"/>
       <source>Edit</source>
       <translation>Редагувати</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wire.py" line="192"/>
       <location filename="../../draftviewproviders/view_base.py" line="474"/>
+      <location filename="../../draftviewproviders/view_wire.py" line="192"/>
       <source>Flatten</source>
       <translation type="unfinished">Flatten</translation>
     </message>
@@ -6011,16 +6011,16 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>Нахил</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="122"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="129"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="122"/>
       <source>True</source>
       <translation>Так</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="126"/>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="158"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="133"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="126"/>
       <source>False</source>
       <translation>Ні</translation>
     </message>
@@ -6080,12 +6080,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>_BSpline.createGeometry: Закривається тією ж першою/останньою точкою. Геометрія не оновлена.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="104"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="105"/>
       <source>Writing camera position</source>
       <translation>Запис положення камери</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="122"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="123"/>
       <source>Writing objects shown/hidden state</source>
       <translation type="unfinished">Writing objects shown/hidden state</translation>
     </message>
@@ -6817,20 +6817,20 @@ set True for fusion or False for compound</translation>
       <translation type="unfinished">Radius of the circle</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="60"/>
       <location filename="../../draftobjects/ellipse.py" line="63"/>
-      <location filename="../../draftobjects/polygon.py" line="66"/>
       <location filename="../../draftobjects/circle.py" line="60"/>
+      <location filename="../../draftobjects/rectangle.py" line="60"/>
+      <location filename="../../draftobjects/polygon.py" line="66"/>
       <source>Create a face</source>
       <translation>Створити грань</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="69"/>
-      <location filename="../../draftobjects/bspline.py" line="56"/>
       <location filename="../../draftobjects/wire.py" line="88"/>
-      <location filename="../../draftobjects/polygon.py" line="69"/>
+      <location filename="../../draftobjects/bspline.py" line="56"/>
       <location filename="../../draftobjects/circle.py" line="63"/>
       <location filename="../../draftobjects/bezcurve.py" line="65"/>
+      <location filename="../../draftobjects/rectangle.py" line="69"/>
+      <location filename="../../draftobjects/polygon.py" line="69"/>
       <source>The area of this object</source>
       <translation type="unfinished">The area of this object</translation>
     </message>
@@ -6855,15 +6855,15 @@ set True for fusion or False for compound</translation>
       <translation type="unfinished">How the polygon must be drawn from the control circle</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="54"/>
       <location filename="../../draftobjects/wire.py" line="76"/>
+      <location filename="../../draftobjects/rectangle.py" line="54"/>
       <location filename="../../draftobjects/polygon.py" line="60"/>
       <source>Radius to use to fillet the corners</source>
       <translation type="unfinished">Radius to use to fillet the corners</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/rectangle.py" line="57"/>
       <location filename="../../draftobjects/wire.py" line="79"/>
+      <location filename="../../draftobjects/rectangle.py" line="57"/>
       <location filename="../../draftobjects/polygon.py" line="63"/>
       <source>Size of the chamfer to give to the corners</source>
       <translation type="unfinished">Size of the chamfer to give to the corners</translation>
@@ -6891,17 +6891,17 @@ set True for fusion or False for compound</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="149"/>
-      <location filename="../../draftobjects/patharray.py" line="265"/>
       <location filename="../../draftobjects/pointarray.py" line="111"/>
       <location filename="../../draftobjects/array.py" line="324"/>
+      <location filename="../../draftobjects/patharray.py" line="265"/>
       <source>Show the individual array elements (only for Link arrays)</source>
       <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="158"/>
-      <location filename="../../draftobjects/patharray.py" line="272"/>
       <location filename="../../draftobjects/pointarray.py" line="117"/>
       <location filename="../../draftobjects/array.py" line="147"/>
+      <location filename="../../draftobjects/patharray.py" line="272"/>
       <source>The placement for each array element</source>
       <translation type="unfinished">The placement for each array element</translation>
     </message>
@@ -7029,8 +7029,8 @@ they will only be editable by changing the style through the 'Annotation style e
 їх можна буде редагувати, лише змінивши стиль за допомогою інструменту «Редактор стилів анотацій».</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/patharray.py" line="223"/>
       <location filename="../../draftobjects/array.py" line="100"/>
+      <location filename="../../draftobjects/patharray.py" line="223"/>
       <source>The base object that will be duplicated</source>
       <translation type="unfinished">The base object that will be duplicated</translation>
     </message>
@@ -7146,9 +7146,9 @@ Otherwise the copies will have the same orientation as the original Base object.
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="119"/>
-      <location filename="../../draftobjects/patharray.py" line="258"/>
       <location filename="../../draftobjects/pointarray.py" line="85"/>
       <location filename="../../draftobjects/array.py" line="128"/>
+      <location filename="../../draftobjects/patharray.py" line="258"/>
       <source>Specifies if the copies should be fused together if they touch each other (slower)</source>
       <translation type="unfinished">Specifies if the copies should be fused together if they touch each other (slower)</translation>
     </message>
@@ -7712,34 +7712,34 @@ the 'First Angle' and 'Last Angle' properties.</translation>
       <translation>Колір тексту</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="76"/>
+      <location filename="../../draftviewproviders/view_label.py" line="77"/>
       <location filename="../../draftviewproviders/view_text.py" line="60"/>
       <source>Line spacing (relative to font size)</source>
       <translation type="unfinished">Line spacing (relative to font size)</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="59"/>
+      <location filename="../../draftviewproviders/view_label.py" line="60"/>
       <source>Vertical alignment</source>
       <translation type="unfinished">Vertical alignment</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="67"/>
+      <location filename="../../draftviewproviders/view_label.py" line="68"/>
       <source>Maximum number of characters on each line of the text box</source>
       <translation type="unfinished">Maximum number of characters on each line of the text box</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="71"/>
+      <location filename="../../draftviewproviders/view_label.py" line="72"/>
       <location filename="../../draftviewproviders/view_text.py" line="55"/>
       <source>Horizontal alignment</source>
       <translation type="unfinished">Horizontal alignment</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="89"/>
+      <location filename="../../draftviewproviders/view_label.py" line="90"/>
       <source>The type of frame around the text of this object</source>
       <translation type="unfinished">The type of frame around the text of this object</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="94"/>
+      <location filename="../../draftviewproviders/view_label.py" line="95"/>
       <source>Display a leader line or not</source>
       <translation>Відображати лінію виноски чи ні</translation>
     </message>
@@ -7867,18 +7867,18 @@ Use 'arch' to force US arch notation</source>
 Використовуйте ‚arch‘ для примусового позначення арки США</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="143"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="158"/>
       <location filename="../../draftviewproviders/view_wire.py" line="66"/>
       <location filename="../../draftviewproviders/view_wire.py" line="79"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="143"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="158"/>
       <source>Arrow size</source>
       <translation>Розмір стрілки</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="148"/>
-      <location filename="../../draftviewproviders/view_draft_annotation.py" line="165"/>
       <location filename="../../draftviewproviders/view_wire.py" line="71"/>
       <location filename="../../draftviewproviders/view_wire.py" line="84"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="148"/>
+      <location filename="../../draftviewproviders/view_draft_annotation.py" line="165"/>
       <source>Arrow type</source>
       <translation>Тип стрілки</translation>
     </message>
@@ -7912,12 +7912,12 @@ beyond the dimension line</translation>
       <translation type="unfinished">Shows the dimension line and arrows</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="50"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="51"/>
       <source>The display length of this section plane</source>
       <translation>Показ довжини цієї площини перетину</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="53"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="54"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Розмір стрілок цієї площини перетину</translation>
     </message>
@@ -7930,8 +7930,8 @@ beyond the dimension line</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
       <location filename="../../draftviewproviders/view_base.py" line="502"/>
+      <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
       <source>Transform</source>
       <translation>Перетворити</translation>
     </message>

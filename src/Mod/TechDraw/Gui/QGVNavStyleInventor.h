@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAW_INVENTORNAVSTYLE_H
-#define TECHDRAW_INVENTORNAVSTYLE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -48,4 +47,3 @@ private:
 };
 
 }
-#endif // TECHDRAW_INVENTORNAVSTYLE_H

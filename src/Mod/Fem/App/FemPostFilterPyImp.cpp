@@ -50,7 +50,7 @@ std::string FemPostFilterPy::representation() const
 }
 
 
-PyObject* FemPostFilterPy::addFilterPipeline(PyObject* args)
+PyObject* FemPostFilterPy::addFilterPipeline([[maybe_unused]] PyObject* args)
 {
 #ifdef FC_USE_VTK_PYTHON
     const char* name;
@@ -84,7 +84,6 @@ PyObject* FemPostFilterPy::addFilterPipeline(PyObject* args)
 
     Py_Return;
 #else
-    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
     return nullptr;
 #endif
@@ -117,7 +116,7 @@ PyObject* FemPostFilterPy::getParentPostGroup(PyObject* args)
     Py_Return;
 }
 
-PyObject* FemPostFilterPy::getInputData(PyObject* args)
+PyObject* FemPostFilterPy::getInputData([[maybe_unused]] PyObject* args)
 {
 #ifdef FC_USE_VTK_PYTHON
     // we take no arguments
@@ -146,7 +145,6 @@ PyObject* FemPostFilterPy::getInputData(PyObject* args)
 
     return py_dataset;
 #else
-    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
     return nullptr;
 #endif
@@ -189,7 +187,7 @@ PyObject* FemPostFilterPy::getInputScalarFields(PyObject* args)
     return Py::new_reference_to(list);
 }
 
-PyObject* FemPostFilterPy::getOutputAlgorithm(PyObject* args)
+PyObject* FemPostFilterPy::getOutputAlgorithm([[maybe_unused]] PyObject* args)
 {
 #ifdef FC_USE_VTK_PYTHON
     // we take no arguments
@@ -203,7 +201,6 @@ PyObject* FemPostFilterPy::getOutputAlgorithm(PyObject* args)
 
     return py_algorithm;
 #else
-    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
     return nullptr;
 #endif

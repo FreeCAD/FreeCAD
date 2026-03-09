@@ -416,7 +416,7 @@ def export(objectslist, filename, argstring):
             )
             return None
 
-    print("export: postprocessing...")
+    # print("export: postprocessing...")  # Commented to reduce test noise
     gcode = append0("%" + PROG_NAME + "\n")
     if not argstring:
         gcode += append("(" + __name__ + " with default settings)\n")

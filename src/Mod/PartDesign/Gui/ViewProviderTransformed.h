@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -21,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderTransformed_H
-#define PARTGUI_ViewProviderTransformed_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -81,6 +82,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderTransformed_H

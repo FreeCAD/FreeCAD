@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_VIEWPROVIDERPARTSPLINE_H
-#define PARTGUI_VIEWPROVIDERPARTSPLINE_H
+#pragma once
 
 #include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Gui/ViewProviderExtensionPython.h>
@@ -77,6 +76,3 @@ using ViewProviderSplineExtensionPython
     = Gui::ViewProviderExtensionPythonT<PartGui::ViewProviderSplineExtension>;
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERPARTSPLINE_H

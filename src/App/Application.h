@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_APP_APPLICATION_H_
-#define SRC_APP_APPLICATION_H_
+#pragma once
 
 #include <fastsignals/signal.h>
 #include <QtCore/qtextstream.h>
@@ -129,6 +128,15 @@ public:
     App::Document* newDocument(const char* proposedName = nullptr,
                                const char* proposedLabel = nullptr,
                                DocumentInitFlags CreateFlags = DocumentInitFlags());
+
+    /**
+     * @brief Closes the document and removes it from the application.
+     *
+     * @param[in] doc The document to close.
+     * @return Returns true if the document was found and closed, false otherwise.
+     */
+    bool closeDocument(const Document* doc);
+
     /**
      * @brief Closes the document and removes it from the application.
      *
@@ -561,7 +569,7 @@ public:
      *
      * @param[in] extension The file type extension.
      */
-    std::vector<std::string> getImportModules(const char* extension) const;
+    std::vector<std::string> getImportModules(const std::string& extension) const;
 
     /// Get a list of all import modules.
     std::vector<std::string> getImportModules() const;
@@ -572,7 +580,7 @@ public:
      * @param[in] Module The module name.
      * @return A list of file types (extensions) supported by the module.
      */
-    std::vector<std::string> getImportTypes(const char* Module) const;
+    std::vector<std::string> getImportTypes(const std::string& Module) const;
 
     /// Get a list of all import filetypes represented as extensions.
     std::vector<std::string> getImportTypes() const;
@@ -583,7 +591,7 @@ public:
      * @param[in] extension The file type represented by its extension.
      * @return A map of filter description to module name.
      */
-    std::map<std::string, std::string> getImportFilters(const char* extension) const;
+    std::map<std::string, std::string> getImportFilters(const std::string& extension) const;
 
     /// Get a mapping of all import filters to their modules.
     std::map<std::string, std::string> getImportFilters() const;
@@ -596,6 +604,22 @@ public:
     void addExportType(const char* filter, const char* moduleName);
 
     /**
+     * @brief Register an export filetype with a translatable description
+     *
+     * @param[in] description A translatable string describing the file type. Must not contain the
+     * list of extensions.
+     * @param[in] extensions A list of supported extensions. Do not include the "*.", only the
+     * extension itself. For example, "txt", not "*.txt".
+     * @param[in] moduleName The name of the module handling the export.
+     */
+    void addTranslatableExportType(const std::string &description,
+                                   const std::vector<std::string> &extensions,
+                                   const std::string &moduleName);
+
+    /// Intended to be called when the language is changed, this retranslates the export type.
+    void retranslateExportTypes();
+
+    /**
      * @copydoc changeImportModule
      */
     void changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName);
@@ -605,7 +629,7 @@ public:
      *
      * @copydetails getImportModules
      */
-    std::vector<std::string> getExportModules(const char* extension) const;
+    std::vector<std::string> getExportModules(const std::string& extension) const;
 
     /// Get a list of all export modules.
     std::vector<std::string> getExportModules() const;
@@ -613,9 +637,9 @@ public:
     /**
      * @brief Get a list of filetypes that are supported by a module for export.
      *
-     * @copydetails App::Application::getImportTypes(const char*) const
+     * @copydetails App::Application::getImportTypes(const std::string&) const
      */
-    std::vector<std::string> getExportTypes(const char* Module) const;
+    std::vector<std::string> getExportTypes(const std::string& Module) const;
 
     /// Get a list of all export filetypes.
     std::vector<std::string> getExportTypes() const;
@@ -623,9 +647,9 @@ public:
     /**
      * @brief Get the export filters with modules of a given filetype.
      *
-     * @copydetails App::Application::getImportFilters(const char*) const
+     * @copydetails App::Application::getImportFilters(const std::string&) const
      */
-    std::map<std::string, std::string> getExportFilters(const char* extension) const;
+    std::map<std::string, std::string> getExportFilters(const std::string& extension) const;
 
     /// Get a mapping of all export filters to their modules.
     std::map<std::string, std::string> getExportFilters() const;
@@ -953,59 +977,6 @@ private:
     static void setupPythonTypes();
     static void setupPythonException(PyObject*);
 
-    // clang-format off
-    // static python wrapper of the exported functions
-    static PyObject* sGetParam          (PyObject *self, PyObject *args);
-    static PyObject* sSaveParameter     (PyObject *self, PyObject *args);
-    static PyObject* sGetVersion        (PyObject *self, PyObject *args);
-    static PyObject* sGetConfig         (PyObject *self, PyObject *args);
-    static PyObject* sSetConfig         (PyObject *self, PyObject *args);
-    static PyObject* sDumpConfig        (PyObject *self, PyObject *args);
-    static PyObject* sAddImportType     (PyObject *self, PyObject *args);
-    static PyObject* sChangeImportModule(PyObject *self, PyObject *args);
-    static PyObject* sGetImportType     (PyObject *self, PyObject *args);
-    static PyObject* sAddExportType     (PyObject *self, PyObject *args);
-    static PyObject* sChangeExportModule(PyObject *self, PyObject *args);
-    static PyObject* sGetExportType     (PyObject *self, PyObject *args);
-    static PyObject* sGetResourcePath   (PyObject *self, PyObject *args);
-    static PyObject* sGetLibraryPath    (PyObject *self, PyObject *args);
-    static PyObject* sGetTempPath       (PyObject *self, PyObject *args);
-    static PyObject* sGetUserCachePath  (PyObject *self, PyObject *args);
-    static PyObject* sGetUserConfigPath (PyObject *self, PyObject *args);
-    static PyObject* sGetUserAppDataPath(PyObject *self, PyObject *args);
-    static PyObject* sGetUserMacroPath  (PyObject *self, PyObject *args);
-    static PyObject* sGetHelpPath       (PyObject *self, PyObject *args);
-    static PyObject* sGetHomePath       (PyObject *self, PyObject *args);
-
-    static PyObject* sLoadFile          (PyObject *self,PyObject *args);
-    static PyObject* sOpenDocument      (PyObject *self,PyObject *args, PyObject *kwd);
-    static PyObject* sSaveDocument      (PyObject *self,PyObject *args);
-    static PyObject* sSaveDocumentAs    (PyObject *self,PyObject *args);
-    static PyObject* sNewDocument       (PyObject *self,PyObject *args, PyObject *kwd);
-    static PyObject* sCloseDocument     (PyObject *self,PyObject *args);
-    static PyObject* sActiveDocument    (PyObject *self,PyObject *args);
-    static PyObject* sSetActiveDocument (PyObject *self,PyObject *args);
-    static PyObject* sGetDocument       (PyObject *self,PyObject *args);
-    static PyObject* sListDocuments     (PyObject *self,PyObject *args);
-    static PyObject* sAddDocObserver    (PyObject *self,PyObject *args);
-    static PyObject* sRemoveDocObserver (PyObject *self,PyObject *args);
-    static PyObject *sIsRestoring       (PyObject *self,PyObject *args);
-
-    static PyObject *sSetLogLevel       (PyObject *self,PyObject *args);
-    static PyObject *sGetLogLevel       (PyObject *self,PyObject *args);
-
-    static PyObject *sCheckLinkDepth    (PyObject *self,PyObject *args);
-    static PyObject *sGetLinksTo        (PyObject *self,PyObject *args);
-
-    static PyObject *sGetDependentObjects(PyObject *self,PyObject *args);
-
-    static PyObject *sSetActiveTransaction  (PyObject *self,PyObject *args);
-    static PyObject *sGetActiveTransaction  (PyObject *self,PyObject *args);
-    static PyObject *sCloseActiveTransaction(PyObject *self,PyObject *args);
-    static PyObject *sCheckAbort(PyObject *self,PyObject *args);
-    static PyMethodDef    Methods[];
-    // clang-format on
-
     friend class ApplicationObserver;
 
     /* Private Init, Destruct, and Access methods */
@@ -1040,6 +1011,7 @@ private:
         std::string filter;
         std::string module;
         std::vector<std::string> types;
+        bool translatable = false;
     };
 
     // open ending information
@@ -1088,6 +1060,3 @@ inline App::Application &GetApplication(){
 }
 
 } // namespace App
-
-
-#endif // SRC_APP_APPLICATION_H_

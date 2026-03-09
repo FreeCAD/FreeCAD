@@ -262,3 +262,19 @@ class depthTestCases(unittest.TestCase):
         d = PathUtils.depth_params(**args)
         r = [i for i in d]
         self.assertListEqual(r, expected, "Expected {}, but result of {}".format(expected, r))
+
+    def test_0_step_down_and_start_depth_equal_to_final_depth(self):
+        target_depth = 10
+
+        sut = PathUtils.depth_params(
+            clearance_height=target_depth + 10,
+            safe_height=target_depth + 5,
+            start_depth=target_depth,
+            step_down=0,
+            z_finish_step=0,
+            final_depth=target_depth,
+        )
+
+        self.assertListEqual(
+            sut.data, [target_depth], f"Expected [{target_depth}] but got {sut.data}"
+        )

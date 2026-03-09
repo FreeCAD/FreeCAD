@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef PART_PREVIEWEXTENSION_H
-#define PART_PREVIEWEXTENSION_H
+#pragma once
 
 #include "PropertyTopoShape.h"
 
@@ -108,5 +107,3 @@ public:
 using PreviewExtensionPython = App::ExtensionPythonT<PreviewExtensionPythonT<PreviewExtension>>;
 
 }  // namespace Part
-
-#endif  // PART_PREVIEWEXTENSION_H

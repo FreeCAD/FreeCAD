@@ -380,8 +380,8 @@
       <translation type="unfinished">Insert Columns</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <location filename="../../SheetTableView.cpp" line="679"/>
+      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <source>Clear Cells</source>
       <translation type="unfinished">Clear Cells</translation>
     </message>
@@ -678,8 +678,8 @@ nastavitve oblikovanja. Če še ne obstaja, bo lastnost ustvarjena.</translation
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Vse (*)</translation>
     </message>
@@ -1205,12 +1205,12 @@ Privzeto: %V = %A
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>New zoom level:</source>
       <translation>Nova povečava:</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>Zoom Level</source>
       <translation type="unfinished">Zoom Level</translation>
     </message>

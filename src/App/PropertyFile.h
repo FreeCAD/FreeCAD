@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTFILE_H
-#define APP_PROPERTFILE_H
+#pragma once
 
 #include <string>
 
@@ -149,5 +148,3 @@ private:
 
 
 }  // namespace App
-
-#endif  // APP_PROPERTFILE_H

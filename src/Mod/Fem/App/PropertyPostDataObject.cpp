@@ -185,7 +185,7 @@ PyObject* PropertyPostDataObject::getPyObject()
 #endif
 }
 
-void PropertyPostDataObject::setPyObject(PyObject* value)
+void PropertyPostDataObject::setPyObject([[maybe_unused]] PyObject* value)
 {
 #ifdef FC_USE_VTK_PYTHON
     vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(value, "vtkDataObject");

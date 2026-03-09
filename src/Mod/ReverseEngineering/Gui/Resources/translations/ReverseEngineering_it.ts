@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Approximates a cylinder</source>
-      <translation type="unfinished">Approximates a cylinder</translation>
+      <translation>Approssima un cilindro</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="143"/>
       <source>Approximates a plane</source>
-      <translation type="unfinished">Approximates a plane</translation>
+      <translation>Approssima un piano</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>Polynomial Surface</source>
-      <translation type="unfinished">Polynomial Surface</translation>
+      <translation>Superficie Polinomiale</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <source>Approximates a polynomial surface</source>
-      <translation type="unfinished">Approximates a polynomial surface</translation>
+      <translation>Approssima una superficie polinomiale</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Approximates a sphere</source>
-      <translation type="unfinished">Approximates a sphere</translation>
+      <translation>Approssima una sfera</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Approximate B-Spline Surface…</source>
-      <translation type="unfinished">Approximate B-Spline Surface…</translation>
+      <translation>Approssima superficie B-Spline…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Approximates a B-spline surface</source>
-      <translation type="unfinished">Approximates a B-spline surface</translation>
+      <translation>Approssima una superficie B-spline</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="532"/>
       <source>Wire From Mesh Boundary…</source>
-      <translation type="unfinished">Wire From Mesh Boundary…</translation>
+      <translation>Polilinea dai bordi della mesh…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Creates a wire from mesh boundaries</source>
-      <translation type="unfinished">Creates a wire from mesh boundaries</translation>
+      <translation>Crea una polilinea dai limiti delle mesh</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="598"/>
       <source>Performs Poisson surface reconstruction</source>
-      <translation type="unfinished">Performs Poisson surface reconstruction</translation>
+      <translation>Esegue la ricostruzione della superficie di Poisson</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="420"/>
       <source>Mesh Segmentation…</source>
-      <translation type="unfinished">Mesh Segmentation…</translation>
+      <translation>Segmentazione della mesh…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="421"/>
       <source>Creates separate mesh segments based on surface types</source>
-      <translation type="unfinished">Creates separate mesh segments based on surface types</translation>
+      <translation>Crea segmenti di maglie separati in base ai tipi di superficie</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="482"/>
       <source>From Components</source>
-      <translation type="unfinished">From Components</translation>
+      <translation>Da componenti</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="483"/>
       <source>Creates mesh segments from components</source>
-      <translation type="unfinished">Creates mesh segments from components</translation>
+      <translation>Crea segmenti di mesh dai componenti</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="452"/>
       <source>Manual Segmentation…</source>
-      <translation type="unfinished">Manual Segmentation…</translation>
+      <translation>Segmentazione manuale…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="453"/>
       <source>Creates mesh segments manually</source>
-      <translation type="unfinished">Creates mesh segments manually</translation>
+      <translation>Crea manualmente i segmenti di mesh</translation>
     </message>
   </context>
   <context>
@@ -191,17 +191,17 @@
     <message>
       <location filename="../../Command.cpp" line="634"/>
       <source>Structured Point Clouds</source>
-      <translation type="unfinished">Structured Point Clouds</translation>
+      <translation>Cloud di punti strutturata</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="635"/>
       <source>Triangulates structured point clouds</source>
-      <translation type="unfinished">Triangulates structured point clouds</translation>
+      <translation>Triangola cloud di punti strutturate</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="636"/>
       <source>Triangulation of structured point clouds</source>
-      <translation>Triangolazione delle nuvole di punti strutturati</translation>
+      <translation>Triangolazione dei cloud di punti strutturati</translation>
     </message>
   </context>
   <context>
@@ -270,17 +270,17 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="14"/>
       <source>Fit B-Spline Surface</source>
-      <translation type="unfinished">Fit B-Spline Surface</translation>
+      <translation>Adatta superficie B-Spline</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="20"/>
       <source>U-Direction</source>
-      <translation type="unfinished">U-Direction</translation>
+      <translation>Direzione U</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="87"/>
       <source>V-Direction</source>
-      <translation type="unfinished">V-Direction</translation>
+      <translation>Direzione V</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="154"/>
@@ -305,12 +305,12 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="231"/>
       <source>Create Placement</source>
-      <translation type="unfinished">Create Placement</translation>
+      <translation>Crea posizionamento</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="247"/>
       <source>Total weight</source>
-      <translation type="unfinished">Total weight</translation>
+      <translation>Peso totale</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="238"/>
@@ -349,7 +349,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="216"/>
       <source>Select a single placement object to get the local orientation.</source>
-      <translation type="unfinished">Select a single placement object to get the local orientation.</translation>
+      <translation>Selezionare un singolo oggetto di posizionamento per ottenere l'orientamento locale.</translation>
     </message>
   </context>
   <context>
@@ -397,17 +397,17 @@
     <message>
       <location filename="../../Command.cpp" line="82"/>
       <source>Select a point cloud.</source>
-      <translation type="unfinished">Select a point cloud.</translation>
+      <translation>Selezionare un cloud di punti.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Select a point cloud or mesh.</source>
-      <translation type="unfinished">Select a point cloud or mesh.</translation>
+      <translation>Selezionare un cloud di punti o una mesh.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="613"/>
       <source>Select a single point cloud.</source>
-      <translation type="unfinished">Select a single point cloud.</translation>
+      <translation>Selezionare un singolo cloud di punti.</translation>
     </message>
   </context>
   <context>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Segmentazione Mesh</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -491,12 +491,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="14"/>
       <source>Manual Mesh Segmentation</source>
-      <translation type="unfinished">Manual Mesh Segmentation</translation>
+      <translation>Segmentazione Mesh manuale</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="98"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>Scegli triangolo</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="105"/>
@@ -547,12 +547,12 @@
     <message>
       <location filename="../../SegmentationManual.ui" line="281"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>Opzioni regione</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="297"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Rispetta solo i triangoli con normali rivolte verso lo schermo</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="287"/>
@@ -596,7 +596,7 @@
     <message>
       <location filename="../../FitBSplineCurve.ui" line="14"/>
       <source>Fit B-Spline Curve</source>
-      <translation type="unfinished">Fit B-Spline Curve</translation>
+      <translation>Adatta curva B-Spline</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="20"/>
@@ -709,12 +709,12 @@
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Approximate B-Spline Curve…</source>
-      <translation type="unfinished">Approximate B-Spline Curve…</translation>
+      <translation>Curva B-Spline approssimativa…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Approximates a B-spline curve</source>
-      <translation type="unfinished">Approximates a B-spline curve</translation>
+      <translation>Approssima una curva B-spline</translation>
     </message>
   </context>
   <context>

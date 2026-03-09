@@ -41,6 +41,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -130,12 +131,11 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj.SplitInputWriter = False
         solver_obj.AnalysisType = "static"
-        solver_obj.GeometricalNonlinearity = "linear"
         solver_obj.ThermoMechSteadyState = False
         solver_obj.MatrixSolverType = "default"
         solver_obj.IterationsControlParameterTimeUse = False
-        solver_obj.GeometricalNonlinearity = "nonlinear"
-        solver_obj.MaterialNonlinearity = "nonlinear"
+        solver_obj.GeometricalNonlinearity = True
+        solver_obj.MaterialNonlinearity = True
     analysis.addObject(solver_obj)
 
     # linear material
@@ -151,7 +151,6 @@ def setup(doc=None, solvertype="ccxtools"):
     name_nlm = "Material_nonlin"
     nonlinear_mat = ObjectsFem.makeMaterialMechanicalNonlinear(doc, material_obj, name_nlm)
     nonlinear_mat.YieldPoints = ["240.0, 0.0", "270.0, 0.025"]
-    analysis.addObject(nonlinear_mat)
     # check solver attributes, Nonlinearity needs to be set to nonlinear
 
     # constraint fixed
@@ -169,13 +168,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # mesh
     from .meshes.mesh_platewithhole_tetra10 import create_nodes, create_elements
 
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
+    fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Shape = geom_obj

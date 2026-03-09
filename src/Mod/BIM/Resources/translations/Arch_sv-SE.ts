@@ -221,7 +221,7 @@ Examples of valid filters (everything is case-insensitive): Name:Wall - Will onl
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
       <translation>En valfri semikolonavgränsad (;) lista med filter för egenskap:värde. Lägg till ! till ett egenskapsnamn för att invertera effekten av filtret (utesluta objekt som matchar filtret). Objekt vars egenskap innehåller värdet kommer att matchas.
 
-Exempel på giltiga filter (allt är skiftlägesokänsligt): Name:Wall - Kommer endast att beakta objekt med "wall" i sitt namn (internt namn); !Name:Wall - Kommer endast att beakta objekt som INTE har "wall" i sitt namn (internt namn); Description:Win - Kommer endast att beakta objekt med "win" i sin beskrivning; !Label:Win - Kommer endast att beakta objekt som INTE har "win" i sin etikett; IfcType:Wall - Kommer endast att beakta objekt vars Ifc Type är "Wall"; !Tag:Wall - Kommer endast att beakta objekt vars tagg INTE är "Wall". Om du lämnar detta fält tomt tillämpas ingen filtrering
+Exempel på giltiga filter (allt är skiftlägesokänsligt): Name:Wall - Kommer endast att beakta objekt med "wall" i sitt namn (internt namn); !Name:Wall - Kommer endast att beakta objekt som INTE har "wall" i sitt namn (internt namn); Description:Win - Kommer endast att beakta objekt med "win" i sin beskrivning; !Label:Win - Kommer endast att beakta objekt som INTE har "win" i sin etikett; IfcType:Wall - Kommer endast att beakta objekt vars Ifc Type är "Wall"; !Tag:Wall - Kommer endast att beakta objekt vars tagg INTE är "vägg". Om du lämnar detta fält tomt tillämpas ingen filtrering
 
 När du hanterar inbyggda IFC-objekt kan du använda FreeCAD-egenskapsnamn, t.ex. 'Class:IfcWall' eller något annat IFC-attribut (t.ex. 'IsTypedBy:#455'). Om kolumnen "Objects" har ställts in på ett IFC-projekt eller -dokument, kommer alla IFC-enheter i det projektet att beaktas.</translation>
     </message>
@@ -410,11 +410,11 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Håll dig inloggad över FreeCAD-sessioner</translation>
     </message>
     <message>
+      <location filename="../ui/DialogDisplayText.ui" line="14"/>
+      <location filename="../ui/dialogExport.ui" line="14"/>
+      <location filename="../ui/dialogListWidget.ui" line="14"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
       <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/dialogExport.ui" line="14"/>
-      <location filename="../ui/DialogDisplayText.ui" line="14"/>
-      <location filename="../ui/dialogListWidget.ui" line="14"/>
       <source>Dialog</source>
       <translation>Dialog</translation>
     </message>
@@ -434,9 +434,9 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Endast valda objekt</translation>
     </message>
     <message>
+      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
-      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
       <translation>Endast synliga BIM-objekt</translation>
     </message>
@@ -456,9 +456,9 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Visa endast matchningar</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
       <location filename="../ui/dialogLayersIFC.ui" line="53"/>
+      <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
       <source>Select All</source>
       <translation>Välj alla</translation>
     </message>
@@ -473,8 +473,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>IFC Fastigheter</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <location filename="../ui/dialogIfcProperties.ui" line="182"/>
+      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <source>Delete Selected Property/Property Set</source>
       <translation>Ta bort vald fastighet/fastighetsuppsättning</translation>
     </message>
@@ -504,20 +504,20 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Tvinga fram export av fullständiga parametriska data från FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
+      <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <source>Order by</source>
       <translation>Sortera efter</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcElements.ui" line="47"/>
       <location filename="../ui/dialogIfcProperties.ui" line="58"/>
+      <location filename="../ui/dialogIfcElements.ui" line="47"/>
       <source>Alphabetical</source>
       <translation>Alfabetisk</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcElements.ui" line="56"/>
       <location filename="../ui/dialogIfcProperties.ui" line="68"/>
+      <location filename="../ui/dialogIfcElements.ui" line="56"/>
       <source>IFC type</source>
       <translation>IFC-typ</translation>
     </message>
@@ -527,8 +527,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcElements.ui" line="70"/>
       <location filename="../ui/dialogIfcProperties.ui" line="78"/>
+      <location filename="../ui/dialogIfcElements.ui" line="70"/>
       <source>Model structure</source>
       <translation>Modellens struktur</translation>
     </message>
@@ -568,8 +568,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Förhindrar ytterligare uppmaningar när du skapar nya FreeCAD-dokument. Nya dokument kommer inte att konverteras till IFC automatiskt, men konvertering är fortfarande möjlig senare via Utils → Skapa IFC-projekt.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
+      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <source>Do not ask again</source>
       <translation>Fråga inte igen</translation>
     </message>
@@ -744,9 +744,9 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Lägger till detta lager till ett IFC-projekt</translation>
     </message>
     <message>
-      <location filename="../ui/dialogProjectManager.ui" line="679"/>
-      <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogLayersIFC.ui" line="46"/>
+      <location filename="../ui/dialogPhases.ui" line="55"/>
+      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <source>Delete</source>
       <translation>Ta bort</translation>
     </message>
@@ -776,17 +776,17 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Tilldela</translation>
     </message>
     <message>
+      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <location filename="../ui/dialogProjectManager.ui" line="728"/>
       <location filename="../ui/dialogProjectManager.ui" line="731"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
       <translation>Avbryt</translation>
     </message>
     <message>
-      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <location filename="../ui/dialogPreflightResults.ui" line="103"/>
-      <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
+      <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
+      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
@@ -1185,8 +1185,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Nedan visas de faser som för närvarande är konfigurerade för denna modell</translation>
     </message>
     <message>
-      <location filename="../ui/dialogProjectManager.ui" line="665"/>
       <location filename="../ui/dialogPhases.ui" line="48"/>
+      <location filename="../ui/dialogProjectManager.ui" line="665"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
@@ -1292,10 +1292,10 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Rymdinformation</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <location filename="../ui/dialogProjectManager.ui" line="457"/>
       <location filename="../ui/dialogProjectManager.ui" line="480"/>
       <location filename="../ui/dialogProjectManager.ui" line="493"/>
-      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
       <translation>0</translation>
     </message>
@@ -1470,8 +1470,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Ett eller flera IFC-dokument som ingår i detta FreeCAD-dokument har ändrats, men inte sparats. De kommer automatiskt att sparas nu.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogImport.ui" line="162"/>
       <location filename="../ui/dialogExport.ui" line="30"/>
+      <location filename="../ui/dialogImport.ui" line="162"/>
       <source>Ask again next time</source>
       <translation>Fråga igen nästa gång</translation>
     </message>
@@ -1585,8 +1585,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Total tjocklek</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCustomProperties.ui" line="71"/>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
+      <location filename="../ui/dialogCustomProperties.ui" line="71"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
@@ -1719,8 +1719,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCustomProperties.ui" line="23"/>
       <location filename="../ui/ArchMultiMaterial.ui" line="37"/>
+      <location filename="../ui/dialogCustomProperties.ui" line="23"/>
       <source>Name</source>
       <translation>Namn</translation>
     </message>
@@ -1730,8 +1730,8 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Kan endast innehålla alfanumeriska tecken och inga mellanslag. Använd CamelCase-typning för att definiera mellanslag automatiskt</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <location filename="../ui/dialogWindows.ui" line="189"/>
+      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <source>Description</source>
       <translation>Beskrivning</translation>
     </message>
@@ -1811,11 +1811,6 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Online-läge</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="206"/>
-      <source>Open the search results inside FreeCAD's web browser instead of the system browser</source>
-      <translation>Öppna sökresultaten i FreeCAD:s webbläsare istället för i systemets webbläsare</translation>
-    </message>
-    <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
       <source>Library Browser</source>
       <translation>Biblioteksbläddrare</translation>
@@ -1841,42 +1836,37 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <translation>Gör att biblioteket kan hämtas online istället för att kräva lokal installation.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="209"/>
-      <source>Search using FreeCAD's web view</source>
-      <translation>Sök med hjälp av FreeCAD:s webbvy</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogLibrary.ui" line="216"/>
+      <location filename="../ui/dialogLibrary.ui" line="206"/>
       <source>Opens a 3D preview of the selected file</source>
       <translation>Öppnar en 3D-förhandsgranskning av den valda filen</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="219"/>
+      <location filename="../ui/dialogLibrary.ui" line="209"/>
       <source>Preview model in 3D view</source>
       <translation>Förhandsgranska modellen i 3D-vy</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="229"/>
+      <location filename="../ui/dialogLibrary.ui" line="219"/>
       <source>Show available alternative file formats for library items (STEP, IFC, etc...)</source>
       <translation>Visa tillgängliga alternativa filformat för biblioteksartiklar (STEP, IFC, etc...)</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="232"/>
+      <location filename="../ui/dialogLibrary.ui" line="222"/>
       <source>Display alternative formats</source>
       <translation>Visa alternativa format</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="239"/>
+      <location filename="../ui/dialogLibrary.ui" line="229"/>
       <source>Note: STEP and BREP files can be placed at custom location. FCStd and IFC files will be placed where objects are defined in the file.</source>
       <translation>Obs: STEP- och BREP-filer kan placeras på en anpassad plats. FCStd- och IFC-filer kommer att placeras där objekten definieras i filen.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="252"/>
+      <location filename="../ui/dialogLibrary.ui" line="242"/>
       <source>Save thumbnails</source>
       <translation>Spara miniatyrbilder</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="262"/>
+      <location filename="../ui/dialogLibrary.ui" line="252"/>
       <source>Save As…</source>
       <translation>Spara som…</translation>
     </message>
@@ -1978,7 +1968,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="276"/>
       <source>Do all common IFC types have the corresponding Property Set?</source>
-      <translation>Har alla vanliga IFC-typer motsvarande Property Set?</translation>
+      <translation>Har alla vanliga IFC-typer motsvarande egenskap Set?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="289"/>
@@ -2038,7 +2028,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry, it is better if they do. This will reduce chances of problems with other applications. In real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn the user if their geometry becomes unclean or not solid at some point. This test makes validates the solidity of the geometry.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Även om det inte är ett krav att IFC-objekten ska ha en helt ren och solid geometri är det bättre om de har det. Detta minskar risken för problem med andra applikationer. I verkliga livet har alla objekt solida former.&lt;/p&gt;&lt;p&gt;FreeCAD har många verktyg för att kontrollera geometrikvaliteten, och de flesta parametriska objekt, inklusive BIM-objekt, kommer vanligtvis att varna användaren om deras geometri blir oren eller inte solid vid någon tidpunkt. Detta test gör validerar geometriens soliditet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Även om det inte är ett krav att IFC-objekten ska ha en helt ren och solid geometri är det bättre om de har det. Detta minskar risken för problem med andra applikationer. I verkliga livet har alla objekt solida former.&lt;/p&gt;&lt;p&gt;FreeCAD har många verktyg för att kontrollera geometrikvaliteten, och de flesta parametriska objekt, inklusive BIM-objekt, kommer vanligtvis att varna användaren om deras geometri blir oren eller inte kropp vid någon tidpunkt. Detta test gör validerar geometriens soliditet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="217"/>
@@ -2078,7 +2068,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="322"/>
       <source>Do all standard Property Set contain the correct properties?</source>
-      <translation>Innehåller alla standard Property Set rätt egenskaper?</translation>
+      <translation>Innehåller alla standard egenskap Set rätt egenskaper?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="349"/>
@@ -2612,7 +2602,7 @@ p, li { blanksteg: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="276"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation>Om detta alternativ kryssas för, kommer platta grupper av ytor bli tvångsutplattade. Detta kan resultera i att geometri får hål eller inte längre är solid</translation>
+      <translation>Om detta alternativ kryssas för, kommer platta grupper av ytor bli tvångsutplattade. Detta kan resultera i att geometri får hål eller inte längre är kropp</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
@@ -2821,7 +2811,7 @@ ett visningsläge för fotavtryck</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="258"/>
       <source>Solid</source>
-      <translation>Solid</translation>
+      <translation>kropp</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="263"/>
@@ -2956,7 +2946,7 @@ ett visningsläge för fotavtryck</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="144"/>
       <source>Whether to join the different Arch::Wall together</source>
-      <translation>Huruvida de olika Arch::Wall ska sammanfogas</translation>
+      <translation>Huruvida de olika Arch::vägg ska sammanfogas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="147"/>
@@ -3270,7 +3260,7 @@ kommer de att behandlas som ett.</translation>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="361"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation>IFC-filer kan innehålla oren eller icke-solid geometri. Om detta alternativ är markerat importeras all geometri, oavsett hur giltig den är.</translation>
+      <translation>IFC-filer kan innehålla oren eller icke-kropp geometri. Om detta alternativ är markerat importeras all geometri, oavsett hur giltig den är.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="364"/>
@@ -3347,7 +3337,7 @@ placeras istället i en "Group".
     <message>
       <location filename="../ui/preferences-dae.ui" line="67"/>
       <source>Mesher</source>
-      <translation type="unfinished">Mesher</translation>
+      <translation>Nätgenerering</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="74"/>
@@ -3382,9 +3372,9 @@ Om du använder Netgen, se till att det är tillgängligt.</translation>
       <translation>Tessellering</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-webgl.ui" line="26"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <source>Export Options</source>
       <translation>Exportalternativ</translation>
     </message>
@@ -3835,8 +3825,8 @@ Standardmallen finns på följande plats:
       <translation>Förval</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="570"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
+      <location filename="../../ArchStructure.py" line="570"/>
       <location filename="../../ArchCommands.py" line="1332"/>
       <location filename="../../bimcommands/BimWall.py" line="341"/>
       <location filename="../../bimcommands/BimPanel.py" line="194"/>
@@ -3844,17 +3834,17 @@ Standardmallen finns på följande plats:
       <translation>Längd</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="584"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
+      <location filename="../../ArchStructure.py" line="584"/>
       <location filename="../../bimcommands/BimWall.py" line="348"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <source>Width</source>
       <translation>Bredd</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="591"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchRoof.py" line="1084"/>
+      <location filename="../../ArchStructure.py" line="591"/>
       <location filename="../../bimcommands/BimWall.py" line="355"/>
       <source>Height</source>
       <translation>Höjd</translation>
@@ -3878,7 +3868,7 @@ Standardmallen finns på följande plats:
       <location filename="../../ArchStructure.py" line="1170"/>
       <location filename="../../ArchWall.py" line="721"/>
       <source>This mesh is an invalid solid</source>
-      <translation>Detta nät är en ogiltig solid</translation>
+      <translation>Detta nät är en ogiltig kropp</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1289"/>
@@ -4118,8 +4108,8 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Välj ett basobjekt</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1143"/>
       <location filename="../../ArchRoof.py" line="1068"/>
+      <location filename="../../Arch.py" line="1143"/>
       <source>Roof</source>
       <translation>Tak</translation>
     </message>
@@ -4204,88 +4194,88 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Uppgradering</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="173"/>
+      <location filename="../../ArchReference.py" line="171"/>
       <source>Part not found in file</source>
       <translation>Del hittades inte i filen</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="195"/>
-      <location filename="../../ArchReference.py" line="240"/>
-      <location filename="../../ArchReference.py" line="436"/>
-      <location filename="../../ArchReference.py" line="874"/>
+      <location filename="../../ArchReference.py" line="198"/>
+      <location filename="../../ArchReference.py" line="243"/>
+      <location filename="../../ArchReference.py" line="443"/>
+      <location filename="../../ArchReference.py" line="885"/>
       <source>NativeIFC not available - unable to process IFC files</source>
       <translation>NativeIFC inte tillgängligt - kan inte behandla IFC-filer</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="293"/>
+      <location filename="../../ArchReference.py" line="296"/>
       <source>Error removing splitter</source>
       <translation>Fel vid borttagning av splitter</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="711"/>
+      <location filename="../../ArchReference.py" line="722"/>
       <source>Reload reference</source>
       <translation>Läs om referens</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchReference.py" line="728"/>
       <source>Open reference</source>
       <translation>Öppen referens</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="755"/>
+      <location filename="../../ArchReference.py" line="766"/>
       <source>Unable to get lightWeight node for object referenced in</source>
       <translation>Det går inte att hämta noden lightWeight för objektet som refereras till i</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="765"/>
-      <location filename="../../ArchReference.py" line="769"/>
+      <location filename="../../ArchReference.py" line="776"/>
+      <location filename="../../ArchReference.py" line="780"/>
       <source>Invalid lightWeight node for object referenced in</source>
       <translation>Ogiltig lightWeight-nod för objekt som refereras till i</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="781"/>
-      <location filename="../../ArchReference.py" line="813"/>
+      <location filename="../../ArchReference.py" line="792"/>
+      <location filename="../../ArchReference.py" line="824"/>
       <source>Invalid root node in</source>
       <translation>Ogiltig rotnod i</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="898"/>
+      <location filename="../../ArchReference.py" line="909"/>
       <source>External reference</source>
       <translation>Extern referens</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="900"/>
+      <location filename="../../ArchReference.py" line="911"/>
       <source>External file</source>
       <translation>Extern fil</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="904"/>
+      <location filename="../../ArchReference.py" line="915"/>
       <source>Open</source>
       <translation>Öppen</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="911"/>
+      <location filename="../../ArchReference.py" line="922"/>
       <source>Part to use:</source>
       <translation>Del att använda:</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="916"/>
+      <location filename="../../ArchReference.py" line="927"/>
       <source>Choose File</source>
       <translation>Välj en fil</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="927"/>
-      <location filename="../../ArchReference.py" line="990"/>
+      <location filename="../../ArchReference.py" line="938"/>
+      <location filename="../../ArchReference.py" line="1001"/>
       <source>None (Use whole object)</source>
       <translation>Ingen (använd hela objektet)</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="978"/>
+      <location filename="../../ArchReference.py" line="989"/>
       <source>Reference files</source>
       <translation>Referensfiler</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="980"/>
+      <location filename="../../ArchReference.py" line="991"/>
       <source>Choose reference file</source>
       <translation>Välj referensfil</translation>
     </message>
@@ -4475,37 +4465,37 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Om detta är markerat kommer fönstrets Offset-egenskapsvärde att läggas till det värde som anges här</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1739"/>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchComponent.py" line="2364"/>
       <location filename="../../ArchWindow.py" line="1642"/>
-      <location filename="../../ArchAxis.py" line="955"/>
       <location filename="../../ArchSpace.py" line="944"/>
+      <location filename="../../ArchAxis.py" line="955"/>
+      <location filename="../../ArchComponent.py" line="2384"/>
+      <location filename="../../ArchSectionPlane.py" line="1737"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
       <source>Remove</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="339"/>
-      <location filename="../../ArchComponent.py" line="2365"/>
       <location filename="../../ArchWindow.py" line="1643"/>
-      <location filename="../../ArchAxis.py" line="956"/>
       <location filename="../../ArchSpace.py" line="938"/>
+      <location filename="../../ArchAxis.py" line="956"/>
+      <location filename="../../ArchComponent.py" line="2385"/>
+      <location filename="../../ArchAxisSystem.py" line="339"/>
       <source>Add</source>
       <translation>Lägg till</translation>
     </message>
     <message>
-      <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchSectionPlane.py" line="1506"/>
-      <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchSite.py" line="1294"/>
-      <location filename="../../ArchReference.py" line="706"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchComponent.py" line="1895"/>
-      <location filename="../../ArchSchedule.py" line="766"/>
       <location filename="../../ArchWindow.py" line="1644"/>
+      <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchAxis.py" line="788"/>
       <location filename="../../ArchMaterial.py" line="470"/>
       <location filename="../../ArchMaterial.py" line="797"/>
+      <location filename="../../ArchSite.py" line="1294"/>
+      <location filename="../../ArchComponent.py" line="1915"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchSchedule.py" line="766"/>
       <source>Edit</source>
       <translation>Redigera</translation>
     </message>
@@ -4521,8 +4511,8 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Ledningar</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2372"/>
       <location filename="../../ArchWindow.py" line="1650"/>
+      <location filename="../../ArchComponent.py" line="2392"/>
       <source>Components</source>
       <translation>Komponenter</translation>
     </message>
@@ -4534,8 +4524,8 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Namn</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2440"/>
       <location filename="../../ArchWindow.py" line="1653"/>
+      <location filename="../../ArchComponent.py" line="2460"/>
       <location filename="../../ArchCommands.py" line="1701"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
@@ -4550,8 +4540,8 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Tjocklek</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../ArchWindow.py" line="1656"/>
+      <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../bimcommands/BimWall.py" line="371"/>
       <source>Offset</source>
       <translation>Förskjutning</translation>
@@ -4607,10 +4597,10 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Välj minst en axel</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="104"/>
-      <location filename="../../ArchAxisSystem.py" line="337"/>
-      <location filename="../../ArchComponent.py" line="2371"/>
       <location filename="../../ArchAxis.py" line="954"/>
+      <location filename="../../ArchComponent.py" line="2391"/>
+      <location filename="../../ArchAxisSystem.py" line="337"/>
+      <location filename="../../Arch.py" line="104"/>
       <source>Axes</source>
       <translation>Axlar</translation>
     </message>
@@ -4620,10 +4610,10 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Axis systemkomponenter</translation>
     </message>
     <message>
-      <location filename="../../importers/importWebGL.py" line="371"/>
-      <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="301"/>
       <location filename="../../importers/importOBJ.py" line="339"/>
+      <location filename="../../importers/importWebGL.py" line="371"/>
+      <location filename="../../importers/importJSON.py" line="62"/>
       <source>Successfully written</source>
       <translation>Framgångsrikt skrivet</translation>
     </message>
@@ -4713,16 +4703,16 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Skapa multi-material</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="533"/>
       <location filename="../../ArchMaterial.py" line="880"/>
       <location filename="../../ArchMaterial.py" line="906"/>
+      <location filename="../../Arch.py" line="533"/>
       <source>Material</source>
       <translation>Material</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="568"/>
       <source>MultiMaterial</source>
-      <translation type="unfinished">MultiMaterial</translation>
+      <translation>Flerdelasmaterial</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="94"/>
@@ -5200,18 +5190,18 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Objektet har inte inställbara IFC-attribut</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2441"/>
+      <location filename="../../ArchComponent.py" line="2461"/>
+      <location filename="../../ArchCommands.py" line="1702"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1014"/>
-      <location filename="../../ArchCommands.py" line="1702"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
       <translation>Värde</translation>
     </message>
     <message>
+      <location filename="../../ArchCommands.py" line="1703"/>
       <location filename="../../ArchSchedule.py" line="990"/>
       <location filename="../../ArchSchedule.py" line="1016"/>
-      <location filename="../../ArchCommands.py" line="1703"/>
       <source>Unit</source>
       <translation>Enhet</translation>
     </message>
@@ -5293,17 +5283,17 @@ Skapandet av våningen avbröts.</translation>
       <translation>Framgångsrikt importerad</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1100"/>
+      <location filename="../../ArchComponent.py" line="1120"/>
       <source>Error computing the shape of this object</source>
       <translation>Fel vid beräkning av formen på detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1126"/>
+      <location filename="../../ArchComponent.py" line="1146"/>
       <source>has no solid</source>
-      <translation>har ingen solid</translation>
+      <translation>har ingen kropp</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1135"/>
+      <location filename="../../ArchComponent.py" line="1155"/>
       <source>has an invalid shape</source>
       <translation>har en ogiltig form</translation>
     </message>
@@ -5314,144 +5304,144 @@ Skapandet av våningen avbröts.</translation>
       <location filename="../../ArchPrecast.py" line="605"/>
       <location filename="../../ArchPrecast.py" line="773"/>
       <location filename="../../ArchPrecast.py" line="894"/>
-      <location filename="../../ArchComponent.py" line="1139"/>
+      <location filename="../../ArchComponent.py" line="1159"/>
       <source>has a null shape</source>
       <translation>har en nollform</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1377"/>
+      <location filename="../../ArchComponent.py" line="1397"/>
       <source>Could not project face from {self.obj.Label}
 </source>
       <translation>Kunde inte projicera yta från {self.obj.Label}
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1390"/>
+      <location filename="../../ArchComponent.py" line="1410"/>
       <source>Could not determine if a face from {self.obj.Label} is vertical: normalAt() failed
 </source>
       <translation>Kunde inte avgöra om en yta från {self.obj.Label} är vertikal: normalAt() misslyckades
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1498"/>
+      <location filename="../../ArchComponent.py" line="1518"/>
       <source>Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
 </source>
       <translation>Fel vid beräkning av områden för {self.obj.Label}: det går inte att projicera eller skapa en yta med normal {face.normalAt(0, 0)}. Areavärdena kommer att återställas till 0.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2366"/>
+      <location filename="../../ArchComponent.py" line="2386"/>
       <source>Components of This Object</source>
       <translation>Komponenter i detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2376"/>
+      <location filename="../../ArchComponent.py" line="2396"/>
       <source>Edit IFC Properties</source>
       <translation>Redigera IFC-egenskaper</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2377"/>
+      <location filename="../../ArchComponent.py" line="2397"/>
       <source>Edit Standard Code</source>
       <translation>Redigera standardkod</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1276"/>
+      <location filename="../../ArchComponent.py" line="1296"/>
       <source>Wrong base type</source>
       <translation>Fel typ av bas</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1300"/>
-      <location filename="../../ArchComponent.py" line="1902"/>
+      <location filename="../../ArchComponent.py" line="1922"/>
       <source>Toggle Subcomponents</source>
       <translation>Växla underkomponenter</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2032"/>
+      <location filename="../../ArchComponent.py" line="2052"/>
       <source>Closing Sketch edit</source>
-      <translation>Avslutning Sketch edit</translation>
+      <translation>Avslutning skiss edit</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2363"/>
+      <location filename="../../ArchComponent.py" line="2383"/>
       <location filename="../../ArchCommands.py" line="287"/>
       <source>Component</source>
       <translation>Komponent</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2056"/>
+      <location filename="../../ArchComponent.py" line="2076"/>
       <source>Select a base object</source>
       <translation>Välj ett basobjekt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1478"/>
+      <location filename="../../ArchComponent.py" line="1498"/>
       <source>Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
 </source>
       <translation>Fel vid beräkning av ytor för {self.obj.Label}: det går inte att projicera icke-planära ytor med hål. Ytvärdena återställs till 0.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2367"/>
+      <location filename="../../ArchComponent.py" line="2387"/>
       <source>Base component</source>
       <translation>Baskomponent</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2368"/>
+      <location filename="../../ArchComponent.py" line="2388"/>
       <source>Additions</source>
       <translation>Tillägg</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2369"/>
+      <location filename="../../ArchComponent.py" line="2389"/>
       <source>Subtractions</source>
       <translation>Subtraktioner</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2370"/>
+      <location filename="../../ArchComponent.py" line="2390"/>
       <source>Objects</source>
       <translation>Objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2373"/>
+      <location filename="../../ArchComponent.py" line="2393"/>
       <source>Fixtures</source>
       <translation>Fixturer</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2374"/>
+      <location filename="../../ArchComponent.py" line="2394"/>
       <source>Group</source>
       <translation>Grupp</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2375"/>
+      <location filename="../../ArchComponent.py" line="2395"/>
       <source>Hosts</source>
       <translation>Värdar</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2439"/>
+      <location filename="../../ArchComponent.py" line="2459"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>Fastighet</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2447"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
       <source>Add property</source>
       <translation>Lägg till fastighet</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2451"/>
+      <location filename="../../ArchComponent.py" line="2471"/>
       <source>Add property set</source>
       <translation>Lägg till egenskapsset</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2452"/>
+      <location filename="../../ArchComponent.py" line="2472"/>
       <source>New...</source>
       <translation>Ny...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2603"/>
+      <location filename="../../ArchComponent.py" line="2623"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>Ny objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2640"/>
+      <location filename="../../ArchComponent.py" line="2660"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation>Nya fastigheter</translation>
@@ -5483,97 +5473,97 @@ Skapandet av våningen avbröts.</translation>
       <translation>Skapa sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1511"/>
+      <location filename="../../ArchSectionPlane.py" line="1509"/>
       <source>Toggle Cutview</source>
       <translation>Växla klippvy</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1732"/>
+      <location filename="../../ArchSectionPlane.py" line="1730"/>
       <source>Scope</source>
       <translation>Omfång</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1735"/>
+      <location filename="../../ArchSectionPlane.py" line="1733"/>
       <source>Placement and Visuals</source>
       <translation>Placering och synlighet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1738"/>
+      <location filename="../../ArchSectionPlane.py" line="1736"/>
       <source>Objects seen by this section plane</source>
       <translation>Objekt sedda av detta sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1744"/>
+      <location filename="../../ArchSectionPlane.py" line="1742"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Tar bort framhävda objekt från listan ovan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1745"/>
+      <location filename="../../ArchSectionPlane.py" line="1743"/>
       <source>Add Selected</source>
       <translation>Lägg till markerad</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1750"/>
+      <location filename="../../ArchSectionPlane.py" line="1748"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Lägger till valda objekt till omfånget för detta sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1751"/>
+      <location filename="../../ArchSectionPlane.py" line="1749"/>
       <source>Cut View</source>
       <translation>Snittvy</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1758"/>
+      <location filename="../../ArchSectionPlane.py" line="1756"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>Skapar ett live-snitt i 3D-vyn och döljer geometrin på ena sidan av planet så att du kan se inuti modellen</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1759"/>
+      <location filename="../../ArchSectionPlane.py" line="1757"/>
       <source>Rotate by 90°</source>
       <translation>Rotera 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1763"/>
+      <location filename="../../ArchSectionPlane.py" line="1761"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Roterar planet runt sin lokala X-axel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1767"/>
+      <location filename="../../ArchSectionPlane.py" line="1765"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Roterar planet runt sin lokala Y-axel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1771"/>
+      <location filename="../../ArchSectionPlane.py" line="1769"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Roterar planet runt sin lokala Z-axel</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1772"/>
+      <location filename="../../ArchSectionPlane.py" line="1770"/>
       <source>Resize to Fit</source>
       <translation>Storleksändra för att passa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1776"/>
       <source>Recenter Plane</source>
       <translation>Omcentrera plan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1760"/>
+      <location filename="../../ArchSectionPlane.py" line="1758"/>
       <source>Rotate X</source>
       <translation>Rotera X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1764"/>
+      <location filename="../../ArchSectionPlane.py" line="1762"/>
       <source>Rotate Y</source>
       <translation>Rotera Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1768"/>
+      <location filename="../../ArchSectionPlane.py" line="1766"/>
       <source>Rotate Z</source>
       <translation>Rotera Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1777"/>
+      <location filename="../../ArchSectionPlane.py" line="1775"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Ändra storlek på planet så att det passar objekten i listan ovan</translation>
     </message>
@@ -5583,7 +5573,7 @@ Skapandet av våningen avbröts.</translation>
       <translation>Centrera</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1783"/>
+      <location filename="../../ArchSectionPlane.py" line="1781"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centrerar planet på objekten i listan ovan</translation>
     </message>
@@ -5756,12 +5746,12 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="805"/>
       <source>contains a non-closed solid</source>
-      <translation>innehåller en osluten solid</translation>
+      <translation>innehåller en osluten kropp</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="809"/>
       <source>contains faces that are not part of any solid</source>
-      <translation>innehåller ytor som inte är en del av någon solid</translation>
+      <translation>innehåller ytor som inte är en del av någon kropp</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1323"/>
@@ -5842,7 +5832,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="176"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Dela nät</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="224"/>
@@ -5907,33 +5897,33 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Skapa 2D-vy</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1152"/>
+      <location filename="../../ArchBuildingPart.py" line="1155"/>
       <source>Active</source>
       <translation>Aktiv</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1163"/>
+      <location filename="../../ArchBuildingPart.py" line="1166"/>
       <source>Set Working Plane</source>
       <translation>Ställ in arbetsplanet</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1173"/>
+      <location filename="../../ArchBuildingPart.py" line="1176"/>
       <source>Write Camera Position</source>
       <translation>Skriva kameraposition</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1179"/>
+      <location filename="../../ArchBuildingPart.py" line="1182"/>
       <source>New Group</source>
       <translation>Ny prisgrupp</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <location filename="../../ArchMaterial.py" line="100"/>
+      <location filename="../../ArchBuildingPart.py" line="1186"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Ordna om barnen i alfabetisk ordning</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1187"/>
+      <location filename="../../ArchBuildingPart.py" line="1190"/>
       <source>Clone Level Up</source>
       <translation>Klona nivå upp</translation>
     </message>
@@ -5974,7 +5964,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="334"/>
       <source>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Skapar en struktur från grunden eller från ett utvalt objekt (skiss, tråd, yta eller solid)</translation>
+      <translation>Skapar en struktur från grunden eller från ett utvalt objekt (skiss, tråd, yta eller kropp)</translation>
     </message>
   </context>
   <context>
@@ -6044,14 +6034,14 @@ Skapandet av byggnaden avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="911"/>
-      <location filename="../../ArchWall.py" line="272"/>
       <location filename="../../ArchPanel.py" line="209"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Den normala extruderingsriktningen för detta objekt (behåll (0,0,0) för automatisk normal)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="919"/>
       <location filename="../../ArchPrecast.py" line="101"/>
+      <location filename="../../ArchStructure.py" line="919"/>
       <source>The structural nodes of this element</source>
       <translation>De strukturella noderna för detta element</translation>
     </message>
@@ -6124,28 +6114,28 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Om sant är elementet inriktat mot axlarna</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="195"/>
+      <location filename="../../ArchEquipment.py" line="103"/>
       <source>The model description of this equipment</source>
       <translation>Modellbeskrivning av denna utrustning</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="203"/>
+      <location filename="../../ArchEquipment.py" line="111"/>
       <source>The URL of the product page of this equipment</source>
       <translation>URL till produktsidan för den här utrustningen</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="211"/>
+      <location filename="../../ArchEquipment.py" line="119"/>
       <location filename="../../ArchMaterial.py" line="208"/>
       <source>A standard code (MasterFormat, OmniClass,…)</source>
       <translation>En standardkod (MasterFormat, OmniClass, ...)</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="219"/>
+      <location filename="../../ArchEquipment.py" line="127"/>
       <source>Additional snap points for this equipment</source>
       <translation>Ytterligare snäpp-punkter för denna utrustning</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="229"/>
+      <location filename="../../ArchEquipment.py" line="137"/>
       <source>The electric power needed by this equipment in Watts</source>
       <translation>Den elektriska effekt som behövs för denna utrustning i watt</translation>
     </message>
@@ -6157,203 +6147,203 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Typen av denna byggnad</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="229"/>
       <location filename="../../ArchFloor.py" line="236"/>
+      <location filename="../../ArchBuildingPart.py" line="230"/>
       <source>The height of this object</source>
       <translation>Höjden på detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="240"/>
+      <location filename="../../ArchBuildingPart.py" line="241"/>
       <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
       <translation>Om true, sprids höjdvärdet till ingående objekt om höjden på dessa objekt är satt till 0</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="249"/>
+      <location filename="../../ArchBuildingPart.py" line="250"/>
       <source>The level of the (0,0,0) point of this level</source>
       <translation>Nivån på (0,0,0) punkten för denna nivå</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="257"/>
       <location filename="../../ArchFloor.py" line="244"/>
+      <location filename="../../ArchBuildingPart.py" line="258"/>
       <source>The computed floor area of this floor</source>
       <translation>Den beräknade golvytan för denna våning</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="265"/>
       <location filename="../../ArchComponent.py" line="258"/>
+      <location filename="../../ArchBuildingPart.py" line="266"/>
       <source>An optional description for this component</source>
       <translation>En valfri beskrivning för denna komponent</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="273"/>
       <location filename="../../ArchComponent.py" line="266"/>
+      <location filename="../../ArchBuildingPart.py" line="274"/>
       <source>An optional tag for this component</source>
       <translation>En valfri tagg för denna komponent</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="281"/>
-      <location filename="../../ArchSectionPlane.py" line="957"/>
+      <location filename="../../ArchSectionPlane.py" line="958"/>
+      <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>Formen på detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="292"/>
+      <location filename="../../ArchBuildingPart.py" line="293"/>
       <source>This property stores an OpenInventor representation for this object</source>
       <translation>Den här egenskapen lagrar en OpenInventor-representation för det här objektet</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="304"/>
+      <location filename="../../ArchBuildingPart.py" line="305"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
       <translation>Om true, kommer endast fasta ämnen att samlas in av detta objekt när det refereras från andra filer</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="316"/>
+      <location filename="../../ArchBuildingPart.py" line="317"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
       <translation>En MaterialName:SolidIndexesList-karta som relaterar materialnamn med solidindex som ska användas när man refererar till detta objekt från andra filer</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="519"/>
-      <location filename="../../ArchSectionPlane.py" line="1129"/>
+      <location filename="../../ArchSectionPlane.py" line="1130"/>
+      <location filename="../../ArchBuildingPart.py" line="522"/>
       <source>The line width of this object</source>
       <translation>Linjebredden för detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="528"/>
+      <location filename="../../ArchBuildingPart.py" line="531"/>
       <source>An optional unit to express levels</source>
       <translation>En valfri enhet för att uttrycka nivåer</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="536"/>
+      <location filename="../../ArchBuildingPart.py" line="539"/>
       <source>A transformation to apply to the level mark</source>
       <translation>En transformation som ska tillämpas på nivåmarkeringen</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="547"/>
+      <location filename="../../ArchBuildingPart.py" line="550"/>
       <source>If true, show the level</source>
       <translation>Om sant, visa nivån</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="559"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Om det är sant, visa enheten på nivåtaggen</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="566"/>
+      <location filename="../../ArchBuildingPart.py" line="569"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Om true, kommer displayförskjutningen även att påverka ursprungsmärket</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="574"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, the object's label is displayed</source>
       <translation>Om true, visas objektets etikett</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="583"/>
+      <location filename="../../ArchBuildingPart.py" line="586"/>
       <source>The font to be used for texts</source>
       <translation>Det typsnitt som ska användas för texter</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="592"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>The font size of texts</source>
       <translation>Teckenstorlek för texter</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="603"/>
+      <location filename="../../ArchBuildingPart.py" line="606"/>
       <source>The individual face colors</source>
       <translation>De individuella ytfärgerna</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="616"/>
+      <location filename="../../ArchBuildingPart.py" line="619"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Om true, när den är aktiverad, kommer arbetsplanet automatiskt att anpassas till denna nivå</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="627"/>
+      <location filename="../../ArchBuildingPart.py" line="630"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Om den är inställd på True kommer arbetsplanet att hållas i Auto-läge</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="637"/>
+      <location filename="../../ArchBuildingPart.py" line="640"/>
       <source>Camera position data associated with this object</source>
       <translation>Kamerapositionsdata associerade med detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="649"/>
+      <location filename="../../ArchBuildingPart.py" line="652"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Om den är inställd kommer vyn som lagrats i detta objekt att återställas vid dubbelklick</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="659"/>
+      <location filename="../../ArchBuildingPart.py" line="662"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Om True, dubbelklickar du på detta objekt i trädet och aktiverar det</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="673"/>
+      <location filename="../../ArchBuildingPart.py" line="676"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Om detta är aktiverat sparas OpenInventor-representationen av detta objekt i FreeCAD-filen, vilket gör det möjligt att referera till det i andra filer i lättviktsläge.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="684"/>
+      <location filename="../../ArchBuildingPart.py" line="687"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation>En plats för att spara OpenInventor-representationen av detta objekt, om den är aktiverad</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="698"/>
+      <location filename="../../ArchBuildingPart.py" line="701"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Om sant, visa de objekt som ingår i denna byggnadsdel kommer att anta dessa inställningar för linje, färg och transparens</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="706"/>
+      <location filename="../../ArchBuildingPart.py" line="709"/>
       <source>The line width of child objects</source>
       <translation>Linjebredd för underordnade objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="715"/>
+      <location filename="../../ArchBuildingPart.py" line="718"/>
       <source>The line color of child objects</source>
       <translation>Linjefärg för underordnade objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="724"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>The shape appearance of child objects</source>
       <translation>Barnobjektens formutseende</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="733"/>
+      <location filename="../../ArchBuildingPart.py" line="736"/>
       <source>The transparency of child objects</source>
       <translation>Transparensen hos underordnade objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="744"/>
+      <location filename="../../ArchBuildingPart.py" line="747"/>
       <source>Cut the view above this level</source>
       <translation>Klipp ut vyn ovanför denna nivå</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="754"/>
+      <location filename="../../ArchBuildingPart.py" line="757"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Avståndet mellan nivåplanet och snittlinjen</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="763"/>
+      <location filename="../../ArchBuildingPart.py" line="766"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Slå på skärning när du aktiverar denna nivå</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="776"/>
+      <location filename="../../ArchBuildingPart.py" line="779"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>Fångstboxen för nyskapade objekt uttryckt som [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="784"/>
+      <location filename="../../ArchBuildingPart.py" line="787"/>
       <source>Turns auto group box on/off</source>
       <translation>Slår på/av automatisk gruppbox</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="792"/>
+      <location filename="../../ArchBuildingPart.py" line="795"/>
       <source>Automatically set size from contents</source>
       <translation>Ställ automatiskt in storlek utifrån innehåll</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="800"/>
+      <location filename="../../ArchBuildingPart.py" line="803"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>En marginal som ska användas när autosize är aktiverat</translation>
     </message>
@@ -6427,12 +6417,12 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchProfile.py" line="521"/>
       <source>T-nut slot width</source>
-      <translation type="unfinished">T-nut slot width</translation>
+      <translation>T-mutter spårbredd</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="528"/>
       <source>T-nut slot depth</source>
-      <translation type="unfinished">T-nut slot depth</translation>
+      <translation>T-mutter spårdjup</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="542"/>
@@ -6750,12 +6740,12 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Smälta samman objekt av samma material</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="595"/>
+      <location filename="../../ArchReference.py" line="606"/>
       <source>The latest time stamp of the linked file</source>
       <translation>Den senaste tidsstämpeln för den länkade filen</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="601"/>
+      <location filename="../../ArchReference.py" line="612"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Om true, kommer färgerna från den länkade filen att hållas uppdaterade</translation>
     </message>
@@ -6801,7 +6791,7 @@ Skapandet av byggnaden avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="144"/>
-      <location filename="../../ArchSketchObject.py" line="52"/>
+      <location filename="../../ArchSketchObject.py" line="54"/>
       <source>The objects that host this window</source>
       <translation>De objekt som är värd för detta fönster</translation>
     </message>
@@ -7175,7 +7165,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchStairs.py" line="532"/>
       <source>Selected edges of the base Sketch/ArchSketch, to use in creating the shape (flight) of this Arch Stairs (instead of using all the Base ArchSketch's edges by default).  Input are index numbers of edges.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Flight Axis) information, with getStairsBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Stairs' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Valda kanter på basskissen/ArchSketch, som ska användas för att skapa formen (flygningen) på denna bågtrappa (istället för att använda alla kanter på basskissen ArchSketch som standard).  Indata är indexnummer för kanter.  Inaktiverad och ignorerad om basobjektet (ArchSketch) tillhandahåller information om valda kanter (som flygaxel) med metoden getStairsBaseShapeEdgesInfo().  [FÖRBÄTTRING av ArchSketch] GUI 'Edit Stairs' Tool tillhandahålls i externt SketchArch Add-on för att låta användare (av)välja kanterna interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning : Inte "Toponaming-tolerant" om bara Sketch används.</translation>
+      <translation>Valda kanter på basskissen/ArchSketch, som ska användas för att skapa formen (flygningen) på denna bågtrappa (istället för att använda alla kanter på basskissen ArchSketch som standard).  Indata är indexnummer för kanter.  Inaktiverad och ignorerad om basobjektet (ArchSketch) tillhandahåller information om valda kanter (som flygaxel) med metoden getStairsBaseShapeEdgesInfo().  [FÖRBÄTTRING av ArchSketch] GUI 'Edit Stairs' Tool tillhandahålls i externt SketchArch Add-on för att låta användare (av)välja kanterna interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning : Inte "Toponaming-tolerant" om bara skiss används.</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="70"/>
@@ -7664,7 +7654,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchCurtainWall.py" line="350"/>
       <source>Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges.</source>
-      <translation>Input är indexnummer för kanterna på geometrierna Base ArchSketch/Sketch (i redigeringsläge).  Valda kanter används för att skapa formen på denna Arch Curtain Wall (istället för att använda alla kanter som standard).  [FÖRBÄTTRAD av ArchSketch] GUI-verktyget "Edit Curtain Wall" finns i det externa tillägget ("SketchArch") så att användaren kan välja kanter interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning : Inte "Toponaming-tolerant" om bara Sketch används. Egenskapen ignoreras om Base ArchSketch tillhandahåller de valda kanterna.</translation>
+      <translation>Input är indexnummer för kanterna på geometrierna Base ArchSketch/Sketch (i redigeringsläge).  Valda kanter används för att skapa formen på denna Arch Curtain Wall (istället för att använda alla kanter som standard).  [FÖRBÄTTRAD av ArchSketch] GUI-verktyget "Edit Curtain vägg" finns i det externa tillägget ("SketchArch") så att användaren kan välja kanter interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning : Inte "Toponaming-tolerant" om bara skiss används. Egenskapen ignoreras om Base ArchSketch tillhandahåller de valda kanterna.</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="85"/>
@@ -7772,8 +7762,8 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Om True, läggs ytterligare rader med varje enskilt objekt till i resultaten</translation>
     </message>
     <message>
+      <location filename="../../ArchSectionPlane.py" line="950"/>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="949"/>
       <source>The placement of this object</source>
       <translation>Placeringen av detta objekt</translation>
     </message>
@@ -7908,7 +7898,7 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>En valfri axel eller ett valfritt axelsystem på vilket detta objekt ska dupliceras</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1555"/>
+      <location filename="../../ArchComponent.py" line="1575"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Använd materialfärgen som formfärg för objektet, om den finns tillgänglig</translation>
     </message>
@@ -7988,80 +7978,80 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Formen på armeringsjärnet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="968"/>
+      <location filename="../../ArchSectionPlane.py" line="969"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>De objekt som måste beaktas av detta avsnitt plan. Tomt betyder hela dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="979"/>
+      <location filename="../../ArchSectionPlane.py" line="980"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Om den är felaktig kommer även icke-fasta ämnen att skäras bort, vilket kan leda till felaktiga resultat.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="991"/>
+      <location filename="../../ArchSectionPlane.py" line="992"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Om True, kommer resulterande vyer att klippas till sektionsplanets område.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1002"/>
+      <location filename="../../ArchSectionPlane.py" line="1003"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Om true, kommer färgen på objektets material att användas för att fylla utskurna områden.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1014"/>
+      <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Geometri längre bort än detta värde kommer att klippas bort. Håll noll för obegränsat.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1087"/>
+      <location filename="../../ArchSectionPlane.py" line="1088"/>
       <source>The display length of this section plane</source>
       <translation>Visningslängden för detta sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1099"/>
+      <location filename="../../ArchSectionPlane.py" line="1100"/>
       <source>The display height of this section plane</source>
       <translation>Visningshöjden för detta sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1111"/>
+      <location filename="../../ArchSectionPlane.py" line="1112"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Storleken på pilarna i detta sektionsplan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1120"/>
+      <location filename="../../ArchSectionPlane.py" line="1121"/>
       <source>The transparency of this object</source>
       <translation>Transparensen för detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1138"/>
-      <location filename="../../ArchSectionPlane.py" line="1155"/>
+      <location filename="../../ArchSectionPlane.py" line="1139"/>
+      <location filename="../../ArchSectionPlane.py" line="1156"/>
       <source>Show the cut in the 3D view</source>
       <translation>Visa snittet i 3D-vyn</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1146"/>
+      <location filename="../../ArchSectionPlane.py" line="1147"/>
       <source>The color of this object</source>
       <translation>Färgen på detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1166"/>
+      <location filename="../../ArchSectionPlane.py" line="1167"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Avståndet mellan snittplanet och det faktiska snittet (håll detta till ett mycket litet värde, men inte noll)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1175"/>
+      <location filename="../../ArchSectionPlane.py" line="1176"/>
       <source>Show the label in the 3D view</source>
       <translation>Visa etiketten i 3D-vyn</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1183"/>
       <location filename="../../ArchSpace.py" line="579"/>
+      <location filename="../../ArchSectionPlane.py" line="1184"/>
       <source>The name of the font</source>
       <translation>Namnet på teckensnittet</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1192"/>
       <location filename="../../ArchSpace.py" line="597"/>
+      <location filename="../../ArchSectionPlane.py" line="1193"/>
       <source>The size of the text font</source>
       <translation>Storleken på textens teckensnitt</translation>
     </message>
@@ -8183,7 +8173,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchWall.py" line="238"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
-      <translation>Höjden på denna vägg. Behåll 0 för automatisk. Används inte om väggen är baserad på en solid</translation>
+      <translation>Höjden på denna vägg. Behåll 0 för automatisk. Används inte om väggen är baserad på en kropp</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="248"/>
@@ -8208,17 +8198,17 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchWall.py" line="205"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Detta åsidosätter Width-attributet för att ange bredden på varje segment av väggen.  Inaktiveras och ignoreras om basobjektet (ArchSketch) tillhandahåller Widths-information med metoden getWidths() (om ett värde är noll kommer värdet för 'Width' att följas).  [FÖRBÄTTRING av ArchSketch] GUI 'Edit Wall Segment Width' Tool tillhandahålls i externt SketchArch Add-on för att låta användare ställa in värdena interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning : Inte "Toponaming-tolerant" om bara Sketch används.</translation>
+      <translation>Detta åsidosätter Width-attributet för att ange bredden på varje segment av väggen.  Inaktiveras och ignoreras om basobjektet (ArchSketch) tillhandahåller Widths-information med metoden getWidths() (om ett värde är noll kommer värdet för 'Width' att följas).  [FÖRBÄTTRING av ArchSketch] GUI 'Edit vägg Segment Width' Tool tillhandahålls i externt SketchArch Add-on för att låta användare ställa in värdena interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning : Inte "Toponaming-tolerant" om bara skiss används.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="216"/>
       <source>This overrides Align attribute to set align of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Detta åsidosätter Align-attributet för att ställa in align för varje segment av väggen.  Inaktiveras och ignoreras om basobjektet (ArchSketch) tillhandahåller Aligns-information med metoden getAligns() (om ett värde inte är 'Vänster, Höger, Mitt' kommer värdet för 'Align' att följas).  [FÖRBÄTTRING av ArchSketch] GUI-verktyget "Edit Wall Segment Align" finns i det externa SketchArch-tillägget så att användarna kan ställa in värdena interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning: Inte "Toponaming-tolerant" om bara Sketch används.</translation>
+      <translation>Detta åsidosätter Align-attributet för att ställa in align för varje segment av väggen.  Inaktiveras och ignoreras om basobjektet (ArchSketch) tillhandahåller Aligns-information med metoden getAligns() (om ett värde inte är 'Vänster, Höger, Mitt' kommer värdet för 'Align' att följas).  [FÖRBÄTTRING av ArchSketch] GUI-verktyget "Edit vägg Segment Align" finns i det externa SketchArch-tillägget så att användarna kan ställa in värdena interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning: Inte "Toponaming-tolerant" om bara skiss används.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="227"/>
       <source>This overrides Offset attribute to set offset of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. </source>
-      <translation>Detta åsidosätter Offset-attributet för att ställa in offset för varje väggsegment.  Inaktiveras och ignoreras om basobjektet (ArchSketch) tillhandahåller Offsets-information med metoden getOffsets() (om ett värde är noll kommer värdet på 'Offset' att följas).  [FÖRBÄTTRAD av ArchSketch] GUI 'Edit Wall Segment Offset' Tool tillhandahålls i externt tillägg ('SketchArch') för att låta användare välja kanterna interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och tillägget SketchArch är installerat).  Varning : Inte "Toponaming-tolerant" om bara Sketch används. Egenskapen ignoreras om Base ArchSketch tillhandahåller de valda kanterna. </translation>
+      <translation>Detta åsidosätter Offset-attributet för att ställa in offset för varje väggsegment.  Inaktiveras och ignoreras om basobjektet (ArchSketch) tillhandahåller Offsets-information med metoden getOffsets() (om ett värde är noll kommer värdet på 'Offset' att följas).  [FÖRBÄTTRAD av ArchSketch] GUI 'Edit vägg Segment Offset' Tool tillhandahålls i externt tillägg ('SketchArch') för att låta användare välja kanterna interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och tillägget SketchArch är installerat).  Varning : Inte "Toponaming-tolerant" om bara skiss används. Egenskapen ignoreras om Base ArchSketch tillhandahåller de valda kanterna. </translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
@@ -8273,7 +8263,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchWall.py" line="393"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Valda kanter (eller grupp av kanter) i basskissen/ArchSketch, som ska användas för att skapa formen på denna Arch Wall (istället för att använda alla kanter i basskissen/ArchSketch som standard).  Indata är indexnummer för kanter eller grupper.  Inaktiveras och ignoreras om basobjektet (ArchSketch) tillhandahåller information om valda kanter (som väggaxel) med metoden getWallBaseShapeEdgesInfo().  [FÖRBÄTTRING av ArchSketch] GUI-verktyget "Redigera väggsegment" finns i det externa SketchArch-tillägget för att låta användare (av)välja kanterna interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning : Inte "Toponaming-tolerant" om bara Sketch används.</translation>
+      <translation>Valda kanter (eller grupp av kanter) i basskissen/ArchSketch, som ska användas för att skapa formen på denna Arch vägg (istället för att använda alla kanter i basskissen/ArchSketch som standard).  Indata är indexnummer för kanter eller grupper.  Inaktiveras och ignoreras om basobjektet (ArchSketch) tillhandahåller information om valda kanter (som väggaxel) med metoden getWallBaseShapeEdgesInfo().  [FÖRBÄTTRING av ArchSketch] GUI-verktyget "Redigera väggsegment" finns i det externa SketchArch-tillägget för att låta användare (av)välja kanterna interaktivt.  "Toponaming-tolerant" om ArchSketch används i Base (och SketchArch Add-on är installerat).  Varning : Inte "Toponaming-tolerant" om bara skiss används.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="404"/>
@@ -8316,7 +8306,7 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1247"/>
+      <location filename="../../ArchBuildingPart.py" line="1250"/>
       <source>Writing camera position</source>
       <translation>Skriva kameraposition</translation>
     </message>
@@ -8341,7 +8331,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../InitGui.py" line="420"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>Utkast-snap</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="421"/>
@@ -8702,7 +8692,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="60"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Skapar ett panelobjekt från grunden eller från ett valt objekt (skiss, tråd, yta eller solid)</translation>
+      <translation>Skapar ett panelobjekt från grunden eller från ett valt objekt (skiss, tråd, yta eller kropp)</translation>
     </message>
   </context>
   <context>
@@ -8916,7 +8906,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="59"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
-      <translation>Skapar ett väggobjekt från grunden eller från ett valt objekt (tråd, yta eller solid)</translation>
+      <translation>Skapar ett väggobjekt från grunden eller från ett valt objekt (tråd, yta eller kropp)</translation>
     </message>
   </context>
   <context>
@@ -8950,7 +8940,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Dela nät</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="164"/>
@@ -9065,9 +9055,9 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchIFCView.py" line="73"/>
-      <location filename="../../ArchSite.py" line="1314"/>
       <location filename="../../ArchAxis.py" line="798"/>
+      <location filename="../../ArchSite.py" line="1314"/>
+      <location filename="../../ArchIFCView.py" line="73"/>
       <source>Transform</source>
       <translation>Omvandla</translation>
     </message>
@@ -9258,8 +9248,8 @@ CTRL+PgUp för att förlänga profilenCTRL+PgDown för att krympa profilenCTRL+/
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
       <source>Label</source>
       <translation>Etikett</translation>
     </message>
@@ -9275,8 +9265,8 @@ CTRL+PgUp för att förlänga profilenCTRL+PgDown för att krympa profilenCTRL+/
       <translation>Material</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <location filename="../../nativeifc/ifc_tools.py" line="60"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>IfcOpenShell hittades inte på det här systemet. IFC-stöd är inaktiverat</translation>
     </message>
@@ -9528,117 +9518,117 @@ CTRL+PgUp för att förlänga profilenCTRL+PgDown för att krympa profilenCTRL+/
       <translation>Skapa ledare</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="189"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="192"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="935"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="939"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="187"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="921"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="925"/>
       <source>Preview</source>
       <translation>Förhandsvisa</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="195"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="925"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="928"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="193"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="911"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="914"/>
       <source>Options</source>
       <translation>Alternativ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="349"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="347"/>
       <source>It is not possible to link because the main document is closed.</source>
       <translation>Det går inte att länka eftersom huvuddokumentet är stängt.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="309"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="307"/>
       <source>Save the working file before linking.</source>
       <translation>Spara arbetsfilen innan du länkar.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="502"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="500"/>
       <source>No structure in cache. Refresh required.</source>
       <translation>Ingen struktur i cacheminnet. Uppdatering krävs.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="570"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="562"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
       <translation>Det är inte möjligt att infoga detta objekt eftersom dokumentet har stängts.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="616"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="608"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
       <translation>Felmeddelande: Det går inte att importera SAT-filer - InventorLoader eller CadExchanger addon måste vara installerat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="642"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="634"/>
       <source>Error: Unable to download</source>
       <translation>Felmeddelande: Det går inte att ladda ner</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="683"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="675"/>
       <source>Insertion point</source>
       <translation>Insättningspunkt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="694"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="686"/>
       <source>Origin</source>
       <translation>Ursprung</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="695"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="687"/>
       <source>Top left</source>
       <translation>Överst vänster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="696"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="688"/>
       <source>Top center</source>
       <translation>Överst centrera</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="697"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="689"/>
       <source>Top right</source>
       <translation>Överst höger</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="698"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="690"/>
       <source>Middle left</source>
       <translation>I mitten, vänsterställt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="699"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="691"/>
       <source>Middle center</source>
       <translation>I mitten, centrerat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="700"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="692"/>
       <source>Middle right</source>
       <translation>I mitten, högerställt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="701"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="693"/>
       <source>Bottom left</source>
       <translation>Nedre vänster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="694"/>
       <source>Bottom center</source>
       <translation>Nedtill, centrerat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="695"/>
       <source>Bottom right</source>
       <translation>Nedre höger</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="809"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="801"/>
       <source>Could not fetch library contents</source>
       <translation>Kunde inte hämta bibliotekets innehåll</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="813"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="805"/>
       <source>No results fetched from online library</source>
       <translation>Inga resultat hämtade från online-bibliotek</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="871"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="863"/>
       <source>Warning, this can take several minutes!</source>
       <translation>Varning, detta kan ta flera minuter!</translation>
     </message>
@@ -9688,8 +9678,8 @@ CTRL+PgUp för att förlänga profilenCTRL+PgDown för att krympa profilenCTRL+/
       <translation>Ta bort oanvänd</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="96"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
+      <location filename="../../bimcommands/BimViews.py" line="96"/>
       <source>Rename</source>
       <translation>Byt namn</translation>
     </message>
@@ -9704,8 +9694,8 @@ CTRL+PgUp för att förlänga profilenCTRL+PgDown för att krympa profilenCTRL+/
       <translation>Sammanfoga till…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="92"/>
       <location filename="../../bimcommands/BimMaterial.py" line="181"/>
+      <location filename="../../bimcommands/BimViews.py" line="92"/>
       <source>Delete</source>
       <translation>Ta bort</translation>
     </message>
@@ -9844,7 +9834,7 @@ CTRL+PgUp för att förlänga profilenCTRL+PgDown för att krympa profilenCTRL+/
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="642"/>
       <source>The following BIM objects have an invalid or non-solid geometry:</source>
-      <translation>Följande BIM-objekt har en ogiltig eller icke-solid geometri:</translation>
+      <translation>Följande BIM-objekt har en ogiltig eller icke-kropp geometri:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="757"/>
@@ -9947,8 +9937,8 @@ CTRL+PgUp för att förlänga profilenCTRL+PgDown för att krympa profilenCTRL+/
       <translation>Mallen har lästs in i det aktuella dokumentet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <source>New Group</source>
       <translation>Ny prisgrupp</translation>
     </message>
@@ -10225,7 +10215,7 @@ CTRL+PgUp för att förlänga profilenCTRL+PgDown för att krympa profilenCTRL+/
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation>Lägg till standard IFC Property Set...</translation>
+      <translation>Lägg till standard IFC egenskap Set...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="140"/>
@@ -10578,7 +10568,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="38"/>
       <source>IFC Diff</source>
-      <translation type="unfinished">IFC Diff</translation>
+      <translation>IFC-jämförelse</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="41"/>
@@ -10607,8 +10597,8 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
       <translation>Tar bort alla objekt från papperskorgen som inte används av någon annan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
       <location filename="../../bimcommands/BimTrash.py" line="78"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
       <source>Empty Trash</source>
       <translation>Töm papperskorgen</translation>
     </message>
@@ -10809,7 +10799,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="257"/>
       <source>Nudge Shrink</source>
-      <translation type="unfinished">Nudge Shrink</translation>
+      <translation>Knuffa krympa</translation>
     </message>
   </context>
   <context>
@@ -10929,7 +10919,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="44"/>
       <source>Creates a slab from a planar shape</source>
-      <translation>Skapar en slab från en plan form</translation>
+      <translation>Skapar en platta från en plan form</translation>
     </message>
   </context>
   <context>
@@ -11072,7 +11062,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="54"/>
       <source>IFC Diff</source>
-      <translation type="unfinished">IFC Diff</translation>
+      <translation>IFC-jämförelse</translation>
     </message>
   </context>
   <context>
@@ -11085,7 +11075,7 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="77"/>
       <source>IFC Expand</source>
-      <translation type="unfinished">IFC Expand</translation>
+      <translation>IFC-expandera</translation>
     </message>
   </context>
   <context>

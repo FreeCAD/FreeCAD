@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_InformationOverlayCoinConverter_H
-#define SKETCHERGUI_InformationOverlayCoinConverter_H
+#pragma once
 
 #include <vector>
 
@@ -220,6 +219,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_InformationOverlayCoinConverter_H

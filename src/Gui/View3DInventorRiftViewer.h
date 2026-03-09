@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_View3DInventorRiftViewer_H
-#define GUI_View3DInventorRiftViewer_H
+#pragma once
 
 #if BUILD_VR
 
@@ -53,5 +52,3 @@ protected:
 }  // namespace Gui
 
 #endif  // BUILD_VR
-
-#endif  // GUI_View3DInventorRiftViewer_H

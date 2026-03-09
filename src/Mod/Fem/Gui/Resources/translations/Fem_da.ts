@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="292"/>
       <source>Contact Constraint</source>
-      <translation type="unfinished">Contact Constraint</translation>
+      <translation>Kontakt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="293"/>
       <source>Creates a contact constraint between faces</source>
-      <translation type="unfinished">Creates a contact constraint between faces</translation>
+      <translation>Fastholder kontakt mellem flader</translation>
     </message>
   </context>
   <context>
@@ -47,12 +47,12 @@
     <message>
       <location filename="../../Command.cpp" line="370"/>
       <source>Displacement Boundary Condition</source>
-      <translation type="unfinished">Displacement Boundary Condition</translation>
+      <translation>Fasthold til flade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="371"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a displacement boundary condition for a geometric entity</translation>
+      <translation>Opretter grænsebetingelse der kun tillader forskydning af en geometrisk enhed</translation>
     </message>
   </context>
   <context>
@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="424"/>
       <source>Fixed Boundary Condition</source>
-      <translation type="unfinished">Fixed Boundary Condition</translation>
+      <translation>Fiksering</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a fixed boundary condition for a geometric entity</translation>
+      <translation>Fikserer en geometrisk enhed til koordinatsystemet</translation>
     </message>
   </context>
   <context>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../Command.cpp" line="534"/>
       <source>Fluid Boundary Condition</source>
-      <translation type="unfinished">Fluid Boundary Condition</translation>
+      <translation>Fluid-grænsebetingelse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="535"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation type="unfinished">Create fluid boundary condition on face entity for Computional Fluid Dynamics</translation>
+      <translation>Opret en fluid-grænsebetingelse på flade til brug for Computional Fluid Dynamics</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="594"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation>Opretter en kraft som virker på en geometrisk enhed</translation>
+      <translation>Opretter en kraft som virker på en geometri</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="656"/>
       <source>Gear Constraint</source>
-      <translation type="unfinished">Gear Constraint</translation>
+      <translation>Tandhjulsforbindelse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="657"/>
       <source>Creates a gear constraint</source>
-      <translation type="unfinished">Creates a gear constraint</translation>
+      <translation>Opretter en relation svarende til en tandhjulsforbindelse</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="704"/>
       <source>Heat Flux Load</source>
-      <translation type="unfinished">Heat Flux Load</translation>
+      <translation>Varmeindstråling</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="705"/>
       <source>Creates a heat flux load acting on a face</source>
-      <translation type="unfinished">Creates a heat flux load acting on a face</translation>
+      <translation>Opretter en varmeindstråling, der virker på en flade</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="777"/>
       <source>Initial Temperature</source>
-      <translation type="unfinished">Initial Temperature</translation>
+      <translation>Starttemperatur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <source>Creates an initial temperature acting on a body</source>
-      <translation type="unfinished">Creates an initial temperature acting on a body</translation>
+      <translation>Opretter en starttemperatur for et emne</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="955"/>
       <source>Spring Boundary Condition</source>
-      <translation type="unfinished">Spring Boundary Condition</translation>
+      <translation>Fjederpåvirkning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="956"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation type="unfinished">Creates a spring boundary condition on a face</translation>
+      <translation>Opretter en fjederpåvirkning på en flade</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../Command.cpp" line="1067"/>
       <source>Temperature Boundary Condition</source>
-      <translation type="unfinished">Temperature Boundary Condition</translation>
+      <translation>Temperaturpåvirkning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1068"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
-      <translation type="unfinished">Creates a temperature/concentrated heat flux load acting on a face</translation>
+      <translation>Opretter en temperaturpåvirkning / koncentreret varmevirkning på en flade</translation>
     </message>
   </context>
   <context>
@@ -432,12 +432,12 @@
     <message>
       <location filename="../../Command.cpp" line="2614"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Filtrerfunktioner</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2615"/>
       <source>Functions for use in postprocessing filter</source>
-      <translation type="unfinished">Functions for use in postprocessing filter</translation>
+      <translation>Funktioner til brug i efterbehandlingsfilteret</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2813"/>
@@ -496,7 +496,7 @@
       <location filename="../../Command.cpp" line="2152"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
-      <translation type="unfinished">Total</translation>
+      <translation>Total</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2386"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../../Command.cpp" line="610"/>
       <source>Make force load on geometry</source>
-      <translation type="unfinished">Make force load on geometry</translation>
+      <translation>Opret kraftpåvirkning på geometri</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="672"/>
@@ -635,12 +635,12 @@
     <message>
       <location filename="../../Command.cpp" line="721"/>
       <source>Make heat flux load on face</source>
-      <translation type="unfinished">Make heat flux load on face</translation>
+      <translation>Opret en varmeindstråling på en flade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="794"/>
       <source>Make initial temperature condition on body</source>
-      <translation type="unfinished">Make initial temperature condition on body</translation>
+      <translation>Opret en starttemperatur for et emne</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="851"/>
@@ -650,7 +650,7 @@
     <message>
       <location filename="../../Command.cpp" line="908"/>
       <source>Make pressure load on face</source>
-      <translation type="unfinished">Make pressure load on face</translation>
+      <translation>Opret en trykbelastning på en flade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="972"/>
@@ -701,12 +701,12 @@
     <message>
       <location filename="../../Command.cpp" line="2061"/>
       <source>Create filter</source>
-      <translation type="unfinished">Create filter</translation>
+      <translation>Opret filter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2647"/>
       <source>Create function</source>
-      <translation type="unfinished">Create function</translation>
+      <translation>Opret funktion</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2967"/>
@@ -751,17 +751,17 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="77"/>
       <source>Not Marked</source>
-      <translation type="unfinished">Not Marked</translation>
+      <translation>Ikke markeret</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="82"/>
       <source>Marked</source>
-      <translation type="unfinished">Marked</translation>
+      <translation>Markeret</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="26"/>
       <source>Select the vertices, lines and surfaces</source>
-      <translation type="unfinished">Select the vertices, lines and surfaces</translation>
+      <translation>Vælg punkter, linjer og flader</translation>
     </message>
     <message>
       <location filename="../../TaskPanelConstraintTemperature.ui" line="39"/>
@@ -796,22 +796,22 @@
     <message>
       <location filename="../../Command.cpp" line="2815"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation type="unfinished">Create a plane function, defined by its origin and normal</translation>
+      <translation>Opret et plan, defineret ved et punkt på planen og dens normalvektor</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2825"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation type="unfinished">Create a sphere function, defined by its center and radius</translation>
+      <translation>Opret en kugle, defineret ved dens centrum og radius</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2835"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
-      <translation type="unfinished">Create a cylinder function, defined by its center, axis and radius</translation>
+      <translation>Opret en cylinder, defineret ved dens center, akse og radius</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2845"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation type="unfinished">Create a box function, defined by its center, length, width and height</translation>
+      <translation>Opret en kasse, defineret ved dens center, længde, bredde og højde</translation>
     </message>
   </context>
   <context>
@@ -871,7 +871,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="231"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>Kontroller mesh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="240"/>
@@ -946,12 +946,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="173"/>
       <source>Analysis Defaults</source>
-      <translation type="unfinished">Analysis Defaults</translation>
+      <translation>Standarder for analyser</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="257"/>
       <source>Solver Defaults</source>
-      <translation type="unfinished">Solver Defaults</translation>
+      <translation>Standarder for Løsningsværktøjer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="308"/>
@@ -1040,17 +1040,17 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="674"/>
       <source>Use binary format</source>
-      <translation type="unfinished">Use binary format</translation>
+      <translation>Brug binært format</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="703"/>
       <source>Analysis type (transient or steady state)</source>
-      <translation type="unfinished">Analysis type (transient or steady state)</translation>
+      <translation>Analysetype (transient eller statisk)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="710"/>
       <source>Use steady state</source>
-      <translation type="unfinished">Use steady state</translation>
+      <translation>Brug statisk analyse</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="388"/>
@@ -1070,17 +1070,17 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="764"/>
       <source>High frequency limit</source>
-      <translation type="unfinished">High frequency limit</translation>
+      <translation>Øvre frekvensgrænse</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="825"/>
       <source>Low frequency limit</source>
-      <translation type="unfinished">Low frequency limit</translation>
+      <translation>Nedre frekvensgrænse</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="155"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Programmet '%1' blev ikke fundet</translation>
     </message>
   </context>
   <context>
@@ -1099,7 +1099,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="75"/>
       <source>Leave blank to use default ElmerSolver binary file</source>
-      <translation type="unfinished">Leave blank to use default ElmerSolver binary file</translation>
+      <translation>Lad feltet stå tomt, for at bruge ElmerSolvers standard-programfiler</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="94"/>
@@ -1109,22 +1109,22 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
       <source>Number of tasks</source>
-      <translation type="unfinished">Number of tasks</translation>
+      <translation>Antal opgaver</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
       <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
-      <translation type="unfinished">Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</translation>
+      <translation>Antal parallelle beregninger. Sæt til `1` hvis Elmer ikke bruger MPI.&lt;br&gt;Brug et lige antal kerner for at drage fordel af mesh-symmetrier&lt;br&gt;(Brug af 8 kerner kan være hurtigere end 9 kerner).&lt;br&gt;I ekstreme tilfælde kan Elmer-løsnigen måske ikke konvergere, hvis antallet af kerner er for højt.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
       <source>Threads per task</source>
-      <translation type="unfinished">Threads per task</translation>
+      <translation>Tråde pr. opgave</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="185"/>
       <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
-      <translation type="unfinished">Number of threads per task. Take effect if Elmer uses OpenMP.</translation>
+      <translation>Antal tråde pr. opgave. Anvendes kun hvis Elmer bruger OpenMP.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="206"/>
@@ -1154,7 +1154,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="125"/>
       <source>Leave blank to use default ElmerGrid binary file</source>
-      <translation type="unfinished">Leave blank to use default ElmerGrid binary file</translation>
+      <translation>Lad feltet stå tomt, for at bruge ElmerGrid's standard-programfiler</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="29"/>
@@ -1169,7 +1169,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="96"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Programmet '%1' blev ikke fundet</translation>
     </message>
   </context>
   <context>
@@ -1197,12 +1197,13 @@ Highest: Only the highest elements will be exported. This means volumes for a vo
 
 FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
-      <translation type="unfinished">All: All elements will be exported.
+      <translation>Alle: Alle elementer bliver eksporteret.
 
-Highest: Only the highest elements will be exported. This means volumes for a volume mesh and faces for a shell mesh.
+Højeste: Kun de højest rangerende elementer bliver eksporteret. Det betyder 
+volumener for et volumetrisk mesh og flader for et overflade mesh.
 
-FEM: Only FEM elements will be exported. This means only edges
-not belonging to faces and faces not belonging to volumes.</translation>
+FEM: Kun FEM elementer bliver eksporteret. Det betyder kanter
+der ikke er knyttet til flader, og flader der ikke er knytte til volumener.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="46"/>
@@ -1228,7 +1229,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="61"/>
       <source>Highest</source>
-      <translation type="unfinished">Highest</translation>
+      <translation>Højeste</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="66"/>
@@ -1291,17 +1292,17 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="268"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
       <source>Working Directory for Solving Analysis and Gmsh Meshing</source>
-      <translation type="unfinished">Working Directory for Solving Analysis and Gmsh Meshing</translation>
+      <translation>Arbejdsmappe til løsning af analyser og Gmsh Meshing</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="187"/>
       <source>Path</source>
-      <translation type="unfinished">Path</translation>
+      <translation>Sti</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="279"/>
@@ -1341,30 +1342,30 @@ with the last used dialog settings</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation type="unfinished">All analysis features are hidden in the model view
-when the results dialog is opened</translation>
+      <translation>Alle analysefunktioner i modelvisningen bliver skjult
+når dialogen med resultater åbnes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
       <source>Hide analysis features when opening result dialog</source>
-      <translation type="unfinished">Hide analysis features when opening result dialog</translation>
+      <translation>Skjul analysefunktioner når resultatvisningen åbnes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
       <source>Defaults</source>
-      <translation type="unfinished">Defaults</translation>
+      <translation>Standardindstillinger</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
       <source>Default solver</source>
-      <translation type="unfinished">Default solver</translation>
+      <translation>Standard løsningsværktøj</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation type="unfinished">Default solver to be added when
-adding an analysis container</translation>
+      <translation>Standard løsningsværktøj som tilføjes, 
+når der tilføjes en analysebeholder</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="414"/>
@@ -1388,7 +1389,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="64"/>
       <source>Leave blank to use default Gmsh binary file</source>
-      <translation type="unfinished">Leave blank to use default Gmsh binary file</translation>
+      <translation>Lad feltet stå tomt, for at bruge Gmsh's standard-programfiler</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="89"/>
@@ -1423,7 +1424,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="90"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Programmet '%1' blev ikke fundet</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="97"/>
@@ -1558,7 +1559,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="80"/>
       <source>Leave blank to use default mystran binary file</source>
-      <translation type="unfinished">Leave blank to use default mystran binary file</translation>
+      <translation>Lad feltet stå tomt, for at bruge mystrans standard-programfiler</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystran.ui" line="93"/>
@@ -1573,7 +1574,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="78"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Programmet '%1' blev ikke fundet</translation>
     </message>
   </context>
   <context>
@@ -1597,7 +1598,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="83"/>
       <source>Leave blank to use default z88r binary file</source>
-      <translation type="unfinished">Leave blank to use default z88r binary file</translation>
+      <translation>Lad feltet stå tomt, for at bruge z88's standard-programfiler</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="110"/>
@@ -1670,7 +1671,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="106"/>
       <source>Executable '%1' not found</source>
-      <translation type="unfinished">Executable '%1' not found</translation>
+      <translation>Programmet '%1' blev ikke fundet</translation>
     </message>
   </context>
   <context>
@@ -1812,12 +1813,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="69"/>
       <source>Edit FEM mesh</source>
-      <translation type="unfinished">Edit FEM mesh</translation>
+      <translation>Rediger FEM mesh</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="100"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Fejl ved oprettelse af mesh</translation>
     </message>
   </context>
   <context>
@@ -1841,7 +1842,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="56"/>
       <source>Analysis Feature Properties</source>
-      <translation type="unfinished">Analysis Feature Properties</translation>
+      <translation>Egenskaber for analysefunktioner</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="182"/>
@@ -1889,7 +1890,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="216"/>
       <source>Only linear edges can be picked</source>
-      <translation type="unfinished">Only linear edges can be picked</translation>
+      <translation>Der må kun vælges retlinjede kanter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="225"/>
@@ -1948,7 +1949,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="143"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
       <source>click Add or Remove</source>
-      <translation type="unfinished">click Add or Remove</translation>
+      <translation>klik på Tilføj eller Fjern</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
@@ -1987,13 +1988,13 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="375"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="396"/>
       <source>Only faces can be picked (edges in 2D models)</source>
-      <translation type="unfinished">Only faces can be picked (edges in 2D models)</translation>
+      <translation>Der må kun vælges flader (konturlinjer i 2D modeller)</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
@@ -2011,7 +2012,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="158"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="158"/>
@@ -2043,12 +2044,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="256"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="295"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Kun én type af valg (punkt, flade eller kant) er tilladt pr. analysefunktion!</translation>
     </message>
   </context>
   <context>
@@ -2056,7 +2057,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="87"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="87"/>
@@ -2088,12 +2089,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="131"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="167"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Kun én type af valg (punkt, flade eller kant) er tilladt pr. analysefunktion!</translation>
     </message>
   </context>
   <context>
@@ -2106,12 +2107,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="346"/>
       <source>Turbulence</source>
-      <translation type="unfinished">Turbulence</translation>
+      <translation>Turbulens</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="347"/>
       <source>Thermal</source>
-      <translation type="unfinished">Thermal</translation>
+      <translation>Termisk</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="349"/>
@@ -2121,7 +2122,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="390"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="390"/>
@@ -2151,13 +2152,13 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="537"/>
       <source>Hydraulic Diameter [m]</source>
-      <translation type="unfinished">Hydraulic Diameter [m]</translation>
+      <translation>Hydraulisk diameter [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="566"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="571"/>
       <source>Gradient [K/m]</source>
-      <translation type="unfinished">Gradient [K/m]</translation>
+      <translation>Gradient [K/m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="575"/>
@@ -2191,7 +2192,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="676"/>
       <source>Only one planar face or edge can be selected!</source>
-      <translation type="unfinished">Only one planar face or edge can be selected!</translation>
+      <translation>Kun én plan flade eller kant kan vælges!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="694"/>
@@ -2206,7 +2207,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="713"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
-      <translation type="unfinished">Only faces for 3D part or edges for 2D can be picked</translation>
+      <translation>Der kan kun flader på 3D-komponenter, eller konturlinjer i 2D</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
@@ -2228,17 +2229,17 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="905"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Kun én type af valg (punkt, flade eller kant) er tilladt pr. analysefunktion!</translation>
     </message>
   </context>
   <context>
@@ -2246,7 +2247,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="92"/>
@@ -2273,17 +2274,17 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="134"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="180"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Kun én type af valg (punkt, flade eller kant) er tilladt pr. analysefunktion!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
@@ -2314,12 +2315,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="166"/>
       <source>Only linear edges can be picked</source>
-      <translation type="unfinished">Only linear edges can be picked</translation>
+      <translation>Der må kun vælges retlinjede kanter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="175"/>
       <source>Only faces and edges can be picked</source>
-      <translation>Kun flader og kanter kan vælges</translation>
+      <translation>Der må kun vælges flader og kanter</translation>
     </message>
   </context>
   <context>
@@ -2327,7 +2328,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="156"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="156"/>
@@ -2355,18 +2356,18 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="300"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="312"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="381"/>
       <source>Selection must only consist of faces! (edges in 2D models)</source>
-      <translation type="unfinished">Selection must only consist of faces! (edges in 2D models)</translation>
+      <translation>Valget må kun bestå af flader! (konturlinjer i 2D modeller)</translation>
     </message>
   </context>
   <context>
@@ -2374,7 +2375,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="98"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Vælg en enkelt geometri af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="98"/>
@@ -2410,12 +2411,12 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="150"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="159"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
@@ -2433,7 +2434,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="75"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="75"/>
@@ -2460,17 +2461,17 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="146"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="158"/>
       <source>Only faces (edges in 2D models) can be picked</source>
-      <translation type="unfinished">Only faces (edges in 2D models) can be picked</translation>
+      <translation>Der må kun vælges flader (konturlinjer i 2D modeller)</translation>
     </message>
   </context>
   <context>
@@ -2491,7 +2492,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
@@ -2518,12 +2519,12 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="151"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
@@ -2536,7 +2537,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
@@ -2562,12 +2563,12 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="216"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
   </context>
   <context>
@@ -2607,7 +2608,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="350"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
@@ -2623,12 +2624,12 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
       <source>Select single geometry of type: </source>
-      <translation type="unfinished">Select single geometry of type: </translation>
+      <translation>Vælg en enkelt geometri af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
@@ -2699,12 +2700,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="69"/>
       <source>Meshing failure</source>
-      <translation type="unfinished">Meshing failure</translation>
+      <translation>Fejl ved oprettelse af mesh</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="70"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation type="unfinished">The FEM module is built without NETGEN support. Meshing will not work!!!</translation>
+      <translation>FEM modulet er kompileret uden NETGEN support. Oprettelse af mesh vil ikke virke!!!</translation>
     </message>
   </context>
   <context>
@@ -2717,12 +2718,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="29"/>
       <source>Basic Properties</source>
-      <translation type="unfinished">Basic Properties</translation>
+      <translation>Grundlæggende egenskaber</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM Material</source>
-      <translation type="unfinished">FEM Material</translation>
+      <translation>FEM materiale</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
@@ -2742,27 +2743,27 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
       <source>Poisson ratio</source>
-      <translation type="unfinished">Poisson ratio</translation>
+      <translation>Poissons forhold</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="263"/>
       <source>Thermal conductivity</source>
-      <translation type="unfinished">Thermal conductivity</translation>
+      <translation>Varmeledningsevne</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="303"/>
       <source>Expansion coefficient</source>
-      <translation type="unfinished">Expansion coefficient</translation>
+      <translation>Udvidelseskoefficient</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="343"/>
       <source>Reference temperature</source>
-      <translation type="unfinished">Reference temperature</translation>
+      <translation>Referencetemperatur</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="386"/>
       <source>Specific heat capacity</source>
-      <translation type="unfinished">Specific heat capacity</translation>
+      <translation>Specifik varmekapacitet</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="190"/>
@@ -2772,7 +2773,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="201"/>
       <source>Kinematic viscosity</source>
-      <translation type="unfinished">Kinematic viscosity</translation>
+      <translation>Kinematisk viskositet</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="252"/>
@@ -2782,7 +2783,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="346"/>
       <source>Reference temperature for thermal expansion</source>
-      <translation type="unfinished">Reference temperature for thermal expansion</translation>
+      <translation>Referencetemperatur for termisk udvidelse</translation>
     </message>
   </context>
   <context>
@@ -2806,7 +2807,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="568"/>
       <location filename="../ui/ElementFluid1D.ui" line="724"/>
       <source>0 mm^2</source>
-      <translation type="unfinished">0 mm^2</translation>
+      <translation>0 mm^2</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="45"/>
@@ -2856,17 +2857,17 @@ that "MAXKOI" needs to be increased.</translation>
       <translation type="unfinished">Inlet Pressure</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
-      <translation type="unfinished">Pressure</translation>
+      <translation>Tryk</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="245"/>
       <location filename="../ui/ElementFluid1D.ui" line="315"/>
       <source>0 MPa</source>
-      <translation type="unfinished">0 MPa</translation>
+      <translation>0 MPa</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="260"/>
@@ -2883,7 +2884,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="278"/>
       <location filename="../ui/ElementFluid1D.ui" line="348"/>
       <source>0 kg/s</source>
-      <translation type="unfinished">0 kg/s</translation>
+      <translation>0 kg/s</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="297"/>
@@ -2980,7 +2981,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
       <source>0 mm</source>
-      <translation type="unfinished">0 mm</translation>
+      <translation>0 mm</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="47"/>
@@ -2990,10 +2991,10 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parameter</translation>
     </message>
@@ -3010,7 +3011,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="41"/>
       <source>1/s</source>
-      <translation type="unfinished">1/s</translation>
+      <translation>1/s</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="14"/>
@@ -3025,22 +3026,22 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="26"/>
       <source>Boundary condition</source>
-      <translation type="unfinished">Boundary condition</translation>
+      <translation>Grænsebetingelse</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="50"/>
       <source>Potential</source>
-      <translation type="unfinished">Potential</translation>
+      <translation>Potentiale</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="60"/>
       <source>Electric potential</source>
-      <translation type="unfinished">Electric potential</translation>
+      <translation>Elektrisk potentiale</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="84"/>
       <source>Electromagnetic potential</source>
-      <translation type="unfinished">Electromagnetic potential</translation>
+      <translation>Elektromagnetisk potentiale</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="100"/>
@@ -3159,23 +3160,23 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
-      <translation type="unfinished">Real</translation>
+      <translation>Reel</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
-      <translation type="unfinished">Imaginary</translation>
+      <translation>Imaginær</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="133"/>
       <source>Scalar</source>
-      <translation type="unfinished">Scalar</translation>
+      <translation>Skalar</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="172"/>
@@ -3195,7 +3196,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="61"/>
       <source>0 degree</source>
-      <translation type="unfinished">0 degree</translation>
+      <translation>0 grader</translation>
     </message>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
@@ -3261,8 +3262,8 @@ Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
@@ -3280,12 +3281,12 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="104"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Diameter</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="141"/>
       <source>Outer diameter</source>
-      <translation type="unfinished">Outer diameter</translation>
+      <translation>Yderdiameter</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
@@ -3331,7 +3332,7 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>Formel</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
@@ -3341,25 +3342,25 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
-      <translation type="unfinished">Unspecified</translation>
+      <translation>Uspecificeret</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
-      <translation type="unfinished">Velocity X</translation>
+      <translation>Hastighed X</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
-      <translation type="unfinished">Velocity Y</translation>
+      <translation>Hastighed Y</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
-      <translation type="unfinished">Velocity Z</translation>
+      <translation>Hastighed Z</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
@@ -3368,15 +3369,15 @@ Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
-      <translation type="unfinished">Analysis Feature Properties</translation>
+      <translation>Egenskaber for analysefunktioner</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
@@ -3471,8 +3472,8 @@ with harmonic/oscillating driving current</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3488,8 +3489,8 @@ with harmonic/oscillating driving current</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3505,8 +3506,8 @@ with harmonic/oscillating driving current</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3546,10 +3547,10 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Maximum element size</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Geometri</translation>
     </message>
@@ -3560,8 +3561,8 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Field</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <source>Frames</source>
       <translation type="unfinished">Frames</translation>
     </message>
@@ -3633,7 +3634,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="198"/>
       <source>Gmsh Version</source>
-      <translation type="unfinished">Gmsh Version</translation>
+      <translation>Gmsh version</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="57"/>
@@ -3644,7 +3645,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="144"/>
       <source>Gmsh</source>
-      <translation type="unfinished">Gmsh</translation>
+      <translation>Gmsh</translation>
     </message>
   </context>
   <context>
@@ -3683,12 +3684,12 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>No active Analysis</source>
-      <translation type="unfinished">No active Analysis</translation>
+      <translation>Ingen aktiv analyse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="77"/>
       <source>You need to create or activate a Analysis</source>
-      <translation type="unfinished">You need to create or activate a Analysis</translation>
+      <translation>Du skal oprette eller aktivere en analyse</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="312"/>
@@ -3705,7 +3706,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="54"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Oprettelse af mesh</translation>
     </message>
     <message>
       <location filename="../../AppFemGui.cpp" line="185"/>
@@ -3731,27 +3732,27 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="116"/>
       <source>Edges</source>
-      <translation type="unfinished">Edges</translation>
+      <translation>Kanter</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="117"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="118"/>
       <source>Polygons</source>
-      <translation type="unfinished">Polygons</translation>
+      <translation>Polygoner</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="119"/>
       <source>Volumes</source>
-      <translation type="unfinished">Volumes</translation>
+      <translation>Volumener</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="120"/>
       <source>Polyhedrons</source>
-      <translation type="unfinished">Polyhedrons</translation>
+      <translation>Polyedere</translation>
     </message>
     <message>
       <location filename="../../PropertyFemMeshItem.cpp" line="121"/>
@@ -3759,14 +3760,14 @@ with harmonic/oscillating driving current</translation>
       <translation>Grupper</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="316"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="320"/>
       <source>Are you sure you want to continue?</source>
       <translation>Sikker på, at du vil fortsætte?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="157"/>
       <source>Edit Analysis Feature</source>
-      <translation type="unfinished">Edit Analysis Feature</translation>
+      <translation>Rediger analysefunktion</translation>
     </message>
   </context>
   <context>
@@ -3784,17 +3785,17 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="76"/>
       <source>Displacement X</source>
-      <translation type="unfinished">Displacement X</translation>
+      <translation>Forskydning X</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="96"/>
       <source>Displacement Y</source>
-      <translation type="unfinished">Displacement Y</translation>
+      <translation>Forskydning Y</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="116"/>
       <source>Displacement Z</source>
-      <translation type="unfinished">Displacement Z</translation>
+      <translation>Forskydning Z</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="156"/>
@@ -3804,7 +3805,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="229"/>
       <source>Displacement Scaling</source>
-      <translation type="unfinished">Displacement Scaling</translation>
+      <translation>Skalering af forskydningen</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="276"/>
@@ -3829,12 +3830,12 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="170"/>
       <source>Histogram</source>
-      <translation type="unfinished">Histogram</translation>
+      <translation>Histogram</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="14"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>Vis resultat</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="26"/>
@@ -3849,17 +3850,17 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="83"/>
       <source>Maximum principal stress</source>
-      <translation type="unfinished">Maximum principal stress</translation>
+      <translation>Største hovedspænding</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="103"/>
       <source>Minimum principal stress</source>
-      <translation type="unfinished">Minimum principal stress</translation>
+      <translation>Mindste hovedspænding</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="123"/>
       <source>Maximum shear stress (Tresca)</source>
-      <translation type="unfinished">Maximum shear stress (Tresca)</translation>
+      <translation>Største forskydningsspænding (Tresca)</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="136"/>
@@ -3889,7 +3890,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="237"/>
       <source>Show</source>
-      <translation type="unfinished">Show</translation>
+      <translation>Vis</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="312"/>
@@ -3914,28 +3915,28 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="522"/>
       <source>User-Defined Equation</source>
-      <translation type="unfinished">User-Defined Equation</translation>
+      <translation>Brugerdefineret formel</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Runs the equation given in the field below,
 outputs the results to the Min and Max fields
 and colors the result mesh accordingly</source>
-      <translation type="unfinished">Runs the equation given in the field below,
-outputs the results to the Min and Max fields
-and colors the result mesh accordingly</translation>
+      <translation>Anvender formlen som angives i feltet nedenfor,
+Resultaterne gemmes i Min og Max felterne
+og resultat-meshet farves i overensstemmelse hermed</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="533"/>
       <source>Calculate</source>
-      <translation type="unfinished">Calculate</translation>
+      <translation>Beregn</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="552"/>
       <source>Enter here an equation to be calculated.
 For possible variables, see the description box below.</source>
-      <translation type="unfinished">Enter here an equation to be calculated.
-For possible variables, see the description box below.</translation>
+      <translation>Angiv den formel der skal anvendes.
+For mulige variabler, se beskrivelsesfeltet nedenfor.</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="556"/>
@@ -4020,7 +4021,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
       <source>reinforcement ratio: rx, ry, rz</source>
-      <translation type="unfinished">reinforcement ratio: rx, ry, rz</translation>
+      <translation>armeringsforhold: rx, ry, rz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="14"/>
@@ -4073,7 +4074,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="91"/>
       <source>Check Mesh</source>
-      <translation type="unfinished">Check Mesh</translation>
+      <translation>Kontroller mesh</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="98"/>
@@ -4132,7 +4133,7 @@ For possible variables, see the description box below.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="320"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="324"/>
       <source>Object dependencies</source>
       <translation>Objektafhængigheder</translation>
     </message>
@@ -4147,7 +4148,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Analysis features</source>
-      <translation type="unfinished">Analysis features</translation>
+      <translation>Analysefunktioner</translation>
     </message>
   </context>
   <context>
@@ -4208,27 +4209,27 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>Tilføj reference</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="35"/>
       <source>Load [N]</source>
-      <translation type="unfinished">Load [N]</translation>
+      <translation>Belastning [N]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="59"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Diameter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="86"/>
       <source>Other diameter</source>
-      <translation type="unfinished">Other diameter</translation>
+      <translation>Anden diameter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="113"/>
       <source>Center distance</source>
-      <translation type="unfinished">Center distance</translation>
+      <translation>Centerafstand</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="137"/>
@@ -4256,7 +4257,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>Tilføj reference</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
@@ -4266,7 +4267,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="59"/>
       <source>Other pulley diameter</source>
-      <translation type="unfinished">Other pulley diameter</translation>
+      <translation>Anden remskivediameter</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="80"/>
@@ -4281,12 +4282,12 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="122"/>
       <source>Belt tension force</source>
-      <translation type="unfinished">Belt tension force</translation>
+      <translation>Remspænding</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="141"/>
       <source>Driven pulley</source>
-      <translation type="unfinished">Driven pulley</translation>
+      <translation>Driven remskive</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="150"/>
@@ -4415,17 +4416,17 @@ for the Elmer solver</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="107"/>
       <source>Displacement X</source>
-      <translation type="unfinished">Displacement X</translation>
+      <translation>Forskydning X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="140"/>
       <source>Displacement Y</source>
-      <translation type="unfinished">Displacement Y</translation>
+      <translation>Forskydning Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="173"/>
       <source>Displacement Z</source>
-      <translation type="unfinished">Displacement Z</translation>
+      <translation>Forskydning Z</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="196"/>
@@ -4456,17 +4457,17 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation X</source>
-      <translation type="unfinished">Rotation X</translation>
+      <translation>Rotation X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation Y</source>
-      <translation type="unfinished">Rotation Y</translation>
+      <translation>Rotation Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation Z</source>
-      <translation type="unfinished">Rotation Z</translation>
+      <translation>Rotation Z</translation>
     </message>
   </context>
   <context>
@@ -4527,12 +4528,12 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="176"/>
       <source>Value [Unit]</source>
-      <translation type="unfinished">Value [Unit]</translation>
+      <translation>Værdi [enhed]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="239"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation type="unfinished">Select a planar edge or face, then press this button</translation>
+      <translation>Vælg en ret kant eller plan flade og tryk derefter på denne knap</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="242"/>
@@ -4589,7 +4590,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="434"/>
       <source>Heat flux [W/m2]</source>
-      <translation type="unfinished">Heat flux [W/m2]</translation>
+      <translation>Varmeindstråling [W/m2]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="441"/>
@@ -4607,7 +4608,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Vælg geometri af typen: Punkt, kant, flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -4632,7 +4633,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
       <source>Select a planar edge or face, then press this button</source>
-      <translation type="unfinished">Select a planar edge or face, then press this button</translation>
+      <translation>Vælg en ret kant eller plan flade og tryk derefter på denne knap</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="120"/>
@@ -4643,8 +4644,8 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation type="unfinished">The direction of the edge or the direction of the
-normal vector of the face is used as direction</translation>
+      <translation>Som retning anvendes retningsvektoren for 
+en kant eller normalvektoren for en flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
@@ -4693,7 +4694,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="218"/>
       <source>Ambient temperature</source>
-      <translation type="unfinished">Ambient temperature</translation>
+      <translation>Omgivelsestemperatur</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="193"/>
@@ -4791,7 +4792,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Vælg geometrier af typen: Flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
@@ -4809,7 +4810,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation type="unfinished">Select geometry of type: Vertex, Edge, Face</translation>
+      <translation>Vælg geometri af typen: Punkt, kant, flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -4834,7 +4835,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="107"/>
       <source>Concentrated heat flux</source>
-      <translation type="unfinished">Concentrated heat flux</translation>
+      <translation>Koncentreret varmestråling</translation>
     </message>
   </context>
   <context>
@@ -4927,7 +4928,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="20"/>
       <source>Coordinates</source>
-      <translation type="unfinished">Coordinates</translation>
+      <translation>Koordinater</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="32"/>
@@ -4962,17 +4963,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="193"/>
       <source>Resolution</source>
-      <translation type="unfinished">Resolution</translation>
+      <translation>Opløsning</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="236"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Tilstand</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="263"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Felt</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="273"/>
@@ -5015,12 +5016,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="113"/>
       <source>Select Point</source>
-      <translation type="unfinished">Select Point</translation>
+      <translation>Vælg punkt</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="169"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Felt</translation>
     </message>
   </context>
   <context>
@@ -5028,7 +5029,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="28"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Tilstand</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
@@ -5046,7 +5047,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
       <location filename="../../TaskPostDisplay.ui" line="103"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>Flade med kanter</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
@@ -5062,12 +5063,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="79"/>
       <source>Field</source>
-      <translation type="unfinished">Field</translation>
+      <translation>Felt</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="116"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Komponent</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="136"/>
@@ -5085,7 +5086,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="28"/>
       <source>Scalar</source>
-      <translation type="unfinished">Scalar</translation>
+      <translation>Skalar</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="42"/>
@@ -5100,7 +5101,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="52"/>
       <source>Surface with Edges</source>
-      <translation type="unfinished">Surface with Edges</translation>
+      <translation>Flade med kanter</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
@@ -5181,32 +5182,32 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="82"/>
       <source>VeryCoarse</source>
-      <translation type="unfinished">VeryCoarse</translation>
+      <translation>VeryCoarse</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="87"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Grov</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="92"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Middel</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="97"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Fin</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="102"/>
       <source>VeryFine</source>
-      <translation type="unfinished">VeryFine</translation>
+      <translation>Ekstra fin</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="107"/>
       <source>UserDefined</source>
-      <translation type="unfinished">UserDefined</translation>
+      <translation>Brugerdefineret</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="115"/>
@@ -5254,7 +5255,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>&amp;FEM</source>
-      <translation type="unfinished">&amp;FEM</translation>
+      <translation>&amp;FEM</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
@@ -5269,12 +5270,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Materialer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Materials</source>
-      <translation type="unfinished">&amp;Materials</translation>
+      <translation>&amp;Materialer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -5299,52 +5300,52 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Fluid Boundary Conditions</source>
-      <translation type="unfinished">Fluid Boundary Conditions</translation>
+      <translation>Fluid-grænsebetingelser</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Fluid Boundary Conditions</source>
-      <translation type="unfinished">&amp;Fluid Boundary Conditions</translation>
+      <translation>&amp;Fluid-grænsebetingelser</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">Electromagnetic Boundary Conditions</translation>
+      <translation>Elektromagnetisk grænsebetingelser</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">&amp;Electromagnetic Boundary Conditions</translation>
+      <translation>&amp;Elektromagnetiske grænsebetingelser</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Geometrical Analysis Features</source>
-      <translation type="unfinished">Geometrical Analysis Features</translation>
+      <translation>Geometriske analysefunktioner</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>&amp;Geometrical Analysis Features</source>
-      <translation type="unfinished">&amp;Geometrical Analysis Features</translation>
+      <translation>&amp;Geometriske analysefunktioner</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>
       <source>Mechanical Boundary Conditions and Loads</source>
-      <translation type="unfinished">Mechanical Boundary Conditions and Loads</translation>
+      <translation>Mekaniske grænsebetingelser og belastninger</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
       <source>&amp;Mechanical Boundary Conditions and Loads</source>
-      <translation type="unfinished">&amp;Mechanical Boundary Conditions and Loads</translation>
+      <translation>&amp;Mekaniske grænsebetingelser og belastninger</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
       <source>Thermal Boundary Conditions and Loads</source>
-      <translation type="unfinished">Thermal Boundary Conditions and Loads</translation>
+      <translation>Termiske grænsebetingelser og belastninger</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
       <source>&amp;Thermal Boundary Conditions and Loads</source>
-      <translation type="unfinished">&amp;Thermal Boundary Conditions and Loads</translation>
+      <translation>&amp;Termiske grænsebetingelser og belastninger</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
@@ -5359,7 +5360,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="73"/>
       <source>Filter Functions</source>
-      <translation type="unfinished">Filter Functions</translation>
+      <translation>Filtrerfunktioner</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="74"/>
@@ -5379,12 +5380,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mesh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>M&amp;esh</source>
-      <translation type="unfinished">M&amp;esh</translation>
+      <translation>M&amp;esh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="68"/>
@@ -5444,25 +5445,25 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_Analysis</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="61"/>
+      <location filename="../../../femcommands/commands.py" line="58"/>
       <source>New Analysis</source>
       <translation>Ny analyse</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="65"/>
+      <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Creates an analysis container with default solver</source>
-      <translation type="unfinished">Creates an analysis container with default solver</translation>
+      <translation>Opretter en beholder til analyser med standard løsningsværktøjer</translation>
     </message>
   </context>
   <context>
     <name>FEM_ClippingPlaneRemoveAll</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="161"/>
+      <location filename="../../../femcommands/commands.py" line="158"/>
       <source>Remove All Clipping Planes</source>
       <translation type="unfinished">Remove All Clipping Planes</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="164"/>
+      <location filename="../../../femcommands/commands.py" line="161"/>
       <source>Removes all clipping planes</source>
       <translation type="unfinished">Removes all clipping planes</translation>
     </message>
@@ -5470,12 +5471,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_Examples</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="551"/>
+      <location filename="../../../femcommands/commands.py" line="548"/>
       <source>FEM Examples</source>
       <translation type="unfinished">FEM Examples</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="552"/>
+      <location filename="../../../femcommands/commands.py" line="549"/>
       <source>Opens the FEM examples</source>
       <translation type="unfinished">Opens the FEM examples</translation>
     </message>
@@ -5483,38 +5484,38 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_MaterialEditor</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="566"/>
+      <location filename="../../../femcommands/commands.py" line="563"/>
       <source>Material Editor</source>
-      <translation>Materiale Editor</translation>
+      <translation>Materialevælger</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="569"/>
+      <location filename="../../../femcommands/commands.py" line="566"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Åbner FreeCAD's materialehåndtering</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="662"/>
+      <location filename="../../../femcommands/commands.py" line="659"/>
       <source>Reinforced Material (Concrete)</source>
-      <translation type="unfinished">Reinforced Material (Concrete)</translation>
+      <translation>Armeret materiale (beton)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="666"/>
+      <location filename="../../../femcommands/commands.py" line="663"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Opretter et bindemateriale til et armeret materiale, f.eks. beton</translation>
     </message>
   </context>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="688"/>
+      <location filename="../../../femcommands/commands.py" line="685"/>
       <source>FEM Mesh to Mesh</source>
       <translation type="unfinished">FEM Mesh to Mesh</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="691"/>
+      <location filename="../../../femcommands/commands.py" line="688"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
       <translation type="unfinished">Converts the surface of a FEM mesh to a mesh</translation>
     </message>
@@ -5522,25 +5523,25 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="763"/>
+      <location filename="../../../femcommands/commands.py" line="760"/>
       <source>Display Mesh Info</source>
-      <translation type="unfinished">Display Mesh Info</translation>
+      <translation>Vis mesh information</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="764"/>
+      <location filename="../../../femcommands/commands.py" line="761"/>
       <source>Displays FEM mesh information</source>
-      <translation type="unfinished">Displays FEM mesh information</translation>
+      <translation>Viser informationer om FEM mesh</translation>
     </message>
   </context>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="787"/>
+      <location filename="../../../femcommands/commands.py" line="784"/>
       <source>Mesh From Shape by Gmsh</source>
       <translation type="unfinished">Mesh From Shape by Gmsh</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="790"/>
+      <location filename="../../../femcommands/commands.py" line="787"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
       <translation type="unfinished">Creates a FEM mesh from a shape by Gmsh mesher</translation>
     </message>
@@ -5548,12 +5549,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="848"/>
+      <location filename="../../../femcommands/commands.py" line="845"/>
       <source>Mesh From Shape by Netgen</source>
       <translation type="unfinished">Mesh From Shape by Netgen</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="852"/>
+      <location filename="../../../femcommands/commands.py" line="849"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation type="unfinished">Creates a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
     </message>
@@ -5561,12 +5562,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1045"/>
+      <location filename="../../../femcommands/commands.py" line="1042"/>
       <source>Solver CalculiX Standard</source>
       <translation type="unfinished">Solver CalculiX Standard</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1050"/>
+      <location filename="../../../femcommands/commands.py" line="1047"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation type="unfinished">Creates a standard FEM solver CalculiX with ccx tools</translation>
     </message>
@@ -5574,12 +5575,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1101"/>
+      <location filename="../../../femcommands/commands.py" line="1098"/>
       <source>Solver Job Control</source>
       <translation type="unfinished">Solver Job Control</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1106"/>
+      <location filename="../../../femcommands/commands.py" line="1103"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation type="unfinished">Changes solver attributes and runs the calculations for the selected solver</translation>
     </message>
@@ -5587,12 +5588,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1118"/>
+      <location filename="../../../femcommands/commands.py" line="1115"/>
       <source>Solver Elmer</source>
       <translation type="unfinished">Solver Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1120"/>
+      <location filename="../../../femcommands/commands.py" line="1117"/>
       <source>Creates a FEM solver Elmer</source>
       <translation type="unfinished">Creates a FEM solver Elmer</translation>
     </message>
@@ -5600,12 +5601,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1157"/>
+      <location filename="../../../femcommands/commands.py" line="1154"/>
       <source>Solver Mystran</source>
       <translation type="unfinished">Solver Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1159"/>
+      <location filename="../../../femcommands/commands.py" line="1156"/>
       <source>Creates a FEM solver Mystran</source>
       <translation type="unfinished">Creates a FEM solver Mystran</translation>
     </message>
@@ -5613,12 +5614,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1169"/>
+      <location filename="../../../femcommands/commands.py" line="1166"/>
       <source>Run Solver</source>
       <translation type="unfinished">Run Solver</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1173"/>
+      <location filename="../../../femcommands/commands.py" line="1170"/>
       <source>Runs the calculations for the selected solver</source>
       <translation type="unfinished">Runs the calculations for the selected solver</translation>
     </message>
@@ -5626,12 +5627,12 @@ normal vector of the face is used as direction</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1230"/>
+      <location filename="../../../femcommands/commands.py" line="1187"/>
       <source>Solver Z88</source>
       <translation type="unfinished">Solver Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1232"/>
+      <location filename="../../../femcommands/commands.py" line="1189"/>
       <source>Creates a FEM solver Z88</source>
       <translation type="unfinished">Creates a FEM solver Z88</translation>
     </message>
@@ -5660,7 +5661,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="304"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="241"/>
@@ -5687,7 +5688,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <source>Abort</source>
-      <translation type="unfinished">Abort</translation>
+      <translation>Afbryd</translation>
     </message>
   </context>
   <context>
@@ -5708,12 +5709,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="161"/>
       <source>Select Faces/Edges/Vertexes</source>
-      <translation type="unfinished">Select Faces/Edges/Vertexes</translation>
+      <translation>Vælg flader/kanter/punkter</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="162"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
-      <translation type="unfinished">To add references: select them in the 3D view and click "Add".</translation>
+      <translation>For at tilføje referencer: Vælg dem i 3D-visningen, og klik på "Tilføj".</translation>
     </message>
   </context>
   <context>
@@ -5769,7 +5770,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="312"/>
       <source>Solid</source>
-      <translation type="unfinished">Solid</translation>
+      <translation>Massivt emne</translation>
     </message>
   </context>
   <context>
@@ -5782,17 +5783,17 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="327"/>
       <source>Displacement X</source>
-      <translation type="unfinished">Displacement X</translation>
+      <translation>Forskydning X</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="335"/>
       <source>Displacement Y</source>
-      <translation type="unfinished">Displacement Y</translation>
+      <translation>Forskydning Y</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="343"/>
       <source>Displacement Z</source>
-      <translation type="unfinished">Displacement Z</translation>
+      <translation>Forskydning Z</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="354"/>
@@ -6022,8 +6023,8 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Which part of the Y field vector to use for the Y axis</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
     </message>
@@ -6210,17 +6211,17 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1503"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1504"/>
       <source>Electromagnetic Boundary Conditions</source>
-      <translation type="unfinished">Electromagnetic Boundary Conditions</translation>
+      <translation>Elektromagnetiske grænsebetingelser</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1505"/>
       <source>Electromagnetic boundary conditions</source>
-      <translation type="unfinished">Electromagnetic boundary conditions</translation>
+      <translation>Elektromagnetiske grænsebetingelser</translation>
     </message>
   </context>
   <context>
@@ -6376,7 +6377,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1883"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1884"/>
@@ -6392,38 +6393,38 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintBodyHeatSource</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="201"/>
+      <location filename="../../../femcommands/commands.py" line="198"/>
       <source>Body Heat Source</source>
-      <translation type="unfinished">Body Heat Source</translation>
+      <translation>Varmeafgivelse</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="204"/>
+      <location filename="../../../femcommands/commands.py" line="201"/>
       <source>Creates a body heat source</source>
-      <translation type="unfinished">Creates a body heat source</translation>
+      <translation>Opretter varmeafgivelse fra en komponent</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintCentrif</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="214"/>
+      <location filename="../../../femcommands/commands.py" line="211"/>
       <source>Centrifugal Load</source>
-      <translation type="unfinished">Centrifugal Load</translation>
+      <translation>Centrifugalkraft</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="215"/>
+      <location filename="../../../femcommands/commands.py" line="212"/>
       <source>Creates a centrifugal load</source>
-      <translation type="unfinished">Creates a centrifugal load</translation>
+      <translation>Opretter en centrifugalkraft som virker på en geometri</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintCurrentDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="228"/>
+      <location filename="../../../femcommands/commands.py" line="225"/>
       <source>Current Density Boundary Condition</source>
       <translation type="unfinished">Current Density Boundary Condition</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="232"/>
+      <location filename="../../../femcommands/commands.py" line="229"/>
       <source>Creates a current density boundary condition</source>
       <translation type="unfinished">Creates a current density boundary condition</translation>
     </message>
@@ -6431,12 +6432,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintElectrostaticPotential</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
+      <location filename="../../../femcommands/commands.py" line="258"/>
       <source>Electrostatic Potential Boundary Condition</source>
       <translation type="unfinished">Electrostatic Potential Boundary Condition</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="265"/>
+      <location filename="../../../femcommands/commands.py" line="262"/>
       <source>Creates an electrostatic potential boundary condition</source>
       <translation type="unfinished">Creates an electrostatic potential boundary condition</translation>
     </message>
@@ -6444,12 +6445,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="277"/>
+      <location filename="../../../femcommands/commands.py" line="274"/>
       <source>Flow Velocity Boundary Condition</source>
       <translation type="unfinished">Flow Velocity Boundary Condition</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="280"/>
+      <location filename="../../../femcommands/commands.py" line="277"/>
       <source>Creates a flow velocity boundary condition</source>
       <translation type="unfinished">Creates a flow velocity boundary condition</translation>
     </message>
@@ -6457,12 +6458,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintInitialPressure</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="308"/>
+      <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Initial Pressure Condition</source>
       <translation type="unfinished">Initial Pressure Condition</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="311"/>
+      <location filename="../../../femcommands/commands.py" line="308"/>
       <source>Creates an initial pressure condition</source>
       <translation type="unfinished">Creates an initial pressure condition</translation>
     </message>
@@ -6470,12 +6471,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintMagnetization</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="323"/>
+      <location filename="../../../femcommands/commands.py" line="320"/>
       <source>Magnetization Boundary Condition</source>
       <translation type="unfinished">Magnetization Boundary Condition</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="326"/>
+      <location filename="../../../femcommands/commands.py" line="323"/>
       <source>Creates a magnetization boundary condition</source>
       <translation type="unfinished">Creates a magnetization boundary condition</translation>
     </message>
@@ -6483,12 +6484,12 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintSectionPrint</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="336"/>
+      <location filename="../../../femcommands/commands.py" line="333"/>
       <source>Section Print Feature</source>
       <translation type="unfinished">Section Print Feature</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="339"/>
+      <location filename="../../../femcommands/commands.py" line="336"/>
       <source>Creates a section print feature</source>
       <translation type="unfinished">Creates a section print feature</translation>
     </message>
@@ -6496,38 +6497,38 @@ No matching module was found in the current Python path.</translation>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="349"/>
+      <location filename="../../../femcommands/commands.py" line="346"/>
       <source>Gravity Load</source>
-      <translation type="unfinished">Gravity Load</translation>
+      <translation>Tyngdekraft</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="350"/>
+      <location filename="../../../femcommands/commands.py" line="347"/>
       <source>Creates a gravity load</source>
-      <translation type="unfinished">Creates a gravity load</translation>
+      <translation>Opretter en tyngdekraftsbelastning</translation>
     </message>
   </context>
   <context>
     <name>FEM_ConstraintTie</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="360"/>
+      <location filename="../../../femcommands/commands.py" line="357"/>
       <source>Tie Constraint</source>
-      <translation type="unfinished">Tie Constraint</translation>
+      <translation>Sammenføjning</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="361"/>
+      <location filename="../../../femcommands/commands.py" line="358"/>
       <source>Creates a tie constraint</source>
-      <translation type="unfinished">Creates a tie constraint</translation>
+      <translation>Sammenføjer to elementer</translation>
     </message>
   </context>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="902"/>
+      <location filename="../../../femcommands/commands.py" line="899"/>
       <source>Mesh Refinement</source>
       <translation type="unfinished">Mesh Refinement</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="903"/>
+      <location filename="../../../femcommands/commands.py" line="900"/>
       <source>Creates a FEM mesh refinement</source>
       <translation type="unfinished">Creates a FEM mesh refinement</translation>
     </message>
@@ -6633,7 +6634,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="473"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="474"/>
@@ -6651,7 +6652,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
@@ -6683,7 +6684,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="320"/>
       <source>External object selection is not supported</source>
-      <translation type="unfinished">External object selection is not supported</translation>
+      <translation>Valg af eksterne objekter understøttes ikke</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
@@ -6745,13 +6746,13 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Erase Elements</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1479"/>
       <location filename="../../TaskCreateElementSet.cpp" line="241"/>
       <location filename="../../TaskCreateElementSet.cpp" line="252"/>
       <location filename="../../TaskCreateElementSet.cpp" line="510"/>
       <location filename="../../TaskCreateElementSet.cpp" line="607"/>
-      <location filename="../../Command.cpp" line="1479"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="242"/>
@@ -6783,7 +6784,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1433"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1435"/>
@@ -6804,7 +6805,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
@@ -6872,12 +6873,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="246"/>
       <source>Netgen Version</source>
-      <translation type="unfinished">Netgen Version</translation>
+      <translation>Netgen version</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="192"/>
       <source>Netgen</source>
-      <translation type="unfinished">Netgen</translation>
+      <translation>Netgen</translation>
     </message>
   </context>
   <context>
@@ -6939,12 +6940,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1071"/>
+      <location filename="../../../femcommands/commands.py" line="1068"/>
       <source>Solver CalculiX</source>
       <translation type="unfinished">Solver CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1076"/>
+      <location filename="../../../femcommands/commands.py" line="1073"/>
       <source>Creates a FEM solver CalculiX</source>
       <translation type="unfinished">Creates a FEM solver CalculiX</translation>
     </message>
@@ -7089,7 +7090,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="45"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="56"/>
@@ -7099,7 +7100,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="82"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Analysetype</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="122"/>
@@ -7122,26 +7123,26 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM Material Reinforcement</source>
-      <translation type="unfinished">FEM Material Reinforcement</translation>
+      <translation>FEM Armeringsmateriale</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
       <source>Matrix Material</source>
-      <translation type="unfinished">Matrix Material</translation>
+      <translation>Bindemateriale</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="61"/>
       <source>Reinforcement Material</source>
-      <translation type="unfinished">Reinforcement Material</translation>
+      <translation>Armeringsmateriale</translation>
     </message>
   </context>
   <context>
     <name>TaskPostGlyph</name>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation type="unfinished">The form of the glyph</translation>
     </message>
@@ -7158,7 +7159,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="47"/>
       <source>Cone</source>
-      <translation type="unfinished">Cone</translation>
+      <translation>Kegle</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="52"/>
@@ -7178,15 +7179,15 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="67"/>
       <source>Sphere</source>
-      <translation type="unfinished">Sphere</translation>
+      <translation>Kugle</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
     </message>
@@ -7196,10 +7197,10 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Orientation</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
@@ -7220,10 +7221,10 @@ Leave blank to use default Python executable</translation>
       <translation>Data</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation type="unfinished">A constant multiplier the glyphs are scaled with</translation>
     </message>
@@ -7238,9 +7239,9 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Changes the scale factor by +/- 50% of the set scale factor</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
     </message>
@@ -7332,38 +7333,38 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Cumulative</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
       <translation type="unfinished">Legend</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
-      <translation type="unfinished">Show</translation>
+      <translation>Vis</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <source>Labels</source>
       <translation>Etiketter</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <source>Y-axis</source>
       <translation>Y-akse</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
       <source>X Axis</source>
-      <translation type="unfinished">X Axis</translation>
+      <translation>X-akse</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <source>Title</source>
       <translation>Titel</translation>
     </message>
@@ -7403,7 +7404,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2578"/>
@@ -7421,7 +7422,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../Command.cpp" line="3019"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="3020"/>
@@ -7453,12 +7454,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ClippingPlaneAdd</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="105"/>
+      <location filename="../../../femcommands/commands.py" line="102"/>
       <source>Clipping Plane on Face</source>
       <translation type="unfinished">Clipping Plane on Face</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="108"/>
+      <location filename="../../../femcommands/commands.py" line="105"/>
       <source>Adds a clipping plane on a selected face</source>
       <translation type="unfinished">Adds a clipping plane on a selected face</translation>
     </message>
@@ -7466,12 +7467,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ConstantVacuumPermittivity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="185"/>
+      <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constant Vacuum Permittivity</source>
       <translation type="unfinished">Constant Vacuum Permittivity</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="189"/>
+      <location filename="../../../femcommands/commands.py" line="186"/>
       <source>Creates a constant vacuum permittivity to overwrite standard value</source>
       <translation type="unfinished">Creates a constant vacuum permittivity to overwrite standard value</translation>
     </message>
@@ -7479,12 +7480,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ConstraintElectricChargeDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="245"/>
+      <location filename="../../../femcommands/commands.py" line="242"/>
       <source>Electric Charge Density</source>
       <translation type="unfinished">Electric Charge Density</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="248"/>
+      <location filename="../../../femcommands/commands.py" line="245"/>
       <source>Creates an electric charge density</source>
       <translation type="unfinished">Creates an electric charge density</translation>
     </message>
@@ -7492,12 +7493,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ConstraintInitialFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="292"/>
+      <location filename="../../../femcommands/commands.py" line="289"/>
       <source>Initial Flow Velocity Condition</source>
       <translation type="unfinished">Initial Flow Velocity Condition</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="296"/>
+      <location filename="../../../femcommands/commands.py" line="293"/>
       <source>Creates an initial flow velocity condition</source>
       <translation type="unfinished">Creates an initial flow velocity condition</translation>
     </message>
@@ -7505,12 +7506,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ElementFluid1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="371"/>
+      <location filename="../../../femcommands/commands.py" line="368"/>
       <source>Fluid Section for 1D Flow</source>
       <translation type="unfinished">Fluid Section for 1D Flow</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="374"/>
+      <location filename="../../../femcommands/commands.py" line="371"/>
       <source>Creates a fluid section for 1D flow</source>
       <translation type="unfinished">Creates a fluid section for 1D flow</translation>
     </message>
@@ -7518,38 +7519,38 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ElementGeometry1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="384"/>
+      <location filename="../../../femcommands/commands.py" line="381"/>
       <source>Beam Cross Section</source>
-      <translation type="unfinished">Beam Cross Section</translation>
+      <translation>Bjælketværsnit</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="385"/>
+      <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Creates a beam cross section</source>
-      <translation type="unfinished">Creates a beam cross section</translation>
+      <translation>Opretter et bjælketværsnit</translation>
     </message>
   </context>
   <context>
     <name>FEM_ElementGeometry2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="395"/>
+      <location filename="../../../femcommands/commands.py" line="392"/>
       <source>Shell Plate Thickness</source>
-      <translation type="unfinished">Shell Plate Thickness</translation>
+      <translation>Pladetykkelse</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="398"/>
+      <location filename="../../../femcommands/commands.py" line="395"/>
       <source>Creates a shell plate thickness</source>
-      <translation type="unfinished">Creates a shell plate thickness</translation>
+      <translation>Opretter pladetykkelse for en skal</translation>
     </message>
   </context>
   <context>
     <name>FEM_ElementRotation1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="408"/>
+      <location filename="../../../femcommands/commands.py" line="405"/>
       <source>Beam Rotation</source>
       <translation type="unfinished">Beam Rotation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="409"/>
+      <location filename="../../../femcommands/commands.py" line="406"/>
       <source>Creates a beam rotation</source>
       <translation type="unfinished">Creates a beam rotation</translation>
     </message>
@@ -7557,12 +7558,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_EquationDeformation</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="419"/>
+      <location filename="../../../femcommands/commands.py" line="416"/>
       <source>Deformation Equation</source>
       <translation type="unfinished">Deformation Equation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="423"/>
+      <location filename="../../../femcommands/commands.py" line="420"/>
       <source>Creates an equation for deformation (nonlinear elasticity)</source>
       <translation type="unfinished">Creates an equation for deformation (nonlinear elasticity)</translation>
     </message>
@@ -7570,12 +7571,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_EquationElasticity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="433"/>
+      <location filename="../../../femcommands/commands.py" line="430"/>
       <source>Elasticity Equation</source>
       <translation type="unfinished">Elasticity Equation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="436"/>
+      <location filename="../../../femcommands/commands.py" line="433"/>
       <source>Creates an equation for elasticity (stress)</source>
       <translation type="unfinished">Creates an equation for elasticity (stress)</translation>
     </message>
@@ -7583,25 +7584,25 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_EquationElectricforce</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="446"/>
+      <location filename="../../../femcommands/commands.py" line="443"/>
       <source>Electricforce Equation</source>
-      <translation type="unfinished">Electricforce Equation</translation>
+      <translation>Formel for elektrisk kraft</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="449"/>
+      <location filename="../../../femcommands/commands.py" line="446"/>
       <source>Creates an equation for electric forces</source>
-      <translation type="unfinished">Creates an equation for electric forces</translation>
+      <translation>Opretter en formel for elektriske kræfter</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationElectrostatic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="459"/>
+      <location filename="../../../femcommands/commands.py" line="456"/>
       <source>Electrostatic Equation</source>
       <translation type="unfinished">Electrostatic Equation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="462"/>
+      <location filename="../../../femcommands/commands.py" line="459"/>
       <source>Creates an equation for electrostatic</source>
       <translation type="unfinished">Creates an equation for electrostatic</translation>
     </message>
@@ -7609,12 +7610,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_EquationFlow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="472"/>
+      <location filename="../../../femcommands/commands.py" line="469"/>
       <source>Flow Equation</source>
       <translation type="unfinished">Flow Equation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="473"/>
+      <location filename="../../../femcommands/commands.py" line="470"/>
       <source>Creates an equation for flow</source>
       <translation type="unfinished">Creates an equation for flow</translation>
     </message>
@@ -7622,12 +7623,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_EquationFlux</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="483"/>
+      <location filename="../../../femcommands/commands.py" line="480"/>
       <source>Flux Equation</source>
       <translation type="unfinished">Flux Equation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="484"/>
+      <location filename="../../../femcommands/commands.py" line="481"/>
       <source>Creates an equation for flux</source>
       <translation type="unfinished">Creates an equation for flux</translation>
     </message>
@@ -7635,12 +7636,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_EquationHeat</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="494"/>
+      <location filename="../../../femcommands/commands.py" line="491"/>
       <source>Heat Equation</source>
       <translation type="unfinished">Heat Equation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="495"/>
+      <location filename="../../../femcommands/commands.py" line="492"/>
       <source>Creates an equation for heat</source>
       <translation type="unfinished">Creates an equation for heat</translation>
     </message>
@@ -7648,38 +7649,38 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_EquationMagnetodynamic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="507"/>
+      <location filename="../../../femcommands/commands.py" line="504"/>
       <source>Magnetodynamic Equation</source>
       <translation type="unfinished">Magnetodynamic Equation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="511"/>
+      <location filename="../../../femcommands/commands.py" line="508"/>
       <source>Creates an equation for magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for magnetodynamic forces</translation>
+      <translation>Opretter en formel for magnetiske kræfter</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationMagnetodynamic2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="523"/>
+      <location filename="../../../femcommands/commands.py" line="520"/>
       <source>Magnetodynamic 2D Equation</source>
       <translation type="unfinished">Magnetodynamic 2D Equation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="527"/>
+      <location filename="../../../femcommands/commands.py" line="524"/>
       <source>Creates an equation for 2D magnetodynamic forces</source>
-      <translation type="unfinished">Creates an equation for 2D magnetodynamic forces</translation>
+      <translation>Opretter en ligning for 2-dimensionale magnetiske kræfter</translation>
     </message>
   </context>
   <context>
     <name>FEM_EquationStaticCurrent</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="537"/>
+      <location filename="../../../femcommands/commands.py" line="534"/>
       <source>Static Current Equation</source>
       <translation type="unfinished">Static Current Equation</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="540"/>
+      <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Creates an equation for static current</source>
       <translation type="unfinished">Creates an equation for static current</translation>
     </message>
@@ -7687,51 +7688,51 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="582"/>
+      <location filename="../../../femcommands/commands.py" line="579"/>
       <source>Fluid Material</source>
-      <translation type="unfinished">Fluid Material</translation>
+      <translation>Fluid</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="583"/>
+      <location filename="../../../femcommands/commands.py" line="580"/>
       <source>Creates a fluid material</source>
-      <translation type="unfinished">Creates a fluid material</translation>
+      <translation>Opretter en fluid</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialMechanicalNonlinear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="595"/>
+      <location filename="../../../femcommands/commands.py" line="592"/>
       <source>Non-Linear Mechanical Material</source>
-      <translation type="unfinished">Non-Linear Mechanical Material</translation>
+      <translation>Ikke lineært elastisk materiale</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="598"/>
+      <location filename="../../../femcommands/commands.py" line="595"/>
       <source>Creates a non-linear mechanical material</source>
-      <translation type="unfinished">Creates a non-linear mechanical material</translation>
+      <translation>Opretter et ikke-lineært elastisk materiale</translation>
     </message>
   </context>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="676"/>
+      <location filename="../../../femcommands/commands.py" line="673"/>
       <source>Solid Material</source>
-      <translation type="unfinished">Solid Material</translation>
+      <translation>Lineært elastisk materiale</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="678"/>
+      <location filename="../../../femcommands/commands.py" line="675"/>
       <source>Creates a solid material</source>
-      <translation type="unfinished">Creates a solid material</translation>
+      <translation>Opretter et lineært elastisk materiale</translation>
     </message>
   </context>
   <context>
     <name>FEM_MeshBoundaryLayer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="730"/>
+      <location filename="../../../femcommands/commands.py" line="727"/>
       <source>Mesh Boundary Layer</source>
       <translation type="unfinished">Mesh Boundary Layer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="733"/>
+      <location filename="../../../femcommands/commands.py" line="730"/>
       <source>Creates a mesh boundary layer</source>
       <translation type="unfinished">Creates a mesh boundary layer</translation>
     </message>
@@ -7739,12 +7740,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_MeshClear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="743"/>
+      <location filename="../../../femcommands/commands.py" line="740"/>
       <source>Clear FEM Mesh</source>
       <translation type="unfinished">Clear FEM Mesh</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="744"/>
+      <location filename="../../../femcommands/commands.py" line="741"/>
       <source>Clears the mesh of a FEM mesh object</source>
       <translation type="unfinished">Clears the mesh of a FEM mesh object</translation>
     </message>
@@ -7752,12 +7753,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="837"/>
+      <location filename="../../../femcommands/commands.py" line="834"/>
       <source>Mesh Group</source>
       <translation type="unfinished">Mesh Group</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="838"/>
+      <location filename="../../../femcommands/commands.py" line="835"/>
       <source>Creates a mesh group</source>
       <translation type="unfinished">Creates a mesh group</translation>
     </message>
@@ -7765,12 +7766,12 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="913"/>
+      <location filename="../../../femcommands/commands.py" line="910"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>Vis resultat</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="917"/>
+      <location filename="../../../femcommands/commands.py" line="914"/>
       <source>Shows and visualizes the selected result data</source>
       <translation type="unfinished">Shows and visualizes the selected result data</translation>
     </message>
@@ -7778,27 +7779,27 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="929"/>
+      <location filename="../../../femcommands/commands.py" line="926"/>
       <source>Purge Results</source>
-      <translation type="unfinished">Purge Results</translation>
+      <translation>Forkast resultater</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="933"/>
+      <location filename="../../../femcommands/commands.py" line="930"/>
       <source>Purges all results from the active analysis</source>
-      <translation type="unfinished">Purges all results from the active analysis</translation>
+      <translation>Forkaster alle resultater fra den aktive analyse</translation>
     </message>
   </context>
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1242"/>
+      <location filename="../../../femcommands/commands.py" line="1199"/>
       <source>Glyph Filter</source>
       <translation type="unfinished">Glyph Filter</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1247"/>
+      <location filename="../../../femcommands/commands.py" line="1204"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
-      <translation type="unfinished">Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</translation>
+      <translation>Tilføjer et efterbehandlingsfilter, der markerer mesh-knudepunkter til visualisering af punktegenskaber</translation>
     </message>
   </context>
   <context>
@@ -7840,9 +7841,9 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Geometri</translation>
     </message>
@@ -7987,9 +7988,9 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="164"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="168"/>
       <source>Activate Analysis</source>
-      <translation type="unfinished">Activate Analysis</translation>
+      <translation>Aktiver analyse</translation>
     </message>
   </context>
   <context>
@@ -8017,6 +8018,29 @@ Leave blank to use default Python executable</translation>
     </message>
   </context>
   <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="405"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="439"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation type="unfinished">FEM: wrong ccx binary</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="452"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="464"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
+    </message>
+  </context>
+  <context>
     <name>SolverElmer</name>
     <message>
       <location filename="../ui/SolverElmer.ui" line="14"/>
@@ -8036,7 +8060,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="45"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="56"/>
@@ -8065,29 +8089,6 @@ Leave blank to use default Python executable</translation>
     </message>
   </context>
   <context>
-    <name>FemToolsCcx</name>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="405"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="439"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation type="unfinished">FEM: wrong ccx binary</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="452"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="464"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::DlgSettingsFemInOutVtkImp</name>
     <message>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
@@ -8097,7 +8098,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
       <source>Highest</source>
-      <translation type="unfinished">Highest</translation>
+      <translation>Højeste</translation>
     </message>
   </context>
 </TS>

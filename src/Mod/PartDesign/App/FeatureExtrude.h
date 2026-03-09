@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURE_EXTRUDE_H
-#define PARTDESIGN_FEATURE_EXTRUDE_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -124,5 +125,3 @@ protected:
 }  // namespace PartDesign
 
 ENABLE_BITMASK_OPERATORS(PartDesign::FeatureExtrude::ExtrudeOption)
-
-#endif  // PARTDESIGN_FEATURE_EXTRUDE_H

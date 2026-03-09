@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKTEXTLEADER_H
-#define TECHDRAWGUI_TASKTEXTLEADER_H
+#pragma once
 
 #include "QGTracker.h"
 
@@ -175,5 +174,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef TECHDRAWGUI_TASKTEXTLEADER_H

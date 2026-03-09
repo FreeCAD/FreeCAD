@@ -118,7 +118,7 @@ class TestSolverElmer(unittest.TestCase):
 
         # write input files
         # fcc_print("Checking FEM input file writing for Elmer solver framework solver ...")
-        w = writer.Writer(self.document.SolverElmer, analysis_dir)
+        w = writer.Writer(self.document.SolverElmer, analysis_dir, testmode=True)
         w.write_solver_input()
 
         fcc_print("Test writing STARTINFO file")
