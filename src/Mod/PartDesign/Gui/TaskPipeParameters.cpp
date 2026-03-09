@@ -76,10 +76,6 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
     // Enable multi-selection in edges list
     ui->listWidgetReferences->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-    // Make Remove edge button work on selection
-    connect(ui->buttonRefRemove, &QToolButton::clicked,
-            this, &TaskPipeParameters::onDeleteEdge);
-
     // Ctrl+A should select edges list, not tree view
     auto* selectAll = new QAction(tr("Select All"), this);
     selectAll->setShortcut(QKeySequence::SelectAll);
