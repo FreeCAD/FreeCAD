@@ -717,7 +717,6 @@ void TaskView::removeDialog()
     tryRestoreWidth();
     triggerMinimumSizeHint();
 
-    clearFocus();
     OverlayManager::instance()->refresh();
 }
 void TaskView::setShowTaskWatcher(bool show)
@@ -997,3 +996,4 @@ void TaskView::removeContextualPanel(QWidget* panel)
 }
 
 #include "moc_TaskView.cpp"
+
