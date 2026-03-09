@@ -221,7 +221,7 @@ bool ViewProviderBody::doubleClicked()
 }
 
 // TODO To be deleted (2015-09-08, Fat-Zer)
-//void ViewProviderBody::updateTree()
+// void ViewProviderBody::updateTree()
 //{
 //    if (ActiveGuiDoc == NULL) return;
 //
