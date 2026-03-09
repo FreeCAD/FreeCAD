@@ -1172,7 +1172,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
       <source>Solid</source>
-      <translation type="unfinished">Solid</translation>
+      <translation>Massivt emne</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
