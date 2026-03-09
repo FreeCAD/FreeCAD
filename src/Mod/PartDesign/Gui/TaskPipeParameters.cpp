@@ -293,8 +293,9 @@ void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString items
 void TaskPipeParameters::onDeleteEdge()
 {
     auto items = ui->listWidgetReferences->selectedItems();
-    if (items.empty())
+    if (items.empty()) {
         return;
+    }
 
     const auto pipe = getObject<PartDesign::Pipe>();
     std::vector<std::string> refs = pipe->Spine.getSubValues();
@@ -303,11 +304,11 @@ void TaskPipeParameters::onDeleteEdge()
         QByteArray data = item->data(Qt::UserRole).toByteArray();
         std::string obj = data.constData();
 
-        delete ui->listWidgetReferences->takeItem(
-            ui->listWidgetReferences->row(item));
+        delete ui->listWidgetReferences->takeItem(ui->listWidgetReferences->row(item));
 
-        if (const auto f = std::ranges::find(refs, obj); f != refs.end())
+        if (const auto f = std::ranges::find(refs, obj); f != refs.end()) {
             refs.erase(f);
+        }
     }
 
     pipe->Spine.setValue(pipe->Spine.getValue(), refs);
