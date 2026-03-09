@@ -948,7 +948,7 @@ Filerne hedder "runPreDrag. smt" og "dragging.log" og er placeret i standardmapp
       <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
-        <numerusform>%n Frihedsgrader</numerusform>
+        <numerusform>%n frihedsgrader</numerusform>
         <numerusform>%n Degrees of Freedom</numerusform>
       </translation>
     </message>

@@ -1222,12 +1222,12 @@
     <message>
       <location filename="../../Command.cpp" line="2364"/>
       <source>Appearance per &amp;Face</source>
-      <translation type="unfinished">Appearance per &amp;Face</translation>
+      <translation>Aspetto per &amp;faccia</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2365"/>
       <source>Sets the appearance of individual faces of the selected object</source>
-      <translation type="unfinished">Sets the appearance of individual faces of the selected object</translation>
+      <translation>Imposta l'aspetto delle singole facce dell'oggetto selezionato</translation>
     </message>
   </context>
   <context>
@@ -1278,7 +1278,7 @@
     <message>
       <location filename="../../Command.cpp" line="134"/>
       <source>Box Fix 1</source>
-      <translation type="unfinished">Box Fix 1</translation>
+      <translation>Riquadro 1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="135"/>
@@ -1296,7 +1296,7 @@
     <message>
       <location filename="../../Command.cpp" line="177"/>
       <source>Box Fix 2</source>
-      <translation type="unfinished">Box Fix 2</translation>
+      <translation>Riquadro 2</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="178"/>
@@ -1386,12 +1386,12 @@
     <message>
       <location filename="../../Command.cpp" line="569"/>
       <source>Join Shapes</source>
-      <translation>Unisciti forme</translation>
+      <translation>Unisci forme</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="571"/>
       <source>Joins the selected walled shapes</source>
-      <translation type="unfinished">Joins the selected walled shapes</translation>
+      <translation>Unisce le forme cave selezionate</translation>
     </message>
   </context>
   <context>
@@ -1427,7 +1427,7 @@
     <message>
       <location filename="../../Command.cpp" line="685"/>
       <source>Shape splitting and compsolid creation tools</source>
-      <translation type="unfinished">Shape splitting and compsolid creation tools</translation>
+      <translation>Strumenti di suddivisione delle forme e creazione di solidi compositi</translation>
     </message>
   </context>
   <context>
@@ -1539,7 +1539,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="462"/>
       <source>Removes the selected features from a shape</source>
-      <translation type="unfinished">Removes the selected features from a shape</translation>
+      <translation>Rimuove le feature selezionate da una forma</translation>
     </message>
   </context>
   <context>
@@ -1552,7 +1552,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="358"/>
       <source>Shape Element Copy</source>
-      <translation type="unfinished">Shape Element Copy</translation>
+      <translation>Copia elemento forma</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="359"/>
@@ -1660,12 +1660,12 @@
     <message>
       <location filename="../../Command.cpp" line="1197"/>
       <source>Import Curve Network</source>
-      <translation type="unfinished">Import Curve Network</translation>
+      <translation>Importa rete di curve</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1199"/>
       <source>Imports a curve network</source>
-      <translation type="unfinished">Imports a curve network</translation>
+      <translation>Importa una rete di curve</translation>
     </message>
   </context>
   <context>
@@ -1683,7 +1683,7 @@
     <message>
       <location filename="../../Command.cpp" line="1747"/>
       <source>Lofts the selected profiles</source>
-      <translation type="unfinished">Lofts the selected profiles</translation>
+      <translation>Connette i profili selezionati</translation>
     </message>
   </context>
   <context>
@@ -1696,7 +1696,7 @@
     <message>
       <location filename="../../Command.cpp" line="1506"/>
       <source>Face From Wires</source>
-      <translation type="unfinished">Face From Wires</translation>
+      <translation>Faccia da polilinea</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1507"/>
@@ -1755,7 +1755,7 @@
     <message>
       <location filename="../../Command.cpp" line="1805"/>
       <source>Offsets shapes in 3D</source>
-      <translation type="unfinished">Offsets shapes in 3D</translation>
+      <translation>Offset forme in 3D</translation>
     </message>
   </context>
   <context>
@@ -1773,7 +1773,7 @@
     <message>
       <location filename="../../Command.cpp" line="1872"/>
       <source>Offsets planar shapes in 2D</source>
-      <translation type="unfinished">Offsets planar shapes in 2D</translation>
+      <translation>Offset forme piane in 2D</translation>
     </message>
   </context>
   <context>
@@ -1786,12 +1786,12 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Pick Curve Network</source>
-      <translation type="unfinished">Pick Curve Network</translation>
+      <translation>Seleziona rete di curve</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>Picks a curve network</source>
-      <translation type="unfinished">Picks a curve network</translation>
+      <translation>Seleziona una rete di curve</translation>
     </message>
   </context>
   <context>
@@ -1840,7 +1840,7 @@
     <message>
       <location filename="../../Command.cpp" line="2438"/>
       <source>Project on Surface</source>
-      <translation type="unfinished">Project on Surface</translation>
+      <translation>Proietta su superficie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2439"/>
@@ -1864,12 +1864,12 @@ della proiezione.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="386"/>
       <source>Refine Shape</source>
-      <translation type="unfinished">Refine Shape</translation>
+      <translation>Affina forma</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="387"/>
       <source>Creates a refined copy of the selected shapes</source>
-      <translation type="unfinished">Creates a refined copy of the selected shapes</translation>
+      <translation>Crea una copia affinata delle forme selezionate</translation>
     </message>
   </context>
   <context>
@@ -1882,12 +1882,12 @@ della proiezione.</translation>
     <message>
       <location filename="../../Command.cpp" line="1350"/>
       <source>Reverse Shapes</source>
-      <translation type="unfinished">Reverse Shapes</translation>
+      <translation>Inverti forme</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1351"/>
       <source>Reverses the orientation of the selected shapes</source>
-      <translation type="unfinished">Reverses the orientation of the selected shapes</translation>
+      <translation>Inverte l'orientamento delle forme selezionate</translation>
     </message>
   </context>
   <context>
@@ -1918,12 +1918,12 @@ della proiezione.</translation>
     <message>
       <location filename="../../Command.cpp" line="2186"/>
       <source>Ruled Surface</source>
-      <translation type="unfinished">Ruled Surface</translation>
+      <translation>Superficie rigata</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2187"/>
       <source>Creates a ruled surface between 2 selected wires</source>
-      <translation type="unfinished">Creates a ruled surface between 2 selected wires</translation>
+      <translation>Crea una superficie rigata tra 2 linee selezionate</translation>
     </message>
   </context>
   <context>
@@ -1941,7 +1941,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../Command.cpp" line="998"/>
       <source>Sections 2 selected shapes</source>
-      <translation type="unfinished">Sections 2 selected shapes</translation>
+      <translation>Seziona 2 forme selezionate</translation>
     </message>
   </context>
   <context>
@@ -1977,7 +1977,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="241"/>
       <source>Creates a simple non-parametric copy of the selected shapes</source>
-      <translation type="unfinished">Creates a simple non-parametric copy of the selected shapes</translation>
+      <translation>Crea una copia semplice non parametrica delle forme selezionate</translation>
     </message>
   </context>
   <context>
@@ -2033,7 +2033,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../Command.cpp" line="1776"/>
       <source>Sweeps profiles along a wire</source>
-      <translation type="unfinished">Sweeps profiles along a wire</translation>
+      <translation>Scorre i profili lungo una linea</translation>
     </message>
   </context>
   <context>
@@ -2051,7 +2051,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../Command.cpp" line="2040"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
-      <translation type="unfinished">Removes the selected faces and offsets the remaining shape outward to add thickness</translation>
+      <translation>Rimuove le facce selezionate e sposta la forma rimanente verso l'esterno per aggiungere spessore</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2099"/>
@@ -2094,12 +2094,12 @@ della proiezione.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="328"/>
       <source>Transformed Copy</source>
-      <translation type="unfinished">Transformed Copy</translation>
+      <translation>Copia trasformata</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="329"/>
       <source>Creates a non-parametric copy with transformed placement of the selected shapes</source>
-      <translation type="unfinished">Creates a non-parametric copy with transformed placement of the selected shapes</translation>
+      <translation>Crea una copia non parametrica con posizionamento trasformato delle forme selezionate</translation>
     </message>
   </context>
   <context>
@@ -2143,7 +2143,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../Command.cpp" line="1225"/>
       <source>Import Curve Net</source>
-      <translation type="unfinished">Import Curve Net</translation>
+      <translation>Importa rete di curve</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
@@ -2269,7 +2269,7 @@ della proiezione.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1603"/>
       <source>Project on surface</source>
-      <translation>Proiettare sulla superficie</translation>
+      <translation>Proietta sulla superficie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="211"/>
@@ -2557,7 +2557,7 @@ Nota: il posizionamento è espresso nello spazio locale dell'oggetto da associar
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="23"/>
       <source>If not empty, field contents will be used in the STEP file header</source>
-      <translation type="unfinished">If not empty, field contents will be used in the STEP file header</translation>
+      <translation>Se non è vuoto, il contenuto del campo verrà utilizzato nell'intestazione del file STEP</translation>
     </message>
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="26"/>
@@ -2613,10 +2613,10 @@ Nota: il posizionamento è espresso nello spazio locale dell'oggetto da associar
 a single object. When importing back the STEP file, the
 placement will be encoded into the shape geometry, instead of keeping
 it inside the placement property.</source>
-      <translation type="unfinished">Keeps the placement information when exporting
-a single object. When importing back the STEP file, the
-placement will be encoded into the shape geometry, instead of keeping
-it inside the placement property.</translation>
+      <translation>Mantiene le informazioni di posizionamento durante l'esportazione
+di un singolo oggetto. Quando si reimporta il file STEP, il
+posizionamento verrà codificato nella geometria della forma, anziché mantenerlo
+all'interno della proprietà di posizionamento.</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="139"/>
@@ -2726,12 +2726,12 @@ Se entrambe le lunghezze sono zero, viene usata la ampiezza della direzione.</tr
     <message>
       <location filename="../../DlgExtrusion.ui" line="68"/>
       <source>Starts the selection of edges in the 3D view</source>
-      <translation type="unfinished">Starts the selection of edges in the 3D view</translation>
+      <translation>Avvia la selezione dei bordi nella vista 3D</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="78"/>
       <source>Specify direction manually using X, Y, Z values</source>
-      <translation type="unfinished">Specify direction manually using X, Y, Z values</translation>
+      <translation>Specificare la direzione manualmente usando i valori X, Y, Z</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="81"/>
@@ -2771,7 +2771,7 @@ Se entrambe le lunghezze sono zero, viene usata la ampiezza della direzione.</tr
     <message>
       <location filename="../../DlgExtrusion.ui" line="262"/>
       <source>Distributes the extrusion length equally to both sides</source>
-      <translation type="unfinished">Distributes the extrusion length equally to both sides</translation>
+      <translation>Distribuisce la lunghezza di estrusione equamente su entrambi i lati</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="265"/>
@@ -2832,7 +2832,7 @@ Se entrambe le lunghezze sono zero, viene usata la ampiezza della direzione.</tr
       <location filename="../../DlgExtrusion.cpp" line="564"/>
       <source>Creating extrusion failed.
 %1</source>
-      <translation type="unfinished">Creating extrusion failed.
+      <translation>Creazione estrusione non riuscita.
 %1</translation>
     </message>
     <message>
@@ -3051,8 +3051,8 @@ Select a valid shape in the drop-down box first.</translation>
       <location filename="../../DlgFilletEdges.cpp" line="1099"/>
       <source>No edge entity is checked to fillet.
 Check one or more edge entities first.</source>
-      <translation type="unfinished">No edge entity is checked to fillet.
-Check one or more edge entities first.</translation>
+      <translation>Nessuna entità spigolo è stata selezionata per il raccordo.
+Selezionare prima una o più entità spigolo.</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="142"/>
@@ -3199,7 +3199,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgImportStep.ui" line="45"/>
       <source>Select this to use App::LinkGroup as group container, or else use App::Part</source>
-      <translation type="unfinished">Select this to use App::LinkGroup as group container, or else use App::Part</translation>
+      <translation>Selezionare questa opzione per utilizzare App::LinkGroup come contenitore del gruppo, o in alternativa utilizzare App::Part</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="61"/>
@@ -3750,12 +3750,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Project on Surface</source>
-      <translation type="unfinished">Project on Surface</translation>
+      <translation>Proietta su superficie</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
       <source>Select Projection Surface</source>
-      <translation type="unfinished">Select Projection Surface</translation>
+      <translation>Selezionare superficie di proiezione</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
@@ -3785,7 +3785,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="116"/>
       <source>Solid depth</source>
-      <translation>Profondità solida</translation>
+      <translation>Profondità solido</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="141"/>
@@ -3815,7 +3815,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
       <source>Projection object</source>
-      <translation type="unfinished">Projection object</translation>
+      <translation>Oggetto da proiettare</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
@@ -3825,7 +3825,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
-      <translation type="unfinished">Cannot create a projection object</translation>
+      <translation>Impossibile creare un oggetto di proiezione</translation>
     </message>
   </context>
   <context>
@@ -3969,7 +3969,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="14"/>
       <source>Shape View</source>
-      <translation type="unfinished">Shape View</translation>
+      <translation>Vista forma</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPart.ui" line="26"/>
@@ -4009,7 +4009,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="110"/>
       <source>Angle deflection</source>
-      <translation type="unfinished">Angle deflection</translation>
+      <translation>Deflessione angolare</translation>
     </message>
     <message>
       <location filename="../../DlgSettings3DViewPartImp.cpp" line="111"/>
@@ -4047,7 +4047,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after applying operations</source>
-      <translation type="unfinished">Automatically refine model after applying operations</translation>
+      <translation>Affina automaticamente il modello dopo l'applicazione delle operazioni</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="99"/>
@@ -4082,7 +4082,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="175"/>
       <source>Switch to task panel when entering Part Design workbench</source>
-      <translation type="unfinished">Switch to task panel when entering Part Design workbench</translation>
+      <translation>Passa al pannello azioni quando si entra nell'ambiente Part Design</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="206"/>
@@ -4122,7 +4122,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="172"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
-      <translation type="unfinished">Automatically switch to the task panel when the Part Design workbench is activated</translation>
+      <translation>Passa automaticamente al pannello azioni quando viene attivato l'ambiente Part Design</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="197"/>
@@ -4145,7 +4145,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="20"/>
       <source>Default Shape Appearance Properties</source>
-      <translation type="unfinished">Default Shape Appearance Properties</translation>
+      <translation>Proprietà predefinite per l'aspetto della forma</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="34"/>
@@ -4296,7 +4296,7 @@ o il nero.</translation>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="505"/>
       <source>Default Annotation Color</source>
-      <translation type="unfinished">Default Annotation Color</translation>
+      <translation>Colore annotazione predefinito</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="519"/>
@@ -4397,7 +4397,7 @@ verrà utilizzato il vettore normale del piano di schizzo</translation>
     <message>
       <location filename="../../TaskLoft.cpp" line="200"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
-      <translation type="unfinished">At least 2 vertices, edges, wires, or faces are required.</translation>
+      <translation>Sono richiesti almeno 2 vertici, spigoli, poli linee o facce.</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.cpp" line="239"/>
@@ -4564,13 +4564,13 @@ verrà utilizzato il vettore normale del piano di schizzo</translation>
     <message>
       <location filename="../../SectionCutting.ui" line="242"/>
       <source>Cut Face</source>
-      <translation type="unfinished">Cut Face</translation>
+      <translation>Faccia di taglio</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="254"/>
       <location filename="../../SectionCutting.ui" line="394"/>
       <source>Color of the cut face</source>
-      <translation type="unfinished">Color of the cut face</translation>
+      <translation>Colore della faccia di taglio</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="302"/>
@@ -4579,21 +4579,21 @@ verrà utilizzato il vettore normale del piano di schizzo</translation>
 from the cut objects.
 Works only properly if all objects
 have the same values.</source>
-      <translation type="unfinished">Takes the color and transparency
-from the cut objects.
-Works only properly if all objects
-have the same values.</translation>
+      <translation>Prende il colore e la trasparenza
+dagli oggetti tagliati.
+Funziona correttamente solo se tutti gli oggetti
+hanno gli stessi valori.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="330"/>
       <location filename="../../SectionCutting.ui" line="473"/>
       <source>Transparency of the cut face</source>
-      <translation type="unfinished">Transparency of the cut face</translation>
+      <translation>Trasparenza della faccia di taglio</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="376"/>
       <source>Cut Intersecting Objects</source>
-      <translation type="unfinished">Cut Intersecting Objects</translation>
+      <translation>Taglia oggetti intersecanti</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="514"/>
@@ -4698,7 +4698,7 @@ saranno visibili solo i tagli creati</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="499"/>
       <source>Select only 1 shape object</source>
-      <translation type="unfinished">Select only 1 shape object</translation>
+      <translation>Selezionare 1 solo oggetto forma</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="571"/>
@@ -4756,7 +4756,7 @@ saranno visibili solo i tagli creati</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="376"/>
       <source>At least one edge or wire is required.</source>
-      <translation>Selezionare almeno un bordo o  una polilinea.</translation>
+      <translation>Selezionare almeno un bordo o  una poli linea.</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="382"/>
@@ -4859,8 +4859,8 @@ saranno visibili solo i tagli creati</translation>
       <location filename="../../TaskAttacher.ui" line="227"/>
       <source>The offset is expressed in the local coordinate system
 of the object being attached</source>
-      <translation type="unfinished">The offset is expressed in the local coordinate system
-of the object being attached</translation>
+      <translation>L'offset è espresso nel sistema di coordinate locale
+dell'oggetto da collegare</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -4886,8 +4886,8 @@ of the object being attached</translation>
       <location filename="../../TaskAttacher.ui" line="257"/>
       <source>Rotation around the local X-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local X-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>Rotazione attorno all'asse X locale. L'offset è espresso nel sistema di coordinate locali
+dell'oggetto da collegare.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="283"/>
@@ -4898,8 +4898,8 @@ of the object being attached.</translation>
       <location filename="../../TaskAttacher.ui" line="296"/>
       <source>Rotation around the local Y-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local Y-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>Rotazione attorno all'asse Y locale. L'offset è espresso nel sistema di coordinate locali
+dell'oggetto da collegare.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="322"/>
@@ -4910,8 +4910,8 @@ of the object being attached.</translation>
       <location filename="../../TaskAttacher.ui" line="335"/>
       <source>Rotation around the local Z-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation type="unfinished">Rotation around the local Z-axis. The offset is expressed in the local coordinate system
-of the object being attached.</translation>
+      <translation>Rotazione attorno all'asse Z locale. L'offset è espresso nel sistema di coordinate locali
+dell'oggetto da collegare.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="358"/>
@@ -5269,7 +5269,7 @@ Controlli individuali delle operazioni booleane:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="592"/>
       <source>to report view.</source>
-      <translation type="unfinished">to report view.</translation>
+      <translation>alla vista report.</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="739"/>
@@ -5493,8 +5493,8 @@ Controlli individuali delle operazioni booleane:</translation>
       <location filename="../../TaskSweep.cpp" line="551"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
-      <translation type="unfinished">Select at least 1 profile and an edge or wire
-in the 3D view for the sweep path.</translation>
+      <translation>Selezionare almeno 1 profilo e un bordo o una poli linea
+nella vista 3D per il percorso di scorrimento.</translation>
     </message>
   </context>
   <context>
@@ -5599,7 +5599,7 @@ in the 3D view for the sweep path.</translation>
       <location filename="../../Command.cpp" line="334"/>
       <location filename="../../Command.cpp" line="1016"/>
       <source>Select 2 shapes</source>
-      <translation type="unfinished">Select 2 shapes</translation>
+      <translation>Selezionare 2 forme</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="351"/>
@@ -5623,7 +5623,7 @@ Continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="953"/>
       <source>Select at least one shape</source>
-      <translation type="unfinished">Select at least one shape</translation>
+      <translation>Selezionare almeno una forma</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1210"/>
@@ -5638,7 +5638,7 @@ Continue?</translation>
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Select either 2 edges or 2 wires.</source>
-      <translation type="unfinished">Select either 2 edges or 2 wires.</translation>
+      <translation>Selezionare 2 bordi o 2 poli linee.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="73"/>
@@ -5699,17 +5699,17 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>Invalid point on curve</source>
-      <translation type="unfinished">Invalid point on curve</translation>
+      <translation>Punto sulla curva non valido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="104"/>
       <source>Invalid point on curve on surface</source>
-      <translation type="unfinished">Invalid point on curve on surface</translation>
+      <translation>Punto sulla curva sulla superficie non valido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="106"/>
       <source>Invalid point on surface</source>
-      <translation type="unfinished">Invalid point on surface</translation>
+      <translation>Punto sulla superficie non valido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="107"/>
@@ -5729,7 +5729,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>No curve on surface</source>
-      <translation type="unfinished">No curve on surface</translation>
+      <translation>Nessuna curva sulla superficie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="111"/>
@@ -5744,27 +5744,27 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="115"/>
       <source>Invalid same range flag</source>
-      <translation type="unfinished">Invalid same range flag</translation>
+      <translation>Contrassegno dello stesso intervallo non valido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid same parameter flag</source>
-      <translation type="unfinished">Invalid same parameter flag</translation>
+      <translation>Segnalatore dello stesso parametro non valido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid degenerated flag</source>
-      <translation type="unfinished">Invalid degenerated flag</translation>
+      <translation>Contrassegno degenerato non valido</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Free edge</source>
-      <translation type="unfinished">Free edge</translation>
+      <translation>Bordo libero</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Invalid multi-connexity</source>
-      <translation type="unfinished">Invalid multi-connexity</translation>
+      <translation>Multi-connettività non valida</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="120"/>
@@ -5774,42 +5774,42 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Empty wire</source>
-      <translation type="unfinished">Empty wire</translation>
+      <translation>Polilinea vuota</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Redundant edge</source>
-      <translation type="unfinished">Redundant edge</translation>
+      <translation>Bordo ridondante</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Self-intersecting wire</source>
-      <translation type="unfinished">Self-intersecting wire</translation>
+      <translation>Polilinea autointersecante</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>No surface</source>
-      <translation type="unfinished">No surface</translation>
+      <translation>Nessuna superficie</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>Invalid wire</source>
-      <translation type="unfinished">Invalid wire</translation>
+      <translation>Polilinea non valida</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Redundant wire</source>
-      <translation type="unfinished">Redundant wire</translation>
+      <translation>Polilinea ridondante</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Intersecting wires</source>
-      <translation type="unfinished">Intersecting wires</translation>
+      <translation>Polilinee intersecanti</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Invalid imbrication of wires</source>
-      <translation type="unfinished">Invalid imbrication of wires</translation>
+      <translation>Imbricazione non valida delle polilinee</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="129"/>
@@ -5869,7 +5869,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="150"/>
       <source>Out of enum range:</source>
-      <translation type="unfinished">Out of enum range:</translation>
+      <translation>Fuori dall'intervallo di enumerazione:</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="162"/>
@@ -5984,7 +5984,7 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
-      <translation type="unfinished">Appearance per Face</translation>
+      <translation>Aspetto per faccia</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjectOnSurface.cpp" line="52"/>
@@ -5994,7 +5994,7 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderSpline.cpp" line="93"/>
       <source>Show Control Points</source>
-      <translation type="unfinished">Show Control Points</translation>
+      <translation>Mostra punti di controllo</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="71"/>
@@ -6628,7 +6628,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="312"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Crea facce piane separate da ogni polilinea in modo indipendente. Nessun supporto per i fori; le polilinee possono essere su piani diversi.</translation>
+      <translation>Crea facce piane separate da ogni poli linea in modo indipendente. Nessun supporto per i fori; le poli linee possono essere su piani diversi.</translation>
     </message>
   </context>
   <context>
@@ -6641,7 +6641,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="66"/>
       <source>Supports making planar faces with holes with islands in them</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands in them</translation>
+      <translation>Supporta la creazione di facce planari con fori con isole al loro interno</translation>
     </message>
   </context>
   <context>
@@ -6654,7 +6654,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="262"/>
       <source>Supports making planar faces with holes, but no islands inside holes</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes</translation>
+      <translation>Supporta la creazione di facce planari con fori, ma nessuna isola all'interno dei fori</translation>
     </message>
   </context>
   <context>
@@ -6675,7 +6675,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Appearance per Face</source>
-      <translation type="unfinished">Appearance per Face</translation>
+      <translation>Aspetto per la faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
@@ -6751,7 +6751,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="237"/>
       <source>Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</source>
-      <translation type="unfinished">Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</translation>
+      <translation>Crea una copia parametrica dell'oggetto selezionato con tutte le tolleranze contenute impostate almeno su un certo valore minimo</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="249"/>
@@ -6885,7 +6885,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="227"/>
       <source>Fuses shapes, taking care to preserve voids</source>
-      <translation type="unfinished">Fuses shapes, taking care to preserve voids</translation>
+      <translation>Fonde le forme, avendo cura di preservare i vuoti</translation>
     </message>
   </context>
   <context>
@@ -6893,12 +6893,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="338"/>
       <source>Embed Shapes</source>
-      <translation type="unfinished">Embed Shapes</translation>
+      <translation>Incorpora forme</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="342"/>
       <source>Fuses one shape into another, taking care to preserve voids</source>
-      <translation type="unfinished">Fuses one shape into another, taking care to preserve voids</translation>
+      <translation>Fonde una forma nell'altra, avendo cura di preservare i vuoti</translation>
     </message>
   </context>
   <context>
@@ -6906,12 +6906,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="454"/>
       <source>Cutout Shape</source>
-      <translation type="unfinished">Cutout Shape</translation>
+      <translation>Ritaglia forma</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="458"/>
       <source>Creates a cutout in the selected shape to fit another shape</source>
-      <translation type="unfinished">Creates a cutout in the selected shape to fit another shape</translation>
+      <translation>Crea un ritaglio nella forma selezionata per adattarla a un'altra forma</translation>
     </message>
   </context>
   <context>
@@ -7029,12 +7029,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="371"/>
       <source>Ring facemaker</source>
-      <translation type="unfinished">Ring facemaker</translation>
+      <translation>Anello facemaker</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="376"/>
       <source>Supports making planar faces with holes and holes as faces</source>
-      <translation type="unfinished">Supports making planar faces with holes and holes as faces</translation>
+      <translation>Supporta la creazione di facce planari con fori e fori come facce</translation>
     </message>
   </context>
   <context>
@@ -7042,7 +7042,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2473"/>
       <source>Persiste&amp;nt Section Cut</source>
-      <translation type="unfinished">Persiste&amp;nt Section Cut</translation>
+      <translation>Sezione di taglio persiste&amp;nte</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2474"/>
@@ -7060,7 +7060,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <source>Changes the selection filter</source>
-      <translation type="unfinished">Changes the selection filter</translation>
+      <translation>Cambia il filtro di selezione</translation>
     </message>
   </context>
   <context>
@@ -7201,7 +7201,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
-      <translation type="unfinished">Failure while rendering preview: %1. That usually indicates an error with model.</translation>
+      <translation>Errore durante il rendering dell'anteprima: %1. Di solito indica un errore con il modello.</translation>
     </message>
   </context>
 </TS>

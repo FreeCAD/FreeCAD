@@ -4,17 +4,17 @@
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="790"/>
+      <location filename="../../CommandAnnotate.cpp" line="789"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="791"/>
+      <location filename="../../CommandAnnotate.cpp" line="790"/>
       <source>Centerline Between 2 Lines</source>
       <translation>Središnja linija između 2 linije</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="792"/>
+      <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Adds a centerline between 2 selected lines</source>
       <translation>Dodajte središnju liniju između 2 odabrane linije</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="865"/>
+      <location filename="../../CommandAnnotate.cpp" line="864"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="866"/>
+      <location filename="../../CommandAnnotate.cpp" line="865"/>
       <source>Centerline Between 2 Points</source>
       <translation>Središnja linija između 2 točke</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="867"/>
+      <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Adds a centerline between 2 selected points</source>
       <translation>Dodajte središnju liniju između 2 odabrane točke</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="978"/>
+      <location filename="../../CommandAnnotate.cpp" line="977"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="979"/>
+      <location filename="../../CommandAnnotate.cpp" line="978"/>
       <source>Cosmetic Line Through 2 Points</source>
       <translation>Dodaj pomočnu liniju kroz 2 točke</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="980"/>
+      <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Add a cosmetic line that passes through 2 selected points</source>
       <translation>Dodaje pomočnu liniju koja prolazi kroz 2 odabrane točke</translation>
     </message>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1742"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1743"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="696"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="697"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1695"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1696"/>
@@ -107,17 +107,17 @@
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="526"/>
+      <location filename="../../CommandAnnotate.cpp" line="525"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="527"/>
+      <location filename="../../CommandAnnotate.cpp" line="526"/>
       <source>Text Annotation</source>
       <translation>Napomena</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="528"/>
+      <location filename="../../CommandAnnotate.cpp" line="527"/>
       <source>Inserts an editable text block annotation to the current page</source>
       <translation>Umeće napomenu teksta koji se može uređivati na postojećoj stranici</translation>
     </message>
@@ -127,7 +127,7 @@
     <message>
       <location filename="../../Command.cpp" line="1661"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1662"/>
@@ -145,7 +145,7 @@
     <message>
       <location filename="../../Command.cpp" line="1274"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1275"/>
@@ -161,22 +161,22 @@
   <context>
     <name>CmdTechDrawCenterLineGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="576"/>
+      <location filename="../../CommandAnnotate.cpp" line="575"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="577"/>
+      <location filename="../../CommandAnnotate.cpp" line="576"/>
       <source>Centerline</source>
       <translation>Srednja linija</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="578"/>
+      <location filename="../../CommandAnnotate.cpp" line="577"/>
       <source>Inserts a centerline to a face, or between 2 lines or edges</source>
       <translation>Umeće središnju crtu na licu ili između 2 linije ili rubova</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="650"/>
+      <location filename="../../CommandAnnotate.cpp" line="649"/>
       <source>Centerline Faces</source>
       <translation>Srednja linija područja</translation>
     </message>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="1338"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1339"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1375"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1376"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="1459"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1460"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="882"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="883"/>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1129"/>
+      <location filename="../../CommandAnnotate.cpp" line="1128"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1130"/>
+      <location filename="../../CommandAnnotate.cpp" line="1129"/>
       <source>Remove Cosmetic Object</source>
       <translation>Ukloni pomoćni objekt</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1131"/>
+      <location filename="../../CommandAnnotate.cpp" line="1130"/>
       <source>Removes the selected cosmetic object from the page</source>
       <translation>Uklanja odabrani pomoćni objekt sa stranice</translation>
     </message>
@@ -274,17 +274,17 @@
   <context>
     <name>CmdTechDrawCosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="387"/>
+      <location filename="../../CommandAnnotate.cpp" line="386"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="388"/>
+      <location filename="../../CommandAnnotate.cpp" line="387"/>
       <source>Cosmetic Vertex</source>
       <translation>Pomoćna tjemena točka</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="389"/>
+      <location filename="../../CommandAnnotate.cpp" line="388"/>
       <source>Adds a cosmetic vertex</source>
       <translation>Dodaje pomoćnu tjemenu točku</translation>
     </message>
@@ -294,11 +294,11 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="200"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="201"/>
-      <location filename="../../CommandAnnotate.cpp" line="276"/>
+      <location filename="../../CommandAnnotate.cpp" line="275"/>
       <source>Cosmetic Vertex</source>
       <translation>Pomoćna tjemena točka</translation>
     </message>
@@ -311,17 +311,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1247"/>
+      <location filename="../../CommandAnnotate.cpp" line="1246"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1248"/>
+      <location filename="../../CommandAnnotate.cpp" line="1247"/>
       <source>Edit Line Appearance</source>
       <translation>Uredite Izgled linije</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1249"/>
+      <location filename="../../CommandAnnotate.cpp" line="1248"/>
       <source>Opens the &apos;Line decoration&apos; dialog to edit the selected lines</source>
       <translation>Otvara &apos;Izgled linije&apos; dijalog za uređivanje odabranih linija</translation>
     </message>
@@ -331,7 +331,7 @@
     <message>
       <location filename="../../Command.cpp" line="1008"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1009"/>
@@ -349,7 +349,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1504"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1505"/>
@@ -367,7 +367,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1363"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1364"/>
@@ -389,7 +389,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="1597"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1598"/>
@@ -449,7 +449,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1740"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1741"/>
@@ -467,7 +467,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1835"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1836"/>
@@ -485,7 +485,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1119"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1120"/>
@@ -503,7 +503,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="941"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="942"/>
@@ -523,7 +523,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1083"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1084"/>
@@ -543,7 +543,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1008"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1009"/>
@@ -563,7 +563,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2101"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2102"/>
@@ -581,7 +581,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="741"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="742"/>
@@ -599,7 +599,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="248"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="249"/>
@@ -623,7 +623,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="279"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="280"/>
@@ -641,7 +641,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1493"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1494"/>
@@ -659,7 +659,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1863"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1864"/>
@@ -677,7 +677,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1273"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1274"/>
@@ -701,7 +701,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2004"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2005"/>
@@ -721,7 +721,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1638"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1639"/>
@@ -741,7 +741,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2195"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2196"/>
@@ -759,7 +759,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1461"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1462"/>
@@ -779,7 +779,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1832"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1833"/>
@@ -799,7 +799,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1339"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1340"/>
@@ -823,7 +823,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2070"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2071"/>
@@ -843,7 +843,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1707"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1708"/>
@@ -863,7 +863,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2244"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2245"/>
@@ -881,7 +881,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="476"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="477"/>
@@ -901,7 +901,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1202"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1203"/>
@@ -919,7 +919,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1048"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1049"/>
@@ -943,7 +943,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1108"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1109"/>
@@ -967,7 +967,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1170"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1172"/>
@@ -987,7 +987,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1676"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1677"/>
@@ -1007,7 +1007,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="170"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="171"/>
@@ -1031,7 +1031,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="445"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="446"/>
@@ -1051,7 +1051,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="507"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="508"/>
@@ -1069,7 +1069,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="148"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="149"/>
@@ -1089,7 +1089,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="298"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="299"/>
@@ -1107,7 +1107,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="179"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="180"/>
@@ -1127,7 +1127,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1447"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1448"/>
@@ -1145,7 +1145,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1384"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1385"/>
@@ -1169,7 +1169,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1415"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1416"/>
@@ -1189,7 +1189,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1546"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1547"/>
@@ -1207,7 +1207,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="792"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="793"/>
@@ -1225,7 +1225,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="628"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="629"/>
@@ -1249,7 +1249,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="757"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="758"/>
@@ -1273,7 +1273,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="690"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="691"/>
@@ -1297,7 +1297,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="267"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="268"/>
@@ -1315,7 +1315,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="709"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="710"/>
@@ -1333,7 +1333,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1708"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1709"/>
@@ -1353,7 +1353,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="549"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="550"/>
@@ -1373,7 +1373,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="446"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="447"/>
@@ -1393,7 +1393,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="498"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="499"/>
@@ -1417,7 +1417,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="395"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="396"/>
@@ -1441,7 +1441,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="581"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="582"/>
@@ -1459,7 +1459,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="799"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="800"/>
@@ -1477,7 +1477,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1837"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1838"/>
@@ -1503,17 +1503,17 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
   <context>
     <name>CmdTechDrawFaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="679"/>
+      <location filename="../../CommandAnnotate.cpp" line="678"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="680"/>
+      <location filename="../../CommandAnnotate.cpp" line="679"/>
       <source>Centerline Between 2 Faces</source>
       <translation>Središnja linija između 2 površine</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="681"/>
+      <location filename="../../CommandAnnotate.cpp" line="680"/>
       <source>Adds a centerline to selected faces</source>
       <translation>Dodaje središnju liniju na odabrane površine</translation>
     </message>
@@ -1523,7 +1523,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandDecorate.cpp" line="169"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="170"/>
@@ -1541,7 +1541,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandDecorate.cpp" line="74"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="75"/>
@@ -1559,7 +1559,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1599"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1600"/>
@@ -1577,7 +1577,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1931"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1932"/>
@@ -1595,7 +1595,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandDecorate.cpp" line="240"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="241"/>
@@ -1628,7 +1628,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandAnnotate.cpp" line="86"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="87"/>
@@ -1646,7 +1646,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1552"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1553"/>
@@ -1662,17 +1662,17 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
   <context>
     <name>CmdTechDrawMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="448"/>
+      <location filename="../../CommandAnnotate.cpp" line="447"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="449"/>
+      <location filename="../../CommandAnnotate.cpp" line="448"/>
       <source>Midpoint Vertices</source>
       <translation>Središnje točke</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="450"/>
+      <location filename="../../CommandAnnotate.cpp" line="449"/>
       <source>Adds cosmetic vertices at the midpoint of the selected edges</source>
       <translation>Umeće pomoćne vrhove u sredinu odabranih rubova</translation>
     </message>
@@ -1682,7 +1682,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="107"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -1700,7 +1700,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="167"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="168"/>
@@ -1728,7 +1728,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="272"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="273"/>
@@ -1746,7 +1746,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="1914"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1915"/>
@@ -1764,7 +1764,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="1052"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1053"/>
@@ -1780,17 +1780,17 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
   <context>
     <name>CmdTechDrawQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="487"/>
+      <location filename="../../CommandAnnotate.cpp" line="486"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="488"/>
+      <location filename="../../CommandAnnotate.cpp" line="487"/>
       <source>Quadrant Vertices</source>
       <translation>Kvadrant krajnje točke</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="489"/>
+      <location filename="../../CommandAnnotate.cpp" line="488"/>
       <source>Adds cosmetic vertices at the quadrant points of the selected circles</source>
       <translation>Dodaje pomoćne točke u kvadratne točke odabranih krugova</translation>
     </message>
@@ -1800,7 +1800,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1456"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1457"/>
@@ -1818,7 +1818,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="236"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="237"/>
@@ -1836,7 +1836,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandAnnotate.cpp" line="148"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="149"/>
@@ -1854,7 +1854,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="727"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="728"/>
@@ -1882,7 +1882,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="819"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="820"/>
@@ -1898,17 +1898,17 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1329"/>
+      <location filename="../../CommandAnnotate.cpp" line="1328"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1330"/>
+      <location filename="../../CommandAnnotate.cpp" line="1329"/>
       <source>Toggle Edge Visibility</source>
       <translation>Promijeni vidljivost ruba</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1331"/>
+      <location filename="../../CommandAnnotate.cpp" line="1330"/>
       <source>Toggles the visibility of the selected edges</source>
       <translation>Mijenja vidljivost odabranih rubova</translation>
     </message>
@@ -1918,7 +1918,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="1734"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1735"/>
@@ -1936,7 +1936,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandStack.cpp" line="235"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="236"/>
@@ -1954,7 +1954,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandStack.cpp" line="355"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="356"/>
@@ -1972,7 +1972,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandStack.cpp" line="62"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="63"/>
@@ -2010,7 +2010,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandStack.cpp" line="175"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="176"/>
@@ -2028,7 +2028,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandStack.cpp" line="295"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="296"/>
@@ -2044,17 +2044,17 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1458"/>
+      <location filename="../../CommandAnnotate.cpp" line="1457"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1459"/>
+      <location filename="../../CommandAnnotate.cpp" line="1458"/>
       <source>Surface Finish Symbol</source>
       <translation>Oznaka (kvalitete) završne obrade površine</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1460"/>
+      <location filename="../../CommandAnnotate.cpp" line="1459"/>
       <source>Adds a surface finish symbol in the selected view</source>
       <translation>Dodaje simbol površinske završne obrade u odabranom pogledu</translation>
     </message>
@@ -2064,7 +2064,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="1532"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1533"/>
@@ -2082,7 +2082,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1647"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1648"/>
@@ -2100,7 +2100,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2056"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2057"/>
@@ -2118,7 +2118,7 @@ Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se 
     <message>
       <location filename="../../Command.cpp" line="297"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="298"/>
@@ -2136,17 +2136,17 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1394"/>
+      <location filename="../../CommandAnnotate.cpp" line="1393"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1395"/>
+      <location filename="../../CommandAnnotate.cpp" line="1394"/>
       <source>Weld Symbol</source>
       <translation>Simbol spoja</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1396"/>
+      <location filename="../../CommandAnnotate.cpp" line="1395"/>
       <source>Adds welding information to the selected leader line</source>
       <translation>Dodaje informacije o spajanju odabranoj liniji vodilici</translation>
     </message>
@@ -2181,8 +2181,8 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>Stvori pokidan pogled</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
+      <location filename="../../PagePrinter.cpp" line="429"/>
       <source>Save page to DXF</source>
       <translation>Spremi stranicu u DXF formatu</translation>
     </message>
@@ -2205,12 +2205,12 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../Command.cpp" line="1428"/>
       <source>Add clip group</source>
-      <translation type="unfinished">Add clip group</translation>
+      <translation>Dodaj grupu isječaka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Remove clip group</source>
-      <translation type="unfinished">Remove clip group</translation>
+      <translation>Ukloni iz grupe isječaka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1634"/>
@@ -2224,17 +2224,17 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>Stvori pogled pregleda</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="334"/>
+      <location filename="../../CommandAnnotate.cpp" line="333"/>
       <source>Add midpoint vertices</source>
-      <translation type="unfinished">Add midpoint vertices</translation>
+      <translation>Dodaj središnje točke rubova</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="361"/>
+      <location filename="../../CommandAnnotate.cpp" line="360"/>
       <source>Quadrant vertices</source>
-      <translation type="unfinished">Quadrant vertices</translation>
+      <translation>Kvadrant pomoćne točke</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="544"/>
+      <location filename="../../CommandAnnotate.cpp" line="543"/>
       <source>Create Annotation</source>
       <translation>Stvori Napomenu</translation>
     </message>
@@ -2282,31 +2282,31 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../CommandCreateDims.cpp" line="243"/>
       <source>Insert dimension</source>
-      <translation type="unfinished">Insert dimension</translation>
+      <translation>Umetni dimenziju</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="758"/>
       <source>Add area dimension</source>
-      <translation type="unfinished">Add area dimension</translation>
+      <translation>Umetni dimenziju površine</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="769"/>
       <location filename="../../CommandCreateDims.cpp" line="1064"/>
       <location filename="../../CommandCreateDims.cpp" line="1165"/>
       <source>Add distance dimension</source>
-      <translation type="unfinished">Add distance dimension</translation>
+      <translation>Umetni dimenziju udaljenosti</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="778"/>
       <location filename="../../CommandCreateDims.cpp" line="884"/>
       <location filename="../../CommandCreateDims.cpp" line="1145"/>
       <source>Add distanceX chamfer dimension</source>
-      <translation type="unfinished">Add distanceX chamfer dimension</translation>
+      <translation>Dodaj dimenziju fasete udaljenost-X</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="831"/>
       <source>Add point to line distance dimension</source>
-      <translation type="unfinished">Add point to line distance dimension</translation>
+      <translation>Dodaj dimenziju udaljenosti od točke do linije</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="847"/>
@@ -2318,73 +2318,73 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../CommandCreateDims.cpp" line="998"/>
       <location filename="../../CommandCreateDims.cpp" line="1019"/>
       <source>Add extent dimension</source>
-      <translation type="unfinished">Add extent dimension</translation>
+      <translation>Umetni dimenziju proširenja</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="895"/>
       <source>Add angle dimension</source>
-      <translation type="unfinished">Add angle dimension</translation>
+      <translation>Umetni dimenziju kuta</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="910"/>
       <source>Add circle to line distance dimension</source>
-      <translation type="unfinished">Add circle to line distance dimension</translation>
+      <translation>Umetni dimenziju udaljenosti od kružnice do linije</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="925"/>
       <source>Add ellipse to line distance dimension</source>
-      <translation type="unfinished">Add ellipse to line distance dimension</translation>
+      <translation>Umetni dimenziju udaljenosti od elipse do linije</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="949"/>
       <location filename="../../CommandCreateDims.cpp" line="983"/>
       <source>Add arc length dimension</source>
-      <translation type="unfinished">Add arc length dimension</translation>
+      <translation>Umetnite dimenziju luka</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="959"/>
       <source>Add circle to circle distance dimension</source>
-      <translation type="unfinished">Add circle to circle distance dimension</translation>
+      <translation>Umetni dimenziju udaljenosti od kružnice do kružnice</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="993"/>
       <source>Add ellipse to ellipse distance dimension</source>
-      <translation type="unfinished">Add ellipse to ellipse distance dimension</translation>
+      <translation>Umetni dimenziju udaljenosti od elipse do elipse</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1049"/>
       <source>Add radius dimension</source>
-      <translation type="unfinished">Add radius dimension</translation>
+      <translation>Umetni dimenziju polumjera</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1053"/>
       <source>Add diameter dimension</source>
-      <translation type="unfinished">Add diameter dimension</translation>
+      <translation>Umetnite dimenziju promjera</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1148"/>
       <source>Add distanceX dimension</source>
-      <translation type="unfinished">Add distanceX dimension</translation>
+      <translation>Umetni dimenziju udaljenosti-X</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1155"/>
       <source>Add distanceY chamfer dimension</source>
-      <translation type="unfinished">Add distanceY chamfer dimension</translation>
+      <translation>Umetni dimenziju fasete udaljenost-Y</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1158"/>
       <source>Add distanceY dimension</source>
-      <translation type="unfinished">Add distanceY dimension</translation>
+      <translation>Umetni dimenziju udaljenosti-Y</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1203"/>
       <source>Add distanceX extent dimension</source>
-      <translation type="unfinished">Add distanceX extent dimension</translation>
+      <translation>Umetni dimenziju proširena udaljenost-X</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1208"/>
       <source>Add distanceY extent dimension</source>
-      <translation type="unfinished">Add distanceY extent dimension</translation>
+      <translation>Umetni dimenziju proširena udaljenost-Y</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1250"/>
@@ -2419,17 +2419,17 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1963"/>
       <source>Create Dimension DistanceX</source>
-      <translation type="unfinished">Create Dimension DistanceX</translation>
+      <translation>Stvorii dimenziju udaljenost-X</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1965"/>
       <source>Create Dimension DistanceY</source>
-      <translation type="unfinished">Create Dimension DistanceY</translation>
+      <translation>Stvorii dimenziju udaljenost-Y</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2252"/>
       <source>Create dimension</source>
-      <translation type="unfinished">Create dimension</translation>
+      <translation>Stvori dimenziju</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="200"/>
@@ -2444,7 +2444,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../CommandDecorate.cpp" line="121"/>
       <source>Remove old hatch</source>
-      <translation type="unfinished">Remove old hatch</translation>
+      <translation>Ukloni staru ispunu uzorka</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="199"/>
@@ -2484,7 +2484,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="251"/>
       <source>Update Cosmetic Line</source>
-      <translation type="unfinished">Update Cosmetic Line</translation>
+      <translation>Ažuriraj pomoćnu liniju</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="229"/>
@@ -2494,12 +2494,12 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="301"/>
       <source>Update Cosmetic Circle</source>
-      <translation type="unfinished">Update Cosmetic Circle</translation>
+      <translation>Ažuriraj pomoćni krug</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="433"/>
       <source>Create Detail view</source>
-      <translation type="unfinished">Create Detail view</translation>
+      <translation>Stvori detaljni pogled</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.cpp" line="475"/>
@@ -2529,11 +2529,11 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../TaskComplexSection.cpp" line="553"/>
       <source>Create Complex Section</source>
-      <translation type="unfinished">Create Complex Section</translation>
+      <translation>Stvori kompleksni odjeljak</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="572"/>
       <location filename="../../TaskComplexSection.cpp" line="648"/>
+      <location filename="../../TaskSectionView.cpp" line="572"/>
       <source>Edit Section View</source>
       <translation>Uređivanje pogled presjeka</translation>
     </message>
@@ -2560,77 +2560,77 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="602"/>
       <source>Position Horizontal Chain Dimension</source>
-      <translation type="unfinished">Position Horizontal Chain Dimension</translation>
+      <translation>Podešava vodoravnu lančanu dimenziju</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="663"/>
       <source>Position Vert Chain Dimension</source>
-      <translation type="unfinished">Position Vert Chain Dimension</translation>
+      <translation>Podešava okomitu lančanu dimenziju</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="725"/>
       <source>Position Oblique Chain Dimension</source>
-      <translation type="unfinished">Position Oblique Chain Dimension</translation>
+      <translation>Podešava kosu lančanu dimenziju</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="911"/>
       <source>Cascade Horizontal Dimension</source>
-      <translation type="unfinished">Cascade Horizontal Dimension</translation>
+      <translation>Kaskada vodoravnih dimenzija</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="977"/>
       <source>Cascade Vertical Dimension</source>
-      <translation type="unfinished">Cascade Vertical Dimension</translation>
+      <translation>Kaskada okomitih dimenzija</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1044"/>
       <source>Cascade Oblique Dimension</source>
-      <translation type="unfinished">Cascade Oblique Dimension</translation>
+      <translation>Kaskada kosih dimenzija</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1243"/>
       <source>Create Horizontal Chain Dimension</source>
-      <translation type="unfinished">Create Horizontal Chain Dimension</translation>
+      <translation>Stvori dimenziju vodoravnog lanca</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1308"/>
       <source>Create Vert Chain dimension</source>
-      <translation type="unfinished">Create Vert Chain dimension</translation>
+      <translation>Stvori dimenzije okomitih lanca</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1373"/>
       <source>Create oblique chain dimension</source>
-      <translation type="unfinished">Create oblique chain dimension</translation>
+      <translation>Stvori dimenzije kosog lanca</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1602"/>
       <source>Create Horizontal Coord Dimension</source>
-      <translation type="unfinished">Create Horizontal Coord Dimension</translation>
+      <translation>Stvori dimenziju vodoravnih koordinata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1670"/>
       <source>Create vert coord dimension</source>
-      <translation type="unfinished">Create vert coord dimension</translation>
+      <translation>Stvori dimenzije okomitih koordinata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1740"/>
       <source>Create oblique coord dimension</source>
-      <translation type="unfinished">Create oblique coord dimension</translation>
+      <translation>Stvori dimenzije kosih koordinata</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1971"/>
       <source>Create Horizontal Chamfer Dimension</source>
-      <translation type="unfinished">Create Horizontal Chamfer Dimension</translation>
+      <translation>Stvori vodoravnu dimenziju žlijeba</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2037"/>
       <source>Create Vert Chamfer Dimension</source>
-      <translation type="unfinished">Create Vert Chamfer Dimension</translation>
+      <translation>Stvori okomitu dimenziju žlijeba</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2212"/>
       <source>Create Arc Length Dimension</source>
-      <translation type="unfinished">Create Arc Length Dimension</translation>
+      <translation>Stvori dimenziju dužine luka</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="204"/>
@@ -3079,35 +3079,6 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="115"/>
-      <location filename="../../CommandAnnotate.cpp" line="120"/>
-      <location filename="../../CommandAnnotate.cpp" line="312"/>
-      <location filename="../../CommandAnnotate.cpp" line="413"/>
-      <location filename="../../CommandAnnotate.cpp" line="720"/>
-      <location filename="../../CommandAnnotate.cpp" line="726"/>
-      <location filename="../../CommandAnnotate.cpp" line="753"/>
-      <location filename="../../CommandAnnotate.cpp" line="763"/>
-      <location filename="../../CommandAnnotate.cpp" line="840"/>
-      <location filename="../../CommandAnnotate.cpp" line="849"/>
-      <location filename="../../CommandAnnotate.cpp" line="906"/>
-      <location filename="../../CommandAnnotate.cpp" line="913"/>
-      <location filename="../../CommandAnnotate.cpp" line="940"/>
-      <location filename="../../CommandAnnotate.cpp" line="952"/>
-      <location filename="../../CommandAnnotate.cpp" line="962"/>
-      <location filename="../../CommandAnnotate.cpp" line="1045"/>
-      <location filename="../../CommandAnnotate.cpp" line="1053"/>
-      <location filename="../../CommandAnnotate.cpp" line="1073"/>
-      <location filename="../../CommandAnnotate.cpp" line="1109"/>
-      <location filename="../../CommandAnnotate.cpp" line="1155"/>
-      <location filename="../../CommandAnnotate.cpp" line="1163"/>
-      <location filename="../../CommandAnnotate.cpp" line="1210"/>
-      <location filename="../../CommandAnnotate.cpp" line="1273"/>
-      <location filename="../../CommandAnnotate.cpp" line="1293"/>
-      <location filename="../../CommandAnnotate.cpp" line="1355"/>
-      <location filename="../../CommandAnnotate.cpp" line="1362"/>
-      <location filename="../../CommandAnnotate.cpp" line="1426"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="629"/>
       <location filename="../../Command.cpp" line="639"/>
       <location filename="../../Command.cpp" line="856"/>
@@ -3126,6 +3097,35 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../Command.cpp" line="1689"/>
       <location filename="../../Command.cpp" line="1695"/>
       <location filename="../../Command.cpp" line="1754"/>
+      <location filename="../../CommandAnnotate.cpp" line="115"/>
+      <location filename="../../CommandAnnotate.cpp" line="120"/>
+      <location filename="../../CommandAnnotate.cpp" line="311"/>
+      <location filename="../../CommandAnnotate.cpp" line="412"/>
+      <location filename="../../CommandAnnotate.cpp" line="719"/>
+      <location filename="../../CommandAnnotate.cpp" line="725"/>
+      <location filename="../../CommandAnnotate.cpp" line="752"/>
+      <location filename="../../CommandAnnotate.cpp" line="762"/>
+      <location filename="../../CommandAnnotate.cpp" line="839"/>
+      <location filename="../../CommandAnnotate.cpp" line="848"/>
+      <location filename="../../CommandAnnotate.cpp" line="905"/>
+      <location filename="../../CommandAnnotate.cpp" line="912"/>
+      <location filename="../../CommandAnnotate.cpp" line="939"/>
+      <location filename="../../CommandAnnotate.cpp" line="951"/>
+      <location filename="../../CommandAnnotate.cpp" line="961"/>
+      <location filename="../../CommandAnnotate.cpp" line="1044"/>
+      <location filename="../../CommandAnnotate.cpp" line="1052"/>
+      <location filename="../../CommandAnnotate.cpp" line="1072"/>
+      <location filename="../../CommandAnnotate.cpp" line="1108"/>
+      <location filename="../../CommandAnnotate.cpp" line="1154"/>
+      <location filename="../../CommandAnnotate.cpp" line="1162"/>
+      <location filename="../../CommandAnnotate.cpp" line="1209"/>
+      <location filename="../../CommandAnnotate.cpp" line="1272"/>
+      <location filename="../../CommandAnnotate.cpp" line="1292"/>
+      <location filename="../../CommandAnnotate.cpp" line="1354"/>
+      <location filename="../../CommandAnnotate.cpp" line="1361"/>
+      <location filename="../../CommandAnnotate.cpp" line="1425"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
@@ -3175,6 +3175,15 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>FreeCAD nije mogao pronaći stranicu za izvoz</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1190"/>
+      <location filename="../../Command.cpp" line="1197"/>
+      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="1217"/>
+      <location filename="../../CommandDecorate.cpp" line="311"/>
+      <location filename="../../CommandDecorate.cpp" line="318"/>
+      <location filename="../../CommandDecorate.cpp" line="325"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../CommandExtensionPack.cpp" line="1865"/>
       <location filename="../../CommandExtensionPack.cpp" line="1994"/>
       <location filename="../../CommandCreateDims.cpp" line="1972"/>
@@ -3185,15 +3194,6 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../CommandCreateDims.cpp" line="2329"/>
       <location filename="../../CommandCreateDims.cpp" line="2337"/>
       <location filename="../../CommandCreateDims.cpp" line="2346"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
-      <location filename="../../CommandDecorate.cpp" line="311"/>
-      <location filename="../../CommandDecorate.cpp" line="318"/>
-      <location filename="../../CommandDecorate.cpp" line="325"/>
-      <location filename="../../Command.cpp" line="1190"/>
-      <location filename="../../Command.cpp" line="1197"/>
-      <location filename="../../Command.cpp" line="1205"/>
-      <location filename="../../Command.cpp" line="1217"/>
       <source>Incorrect selection</source>
       <translation>Netočan odabir</translation>
     </message>
@@ -3214,6 +3214,33 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>U ovom odabiru nema oblika, grupa ili poveznica</translation>
     </message>
     <message>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="739"/>
+      <location filename="../../Command.cpp" line="832"/>
+      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../CommandAnnotate.cpp" line="100"/>
+      <location filename="../../CommandAnnotate.cpp" line="161"/>
+      <location filename="../../CommandAnnotate.cpp" line="213"/>
+      <location filename="../../CommandAnnotate.cpp" line="399"/>
+      <location filename="../../CommandAnnotate.cpp" line="460"/>
+      <location filename="../../CommandAnnotate.cpp" line="499"/>
+      <location filename="../../CommandAnnotate.cpp" line="588"/>
+      <location filename="../../CommandAnnotate.cpp" line="692"/>
+      <location filename="../../CommandAnnotate.cpp" line="803"/>
+      <location filename="../../CommandAnnotate.cpp" line="878"/>
+      <location filename="../../CommandAnnotate.cpp" line="991"/>
+      <location filename="../../CommandAnnotate.cpp" line="1141"/>
+      <location filename="../../CommandAnnotate.cpp" line="1260"/>
+      <location filename="../../CommandAnnotate.cpp" line="1341"/>
+      <location filename="../../CommandAnnotate.cpp" line="1407"/>
+      <location filename="../../CommandExtensionPack.cpp" line="290"/>
+      <location filename="../../CommandExtensionPack.cpp" line="593"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1214"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1752"/>
       <location filename="../../CommandExtensionDims.cpp" line="310"/>
       <location filename="../../CommandExtensionDims.cpp" line="519"/>
       <location filename="../../CommandExtensionDims.cpp" line="807"/>
@@ -3221,9 +3248,27 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../CommandExtensionDims.cpp" line="1506"/>
       <location filename="../../CommandExtensionDims.cpp" line="1875"/>
       <location filename="../../CommandExtensionDims.cpp" line="2113"/>
-      <location filename="../../CommandAnnotate.cpp" line="100"/>
-      <location filename="../../CommandAnnotate.cpp" line="161"/>
-      <location filename="../../CommandAnnotate.cpp" line="213"/>
+      <location filename="../../CommandCreateDims.cpp" line="1470"/>
+      <location filename="../../CommandCreateDims.cpp" line="1518"/>
+      <location filename="../../CommandCreateDims.cpp" line="1566"/>
+      <location filename="../../CommandCreateDims.cpp" line="1614"/>
+      <location filename="../../CommandCreateDims.cpp" line="1662"/>
+      <location filename="../../CommandCreateDims.cpp" line="1709"/>
+      <location filename="../../CommandCreateDims.cpp" line="1756"/>
+      <location filename="../../CommandCreateDims.cpp" line="1803"/>
+      <location filename="../../CommandCreateDims.cpp" line="1850"/>
+      <location filename="../../CommandCreateDims.cpp" line="1946"/>
+      <location filename="../../CommandCreateDims.cpp" line="2071"/>
+      <source>Task in progress</source>
+      <translation>Zadatak se izvršava</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="740"/>
+      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../CommandAnnotate.cpp" line="101"/>
+      <location filename="../../CommandAnnotate.cpp" line="162"/>
+      <location filename="../../CommandAnnotate.cpp" line="214"/>
       <location filename="../../CommandAnnotate.cpp" line="400"/>
       <location filename="../../CommandAnnotate.cpp" line="461"/>
       <location filename="../../CommandAnnotate.cpp" line="500"/>
@@ -3236,33 +3281,6 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../CommandExtensionPack.cpp" line="290"/>
-      <location filename="../../CommandExtensionPack.cpp" line="593"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1214"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1752"/>
-      <location filename="../../CommandCreateDims.cpp" line="1470"/>
-      <location filename="../../CommandCreateDims.cpp" line="1518"/>
-      <location filename="../../CommandCreateDims.cpp" line="1566"/>
-      <location filename="../../CommandCreateDims.cpp" line="1614"/>
-      <location filename="../../CommandCreateDims.cpp" line="1662"/>
-      <location filename="../../CommandCreateDims.cpp" line="1709"/>
-      <location filename="../../CommandCreateDims.cpp" line="1756"/>
-      <location filename="../../CommandCreateDims.cpp" line="1803"/>
-      <location filename="../../CommandCreateDims.cpp" line="1850"/>
-      <location filename="../../CommandCreateDims.cpp" line="1946"/>
-      <location filename="../../CommandCreateDims.cpp" line="2071"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../Command.cpp" line="739"/>
-      <location filename="../../Command.cpp" line="832"/>
-      <location filename="../../Command.cpp" line="895"/>
-      <source>Task in progress</source>
-      <translation>Zadatak se izvršava</translation>
-    </message>
-    <message>
       <location filename="../../CommandExtensionDims.cpp" line="311"/>
       <location filename="../../CommandExtensionDims.cpp" line="520"/>
       <location filename="../../CommandExtensionDims.cpp" line="808"/>
@@ -3270,24 +3288,6 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../CommandExtensionDims.cpp" line="1507"/>
       <location filename="../../CommandExtensionDims.cpp" line="1876"/>
       <location filename="../../CommandExtensionDims.cpp" line="2114"/>
-      <location filename="../../CommandAnnotate.cpp" line="101"/>
-      <location filename="../../CommandAnnotate.cpp" line="162"/>
-      <location filename="../../CommandAnnotate.cpp" line="214"/>
-      <location filename="../../CommandAnnotate.cpp" line="401"/>
-      <location filename="../../CommandAnnotate.cpp" line="462"/>
-      <location filename="../../CommandAnnotate.cpp" line="501"/>
-      <location filename="../../CommandAnnotate.cpp" line="590"/>
-      <location filename="../../CommandAnnotate.cpp" line="694"/>
-      <location filename="../../CommandAnnotate.cpp" line="805"/>
-      <location filename="../../CommandAnnotate.cpp" line="880"/>
-      <location filename="../../CommandAnnotate.cpp" line="993"/>
-      <location filename="../../CommandAnnotate.cpp" line="1143"/>
-      <location filename="../../CommandAnnotate.cpp" line="1262"/>
-      <location filename="../../CommandAnnotate.cpp" line="1343"/>
-      <location filename="../../CommandAnnotate.cpp" line="1409"/>
-      <location filename="../../Command.cpp" line="740"/>
-      <location filename="../../Command.cpp" line="833"/>
-      <location filename="../../Command.cpp" line="896"/>
       <source>Close active task dialog and try again</source>
       <translation>Zatvori aktivni dijalog rješavača i pokušaj ponovo</translation>
     </message>
@@ -3308,14 +3308,14 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>U ovom odabiru nema osnovnog pogleda, oblika, grupa ili poveznica</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2330"/>
       <location filename="../../Command.cpp" line="1191"/>
+      <location filename="../../CommandCreateDims.cpp" line="2330"/>
       <source>Select an object first</source>
       <translation>Najprije odaberite objekt</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2338"/>
       <location filename="../../Command.cpp" line="1198"/>
+      <location filename="../../CommandCreateDims.cpp" line="2338"/>
       <source>Too many objects selected</source>
       <translation>Previše objekata odabrano</translation>
     </message>
@@ -3357,7 +3357,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../Command.cpp" line="1554"/>
       <source>Scalable vector graphic</source>
-      <translation type="unfinished">Scalable vector graphic</translation>
+      <translation>Scalable vektorska grafika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1554"/>
@@ -3367,32 +3367,32 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../Command.cpp" line="1615"/>
       <source>Select at least one object</source>
-      <translation type="unfinished">Select at least one object</translation>
+      <translation>Odaberite barem jedan objekt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1690"/>
       <source>Select only 1 BIM section plane</source>
-      <translation type="unfinished">Select only 1 BIM section plane</translation>
+      <translation>Odaberite samo 1 BIM dio ravni presjeka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1696"/>
       <source>No BIM section plane in selection</source>
-      <translation type="unfinished">No BIM section plane in selection</translation>
+      <translation>Nema BIM odjeljka u odabiru</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1755"/>
       <source>Select exactly one spreadsheet object</source>
-      <translation type="unfinished">Select exactly one spreadsheet object</translation>
+      <translation>Odaberite točno jedan objekt proračunska tablica</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1834"/>
       <source>No drawing page</source>
-      <translation type="unfinished">No drawing page</translation>
+      <translation>Nema stranice za crtanje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1870"/>
       <source>Cannot export selection</source>
-      <translation type="unfinished">Cannot export selection</translation>
+      <translation>Odabir se ne može izvesti</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1471"/>
@@ -3407,58 +3407,58 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../CommandCreateDims.cpp" line="1947"/>
       <location filename="../../CommandCreateDims.cpp" line="2072"/>
       <source>Close the active task dialog and try again</source>
-      <translation type="unfinished">Close the active task dialog and try again</translation>
+      <translation>Zatvori aktivni dijalog i pokušaj ponovo</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1973"/>
       <location filename="../../CommandCreateDims.cpp" line="2163"/>
       <source>No view of a part in selection.</source>
-      <translation type="unfinished">No view of a part in selection.</translation>
+      <translation>Ne postoji pogled na komponentu u odabiru.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2015"/>
       <source>Cannot make 2D extent dimension from selection</source>
-      <translation type="unfinished">Cannot make 2D extent dimension from selection</translation>
+      <translation>Ne mogu napraviti 2D proširenu dimenziju iz odabira</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2031"/>
       <source>Cannot make 3D extent dimension from selection</source>
-      <translation type="unfinished">Cannot make 3D extent dimension from selection</translation>
+      <translation>Ne mogu napraviti 3D proširenu dimenziju iz odabira</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2111"/>
       <source>There is no dimension in your selection</source>
-      <translation type="unfinished">There is no dimension in your selection</translation>
+      <translation>Nema Dimenzije u odabiru</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2178"/>
       <source>Cannot make 2D dimension from selection</source>
-      <translation type="unfinished">Cannot make 2D dimension from selection</translation>
+      <translation>Ne mogu napraviti 2D dimenziju iz odabira</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2194"/>
       <source>Cannot make 3D dimension from selection</source>
-      <translation type="unfinished">Cannot make 3D dimension from selection</translation>
+      <translation>Ne mogu napraviti 3D dimenziju iz odabira</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2207"/>
       <source>Ellipse curve warning</source>
-      <translation type="unfinished">Ellipse curve warning</translation>
+      <translation>Krivulja elipse Upozorenje</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2218"/>
       <source>B-spline curve warning</source>
-      <translation type="unfinished">B-spline curve warning</translation>
+      <translation>Krivulja Bspline Upozorenje</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2229"/>
       <source>B-spline curve error</source>
-      <translation type="unfinished">B-spline curve error</translation>
+      <translation>Greška B-Spline krivulje</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2230"/>
       <source>Selected edge is a B-spline and a radius/diameter cannot be calculated.</source>
-      <translation type="unfinished">Selected edge is a B-spline and a radius/diameter cannot be calculated.</translation>
+      <translation>Odabrani rub je B-spline a polumjer/promjer se ne može izračunati.</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2347"/>
@@ -3476,13 +3476,13 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>Sve datoteke</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="332"/>
+      <location filename="../../CommandDecorate.cpp" line="338"/>
       <location filename="../../TaskDimension.cpp" line="551"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
       <location filename="../../CommandCreateDims.cpp" line="2193"/>
-      <location filename="../../CommandDecorate.cpp" line="332"/>
-      <location filename="../../CommandDecorate.cpp" line="338"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
       <source>Incorrect Selection</source>
       <translation>Netočan odabir</translation>
     </message>
@@ -3490,7 +3490,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../CommandAlign.cpp" line="54"/>
       <source>You must select 2 vertices or 1 edge
 </source>
-      <translation type="unfinished">You must select 2 vertices or 1 edge
+      <translation>Morate odabrati 2 vrha ili 1 rub
 </translation>
     </message>
     <message>
@@ -3506,7 +3506,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1989"/>
       <source>Selection contains both 2D and 3D geometry</source>
-      <translation type="unfinished">Selection contains both 2D and 3D geometry</translation>
+      <translation>Odabir sadrži obije 2D i 3D geometriju</translation>
     </message>
     <message>
       <location filename="../../CommandStack.cpp" line="74"/>
@@ -3514,11 +3514,11 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../CommandStack.cpp" line="250"/>
       <location filename="../../CommandStack.cpp" line="310"/>
       <source>Close the active task dialog and try again.</source>
-      <translation type="unfinished">Close the active task dialog and try again.</translation>
+      <translation>Zatvori aktivni dijalog i pokušaj ponovo.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="989"/>
       <location filename="../../CommandStack.cpp" line="369"/>
+      <location filename="../../CommandExtensionPack.cpp" line="989"/>
       <source>Task In Progress</source>
       <translation>Rješavanje u postupku</translation>
     </message>
@@ -3528,59 +3528,59 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>TehnCrtanje krug rupe</translation>
     </message>
     <message>
+      <location filename="../../CommandStack.cpp" line="370"/>
       <location filename="../../CommandExtensionPack.cpp" line="291"/>
       <location filename="../../CommandExtensionPack.cpp" line="594"/>
       <location filename="../../CommandExtensionPack.cpp" line="990"/>
       <location filename="../../CommandExtensionPack.cpp" line="1215"/>
       <location filename="../../CommandExtensionPack.cpp" line="1460"/>
       <location filename="../../CommandExtensionPack.cpp" line="1753"/>
-      <location filename="../../CommandStack.cpp" line="370"/>
       <source>Close active task dialog and try again.</source>
       <translation>Zatvori aktivni dijalog rješavača i pokušaj ponovo.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="889"/>
       <source>Selection is empty.</source>
-      <translation type="unfinished">Selection is empty.</translation>
+      <translation>Odabir je prazan.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="912"/>
       <source>You must select a base View for the circle.</source>
-      <translation type="unfinished">You must select a base View for the circle.</translation>
+      <translation>Morate odabrati osnovni prikaz za krug.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="934"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
-      <translation type="unfinished">Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</translation>
+      <translation>Odabrano nije pomoćni krug ili pomoćni luk kruga.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="970"/>
       <source>Please select a center for the circle.</source>
-      <translation type="unfinished">Please select a center for the circle.</translation>
+      <translation>Molimo odaberite središte za krug.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1866"/>
       <source>No faces in selection</source>
-      <translation type="unfinished">No faces in selection</translation>
+      <translation>Nema površine u odabiru</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1995"/>
       <source>No edges in selection</source>
-      <translation type="unfinished">No edges in selection</translation>
+      <translation>Nema rubova u odabiru</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2220"/>
       <source>TechDraw thread hole side</source>
-      <translation type="unfinished">TechDraw thread hole side</translation>
+      <translation>TehnCrtanje Unutarnji navoj pogled sa strane</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="2221"/>
       <source>Select 2 straight lines</source>
-      <translation type="unfinished">Select 2 straight lines</translation>
+      <translation>Odaberite 2 ravne linije</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="769"/>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
+      <location filename="../../CommandAnnotate.cpp" line="768"/>
+      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="888"/>
       <location filename="../../CommandExtensionPack.cpp" line="911"/>
       <location filename="../../CommandExtensionPack.cpp" line="933"/>
@@ -3589,124 +3589,124 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>Pogrešan odabir</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="313"/>
-      <location filename="../../CommandAnnotate.cpp" line="414"/>
+      <location filename="../../CommandAnnotate.cpp" line="312"/>
+      <location filename="../../CommandAnnotate.cpp" line="413"/>
       <source>No DrawViewPart objects in this selection</source>
       <translation>Nema DrawViewPart objekata u ovom odabiru</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="116"/>
       <source>Cannot attach leader. No base view selected.</source>
-      <translation type="unfinished">Cannot attach leader. No base view selected.</translation>
+      <translation>Ne može se priložiti prednjak. Nije odabran nijedan osnovni prikaz.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="121"/>
-      <location filename="../../CommandAnnotate.cpp" line="727"/>
-      <location filename="../../CommandAnnotate.cpp" line="907"/>
-      <location filename="../../CommandAnnotate.cpp" line="1046"/>
+      <location filename="../../CommandAnnotate.cpp" line="726"/>
+      <location filename="../../CommandAnnotate.cpp" line="906"/>
+      <location filename="../../CommandAnnotate.cpp" line="1045"/>
       <source>You must select a base view for the line</source>
-      <translation type="unfinished">You must select a base view for the line</translation>
+      <translation>Morate odabrati osnovni prikaz za liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="721"/>
-      <location filename="../../CommandAnnotate.cpp" line="914"/>
+      <location filename="../../CommandAnnotate.cpp" line="720"/>
+      <location filename="../../CommandAnnotate.cpp" line="913"/>
       <source>No base view in selection</source>
       <translation>Nema osnovnog pogleda u odabiru</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="754"/>
+      <location filename="../../CommandAnnotate.cpp" line="753"/>
       <source>You must select faces or an existing centerline</source>
       <translation>Morate odabrati plohe ili postojeću središnju liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="764"/>
+      <location filename="../../CommandAnnotate.cpp" line="763"/>
       <source>No CenterLine in selection</source>
       <translation>Nema središnje linije u odabiru</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="770"/>
-      <location filename="../../CommandAnnotate.cpp" line="953"/>
+      <location filename="../../CommandAnnotate.cpp" line="769"/>
+      <location filename="../../CommandAnnotate.cpp" line="952"/>
       <source>Selection is not a centerline</source>
       <translation>Odabir nije središnja linija</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="841"/>
+      <location filename="../../CommandAnnotate.cpp" line="840"/>
       <source>Selection is not a Centerline</source>
       <translation>Odabir nije središnja linija</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="850"/>
+      <location filename="../../CommandAnnotate.cpp" line="849"/>
       <source>Selection not understood</source>
       <translation>Odabir nije razumljiv</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="941"/>
+      <location filename="../../CommandAnnotate.cpp" line="940"/>
       <source>You must select 2 vertices or an existing centerline</source>
       <translation>Morate odabrati 2 tjemene točke ili postojeću središnju liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="963"/>
+      <location filename="../../CommandAnnotate.cpp" line="962"/>
       <source>Select 2 vertices or 1 centerline</source>
       <translation>Odaberi 2 tjemene točke ili 1 središnju liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1054"/>
+      <location filename="../../CommandAnnotate.cpp" line="1053"/>
       <source>Not enough points in the selection</source>
       <translation>Nema dovoljno točaka u odabiru</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1074"/>
+      <location filename="../../CommandAnnotate.cpp" line="1073"/>
       <source>Selection is not a cosmetic line</source>
       <translation>Odabir nije pomoćna linija</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1110"/>
+      <location filename="../../CommandAnnotate.cpp" line="1109"/>
       <source>You must select 2 vertices</source>
       <translation>Morate odabrati 2 tjemene točke</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1156"/>
-      <location filename="../../CommandAnnotate.cpp" line="1356"/>
+      <location filename="../../CommandAnnotate.cpp" line="1155"/>
+      <location filename="../../CommandAnnotate.cpp" line="1355"/>
       <source>Nothing selected</source>
       <translation>Ništa nije odabrano</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1164"/>
+      <location filename="../../CommandAnnotate.cpp" line="1163"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>Najmanje 1 predmet u odabiru nije Prikaz dijelova</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1211"/>
+      <location filename="../../CommandAnnotate.cpp" line="1210"/>
       <source>Unknown object type in selection</source>
       <translation>Nepoznata vrsta objekta u izboru</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1274"/>
+      <location filename="../../CommandAnnotate.cpp" line="1273"/>
       <source>You must select a view and/or lines</source>
       <translation>Morate odabrati jedan pogled i / ili linije</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1294"/>
+      <location filename="../../CommandAnnotate.cpp" line="1293"/>
       <source>No view in selection</source>
       <translation>Nema pogleda u odabiru</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1363"/>
+      <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <source>No part views in this selection</source>
-      <translation type="unfinished">No part views in this selection</translation>
+      <translation>Nema Pogleda djelova u ovom odabiru</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1427"/>
+      <location filename="../../CommandAnnotate.cpp" line="1426"/>
       <source>Select exactly one leader line or one weld symbol</source>
       <translation>Odaberite samo jednu liniju vodilicu ili simbol spajanja</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1486"/>
+      <location filename="../../CommandAnnotate.cpp" line="1485"/>
       <source>SurfaceFinishSymbols</source>
       <translation>Simboli za završnu obradu površine</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1487"/>
+      <location filename="../../CommandAnnotate.cpp" line="1486"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>Odabrani objekt nije dio prikaza, niti je vodiljna linija</translation>
     </message>
@@ -3728,7 +3728,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../CommandDecorate.cpp" line="319"/>
       <source>No TechDraw object in selection</source>
-      <translation>Nema objekta tehničkog crtanja u odabiru</translation>
+      <translation>Nema objekta TehnCrtanje u odabiru</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="326"/>
@@ -3762,39 +3762,39 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>Ova funkcija treba stranicu.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="311"/>
+      <location filename="../../MDIViewPage.cpp" line="312"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="312"/>
-      <location filename="../../MDIViewPage.cpp" line="535"/>
+      <location filename="../../MDIViewPage.cpp" line="313"/>
+      <location filename="../../MDIViewPage.cpp" line="538"/>
       <source>All Files (*.*)</source>
       <translation>Sve datoteke (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="314"/>
+      <location filename="../../MDIViewPage.cpp" line="315"/>
       <source>Export Page as PDF</source>
       <translation>Izvoz stranicu u PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="488"/>
-      <location filename="../../MDIViewPage.cpp" line="510"/>
+      <location filename="../../MDIViewPage.cpp" line="491"/>
+      <location filename="../../MDIViewPage.cpp" line="513"/>
       <source>All files (*.*)</source>
       <translation>Sve datoteke (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="490"/>
+      <location filename="../../MDIViewPage.cpp" line="493"/>
       <source>Export page as SVG</source>
       <translation>Izvoz Stranice u SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="512"/>
+      <location filename="../../MDIViewPage.cpp" line="515"/>
       <source>Export page as DXF</source>
       <translation>Izvezi stranicu u DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="537"/>
+      <location filename="../../MDIViewPage.cpp" line="540"/>
       <source>Export page as PDF</source>
       <translation>Izvezi stranicu kao PDF</translation>
     </message>
@@ -3882,14 +3882,14 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>Uredi složeni presjek</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="228"/>
       <location filename="../../TaskComplexSection.cpp" line="215"/>
+      <location filename="../../TaskSectionView.cpp" line="228"/>
       <source>Current View Direction</source>
       <translation>Trenutni smjer pogleda</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="229"/>
       <location filename="../../TaskComplexSection.cpp" line="216"/>
+      <location filename="../../TaskSectionView.cpp" line="229"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Smjer pogleda u koordinatama baznog pogleda</translation>
     </message>
@@ -3901,11 +3901,11 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../TaskComplexSection.cpp" line="525"/>
       <source>Check SectionNormal, Direction and/or XDirection.</source>
-      <translation type="unfinished">Check SectionNormal, Direction and/or XDirection.</translation>
+      <translation>Provjerite SectionNormal, Direction i/ili XDirection.</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="638"/>
       <location filename="../../TaskComplexSection.cpp" line="714"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Operacija nije uspjela</translation>
     </message>
@@ -3940,8 +3940,8 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <translation>Uredite detaljni pogled</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="136"/>
       <location filename="../../ViewProviderBalloon.cpp" line="86"/>
+      <location filename="../../ViewProviderDimension.cpp" line="136"/>
       <source>Edit %1</source>
       <translation>Uređivanje %1</translation>
     </message>
@@ -3969,7 +3969,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../CommandExtensionDims.cpp" line="598"/>
       <location filename="../../CommandExtensionDims.cpp" line="607"/>
       <source>TechDraw PosHorizChainDimension</source>
-      <translation>TehnCrtanje Rasporedi vodoravno skup kota</translation>
+      <translation>TehnCrtanje rasporedi vodoravne lančane dimenzije</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="608"/>
@@ -4077,15 +4077,15 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
 </translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2329"/>
-      <location filename="../../CommandAnnotate.cpp" line="1023"/>
+      <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <location filename="../../CommandExtensionPack.cpp" line="2135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2329"/>
       <source>Selection is empty</source>
       <translation>Odabir je prazan</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <location filename="../../CommandExtensionPack.cpp" line="2142"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <source>No object selected</source>
       <translation>Nema odabranog objekta</translation>
     </message>
@@ -4202,7 +4202,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
       <location filename="../../AppTechDrawGui.cpp" line="174"/>
       <location filename="../../AppTechDrawGui.cpp" line="175"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="124"/>
@@ -4282,28 +4282,28 @@ ima simbol spajanja koji bi se pokidao.
 </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="379"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="378"/>
       <source>Close open dialog before deleting detail object</source>
-      <translation type="unfinished">Close open dialog before deleting detail object</translation>
+      <translation>Zatvori otvoreni dijalog prije brisanja detalja objekta</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="394"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="393"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Ne možete izbrisati ovaj pogled jer ima jedan ili više ovisnih prikaza koji bi se slomili.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="383"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="398"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
       <location filename="../../ViewProviderPage.cpp" line="209"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <source>Object dependencies</source>
       <translation>Zavisnosti objekta</translation>
     </message>
@@ -4381,7 +4381,7 @@ ima pločicu spajanja koja bi se pokidala.
     <message>
       <location filename="../../TaskActiveView.ui" line="44"/>
       <source>Crops captured image to this width</source>
-      <translation type="unfinished">Crops captured image to this width</translation>
+      <translation>Obreži snimljenu sliku na ovu širinu</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="73"/>
@@ -4401,7 +4401,7 @@ ima pločicu spajanja koja bi se pokidala.
     <message>
       <location filename="../../TaskActiveView.ui" line="116"/>
       <source>Crops captured image to this height</source>
-      <translation type="unfinished">Crops captured image to this height</translation>
+      <translation>Obrezuje snimljenu sliku na ovu širinu</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="139"/>
@@ -4549,14 +4549,14 @@ na prijelom u liniji oznake</translation>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="245"/>
       <source>Field weld</source>
-      <translation type="unfinished">Field weld</translation>
+      <translation>Montažni spoj</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="252"/>
       <source>Adds the &apos;All around&apos; symbol (circle)
 at the kink in the leader line</source>
-      <translation type="unfinished">Adds the &apos;All around&apos; symbol (circle)
-at the kink in the leader line</translation>
+      <translation>Dodaje &apos;Uokolo &apos;simbol (krug)
+na prijelom u liniji oznake</translation>
     </message>
     <message>
       <location filename="../../TaskWeldingSymbol.ui" line="256"/>
@@ -4640,7 +4640,7 @@ Taj će se direktorij koristiti za odabir simbola.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="75"/>
       <source>Edge fuzz</source>
-      <translation type="unfinished">Edge fuzz</translation>
+      <translation>Okvir odabira ruba</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="82"/>
@@ -4677,12 +4677,12 @@ može smanjiti performanse u složenim modelima.
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="135"/>
       <source>Detect faces</source>
-      <translation type="unfinished">Detect faces</translation>
+      <translation>Otkrij površine</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="177"/>
       <source>Validate shapes</source>
-      <translation type="unfinished">Validate shapes</translation>
+      <translation>Provjerite oblike</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="199"/>
@@ -4712,17 +4712,17 @@ može smanjiti performanse u složenim modelima.
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="265"/>
       <source>Mark fuzz</source>
-      <translation type="unfinished">Mark fuzz</translation>
+      <translation>Okvir odabira središta</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="301"/>
       <source>Max SVG hatch tiles</source>
-      <translation type="unfinished">Max SVG hatch tiles</translation>
+      <translation>Maksimalni broj pločica SVG šrafure</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="311"/>
       <source>Debug bad shape</source>
-      <translation type="unfinished">Debug bad shape</translation>
+      <translation>Otkloni greške na lošem obliku</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="335"/>
@@ -5817,17 +5817,17 @@ mogu prepisati globalni &apos;Update with 3D&apos; parametar</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="513"/>
       <source>Welding directory</source>
-      <translation type="unfinished">Welding directory</translation>
+      <translation>Imenik oznaka zavarivanja</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="564"/>
       <source>Starting directory for &apos;Insert Page From Template&apos; tool</source>
-      <translation type="unfinished">Starting directory for &apos;Insert Page From Template&apos; tool</translation>
+      <translation>Početni direktorij za &apos;Ubaci stranicu pomoću Predloška&apos; alat</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="577"/>
       <source>Template directory</source>
-      <translation type="unfinished">Template directory</translation>
+      <translation>Imenik predložaka</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="590"/>
@@ -5837,12 +5837,12 @@ mogu prepisati globalni &apos;Update with 3D&apos; parametar</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="608"/>
       <source>Hatch pattern file</source>
-      <translation type="unfinished">Hatch pattern file</translation>
+      <translation>Datoteka uzorka šrafiranja</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="615"/>
       <source>Default template</source>
-      <translation type="unfinished">Default template</translation>
+      <translation>Zadani predložak</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="627"/>
@@ -5852,7 +5852,7 @@ mogu prepisati globalni &apos;Update with 3D&apos; parametar</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="714"/>
       <source>Set &apos;Show grid&apos; property to true on new pages</source>
-      <translation type="unfinished">Set &apos;Show grid&apos; property to true on new pages</translation>
+      <translation>Postavi svojstvo na točno za &apos;Prikaži mrežu&apos; na novim stranicama</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="717"/>
@@ -5977,12 +5977,12 @@ mogu prepisati globalni &apos;Update with 3D&apos; parametar</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="968"/>
       <source>Highlight snapping factor</source>
-      <translation type="unfinished">Highlight snapping factor</translation>
+      <translation>Istaknuti Faktor hvatanja</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="975"/>
       <source>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</source>
-      <translation type="unfinished">Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</translation>
+      <translation>Kontrolira uhvati radijus za istaknute dijelove. Tjemena točka mora biti unutar ovog faktora puta veličina isticanja kako bi se uhvatio cilj.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1024"/>
@@ -6171,7 +6171,7 @@ Brzo, ali rezultat je zbirka kratkih ravnih linija.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="229"/>
       <source>Legacy symbol scaling</source>
-      <translation type="unfinished">Legacy symbol scaling</translation>
+      <translation>Zastarijelo skaliranje simbola</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="259"/>
@@ -6181,22 +6181,22 @@ Brzo, ali rezultat je zbirka kratkih ravnih linija.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="267"/>
       <source>Vertex scale</source>
-      <translation type="unfinished">Vertex scale</translation>
+      <translation>Skaliranje tjemene točke</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="313"/>
       <source>Center mark scale</source>
-      <translation type="unfinished">Center mark scale</translation>
+      <translation>Skaliranje srednje oznake</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="370"/>
       <source>Template edit mark</source>
-      <translation type="unfinished">Template edit mark</translation>
+      <translation>Oznaka za uređivanje predložka</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="405"/>
       <source>Welding symbol scale</source>
-      <translation type="unfinished">Welding symbol scale</translation>
+      <translation>Skaliranje simbola spajanja</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="286"/>
@@ -6233,54 +6233,54 @@ Brzo, ali rezultat je zbirka kratkih ravnih linija.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="88"/>
+      <location filename="../../MDIViewPage.cpp" line="89"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Uključivanje/isključivanje &amp; Držati Obnovljeno</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="91"/>
+      <location filename="../../MDIViewPage.cpp" line="92"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;izvoz SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="95"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>Export DXF</source>
       <translation>Izvoz DFX</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="99"/>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
       <source>Export PDF</source>
       <translation>Izvoz PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="104"/>
       <source>Print All Pages</source>
       <translation>Ispis svih stranica</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="394"/>
+      <location filename="../../MDIViewPage.cpp" line="397"/>
       <source>Different orientation</source>
       <translation>Drugačija orijentacija</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="395"/>
+      <location filename="../../MDIViewPage.cpp" line="398"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>Pisač koristi drugu orijentaciju ispisa nego što je u crtežu. Želite li nastaviti?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="404"/>
+      <location filename="../../MDIViewPage.cpp" line="407"/>
       <source>Different paper size</source>
       <translation>Drugačija veličina papira</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="405"/>
+      <location filename="../../MDIViewPage.cpp" line="408"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Pisač koristi drugu veličinu papra nego što je u crtežu. Želite li nastaviti?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1080"/>
+      <location filename="../../MDIViewPage.cpp" line="1083"/>
       <source>Selected:</source>
       <translation>Odabrane:</translation>
     </message>
@@ -6305,7 +6305,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../SymbolChooser.ui" line="55"/>
       <source>Directory to welding symbols</source>
-      <translation type="unfinished">Directory to welding symbols</translation>
+      <translation>Direktorij za simbole spajanja</translation>
     </message>
   </context>
   <context>
@@ -6323,7 +6323,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="43"/>
       <source>Color for text</source>
-      <translation type="unfinished">Color for text</translation>
+      <translation>Boja teksta</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="57"/>
@@ -6333,7 +6333,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="76"/>
       <source>Font size for text</source>
-      <translation type="unfinished">Font size for text</translation>
+      <translation>Veličina pisma teksta</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="102"/>
@@ -6383,27 +6383,27 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="181"/>
       <source>Shape scale</source>
-      <translation type="unfinished">Shape scale</translation>
+      <translation>Razmjer oblika</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="213"/>
       <source>End symbol</source>
-      <translation type="unfinished">End symbol</translation>
+      <translation>Krajnji simbol</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="227"/>
       <source>End symbol scale</source>
-      <translation type="unfinished">End symbol scale</translation>
+      <translation>Skaliranje krajneg simbola</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="259"/>
       <source>Line visible</source>
-      <translation type="unfinished">Line visible</translation>
+      <translation>Linija vidljiva</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="266"/>
       <source>Controls whether the leader line is visible or not</source>
-      <translation type="unfinished">Controls whether the leader line is visible or not</translation>
+      <translation>Kontrolira da li je linija vodilica vidljiva ili ne</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="286"/>
@@ -6413,7 +6413,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="324"/>
       <source>Leader kink length</source>
-      <translation type="unfinished">Leader kink length</translation>
+      <translation>Dužina prijeloma linije vodilice</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="194"/>
@@ -6433,7 +6433,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="95"/>
       <source>Bubble shape</source>
-      <translation type="unfinished">Bubble shape</translation>
+      <translation>Oblačići oblik</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="220"/>
@@ -6642,7 +6642,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="136"/>
       <source>Scale type</source>
-      <translation>Vrsta skale</translation>
+      <translation type="unfinished">Scale type</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="162"/>
@@ -6682,12 +6682,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="395"/>
       <source>Check to update display after every property change</source>
-      <translation type="unfinished">Check to update display after every property change</translation>
+      <translation>Provjerite ažuriranje zaslona nakon svake promjene svojstva</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="405"/>
       <source>Rebuild display now. May be slow for complex models</source>
-      <translation type="unfinished">Rebuild display now. May be slow for complex models</translation>
+      <translation>Obnovi prikaz sada. Može biti sporo za složene modele</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="187"/>
@@ -6779,7 +6779,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="156"/>
-      <location filename="../../TaskCosVertex.cpp" line="245"/>
+      <location filename="../../TaskCosVertex.cpp" line="248"/>
       <source>Pick points</source>
       <translation>Odaberi točke</translation>
     </message>
@@ -6794,12 +6794,12 @@ Do you want to continue?</source>
       <translation>Prekini odabir</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="198"/>
+      <location filename="../../TaskCosVertex.cpp" line="201"/>
       <source>Left click to set a point</source>
       <translation>Lijevi klik za postavljanje točke</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="273"/>
+      <location filename="../../TaskCosVertex.cpp" line="276"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>Uređivanje napušteno. Početi ispočetka.</translation>
     </message>
@@ -6820,13 +6820,13 @@ Do you want to continue?</source>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
       <location filename="../../TaskCosmeticLine.ui" line="140"/>
       <source>2D point</source>
-      <translation type="unfinished">2D point</translation>
+      <translation>2D točka</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="77"/>
       <location filename="../../TaskCosmeticLine.ui" line="156"/>
       <source>3D point</source>
-      <translation type="unfinished">3D point</translation>
+      <translation>3D točka</translation>
     </message>
   </context>
   <context>
@@ -7178,7 +7178,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskDetail.ui" line="86"/>
       <source>Enables dragging of the detail highlight to a new position</source>
-      <translation type="unfinished">Enables dragging of the detail highlight to a new position</translation>
+      <translation>Omogućuje povlačenje detalja na novu poziciju</translation>
     </message>
     <message>
       <location filename="../../TaskDetail.ui" line="120"/>
@@ -8746,7 +8746,7 @@ koristeći zadane X/Y razmake</translation>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
@@ -9000,7 +9000,7 @@ koristeći zadane X/Y razmake</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2094"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2095"/>
@@ -9404,7 +9404,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="859"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="860"/>
@@ -9424,7 +9424,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1965"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1966"/>
@@ -9482,12 +9482,12 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="81"/>
       <source>Offset Vertex</source>
-      <translation type="unfinished">Offset Vertex</translation>
+      <translation>Pomakni tjemenu točku</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="84"/>
       <source>Creates an offset from one selected vertex</source>
-      <translation type="unfinished">Creates an offset from one selected vertex</translation>
+      <translation>Stvara pomak od jedne odabrane tjemene točke</translation>
     </message>
   </context>
   <context>
@@ -9495,7 +9495,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="139"/>
       <source>Fill Template Fields In </source>
-      <translation type="unfinished">Fill Template Fields In </translation>
+      <translation>Ispuni polja predloška u </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="146"/>
@@ -9510,12 +9510,12 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="50"/>
       <source>Update Template Fields</source>
-      <translation type="unfinished">Update Template Fields</translation>
+      <translation>Ažuriranja polja predložka</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandFillTemplateFields.py" line="54"/>
       <source>Uses document info to populate the template fields</source>
-      <translation type="unfinished">Uses document info to populate the template fields</translation>
+      <translation>Koristi podatke dokumenta za popunjavanje polja predloška</translation>
     </message>
   </context>
   <context>
@@ -9533,7 +9533,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="109"/>
       <source>View or projection group missing</source>
-      <translation type="unfinished">View or projection group missing</translation>
+      <translation>Pogled ili grupa projekcije nedostaje</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="446"/>
@@ -9543,7 +9543,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="535"/>
       <source>Fill template fields</source>
-      <translation type="unfinished">Fill template fields</translation>
+      <translation>Ispuni polja predloška</translation>
     </message>
   </context>
   <context>
@@ -9795,7 +9795,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="55"/>
       <source>Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</source>
-      <translation type="unfinished">Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view</translation>
+      <translation>Poravnavanje odabranog prikaza odjeljka s izvornim pogledom na ortogonalnim ili odabranim rubom u pogledu na odabranu tjemenu točku u pogledu na osnovni prikaz</translation>
     </message>
   </context>
   <context>
@@ -9803,7 +9803,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="210"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="211"/>
@@ -9815,7 +9815,7 @@ jer je otvoren dijalog zadataka.</translation>
       <location filename="../../CommandExtensionDims.cpp" line="212"/>
       <location filename="../../CommandExtensionDims.cpp" line="389"/>
       <source>Inserts a repeated feature count at the beginning of the dimension</source>
-      <translation type="unfinished">Inserts a repeated feature count at the beginning of the dimension</translation>
+      <translation>Uvodi ponovljeni broj značajki na početku dimenzije</translation>
     </message>
   </context>
   <context>
@@ -9846,7 +9846,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../Command.cpp" line="547"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="548"/>
@@ -9856,7 +9856,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../Command.cpp" line="549"/>
       <source>Inserts a new broken view for the selected objects or base view and break definition objects</source>
-      <translation type="unfinished">Inserts a new broken view for the selected objects or base view and break definition objects</translation>
+      <translation>Uvodi novi slomljeni pogled za odabrane objekte ili osnovni pogled i razbijanje objekata definicije</translation>
     </message>
   </context>
   <context>
@@ -9900,7 +9900,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1789"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1790"/>
@@ -9910,7 +9910,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1791"/>
       <source>Inserts an annotation showing the area of a selected face</source>
-      <translation type="unfinished">Inserts an annotation showing the area of a selected face</translation>
+      <translation>Uvodi obilježavanje koje prikazuje područje odabranog lica</translation>
     </message>
   </context>
   <context>
@@ -10000,17 +10000,17 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandAlign.cpp" line="121"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAlign.cpp" line="122"/>
       <source>Align Vertices/Edge Vertically</source>
-      <translation type="unfinished">Align Vertices/Edge Vertically</translation>
+      <translation>Podesi vrhove/rubove okomito</translation>
     </message>
     <message>
       <location filename="../../CommandAlign.cpp" line="123"/>
       <source>Aligns the selected vertices or edges vertically to the view rotation</source>
-      <translation type="unfinished">Aligns the selected vertices or edges vertically to the view rotation</translation>
+      <translation>Poravnava odabrane vrhove ili rubove okomito na rotaciju gledanja</translation>
     </message>
   </context>
   <context>
@@ -10018,17 +10018,17 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandAlign.cpp" line="154"/>
       <source>TechDraw</source>
-      <translation>Tehničko Crtanje</translation>
+      <translation>TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandAlign.cpp" line="155"/>
       <source>Align Vertices/Edge Horizontally</source>
-      <translation type="unfinished">Align Vertices/Edge Horizontally</translation>
+      <translation>Podesi vrhove/rubove vodoravno</translation>
     </message>
     <message>
       <location filename="../../CommandAlign.cpp" line="156"/>
       <source>Aligns the selected vertices or edges horizontally to the view rotation</source>
-      <translation type="unfinished">Aligns the selected vertices or edges horizontally to the view rotation</translation>
+      <translation>Poravnava odabrane vrhove ili rubove vodoravno na rotaciju gledanja</translation>
     </message>
   </context>
   <context>
@@ -10044,12 +10044,12 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
-      <translation type="unfinished">Axonometric Length Dimension</translation>
+      <translation>Aksonometrijska dimenzija duljine</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
-      <translation type="unfinished">Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</translation>
+      <translation>Stvara dimenziju duljine s aksonometrijskim pogledom, koristeći odabrane rubove ili parove s tjemenom točkom za definiranje smjera i mjerenja</translation>
     </message>
   </context>
   <context>
@@ -10084,7 +10084,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>TechDraw_CosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="277"/>
+      <location filename="../../CommandAnnotate.cpp" line="276"/>
       <source>Inserts a cosmetic vertex into a view</source>
       <translation>Umeće pomoćne tjemene točke u pogled</translation>
     </message>
@@ -10092,7 +10092,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>TechDraw_Midpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="281"/>
+      <location filename="../../CommandAnnotate.cpp" line="280"/>
       <source>Inserts cosmetic vertices at the midpoint of the selected edges</source>
       <translation>Umeće pomoćne vrhove u sredinu odabranih rubova</translation>
     </message>
@@ -10100,7 +10100,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>TechDraw_Quadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="285"/>
+      <location filename="../../CommandAnnotate.cpp" line="284"/>
       <source>Inserts cosmetic vertices at the quadrant points of the selected circles</source>
       <translation>Umeće pomoćne vrhove u kvadratne točke odabranih krugova</translation>
     </message>
@@ -10108,7 +10108,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>TechDraw_FaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="651"/>
+      <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Adds a centerline to selected faces</source>
       <translation>Dodaje središnju liniju na odabrane površine</translation>
     </message>
@@ -10116,7 +10116,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>TechDraw_2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Adds a centerline between 2 selected lines</source>
       <translation>Dodajte središnju liniju između 2 odabrane linije</translation>
     </message>
@@ -10124,7 +10124,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>TechDraw_2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Adds a centerline between 2 selected points</source>
       <translation>Dodajte središnju liniju između 2 odabrane točke</translation>
     </message>
@@ -10134,7 +10134,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1907"/>
       <source>Insert horizontal extent dimension</source>
-      <translation type="unfinished">Insert horizontal extent dimension</translation>
+      <translation>Umetni vodoravnu proširenu dimenziju</translation>
     </message>
   </context>
   <context>
@@ -10142,7 +10142,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1911"/>
       <source>Insert vertical extent dimension</source>
-      <translation type="unfinished">Insert vertical extent dimension</translation>
+      <translation>Umetni okomitu proširenu dimenziju</translation>
     </message>
   </context>
   <context>
@@ -10150,7 +10150,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandStack.cpp" line="142"/>
       <source>Moves the view to the top of the stack</source>
-      <translation type="unfinished">Moves the view to the top of the stack</translation>
+      <translation>Premješta pogled na vrh stoga</translation>
     </message>
   </context>
   <context>
@@ -10158,7 +10158,7 @@ jer je otvoren dijalog zadataka.</translation>
     <message>
       <location filename="../../CommandStack.cpp" line="146"/>
       <source>Moves the view to the bottom of the stack</source>
-      <translation type="unfinished">Moves the view to the bottom of the stack</translation>
+      <translation>Premješta pogled na dno stoga</translation>
     </message>
   </context>
   <context>
@@ -10211,7 +10211,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>CmdMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="280"/>
+      <location filename="../../CommandAnnotate.cpp" line="279"/>
       <source>Midpoint Vertices</source>
       <translation>Središnje točke</translation>
     </message>
@@ -10219,7 +10219,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>CmdQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="284"/>
+      <location filename="../../CommandAnnotate.cpp" line="283"/>
       <source>Quadrant Vertices</source>
       <translation>Kvadrant krajnje točke</translation>
     </message>
@@ -10227,7 +10227,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="654"/>
+      <location filename="../../CommandAnnotate.cpp" line="653"/>
       <source>Centerline 2 Lines</source>
       <translation>Središnjica 2 linije</translation>
     </message>
@@ -10235,7 +10235,7 @@ jer je otvoren dijalog zadataka.</translation>
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="658"/>
+      <location filename="../../CommandAnnotate.cpp" line="657"/>
       <source>Centerline 2 Points</source>
       <translation>Središnjica 2 točke</translation>
     </message>

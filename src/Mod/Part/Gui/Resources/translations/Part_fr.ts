@@ -1400,12 +1400,12 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
     <message>
       <location filename="../../Command.cpp" line="818"/>
       <source>Compound Tools</source>
-      <translation>Outils composés</translation>
+      <translation>Outils des composés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="819"/>
       <source>Compound tools for working with multiple shapes</source>
-      <translation>Outils composés pour travailler avec des formes multiples</translation>
+      <translation>Outils des composés pour travailler avec des formes multiples</translation>
     </message>
   </context>
   <context>
@@ -1459,7 +1459,7 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
     <message>
       <location filename="../../Command.cpp" line="685"/>
       <source>Shape splitting and compsolid creation tools</source>
-      <translation>Outils de division de formes et de création de solide composite</translation>
+      <translation>Outils de division de formes et de création de solides composites</translation>
     </message>
   </context>
   <context>
@@ -3214,7 +3214,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="29"/>
       <source>Merges compounds during file reading (slower but higher details)</source>
-      <translation>Fusionne les composés pendant la lecture du fichier (plus lent mais plus détaillé).</translation>
+      <translation>Fusionne des composés pendant la lecture du fichier (plus lent mais plus détaillé).</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="32"/>
@@ -5243,7 +5243,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="425"/>
       <source>Check is running…</source>
-      <translation>La vérification est en cours d'exécution de…</translation>
+      <translation>La vérification est en cours d'exécution…</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="454"/>
@@ -5639,8 +5639,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="528"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
-      <translation>L'utilisation de non-solides pour les opérations booléennes peut entraîner des résultats inattendus.
-Voulez-vous continuer ?</translation>
+      <translation>L'utilisation de non-solides pour les opérations booléennes peut entraîner des résultats inattendus. Voulez-vous continuer ?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="411"/>
@@ -5701,7 +5700,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound solid</source>
-      <translation>Composé solide</translation>
+      <translation>Solide de composés</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
@@ -5976,12 +5975,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="305"/>
       <source>Edit Fillet</source>
-      <translation>Éditer le congé</translation>
+      <translation>Éditer un congé</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="426"/>
       <source>Edit Chamfer</source>
-      <translation>Éditer le chanfrein</translation>
+      <translation>Éditer un chanfrein</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="566"/>
@@ -6031,12 +6030,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="71"/>
       <source>Delete %1 content?</source>
-      <translation>Supprimer le contenu %1 ?</translation>
+      <translation>Faut-il supprimer le contenu %1 ?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="72"/>
       <source>The %1 '%2' has %3. Do you want to delete them as well?</source>
-      <translation>Le %1 « %2 » contient %3. Voulez-vous également les supprimer ?</translation>
+      <translation>Le %1 « %2 » contient %3. Faut-il également les supprimer ?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="236"/>
@@ -6077,12 +6076,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
-      <translation>Supprimer le contenu composé ?</translation>
+      <translation>Faut-il supprimer le contenu du composé ?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
-      <translation>Le composant « %1 » comporte %2 objets enfants. Voulez-vous également les supprimer ?</translation>
+      <translation>Le composé « %1 » comporte %2 objets enfants. Faut-il également les supprimer ?</translation>
     </message>
   </context>
   <context>
@@ -6236,7 +6235,8 @@ Voulez-vous continuer ?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="244"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="692"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation>Sélectionner au moins deux objets, ou un ou plusieurs composés. Si un seul composé est sélectionné, les formes composées seront intersectées entre elles (sinon, les composés avec auto-intersections ne sont pas valides).</translation>
+      <translation>Sélectionner au moins deux objets, ou un ou plusieurs composés. Si un seul composé est sélectionné, les formes composées seront
+intersectées entre elles (sinon, les composés avec auto-intersections ne sont pas valides).</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="465"/>
@@ -6250,12 +6250,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="57"/>
       <source>Compound Filter</source>
-      <translation>Filtrer par composé</translation>
+      <translation>Filtre de composé</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="87"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation>Sélectionner d'abord un composé. Si un deuxième objet est sélectionné (facultatif), il sera traité comme un modèle de forme.</translation>
+      <translation>Sélectionner d'abord une forme qui est un composé. Si un deuxième objet est sélectionné (facultatif), il sera traité comme un modèle de forme.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="67"/>
@@ -6263,7 +6263,7 @@ Voulez-vous continuer ?</translation>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation>Filtre les objets du composé sélectionné en fonction de caractéristiques telles que le volume, la surface ou la longueur, ou en choisissant
+      <translation>Filtre les objets du composé sélectionné en fonction des caractéristiques telles que le volume, la surface ou la longueur, ou en choisissant
 des éléments spécifiques.
 Si un deuxième objet est sélectionné, il sera utilisé comme référence, par exemple pour le filtrage des collisions ou des distances.</translation>
     </message>
@@ -6281,7 +6281,7 @@ Si un deuxième objet est sélectionné, il sera utilisé comme référence, par
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="133"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Cliquer sur « Continuer » pour créer la fonctionnalité malgré tout, ou sur « Annuler » pour abandonner</translation>
+      <translation>Cliquer sur « Continuer » pour créer la fonction malgré tout, ou sur « Annuler » pour abandonner</translation>
     </message>
   </context>
   <context>
@@ -6507,7 +6507,7 @@ Si un deuxième objet est sélectionné, il sera utilisé comme référence, par
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="152"/>
       <source>Is closed</source>
-      <translation>Est fermé</translation>
+      <translation>La forme est-elle fermée</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="159"/>
@@ -6963,12 +6963,12 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="443"/>
       <source>Slice to Compound</source>
-      <translation>Séparer en composés</translation>
+      <translation>Séparer vers un composé</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="448"/>
       <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
-      <translation>Découpe l'objet sélectionné en utilisant d'autres objets comme outils de découpe et en stockant les résultats dans un composé.</translation>
+      <translation>Sépare l'objet sélectionné en utilisant d'autres objets comme outils de découpe et en stockant les résultats dans un composé.</translation>
     </message>
   </context>
   <context>
@@ -6981,7 +6981,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
       <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
-      <translation>Découpe l'objet sélectionné à l'aide d'autres objets, puis le divise en plusieurs parties, créant ainsi un filtre composé pour chaque partie.</translation>
+      <translation>Sépare l'objet sélectionné à l'aide d'autres objets, puis le divise en plusieurs parties, créant ainsi un filtre de composé pour chaque partie.</translation>
     </message>
   </context>
   <context>
@@ -7060,7 +7060,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="371"/>
       <source>Ring facemaker</source>
-      <translation>Créateur de face avec anneau</translation>
+      <translation>Générateur d'anneaux</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="376"/>
