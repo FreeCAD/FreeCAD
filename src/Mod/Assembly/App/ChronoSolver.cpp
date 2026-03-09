@@ -38,9 +38,37 @@
 # include <chrono/physics/ChLinkLockScrew.h>
 # include <chrono/physics/ChLinkMate.h>
 # include <chrono/physics/ChSystemNSC.h>
+# include <chrono/solver/ChDirectSolverLS.h>
 # include <chrono/timestepper/ChAssemblyAnalysis.h>
 
 FC_LOG_LEVEL_INIT("ChronoSolver", true, true, true)
+
+namespace
+{
+
+/// CFM compliance applied to all active constraints of every Cylindrical joint.
+/// Regularises the KKT matrix when Rx/Ry constraints are redundant in a closed loop.
+static constexpr double kCylindricalCompliance = 1e-7;
+
+/// Thin subclass of ChLinkMateCylindrical that exposes the protected constraint mask
+/// so we can set per-DOF compliance terms after initialisation.
+///
+/// ChLinkMateCylindrical flags (true, true, false, true, true, false) give 4 active
+/// constraints indexed: 0=Tx, 1=Ty, 2=Rx, 3=Ry.
+/// In a closed kinematic loop with Revolute joints, the Rx and Ry constraints are
+/// redundant (revolutes already constrain the planar DOFs), making the KKT Jacobian
+/// rank-deficient.  Adding a small CFM term regularises the matrix without removing
+/// any structural constraint.
+struct CylindricalAccessor : public chrono::ChLinkMateCylindrical
+{
+    void setCompliance(double cfm)
+    {
+        for (unsigned i = 0; i < GetNumConstraints(); ++i)
+            mask.GetConstraint(i).SetComplianceTerm(cfm);
+    }
+};
+
+}  // namespace
 
 using namespace Assembly;
 using namespace Assembly::Solver;
@@ -174,6 +202,12 @@ ChronoAssembly::ChronoAssembly()
 {
     sys = std::make_unique<chrono::ChSystemNSC>();
     sys->SetGravitationalAcceleration(chrono::ChVector3d(0, 0, 0));
+
+    // Switch from SparseLU to SparseQR.  QR computes a minimum-norm least-squares
+    // solution and handles rank-deficient constraint Jacobians without requiring
+    // compliance regularisation.  This is more robust for closed kinematic loops
+    // where some constraints are structurally redundant.
+    sys->SetSolver(chrono_types::make_shared<chrono::ChSolverSparseQR>());
 
     // Create a fixed ground body at the world origin
     groundBody = std::make_shared<chrono::ChBody>();
@@ -359,7 +393,7 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
             // positional Jacobian (which projects displacement onto frame2's X/Y) to
             // be poorly conditioned.  The Z-axes here have already been normalized
             // (parallel, not anti-parallel) by the block above.
-            auto link = std::make_shared<chrono::ChLinkMateCylindrical>();
+            auto link = std::make_shared<CylindricalAccessor>();
             link->SetName(joint->getName());
             link->Initialize(
                 body1,
@@ -371,12 +405,24 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
                 frame2.GetRot().GetAxisZ()
             );
             sys->AddLink(link);
+            // Regularise the KKT matrix: in a closed kinematic loop, the Cylindrical's
+            // Rx and Ry constraints are redundant with the Revolute joints that keep the
+            // mechanism planar, making SparseLU rank-deficient.  A small CFM term on all
+            // active constraints (Tx, Ty, Rx, Ry) is harmless for non-redundant cases
+            // (sub-micrometer / sub-microradian violation) but fixes rank deficiency.
+            link->setCompliance(kCylindricalCompliance);
             break;
         }
 
-        case JointClass::TRANSLATIONAL_JOINT:
+        case JointClass::TRANSLATIONAL_JOINT: {
+            // Use a rigid ChLinkMatePrismatic.  In a closed kinematic loop that also
+            // contains a Cylindrical joint, the Prismatic's Rz constraint is redundant,
+            // making the KKT Jacobian rank-deficient.  ChSolverSparseQR handles this
+            // natively by computing the minimum-norm least-squares solution, so no
+            // structural replacement or compliance regularisation is needed here.
             initMate(std::make_shared<chrono::ChLinkMatePrismatic>());
             break;
+        }
 
         case JointClass::SPHERICAL_JOINT:
             initMate(std::make_shared<chrono::ChLinkMateSpherical>());
@@ -685,7 +731,7 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts)
     // across N sub-steps, calling DoAssembly for each.  This keeps each
     // Newton-Raphson solve close to the previous solution, so the solver tracks
     // the correct branch through the constraint manifold.
-    static constexpr int kSubSteps = 5;
+    static constexpr int kSubSteps = 20;
 
     // Collect dragged bodies and their target positions (already set by pushPlacement).
     struct BodyTarget
@@ -759,6 +805,27 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts)
     if (debugLogging) {
         FC_MSG("=== dragStep complete: post-solve structure ===");
         dumpStructure();
+    }
+
+    // Fix quaternion sign: DoAssembly can flip a body's quaternion to the
+    // antipodal representation (-q instead of +q, same physical rotation).
+    // If the sign differs from our target quaternion, the NLERP in the NEXT
+    // drag step would interpolate through the antipodal path (≈360° rotation).
+    // Canonicalize each dragged body's quaternion so it lies in the same
+    // hemisphere as the target.
+    //
+    // NOTE: We deliberately do NOT restore the body's position to t.targetPos.
+    // DoAssembly has adjusted the dragged body to satisfy hard constraints
+    // (e.g., keeping a revolute pivot coincident).  Forcing the position back
+    // to the exact user-dragged target re-introduces that constraint violation,
+    // and saveDragStepStart() would then record an inconsistent state that
+    // causes Newton-Raphson in the next step to diverge, producing growing
+    // positional drift in the joint markers.
+    for (const auto& t : targets) {
+        auto rot = t.body->GetRot();
+        if (rot.Dot(t.targetRot) < 0.0) {
+            t.body->SetRot(chrono::ChQuaternion<double>(-rot.e0(), -rot.e1(), -rot.e2(), -rot.e3()));
+        }
     }
 
     // Save current body positions as the start for the next drag step.

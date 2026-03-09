@@ -74,6 +74,7 @@ AssemblyObject::AssemblyObject()
 {
     // TODO: replace with user/addon configuration to support alternative solvers
     solver = std::make_shared<Solver::ChronoSolver>(this);
+    // solver = std::make_shared<Solver::OndselSolver>(this);
     assembly = solver->makeAssembly();
 
     lastDoF = numberOfComponents() * 6;
