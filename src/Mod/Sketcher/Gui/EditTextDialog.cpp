@@ -30,6 +30,7 @@
 #include <Gui/CommandT.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "CommandConstraints.h"
 #include "EditTextDialog.h"
 #include "ViewProviderSketch.h"
 #include "Utils.h"
@@ -114,12 +115,14 @@ void EditTextDialog::on_buttonBox_accepted()
         }
 
         // Send the updated 5-parameter call to Python
+        std::string escText = escapeForPython(newText);
+        std::string escFont = escapeForPython(newFontPath);
         Gui::cmdAppObjectArgs(
             sketch,
             "setTextAndFont(%i, '%s', '%s', %s, %s)",
             constrIndex,
-            newText.c_str(),
-            newFontPath.c_str(),
+            escText.c_str(),
+            escFont.c_str(),
             newIsHeight ? "True" : "False",
             isConstruction ? "True" : "False"
         );
