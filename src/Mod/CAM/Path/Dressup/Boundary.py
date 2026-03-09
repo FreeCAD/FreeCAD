@@ -174,7 +174,7 @@ class PathBoundary:
                 if horizFeed and Path.Geom.isRoughly(begin.z, end.z, 0.001):
                     speed = horizFeed
                 else:
-                    verticalFeed
+                    speed = verticalFeed
                 cmds.append(Path.Command("G1", {"X": end.x, "Y": end.y, "Z": end.z, "F": speed}))
 
         return cmds
