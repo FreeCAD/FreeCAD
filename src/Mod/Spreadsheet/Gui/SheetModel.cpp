@@ -482,8 +482,7 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
                 return {};
         }
     }
-    else if (prop->isDerivedFrom<App::PropertyFloat>()
-             || prop->isDerivedFrom<App::PropertyInteger>()) {
+    else if (prop->isDerivedFrom<App::PropertyFloat>() || prop->isDerivedFrom<App::PropertyInteger>()) {
         /* Number */
         double d {};
         long l {};

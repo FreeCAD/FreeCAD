@@ -30,6 +30,7 @@ graphical user interface.
 These functions can be used as the backend for the graphical commands
 defined in `DraftTools.py`.
 """
+
 ## \addtogroup DRAFT
 #  @{
 
@@ -163,7 +164,6 @@ from draftfunctions.mirror import mirror
 
 from draftfunctions.upgrade import upgrade
 
-
 # ---------------------------------------------------------------------------
 # Draft objects
 # ---------------------------------------------------------------------------
@@ -191,7 +191,6 @@ from draftmake.make_circle import make_circle, makeCircle
 
 # arcs
 from draftmake.make_arc_3points import make_arc_3points
-
 
 # ellipse
 from draftobjects.ellipse import Ellipse, _Ellipse

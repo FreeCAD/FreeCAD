@@ -4136,14 +4136,18 @@ void Area::toPath(
                         arcPlane = ArcPlaneXY;
                         cmd = "G17";
                     }
-                    else if (fabs(dir.Z()) < Precision::Confusion()
-                             && fabs(dir.X()) < Precision::Confusion()) {
+                    else if (
+                        fabs(dir.Z()) < Precision::Confusion()
+                        && fabs(dir.X()) < Precision::Confusion()
+                    ) {
                         clockwise = dir.Y() < 0;
                         arcPlane = ArcPlaneZX;
                         cmd = "G18";
                     }
-                    else if (fabs(dir.Y()) < Precision::Confusion()
-                             && fabs(dir.Z()) < Precision::Confusion()) {
+                    else if (
+                        fabs(dir.Y()) < Precision::Confusion()
+                        && fabs(dir.Z()) < Precision::Confusion()
+                    ) {
                         clockwise = dir.X() < 0;
                         arcPlane = ArcPlaneYZ;
                         cmd = "G19";

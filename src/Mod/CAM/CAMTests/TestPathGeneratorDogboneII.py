@@ -28,7 +28,6 @@ import Path.Base.Language as PathLanguage
 import CAMTests.PathTestUtils as PathTestUtils
 import math
 
-
 # Path.Log.setLevel(Path.Log.Level.DEBUG)
 Path.Log.setLevel(Path.Log.Level.NOTICE)
 

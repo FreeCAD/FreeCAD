@@ -287,7 +287,9 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject* args) const
     PyObject* is_Frenet = Py_False;
     int transition = 0;
 
-    if (PyArg_ParseTuple(args, "O|O!O!i", &obj, &PyBool_Type, &make_solid, &PyBool_Type, &is_Frenet, &transition)) {
+    if (
+        PyArg_ParseTuple(args, "O|O!O!i", &obj, &PyBool_Type, &make_solid, &PyBool_Type, &is_Frenet, &transition)
+    ) {
         try {
             TopTools_ListOfShape sections;
             Py::Sequence list(obj);
@@ -433,16 +435,9 @@ PyObject* TopoShapeWirePy::approximate(PyObject* args, PyObject* kwds) const
 
     static const std::array<const char*, 5>
         kwds_approx {"Tol2d", "Tol3d", "MaxSegments", "MaxDegree", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(
-            args,
-            kwds,
-            "|ddii",
-            kwds_approx,
-            &tol2d,
-            &tol3d,
-            &maxseg,
-            &maxdeg
-        )) {
+    if (
+        !Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|ddii", kwds_approx, &tol2d, &tol3d, &maxseg, &maxdeg)
+    ) {
         return nullptr;
     }
     try {
@@ -557,15 +552,9 @@ PyObject* TopoShapeWirePy::discretize(PyObject* args, PyObject* kwds) const
         static const std::array<const char*, 4> kwds_Deflection {"Deflection", "First", "Last", nullptr};
         PyErr_Clear();
         double deflection;
-        if (Base::Wrapped_ParseTupleAndKeywords(
-                args,
-                kwds,
-                "d|dd",
-                kwds_Deflection,
-                &deflection,
-                &first,
-                &last
-            )) {
+        if (
+            Base::Wrapped_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)
+        ) {
             GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
             if (discretizer.IsDone() && discretizer.NbPoints() > 0) {
                 Py::List points;

@@ -29,6 +29,7 @@
 It mostly works on lines, polylines, and similar objects with
 regular geometrical shapes, like rectangles.
 """
+
 ## @package gui_offset
 # \ingroup draftguitools
 # \brief Provides GUI tools to create offsets from objects.

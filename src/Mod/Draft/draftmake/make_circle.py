@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Circle objects."""
+
 ## @package make_circle
 # \ingroup draftmake
 # \brief Provides functions to create Circle objects.

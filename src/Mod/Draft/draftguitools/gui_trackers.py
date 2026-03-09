@@ -26,6 +26,7 @@ This module provides Coin (pivy) based objects
 that are used by the Draft Workbench to draw temporary geometry,
 that is, previews, of the real objects that will be created on the 3D view.
 """
+
 ## @package gui_trackers
 # \ingroup draftguitools
 # \brief Provides Coin based objects used to preview objects being built.

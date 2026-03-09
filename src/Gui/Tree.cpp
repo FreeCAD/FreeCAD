@@ -2232,8 +2232,10 @@ Qt::DropAction getDropAction(int size, const int type)
     if (QApplication::keyboardModifiers() == Qt::ControlModifier) {
         return Qt::CopyAction;
     }
-    else if (QApplication::keyboardModifiers() == Qt::AltModifier
-             && (size == 1 || type == TreeWidget::DocumentType)) {
+    else if (
+        QApplication::keyboardModifiers() == Qt::AltModifier
+        && (size == 1 || type == TreeWidget::DocumentType)
+    ) {
         return Qt::LinkAction;
     }
     else {
@@ -4746,13 +4748,10 @@ void DocumentItem::populateItem(DocumentObjectItem* item, bool refresh, bool del
         auto it = ObjectMap.find(child);
         if (it == ObjectMap.end() || it->second->items.empty()) {
             auto vp = getViewProvider(child);
-            if (!vp
-                || !createNewItem(
-                    *vp,
-                    item,
-                    i,
-                    it == ObjectMap.end() ? DocumentObjectDataPtr() : it->second
-                )) {
+            if (
+                !vp
+                || !createNewItem(*vp, item, i, it == ObjectMap.end() ? DocumentObjectDataPtr() : it->second)
+            ) {
                 --i;
             }
             else {

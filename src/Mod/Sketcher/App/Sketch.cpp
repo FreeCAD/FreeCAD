@@ -2087,8 +2087,10 @@ int Sketch::addConstraint(const Constraint* constraint)
                     constraint->Third
                 );
             }
-            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                     && constraint->Third == GeoEnum::GeoUndef) {
+            else if (
+                constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
+                && constraint->Third == GeoEnum::GeoUndef
+            ) {
                 // simple perpendicularity
                 rtn = addPerpendicularConstraint(constraint->First, constraint->Second);
             }
@@ -2126,8 +2128,7 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                 isSpecialCase = true;
             }
-            else if (constraint->FirstPos == PointPos::start
-                     && constraint->Third == GeoEnum::GeoUndef) {
+            else if (constraint->FirstPos == PointPos::start && constraint->Third == GeoEnum::GeoUndef) {
                 // check for B-Spline Knot to curve tangency
                 auto knotgeoId = checkGeoId(constraint->First);
                 if (Geoms[knotgeoId].type == Point) {
@@ -2150,8 +2151,10 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                                 isSpecialCase = true;
                             }
-                            else if (constraint->SecondPos == PointPos::start
-                                     || constraint->SecondPos == PointPos::end) {
+                            else if (
+                                constraint->SecondPos == PointPos::start
+                                || constraint->SecondPos == PointPos::end
+                            ) {
                                 rtn = addTangentLineEndpointAtBSplineKnotConstraint(
                                     linegeoid,
                                     constraint->SecondPos,
@@ -2210,10 +2213,11 @@ int Sketch::addConstraint(const Constraint* constraint)
                     c.driving
                 );
             }
-            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                     && constraint->Second != GeoEnum::GeoUndef
-                     && constraint->Third == GeoEnum::GeoUndef) {  // circle to circle, circle to
-                                                                   // arc, etc.
+            else if (
+                constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
+                && constraint->Second != GeoEnum::GeoUndef && constraint->Third == GeoEnum::GeoUndef
+            ) {  // circle to circle, circle to
+                 // arc, etc.
 
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -5329,8 +5333,10 @@ int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds, Base::Vec
                     i += 2;
                 }
             }
-            else if (Geoms[geoId].type == Arc || Geoms[geoId].type == ArcOfEllipse
-                     || Geoms[geoId].type == ArcOfHyperbola || Geoms[geoId].type == ArcOfParabola) {
+            else if (
+                Geoms[geoId].type == Arc || Geoms[geoId].type == ArcOfEllipse
+                || Geoms[geoId].type == ArcOfHyperbola || Geoms[geoId].type == ArcOfParabola
+            ) {
                 MoveParameters[i] = toPoint.x;
                 MoveParameters[i + 1] = toPoint.y;
                 i += 2;

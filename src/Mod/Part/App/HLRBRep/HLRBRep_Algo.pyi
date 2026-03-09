@@ -11,8 +11,7 @@ from Base.PyObjectBase import PyObjectBase
     Include="HLRBRep_Algo.hxx",
     Constructor=True,
 )
-@class_declarations(
-    """
+@class_declarations("""
 private:
     Handle(HLRBRep_Algo) hAlgo;
 
@@ -20,8 +19,7 @@ public:
     Handle(HLRBRep_Algo) handle() {
         return hAlgo;
     }
-"""
-)
+""")
 class HLRBRep_Algo(PyObjectBase):
     """
     Algo() -> HLRBRep_Algo

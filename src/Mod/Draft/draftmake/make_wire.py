@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create multipoint Wire objects."""
+
 ## @package make_wire
 # \ingroup draftmake
 # \brief Provides functions to create multipoint Wire objects.

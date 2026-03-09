@@ -155,8 +155,10 @@ private:
                             constr->First = currentgeoid;
                             constr->FirstPos = Sketcher::PointPos::start;
                         }
-                        else if (constr->First == geoIds.back()
-                                 && constr->FirstPos == Sketcher::PointPos::mid) {
+                        else if (
+                            constr->First == geoIds.back()
+                            && constr->FirstPos == Sketcher::PointPos::mid
+                        ) {
                             constr->First = currentgeoid;
                             constr->FirstPos = Sketcher::PointPos::end;
                         }
@@ -325,8 +327,10 @@ private:
                             constr->First = currentgeoid;
                             constr->FirstPos = Sketcher::PointPos::start;
                         }
-                        else if (constr->First == geoIds.back()
-                                 && constr->FirstPos == Sketcher::PointPos::start) {
+                        else if (
+                            constr->First == geoIds.back()
+                            && constr->FirstPos == Sketcher::PointPos::start
+                        ) {
                             constr->First = currentgeoid;
                             constr->FirstPos = Sketcher::PointPos::end;
                         }

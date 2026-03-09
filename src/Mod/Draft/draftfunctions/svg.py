@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the SVG representation of various shapes."""
+
 ## @package svg
 # \ingroup draftfunctions
 # \brief Provides functions to return the SVG representation of shapes.

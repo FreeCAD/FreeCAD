@@ -36,7 +36,6 @@ import UtilsAssembly
 import Preferences
 import CommandCreateJoint
 
-
 __title__ = "Assembly Command Insert Component"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"

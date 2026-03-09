@@ -31,7 +31,6 @@ import PathScripts.PathUtils as PathUtils
 import copy
 import math
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -661,7 +660,7 @@ class PathData:
         self.baseWire = self.findBottomWire(self.edges)
 
     def findBottomWire(self, edges):
-        (minZ, maxZ) = self.findZLimits(edges)
+        minZ, maxZ = self.findZLimits(edges)
         self.minZ = minZ
         self.maxZ = maxZ
         bottom = [
@@ -717,7 +716,7 @@ class PathData:
         R = radius if radius else self.defaultTagRadius()
 
         # start assigning tags on the longest segment
-        (shortestEdge, longestEdge) = self.shortestAndLongestPathEdge()
+        shortestEdge, longestEdge = self.shortestAndLongestPathEdge()
         startIndex = 0
         for i in range(0, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
@@ -758,12 +757,12 @@ class PathData:
 
         for i in range(startIndex + 1, len(self.baseWire.Edges)):
             edge = self.baseWire.Edges[i]
-            (currentLength, lastTagLength) = self.processEdge(
+            currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
         for i in range(0, startIndex):
             edge = self.baseWire.Edges[i]
-            (currentLength, lastTagLength) = self.processEdge(
+            currentLength, lastTagLength = self.processEdge(
                 i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
             )
 
