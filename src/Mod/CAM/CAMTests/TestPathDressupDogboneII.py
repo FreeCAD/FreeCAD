@@ -71,7 +71,12 @@ class MockFeaturePython(object):
     def __setattr__(self, name, val):
         if name == "prop":
             return super().__setattr__(name, val)
-        self.prop[name] = (self.prop[name][0], val)
+        if name in self.prop:
+            self.prop[name] = (self.prop[name][0], val)
+        else:
+            # Handle assignment to properties that don't exist yet
+            # Default to App::PropertyString for unknown properties
+            self.prop[name] = ("App::PropertyString", val)
 
     def __getattr__(self, name):
         if name == "prop":

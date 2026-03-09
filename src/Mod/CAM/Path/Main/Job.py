@@ -540,6 +540,17 @@ class ObjectJob:
             hasattr(obj, "Machine")
             and obj.getTypeIdOfProperty("Machine") != "App::PropertyEnumeration"
         )
+
+        # Ensure Machine property exists
+        if not hasattr(obj, "Machine"):
+            # Add the enumeration property if it doesn't exist
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Machine",
+                "Output",
+                QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
+            )
+
         current_value = None
         if needs_migration:
             # Store the current value
