@@ -996,4 +996,3 @@ void TaskView::removeContextualPanel(QWidget* panel)
 }
 
 #include "moc_TaskView.cpp"
-
