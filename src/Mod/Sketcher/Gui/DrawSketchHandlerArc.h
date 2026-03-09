@@ -1028,4 +1028,3 @@ void DSHArcController::doConstructionMethodChanged()
 }
 
 }  // namespace SketcherGui
-
