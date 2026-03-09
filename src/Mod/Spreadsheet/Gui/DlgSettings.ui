@@ -229,6 +229,9 @@ Defaults to: %V = %A
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Escape character, typically the backslash (\), used to indicate special unprintable characters, e.g. \t = tab. Must be a single character.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string notr="true">\</string>
         </property>
