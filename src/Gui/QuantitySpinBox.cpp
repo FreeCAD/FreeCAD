@@ -127,7 +127,9 @@ bool tryUpdateDisplayContextFromText(
     }
 
     try {
-        const auto unitQuantity = Base::Quantity::parse(QStringLiteral("1%1").arg(candidateUnit).toStdString());
+        const auto unitQuantity = Base::Quantity::parse(
+            QStringLiteral("1%1").arg(candidateUnit).toStdString()
+        );
         if (!quantity.isDimensionlessOrUnit(unitQuantity.getUnit())) {
             return false;
         }
