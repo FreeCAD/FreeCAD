@@ -90,15 +90,11 @@ using namespace Base;
 
 namespace
 {
-void updateDoubleSide(Gui::LinkView* linkView, App::LinkBaseExtension* ext)
+void updateWindingOrder(Gui::LinkView* linkView, App::LinkBaseExtension* ext)
 {
     Base::Matrix4D mat = ext->getTransform(false);
     ext->getTrueLinkedObject(true, &mat, 0, false);
-    // Calculate 3x3 determinant directly from Matrix4D
-    double det3 = mat[0][0] * (mat[1][1] * mat[2][2] - mat[1][2] * mat[2][1])
-        - mat[0][1] * (mat[1][0] * mat[2][2] - mat[1][2] * mat[2][0])
-        + mat[0][2] * (mat[1][0] * mat[2][1] - mat[1][1] * mat[2][0]);
-    linkView->renderDoubleSide(det3 < 0.0);
+    linkView->renderDoubleSide(mat.determinant3() < 0.0);
 }
 }  // namespace
 
@@ -1177,7 +1173,7 @@ void LinkView::renderDoubleSide(bool enable)
 {
     if (!pcShapeHints) {
         pcShapeHints = new SoShapeHints;
-        pcShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+        pcShapeHints->shapeType = SoShapeHints::SOLID;
         pcLinkRoot->insertChild(pcShapeHints, 0);
     }
     if (enable) {
@@ -2206,7 +2202,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
         }
         applyColors();
         checkIcon(ext);
-        updateDoubleSide(linkView, ext);
+        updateWindingOrder(linkView, ext);
     }
     else if (prop == ext->getColoredElementsProperty()) {
         if (!prop->testStatus(App::Property::User3)) {
@@ -2219,7 +2215,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
             if (canScale(v)) {
                 pcTransform->scaleFactor.setValue(v.x, v.y, v.z);
             }
-            updateDoubleSide(linkView, ext);
+            updateWindingOrder(linkView, ext);
         }
     }
     else if (prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
@@ -2229,7 +2225,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
             if (canScale(v)) {
                 pcTransform->scaleFactor.setValue(v.x, v.y, v.z);
             }
-            updateDoubleSide(linkView, ext);
+            updateWindingOrder(linkView, ext);
         }
     }
     else if (prop == ext->getLinkCopyOnChangeGroupProperty()) {
@@ -2280,7 +2276,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
 
             // applyColors();
             signalChangeIcon();
-            updateDoubleSide(linkView, ext);
+            updateWindingOrder(linkView, ext);
         }
     }
     else if (prop == ext->getLinkTransformProperty()) {
@@ -2545,7 +2541,7 @@ void ViewProviderLink::finishRestoring()
     updateDataPrivate(ext, ext->_getElementListProperty());
     applyMaterial();
     applyColors();
-    updateDoubleSide(linkView, ext);
+    updateWindingOrder(linkView, ext);
 
     // TODO: notify the tree. This is ugly, any other way?
     getDocument()->signalChangedObject(*this, ext->_LinkTouched);
