@@ -99,7 +99,7 @@ bool tryUpdateDisplayContextFromText(
     const QString& text,
     const Base::Quantity& quantity,
     double& unitFactor,
-    double& unitValue,
+    double* unitValue,
     QString& unitStr
 )
 {
@@ -132,7 +132,9 @@ bool tryUpdateDisplayContextFromText(
             return false;
         }
         unitFactor = unitQuantity.getValue();
-        unitValue = candidateValue;
+        if (unitValue) {
+            *unitValue = candidateValue;
+        }
         unitStr = candidateUnit;
         return unitFactor != 0.0 || quantity.getValue() == 0.0;
     }
@@ -682,14 +684,13 @@ void QuantitySpinBox::setValue(double value)
     }
 
     double displayFactor = d->unitFactor;
-    double displayValue = d->unitValue;
     QString displayUnit = d->unitStr;
     if (!tryUpdateDisplayContextFromText(
             d->locale,
             lineEdit()->text(),
             d->quantity,
             displayFactor,
-            displayValue,
+            nullptr,
             displayUnit
         )) {
         setValue(quantity);
@@ -1012,7 +1013,7 @@ void QuantitySpinBox::stepBy(int steps)
         lineEdit()->text(),
         current,
         d->unitFactor,
-        d->unitValue,
+        &d->unitValue,
         d->unitStr
     );
     if (!preserveDisplay && d->pendingEmit) {
