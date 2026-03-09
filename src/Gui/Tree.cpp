@@ -699,7 +699,10 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->relabelObjectAction = new QAction(this);
 #ifndef Q_OS_MAC
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
+#else
+    this->relabelObjectAction->setShortcut(QKeySequence(Qt::Key_Return));
 #endif
+    this->relabelObjectAction->setShortcutVisibleInContextMenu(true);
     connect(this->relabelObjectAction, &QAction::triggered, this, &TreeWidget::onRelabelObject);
 
     this->finishEditingAction = new QAction(this);
