@@ -573,10 +573,11 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const
 
     // Clear State_Enabled for hidden objects so QSS ::item:disabled rules can
     // override the overlay stylesheet's blanket ::item { color } for text fading.
-    QColor fgColor = index.data(Qt::ForegroundRole).value<QBrush>().color();
-    QColor disabledColor = option->palette.color(QPalette::Disabled, QPalette::Text);
-    if (fgColor.isValid() && fgColor.toRgb() == disabledColor.toRgb()) {
-        option->state &= ~QStyle::State_Enabled;
+    if (item->type() == TreeWidget::ObjectType) {
+        if (auto* docItem = static_cast<DocumentObjectItem*>(item);
+            docItem->object() && !docItem->object()->isShow()) {
+            option->state &= ~QStyle::State_Enabled;
+        }
     }
 
     option->textElideMode = Qt::ElideMiddle;
