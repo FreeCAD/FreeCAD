@@ -188,10 +188,7 @@ void TaskBox::hideGroupBox()
     m_foldStep = 0.0;
     m_foldDirection = -1;
 
-    // make sure to have the correct icon
-    bool block = myHeader->blockSignals(true);
-    myHeader->fold();
-    myHeader->blockSignals(block);
+    myHeader->setFold(false);
 
     myDummy->setFixedHeight(0);
     myDummy->hide();
