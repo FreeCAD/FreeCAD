@@ -280,7 +280,7 @@
       <location filename="../../OpenSCADCommands.py" line="483"/>
       <location filename="../../OpenSCADCommands.py" line="487"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Nätboolean</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="488"/>
