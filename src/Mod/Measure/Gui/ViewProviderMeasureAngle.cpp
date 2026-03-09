@@ -628,6 +628,10 @@ void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureO
 {
     // for imgOrigin, the initial radius is set to the center of the two obj
     auto obj = getMeasureAngle();
+    float radius = 0.1f * getViewScale();
+    auto angle = fieldAngle.getValue() / 2.0f;
+    angle += sectorArcRotation.getValue();
+
     if (obj->isImgOrigin()) {
         gp_Vec loc1 = obj->location1();
         gp_Vec loc2 = obj->location2();
@@ -642,13 +646,13 @@ void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureO
         invMatrix.multVecMatrix(SbVec3f(loc2.X(), loc2.Y(), loc2.Z()), localLoc2);
 
         // arc radius = distance to the center of the two edge locations
-        SbVec3f center = (localLoc1 + localLoc2) / 2.0f;
-        center[2] = 0.0f;
-        setLabelTranslation(center);
-        return;
+        radius = ((localLoc1 + localLoc2) / 2.0f).length();
+        // offset the angle by 180 degrees for left handed coord system
+        angle += std::numbers::pi;
     }
 
-    setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
+    auto pos = SbVec3f(radius * std::cos(angle), radius * std::sin(angle), 0);
+    setLabelTranslation(pos);
 }
 
 void ViewProviderMeasureAngle::onLabelMoved()
