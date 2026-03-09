@@ -36,7 +36,8 @@
 # include <chrono/physics/ChLinkLockGear.h>
 # include <chrono/physics/ChLinkLockPulley.h>
 # include <chrono/physics/ChLinkLockScrew.h>
-# include <chrono/physics/ChLinkMate.h>
+# include <chrono/physics/ChLinkLock.h>
+# include <chrono/physics/ChLinkMate.h>   // ChLinkMateRackPinion has no Lock equivalent
 # include <chrono/physics/ChSystemNSC.h>
 # include <chrono/solver/ChDirectSolverLS.h>
 # include <chrono/timestepper/ChAssemblyAnalysis.h>
@@ -46,27 +47,18 @@ FC_LOG_LEVEL_INIT("ChronoSolver", true, true, true)
 namespace
 {
 
-/// CFM compliance applied to all active constraints of every Cylindrical joint.
-/// Regularises the KKT matrix when Rx/Ry constraints are redundant in a closed loop.
-static constexpr double kCylindricalCompliance = 1e-7;
-
-/// Thin subclass of ChLinkMateCylindrical that exposes the protected constraint mask
-/// so we can set per-DOF compliance terms after initialisation.
-///
-/// ChLinkMateCylindrical flags (true, true, false, true, true, false) give 4 active
-/// constraints indexed: 0=Tx, 1=Ty, 2=Rx, 3=Ry.
-/// In a closed kinematic loop with Revolute joints, the Rx and Ry constraints are
-/// redundant (revolutes already constrain the planar DOFs), making the KKT Jacobian
-/// rank-deficient.  Adding a small CFM term regularises the matrix without removing
-/// any structural constraint.
-struct CylindricalAccessor : public chrono::ChLinkMateCylindrical
+/// Evaluate the simple expression strings produced by AssemblyObject for limits.
+/// Translation limits are stored as plain number strings (e.g. "0.500000").
+/// Rotation limits are stored as degree-to-radian expressions (e.g. "30.000000*pi/180.0").
+static double evaluateLimitExpression(const std::string& expr)
 {
-    void setCompliance(double cfm)
-    {
-        for (unsigned i = 0; i < GetNumConstraints(); ++i)
-            mask.GetConstraint(i).SetComplianceTerm(cfm);
+    static const std::string kSuffix = "*pi/180.0";
+    if (expr.size() > kSuffix.size()
+        && expr.compare(expr.size() - kSuffix.size(), kSuffix.size(), kSuffix) == 0) {
+        return std::stod(expr.substr(0, expr.size() - kSuffix.size())) * M_PI / 180.0;
     }
-};
+    return std::stod(expr);
+}
 
 }  // namespace
 
@@ -350,18 +342,30 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
         }
     }
 
-    // Helper: Initialize a ChLinkMate-based joint with body-relative frames
+    // Helper: Initialize a ChLinkMate-based joint with body-relative frames.
+    // Used only for joints with no ChLinkLock equivalent (e.g. RackPinion).
     auto initMate = [&](auto link) {
         link->SetName(joint->getName());
         link->Initialize(body1, body2, true, frame1, frame2);
         sys->AddLink(link);
     };
 
-    // Helper: Initialize a ChLinkMarkers-based joint (ChLinkLock family)
+    // Helper: Initialize a ChLinkLock-based joint with body-relative frames.
     auto initLock = [&](auto link) {
         link->SetName(joint->getName());
         link->Initialize(body1, body2, true, frame1, frame2);
         sys->AddLink(link);
+    };
+
+    // Helper: Initialize a ChLinkLock-based joint and register it for limit support.
+    // Joints with free DOFs that can have limits (Revolute, Prismatic, Cylindrical)
+    // are stored in limitableJoints keyed by (markerI, markerJ) so addLimit() can
+    // find the right link and call LimitRz()/LimitZ() on it.
+    auto initLockLimitable = [&](auto link) {
+        link->SetName(joint->getName());
+        link->Initialize(body1, body2, true, frame1, frame2);
+        sys->AddLink(link);
+        limitableJoints[{joint->getMarkerI(), joint->getMarkerJ()}] = link;
     };
 
     switch (joint->getJointClass()) {
@@ -369,7 +373,7 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
             // If one body is the ground, mark the other as truly fixed in Chrono
             // instead of adding a constraint.  SetFixed(true) removes the body from
             // the solver's degrees of freedom entirely, which is more robust than a
-            // ChLinkMateFix whose Newton-Raphson residual can cause tiny drift.
+            // constraint link whose Newton-Raphson residual can cause tiny drift.
             if (body1 == groundBody) {
                 body2->SetFixed(true);
             }
@@ -377,132 +381,61 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
                 body1->SetFixed(true);
             }
             else {
-                initMate(std::make_shared<chrono::ChLinkMateFix>());
+                initLock(std::make_shared<chrono::ChLinkLockLock>());
             }
             break;
 
         case JointClass::REVOLUTE_JOINT:
-            initMate(std::make_shared<chrono::ChLinkMateRevolute>());
+            // Free DOF: Rz.  Limits applied via LimitRz().
+            initLockLimitable(std::make_shared<chrono::ChLinkLockRevolute>());
             break;
 
-        case JointClass::CYLINDRICAL_JOINT: {
-            // Use the specialized 7-arg Initialize instead of the generic 5-arg form.
-            // The 7-arg form rebuilds each constraint frame from just the Z-axis
-            // direction (via SetFromAxisZ), producing canonical perpendicular X/Y axes.
-            // This avoids any spin offset in the stored frames that would cause the
-            // positional Jacobian (which projects displacement onto frame2's X/Y) to
-            // be poorly conditioned.  The Z-axes here have already been normalized
-            // (parallel, not anti-parallel) by the block above.
-            auto link = std::make_shared<CylindricalAccessor>();
-            link->SetName(joint->getName());
-            link->Initialize(
-                body1,
-                body2,
-                true,
-                frame1.GetPos(),
-                frame2.GetPos(),
-                frame1.GetRot().GetAxisZ(),
-                frame2.GetRot().GetAxisZ()
-            );
-            sys->AddLink(link);
-            // Regularise the KKT matrix: in a closed kinematic loop, the Cylindrical's
-            // Rx and Ry constraints are redundant with the Revolute joints that keep the
-            // mechanism planar, making SparseLU rank-deficient.  A small CFM term on all
-            // active constraints (Tx, Ty, Rx, Ry) is harmless for non-redundant cases
-            // (sub-micrometer / sub-microradian violation) but fixes rank deficiency.
-            link->setCompliance(kCylindricalCompliance);
+        case JointClass::CYLINDRICAL_JOINT:
+            // Free DOFs: Z (translation) and Rz (rotation).
+            // Limits applied via LimitZ() and LimitRz().
+            // ChSolverSparseQR handles any redundant constraints in closed kinematic
+            // loops natively (minimum-norm least-squares), so no compliance is needed.
+            initLockLimitable(std::make_shared<chrono::ChLinkLockCylindrical>());
             break;
-        }
 
-        case JointClass::TRANSLATIONAL_JOINT: {
-            // Use a rigid ChLinkMatePrismatic.  In a closed kinematic loop that also
-            // contains a Cylindrical joint, the Prismatic's Rz constraint is redundant,
-            // making the KKT Jacobian rank-deficient.  ChSolverSparseQR handles this
-            // natively by computing the minimum-norm least-squares solution, so no
-            // structural replacement or compliance regularisation is needed here.
-            initMate(std::make_shared<chrono::ChLinkMatePrismatic>());
+        case JointClass::TRANSLATIONAL_JOINT:
+            // Free DOF: Z (translation along the joint axis).  Limits via LimitZ().
+            initLockLimitable(std::make_shared<chrono::ChLinkLockPrismatic>());
             break;
-        }
 
         case JointClass::SPHERICAL_JOINT:
-            initMate(std::make_shared<chrono::ChLinkMateSpherical>());
+            // Free DOFs: Rx, Ry, Rz.
+            initLock(std::make_shared<chrono::ChLinkLockSpherical>());
             break;
 
-        case JointClass::PARALLEL_AXES_JOINT: {
-            // ChLinkMateParallel::Initialize hides the base 5-arg form; use its own
-            // 7-arg Initialize(body1, body2, rel, pt1, pt2, dir1, dir2).
-            auto link = std::make_shared<chrono::ChLinkMateParallel>();
-            link->SetName(joint->getName());
-            link->Initialize(
-                body1,
-                body2,
-                true,
-                frame1.GetPos(),
-                frame2.GetPos(),
-                frame1.GetRot().GetAxisZ(),
-                frame2.GetRot().GetAxisZ()
-            );
-            sys->AddLink(link);
+        case JointClass::PARALLEL_AXES_JOINT:
+            initLock(std::make_shared<chrono::ChLinkLockParallel>());
             break;
-        }
 
-        case JointClass::PERPENDICULAR_JOINT: {
-            // ChLinkMateOrthogonal::Initialize hides the base 5-arg form; use its own
-            // 7-arg Initialize(body1, body2, rel, pt1, pt2, dir1, dir2).
-            auto link = std::make_shared<chrono::ChLinkMateOrthogonal>();
-            link->SetName(joint->getName());
-            link->Initialize(
-                body1,
-                body2,
-                true,
-                frame1.GetPos(),
-                frame2.GetPos(),
-                frame1.GetRot().GetAxisZ(),
-                frame2.GetRot().GetAxisZ()
-            );
-            sys->AddLink(link);
+        case JointClass::PERPENDICULAR_JOINT:
+            initLock(std::make_shared<chrono::ChLinkLockPerpend>());
             break;
-        }
 
-        case JointClass::PLANAR_JOINT: {
-            // ChLinkMatePlanar::Initialize hides the base 5-arg form; use its own
-            // 7-arg Initialize(body1, body2, rel, pt1, pt2, norm1, norm2).
-            // The plane normal is the Z-axis of each marker frame.
-            auto link = std::make_shared<chrono::ChLinkMatePlanar>();
-            link->SetName(joint->getName());
-            link->Initialize(
-                body1,
-                body2,
-                true,
-                frame1.GetPos(),
-                frame2.GetPos(),
-                frame1.GetRot().GetAxisZ(),
-                frame2.GetRot().GetAxisZ()
-            );
-            sys->AddLink(link);
+        case JointClass::PLANAR_JOINT:
+            // Free DOFs: X, Y (in-plane translation) and Rz (in-plane rotation).
+            // Constrains Z (normal) and Rx, Ry (tilt).
+            initLock(std::make_shared<chrono::ChLinkLockPlanar>());
             break;
-        }
 
         case JointClass::POINT_IN_PLANE_JOINT:
-            // Constrain only z (normal to plane), leave x/y free; no rotational constraints.
-            initMate(
-                std::make_shared<chrono::ChLinkMateGeneric>(false, false, true, false, false, false)
-            );
+            // Constrains Z (normal to plane); leaves X, Y, Rx, Ry, Rz free.
+            initLock(std::make_shared<chrono::ChLinkLockPointPlane>());
             break;
 
         case JointClass::POINT_IN_LINE_JOINT:
-            // Constrain y and z, leave x (along the line) free; no rotational constraints.
-            initMate(
-                std::make_shared<chrono::ChLinkMateGeneric>(false, true, true, false, false, false)
-            );
+            // Constrains Y and Z; leaves X (along the line), Rx, Ry, Rz free.
+            initLock(std::make_shared<chrono::ChLinkLockPointLine>());
             break;
 
         case JointClass::LINE_IN_PLANE_JOINT:
-            // Constrain z (normal), rx and ry (line must stay parallel to the plane);
-            // leave x, y, and rz free.
-            initMate(
-                std::make_shared<chrono::ChLinkMateGeneric>(false, false, true, true, true, false)
-            );
+            // Constrains Z (normal), Rx and Ry (line parallel to plane);
+            // leaves X, Y, Rz free.  Same DOF pattern as ChLinkLockPlanar.
+            initLock(std::make_shared<chrono::ChLinkLockPlanar>());
             break;
 
         case JointClass::RACK_PINION_JOINT: {
@@ -587,9 +520,51 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
     }
 }
 
-void ChronoAssembly::addLimit(std::shared_ptr<Limit> /*limit*/)
+void ChronoAssembly::addLimit(std::shared_ptr<Limit> limit)
 {
-    FC_WARN("ChronoSolver: joint limits are not yet implemented; limit ignored");
+    auto key = std::make_pair(limit->getMarkerI(), limit->getMarkerJ());
+    auto it = limitableJoints.find(key);
+    if (it == limitableJoints.end()) {
+        FC_WARN(
+            "ChronoSolver: no limitable joint found for limit '" << limit->getName() << "'"
+        );
+        return;
+    }
+    auto& link = it->second;
+
+    const double value = evaluateLimitExpression(limit->getLimitExpression());
+    const bool isMax = (limit->getType() == LimitType::LESS_THAN_OR_EQUAL);
+
+    switch (limit->getLimitClass()) {
+        case LimitClass::ROTATION_LIMIT:
+            // The free rotational DOF for Revolute and Cylindrical joints is Rz
+            // (rotation about the joint's Z axis).
+            if (isMax) {
+                link->LimitRz().SetMax(value);
+            }
+            else {
+                link->LimitRz().SetMin(value);
+            }
+            link->LimitRz().SetActive(true);
+            break;
+
+        case LimitClass::TRANSLATION_LIMIT:
+            // The free translational DOF for Prismatic and Cylindrical joints is Z
+            // (translation along the joint's Z axis).
+            if (isMax) {
+                link->LimitZ().SetMax(value);
+            }
+            else {
+                link->LimitZ().SetMin(value);
+            }
+            link->LimitZ().SetActive(true);
+            break;
+
+        default:
+            FC_WARN(
+                "ChronoSolver: unknown limit class for limit '" << limit->getName() << "'"
+            );
+    }
 }
 
 void ChronoAssembly::addMotion(std::shared_ptr<Motion> /*motion*/)

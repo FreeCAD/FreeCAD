@@ -43,6 +43,7 @@
 namespace chrono
 {
 class ChBody;
+class ChLinkLock;
 class ChSystemNSC;
 }  // namespace chrono
 
@@ -174,6 +175,11 @@ private:
 
     // Map from full MarkerRef string to resolved MarkerInfo (populated lazily in addJoint)
     std::map<MarkerRef, MarkerInfo> markerRegistry;
+
+    // Map from (markerI, markerJ) → the ChLinkLock joint, populated in addJoint().
+    // Used by addLimit() to find the joint that owns a given limit and apply
+    // SetMin/SetMax/SetActive on the appropriate free-DOF limit object.
+    std::map<std::pair<MarkerRef, MarkerRef>, std::shared_ptr<chrono::ChLinkLock>> limitableJoints;
 
     // Simulation parameter storage
     std::shared_ptr<SimulationParameters> simulationParameters;
