@@ -339,7 +339,7 @@
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="215"/>
@@ -382,7 +382,7 @@
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -722,7 +722,7 @@
     <message>
       <location filename="../../FitBSplineCurve.cpp" line="89"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
 </TS>

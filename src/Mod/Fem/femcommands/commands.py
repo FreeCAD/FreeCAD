@@ -725,6 +725,29 @@ class _MeshClear(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
+class _MeshClearGroups(CommandManager):
+    "The FEM_MeshClearGroups command definition"
+
+    def __init__(self):
+        super().__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshClearGroups", "Clear Mesh Groups")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshClearGroups", "Remove groups from FEM mesh")
+        self.is_active = "with_femmesh"
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("ClearGroups FEM mesh")
+        FreeCADGui.addModule("Fem")
+        grps = "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh.Groups"
+        remove_func = "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh.removeGroup"
+        FreeCADGui.doCommand(f"tuple(map({remove_func}, {grps}))")
+        FreeCAD.Console.PrintMessage(
+            f"Groups cleared: Now {self.selobj.Name} has {self.selobj.FemMesh.GroupCount} groups\n"
+        )
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
+
+
 class _MeshDisplayInfo(CommandManager):
     "The FEM_MeshDisplayInfo command definition"
 
@@ -1233,6 +1256,7 @@ FreeCADGui.addCommand("FEM_MaterialSolid", _MaterialSolid())
 FreeCADGui.addCommand("FEM_FEMMesh2Mesh", _FEMMesh2Mesh())
 FreeCADGui.addCommand("FEM_MeshBoundaryLayer", _MeshBoundaryLayer())
 FreeCADGui.addCommand("FEM_MeshClear", _MeshClear())
+FreeCADGui.addCommand("FEM_MeshClearGroups", _MeshClearGroups())
 FreeCADGui.addCommand("FEM_MeshDisplayInfo", _MeshDisplayInfo())
 FreeCADGui.addCommand("FEM_MeshGmshFromShape", _MeshGmshFromShape())
 FreeCADGui.addCommand("FEM_MeshGroup", _MeshGroup())

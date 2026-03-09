@@ -72,7 +72,7 @@ class DraftBaseWidget(QtWidgets.QWidget):
         super().__init__(parent)
 
     def eventFilter(self, widget, event):
-        if event.type() == QtCore.QEvent.KeyPress and event.text().upper() == _get_incmd_shortcut(
+        if event.type() == QtCore.QEvent.KeyPress and event.text().upper() in _get_incmd_shortcut(
             "CycleSnap"
         ):
             if hasattr(FreeCADGui, "Snapper"):
@@ -1324,84 +1324,84 @@ class DraftToolBar:
         spec = False
         self.last_point = self.get_last_point()
         # Most frequently used shortcuts first:
-        if txt == _get_incmd_shortcut("Relative"):
+        if txt in _get_incmd_shortcut("Relative"):
             if self.isRelative.isVisible():
                 self.isRelative.setChecked(not self.isRelative.isChecked())
                 # setRelative takes care of rest
             spec = True
-        elif txt == _get_incmd_shortcut("Global"):
+        elif txt in _get_incmd_shortcut("Global"):
             if self.isGlobal.isVisible():
                 self.isGlobal.setChecked(not self.isGlobal.isChecked())
                 # setGlobal takes care of rest
             spec = True
-        elif txt == _get_incmd_shortcut("Length"):
+        elif txt in _get_incmd_shortcut("Length"):
             if self.lengthValue.isVisible():
                 self.constrain("angle")
             self.displayPoint(self.new_point, self.last_point)
             spec = True
-        elif txt == _get_incmd_shortcut("RestrictX"):
+        elif txt in _get_incmd_shortcut("RestrictX"):
             self.constrain("x")
             self.displayPoint(self.new_point, self.last_point)
             spec = True
-        elif txt == _get_incmd_shortcut("RestrictY"):
+        elif txt in _get_incmd_shortcut("RestrictY"):
             self.constrain("y")
             self.displayPoint(self.new_point, self.last_point)
             spec = True
-        elif txt == _get_incmd_shortcut("RestrictZ"):
+        elif txt in _get_incmd_shortcut("RestrictZ"):
             self.constrain("z")
             self.displayPoint(self.new_point, self.last_point)
             spec = True
-        elif txt == _get_incmd_shortcut("Copy"):
+        elif txt in _get_incmd_shortcut("Copy"):
             if self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
             spec = True
-        elif txt == _get_incmd_shortcut("Exit"):
+        elif txt in _get_incmd_shortcut("Exit"):
             if self.finishButton.isVisible():
                 self.finish()
-        elif txt == _get_incmd_shortcut("Close"):
+        elif txt in _get_incmd_shortcut("Close"):
             if self.closeButton.isVisible():
                 self.closeLine()
-        elif txt == _get_incmd_shortcut("AddHold"):
+        elif txt in _get_incmd_shortcut("AddHold"):
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.addHoldPoint()
             spec = True
-        elif txt == _get_incmd_shortcut("Recenter"):
+        elif txt in _get_incmd_shortcut("Recenter"):
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.recenter_workingplane()
             spec = True
-        elif txt == _get_incmd_shortcut("Snap"):
+        elif txt in _get_incmd_shortcut("Snap"):
             self.togglesnap()
             spec = True
-        elif txt == _get_incmd_shortcut("MakeFace"):
+        elif txt in _get_incmd_shortcut("MakeFace"):
             if self.makeFace.isVisible():
                 self.makeFace.setChecked(not self.makeFace.isChecked())
             spec = True
-        elif txt == _get_incmd_shortcut("Continue"):
+        elif txt in _get_incmd_shortcut("Continue"):
             if self.continueCmd.isVisible():
                 self.toggleContinue()
             spec = True
-        elif txt == _get_incmd_shortcut("SetWP"):
+        elif txt in _get_incmd_shortcut("SetWP"):
             if self.orientWPButton.isVisible():
                 self.orientWP()
             spec = True
-        elif txt == _get_incmd_shortcut("SelectEdge"):
+        elif txt in _get_incmd_shortcut("SelectEdge"):
             self.selectEdge()
             spec = True
-        elif txt == _get_incmd_shortcut("SubelementMode"):
+        elif txt in _get_incmd_shortcut("SubelementMode"):
             if self.isSubelementMode.isVisible():
                 self.isSubelementMode.setChecked(not self.isSubelementMode.isChecked())
             spec = True
-        elif txt == _get_incmd_shortcut("Wipe"):
+        elif txt in _get_incmd_shortcut("Wipe"):
             if self.wipeButton.isVisible():
                 self.wipeLine()
             spec = True
-        elif txt == _get_incmd_shortcut("Undo"):
+        elif txt in _get_incmd_shortcut("Undo"):
             self.undoSegment()
             spec = True
-        elif txt == _get_incmd_shortcut("IncreaseRadius"):
+        elif txt in _get_incmd_shortcut("IncreaseRadius"):
             self.toggleradius(1)
             spec = True
-        elif txt == _get_incmd_shortcut("DecreaseRadius"):
+        elif txt in _get_incmd_shortcut("DecreaseRadius"):
             self.toggleradius(-1)
             spec = True
 

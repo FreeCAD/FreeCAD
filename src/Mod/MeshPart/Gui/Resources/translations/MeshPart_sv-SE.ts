@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="85"/>
       <source>Trim Mesh</source>
-      <translation type="unfinished">Trim Mesh</translation>
+      <translation>Trimma nät</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="86"/>
@@ -497,8 +497,8 @@ Ett värde i intervallet 0,2-10.</translation>
       <location filename="../../Tessellation.cpp" line="280"/>
       <source>Error: body without a tip selected.
 Either set the tip of the body or select a different shape.</source>
-      <translation type="unfinished">Error: body without a tip selected.
-Either set the tip of the body or select a different shape.</translation>
+      <translation>Fel: kropp utan en spets vald.
+Antingen ställ in spetsen på kroppen eller välj en annan form.</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="288"/>
@@ -590,7 +590,7 @@ Välj en annan form.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="90"/>
       <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <translation>Veckla ut yta</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="93"/>

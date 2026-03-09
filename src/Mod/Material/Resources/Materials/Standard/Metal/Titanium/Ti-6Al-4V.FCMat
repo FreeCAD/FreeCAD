@@ -3,6 +3,7 @@
 General:
   UUID: "f8013463-8008-4063-818c-ab6884cfa015"
   Author: "vlk"
+  License: "LGPL-2.1-or-later"
   Name: "Ti-6Al-4V (Grade 5)"
 Models:
   Father:

@@ -582,6 +582,8 @@ static std::vector<std::pair<long, Data::MappedName>> getElementSource(
             }
             break;
         }
+        // "Compact" makes an owned copy to ensure we don't have a dangling point later on
+        original.compact();
         ret.emplace_back(tag, original);
     }
     return ret;
