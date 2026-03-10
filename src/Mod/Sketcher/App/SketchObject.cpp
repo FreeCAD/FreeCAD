@@ -3950,13 +3950,40 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
 
     const auto& allConstraints = this->Constraints.getValues();
 
+    // Remove constraints that should NOT be processed by deriveConstraintsForPieces:
+    // - InternalAlignment constraints are tied to the geometry and handled by geometry deletion.
+    // - Constraints referencing specific named points (start, end, mid) on GeoId are handled
+    //   in-place by the transferConstraints calls below, so they must NOT be in the delete list.
+    // All remaining constraints (e.g. PointPos::none edge-level constraints, dimensional
+    // constraints referencing points not at start/end/mid) are passed to
+    // deriveConstraintsForPieces and then deleted and re-added remapped to the new geometry.
     std::erase_if(idsOfOldConstraints, [&GeoId, &allConstraints](const auto& i) {
-        return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none);
+        const auto* con = allConstraints[i];
+        if (con->Type == InternalAlignment) {
+            return true;
+        }
+        if (con->involvesGeoIdAndPosId(GeoId, PointPos::start)) {
+            return true;
+        }
+        if (con->involvesGeoIdAndPosId(GeoId, PointPos::end)) {
+            return true;
+        }
+        if (con->involvesGeoIdAndPosId(GeoId, PointPos::mid)) {
+            return true;
+        }
+        return false;
     });
+
+    // Convert newGeos to const pointers for deriveConstraintsForPieces.
+    // Passing newGeos explicitly avoids the fallback path that calls getGeometry()
+    // on IDs that don't exist yet (the new geometry hasn't been committed via
+    // replaceGeometries yet), which would cause newGeosLikelyNotCreated=true and
+    // silently skip geometric constraint remapping (tangent, perpendicular, distance).
+    std::vector<const Part::Geometry*> constNewGeos(newGeos.begin(), newGeos.end());
 
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
-        deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
+        deriveConstraintsForPieces(GeoId, newIds, constNewGeos, con, newConstraints);
     }
 
     // This also seems to reset SketchObject::Geometry.
