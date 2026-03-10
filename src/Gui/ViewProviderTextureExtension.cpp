@@ -32,7 +32,6 @@
 
 #include "ViewProviderTextureExtension.h"
 #include <Gui/BitmapFactory.h>
-#include <App/Application.h>
 #include <App/Material.h>
 
 
@@ -97,7 +96,6 @@ void ViewProviderTextureExtension::setCoinAppearance(
 )
 {
     if (!source.image.empty()) {
-        Base::Console().log("setCoinAppearance(Texture)\n");
         activateTexture2D();
 
         QByteArray by = QByteArray::fromBase64(QString::fromStdString(source.image).toUtf8());
@@ -108,7 +106,6 @@ void ViewProviderTextureExtension::setCoinAppearance(
         pcShapeTexture2D->image = texture;
     }
     else {
-        Base::Console().log("setCoinAppearance(Material)\n");
         activateMaterial();
     }
 
