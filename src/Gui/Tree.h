@@ -421,6 +421,8 @@ protected:
         = std::unordered_map<const ViewProvider*, std::vector<ViewProviderDocumentObject*>>;
     void populateParents(const ViewProvider* vp, ViewParentMap&);
 
+    void setReadOnlyIconOverlays(int column, QIcon& overlays);
+
 private:
     const char* treeName;  // for debugging purpose
     Gui::Document* pDocument;
@@ -527,6 +529,10 @@ private:
         const std::vector<bool>& snapshot,
         std::vector<bool>::const_iterator& from
     );
+    
+    void setIconOverlays(int currentStatus, int w, QPixmap& overlays);
+    void generateIcon(int currentStatus, QIcon::Mode mode, QIcon& icon);
+    QIcon getVisibilityIcon(int currentStatus, QIcon& original_icon);
 
     QBrush bgBrush;
     DocumentItem* myOwner;
