@@ -324,6 +324,7 @@
         <file>zoom-out.svg</file>
         <file>zoom-selection.svg</file>
         <file>tabler/outline/package-import.svg</file>
+        <file>tabler/outline/adjustments-check.svg</file>
     </qresource>
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>

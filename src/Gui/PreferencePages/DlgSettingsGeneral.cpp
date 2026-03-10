@@ -58,6 +58,8 @@
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
 
+#include <IconManager.h>
+
 using namespace Gui;
 using namespace Gui::Dialog;
 namespace fs = std::filesystem;
@@ -699,7 +701,7 @@ void DlgSettingsGeneral::recreatePreferencePackMenu()
         packs.erase(key);  // Remove the elements from the map
     }
 
-    QIcon icon = style()->standardIcon(QStyle::SP_DialogApplyButton);
+    QIcon icon = IconManager::instance().icon(":/icons/tabler/outline/adjustments-check.svg");
     for (const auto& pack : packs) {
         auto* item = new QTreeWidgetItem(ui->PreferencePacks);
         item->setText(0, QString::fromStdString(pack.first));
