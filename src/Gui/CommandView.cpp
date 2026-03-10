@@ -393,8 +393,15 @@ void StdCmdFreezeViews::activated(int iMsg)
     }
     else if (iMsg == 3) {
         // Create a new view
-        const std::string& camera
-            = freecad_cast<View3DInventor*>(getGuiApplication()->activeView())->getCamera();
+        auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+        if (view3d == nullptr) {
+            Base::Console().developerError(
+                "StdCmdFreezeViews",
+                "Expected the active view to be View3DInventor\n"
+            );
+            return;
+        }
+        const std::string& camera = view3d->getCamera();
 
         QList<QAction*> acts = pcAction->actions();
         int index = 1;
@@ -428,6 +435,21 @@ void StdCmdFreezeViews::activated(int iMsg)
             view3D->setCamera(data.toLatin1());
         }
     }
+}
+
+bool StdCmdFreezeViews::isActive()
+{
+    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+
+    separator->setVisible(savedViews > 0);
+    if (view) {
+        saveView->setEnabled(savedViews > 0);
+        freezeView->setEnabled(savedViews < maxViews);
+        clearView->setEnabled(savedViews > 0);
+        return true;
+    }
+
+    return false;
 }
 
 void StdCmdFreezeViews::onSaveViews()
@@ -589,23 +611,6 @@ void StdCmdFreezeViews::onRestoreViews()
             acts[index]->setVisible(false);
         }
     }
-}
-
-bool StdCmdFreezeViews::isActive()
-{
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        saveView->setEnabled(savedViews > 0);
-        freezeView->setEnabled(savedViews < maxViews);
-        clearView->setEnabled(savedViews > 0);
-        separator->setVisible(savedViews > 0);
-        return true;
-    }
-    else {
-        separator->setVisible(savedViews > 0);
-    }
-
-    return false;
 }
 
 void StdCmdFreezeViews::languageChange()
@@ -2633,7 +2638,15 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::string camera = freecad_cast<View3DInventor*>(getGuiApplication()->activeView())->getCamera();
+    auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view3d == nullptr) {
+        Base::Console().developerError(
+            "StdCmdViewIvIssueCameraPos",
+            "Expected the active view to be View3DInventor\n"
+        );
+        return;
+    }
+    std::string camera = view3d->getCamera();
 
     // remove the #inventor line...
     std::string::size_type pos = camera.find_first_of('\n');
