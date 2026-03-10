@@ -23,6 +23,8 @@
 
 #include <QMenu>
 
+#include <Inventor/nodes/SoMaterial.h>
+
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Part.h>
