@@ -26,7 +26,6 @@
 #include <QMenu>
 #include <QMessageBox>
 
-
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
@@ -57,6 +56,7 @@
 #include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <App/Property.h>
+#include <Utilities.h>
 
 #include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -305,17 +305,8 @@ void ViewProviderHole::updateThreadClipper(const PartDesign::Hole* pcHole)
         gp_Vec(holeNormalAxis) * -pcHole->ThreadDepth.getValue()
     );
 
-    SbVec3f endPlanePoint(
-        static_cast<float>(endPlanePnt.X()),
-        static_cast<float>(endPlanePnt.Y()),
-        static_cast<float>(endPlanePnt.Z())
-    );
-
-    SbVec3f endPlaneNormal(
-        static_cast<float>(holeNormalAxis.X()),
-        static_cast<float>(holeNormalAxis.Y()),
-        static_cast<float>(holeNormalAxis.Z())
-    );
+    SbVec3f endPlanePoint = Base::convertTo<SbVec3f>(endPlanePnt);
+    SbVec3f endPlaneNormal = Base::convertTo<SbVec3f>(holeNormalAxis);
 
     // Update the end thread clipper plane
     m_endThreadClipper->plane.setValue(SbPlane(endPlaneNormal, endPlanePoint));
