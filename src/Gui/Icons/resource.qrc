@@ -323,6 +323,7 @@
         <file>zoom-in.svg</file>
         <file>zoom-out.svg</file>
         <file>zoom-selection.svg</file>
+        <file>tabler/outline/package-import.svg</file>
     </qresource>
     <qresource prefix="/icons/FreeCAD-default">
         <file>index.theme</file>

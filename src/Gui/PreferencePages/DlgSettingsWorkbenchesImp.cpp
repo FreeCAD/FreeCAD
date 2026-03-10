@@ -37,6 +37,8 @@
 #include "DlgSettingsWorkbenchesImp.h"
 #include "ui_DlgSettingsWorkbenches.h"
 
+#include <IconManager.h>
+
 
 using namespace Gui::Dialog;
 
@@ -162,12 +164,12 @@ wbListItem::wbListItem(
     }
 
     // 6: Load button/loaded indicator
-    loadLabel = new QLabel(tr("Loaded"), this);
-    loadLabel->setAlignment(Qt::AlignCenter);
-    loadLabel->setEnabled(enableCheckBox->isChecked());
+    loadLabel = new QLabel(tr("Not Loaded"), this);
+    loadLabel->setFixedWidth(80);
+    loadLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
     loadButton = new QToolButton(this);
     loadButton->setText(tr("Load"));
-    loadButton->setIcon(style()->standardIcon(QStyle::SP_BrowserReload));
+    loadButton->setIcon(IconManager::instance().icon(":/icons/tabler/outline/package-import.svg"));
     loadButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     loadButton->setProperty("controlSize", "small");
     loadButton->setToolTip(
@@ -178,17 +180,21 @@ wbListItem::wbListItem(
     connect(loadButton, &QToolButton::clicked, this, [this]() { onLoadClicked(); });
     if (WorkbenchManager::instance()->getWorkbench(wbName.toStdString())) {
         loadButton->setVisible(false);
+        loadLabel->setText(tr("Loaded"));
     }
     else {
-        loadLabel->setVisible(false);
+        loadLabel->setDisabled(true);
+        loadLabel->setText(tr("Not loaded"));
     }
 
     auto layout = new QHBoxLayout(this);
     layout->addWidget(enableCheckBox);
     layout->addWidget(subWidget);
     layout->addWidget(autoloadCheckBox);
-    layout->addWidget(loadButton);
+    layout->addSpacing(40);
     layout->addWidget(loadLabel);
+    layout->addStretch();
+    layout->addWidget(loadButton);
     layout->setAlignment(Qt::AlignLeft);
     layout->setContentsMargins(10, 0, 0, 0);
 }
@@ -239,7 +245,6 @@ void wbListItem::onWbToggled(bool checked)
     iconLabel->setEnabled(checked);
     textLabel->setEnabled(checked);
     shortcutLabel->setEnabled(checked);
-    loadLabel->setEnabled(checked);
     loadButton->setEnabled(checked);
     autoloadCheckBox->setEnabled(checked);
 
