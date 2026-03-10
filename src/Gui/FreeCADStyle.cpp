@@ -293,8 +293,10 @@ const std::map<StyleComponent, std::vector<std::string_view>> componentChains = 
     {StyleComponent::TextEdit,   {"TextEdit", "LineEdit", "FormControl"}},
     {StyleComponent::Select,     {"Select", "Button", "FormControl"}},
     {StyleComponent::ComboBox,   {"ComboBox", "LineEdit", "FormControl"}},
+    {StyleComponent::List,       {"List"}},
     {StyleComponent::ListItem,   {"ListItem"}},
-    {StyleComponent::TreeItem,   {"TreeItem"}},
+    {StyleComponent::Tree,       {"Tree", "List"}},
+    {StyleComponent::TreeItem,   {"TreeItem", "ListItem"}},
 };
 // clang-format on
 
@@ -758,7 +760,7 @@ QSize FreeCADStyle::sizeFromContents(
     }
 
     if (type == CT_ItemViewItem) {
-        const StyleContext context = contextOf(widget, option);
+        const StyleContext context = contextOf(widget, option, StyleComponentElement::Item);
         const bool isItemComponent = context.component == StyleComponent::ListItem
             || context.component == StyleComponent::TreeItem;
         if (!isItemComponent) {
@@ -801,7 +803,7 @@ QRect FreeCADStyle::subElementRect(SubElement element, const QStyleOption* optio
         if (!effectiveWidget && vopt) {
             effectiveWidget = vopt->widget;
         }
-        const StyleContext context = contextOf(effectiveWidget, option);
+        const StyleContext context = contextOf(effectiveWidget, option, StyleComponentElement::Item);
         const bool isItemComponent = context.component == StyleComponent::ListItem
             || context.component == StyleComponent::TreeItem;
         if (!isItemComponent || !vopt) {
@@ -1369,7 +1371,11 @@ std::optional<StyleParameters::Value> FreeCADStyle::resolve(
     return std::nullopt;
 }
 
-StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* option)
+StyleContext FreeCADStyle::contextOf(
+    const QWidget* widget,
+    const QStyleOption* option,
+    const StyleComponentElement& element
+)
 {
     StyleContext context;
 
@@ -1389,11 +1395,13 @@ StyleContext FreeCADStyle::contextOf(const QWidget* widget, const QStyleOption* 
         context.component = comboBox->isEditable() ? StyleComponent::ComboBox
                                                    : StyleComponent::Select;
     }
-    else if (qobject_cast<const QListView*>(widget)) {
-        context.component = StyleComponent::ListItem;
-    }
     else if (qobject_cast<const QTreeView*>(widget)) {
-        context.component = StyleComponent::TreeItem;
+        context.component = element == StyleComponentElement::Root ? StyleComponent::Tree
+                                                                   : StyleComponent::TreeItem;
+    }
+    else if (qobject_cast<const QListView*>(widget)) {
+        context.component = element == StyleComponentElement::Root ? StyleComponent::List
+                                                                   : StyleComponent::ListItem;
     }
 
     // ButtonType — derived from style option features first, then widget properties.

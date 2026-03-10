@@ -317,7 +317,11 @@ private:
      * (controlSize, isDefault, isFlat, autoRaise, property("flat")), and state
      * from option->state flags. Passing @p option as nullptr yields Normal state.
      */
-    static StyleContext contextOf(const QWidget* widget, const QStyleOption* option = nullptr);
+    static StyleContext contextOf(
+        const QWidget* widget,
+        const QStyleOption* option = nullptr,
+        const StyleComponentElement& element = StyleComponentElement::Root
+    );
 
     /**
      * @brief Paints the label (icon + text) of a push button.
