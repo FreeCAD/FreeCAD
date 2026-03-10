@@ -137,6 +137,9 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
         button->setText(theme.second);
         button->setIcon(iconMap[theme.first]);
         button->setIconSize(iconMap[theme.first].actualSize(QSize(256, 256)));
+        button->setMinimumHeight(
+            button->iconSize().height() + fontMetrics().boundingRect(theme.second).height() + 16
+        );
         if (theme.first == Theme::Classic && styleSheetName.isEmpty()) {
             button->setChecked(true);
         }
