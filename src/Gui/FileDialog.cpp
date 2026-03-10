@@ -482,6 +482,9 @@ QStringList FileDialog::getOpenFileNames(
     return files;
 }
 
+#include <App/Application.h>
+#include <App/Document.h>
+
 QString FileDialog::workingDirectory;
 
 /**
@@ -491,6 +494,23 @@ QString FileDialog::workingDirectory;
  */
 QString FileDialog::getWorkingDirectory()
 {
+    // If there is an active document that has a saved filename, use its directory.
+    // This addresses issue #27926 where the file dialog should preferably open in the current
+    // document's directory.
+    if (App::Document* doc = App::GetApplication().getActiveDocument()) {
+        QString docFile = QString::fromUtf8(doc->getFileName());
+        if (!docFile.isEmpty()) {
+            QFileInfo fi(docFile);
+            if (fi.exists()) {
+                QString docDir = fi.absolutePath();
+                if (!docDir.isEmpty()) {
+                    return docDir;
+                }
+            }
+        }
+    }
+
+    // Fallback to the globally stored working directory
     return workingDirectory;
 }
 
