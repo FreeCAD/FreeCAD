@@ -41,6 +41,8 @@ if(FREETYPE_FOUND)
         ${Part_LIBS}
         ${FREETYPE_LIBRARIES}
     )
+
+    set(Part_LIBS ${Part_LIBS} harfbuzz::harfbuzz)
 endif(FREETYPE_FOUND)
 
 generate_from_py(Arc)
