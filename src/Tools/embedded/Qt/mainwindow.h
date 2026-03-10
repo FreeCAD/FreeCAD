@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 
@@ -37,5 +36,3 @@ private:
     QAction* exitAct;
     QAction* aboutAct;
 };
-
-#endif

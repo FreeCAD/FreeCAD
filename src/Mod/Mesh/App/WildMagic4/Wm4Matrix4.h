@@ -16,8 +16,7 @@
 //
 // Version: 4.0.1 (2006/08/19)
 
-#ifndef WM4MATRIX4_H
-#define WM4MATRIX4_H
+#pragma once
 
 // Matrix operations are applied on the left.  For example, given a matrix M
 // and a vector V, matrix-times-vector is M*V.  That is, V is treated as a
@@ -162,5 +161,3 @@ namespace Wm4
 typedef Matrix4<float> Matrix4f;
 typedef Matrix4<double> Matrix4d;
 }
-
-#endif

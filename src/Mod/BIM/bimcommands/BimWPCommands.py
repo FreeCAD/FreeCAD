@@ -83,7 +83,7 @@ class BIM_WPView:
             "MenuText": QT_TRANSLATE_NOOP("BIM_WPView", "Working Plane View"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_WPView",
-                "Aligns the view to the current item in BIM Views window or to the current working plane",
+                "Aligns the view to the current item in BIM Views Manager or to the current working plane",
             ),
             "Accel": "9",
         }

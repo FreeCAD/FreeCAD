@@ -138,7 +138,7 @@ class ESwriter:
                         self.write.boundary(name, "Electric Flux", flux_density)
                     if obj.PotentialConstant:
                         self.write.boundary(name, "Potential Constant", True)
-                    if obj.ElectricInfinity:
+                    if obj.FarField:
                         self.write.boundary(name, "Electric Infinity BC", True)
                     if obj.ElectricForcecalculation:
                         self.write.boundary(name, "Calculate Electric Force", True)

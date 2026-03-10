@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskPostDisplay_H
-#define GUI_TASKVIEW_TaskPostDisplay_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -204,7 +203,7 @@ private:
     QPixmap m_icon;
     App::DocumentObjectWeakPtrT m_object;
     Gui::ViewProviderWeakPtrT m_view;
-    boost::signals2::connection m_connection;
+    fastsignals::connection m_connection;
 };
 
 
@@ -594,5 +593,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskPostDisplay_H

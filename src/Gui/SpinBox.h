@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SPINBOX_H
-#define GUI_SPINBOX_H
+#pragma once
 
 #include <QSpinBox>
 #include <QValidator>
@@ -72,6 +71,9 @@ protected:
     virtual void openFormulaDialog();
 
     void drawControl(QStyleOptionSpinBox&);
+
+private:
+    void showExpression(Number number);
 
 protected:
     QLineEdit* lineedit;
@@ -209,5 +211,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SPINBOX_H

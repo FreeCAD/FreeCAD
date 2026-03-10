@@ -21,8 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_CHAINJNTTOJACSOLVER_HPP
-#define KDL_CHAINJNTTOJACSOLVER_HPP
+#pragma once
 
 #include "solveri.hpp"
 #include "frames.hpp"
@@ -73,5 +72,3 @@ namespace KDL
         unsigned int nr_of_unlocked_joints_;
     };
 }
-#endif
-

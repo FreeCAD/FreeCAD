@@ -46,6 +46,22 @@ FemMeshShapeBaseObject::FemMeshShapeBaseObject()
         Prop_None,
         "Geometry object, the mesh is made from. The geometry object has to have a Shape."
     );
+    ADD_PROPERTY_TYPE(
+        Tool,
+        (Py::Object()),
+        "FEM Mesh",
+        App::PropertyType(
+            App::Prop_Transient | App::Prop_Hidden | App::Prop_ReadOnly | App::Prop_Output
+        ),
+        "Tool object for run the mesher"
+    );
+    ADD_PROPERTY_TYPE(
+        WorkingDirectory,
+        (""),
+        "FEM Mesh",
+        App::PropertyType(App::Prop_Transient | App::Prop_Hidden | App::Prop_Output),
+        "Mesher working directory"
+    );
 
     Shape.setScope(LinkScope::Global);
 }

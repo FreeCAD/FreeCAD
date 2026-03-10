@@ -22,6 +22,8 @@
 
 #include "NavlibInterface.h"
 
+#include <boost/bind/bind.hpp>
+
 #include <QMatrix4x4>
 #include <QMdiArea>
 #include <QTabBar>

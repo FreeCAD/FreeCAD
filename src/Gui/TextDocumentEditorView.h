@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TEXTDOCUMENTEDITORVIEW_H
-#define GUI_TEXTDOCUMENTEDITORVIEW_H
+#pragma once
 
 #include <QPlainTextEdit>
 
@@ -75,11 +74,9 @@ private:
 private:
     QPlainTextEdit* const editor;
     App::TextDocument* const textDocument;
-    boost::signals2::connection textConnection;
-    boost::signals2::connection labelConnection;
+    fastsignals::advanced_connection textConnection;
+    fastsignals::connection labelConnection;
     bool aboutToClose = false;
 };
 
 }  // namespace Gui
-
-#endif

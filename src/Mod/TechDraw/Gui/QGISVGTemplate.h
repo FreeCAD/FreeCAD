@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
-#define DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -77,5 +76,3 @@ private:
 };// class QGISVGTemplate
 
 }// namespace TechDrawGui
-
-#endif// DRAWINGGUI_QGRAPHICSITEMSVGTEMPLATE_H

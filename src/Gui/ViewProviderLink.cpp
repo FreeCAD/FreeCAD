@@ -88,6 +88,16 @@ FC_LOG_LEVEL_INIT("App::Link", true, true)
 using namespace Gui;
 using namespace Base;
 
+namespace
+{
+void updateWindingOrder(Gui::LinkView* linkView, App::LinkBaseExtension* ext)
+{
+    Base::Matrix4D mat = ext->getTransform(false);
+    ext->getTrueLinkedObject(true, &mat, 0, false);
+    linkView->renderDoubleSide(mat.determinant3() < 0.0);
+}
+}  // namespace
+
 using CharRange = boost::iterator_range<const char*>;
 ////////////////////////////////////////////////////////////////////////////
 
@@ -121,7 +131,7 @@ class Gui::LinkInfo
 public:
     std::atomic<int> ref;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connChangeIcon;
 
     ViewProviderDocumentObject* pcLinked;
@@ -1161,18 +1171,18 @@ void LinkView::setDrawStyle(int style, double lineWidth, double pointSize)
 
 void LinkView::renderDoubleSide(bool enable)
 {
+    if (!pcShapeHints) {
+        pcShapeHints = new SoShapeHints;
+        pcShapeHints->shapeType = SoShapeHints::SOLID;
+        pcLinkRoot->insertChild(pcShapeHints, 0);
+    }
     if (enable) {
-        if (!pcShapeHints) {
-            pcShapeHints = new SoShapeHints;
-            pcShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
-            pcShapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-            pcLinkRoot->insertChild(pcShapeHints, 0);
-        }
-        pcShapeHints->setOverride(true);
+        pcShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
     }
-    else if (pcShapeHints) {
-        pcShapeHints->setOverride(false);
+    else {
+        pcShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     }
+    pcShapeHints->setOverride(true);
 }
 
 void LinkView::setMaterial(int index, const App::Material* material)
@@ -2196,6 +2206,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
         }
         applyColors();
         checkIcon(ext);
+        updateWindingOrder(linkView, ext);
     }
     else if (prop == ext->getColoredElementsProperty()) {
         if (!prop->testStatus(App::Property::User3)) {
@@ -2208,8 +2219,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
             if (canScale(v)) {
                 pcTransform->scaleFactor.setValue(v.x, v.y, v.z);
             }
-            SbMatrix matrix = convert(ext->getTransform(false));
-            linkView->renderDoubleSide(matrix.det3() < 1e-7);
+            updateWindingOrder(linkView, ext);
         }
     }
     else if (prop == ext->getPlacementProperty() || prop == ext->getLinkPlacementProperty()) {
@@ -2219,8 +2229,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
             if (canScale(v)) {
                 pcTransform->scaleFactor.setValue(v.x, v.y, v.z);
             }
-            SbMatrix matrix = convert(ext->getTransform(false));
-            linkView->renderDoubleSide(matrix.det3() < 1e-7);
+            updateWindingOrder(linkView, ext);
         }
     }
     else if (prop == ext->getLinkCopyOnChangeGroupProperty()) {
@@ -2271,6 +2280,7 @@ void ViewProviderLink::updateDataPrivate(App::LinkBaseExtension* ext, const App:
 
             // applyColors();
             signalChangeIcon();
+            updateWindingOrder(linkView, ext);
         }
     }
     else if (prop == ext->getLinkTransformProperty()) {
@@ -2535,6 +2545,7 @@ void ViewProviderLink::finishRestoring()
     updateDataPrivate(ext, ext->_getElementListProperty());
     applyMaterial();
     applyColors();
+    updateWindingOrder(linkView, ext);
 
     // TODO: notify the tree. This is ugly, any other way?
     getDocument()->signalChangedObject(*this, ext->_LinkTouched);

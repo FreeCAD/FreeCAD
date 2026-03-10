@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_INVENTOR_MARKERBITMAPS_H
-#define GUI_INVENTOR_MARKERBITMAPS_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -55,5 +54,3 @@ private:
 }  // namespace Inventor
 
 }  // namespace Gui
-
-#endif  // GUI_INVENTOR_MARKERBITMAPS_H

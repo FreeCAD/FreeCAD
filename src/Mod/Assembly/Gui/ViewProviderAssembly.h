@@ -21,11 +21,11 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H
-#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H
+#pragma once
 
 #include <QCoreApplication>
-#include <boost/signals2.hpp>
+#include <QMetaObject>
+#include <fastsignals/signal.h>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -217,6 +217,8 @@ public:
     void isolateComponents(std::set<App::DocumentObject*>& parts, IsolateMode mode);
     void isolateJointReferences(App::DocumentObject* joint, IsolateMode mode = IsolateMode::Transparent);
     void clearIsolate();
+    bool explodeTemporarily(App::DocumentObject* explodedView);
+    void clearTemporaryExplosion();
 
     DragMode dragMode;
     bool canStartDragging;
@@ -247,7 +249,7 @@ public:
     SoFieldSensor* translationSensor = nullptr;
     SoFieldSensor* rotationSensor = nullptr;
 
-    boost::signals2::signal<
+    fastsignals::signal<
         void(const QString& state, const QString& msg, const QString& url, const QString& linkText)>
         signalSetUp;
 
@@ -263,6 +265,10 @@ private:
     );
 
     void slotAboutToOpenTransaction(const std::string& cmdName);
+    void slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name);
+
+    void onWorkbenchActivated(const QString& name);
+    void updateTaskPanel(bool show);
 
     struct ComponentState
     {
@@ -274,8 +280,12 @@ private:
     };
 
     std::unordered_map<App::DocumentObject*, ComponentState> stateBackup;
+    App::DocumentObject* temporaryExplosion {nullptr};
     App::DocumentObject* isolatedJoint {nullptr};
     bool isolatedJointVisibilityBackup {false};
+
+    void highlightJointElements(App::DocumentObject* joint);
+    void clearJointElementHighlight();
 
     void applyIsolationRecursively(
         App::DocumentObject* current,
@@ -284,10 +294,12 @@ private:
         std::set<App::DocumentObject*>& visited
     );
 
-    boost::signals2::connection connectSolverUpdate;
-    boost::signals2::scoped_connection m_preTransactionConn;
+    TaskAssemblyMessages* taskSolver {nullptr};
+
+    QMetaObject::Connection workbenchConnection;
+    fastsignals::connection connectActivatedVP;
+    fastsignals::connection connectSolverUpdate;
+    fastsignals::scoped_connection m_preTransactionConn;
 };
 
 }  // namespace AssemblyGui
-
-#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H

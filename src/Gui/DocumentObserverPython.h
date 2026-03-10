@@ -21,11 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DOCUMENTOBSERVERPYTHON_H
-#define GUI_DOCUMENTOBSERVERPYTHON_H
+#pragma once
 
 #include <FCGlobal.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <CXX/Objects.hxx>
 #include <string>
 #include <vector>
@@ -89,7 +88,7 @@ private:
 
     using Connection = struct PythonObject
     {
-        boost::signals2::scoped_connection slot;
+        fastsignals::scoped_connection slot;
         Py::Object py;
         PyObject* ptr()
         {
@@ -111,5 +110,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_DOCUMENTOBSERVERPYTHON_H

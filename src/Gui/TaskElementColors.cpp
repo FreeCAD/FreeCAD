@@ -50,7 +50,7 @@ namespace sp = std::placeholders;
 class ElementColors::Private: public Gui::SelectionGate
 {
 public:
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     std::unique_ptr<Ui_TaskElementColors> ui;
     ViewProviderDocumentObject* vp;
     ViewProviderDocumentObject* vpParent;

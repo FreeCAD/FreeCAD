@@ -1,5 +1,4 @@
-#ifndef QUARTER_IMAGELOADER_H
-#define QUARTER_IMAGELOADER_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -52,5 +51,3 @@ private:
 };
 
 }}} // namespace
-
-#endif // QUARTER_IMAGELOADER_H

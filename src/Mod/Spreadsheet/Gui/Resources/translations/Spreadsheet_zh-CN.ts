@@ -380,8 +380,8 @@
       <translation>插入列</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <location filename="../../SheetTableView.cpp" line="679"/>
+      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <source>Clear Cells</source>
       <translation>清除单元格</translation>
     </message>
@@ -674,8 +674,8 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.cSV);;所有 (*)</translation>
     </message>
@@ -1177,12 +1177,12 @@ Defaults to: %V = %A
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>New zoom level:</source>
       <translation>新缩放级别：</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>Zoom Level</source>
       <translation>缩放级别</translation>
     </message>

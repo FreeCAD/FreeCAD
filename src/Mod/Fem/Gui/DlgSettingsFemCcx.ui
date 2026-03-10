@@ -193,6 +193,9 @@
           <property name="toolTip">
            <string>Default type on analysis</string>
           </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>AnalysisType</cstring>
           </property>
@@ -351,6 +354,9 @@
           </property>
           <property name="editable">
            <bool>false</bool>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>Solver</cstring>

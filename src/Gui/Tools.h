@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TOOLS_H
-#define GUI_TOOLS_H
+#pragma once
 
 #include <FCConfig.h>
 #include <FCGlobal.h>
@@ -122,5 +121,3 @@ T valueOr(const QVariant& variant, const T& defaultValue)
 }
 
 }  // namespace Gui::QtTools
-
-#endif  // GUI_TOOLS_H

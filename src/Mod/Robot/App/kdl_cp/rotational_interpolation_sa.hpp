@@ -43,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_ROTATIONALINTERPOLATION_SINGLEAXIS_H
-#define KDL_ROTATIONALINTERPOLATION_SINGLEAXIS_H
+#pragma once
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -81,6 +80,3 @@ class RotationalInterpolation_SingleAxis: public RotationalInterpolation
 	};
 
 }
-
-
-#endif

@@ -282,38 +282,61 @@ class MgDynwriter:
                 self.write.boundary(name, "Electric Current Density Im", current_density)
 
         if femutils.is_derived_from(obj, "Fem::ConstraintElectrostaticPotential"):
-            if obj.EnableAV:
-                potential = obj.AV_re.getValueAs("V")
-                if equation.IsHarmonic:
-                    self.write.boundary(name, "AV re", potential)
-                    potential = obj.AV_im.getValueAs("V")
-                    self.write.boundary(name, "AV im", potential)
-                else:
-                    self.write.boundary(name, "AV", potential)
-            if obj.EnableAV_1:
-                potential = obj.AV_re_1.getValueAs("Wb/m")
-                if equation.IsHarmonic:
-                    self.write.boundary(name, "AV re {e} 1", potential)
-                    potential = obj.AV_im_1.getValueAs("Wb/m")
-                    self.write.boundary(name, "AV im {e} 1", potential)
-                else:
-                    self.write.boundary(name, "AV {e} 1", potential)
-            if obj.EnableAV_2:
-                potential = obj.AV_re_2.getValueAs("Wb/m")
-                if equation.IsHarmonic:
-                    self.write.boundary(name, "AV re {e} 2", potential)
-                    potential = obj.AV_im_2.getValueAs("Wb/m")
-                    self.write.boundary(name, "AV im {e} 2", potential)
-                else:
-                    self.write.boundary(name, "AV {e} 2", potential)
-            if obj.EnableAV_3:
-                potential = obj.AV_re_3.getValueAs("Wb/m")
-                if equation.IsHarmonic:
-                    self.write.boundary(name, "AV re {e} 3", potential)
-                    potential = obj.AV_im_3.getValueAs("Wb/m")
-                    self.write.boundary(name, "AV im {e} 3", potential)
-                else:
-                    self.write.boundary(name, "AV {e} 3", potential)
+            if obj.BoundaryCondition == "Dirichlet":
+                if obj.EnableAV:
+                    potential = obj.AV_re.getValueAs("V")
+                    if equation.IsHarmonic:
+                        self.write.boundary(name, "AV re", potential)
+                        potential = obj.AV_im.getValueAs("V")
+                        self.write.boundary(name, "AV im", potential)
+                    else:
+                        self.write.boundary(name, "AV", potential)
+                if obj.EnableAV_1:
+                    potential = obj.AV_re_1.getValueAs("Wb/m")
+                    if equation.IsHarmonic:
+                        self.write.boundary(name, "AV re {e} 1", potential)
+                        potential = obj.AV_im_1.getValueAs("Wb/m")
+                        self.write.boundary(name, "AV im {e} 1", potential)
+                    else:
+                        self.write.boundary(name, "AV {e} 1", potential)
+                if obj.EnableAV_2:
+                    potential = obj.AV_re_2.getValueAs("Wb/m")
+                    if equation.IsHarmonic:
+                        self.write.boundary(name, "AV re {e} 2", potential)
+                        potential = obj.AV_im_2.getValueAs("Wb/m")
+                        self.write.boundary(name, "AV im {e} 2", potential)
+                    else:
+                        self.write.boundary(name, "AV {e} 2", potential)
+                if obj.EnableAV_3:
+                    potential = obj.AV_re_3.getValueAs("Wb/m")
+                    if equation.IsHarmonic:
+                        self.write.boundary(name, "AV re {e} 3", potential)
+                        potential = obj.AV_im_3.getValueAs("Wb/m")
+                        self.write.boundary(name, "AV im {e} 3", potential)
+                    else:
+                        self.write.boundary(name, "AV {e} 3", potential)
+
+            elif obj.BoundaryCondition == "Neumann":
+                if obj.EnableMagnetic_1:
+                    b1 = obj.Magnetic_re_1.getValueAs("Wb/m^2")
+                    self.write.boundary(name, "Magnetic Flux Density 1", b1)
+                    if equation.IsHarmonic:
+                        b1 = obj.Magnetic_im_1.getValueAs("Wb/m^2")
+                        self.write.boundary(name, "Magnetic Flux Density Im 1", b1)
+
+                if obj.EnableMagnetic_2:
+                    b2 = obj.Magnetic_re_2.getValueAs("Wb/m^2")
+                    self.write.boundary(name, "Magnetic Flux Density 2", b2)
+                    if equation.IsHarmonic:
+                        b2 = obj.Magnetic_im_2.getValueAs("Wb/m^2")
+                        self.write.boundary(name, "Magnetic Flux Density Im 2", b2)
+
+                if obj.EnableMagnetic_3:
+                    b3 = obj.Magnetic_re_3.getValueAs("Wb/m^2")
+                    self.write.boundary(name, "Magnetic Flux Density 3", b3)
+                    if equation.IsHarmonic:
+                        b3 = obj.Magnetic_im_3.getValueAs("Wb/m^2")
+                        self.write.boundary(name, "Magnetic Flux Density Im 3", b3)
 
     def handleMagnetodynamicBndConditions(self, equation):
         # the current density can either be a body force or a boundary constraint

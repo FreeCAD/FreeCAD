@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEW3DPY_H
-#define GUI_VIEW3DPY_H
+#pragma once
 
 #include "MDIView.h"
 #include "MDIViewPy.h"
@@ -145,5 +144,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW3DPY_H

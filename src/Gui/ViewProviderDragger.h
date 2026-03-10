@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DRAGGER_H
-#define GUI_VIEWPROVIDER_DRAGGER_H
+#pragma once
 
 #include "ViewProviderDocumentObject.h"
 #include <Base/Placement.h>
@@ -162,5 +161,3 @@ private:
 }  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::ViewProviderDragger::DraggerComponent)
-
-#endif  // GUI_VIEWPROVIDER_DRAGGER_H

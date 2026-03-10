@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MODELREFINE_H
-#define MODELREFINE_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -198,6 +197,7 @@ public:
     {
         return workShell;
     }
+    void fixOrientation(const TopoDS_Shell& shell);
     bool isModified()
     {
         return modifiedSignal;
@@ -258,5 +258,3 @@ protected:
     TopTools_ListOfShape myDeleted;
 };
 }  // namespace Part
-
-#endif  // MODELREFINE_H

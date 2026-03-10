@@ -15,35 +15,35 @@
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">
-    <widget class="QLabel" name="labelName">
-     <property name="text">
-      <string>Name</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="lineEditName"/>
-   </item>
-   <item row="1" column="0">
     <widget class="QLabel" name="labelGroup">
      <property name="text">
       <string>Group</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="labelType">
      <property name="text">
       <string>Type</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="1" column="1">
     <widget class="QComboBox" name="comboBoxType">
      <property name="editable">
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelName">
+     <property name="text">
+      <string>Name</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="lineEditName"/>
    </item>
    <item row="3" column="0">
     <widget class="QLabel" name="labelValue">

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditModeConstraintCoinManager_H
-#define SKETCHERGUI_EditModeConstraintCoinManager_H
+#pragma once
 
 #include <functional>
 #include <vector>
@@ -151,13 +150,7 @@ private:
     );
 
     /// finds a free position for placing a constraint icon
-    Base::Vector3d seekConstraintPosition(
-        const Base::Vector3d& origPos,
-        const Base::Vector3d& norm,
-        const Base::Vector3d& dir,
-        float step,
-        const SoNode* constraint
-    );
+    Base::Vector3d seekConstraintPosition(const Base::Vector3d& norm, float step);
 
     /// Return display string for constraint including hiding units if
     // requested.
@@ -285,6 +278,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_EditModeConstraintCoinManager_H

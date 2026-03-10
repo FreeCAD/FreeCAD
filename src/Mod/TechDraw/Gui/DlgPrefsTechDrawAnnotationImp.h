@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
-#define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
+#pragma once
 
 #include <memory>
 #include <Gui/PrefWidgets.h>
@@ -65,5 +64,3 @@ private:
 };
 
 } // namespace TechDrawGui
-
-#endif // DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H

@@ -27,11 +27,11 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Bunu özel bir URL'ye veya yardım dosyalarının bulunduğu klasöre ayarlayın.
+Eklentiyi kullanarak dokümantasyonu çevrimdışı kullanım için kolayca indirebilirsiniz.
+Yönetici ve "çevrimdışı dokümantasyon" eklentisinin yüklenmesi. Eğer bu
+Bu alan boş bırakılırsa, FreeCAD yardım dosyalarını otomatik olarak şu konumda arayacaktır:
+Varsayılan konum ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
@@ -61,10 +61,10 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
+      <translation>Bunu özel bir URL'ye veya yardım dosyalarının bulunduğu klasöre ayarlayın.
+Dokümantasyon, Eklenti Yöneticisi aracılığıyla çevrimdışı kullanım için indirilebilir ve kurulum tamamlanabilir.
+"Çevrimdışı dokümantasyon" eklentisi. Bu alan boş bırakılırsa, FreeCAD
+Yardım dosyalarını varsayılan konumda otomatik olarak ara.
 ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>

@@ -2,6 +2,7 @@
 # *   Copyright (c) 2015 Qingfeng Xia <qingfeng.xia()eng.ox.ac.uk>          *
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2024 PMcB                                               *
+# *   Copyright (c) 2025 PMcB                                               *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -266,6 +267,11 @@ class _TaskPanel:
                 self.result_widget.steps.setValue(FreeCAD.FEM_dialog["animate"][0])
                 self.result_widget.loops.setValue(FreeCAD.FEM_dialog["animate"][1])
                 self.result_widget.framerate.setValue(FreeCAD.FEM_dialog["animate"][2])
+                if FreeCAD.FEM_dialog["animate"][3]:
+                    self.result_widget.rb_full_cycle.setChecked(True)
+                else:
+                    self.result_widget.rb_half_cycle.setChecked(True)
+                self.result_widget.sb_displacement_factor.setValue(FreeCAD.FEM_dialog["animate"][4])
         except Exception:
             self.restore_initial_result_dialog()
 
@@ -284,7 +290,7 @@ class _TaskPanel:
             "show_disp": True,  # False,
             "disp_factor": 5.0,
             "disp_factor_max": 100.0,
-            "animate": [-1, -1, -1, -1],  # steps, loops, rate, indicator (not used)
+            "animate": [-1, -1, -1, -1, -1, -1, -1],  # steps, loops, rate, cycle type
         }
         self.result_widget.sb_displacement_factor_max.setValue(100.0)  # init non standard values
 
@@ -315,7 +321,7 @@ class _TaskPanel:
                 "Uabs",
                 self.result_obj.DisplacementLengths,
                 "mm",
-                translate("FEM", "Displacement Magnitude"),
+                translate("FEM", "Displacement magnitude"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -351,7 +357,7 @@ class _TaskPanel:
                 "Sabs",
                 self.result_obj.vonMises,
                 "MPa",
-                translate("FEM", "von Mises Stress"),
+                translate("FEM", "von Mises stress"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -363,7 +369,7 @@ class _TaskPanel:
                 "MaxShear",
                 self.result_obj.MaxShear,
                 "MPa",
-                translate("FEM", "Max Shear Stress"),
+                translate("FEM", "Maximum shear stress (Tresca)"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -375,7 +381,7 @@ class _TaskPanel:
                 "MaxPrin",
                 self.result_obj.PrincipalMax,
                 "MPa",
-                translate("FEM", "Max Principal Stress"),
+                translate("FEM", "Maximum principal stress"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -399,7 +405,7 @@ class _TaskPanel:
                 "MFlow",
                 self.result_obj.MassFlowRate,
                 "kg/s",
-                translate("FEM", "Mass Flow Rate"),
+                translate("FEM", "Mass flow rate"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -411,7 +417,7 @@ class _TaskPanel:
                 "NPress",
                 self.result_obj.NetworkPressure,
                 "MPa",
-                translate("FEM", "Network Pressure"),
+                translate("FEM", "Network pressure"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -423,7 +429,7 @@ class _TaskPanel:
                 "MinPrin",
                 self.result_obj.PrincipalMin,
                 "MPa",
-                translate("FEM", "Min Principal Stress"),
+                translate("FEM", "Minimum principal stress"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -435,7 +441,7 @@ class _TaskPanel:
                 "Peeq",
                 self.result_obj.Peeq,
                 "",
-                translate("FEM", "Equivalent Plastic Strain"),
+                translate("FEM", "Equivalent plastic strain"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)
@@ -787,8 +793,14 @@ class _TaskPanel:
         FreeCAD.FEM_dialog["animate"][0] = self.result_widget.steps.value()
         FreeCAD.FEM_dialog["animate"][1] = self.result_widget.loops.value()
         FreeCAD.FEM_dialog["animate"][2] = self.result_widget.framerate.value()
+        FreeCAD.FEM_dialog["animate"][3] = self.result_widget.rb_full_cycle.isChecked()
+        try:
+            FreeCAD.FEM_dialog["animate"][4] = self.result_widget.sb_displacement_factor.value()
+        except:
+            FreeCAD.FEM_dialog["animate"][4] = 1
 
     # animation start
+
     def animate_displacement(self):
         if "result_obj" in FreeCAD.FEM_dialog:
             if FreeCAD.FEM_dialog["result_obj"] != self.result_obj:
@@ -806,22 +818,44 @@ class _TaskPanel:
         steps_per_cycle = int(self.result_widget.steps.value())
         number_cycles = int(self.result_widget.loops.value())
 
-        inc = math.pi / steps_per_cycle * 2.0
+        sinc = inc = math.pi / steps_per_cycle * 2.0
         self.set_label(self.result_obj.Label, self.results_name)
 
         done = False
-        for lo in range(0, number_cycles):
-            for st in range(0, steps_per_cycle):
+        #        for lo in range(0, number_cycles):
+        loops = max(1, number_cycles) * steps_per_cycle + 1
+        st = 0
+        for loop in range(0, loops):
+            if self.result_widget.rb_half_cycle.isChecked():
+                if number_cycles > 0:  # 0 -> 1 -> 0, repeated
+                    inc = sinc / 2
+                else:
+                    inc = sinc / 4
+                # full cycle
+            if self.result_widget.rb_full_cycle.isChecked():
                 self.mesh_obj.ViewObject.applyDisplacement(
                     math.sin(st * inc) * self.hsb_displacement_factor
                 )
-                FreeCADGui.updateGui()
-                if not self.startAnimate:
-                    done = True
-                    break
-                time.sleep(1.0 / frame_rate)  # modify the time here
-            if done:
+            elif self.result_widget.rb_half_cycle.isChecked():
+                # half cycle
+                if number_cycles > 0:  # 0 -> 1 -> 0, repeated
+                    self.mesh_obj.ViewObject.applyDisplacement(
+                        abs(math.sin(st * inc)) * self.hsb_displacement_factor
+                    )
+                elif number_cycles <= 0:  # 0 -> 1, once
+                    self.mesh_obj.ViewObject.applyDisplacement(
+                        abs(math.sin(st * inc)) * self.hsb_displacement_factor
+                    )
+            else:
+                print("No cycle type selected")
+            FreeCADGui.updateGui()
+            if not self.startAnimate:
+                done = True
                 break
+            time.sleep(1.0 / frame_rate)  # modify the time here
+            st += 1
+        # if done:
+        #         break
         try:
             self.result_widget.startButton.setText("Start Animation")
         except:

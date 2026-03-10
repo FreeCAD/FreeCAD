@@ -83,7 +83,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="45"/>
       <source>Kuka Compact Subroutine</source>
-      <translation>Kompaktes Kuka-Unterprogramm</translation>
+      <translation>Kuka-Compact-Unterprogramm</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="46"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="126"/>
       <source>Kuka Full Subroutine</source>
-      <translation>Vollständiges Kuka-Unterprogramm</translation>
+      <translation>Kuka-Vollständiges-Unterprogramm</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="127"/>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="441"/>
       <source>Dress-Up Trajectory</source>
-      <translation>Überlagerungs-Trajektorie</translation>
+      <translation>Bewegungsbahn anpassen</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="442"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
-      <translation>Erstellt ein Überlagerungs-Objekt das Teile der Trajektorie überschreibt</translation>
+      <translation>Erstellt ein Anpassungs-Objekt das Teile der Trajektorie überschreibt</translation>
     </message>
   </context>
   <context>
@@ -292,20 +292,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="68"/>
-      <location filename="../../CommandExport.cpp" line="61"/>
-      <location filename="../../CommandExport.cpp" line="142"/>
-      <location filename="../../Command.cpp" line="102"/>
-      <location filename="../../Command.cpp" line="165"/>
-      <location filename="../../Command.cpp" line="267"/>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../CommandTrajectory.cpp" line="178"/>
-      <location filename="../../CommandTrajectory.cpp" line="199"/>
-      <location filename="../../CommandTrajectory.cpp" line="484"/>
-      <source>Wrong selection</source>
-      <translation>Falsche Auswahl</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Select VRML file for Robot</source>
       <translation>VRML-Datei für Roboter auswählen</translation>
@@ -326,6 +312,20 @@
       <translation>CSV-Dateien (*.csv)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
+      <location filename="../../CommandTrajectory.cpp" line="178"/>
+      <location filename="../../CommandTrajectory.cpp" line="199"/>
+      <location filename="../../CommandTrajectory.cpp" line="484"/>
+      <location filename="../../CommandInsertRobot.cpp" line="68"/>
+      <location filename="../../CommandExport.cpp" line="61"/>
+      <location filename="../../CommandExport.cpp" line="142"/>
+      <source>Wrong selection</source>
+      <translation>Falsche Auswahl</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Select one Robot to set home position</source>
       <translation>Einen Roboter auswählen, um die Ausgangsposition festzulegen</translation>
@@ -336,10 +336,10 @@
       <translation>Einen Roboter auswählen</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="143"/>
       <location filename="../../Command.cpp" line="268"/>
       <location filename="../../CommandTrajectory.cpp" line="108"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="143"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Einen Roboter und eine Bewegungsbahn auswählen.</translation>
     </message>

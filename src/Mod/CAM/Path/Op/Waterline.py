@@ -564,6 +564,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("CutPattern", C)
         obj.setEditorMode("SampleInterval", G)
         obj.setEditorMode("MinSampleInterval", D)
+        obj.setEditorMode("OptimizeLinearPaths", D)
         obj.setEditorMode("LinearDeflection", expMode)
         obj.setEditorMode("AngularDeflection", expMode)
 
@@ -1226,6 +1227,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         bb = self.boundBoxes[mdlIdx]
         stl = self.modelSTLs[mdlIdx]
         depOfst = obj.DepthOffset.Value
+        optimizeLinear = obj.OptimizeLinearPaths
 
         # Prepare global holdpoint and layerEndPnt containers
         if self.holdPoint is None:
@@ -1284,6 +1286,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             # Generate G-Code
             layTime = time.time()
             for loop in scanLines:
+                if optimizeLinear:
+                    loop = PathUtils.simplify3dLine(loop, tolerance=self.geoTlrnc)
                 # We pass '0.0' as layDep because Adaptive loops have their own Z embedded
                 cmds = self._loopToGcode(obj, 0.0, loop)
                 commands.extend(cmds)
@@ -1897,7 +1901,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             if cont:
                 # Identify solid areas in the offset data
                 if obj.CutPattern == "Offset" or obj.CutPattern == "None":
-                    ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea)
+                    ofstSolidFacesList = self._getSolidAreasFromPlanarFaces(ofstArea.Faces)
                     if ofstSolidFacesList:
                         clearArea = Part.makeCompound(ofstSolidFacesList)
                         self.showDebugObject(clearArea, "ClearArea_{}".format(caCnt))
@@ -2014,6 +2018,12 @@ class ObjectWaterline(PathOp.ObjectOp):
                 startVect = FreeCAD.Vector(V[0].X, V[0].Y, V[0].Z)
 
             commands.append(Path.Command("N (Wire {}.)".format(w)))
+
+            # This ensures the tool is directly above the entry point before plunging,
+            # preventing diagonal moves through the material.
+            commands.append(
+                Path.Command("G0", {"X": startVect.x, "Y": startVect.y, "F": self.horizRapid})
+            )
             (cmds, endVect) = self._wireToPath(obj, wire, startVect)
             commands.extend(cmds)
             commands.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
@@ -2303,8 +2313,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         pathParams["feedrate"] = self.horizFeed
         pathParams["feedrate_v"] = self.vertFeed
         pathParams["verbose"] = True
-        pathParams["resume_height"] = obj.SafeHeight.Value
-        pathParams["retraction"] = obj.ClearanceHeight.Value
+        pathParams["retraction"] = obj.SafeHeight.Value
         pathParams["return_end"] = True
         # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
         pathParams["preamble"] = False

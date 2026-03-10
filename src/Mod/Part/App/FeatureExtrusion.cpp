@@ -41,6 +41,7 @@
 
 #include <App/Document.h>
 #include <Base/Exception.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
 
 #include "FeatureExtrusion.h"
@@ -53,6 +54,7 @@ using namespace Part;
 PROPERTY_SOURCE(Part::Extrusion, Part::Feature)
 
 const char* Extrusion::eDirModeStrings[] = {"Custom", "Edge", "Normal", nullptr};
+const char* Extrusion::eInnerWireTaperStrings[] = {"Inverted", "SameAsOuter", nullptr};
 
 namespace
 {
@@ -136,6 +138,9 @@ Extrusion::Extrusion()
     ADD_PROPERTY_TYPE(FaceMakerMode, (3L), "Extrude", App::Prop_None,
                       "If Solid is true, this sets the facemaker class to use when converting wires to faces. Otherwise, ignored.");
     FaceMakerMode.setEnums(MakerEnums);
+    ADD_PROPERTY_TYPE(InnerWireTaper, (static_cast<long>(InnerWireTaper::Inverted)), "Compatibility", App::Prop_Hidden,
+                      "Controls taper direction for inner wires (holes).");
+    InnerWireTaper.setEnums(eInnerWireTaperStrings);
     // clang-format on
 }
 
@@ -144,7 +149,7 @@ short Extrusion::mustExecute() const
     if (Base.isTouched() || Dir.isTouched() || DirMode.isTouched() || DirLink.isTouched()
         || LengthFwd.isTouched() || LengthRev.isTouched() || Solid.isTouched()
         || Reversed.isTouched() || Symmetric.isTouched() || TaperAngle.isTouched()
-        || TaperAngleRev.isTouched() || FaceMakerClass.isTouched()) {
+        || TaperAngleRev.isTouched() || FaceMakerClass.isTouched() || InnerWireTaper.isTouched()) {
         return 1;
     }
     return 0;
@@ -267,6 +272,7 @@ ExtrusionParameters Extrusion::computeFinalParameters()
     }
 
     result.faceMakerClass = this->FaceMakerClass.getValue();
+    result.innerWireTaper = static_cast<Part::InnerWireTaper>(this->InnerWireTaper.getValue());
 
     return result;
 }
@@ -493,6 +499,16 @@ void Part::Extrusion::setupObject()
 void Extrusion::onDocumentRestored()
 {
     restoreFaceMakerMode(this);
+}
+
+void Extrusion::Restore(Base::XMLReader& reader)
+{
+    Part::Feature::Restore(reader);
+
+    // for 1.0 the inner wire taper was not inverted due to a bug
+    if (Base::getVersion(reader.ProgramVersion) == Base::Version::v1_0) {
+        InnerWireTaper.setValue(static_cast<long>(Part::InnerWireTaper::SameAsOuter));
+    }
 }
 
 void Part::Extrusion::onChanged(const App::Property* prop)

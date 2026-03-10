@@ -1,0 +1,62 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2026 Joe Da Silva <digital@joescat.com>                 *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'IsotropicLinearElasticArrays'
+  UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
+  URL: ''
+  Description: ''
+  DOI: ''
+  ElasticProperties:
+    Type: '2DArray'
+    Columns:
+      Temperature:
+        Type: 'Quantity'
+        Units: 'C'
+        URL: ''
+        Description: "Temperature"
+      BulkModulus:
+        DisplayName: "Bulk Modulus"
+        Type: 'Quantity'
+        Units: 'kPa'
+        URL: ''
+        Description: "Bulk modulus in [FreeCAD Pressure unit]"
+      PoissonRatio:
+        DisplayName: "Poisson Ratio"
+        Type: 'Float'
+        Units: ''
+        URL: ''
+        Description: "Poisson's ratio [unitless]"
+      ShearModulus:
+        DisplayName: "Shear Modulus"
+        Type: 'Quantity'
+        Units: 'kPa'
+        URL: ''
+        Description: "Shear modulus in [FreeCAD Pressure unit]"
+      YoungsModulus:
+        DisplayName: "Young's Modulus"
+        Type: 'Quantity'
+        Units: 'kPa'
+        URL: ''
+        Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"
+

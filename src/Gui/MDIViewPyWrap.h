@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_MDIVIEWPYWRAP_H
-#define GUI_MDIVIEWPYWRAP_H
+#pragma once
 
 #include <memory>
 #include <Gui/MDIView.h>
@@ -87,5 +86,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MDIVIEWPYWRAP_H

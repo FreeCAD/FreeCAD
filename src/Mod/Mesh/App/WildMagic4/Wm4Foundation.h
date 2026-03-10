@@ -16,8 +16,7 @@
 //
 // Version: 4.0.6 (2006/11/05)
 
-#ifndef WM4FOUNDATION_H
-#define WM4FOUNDATION_H
+#pragma once
 
 // approximation
 #include "Wm4ApprCircleFit2.h"
@@ -377,5 +376,3 @@
 #include "Wm4TSmallUnorderedSet.h"
 #include "Wm4TStringHashTable.h"
 #include "Wm4TTuple.h"
-
-#endif

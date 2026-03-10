@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAW_TOUCHPADNAVSTYLE_H
-#define TECHDRAW_TOUCHPADNAVSTYLE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -50,4 +49,3 @@ private:
 };
 
 }
-#endif // TECHDRAW_TOUCHPADNAVSTYLE_H

@@ -21,10 +21,10 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREE_H
-#define GUI_TREE_H
+#pragma once
 
 #include <unordered_map>
+#include <QTimer>
 #include <QElapsedTimer>
 #include <QStyledItemDelegate>
 #include <QTreeWidget>
@@ -278,6 +278,12 @@ private:
     QTimer* selectTimer;
     QTimer* preselectTimer;
     QElapsedTimer preselectTime;
+
+    // this timer is used to prevent double click event on visibility icon
+    QTimer visibilityIconDoubleClickTimer;
+
+    static std::unique_ptr<QPixmap> documentPixmap;
+    static std::unique_ptr<QPixmap> documentPartialPixmap;
     std::unordered_map<const Gui::Document*, DocumentItem*> DocumentMap;
     std::unordered_map<App::DocumentObject*, std::set<DocumentObjectDataPtr>> ObjectTable;
 
@@ -300,7 +306,7 @@ private:
     friend class TreeParams;
     friend class TreeWidgetItemDelegate;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectNewDocument;
     Connection connectDelDocument;
     Connection connectRenDocument;
@@ -433,7 +439,7 @@ private:
     ExpandInfoPtr _ExpandInfo;
     void restoreItemExpansion(const ExpandInfoPtr&, DocumentObjectItem*);
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectChgObject;
@@ -538,7 +544,7 @@ private:
     DocumentItem* myOwner;
     DocumentObjectDataPtr myData;
     std::vector<std::string> mySubs;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     int previousStatus;
     int selected;
     bool populated;
@@ -582,5 +588,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TREE_H

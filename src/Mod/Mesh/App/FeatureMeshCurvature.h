@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FeatureMeshCurvature_H
-#define FeatureMeshCurvature_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -62,5 +61,3 @@ public:
 };
 
 }  // namespace Mesh
-
-#endif  // Curvature_H

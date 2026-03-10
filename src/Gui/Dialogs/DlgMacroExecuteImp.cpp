@@ -413,9 +413,24 @@ void DlgMacroExecuteImp::accept()
 void DlgMacroExecuteImp::onFileChooserFileNameChanged(const QString& fn)
 {
     if (!fn.isEmpty()) {
-        // save the path in the parameters
         this->macroPath = fn;
-        getWindowParameter()->SetASCII("MacroPath", fn.toUtf8());
+        std::filesystem::path chosenPath(fn.toStdString());
+        if (chosenPath.filename().empty()) {
+            chosenPath = chosenPath.parent_path();
+        }
+        std::filesystem::path userMacroDir(App::Application::getUserMacroDir());
+        if (userMacroDir.filename().empty()) {
+            userMacroDir = userMacroDir.parent_path();
+        }
+        if (chosenPath != userMacroDir) {
+            // Save the path in the parameters, but only if it is NOT the default value
+            getWindowParameter()->SetASCII("MacroPath", fn.toUtf8());
+        }
+        else {
+            // If the user specifically chose the default path, actually remove the setting (this
+            // could happen if the user was trying to "undo" setting a custom path).
+            getWindowParameter()->RemoveASCII("MacroPath");
+        }
         // fill the list box
         fillUpList();
     }

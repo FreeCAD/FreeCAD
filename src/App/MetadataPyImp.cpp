@@ -33,12 +33,7 @@
 #include "MetadataPy.cpp"
 
 using namespace Base;
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
 using namespace XERCES_CPP_NAMESPACE;
-#else
-XERCES_CPP_NAMESPACE_USE
-#endif
 
 // Returns a string which represents the object e.g. when printed in Python
 std::string MetadataPy::representation() const

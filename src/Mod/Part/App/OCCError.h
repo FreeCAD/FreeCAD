@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _OCCError_h_
-#define _OCCError_h_
+#pragma once
 
 #include <Standard_Failure.hxx>
 #include <Standard_Version.hxx>
@@ -63,4 +62,3 @@ PartExport extern PyObject* PartExceptionOCCDimensionError;
 }  // namespace Part
 
 #define PY_CATCH_OCC _PY_CATCH_OCC(return (NULL))
-#endif  // _OCCError_h_

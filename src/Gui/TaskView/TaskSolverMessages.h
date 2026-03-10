@@ -21,15 +21,14 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSolverMessages_H
-#define GUI_TASKVIEW_TaskSolverMessages_H
+#pragma once
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Gui/TaskView/TaskView.h>
 
 class Ui_TaskSolverMessages;
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 
 namespace App
 {
@@ -69,5 +68,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TaskSolverMessages_H

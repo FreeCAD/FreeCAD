@@ -32,8 +32,13 @@
 
 #if defined( _WIN32 )
 #if defined( _MSC_VER )
-#include <codecvt>
+#include <codecvt> //  codecvt_utf8_utf16 is deprecated in C++17, removed in C++226
 #include <io.h>
+#define NOMINMAX // prevents <windows.h> to  #define min and max. Sigh ...
+// clang-format off: <windows.h> MUST be included before <stringapiset.h>
+#include <windows.h>
+#include <stringapiset.h> // Use WIN32 API to replace codecvt_utf8_utf16
+// clang-format on
 #elif defined( __GNUC__ )
 #ifndef _LARGEFILE64_SOURCE
 #define _LARGEFILE64_SOURCE
@@ -233,12 +238,31 @@ CheckedFile::CheckedFile( const char *input, uint64_t size, ReadChecksumPolicy p
 int CheckedFile::open64( const ustring &fileName, int flags, int mode )
 {
 #if defined( _MSC_VER )
-   // Ref: https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/sopen-s-wsopen-s
 
-   // Handle UTF-8 file names - Windows requires conversion to UTF-16
+// Handle UTF-8 file names - Windows requires conversion to UTF-16
+#if ( ( defined( _MSVC_LANG ) && _MSVC_LANG >= 201703L ) || __cplusplus >= 201703L )
+   // Ref:
+   // https://learn.microsoft.com/en-us/windows/win32/api/stringapiset/nf-stringapiset-multibytetowidechar
+   std::wstring widePath;
+   int sizeUtf16 = ::MultiByteToWideChar( CP_UTF8, 0, fileName.c_str(), -1, NULL, 0 );
+   if ( sizeUtf16 > 0 )
+   {
+      widePath.resize( sizeUtf16 + 1 );
+      sizeUtf16 =
+         ::MultiByteToWideChar( CP_UTF8, 0, fileName.c_str(), -1, &widePath[0], sizeUtf16 );
+   }
+   if ( sizeUtf16 <= 0 )
+   {
+      throw E57_EXCEPTION2( ErrorOpenFailed,
+                            "Error in converting file name to UTF16. fileName=" + fileName );
+   }
+#else
+   // Until C++17
    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
    std::wstring widePath = converter.from_bytes( fileName );
+#endif
 
+   // Ref: https://learn.microsoft.com/en-us/cpp/c-runtime-library/reference/sopen-s-wsopen-s
    int handle;
    errno_t err = _wsopen_s( &handle, widePath.c_str(), flags, _SH_DENYNO, mode );
    if ( err != 0 )

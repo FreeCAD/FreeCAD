@@ -561,6 +561,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 constraint->Third = intArg5;
                 return true;
             }
+            if (strcmp("Perpendicular", ConstraintType) == 0) {
+                constraint->Type = Perpendicular;
+                constraint->First = intArg1;
+                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
+                constraint->Second = intArg3;
+                constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->Third = intArg5;
+                return true;
+            }
         }
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, Value
         if (PyNumber_Check(oNumArg5)) {  // can be float or int

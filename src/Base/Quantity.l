@@ -93,6 +93,9 @@ CGRP     '\,'[0-9][0-9][0-9]
 "h"             yylval = Quantity::Hour;                return UNIT; // hour
 
 "A"             yylval = Quantity::Ampere;              return UNIT; // Ampere         (internal standard electric current)
+"nA"            yylval = Quantity::NanoAmpere;          return UNIT; // nano Ampere
+"uA"            yylval = Quantity::MicroAmpere;         return UNIT; // micro Ampere
+"\xC2\xB5""A"   yylval = Quantity::MicroAmpere;         return UNIT; // micro Ampere
 "mA"            yylval = Quantity::MilliAmpere;         return UNIT; // milli Ampere
 "kA"            yylval = Quantity::KiloAmpere;          return UNIT; // kilo Ampere
 "MA"            yylval = Quantity::MegaAmpere;          return UNIT; // mega Ampere
@@ -103,6 +106,9 @@ CGRP     '\,'[0-9][0-9][0-9]
 "uK"            yylval = Quantity::MicroKelvin;         return UNIT; // micro Kelvin
 
 "mol"           yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)
+"nmol"          yylval = Quantity::NanoMole;            return UNIT; // Nano Mole
+"umol"          yylval = Quantity::MicroMole;           return UNIT; // Micro Mole
+"\xC2\xB5mol"   yylval = Quantity::MicroMole;           return UNIT; // Micro Mole
 "mmol"          yylval = Quantity::MilliMole;           return UNIT; // Milli Mole
 
 "cd"            yylval = Quantity::Candela;             return UNIT; // Candela        (internal standard luminous intensity)
@@ -151,6 +157,9 @@ CGRP     '\,'[0-9][0-9][0-9]
 "Mpsi"          yylval = Quantity::MPSI;                return UNIT; // 1000 ksi
 
 "W"             yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3)
+"nW"            yylval = Quantity::NanoWatt;           return UNIT; // milli Watt
+"uW"            yylval = Quantity::MicroWatt;           return UNIT; // micro Watt
+"\xC2\xB5W"     yylval = Quantity::MicroWatt;           return UNIT; // micro Watt
 "mW"            yylval = Quantity::MilliWatt;           return UNIT; // milli Watt
 "kW"            yylval = Quantity::KiloWatt;            return UNIT; // kilo Watt
 "VA"            yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3)
@@ -173,6 +182,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "C"             yylval = Quantity::Coulomb;             return UNIT; // Coulomb (A*s)
 
 "T"             yylval = Quantity::Tesla;               return UNIT; // Tesla (kg/s^2/A)
+"mT"            yylval = Quantity::MilliTesla;          return UNIT; // milli Tesla
 "G"             yylval = Quantity::Gauss;               return UNIT; // Gauss (1 G = 1e-4 T)
 
 "Wb"            yylval = Quantity::Weber;               return UNIT; // Weber (kg*m^2/s^2/A)

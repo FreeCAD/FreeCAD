@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATURECOMPOUND_H
-#define PART_FEATURECOMPOUND_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 
@@ -69,6 +68,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATURECOMPOUND_H

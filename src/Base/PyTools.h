@@ -61,8 +61,7 @@ for any purpose and without fee is hereby granted.  This software
 is provided on an as is basis, without warranties of any kind.
 */
 
-#ifndef PPEMBED_H
-#define PPEMBED_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {             /* a C library, but callable from C++ */
@@ -74,9 +73,7 @@ extern "C" {             /* a C library, but callable from C++ */
 #	undef  _POSIX_C_SOURCE
 #endif // (re-)defined in pyconfig.h
 #include <Python.h>
-#ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
-#endif
 
 extern int PP_RELOAD;    /* 1=reload py modules when attributes referenced */
 extern int PP_DEBUG;     /* 1=start debugger when string/function/member run */
@@ -193,5 +190,4 @@ extern PyObject *PP_last_exception_type;   /* saved exception type */
 }
 #endif
 
-#endif /*PREEMBED_H*/
 // clang-format on

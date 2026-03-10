@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Feature_H
-#define PARTDESIGN_Feature_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/SuppressibleExtension.h>
@@ -128,6 +129,11 @@ protected:
     static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
 
     /**
+     * Fix solids
+     */
+    TopoShape fixSolids(const TopoShape&);
+
+    /**
      * Checks if the single-solid body rule is fulfilled.
      */
     bool isSingleSolidRuleSatisfied(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
@@ -152,6 +158,3 @@ protected:
 using FeaturePython = App::FeaturePythonT<Feature>;
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_Feature_H

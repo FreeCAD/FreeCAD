@@ -139,7 +139,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Afstand</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -395,17 +395,17 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Grov</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Middel</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Fin</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>

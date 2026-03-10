@@ -20,11 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_GRAPHVIZVIEW_H
-#define GUI_GRAPHVIZVIEW_H
+#pragma once
+
+#include <fastsignals/signal.h>
 
 #include "MDIView.h"
-
 
 class QGraphicsScene;
 class QGraphicsView;
@@ -81,12 +81,10 @@ private:
     GraphvizWorker* thread;
     int nPending;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection recomputeConnection;
     Connection undoConnection;
     Connection redoConnection;
 };
 
 }  // namespace Gui
-
-#endif  // GUI_GRAPHVIZVIEW_H

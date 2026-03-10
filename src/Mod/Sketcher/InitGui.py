@@ -55,5 +55,3 @@ class SketcherWorkbench(Workbench):
 
 
 Gui.addWorkbench(SketcherWorkbench())
-
-FreeCAD.__unit_test__ += ["TestSketcherGui"]

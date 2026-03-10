@@ -98,6 +98,7 @@ SET(FemExamples_SRCS
     femexamples/equation_magnetostatics_2D_elmer.py
     femexamples/equation_staticcurrent_elmer.py
     femexamples/frequency_beamsimple.py
+    femexamples/magnetic_shielding_2D.py
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py
     femexamples/material_multiple_bendingbeam_fivefaces.py
@@ -115,6 +116,7 @@ SET(FemExamples_SRCS
 
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
+    femexamples/meshes/generate_mesh.py
     femexamples/meshes/mesh_beamsimple_tetra10.py
     femexamples/meshes/mesh_boxanalysis_tetra10.py
     femexamples/meshes/mesh_boxes_2_vertikal_tetra10.py
@@ -252,8 +254,6 @@ SET(FemSolver_SRCS
 SET(FemSolverCalculix_SRCS
     femsolver/calculix/__init__.py
     femsolver/calculix/calculixtools.py
-    femsolver/calculix/solver.py
-    femsolver/calculix/tasks.py
     femsolver/calculix/write_constraint_bodyheatsource.py
     femsolver/calculix/write_constraint_centrif.py
     femsolver/calculix/write_constraint_contact.py
@@ -516,6 +516,7 @@ SET(FemTools_SRCS
     femtools/geomtools.py
     femtools/membertools.py
     femtools/migrate_app.py
+    femtools/objecttools.py
     femtools/tokrules.py
 )
 

@@ -1,0 +1,74 @@
+﻿---
+# File created by FreeCAD 1.0.2 Revision: 39319 (Git)
+General:
+  UUID: "acc6134c-5bcb-4146-955c-390209bc54cc"
+  Name: "Copper-647"
+  Author: "Joe Da Silva"
+  License: "LGPL-2.0-or-later"
+  SourceURL: "https://copper.org/publications/pub_list/pdf/144-8-mechanical.pdf"
+  ReferenceSource: "144-8-mechanical.pdf"
+  Tags:
+    - "C64700"
+    - "Aged"
+    - "Copper-nickel silicon"
+  Description: >
+    Copper-647, CuNi2Si, Copper-nickel silicon, Aged 450°C 2hr.
+    Cu≥97% Ni=1.97% 0.4%≤(Si≈0.52)≤0.8% Fe=0.01%. 26%≤IACS≤44%.
+    Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
+    with permission and credit to the 'Copper Development Association' (CDA).
+    For your own production accuracy, please use values provided by the
+    material vendors you are working with.
+Inherits:
+  Bronze:
+    UUID: "ae194589-02d4-4e9b-98a7-f523f660d510"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Aged"
+    StandardCode: "Copper-647"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "8910 kg/m^3"
+    UltimateStrain: "9.9"
+    UltimateTensileStrength: "775 MPa"
+    YieldStrain: "0.77"
+    YieldStrength: "724 MPa"
+    Elongation: "15"
+    FractureStrength: "520 MPa"
+    ReductionOfArea: "60"
+    YoungsModulus: "148 GPa"
+  Hardness:
+    UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
+    Hardness: "98"
+    HardnessUnits: "HRB"
+  Toughness:
+    UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
+    ImpactCharpy: "149 J"
+    NotchTensileStrength: "1308 MPa"
+  IsotropicLinearElasticArrays:
+    UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
+    ElasticProperties:
+      - [["295 K", "", "", "", "148 GPa"],
+         ["195 K", "", "", "", "154 GPa"],
+         ["76 K",  "", "", "", "160 GPa"],
+         ["20 K",  "", "", "", "162 GPa"],
+         ["4 K",   "", "", "", "163 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "9.9",  "775 MPa", "0.77", "724 MPa",   "15.0", "520 MPa", "60.0"],
+         ["195 K", "11.1", "823 MPa", "0.77", "763.9 MPa", "18.0", "508 MPa", "66.0"],
+         ["76 K",  "17.2", "852 MPa", "0.83", "786.7 MPa", "24.0", "509 MPa", "70.0"],
+         ["20 K",  "26.5", "922 MPa", "0.90", "816.3 MPa", "33.0", "720 MPa", "68.0"],
+         ["4 K",   "26.6", "936 MPa", "1.0",  "830 MPa",   "31.0", "839 MPa", "65.0"]]
+  ToughnessArrays:
+    UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
+    PlasticTriaxialProperties:
+      - [["295 K", "149 J", "1308 MPa"],
+         ["195 K", "144 J", "1343 MPa"],
+         ["76 K",  "148 J", "1411 MPa"],
+         ["20 K",  "157 J", "1764 MPa"],
+         ["4 K",   "",      "1463 MPa"]]

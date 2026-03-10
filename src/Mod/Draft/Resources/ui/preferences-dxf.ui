@@ -514,9 +514,6 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</string
           <property name="text">
            <string>Treat ellipses and splines as polylines</string>
           </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>DiscretizeEllipses</cstring>
           </property>

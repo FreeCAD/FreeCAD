@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEW3DVIEWERPY_H
-#define GUI_VIEW3DVIEWERPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 #include <list>
@@ -96,5 +95,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW3DPY_H

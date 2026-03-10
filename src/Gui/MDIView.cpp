@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <boost/core/ignore_unused.hpp>
 #include <QAction>
 #include <QApplication>

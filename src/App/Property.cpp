@@ -23,6 +23,8 @@
  ***************************************************************************/
 
 #include <cassert>
+#include <array>
+#include <tuple>
 
 #include <atomic>
 #include <Base/Tools.h>
@@ -114,36 +116,35 @@ std::string Property::getFileName(const char* postfix, const char* prefix) const
     return ss.str();
 }
 
+// clang-format off
+static constexpr auto mapProps = std::to_array<std::tuple<Property::Status, PropertyType>>({
+    {App::Property::PropReadOnly,    Prop_ReadOnly},
+    {App::Property::PropHidden,      Prop_Hidden},
+    {App::Property::PropOutput,      Prop_Output},
+    {App::Property::PropTransient,   Prop_Transient},
+    {App::Property::PropNoRecompute, Prop_NoRecompute},
+    {App::Property::PropNoPersist,   Prop_NoPersist}
+});
+// clang-format on
+
 short Property::getType() const
 {
     short type = 0;
-#define GET_PTYPE(_name)                                                                           \
-    do {                                                                                           \
-        if (testStatus(App::Property::Prop##_name))                                                \
-            type |= Prop_##_name;                                                                  \
-    } while (0)
-    GET_PTYPE(ReadOnly);
-    GET_PTYPE(Hidden);
-    GET_PTYPE(Output);
-    GET_PTYPE(Transient);
-    GET_PTYPE(NoRecompute);
-    GET_PTYPE(NoPersist);
+    for (const auto& [propertyStatus, propertyType] : mapProps) {
+        if (testStatus(propertyStatus)) {
+            type |= propertyType;
+        }
+    }
     return type;
 }
 
 void Property::syncType(unsigned type)
 {
-#define SYNC_PTYPE(_name)                                                                          \
-    do {                                                                                           \
-        if (type & Prop_##_name)                                                                   \
-            StatusBits.set((size_t)Prop##_name);                                                   \
-    } while (0)
-    SYNC_PTYPE(ReadOnly);
-    SYNC_PTYPE(Transient);
-    SYNC_PTYPE(Hidden);
-    SYNC_PTYPE(Output);
-    SYNC_PTYPE(NoRecompute);
-    SYNC_PTYPE(NoPersist);
+    for (const auto& [propertyStatus, propertyType] : mapProps) {
+        if (type & propertyType) {
+            StatusBits.set((size_t)propertyStatus);
+        }
+    }
 }
 
 const char* Property::getGroup() const

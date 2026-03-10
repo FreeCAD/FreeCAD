@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERORIGINGROUP_H
-#define VIEWPROVIDERORIGINGROUP_H
+#pragma once
 
 #include "ViewProviderOriginGroupExtension.h"
 
@@ -39,6 +38,3 @@ public:
 };
 
 }  // namespace Gui
-
-
-#endif /* end of include guard: VIEWPROVIDERORIGINGROUP_H */

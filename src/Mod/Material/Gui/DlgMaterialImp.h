@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MATGUI_DIALOGMATERIALIMP_H
-#define MATGUI_DIALOGMATERIALIMP_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -117,5 +116,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DIALOGMATERIALIMP_H

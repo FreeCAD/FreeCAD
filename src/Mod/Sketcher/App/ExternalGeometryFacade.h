@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GEOMETRYEXTERNALFACADE_H
-#define SKETCHER_GEOMETRYEXTERNALFACADE_H
+#pragma once
 
 #include <boost/uuid/uuid_io.hpp>
 
@@ -330,6 +329,3 @@ private:
 
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_GEOMETRYEXTERNALFACADE_H

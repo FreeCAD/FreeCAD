@@ -1645,7 +1645,7 @@ def explore(filename=None):
         from PySide import QtGui
 
         filename = QtGui.QFileDialog.getOpenFileName(
-            QtGui.QApplication.activeWindow(), "Open IFC file", None, "IFC files (*.ifc *.IFC)"
+            QtGui.QApplication.activeWindow(), "Open IFC File", None, "IFC files (*.ifc *.IFC)"
         )
         if filename:
             filename = filename[0]

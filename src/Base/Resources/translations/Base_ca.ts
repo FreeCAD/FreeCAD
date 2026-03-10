@@ -6,37 +6,37 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="90"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation>Sistema Estàndard (mm, kg, s, °)</translation>
+      <translation>Estàndard (mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="326"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation>Sistema MKS (m, kg, s, °)</translation>
+      <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="593"/>
       <source>US customary (in, lb)</source>
-      <translation>Sistema US (in, lb)</translation>
+      <translation>Unitats US (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation>Sistema Imperial per Enginyeria Civil (ft, lb, mph)</translation>
+      <translation>Imperial per a Enginyeria Civil (ft, lb, mph)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="75"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation>Sistema imperial decimal (in, lb)</translation>
+      <translation>Imperial decimal (in, lb)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="554"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Sistema Construcció Euro (cm, m², m³)</translation>
+      <translation>Construcció Euro (cm, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Sistema Construcció US (ft-in, sqft, cft)</translation>
+      <translation>Construcció US (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="53"/>

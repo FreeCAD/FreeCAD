@@ -60,7 +60,7 @@
         <item row="1" column="1">
          <widget class="QRadioButton" name="rb_vm_stress">
           <property name="text">
-           <string>von Mises Stress</string>
+           <string>von Mises stress</string>
           </property>
          </widget>
         </item>
@@ -495,9 +495,9 @@
      <widget class="QPushButton" name="startButton">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>230</x>
         <y>130</y>
-        <width>435</width>
+        <width>200</width>
         <height>25</height>
        </rect>
       </property>
@@ -506,6 +506,35 @@
       </property>
       <property name="text">
        <string>Start Animation</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rb_full_cycle">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>130</y>
+        <width>91</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string> Full cycle</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="rb_half_cycle">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>130</y>
+        <width>101</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Half cycle</string>
       </property>
      </widget>
     </widget>

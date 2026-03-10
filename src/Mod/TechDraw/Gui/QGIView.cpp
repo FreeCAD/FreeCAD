@@ -277,7 +277,7 @@ void QGIView::snapPosition(QPointF& newPosition)
         return;
     }
 
-    auto feature = getViewObject();
+    DrawView* feature = getViewObject();
     if (!feature) {
         return;
     }
@@ -286,14 +286,18 @@ void QGIView::snapPosition(QPointF& newPosition)
         return;
     }
 
-    auto dvp = freecad_cast<DrawViewPart*>(feature);
+    auto* dvp = freecad_cast<DrawViewPart*>(feature);
     if (dvp  &&
         !dvp->hasGeometry()) {
         // too early. wait for updates to finish.
         return;
     }
 
-    auto vpPage = getViewProviderPage(feature);
+    ViewProviderPage* vpPage = getViewProviderPage(feature);
+    if (!vpPage) {
+        // too early. not added to page yet?
+        return;
+    }
 
     QGSPage* scenePage = vpPage->getQGSPage();
     if (!scenePage) {
@@ -577,12 +581,7 @@ QGIViewClip* QGIView::getClipGroup()
 
 void QGIView::updateView(bool forceUpdate)
 {
-            //allow/prevent dragging
-    if (getViewObject()->isLocked()) {
-        setFlag(QGraphicsItem::ItemIsMovable, false);
-    } else {
-        setFlag(QGraphicsItem::ItemIsMovable, true);
-    }
+    setMovableFlag();
 
     if (getViewObject() && forceUpdate) {
         setPosition(Rez::guiX(getViewObject()->X.getValue()),
@@ -697,7 +696,11 @@ void QGIView::layoutDecorations(const QRectF& contentArea,
     constexpr double padding{10};
     QRectF paddedContentArea = contentArea.adjusted(-padding, -padding, padding, padding);
 
-    double frameWidth = qMax(paddedContentArea.width(), labelRect.width());
+    double frameWidth = paddedContentArea.width();
+    // For standard views, expand frame to fit label. For RichAnno, keep frame tight to text.
+    if (type() != UserType::QGIRichAnno) {
+        frameWidth = qMax(frameWidth, labelRect.width());
+    }
     double frameHeight = paddedContentArea.height();
 
     outFrameRect = QRectF(paddedContentArea.center().x() - (frameWidth / 2),
@@ -1138,6 +1141,15 @@ bool QGIView::isExporting() const
     }
 
     return scenePage->getExportingAny();
+}
+
+void QGIView::setMovableFlag()
+{
+    if (getViewObject()->isLocked()) {
+        setFlag(QGraphicsItem::ItemIsMovable, false);
+    } else {
+        setFlag(QGraphicsItem::ItemIsMovable, true);
+    }
 }
 
 //! Retrieves objects of type T with given indexes

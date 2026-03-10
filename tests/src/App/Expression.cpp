@@ -363,32 +363,32 @@ private:
 // Each "evaluate" test has an equivalent "simplify" test
 TEST_F(Evaluate, test_evaluate_simple)
 {
-    App::Expression* e = App::ExpressionParser::parse(this_obj(), "1 + 2");
-    App::Expression* evaluated = e->eval();
+    App::ExpressionPtr e = App::ExpressionParser::parse(this_obj(), "1 + 2");
+    App::ExpressionPtr evaluated = e->eval();
     EXPECT_EQ(e->toString(), "1 + 2");
     EXPECT_EQ(evaluated->toString(), "3");
 }
 
 TEST_F(Evaluate, test_simplify_simple)
 {
-    App::Expression* e = App::ExpressionParser::parse(this_obj(), "1 + 2");
-    App::Expression* simplified = e->simplify();
+    App::ExpressionPtr e = App::ExpressionParser::parse(this_obj(), "1 + 2");
+    App::ExpressionPtr simplified = e->simplify();
     EXPECT_EQ(e->toString(), "1 + 2");
     EXPECT_EQ(simplified->toString(), "3");
 }
 
 TEST_F(Evaluate, test_evaluate_function)
 {
-    App::Expression* e = App::ExpressionParser::parse(this_obj(), "sqrt(4)");
-    App::Expression* evaluated = e->eval();
+    App::ExpressionPtr e = App::ExpressionParser::parse(this_obj(), "sqrt(4)");
+    App::ExpressionPtr evaluated = e->eval();
     EXPECT_EQ(e->toString(), "sqrt(4)");
     EXPECT_EQ(evaluated->toString(), "2");
 }
 
 TEST_F(Evaluate, test_simplify_function)
 {
-    App::Expression* e = App::ExpressionParser::parse(this_obj(), "sqrt(4)");
-    App::Expression* simplified = e->simplify();
+    App::ExpressionPtr e = App::ExpressionParser::parse(this_obj(), "sqrt(4)");
+    App::ExpressionPtr simplified = e->simplify();
     EXPECT_EQ(e->toString(), "sqrt(4)");
     EXPECT_EQ(simplified->toString(), "2");
 }
@@ -397,8 +397,8 @@ TEST_F(Evaluate, test_evaluate_refer_to_var)
 {
     auto* prop = freecad_cast<App::PropertyFloat*>(this_obj()->addDynamicProperty("App::PropertyFloat", "Var"));
     prop->setValue(2.0);
-    App::Expression* e = App::ExpressionParser::parse(this_obj(), "sqrt(2 + Var)");
-    App::Expression* evaluated = e->eval();
+    App::ExpressionPtr e = App::ExpressionParser::parse(this_obj(), "sqrt(2 + Var)");
+    App::ExpressionPtr evaluated = e->eval();
     EXPECT_EQ(e->toString(), "sqrt(2 + Var)");
     EXPECT_EQ(evaluated->toString(), "2");
 }
@@ -407,8 +407,8 @@ TEST_F(Evaluate, test_simplify_refer_to_var)
 {
     auto* prop = freecad_cast<App::PropertyFloat*>(this_obj()->addDynamicProperty("App::PropertyFloat", "Var"));
     prop->setValue(2.0);
-    App::Expression* e = App::ExpressionParser::parse(this_obj(), "sqrt(2 + Var)");
-    App::Expression* simplified = e->simplify();
+    App::ExpressionPtr e = App::ExpressionParser::parse(this_obj(), "sqrt(2 + Var)");
+    App::ExpressionPtr simplified = e->simplify();
     EXPECT_EQ(e->toString(), "sqrt(2 + Var)");
     EXPECT_EQ(simplified->toString(), "sqrt(2 + Var)");
 }

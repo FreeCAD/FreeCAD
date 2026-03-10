@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerTranslate_H
-#define SKETCHERGUI_DrawSketchHandlerTranslate_H
+#pragma once
 
 #include <QApplication>
 #include <map>
@@ -796,6 +795,3 @@ void DSHTranslateController::computeNextDrawSketchHandlerMode()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerTranslate_H

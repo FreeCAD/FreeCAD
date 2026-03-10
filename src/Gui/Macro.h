@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MACRO_H
-#define GUI_MACRO_H
+#pragma once
 
 #include <stack>
 #include <tuple>
@@ -238,6 +237,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_MACRO_H

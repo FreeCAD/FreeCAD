@@ -67,7 +67,7 @@ def insert(filename, docname, record=None):
 
             reply = QtGui.QInputDialog.getItem(
                 FreeCADGui.getMainWindow(),
-                translate("Arch", "Shapes elevation"),
+                translate("Arch", "Shapes Elevation"),
                 translate("Arch", "Choose which field provides shapes elevations:"),
                 fields,
             )
@@ -141,7 +141,7 @@ def checkShapeFileLibrary():
 
             reply = QtGui.QMessageBox.question(
                 FreeCADGui.getMainWindow(),
-                translate("Arch", "Shapefile module not found"),
+                translate("Arch", "Shapefile Module Not Found"),
                 translate(
                     "Arch",
                     "The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.",

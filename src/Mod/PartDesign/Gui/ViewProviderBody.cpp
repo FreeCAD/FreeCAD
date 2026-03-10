@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -45,6 +47,7 @@
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
+#include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "ViewProviderBody.h"
 #include "Utils.h"
@@ -110,6 +113,29 @@ void ViewProviderBody::setOverrideMode(const std::string& mode)
     }
     else {
         overrideMode = mode;
+
+        // Propagate the override mode to child features.
+        // When the Body is an external link, the global viewport loop
+        // won't reach these children automatically.
+        if (pcObject && !isRestoring()) {
+            Gui::Document* gdoc = Gui::Application::Instance->getDocument(pcObject->getDocument());
+            if (gdoc) {
+                PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+                auto features = body->Group.getValues();
+                for (auto feature : features) {
+                    if (feature && feature->isDerivedFrom<PartDesign::Feature>()) {
+                        if (Gui::ViewProvider* vp = gdoc->getViewProvider(feature)) {
+                            vp->setOverrideMode(mode);
+                        }
+                    }
+                }
+                if (App::DocumentObject* base = body->BaseFeature.getValue()) {
+                    if (Gui::ViewProvider* vp = gdoc->getViewProvider(base)) {
+                        vp->setOverrideMode(mode);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -445,6 +471,9 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
     }
     else if (obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
         return !obj->isDerivedFrom<App::Origin>();
+    }
+    else if (obj->isDerivedFrom<PartDesign::SubShapeBinder>()) {
+        return true;
     }
     else if (obj->isDerivedFrom<Part::Part2DObject>()) {
         return true;

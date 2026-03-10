@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Body_H
-#define PARTDESIGN_Body_H
+#pragma once
 
 #include <Mod/Part/App/BodyBase.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -161,11 +162,8 @@ protected:
     void onDocumentRestored() override;
 
 private:
-    boost::signals2::scoped_connection connection;
+    fastsignals::scoped_connection connection;
     bool showTip = false;
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Body_H

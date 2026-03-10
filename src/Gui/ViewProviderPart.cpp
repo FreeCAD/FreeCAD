@@ -77,7 +77,7 @@ void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPart::isActivePart()
+bool ViewProviderPart::isActivePart(const char* key)
 {
     App::DocumentObject* activePart = nullptr;
     auto activeDoc = Gui::Application::Instance->activeDocument();
@@ -89,7 +89,7 @@ bool ViewProviderPart::isActivePart()
         return false;
     }
 
-    activePart = activeView->getActiveObject<App::DocumentObject*>(PARTKEY);
+    activePart = activeView->getActiveObject<App::DocumentObject*>(key);
 
     if (activePart == this->getObject()) {
         return true;

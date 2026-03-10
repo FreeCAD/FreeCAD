@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
-#define SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H
+#pragma once
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/SketcherGlobal.h>
@@ -84,6 +83,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHER_VIEWPROVIDERSKETCHGEOMETRYEXTENSION_H

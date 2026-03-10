@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifndef RALLND_H
-#define RALLND_H
+#pragma once
 
 #include "rall1d.h"
 #include "rall1d_io.h"
@@ -99,6 +98,3 @@ public:
 		grad = d[0];
 	}
 };
-
-#endif
-

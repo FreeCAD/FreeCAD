@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_CommandConstraints_H
-#define SKETCHERGUI_CommandConstraints_H
+#pragma once
 
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -139,4 +138,3 @@ void doEndpointToEdgeTangency(
 void notifyConstraintSubstitutions(const QString& message);
 
 }  // namespace SketcherGui
-#endif  // SKETCHERGUI_CommandConstraints_H

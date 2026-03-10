@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREEXTRUSION_H
-#define PART_FEATUREEXTRUSION_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -58,6 +57,7 @@ public:
     App::PropertyAngle TaperAngleRev;
     App::PropertyString FaceMakerClass;
     App::PropertyEnumeration FaceMakerMode;
+    App::PropertyEnumeration InnerWireTaper;
 
     /** @name methods override feature */
     //@{
@@ -108,6 +108,7 @@ public:
 
     static Base::Vector3d calculateShapeNormal(const App::PropertyLink& shapeLink);
     void onDocumentRestored() override;
+    void Restore(Base::XMLReader& reader) override;
 
 public:  // mode enumerations
     enum eDirMode
@@ -117,6 +118,7 @@ public:  // mode enumerations
         dmNormal
     };
     static const char* eDirModeStrings[];
+    static const char* eInnerWireTaperStrings[];
 
 protected:
     void setupObject() override;
@@ -148,6 +150,3 @@ protected:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREEXTRUSION_H

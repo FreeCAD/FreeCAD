@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOFCSHAPEOBJECT_H
-#define PARTGUI_SOFCSHAPEOBJECT_H
+#pragma once
 
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
@@ -85,6 +84,3 @@ private:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_SOFCSHAPEOBJECT_H

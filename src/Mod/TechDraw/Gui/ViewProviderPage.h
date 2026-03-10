@@ -21,13 +21,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERPAGE_H
-#define DRAWINGGUI_VIEWPROVIDERPAGE_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -110,7 +109,7 @@ public:
     void onGuiRepaint(const TechDraw::DrawPage* dp);
 
 // NOLINTBEGIN
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectGuiRepaint;
 // NOLINTEND
 
@@ -157,6 +156,3 @@ private:
 };
 
 }// namespace TechDrawGui
-
-
-#endif// DRAWINGGUI_VIEWPROVIDERPAGE_H

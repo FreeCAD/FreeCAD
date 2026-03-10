@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 // clang-format off
-#ifndef APP_FEATUREPYTHONPYIMP_H
-#define APP_FEATUREPYTHONPYIMP_H
+#pragma once
 
 #include <Base/BaseClass.h>
 #include <Base/Interpreter.h>
@@ -118,5 +117,4 @@ private:
 # pragma GCC diagnostic pop
 #endif
 
-#endif // APP_FEATUREPYTHONPYIMP_H
 // clang-format on

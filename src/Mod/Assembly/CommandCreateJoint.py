@@ -416,6 +416,8 @@ def createGroundedJoint(obj):
     )
     Gui.doCommand(commands)
     Gui.doCommandGui("JointObject.ViewProviderGroundedJoint(ground.ViewObject)")
+
+    Gui.doCommand("UtilsAssembly.activeAssembly().Document.recompute()")
     return Gui.doCommandEval("ground")
 
 
@@ -431,7 +433,7 @@ class CommandToggleGrounded:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_ToggleGrounded",
                 "<p>Toggles the grounding of a part.</p>"
-                "<p>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.",
+                "<p>Grounding a part permanently locks its position in the assembly, preventing any movement or rotation.",
             ),
             "CmdType": "ForEdit",
         }
@@ -471,8 +473,11 @@ class CommandToggleGrounded:
                         Gui.doCommand(commands)
                         continue
 
-                ref = [sel.Object, [sub, sub]]
-                moving_part = UtilsAssembly.getMovingPart(assembly, ref)
+                moving_part, new_sub = UtilsAssembly.getComponentReference(
+                    assembly, sel.Object, sub
+                )
+                if not moving_part:
+                    continue
 
                 # Only objects within the assembly.
                 if moving_part is None:
