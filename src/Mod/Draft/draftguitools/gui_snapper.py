@@ -1056,7 +1056,7 @@ class Snapper:
             # get the stored objects to calculate intersections
             for obj_name, sub_name in zip(self.lastObj, self.lastObjSubelements):
                 obj = App.ActiveDocument.getObject(obj_name)
-                if obj and (obj.isDerivedFrom("Part::Feature") or (Draft.getType(obj) == "Axis")):
+                if obj and (obj.isDerivedFrom("Part::Feature") or utils.get_type(obj) == "Axis"):
                     # obj sub is face, shape is edge:
                     if "Face" in sub_name and shape.ShapeType == "Edge":
                         face = obj.Shape.Faces[int(sub_name[4:]) - 1]
