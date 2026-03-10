@@ -46,7 +46,6 @@ import argparse
 import datetime
 import shlex
 from PathScripts import PathUtils
-import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
 
 TOOLTIP = """

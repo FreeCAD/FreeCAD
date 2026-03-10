@@ -22,8 +22,6 @@
 # ***************************************************************************
 
 
-import FreeCAD
-
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
 import CAMTests.PostTestMocks as PostTestMocks
@@ -364,7 +362,6 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
 
         # Verify the modified path
         result_cmds = self.profile_op.Path.Commands
-        cmd_names = [cmd.Name for cmd in result_cmds]
 
         # Should have torch mark sequence for first entry only
         # The mark entry sequence includes: G1 Z(cut), G4, M5

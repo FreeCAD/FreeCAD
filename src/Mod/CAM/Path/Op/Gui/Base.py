@@ -366,12 +366,12 @@ class ViewProvider(object):
                             # Use attachment engine to set operation placement
                             # AttachmentSupport: tuple of (object, subname)
                             # MapMode: "FlatFace" aligns Z-axis with face normal
-                            self.operation.AttachmentSupport = (obj, (subname,))
+                            self.operation.AttachmentSupport = (obj, (sub,))
                             self.operation.MapMode = "FlatFace"
                             FreeCAD.ActiveDocument.recompute()
 
                             FreeCAD.Console.PrintMessage(
-                                f"Attached {self.operation.Label} to {obj.Label}.{subname}\n"
+                                f"Attached {self.operation.Label} to {obj.Label}.{sub}\n"
                             )
 
                             # Deactivate and remove observer

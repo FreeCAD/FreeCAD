@@ -21,7 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from os import linesep, path, remove
+from os import linesep, path
 import re
 import tempfile
 from unittest.mock import mock_open, patch

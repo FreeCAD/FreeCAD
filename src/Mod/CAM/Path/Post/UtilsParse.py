@@ -64,7 +64,7 @@ def check_for_an_adaptive_op(
     if values["OUTPUT_ADAPTIVE"] and adaptiveOp and command in values["RAPID_MOVES"]:
         if opHorizRapid and opVertRapid:
             return "G1"
-        command_line.append(f"(Tool Controller Rapid Values are unset)")
+        command_line.append("(Tool Controller Rapid Values are unset)")
     return ""
 
 

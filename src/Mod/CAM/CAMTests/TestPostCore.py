@@ -340,12 +340,12 @@ class TestBuildPostList(unittest.TestCase):
                 # Determine object type/role
                 obj_type = type(obj).__name__
                 if obj_type == "_FixtureSetupObject":
-                    output.append(f"        Type: Fixture Setup")
+                    output.append("        Type: Fixture Setup")
                     if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
                         fixture_cmd = obj.Path.Commands[0]
                         output.append(f"        Fixture: {fixture_cmd.Name}")
                 elif obj_type == "_CommandObject":
-                    output.append(f"        Type: Command Object")
+                    output.append("        Type: Command Object")
                     if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
                         cmd = obj.Path.Commands[0]
                         params = " ".join(
@@ -365,7 +365,7 @@ class TestBuildPostList(unittest.TestCase):
                     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "__class__"):
                         proxy_name = obj.Proxy.__class__.__name__
                         if "ToolController" in proxy_name:
-                            output.append(f"        Type: Tool Controller")
+                            output.append("        Type: Tool Controller")
                             if hasattr(obj, "ToolNumber"):
                                 output.append(f"        Tool Number: {obj.ToolNumber}")
                             if hasattr(obj, "Path") and obj.Path and obj.Path.Commands:
@@ -388,7 +388,7 @@ class TestBuildPostList(unittest.TestCase):
                                         )
                                         output.append(f"        M6 Command: {cmd.Name} {params}")
                         else:
-                            output.append(f"        Type: Operation")
+                            output.append("        Type: Operation")
                             if hasattr(obj, "ToolController") and obj.ToolController:
                                 tc = obj.ToolController
                                 output.append(

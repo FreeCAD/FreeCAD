@@ -29,6 +29,7 @@ import copy
 
 from Path.Post.Processor import PostProcessor
 
+import Constants
 import Path
 import FreeCAD
 
@@ -217,7 +218,7 @@ class GenericPlasma(PostProcessor):
                     for cmd in item.Path.Commands:
                         new_commands.append(cmd)
                         # After torch on commands, inject G4 pause
-                        if cmd.Name in ["M3", "M4"]:
+                        if cmd.Name in Constants.MCODE_SPINDLE_ON:
                             # Create G4 dwell command with P parameter (seconds)
                             pause_cmd = Path.Command("G4", {"P": pierce_delay_sec})
                             new_commands.append(pause_cmd)
@@ -240,7 +241,7 @@ class GenericPlasma(PostProcessor):
                     for cmd in item.Path.Commands:
                         new_commands.append(cmd)
                         # After torch off command, inject G4 pause
-                        if cmd.Name == "M5":
+                        if cmd.Name in Constants.MCODE_SPINDLE_OFF:
                             # Create G4 dwell command with P parameter (seconds)
                             pause_cmd = Path.Command("G4", {"P": cooling_delay_sec})
                             new_commands.append(pause_cmd)
@@ -337,9 +338,9 @@ class GenericPlasma(PostProcessor):
                     self._reset_plasma_state()
 
                     # Get operation heights from the path object
-                    pierce_height = self._get_operation_height(item, "StartDepth", 0)
+                    # pierce_height = self._get_operation_height(item, "StartDepth", 0)
                     cut_height = self._get_operation_height(item, "FinalDepth", 0)
-                    clearance_height = self._get_clearance_height(item, pierce_height + 10)
+                    # clearance_height = self._get_clearance_height(item, pierce_height + 10)
 
                     new_commands = []
                     first_entry_done = False
@@ -369,11 +370,14 @@ class GenericPlasma(PostProcessor):
                             continue
 
                         # Skip all movement commands for mark entry only mode
-                        if cmd.Name in ["G0", "G1", "G2", "G3"] and "Z" in cmd.Parameters:
+                        if (
+                            cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
+                            and "Z" in cmd.Parameters
+                        ):
                             # Only allow Z+ movements (retractions)
                             if self._last_z is not None and cmd.Parameters["Z"] > self._last_z:
                                 new_commands.append(cmd)
-                        elif cmd.Name in ["M3", "M4", "M5"]:
+                        elif cmd.Name in Constants.MCODE_SPINDLE_ON + Constants.MCODE_SPINDLE_OFF:
                             # Skip torch commands in mark entry mode
                             continue
                         else:
@@ -415,7 +419,10 @@ class GenericPlasma(PostProcessor):
                     for cmd in item.Path.Commands:
                         new_cmd = cmd
                         # Remove F parameter from all movement commands
-                        if cmd.Name in ["G0", "G1", "G2", "G3"] and "F" in cmd.Parameters:
+                        if (
+                            cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
+                            and "F" in cmd.Parameters
+                        ):
                             # Create new command without F parameter
                             new_params = dict(cmd.Parameters)
                             del new_params["F"]
@@ -432,7 +439,7 @@ class GenericPlasma(PostProcessor):
             bool: True to continue with post-processing, False to cancel
         """
         try:
-            from PySide import QtCore, QtGui, QtWidgets
+            from PySide import QtWidgets
 
             app = QtWidgets.QApplication.instance()
             if app is None:

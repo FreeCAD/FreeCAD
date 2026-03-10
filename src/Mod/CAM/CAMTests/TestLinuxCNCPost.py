@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
 
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
