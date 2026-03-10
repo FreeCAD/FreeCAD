@@ -46,7 +46,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Material.h>
-#include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/Tools.h>
@@ -285,7 +284,6 @@ void ViewProviderHole::updateThreadClipper(const PartDesign::Hole* pcHole)
     std::string theadDepthType = pcHole->ThreadDepthType.getValueAsString();
     if (theadDepthType == "Hole depth") {
         m_endThreadClipper->on = FALSE;
-        Base::Console().message("Thread clip plane disabled\n");
         return;
     }
     m_endThreadClipper->on = TRUE;
