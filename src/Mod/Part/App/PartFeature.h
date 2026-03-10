@@ -26,6 +26,7 @@
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
+#include <App/PropertyStandard.h>
 #include <Mod/Material/App/PropertyMaterial.h>
 #include <Mod/Part/PartGlobal.h>
 #include <Base/Bitmask.h>
@@ -74,6 +75,7 @@ public:
     ~Feature() override;
 
     PropertyPartShape Shape;
+    App::PropertyBool CanComputeShape;
     Materials::PropertyMaterial ShapeMaterial;
 
     /** @name methods override feature */
@@ -257,6 +259,7 @@ private:
     struct ElementCache;
     std::map<std::string, ElementCache> _elementCache;
     std::vector<std::pair<std::string, PropertyPartShape*>> _elementCachePrefixMap;
+    fastsignals::connection startSaveDocumentConnection;
 };
 
 class PartExport FilletBase: public Part::Feature
