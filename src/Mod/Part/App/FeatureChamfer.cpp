@@ -120,7 +120,8 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         if (msg.find("command not done") != std::string::npos) {
             return new App::DocumentObjectExecReturn(
                 "Chamfer size too large: would consume an adjacent face. "
-                "Reduce the size or select fewer edges.");
+                "Reduce the size or select fewer edges."
+            );
         }
         return new App::DocumentObjectExecReturn(msg.c_str());
     }
