@@ -181,6 +181,8 @@ public:
     PropertyMap Material;
     /// Read-only name of the temp dir created when the document is opened.
     PropertyString TransientDir;
+    /// Name of the cache dir for this document
+    PropertyPath DocumentCacheDir;
     /// Tip object of the document (if any).
     PropertyLink Tip;
     /// Tip object name of the document (if any).

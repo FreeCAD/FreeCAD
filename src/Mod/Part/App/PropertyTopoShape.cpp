@@ -450,7 +450,7 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
     if (reader.hasAttribute("file")) {
         std::string file = reader.getAttribute<const char*>("file");
         if (!file.empty()) {
-            // initiate a file read
+            // record a file read
             reader.addFile(file.c_str(), this);
         }
     }

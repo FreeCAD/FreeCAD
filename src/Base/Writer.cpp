@@ -311,6 +311,35 @@ std::string Writer::addFile(const char* Name, const Base::Persistence* Object)
     return temp.FileName;
 }
 
+void Writer::writeFileToCacheDir(const FileEntry& entry)
+{
+    try {
+        Base::FileWriter writer(documentCacheDir.c_str());
+        writer.putNextEntry(entry.FileName.c_str());
+        entry.Object->SaveDocFile(writer);
+        writer.close();
+    }
+    catch (...) {
+        addError(
+            "Writer::writeFileToCacheDir() Could not write file: " + documentCacheDir + "/"
+            + entry.FileName
+        );
+    }
+}
+
+void Writer::writeFilesToCacheDir()
+{
+    if (documentCacheDir.empty()) {
+        return;
+    }
+
+    for (const auto& entry : FileList) {
+        if (entry.Object->canBeCachedForDocument()) {
+            writeFileToCacheDir(entry);
+        }
+    }
+}
+
 void Writer::incInd()
 {
     if (indent < 1020) {
@@ -366,6 +395,11 @@ void ZipWriter::putNextEntry(const char* file, const char* obj)
     Writer::checkErrNo();
 }
 
+bool ZipWriter::shouldWrite(FileEntry& entry)
+{
+    return documentCacheDir.empty() || !entry.Object->canBeCachedForDocument();
+}
+
 void ZipWriter::writeFiles()
 {
     // use a while loop because it is possible that while
@@ -373,10 +407,12 @@ void ZipWriter::writeFiles()
     size_t index = 0;
     while (index < FileList.size()) {
         FileEntry entry = FileList[index];
-        putNextEntry(entry.FileName.c_str());
-        indent = 0;
-        indBuf[0] = 0;
-        entry.Object->SaveDocFile(*this);
+        if (shouldWrite(entry)) {
+            putNextEntry(entry.FileName.c_str());
+            indent = 0;
+            indBuf[0] = 0;
+            entry.Object->SaveDocFile(*this);
+        }
         index++;
     }
 }

@@ -92,6 +92,20 @@ Feature::Feature()
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
     auto mat = Materials::MaterialManager::defaultMaterial();
     ADD_PROPERTY(ShapeMaterial, (*mat));
+    ADD_PROPERTY_TYPE(
+        CanComputeShape,
+        (false),
+        nullptr,
+        App::PropertyType::Prop_Hidden,
+        "Whether the shape can be computed by this document object"
+    );
+
+    // NOLINTNEXTLINE(bugprone-unused-return-value)
+    App::GetApplication().signalStartSaveDocument.connect(
+        [this](const App::Document& /*doc*/, const std::string& /*filename*/) {
+            Shape.setCanBeCachedForDocument(CanComputeShape.getValue());
+        }
+    );
 }
 
 Feature::~Feature() = default;
