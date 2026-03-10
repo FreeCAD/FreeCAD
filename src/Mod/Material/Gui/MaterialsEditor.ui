@@ -26,11 +26,11 @@
    <item>
     <widget class="QSplitter" name="splitter">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <widget class="QTreeView" name="treeMaterials">
       <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectItems</enum>
+       <enum>QAbstractItemView::SelectionBehavior::SelectItems</enum>
       </property>
       <property name="headerHidden">
        <bool>true</bool>
@@ -54,19 +54,19 @@
         <item>
          <layout class="QGridLayout" name="gridLayout">
           <property name="sizeConstraint">
-           <enum>QLayout::SetMinAndMaxSize</enum>
+           <enum>QLayout::SizeConstraint::SetMinAndMaxSize</enum>
           </property>
           <property name="leftMargin">
-           <number>7</number>
+           <number>0</number>
           </property>
           <property name="topMargin">
-           <number>7</number>
+           <number>0</number>
           </property>
           <property name="rightMargin">
-           <number>7</number>
+           <number>0</number>
           </property>
           <property name="bottomMargin">
-           <number>7</number>
+           <number>0</number>
           </property>
           <item row="3" column="0">
            <widget class="QLabel" name="labelParent">
@@ -118,15 +118,9 @@
              <widget class="QLineEdit" name="editSourceURL"/>
             </item>
             <item>
-             <widget class="QPushButton" name="buttonURL">
-              <property name="maximumSize">
-               <size>
-                <width>22</width>
-                <height>22</height>
-               </size>
-              </property>
+             <widget class="QToolButton" name="buttonURL">
               <property name="text">
-               <string/>
+               <string>Open URL</string>
               </property>
              </widget>
             </item>
@@ -172,7 +166,7 @@
           <item>
            <spacer name="horizontalSpacer_3">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -220,7 +214,7 @@
           <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -270,7 +264,7 @@
           <item>
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+             <enum>Qt::Orientation::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -313,10 +307,10 @@
    <item>
     <widget class="QDialogButtonBox" name="standardButtons">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Save</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok|QDialogButtonBox::StandardButton::Save</set>
      </property>
     </widget>
    </item>
