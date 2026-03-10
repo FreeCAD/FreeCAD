@@ -48,6 +48,8 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
         for prop in self._get_properties():
             prop.add_to_object(obj)
 
+        obj.addExtension("Fem::WorkerExtensionPython")
+
     def _get_properties(self):
         prop = []
 
@@ -310,3 +312,6 @@ class MeshGmsh(base_fempythonobject.BaseFemPythonObject):
             prop.add_to_object(obj)
         except Base.PropertyError:
             pass
+
+        if not obj.hasExtension("Fem::WorkerExtensionPython"):
+            obj.addExtension("Fem::WorkerExtensionPython")
