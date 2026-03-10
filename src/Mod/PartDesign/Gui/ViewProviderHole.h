@@ -123,7 +123,6 @@ private:
         std::array<int, 3>& triIndices
     );
     std::map<const PartDesign::Hole*, SoSwitch*> m_threadOverlays;
-    void updateThreadTexture();
     void clearThreadTextures();
 };
 
