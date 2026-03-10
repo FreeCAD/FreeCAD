@@ -1349,7 +1349,7 @@ void Hole::onChanged(const App::Property* prop)
         ThreadClass.setReadOnly(isNone || !isThreaded);
         ThreadDepthType.setReadOnly(isNone || !isThreaded);
         ThreadDepth.setReadOnly(isNone || !isThreaded);
-        ModelThread.setReadOnly(!isNone && isThreaded);
+        ModelThread.setReadOnly(isNone || !isThreaded);
         UseCustomThreadClearance.setReadOnly(isNone || !isThreaded || !ModelThread.getValue());
         CustomThreadClearance.setReadOnly(
             !UseCustomThreadClearance.getValue() || UseCustomThreadClearance.isReadOnly()
