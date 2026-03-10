@@ -3968,7 +3968,12 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     const auto& allConstraints = this->Constraints.getValues();
 
     std::erase_if(idsOfOldConstraints, [&GeoId, &allConstraints](const auto& i) {
-        return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none);
+        const auto* con = allConstraints[i];
+        if (con->Type == InternalAlignment) { return true; }
+        if (con->involvesGeoIdAndPosId(GeoId, PointPos::start)) { return true; }
+        if (con->involvesGeoIdAndPosId(GeoId, PointPos::end)) { return true; }
+        if (con->involvesGeoIdAndPosId(GeoId, PointPos::mid)) { return true; }
+        return false;
     });
 
     for (const auto& oldConstrId : idsOfOldConstraints) {
