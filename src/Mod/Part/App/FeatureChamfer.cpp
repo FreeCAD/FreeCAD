@@ -32,6 +32,7 @@
 
 
 #include <SignalException.h>
+#include <Base/Exception.h>
 #include "FeatureChamfer.h"
 #include "TopoShapeOpCode.h"
 
@@ -123,9 +124,13 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         }
         return new App::DocumentObjectExecReturn(msg.c_str());
     }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
     catch (...) {
         return new App::DocumentObjectExecReturn(
-            "Chamfer failed: OCC kernel error in chamfer computation"
+            "Chamfer failed: size may be too large for adjacent edges sharing a vertex. "
+            "Reduce the size or chamfer edges individually."
         );
     }
 }
