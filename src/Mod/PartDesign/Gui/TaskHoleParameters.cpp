@@ -281,20 +281,16 @@ TaskHoleParameters::~TaskHoleParameters() = default;
 
 void TaskHoleParameters::modelThreadChanged()
 {
+    // Model thread checkbox changed
     auto pcHole = getObject<PartDesign::Hole>();
-    bool isThreaded = pcHole->Threaded.getValue();
-    if (!isThreaded) {
-        ui->ModelThread->setChecked(false);
-    }
-    bool isModeled = isThreaded && ui->ModelThread->isChecked();
-    if (ui->HoleType->currentIndex() == Threaded) {
-        pcHole->CosmeticThread.setValue(true);
-        ui->ModelThread->setVisible(true);
-    }
-    else {
-        ui->ModelThread->setVisible(false);
-    }
+
+    bool isModeled = getModelThread();
+    bool isCosmetic = getCosmeticThreaded();
+    // When the combobox is "Threaded", represent the thread either as
+    // modeled geometry or as a cosmetic texture.
+    // Set both properties explicitly.
     pcHole->ModelThread.setValue(isModeled);
+    pcHole->CosmeticThread.setValue(isCosmetic);
 
     // update view not active if modeling threads
     // this will also ensure that the feature is recomputed.
@@ -304,10 +300,6 @@ void TaskHoleParameters::modelThreadChanged()
     // conditional enabling of thread modeling options
     ui->CustomClearanceWidget->setVisible(isModeled);
 
-    ui->ThreadDepthWidget->setVisible(isThreaded && isModeled);
-    ui->ThreadDepthDimensionWidget->setVisible(
-        std::string(pcHole->ThreadDepthType.getValueAsString()) == "Dimension"
-    );
     recomputeFeature();
 }
 
