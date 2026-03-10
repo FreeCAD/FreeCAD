@@ -59,11 +59,11 @@ import femresult.resulttools as resulttools
 translate = FreeCAD.Qt.translate
 
 
-
 class _TaskPanel:
     """
     The task panel for the post-processing
     """
+
     def __init__(self, obj):
         self.result_obj = obj
         self.mesh_obj = self.result_obj.Mesh
@@ -673,7 +673,7 @@ class _TaskPanel:
             return 0.0
 
         max_val = self.result_widget.sb_displacement_factor_max.value()
-        res =  round(value/max_val * 100)
+        res = round(value / max_val * 100)
         return res
 
     def convert_from_slider_value(self, value: float):
@@ -681,11 +681,11 @@ class _TaskPanel:
             return 0.0
 
         max_val = self.result_widget.sb_displacement_factor_max.value()
-        return value/100 * max_val
+        return value / 100 * max_val
 
     def hsb_disp_factor_changed(self, value):
         inputbox = self.result_widget.sb_displacement_factor
-        
+
         scaled_val = self.convert_from_slider_value(value)
         FreeCAD.FEM_dialog["disp_factor"] = scaled_val
         self.update_displacement()
