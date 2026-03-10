@@ -865,11 +865,11 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         widget->setDisabled(ro);
     };
 
-    if (&Prop == &hole->Threaded || &Prop == &hole->ModelThread || &Prop == &hole->CosmeticThread) {
+    if (&Prop == &hole->Threaded || &Prop == &hole->CosmeticThread) {
         updateHoleTypeCombo();
     }
     else if (&Prop == &hole->ModelThread) {
-        ui->ModelThread->setEnabled(true);
+        updateHoleTypeCombo();
         updateCheckable(ui->ModelThread, hole->ModelThread.getValue());
     }
     else if (&Prop == &hole->ThreadType) {
