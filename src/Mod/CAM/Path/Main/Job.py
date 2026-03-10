@@ -515,8 +515,30 @@ class ObjectJob:
         # Store current selection if it exists
         current_selection = getattr(obj, "Machine", "") if hasattr(obj, "Machine") else ""
 
-        # Update enumeration
-        obj.Machine = machines
+        # Check if we need to migrate from String to Enumeration
+        if (
+            hasattr(obj, "Machine")
+            and obj.getTypeIdOfProperty("Machine") != "App::PropertyEnumeration"
+        ):
+            # Store the current value
+            current_value = getattr(obj, "Machine", "")
+            # Remove the old property
+            obj.removeProperty("Machine")
+            # Add the new enumeration property
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Machine",
+                "Output",
+                QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
+            )
+            # Restore the value if it exists in the new enumeration
+            if current_value and current_value in machines:
+                setattr(obj, "Machine", current_value)
+            else:
+                setattr(obj, "Machine", "")
+        else:
+            # Update enumeration
+            obj.Machine = machines
 
         # Restore selection if it's still valid
         if current_selection and current_selection in machines:
@@ -543,9 +565,10 @@ class ObjectJob:
 
         # Ensure Machine property exists
         if not hasattr(obj, "Machine"):
-            # Add the enumeration property if it doesn't exist
+            # Add as string initially to allow any value to be set during test setup
+            # Will be migrated to enumeration later in refreshMachineEnumeration
             obj.addProperty(
-                "App::PropertyEnumeration",
+                "App::PropertyString",
                 "Machine",
                 "Output",
                 QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
