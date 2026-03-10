@@ -53,8 +53,8 @@
                 "parent": null,
                 "sequence": 0,
                 "joint": {
-                    "origin": [0, 0, 0],
-                    "axis": [0, 0, 1]
+                    "origin": [0, 0, 0, 0],
+                    "axis": [0, 0, 0, 1]
                 },
                 "limits": {
                     "min": 0,
