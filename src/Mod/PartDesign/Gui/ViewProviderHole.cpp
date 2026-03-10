@@ -498,6 +498,8 @@ SbVec2f ViewProviderHole::addVertex(
     return SbVec2f(uCoord, vCoord);
 }
 
+namespace
+{
 Handle(Geom_Surface) unwrapSurface(const TopoDS_Face& face)
 {
     Handle(Geom_Surface) surf = BRep_Tool::Surface(face);
@@ -506,7 +508,7 @@ Handle(Geom_Surface) unwrapSurface(const TopoDS_Face& face)
     }
     return surf;
 }
-
+}  // namespace
 
 void ViewProviderHole::handleSeamTriangle(
     std::vector<SbVec3f>& vertices,
