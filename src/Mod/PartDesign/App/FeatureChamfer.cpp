@@ -218,9 +218,11 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
     catch (...) {
-        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+            "Exception",
             "Chamfer failed: size may be too large for adjacent edges sharing a vertex. "
-            "Reduce the size or chamfer edges individually."));
+            "Reduce the size or chamfer edges individually."
+        ));
     }
 }
 
