@@ -420,7 +420,7 @@ App::Material ViewProviderHole::getGlobalMaterial()
     }
     if (auto* bodyVp = getBodyViewProvider()) {
         if (auto* materialProp
-            = dynamic_cast<App::PropertyMaterial*>(bodyVp->getPropertyByName("Material"))) {
+            = freecad_cast<App::PropertyMaterial*>(bodyVp->getPropertyByName("Material"))) {
             return materialProp->getValue();
         }
     }
