@@ -93,10 +93,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qcheckbox
 --------------------------------------------------------------------------- */
 QCheckBox {
   color:@TextForegroundColor;
-  padding: 1px;
   outline: none;
-  border: 1px solid transparent;
-  background-color: transparent;
   spacing: 8px;
 }
 
@@ -1528,9 +1525,6 @@ QGroupBox[objectName="matOpsGrpBox"] QPushButton {
   min-width: 235px;
 }
 
-Gui--WorkbenchComboBox {
-padding-right: -10px;
-}
 /* Below is a fix for indentation in properties*/
 
 QTreeView#groupsTreeView {
