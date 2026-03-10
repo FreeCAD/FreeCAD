@@ -3065,13 +3065,23 @@ protected:
             pnt2 = Obj->getPoint(selPoints[1].GeoId, selPoints[1].PosId);
         }
 
+        bool isHorizontal = std::abs(pnt1.y - pnt2.y) < Precision::Confusion();
+        bool isVertical = std::abs(pnt1.x - pnt2.x) < Precision::Confusion();
+
         double minX, minY, maxX, maxY;
         minX = min(pnt1.x, pnt2.x);
         maxX = max(pnt1.x, pnt2.x);
         minY = min(pnt1.y, pnt2.y);
         maxY = max(pnt1.y, pnt2.y);
-        if (onSketchPos.x > minX && onSketchPos.x < maxX
-            && (onSketchPos.y < minY || onSketchPos.y > maxY) && type != Sketcher::DistanceX) {
+
+        bool isInDistanceXZone = onSketchPos.x > minX && onSketchPos.x < maxX
+            && (onSketchPos.y < minY || onSketchPos.y > maxY);
+        bool isInDistanceYZone = onSketchPos.y > minY && onSketchPos.y < maxY
+            && (onSketchPos.x < minX || onSketchPos.x > maxX);
+        bool isInDistanceZone = ((onSketchPos.y < minY || onSketchPos.y > maxY) && (onSketchPos.x < minX || onSketchPos.x > maxX))
+            || (onSketchPos.y > minY && onSketchPos.y < maxY && onSketchPos.x > minX && onSketchPos.x < maxX);
+
+        if ((isHorizontal || isInDistanceXZone) && type != Sketcher::DistanceX) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceX constraint"));
             specialConstraint = SpecialConstraint::LineOr2PointsDistance;
             if (selLine.size() == 1) {
@@ -3081,8 +3091,7 @@ protected:
                 createDistanceXYConstrain(Sketcher::DistanceX, selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, onSketchPos);
             }
         }
-        else if (onSketchPos.y > minY && onSketchPos.y < maxY
-            && (onSketchPos.x < minX || onSketchPos.x > maxX) && type != Sketcher::DistanceY) {
+        else if ((isVertical || isInDistanceYZone) && type != Sketcher::DistanceY) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add DistanceY constraint"));
             specialConstraint = SpecialConstraint::LineOr2PointsDistance;
             if (selLine.size() == 1) {
@@ -3092,8 +3101,7 @@ protected:
                 createDistanceXYConstrain(Sketcher::DistanceY, selPoints[0].GeoId, selPoints[0].PosId, selPoints[1].GeoId, selPoints[1].PosId, onSketchPos);
             }
         }
-        else if ((((onSketchPos.y < minY || onSketchPos.y > maxY) && (onSketchPos.x < minX || onSketchPos.x > maxX))
-            || (onSketchPos.y > minY && onSketchPos.y < maxY && onSketchPos.x > minX && onSketchPos.x < maxX)) && type != Sketcher::Distance) {
+        else if (isInDistanceZone && !isHorizontal && !isVertical && type != Sketcher::Distance) {
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraint"));
             if (selLine.size() == 1) {
                 createDistanceConstrain(selLine[0].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, Sketcher::PointPos::end, onSketchPos);
