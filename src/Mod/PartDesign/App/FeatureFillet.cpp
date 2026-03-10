@@ -153,14 +153,18 @@ App::DocumentObjectExecReturn* Fillet::execute()
         return new App::DocumentObjectExecReturn(e.what());
     }
     catch (Standard_Failure& e) {
-        return new App::DocumentObjectExecReturn(e.GetMessageString());
+        std::string msg = e.GetMessageString();
+        if (msg.find("command not done") != std::string::npos) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
+                "Fillet failed: radius too large for selected edge(s). "
+                "Reduce the radius or select fewer edges."));
+        }
+        return new App::DocumentObjectExecReturn(msg.c_str());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
             "Exception",
-            "Fillet operation failed. The selected edges may contain geometry that cannot be "
-            "filleted together. "
-            "Try filleting edges individually or with a smaller radius."
+            "Fillet operation failed. Try a smaller radius or fillet edges individually."
         ));
     }
 }

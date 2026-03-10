@@ -25,6 +25,7 @@
 #include <FCConfig.h>
 
 #include <BRepFilletAPI_MakeFillet.hxx>
+#include <ChFiDS_ErrorStatus.hxx>
 #include <Precision.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
@@ -113,6 +114,42 @@ App::DocumentObjectExecReturn* Fillet::execute()
         }
         Edges.setValues(edges);
 
+        // Explicitly build so OCC diagnostics are available on failure.
+        mkFillet.Build();
+        if (!mkFillet.IsDone()) {
+            int nFaulty = mkFillet.NbFaultyContours();
+            if (nFaulty > 0) {
+                int ic = mkFillet.FaultyContour(1);
+                switch (mkFillet.StripeStatus(ic)) {
+                    case ChFiDS_WalkingFailure:
+                        return new App::DocumentObjectExecReturn(
+                            "Fillet radius too large: cannot trace surface along edge. Reduce the radius.");
+                    case ChFiDS_StartsolFailure:
+                        return new App::DocumentObjectExecReturn(
+                            "Fillet conflict at shared vertex: adjacent radii overlap. "
+                            "Reduce the radius or fillet edges separately.");
+                    case ChFiDS_TwistedSurface:
+                        return new App::DocumentObjectExecReturn(
+                            "Fillet radius too large: surface would self-intersect. Reduce the radius.");
+                    default:
+                        break;
+                }
+                return new App::DocumentObjectExecReturn(
+                    "Fillet failed on selected edge(s). Reduce the radius or fillet edges individually.");
+            }
+            if (mkFillet.NbFaultyVertices() > 0) {
+                return new App::DocumentObjectExecReturn(
+                    "Fillet failed at shared corner: adjacent radii overlap. Reduce the radius.");
+            }
+            if (mkFillet.HasResult()) {
+                return new App::DocumentObjectExecReturn(
+                    "Fillet partially applied: some edges failed. Reduce the radius or fillet individually.");
+            }
+            return new App::DocumentObjectExecReturn(
+                "Fillet failed: radius exceeds adjacent face width. "
+                "Reduce the radius or select fewer edges.");
+        }
+
         TopoDS_Shape shape = mkFillet.Shape();
         if (shape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
@@ -123,7 +160,13 @@ App::DocumentObjectExecReturn* Fillet::execute()
         return Part::FilletBase::execute();
     }
     catch (Standard_Failure& e) {
-        return new App::DocumentObjectExecReturn(e.GetMessageString());
+        std::string msg = e.GetMessageString();
+        if (msg.find("command not done") != std::string::npos) {
+            return new App::DocumentObjectExecReturn(
+                "Fillet failed: radius too large for selected edge(s). "
+                "Reduce the radius or select fewer edges.");
+        }
+        return new App::DocumentObjectExecReturn(msg.c_str());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when making fillets");

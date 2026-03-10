@@ -58,6 +58,7 @@
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
+#include <ChFiDS_ErrorStatus.hxx>
 #include <BRepLib.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakeFilling.hxx>
@@ -4105,7 +4106,48 @@ TopoShape& TopoShape::makeElementFillet(
         }
         mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
     }
-    return makeElementShape(mkFillet, shape, op);
+    try {
+        return makeElementShape(mkFillet, shape, op);
+    }
+    catch (const Standard_Failure& e) {
+        // Build() was called lazily inside Shape(); diagnostics are now populated.
+        int nFaulty = mkFillet.NbFaultyContours();
+        if (nFaulty > 0) {
+            int ic = mkFillet.FaultyContour(1);
+            switch (mkFillet.StripeStatus(ic)) {
+                case ChFiDS_WalkingFailure:
+                    FC_THROWM(Base::CADKernelError,
+                        "Fillet radius too large: cannot trace surface along edge. Reduce the radius.");
+                case ChFiDS_StartsolFailure:
+                    FC_THROWM(Base::CADKernelError,
+                        "Fillet conflict at shared vertex: adjacent radii overlap. "
+                        "Reduce the radius or fillet edges separately.");
+                case ChFiDS_TwistedSurface:
+                    FC_THROWM(Base::CADKernelError,
+                        "Fillet radius too large: surface would self-intersect. Reduce the radius.");
+                default:
+                    break;
+            }
+            FC_THROWM(Base::CADKernelError,
+                "Fillet failed on " << nFaulty << " edge contour(s). "
+                "Reduce the radius or fillet edges individually.");
+        }
+        int nVerts = mkFillet.NbFaultyVertices();
+        if (nVerts > 0) {
+            FC_THROWM(Base::CADKernelError,
+                "Fillet failed at " << nVerts << " shared vertex/vertices: "
+                "adjacent radii overlap. Reduce the radius.");
+        }
+        if (mkFillet.HasResult()) {
+            FC_THROWM(Base::CADKernelError,
+                "Fillet partially applied: some edges could not be filleted. "
+                "Reduce the radius or fillet edges individually.");
+        }
+        // No fillet-specific diagnostic matched — rethrow the original OCC exception
+        // so real errors (memory, corruption, etc.) are not masked.
+        (void)e;
+        throw;
+    }
 }
 
 TopoShape& TopoShape::makeElementChamfer(
@@ -4168,7 +4210,18 @@ TopoShape& TopoShape::makeElementChamfer(
         }
     }
     Part::SignalException sig;
-    return makeElementShape(mkChamfer, shape, op);
+    try {
+        return makeElementShape(mkChamfer, shape, op);
+    }
+    catch (const Standard_Failure& e) {
+        std::string msg = e.GetMessageString();
+        if (msg.find("command not done") != std::string::npos) {
+            FC_THROWM(Base::CADKernelError,
+                "Chamfer size too large: would consume or eliminate an adjacent face. "
+                "Reduce the size, select fewer edges, or widen the sketch.");
+        }
+        throw;
+    }
 }
 
 TopoShape& TopoShape::makeElementGeneralFuse(

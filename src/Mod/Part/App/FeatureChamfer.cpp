@@ -115,7 +115,13 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         return Part::FilletBase::execute();
     }
     catch (Standard_Failure& e) {
-        return new App::DocumentObjectExecReturn(e.GetMessageString());
+        std::string msg = e.GetMessageString();
+        if (msg.find("command not done") != std::string::npos) {
+            return new App::DocumentObjectExecReturn(
+                "Chamfer size too large: would consume an adjacent face. "
+                "Reduce the size or select fewer edges.");
+        }
+        return new App::DocumentObjectExecReturn(msg.c_str());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(

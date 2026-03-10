@@ -204,7 +204,13 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
-        return new App::DocumentObjectExecReturn(e.GetMessageString());
+        std::string msg = e.GetMessageString();
+        if (msg.find("command not done") != std::string::npos) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
+                "Chamfer failed: size too large for selected edge(s). "
+                "Reduce the size or select fewer edges."));
+        }
+        return new App::DocumentObjectExecReturn(msg.c_str());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(
