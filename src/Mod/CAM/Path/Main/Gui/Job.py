@@ -787,29 +787,6 @@ class TaskPanel:
         self.obj.PostProcessor = postProcessors
         self.obj.PostProcessor = currentPostProcessor
 
-        # Refresh Machine enumeration with current available machines
-        from Machine.models.machine import MachineFactory
-
-        currentMachine = getattr(self.obj, "Machine", "")
-        machines = [""]  # Add empty string as default (no machine)
-        try:
-            available_machines = MachineFactory.list_configurations()
-            # Filter out <any> and empty entries
-            filtered_machines = [m for m in available_machines if m and m != "<any>"]
-            machines.extend(filtered_machines)
-        except Exception:
-            # If MachineFactory fails, just use empty option
-            pass
-
-        # Update the Machine enumeration if it exists
-        if hasattr(self.obj, "Machine"):
-            self.obj.Machine = machines
-            # Restore selection if it's still valid
-            if currentMachine and currentMachine in machines:
-                self.obj.Machine = currentMachine
-            else:
-                self.obj.Machine = ""
-
         self.postProcessorDefaultTooltip = self.form.postProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 

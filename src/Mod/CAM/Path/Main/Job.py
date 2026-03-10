@@ -213,7 +213,7 @@ class ObjectJob:
             QT_TRANSLATE_NOOP("App::Property", "The Work Coordinate Systems for the Job"),
         )
         obj.addProperty(
-            "App::PropertyEnumeration",
+            "App::PropertyString",
             "Machine",
             "Output",
             QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
@@ -248,19 +248,6 @@ class ObjectJob:
             obj.PostProcessor = ""
         obj.PostProcessorArgs = Path.Preferences.defaultPostProcessorArgs()
 
-        # Populate Machine enumeration with available machines
-        from Machine.models.machine import MachineFactory
-
-        machines = [""]  # Add empty string as default (no machine)
-        try:
-            available_machines = MachineFactory.list_configurations()
-            # Filter out <any> and empty entries
-            filtered_machines = [m for m in available_machines if m and m != "<any>"]
-            machines.extend(filtered_machines)
-        except Exception:
-            # If MachineFactory fails, just use empty option
-            pass
-        obj.Machine = machines
         obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
 
         self.setupOperations(obj)
@@ -498,53 +485,26 @@ class ObjectJob:
                 else:
                     ops.Label = label
 
-    def refreshMachineEnumeration(self, obj):
-        """Refresh the Machine enumeration with current available machines."""
-        from Machine.models.machine import MachineFactory
-
-        machines = [""]  # Add empty string as default (no machine)
-        try:
-            available_machines = MachineFactory.list_configurations()
-            # Filter out <any> and empty entries
-            filtered_machines = [m for m in available_machines if m and m != "<any>"]
-            machines.extend(filtered_machines)
-        except Exception:
-            # If MachineFactory fails, just use empty option
-            pass
-
-        # Store current selection if it exists
-        current_selection = getattr(obj, "Machine", "") if hasattr(obj, "Machine") else ""
-
-        # Check if we need to migrate from String to Enumeration
-        if (
-            hasattr(obj, "Machine")
-            and obj.getTypeIdOfProperty("Machine") != "App::PropertyEnumeration"
-        ):
-            # Store the current value
-            current_value = getattr(obj, "Machine", "")
-            # Remove the old property
-            obj.removeProperty("Machine")
-            # Add the new enumeration property
+    def ensureMachineProperty(self, obj):
+        """Ensure the Machine property exists as a String.
+        Migrates from Enumeration to String if needed (legacy documents)."""
+        if not hasattr(obj, "Machine"):
             obj.addProperty(
-                "App::PropertyEnumeration",
+                "App::PropertyString",
                 "Machine",
                 "Output",
                 QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
             )
-            # Restore the value if it exists in the new enumeration
-            if current_value and current_value in machines:
-                setattr(obj, "Machine", current_value)
-            else:
-                setattr(obj, "Machine", "")
-        else:
-            # Update enumeration
-            obj.Machine = machines
-
-        # Restore selection if it's still valid
-        if current_selection and current_selection in machines:
-            setattr(obj, "Machine", current_selection)
-        else:
-            setattr(obj, "Machine", "")
+        elif obj.getTypeIdOfProperty("Machine") == "App::PropertyEnumeration":
+            current_value = getattr(obj, "Machine", "") or ""
+            obj.removeProperty("Machine")
+            obj.addProperty(
+                "App::PropertyString",
+                "Machine",
+                "Output",
+                QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
+            )
+            obj.Machine = current_value
 
     def onDocumentRestored(self, obj):
         self.setupBaseModel(obj)
@@ -557,49 +517,9 @@ class ObjectJob:
             postProcessors = [""] + postProcessors
         obj.PostProcessor = postProcessors
 
-        # Check if we need to migrate Machine property from String to Enumeration
-        needs_migration = (
-            hasattr(obj, "Machine")
-            and obj.getTypeIdOfProperty("Machine") != "App::PropertyEnumeration"
-        )
-
-        # Ensure Machine property exists
-        if not hasattr(obj, "Machine"):
-            # Add as string initially to allow any value to be set during test setup
-            # Will be migrated to enumeration later in refreshMachineEnumeration
-            obj.addProperty(
-                "App::PropertyString",
-                "Machine",
-                "Output",
-                QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
-            )
-
-        current_value = None
-        if needs_migration:
-            # Store the current value
-            current_value = getattr(obj, "Machine", "")
-            # Remove the old property
-            obj.removeProperty("Machine")
-            # Add the new enumeration property
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "Machine",
-                "Output",
-                QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
-            )
-
-        # Update Machine enumeration with available machines
-        self.refreshMachineEnumeration(obj)
-
-        # Restore the original value if we migrated the property
-        if needs_migration and current_value:
-            # Only restore if the value exists in the new enumeration
-            machines = getattr(obj, "Machine", [])
-            if current_value in machines:
-                setattr(obj, "Machine", current_value)
-            else:
-                # If the old value is not in the new enumeration, set to empty
-                setattr(obj, "Machine", "")
+        # Ensure Machine property exists as a String.
+        # Old documents may have it as an Enumeration or not at all.
+        self.ensureMachineProperty(obj)
 
         self.setupToolTable(obj)
         self.integrityCheck(obj)

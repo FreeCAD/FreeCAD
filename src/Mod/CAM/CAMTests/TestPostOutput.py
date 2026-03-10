@@ -438,7 +438,6 @@ class TestExport2Integration(unittest.TestCase):
         cls.job.OrderOutputBy = "Operation"
         cls.job.Fixtures = ["G54"]
 
-        # Machine property now exists by default
         cls.job.Machine = "Millstone"
 
         from Path.Tool.toolbit import ToolBit

@@ -1848,6 +1848,9 @@ class MachineFactory:
             FileNotFoundError: If no machine with that name is found
             ValueError: If the loaded data is not a valid machine configuration
         """
+        if not machine_name:
+            return None
+
         # Get list of available machine files
         machine_files = cls.list_configuration_files()
 
