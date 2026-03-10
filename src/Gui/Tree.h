@@ -535,7 +535,7 @@ private:
         const std::vector<bool>& snapshot,
         std::vector<bool>::const_iterator& from
     );
-    
+
     void setIconOverlays(int currentStatus, int w, QPixmap& overlays);
     void generateIcon(int currentStatus, QIcon::Mode mode, QIcon& icon);
     QIcon getVisibilityIcon(int currentStatus, QIcon& original_icon);

@@ -5994,13 +5994,10 @@ void DocumentItem::updateSelection()
 
 void DocumentItem::setReadOnlyIconOverlays(int column, QIcon& overlayedIcon)
 {
-    //handle read only file icon overlays
+    // handle read only file icon overlays
     static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("forbidden", QSize(10, 10)));
-    overlayedIcon = Gui::BitmapFactoryInst::mergePixmap(
-        overlayedIcon,
-        px,
-        Gui::BitmapFactoryInst::BottomRight
-    );
+    overlayedIcon
+        = Gui::BitmapFactoryInst::mergePixmap(overlayedIcon, px, Gui::BitmapFactoryInst::BottomRight);
 
     // if a read-only file has been modified, add a warning overlay
     if (document()->isModified()) {
@@ -6010,11 +6007,14 @@ void DocumentItem::setReadOnlyIconOverlays(int column, QIcon& overlayedIcon)
             warnpx,
             Gui::BitmapFactoryInst::TopRight
         );
-        setToolTip(column, "Document is loaded from a read-only file. Changes have been made but cannot be saved.");
-    } else {
+        setToolTip(
+            column,
+            "Document is loaded from a read-only file. Changes have been made but cannot be saved."
+        );
+    }
+    else {
         setToolTip(column, "Document is loaded from a read-only file. Changes cannot be saved.");
     }
-
 }
 
 void DocumentItem::setBaseIcon(int column, const QIcon& base)
@@ -6022,10 +6022,10 @@ void DocumentItem::setBaseIcon(int column, const QIcon& base)
     QIcon overlayedIcon = base;
     setToolTip(column, "");
     if (document()->getDocument()->isReadOnlyFile()) {
-        setReadOnlyIconOverlays(column,overlayedIcon);
+        setReadOnlyIconOverlays(column, overlayedIcon);
     }
-    
-    //future icon overlays handled here. tooltip logic needs imporovement for merging multiple icons.
+
+    // future icon overlays handled here. tooltip logic needs imporovement for merging multiple icons.
 
     setIcon(column, overlayedIcon);
 }
@@ -6179,7 +6179,7 @@ void DocumentObjectItem::setIconOverlays(int currentStatus, int w, QPixmap& over
     if (currentStatus & Status::Hidden) {
         static QPixmap pxHidden;
         if (pxHidden.isNull()) {
-            pxHidden = Gui::BitmapFactory().pixmapFromSvg("TreeItemVisible", QSize(10,10));
+            pxHidden = Gui::BitmapFactory().pixmapFromSvg("TreeItemVisible", QSize(10, 10));
         }
         overlays = BitmapFactory().merge(overlays, pxHidden, BitmapFactoryInst::TopLeft);
     }
@@ -6249,16 +6249,10 @@ void DocumentObjectItem::generateIcon(int currentStatus, QIcon::Mode mode, QIcon
 
     // if needed show small pixmap inside
     if (!px.isNull()) {
-        pxOff = BitmapFactory().merge(
-            icon_org.pixmap(w, w, mode, QIcon::Off),
-            px,
-            BitmapFactoryInst::TopRight
-        );
-        pxOn = BitmapFactory().merge(
-            icon_org.pixmap(w, w, mode, QIcon::On),
-            px,
-            BitmapFactoryInst::TopRight
-        );
+        pxOff = BitmapFactory()
+                    .merge(icon_org.pixmap(w, w, mode, QIcon::Off), px, BitmapFactoryInst::TopRight);
+        pxOn = BitmapFactory()
+                   .merge(icon_org.pixmap(w, w, mode, QIcon::On), px, BitmapFactoryInst::TopRight);
     }
     else {
         pxOff = icon_org.pixmap(w, w, mode, QIcon::Off);
@@ -6270,8 +6264,6 @@ void DocumentObjectItem::generateIcon(int currentStatus, QIcon::Mode mode, QIcon
 
     icon.addPixmap(pxOn, QIcon::Normal, QIcon::On);
     icon.addPixmap(pxOff, QIcon::Normal, QIcon::Off);
-
-    
 }
 
 QIcon DocumentObjectItem::getVisibilityIcon(int currentStatus, QIcon& original_icon)
@@ -6408,7 +6400,7 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         icon = object()->mergeColorfulOverlayIcons(icon);
 
         if (isVisibilityIconEnabled()) {
-            
+
             icon = getVisibilityIcon(currentStatus, icon);
         }
     }
