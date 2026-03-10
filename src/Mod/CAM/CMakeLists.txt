@@ -176,6 +176,7 @@ SET(PathPythonMachineUi_SRCS
 
 SET(PathPythonMachineUiEditor_SRCS
     Machine/ui/editor/machine_editor.py
+    Machine/ui/editor/postprocessor_properties.py
     Machine/ui/editor/__init__.py
 )
 
