@@ -123,18 +123,24 @@ App::DocumentObjectExecReturn* Fillet::execute()
                 switch (mkFillet.StripeStatus(ic)) {
                     case ChFiDS_WalkingFailure:
                         return new App::DocumentObjectExecReturn(
-                            "Fillet radius too large: cannot trace surface along edge. Reduce the "
-                            "radius."
+                            "Fillet failed: could not trace the blending surface along this edge. "
+                            "The radius may be too large or the edge geometry too complex. "
+                            "Try reducing the radius or selecting fewer edges."
                         );
                     case ChFiDS_StartsolFailure:
                         return new App::DocumentObjectExecReturn(
-                            "Fillet conflict at shared vertex: adjacent radii overlap. "
-                            "Reduce the radius or fillet edges separately."
+                            "Fillet failed to start on selected edge: the radius may be too large. "
+                            "Reduce the radius or fillet this edge separately."
                         );
                     case ChFiDS_TwistedSurface:
                         return new App::DocumentObjectExecReturn(
-                            "Fillet radius too large: surface would self-intersect. Reduce the "
-                            "radius."
+                            "Fillet failed: the blending surface would be self-intersecting. "
+                            "Try reducing the radius or selecting a different edge."
+                        );
+                    case ChFiDS_Error:
+                        return new App::DocumentObjectExecReturn(
+                            "Fillet failed: OCC internal geometry error. "
+                            "Check that selected edges are valid and the shape has no defects."
                         );
                     default:
                         break;
@@ -146,7 +152,9 @@ App::DocumentObjectExecReturn* Fillet::execute()
             }
             if (mkFillet.NbFaultyVertices() > 0) {
                 return new App::DocumentObjectExecReturn(
-                    "Fillet failed at shared corner: adjacent radii overlap. Reduce the radius."
+                    "Fillet failed at one or more vertices. "
+                    "The radius may be causing conflicts where edges meet. "
+                    "Try reducing the radius or filleting edges individually."
                 );
             }
             if (mkFillet.HasResult()) {
@@ -156,7 +164,7 @@ App::DocumentObjectExecReturn* Fillet::execute()
                 );
             }
             return new App::DocumentObjectExecReturn(
-                "Fillet failed: radius exceeds adjacent face width. "
+                "Fillet failed: the radius may be too large or incompatible with the selected edges. "
                 "Reduce the radius or select fewer edges."
             );
         }

@@ -203,19 +203,16 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         this->Shape.setValue(shape);
         return App::DocumentObject::StdReturn;
     }
-    catch (Standard_Failure& e) {
-        std::string msg = e.GetMessageString();
-        if (msg.find("command not done") != std::string::npos) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
-                "Exception",
-                "Chamfer failed: size too large for selected edge(s). "
-                "Reduce the size or select fewer edges."
-            ));
-        }
-        return new App::DocumentObjectExecReturn(msg.c_str());
-    }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+    catch (Standard_Failure& e) {
+        // Surface the raw OCC message with context; do not assume a single cause.
+        std::string msg = e.GetMessageString();
+        std::string fullMsg = "Chamfer failed: " + msg
+            + ". Check that the size is not too large, edges are valid, "
+              "and the shape has no degenerate edges.";
+        return new App::DocumentObjectExecReturn(fullMsg.c_str());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",

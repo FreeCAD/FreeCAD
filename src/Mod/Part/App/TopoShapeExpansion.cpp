@@ -4116,17 +4116,34 @@ TopoShape& TopoShape::makeElementFillet(
             int ic = mkFillet.FaultyContour(1);
             switch (mkFillet.StripeStatus(ic)) {
                 case ChFiDS_WalkingFailure:
-                    FC_THROWM(Base::CADKernelError, "Fillet radius too large: cannot trace surface along edge. Reduce the radius.");
+                    FC_THROWM(Base::CADKernelError,
+                        "Fillet failed: could not trace the blending surface along edge contour "
+                            << ic
+                            << ". The radius may be too large or the edge geometry too complex. "
+                               "Try reducing the radius or selecting fewer edges.");
                 case ChFiDS_StartsolFailure:
                     FC_THROWM(
                         Base::CADKernelError,
-                        "Fillet conflict at shared vertex: adjacent radii overlap. "
-                        "Reduce the radius or fillet edges separately."
+                        "Fillet failed to start on edge contour "
+                            << ic
+                            << ": the radius may be too large. "
+                               "Reduce the radius or fillet this edge separately."
                     );
                 case ChFiDS_TwistedSurface:
                     FC_THROWM(
                         Base::CADKernelError,
-                        "Fillet radius too large: surface would self-intersect. Reduce the radius."
+                        "Fillet failed on edge contour "
+                            << ic
+                            << ": the blending surface would be self-intersecting. "
+                               "Try reducing the radius or selecting a different edge."
+                    );
+                case ChFiDS_Error:
+                    FC_THROWM(
+                        Base::CADKernelError,
+                        "Fillet failed on edge contour "
+                            << ic
+                            << ": OCC internal geometry error. "
+                               "Check that selected edges are valid and the shape has no defects."
                     );
                 default:
                     break;
@@ -4143,8 +4160,9 @@ TopoShape& TopoShape::makeElementFillet(
             FC_THROWM(
                 Base::CADKernelError,
                 "Fillet failed at " << nVerts
-                                    << " shared vertex/vertices: "
-                                       "adjacent radii overlap. Reduce the radius."
+                                    << " vertex/vertices. "
+                                       "The radius may be causing conflicts where edges meet. "
+                                       "Try reducing the radius or filleting edges individually."
             );
         }
         if (mkFillet.HasResult()) {
@@ -4154,10 +4172,9 @@ TopoShape& TopoShape::makeElementFillet(
                 "Reduce the radius or fillet edges individually."
             );
         }
-        // No fillet-specific diagnostic matched — rethrow the original OCC exception
-        // so real errors (memory, corruption, etc.) are not masked.
-        (void)e;
-        throw;
+        // Diagnostics empty: failure occurred before OCC could track faulty contours.
+        // Surface the raw OCC message without speculative hints — the cause is unknown here.
+        FC_THROWM(Base::CADKernelError, "Fillet failed: " << e.GetMessageString());
     }
 }
 
@@ -4229,8 +4246,9 @@ TopoShape& TopoShape::makeElementChamfer(
         if (msg.find("command not done") != std::string::npos) {
             FC_THROWM(
                 Base::CADKernelError,
-                "Chamfer size too large: would consume or eliminate an adjacent face. "
-                "Reduce the size, select fewer edges, or widen the sketch."
+                "Chamfer failed: the parameters are incompatible with this shape geometry. "
+                "Try reducing the size, selecting fewer edges, "
+                "or ensuring the selected edges have sufficient width."
             );
         }
         throw;
