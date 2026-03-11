@@ -153,7 +153,13 @@ std::string UnitsApi::toUnicodeSuperscript(const std::string& str)
 
     std::string result;
 
-    enum State { Normal, AfterCaret, AfterCaretMinus, InExponent } state = Normal;
+    enum State
+    {
+        Normal,
+        AfterCaret,
+        AfterCaretMinus,
+        InExponent
+    } state = Normal;
 
     for (char ch : str) {
         switch (state) {

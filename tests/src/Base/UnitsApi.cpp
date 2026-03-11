@@ -83,8 +83,7 @@ TEST(UnitsApi_toUnicodeSuperscript, area_unit_mm_squared)
 TEST(UnitsApi_toUnicodeSuperscript, multiple_exponents_in_one_string)
 {
     // mm^2/s^3  →  mm²/s³
-    EXPECT_EQ(UnitsApi::toUnicodeSuperscript("mm^2/s^3"),
-              "mm\xc2\xb2/s\xc2\xb3");
+    EXPECT_EQ(UnitsApi::toUnicodeSuperscript("mm^2/s^3"), "mm\xc2\xb2/s\xc2\xb3");
 }
 
 TEST(UnitsApi_toUnicodeSuperscript, inverse_area_unit)
@@ -96,8 +95,7 @@ TEST(UnitsApi_toUnicodeSuperscript, inverse_area_unit)
 TEST(UnitsApi_toUnicodeSuperscript, complex_unit_with_negative_exponent)
 {
     // mm^2*kg/s^-2  →  mm²*kg/s⁻²
-    EXPECT_EQ(UnitsApi::toUnicodeSuperscript("mm^2*kg/s^-2"),
-              "mm\xc2\xb2*kg/s\xe2\x81\xbb\xc2\xb2");
+    EXPECT_EQ(UnitsApi::toUnicodeSuperscript("mm^2*kg/s^-2"), "mm\xc2\xb2*kg/s\xe2\x81\xbb\xc2\xb2");
 }
 
 TEST(UnitsApi_toUnicodeSuperscript, caret_at_end_of_string)
@@ -117,7 +115,7 @@ TEST(UnitsApi_toUnicodeSuperscript, caret_followed_by_non_digit)
 
 TEST(UnitsApi_toUnicodeSuperscript, double_caret_before_digit)
 {
-    EXPECT_EQ(UnitsApi::toUnicodeSuperscript("mm^^2"), "mm^\xc2\xb2"); // mm^²
+    EXPECT_EQ(UnitsApi::toUnicodeSuperscript("mm^^2"), "mm^\xc2\xb2");  // mm^²
 }
 
 TEST(UnitsApi_toUnicodeSuperscript, multi_digit)
