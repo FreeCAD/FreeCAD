@@ -434,8 +434,11 @@ void FileWriter::putNextEntry(const char* file, const char* obj)
 {
     Writer::putNextEntry(file, obj);
 
-    std::string fileName = DirName + "/" + file;
-    this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
+    namespace fs = std::filesystem;
+    fs::path path = DirName + "/" + file;
+    fs::create_directories(path.parent_path());
+
+    this->FileStream.open(path, std::ios::out | std::ios::binary);
 
     Writer::checkErrNo();
 }
