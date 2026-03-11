@@ -134,6 +134,7 @@ private:
                                                       {"Company", ""},
                                                       {"CreatedBy", ""},
                                                       {"CreationDate", ""},
+                                                      {"DocumentCacheDir", ""},
                                                       {"Label", ""},
                                                       {"LastModifiedBy", ""},
                                                       {"LastModifiedDate", ""},
@@ -150,6 +151,7 @@ private:
         metadata.company = propMap.at("Company");
         metadata.createdBy = propMap.at("CreatedBy");
         metadata.creationDate = propMap.at("CreationDate");
+        metadata.documentCacheDir = propMap.at("DocumentCacheDir");
         metadata.label = propMap.at("Label");
         metadata.lastModifiedBy = propMap.at("LastModifiedBy");
         metadata.lastModifiedDate = propMap.at("LastModifiedDate");
@@ -481,11 +483,34 @@ bool ProjectFile::containsFile(const std::string& name) const
     return entry != nullptr;
 }
 
+bool ProjectFile::containsFileInDocumentCache(const std::string& name) const
+{
+    ProjectFile::Metadata metadata = getMetadata();
+    if (metadata.documentCacheDir.empty()) {
+        return false;
+    }
+
+    std::string path = metadata.documentCacheDir + "/" + name;
+    Base::FileInfo fi(path);
+    return fi.exists();
+}
+
 uint32_t ProjectFile::sizeOfFile(const std::string& name) const
 {
-    zipios::ZipFile project(stdFile);
-    auto entry = project.getEntry(name);
-    return entry == nullptr ? 0 : entry->getSize();
+    if (containsFile(name)) {
+        zipios::ZipFile project(stdFile);
+        auto entry = project.getEntry(name);
+        return entry == nullptr ? 0 : entry->getSize();
+    }
+
+    if (containsFileInDocumentCache(name)) {
+        ProjectFile::Metadata metadata = getMetadata();
+        std::string path = metadata.documentCacheDir + "/" + name;
+        Base::FileInfo fi(path);
+        return fi.size();
+    }
+
+    return 0;
 }
 
 std::list<std::string> ProjectFile::getInputFiles(const std::string& name) const
@@ -581,6 +606,18 @@ void ProjectFile::readInputFileDirect(const std::string& name, std::ostream& str
     std::unique_ptr<std::istream> istr(project.getInputStream(name));
     if (istr) {
         *istr >> str.rdbuf();
+    }
+}
+
+void ProjectFile::readInputFileFromDocumentCache(const std::string& name, std::ostream& str) const
+{
+    ProjectFile::Metadata metadata = getMetadata();
+    std::string path = metadata.documentCacheDir + "/" + name;
+    Base::FileInfo fi(path);
+    if (fi.exists()) {
+        Base::ifstream file(fi, std::ios::in | std::ios::binary);
+        file >> str.rdbuf();
+        file.close();
     }
 }
 
