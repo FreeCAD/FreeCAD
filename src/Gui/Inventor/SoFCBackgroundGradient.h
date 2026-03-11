@@ -67,9 +67,9 @@ protected:
 
     SbColor fCol, tCol, mCol;
 
-    inline static QImage oTile{};
-    QScopedPointer <QOpenGLTexture> oTex{}; // overlay pattern texture
-    static constexpr double oAlpha{0.03};   // transparency of the pattern
+    inline static QImage oTile {};
+    QScopedPointer<QOpenGLTexture> oTex {};  // overlay pattern texture
+    static constexpr double oAlpha {0.03};   // transparency of the pattern
 };
 
 }  // namespace Gui
