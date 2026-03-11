@@ -6,17 +6,17 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="20"/>
       <source>Edge Constraints</source>
-      <translation type="unfinished">Edge Constraints</translation>
+      <translation>Ograničenje ruba</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="26"/>
       <source>Constrains the surface to pass through the selected edges</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected edges</translation>
+      <translation>Ograničava površinu kako bi se prosljeđivala kroz odabrane rubove</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="29"/>
       <source>Non-Boundary Edges</source>
-      <translation type="unfinished">Non-Boundary Edges</translation>
+      <translation>Neobavezni rubovi</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Prihvati</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -54,22 +54,22 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation type="unfinished">Boundaries</translation>
+      <translation>Granice</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
       <source>Support Surface</source>
-      <translation type="unfinished">Support Surface</translation>
+      <translation>Potpora Površine</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="44"/>
       <source>Edges that will limit the surface</source>
-      <translation type="unfinished">Edges that will limit the surface</translation>
+      <translation>Rubovi koji će ograničiti površinu</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="47"/>
       <source>Boundary Edges</source>
-      <translation type="unfinished">Boundary Edges</translation>
+      <translation>Rubovi ograničenja</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
@@ -85,7 +85,7 @@
       <location filename="../../TaskFilling.ui" line="95"/>
       <location filename="../../TaskFilling.ui" line="111"/>
       <source>Drag the items to reorder the list</source>
-      <translation type="unfinished">Drag the items to reorder the list</translation>
+      <translation>Povucite stavke da biste im promijenili redoslijed</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Prihvati</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -114,12 +114,12 @@
       <location filename="../../TaskSections.ui" line="14"/>
       <location filename="../../TaskSections.ui" line="23"/>
       <source>Sectional Edges</source>
-      <translation type="unfinished">Sectional Edges</translation>
+      <translation>Sekcijski rubovi</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="20"/>
       <source>Constrains the surface to follow the selected sectional edges</source>
-      <translation type="unfinished">Constrains the surface to follow the selected sectional edges</translation>
+      <translation>Ograničava površinu kako bi slijedila odabrane sekcijske rubove</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Popis se može preurediti povlačenjem&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -142,12 +142,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="20"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>Popunjavanje</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="26"/>
       <source>Fill Type</source>
-      <translation type="unfinished">Fill Type</translation>
+      <translation>Vrsta ispune</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="38"/>
@@ -157,7 +157,7 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="48"/>
       <source>Coons</source>
-      <translation type="unfinished">Coons</translation>
+      <translation>Konusi</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="55"/>
@@ -182,28 +182,28 @@
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="222"/>
       <source>Flip orientation</source>
-      <translation type="unfinished">Flip orientation</translation>
+      <translation>Prebaci smjer orijentacije</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="378"/>
       <source>Too many edges</source>
-      <translation type="unfinished">Too many edges</translation>
+      <translation>Previše rubova</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="379"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="387"/>
       <source>The tool requires two, three or four edges</source>
-      <translation type="unfinished">The tool requires two, three or four edges</translation>
+      <translation>Alat zahtijeva dva, tri ili četiri ruba</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="386"/>
       <source>Too less edges</source>
-      <translation type="unfinished">Too less edges</translation>
+      <translation>Premalo rubova</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="398"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Neispravan objekt</translation>
     </message>
   </context>
   <context>
@@ -211,27 +211,27 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="14"/>
       <source>Vertex Constraints</source>
-      <translation type="unfinished">Vertex Constraints</translation>
+      <translation>Ograničenja tjemene točke</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="20"/>
       <source>Constrains the surface to pass through the selected vertices</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected vertices</translation>
+      <translation>Ograničava površinu kako bi se prosljeđivala kroz odabrane tjemene točke</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="23"/>
       <source>Non-Boundary Vertices</source>
-      <translation type="unfinished">Non-Boundary Vertices</translation>
+      <translation>Neobavezne tjemene točke</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="40"/>
       <source>Add Vertex</source>
-      <translation type="unfinished">Add Vertex</translation>
+      <translation>Dodaj Tjemenu točku</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="59"/>
       <source>Remove Vertex</source>
-      <translation type="unfinished">Remove Vertex</translation>
+      <translation>Ukloni Tjemenu točku</translation>
     </message>
   </context>
   <context>
@@ -239,12 +239,12 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="14"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Mješana krivulja</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="20"/>
       <source>Start Edge</source>
-      <translation type="unfinished">Start Edge</translation>
+      <translation>Početni rub</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
@@ -273,7 +273,7 @@
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="113"/>
       <source>End Edge</source>
-      <translation type="unfinished">End Edge</translation>
+      <translation>Krajnji rub</translation>
     </message>
   </context>
   <context>
@@ -294,12 +294,12 @@
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Surface Cut</source>
-      <translation type="unfinished">Surface Cut</translation>
+      <translation>Skraćivanje površine</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>Cuts one shape using another</source>
-      <translation type="unfinished">Cuts one shape using another</translation>
+      <translation>Smanjuje jedan oblik koristeći drugi</translation>
     </message>
   </context>
   <context>
@@ -312,16 +312,16 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>Popunjavanje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Creates a surface from a series of selected boundary edges.
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
-      <translation type="unfinished">Creates a surface from a series of selected boundary edges.
-Additionally, the surface may be constrained by edges and
-vertices that are not on the boundary.</translation>
+      <translation>Stvara površinu iz niza odabranih rubova granica.
+Osim toga, površina može biti ograničena rubovima i
+vrhovima koji nisu na granici.</translation>
     </message>
   </context>
   <context>
@@ -331,22 +331,22 @@ vertices that are not on the boundary.</translation>
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="345"/>
       <source>Create surface</source>
-      <translation type="unfinished">Create surface</translation>
+      <translation>Stvori površinu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Miješana krivulja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
       <source>Extend surface</source>
-      <translation type="unfinished">Extend surface</translation>
+      <translation>Proširi površinu</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.cpp" line="409"/>
       <source>Edit blending curve</source>
-      <translation type="unfinished">Edit blending curve</translation>
+      <translation>Uredi miješanu krivulju</translation>
     </message>
   </context>
   <context>
@@ -359,12 +359,12 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Fill Boundary Curves</source>
-      <translation type="unfinished">Fill Boundary Curves</translation>
+      <translation>Ispuni krivulju ograničenja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="150"/>
       <source>Creates a surface from 2, 3, or 4 boundary edges</source>
-      <translation type="unfinished">Creates a surface from 2, 3, or 4 boundary edges</translation>
+      <translation>Stvara površinu od 2, 3 ili 4 ruba ograničenja</translation>
     </message>
   </context>
   <context>
@@ -377,14 +377,14 @@ vertices that are not on the boundary.</translation>
     <message>
       <location filename="../../Command.cpp" line="179"/>
       <source>Curve on Mesh</source>
-      <translation type="unfinished">Curve on Mesh</translation>
+      <translation>Krivulja na mreži</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="180"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a mesh object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a mesh object.</translation>
+      <translation>Stvara približnu krivulju na vrhu mreže.
+Ova naredba radi samo s mrežnim objektom.</translation>
     </message>
   </context>
   <context>
@@ -397,12 +397,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Miješana krivulja</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Joins 2 edges with continuity</source>
-      <translation type="unfinished">Joins 2 edges with continuity</translation>
+      <translation>Pridružuje se 2 ruba s kontinuitetom</translation>
     </message>
   </context>
   <context>
@@ -415,12 +415,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Extend Face</source>
-      <translation type="unfinished">Extend Face</translation>
+      <translation>Produži površinu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="288"/>
       <source>Extrapolates the selected face or surface at its boundaries with its local U and V parameters</source>
-      <translation type="unfinished">Extrapolates the selected face or surface at its boundaries with its local U and V parameters</translation>
+      <translation>Ekstrapolira odabrano lice ili površinu na svojim granicama s lokalnim U i V parametrima</translation>
     </message>
   </context>
   <context>
@@ -433,7 +433,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Select a single face</source>
-      <translation type="unfinished">Select a single face</translation>
+      <translation>Odaberite jedno lice</translation>
     </message>
   </context>
   <context>
@@ -451,7 +451,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <source>Creates a surface from a series of sectional edges</source>
-      <translation type="unfinished">Creates a surface from a series of sectional edges</translation>
+      <translation>Stvara površinu iz niza sekcijskih rubova</translation>
     </message>
   </context>
   <context>
@@ -464,15 +464,15 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="326"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Neispravan objekt</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="406"/>
       <source>Edge has %n adjacent face(s)</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+      <translation>
+        <numerusform>Rub ima %n susjednih površina</numerusform>
+        <numerusform>Rub ima %n susjednih površina</numerusform>
+        <numerusform>Rub ima %n susjedne površine</numerusform>
       </translation>
     </message>
     <message>
@@ -483,16 +483,16 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="431"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>Rub nema susjednih površina</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <source>Edit Filling</source>
-      <translation type="unfinished">Edit Filling</translation>
+      <translation>Uredi ispunjavanje</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="661"/>
@@ -502,7 +502,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>
       <source>Edit Sections</source>
-      <translation type="unfinished">Edit Sections</translation>
+      <translation>Uredi odjeljke</translation>
     </message>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
@@ -520,15 +520,15 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="494"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Neispravan objekt</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>Rub ima %n susjednu površinu</numerusform>
+        <numerusform>Rub ima %n susjednih površina</numerusform>
+        <numerusform>Rub ima %n susjedne površine</numerusform>
       </translation>
     </message>
     <message>
@@ -539,7 +539,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>Rub nema susjednih površina</translation>
     </message>
   </context>
   <context>
@@ -552,7 +552,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="420"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Neispravan objekt</translation>
     </message>
   </context>
 </TS>

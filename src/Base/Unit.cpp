@@ -102,6 +102,7 @@ constexpr auto unitSpecs = std::to_array<UnitSpec>({
     { "VacuumPermittivity"                    , { -3, -1,  4,  2                 } },
     { "Velocity"                              , {  1,  0, -1                     } },
     { "Volume"                                , {  3                             } },
+    { "Concentration"                         , { -3,  0,  0,  0,  0,  1         } },
     { "VolumeChargeDensity"                   , { -3,  0,  1,  1                 } },
     { "VolumeFlowRate"                        , {  3,  0, -1                     } },
     { "VolumetricThermalExpansionCoefficient" , {  0,  0,  0,  0, -1             } },
@@ -327,6 +328,7 @@ constexpr Unit Unit::Angle                                 = make("Angle"       
 constexpr Unit Unit::Acceleration                          = make("Acceleration"                );
 constexpr Unit Unit::AngleOfFriction                       = make("Angle"                       );
 constexpr Unit Unit::Area                                  = make("Area"                        );
+constexpr Unit Unit::Concentration                         = make("Concentration"               );
 constexpr Unit Unit::CompressiveStrength                   = make("Pressure"                    );
 constexpr Unit Unit::CurrentDensity                        = make("CurrentDensity"              );
 constexpr Unit Unit::Density                               = make("Density"                     );

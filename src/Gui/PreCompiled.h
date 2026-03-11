@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PRECOMPILED_H
-#define GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -90,5 +89,3 @@
 #if defined(FC_OS_WIN32)
 # include <windows.h>
 #endif
-
-#endif  // GUI_PRECOMPILED_H

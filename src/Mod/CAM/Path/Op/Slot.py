@@ -569,11 +569,6 @@ class ObjectSlot(PathOp.ObjectOp):
             self.commandlist.clear()
             return False
 
-        # Final move to clearance height
-        self.commandlist.append(
-            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        )
-
         # Hide debug visuals
         if self.showDebugObjects and FreeCAD.GuiUp:
             FreeCADGui.ActiveDocument.getObject(self.tmpGrp.Name).Visibility = False

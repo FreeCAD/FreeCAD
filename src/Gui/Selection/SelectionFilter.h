@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SelectionFilter_H
-#define GUI_SelectionFilter_H
+#pragma once
 
 #include <limits>
 #include <memory>
@@ -218,6 +217,3 @@ struct Node_Block
 
 
 }  // namespace Gui
-
-
-#endif  // GUI_SelectionFilter_H

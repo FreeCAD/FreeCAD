@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ViewProviderTextDocument_H
-#define GUI_ViewProviderTextDocument_H
+#pragma once
 
 #include <QPointer>
 #include "ViewProviderDocumentObject.h"
@@ -65,5 +64,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif

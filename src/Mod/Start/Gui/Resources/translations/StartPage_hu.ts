@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="209"/>
+      <location filename="../../StartView.cpp" line="211"/>
       <source>Open File</source>
       <translation>Fájl megnyitás</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Assembly</source>
       <translation>Összeállítás</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>2D Draft</source>
       <translation>2D tervrajz</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Creates a 2D Draft document</source>
       <translation>Létrehoz egy 2D tervrajz dokumentumot</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="229"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Építészet</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="204"/>
+      <location filename="../../StartView.cpp" line="206"/>
       <source>Empty File</source>
       <translation>Üres fájl</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="205"/>
+      <location filename="../../StartView.cpp" line="207"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Létrehoz egy új FreeCAD fájlt</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="210"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Megnyit egy meglévő CAD fájlt vagy 3D modellt</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
+      <location filename="../../StartView.cpp" line="216"/>
       <source>Parametric Body</source>
       <translation>Változós test</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Létrehoz egy testet az alkatrész tervezés munkafelülettel</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="220"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Creates an assembly project</source>
       <translation>Létrehoz egy összeszerelési tervet</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="230"/>
       <source>Creates an architectural project</source>
       <translation>Létrehoz egy építészeti tervet</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="503"/>
+      <location filename="../../StartView.cpp" line="509"/>
       <source>New File</source>
       <translation>Új fájl</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="504"/>
+      <location filename="../../StartView.cpp" line="510"/>
       <source>Examples</source>
       <translation>Példák</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="505"/>
+      <location filename="../../StartView.cpp" line="511"/>
       <source>Recent Files</source>
       <translation>Legutóbbi fájlok</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="521"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>Open First Start Setup</source>
       <translation>Első indítási beállítás megnyitása</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="528"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>Ne jelenítse meg újra ezt a kezdőlapot (üres képernyővel kezdje)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="497"/>
+      <location filename="../../StartView.cpp" line="503"/>
       <source>Start</source>
       <translation>Kezdő időpont</translation>
     </message>

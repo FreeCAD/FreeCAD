@@ -152,13 +152,13 @@ all writes to the CompressedVectorNode will be lost (it will have zero children)
 @pre The associated ImageFile must be open.
 @pre This CompressedVectorWriter must be open (i.e isOpen())
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorWriterNotOpen
-@throw ::ErrorPathUndefined
-@throw ::ErrorNoBufferForElement
-@throw ::ErrorBufferSizeMismatch
-@throw ::ErrorBufferDuplicatePathName
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorWriterNotOpen (n/c)
+@throw ::ErrorPathUndefined (n/c)
+@throw ::ErrorNoBufferForElement (n/c)
+@throw ::ErrorBufferSizeMismatch (n/c)
+@throw ::ErrorBufferDuplicatePathName (n/c)
 @throw ::ErrorConversionRequired This CompressedVectorWriter in undocumented state, associated
 CompressedVectorNode modified but consistent, associated ImageFile modified but consistent.
 @throw ::ErrorValueOutOfBounds This CompressedVectorWriter in undocumented state, associated
@@ -218,13 +218,13 @@ is invoked, all writes to the CompressedVectorNode will be lost (it will have ze
 @pre The associated ImageFile must be open.
 @pre This CompressedVectorWriter must be open (i.e isOpen())
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorWriterNotOpen
-@throw ::ErrorPathUndefined
-@throw ::ErrorNoBufferForElement
-@throw ::ErrorBufferSizeMismatch
-@throw ::ErrorBufferDuplicatePathName
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorWriterNotOpen (n/c)
+@throw ::ErrorPathUndefined (n/c)
+@throw ::ErrorNoBufferForElement (n/c)
+@throw ::ErrorBufferSizeMismatch (n/c)
+@throw ::ErrorBufferDuplicatePathName (n/c)
 @throw ::ErrorConversionRequired This CompressedVectorWriter in undocumented state, associated
 ImageFile modified but consistent.
 @throw ::ErrorValueOutOfBounds This CompressedVectorWriter in undocumented state, associated
@@ -269,7 +269,7 @@ writes to the CompressedVectorNode will be lost (it will have zero children).
 @pre The associated ImageFile must be open.
 @post This CompressedVectorWriter is closed (i.e !isOpen())
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorSeekFailed This CompressedVectorWriter, associated ImageFile in undocumented state
 @throw ::ErrorReadFailed  This CompressedVectorWriter, associated ImageFile in undocumented state
 @throw ::ErrorWriteFailed This CompressedVectorWriter, associated ImageFile in undocumented state
@@ -288,7 +288,7 @@ void CompressedVectorWriter::close()
 
 @pre The associated ImageFile must be open.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see CompressedVectorWriter::close, CompressedVectorNode::writer
@@ -305,7 +305,7 @@ bool CompressedVectorWriter::isOpen()
 
 @return A smart CompressedVectorNode handle referencing the underlying object being written to.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see CompressedVectorNode::writer

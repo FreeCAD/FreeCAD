@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSolverMessages_H
-#define GUI_TASKVIEW_TaskSolverMessages_H
+#pragma once
 
 #include <fastsignals/signal.h>
 
@@ -69,5 +68,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TaskSolverMessages_H

@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINTPulley_H
-#define FEM_CONSTRAINTPulley_H
+#pragma once
 
 #include "FemConstraintGear.h"
 
@@ -65,6 +64,3 @@ protected:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTPulley_H

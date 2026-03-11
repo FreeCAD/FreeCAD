@@ -46,9 +46,8 @@ bool isAlterGeoActive(Gui::Document* doc)
 {
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
-            return true;
-        }
+        auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        return (vp && vp->isInEditMode());
     }
 
     return false;
@@ -88,6 +87,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArc");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateText");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseByCenter");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseBy3Points");

@@ -3,7 +3,7 @@
 General:
   UUID: "c0341eef-0897-4fcf-a7f7-eddf1a2600a5"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Neon GNC"
   Description: "Defines the Neon GNC appearance properties"
 AppearanceModels:

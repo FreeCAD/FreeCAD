@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_APP_PRIVATE_DOCUMENTP_H_
-#define SRC_APP_PRIVATE_DOCUMENTP_H_
+#pragma once
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4834)
@@ -172,5 +171,3 @@ struct DocumentP
 };
 
 }  // namespace App
-
-#endif  // SRC_APP_PRIVATE_DOCUMENTP_H_

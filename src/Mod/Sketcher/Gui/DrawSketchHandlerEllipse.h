@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerEllipse_H
-#define SKETCHERGUI_DrawSketchHandlerEllipse_H
+#pragma once
 
 #include <cmath>
 
@@ -62,6 +61,7 @@ using DSHEllipseController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::CircleEllipseConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -395,7 +395,7 @@ private:
         auto lprojy = projy.Length();  // Py = b sin t
 
         if (lprojx > firstRadius) {
-            secondRadius = 0.0;
+            secondRadius = lprojy;
         }
         else {
             double t = std::acos(lprojx / firstRadius);
@@ -1047,6 +1047,3 @@ void DSHEllipseController::addConstraints()
     // No constraint possible for 3 rim ellipse.
 }
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerEllipse_H

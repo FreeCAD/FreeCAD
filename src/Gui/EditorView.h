@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_EDITORVIEW_H
-#define GUI_EDITORVIEW_H
+#pragma once
 
 #include "MDIView.h"
 #include "Window.h"
@@ -77,7 +76,7 @@ public:
     void onUpdate() override
     {}
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
     bool canClose() override;
@@ -136,7 +135,7 @@ public:
     PythonEditorView(PythonEditor* editor, QWidget* parent);
     ~PythonEditorView() override;
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
 public Q_SLOTS:
@@ -189,5 +188,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_EDITORVIEW_H

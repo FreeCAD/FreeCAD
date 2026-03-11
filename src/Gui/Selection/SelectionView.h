@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_SELECTIONVIEW_H
-#define GUI_DOCKWND_SELECTIONVIEW_H
+#pragma once
 
 #include "DockWindow.h"
 #include "Selection.h"
@@ -76,7 +75,7 @@ public:
 
     void leaveEvent(QEvent*) override;
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
 
     const char* getName() const override
     {
@@ -208,5 +207,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_DOCKWND_SELECTIONVIEW_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerExtend_H
-#define SKETCHERGUI_DrawSketchHandlerExtend_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -410,5 +409,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerExtend_H

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Pipe_H
-#define PARTDESIGN_Pipe_H
+#pragma once
 
 #include "FeatureSketchBased.h"
 #include <BRepOffsetAPI_MakePipeShell.hxx>
@@ -117,6 +118,3 @@ public:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_Pipe_H

@@ -22,9 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAFTUTILS_PRECOMPILED_H
-#define DRAFTUTILS_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
-
-#endif

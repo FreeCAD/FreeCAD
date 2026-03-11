@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SEGMENTATIONBESTFIT_H
-#define MESHGUI_SEGMENTATIONBESTFIT_H
+#pragma once
 
 #include <list>
 #include <QDialog>
@@ -152,5 +151,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_SEGMENTATIONBESTFIT_H

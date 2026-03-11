@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKEDITCONTROL_H
-#define GUI_TASKVIEW_TASKEDITCONTROL_H
+#pragma once
 
 #include "TaskView.h"
 
@@ -61,5 +60,3 @@ protected:
 
 }  // namespace TaskView
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

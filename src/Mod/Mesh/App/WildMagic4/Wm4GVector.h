@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4GVECTOR_H
-#define WM4GVECTOR_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Math.h"
@@ -93,5 +92,3 @@ namespace Wm4
 typedef GVector<float> GVectorf;
 typedef GVector<double> GVectord;
 }
-
-#endif

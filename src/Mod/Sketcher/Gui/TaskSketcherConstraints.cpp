@@ -52,6 +52,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "EditDatumDialog.h"
+#include "EditTextDialog.h"
 #include "TaskSketcherConstraints.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
@@ -107,6 +108,88 @@ public:
     }
     ~ConstraintItem() override
     {}
+
+    QString getName() const
+    {
+        const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
+
+        if (!constraint->Name.empty()) {
+            return QString::fromStdString(constraint->Name);
+        }
+
+        QString type;
+        switch (constraint->Type) {
+            case Sketcher::Horizontal:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Horizontal");
+                break;
+            case Sketcher::Vertical:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Vertical");
+                break;
+            case Sketcher::Coincident:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Coincident");
+                break;
+            case Sketcher::PointOnObject:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "PointOnObject");
+                break;
+            case Sketcher::Parallel:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Parallel");
+                break;
+            case Sketcher::Perpendicular:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Perpendicular");
+                break;
+            case Sketcher::Tangent:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Tangent");
+                break;
+            case Sketcher::Equal:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Equal");
+                break;
+            case Sketcher::Symmetric:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Symmetric");
+                break;
+            case Sketcher::Block:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Lock");
+                break;
+            case Sketcher::Distance:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Distance");
+                break;
+            case Sketcher::DistanceX:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "DistanceX");
+                break;
+            case Sketcher::DistanceY:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "DistanceY");
+                break;
+            case Sketcher::Radius:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Radius");
+                break;
+            case Sketcher::Diameter:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Diameter");
+                break;
+            case Sketcher::Angle:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Angle");
+                break;
+            case Sketcher::Weight:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Weight");
+                break;
+            case Sketcher::SnellsLaw:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Snell");
+                break;
+            case Sketcher::InternalAlignment:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Alignment");
+                break;
+            /*case Sketcher::Group:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Group");
+                break;
+            case Sketcher::Text:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Text");
+                break;*/
+            default:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Constraint");
+                break;
+        }
+
+        return QStringLiteral("%1-%2").arg(ConstraintNbr + 1).arg(type);
+    }
+
     void setData(int role, const QVariant& value) override
     {
         if (role == Qt::EditRole)
@@ -137,9 +220,7 @@ public:
                                                                         ConstraintNbr));
         }
         else if (role == Qt::DisplayRole) {
-            QString name =
-                QString::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
-                    constraint->Name, ConstraintNbr));
+            QString name = getName();
 
             switch (constraint->Type) {
                 case Sketcher::Horizontal:
@@ -238,6 +319,8 @@ public:
             // Gui::BitmapFactory().iconFromTheme("Constraint_Ellipse_Axis_Angle") );
             static QIcon equal(Gui::BitmapFactory().iconFromTheme("Constraint_EqualLength"));
             static QIcon pntoo(Gui::BitmapFactory().iconFromTheme("Constraint_PointOnObject"));
+            static QIcon group(Gui::BitmapFactory().iconFromTheme("Constraint_Group"));
+            static QIcon text(Gui::BitmapFactory().iconFromTheme("Constraint_Text"));
             static QIcon symm(Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric"));
             static QIcon snell(Gui::BitmapFactory().iconFromTheme("Constraint_SnellsLaw"));
             static QIcon iaellipseminoraxis(Gui::BitmapFactory().iconFromTheme(
@@ -269,7 +352,7 @@ public:
             auto selicon = [this](const Sketcher::Constraint* constr,
                               const QIcon& normal,
                               const QIcon& driven) -> QIcon {
-                if (!constr->isActive) {
+                if (!sketch->isConstraintActiveInSketch(constr)) {
                     QIcon darkIcon;
                     int w = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
                     darkIcon.addPixmap(normal.pixmap(w, w, QIcon::Disabled, QIcon::Off),
@@ -298,6 +381,10 @@ public:
                     return selicon(constraint, block, block);
                 case Sketcher::PointOnObject:
                     return selicon(constraint, pntoo, pntoo);
+                case Sketcher::Group:
+                    return selicon(constraint, group, group);
+                case Sketcher::Text:
+                    return selicon(constraint, text, text);
                 case Sketcher::Parallel:
                     return selicon(constraint, para, para);
                 case Sketcher::Perpendicular:
@@ -381,6 +468,8 @@ public:
             case Sketcher::Tangent:
             case Sketcher::Equal:
             case Sketcher::Symmetric:
+            case Sketcher::Group:
+            case Sketcher::Text:
                 return true;
             case Sketcher::Distance:
             case Sketcher::DistanceX:
@@ -745,6 +834,10 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
         it->setCheckState(isChecked ? Qt::Checked : Qt::Unchecked);
         filterState = filterState >> 1;// shift right to get rid of the used bit.
     }
+
+    // Text constraint filter is hidden from the user
+    item(static_cast<int>(ConstraintFilter::FilterValue::Text))->setHidden(true);
+
     languageChange();
 
     setPartiallyChecked();
@@ -1181,6 +1274,11 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
         editDatumDialog->exec(false);
         delete editDatumDialog;
     }
+    else if (it->constraintType() == Sketcher::Text) {
+        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr);
+        editDialog->exec();
+        delete editDialog;
+    }
 }
 
 void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem* item)
@@ -1614,6 +1712,10 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
     ConstraintItem* it = static_cast<ConstraintItem*>(item);
     const Sketcher::Constraint* constraint = vals[it->ConstraintNbr];
 
+    // Text constraint is hidden from the list widget.
+    if (constraint->Type == Sketcher::Text) {
+        return true;
+    }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -1635,6 +1737,12 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
                 break;
             case Sketcher::PointOnObject:
                 visible = checkFilterBitset(multiFilterStatus, FilterValue::PointOnObject);
+                break;
+            case Sketcher::Group:
+                visible = checkFilterBitset(multiFilterStatus, FilterValue::Group);
+                break;
+            case Sketcher::Text:
+                visible = checkFilterBitset(multiFilterStatus, FilterValue::Text);
                 break;
             case Sketcher::Parallel:
                 visible = checkFilterBitset(multiFilterStatus, FilterValue::Parallel);

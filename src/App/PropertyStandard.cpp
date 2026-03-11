@@ -770,6 +770,54 @@ void PropertyIntegerConstraint::setPyObject(PyObject* value)
     }
 }
 
+void PropertyIntegerConstraint::Save(Base::Writer& writer) const
+{
+    writer.Stream() << writer.ind()
+                    << "<Integer value=\"" << _lValue << "\"";
+    if (_ConstStruct && _ConstStruct->isDeletable()) {
+        long minimum = _ConstStruct->LowerBound;
+        long maximum = _ConstStruct->UpperBound;
+        long stepsize = _ConstStruct->StepSize;
+        writer.Stream() << " min=\"" << minimum << "\""
+                        << " max=\"" << maximum << "\""
+                        << " step=\"" << stepsize << "\"";
+    }
+    writer.Stream() << "/>\n";
+}
+
+void PropertyIntegerConstraint::Restore(Base::XMLReader& reader)
+{
+    // read my Element
+    reader.readElement("Integer");
+    // get the value of my Attribute
+    setValue(reader.getAttribute<long>("value"));
+
+    bool createConstraint = false;
+    long minimum = std::numeric_limits<int>::lowest();
+    long maximum = std::numeric_limits<int>::max();
+    long stepsize = 1.0;
+    if (reader.hasAttribute("min")) {
+        minimum = reader.getAttribute<long>("min");
+        createConstraint = true;
+    }
+    if (reader.hasAttribute("max")) {
+        maximum = reader.getAttribute<long>("max");
+        createConstraint = true;
+    }
+    if (reader.hasAttribute("step")) {
+        stepsize = reader.getAttribute<long>("step");
+    }
+
+    if (createConstraint) {
+        Constraints* c = new Constraints();
+        c->setDeletable(true);
+        c->LowerBound = minimum;
+        c->UpperBound = maximum;
+        c->StepSize = stepsize;
+        setConstraints(c);
+    }
+}
+
 //**************************************************************************
 //**************************************************************************
 // PropertyPercent
@@ -1269,6 +1317,54 @@ void PropertyFloatConstraint::setPyObject(PyObject* value)
         aboutToSetValue();
         _dValue = valConstr[0];
         hasSetValue();
+    }
+}
+
+void PropertyFloatConstraint::Save(Base::Writer& writer) const
+{
+    writer.Stream() << writer.ind()
+                    << "<Float value=\"" << _dValue << "\"";
+    if (_ConstStruct && _ConstStruct->isDeletable()) {
+        double minimum = _ConstStruct->LowerBound;
+        double maximum = _ConstStruct->UpperBound;
+        double stepsize = _ConstStruct->StepSize;
+        writer.Stream() << " min=\"" << minimum << "\""
+                        << " max=\"" << maximum << "\""
+                        << " step=\"" << stepsize << "\"";
+    }
+    writer.Stream() << "/>\n";
+}
+
+void PropertyFloatConstraint::Restore(Base::XMLReader& reader)
+{
+    // read my Element
+    reader.readElement("Float");
+    // get the value of my Attribute
+    setValue(reader.getAttribute<double>("value"));
+
+    bool createConstraint = false;
+    double minimum = std::numeric_limits<double>::lowest();
+    double maximum = std::numeric_limits<double>::max();
+    double stepsize = 1.0;
+    if (reader.hasAttribute("min")) {
+        minimum = reader.getAttribute<double>("min");
+        createConstraint = true;
+    }
+    if (reader.hasAttribute("max")) {
+        maximum = reader.getAttribute<double>("max");
+        createConstraint = true;
+    }
+    if (reader.hasAttribute("step")) {
+        stepsize = reader.getAttribute<double>("step");
+    }
+
+    if (createConstraint) {
+        Constraints* c = new Constraints();
+        c->setDeletable(true);
+        c->LowerBound = minimum;
+        c->UpperBound = maximum;
+        c->StepSize = stepsize;
+        setConstraints(c);
     }
 }
 
@@ -3194,6 +3290,7 @@ const Base::Color& PropertyMaterialList::getDiffuseColor(int index) const
 std::vector<Base::Color> PropertyMaterialList::getDiffuseColors() const
 {
     std::vector<Base::Color> list;
+    list.reserve(_lValueList.size());
     for (auto& material : _lValueList) {
         list.push_back(material.diffuseColor);
     }
@@ -3244,6 +3341,7 @@ float PropertyMaterialList::getTransparency(int index) const
 std::vector<float> PropertyMaterialList::getTransparencies() const
 {
     std::vector<float> list;
+    list.reserve(_lValueList.size());
     for (auto& material : _lValueList) {
         list.push_back(material.transparency);
     }

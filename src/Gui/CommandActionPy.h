@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_COMMANDACTIONPY_H
-#define GUI_COMMANDACTIONPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_COMMANDACTIONPY_H

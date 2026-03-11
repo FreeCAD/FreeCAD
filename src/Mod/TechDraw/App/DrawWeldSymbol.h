@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawWeldSymbol_h_
-#define TechDraw_DrawWeldSymbol_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -73,4 +72,3 @@ private:
 using DrawWeldSymbolPython = App::FeaturePythonT<DrawWeldSymbol>;
 
 } //namespace TechDraw
-#endif

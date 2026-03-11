@@ -6,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONPANEL_H
-#define ACTIONPANEL_H
+#pragma once
 
 #include <QFrame>
 #include <QSpacerItem>
@@ -105,5 +104,3 @@ protected:
 };
 
 } // namespace
-
-#endif // ACTIONPANEL_H

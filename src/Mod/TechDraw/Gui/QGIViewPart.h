@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWPART_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -129,7 +128,8 @@ public:
 
     bool hideCenterMarks() const;
 
-
+    void setMovableFlag() override;
+    void setMovableFlagProjGroupItem();
 
 protected:
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
@@ -164,5 +164,3 @@ private:
 };
 
 } // namespace
-
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWPART_H

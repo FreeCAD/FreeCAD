@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEW_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEW_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -187,6 +186,7 @@ public:
 
     bool isExporting() const;
 
+    virtual void setMovableFlag();
 
 protected:
     QGIView* getQGIVByName(std::string name) const;
@@ -246,5 +246,3 @@ private:
 };
 
 } // namespace
-
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEW_H

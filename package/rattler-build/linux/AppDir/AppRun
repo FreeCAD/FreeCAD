@@ -31,4 +31,4 @@ else
     MAIN="$HERE/usr/bin/freecad"
 fi
 
-"${MAIN}" "$@"
+exec "${MAIN}" "$@"

@@ -138,7 +138,6 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
                     QtGui.QColor(getOutputWinColor("Error")),
                 )
                 return
-            self.tool.update_properties()
             self.write_log("Process finished\n", QtGui.QColor(getOutputWinColor("Text")))
 
     def process_started(self):

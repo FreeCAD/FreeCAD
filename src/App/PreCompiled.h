@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -50,6 +49,7 @@
 #include <sstream>
 
 // STL
+#include <array>
 #include <bitset>
 #include <chrono>
 #if defined(FC_OS_WIN32)
@@ -91,5 +91,3 @@
 #include <QProcessEnvironment>
 #include <QStandardPaths>
 #include <QString>
-
-#endif  // APP_PRECOMPILED_H

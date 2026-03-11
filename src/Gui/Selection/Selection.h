@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SELECTION_H
-#define GUI_SELECTION_H
+#pragma once
 
 #include <deque>
 #include <list>
@@ -791,6 +790,7 @@ protected:
         App::DocumentObject* pResolvedObject = nullptr;
 
         void log(bool remove = false, bool clearPreselect = true);
+        std::string getSubString() const;
     };
     mutable std::list<_SelObj> _SelList;
 
@@ -903,5 +903,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SELECTION_H

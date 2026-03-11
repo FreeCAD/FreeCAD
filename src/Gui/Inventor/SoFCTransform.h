@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_INVENTOR_SOFCTRANSFORM_H
-#define GUI_INVENTOR_SOFCTRANSFORM_H
+#pragma once
 
 #include <Inventor/nodes/SoTransform.h>
 #include <FCGlobal.h>
@@ -61,5 +60,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_INVENTOR_SOFCTRANSFORM_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FACE_H
-#define PART_FACE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -58,6 +57,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FACE_H

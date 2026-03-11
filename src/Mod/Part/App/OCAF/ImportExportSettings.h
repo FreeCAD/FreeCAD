@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_OCAF_IMPORTEXPORTSETTINGS_H
-#define PART_OCAF_IMPORTEXPORTSETTINGS_H
+#pragma once
 
 #include <list>
 #include <memory>
@@ -157,5 +156,3 @@ private:
 
 }  // namespace OCAF
 }  // namespace Part
-
-#endif

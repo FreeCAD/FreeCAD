@@ -25,6 +25,9 @@
 #include <QCursor>
 #include <QLocale>
 #include <QRegularExpression>
+#include <QDir>
+#include <QDirIterator>
+#include <QFileInfo>
 
 #include <App/Application.h>
 #include <Base/Quantity.h>
@@ -506,7 +509,7 @@ bool SketcherGui::isSketchInEdit(Gui::Document* doc)
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         auto* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        return (vp != nullptr);
+        return (vp != nullptr && vp->isInEditMode());
     }
     return false;
 }
@@ -750,16 +753,11 @@ void SketcherGui::ConstraintToAttachment(
 void SketcherGui::ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj)
 {
     using std::numbers::pi;
-    double angleModPi = std::fmod(angle, pi);
-    double angleModHalfPi = std::fmod(angle, pi / 2);
 
-    if (fabs(angleModPi - pi) < Precision::Confusion()
-        || fabs(angleModPi + pi) < Precision::Confusion()
-        || fabs(angleModPi) < Precision::Confusion()) {
+    if (fabs(std::remainder(angle, pi)) < Precision::Confusion()) {
         Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", geoId);
     }
-    else if (fabs(angleModHalfPi - pi / 2) < Precision::Confusion()
-             || fabs(angleModHalfPi + pi / 2) < Precision::Confusion()) {
+    else if (fabs(std::remainder(angle, pi / 2)) < Precision::Confusion()) {
         Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Vertical',%d)) ", geoId);
     }
     else {
@@ -998,4 +996,47 @@ int SketcherGui::indexOfGeoId(const std::vector<int>& vec, int elem)
         }
     }
     return -1;
+}
+
+QMap<QString, QString> SketcherGui::findAvailableFontFiles()
+{
+    QMap<QString, QString> fontMap;
+    QStringList fontPaths;
+
+    // 0. Include FreeCAD bundled fonts
+    fontPaths << QString::fromStdString(
+        App::Application::getResourceDir() + "Mod/TechDraw/Resources/fonts/"
+    );
+
+#if defined(Q_OS_WIN)
+    fontPaths << QString::fromUtf8("C:/Windows/Fonts");
+#elif defined(Q_OS_MACOS)
+    fontPaths << QString::fromUtf8("/System/Library/Fonts") << QString::fromUtf8("/Library/Fonts")
+              << QDir::homePath() + QString::fromUtf8("/Library/Fonts");
+#else  // Linux and other Unix-like systems
+    fontPaths << QString::fromUtf8("/usr/share/fonts") << QString::fromUtf8("/usr/local/share/fonts")
+              << QDir::homePath() + QString::fromUtf8("/.fonts");
+#endif
+
+    for (const QString& path : fontPaths) {
+        if (!QDir(path).exists()) {
+            continue;
+        }
+
+        QDirIterator it(
+            path,
+            QStringList() << QString::fromUtf8("*.ttf") << QString::fromUtf8("*.otf")
+                          << QString::fromUtf8("*.ttc"),
+            QDir::Files,
+            QDirIterator::Subdirectories
+        );
+        while (it.hasNext()) {
+            QString filePath = it.next();
+            QFileInfo fileInfo(filePath);
+            // Use the base name as a "friendly name".
+            // We store in a map to avoid duplicates from different paths (e.g. ttf vs otf).
+            fontMap[fileInfo.baseName()] = filePath;
+        }
+    }
+    return fontMap;
 }

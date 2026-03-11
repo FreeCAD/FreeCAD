@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCUMENT_H
-#define GUI_DOCUMENT_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -121,8 +120,11 @@ public:
         signalChangedObject;
     /// signal on renamed Object
     mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalRelabelObject;
-    /// signal on activated Object
+    /// signal on activated Object (relay of App activation signal)
     mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalActivatedObject;
+    /// signal on activated Object in the tree (bold item)
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject*, const char*)>
+        signalActivatedViewProvider;
     /// signal on entering in edit mode
     mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode
@@ -216,7 +218,7 @@ public:
      * first checked view is the current active view.
      * If a view supports the message true is returned and false otherwise.
      */
-    bool sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, const char** ppReturn);
+    bool sendMsgToFirstView(const Base::Type& typeId, const char* pMsg);
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv = false);
     /// Detach a view (get called by the MDIView destructor)
@@ -369,6 +371,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_DOCUMENT_H

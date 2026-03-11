@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef PARTGUI_WORKBENCHMANIPULATOR_H
-#define PARTGUI_WORKBENCHMANIPULATOR_H
+#pragma once
 
 #include <Gui/WorkbenchManipulator.h>
 
@@ -58,6 +57,3 @@ private:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_WORKBENCHMANIPULATOR_H

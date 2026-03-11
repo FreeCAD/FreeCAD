@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __stock_object_h__
-#define __stock_object_h__
+#pragma once
 #include "SolidObject.h"
 #include "linmath.h"
 
@@ -41,5 +40,3 @@ private:
     float mProfile[8] = {};
 };
 }  // namespace MillSim
-
-#endif

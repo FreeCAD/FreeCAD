@@ -92,6 +92,31 @@ Writer::Writer()
 
 Writer::~Writer() = default;
 
+void Writer::clear()
+{
+    Stream().clear();
+}
+
+bool Writer::isGood() const
+{
+    return Stream().good();
+}
+
+bool Writer::hasFailed() const
+{
+    return Stream().fail();
+}
+
+bool Writer::isBad() const
+{
+    return Stream().bad();
+}
+
+bool Writer::isEof() const
+{
+    return Stream().eof();
+}
+
 std::ostream& Writer::beginCharStream(CharStreamFormat format)
 {
     if (CharStream) {
@@ -269,7 +294,8 @@ std::vector<std::string> Writer::getErrors() const
 std::string Writer::addFile(const char* Name, const Base::Persistence* Object)
 {
     // always check isForceXML() before requesting a file!
-    assert(!isForceXML());
+    // assert(!isForceXML()); Changes introduced in 1.0 differ from LS3 (TNP), so this assertion is
+    // not valid anymore.
 
     FileEntry temp;
     temp.FileName = Name ? Name : "";

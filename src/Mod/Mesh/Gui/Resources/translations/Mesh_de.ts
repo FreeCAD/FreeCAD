@@ -1428,7 +1428,7 @@ beim Schreiben einer Datei im AMF-Format verwendet wird</translation>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="356"/>
       <source>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Dies ist der kleinste Winkel zwischen zwei Flächen, bei dem die Normalen für Flat-Shading berechnet werden.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Wenn der Winkel zwischen den Normalen von zwei benachbarten Flächen kleiner als der Fadenwinkel ist, werden die Flächen im Bereich ihrer gemeinsame Kante weichgezeichnet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;/head&gt;&lt;body style=" white-space: pre-wrap; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;"&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Dies ist der kleinste Winkel zwischen zwei Flächen, bei dem die Normalen für flache Schattierungen berechnet werden.&lt;/p&gt;&lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"&gt;Wenn der Winkel zwischen den Normalen von zwei benachbarten Flächen kleiner als der Faltenwinkel ist, werden die Flächen im Bereich ihrer gemeinsame Kante weichgezeichnet.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="404"/>
@@ -1482,11 +1482,11 @@ Bei flacher Schattierungen sind die Oberflächennormen nicht pro Knotenpunkt def
 
  If face angle ≥ crease angle, facet shading is used
  If face angle &lt; crease angle, smooth shading is used</source>
-      <translation>Der SickenWinkel ist der Schwellenwert zwischen zwei Oberflächen.
+      <translation>Der Faltenwinkel ist der Schwellenwert zwischen zwei Oberflächen.
 
 Wenn gilt:
-Flächenwinkel &gt;= SickenWinkel, wird Facettenschattierung angewendet
-Flächenwinkel &lt; SickenWinkel, wird glattes Schattieren angewendet</translation>
+ Flächenwinkel &gt;= Faltenwinkel, wird Facettenschattierung angewendet
+ Flächenwinkel &lt; Faltenwinkel, wird glattes Schattieren angewendet</translation>
     </message>
   </context>
   <context>

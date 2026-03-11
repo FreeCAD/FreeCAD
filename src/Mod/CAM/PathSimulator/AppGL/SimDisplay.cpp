@@ -91,11 +91,15 @@ void SimDisplay::CreateFboQuad()
                             1.0f,  -1.0f, 1.0f, 0.0f, 1.0f,  1.0f,  1.0f, 1.0f
     };
 
-    glGenVertexArrays(1, &mFboQuadVAO);
     glGenBuffers(1, &mFboQuadVBO);
-    glBindVertexArray(mFboQuadVAO);
     glBindBuffer(GL_ARRAY_BUFFER, mFboQuadVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices[0], GL_STATIC_DRAW);
+}
+
+void SimDisplay::SetupVertexAttribs()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, mFboQuadVBO);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(1);
@@ -131,7 +135,6 @@ void SimDisplay::UniformCircle(vec3& randVec)
     randVec[2] = 0;
 }
 
-
 void SimDisplay::CreateDisplayFbos()
 {
     // setup frame buffer for simulation
@@ -149,7 +152,6 @@ void SimDisplay::CreateDisplayFbos()
     // a normal texture for the frame buffer
     CreateGBufTex(GL_TEXTURE2, GL_RGB32F, GL_RGBA, GL_FLOAT, mFboNormTexture);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mFboNormTexture, 0);
-
 
     unsigned int attachments[3] = {GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2};
     glDrawBuffers(3, attachments);
@@ -178,7 +180,6 @@ void SimDisplay::CreateDisplayFbos()
 
 void SimDisplay::CreateSsaoFbos()
 {
-
     mSsaoValid = true;
 
     // setup framebuffer for SSAO processing
@@ -240,7 +241,7 @@ SimDisplay::~SimDisplay()
     CleanGL();
 }
 
-void SimDisplay::InitGL(qreal devicePixelRatio)
+void SimDisplay::InitGL()
 {
     if (displayInitiated) {
         return;
@@ -249,16 +250,12 @@ void SimDisplay::InitGL(qreal devicePixelRatio)
     // setup light object
     mlightObject.GenerateBoxStock(-0.5f, -0.5f, -0.5f, 1, 1, 1);
 
-    mDevicePixelRatio = devicePixelRatio;
-    mWidth = (int)(gWindowSizeW * mDevicePixelRatio);
-    mHeight = (int)(gWindowSizeH * mDevicePixelRatio);
     InitShaders();
-    CreateDisplayFbos();
-    CreateSsaoFbos();
     CreateFboQuad();
 
-    UpdateProjection();
     displayInitiated = true;
+
+    UpdateWindowScale(800, 600);
 }
 
 void SimDisplay::CleanFbos()
@@ -283,7 +280,6 @@ void SimDisplay::CleanGL()
     CleanFbos();
 
     // cleanup geometry
-    GLDELETE_VERTEXARRAY(mFboQuadVAO);
     GLDELETE_BUFFER(mFboQuadVBO);
 
     // cleanup shaders
@@ -299,7 +295,7 @@ void SimDisplay::CleanGL()
     displayInitiated = false;
 }
 
-void SimDisplay::PrepareDisplay(vec3 objCenter)
+void SimDisplay::PrepareDisplay(const vec3& objCenter)
 {
     mat4x4_look_at(mMatLookAt, eye, target, upvec);
     mat4x4_translate_in_place(mMatLookAt, mEyeX * mEyeXZFactor, 0, mEyeZ * mEyeXZFactor);
@@ -327,7 +323,7 @@ void SimDisplay::StartDepthPass()
     shaderFlat.UpdateViewMat(mMatLookAt);
 }
 
-void SimDisplay::StartGeometryPass(vec3 objColor, bool invertNormals)
+void SimDisplay::StartGeometryPass(const vec3& objColor, bool invertNormals)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     shaderGeom.Activate();
@@ -340,7 +336,7 @@ void SimDisplay::StartGeometryPass(vec3 objColor, bool invertNormals)
 
 // A 'closer' geometry pass is similar to std geometry pass, but render the objects
 // slightly closer to the camera. This mitigates overlapping faces artifacts.
-void SimDisplay::StartCloserGeometryPass(vec3 objColor)
+void SimDisplay::StartCloserGeometryPass(const vec3& objColor)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     shaderGeomCloser.Activate();
@@ -363,15 +359,22 @@ void SimDisplay::ScaleViewToStock(StockObject* obj)
     mMaxStockDim = fmaxf(obj->size[0], obj->size[1]);
     maxFar = mMaxStockDim * 16;
     UpdateProjection();
+
     vec3_set(eye, 0, 0, 0);
+    mEyeDistFactor = NAN;
     UpdateEyeFactor(0.1f);
+
     vec3_set(lightPos, obj->position[0], obj->position[1], obj->position[2] + mMaxStockDim / 3);
     mlightObject.SetPosition(lightPos);
 }
 
-void SimDisplay::RenderResult(bool recalculate)
+void SimDisplay::RenderResult(bool recalculate, bool ssao)
 {
-    if (mSsaoValid && applySSAO) {
+    if (!displayInitiated) {
+        return;
+    }
+
+    if (mSsaoValid && ssao) {
         RenderResultSSAO(recalculate);
     }
     else {
@@ -391,7 +394,7 @@ void SimDisplay::RenderResultStandard()
     shaderSSAOLighting.UpdateNormalTexSlot(2);
     shaderSSAOLighting.UpdateSsaoActive(false);
     // shaderSimFbo.Activate();
-    glBindVertexArray(mFboQuadVAO);
+    SetupVertexAttribs();
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glActiveTexture(GL_TEXTURE0);
@@ -426,7 +429,7 @@ void SimDisplay::RenderResultSSAO(bool recalculate)
         glBindTexture(GL_TEXTURE_2D, mFboPosTexture);
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, mFboNormTexture);
-        glBindVertexArray(mFboQuadVAO);
+        SetupVertexAttribs();
         glDrawArrays(GL_TRIANGLES, 0, 6);
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -437,7 +440,8 @@ void SimDisplay::RenderResultSSAO(bool recalculate)
         shaderSSAOBlur.UpdateSsaoTexSlot(0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, mFboSsaoTexture);
-        glBindVertexArray(mFboQuadVAO);
+        shaderSSAOBlur.UpdateScreenDimension(mWidth, mHeight);
+        SetupVertexAttribs();
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
@@ -459,7 +463,7 @@ void SimDisplay::RenderResultSSAO(bool recalculate)
     glBindTexture(GL_TEXTURE_2D, mFboSsaoBlurTexture);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glBindVertexArray(mFboQuadVAO);
+    SetupVertexAttribs();
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
@@ -549,12 +553,20 @@ void SimDisplay::UpdateEyeFactor(float factor)
     eye[1] = -factor * maxFar;
 }
 
-void SimDisplay::UpdateWindowScale()
+void SimDisplay::UpdateWindowScale(int width, int height)
 {
-    mWidth = (int)(gWindowSizeW * mDevicePixelRatio);
-    mHeight = (int)(gWindowSizeH * mDevicePixelRatio);
-    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
-    CleanFbos();
+    if (!displayInitiated || (width == mWidth && height == mHeight)) {
+        return;
+    }
+
+    mWidth = width;
+    mHeight = height;
+
+    if (mFbo != 0) {
+        glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+        CleanFbos();
+    }
+
     CreateDisplayFbos();
     CreateSsaoFbos();
     UpdateProjection();
@@ -564,7 +576,7 @@ void SimDisplay::UpdateProjection()
 {
     // Setup projection
     mat4x4 projmat;
-    mat4x4_perspective(projmat, 0.7f, (float)gWindowSizeW / gWindowSizeH, 1.0f, maxFar);
+    mat4x4_perspective(projmat, 0.7f, (float)mWidth / mHeight, 1.0f, maxFar);
     shader3D.Activate();
     shader3D.UpdateProjectionMat(projmat);
     shaderInv3D.Activate();
@@ -584,5 +596,9 @@ void SimDisplay::UpdateProjection()
     shaderGeomCloser.UpdateProjectionMat(projmat);
 }
 
+float SimDisplay::GetEyeFactor()
+{
+    return mEyeDistFactor;
+}
 
 }  // namespace MillSim

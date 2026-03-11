@@ -1,5 +1,4 @@
-#ifndef QUARTER_QUARTERWIDGETP_H
-#define QUARTER_QUARTERWIDGETP_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -115,7 +114,5 @@ public:
   QuarterWidgetP_cachecontext * findCacheContext(QuarterWidget * widget, const QOpenGLWidget * sharewidget);
   static void removeFromCacheContext(QuarterWidgetP_cachecontext * context, const QOpenGLWidget * widget);
 };
-
-#endif // QUARTER_QUARTERWIDGETP_H
 
 }}} // namespace

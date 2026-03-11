@@ -64,6 +64,8 @@ class ObjectOp(PathOp.ObjectOp):
         """buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands."""
         Path.Log.track(obj.Label, len(wires), zValues)
 
+        tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
+
         # sort wires, adapted from Area.py
         if len(wires) > 1:
             locations = []
@@ -147,13 +149,13 @@ class ObjectOp(PathOp.ObjectOp):
                     if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
                         # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
                         # Edge not reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge):
+                        for cmd in Path.Geom.cmdsForEdge(edge, flip=False, tol=tol):
                             # Add gcode for edge
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[-1].Point
                     else:
                         # Edge reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge, True):
+                        for cmd in Path.Geom.cmdsForEdge(edge, flip=True, tol=tol):
                             # Add gcode for reversed edge
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerFillet_H
-#define SKETCHERGUI_DrawSketchHandlerFillet_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -113,6 +112,7 @@ using DSHFilletController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::FilletConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -504,5 +504,3 @@ void DSHFilletController::adaptDrawingToCheckboxChange(int checkboxindex, bool v
 }
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerFillet_H

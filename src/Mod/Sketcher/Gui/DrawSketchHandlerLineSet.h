@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerLineSet_H
-#define SKETCHERGUI_DrawSketchHandlerLineSet_H
+#pragma once
 
 #include <QApplication>
 
@@ -878,7 +877,5 @@ protected:
         dirVec.Normalize();
     }
 };
+
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerLineSet_H

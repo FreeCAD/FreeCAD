@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHTRIM_BY_PLANE_H
-#define MESHTRIM_BY_PLANE_H
+#pragma once
 
 #include "MeshKernel.h"
 
@@ -85,5 +84,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESHTRIM_BY_PLANE_H

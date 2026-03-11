@@ -22,17 +22,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_IINPUTSOURCE_H
-#define BASE_IINPUTSOURCE_H
+#pragma once
 
 #include <iosfwd>
 #include <memory>
 
 #include <xercesc/util/BinInputStream.hpp>
 #include <xercesc/sax/InputSource.hpp>
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 namespace XERCES_CPP_NAMESPACE
 {
@@ -108,5 +105,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_IINPUTSOURCE_H

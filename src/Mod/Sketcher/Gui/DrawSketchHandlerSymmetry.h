@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerSymmetry_H
-#define SKETCHERGUI_DrawSketchHandlerSymmetry_H
+#pragma once
 
 #include <QApplication>
 
@@ -55,10 +54,11 @@ using DSHSymmetryController = DrawSketchDefaultWidgetController<
     DrawSketchHandlerSymmetry,
     StateMachines::OneSeekEnd,
     /*PAutoConstraintSize =*/0,
-    /*OnViewParametersT =*/OnViewParameters<0>,
-    /*WidgetParametersT =*/WidgetParameters<0>,
-    /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*OnViewParametersT =*/OnViewParameters<0>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<0>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;   // NOLINT
 
 using DSHSymmetryControllerBase = DSHSymmetryController::ControllerBase;
 
@@ -280,9 +280,24 @@ void DSHSymmetryController::configureToolWidget()
             WCheckbox::FirstBox,
             QApplication::translate("TaskSketcherTool_c1_symmetry", "Delete original geometries (U)")
         );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::FirstBox,
+            QApplication::translate(
+                "TaskSketcherTool_c1_symmetry",
+                "Removes the original geometry and keeps only the mirrored result."
+
+            )
+        );
         toolWidget->setCheckboxLabel(
             WCheckbox::SecondBox,
             QApplication::translate("TaskSketcherTool_c2_symmetry", "Create symmetry constraints (J)")
+        );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::SecondBox,
+            QApplication::translate(
+                "TaskSketcherTool_c2_symmetry",
+                "Create symmetry constraints between the original and mirrored geometries"
+            )
         );
     }
 }
@@ -308,6 +323,3 @@ void DSHSymmetryController::adaptDrawingToCheckboxChange(int checkboxindex, bool
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerSymmetry_H

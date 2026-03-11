@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATURE_H
-#define PART_FEATURE_H
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
@@ -298,19 +297,6 @@ public:
  * Find all faces cut by a line through the centre of gravity of a given face
  * Useful for the "up to face" options to pocket or pad
  */
-// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-struct cutFaces
-{
-    TopoDS_Face face;
-    double distsq;
-};
-
-// TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
-PartExport std::vector<cutFaces> findAllFacesCutBy(
-    const TopoDS_Shape& shape,
-    const TopoDS_Shape& face,
-    const gp_Dir& dir
-);
 struct cutTopoShapeFaces
 {
     TopoShape face;
@@ -347,5 +333,3 @@ PartExport bool checkIntersection(
 }  // namespace Part
 
 ENABLE_BITMASK_OPERATORS(Part::ShapeOption)
-
-#endif  // PART_FEATURE_H

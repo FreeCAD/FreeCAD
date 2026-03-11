@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawComplexSection_h_
-#define DrawComplexSection_h_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -71,6 +70,8 @@ public:
     TopoDS_Shape makeCuttingToolFromClosedProfile(const TopoDS_Wire& profileWire, double dMax);
     TopoDS_Shape cuttingToolFromProfile(const TopoDS_Wire& inProfileWire,
                                         double dMax) const;
+    TopoDS_Wire closeSingleEdgeProfile(const TopoDS_Edge& singleEdge,
+                                       double dMax) const;
 
 
     void makeAlignedPieces(const TopoDS_Shape& rawShape);
@@ -196,5 +197,3 @@ private:
 using DrawComplexSectionPython = App::FeaturePythonT<DrawComplexSection>;
 
 }//namespace TechDraw
-
-#endif

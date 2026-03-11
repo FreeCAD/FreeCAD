@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TRIANGLEKEY_H
-#define WM4TRIANGLEKEY_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4System.h"
@@ -37,5 +36,3 @@ public:
 }
 
 #include "Wm4TriangleKey.inl"
-
-#endif

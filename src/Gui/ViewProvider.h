@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_H
-#define GUI_VIEWPROVIDER_H
+#pragma once
 
 #include <bitset>
 #include <map>
@@ -445,6 +444,11 @@ public:
     {
         return true;
     }
+    /** Tell if the tree item should be auto collapsed*/
+    bool isAutoCollapseOnDeactivation() const
+    {
+        return autoCollapseOnDeactivation;
+    }
 
     /** @name Signals of the view provider */
     //@{
@@ -707,6 +711,7 @@ protected:
     /// The root separator for annotations
     SoSeparator* pcAnnotation {nullptr};
     ViewProviderPy* pyViewObject {nullptr};
+    bool autoCollapseOnDeactivation {true};
     std::string overrideMode;
     std::bitset<32> StatusBits;
     /// whether visibility can toggled
@@ -723,5 +728,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_H

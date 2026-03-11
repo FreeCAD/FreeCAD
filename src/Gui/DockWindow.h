@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DOCKWINDOW_H
-#define GUI_DOCKWINDOW_H
+#pragma once
 
 #include <Gui/View.h>
 #include <QWidget>
@@ -72,7 +71,7 @@ public:
         return "DockWindow";
     }
     /// Message handler
-    bool onMsg(const char*, const char**) override
+    bool onMsg(const char*) override
     {
         return false;
     }
@@ -94,5 +93,3 @@ Q_SIGNALS:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_DOCKWINDOW_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __shader_h__
-#define __shader_h__
+#pragma once
 
 #include "OpenGlWrapper.h"
 #include "linmath.h"
@@ -39,13 +38,13 @@ public:
 
 public:
     unsigned int shaderId = 0;
-    void UpdateModelMat(mat4x4 transformMat, mat4x4 normalMat);
-    void UpdateProjectionMat(mat4x4 mat);
-    void UpdateViewMat(mat4x4 mat);
-    void UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient, float linearity);
+    void UpdateModelMat(const mat4x4& transformMat, const mat4x4& normalMat);
+    void UpdateProjectionMat(const mat4x4& mat);
+    void UpdateViewMat(const mat4x4& mat);
+    void UpdateEnvColor(const vec3& lightPos, const vec3& lightColor, const vec3& ambient, float linearity);
     void UpdateScreenDimension(int width, int height);
-    void UpdateObjColor(vec3 objColor);
-    void UpdateObjColorAlpha(vec4 objColor);
+    void UpdateObjColor(const vec3& objColor);
+    void UpdateObjColorAlpha(const vec4& objColor);
     void UpdateNormalState(bool isInverted);
     void UpdateSsaoActive(bool isInverted);
     void UpdateTextureSlot(int slot);
@@ -63,7 +62,6 @@ public:
     {
         return shaderId > 0;
     }
-
 
 protected:
     int mModelPos = -1;
@@ -89,8 +87,8 @@ protected:
     int mScreenWidthPos = -1;
     int mScreenHeightPos = -1;
 
-    const char* vertShader = nullptr;
-    const char* fragShader = nullptr;
+    std::string vertShader;
+    std::string fragShader;
 };
 
 extern Shader* CurrentShader;
@@ -114,4 +112,3 @@ extern const char* FragShader3DLine;
 
 
 }  // namespace MillSim
-#endif  // !__shader_h__

@@ -26,8 +26,8 @@
       <translation>Position</translation>
     </message>
     <message>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="345"/>
       <source>Enum</source>
       <translation>Aufzählung</translation>
     </message>
@@ -128,10 +128,10 @@
       <translation>Positionierung</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
+      <location filename="../Transform.cpp" line="108"/>
       <location filename="../TaskTransform.cpp" line="128"/>
       <location filename="../TaskTransform.cpp" line="808"/>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
       <source>Transform</source>
       <translation>Transformieren</translation>
     </message>
@@ -141,7 +141,7 @@
       <translation>Array-Elemente umschalten</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Bild bearbeiten</translation>
@@ -924,7 +924,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="509"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
       <translation>Eigenschaft hinzufügen</translation>
     </message>
@@ -954,37 +954,37 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="537"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="599"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="664"/>
       <source>Invalid group name</source>
       <translation>Ungültiger Gruppenname</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="667"/>
       <source>Invalid type name</source>
       <translation>Ungültiger Typname</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="608"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="673"/>
       <source>Invalid property name '%1'</source>
       <translation>Ungültiger Eigenschaftsname '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="611"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="676"/>
       <source>Property '%1' already exists</source>
       <translation>Eigenschaft '%1' existiert bereits</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="614"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="679"/>
       <source>'%1' is a constant</source>
       <translation>'%1' ist eine Konstante</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="617"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="682"/>
       <source>'%1' is a unit</source>
       <translation>'%1' ist eine Einheit</translation>
     </message>
@@ -1715,56 +1715,56 @@ same time. The one with the highest priority will be triggered.</source>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="121"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="794"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="809"/>
       <source>Macros</source>
       <translation>Makros</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="471"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="486"/>
       <source>Macro file</source>
       <translation>Makrodatei</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="497"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="907"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1070"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="512"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="922"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1085"/>
       <source>Existing file</source>
       <translation>Vorhandene Datei</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="498"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="513"/>
       <source>'%1'.
 This file already exists.</source>
       <translation>'%1'.\n
 Diese Datei ist bereits vorhanden.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="506"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="521"/>
       <source>Cannot create file</source>
       <translation>Datei kann nicht erstellt werden</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="507"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="522"/>
       <source>Creation of file '%1' failed.</source>
       <translation>Erstellen der Datei %1' fehlgeschlagen.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="548"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="563"/>
       <source>Delete macro</source>
       <translation>Makro löschen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="583"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="598"/>
       <source>Do not show again</source>
       <translation>Nicht noch einmal anzeigen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="584"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="599"/>
       <source>Guided Walkthrough</source>
       <translation>Programm-Einführung</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="586"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="601"/>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
@@ -1775,92 +1775,92 @@ Hinweis: Die Änderungen werden beim nächsten Wechsel im Arbeitsbereich wirksam
 </translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="667"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="682"/>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
       <translation>Lösung: Fehlende Felder ausfüllen (optional) und auf Hinzufügen klicken, dann schließen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="745"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="760"/>
       <source>Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</source>
       <translation>Anleitung zum Durchgehen: Makro aus der Liste auswählen, mit der rechten Pfeiltaste (-&gt;) klicken, dann Schließen.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="769"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="784"/>
       <source>Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</source>
       <translation>Lösungsansatz: Auf Neu klicken, Makro auswählen, dann rechten Pfeil (-&gt;), dann Schließen.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="885"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="900"/>
       <source>Renaming Macro File</source>
       <translation>Makrodatei umbenennen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="452"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="467"/>
       <source>Read-Only</source>
       <translation>Nur lesen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="472"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="487"/>
       <source>Enter a file name:</source>
       <translation>Dateinamen eingeben:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="549"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="564"/>
       <source>Delete the macro '%1'?</source>
       <translation>Makro '%1 ' löschen?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="641"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="656"/>
       <source>Walkthrough, Dialog 1 of 2</source>
       <translation>Lösungsweg, Dialog 1 von 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 1 of 1</source>
       <translation>Lösungsweg, Dialog 1 von 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 2 of 2</source>
       <translation>Lösungsweg, Dialog 2 von 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="886"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1051"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="901"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1066"/>
       <source>Enter new name</source>
       <translation>Neuen Namen eingeben</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="908"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1071"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="923"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1086"/>
       <source>'%1'
  already exists.</source>
       <translation>'%1'
 ist bereits vorhanden.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="914"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="929"/>
       <source>Rename Failed</source>
       <translation>Umbenennen fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="915"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="930"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Umbenennen nach '%1' fehlgeschlagen. Möglicherweise ein Dateizugriffsfehler?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1050"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1065"/>
       <source>Duplicate Macro</source>
       <translation>Makro kopieren</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1077"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1092"/>
       <source>Duplicate Failed</source>
       <translation>Kopieren fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1078"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1093"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Fehler beim Kopieren nach '%1'. Vielleicht liegt ein Dateiberechtigungsfehler vor?</translation>
@@ -2266,7 +2266,7 @@ Ein anderes Verzeichnis angeben.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferences.ui" line="233"/>
       <source>Search preferences...</source>
-      <translation>Einstellungen suchen…</translation>
+      <translation>Einstellungen suchen...</translation>
     </message>
     <message>
       <source/>
@@ -3355,7 +3355,7 @@ Diese Funktion kann die Neuberechnungszeit leicht erhöhen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
       <source>Add thumbnail to project file when saving</source>
-      <translation>Miniaturansicht beim Speichern zur Projektdatei hinzufügen</translation>
+      <translation>Beim Speichern eine Miniaturansicht zur Projektdatei hinzufügen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
@@ -3430,7 +3430,7 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>Partielles Laden von externen verknüpften Dokumenten aktivieren.
+      <translation>Teilweises Laden von externen verknüpften Dokumenten aktivieren.
 Dann werden nur referenzierte Objekte und ihre Abhängigkeiten geladen,
 wenn ein verknüpftes Dokument automatisch zusammen mit dem Hauptdokument geöffnet wird.
 Ein teilweise geladenes Dokument kann nicht bearbeitet werden. Doppelklick auf das Dokumenten-Symbol in der Baumansicht, um es vollständig neu zu laden.</translation>
@@ -3438,7 +3438,7 @@ Ein teilweise geladenes Dokument kann nicht bearbeitet werden. Doppelklick auf d
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="603"/>
       <source>Disable partial loading of external linked objects</source>
-      <translation>Deaktiviere partielles Laden von externen verknüpften Objekten</translation>
+      <translation>Teilweises Laden von extern verknüpften Objekten deaktivieren</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="619"/>
@@ -4011,11 +4011,11 @@ Turntable: the part will be rotated around the Z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the Z-axis.
          </source>
       <translation>Rotationsbahn-Stil.
-Abgerundeter Arcball: Durch Bewegen der Maus in den Ecken des Bildschirms wird das Teil nur gerollt.
+Abgerundeter Bogenball: Durch Bewegen der Maus in den Ecken des Bildschirms wird das Teil nur gerollt.
 Trackball: Durch horizontales Bewegen der Maus wird das Teil um die Y-Achse gedreht.
-Trackball Classic: Durch Bewegen der Maus wird das Teil gedreht, wobei eine Präzession möglich ist.
-Drehteller: Das Teil wird um die Z-Achse gedreht (mit eingeschränkten Achsen).
-Freier Drehteller: Das Teil wird um die Z-Achse gedreht.
+Trackball klassisch: Durch Bewegen der Maus wird das Teil gedreht, wobei eine Präzession möglich ist.
+Drehscheibe: Das Teil wird um die Z-Achse gedreht (mit eingeschränkten Achsen).
+Freie Drehscheibe: Das Teil wird um die Z-Achse gedreht.
          </translation>
     </message>
     <message>
@@ -4036,7 +4036,7 @@ Freier Drehteller: Das Teil wird um die Z-Achse gedreht.
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
       <source>Trackball Classic</source>
-      <translation>Steuerkugel klassisch</translation>
+      <translation>Trackball klassisch</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="508"/>
@@ -4046,7 +4046,7 @@ Freier Drehteller: Das Teil wird um die Z-Achse gedreht.
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="516"/>
       <source>Rotation mode</source>
-      <translation>Art der Drehung</translation>
+      <translation>Rotationsmodus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="535"/>
@@ -6048,66 +6048,66 @@ Alle Änderungen speichern?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="157"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="303"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="492"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="135"/>
       <location filename="../InputVector.h" line="160"/>
       <location filename="../InputVector.h" line="281"/>
       <location filename="../InputVector.h" line="306"/>
       <location filename="../InputVector.h" line="479"/>
       <location filename="../InputVector.h" line="495"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Benutzerdefiniert…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Falsche Richtung</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="242"/>
       <location filename="../InputVector.h" line="377"/>
       <location filename="../InputVector.h" line="566"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>Richtungsvektor darf nicht der Nullvektor sein</translation>
     </message>
@@ -6582,7 +6582,7 @@ ODER ALT-Taste + rechte Maustaste drücken ODER Bild auf/Bild ab auf der Tastatu
       <location filename="../propertyeditor/PropertyEditor.cpp" line="991"/>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
       <source>Edit Property Tooltip</source>
-      <translation>Eigenschaftstooltip bearbeiten</translation>
+      <translation>Tooltipp der Eigenschaft bearbeiten</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1008"/>
@@ -7968,47 +7968,47 @@ Weitere Einzelheiten finden sich im Ausgabefenster.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="359"/>
+      <location filename="../StartupProcess.cpp" line="373"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Dieses System verwendet OpenGL %1.%2. FreeCAD erfordert OpenGL 2.0 oder höher. Dafür den Grafiktreiber und/oder die Grafikkarte entsprechend aktualisieren.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="370"/>
+      <location filename="../StartupProcess.cpp" line="384"/>
       <source>Invalid OpenGL Version</source>
       <translation>Ungültige OpenGL-Version</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="321"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="396"/>
       <source>Migrating</source>
       <translation>Überführen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="382"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="457"/>
       <source>Restarting</source>
       <translation>Neustart</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="336"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="411"/>
       <source>Migration failed</source>
       <translation>Migration fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="304"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="374"/>
       <source>Estimated size of data to copy: %1</source>
       <translation>Geschätzte Größe der zu kopierenden Daten: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="322"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="397"/>
       <source>Migrating configuration data and addons…</source>
       <translation>Konfigurationsdaten und Addons migrieren…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="337"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="412"/>
       <source>Migration failed. See the Report View for details.</source>
       <translation>Umwandlung fehlgeschlagen. Siehe Ausgabefenster für Details.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="381"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="456"/>
       <source> → Restarting…</source>
       <translation> → Neustart…</translation>
     </message>
@@ -8374,7 +8374,7 @@ Fortfahren?</translation>
       <translation>Zu viele offene, unaufdringliche Benachrichtigungen. Benachrichtigungen werden ausgelassen!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1412"/>
+      <location filename="../Document.cpp" line="1419"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8383,44 +8383,44 @@ Fortfahren?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1413"/>
+      <location filename="../Document.cpp" line="1420"/>
       <source>Are you sure you want to continue?</source>
       <translation>Wirklich fortfahren?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1439"/>
+      <location filename="../Document.cpp" line="1446"/>
       <source>Check report view for more…</source>
       <translation>Ausgabefenster für mehr prüfen…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1443"/>
+      <location filename="../Document.cpp" line="1450"/>
       <source>Physical path:</source>
       <translation>Physischer Pfad:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1444"/>
       <location filename="../Document.cpp" line="1451"/>
+      <location filename="../Document.cpp" line="1458"/>
       <source>Document:</source>
       <translation>Dokument:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1445"/>
       <location filename="../Document.cpp" line="1452"/>
+      <location filename="../Document.cpp" line="1459"/>
       <source>Path:</source>
       <translation>Pfad:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1463"/>
+      <location filename="../Document.cpp" line="1470"/>
       <source>Identical physical path</source>
       <translation>Identischer physischer Pfad</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1475"/>
+      <location filename="../Document.cpp" line="1482"/>
       <source>Could not save document</source>
       <translation>Dokument konnte nicht gespeichert werden</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1476"/>
+      <location filename="../Document.cpp" line="1483"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8433,107 +8433,107 @@ Would you like to save the file with a different name?</source>
 Die Datei unter einem anderen Namen speichern?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1490"/>
-      <location filename="../Document.cpp" line="1648"/>
-      <location filename="../Document.cpp" line="1750"/>
+      <location filename="../Document.cpp" line="1497"/>
+      <location filename="../Document.cpp" line="1655"/>
+      <location filename="../Document.cpp" line="1757"/>
       <source>Saving aborted</source>
       <translation>Speichern abgebrochen</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1536"/>
+      <location filename="../Document.cpp" line="1543"/>
       <source>Save dependent files</source>
       <translation>Abhängige Dateien speichern</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1537"/>
+      <location filename="../Document.cpp" line="1544"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Die Datei enthält externe Abhängigkeiten. Auch die abhängigen Dateien speichern?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1583"/>
-      <location filename="../Document.cpp" line="1641"/>
+      <location filename="../Document.cpp" line="1590"/>
+      <location filename="../Document.cpp" line="1648"/>
       <source>Saving document failed</source>
       <translation>Fehler beim Speichern des Dokuments</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1598"/>
+      <location filename="../Document.cpp" line="1605"/>
       <source>Save document under new filename…</source>
       <translation>Dokument unter neuem Dateinamen speichern…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1725"/>
+      <location filename="../Document.cpp" line="1732"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Speichert eine Kopie des Dokuments unter einem neuen Dateinamen…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1607"/>
-      <location filename="../Document.cpp" line="1730"/>
+      <location filename="../Document.cpp" line="1614"/>
+      <location filename="../Document.cpp" line="1737"/>
       <source>Save %1 Document</source>
       <translation>Dokument %1 speichern</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1609"/>
+      <location filename="../Document.cpp" line="1616"/>
       <source>Document</source>
       <translation>Dokument</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1663"/>
-      <location filename="../Document.cpp" line="1713"/>
+      <location filename="../Document.cpp" line="1670"/>
+      <location filename="../Document.cpp" line="1720"/>
       <source>Failed to save document</source>
       <translation>Fehler beim Speichern des Dokuments</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1664"/>
+      <location filename="../Document.cpp" line="1671"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Die Dokumente enthalten zyklische Abhängigkeiten. Sollen sie trotzdem gespeichert werden?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1732"/>
+      <location filename="../Document.cpp" line="1739"/>
       <source>%1 document (*.FCStd)</source>
       <translation>%1-Dokument (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2406"/>
+      <location filename="../Document.cpp" line="2413"/>
       <source>Document not closable</source>
       <translation>Dokument kann nicht geschlossen werden</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2407"/>
+      <location filename="../Document.cpp" line="2414"/>
       <source>The document is not closable for the moment.</source>
       <translation>Das Dokument kann im Moment nicht geschlossen werden.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2447"/>
+      <location filename="../Document.cpp" line="2454"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>Speichern des Dokuments '%1' fehlgeschlagen. Soll das Schließen abgebrochen werden?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2449"/>
+      <location filename="../Document.cpp" line="2456"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>Speichern des Dokuments fehlgeschlagen. Soll das Schließen abgebrochen werden?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2454"/>
+      <location filename="../Document.cpp" line="2461"/>
       <source>Unable to save document</source>
       <translation>Dokument konnte nicht gespeichert werden</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Undo</source>
       <translation>Rückgängig</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Redo</source>
       <translation>Wiederholen</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2814"/>
+      <location filename="../Document.cpp" line="2821"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Es gibt gruppierte Transaktionen in den folgenden Dokumenten mit anderen vorhergehenden Transaktionen</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2819"/>
+      <location filename="../Document.cpp" line="2826"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8601,12 +8601,12 @@ Choose 'Abort' to abort</source>
       <translation>Kann Systembrowser nicht starten.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2555"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Nicht genügend Speicher</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2556"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Nicht genügend Speicher verfügbar, um die Daten darstellen zu können.</translation>
     </message>
@@ -8632,8 +8632,8 @@ Choose 'Abort' to abort</source>
       <translation>Auswahl präzisieren</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <source>Transform</source>
       <translation>Bewegen</translation>
     </message>
@@ -8668,12 +8668,12 @@ Choose 'Abort' to abort</source>
       <translation>Einige Dokumente konnten nicht gespeichert werden. Schließen abbrechen?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="539"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="554"/>
       <source>Delete macro</source>
       <translation>Makro löschen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="540"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="555"/>
       <source>Not allowed to delete system-wide macros</source>
       <translation>Keine Berechtigung die systemweiten Makros zu löschen</translation>
     </message>
@@ -8746,12 +8746,12 @@ Choose 'Abort' to abort</source>
       <translation>Fehler beim Importieren aller Verknüpfungen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="926"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
       <source>Add property</source>
       <translation>Eigenschaft hinzufügen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="927"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Das Hinzufügen der Eigenschaft %2 zu '%1' ist fehlgeschlagen</translation>
     </message>
@@ -8762,8 +8762,8 @@ Choose 'Abort' to abort</source>
       <translation>Drag &amp; Drop fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="900"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <source>Apply to all</source>
       <translation>Auf alle anwenden</translation>
     </message>
@@ -9031,7 +9031,7 @@ aktuellen Kopie gehen verloren.
       <translation>Aktives Objekt</translation>
     </message>
     <message>
-      <location filename="../ViewProviderTextDocument.cpp" line="105"/>
+      <location filename="../ViewProviderTextDocument.cpp" line="107"/>
       <source>Edit Text</source>
       <translation>Text bearbeiten</translation>
     </message>
@@ -9074,7 +9074,7 @@ aktuellen Kopie gehen verloren.
       <translation>Nicht erlaubt:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Auswahl vom Filter nicht erlaubt</translation>
     </message>
@@ -10243,7 +10243,7 @@ Das Dokument jetzt speichern?</translation>
     <message>
       <location filename="../Workbench.cpp" line="610"/>
       <source>Link Actions</source>
-      <translation>Aktionen verknüpfen</translation>
+      <translation>Verknüpfungsaktionen</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="595"/>
@@ -11661,7 +11661,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="438"/>
       <source>Ambient light</source>
-      <translation>Ambient light</translation>
+      <translation>Umgebungslicht</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="145"/>
@@ -11736,12 +11736,12 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="676"/>
       <source>Auto hide hint visual display triggering width</source>
-      <translation>Auslösebreite für das automatische Ausblenden</translation>
+      <translation>Auslöselänge für das automatische Ausblenden</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="708"/>
       <source>Auto hide hint visual display width</source>
-      <translation>Automatisches Ausblenden der Anzeigenbreite</translation>
+      <translation>Automatisches Ausblenden der Anzeigenlänge</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="740"/>
@@ -12492,7 +12492,7 @@ der Region nicht transparent sind.</translation>
     <message>
       <location filename="../TaskTransform.cpp" line="178"/>
       <source>Center of mass / centroid</source>
-      <translation>Massenmittelpunkt/Schwerpunkt</translation>
+      <translation>Schwerpunkt</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="184"/>
@@ -13232,7 +13232,7 @@ Fortfahren?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="1029"/>
       <source>Link Actions</source>
-      <translation>Aktionen verknüpfen</translation>
+      <translation>Verknüpfungsaktionen</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="1030"/>
@@ -14352,7 +14352,7 @@ Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation>Exakte Übereinstimmung</translation>
     </message>
@@ -14360,7 +14360,7 @@ Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation>Exakte Übereinstimmung</translation>
     </message>
@@ -14562,12 +14562,12 @@ Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Ja</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Nein</translation>
     </message>
@@ -14642,42 +14642,42 @@ Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
       <translation>Hilfe</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="160"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="161"/>
       <source>Copy Configuration (Recommended)</source>
       <translation>Konfiguration kopieren (empfohlen)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="139"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="140"/>
       <source>Welcome to %1 %2.%3</source>
       <translation>Willkommen zu %1 %2.%3</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="142"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="143"/>
       <source>Calculating size…</source>
       <translation>Größe wird berechnet…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="146"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="147"/>
       <source>Share configuration between versions</source>
       <translation>Konfiguration zwischen den Versionen teilen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="170"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
       <source>Share configuration with previous version</source>
       <translation>Konfiguration mit vorheriger Version teilen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="172"/>
       <source>Use a new default configuration</source>
       <translation>Eine neue Standardkonfiguration verwenden</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="331"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="406"/>
       <source>Migration complete</source>
       <translation>Migration abgeschlossen</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="368"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="443"/>
       <source>New default configuration created</source>
       <translation>Neue Standardkonfiguration erstellt</translation>
     </message>

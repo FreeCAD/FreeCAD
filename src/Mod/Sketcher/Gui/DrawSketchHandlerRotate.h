@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerRotate_H
-#define SKETCHERGUI_DrawSketchHandlerRotate_H
+#pragma once
 
 #include <QApplication>
 
@@ -54,7 +53,8 @@ using DSHRotateController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<4>,
     /*WidgetParametersT =*/WidgetParameters<1>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHRotateControllerBase = DSHRotateController::ControllerBase;
 
@@ -674,6 +674,3 @@ void DSHRotateController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerRotate_H

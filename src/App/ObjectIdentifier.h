@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PATH_H
-#define APP_PATH_H
+#pragma once
 
 #include <bitset>
 #include <climits>
@@ -1643,5 +1642,3 @@ struct hash<App::ObjectIdentifier>
     }
 };
 }  // namespace std
-
-#endif

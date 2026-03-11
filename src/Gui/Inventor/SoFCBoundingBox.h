@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef COIN_SOFCBOUNDINGBOX_H
-#define COIN_SOFCBOUNDINGBOX_H
+#pragma once
 
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -109,6 +108,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // COIN_SOFCBOUNDINGBOX_H

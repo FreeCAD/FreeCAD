@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcSlot_H
-#define SKETCHERGUI_DrawSketchHandlerArcSlot_H
+#pragma once
 
 #include <QApplication>
 
@@ -69,6 +68,7 @@ using DSHArcSlotController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::ArcSlotConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -1036,6 +1036,3 @@ void DSHArcSlotController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcSlot_H

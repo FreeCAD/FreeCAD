@@ -109,6 +109,8 @@ class Stretch(gui_base_original.Modifier):
                                 self.sel.append(
                                     [obj.Base.Base, obj.Placement.multiply(obj.Base.Placement)]
                                 )
+                elif utils.getType(obj) == "Wall" and not obj.Base:  # baseless walls
+                    self.sel.append([obj, App.Placement()])
             elif utils.getType(obj) in ["Offset2D", "Array"]:
                 base = None
                 if hasattr(obj, "Source") and obj.Source:
@@ -215,6 +217,18 @@ class Stretch(gui_base_original.Modifier):
                     iso = False
                     for p in o.Shape.Vertexes:
                         p = vispla.multVec(p.Point)
+                        isi = self.rectracker.isInside(p)
+                        np.append(isi)
+                        if isi:
+                            iso = True
+                            nodes.append(p)
+                    if iso:
+                        self.ops.append([o, np])
+                elif tp == "Wall":
+                    np = []
+                    iso = False
+                    # For baseless walls, get endpoints from our new API method
+                    for p in o.Proxy.calc_endpoints(o):
                         isi = self.rectracker.isInside(p)
                         np.append(isi)
                         if isi:
@@ -477,6 +491,28 @@ class Stretch(gui_base_original.Modifier):
                             commitops.append("w = " + _cmd)
                             commitops.append(_format)
                             commitops.append(_hide)
+                    elif tp == "Wall":
+                        npts = []
+                        # Reconstruct the new endpoints after applying displacement
+                        for i, pt in enumerate(ops[0].Proxy.calc_endpoints(ops[0])):
+                            if ops[1][i]:
+                                npts.append(pt.add(self.displacement))
+                            else:
+                                npts.append(pt)
+                        # Construct the points list string
+                        points_str = (
+                            "["
+                            + ", ".join([f"FreeCAD.Vector({p.x}, {p.y}, {p.z})" for p in npts])
+                            + "]"
+                        )
+
+                        commitops.append("import FreeCAD")
+                        commitops.append(
+                            f"wall_obj = FreeCAD.ActiveDocument.getObject('{ops[0].Name}')"
+                        )
+                        commitops.append(
+                            f"wall_obj.Proxy.set_from_endpoints(wall_obj, {points_str})"
+                        )
                     else:
                         _pl = _doc + ops[0].Name
                         _pl += ".Placement.Base=FreeCAD."

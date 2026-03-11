@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_FEATURECUSTOM_H
-#define APP_FEATURECUSTOM_H
+#pragma once
 
 #include <App/PropertyContainer.h>
 
@@ -104,5 +103,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_FEATURECUSTOM_H

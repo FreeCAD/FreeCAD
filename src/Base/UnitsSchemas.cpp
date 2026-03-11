@@ -44,7 +44,6 @@ using Base::UnitsSchemaSpec;
 UnitsSchemas::UnitsSchemas(const UnitsSchemasDataPack& pack)
     : pack {pack}
     , denominator {pack.defDenominator}
-    , decimals {pack.defDecimals}
 {}
 
 size_t UnitsSchemas::count() const

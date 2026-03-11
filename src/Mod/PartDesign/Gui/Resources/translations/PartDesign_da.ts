@@ -22,7 +22,7 @@
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
-      <translation>Input tilstanden for helixen specificerer, hvilke egenskaber der er indstillet af brugeren.
+      <translation>Inputmetoden for helixen specificerer, hvilke egenskaber der er fastsat af brugeren.
 Afhængige egenskaber beregnes derefter.</translation>
     </message>
     <message>
@@ -60,7 +60,7 @@ Værdier som ikke er nul, gør spiralen konisk.</translation>
       <location filename="../../../App/FeatureHelix.cpp" line="165"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
-      <translation>Sætter omdrejningsretningen venstre om, dvs. 
+      <translation>Fastsætter omdrejningsretningen til venstre om, dvs. 
 mod uret, set langs spiralens længdeakse.</translation>
     </message>
     <message>
@@ -483,7 +483,7 @@ så profilet ikke overlapper sig selv.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="659"/>
       <source>Set Tip</source>
-      <translation>Sæt arbejdsposition</translation>
+      <translation>Fastsæt arbejdsposition</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="660"/>
@@ -882,7 +882,7 @@ så profilet ikke overlapper sig selv.</translation>
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Edit Shape Binder</source>
-      <translation>Rediger geometrisk forbindelse</translation>
+      <translation>Redigér geometrisk forbindelse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
@@ -907,7 +907,7 @@ så profilet ikke overlapper sig selv.</translation>
     <message>
       <location filename="../../Command.cpp" line="2500"/>
       <source>Convert to Multi-Transform feature</source>
-      <translation>Konverter til multitransformeret geometri</translation>
+      <translation>Konvertér til multitransformeret geometri</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="253"/>
@@ -947,7 +947,7 @@ så profilet ikke overlapper sig selv.</translation>
       <translation>Dupliker et PartDesign objekt</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1105"/>
+      <location filename="../../CommandBody.cpp" line="1110"/>
       <source>Move a feature inside body</source>
       <translation>Flyt en funktion internt i emnet</translation>
     </message>
@@ -1062,12 +1062,12 @@ så profilet ikke overlapper sig selv.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="179"/>
       <source>Addendum coefficient</source>
-      <translation type="unfinished">Addendum coefficient</translation>
+      <translation>Tandtopskoefficient</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="199"/>
       <source>Dedendum coefficient</source>
-      <translation type="unfinished">Dedendum coefficient</translation>
+      <translation>Tandfodskoefficient</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.ui" line="219"/>
@@ -1369,7 +1369,7 @@ Hvis nul, sættes den lig med Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation>Du valgte geometrier, som ikke er en del af det aktive emne. Definér venligst hvordan disse valg skal håndteres. Hvis du ikke ønsker sådanne referencer, så annullér kommandoen.</translation>
+      <translation>Du valgte geometrier, som ikke er en del af det aktive emne. Definér venligst hvordan disse valg skal håndteres. Hvis du ikke ønsker sådanne referencer, så annuller kommandoen.</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1423,12 +1423,12 @@ Hvis nul, sættes den lig med Radius2</translation>
       <translation>Fælles</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="50"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="51"/>
       <source>Boolean Parameters</source>
       <translation>Booleske parametre</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="82"/>
       <source>Remove</source>
       <translation>Fjern</translation>
     </message>
@@ -1510,7 +1510,7 @@ Hvis nul, sættes den lig med Radius2</translation>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="79"/>
       <source>Flips the direction</source>
-      <translation>Vend retningen</translation>
+      <translation>Vender retningen</translation>
     </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="119"/>
@@ -1543,17 +1543,17 @@ Hvis nul, sættes den lig med Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>Empty body list</source>
       <translation>Tom liste over emner</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>The body list cannot be empty</source>
       <translation>Listen over emner kan ikke være tom</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="395"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="399"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolesk: Accepter: Input fejl</translation>
     </message>
@@ -1578,9 +1578,9 @@ Hvis nul, sættes den lig med Radius2</translation>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>
-      <translation type="unfinished">The feature could not be created with the given parameters.
-The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</translation>
+      <translation>Geometrien kunne ikke oprettes med de angivne parametre.
+Geometrien kan være ugyldig eller parametrene kan være uforenelige.
+Juster parametrene og prøv igen.</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="235"/>
@@ -1733,12 +1733,12 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1359"/>
       <source>One sided</source>
-      <translation>Ensidet</translation>
+      <translation>En retning</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1360"/>
       <source>Two sided</source>
-      <translation>Tosidet</translation>
+      <translation>To retninger</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1361"/>
@@ -1801,7 +1801,7 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="71"/>
       <source>No wire in sketch</source>
-      <translation type="unfinished">No wire in sketch</translation>
+      <translation>Ingen multilinje i skitsen</translation>
     </message>
     <message>
       <location filename="../../TaskFeaturePick.cpp" line="73"/>
@@ -2134,7 +2134,7 @@ Please adjust the parameters and try again.</translation>
       <location filename="../../TaskHoleParameters.cpp" line="696"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
-      <translation>Luk</translation>
+      <translation>Lille</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.cpp" line="700"/>
@@ -2166,12 +2166,12 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
-      <translation>Styret overflade</translation>
+      <translation>Skarpe overgange</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="27"/>
       <source>Closed</source>
-      <translation>Lukket flade</translation>
+      <translation>Forbind endeflader</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="34"/>
@@ -2186,17 +2186,17 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="65"/>
       <source>Add Section</source>
-      <translation>Tilføj sektion</translation>
+      <translation>Tilføj tværsnit</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="78"/>
       <source>Remove Section</source>
-      <translation>Fjern sektion</translation>
+      <translation>Fjern tværsnit</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="103"/>
       <source>List can be reordered by dragging</source>
-      <translation>Rækkefølgen i listen kan ændre ved at trække/slippe</translation>
+      <translation>Rækkefølgen i listen kan ændres ved at trække elementerne</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
@@ -2242,7 +2242,7 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="69"/>
       <source>Edit</source>
-      <translation>Rediger</translation>
+      <translation>Redigér</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="72"/>
@@ -2325,12 +2325,12 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="74"/>
       <source>Up to face</source>
-      <translation>Op til ansigt</translation>
+      <translation>Til flade</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="75"/>
       <source>Up to shape</source>
-      <translation>Op til geomerti</translation>
+      <translation>Til geomerti</translation>
     </message>
   </context>
   <context>
@@ -2414,7 +2414,7 @@ ellers vil skitseplanets normalvektor blive brugt</translation>
       <location filename="../../TaskPadPocketParameters.ui" line="521"/>
       <source>If unchecked, the length will be
 measured along the specified direction</source>
-      <translation>Hvis ikke afkrydset, vil længden blive
+      <translation>Hvis umarkeret, vil længden blive
 målt i den angivne retning</translation>
     </message>
     <message>
@@ -2431,7 +2431,7 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="505"/>
       <source>Reversed</source>
-      <translation>Modsat</translation>
+      <translation>Modsat retning</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="534"/>
@@ -2518,7 +2518,7 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
-      <translation type="unfinished">Orientation mode</translation>
+      <translation>Retningen følger</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="36"/>
@@ -2528,7 +2528,7 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="41"/>
       <source>Fixed</source>
-      <translation>Fastgjort</translation>
+      <translation>Fast retnining</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="46"/>
@@ -2538,17 +2538,17 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="51"/>
       <source>Auxiliary</source>
-      <translation type="unfinished">Auxiliary</translation>
+      <translation>Ekstern reference</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="56"/>
       <source>Binormal</source>
-      <translation>Binormal</translation>
+      <translation>Binormal vektor</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="76"/>
       <source>Curvilinear equivalence</source>
-      <translation type="unfinished">Curvilinear equivalence</translation>
+      <translation>Curvilineær ækvivalens</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="83"/>
@@ -2563,17 +2563,17 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="125"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="144"/>
       <source>Remove Edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="166"/>
       <source>Set the constant binormal vector used to calculate the profiles orientation</source>
-      <translation type="unfinished">Set the constant binormal vector used to calculate the profiles orientation</translation>
+      <translation>Fastsæt den konstante binormale vektor, der bruges til at beregne tværsnitsretningen</translation>
     </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="190"/>
@@ -2593,7 +2593,7 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="575"/>
       <source>Section Orientation</source>
-      <translation type="unfinished">Section Orientation</translation>
+      <translation>Tværsnitsretning</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="603"/>
@@ -2617,17 +2617,17 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="51"/>
       <source>Corner transition</source>
-      <translation>Hjørneovergang</translation>
+      <translation>Hjørneovergange</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="70"/>
       <source>Right corner</source>
-      <translation>Højre hjørne</translation>
+      <translation>Skarpe hjørner</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="75"/>
       <source>Round corner</source>
-      <translation>Afrund hjørne</translation>
+      <translation>Afrundede hjørner</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="85"/>
@@ -2637,12 +2637,12 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="119"/>
       <source>Add edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="138"/>
       <source>Remove edge</source>
-      <translation>Fjern Kant</translation>
+      <translation>Fjern linje</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.ui" line="65"/>
@@ -2681,27 +2681,27 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="36"/>
       <source>Constant</source>
-      <translation>Konstant</translation>
+      <translation>Konstant tværsnit</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="41"/>
       <source>Multisection</source>
-      <translation type="unfinished">Multisection</translation>
+      <translation>Multisektion</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="64"/>
       <source>Add Section</source>
-      <translation>Tilføj sektion</translation>
+      <translation>Tilføj tværsnit</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="77"/>
       <source>Remove Section</source>
-      <translation>Fjern sektion</translation>
+      <translation>Fjern profil</translation>
     </message>
     <message>
       <location filename="../../TaskPipeScaling.ui" line="102"/>
       <source>List can be reordered by dragging</source>
-      <translation>Rækkefølgen i listen kan ændre ved at trække/slippe</translation>
+      <translation>Rækkefølgen i listen kan ændres ved at trække elementerne</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="870"/>
@@ -2754,12 +2754,12 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="78"/>
       <source>Up to face</source>
-      <translation>Op til ansigt</translation>
+      <translation>Til flade</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="79"/>
       <source>Up to shape</source>
-      <translation>Op til geometri</translation>
+      <translation>Til geometri</translation>
     </message>
   </context>
   <context>
@@ -2771,19 +2771,19 @@ målt i den angivne retning</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="242"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="254"/>
       <source>Base X-axis</source>
       <translation>Basis X-akse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="255"/>
       <source>Base Y-axis</source>
       <translation>Basis Y-akse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="244"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Base Z-axis</source>
       <translation>Basis Z-akse</translation>
     </message>
@@ -2805,7 +2805,7 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="161"/>
       <source>Reversed</source>
-      <translation>Modsat</translation>
+      <translation>Modsat retning</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="120"/>
@@ -2819,20 +2819,20 @@ målt i den angivne retning</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="252"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="264"/>
       <source>Select reference…</source>
       <translation>Vælg reference…</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="87"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="195"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="158"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="160"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="491"/>
       <source>Face</source>
       <translation>Flade</translation>
     </message>
@@ -2842,32 +2842,32 @@ målt i den angivne retning</translation>
       <translation>Genberegn ved ændringer</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="199"/>
       <source>To last</source>
       <translation>Til sidste</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="200"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
       <source>Through all</source>
       <translation>Gennem alt</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>To first</source>
       <translation>Til første</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
       <source>Up to face</source>
-      <translation>Op til ansigt</translation>
+      <translation>Til flade</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="216"/>
       <source>Two angles</source>
       <translation>To vinkler</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="467"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
       <source>No face selected</source>
       <translation>Ingen flade valgt</translation>
     </message>
@@ -2916,7 +2916,7 @@ målt i den angivne retning</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="193"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="202"/>
       <source>Face</source>
       <translation>Flade</translation>
     </message>
@@ -2958,12 +2958,12 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="88"/>
       <source>Pipe</source>
-      <translation>Trukket profil</translation>
+      <translation>Rør</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="93"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>For- og bagside</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="101"/>
@@ -2979,7 +2979,7 @@ målt i den angivne retning</translation>
       <location filename="../../TaskThicknessParameters.ui" line="114"/>
       <location filename="../../TaskThicknessParameters.ui" line="124"/>
       <source>Intersection</source>
-      <translation>Skæringspunkt</translation>
+      <translation>Skæringer</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="131"/>
@@ -2990,7 +2990,7 @@ målt i den angivne retning</translation>
       <location filename="../../TaskThicknessParameters.cpp" line="267"/>
       <source>Empty thickness created!
 </source>
-      <translation>Oprettede en tom tykkelse!
+      <translation>Oprettede et emne uden tykkelse!
 </translation>
     </message>
   </context>
@@ -3066,7 +3066,7 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="48"/>
       <source>Transform tool shapes</source>
-      <translation type="unfinished">Transform tool shapes</translation>
+      <translation>Transformeringsværktøjer</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="78"/>
@@ -3086,7 +3086,7 @@ målt i den angivne retning</translation>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="106"/>
       <source>List can be reordered by dragging</source>
-      <translation>Rækkefølgen i listen kan ændre ved at trække/slippe</translation>
+      <translation>Rækkefølgen i listen kan ændres ved at trække elementerne</translation>
     </message>
   </context>
   <context>
@@ -3105,27 +3105,27 @@ målt i den angivne retning</translation>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1090"/>
+      <location filename="../../CommandBody.cpp" line="1095"/>
       <source>Move Feature After…</source>
       <translation>Flyt geometri efter…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1091"/>
+      <location filename="../../CommandBody.cpp" line="1096"/>
       <source>Select a feature from the list</source>
       <translation>Vælg en geometri fra listen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1178"/>
+      <location filename="../../CommandBody.cpp" line="1183"/>
       <source>Move Tip</source>
       <translation>Flyt arbejdsposition</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1184"/>
+      <location filename="../../CommandBody.cpp" line="1189"/>
       <source>Set tip to last feature?</source>
-      <translation>Sæt arbejdspositionen til sidste operation?</translation>
+      <translation>Fastsæt arbejdspositionen til sidste operation?</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1179"/>
+      <location filename="../../CommandBody.cpp" line="1184"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>Den flyttede geometri vises efter den aktuelle arbejdsposition.</translation>
     </message>
@@ -3190,11 +3190,11 @@ målt i den angivne retning</translation>
       <translation>Ingen gyldige konstruktionsplaner i dette dokument</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="257"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialog er allerede åben i opgavepanelet</translation>
     </message>
@@ -3234,11 +3234,11 @@ målt i den angivne retning</translation>
       <translation>Ingen skitse tilgængelig i dokumentet</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="258"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>Luk denne dialog?</translation>
     </message>
@@ -3398,14 +3398,14 @@ Dette kan føre til uventede resultater.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="617"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Rediger venligst '%1' og omdefiner den for at bruge en base- eller konstruktionsflade som skitseplan.</translation>
+      <translation>Redigér '%1' og omdefiner den for at bruge en base- eller konstruktionsflade som skitseplan.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="691"/>
       <location filename="../../CommandBody.cpp" line="699"/>
       <location filename="../../CommandBody.cpp" line="711"/>
-      <location filename="../../CommandBody.cpp" line="1056"/>
-      <location filename="../../CommandBody.cpp" line="1066"/>
+      <location filename="../../CommandBody.cpp" line="1061"/>
+      <location filename="../../CommandBody.cpp" line="1071"/>
       <source>Selection error</source>
       <translation>Markeringsfejl</translation>
     </message>
@@ -3432,27 +3432,27 @@ Dette kan føre til uventede resultater.</translation>
       <translation>Der er ikke andre emner at flytte til</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1057"/>
+      <location filename="../../CommandBody.cpp" line="1062"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>Ikke muligt at flytte et emnes basisgeometri.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1067"/>
+      <location filename="../../CommandBody.cpp" line="1072"/>
       <source>Select one or more features from the same body.</source>
       <translation>Vælg en eller flere geometrier fra samme emne.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1082"/>
+      <location filename="../../CommandBody.cpp" line="1087"/>
       <source>Beginning of the body</source>
       <translation>Starten på et emne</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1163"/>
+      <location filename="../../CommandBody.cpp" line="1168"/>
       <source>Dependency violation</source>
       <translation>Afhængigheds overtrædelse</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1164"/>
+      <location filename="../../CommandBody.cpp" line="1169"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3471,24 +3471,24 @@ Dette kan føre til uventede resultater.</translation>
       <translation>Det er ikke muligt at oprette en subtraktiv geometri uden at have en basisgeometri</translation>
     </message>
     <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="228"/>
       <source>Vertical sketch axis</source>
       <translation>Lodret skitseakse</translation>
     </message>
     <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
       <location filename="../../TaskTransformedParameters.cpp" line="440"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="229"/>
       <source>Horizontal sketch axis</source>
       <translation>Vandret skitseakse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
       <source>Construction line %1</source>
       <translation>Konstruktionslinje %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="85"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="94"/>
       <source>Face</source>
       <translation>Flade</translation>
     </message>
@@ -3522,27 +3522,27 @@ For ældre dokumenter med Part-Design objekter som mangler et emne, skal du brug
       <translation>For at kunne bruge denne funktion skal den tilhøre et objekt i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Geometrien indgår ikke i en komponent</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>For at kunne bruge denne funktion skal den tilhøre en komponent i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProvider.cpp" line="92"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
+      <location filename="../../ViewProvider.cpp" line="92"/>
       <source>Edit %1</source>
-      <translation>Rediger %1</translation>
+      <translation>Redigér %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="105"/>
       <source>Set Face Colors</source>
-      <translation>Sæt farver for flader</translation>
+      <translation>Fastsæt farver for flader</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="112"/>
@@ -3570,7 +3570,7 @@ For ældre dokumenter med Part-Design objekter som mangler et emne, skal du brug
     <message>
       <location filename="../../ViewProviderDatum.cpp" line="234"/>
       <source>Edit Datum</source>
-      <translation>Rediger konstruktionslinje/flade</translation>
+      <translation>Redigér konstruktionslinje/flade</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="91"/>
@@ -3587,7 +3587,7 @@ Denne geometri er ødelagt, og kan ikke redigeres.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="220"/>
       <source>Edit Shape Binder</source>
-      <translation>Rediger geometrisk forbindelse</translation>
+      <translation>Redigér geometrisk forbindelse</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="350"/>
@@ -3597,7 +3597,7 @@ Denne geometri er ødelagt, og kan ikke redigeres.</translation>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="352"/>
       <source>Select Bound Object</source>
-      <translation type="unfinished">Select Bound Object</translation>
+      <translation>Vælg forbundet objekt</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="154"/>
@@ -3636,17 +3636,17 @@ Men du vil kunne overføre filen på et hvilket som helst senere tidspunkt med '
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="67"/>
       <source>Edit Boolean</source>
-      <translation>Rediger boolesk opretation</translation>
+      <translation>Redigér boolesk opretation</translation>
     </message>
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="40"/>
       <source>Edit Chamfer</source>
-      <translation>Rediger rejfning</translation>
+      <translation>Redigér rejfning</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="41"/>
       <source>Edit Draft</source>
-      <translation>Rediger affasning</translation>
+      <translation>Redigér affasning</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="40"/>
@@ -3661,37 +3661,37 @@ Men du vil kunne overføre filen på et hvilket som helst senere tidspunkt med '
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="48"/>
       <source>Edit Helix</source>
-      <translation>Rediger spiral</translation>
+      <translation>Redigér spiral</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="63"/>
       <source>Edit Hole</source>
-      <translation>Rediger hul</translation>
+      <translation>Redigér hul</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLinearPattern.cpp" line="38"/>
       <source>Edit Linear Pattern</source>
-      <translation>Rediger lineært mønster</translation>
+      <translation>Redigér lineært mønster</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="65"/>
       <source>Edit Loft</source>
-      <translation>Rediger transformering</translation>
+      <translation>Redigér transformering</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="38"/>
       <source>Edit Mirror</source>
-      <translation>Rediger spejling</translation>
+      <translation>Redigér spejling</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="47"/>
       <source>Edit Multi-Transform</source>
-      <translation>Rediger multitransformation</translation>
+      <translation>Redigér multitransformation</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="43"/>
       <source>Edit Pad</source>
-      <translation>Rediger ekstrudering</translation>
+      <translation>Redigér ekstrudering</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="75"/>
@@ -3701,32 +3701,32 @@ Men du vil kunne overføre filen på et hvilket som helst senere tidspunkt med '
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="45"/>
       <source>Edit Pocket</source>
-      <translation>Rediger indpresning</translation>
+      <translation>Redigér indpresning</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
       <source>Edit Polar Pattern</source>
-      <translation>Rediger polært mønster</translation>
+      <translation>Redigér polært mønster</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="49"/>
       <source>Edit Primitive</source>
-      <translation>Rediger basisgeometri</translation>
+      <translation>Redigér basisgeometri</translation>
     </message>
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="43"/>
       <source>Edit Revolution</source>
-      <translation>Rediger drejet geometri</translation>
+      <translation>Redigér drejet geometri</translation>
     </message>
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="38"/>
       <source>Edit Scale</source>
-      <translation>Rediger skalering</translation>
+      <translation>Redigér skalering</translation>
     </message>
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="40"/>
       <source>Edit Thickness</source>
-      <translation>Rediger tykkelse</translation>
+      <translation>Redigér tykkelse</translation>
     </message>
   </context>
   <context>
@@ -3829,12 +3829,12 @@ Men du vil kunne overføre filen på et hvilket som helst senere tidspunkt med '
     <message>
       <location filename="../../../SprocketFeature.ui" line="219"/>
       <source>Chain pitch</source>
-      <translation type="unfinished">Chain pitch</translation>
+      <translation>Deling</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="266"/>
       <source>Chain roller diameter</source>
-      <translation type="unfinished">Chain roller diameter</translation>
+      <translation>Kæderullernes diameter</translation>
     </message>
     <message>
       <location filename="../../../SprocketFeature.ui" line="310"/>
@@ -3929,7 +3929,7 @@ Bemærk, beregningen kan tage nogen tid</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1006"/>
       <source>Thread Depth</source>
-      <translation>Gevinddybde</translation>
+      <translation>Dybde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="1059"/>
@@ -3944,32 +3944,32 @@ Bemærk, beregningen kan tage nogen tid</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="65"/>
       <source>Head type</source>
-      <translation type="unfinished">Head type</translation>
+      <translation>Undersænkning</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="153"/>
       <source>Depth type</source>
-      <translation type="unfinished">Depth type</translation>
+      <translation>Dybde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="245"/>
       <source>Head diameter</source>
-      <translation type="unfinished">Head diameter</translation>
+      <translation>Hoveddiameter</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="293"/>
       <source>Head depth</source>
-      <translation type="unfinished">Head depth</translation>
+      <translation>Undersænkningsdybde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="678"/>
       <source>Clearance / Passthrough</source>
-      <translation>Tolerance / frigang</translation>
+      <translation>Frigang/bolthul (u. gevind)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="683"/>
       <source>Tap drill (to be threaded)</source>
-      <translation>Skæretap (for gevind)</translation>
+      <translation>Hul for skæretap (u. gevind)</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="688"/>
@@ -4017,17 +4017,17 @@ Kun mulig for huller uden gevind</translation>
       <location filename="../../TaskHoleParameters.ui" line="88"/>
       <location filename="../../TaskHoleParameters.ui" line="727"/>
       <source>Standard</source>
-      <translation>Standard</translation>
+      <translation>Gevind</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="732"/>
       <source>Close</source>
-      <translation>Luk</translation>
+      <translation>Lille</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="737"/>
       <source>Wide</source>
-      <translation>Bredde</translation>
+      <translation>Stor</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="848"/>
@@ -4062,7 +4062,7 @@ Kun mulig for huller uden gevind</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="95"/>
       <source>Base profile types</source>
-      <translation type="unfinished">Base profile types</translation>
+      <translation>Basisprofil typer</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="126"/>
@@ -4093,19 +4093,19 @@ Kun mulig for huller uden gevind</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="197"/>
       <source>Custom head values</source>
-      <translation type="unfinished">Custom head values</translation>
+      <translation>Brugerdefineret undersænkning</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="367"/>
       <source>Drill angle</source>
       <extracomment>Translate it as short as possible</extracomment>
-      <translation>Borevinkel</translation>
+      <translation>Spidsningsvinkel</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="403"/>
       <source>Include in depth</source>
       <extracomment>Translate it as short as possible</extracomment>
-      <translation>Inkluder i dybden</translation>
+      <translation>Inkludér i dybden</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="610"/>
@@ -4120,7 +4120,7 @@ Kun mulig for huller uden gevind</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="783"/>
       <source>Thread</source>
-      <translation>Gevindskåret</translation>
+      <translation>Gevind</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="892"/>
@@ -4135,7 +4135,7 @@ Kun mulig for huller uden gevind</translation>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="957"/>
       <source>Thread Depth Type</source>
-      <translation type="unfinished">Thread Depth Type</translation>
+      <translation>Gevinddybde</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="971"/>
@@ -4256,7 +4256,7 @@ over 90: større hulradius i bunden</translation>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Shaft Design Wizard</source>
-      <translation>Akseldesign</translation>
+      <translation>Aksel</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
@@ -4309,22 +4309,22 @@ over 90: større hulradius i bunden</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="50"/>
       <source>Start edge type</source>
-      <translation type="unfinished">Start edge type</translation>
+      <translation>Start kanttype</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="51"/>
       <source>Start edge size</source>
-      <translation type="unfinished">Start edge size</translation>
+      <translation>Start kantstørrelse</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="52"/>
       <source>End edge type</source>
-      <translation type="unfinished">End edge type</translation>
+      <translation>Slut kanttype</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="53"/>
       <source>End edge size</source>
-      <translation type="unfinished">End edge size</translation>
+      <translation>Slut kantstørrelse</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="67"/>
@@ -4360,7 +4360,7 @@ over 90: større hulradius i bunden</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="158"/>
       <source>Fixed</source>
-      <translation>Fastsat</translation>
+      <translation>Fikseret</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="159"/>
@@ -4380,7 +4380,7 @@ over 90: større hulradius i bunden</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="162"/>
       <source>Pulley</source>
-      <translation>Trisse</translation>
+      <translation>Remhjul</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaftTable.py" line="179"/>
@@ -4427,12 +4427,12 @@ over 90: større hulradius i bunden</translation>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="402"/>
+      <location filename="../../../App/Body.cpp" line="403"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Det linkede objekt er ikke en PartDesign egenskab</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="411"/>
+      <location filename="../../../App/Body.cpp" line="412"/>
       <source>Tip shape is empty</source>
       <translation>Geometrien for arbejdspositionen er tom</translation>
     </message>
@@ -4467,20 +4467,20 @@ over 90: større hulradius i bunden</translation>
       <translation>Kan ikke udføre booleske operationer med en ugyldig startgeometri</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
       <location filename="../../../App/FeaturePipe.cpp" line="480"/>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="759"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="788"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Operationen resulterer i flere massive emner. Aktiver 'Tillad sammensatte emner' i det aktive emne.</translation>
     </message>
@@ -4495,30 +4495,30 @@ over 90: større hulradius i bunden</translation>
       <translation>Ikke-understøttet boolesk operation</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="346"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>Kan ikke oprette en ekstrudering med en samlet længde på nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>Kan ikke oprette en indpresning med en samlet længde på nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Der blev ikke genereret en ekstruderet geometri.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="714"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
-      <translation type="unfinished">Resulting fused extrusion is null.</translation>
+      <translation>Resultatet af den ekstruderingen er, at al geometri fjernes.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="750"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>Resulterende geometri er ikke et massivt emne</translation>
     </message>
@@ -4531,7 +4531,7 @@ over 90: større hulradius i bunden</translation>
       <location filename="../../../App/FeatureDraft.cpp" line="327"/>
       <location filename="../../../App/FeatureFillet.cpp" line="120"/>
       <source>Resulting shape is null</source>
-      <translation>Resulterende geometri er ugyldig</translation>
+      <translation>Resultatet er at al geometri fjernes</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="141"/>
@@ -4590,19 +4590,19 @@ over 90: større hulradius i bunden</translation>
   - den valgte skitse ikke hører til det aktive emne.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="395"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
       <source>Failed to obtain profile shape</source>
       <translation>Kunne ikke finde profil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Oprettelse mislykkedes, fordi retningen vinkelret på skitsens normalvektor</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="472"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>Oprettelse af en flade fra en skitse mislykkedes</translation>
     </message>
@@ -4612,20 +4612,20 @@ over 90: større hulradius i bunden</translation>
       <translation>Vinklerne for afdrejningen ophæver hinanden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <location filename="../../../App/FeatureGroove.cpp" line="171"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Omdrejningsaksen skærer skitsen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="295"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="264"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="263"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
       <source>Could not revolve the sketch!</source>
       <translation>Kunne ikke dreje skitsen!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="307"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="276"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="275"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Kunne ikke oprette en flade fra skitsen.
@@ -4675,9 +4675,9 @@ Krydsende linjer i en skitse er ikke tilladt.</translation>
       <translation>Fejl: Fladen skal være plan</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>Fejl: Resultatet er ikke et massivt emne</translation>
     </message>
@@ -4787,7 +4787,7 @@ Krydsende linjer i en skitse er ikke tilladt.</translation>
       <location filename="../../../App/FeatureHole.cpp" line="2039"/>
       <location filename="../../../App/FeatureHole.cpp" line="2047"/>
       <source>Boolean operation failed on profile Edge</source>
-      <translation type="unfinished">Boolean operation failed on profile Edge</translation>
+      <translation>Boolesk operation mislykkedes på profilkant</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2054"/>
@@ -4809,12 +4809,12 @@ Krydsende skitselinjer eller flere flader i en skitse er ikke tilladt.</translat
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2245"/>
       <source>Thread type out of range</source>
-      <translation>Gevindtype ikke mulig</translation>
+      <translation>Gevindtypen er ikke mulig</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2248"/>
       <source>Thread size out of range</source>
-      <translation>Gevindstørrelse ikke mulig</translation>
+      <translation>Gevindstørrelsen er ikke mulig</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2396"/>
@@ -4824,7 +4824,7 @@ Krydsende skitselinjer eller flere flader i en skitse er ikke tilladt.</translat
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="191"/>
       <source>Loft: At least one section is needed</source>
-      <translation>Transforming: Mindst et tværsnit er nødvendigt</translation>
+      <translation>Transformering: Mindst et tværsnit er nødvendigt</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="392"/>
@@ -4837,13 +4837,13 @@ Krydsende skitselinjer eller flere flader i en skitse er ikke tilladt.</translat
       <translation>Transforming: Oprettelse af en flade fra skitsen mislykkedes</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="444"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <source>Loft: Failed to create shell</source>
       <translation>Transformér: Kunne ikke oprette fladegeometri</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Kunne ikke oprette en flade fra skitsen.
@@ -4857,17 +4857,17 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="210"/>
       <source>No spine linked</source>
-      <translation type="unfinished">No spine linked</translation>
+      <translation>Ingen kurve tilknyttet</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="225"/>
       <source>No auxiliary spine linked.</source>
-      <translation type="unfinished">No auxiliary spine linked.</translation>
+      <translation>Ingen ekstern kurve tilknyttet.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="248"/>
       <source>Pipe: Only one isolated point is needed if using a sketch with isolated points for section</source>
-      <translation>Trukket profil: Kun et isoleret punkt er nødvendigt, hvis du bruger en skitse med isolerede punkter som tværsnit</translation>
+      <translation>Trukket profil: Kun et isoleret punkt er nødvendigt, hvis der bruges en skitse med isolerede punkter som tværsnit</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="257"/>
@@ -4892,12 +4892,12 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="306"/>
       <source>Multisections need to have the same amount of inner wires as the base section</source>
-      <translation type="unfinished">Multisections need to have the same amount of inner wires as the base section</translation>
+      <translation>Multisektionsprofiler skal konstrueres med samme antal linjer som basisprofilet</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="339"/>
       <source>Path must not be a null shape</source>
-      <translation>Ruten kan ikke være en tom geometri</translation>
+      <translation>Kurven er ikke gyldig</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="379"/>
@@ -4922,27 +4922,27 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="672"/>
       <source>Invalid element in spine.</source>
-      <translation type="unfinished">Invalid element in spine.</translation>
+      <translation>Ugyldigt kurveelement.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="677"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Element in spine is neither an edge nor a wire.</translation>
+      <translation>Elementet i kurven er hverken en linje eller en multilinje.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="698"/>
       <source>Spine is not connected.</source>
-      <translation type="unfinished">Spine is not connected.</translation>
+      <translation>Kurven er ikke sammenhængende.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="704"/>
       <source>Spine is neither an edge nor a wire.</source>
-      <translation type="unfinished">Spine is neither an edge nor a wire.</translation>
+      <translation>Kurven er hverken en linje eller en multilinje.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="709"/>
       <source>Invalid spine.</source>
-      <translation type="unfinished">Invalid spine.</translation>
+      <translation>Ugyldig kurve.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="101"/>
@@ -4950,16 +4950,16 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
       <translation>Kan ikke fjerne en basisgeometri uden en geometri at fjerne materiale fra</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>Ukendt operationstype</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>Kunne ikke udføre boolesk operation</translation>
     </message>
@@ -5077,13 +5077,13 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
       <translation>Drejningsvinklerne ophæver hinanden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <source>Reference axis is invalid</source>
       <translation>Referenceaksen er ugyldig</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
       <source>Fusion with base feature failed</source>
       <translation>Fusion med basisgeometri mislykkedes</translation>
     </message>
@@ -5098,17 +5098,17 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
       <translation>Ingen originalegenskaber knyttet til den transformerede egenskab.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="326"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Kan ikke omdanne ugyldig støttegeometri</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="377"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="397"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Geometrien for tilføjede/fjernede egenskab er tom</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="368"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="388"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Kun tilføjede og fjernede geometrier kan omdannes</translation>
     </message>
@@ -5141,7 +5141,7 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
     <message>
       <location filename="../../../SprocketFeature.py" line="67"/>
       <source>Creates or edits the sprocket definition.</source>
-      <translation type="unfinished">Creates or edits the sprocket definition.</translation>
+      <translation>Opretter eller redigerer definitionen af kædehjul.</translation>
     </message>
   </context>
   <context>
@@ -5149,12 +5149,12 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
     <message>
       <location filename="../../TaskPreviewParameters.ui" line="20"/>
       <source>Show final result</source>
-      <translation>Vis endeligt resultat</translation>
+      <translation>Endeligt resultat</translation>
     </message>
     <message>
       <location filename="../../TaskPreviewParameters.ui" line="27"/>
       <source>Show preview overlay</source>
-      <translation type="unfinished">Show preview overlay</translation>
+      <translation>Transparent forhåndsvisning</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="48"/>
@@ -5167,7 +5167,7 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="223"/>
       <source>Shaft Design Wizard</source>
-      <translation>Akseldesign</translation>
+      <translation>Aksel</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="226"/>
@@ -5180,7 +5180,7 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
     <message>
       <location filename="../../../App/FeatureAddSub.cpp" line="84"/>
       <source>Failure while computing removed volume preview: %1</source>
-      <translation type="unfinished">Failure while computing removed volume preview: %1</translation>
+      <translation>Fejl ved beregning af fjernet geometri, forhåndsvisning: %1</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureAddSub.cpp" line="105"/>
@@ -5311,7 +5311,7 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="823"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="835"/>
       <source>Revolution Parameters</source>
       <translation>Parametre for drejning</translation>
     </message>
@@ -5319,7 +5319,7 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="833"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="845"/>
       <source>Groove Parameters</source>
       <translation>Parametre for afdrejning</translation>
     </message>
@@ -5329,7 +5329,7 @@ Krydsende linjer eller flere flader i en skitse er ikke tilladt.</translation>
     <message>
       <location filename="../../TaskTransformedMessages.cpp" line="37"/>
       <source>Transformed Feature Messages</source>
-      <translation type="unfinished">Transformed Feature Messages</translation>
+      <translation>Meddelelser om transformeringen</translation>
     </message>
   </context>
   <context>

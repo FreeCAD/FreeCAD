@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKDETAIL_H
-#define TECHDRAWGUI_TASKDETAIL_H
+#pragma once
 
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -161,5 +160,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef TECHDRAWGUI_TASKDETAIL_H

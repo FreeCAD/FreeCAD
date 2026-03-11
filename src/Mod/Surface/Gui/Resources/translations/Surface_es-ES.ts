@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Aceptar</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -54,7 +54,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation type="unfinished">Boundaries</translation>
+      <translation>Límites</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Aceptar</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -182,12 +182,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="222"/>
       <source>Flip orientation</source>
-      <translation type="unfinished">Flip orientation</translation>
+      <translation>Voltear orientación</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="378"/>
       <source>Too many edges</source>
-      <translation type="unfinished">Too many edges</translation>
+      <translation>Demasiadas aristas</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="379"/>
@@ -203,7 +203,7 @@
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="398"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Objeto inválido</translation>
     </message>
   </context>
   <context>
@@ -226,12 +226,12 @@
     <message>
       <location filename="../../TaskFillingVertex.ui" line="40"/>
       <source>Add Vertex</source>
-      <translation type="unfinished">Add Vertex</translation>
+      <translation>Añadir vértices</translation>
     </message>
     <message>
       <location filename="../../TaskFillingVertex.ui" line="59"/>
       <source>Remove Vertex</source>
-      <translation type="unfinished">Remove Vertex</translation>
+      <translation>Eliminar vértice </translation>
     </message>
   </context>
   <context>
@@ -299,7 +299,7 @@
     <message>
       <location filename="../../Command.cpp" line="56"/>
       <source>Cuts one shape using another</source>
-      <translation type="unfinished">Cuts one shape using another</translation>
+      <translation>Corta una forma usando otra</translation>
     </message>
   </context>
   <context>
@@ -312,16 +312,16 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>Relleno</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Creates a surface from a series of selected boundary edges.
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
-      <translation type="unfinished">Creates a surface from a series of selected boundary edges.
-Additionally, the surface may be constrained by edges and
-vertices that are not on the boundary.</translation>
+      <translation>Crea una superficie a partir de una serie de bordes fronterizos seleccionados.
+Adicionalmente, la superficie puede estar restringida por bordes y vértices
+que no están en el límite.</translation>
     </message>
   </context>
   <context>
@@ -331,17 +331,17 @@ vertices that are not on the boundary.</translation>
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="345"/>
       <source>Create surface</source>
-      <translation type="unfinished">Create surface</translation>
+      <translation>Crear superficie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Blend Curve</source>
-      <translation type="unfinished">Blend Curve</translation>
+      <translation>Fusionar curva</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="303"/>
       <source>Extend surface</source>
-      <translation type="unfinished">Extend surface</translation>
+      <translation>Extender superficie</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.cpp" line="409"/>
@@ -383,8 +383,8 @@ vertices that are not on the boundary.</translation>
       <location filename="../../Command.cpp" line="180"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a mesh object.</source>
-      <translation type="unfinished">Creates an approximated curve on top of a mesh.
-This command only works with a mesh object.</translation>
+      <translation>Crea una curva aproximada encima de una malla.
+Este comando solo funciona con un objeto de malla.</translation>
     </message>
   </context>
   <context>
@@ -415,12 +415,12 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Extend Face</source>
-      <translation type="unfinished">Extend Face</translation>
+      <translation>Extender cara</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="288"/>
       <source>Extrapolates the selected face or surface at its boundaries with its local U and V parameters</source>
-      <translation type="unfinished">Extrapolates the selected face or surface at its boundaries with its local U and V parameters</translation>
+      <translation>Extrapola la cara o superficie seleccionada en sus límites con sus parámetros locales U y V</translation>
     </message>
   </context>
   <context>
@@ -433,7 +433,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Select a single face</source>
-      <translation type="unfinished">Select a single face</translation>
+      <translation>Seleccione una sola cara</translation>
     </message>
   </context>
   <context>
@@ -451,7 +451,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="334"/>
       <source>Creates a surface from a series of sectional edges</source>
-      <translation type="unfinished">Creates a surface from a series of sectional edges</translation>
+      <translation>Crea una superficie a partir de una serie de aristas seccionales</translation>
     </message>
   </context>
   <context>
@@ -464,7 +464,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="326"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Objeto inválido</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="406"/>
@@ -482,14 +482,14 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="431"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>La arista no tiene caras adyacentes</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <source>Edit Filling</source>
       <translation type="unfinished">Edit Filling</translation>
     </message>
@@ -501,7 +501,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>
       <source>Edit Sections</source>
-      <translation type="unfinished">Edit Sections</translation>
+      <translation>Editar secciones</translation>
     </message>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
@@ -519,14 +519,14 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="494"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Objeto inválido</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>La arista tiene %n cara adyacente</numerusform>
+        <numerusform>La arista tiene %n caras adyacentes</numerusform>
       </translation>
     </message>
     <message>
@@ -537,7 +537,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>La arista no tiene caras adyacentes</translation>
     </message>
   </context>
   <context>
@@ -550,7 +550,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="420"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Objeto inválido</translation>
     </message>
   </context>
 </TS>

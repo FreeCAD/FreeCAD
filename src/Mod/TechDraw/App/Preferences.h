@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Preferences_h_
-#define Preferences_h_
+#pragma once
 
 #include <Qt>
 #include <string>
@@ -175,4 +174,3 @@ public:
 
 
 }//end namespace TechDraw
-#endif

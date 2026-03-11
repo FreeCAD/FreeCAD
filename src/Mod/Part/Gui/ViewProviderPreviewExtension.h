@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef PARTGUI_VIEWPROVIDERPREVIEWEXTENSION_H
-#define PARTGUI_VIEWPROVIDERPREVIEWEXTENSION_H
+#pragma once
 
 #include "SoBrepEdgeSet.h"
 #include "SoBrepFaceSet.h"
@@ -118,6 +117,3 @@ using ViewProviderPreviewExtensionPython
     = Gui::ViewProviderExtensionPythonT<ViewProviderPreviewExtension>;
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERPREVIEWEXTENSION_H

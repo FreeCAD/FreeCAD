@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_MOD_SPREADSHEET_APP_SHEET_H_
-#define SRC_MOD_SPREADSHEET_APP_SHEET_H_
+#pragma once
 
 #ifdef signals
 # undef signals
@@ -110,6 +109,7 @@ public:
     void splitCell(App::CellAddress address);
 
     Cell* getCell(App::CellAddress address);
+    const Cell* getCell(App::CellAddress address) const;
 
     Cell* getNewCell(App::CellAddress address);
 
@@ -316,6 +316,3 @@ protected:
 using SheetPython = App::FeaturePythonT<Sheet>;
 
 }  // namespace Spreadsheet
-
-
-#endif  // SRC_MOD_SPREADSHEET_APP_SHEET_H_

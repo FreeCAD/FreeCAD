@@ -23,14 +23,14 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBSERVER_H
-#define APP_DOCUMENTOBSERVER_H
+#pragma once
 
 #include <Base/BaseClass.h>
 #include <Base/Bitmask.h>
 #include <fastsignals/signal.h>
 #include <memory>
 #include <set>
+#include <string>
 #include <FCGlobal.h>
 
 
@@ -55,17 +55,21 @@ public:
     /*! Constructor */
     DocumentT(Document*);  // explicit bombs
     /*! Constructor */
-    explicit DocumentT(const std::string&);
+    explicit DocumentT(std::string);
     /*! Constructor */
     DocumentT(const DocumentT&);
+    /*! Move constructor */
+    DocumentT(DocumentT&&) noexcept;
     /*! Destructor */
     ~DocumentT();
     /*! Assignment operator */
-    void operator=(const DocumentT&);
+    DocumentT& operator=(const DocumentT&);
+    /*! Move assignment operator */
+    DocumentT& operator=(DocumentT&&) noexcept;
     /*! Assignment operator */
-    void operator=(const Document*);
+    DocumentT& operator=(const Document*);
     /*! Assignment operator */
-    void operator=(const std::string&);
+    DocumentT& operator=(const std::string&);
 
     bool operator==(const DocumentT& other) const
     {
@@ -75,6 +79,11 @@ public:
     bool operator<(const DocumentT& other) const
     {
         return document < other.document;
+    }
+
+    explicit operator bool() const
+    {
+        return getDocument() != nullptr;
     }
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
@@ -103,7 +112,7 @@ public:
     /*! Constructor */
     DocumentObjectT(const DocumentObjectT&);
     /*! Constructor */
-    DocumentObjectT(DocumentObjectT&&);
+    DocumentObjectT(DocumentObjectT&&) noexcept;
     /*! Constructor */
     explicit DocumentObjectT(const DocumentObject*);
     /*! Constructor */
@@ -117,13 +126,23 @@ public:
     /*! Assignment operator */
     DocumentObjectT& operator=(const DocumentObjectT&);
     /*! Assignment operator */
-    DocumentObjectT& operator=(DocumentObjectT&&);
+    DocumentObjectT& operator=(DocumentObjectT&&) noexcept;
     /*! Assignment operator */
-    void operator=(const DocumentObject*);
+    DocumentObjectT& operator=(const DocumentObject*);
     /*! Assignment operator */
-    void operator=(const Property*);
+    DocumentObjectT& operator=(const Property*);
     /*! Equality operator */
     bool operator==(const DocumentObjectT&) const;
+
+    bool operator<(const DocumentObjectT& other) const
+    {
+        return object < other.object;
+    }
+
+    explicit operator bool() const
+    {
+        return getObject() != nullptr;
+    }
 
     /*! Get a pointer to the document or 0 if it doesn't exist any more. */
     Document* getDocument() const;
@@ -135,8 +154,13 @@ public:
     DocumentObject* getObject() const;
     /*! Get a pointer to the property or 0 if it doesn't exist any more. */
     Property* getProperty() const;
+    /*! Get a pointer to the property by name or 0 if it doesn't exist any more. */
+    Property* getPropertyByName(const char* name) const;
     /*! Get the name of the document object. */
     const std::string& getObjectName() const;
+    /*! Get the name of the document object. */
+    const char* getNameInDocument() const;
+    bool isAttachedToDocument() const;
     /*! Get the label of the document object. */
     const std::string& getObjectLabel() const;
     /*! Get the name of the property. */
@@ -171,11 +195,14 @@ public:
     /*! Constructor */
     SubObjectT();
 
+    /*! Destructor */
+    ~SubObjectT();
+
     /*! Constructor */
     SubObjectT(const SubObjectT&);
 
     /*! Constructor */
-    SubObjectT(SubObjectT&&);
+    SubObjectT(SubObjectT&&) noexcept;
 
     /*! Constructor */
     SubObjectT(const DocumentObjectT& obj, const char* subname);
@@ -193,7 +220,7 @@ public:
     SubObjectT& operator=(const SubObjectT&);
 
     /*! Assignment operator */
-    SubObjectT& operator=(SubObjectT&&);
+    SubObjectT& operator=(SubObjectT&&) noexcept;
 
     /*! Assignment operator */
     SubObjectT& operator=(const DocumentObjectT&);
@@ -356,7 +383,9 @@ public:
 
     // disable
     DocumentWeakPtrT(const DocumentWeakPtrT&) = delete;
+    DocumentWeakPtrT(DocumentWeakPtrT&&) = delete;
     DocumentWeakPtrT& operator=(const DocumentWeakPtrT&) = delete;
+    DocumentWeakPtrT& operator=(DocumentWeakPtrT&&) = delete;
 
 private:
     class Private;
@@ -371,6 +400,14 @@ class AppExport DocumentObjectWeakPtrT
 public:
     explicit DocumentObjectWeakPtrT(App::DocumentObject*);
     ~DocumentObjectWeakPtrT();
+
+    // disable copy
+    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT &) = delete;
+    DocumentObjectWeakPtrT &operator=(const DocumentObjectWeakPtrT &) = delete;
+
+    // default move
+    DocumentObjectWeakPtrT(DocumentObjectWeakPtrT &&);
+    DocumentObjectWeakPtrT &operator=(DocumentObjectWeakPtrT &&);
 
     /*!
      * \brief reset
@@ -416,13 +453,6 @@ public:
 
 private:
     App::DocumentObject* _get() const noexcept;
-
-public:
-    // disable
-    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT&) = delete;
-    DocumentObjectWeakPtrT& operator=(const DocumentObjectWeakPtrT&) = delete;
-
-private:
     class Private;
     std::unique_ptr<Private> d;
 };
@@ -504,7 +534,9 @@ public:
 
     // disable
     WeakPtrT(const WeakPtrT&) = delete;
+    WeakPtrT(WeakPtrT&&) = delete;
     WeakPtrT& operator=(const WeakPtrT&) = delete;
+    WeakPtrT& operator=(WeakPtrT&&) = delete;
 
 private:
     DocumentObjectWeakPtrT ptr;
@@ -614,6 +646,13 @@ private:
 
 }  // namespace App
 
-ENABLE_BITMASK_OPERATORS(App::SubObjectT::NormalizeOption)
+template<>
+struct std::hash<App::DocumentObjectWeakPtrT>
+{
+    std::size_t operator()(const App::DocumentObjectWeakPtrT& ptr) const noexcept
+    {
+        return std::hash<App::DocumentObject*>{}(*ptr);
+    }
+};
 
-#endif  // APP_DOCUMENTOBSERVER_H
+ENABLE_BITMASK_OPERATORS(App::SubObjectT::NormalizeOption)

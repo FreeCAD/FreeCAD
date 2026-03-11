@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WORKBENCHMANAGER_H
-#define GUI_WORKBENCHMANAGER_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -78,6 +77,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_WORKBENCHMANAGER_H
