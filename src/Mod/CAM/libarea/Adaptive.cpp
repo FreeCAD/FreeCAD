@@ -1913,24 +1913,26 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             for (Path path : currentTBP) {
                 int orientation = Orientation(path);
                 int direction = (getPathNestingLevel(path, inputPaths) % 2 == 1) ? 1 : -1;
-                bool z1 = false;
+                bool finshing = false;
                 for (IntPoint& p : path) {
                     if (p.Z == 1) {
-                        z1 = true;
+                        finshing = true;
                         break;
                     }
                 }
 
-                Paths out;
-                clipof.Clear();
-                clipof.AddPath(path, JoinType::jtRound, EndType::etClosedPolygon);
-                clipof.Execute(out, finishPassOffsetScaled * direction);
+                if (finshing) {
+                    Paths out;
+                    clipof.Clear();
+                    clipof.AddPath(path, JoinType::jtRound, EndType::etClosedPolygon);
+                    clipof.Execute(out, finishPassOffsetScaled * direction);
 
-                for (Path& p : out) {
-                    if (Orientation(p) != orientation) {
-                        ReversePath(p);
+                    for (Path& p : out) {
+                        if (Orientation(p) != orientation) {
+                            ReversePath(p);
+                        }
+                        finishingPass.push_back(p);
                     }
-                    finishingPass.push_back(p);
                 }
             }
 
