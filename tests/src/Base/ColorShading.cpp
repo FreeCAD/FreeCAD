@@ -139,7 +139,7 @@ TEST_F(ColorShadingTest, ChromaScalesWithGamutBoundary)
         auto result = Base::ColorShading::computeShade(position, anchor, defaultParameters);
         float darkScale = result.lightness / anchor.lightness;
         float lightScale = (1.0F - result.lightness) / (1.0F - anchor.lightness);
-        float expectedChroma = anchor.chroma * std::pow(std::min(darkScale, lightScale), 0.7F);
+        float expectedChroma = anchor.chroma * std::pow(std::min(darkScale, lightScale), 0.5F);
         EXPECT_NEAR(result.chroma, expectedChroma, 1e-6F) << "position=" << position;
     }
 }
