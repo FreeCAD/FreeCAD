@@ -1645,8 +1645,13 @@ Feature* Feature::create(const TopoShape& shape, const char* name, App::Document
 
 void Feature::onDocumentRestored()
 {
-    // expandShapeContents();
-    App::GeoFeature::onDocumentRestored();
+    if (CanComputeShape.getValue() && Shape.getShape().isNull()) {
+        // A normal touch does not work because that is cleared in the
+        // recompute phase.
+        App::Document* doc = getDocument();
+        doc->addRecomputeObject(this, /*forMigration = */ false);
+    }
+    GeoFeature::onDocumentRestored();
 }
 
 ShapeHistory Feature::buildHistory(

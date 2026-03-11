@@ -1633,10 +1633,12 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
     return objs;
 }
 
-void Document::addRecomputeObject(DocumentObject* obj) // NOLINT
+void Document::addRecomputeObject(DocumentObject* obj, bool forMigration) // NOLINT
 {
     if (testStatus(Status::Restoring) && obj) {
-        setStatus(Status::RecomputeOnRestore, true);
+        if (forMigration) {
+            setStatus(Status::RecomputeOnRestore, true);
+        }
         d->touchedObjs.insert(obj);
         obj->touch();
     }
