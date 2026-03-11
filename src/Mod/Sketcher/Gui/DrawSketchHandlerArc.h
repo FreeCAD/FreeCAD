@@ -314,6 +314,44 @@ private:
         auto& ac3 = sugConstraints[2];
 
         if (constructionMethod() == ConstructionMethod::Center) {
+            // Prevent overconstraining when the arc center is placed symmetrically (at the midpoint)
+            // of a line and the arc endpoints are coincident with the endpoints of the same line.
+            Sketcher::SketchObject* sketchObj = sketchgui->getSketchObject();
+            for (auto& centerAC : ac1) {
+                if (centerAC.Type == Sketcher::ConstraintType::Symmetric) {
+                    int lineGeoId = centerAC.GeoId;
+
+                    auto isCoincidentToLineEndpoint = [sketchObj, lineGeoId](const auto& ac) {
+                        if (ac.Type != Sketcher::ConstraintType::Coincident) {
+                            return false;
+                        }
+                        return sketchObj->arePointsCoincident(
+                                   ac.GeoId,
+                                   ac.PosId,
+                                   lineGeoId,
+                                   Sketcher::PointPos::start
+                               )
+                            || sketchObj->arePointsCoincident(
+                                ac.GeoId,
+                                ac.PosId,
+                                lineGeoId,
+                                Sketcher::PointPos::end
+                            );
+                    };
+
+                    bool startCoincident
+                        = std::any_of(ac2.begin(), ac2.end(), isCoincidentToLineEndpoint);
+                    bool endCoincident
+                        = std::any_of(ac3.begin(), ac3.end(), isCoincidentToLineEndpoint);
+
+                    if (startCoincident && endCoincident) {
+                        // Change symmetry to PointOnObject to maintain center on line without
+                        // overconstraining
+                        centerAC.Type = Sketcher::ConstraintType::PointOnObject;
+                    }
+                }
+            }
+
             generateAutoConstraintsOnElement(
                 ac1,
                 ArcGeoId,
