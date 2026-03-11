@@ -54,6 +54,7 @@ Options:
                      show details of what has changed.
     -p  --partinfo:  Print size and hash of internal BREP part files
     -g  --gui:       Adds visual properties too (if not using -s or -vs)
+    -nd --nodoc:     Do not print document and hash
 
 Git usage:
 
@@ -259,6 +260,11 @@ if __name__ == "__main__":
     else:
         gui = False
 
+    if ("-nd" in sys.argv[1:]) or ("--nodoc" in sys.argv[1:]):
+        nodoc = True
+    else:
+        nodoc = False
+
     zfile = zipfile.ZipFile(sys.argv[-1])
 
     if not "Document.xml" in zfile.namelist():
@@ -279,6 +285,7 @@ if __name__ == "__main__":
         s = str(s / 1048576) + "M"
     else:
         s = str(s / 1024) + "K"
-    print("Document: " + sys.argv[-1] + " (" + s + ")")
-    print("   SHA1: " + str(hashlib.sha1(open(sys.argv[-1], "rb").read()).hexdigest()))
+    if not nodoc:
+        print("Document: " + sys.argv[-1] + " (" + s + ")")
+        print("   SHA1: " + str(hashlib.sha1(open(sys.argv[-1], "rb").read()).hexdigest()))
     xml.sax.parseString(doc, FreeCADFileHandler(zfile, short))
