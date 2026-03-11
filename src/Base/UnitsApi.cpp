@@ -137,7 +137,7 @@ std::string UnitsApi::schemaTranslate(const Quantity& quant)
 
 std::string UnitsApi::toUnicodeSuperscript(const std::string& str)
 {
-    static const char* superscripts[] = {
+    static constexpr auto superscripts = std::to_array<std::string_view>({
         "\xe2\x81\xb0",  // ⁰ U+2070
         "\xc2\xb9",      // ¹ U+00B9
         "\xc2\xb2",      // ² U+00B2
@@ -148,48 +148,83 @@ std::string UnitsApi::toUnicodeSuperscript(const std::string& str)
         "\xe2\x81\xb7",  // ⁷ U+2077
         "\xe2\x81\xb8",  // ⁸ U+2078
         "\xe2\x81\xb9",  // ⁹ U+2079
-    };
-
+    });
     static const char* superscriptMinus = "\xe2\x81\xbb";  // ⁻ U+207B
 
     std::string result;
-    bool superscript = false;
-    bool minus = false;
 
-    auto flushPending = [&] {
-        if (superscript) {
-            result += '^';
-            if (minus) {
-                result += '-';
-            }
-            superscript = false;
-            minus = false;
-        }
-    };
+    enum State { Normal, AfterCaret, AfterCaretMinus, InExponent } state = Normal;
 
     for (char ch : str) {
-        if (ch == '^') {
-            flushPending();
-            superscript = true;
-        }
-        else if (superscript && ch == '-' && !minus) {
-            minus = true;
-        }
-        else if (superscript && ch >= '0' && ch <= '9') {
-            if (minus) {
-                result += superscriptMinus;
-            }
-            result += superscripts[ch - '0'];
-            superscript = false;
-            minus = false;
-        }
-        else {
-            flushPending();
-            result += ch;
+        switch (state) {
+            case Normal:
+                if (ch == '^') {
+                    state = AfterCaret;
+                }
+                else {
+                    result += ch;
+                }
+                break;
+
+            case AfterCaret:
+                if (ch == '^') {
+                    result += '^';
+                }
+                else if (ch == '-') {
+                    state = AfterCaretMinus;
+                }
+                else if (ch >= '0' && ch <= '9') {
+                    result += superscripts[ch - '0'];
+                    state = InExponent;
+                }
+                else {
+                    result += '^';
+                    result += ch;
+                    state = Normal;
+                }
+                break;
+
+            case AfterCaretMinus:
+                if (ch >= '0' && ch <= '9') {
+                    result += superscriptMinus;
+                    result += superscripts[ch - '0'];
+                    state = InExponent;
+                }
+                else if (ch == '^') {
+                    result += '^';
+                    result += '-';
+                    state = AfterCaret;
+                }
+                else {
+                    result += '^';
+                    result += '-';
+                    result += ch;
+                    state = Normal;
+                }
+                break;
+
+            case InExponent:
+                if (ch >= '0' && ch <= '9') {
+                    result += superscripts[ch - '0'];
+                }
+                else if (ch == '^') {
+                    state = AfterCaret;
+                }
+                else {
+                    result += ch;
+                    state = Normal;
+                }
+                break;
         }
     }
 
-    flushPending();
+    if (state == AfterCaret) {
+        result += '^';
+    }
+    else if (state == AfterCaretMinus) {
+        result += '^';
+        result += '-';
+    }
 
     return result;
 }
