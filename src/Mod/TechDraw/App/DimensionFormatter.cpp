@@ -104,7 +104,6 @@ std::string DimensionFormatter::formatValue(const qreal value,
     double factor{1.0};
     std::string unitText{""};
     asQuantity.getUserString(factor, unitText);
-    std::string super2{"²"};
     std::string squareTag{"^2"};
 
     if (unitText.empty()) {
