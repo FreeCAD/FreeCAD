@@ -691,6 +691,31 @@ class PostProcessor:
             if hasattr(duplicates, "parameters"):
                 self.values["OUTPUT_DOUBLES"] = duplicates.parameters
 
+    def _apply_schema_defaults(self):
+        """Populate postprocessor_properties with schema defaults for missing keys.
+
+        The .fcm file only stores properties explicitly changed by the user.
+        Properties not present in the file (e.g. preamble, safetyblock, postamble)
+        still have defaults defined in the postprocessor's property schema.
+
+        This method merges those defaults so that export2 and other consumers
+        can read them from postprocessor_properties without special-case fallback
+        logic.
+
+        Must be called after self._machine is set and before any code reads
+        postprocessor_properties.
+        """
+        if not self._machine:
+            return
+
+        schema = self.get_full_property_schema()
+        for prop in schema:
+            name = prop.get("name", "")
+            if name and name not in self._machine.postprocessor_properties:
+                default = prop.get("default", "")
+                self._machine.postprocessor_properties[name] = default
+                Path.Log.debug(f"Schema default applied: {name} = {repr(default)}")
+
     def _apply_job_property_overrides(self):
         """Apply job-level postprocessor property overrides on top of machine config.
 
@@ -1260,6 +1285,10 @@ class PostProcessor:
 
         # Merge machine configuration into values dict
         self._merge_machine_config()
+
+        # Populate postprocessor_properties with schema defaults for any keys
+        # not explicitly stored in the .fcm file (e.g. preamble, safetyblock)
+        self._apply_schema_defaults()
 
         # Apply job-level property overrides on top of machine defaults
         self._apply_job_property_overrides()

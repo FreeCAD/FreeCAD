@@ -1776,3 +1776,75 @@ class TestExport2Integration(unittest.TestCase):
         self.assertEqual(
             machine.postprocessor_properties["drill_cycles_to_translate"], "G81\nG82\nG83"
         )
+
+    def test154_schema_defaults_applied_for_missing_properties(self):
+        """
+        Test that schema defaults are applied when postprocessor.properties
+        is sparse (only contains user-changed values).
+
+        Real .fcm files only store properties the user explicitly changed.
+        Properties like preamble, postamble, safetyblock may be absent.
+        _apply_schema_defaults must fill them in from the schema so that
+        export2 can read them.
+
+        INPUT:
+        - Machine config with sparse postprocessor.properties (only
+          file_extension set, all block properties absent)
+        - Base PostProcessor class (empty-string defaults for blocks)
+
+        EXPECTED OUTPUT:
+        - After export2, postprocessor_properties contains all schema keys
+        - Keys that were absent get their schema default values
+        - Keys that were present retain their original values
+        """
+        config = self._get_full_machine_config()
+        # Simulate a sparse .fcm: only file_extension is stored
+        config["postprocessor"]["properties"] = {
+            "file_extension": "nc",
+        }
+        machine = Machine.from_dict(config)
+
+        # Verify the key is absent before export
+        self.assertNotIn("preamble", machine.postprocessor_properties)
+        self.assertNotIn("postamble", machine.postprocessor_properties)
+        self.assertNotIn("safetyblock", machine.postprocessor_properties)
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
+            ]
+        ):
+            results = self._run_export2(machine)
+
+            # After export2, schema defaults should have been applied
+            self.assertIn(
+                "preamble",
+                machine.postprocessor_properties,
+                "preamble key should exist after _apply_schema_defaults",
+            )
+            self.assertIn(
+                "postamble",
+                machine.postprocessor_properties,
+                "postamble key should exist after _apply_schema_defaults",
+            )
+            self.assertIn(
+                "safetyblock",
+                machine.postprocessor_properties,
+                "safetyblock key should exist after _apply_schema_defaults",
+            )
+            self.assertIn(
+                "pre_operation",
+                machine.postprocessor_properties,
+                "pre_operation key should exist after _apply_schema_defaults",
+            )
+            self.assertIn(
+                "post_operation",
+                machine.postprocessor_properties,
+                "post_operation key should exist after _apply_schema_defaults",
+            )
+            # Original value should be preserved
+            self.assertEqual(
+                machine.postprocessor_properties["file_extension"],
+                "nc",
+                "Existing property should not be overwritten",
+            )

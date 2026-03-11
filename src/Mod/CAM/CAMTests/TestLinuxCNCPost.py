@@ -517,3 +517,96 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
 
         # Verify - should not be None (not suppressed)
         self.assertIsNotNone(result)
+
+    def test_schema_defaults_applied_for_sparse_config(self):
+        """
+        Test that LinuxCNC schema defaults are applied when postprocessor_properties
+        is sparse (simulating a real .fcm file that only stores user-changed values).
+
+        LinuxCNC overrides get_common_property_schema() to set:
+            preamble = "G17 G54 G40 G49 G80 G90"
+            postamble = "M05\\nG17 G54 G90 G80 G40\\nM2"
+            safetyblock = "G40 G49 G80"
+
+        INPUT:
+        - LinuxCNC postprocessor with a machine that has only
+          file_extension and blend_mode in postprocessor_properties
+        - preamble, postamble, safetyblock keys are absent
+
+        EXPECTED OUTPUT:
+        - After export2, postprocessor_properties contains all schema keys
+        - preamble, postamble, safetyblock have LinuxCNC-specific defaults
+        """
+        # Start with a sparse config (only blend_mode set, no blocks)
+        self.post._machine.postprocessor_properties = {
+            "file_extension": "ngc",
+            "blend_mode": "BLEND",
+        }
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+
+        # Verify keys are absent before export
+        self.assertNotIn("preamble", self.post._machine.postprocessor_properties)
+        self.assertNotIn("postamble", self.post._machine.postprocessor_properties)
+        self.assertNotIn("safetyblock", self.post._machine.postprocessor_properties)
+
+        self.profile_op.Path = Path.Path([Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0})])
+        results = self.post.export2()
+
+        # After export2, schema defaults should have been applied
+        props = self.post._machine.postprocessor_properties
+        self.assertIn("preamble", props, "preamble key should exist after export2")
+        self.assertIn("postamble", props, "postamble key should exist after export2")
+        self.assertIn("safetyblock", props, "safetyblock key should exist after export2")
+
+        # Existing value should be preserved
+        self.assertEqual(props["file_extension"], "ngc")
+
+    def test_schema_defaults_blocks_appear_in_output(self):
+        """
+        Test that LinuxCNC schema default blocks actually appear in the G-code
+        output when the .fcm file omits them.
+
+        This simulates the real-world bug: user's .fcm has only file_extension
+        and rotary move properties, but the machine editor shows preamble,
+        postamble, and safetyblock with their schema defaults. After
+        postprocessing, those blocks must appear in the output.
+
+        INPUT:
+        - LinuxCNC postprocessor with sparse postprocessor_properties
+        - No preamble, postamble, or safetyblock keys in config
+
+        EXPECTED OUTPUT:
+        - Preamble default "G17 G54 G40 G49 G80 G90" appears in output
+        - Postamble defaults "M05", "G17 G54 G90 G80 G40", "M2" appear
+        - Safetyblock default "G40 G49 G80" appears in output
+        """
+        self.post._machine.postprocessor_properties = {
+            "file_extension": "ngc",
+            "blend_mode": "BLEND",
+            "blend_tolerance": 0.0,
+        }
+        self.post._machine.output.comments.enabled = False
+        self.post._machine.output.output_header = False
+
+        self.profile_op.Path = Path.Path(
+            [
+                Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0}),
+                Path.Command("G1", {"X": 20.0, "Y": 10.0, "Z": 5.0, "F": 1000.0}),
+            ]
+        )
+        results = self.post.export2()
+        gcode = "\n".join(g for _, g in results)
+
+        # LinuxCNC preamble defaults
+        self.assertIn("G17", gcode, "Preamble G17 should appear from schema default")
+        self.assertIn("G54", gcode, "Preamble G54 should appear from schema default")
+        self.assertIn("G80", gcode, "Preamble/safety G80 should appear from schema default")
+
+        # LinuxCNC postamble defaults
+        self.assertIn("M05", gcode, "Postamble M05 should appear from schema default")
+        self.assertIn("M2", gcode, "Postamble M2 should appear from schema default")
+
+        # LinuxCNC safetyblock defaults
+        self.assertIn("G40", gcode, "Safetyblock G40 should appear from schema default")
+        self.assertIn("G49", gcode, "Safetyblock G49 should appear from schema default")
