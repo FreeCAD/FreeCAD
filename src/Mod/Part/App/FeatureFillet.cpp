@@ -179,14 +179,7 @@ App::DocumentObjectExecReturn* Fillet::execute()
         return Part::FilletBase::execute();
     }
     catch (Standard_Failure& e) {
-        std::string msg = e.GetMessageString();
-        if (msg.find("command not done") != std::string::npos) {
-            return new App::DocumentObjectExecReturn(
-                "Fillet failed: radius too large for selected edge(s). "
-                "Reduce the radius or select fewer edges."
-            );
-        }
-        return new App::DocumentObjectExecReturn(msg.c_str());
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn("A fatal error occurred when making fillets");

@@ -121,18 +121,11 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         this->Shape.setValue(res.makeElementShape(mkChamfer, baseTopoShape, Part::OpCodes::Chamfer));
         return Part::FilletBase::execute();
     }
-    catch (Standard_Failure& e) {
-        std::string msg = e.GetMessageString();
-        if (msg.find("command not done") != std::string::npos) {
-            return new App::DocumentObjectExecReturn(
-                "Chamfer size too large: would consume an adjacent face. "
-                "Reduce the size or select fewer edges."
-            );
-        }
-        return new App::DocumentObjectExecReturn(msg.c_str());
-    }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
+    }
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (...) {
         return new App::DocumentObjectExecReturn(
