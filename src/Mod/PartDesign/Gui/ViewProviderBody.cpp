@@ -552,7 +552,7 @@ bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj, App::Docu
 void ViewProviderBody::show()
 {
     // Call the base version first to ensure normal behavior
-    PartGui::ViewProviderPartExt::show();
+    PartGui::ViewProviderPart::show();
 
     auto* body = static_cast<PartDesign::Body*>(getObject());
 
