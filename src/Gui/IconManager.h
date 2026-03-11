@@ -32,6 +32,8 @@
 #include <QSize>
 #include <QString>
 
+
+class QDomElement;
 namespace Gui
 {
 
@@ -95,7 +97,7 @@ private:
     QByteArray materializeSvgDom(const QByteArray& rawSvg, const QColor& color) const;
     QPixmap renderSvg(const QByteArray& svg, const QSize& size, qreal dpr) const;
 
-    static void recolorCurrentStrokeAttributes(class QDomElement& element, const QString& colorValue);
+    static void recolorCurrentStrokeAttributes(QDomElement& element, const QString& colorValue);
 
 private:
     mutable QMutex m_mutex;

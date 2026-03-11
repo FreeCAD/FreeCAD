@@ -36,6 +36,7 @@
 #include <Base/Color.h>
 #include <Base/Exception.h>
 #include <FCGlobal.h>
+#include <cassert>
 
 namespace Gui::StyleParameters
 {

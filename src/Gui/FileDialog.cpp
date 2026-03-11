@@ -48,6 +48,8 @@
 #include "MainWindow.h"
 #include "Tools.h"
 
+#include <QPushButton>
+
 
 using namespace Gui;
 

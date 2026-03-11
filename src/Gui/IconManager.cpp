@@ -24,11 +24,11 @@
 #include "IconManager.h"
 
 #include <QApplication>
-#include <QDomDocument>
-#include <QDomElement>
 #include <QFile>
 #include <QPainter>
 #include <QSvgRenderer>
+#include <QPalette>
+#include <QDomDocument>
 
 #include <fmt/format.h>
 
