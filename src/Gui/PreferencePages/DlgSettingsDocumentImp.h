@@ -50,6 +50,7 @@ public:
 
 protected Q_SLOTS:
     void onLicenseTypeChanged(int index);
+    void onDateFormatChanged(const QString& text);
 
 protected:
     void changeEvent(QEvent* e) override;
