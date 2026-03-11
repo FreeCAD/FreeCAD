@@ -172,10 +172,7 @@ bool ViewProvider::setEdit(int ModNum)
             }
         }
 
-        auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
-            return editdoc->getEditViewProvider() == this;
-        });
-        Gui::Control().showDialog(featureDlg, editDoc->getDocument());
+        Gui::Control().showDialog(featureDlg);
         return true;
     }
     else {
