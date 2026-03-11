@@ -52,6 +52,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "EditDatumDialog.h"
+#include "EditTextDialog.h"
 #include "TaskSketcherConstraints.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
@@ -318,6 +319,8 @@ public:
             // Gui::BitmapFactory().iconFromTheme("Constraint_Ellipse_Axis_Angle") );
             static QIcon equal(Gui::BitmapFactory().iconFromTheme("Constraint_EqualLength"));
             static QIcon pntoo(Gui::BitmapFactory().iconFromTheme("Constraint_PointOnObject"));
+            static QIcon group(Gui::BitmapFactory().iconFromTheme("Constraint_Group"));
+            static QIcon text(Gui::BitmapFactory().iconFromTheme("Constraint_Text"));
             static QIcon symm(Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric"));
             static QIcon snell(Gui::BitmapFactory().iconFromTheme("Constraint_SnellsLaw"));
             static QIcon iaellipseminoraxis(Gui::BitmapFactory().iconFromTheme(
@@ -349,7 +352,7 @@ public:
             auto selicon = [this](const Sketcher::Constraint* constr,
                               const QIcon& normal,
                               const QIcon& driven) -> QIcon {
-                if (!constr->isActive) {
+                if (!sketch->isConstraintActiveInSketch(constr)) {
                     QIcon darkIcon;
                     int w = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
                     darkIcon.addPixmap(normal.pixmap(w, w, QIcon::Disabled, QIcon::Off),
@@ -378,6 +381,10 @@ public:
                     return selicon(constraint, block, block);
                 case Sketcher::PointOnObject:
                     return selicon(constraint, pntoo, pntoo);
+                case Sketcher::Group:
+                    return selicon(constraint, group, group);
+                case Sketcher::Text:
+                    return selicon(constraint, text, text);
                 case Sketcher::Parallel:
                     return selicon(constraint, para, para);
                 case Sketcher::Perpendicular:
@@ -461,6 +468,8 @@ public:
             case Sketcher::Tangent:
             case Sketcher::Equal:
             case Sketcher::Symmetric:
+            case Sketcher::Group:
+            case Sketcher::Text:
                 return true;
             case Sketcher::Distance:
             case Sketcher::DistanceX:
@@ -825,6 +834,10 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
         it->setCheckState(isChecked ? Qt::Checked : Qt::Unchecked);
         filterState = filterState >> 1;// shift right to get rid of the used bit.
     }
+
+    // Text constraint filter is hidden from the user
+    item(static_cast<int>(ConstraintFilter::FilterValue::Text))->setHidden(true);
+
     languageChange();
 
     setPartiallyChecked();
@@ -1261,6 +1274,11 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
         editDatumDialog->exec(false);
         delete editDatumDialog;
     }
+    else if (it->constraintType() == Sketcher::Text) {
+        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr);
+        editDialog->exec();
+        delete editDialog;
+    }
 }
 
 void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem* item)
@@ -1694,6 +1712,10 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
     ConstraintItem* it = static_cast<ConstraintItem*>(item);
     const Sketcher::Constraint* constraint = vals[it->ConstraintNbr];
 
+    // Text constraint is hidden from the list widget.
+    if (constraint->Type == Sketcher::Text) {
+        return true;
+    }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -1715,6 +1737,12 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
                 break;
             case Sketcher::PointOnObject:
                 visible = checkFilterBitset(multiFilterStatus, FilterValue::PointOnObject);
+                break;
+            case Sketcher::Group:
+                visible = checkFilterBitset(multiFilterStatus, FilterValue::Group);
+                break;
+            case Sketcher::Text:
+                visible = checkFilterBitset(multiFilterStatus, FilterValue::Text);
                 break;
             case Sketcher::Parallel:
                 visible = checkFilterBitset(multiFilterStatus, FilterValue::Parallel);

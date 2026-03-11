@@ -224,6 +224,8 @@ public:
     static const Quantity Hour;
 
     static const Quantity Ampere;
+    static const Quantity NanoAmpere;
+    static const Quantity MicroAmpere;
     static const Quantity MilliAmpere;
     static const Quantity KiloAmpere;
     static const Quantity MegaAmpere;
@@ -232,6 +234,8 @@ public:
     static const Quantity MilliKelvin;
     static const Quantity MicroKelvin;
 
+    static const Quantity NanoMole;
+    static const Quantity MicroMole;
     static const Quantity MilliMole;
     static const Quantity Mole;
 
@@ -282,6 +286,8 @@ public:
     static const Quantity MPSI;
 
     static const Quantity Watt;
+    static const Quantity NanoWatt;
+    static const Quantity MicroWatt;
     static const Quantity MilliWatt;
     static const Quantity KiloWatt;
     static const Quantity VoltAmpere;

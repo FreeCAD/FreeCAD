@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
-      <translation>Pág&amp;ina de inicio</translation>
+      <translation>Página de inicio</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>

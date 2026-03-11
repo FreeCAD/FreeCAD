@@ -113,6 +113,29 @@ void ViewProviderBody::setOverrideMode(const std::string& mode)
     }
     else {
         overrideMode = mode;
+
+        // Propagate the override mode to child features.
+        // When the Body is an external link, the global viewport loop
+        // won't reach these children automatically.
+        if (pcObject && !isRestoring()) {
+            Gui::Document* gdoc = Gui::Application::Instance->getDocument(pcObject->getDocument());
+            if (gdoc) {
+                PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+                auto features = body->Group.getValues();
+                for (auto feature : features) {
+                    if (feature && feature->isDerivedFrom<PartDesign::Feature>()) {
+                        if (Gui::ViewProvider* vp = gdoc->getViewProvider(feature)) {
+                            vp->setOverrideMode(mode);
+                        }
+                    }
+                }
+                if (App::DocumentObject* base = body->BaseFeature.getValue()) {
+                    if (Gui::ViewProvider* vp = gdoc->getViewProvider(base)) {
+                        vp->setOverrideMode(mode);
+                    }
+                }
+            }
+        }
     }
 }
 

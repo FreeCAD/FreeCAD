@@ -54,6 +54,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.chipBreakEnabled.setEnabled(False)
 
     def registerSignalHandlers(self, obj):
+        # Strategy selector handler
+        if hasattr(self.form, "Strategy"):
+            self.form.Strategy.currentIndexChanged.connect(self.onStrategyChanged)
+
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
         self.form.peckEnabled.toggled.connect(self.form.feedRetractEnabled.setDisabled)
@@ -91,11 +95,59 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def setChipBreakControl(self):
         self.form.chipBreakEnabled.setEnabled(self.form.peckEnabled.isChecked())
 
+    def onStrategyChanged(self):
+        """Handle strategy selector changes - update property visibility"""
+        if not hasattr(self.form, "Strategy"):
+            return
+
+        strategy = str(self.form.Strategy.currentData())
+        self.updateStrategyVisibility(None, strategy)
+
+        # Validate tool for tapping strategy
+        if strategy == "Tapping":
+            self.validateTappingTool()
+
+    def updateStrategyVisibility(self, obj, strategy=None):
+        """Show/hide properties based on selected strategy"""
+        if not hasattr(self.form, "Strategy"):
+            return
+
+        if strategy is None:
+            if obj and hasattr(obj, "Strategy"):
+                strategy = obj.Strategy
+            else:
+                strategy = str(self.form.Strategy.currentData())
+
+        # Drilling-specific controls
+        drilling_controls = [
+            self.form.peckEnabled,
+            self.form.peckDepth,
+            self.form.peckDepthLabel,
+            self.form.chipBreakEnabled,
+            self.form.feedRetractEnabled,
+        ]
+
+        # Show/hide based on strategy
+        is_drilling = strategy == "Drilling"
+        for control in drilling_controls:
+            if hasattr(self.form, control.objectName()):
+                control.setVisible(is_drilling)
+
+        # Tapping note/info (if we add UI elements for it in future)
+        # For now, both strategies share: DwellEnabled, DwellTime, KeepToolDown, ExtraOffset
+
+    def validateTappingTool(self):
+        """Validate that selected tool is appropriate for tapping"""
+        # This will be called when strategy changes to Tapping
+        # Could show warning if tool doesn't have Pitch property
+        # For now, just log - actual validation happens at execution time
+        Path.Log.debug("Tapping strategy selected - tool will be validated at execution")
+
     def getForm(self):
         """getForm() ... return UI"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpDrillingEdit.ui")
 
-        comboToPropertyMap = [("ExtraOffset", "ExtraOffset")]
+        comboToPropertyMap = [("Strategy", "Strategy"), ("ExtraOffset", "ExtraOffset")]
         enumTups = PathDrilling.ObjectDrilling.propertyEnumerations(dataType="raw")
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
@@ -110,6 +162,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         Path.Log.track()
         self.peckDepthSpinBox.updateProperty()
         self.dwellTimeSpinBox.updateProperty()
+
+        if hasattr(self.form, "Strategy") and hasattr(obj, "Strategy"):
+            if obj.Strategy != str(self.form.Strategy.currentData()):
+                obj.Strategy = str(self.form.Strategy.currentData())
 
         if obj.KeepToolDown != self.form.KeepToolDownEnabled.isChecked():
             obj.KeepToolDown = self.form.KeepToolDownEnabled.isChecked()
@@ -131,6 +187,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """setFields(obj) ... update UI with obj properties' values"""
         Path.Log.track()
         self.updateQuantitySpinBoxes()
+
+        # Set Strategy selector
+        if hasattr(self.form, "Strategy") and hasattr(obj, "Strategy"):
+            self.selectInComboBox(obj.Strategy, self.form.Strategy)
+            self.updateStrategyVisibility(obj)
 
         if not hasattr(obj, "KeepToolDown"):
             obj.addProperty(
@@ -177,6 +238,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model"""
         signals = []
+
+        if hasattr(self.form, "Strategy"):
+            signals.append(self.form.Strategy.currentIndexChanged)
 
         signals.append(self.form.peckDepth.editingFinished)
         signals.append(self.form.dwellTime.editingFinished)

@@ -88,7 +88,7 @@
     <message>
       <location filename="../../../InitGui.py" line="109"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Tionól</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="110"/>
@@ -287,7 +287,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="406"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Easpórtáil</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="413"/>
@@ -339,7 +339,7 @@
       <location filename="../../../CommandInsertNewPart.py" line="80"/>
       <location filename="../../../CommandInsertNewPart.py" line="164"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Sábháil</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="167"/>
@@ -494,7 +494,7 @@ Sainmhíníonn FÁNA géire an aistrithe idir 0 agus H1 agus H2 go 0 thart ar am
     <message>
       <location filename="../../../InitGui.py" line="230"/>
       <source>Constraints</source>
-      <translation type="unfinished">Constraints</translation>
+      <translation>Srianta</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="246"/>
@@ -966,7 +966,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../../../CommandCreateJoint.py" line="318"/>
       <source>Screw Joint</source>
-      <translation type="unfinished">Screw Joint</translation>
+      <translation>Comhpháirt Scriú</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="324"/>
@@ -1067,7 +1067,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="96"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Easpórtáil</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="109"/>
@@ -1169,7 +1169,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="129"/>
       <source>Step</source>
-      <translation type="unfinished">Step</translation>
+      <translation>Céim</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
@@ -1367,7 +1367,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../../../CommandCreateJoint.py" line="246"/>
       <source>Perpendicular Joint</source>
-      <translation type="unfinished">Perpendicular Joint</translation>
+      <translation>Comhpháirteach Ingearach</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="251"/>
@@ -1419,7 +1419,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../../../CommandCreateJoint.py" line="366"/>
       <source>Belt Joint</source>
-      <translation type="unfinished">Belt Joint</translation>
+      <translation>Comhpháirteach Crios</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="372"/>

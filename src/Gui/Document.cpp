@@ -1898,11 +1898,9 @@ void Document::RestoreDocFile(Base::Reader& reader)
         if (!Base::Tools::isNullOrEmpty(ppReturn)) {
             saveCameraSettings(ppReturn);
             try {
-                const char** pReturnIgnore = nullptr;
-                std::list<MDIView*> mdi = getMDIViews();
-                for (const auto& it : mdi) {
-                    if (it->onHasMsg("SetCamera")) {
-                        it->onMsg(cameraSettings.c_str(), pReturnIgnore);
+                for (const auto& it : getMDIViews()) {
+                    if (auto* view3D = freecad_cast<View3DInventor*>(it)) {
+                        view3D->setCamera(cameraSettings.c_str());
                     }
                 }
             }
@@ -2023,12 +2021,10 @@ void Document::SaveDocFile(Base::Writer& writer) const
     writer.decInd();  // indentation for 'ViewProviderData Count'
 
     // save camera settings
-    std::list<MDIView*> mdi = getMDIViews();
-    for (const auto& it : mdi) {
-        if (it->onHasMsg("GetCamera")) {
-            const char* ppReturn = nullptr;
-            it->onMsg("GetCamera", &ppReturn);
-            if (saveCameraSettings(ppReturn)) {
+    for (const auto& it : getMDIViews()) {
+        if (auto* view3D = freecad_cast<View3DInventor*>(it)) {
+            const std::string& camera = view3D->getCamera();
+            if (saveCameraSettings(camera.c_str())) {
                 break;
             }
         }
@@ -2217,9 +2213,8 @@ MDIView* Document::createView(const Base::Type& typeId, CreateViewMode mode)
             auto firstView = static_cast<View3DInventor*>(theViews.front());
             shareWidget = qobject_cast<QOpenGLWidget*>(firstView->getViewer()->getGLWidget());
 
-            const char* ppReturn = nullptr;
-            firstView->onMsg("GetCamera", &ppReturn);
-            saveCameraSettings(ppReturn);
+            const std::string& camera = firstView->getCamera();
+            saveCameraSettings(camera.c_str());
         }
 
         auto view3D = new View3DInventor(this, getMainWindow(), shareWidget);
@@ -2265,8 +2260,7 @@ MDIView* Document::createView(const Base::Type& typeId, CreateViewMode mode)
         view3D->resize(400, 300);
 
         if (!cameraSettings.empty()) {
-            const char* ppReturn = nullptr;
-            view3D->onMsg(cameraSettings.c_str(), &ppReturn);
+            view3D->setCamera(cameraSettings.c_str());
         }
 
         // When cloning the view, don't add the view to the main window. The whole purpose of the
@@ -2284,7 +2278,7 @@ MDIView* Document::createView(const Base::Type& typeId, CreateViewMode mode)
 
 const char* Document::getCameraSettings() const
 {
-    return cameraSettings.size() > 10 ? cameraSettings.c_str() + 10 : cameraSettings.c_str();
+    return cameraSettings.c_str();
 }
 
 bool Document::saveCameraSettings(const char* settings) const
@@ -2314,7 +2308,7 @@ bool Document::saveCameraSettings(const char* settings) const
         return false;
     }
 
-    cameraSettings = std::string("SetCamera ") + settings;
+    cameraSettings = settings;
     return true;
 }
 
@@ -2531,16 +2525,15 @@ std::list<MDIView*> Document::getMDIViewsOfType(const Base::Type& typeId) const
 bool Document::sendMsgToViews(const char* pMsg)
 {
     std::list<Gui::BaseView*>::iterator it;
-    const char** pReturnIgnore = nullptr;
 
     for (it = d->baseViews.begin(); it != d->baseViews.end(); ++it) {
-        if ((*it)->onMsg(pMsg, pReturnIgnore)) {
+        if ((*it)->onMsg(pMsg)) {
             return true;
         }
     }
 
     for (it = d->passiveViews.begin(); it != d->passiveViews.end(); ++it) {
-        if ((*it)->onMsg(pMsg, pReturnIgnore)) {
+        if ((*it)->onMsg(pMsg)) {
             return true;
         }
     }
@@ -2548,12 +2541,12 @@ bool Document::sendMsgToViews(const char* pMsg)
     return false;
 }
 
-bool Document::sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, const char** ppReturn)
+bool Document::sendMsgToFirstView(const Base::Type& typeId, const char* pMsg)
 {
     // first try the active view
     Gui::MDIView* view = getActiveView();
     if (view && view->isDerivedFrom(typeId)) {
-        if (view->onMsg(pMsg, ppReturn)) {
+        if (view->onMsg(pMsg)) {
             return true;
         }
     }
@@ -2561,7 +2554,7 @@ bool Document::sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, co
     // now try the other views
     std::list<Gui::MDIView*> views = getMDIViewsOfType(typeId);
     for (const auto& it : views) {
-        if ((it != view) && it->onMsg(pMsg, ppReturn)) {
+        if ((it != view) && it->onMsg(pMsg)) {
             return true;
         }
     }

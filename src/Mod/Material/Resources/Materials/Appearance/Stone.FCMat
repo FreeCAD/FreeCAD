@@ -3,7 +3,7 @@
 General:
   UUID: "a9f54d61-cc98-46df-8734-b0543ceb4e45"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Stone"
   Description: "Defines the Stone appearance properties"
 AppearanceModels:
