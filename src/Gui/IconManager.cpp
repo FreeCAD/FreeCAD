@@ -23,10 +23,13 @@
 
 #include "IconManager.h"
 
+#include <QApplication>
 #include <QDomDocument>
+#include <QDomElement>
 #include <QFile>
 #include <QPainter>
 #include <QSvgRenderer>
+
 #include <fmt/format.h>
 
 using namespace Gui;
