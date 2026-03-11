@@ -69,11 +69,21 @@ QByteArray loadFCStdThumbnail(const QString& pathToFCStdFile)
             const QString pathToCachedThumbnail = getPathToCachedThumbnail(pathToFCStdFile);
             if (!useCachedThumbnail(pathToCachedThumbnail, pathToFCStdFile)) {
                 static const QString pathToThumbnail = defaultThumbnailPath;
-                if (proj.containsFile(pathToThumbnail.toStdString())) {
+                bool fileContainsThumbnail = proj.containsFile(pathToThumbnail.toStdString());
+                bool docCacheContainsThumbnail = proj.containsFileInDocumentCache(
+                    pathToThumbnail.toStdString()
+                );
+
+                if (fileContainsThumbnail || docCacheContainsThumbnail) {
                     createThumbnailsDir();
                     const Base::FileInfo fi(pathToCachedThumbnail.toStdString());
                     Base::ofstream stream(fi, std::ios::out | std::ios::binary);
-                    proj.readInputFileDirect(pathToThumbnail.toStdString(), stream);
+                    if (fileContainsThumbnail) {
+                        proj.readInputFileDirect(pathToThumbnail.toStdString(), stream);
+                    }
+                    else if (docCacheContainsThumbnail) {
+                        proj.readInputFileFromDocumentCache(pathToThumbnail.toStdString(), stream);
+                    }
                     stream.close();
                 }
             }
