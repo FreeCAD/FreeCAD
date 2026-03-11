@@ -46,7 +46,9 @@ using namespace Gui;
 
 Thumbnail::Thumbnail(int s)
     : size(s)
-{}
+{
+    setCanBeCachedForDocument(true);
+}
 
 Thumbnail::~Thumbnail() = default;
 
