@@ -658,11 +658,8 @@ bool ViewProviderHole::generateBoreMeshData(
         for (const auto& facet : meshFacets) {
             std::array<int, 3> n = {1, 1, 1};
             facet.Get(n[0], n[1], n[2]);
-            std::array<int, 3> triIndices = {
-                localToGlobalIndex[n[0] - 1],
-                localToGlobalIndex[n[1] - 1],
-                localToGlobalIndex[n[2] - 1]
-            };
+            std::array<int, 3> triIndices
+                = {localToGlobalIndex[n[0]], localToGlobalIndex[n[1]], localToGlobalIndex[n[2]]};
             handleSeamTriangle(vertices, normals, uvs, triIndices);
 
             indices.insert(indices.end(), {triIndices[0], triIndices[1], triIndices[2], -1});
