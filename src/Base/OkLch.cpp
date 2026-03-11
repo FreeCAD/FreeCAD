@@ -28,6 +28,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <numbers>
 
 // NOLINTBEGIN(readability-magic-numbers)
 
@@ -105,8 +106,11 @@ LinearRgb okLabToLinearSrgb(const OkLab& lab)
     };
 }
 
-constexpr float degreesPerRadian = 180.0f / static_cast<float>(M_PI);
-constexpr float radiansPerDegree = static_cast<float>(M_PI) / 180.0f;
+
+constexpr float pi = std::numbers::pi_v<float>;
+
+constexpr float degreesPerRadian = 180.0f / pi;
+constexpr float radiansPerDegree = pi / 180.0f;
 constexpr float fullCircleDegrees = 360.0f;
 
 OkLch okLabToOkLch(const OkLab& lab)
