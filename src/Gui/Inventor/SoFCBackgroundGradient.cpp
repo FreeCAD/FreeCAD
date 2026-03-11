@@ -85,6 +85,10 @@ SoFCBackgroundGradient::SoFCBackgroundGradient()
     tCol.setValue(0.7f, 0.7f, 0.9f);
     mCol.setValue(1.0f, 1.0f, 1.0f);
     gradient = Gradient::LINEAR;
+
+    if(oTile.isNull()){
+        oTile.load(":/patterns/checkerboard_pattern.png");
+    }
 }
 
 /*!
@@ -180,6 +184,28 @@ void SoFCBackgroundGradient::GLRender(SoGLRenderAction* /*action*/)
         }
     }  // end of radial gradient
     glEnd();
+
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    if(oTex == nullptr){
+        oTex.reset(new QOpenGLTexture(oTile));
+        oTex->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
+        oTex->setWrapMode(QOpenGLTexture::Repeat);
+        oTex->generateMipMaps();
+    }
+    oTex->bind();
+
+    glBegin(GL_QUADS);
+    glColor4d(1.0, 1.0, 1.0, oAlpha);
+    glTexCoord2d(0.0, 0.0); glVertex2d(-1.0, -1.0);
+    glTexCoord2d(0.0, 1.0); glVertex2d(-1.0, +1.0);
+    glTexCoord2d(1.0, 1.0); glVertex2d(+1.0, +1.0);
+    glTexCoord2d(1.0, 0.0); glVertex2d(+1.0, -1.0);
+    glEnd();
+
 
     glPopAttrib();
     glPopMatrix();  // restore modelview

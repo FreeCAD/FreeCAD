@@ -28,7 +28,8 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <FCGlobal.h>
-
+#include <QImage>
+#include <QOpenGLTexture>
 
 class SbColor;
 class SoGLRenderAction;
@@ -65,6 +66,10 @@ protected:
     ~SoFCBackgroundGradient() override;
 
     SbColor fCol, tCol, mCol;
+
+    inline static QImage oTile{};
+    QScopedPointer <QOpenGLTexture> oTex{}; // overlay pattern texture
+    static constexpr double oAlpha{0.03};   // transparency of the pattern
 };
 
 }  // namespace Gui
