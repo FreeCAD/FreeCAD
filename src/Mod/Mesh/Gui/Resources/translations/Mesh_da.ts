@@ -1172,7 +1172,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="29"/>
       <source>Solid</source>
-      <translation type="unfinished">Solid</translation>
+      <translation>Massivt emne</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="42"/>
@@ -1686,7 +1686,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Oprettelse af mesh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>

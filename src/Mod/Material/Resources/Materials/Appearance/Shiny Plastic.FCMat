@@ -3,7 +3,7 @@
 General:
   UUID: "591c4c4a-22ba-4a9a-869d-e5610107d69a"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Shiny Plastic"
   Description: "Defines the Shiny Plastic appearance properties"
 AppearanceModels:

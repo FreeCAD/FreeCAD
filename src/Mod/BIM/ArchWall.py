@@ -870,7 +870,10 @@ class _Wall(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchPropertySet", 0)
         else:
             if hasattr(obj, "Width"):
-                obj.setEditorMode("Width", 0)
+                if hasattr(self, "multimaterialsWidth") and self.multimaterialsWidth:
+                    obj.setEditorMode("Width", ["ReadOnly"])
+                else:
+                    obj.setEditorMode("Width", 0)
             if hasattr(obj, "Align"):
                 obj.setEditorMode("Align", 0)
             if hasattr(obj, "Offset"):
@@ -1053,7 +1056,7 @@ class _Wall(ArchComponent.Component):
             else:
                 aligns = [obj.Align]
 
-        # set 'default' align - for filling in any item in the list == 0 or None
+        # Set 'default' align - for filling in any item in the list == 0 or None
         align = obj.Align  # or aligns[0]
 
         # Get offset of each edge segment from Base Objects if they store it
@@ -1106,25 +1109,25 @@ class _Wall(ArchComponent.Component):
         placement = None
         self.basewires = None
 
-        # build wall layers
-        layers = []
-        if hasattr(obj, "Material"):
-            if obj.Material:
-                if hasattr(obj.Material, "Materials"):
-                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
-                    # multimaterials
-                    varwidth = 0
-                    restwidth = width - sum(thicknesses)
-                    if restwidth > 0:
-                        varwidth = [t for t in thicknesses if t == 0]
-                        if varwidth:
-                            varwidth = restwidth / len(varwidth)
-                    for t in obj.Material.Thicknesses:
-                        if t:
-                            layers.append(t)
-                        elif varwidth:
-                            layers.append(varwidth)
-
+        # Check and build wall layers
+        self.multimaterialsWidth = False
+        layers = self.get_layers(obj)
+        # check total width and update Wall's Width
+        if layers:
+            total = sum(layers)
+            if obj.Width.Value != total:
+                obj.Width = total
+            # If there is no 0 (zero) in any of the layers, the total thickness
+            # is driven by the multi-materials itself.  Otherwise, user should
+            # be able in any time change the Width and drive the total thickness
+            # - in the latter case, Width property should not be changed to
+            # ready-only.
+            if not (0 in obj.Material.Thicknesses):
+                self.multimaterialsWidth = True
+        if self.multimaterialsWidth:
+            obj.setEditorMode("Width", ["ReadOnly"])
+        else:
+            obj.setEditorMode("Width", 0)
         # Check if there is obj.Base and its validity to proceed
         if self.ensureBase(obj):
             if hasattr(obj.Base, "Shape"):
@@ -1794,20 +1797,24 @@ if FreeCAD.GuiUp:
             self.wallWidget.setWindowTitle(translate("Arch", "Wall Options"))
 
             layout = QtGui.QFormLayout(self.wallWidget)
+            loader = FreeCADGui.UiLoader()
 
-            self.length = FreeCADGui.UiLoader().createWidget("Gui::InputField")
-            self.length.setProperty("unit", "mm")
-            self.length.setText(obj.Length.UserString)
+            # Length
+            self.length = loader.createWidget("Gui::QuantitySpinBox")
+            FreeCADGui.ExpressionBinding(self.length).bind(self.obj, "Length")
+            self.length.setProperty("value", self.obj.Length)
             layout.addRow(translate("Arch", "Length"), self.length)
 
-            self.width = FreeCADGui.UiLoader().createWidget("Gui::InputField")
-            self.width.setProperty("unit", "mm")
-            self.width.setText(obj.Width.UserString)
+            # Width
+            self.width = loader.createWidget("Gui::QuantitySpinBox")
+            FreeCADGui.ExpressionBinding(self.width).bind(self.obj, "Width")
+            self.width.setProperty("value", self.obj.Width)
             layout.addRow(translate("Arch", "Width"), self.width)
 
-            self.height = FreeCADGui.UiLoader().createWidget("Gui::InputField")
-            self.height.setProperty("unit", "mm")
-            self.height.setText(obj.Height.UserString)
+            # Height
+            self.height = loader.createWidget("Gui::QuantitySpinBox")
+            FreeCADGui.ExpressionBinding(self.height).bind(self.obj, "Height")
+            self.height.setProperty("value", self.obj.Height)
             layout.addRow(translate("Arch", "Height"), self.height)
 
             self.alignLayout = QtGui.QHBoxLayout()
@@ -1847,9 +1854,9 @@ if FreeCAD.GuiUp:
             self.obj.recompute()
 
         def accept(self):
-            self.obj.Length = self.length.text()
-            self.obj.Width = self.width.text()
-            self.obj.Height = self.height.text()
+            self.obj.Length = self.length.property("value")
+            self.obj.Width = self.width.property("value")
+            self.obj.Height = self.height.property("value")
             return super().accept()
 
 

@@ -2856,9 +2856,9 @@ de que "MAXKOI" necesita ser aumentado.</translation>
       <translation>Presión de entrada</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Presión</translation>
     </message>
@@ -2990,10 +2990,10 @@ de que "MAXKOI" necesita ser aumentado.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parámetro</translation>
     </message>
@@ -3159,16 +3159,16 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>Real</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>Imaginario</translation>
     </message>
@@ -3261,8 +3261,8 @@ Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
@@ -3368,13 +3368,13 @@ Note: has no effect if a solid was selected</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation type="unfinished">Analysis Feature Properties</translation>
     </message>
@@ -3471,8 +3471,8 @@ with harmonic/oscillating driving current</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3488,8 +3488,8 @@ with harmonic/oscillating driving current</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3505,8 +3505,8 @@ with harmonic/oscillating driving current</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3546,10 +3546,10 @@ with harmonic/oscillating driving current</translation>
       <translation type="unfinished">Maximum element size</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Formulario</translation>
     </message>
@@ -3560,8 +3560,8 @@ with harmonic/oscillating driving current</translation>
       <translation>Campo</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <source>Frames</source>
       <translation>Marcos</translation>
     </message>
@@ -3834,7 +3834,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="14"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>Mostrar resultado</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="26"/>
@@ -3844,17 +3844,17 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="56"/>
       <source>Displacement magnitude</source>
-      <translation type="unfinished">Displacement magnitude</translation>
+      <translation>Magnitud del desplazamiento</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="83"/>
       <source>Maximum principal stress</source>
-      <translation type="unfinished">Maximum principal stress</translation>
+      <translation>Esfuerzo principal máximo</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="103"/>
       <source>Minimum principal stress</source>
-      <translation type="unfinished">Minimum principal stress</translation>
+      <translation>Esfuerzo principal mínimo</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="123"/>
@@ -3874,7 +3874,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="163"/>
       <source>Network pressure</source>
-      <translation type="unfinished">Network pressure</translation>
+      <translation>Presión de red</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="181"/>
@@ -4083,12 +4083,12 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
       <source>Write .inp File</source>
-      <translation type="unfinished">Write .inp File</translation>
+      <translation>Escribir archivo .inp</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="120"/>
       <source>Edit .inp File</source>
-      <translation type="unfinished">Edit .inp File</translation>
+      <translation>Editar archivo .inp</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="151"/>
@@ -4208,7 +4208,7 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>Añadir una referencia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="35"/>
@@ -4256,7 +4256,7 @@ Para posibles variables, vea el cuadro de descripción a continuación.</transla
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
       <source>Add Reference</source>
-      <translation type="unfinished">Add Reference</translation>
+      <translation>Añadir una referencia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="35"/>
@@ -4693,7 +4693,7 @@ normal de la cara se utiliza como dirección</translation>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="156"/>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="218"/>
       <source>Ambient temperature</source>
-      <translation type="unfinished">Ambient temperature</translation>
+      <translation>Temperatura ambiente</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="193"/>
@@ -5171,7 +5171,7 @@ normal de la cara se utiliza como dirección</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="46"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>Tamaño mínimo</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="71"/>
@@ -5211,7 +5211,7 @@ normal de la cara se utiliza como dirección</translation>
     <message>
       <location filename="../../TaskTetParameter.ui" line="115"/>
       <source>Growth rate</source>
-      <translation type="unfinished">Growth rate</translation>
+      <translation>Tasa de crecimiento</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="129"/>
@@ -5446,7 +5446,7 @@ normal de la cara se utiliza como dirección</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="58"/>
       <source>New Analysis</source>
-      <translation type="unfinished">New Analysis</translation>
+      <translation>Nuevo análisis</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
@@ -5498,7 +5498,7 @@ normal de la cara se utiliza como dirección</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="659"/>
       <source>Reinforced Material (Concrete)</source>
-      <translation type="unfinished">Reinforced Material (Concrete)</translation>
+      <translation>Material reforzado (hormigón)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="663"/>
@@ -5744,7 +5744,7 @@ normal de la cara se utiliza como dirección</translation>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="302"/>
       <source>Select geometry of type: {}{}{}</source>
-      <translation type="unfinished">Select geometry of type: {}{}{}</translation>
+      <translation>Seleccione geometría del tipo: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="331"/>
@@ -5859,7 +5859,7 @@ Por favor, primero seleccione un tipo de resultado.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="740"/>
       <source>Result mesh is empty</source>
-      <translation type="unfinished">Result mesh is empty</translation>
+      <translation>La malla resultante está vacía</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="754"/>
@@ -5873,9 +5873,9 @@ Por favor, primero seleccione un tipo de resultado.</translation>
 
 Correct module found in: 
 {}</source>
-      <translation type="unfinished">
+      <translation>
 
-Correct module found in: 
+Módulo correcto encontrado en: 
 {}</translation>
     </message>
     <message>
@@ -5883,9 +5883,9 @@ Correct module found in:
       <source>
 
 Should this module be loaded instead?</source>
-      <translation type="unfinished">
+      <translation>
 
-Should this module be loaded instead?</translation>
+¿Debe cargarse este módulo en su lugar?</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="223"/>
@@ -5919,42 +5919,42 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="63"/>
       <source>with {}</source>
-      <translation type="unfinished">with {}</translation>
+      <translation>con {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="98"/>
       <source>Add {}</source>
-      <translation type="unfinished">Add {}</translation>
+      <translation>Añadir {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="114"/>
       <source>From {}</source>
-      <translation type="unfinished">From {}</translation>
+      <translation>De {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="123"/>
       <source>add {}</source>
-      <translation type="unfinished">add {}</translation>
+      <translation>añadir {}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="371"/>
       <source>{}: Data source not available</source>
-      <translation type="unfinished">{}: Data source not available</translation>
+      <translation>{}: Fuente de datos no disponible</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="530"/>
       <source>Data used in:</source>
-      <translation type="unfinished">Data used in:</translation>
+      <translation>Datos usados en:</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="532"/>
       <source>Data used from:</source>
-      <translation type="unfinished">Data used from:</translation>
+      <translation>Datos usados de:</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="541"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>Añadir datos a</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="546"/>
@@ -5964,32 +5964,32 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="553"/>
       <source>Add data from</source>
-      <translation type="unfinished">Add data from</translation>
+      <translation>Añadir datos de</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/post_visualization.py" line="109"/>
       <source>Data Visualizations</source>
-      <translation type="unfinished">Data Visualizations</translation>
+      <translation>Visualizaciones de datos</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/post_visualization.py" line="112"/>
       <source>Different visualizations to show post processing data in</source>
-      <translation type="unfinished">Different visualizations to show post processing data in</translation>
+      <translation>Diferentes visualizaciones para mostrar datos de postprocesamiento en</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="175"/>
       <source>Export to CSV</source>
-      <translation type="unfinished">Export to CSV</translation>
+      <translation>Exportar a CSV</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="213"/>
       <source>Save as csv file</source>
-      <translation type="unfinished">Save as csv file</translation>
+      <translation>Guardar como archivo CSV</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/vtk_table_view.py" line="218"/>
       <source>CSV file export aborted: no filename selected</source>
-      <translation type="unfinished">CSV file export aborted: no filename selected</translation>
+      <translation>Exportación de archivo CSV interrumpida: no hay un nombre de archivo seleccionado</translation>
     </message>
     <message>
       <location filename="../../../femobjects/base_fempostextractors.py" line="87"/>
@@ -6022,8 +6022,8 @@ No matching module was found in the current Python path.</translation>
       <translation type="unfinished">Which part of the Y field vector to use for the Y axis</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation type="unfinished">Specify if the field shall be extracted for every available frame</translation>
     </message>
@@ -6040,7 +6040,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femtaskpanels/base_fempostpanel.py" line="69"/>
       <source>Edit {}</source>
-      <translation type="unfinished">Edit {}</translation>
+      <translation>Editar {}</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
@@ -6057,7 +6057,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="69"/>
       <source>Histogram Data</source>
-      <translation type="unfinished">Histogram Data</translation>
+      <translation>Datos del histograma</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_histogram.py" line="76"/>
@@ -6077,12 +6077,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="54"/>
       <source>Show Table</source>
-      <translation type="unfinished">Show Table</translation>
+      <translation>Mostrar tabla</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="64"/>
       <source>Table Data</source>
-      <translation type="unfinished">Table Data</translation>
+      <translation>Datos de la tabla</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
@@ -6192,7 +6192,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="414"/>
       <source>The scale the axis are drawn in</source>
-      <translation type="unfinished">The scale the axis are drawn in</translation>
+      <translation>La escala en la que se dibuja el eje</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="188"/>
@@ -6238,7 +6238,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="77"/>
       <source>Enable Laplacian smoothing</source>
-      <translation type="unfinished">Enable Laplacian smoothing</translation>
+      <translation>Activar suavizado Laplaciano</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="80"/>
@@ -6248,7 +6248,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskPostContours.ui" line="97"/>
       <source>Factor to control vertex displacement</source>
-      <translation type="unfinished">Factor to control vertex displacement</translation>
+      <translation>Factor para controlar el desplazamiento de vértices</translation>
     </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="113"/>
@@ -6271,7 +6271,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1688"/>
       <source>Electromagnetic Equations</source>
-      <translation type="unfinished">Electromagnetic Equations</translation>
+      <translation>Ecuaciones electromagnéticas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1689"/>
@@ -6289,7 +6289,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="2541"/>
       <source>Contours Filter</source>
-      <translation type="unfinished">Contours Filter</translation>
+      <translation>Filtro de contornos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2542"/>
@@ -6381,7 +6381,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1884"/>
       <source>Mechanical Equations</source>
-      <translation type="unfinished">Mechanical Equations</translation>
+      <translation>Ecuaciones mecánicas</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1885"/>
@@ -6394,7 +6394,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="198"/>
       <source>Body Heat Source</source>
-      <translation type="unfinished">Body Heat Source</translation>
+      <translation>Fuente de calor de cuerpo</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="201"/>
@@ -6407,7 +6407,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="211"/>
       <source>Centrifugal Load</source>
-      <translation type="unfinished">Centrifugal Load</translation>
+      <translation>Carga centrífuga</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="212"/>
@@ -6420,7 +6420,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="225"/>
       <source>Current Density Boundary Condition</source>
-      <translation type="unfinished">Current Density Boundary Condition</translation>
+      <translation>Condición de frontera de densidad de corriente</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="229"/>
@@ -6433,7 +6433,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="258"/>
       <source>Electrostatic Potential Boundary Condition</source>
-      <translation type="unfinished">Electrostatic Potential Boundary Condition</translation>
+      <translation>Condición de frontera de potencial electrostático</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="262"/>
@@ -6446,7 +6446,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="274"/>
       <source>Flow Velocity Boundary Condition</source>
-      <translation type="unfinished">Flow Velocity Boundary Condition</translation>
+      <translation>Condición de frontera de velocidad de flujo</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="277"/>
@@ -6459,7 +6459,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Initial Pressure Condition</source>
-      <translation type="unfinished">Initial Pressure Condition</translation>
+      <translation>Condición de presión inicial</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="308"/>
@@ -6472,7 +6472,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="320"/>
       <source>Magnetization Boundary Condition</source>
-      <translation type="unfinished">Magnetization Boundary Condition</translation>
+      <translation>Condición de frontera de magnetización</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="323"/>
@@ -6485,7 +6485,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="333"/>
       <source>Section Print Feature</source>
-      <translation type="unfinished">Section Print Feature</translation>
+      <translation>Característica de sección de impresión</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="336"/>
@@ -6498,7 +6498,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="346"/>
       <source>Gravity Load</source>
-      <translation type="unfinished">Gravity Load</translation>
+      <translation>Carga de gravedad</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="347"/>
@@ -6511,7 +6511,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="357"/>
       <source>Tie Constraint</source>
-      <translation type="unfinished">Tie Constraint</translation>
+      <translation>Restricción de unión</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="358"/>
@@ -6524,7 +6524,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="899"/>
       <source>Mesh Refinement</source>
-      <translation type="unfinished">Mesh Refinement</translation>
+      <translation>Refinamiento de malla</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="900"/>
@@ -6638,7 +6638,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="474"/>
       <source>Rigid Body Constraint</source>
-      <translation type="unfinished">Rigid Body Constraint</translation>
+      <translation>Restricción de cuerpo rígido</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="475"/>
@@ -6714,7 +6714,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="35"/>
       <source>Erase elements by polygon</source>
-      <translation type="unfinished">Erase elements by polygon</translation>
+      <translation>Borrar elementos por polígono</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
@@ -6742,14 +6742,14 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1434"/>
       <source>Erase Elements</source>
-      <translation type="unfinished">Erase Elements</translation>
+      <translation>Borrar elementos</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1479"/>
       <location filename="../../TaskCreateElementSet.cpp" line="241"/>
       <location filename="../../TaskCreateElementSet.cpp" line="252"/>
       <location filename="../../TaskCreateElementSet.cpp" line="510"/>
       <location filename="../../TaskCreateElementSet.cpp" line="607"/>
-      <location filename="../../Command.cpp" line="1479"/>
       <source>Wrong selection</source>
       <translation>Selección incorrecta</translation>
     </message>
@@ -6842,7 +6842,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="82"/>
       <source>Minimum size</source>
-      <translation type="unfinished">Minimum size</translation>
+      <translation>Tamaño mínimo</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="117"/>
@@ -6852,12 +6852,12 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="124"/>
       <source>Growth rate</source>
-      <translation type="unfinished">Growth rate</translation>
+      <translation>Tasa de crecimiento</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="147"/>
       <source>Curvature safety</source>
-      <translation type="unfinished">Curvature safety</translation>
+      <translation>Seguridad de curvatura</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="164"/>
@@ -6872,7 +6872,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="246"/>
       <source>Netgen Version</source>
-      <translation type="unfinished">Netgen Version</translation>
+      <translation>Versión de Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="192"/>
@@ -6901,7 +6901,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="54"/>
       <source>Python path</source>
-      <translation type="unfinished">Python path</translation>
+      <translation>Ruta de Python</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
@@ -6954,7 +6954,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="28"/>
       <source>Field name</source>
-      <translation type="unfinished">Field name</translation>
+      <translation>Nombre del campo</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="41"/>
@@ -6969,7 +6969,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="62"/>
       <source>Scalars</source>
-      <translation type="unfinished">Scalars</translation>
+      <translation>Escalares</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="72"/>
@@ -6979,12 +6979,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="82"/>
       <source>Operators</source>
-      <translation type="unfinished">Operators</translation>
+      <translation>Operadores</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="102"/>
       <source>Replace invalid data</source>
-      <translation type="unfinished">Replace invalid data</translation>
+      <translation>Reemplazar datos inválidos</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="105"/>
@@ -7138,10 +7138,10 @@ Leave blank to use default Python executable</translation>
   <context>
     <name>TaskPostGlyph</name>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>La forma del glifo</translation>
     </message>
@@ -7181,12 +7181,12 @@ Leave blank to use default Python executable</translation>
       <translation>Esfera</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation type="unfinished">Which vector field is used to orient the glyphs</translation>
     </message>
@@ -7196,10 +7196,10 @@ Leave blank to use default Python executable</translation>
       <translation>Orientación</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Ninguno</translation>
     </message>
@@ -7220,10 +7220,10 @@ Leave blank to use default Python executable</translation>
       <translation>Datos</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Un multiplicador constante con el que se escalan los glifos</translation>
     </message>
@@ -7235,29 +7235,29 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="199"/>
       <source>Changes the scale factor by +/- 50% of the set scale factor</source>
-      <translation type="unfinished">Changes the scale factor by +/- 50% of the set scale factor</translation>
+      <translation>Cambia el factor de escala en +/- 50% del factor de escala establecido</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation type="unfinished">If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="230"/>
       <source>Not a vector</source>
-      <translation type="unfinished">Not a vector</translation>
+      <translation>No es un vector</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="235"/>
       <source>By magnitude</source>
-      <translation type="unfinished">By magnitude</translation>
+      <translation>Por magnitud</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="240"/>
       <source>By components</source>
-      <translation type="unfinished">By components</translation>
+      <translation>Por componentes</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="251"/>
@@ -7332,38 +7332,38 @@ Leave blank to use default Python executable</translation>
       <translation type="unfinished">Cumulative</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
       <translation type="unfinished">Legend</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Mostrar</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <source>Labels</source>
       <translation>Etiquetas</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <source>Y-axis</source>
       <translation>Eje Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
       <source>X Axis</source>
-      <translation type="unfinished">X Axis</translation>
+      <translation>Eje X</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <source>Title</source>
       <translation>Título</translation>
     </message>
@@ -7546,7 +7546,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="405"/>
       <source>Beam Rotation</source>
-      <translation type="unfinished">Beam Rotation</translation>
+      <translation>Rotación de la viga</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="406"/>
@@ -7598,12 +7598,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="456"/>
       <source>Electrostatic Equation</source>
-      <translation type="unfinished">Electrostatic Equation</translation>
+      <translation>Ecuación electrostática</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="459"/>
       <source>Creates an equation for electrostatic</source>
-      <translation type="unfinished">Creates an equation for electrostatic</translation>
+      <translation>Crea una ecuación para la electrostática</translation>
     </message>
   </context>
   <context>
@@ -7715,12 +7715,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="673"/>
       <source>Solid Material</source>
-      <translation type="unfinished">Solid Material</translation>
+      <translation>Material sólido</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="675"/>
       <source>Creates a solid material</source>
-      <translation type="unfinished">Creates a solid material</translation>
+      <translation>Crea un material sólido</translation>
     </message>
   </context>
   <context>
@@ -7767,7 +7767,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="910"/>
       <source>Show Result</source>
-      <translation type="unfinished">Show Result</translation>
+      <translation>Mostrar resultado</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="914"/>
@@ -7793,7 +7793,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1199"/>
       <source>Glyph Filter</source>
-      <translation type="unfinished">Glyph Filter</translation>
+      <translation>Filtro de glifos</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1204"/>
@@ -7813,7 +7813,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../../TaskPostExtraction.ui" line="22"/>
       <location filename="../ui/TaskPostExtraction.ui" line="37"/>
       <source>Data Summary</source>
-      <translation type="unfinished">Data Summary</translation>
+      <translation>Resumen de datos</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="29"/>
@@ -7824,25 +7824,25 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="62"/>
       <source>Data used in</source>
-      <translation type="unfinished">Data used in</translation>
+      <translation>Datos usados en</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="92"/>
       <source>Add data to</source>
-      <translation type="unfinished">Add data to</translation>
+      <translation>Añadir datos a</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="107"/>
       <source>Create and add</source>
-      <translation type="unfinished">Create and add</translation>
+      <translation>Crear y añadir</translation>
     </message>
   </context>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Formulario</translation>
     </message>
@@ -7870,7 +7870,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
       <source>Hatch pattern</source>
-      <translation type="unfinished">Hatch pattern</translation>
+      <translation>Patrón de rayado</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="89"/>
@@ -7891,7 +7891,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
       <source>Legend</source>
-      <translation type="unfinished">Legend</translation>
+      <translation>Leyenda</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="135"/>
@@ -7981,7 +7981,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskPostExtraction.cpp" line="50"/>
       <source>Data and Extractions</source>
-      <translation type="unfinished">Data and Extractions</translation>
+      <translation>Datos y extracciones</translation>
     </message>
   </context>
   <context>
@@ -7989,7 +7989,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="168"/>
       <source>Activate Analysis</source>
-      <translation type="unfinished">Activate Analysis</translation>
+      <translation>Activar análisis</translation>
     </message>
   </context>
   <context>
@@ -7997,7 +7997,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../TaskObjectName.cpp" line="39"/>
       <source>Name of the object</source>
-      <translation type="unfinished">Name of the object</translation>
+      <translation>Nombre del objeto</translation>
     </message>
   </context>
   <context>
@@ -8013,7 +8013,30 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_centrif.py" line="67"/>
       <source>Axis Reference Selector</source>
-      <translation type="unfinished">Axis Reference Selector</translation>
+      <translation>Selector de referencia de ejes</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="405"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="439"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation type="unfinished">FEM: wrong ccx binary</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="452"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="464"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
     </message>
   </context>
   <context>
@@ -8051,7 +8074,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="82"/>
       <source>Simulation type</source>
-      <translation type="unfinished">Simulation type</translation>
+      <translation>Tipo de simulación</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="122"/>
@@ -8062,29 +8085,6 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/SolverElmer.ui" line="129"/>
       <source>Solver Version</source>
       <translation type="unfinished">Solver Version</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemToolsCcx</name>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="405"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="439"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation type="unfinished">FEM: wrong ccx binary</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="452"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="464"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
     </message>
   </context>
   <context>

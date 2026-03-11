@@ -2915,7 +2915,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="193"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="202"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -3188,11 +3188,11 @@ measured along the specified direction</source>
       <translation>Pas de plan valide dans le document</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="257"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une fenêtre de dialogue est déjà ouverte dans le panneau des tâches.</translation>
     </message>
@@ -3232,11 +3232,11 @@ measured along the specified direction</source>
       <translation>Aucune esquisse n’est disponible dans le document</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="258"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>Faut-il fermer cette boîte de dialogue ?</translation>
     </message>
@@ -3463,14 +3463,14 @@ This may lead to unexpected results.</source>
       <translation>Il n’est pas possible de créer une fonction soustractive sans une fonction de base présente.</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <source>Vertical sketch axis</source>
       <translation>Axe vertical de l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="440"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="440"/>
       <source>Horizontal sketch axis</source>
       <translation>Axe horizontal de l'esquisse</translation>
     </message>
@@ -3480,7 +3480,7 @@ This may lead to unexpected results.</source>
       <translation>Ligne de construction %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="85"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="94"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -3524,10 +3524,10 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProvider.cpp" line="92"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
+      <location filename="../../ViewProvider.cpp" line="92"/>
       <source>Edit %1</source>
       <translation>Éditer %1</translation>
     </message>
@@ -4454,20 +4454,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Impossible d'appliquer une opération booléenne à une forme de base invalide</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
       <location filename="../../../App/FeaturePipe.cpp" line="480"/>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Le résultat comporte plusieurs solides : activer « Autoriser les composés » dans le corps actif.</translation>
     </message>
@@ -4502,10 +4502,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>L'extrusion fusionnée résultante est sans résultat.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forme résultante n'est pas un solide</translation>
     </message>
@@ -4587,9 +4587,9 @@ de congés ensemble. Essayer de créer des congés sur chaque arête ou des cong
       <translation>La création a échoué car la direction est orthogonale au vecteur normal de l'esquisse.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>La création d'une face à partir de l'esquisse a échoué</translation>
     </message>
@@ -4599,20 +4599,20 @@ de congés ensemble. Essayer de créer des congés sur chaque arête ou des cong
       <translation>Les angles de rainure s'annulent mutuellement.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <location filename="../../../App/FeatureGroove.cpp" line="171"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>L'axe de révolution coupe l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
       <location filename="../../../App/FeatureGroove.cpp" line="263"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
       <source>Could not revolve the sketch!</source>
       <translation>Impossible de faire tourner l'esquisse !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
       <location filename="../../../App/FeatureGroove.cpp" line="275"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Impossible de créer une face à partir de l'esquisse.
@@ -4662,9 +4662,9 @@ Les entités d'intersection d'esquisse dans une esquisse ne sont pas autorisées
       <translation>Erreur : la face doit être plane</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>Erreur : le résultat n'est pas un solide.</translation>
     </message>
@@ -4824,8 +4824,8 @@ L'intersection d'entités d'esquisse ou de plusieurs faces dans une esquisse n'e
       <translation>Lissage : la création d'une face à partir de l'esquisse a échoué.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="444"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <source>Loft: Failed to create shell</source>
       <translation>Lissage : impossible de créer une coque.</translation>
     </message>
@@ -4937,16 +4937,16 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Impossible de soustraire la fonction primitive sans la fonction de base</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>Type d'opération inconnu</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>Impossible d'effectuer l'opération booléenne</translation>
     </message>
@@ -5064,8 +5064,8 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
       <translation>Les angles de révolution s'annulent mutuellement.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <source>Reference axis is invalid</source>
       <translation>L'axe de référence n'est pas valide</translation>
     </message>

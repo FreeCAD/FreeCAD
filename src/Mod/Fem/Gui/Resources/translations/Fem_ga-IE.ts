@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="291"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="292"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="369"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="370"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="423"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="424"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="533"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="534"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="592"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="593"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="655"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="656"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="703"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="704"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="776"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="777"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="833"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="834"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="890"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="891"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1013"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1014"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="954"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="955"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="1066"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1067"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="1123"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1124"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../Command.cpp" line="1279"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1280"/>
@@ -309,7 +309,7 @@
     <message>
       <location filename="../../Command.cpp" line="1220"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1221"/>
@@ -327,7 +327,7 @@
     <message>
       <location filename="../../Command.cpp" line="2871"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2872"/>
@@ -345,7 +345,7 @@
     <message>
       <location filename="../../Command.cpp" line="2235"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2236"/>
@@ -373,7 +373,7 @@
     <message>
       <location filename="../../Command.cpp" line="2274"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2275"/>
@@ -391,7 +391,7 @@
     <message>
       <location filename="../../Command.cpp" line="2311"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2312"/>
@@ -409,7 +409,7 @@
     <message>
       <location filename="../../Command.cpp" line="2348"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2349"/>
@@ -427,7 +427,7 @@
     <message>
       <location filename="../../Command.cpp" line="2613"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2614"/>
@@ -457,7 +457,7 @@
     <message>
       <location filename="../../Command.cpp" line="2843"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Bosca</translation>
     </message>
   </context>
   <context>
@@ -501,7 +501,7 @@
     <message>
       <location filename="../../Command.cpp" line="2386"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2387"/>
@@ -531,7 +531,7 @@
     <message>
       <location filename="../../Command.cpp" line="2912"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2913"/>
@@ -559,7 +559,7 @@
     <message>
       <location filename="../../Command.cpp" line="2466"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2467"/>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Command.cpp" line="2503"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2504"/>
@@ -1182,7 +1182,7 @@ Ní bheidh sé i bhfeidhm ach amháin má tá 'Píblíne amháin' cumasaithe</tr
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="20"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Easpórtáil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="28"/>
@@ -1291,7 +1291,7 @@ nóid ina gcuirtear an srian nó an t-ábhar i bhfeidhm.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="268"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="31"/>
@@ -1352,7 +1352,7 @@ samhail nuair a osclaítear an dialóg torthaí</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
       <source>Defaults</source>
-      <translation type="unfinished">Defaults</translation>
+      <translation>Réamhshocruithe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
@@ -1524,7 +1524,7 @@ a easpórtáladh ó FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="89"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Easpórtáil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="95"/>
@@ -1695,7 +1695,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
       <location filename="../../TaskFemConstraint.cpp" line="237"/>
       <location filename="../../TaskFemConstraint.cpp" line="258"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="238"/>
@@ -1708,7 +1708,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1716,7 +1716,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1724,7 +1724,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1732,7 +1732,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1740,7 +1740,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="476"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1748,7 +1748,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1756,7 +1756,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1764,7 +1764,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="117"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1772,7 +1772,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1780,7 +1780,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1788,7 +1788,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1796,7 +1796,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1804,7 +1804,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -1825,7 +1825,7 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../../TaskPostBoxes.cpp" line="391"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -2856,9 +2856,9 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
       <translation>Brú Ionraoin</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>Brú</translation>
     </message>
@@ -2990,10 +2990,10 @@ go gcaithfear "MAXKOI" a mhéadú.</translation>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
-      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paraiméadar</translation>
     </message>
@@ -3159,16 +3159,16 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="113"/>
+      <location filename="../ui/Magnetization.ui" line="39"/>
       <source>Real</source>
       <translation>Fíor</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="123"/>
+      <location filename="../ui/Magnetization.ui" line="49"/>
       <source>Imaginary</source>
       <translation>Samhlaíoch</translation>
     </message>
@@ -3200,7 +3200,7 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
@@ -3257,12 +3257,12 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
       <location filename="../ui/ElementGeometry1D.ui" line="41"/>
       <location filename="../ui/ElementGeometry1D.ui" line="279"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
@@ -3368,13 +3368,13 @@ Nóta: níl aon éifeacht aige má roghnaíodh solad</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
+      <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Airíonna Gné Anailíse</translation>
     </message>
@@ -3471,8 +3471,8 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="194"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3488,8 +3488,8 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="257"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3505,8 +3505,8 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="320"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3546,12 +3546,12 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
       <translation>Uasmhéid eiliminte</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
@@ -3560,10 +3560,10 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
       <translation>Réimse</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <source>Frames</source>
-      <translation type="unfinished">Frames</translation>
+      <translation>Frámaí</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
@@ -3628,7 +3628,7 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="172"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Am</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="198"/>
@@ -3694,7 +3694,7 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="312"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="895"/>
       <source>A dialog is already open in the task panel</source>
-      <translation type="unfinished">A dialog is already open in the task panel</translation>
+      <translation>Tá dialóg oscailte cheana féin sa phainéal tascanna</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="313"/>
@@ -3761,7 +3761,7 @@ cothromóidí le sruth tiomána armónach/luaineach</translation>
     <message>
       <location filename="../../ViewProviderAnalysis.cpp" line="320"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>An bhfuil tú cinnte gur mian leat leanúint ar aghaidh?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="157"/>
@@ -4093,7 +4093,7 @@ Le haghaidh athróga féideartha, féach an bosca cur síos thíos.</translation
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="151"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Am</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="130"/>
@@ -4126,7 +4126,7 @@ Le haghaidh athróga féideartha, féach an bosca cur síos thíos.</translation
     <message>
       <location filename="../../SphereWidget.ui" line="20"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
   </context>
   <context>
@@ -4175,7 +4175,7 @@ Le haghaidh athróga féideartha, féach an bosca cur síos thíos.</translation
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Bosca</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -4568,7 +4568,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="306"/>
       <source>Page</source>
-      <translation type="unfinished">Page</translation>
+      <translation>Leathanach</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="312"/>
@@ -4988,7 +4988,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="17"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
@@ -5174,7 +5174,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="71"/>
       <source>Fineness</source>
-      <translation type="unfinished">Fineness</translation>
+      <translation>Míne</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="82"/>
@@ -5377,7 +5377,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="65"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
@@ -5483,7 +5483,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="563"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>Eagarthóir Ábhar</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="566"/>
@@ -5669,7 +5669,7 @@ normal vector of the face is used as direction</source>
       <location filename="../../../femsolver/solver_taskpanel.py" line="301"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Rith</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
@@ -6020,8 +6020,8 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
       <translation>Cén chuid den veicteoir réimse Y le húsáid don ais Y</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>Sonraigh an ndéanfar an réimse a bhaint as gach fráma atá ar fáil</translation>
     </message>
@@ -6200,7 +6200,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="209"/>
       <source>default</source>
-      <translation type="unfinished">default</translation>
+      <translation>réamhshocraithe</translation>
     </message>
   </context>
   <context>
@@ -6208,7 +6208,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../Command.cpp" line="1503"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1504"/>
@@ -6264,7 +6264,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../Command.cpp" line="1687"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1688"/>
@@ -6282,7 +6282,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../Command.cpp" line="2540"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2541"/>
@@ -6300,7 +6300,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../BoxWidget.ui" line="20"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="32"/>
@@ -6325,7 +6325,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../BoxWidget.ui" line="153"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="182"/>
@@ -6338,7 +6338,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../CylinderWidget.ui" line="20"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="26"/>
@@ -6374,7 +6374,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../Command.cpp" line="1883"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1884"/>
@@ -6535,7 +6535,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
@@ -6613,7 +6613,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
@@ -6631,7 +6631,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../Command.cpp" line="473"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="474"/>
@@ -6694,7 +6694,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Earráid ionchuir</translation>
     </message>
   </context>
   <context>
@@ -6702,7 +6702,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="20"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="28"/>
@@ -6727,7 +6727,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
       <source>Restore</source>
-      <translation type="unfinished">Restore</translation>
+      <translation>Athchóirigh</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="70"/>
@@ -6743,11 +6743,11 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
       <translation>Scrios Eilimintí</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1479"/>
       <location filename="../../TaskCreateElementSet.cpp" line="241"/>
       <location filename="../../TaskCreateElementSet.cpp" line="252"/>
       <location filename="../../TaskCreateElementSet.cpp" line="510"/>
       <location filename="../../TaskCreateElementSet.cpp" line="607"/>
-      <location filename="../../Command.cpp" line="1479"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
@@ -6781,7 +6781,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../Command.cpp" line="1433"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1435"/>
@@ -6802,7 +6802,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../../Command.cpp" line="1379"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1380"/>
@@ -6830,7 +6830,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../ui/MeshNetgen.ui" line="37"/>
       <source>Fineness</source>
-      <translation type="unfinished">Fineness</translation>
+      <translation>Míne</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="47"/>
@@ -6865,7 +6865,7 @@ Ní bhfuarthas aon mhodúl comhoiriúnach sa chonair reatha Python.</translation
     <message>
       <location filename="../ui/MeshNetgen.ui" line="220"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Am</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="246"/>
@@ -7044,7 +7044,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../../TaskPostFrames.ui" line="26"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../TaskPostFrames.ui" line="34"/>
@@ -7102,7 +7102,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="122"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Am</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="74"/>
@@ -7136,17 +7136,17 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
   <context>
     <name>TaskPostGlyph</name>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>Foirm an ghlif</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="25"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="42"/>
@@ -7179,12 +7179,12 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Sféar</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Cén réimse veicteora a úsáidtear chun na glifí a threoshuíomh</translation>
     </message>
@@ -7194,10 +7194,10 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Treoshuíomh</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Dada</translation>
     </message>
@@ -7218,10 +7218,10 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Sonraí</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Iolraitheoir tairiseach a úsáidtear chun na glifí a scálú</translation>
     </message>
@@ -7236,9 +7236,9 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Athraíonn sé an fachtóir scála faoi +/- 50% den fhachtóir scála socraithe</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Más veicteoir atá sna sonraí scála, cinneann an airí seo an ndéantar an gliff a scálaiú de réir mhéid an veicteora nó de réir na gcomhpháirteanna aonair</translation>
     </message>
@@ -7330,29 +7330,29 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Carnach</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
       <translation>Finscéal</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Taispeáin</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <source>Labels</source>
-      <translation type="unfinished">Labels</translation>
+      <translation>Lipéid</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Ais-Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
@@ -7360,10 +7360,10 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <translation>Ais X</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <source>Title</source>
-      <translation type="unfinished">Title</translation>
+      <translation>Teideal</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="192"/>
@@ -7393,7 +7393,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="148"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>Ais-X</translation>
     </message>
   </context>
   <context>
@@ -7401,7 +7401,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2578"/>
@@ -7419,7 +7419,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../../Command.cpp" line="3019"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="3020"/>
@@ -7805,7 +7805,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
       <location filename="../../TaskPostExtraction.ui" line="14"/>
       <location filename="../ui/TaskPostExtraction.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="22"/>
@@ -7838,11 +7838,11 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
   <context>
     <name>PostHistogramEdit</name>
     <message>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
@@ -7873,7 +7873,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="89"/>
       <source>Lines</source>
-      <translation type="unfinished">Lines</translation>
+      <translation>Línte</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="102"/>
@@ -7905,7 +7905,7 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="34"/>
       <source>Marker</source>
-      <translation type="unfinished">Marker</translation>
+      <translation>Marcóir</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="87"/>
@@ -8015,6 +8015,29 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     </message>
   </context>
   <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="405"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>Gan aon ccx dénártha CalculiX nó ccx mícheart</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="439"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>FEM: dénártha ccx mícheart</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="452"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>FEM: Níor aimsíodh an comhad dénártha CalculiX ccx '{}'. Socraigh an cosán ccx dénártha CalculiX sa chluaisín roghanna FEM i CalculiX.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="464"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>FEM: Níl an frása '{}' a bhíothas ag súil leis in aschur '{}' ó CalculiX ccx '{}'. Tá roinnt fadhbanna ann agus an comhad dénártha ccx á rith. Seiceáil an ritheann ccx go neamhspleách gan FreeCAD.</translation>
+    </message>
+  </context>
+  <context>
     <name>SolverElmer</name>
     <message>
       <location filename="../ui/SolverElmer.ui" line="14"/>
@@ -8054,35 +8077,12 @@ Fág bán chun an comhad inrite Python réamhshocraithe a úsáid</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="122"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Am</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="129"/>
       <source>Solver Version</source>
       <translation>Leagan an Réititheora</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemToolsCcx</name>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="405"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation>Gan aon ccx dénártha CalculiX nó ccx mícheart</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="439"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation>FEM: dénártha ccx mícheart</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="452"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>FEM: Níor aimsíodh an comhad dénártha CalculiX ccx '{}'. Socraigh an cosán ccx dénártha CalculiX sa chluaisín roghanna FEM i CalculiX.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="464"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>FEM: Níl an frása '{}' a bhíothas ag súil leis in aschur '{}' ó CalculiX ccx '{}'. Tá roinnt fadhbanna ann agus an comhad dénártha ccx á rith. Seiceáil an ritheann ccx go neamhspleách gan FreeCAD.</translation>
     </message>
   </context>
   <context>

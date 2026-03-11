@@ -73,7 +73,6 @@ SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/__init__.py
     Path/Dressup/Gui/Array.py
     Path/Dressup/Gui/AxisMap.py
-    Path/Dressup/Gui/Dogbone.py
     Path/Dressup/Gui/DogboneII.py
     Path/Dressup/Gui/Dragknife.py
     Path/Dressup/Gui/LeadInOut.py
@@ -172,17 +171,17 @@ SET(PathPythonToolsGui_SRCS
 )
 
 SET(PathPythonMachineUi_SRCS
-    Path/Machine/ui/__init__.py
+    Machine/ui/__init__.py
 )
 
 SET(PathPythonMachineUiEditor_SRCS
-    Path/Machine/ui/editor/machine_editor.py
-    Path/Machine/ui/editor/__init__.py
+    Machine/ui/editor/machine_editor.py
+    Machine/ui/editor/__init__.py
 )
 
 SET(PathPythonMachineModels_SRCS
-    Path/Machine/models/__init__.py
-    Path/Machine/models/machine.py
+    Machine/models/__init__.py
+    Machine/models/machine.py
 )
 
 SET(PathPythonToolsToolBit_SRCS
@@ -236,6 +235,7 @@ SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/toollist.py
     Path/Tool/toolbit/ui/util.py
     Path/Tool/toolbit/ui/view.py
+    Path/Tool/toolbit/ui/typefilter.py
 )
 
 SET(PathPythonToolsLibrary_SRCS
@@ -497,6 +497,7 @@ SET(Tools_Shape_SRCS
     Tools/Shape/thread-mill.svg
     Tools/Shape/v-bit.fcstd
     Tools/Shape/v-bit.svg
+    Tools/Shape/shape_aliases.json
 )
 
 SET(Tests_SRCS
@@ -529,7 +530,6 @@ SET(Tests_SRCS
     CAMTests/TestPathCore.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
-    CAMTests/TestPathDressupDogbone.py
     CAMTests/TestPathDressupDogboneII.py
     CAMTests/TestPathDressupHoldingTags.py
     CAMTests/TestPathDrillGenerator.py
@@ -927,21 +927,21 @@ INSTALL(
     FILES
         ${PathPythonMachineModels_SRCS}
     DESTINATION
-        Mod/CAM/Path/Machine/models
+        Mod/CAM/Machine/models
 )
 
 INSTALL(
     FILES
         ${PathPythonMachineUi_SRCS}
     DESTINATION
-        Mod/CAM/Path/Machine/ui
+        Mod/CAM/Machine/ui
 )
 
 INSTALL(
     FILES
         ${PathPythonMachineUiEditor_SRCS}
     DESTINATION
-        Mod/CAM/Path/Machine/ui/editor
+        Mod/CAM/Machine/ui/editor
 )
 
 INSTALL(

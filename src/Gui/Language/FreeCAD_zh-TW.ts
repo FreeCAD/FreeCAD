@@ -26,8 +26,8 @@
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <source>Enum</source>
       <translation>列舉</translation>
     </message>
@@ -128,10 +128,10 @@
       <translation>放置</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
+      <location filename="../Transform.cpp" line="108"/>
       <location filename="../TaskTransform.cpp" line="128"/>
       <location filename="../TaskTransform.cpp" line="808"/>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
       <source>Transform</source>
       <translation>轉換</translation>
     </message>
@@ -1451,7 +1451,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="85"/>
       <source>Global</source>
-      <translation>全局的</translation>
+      <translation>全域</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="103"/>
@@ -5425,7 +5425,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../TextureMapping.ui" line="26"/>
       <source>Global</source>
-      <translation>全局的</translation>
+      <translation>全域</translation>
     </message>
     <message>
       <location filename="../TextureMapping.ui" line="33"/>
@@ -6041,66 +6041,66 @@ Save all changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="157"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="303"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="492"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="135"/>
       <location filename="../InputVector.h" line="160"/>
       <location filename="../InputVector.h" line="281"/>
       <location filename="../InputVector.h" line="306"/>
       <location filename="../InputVector.h" line="479"/>
       <location filename="../InputVector.h" line="495"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>使用者定義</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>錯誤的方向</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="242"/>
       <location filename="../InputVector.h" line="377"/>
       <location filename="../InputVector.h" line="566"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>方向不可為空向量</translation>
     </message>
@@ -8617,8 +8617,8 @@ Choose 'Abort' to abort</source>
       <translation>明確選擇</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <source>Transform</source>
       <translation>轉換</translation>
     </message>
@@ -8747,8 +8747,8 @@ Choose 'Abort' to abort</source>
       <translation>拖放操作失敗</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="900"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <source>Apply to all</source>
       <translation>全部套用</translation>
     </message>
@@ -9008,7 +9008,7 @@ the current copy will be lost.
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="170"/>
       <source>Change Image</source>
-      <translation type="unfinished">Change Image</translation>
+      <translation>變更圖片</translation>
     </message>
     <message>
       <location filename="../ViewProviderPart.cpp" line="72"/>
@@ -9023,17 +9023,17 @@ the current copy will be lost.
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="96"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>關閉此對話框?</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObjectGroup.cpp" line="107"/>
       <source>Select Group Contents</source>
-      <translation type="unfinished">Select Group Contents</translation>
+      <translation>選擇群組內容</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObjectGroup.cpp" line="109"/>
       <source>Selects all objects that are children of this group</source>
-      <translation type="unfinished">Selects all objects that are children of this group</translation>
+      <translation>選擇此群組的所有子物件</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="259"/>
@@ -9253,7 +9253,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="286"/>
       <source>Exports an object in the active document</source>
-      <translation type="unfinished">Exports an object in the active document</translation>
+      <translation>於作業中文件匯出一個物件</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="434"/>
@@ -9289,7 +9289,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandFeat.cpp" line="55"/>
       <source>Recomputes a feature or document</source>
-      <translation type="unfinished">Recomputes a feature or document</translation>
+      <translation>重新計算特徵或文件</translation>
     </message>
   </context>
   <context>
@@ -9372,12 +9372,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="568"/>
       <source>&amp;Merge Document</source>
-      <translation type="unfinished">&amp;Merge Document</translation>
+      <translation>合併文件(&amp;M)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="570"/>
       <source>Merges another FreeCAD document into the active one</source>
-      <translation type="unfinished">Merges another FreeCAD document into the active one</translation>
+      <translation>將另一個 FreeCAD 文件合併到目前作業文件中</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="584"/>
@@ -9407,12 +9407,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="707"/>
       <source>&amp;New Document</source>
-      <translation type="unfinished">&amp;New Document</translation>
+      <translation>新文件(&amp;N)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="708"/>
       <source>Creates a new empty document</source>
-      <translation type="unfinished">Creates a new empty document</translation>
+      <translation>建立一個新的空白檔案</translation>
     </message>
   </context>
   <context>
@@ -9433,12 +9433,12 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="85"/>
       <source>&amp;Open…</source>
-      <translation type="unfinished">&amp;Open…</translation>
+      <translation>開啟(&amp;O)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="86"/>
       <source>Opens a document or imports files</source>
-      <translation type="unfinished">Opens a document or imports files</translation>
+      <translation>開啟一個文件或匯入檔案</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="100"/>
@@ -9562,7 +9562,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="1386"/>
       <source>Selects all objects in the active document</source>
-      <translation type="unfinished">Selects all objects in the active document</translation>
+      <translation>於作業中文件選取所有物件</translation>
     </message>
   </context>
   <context>
@@ -9583,7 +9583,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandWindow.cpp" line="415"/>
       <source>Status Bar</source>
-      <translation type="unfinished">Status Bar</translation>
+      <translation>狀態列</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="416"/>
@@ -11228,12 +11228,12 @@ dot/period will always be printed</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="240"/>
       <source>Size of toolbar icons</source>
-      <translation type="unfinished">Size of toolbar icons</translation>
+      <translation>工具列圖示尺寸</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="247"/>
       <source>Icon size in the toolbar</source>
-      <translation type="unfinished">Icon size in the toolbar</translation>
+      <translation>工具列中之圖示尺寸</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="261"/>
@@ -12177,7 +12177,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
       <source>Python &amp;Modules Documentation</source>
-      <translation type="unfinished">Python &amp;Modules Documentation</translation>
+      <translation>Python 模組文件(&amp;M)</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="326"/>
@@ -12283,7 +12283,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../TaskTransform.ui" line="41"/>
       <source>Global coordinate system</source>
-      <translation type="unfinished">Global coordinate system</translation>
+      <translation>全局座標系統</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="56"/>
@@ -12416,7 +12416,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.ui" line="34"/>
       <source>PDF version</source>
-      <translation type="unfinished">PDF version</translation>
+      <translation>PDF版本</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPDF.ui" line="41"/>
@@ -12494,7 +12494,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../TaskTransform.cpp" line="192"/>
       <source>Global</source>
-      <translation>全局的</translation>
+      <translation>全域</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="407"/>
@@ -12937,7 +12937,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="898"/>
       <source>Shows information about the active document</source>
-      <translation type="unfinished">Shows information about the active document</translation>
+      <translation>顯示關於作業中文件的資訊</translation>
     </message>
   </context>
   <context>
@@ -12963,7 +12963,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="958"/>
       <source>Prints the active document</source>
-      <translation type="unfinished">Prints the active document</translation>
+      <translation>列印作業中文件</translation>
     </message>
   </context>
   <context>
@@ -13015,7 +13015,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1609"/>
       <source>Recomputes the active document</source>
-      <translation type="unfinished">Recomputes the active document</translation>
+      <translation>重新計算作業中文件</translation>
     </message>
   </context>
   <context>
@@ -13375,12 +13375,12 @@ Proceed?</source>
     <message>
       <location filename="../CommandStd.cpp" line="413"/>
       <source>Prefere&amp;nces</source>
-      <translation type="unfinished">Prefere&amp;nces</translation>
+      <translation>偏好設定(&amp;n)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="415"/>
       <source>Opens a dialog to edit the preferences</source>
-      <translation type="unfinished">Opens a dialog to edit the preferences</translation>
+      <translation>開啟偏好設定視窗</translation>
     </message>
   </context>
   <context>
@@ -13393,7 +13393,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandStd.cpp" line="461"/>
       <source>Opens a dialog to edit toolbars, shortcuts, and macros</source>
-      <translation type="unfinished">Opens a dialog to edit toolbars, shortcuts, and macros</translation>
+      <translation>開啟對話框以編輯工具列、快捷鍵以及巨集</translation>
     </message>
   </context>
   <context>
@@ -13440,7 +13440,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandStd.cpp" line="780"/>
       <source>Te&amp;xt Document</source>
-      <translation type="unfinished">Te&amp;xt Document</translation>
+      <translation>文字文件(&amp;x)</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="781"/>
@@ -13666,7 +13666,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="1268"/>
       <source>Shows all objects in the document</source>
-      <translation type="unfinished">Shows all objects in the document</translation>
+      <translation>顯示文件中的所有物件</translation>
     </message>
   </context>
   <context>
@@ -13679,7 +13679,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="1310"/>
       <source>Hides all objects in the document</source>
-      <translation type="unfinished">Hides all objects in the document</translation>
+      <translation>隱藏文件中的所有物件</translation>
     </message>
   </context>
   <context>
@@ -13770,7 +13770,7 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="2266"/>
       <source>Opens a new 3D view window for the active document</source>
-      <translation type="unfinished">Opens a new 3D view window for the active document</translation>
+      <translation>為作業中文件開啟新的3D視圖視窗</translation>
     </message>
   </context>
   <context>
@@ -14012,12 +14012,12 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="3559"/>
       <source>&amp;Single Document</source>
-      <translation type="unfinished">&amp;Single Document</translation>
+      <translation>單一文件(&amp;S)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3560"/>
       <source>Displays only the active document in the tree view</source>
-      <translation type="unfinished">Displays only the active document in the tree view</translation>
+      <translation>在樹狀圖中僅顯示作業中文件</translation>
     </message>
   </context>
   <context>
@@ -14025,12 +14025,12 @@ Proceed?</source>
     <message>
       <location filename="../CommandView.cpp" line="3576"/>
       <source>&amp;Multi Document</source>
-      <translation type="unfinished">&amp;Multi Document</translation>
+      <translation>多重文件(&amp;M)</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3577"/>
       <source>Displays all documents in the tree view</source>
-      <translation type="unfinished">Displays all documents in the tree view</translation>
+      <translation>在樹狀圖檢視中顯示所有文件</translation>
     </message>
   </context>
   <context>
@@ -14328,12 +14328,12 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="350"/>
       <source>Lock Toolbars</source>
-      <translation type="unfinished">Lock Toolbars</translation>
+      <translation>鎖定工具列</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="351"/>
       <source>Locks toolbars so they are no longer moveable</source>
-      <translation type="unfinished">Locks toolbars so they are no longer moveable</translation>
+      <translation>鎖定工具欄，使其不再可移動</translation>
     </message>
   </context>
   <context>
@@ -14512,7 +14512,7 @@ This makes the docked panel stay transparent at all times.</translation>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="881"/>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="890"/>
       <source>Toolbox Bars</source>
-      <translation type="unfinished">Toolbox Bars</translation>
+      <translation>工具箱列</translation>
     </message>
   </context>
   <context>

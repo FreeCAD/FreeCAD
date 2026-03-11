@@ -105,6 +105,7 @@ using DSHOffsetController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::OffsetConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -397,11 +398,16 @@ private:
 
     void drawOffsetPreview()
     {
-        std::vector<Part::Geometry*> geometriesToAdd;
-        std::vector<int> listOfOffsetGeoIds;
-        getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
+        try {
+            std::vector<Part::Geometry*> geometriesToAdd;
+            std::vector<int> listOfOffsetGeoIds;
+            getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
-        drawEdit(geometriesToAdd);
+            drawEdit(geometriesToAdd);
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+        }
     }
 
     void createOffset()

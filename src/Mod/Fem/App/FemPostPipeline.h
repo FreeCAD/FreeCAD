@@ -75,6 +75,7 @@ public:
     );
     void scale(double s);
     void renameArrays(const std::map<std::string, std::string>& names);
+    void addArrayFromFunction(const std::map<std::string, std::string>& functions);
 
     // load from results
     void load(FemResultObject* res);
@@ -93,6 +94,7 @@ public:
     bool hasFrames();
     std::string getFrameType();
     Base::Unit getFrameUnit();
+    void setTimeInfo(const std::string& frameType, const Base::Unit& unit);
     unsigned int getFrameNumber();
     std::vector<double> getFrameValues();
 
@@ -123,6 +125,7 @@ private:
     bool m_block_property = false;
     bool m_data_updated = false;
     void updateData();
+    void updateFrameValues();
 
 
     template<class TReader>

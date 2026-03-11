@@ -66,7 +66,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="188"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Rith</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="205"/>

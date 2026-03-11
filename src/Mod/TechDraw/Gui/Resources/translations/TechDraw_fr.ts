@@ -4,17 +4,17 @@
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="790"/>
+      <location filename="../../CommandAnnotate.cpp" line="789"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="791"/>
+      <location filename="../../CommandAnnotate.cpp" line="790"/>
       <source>Centerline Between 2 Lines</source>
       <translation>Ligne centrale entre 2 lignes</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="792"/>
+      <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Adds a centerline between 2 selected lines</source>
       <translation>Ajoute une ligne centrale entre 2 lignes sélectionnées.</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="865"/>
+      <location filename="../../CommandAnnotate.cpp" line="864"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="866"/>
+      <location filename="../../CommandAnnotate.cpp" line="865"/>
       <source>Centerline Between 2 Points</source>
       <translation>Ligne centrale entre 2 points</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="867"/>
+      <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Adds a centerline between 2 selected points</source>
       <translation>Ajoute une ligne centrale entre 2 points sélectionnés.</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="978"/>
+      <location filename="../../CommandAnnotate.cpp" line="977"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="979"/>
+      <location filename="../../CommandAnnotate.cpp" line="978"/>
       <source>Cosmetic Line Through 2 Points</source>
       <translation>Ligne cosmétique par 2 points</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="980"/>
+      <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Add a cosmetic line that passes through 2 selected points</source>
       <translation>Ajoute une ligne cosmétique qui passe par 2 points sélectionnés.</translation>
     </message>
@@ -107,17 +107,17 @@
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="526"/>
+      <location filename="../../CommandAnnotate.cpp" line="525"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="527"/>
+      <location filename="../../CommandAnnotate.cpp" line="526"/>
       <source>Text Annotation</source>
       <translation>Insérer une annotation</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="528"/>
+      <location filename="../../CommandAnnotate.cpp" line="527"/>
       <source>Inserts an editable text block annotation to the current page</source>
       <translation>Insère une annotation sous forme de bloc de texte modifiable dans la feuille courante.</translation>
     </message>
@@ -161,22 +161,22 @@
   <context>
     <name>CmdTechDrawCenterLineGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="576"/>
+      <location filename="../../CommandAnnotate.cpp" line="575"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="577"/>
+      <location filename="../../CommandAnnotate.cpp" line="576"/>
       <source>Centerline</source>
       <translation>Lignes centrales</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="578"/>
+      <location filename="../../CommandAnnotate.cpp" line="577"/>
       <source>Inserts a centerline to a face, or between 2 lines or edges</source>
       <translation>Insère une ligne centrale à une face, ou entre 2 lignes ou 2 arêtes.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="650"/>
+      <location filename="../../CommandAnnotate.cpp" line="649"/>
       <source>Centerline Faces</source>
       <translation>Ligne centrale à une/des face(s)</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1129"/>
+      <location filename="../../CommandAnnotate.cpp" line="1128"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1130"/>
+      <location filename="../../CommandAnnotate.cpp" line="1129"/>
       <source>Remove Cosmetic Object</source>
       <translation>Supprimer un objet cosmétique</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1131"/>
+      <location filename="../../CommandAnnotate.cpp" line="1130"/>
       <source>Removes the selected cosmetic object from the page</source>
       <translation>Supprime l'objet cosmétique sélectionné de la page.</translation>
     </message>
@@ -274,17 +274,17 @@
   <context>
     <name>CmdTechDrawCosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="387"/>
+      <location filename="../../CommandAnnotate.cpp" line="386"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="388"/>
+      <location filename="../../CommandAnnotate.cpp" line="387"/>
       <source>Cosmetic Vertex</source>
       <translation>Sommet cosmétique</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="389"/>
+      <location filename="../../CommandAnnotate.cpp" line="388"/>
       <source>Adds a cosmetic vertex</source>
       <translation>Ajoute un sommet cosmétique.</translation>
     </message>
@@ -298,7 +298,7 @@
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="201"/>
-      <location filename="../../CommandAnnotate.cpp" line="276"/>
+      <location filename="../../CommandAnnotate.cpp" line="275"/>
       <source>Cosmetic Vertex</source>
       <translation>Sommet cosmétique</translation>
     </message>
@@ -311,17 +311,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1247"/>
+      <location filename="../../CommandAnnotate.cpp" line="1246"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1248"/>
+      <location filename="../../CommandAnnotate.cpp" line="1247"/>
       <source>Edit Line Appearance</source>
       <translation>Changer l'apparence des lignes</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1249"/>
+      <location filename="../../CommandAnnotate.cpp" line="1248"/>
       <source>Opens the &apos;Line decoration&apos; dialog to edit the selected lines</source>
       <translation>Ouvre la boîte de dialogue « Apparence des lignes » pour modifier les lignes sélectionnées.</translation>
     </message>
@@ -1531,17 +1531,17 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
   <context>
     <name>CmdTechDrawFaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="679"/>
+      <location filename="../../CommandAnnotate.cpp" line="678"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="680"/>
+      <location filename="../../CommandAnnotate.cpp" line="679"/>
       <source>Centerline Between 2 Faces</source>
       <translation>Ligne centrale entre 2 faces</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="681"/>
+      <location filename="../../CommandAnnotate.cpp" line="680"/>
       <source>Adds a centerline to selected faces</source>
       <translation>Ajoute une ligne centrale aux faces sélectionnées.</translation>
     </message>
@@ -1549,17 +1549,17 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="169"/>
+      <location filename="../../CommandDecorate.cpp" line="233"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="170"/>
+      <location filename="../../CommandDecorate.cpp" line="234"/>
       <source>Geometric Hatch</source>
       <translation>Appliquer un motif de hachures géométriques</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="171"/>
+      <location filename="../../CommandDecorate.cpp" line="235"/>
       <source>Applies a geometric hatch pattern to the selected faces</source>
       <translation>Applique un motif de hachure géométrique aux faces sélectionnées.</translation>
     </message>
@@ -1567,17 +1567,17 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
   <context>
     <name>CmdTechDrawHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="74"/>
+      <location filename="../../CommandDecorate.cpp" line="138"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="75"/>
+      <location filename="../../CommandDecorate.cpp" line="139"/>
       <source>Image Hatch</source>
       <translation>Hachurer par une image</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="76"/>
+      <location filename="../../CommandDecorate.cpp" line="140"/>
       <source>Applies a hatch pattern to the selected faces using an image file</source>
       <translation>Applique un modèle de hachures aux faces sélectionnées en utilisant un fichier image.</translation>
     </message>
@@ -1621,32 +1621,32 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="240"/>
+      <location filename="../../CommandDecorate.cpp" line="304"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="241"/>
+      <location filename="../../CommandDecorate.cpp" line="305"/>
       <source>Bitmap Image</source>
       <translation>Image bitmap</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="242"/>
+      <location filename="../../CommandDecorate.cpp" line="306"/>
       <source>Inserts a bitmap from a file into the current page</source>
       <translation>Insère une image bitmap à partir d'un fichier dans la feuille courante.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="244"/>
+      <location filename="../../CommandDecorate.cpp" line="308"/>
       <source>Insert bitmap from a file into a page</source>
       <translation>Insérer une image bitmap à partir d'un fichier dans une feuille</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="259"/>
+      <location filename="../../CommandDecorate.cpp" line="323"/>
       <source>Select an image file</source>
       <translation>Sélectionner un fichier image</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="261"/>
+      <location filename="../../CommandDecorate.cpp" line="325"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
       <translation>Fichiers image (*.jpg *.jpeg *.png *.bmp);;Tous les fichiers (*)</translation>
     </message>
@@ -1690,17 +1690,17 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
   <context>
     <name>CmdTechDrawMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="448"/>
+      <location filename="../../CommandAnnotate.cpp" line="447"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="449"/>
+      <location filename="../../CommandAnnotate.cpp" line="448"/>
       <source>Midpoint Vertices</source>
       <translation>Sommets au milieu</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="450"/>
+      <location filename="../../CommandAnnotate.cpp" line="449"/>
       <source>Adds cosmetic vertices at the midpoint of the selected edges</source>
       <translation>Ajoute des sommets cosmétiques au milieu des arêtes sélectionnées.</translation>
     </message>
@@ -1808,17 +1808,17 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
   <context>
     <name>CmdTechDrawQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="487"/>
+      <location filename="../../CommandAnnotate.cpp" line="486"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="488"/>
+      <location filename="../../CommandAnnotate.cpp" line="487"/>
       <source>Quadrant Vertices</source>
       <translation>Ajouter des sommets quadrants</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="489"/>
+      <location filename="../../CommandAnnotate.cpp" line="488"/>
       <source>Adds cosmetic vertices at the quadrant points of the selected circles</source>
       <translation>Ajoute des sommets cosmétiques aux quadrants des cercles sélectionnés.</translation>
     </message>
@@ -1926,17 +1926,17 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1329"/>
+      <location filename="../../CommandAnnotate.cpp" line="1328"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1330"/>
+      <location filename="../../CommandAnnotate.cpp" line="1329"/>
       <source>Toggle Edge Visibility</source>
       <translation>Activer/désactiver la visibilité des arêtes</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1331"/>
+      <location filename="../../CommandAnnotate.cpp" line="1330"/>
       <source>Toggles the visibility of the selected edges</source>
       <translation>Active/désactive la visibilité des arêtes sélectionnées.</translation>
     </message>
@@ -2072,17 +2072,17 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1458"/>
+      <location filename="../../CommandAnnotate.cpp" line="1457"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1459"/>
+      <location filename="../../CommandAnnotate.cpp" line="1458"/>
       <source>Surface Finish Symbol</source>
       <translation>Symbole de finition de surface</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1460"/>
+      <location filename="../../CommandAnnotate.cpp" line="1459"/>
       <source>Adds a surface finish symbol in the selected view</source>
       <translation>Insère un symbole de finition de surface dans la vue sélectionnée.</translation>
     </message>
@@ -2164,17 +2164,17 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1394"/>
+      <location filename="../../CommandAnnotate.cpp" line="1393"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1395"/>
+      <location filename="../../CommandAnnotate.cpp" line="1394"/>
       <source>Weld Symbol</source>
       <translation>Symbole et informations de soudage</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1396"/>
+      <location filename="../../CommandAnnotate.cpp" line="1395"/>
       <source>Adds welding information to the selected leader line</source>
       <translation>Insère des informations de soudage à la ligne de repère sélectionnée.</translation>
     </message>
@@ -2209,8 +2209,8 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Créer une vue interrompue</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
+      <location filename="../../PagePrinter.cpp" line="429"/>
       <source>Save page to DXF</source>
       <translation>Enregistrer la feuille au format DXF</translation>
     </message>
@@ -2252,17 +2252,17 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Créer une vue d'une feuille de calcul</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="334"/>
+      <location filename="../../CommandAnnotate.cpp" line="333"/>
       <source>Add midpoint vertices</source>
       <translation>Ajouter des sommets au milieu</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="361"/>
+      <location filename="../../CommandAnnotate.cpp" line="360"/>
       <source>Quadrant vertices</source>
       <translation>Ajouter des sommets quadrants</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="544"/>
+      <location filename="../../CommandAnnotate.cpp" line="543"/>
       <source>Create Annotation</source>
       <translation>Créer une annotation</translation>
     </message>
@@ -2470,17 +2470,17 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Mettre à jour les hachures</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="121"/>
+      <location filename="../../CommandDecorate.cpp" line="185"/>
       <source>Remove old hatch</source>
       <translation>Supprimer l'ancien motif de hachure</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="199"/>
+      <location filename="../../CommandDecorate.cpp" line="263"/>
       <source>Create GeomHatch</source>
       <translation>Créer des hachures géométriques</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="270"/>
+      <location filename="../../CommandDecorate.cpp" line="334"/>
       <source>Create Image</source>
       <translation>Créer une image</translation>
     </message>
@@ -2560,8 +2560,8 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Créer une vue en coupe complexe</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="572"/>
       <location filename="../../TaskComplexSection.cpp" line="648"/>
+      <location filename="../../TaskSectionView.cpp" line="572"/>
       <source>Edit Section View</source>
       <translation>Modifier la vue en coupe</translation>
     </message>
@@ -3107,35 +3107,6 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="115"/>
-      <location filename="../../CommandAnnotate.cpp" line="120"/>
-      <location filename="../../CommandAnnotate.cpp" line="312"/>
-      <location filename="../../CommandAnnotate.cpp" line="413"/>
-      <location filename="../../CommandAnnotate.cpp" line="720"/>
-      <location filename="../../CommandAnnotate.cpp" line="726"/>
-      <location filename="../../CommandAnnotate.cpp" line="753"/>
-      <location filename="../../CommandAnnotate.cpp" line="763"/>
-      <location filename="../../CommandAnnotate.cpp" line="840"/>
-      <location filename="../../CommandAnnotate.cpp" line="849"/>
-      <location filename="../../CommandAnnotate.cpp" line="906"/>
-      <location filename="../../CommandAnnotate.cpp" line="913"/>
-      <location filename="../../CommandAnnotate.cpp" line="940"/>
-      <location filename="../../CommandAnnotate.cpp" line="952"/>
-      <location filename="../../CommandAnnotate.cpp" line="962"/>
-      <location filename="../../CommandAnnotate.cpp" line="1045"/>
-      <location filename="../../CommandAnnotate.cpp" line="1053"/>
-      <location filename="../../CommandAnnotate.cpp" line="1073"/>
-      <location filename="../../CommandAnnotate.cpp" line="1109"/>
-      <location filename="../../CommandAnnotate.cpp" line="1155"/>
-      <location filename="../../CommandAnnotate.cpp" line="1163"/>
-      <location filename="../../CommandAnnotate.cpp" line="1210"/>
-      <location filename="../../CommandAnnotate.cpp" line="1273"/>
-      <location filename="../../CommandAnnotate.cpp" line="1293"/>
-      <location filename="../../CommandAnnotate.cpp" line="1355"/>
-      <location filename="../../CommandAnnotate.cpp" line="1362"/>
-      <location filename="../../CommandAnnotate.cpp" line="1426"/>
-      <location filename="../../CommandHelpers.cpp" line="87"/>
-      <location filename="../../CommandHelpers.cpp" line="100"/>
       <location filename="../../Command.cpp" line="629"/>
       <location filename="../../Command.cpp" line="639"/>
       <location filename="../../Command.cpp" line="856"/>
@@ -3154,6 +3125,35 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <location filename="../../Command.cpp" line="1689"/>
       <location filename="../../Command.cpp" line="1695"/>
       <location filename="../../Command.cpp" line="1754"/>
+      <location filename="../../CommandAnnotate.cpp" line="115"/>
+      <location filename="../../CommandAnnotate.cpp" line="120"/>
+      <location filename="../../CommandAnnotate.cpp" line="311"/>
+      <location filename="../../CommandAnnotate.cpp" line="412"/>
+      <location filename="../../CommandAnnotate.cpp" line="719"/>
+      <location filename="../../CommandAnnotate.cpp" line="725"/>
+      <location filename="../../CommandAnnotate.cpp" line="752"/>
+      <location filename="../../CommandAnnotate.cpp" line="762"/>
+      <location filename="../../CommandAnnotate.cpp" line="839"/>
+      <location filename="../../CommandAnnotate.cpp" line="848"/>
+      <location filename="../../CommandAnnotate.cpp" line="905"/>
+      <location filename="../../CommandAnnotate.cpp" line="912"/>
+      <location filename="../../CommandAnnotate.cpp" line="939"/>
+      <location filename="../../CommandAnnotate.cpp" line="951"/>
+      <location filename="../../CommandAnnotate.cpp" line="961"/>
+      <location filename="../../CommandAnnotate.cpp" line="1044"/>
+      <location filename="../../CommandAnnotate.cpp" line="1052"/>
+      <location filename="../../CommandAnnotate.cpp" line="1072"/>
+      <location filename="../../CommandAnnotate.cpp" line="1108"/>
+      <location filename="../../CommandAnnotate.cpp" line="1154"/>
+      <location filename="../../CommandAnnotate.cpp" line="1162"/>
+      <location filename="../../CommandAnnotate.cpp" line="1209"/>
+      <location filename="../../CommandAnnotate.cpp" line="1272"/>
+      <location filename="../../CommandAnnotate.cpp" line="1292"/>
+      <location filename="../../CommandAnnotate.cpp" line="1354"/>
+      <location filename="../../CommandAnnotate.cpp" line="1361"/>
+      <location filename="../../CommandAnnotate.cpp" line="1425"/>
+      <location filename="../../CommandHelpers.cpp" line="87"/>
+      <location filename="../../CommandHelpers.cpp" line="100"/>
       <source>Wrong selection</source>
       <translation>Sélection non valide</translation>
     </message>
@@ -3203,6 +3203,15 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>FreeCAD n'a pas pu trouver de feuille à exporter.</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="1190"/>
+      <location filename="../../Command.cpp" line="1197"/>
+      <location filename="../../Command.cpp" line="1205"/>
+      <location filename="../../Command.cpp" line="1217"/>
+      <location filename="../../CommandDecorate.cpp" line="377"/>
+      <location filename="../../CommandDecorate.cpp" line="384"/>
+      <location filename="../../CommandDecorate.cpp" line="391"/>
+      <location filename="../../TaskDimRepair.cpp" line="137"/>
+      <location filename="../../TaskDimRepair.cpp" line="148"/>
       <location filename="../../CommandExtensionPack.cpp" line="1865"/>
       <location filename="../../CommandExtensionPack.cpp" line="1994"/>
       <location filename="../../CommandCreateDims.cpp" line="1972"/>
@@ -3213,15 +3222,6 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <location filename="../../CommandCreateDims.cpp" line="2329"/>
       <location filename="../../CommandCreateDims.cpp" line="2337"/>
       <location filename="../../CommandCreateDims.cpp" line="2346"/>
-      <location filename="../../TaskDimRepair.cpp" line="137"/>
-      <location filename="../../TaskDimRepair.cpp" line="148"/>
-      <location filename="../../CommandDecorate.cpp" line="311"/>
-      <location filename="../../CommandDecorate.cpp" line="318"/>
-      <location filename="../../CommandDecorate.cpp" line="325"/>
-      <location filename="../../Command.cpp" line="1190"/>
-      <location filename="../../Command.cpp" line="1197"/>
-      <location filename="../../Command.cpp" line="1205"/>
-      <location filename="../../Command.cpp" line="1217"/>
       <source>Incorrect selection</source>
       <translation>Sélection non valide</translation>
     </message>
@@ -3242,6 +3242,33 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Il n'y a pas de formes, de groupes ou de liens dans cette sélection.</translation>
     </message>
     <message>
+      <location filename="../../CommandStack.cpp" line="73"/>
+      <location filename="../../CommandStack.cpp" line="189"/>
+      <location filename="../../CommandStack.cpp" line="249"/>
+      <location filename="../../CommandStack.cpp" line="309"/>
+      <location filename="../../Command.cpp" line="739"/>
+      <location filename="../../Command.cpp" line="832"/>
+      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../CommandAnnotate.cpp" line="100"/>
+      <location filename="../../CommandAnnotate.cpp" line="161"/>
+      <location filename="../../CommandAnnotate.cpp" line="213"/>
+      <location filename="../../CommandAnnotate.cpp" line="399"/>
+      <location filename="../../CommandAnnotate.cpp" line="460"/>
+      <location filename="../../CommandAnnotate.cpp" line="499"/>
+      <location filename="../../CommandAnnotate.cpp" line="588"/>
+      <location filename="../../CommandAnnotate.cpp" line="692"/>
+      <location filename="../../CommandAnnotate.cpp" line="803"/>
+      <location filename="../../CommandAnnotate.cpp" line="878"/>
+      <location filename="../../CommandAnnotate.cpp" line="991"/>
+      <location filename="../../CommandAnnotate.cpp" line="1141"/>
+      <location filename="../../CommandAnnotate.cpp" line="1260"/>
+      <location filename="../../CommandAnnotate.cpp" line="1341"/>
+      <location filename="../../CommandAnnotate.cpp" line="1407"/>
+      <location filename="../../CommandExtensionPack.cpp" line="290"/>
+      <location filename="../../CommandExtensionPack.cpp" line="593"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1214"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1752"/>
       <location filename="../../CommandExtensionDims.cpp" line="310"/>
       <location filename="../../CommandExtensionDims.cpp" line="519"/>
       <location filename="../../CommandExtensionDims.cpp" line="807"/>
@@ -3249,9 +3276,27 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <location filename="../../CommandExtensionDims.cpp" line="1506"/>
       <location filename="../../CommandExtensionDims.cpp" line="1875"/>
       <location filename="../../CommandExtensionDims.cpp" line="2113"/>
-      <location filename="../../CommandAnnotate.cpp" line="100"/>
-      <location filename="../../CommandAnnotate.cpp" line="161"/>
-      <location filename="../../CommandAnnotate.cpp" line="213"/>
+      <location filename="../../CommandCreateDims.cpp" line="1470"/>
+      <location filename="../../CommandCreateDims.cpp" line="1518"/>
+      <location filename="../../CommandCreateDims.cpp" line="1566"/>
+      <location filename="../../CommandCreateDims.cpp" line="1614"/>
+      <location filename="../../CommandCreateDims.cpp" line="1662"/>
+      <location filename="../../CommandCreateDims.cpp" line="1709"/>
+      <location filename="../../CommandCreateDims.cpp" line="1756"/>
+      <location filename="../../CommandCreateDims.cpp" line="1803"/>
+      <location filename="../../CommandCreateDims.cpp" line="1850"/>
+      <location filename="../../CommandCreateDims.cpp" line="1946"/>
+      <location filename="../../CommandCreateDims.cpp" line="2071"/>
+      <source>Task in progress</source>
+      <translation>Tâche en cours</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="740"/>
+      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../CommandAnnotate.cpp" line="101"/>
+      <location filename="../../CommandAnnotate.cpp" line="162"/>
+      <location filename="../../CommandAnnotate.cpp" line="214"/>
       <location filename="../../CommandAnnotate.cpp" line="400"/>
       <location filename="../../CommandAnnotate.cpp" line="461"/>
       <location filename="../../CommandAnnotate.cpp" line="500"/>
@@ -3264,33 +3309,6 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <location filename="../../CommandAnnotate.cpp" line="1261"/>
       <location filename="../../CommandAnnotate.cpp" line="1342"/>
       <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../CommandExtensionPack.cpp" line="290"/>
-      <location filename="../../CommandExtensionPack.cpp" line="593"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1214"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1752"/>
-      <location filename="../../CommandCreateDims.cpp" line="1470"/>
-      <location filename="../../CommandCreateDims.cpp" line="1518"/>
-      <location filename="../../CommandCreateDims.cpp" line="1566"/>
-      <location filename="../../CommandCreateDims.cpp" line="1614"/>
-      <location filename="../../CommandCreateDims.cpp" line="1662"/>
-      <location filename="../../CommandCreateDims.cpp" line="1709"/>
-      <location filename="../../CommandCreateDims.cpp" line="1756"/>
-      <location filename="../../CommandCreateDims.cpp" line="1803"/>
-      <location filename="../../CommandCreateDims.cpp" line="1850"/>
-      <location filename="../../CommandCreateDims.cpp" line="1946"/>
-      <location filename="../../CommandCreateDims.cpp" line="2071"/>
-      <location filename="../../CommandStack.cpp" line="73"/>
-      <location filename="../../CommandStack.cpp" line="189"/>
-      <location filename="../../CommandStack.cpp" line="249"/>
-      <location filename="../../CommandStack.cpp" line="309"/>
-      <location filename="../../Command.cpp" line="739"/>
-      <location filename="../../Command.cpp" line="832"/>
-      <location filename="../../Command.cpp" line="895"/>
-      <source>Task in progress</source>
-      <translation>Tâche en cours</translation>
-    </message>
-    <message>
       <location filename="../../CommandExtensionDims.cpp" line="311"/>
       <location filename="../../CommandExtensionDims.cpp" line="520"/>
       <location filename="../../CommandExtensionDims.cpp" line="808"/>
@@ -3298,24 +3316,6 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <location filename="../../CommandExtensionDims.cpp" line="1507"/>
       <location filename="../../CommandExtensionDims.cpp" line="1876"/>
       <location filename="../../CommandExtensionDims.cpp" line="2114"/>
-      <location filename="../../CommandAnnotate.cpp" line="101"/>
-      <location filename="../../CommandAnnotate.cpp" line="162"/>
-      <location filename="../../CommandAnnotate.cpp" line="214"/>
-      <location filename="../../CommandAnnotate.cpp" line="401"/>
-      <location filename="../../CommandAnnotate.cpp" line="462"/>
-      <location filename="../../CommandAnnotate.cpp" line="501"/>
-      <location filename="../../CommandAnnotate.cpp" line="590"/>
-      <location filename="../../CommandAnnotate.cpp" line="694"/>
-      <location filename="../../CommandAnnotate.cpp" line="805"/>
-      <location filename="../../CommandAnnotate.cpp" line="880"/>
-      <location filename="../../CommandAnnotate.cpp" line="993"/>
-      <location filename="../../CommandAnnotate.cpp" line="1143"/>
-      <location filename="../../CommandAnnotate.cpp" line="1262"/>
-      <location filename="../../CommandAnnotate.cpp" line="1343"/>
-      <location filename="../../CommandAnnotate.cpp" line="1409"/>
-      <location filename="../../Command.cpp" line="740"/>
-      <location filename="../../Command.cpp" line="833"/>
-      <location filename="../../Command.cpp" line="896"/>
       <source>Close active task dialog and try again</source>
       <translation>Fermer la boîte de dialogue des tâches actives et réessayer</translation>
     </message>
@@ -3336,14 +3336,14 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Il n'y a pas de vue de base, de formes, de groupes ou de liens dans cette sélection.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2330"/>
       <location filename="../../Command.cpp" line="1191"/>
+      <location filename="../../CommandCreateDims.cpp" line="2330"/>
       <source>Select an object first</source>
       <translation>Sélectionner d’abord un objet</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2338"/>
       <location filename="../../Command.cpp" line="1198"/>
+      <location filename="../../CommandCreateDims.cpp" line="2338"/>
       <source>Too many objects selected</source>
       <translation>Trop d'éléments sélectionnés</translation>
     </message>
@@ -3504,13 +3504,13 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Tous les fichiers</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="398"/>
+      <location filename="../../CommandDecorate.cpp" line="404"/>
       <location filename="../../TaskDimension.cpp" line="551"/>
-      <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
       <location filename="../../CommandCreateDims.cpp" line="2193"/>
-      <location filename="../../CommandDecorate.cpp" line="332"/>
-      <location filename="../../CommandDecorate.cpp" line="338"/>
+      <location filename="../../CommandAlign.cpp" line="53"/>
       <source>Incorrect Selection</source>
       <translation>Sélection non valide</translation>
     </message>
@@ -3544,8 +3544,8 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Fermer la boîte de dialogue de la tâche active et réessayer</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="989"/>
       <location filename="../../CommandStack.cpp" line="369"/>
+      <location filename="../../CommandExtensionPack.cpp" line="989"/>
       <source>Task In Progress</source>
       <translation>Tâche en cours</translation>
     </message>
@@ -3555,13 +3555,13 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Cercle de trou</translation>
     </message>
     <message>
+      <location filename="../../CommandStack.cpp" line="370"/>
       <location filename="../../CommandExtensionPack.cpp" line="291"/>
       <location filename="../../CommandExtensionPack.cpp" line="594"/>
       <location filename="../../CommandExtensionPack.cpp" line="990"/>
       <location filename="../../CommandExtensionPack.cpp" line="1215"/>
       <location filename="../../CommandExtensionPack.cpp" line="1460"/>
       <location filename="../../CommandExtensionPack.cpp" line="1753"/>
-      <location filename="../../CommandStack.cpp" line="370"/>
       <source>Close active task dialog and try again.</source>
       <translation>Fermer la fenêtre de dialogue des tâches actives et réessayer</translation>
     </message>
@@ -3606,8 +3606,8 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Sélectionner 2 lignes droites</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="769"/>
-      <location filename="../../CommandAnnotate.cpp" line="1022"/>
+      <location filename="../../CommandAnnotate.cpp" line="768"/>
+      <location filename="../../CommandAnnotate.cpp" line="1021"/>
       <location filename="../../CommandExtensionPack.cpp" line="888"/>
       <location filename="../../CommandExtensionPack.cpp" line="911"/>
       <location filename="../../CommandExtensionPack.cpp" line="933"/>
@@ -3616,8 +3616,8 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Sélection incorrecte</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="313"/>
-      <location filename="../../CommandAnnotate.cpp" line="414"/>
+      <location filename="../../CommandAnnotate.cpp" line="312"/>
+      <location filename="../../CommandAnnotate.cpp" line="413"/>
       <source>No DrawViewPart objects in this selection</source>
       <translation>Aucun objet DrawViewPart dans cette sélection</translation>
     </message>
@@ -3628,143 +3628,153 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="121"/>
-      <location filename="../../CommandAnnotate.cpp" line="727"/>
-      <location filename="../../CommandAnnotate.cpp" line="907"/>
-      <location filename="../../CommandAnnotate.cpp" line="1046"/>
+      <location filename="../../CommandAnnotate.cpp" line="726"/>
+      <location filename="../../CommandAnnotate.cpp" line="906"/>
+      <location filename="../../CommandAnnotate.cpp" line="1045"/>
       <source>You must select a base view for the line</source>
       <translation>Vous devez sélectionner une vue de base pour la ligne.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="721"/>
-      <location filename="../../CommandAnnotate.cpp" line="914"/>
+      <location filename="../../CommandAnnotate.cpp" line="720"/>
+      <location filename="../../CommandAnnotate.cpp" line="913"/>
       <source>No base view in selection</source>
       <translation>Il n'y a pas de vue de base sélectionnée.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="754"/>
+      <location filename="../../CommandAnnotate.cpp" line="753"/>
       <source>You must select faces or an existing centerline</source>
       <translation>Vous devez sélectionner des faces ou une ligne centrale existante.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="764"/>
+      <location filename="../../CommandAnnotate.cpp" line="763"/>
       <source>No CenterLine in selection</source>
       <translation>Il n'y a pas de ligne centrale sélectionnée.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="770"/>
-      <location filename="../../CommandAnnotate.cpp" line="953"/>
+      <location filename="../../CommandAnnotate.cpp" line="769"/>
+      <location filename="../../CommandAnnotate.cpp" line="952"/>
       <source>Selection is not a centerline</source>
       <translation>La sélection n'est pas une ligne centrale.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="841"/>
+      <location filename="../../CommandAnnotate.cpp" line="840"/>
       <source>Selection is not a Centerline</source>
       <translation>La sélection n'est pas une ligne centrale.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="850"/>
+      <location filename="../../CommandAnnotate.cpp" line="849"/>
       <source>Selection not understood</source>
       <translation>La sélection n'est pas comprise.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="941"/>
+      <location filename="../../CommandAnnotate.cpp" line="940"/>
       <source>You must select 2 vertices or an existing centerline</source>
       <translation>Vous devez sélectionner 2 sommets ou une ligne centrale existante.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="963"/>
+      <location filename="../../CommandAnnotate.cpp" line="962"/>
       <source>Select 2 vertices or 1 centerline</source>
       <translation>Sélectionner 2 sommets ou 1 ligne centrale</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1054"/>
+      <location filename="../../CommandAnnotate.cpp" line="1053"/>
       <source>Not enough points in the selection</source>
       <translation>Il n'y a pas assez de points dans la sélection.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1074"/>
+      <location filename="../../CommandAnnotate.cpp" line="1073"/>
       <source>Selection is not a cosmetic line</source>
       <translation>La sélection n'est pas une ligne cosmétique.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1110"/>
+      <location filename="../../CommandAnnotate.cpp" line="1109"/>
       <source>You must select 2 vertices</source>
       <translation>Vous devez sélectionner 2 sommets.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1156"/>
-      <location filename="../../CommandAnnotate.cpp" line="1356"/>
+      <location filename="../../CommandAnnotate.cpp" line="1155"/>
+      <location filename="../../CommandAnnotate.cpp" line="1355"/>
       <source>Nothing selected</source>
       <translation>Aucune sélection</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1164"/>
+      <location filename="../../CommandAnnotate.cpp" line="1163"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>Au moins un objet dans la sélection n'est pas une vue partielle.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1211"/>
+      <location filename="../../CommandAnnotate.cpp" line="1210"/>
       <source>Unknown object type in selection</source>
       <translation>Type d'objet inconnu dans la sélection</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1274"/>
+      <location filename="../../CommandAnnotate.cpp" line="1273"/>
       <source>You must select a view and/or lines</source>
       <translation>Vous devez sélectionner une vue et/ou des lignes.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1294"/>
+      <location filename="../../CommandAnnotate.cpp" line="1293"/>
       <source>No view in selection</source>
       <translation>Il n'y a pas de vue dans la sélection.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1363"/>
+      <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <source>No part views in this selection</source>
       <translation>Il n'y a pas de vues partielles dans cette sélection.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1427"/>
+      <location filename="../../CommandAnnotate.cpp" line="1426"/>
       <source>Select exactly one leader line or one weld symbol</source>
       <translation>Sélectionner exactement une ligne de repère ou un symbole de soudage</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1486"/>
+      <location filename="../../CommandAnnotate.cpp" line="1485"/>
       <source>SurfaceFinishSymbols</source>
       <translation>Symboles d'état de surface</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1487"/>
+      <location filename="../../CommandAnnotate.cpp" line="1486"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>L'objet sélectionné n'est ni une vue partielle ni une ligne de repère.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="109"/>
+      <location filename="../../CommandDecorate.cpp" line="103"/>
+      <source>No TechDraw Page</source>
+      <translation type="unfinished">No TechDraw Page</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="104"/>
+      <source>Need a TechDraw Page for this command</source>
+      <translation type="unfinished">Need a TechDraw Page for this command</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="173"/>
       <source>Replace hatch?</source>
       <translation>Faut-il remplacer le motif de hachure ?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="110"/>
+      <location filename="../../CommandDecorate.cpp" line="174"/>
       <source>Some faces in the selection are already hatched. Replace?</source>
       <translation>Certaines faces de la sélection sont déjà hachurées. Faut-il remplacer le motif des hachures ?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="312"/>
+      <location filename="../../CommandDecorate.cpp" line="378"/>
       <source>Select a face first</source>
       <translation>Sélectionner d'abord une face</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="319"/>
+      <location filename="../../CommandDecorate.cpp" line="385"/>
       <source>No TechDraw object in selection</source>
       <translation>Aucun objet TechDraw dans la sélection</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="326"/>
+      <location filename="../../CommandDecorate.cpp" line="392"/>
       <source>Create a page to insert</source>
       <translation>Créer une feuille à insérer</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="333"/>
-      <location filename="../../CommandDecorate.cpp" line="339"/>
+      <location filename="../../CommandDecorate.cpp" line="399"/>
+      <location filename="../../CommandDecorate.cpp" line="405"/>
       <source>No faces to hatch in this selection</source>
       <translation>Il n'y a pas de faces à hachurer dans cette sélection.</translation>
     </message>
@@ -3789,56 +3799,56 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Cette fonction requiert une feuille.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="311"/>
+      <location filename="../../MDIViewPage.cpp" line="316"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="312"/>
-      <location filename="../../MDIViewPage.cpp" line="535"/>
+      <location filename="../../MDIViewPage.cpp" line="317"/>
+      <location filename="../../MDIViewPage.cpp" line="549"/>
       <source>All Files (*.*)</source>
       <translation>Tous les fichiers (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="314"/>
+      <location filename="../../MDIViewPage.cpp" line="319"/>
       <source>Export Page as PDF</source>
       <translation>Exporter la feuille au format PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="488"/>
-      <location filename="../../MDIViewPage.cpp" line="510"/>
+      <location filename="../../MDIViewPage.cpp" line="502"/>
+      <location filename="../../MDIViewPage.cpp" line="524"/>
       <source>All files (*.*)</source>
       <translation>Tous les fichiers (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="490"/>
+      <location filename="../../MDIViewPage.cpp" line="504"/>
       <source>Export page as SVG</source>
       <translation>Exporter la feuille au format SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="512"/>
+      <location filename="../../MDIViewPage.cpp" line="526"/>
       <source>Export page as DXF</source>
       <translation>Exporter une feuille au format DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="537"/>
+      <location filename="../../MDIViewPage.cpp" line="551"/>
       <source>Export page as PDF</source>
       <translation>Exporter une feuille au format PDF</translation>
     </message>
     <message>
       <location filename="../../ViewProviderProjGroup.cpp" line="159"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
-      <location filename="../../ViewProviderPage.cpp" line="206"/>
+      <location filename="../../ViewProviderPage.cpp" line="217"/>
       <source>Are you sure you want to continue?</source>
       <translation>Êtes-vous sûr de vouloir continuer ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="226"/>
+      <location filename="../../ViewProviderPage.cpp" line="237"/>
       <source>Show Drawing</source>
       <translation>Afficher le dessin</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="228"/>
+      <location filename="../../ViewProviderPage.cpp" line="239"/>
       <source>Toggle Keep Updated</source>
       <translation>Activer/désactiver la mise à jour</translation>
     </message>
@@ -3909,14 +3919,14 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Modifier une vue en coupe complexe</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="228"/>
       <location filename="../../TaskComplexSection.cpp" line="215"/>
+      <location filename="../../TaskSectionView.cpp" line="228"/>
       <source>Current View Direction</source>
       <translation>Direction de la vue actuelle</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="229"/>
       <location filename="../../TaskComplexSection.cpp" line="216"/>
+      <location filename="../../TaskSectionView.cpp" line="229"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Direction de la vue dans le système de coordonnées de la vue de base</translation>
     </message>
@@ -3931,8 +3941,8 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Vérifier la section normale, la direction et/ou la direction X</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="638"/>
       <location filename="../../TaskComplexSection.cpp" line="714"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>L'opération a échoué</translation>
     </message>
@@ -3967,8 +3977,8 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Modifier la vue détaillée</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="136"/>
       <location filename="../../ViewProviderBalloon.cpp" line="86"/>
+      <location filename="../../ViewProviderDimension.cpp" line="136"/>
       <source>Edit %1</source>
       <translation>Éditer %1</translation>
     </message>
@@ -4102,15 +4112,15 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Format de personnalisation</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2329"/>
-      <location filename="../../CommandAnnotate.cpp" line="1023"/>
+      <location filename="../../CommandAnnotate.cpp" line="1022"/>
       <location filename="../../CommandExtensionPack.cpp" line="2135"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2329"/>
       <source>Selection is empty</source>
       <translation>La sélection est vide</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <location filename="../../CommandExtensionPack.cpp" line="2142"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2345"/>
       <source>No object selected</source>
       <translation>Aucun objet sélectionné</translation>
     </message>
@@ -4304,28 +4314,28 @@ it has a weld symbol that would become broken.</source>
       <translation>Vous ne pouvez pas supprimer cette ligne de repère car elle comporte un symbole de soudage qui se casserait.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="379"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="378"/>
       <source>Close open dialog before deleting detail object</source>
       <translation>Fermer la boîte de dialogue ouverte avant de supprimer une vue détaillée</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="394"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="393"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Vous ne pouvez pas supprimer cette vue car elle possède une ou plusieurs vues dépendantes qui deviendraient orphelines.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="383"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="398"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="145"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="162"/>
       <location filename="../../ViewProviderWeld.cpp" line="143"/>
+      <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderPage.cpp" line="209"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="382"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="397"/>
+      <location filename="../../ViewProviderPage.cpp" line="220"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="154"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="163"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="171"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="179"/>
-      <location filename="../../ViewProviderLeader.cpp" line="212"/>
       <source>Object dependencies</source>
       <translation>Dépendances des objets</translation>
     </message>
@@ -4350,7 +4360,7 @@ it has a weld symbol that would become broken.</source>
       <translation>Vous ne pouvez pas supprimer cette vue car elle comporte une ligne de repère qui se casserait.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="198"/>
+      <location filename="../../ViewProviderPage.cpp" line="209"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>La feuille n'est pas vide et donc les objets de référence suivants pourraient être perdus :</translation>
@@ -5708,6 +5718,16 @@ pour les groupes de projection</translation>
       <translation>Conventions</translation>
     </message>
     <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="345"/>
+      <source>First angle</source>
+      <translation>Premier angle</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="350"/>
+      <source>Third angle</source>
+      <translation>Troisième angle</translation>
+    </message>
+    <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="355"/>
       <source>Page</source>
       <translation>Feuille</translation>
@@ -5886,22 +5906,47 @@ Les modifications n'ont aucun effet sur les cotes existantes.</translation>
       <translation>Utiliser la direction de la caméra 3D</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="856"/>
-      <source>Displays view labels even when frames are suppressed</source>
-      <translation>Affiche les étiquettes des vues même lorsque les cadres sont supprimés.</translation>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="891"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="863"/>
+      <source>Auto</source>
+      <translation>Automatique</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="868"/>
+      <source>On</source>
+      <translation>Activé</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="873"/>
+      <source>Off</source>
+      <translation>Désactivé</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="878"/>
+      <source>Manual</source>
+      <translation type="unfinished">Manual</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="886"/>
+      <source>View frames mode</source>
+      <translation type="unfinished">View frames mode</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
       <source>Snaps views into alignment when being dragged</source>
       <translation>Les vues seront aimantées sur l'alignement lorsqu'elles seront déplacées.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="894"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="913"/>
       <source>Snap view alignment</source>
       <translation>Aimanter les vues à l'alignement</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="913"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="932"/>
       <source>Snap detail highlights</source>
       <translation>Aimanter les surbrillances des vues détaillées</translation>
     </message>
@@ -5909,16 +5954,6 @@ Les modifications n'ont aucun effet sur les cotes existantes.</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="643"/>
       <source>Diamond</source>
       <translation>Diamant</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="345"/>
-      <source>First angle</source>
-      <translation>Premier angle</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="350"/>
-      <source>Third angle</source>
-      <translation>Troisième angle</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="664"/>
@@ -5951,44 +5986,39 @@ Les modifications n'ont aucun effet sur les cotes existantes.</translation>
       <translation>Vues par défaut</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="859"/>
-      <source>Always Show Label</source>
-      <translation>Toujours afficher les étiquettes</translation>
-    </message>
-    <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="883"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="902"/>
       <source>Snapping</source>
       <translation>Aimantation</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
       <source>Check this box if you want detail view highlights to snap to the nearest vertex when dragging.</source>
       <translation>Cochez cette case si vous souhaitez que les surlignages de la vue détaillée s'aimantent sur le
 sommet le plus proche lors de glissement.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="929"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="948"/>
       <source>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</source>
       <translation>Lorsque vous faites glisser une vue, si elle se trouve à l'intérieur de cette portion
 de la taille de la vue par rapport au bon alignement, elle s'aimantera à l'alignement.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="961"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="980"/>
       <source>View snapping factor</source>
       <translation>Coefficient d'aimantation des vues</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="968"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="987"/>
       <source>Highlight snapping factor</source>
       <translation>Coefficient d'aimantation des surbrillances</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="975"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="994"/>
       <source>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</source>
       <translation>Contrôle le rayon d'aimantation pour les surbrillances. Les sommets doivent se trouver à l'intérieur de ce coefficient multiplié par la taille de la surbrillance pour être une cible d'aimantation.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1024"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="1042"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;span style=&quot; font-weight:600;&quot;&gt;Remarque :&lt;/span&gt; les éléments en &lt;span style=&quot; font-style:italic;&quot;&gt;italiques&lt;/span&gt; sont les valeurs par défaut des nouveaux objets. Ils n'ont aucun effet sur les objets déjà en place.</translation>
     </message>
@@ -6225,54 +6255,59 @@ Sinon, une méthode plus précise sera utilisée.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="88"/>
+      <location filename="../../MDIViewPage.cpp" line="90"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Activer/désactiver la &amp;mise à jour</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="91"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
+      <source>Toggle &amp;Frames</source>
+      <translation type="unfinished">Toggle &amp;Frames</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exporter au format SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="95"/>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
       <source>Export DXF</source>
       <translation>Exporter au format DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="99"/>
+      <location filename="../../MDIViewPage.cpp" line="104"/>
       <source>Export PDF</source>
       <translation>Exporter au format PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="103"/>
+      <location filename="../../MDIViewPage.cpp" line="108"/>
       <source>Print All Pages</source>
       <translation>Imprimer toutes les feuilles</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="394"/>
+      <location filename="../../MDIViewPage.cpp" line="401"/>
       <source>Different orientation</source>
       <translation>Orientation différente</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="395"/>
+      <location filename="../../MDIViewPage.cpp" line="402"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>L'imprimante utilise une orientation différente que celle du dessin. Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="404"/>
+      <location filename="../../MDIViewPage.cpp" line="411"/>
       <source>Different paper size</source>
       <translation>Format de papier différent</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="405"/>
+      <location filename="../../MDIViewPage.cpp" line="412"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>L'imprimante utilise un format de papier différent que le dessin. Voulez-vous continuer ?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1080"/>
+      <location filename="../../MDIViewPage.cpp" line="1094"/>
       <source>Selected:</source>
       <translation>Sélectionné:</translation>
     </message>
@@ -6768,7 +6803,7 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskCosVertex.cpp" line="156"/>
-      <location filename="../../TaskCosVertex.cpp" line="245"/>
+      <location filename="../../TaskCosVertex.cpp" line="248"/>
       <source>Pick points</source>
       <translation>Choisir des points</translation>
     </message>
@@ -6783,12 +6818,12 @@ Do you want to continue?</source>
       <translation>Annuler la sélection</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="198"/>
+      <location filename="../../TaskCosVertex.cpp" line="201"/>
       <source>Left click to set a point</source>
       <translation>Clic gauche pour définir un point</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="273"/>
+      <location filename="../../TaskCosVertex.cpp" line="276"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>Modification en cours abandonnée. Recommencer.</translation>
     </message>
@@ -10062,7 +10097,7 @@ direction et la mesure.</translation>
   <context>
     <name>TechDraw_CosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="277"/>
+      <location filename="../../CommandAnnotate.cpp" line="276"/>
       <source>Inserts a cosmetic vertex into a view</source>
       <translation>Insère un sommet cosmétique dans une vue.</translation>
     </message>
@@ -10070,7 +10105,7 @@ direction et la mesure.</translation>
   <context>
     <name>TechDraw_Midpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="281"/>
+      <location filename="../../CommandAnnotate.cpp" line="280"/>
       <source>Inserts cosmetic vertices at the midpoint of the selected edges</source>
       <translation>Ajoute des sommets cosmétiques au milieu des arêtes sélectionnées.</translation>
     </message>
@@ -10078,7 +10113,7 @@ direction et la mesure.</translation>
   <context>
     <name>TechDraw_Quadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="285"/>
+      <location filename="../../CommandAnnotate.cpp" line="284"/>
       <source>Inserts cosmetic vertices at the quadrant points of the selected circles</source>
       <translation>Ajoute des sommets cosmétiques aux quadrants des cercles sélectionnés.</translation>
     </message>
@@ -10086,7 +10121,7 @@ direction et la mesure.</translation>
   <context>
     <name>TechDraw_FaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="651"/>
+      <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Adds a centerline to selected faces</source>
       <translation>Ajoute une ligne centrale aux faces sélectionnées.</translation>
     </message>
@@ -10094,7 +10129,7 @@ direction et la mesure.</translation>
   <context>
     <name>TechDraw_2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Adds a centerline between 2 selected lines</source>
       <translation>Ajoute une ligne centrale entre 2 lignes sélectionnées.</translation>
     </message>
@@ -10102,7 +10137,7 @@ direction et la mesure.</translation>
   <context>
     <name>TechDraw_2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="659"/>
+      <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Adds a centerline between 2 selected points</source>
       <translation>Ajoute une ligne centrale entre 2 points sélectionnés.</translation>
     </message>
@@ -10189,7 +10224,7 @@ direction et la mesure.</translation>
   <context>
     <name>CmdMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="280"/>
+      <location filename="../../CommandAnnotate.cpp" line="279"/>
       <source>Midpoint Vertices</source>
       <translation>Sommets au milieu</translation>
     </message>
@@ -10197,7 +10232,7 @@ direction et la mesure.</translation>
   <context>
     <name>CmdQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="284"/>
+      <location filename="../../CommandAnnotate.cpp" line="283"/>
       <source>Quadrant Vertices</source>
       <translation>Ajouter des sommets quadrants</translation>
     </message>
@@ -10205,7 +10240,7 @@ direction et la mesure.</translation>
   <context>
     <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="654"/>
+      <location filename="../../CommandAnnotate.cpp" line="653"/>
       <source>Centerline 2 Lines</source>
       <translation>Ligne centrale 2 lignes</translation>
     </message>
@@ -10213,9 +10248,23 @@ direction et la mesure.</translation>
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="658"/>
+      <location filename="../../CommandAnnotate.cpp" line="657"/>
       <source>Centerline 2 Points</source>
       <translation>Ligne centrale 2 points</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawToggleFrame</name>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="75"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../CommandDecorate.cpp" line="76"/>
+      <location filename="../../CommandDecorate.cpp" line="77"/>
+      <source>Turn View Frames On/Off</source>
+      <translation type="unfinished">Turn View Frames On/Off</translation>
     </message>
   </context>
 </TS>

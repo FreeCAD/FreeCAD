@@ -7,7 +7,7 @@
       <location filename="../../AttacherTexts.cpp" line="842"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Any</translation>
+      <translation>Enhver</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="843"/>
@@ -115,7 +115,7 @@
       <location filename="../../AttacherTexts.cpp" line="863"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Solid</translation>
+      <translation>Massivt emne</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="864"/>
@@ -130,7 +130,7 @@
       <location filename="../../AttacherTexts.cpp" line="727"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktiveret</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="728"/>
@@ -510,7 +510,7 @@
       <location filename="../../AttacherTexts.cpp" line="296"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktiveret</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="297"/>
@@ -668,25 +668,25 @@
       <location filename="../../AttacherTexts.cpp" line="430"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane by 3 points</translation>
+      <translation>Plan ved 3 punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="431"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Align plane to pass through three vertices.</translation>
+      <translation>Justér planet så det skærer tre punkter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="439"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Normal to 3 points</translation>
+      <translation>Normal til 3 punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="440"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</translation>
+      <translation>Planet vil skære de første to punkter og være vinkelret på det plan, der skærer alle tre punkter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="449"/>
@@ -719,7 +719,7 @@
       <location filename="../../AttacherTexts.cpp" line="54"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Deactivated</translation>
+      <translation>Deaktiveret</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="55"/>
@@ -1181,12 +1181,12 @@
     <message>
       <location filename="../../Command.cpp" line="2408"/>
       <source>Box Selection</source>
-      <translation type="unfinished">Box Selection</translation>
+      <translation>Boks-valg</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2409"/>
       <source>Selects elements in the 3D view using a box selection</source>
-      <translation type="unfinished">Selects elements in the 3D view using a box selection</translation>
+      <translation>Vælger elementer i 3D-visningen ved brug af en boks</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2411"/>
@@ -1465,7 +1465,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="203"/>
       <source>Creates a solid cone</source>
-      <translation type="unfinished">Creates a solid cone</translation>
+      <translation>Opretter en massiv Kegle</translation>
     </message>
   </context>
   <context>
@@ -1478,12 +1478,12 @@
     <message>
       <location filename="../../Command.cpp" line="1677"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1678"/>
       <source>Creates cross-sections</source>
-      <translation type="unfinished">Creates cross-sections</translation>
+      <translation>Opretter tværsnit</translation>
     </message>
   </context>
   <context>
@@ -2028,12 +2028,12 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1775"/>
       <source>Sweep</source>
-      <translation type="unfinished">Sweep</translation>
+      <translation>Træk</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1776"/>
       <source>Sweeps profiles along a wire</source>
-      <translation type="unfinished">Sweeps profiles along a wire</translation>
+      <translation>Trækker profiler langs en kurve</translation>
     </message>
   </context>
   <context>
@@ -2264,7 +2264,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="423"/>
       <source>Sweep</source>
-      <translation type="unfinished">Sweep</translation>
+      <translation>Træk</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1603"/>
@@ -2383,7 +2383,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation type="unfinished">Cross Sections</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
@@ -4031,12 +4031,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="26"/>
       <source>Automatically check model after boolean operation</source>
-      <translation type="unfinished">Automatically check model after boolean operation</translation>
+      <translation>Kontroller automatisk modellen efter booleske operationer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="42"/>
       <source>Automatically refine model after boolean operation</source>
-      <translation type="unfinished">Automatically refine model after boolean operation</translation>
+      <translation>Forfin automatisk modellen efter booleske operationer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="105"/>
@@ -4051,7 +4051,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after applying operations</source>
-      <translation type="unfinished">Automatically refine model after applying operations</translation>
+      <translation>Forfin automatisk modellen efter udførelse af operationer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="99"/>
@@ -4066,7 +4066,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="135"/>
       <source>Default profile type for holes</source>
-      <translation type="unfinished">Default profile type for holes</translation>
+      <translation>Standard profiltype for huller</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="152"/>
@@ -4091,12 +4091,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="206"/>
       <source>Show final result by default when editing features</source>
-      <translation type="unfinished">Show final result by default when editing features</translation>
+      <translation>Vis slutresultatet som standard, ved redigering af geometrier</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="219"/>
       <source>Show transparent preview overlay by default when editing features</source>
-      <translation type="unfinished">Show transparent preview overlay by default when editing features</translation>
+      <translation>Vis en transparent forhåndsvisning som standard, ved redigering af geometrier</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="235"/>
@@ -4106,27 +4106,27 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="257"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>Eksperimentel</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="266"/>
       <source>These settings are experimental and may result in decreased stability, problems and undefined behaviors</source>
-      <translation type="unfinished">These settings are experimental and may result in decreased stability, problems and undefined behaviors</translation>
+      <translation>Disse indstillinger er eksperimentelle og kan resultere i reduceret stabilitet, uønskede resultater, og andre problemer</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="276"/>
       <source>Show interactive draggers when editing features</source>
-      <translation type="unfinished">Show interactive draggers when editing features</translation>
+      <translation>Vis interaktive trækmuligheder under redigering af egenskaber</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="292"/>
       <source>Disable recompute while dragging</source>
-      <translation type="unfinished">Disable recompute while dragging</translation>
+      <translation>Deaktivér genberegning, mens komponenter trækkes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="172"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
-      <translation type="unfinished">Automatically switch to the task panel when the Part Design workbench is activated</translation>
+      <translation>Skift automatisk til opgavepanelet når Part Design værktøjskassen aktiveres</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="197"/>
@@ -4136,7 +4136,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="74"/>
       <source>Allow multiple solids in Part Design bodies by default</source>
-      <translation type="unfinished">Allow multiple solids in Part Design bodies by default</translation>
+      <translation>Tillad som standard, at Part Design emner indeholder flere massive komponenter</translation>
     </message>
   </context>
   <context>
@@ -4817,7 +4817,7 @@ only created cuts will be visible</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="526"/>
       <source>Sweep</source>
-      <translation type="unfinished">Sweep</translation>
+      <translation>Træk</translation>
     </message>
   </context>
   <context>
@@ -5151,7 +5151,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
       <source>Skip this settings page and run the geometry check automatically</source>
-      <translation type="unfinished">Skip this settings page and run the geometry check automatically</translation>
+      <translation>Spring denne indstillingsside over, og kør kontrol af geometrien automatisk</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
@@ -5463,7 +5463,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="101"/>
       <source>Box Selection</source>
-      <translation type="unfinished">Box Selection</translation>
+      <translation>Boks-valg</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="122"/>
@@ -5476,7 +5476,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation type="unfinished">Sweep</translation>
+      <translation>Træk</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
@@ -5562,7 +5562,7 @@ in the 3D view for the sweep path.</translation>
       <location filename="../../ViewProviderPrimitive.cpp" line="54"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
       <source>Edit %1</source>
-      <translation>Rediger %1</translation>
+      <translation>Redigér %1</translation>
     </message>
     <message>
       <location filename="../../AppPartGui.cpp" line="252"/>
@@ -5663,7 +5663,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Punkt</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
@@ -5678,7 +5678,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Solid</source>
-      <translation type="unfinished">Solid</translation>
+      <translation>Massivt emne</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
@@ -5953,7 +5953,7 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="426"/>
       <source>Edit Chamfer</source>
-      <translation>Rediger rejfning</translation>
+      <translation>Redigér rejfning</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="566"/>
@@ -6709,17 +6709,17 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="91"/>
       <source>Set to Default</source>
-      <translation type="unfinished">Set to Default</translation>
+      <translation>Angiv som standard</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="98"/>
       <source>Allows the selection of multiple faces by dragging a rectangle in the 3D view</source>
-      <translation type="unfinished">Allows the selection of multiple faces by dragging a rectangle in the 3D view</translation>
+      <translation>Tillader valg af flere flader, ved at trække et rektangel i 3D-visningen</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
       <source>Box Selection</source>
-      <translation type="unfinished">Box Selection</translation>
+      <translation>Boks-valg</translation>
     </message>
   </context>
   <context>

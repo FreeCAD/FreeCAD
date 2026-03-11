@@ -6,17 +6,17 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="20"/>
       <source>Edge Constraints</source>
-      <translation type="unfinished">Edge Constraints</translation>
+      <translation>Srianta Imeall</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="26"/>
       <source>Constrains the surface to pass through the selected edges</source>
-      <translation type="unfinished">Constrains the surface to pass through the selected edges</translation>
+      <translation>Cuireann sé srian ar an dromchla dul trí na himill roghnaithe</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="29"/>
       <source>Non-Boundary Edges</source>
-      <translation type="unfinished">Non-Boundary Edges</translation>
+      <translation>Imill Neamhtheorann</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="146"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Glac leis</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
@@ -54,22 +54,22 @@
     <message>
       <location filename="../../TaskFilling.ui" line="20"/>
       <source>Boundaries</source>
-      <translation type="unfinished">Boundaries</translation>
+      <translation>Teorainneacha</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="28"/>
       <source>Support Surface</source>
-      <translation type="unfinished">Support Surface</translation>
+      <translation>Dromchla Tacaíochta</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="44"/>
       <source>Edges that will limit the surface</source>
-      <translation type="unfinished">Edges that will limit the surface</translation>
+      <translation>Imeall a chuirfidh teorainn leis an dromchla</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="47"/>
       <source>Boundary Edges</source>
-      <translation type="unfinished">Boundary Edges</translation>
+      <translation>Imeall Teorann</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
@@ -85,7 +85,7 @@
       <location filename="../../TaskFilling.ui" line="95"/>
       <location filename="../../TaskFilling.ui" line="111"/>
       <source>Drag the items to reorder the list</source>
-      <translation type="unfinished">Drag the items to reorder the list</translation>
+      <translation>Tarraing na míreanna chun an liosta a athordú</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
@@ -100,7 +100,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="184"/>
       <source>Accept</source>
-      <translation type="unfinished">Accept</translation>
+      <translation>Glac leis</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
@@ -114,12 +114,12 @@
       <location filename="../../TaskSections.ui" line="14"/>
       <location filename="../../TaskSections.ui" line="23"/>
       <source>Sectional Edges</source>
-      <translation type="unfinished">Sectional Edges</translation>
+      <translation>Imill Rannóige</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="20"/>
       <source>Constrains the surface to follow the selected sectional edges</source>
-      <translation type="unfinished">Constrains the surface to follow the selected sectional edges</translation>
+      <translation>Cuireann sé srian ar an dromchla chun na himill rannóige roghnaithe a leanúint</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
@@ -134,7 +134,7 @@
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List can be reordered by dragging&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Is féidir an liosta a athordú trí tharraingt&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>
@@ -142,12 +142,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="20"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>Líonadh</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="26"/>
       <source>Fill Type</source>
-      <translation type="unfinished">Fill Type</translation>
+      <translation>Cineál Líonadh</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="38"/>
@@ -157,12 +157,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="48"/>
       <source>Coons</source>
-      <translation type="unfinished">Coons</translation>
+      <translation>Cúinneoga</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="55"/>
       <source>Curved</source>
-      <translation type="unfinished">Curved</translation>
+      <translation>Cuartha</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="76"/>
@@ -182,28 +182,28 @@
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="222"/>
       <source>Flip orientation</source>
-      <translation type="unfinished">Flip orientation</translation>
+      <translation>Treoshuíomh smeach</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="378"/>
       <source>Too many edges</source>
-      <translation type="unfinished">Too many edges</translation>
+      <translation>An iomarca imeall</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="379"/>
       <location filename="../../TaskGeomFillSurface.cpp" line="387"/>
       <source>The tool requires two, three or four edges</source>
-      <translation type="unfinished">The tool requires two, three or four edges</translation>
+      <translation>Éilíonn an uirlis dhá, trí nó ceithre imeall</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="386"/>
       <source>Too less edges</source>
-      <translation type="unfinished">Too less edges</translation>
+      <translation>An iomarca imeall</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="398"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Réad neamhbhailí</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
       <location filename="../../Blending/TaskBlendCurve.ui" line="96"/>
       <location filename="../../Blending/TaskBlendCurve.ui" line="189"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Méid</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="113"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>Líonadh</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -464,7 +464,7 @@ Ní oibríonn an t-ordú seo ach le réad mogaill.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="326"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Réad neamhbhailí</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="406"/>
@@ -491,8 +491,8 @@ Ní oibríonn an t-ordú seo ach le réad mogaill.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <source>Edit Filling</source>
       <translation>Cuir Líonadh in Eagar</translation>
     </message>
@@ -522,7 +522,7 @@ Ní oibríonn an t-ordú seo ach le réad mogaill.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="494"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Réad neamhbhailí</translation>
     </message>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
@@ -556,7 +556,7 @@ Ní oibríonn an t-ordú seo ach le réad mogaill.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="420"/>
       <source>Invalid object</source>
-      <translation type="unfinished">Invalid object</translation>
+      <translation>Réad neamhbhailí</translation>
     </message>
   </context>
 </TS>

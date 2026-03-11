@@ -60,20 +60,20 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyEnumeration",
+                type="App::PropertyBool",
                 name="GeometricalNonlinearity",
                 group="Solver",
-                doc="Set geometrical nonlinearity",
-                value=["linear", "nonlinear"],
+                doc="Use geometrical nonlinearity",
+                value=False,
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyEnumeration",
+                type="App::PropertyBool",
                 name="MaterialNonlinearity",
                 group="Solver",
-                doc="Set material nonlinearity",
-                value=["linear", "nonlinear"],
+                doc="If available, use nonlinear material properties",
+                value=True,
             )
         )
         prop.append(
@@ -351,6 +351,15 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
             except Base.PropertyError:
                 prop.add_to_object(obj)
 
+            # change GeometricalNonlinearity and MaterialNonlinearity types
+            if prop.name == "MaterialNonlinearity":
+                prop.handle_change_type(
+                    obj, "App::PropertyEnumeration", lambda x: False if x == "linear" else True
+                )
+            elif prop.name == "GeometricalNonlinearity":
+                prop.handle_change_type(
+                    obj, "App::PropertyEnumeration", lambda x: False if x == "linear" else True
+                )
         # remove old properties
         try:
             obj.AutomaticIncrementation = not obj.getPropertyByName(

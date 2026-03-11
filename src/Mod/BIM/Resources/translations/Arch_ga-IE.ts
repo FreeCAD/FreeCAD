@@ -346,7 +346,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/ArchSchedule.ui" line="177"/>
       <source>Delete Row</source>
-      <translation type="unfinished">Delete Row</translation>
+      <translation>Scrios an Ró</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="188"/>
@@ -381,7 +381,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/ArchSchedule.ui" line="229"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Easpórtáil</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
@@ -401,7 +401,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
       <source>Password</source>
-      <translation type="unfinished">Password</translation>
+      <translation>Pasfhocal</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="62"/>
@@ -409,11 +409,11 @@ i FreeCAD nó nach bhfuil.
       <translation>Fan logáilte isteach i seisiúin FreeCAD</translation>
     </message>
     <message>
+      <location filename="../ui/DialogDisplayText.ui" line="14"/>
+      <location filename="../ui/dialogExport.ui" line="14"/>
+      <location filename="../ui/dialogListWidget.ui" line="14"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
       <location filename="../ui/dialogPhases.ui" line="14"/>
-      <location filename="../ui/dialogExport.ui" line="14"/>
-      <location filename="../ui/DialogDisplayText.ui" line="14"/>
-      <location filename="../ui/dialogListWidget.ui" line="14"/>
       <source>Dialog</source>
       <translation>Dialóg</translation>
     </message>
@@ -433,9 +433,9 @@ i FreeCAD nó nach bhfuil.
       <translation>Réada roghnaithe amháin</translation>
     </message>
     <message>
+      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
-      <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
       <translation>Réada BIM le feiceáil amháin</translation>
     </message>
@@ -455,9 +455,9 @@ i FreeCAD nó nach bhfuil.
       <translation>Taispeáin cluichí amháin</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
       <location filename="../ui/dialogLayersIFC.ui" line="53"/>
+      <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
       <source>Select All</source>
       <translation>Roghnaigh Uile</translation>
     </message>
@@ -472,8 +472,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Airíonna IFC</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <location filename="../ui/dialogIfcProperties.ui" line="182"/>
+      <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
       <source>Delete Selected Property/Property Set</source>
       <translation>Scrios an Maoine/Tacar Maoine Roghnaithe</translation>
     </message>
@@ -503,22 +503,22 @@ i FreeCAD nó nach bhfuil.
       <translation>Easpórtáil fhorfheidhmithe sonraí paraiméadracha FreeCAD iomlána</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
+      <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Ordú de réir</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcElements.ui" line="47"/>
       <location filename="../ui/dialogIfcProperties.ui" line="58"/>
+      <location filename="../ui/dialogIfcElements.ui" line="47"/>
       <source>Alphabetical</source>
-      <translation type="unfinished">Alphabetical</translation>
+      <translation>In ord aibítre</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcElements.ui" line="56"/>
       <location filename="../ui/dialogIfcProperties.ui" line="68"/>
+      <location filename="../ui/dialogIfcElements.ui" line="56"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>Cineál IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="65"/>
@@ -526,71 +526,71 @@ i FreeCAD nó nach bhfuil.
       <translation>Ábhar</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcElements.ui" line="70"/>
       <location filename="../ui/dialogIfcProperties.ui" line="78"/>
+      <location filename="../ui/dialogIfcElements.ui" line="70"/>
       <source>Model structure</source>
-      <translation type="unfinished">Model structure</translation>
+      <translation>Struchtúr samhail</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="101"/>
       <source>Change type</source>
-      <translation type="unfinished">Change type</translation>
+      <translation>Athraigh cineál</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="108"/>
       <source>Change material</source>
-      <translation type="unfinished">Change material</translation>
+      <translation>Athraigh ábhar</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="14"/>
       <source>Single IFC Document</source>
-      <translation type="unfinished">Single IFC Document</translation>
+      <translation>Doiciméad IFC Aonair</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
       <source>Convert this document to an IFC document? Selecting 'Yes' will enable automatic creation of IFC objects. Selecting 'No' will allow a mix of IFC and non-IFC elements within the file.</source>
-      <translation type="unfinished">Convert this document to an IFC document? Selecting 'Yes' will enable automatic creation of IFC objects. Selecting 'No' will allow a mix of IFC and non-IFC elements within the file.</translation>
+      <translation>An bhfuil tú ag iarraidh an doiciméad seo a thiontú go doiciméad IFC? Má roghnaíonn tú 'Tá', beidh cruthú uathoibríoch réada IFC ar siúl. Má roghnaíonn tú 'Níl', beidh meascán d'eilimintí IFC agus neamh-IFC laistigh den chomhad.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
       <source>Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</source>
-      <translation type="unfinished">Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</translation>
+      <translation>Cuireann sé struchtúr foirgnimh réamhshocraithe leis ina bhfuil IfcSite, IfcBuilding, agus IfcBuildingStorey. Is féidir an struchtúr a chur leis de láimh níos déanaí freisin.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>
       <source>Also create a default structure</source>
-      <translation type="unfinished">Also create a default structure</translation>
+      <translation>Cruthaigh struchtúr réamhshocraithe freisin</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="40"/>
       <source>Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</source>
-      <translation type="unfinished">Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</translation>
+      <translation>Cuireann sé cosc ​​ar leideanna breise agus doiciméid FreeCAD nua á gcruthú. Ní dhéanfar doiciméid nua a thiontú go IFC go huathoibríoch, ach is féidir tiontú a dhéanamh níos déanaí trí Utils → Cruthaigh Tionscadal IFC.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
+      <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <source>Do not ask again</source>
-      <translation type="unfinished">Do not ask again</translation>
+      <translation>Ná fiafraigh arís</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="14"/>
       <source>IFC Elements Manager</source>
-      <translation type="unfinished">IFC Elements Manager</translation>
+      <translation>Bainisteoir Eilimintí IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ligeann an dialóg seo duit an cineál agus an t-ábhar IFC a bhaineann le haon réad BIM sa doiciméad seo a athrú. Cliceáil faoi dhó ar an gcineál IFC le hathrú, nó bain úsáid as an roghchlár anuas faoin liosta.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="14"/>
       <source>IFC Quantities Manager</source>
-      <translation type="unfinished">IFC Quantities Manager</translation>
+      <translation>Bainisteoir Cainníochtaí IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Déanfar cainníochtaí seiceáilte a easpórtáil chuig IFC. Léiríonn cainníochtaí atá marcáilte le comhartha rabhaidh luach nialasach a d'fhéadfadh a bheith ort a sheiceáil. Má chliceálann tú ar cheanntásc colúin, cuirfear i bhfeidhm é ar na míreanna roghnaithe go léir.&lt;/p&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Rabhadh&lt;/span&gt;: Is é an limistéar cothrománach an limistéar a fhaightear agus an réad á theilgean ar an eitleán talún (X,Y), ach is é an limistéar ingearach suim na n-achar go léir de na haghaidheanna atá ingearach (orthogonal leis an eitleán talún), mar sin déanfar an dá aghaidh de bhalla a chomhaireamh.&lt;/p&gt;&lt;p&gt;Is féidir luachanna faid, leithead agus airde a athrú anseo, ach bí cúramach, d'fhéadfadh sé an geoiméadracht a athrú!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="49"/>
@@ -605,132 +605,132 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Conas a iompórtálfar an comhad IFC ar dtús: Réad amháin, struchtúr tionscadail amháin, nó na réad aonair go léir.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="26"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Réad fréimhe amháin (réamhshocraithe)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="31"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Struchtúr tionscadail (leibhéil)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="36"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Gach réad IFC aonair</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="44"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Allmhairiú tosaigh</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="14"/>
       <source>IFC Import Options</source>
-      <translation type="unfinished">IFC Import Options</translation>
+      <translation>Roghanna Iompórtála IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
       <source>Locked (IFC objects only)</source>
-      <translation type="unfinished">Locked (IFC objects only)</translation>
+      <translation>Glasáilte (réada IFC amháin)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="60"/>
       <source>Unlocked (non-IFC objects permitted)</source>
-      <translation type="unfinished">Unlocked (non-IFC objects permitted)</translation>
+      <translation>Díghlasáilte (ceadaítear réada neamh-IFC)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
       <source>Lock document</source>
-      <translation type="unfinished">Lock document</translation>
+      <translation>Glasáil doiciméad</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Cineál ionadaíochta</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="82"/>
       <source>The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation type="unfinished">The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</translation>
+      <translation>An cineál réada a cruthaíodh ag an allmhairiú. Tá an mogalra níos tapúla, ach tá cruthanna níos cruinne. Is féidir leat tiontú idir an dá cheann am ar bith trí chliceáil ar dheis ar chrann na réada</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="89"/>
       <source>Load the shape (slower)</source>
-      <translation type="unfinished">Load the shape (slower)</translation>
+      <translation>Luchtaigh an cruth (níos moille)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="94"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Luchtaigh léiriú 3T amháin, gan cruth (réamhshocraithe)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="99"/>
       <source>No 3D representation</source>
-      <translation type="unfinished">No 3D representation</translation>
+      <translation>Gan aon léiriú 3T</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="119"/>
       <source>Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</source>
-      <translation type="unfinished">Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</translation>
+      <translation>Réamhluchtaíonn sé cineálacha IFC atá ceangailte leis na réada. Is féidir an socrú seo a fhágáil díchumasaithe agus cliceáil faoi dhó níos déanaí ar an réad chun na cineálacha a luchtú.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="139"/>
       <source>Preload all materials of the file. It is advised to leave this unchecked and load materials later, only when needed</source>
-      <translation type="unfinished">Preload all materials of the file. It is advised to leave this unchecked and load materials later, only when needed</translation>
+      <translation>Réamhluchtaigh gach ábhar sa chomhad. Moltar gan tic a chur leis seo agus ábhair a luchtú níos déanaí, nuair is gá amháin</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="159"/>
       <source>If this is unchecked, these settings will be applied automatically next time. This can be changed later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</source>
-      <translation type="unfinished">If this is unchecked, these settings will be applied automatically next time. This can be changed later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</translation>
+      <translation>Mura bhfuil an tic seo, cuirfear na socruithe seo i bhfeidhm go huathoibríoch an chéad uair eile. Is féidir é seo a athrú níos déanaí faoin roghchlár Eagar -&gt; Roghanna -&gt; BIM -&gt; IFC Dúchasach</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="109"/>
       <source>If this is checked, the workbench specified in Start preferences will be loaded after import</source>
-      <translation type="unfinished">If this is checked, the workbench specified in Start preferences will be loaded after import</translation>
+      <translation>Má tá tic sa rogha seo, luchtófar an binse oibre atá sonraithe i roghanna Tosaigh tar éis an iompórtála</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="51"/>
       <source>Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</source>
-      <translation type="unfinished">Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</translation>
+      <translation>Sainmhíníonn sé seo conas a stóráiltear sonraí IFC sa doiciméad FreeCAD. Déileálann 'Doiciméad IFC aonair' leis an doiciméad FreeCAD féin mar an doiciméad IFC, agus an t-ábhar cruthaithe go léir a bhaineann leis. Cruthaíonn 'Úsáid réad doiciméad IFC' réad ar leith a léiríonn an doiciméad IFC, rud a ligeann d'ábhar IFC agus neamh-IFC araon bheith ann le chéile.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="112"/>
       <source>Switch workbench after import</source>
-      <translation type="unfinished">Switch workbench after import</translation>
+      <translation>Athraigh an binse oibre tar éis allmhairithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="122"/>
       <source>Preload types</source>
-      <translation type="unfinished">Preload types</translation>
+      <translation>Cineálacha réamhluchtaithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="129"/>
       <source>Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</source>
-      <translation type="unfinished">Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</translation>
+      <translation>Réamhluchtaigh tacair airíonna na n-ábhar go léir. Moltar gan seiceáil a dhéanamh air seo agus tacair airíonna a luchtú níos déanaí, nuair is gá amháin</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="132"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>Réamhluchtaigh tacair airíonna</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="142"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Ábhair réamhluchtaithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
       <source>Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</source>
-      <translation type="unfinished">Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</translation>
+      <translation>Réamhluchtaigh gach sraith den chomhad. Moltar gan tic a chur leis seo agus sraitheanna a luchtú níos déanaí, nuair is gá amháin</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="152"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Réamhluchtaigh sraitheanna</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="29"/>
@@ -740,19 +740,19 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="36"/>
       <source>Adds this layer to an IFC project</source>
-      <translation type="unfinished">Adds this layer to an IFC project</translation>
+      <translation>Cuireann an ciseal seo le tionscadal IFC</translation>
     </message>
     <message>
-      <location filename="../ui/dialogProjectManager.ui" line="679"/>
-      <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogLayersIFC.ui" line="46"/>
+      <location filename="../ui/dialogPhases.ui" line="55"/>
+      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <source>Delete</source>
       <translation>Scrios</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="14"/>
       <source>Layers Manager</source>
-      <translation type="unfinished">Layers Manager</translation>
+      <translation>Bainisteoir Sraitheanna</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="60"/>
@@ -767,47 +767,47 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="74"/>
       <source>Assign selected objects to the selected layer</source>
-      <translation type="unfinished">Assign selected objects to the selected layer</translation>
+      <translation>Sannadh réada roghnaithe don tsraith roghnaithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="77"/>
       <source>Assign</source>
-      <translation type="unfinished">Assign</translation>
+      <translation>Sannadh</translation>
     </message>
     <message>
+      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <location filename="../ui/dialogProjectManager.ui" line="728"/>
       <location filename="../ui/dialogProjectManager.ui" line="731"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
       <translation>Cealaigh</translation>
     </message>
     <message>
-      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <location filename="../ui/dialogPreflightResults.ui" line="103"/>
-      <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
+      <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
+      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>Ceart go leor</translation>
     </message>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="14"/>
       <source>Nudge</source>
-      <translation type="unfinished">Nudge</translation>
+      <translation>Broid</translation>
     </message>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="20"/>
       <source>New nudge value</source>
-      <translation type="unfinished">New nudge value</translation>
+      <translation>Luach nudge nua</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="14"/>
       <source>BIM Project Setup</source>
-      <translation type="unfinished">BIM Project Setup</translation>
+      <translation>Socrú Tionscadail BIM</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="154"/>
       <source>Project name</source>
-      <translation type="unfinished">Project name</translation>
+      <translation>Ainm an tionscadail</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="179"/>
@@ -822,17 +822,17 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="206"/>
       <source> E</source>
-      <translation type="unfinished"> E</translation>
+      <translation> O</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="222"/>
       <source>Elevation</source>
-      <translation type="unfinished">Elevation</translation>
+      <translation>Airde</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="229"/>
       <source>Declination</source>
-      <translation type="unfinished">Declination</translation>
+      <translation>Diúltú</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="239"/>
@@ -970,7 +970,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="290"/>
       <source>Address</source>
-      <translation type="unfinished">Address</translation>
+      <translation>Seoladh</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="297"/>
@@ -1184,8 +1184,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Seo thíos na céimeanna atá cumraithe faoi láthair don mhúnla seo</translation>
     </message>
     <message>
-      <location filename="../ui/dialogProjectManager.ui" line="665"/>
       <location filename="../ui/dialogPhases.ui" line="48"/>
+      <location filename="../ui/dialogProjectManager.ui" line="665"/>
       <source>Add</source>
       <translation>Cuir leis</translation>
     </message>
@@ -1247,7 +1247,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogSpaces.ui" line="37"/>
       <source>Space</source>
-      <translation type="unfinished">Space</translation>
+      <translation>Spás</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="42"/>
@@ -1260,7 +1260,7 @@ i FreeCAD nó nach bhfuil.
       <location filename="../ui/dialogSpaces.ui" line="61"/>
       <location filename="../ui/dialogSpaces.ui" line="128"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Limistéar</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="55"/>
@@ -1291,10 +1291,10 @@ i FreeCAD nó nach bhfuil.
       <translation>Faisnéis Spáis</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <location filename="../ui/dialogProjectManager.ui" line="457"/>
       <location filename="../ui/dialogProjectManager.ui" line="480"/>
       <location filename="../ui/dialogProjectManager.ui" line="493"/>
-      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
       <translation>0</translation>
     </message>
@@ -1346,7 +1346,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogWelcome.ui" line="14"/>
       <source>Welcome</source>
-      <translation type="unfinished">Welcome</translation>
+      <translation>Fáilte</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="71"/>
@@ -1469,8 +1469,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Tá ceann amháin nó níos mó de dhoiciméid IFC atá sa doiciméad FreeCAD seo modhnaithe, ach níor sábháladh iad. Sábhálfar iad go huathoibríoch anois.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogImport.ui" line="162"/>
       <location filename="../ui/dialogExport.ui" line="30"/>
+      <location filename="../ui/dialogImport.ui" line="162"/>
       <source>Ask again next time</source>
       <translation>Iarr arís an chéad uair eile</translation>
     </message>
@@ -1584,8 +1584,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Tiús iomlán</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCustomProperties.ui" line="71"/>
       <location filename="../ui/ArchMultiMaterial.ui" line="68"/>
+      <location filename="../ui/dialogCustomProperties.ui" line="71"/>
       <source>Add</source>
       <translation>Cuir leis</translation>
     </message>
@@ -1718,8 +1718,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Ábhar</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCustomProperties.ui" line="23"/>
       <location filename="../ui/ArchMultiMaterial.ui" line="37"/>
+      <location filename="../ui/dialogCustomProperties.ui" line="23"/>
       <source>Name</source>
       <translation>Ainm</translation>
     </message>
@@ -1729,8 +1729,8 @@ i FreeCAD nó nach bhfuil.
       <translation>Ní féidir ach carachtair alfa-uimhriúla a bheith ann agus gan spásanna. Úsáid clóscríobh CamelCase chun spásanna a shainiú go huathoibríoch</translation>
     </message>
     <message>
-      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <location filename="../ui/dialogWindows.ui" line="189"/>
+      <location filename="../ui/dialogCustomProperties.ui" line="37"/>
       <source>Description</source>
       <translation>Cur síos</translation>
     </message>
@@ -1752,7 +1752,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="54"/>
       <source>Hidden</source>
-      <translation type="unfinished">Hidden</translation>
+      <translation>I bhfolach</translation>
     </message>
     <message>
       <location filename="../ui/dialogCustomProperties.ui" line="61"/>
@@ -1777,7 +1777,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogLibrary.ui" line="32"/>
       <source>Insert</source>
-      <translation type="unfinished">Insert</translation>
+      <translation>Cuir isteach</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="39"/>
@@ -1942,7 +1942,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogPreflight.ui" line="191"/>
       <source>Geometry</source>
-      <translation type="unfinished">Geometry</translation>
+      <translation>Geoiméadracht</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="207"/>
@@ -2118,7 +2118,7 @@ i FreeCAD nó nach bhfuil.
       <location filename="../ui/dialogReorder.ui" line="14"/>
       <location filename="../ui/dialogViews.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
@@ -2133,7 +2133,7 @@ i FreeCAD nó nach bhfuil.
     <message>
       <location filename="../ui/dialogTutorial.ui" line="14"/>
       <source>BIM Tutorial</source>
-      <translation type="unfinished">BIM Tutorial</translation>
+      <translation>Ranganna Teagaisc BIM</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="20"/>
@@ -2168,7 +2168,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/dialogTutorial.ui" line="59"/>
       <location filename="../ui/dialogTutorial.ui" line="76"/>
       <source>icon</source>
-      <translation type="unfinished">icon</translation>
+      <translation>deilbhín</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="69"/>
@@ -2198,7 +2198,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogViews.ui" line="79"/>
       <source>2D Views</source>
-      <translation type="unfinished">2D Views</translation>
+      <translation>Radharcanna 2T</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="40"/>
@@ -2208,7 +2208,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="50"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Méid</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="60"/>
@@ -2220,7 +2220,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/dialogWindows.ui" line="151"/>
       <location filename="../ui/dialogWindows.ui" line="196"/>
       <source>Tag</source>
-      <translation type="unfinished">Tag</translation>
+      <translation>Chlib</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="14"/>
@@ -2256,7 +2256,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="161"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="168"/>
@@ -2287,32 +2287,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="28"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Allmhairiú tosaigh</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Conas a iompórtálfar an comhad IFC ar dtús: Réad amháin, struchtúr tionscadail amháin, nó na réad aonair go léir.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="45"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Réad fréimhe amháin (réamhshocraithe)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="50"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Struchtúr tionscadail (leibhéil)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="55"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Gach réad IFC aonair</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="63"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Cineál ionadaíochta</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="83"/>
@@ -2322,7 +2322,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="88"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Luchtaigh léiriú 3T amháin, gan cruth (réamhshocraithe)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="14"/>
@@ -2337,7 +2337,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="93"/>
       <source>No 3D representation</source>
-      <translation type="unfinished">No 3D representation</translation>
+      <translation>Gan aon léiriú 3T</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="103"/>
@@ -2357,7 +2357,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="122"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>Réamhluchtaigh tacair airíonna</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="135"/>
@@ -2367,7 +2367,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="138"/>
       <source>Preload types</source>
-      <translation type="unfinished">Preload types</translation>
+      <translation>Cineálacha réamhluchtaithe</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="151"/>
@@ -2377,7 +2377,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="154"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Ábhair réamhluchtaithe</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="167"/>
@@ -2387,7 +2387,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="170"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Réamhluchtaigh sraitheanna</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="183"/>
@@ -2452,7 +2452,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="221"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Easpórtáil</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="227"/>
@@ -2486,152 +2486,152 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="26"/>
       <source>Auto-join walls</source>
-      <translation type="unfinished">Auto-join walls</translation>
+      <translation>Ballaí a cheangal go huathoibríoch</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="58"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
-      <translation type="unfinished">Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</translation>
+      <translation>Dhá straitéis fhéideartha chun spleáchais chiorclacha a sheachaint: Réad amháin eile a chruthú (gan tic) nó geoiméadracht sheachtrach an sceitse bonn a bhaint (tic)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="96"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation type="unfinished">Apply Draft construction style to subcomponents</translation>
+      <translation>Cuir stíl tógála Dréachta i bhfeidhm ar fho-chomhpháirteanna</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
       <source> faces</source>
-      <translation type="unfinished"> faces</translation>
+      <translation> aghaidheanna</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="186"/>
       <source>Interval between file checks for references</source>
-      <translation type="unfinished">Interval between file checks for references</translation>
+      <translation>Eatramh idir seiceálacha comhad le haghaidh tagairtí</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="193"/>
       <source> seconds</source>
-      <translation type="unfinished"> seconds</translation>
+      <translation> soicindí</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="112"/>
       <source>Set "Move with host" property to True by default</source>
-      <translation type="unfinished">Set "Move with host" property to True by default</translation>
+      <translation>Socraigh an airí "Bog leis an óstach" go Fíor de réir réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="128"/>
       <source>Set "Move base" property to True by default</source>
-      <translation type="unfinished">Set "Move base" property to True by default</translation>
+      <translation>Socraigh an airí "Bog bonn" go Fíor de réir réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation type="unfinished">If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</translation>
+      <translation>Má tá tic sa rogha seo, nuair a bhíonn ábhar ag réad Áirse, glacfaidh an réad dath an ábhair. Is féidir é seo a shárú do gach réad.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="14"/>
       <source>General Settings</source>
-      <translation type="unfinished">General Settings</translation>
+      <translation>Socruithe Ginearálta</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="20"/>
       <source>Object Creation</source>
-      <translation type="unfinished">Object Creation</translation>
+      <translation>Cruthú Réada</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="42"/>
       <source>When two similar walls are connected, their underlying sketches are merged and the walls are combined into a single object</source>
-      <translation type="unfinished">When two similar walls are connected, their underlying sketches are merged and the walls are combined into a single object</translation>
+      <translation>Nuair a cheanglaítear dhá bhalla chomhchosúla, cuirtear a sceitsí bunúsacha le chéile agus cuirtear na ballaí le chéile in aon réad amháin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="77"/>
       <source>Use material color as shape color</source>
-      <translation type="unfinished">Use material color as shape color</translation>
+      <translation>Úsáid dath an ábhair mar dhath an chruth</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes subtraction or addition of an Arch object, it will receive the Draft construction color.</source>
-      <translation type="unfinished">If this is checked, when an object becomes subtraction or addition of an Arch object, it will receive the Draft construction color.</translation>
+      <translation>Má tá tic sa rogha seo, nuair a thagann réad chun bheith ina dhealú nó ina chur leis de réad Áirse, gheobhaidh sé an dath tógála Dréachta.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="109"/>
       <source>By default, new objects will have their "Move with host" property set to False, which means they will not move when their host object is moved</source>
-      <translation type="unfinished">By default, new objects will have their "Move with host" property set to False, which means they will not move when their host object is moved</translation>
+      <translation>De réir réamhshocraithe, socrófar airí "Bog leis an óstach" ag réada nua go Bréagach, rud a chiallaíonn nach mbogfaidh siad nuair a bhogtar a n-réad óstach</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="215"/>
       <source>IFC version</source>
-      <translation type="unfinished">IFC version</translation>
+      <translation>Leagan IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="222"/>
       <source>The IFC version will change which attributes and products are supported</source>
-      <translation type="unfinished">The IFC version will change which attributes and products are supported</translation>
+      <translation>Athróidh leagan IFC na tréithe agus na táirgí a bhfuil tacaíocht acu dóibh</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="232"/>
       <source>IFC4</source>
-      <translation type="unfinished">IFC4</translation>
+      <translation>IFC4</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="237"/>
       <source>IFC2X3</source>
-      <translation type="unfinished">IFC2X3</translation>
+      <translation>IFC2X3</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="248"/>
       <source>Mesh to Shape Conversion</source>
-      <translation type="unfinished">Mesh to Shape Conversion</translation>
+      <translation>Comhshó Mogalra go Cruth</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="254"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation type="unfinished">If this is checked, conversion is faster but the result might still contain triangulated faces</translation>
+      <translation>Má tá tic sa rogha seo, beidh an tiontú níos tapúla ach d’fhéadfadh aghaidheanna triantánacha a bheith sa toradh fós</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="257"/>
       <source>Fast conversion</source>
-      <translation type="unfinished">Fast conversion</translation>
+      <translation>Comhshó tapa</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="333"/>
       <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
-      <translation type="unfinished">Tolerance value to use when checking if 2 adjacent faces as planar</translation>
+      <translation>Luach lamháltais le húsáid agus seiceáil á dhéanamh an bhfuil 2 aghaidh chóngaracha comhphlánacha</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="276"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation type="unfinished">If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</translation>
+      <translation>Má tá tic sa rogha seo, déanfar grúpaí cothroma aghaidheanna a leacú go fórsa, rud a fhágann go bhféadfadh bearnaí agus torthaí neamh-sholadacha a bheith mar thoradh air</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
       <source>Join base sketches of walls if possible</source>
-      <translation type="unfinished">Join base sketches of walls if possible</translation>
+      <translation>Ceangail sceitsí bunúsacha na mballaí más féidir</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="61"/>
       <source>Remove external geometry of base sketches if needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches if needed</translation>
+      <translation>Bain geoiméadracht sheachtrach sceitsí bonn más gá</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="144"/>
       <source>Do not compute areas for objects with more than</source>
-      <translation type="unfinished">Do not compute areas for objects with more than</translation>
+      <translation>Ná ríomh achar le haghaidh rudaí a bhfuil níos mó ná</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="279"/>
       <source>Force flat faces</source>
-      <translation type="unfinished">Force flat faces</translation>
+      <translation>Fórsa aghaidheanna cothroma</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="295"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation type="unfinished">If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</translation>
+      <translation>Má tá tic sa rogha seo, déanfar poill sna haghaidheanna trí dhealú seachas trí threoshuíomh sreanga a úsáid</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="298"/>
       <source>Cut method</source>
-      <translation type="unfinished">Cut method</translation>
+      <translation>Modh gearrtha</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="317"/>
@@ -2641,75 +2641,74 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="377"/>
       <source>Show debug information during 2D rendering</source>
-      <translation type="unfinished">Show debug information during 2D rendering</translation>
+      <translation>Taispeáin faisnéis dífhabhtaithe le linn rindreáil 2T</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="380"/>
       <source>Show renderer debug messages</source>
-      <translation type="unfinished">Show renderer debug messages</translation>
+      <translation>Taispeáin teachtaireachtaí dífhabhtaithe an rindreora</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="393"/>
       <source>Cut areas line thickness ratio</source>
-      <translation type="unfinished">Cut areas line thickness ratio</translation>
+      <translation>Cóimheas tiús líne na limistéar gearrtha</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="400"/>
       <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
-      <translation type="unfinished">Specifies how many times the viewed line thickness must be applied to cut lines</translation>
+      <translation>Sonraíonn sé cé mhéad uair is gá an tiús líne a fheictear a chur i bhfeidhm chun línte a ghearradh</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="429"/>
       <source>Symbol line thickness ratio</source>
-      <translation type="unfinished">Symbol line thickness ratio</translation>
+      <translation>Cóimheas tiús líne siombail</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="449"/>
       <source>Hidden geometry pattern</source>
-      <translation type="unfinished">Hidden geometry pattern</translation>
+      <translation>Patrún geoiméadrachta i bhfolach</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="462"/>
       <source>This is the SVG stroke-dasharray property to apply
 to projections of hidden objects.</source>
-      <translation type="unfinished">This is the SVG stroke-dasharray property to apply
-to projections of hidden objects.</translation>
+      <translation>Seo í an mhaoin SVG stroke-dasharray atá le cur i bhfeidhm
+ar theilgean réad i bhfolach.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="479"/>
       <source>Pattern scale</source>
-      <translation type="unfinished">Pattern scale</translation>
+      <translation>Scála patrún</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="528"/>
       <source>The URL of a BIM server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a BIM server instance (www.bimserver.org) to connect to.</translation>
+      <translation>URL d’fhreastalaí BIM (www.bimserver.org) le ceangal leis.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="544"/>
       <source>If this is selected, the "Open BIM Server in browser"
 button will open the BIM Server interface in an external browser
 instead of the FreeCAD web workbench</source>
-      <translation type="unfinished">If this is selected, the "Open BIM Server in browser"
-button will open the BIM Server interface in an external browser
-instead of the FreeCAD web workbench</translation>
+      <translation>Má roghnaítear é seo, osclóidh an cnaipe
+"Oscail Freastalaí BIM sa bhrabhsálaí" comhéadan Freastalaí
+BIM i mbrabhsálaí seachtrach in ionad an bhinse oibre gréasáin FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="521"/>
       <source>Address</source>
-      <translation type="unfinished">Address</translation>
+      <translation>Seoladh</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="371"/>
       <source>2D Rendering</source>
-      <translation type="unfinished">2D Rendering</translation>
+      <translation>Rindreáil 2T</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="486"/>
       <source>Scaling factor for patterns used by objects that have
 a footprint display mode</source>
-      <translation type="unfinished">Scaling factor for patterns used by objects that have
-a footprint display mode</translation>
+      <translation>Fachtóir scálaithe do phatrúin a úsáideann réada a bhfuil mód taispeána lorg coise acu</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
@@ -2719,27 +2718,27 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="549"/>
       <source>Open in external browser</source>
-      <translation type="unfinished">Open in external browser</translation>
+      <translation>Oscail i mbrabhsálaí seachtrach</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="565"/>
       <source>Survey</source>
-      <translation type="unfinished">Survey</translation>
+      <translation>Suirbhé</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="571"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation type="unfinished">If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</translation>
+      <translation>Má tá tic sa rogha seo, beidh an t-aonad san áireamh sa téacs a chuirtear sa ghearrthaisce. Seachas sin, beidh sé ina uimhir shimplí a shloinntear in aonaid inmheánacha (milliméadair)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="574"/>
       <source>Include unit when sending measurements to clipboard</source>
-      <translation type="unfinished">Include unit when sending measurements to clipboard</translation>
+      <translation>Cuir aonad san áireamh agus tomhais á seoladh chuig an ghearrthaisce</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="14"/>
       <source>Defaults</source>
-      <translation type="unfinished">Defaults</translation>
+      <translation>Réamhshocruithe</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="344"/>
@@ -2759,12 +2758,12 @@ a footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
       <source>Wall color</source>
-      <translation type="unfinished">Wall color</translation>
+      <translation>Dath balla</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="63"/>
       <source>Structure color</source>
-      <translation type="unfinished">Structure color</translation>
+      <translation>Dath struchtúir</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="87"/>
@@ -3369,9 +3368,9 @@ Má tá Netgen á úsáid agat, déan cinnte go bhfuil sé ar fáil.</translatio
       <translation>Teasáil</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-webgl.ui" line="26"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
+      <location filename="../ui/preferences-webgl.ui" line="26"/>
       <source>Export Options</source>
       <translation>Roghanna Easpórtála</translation>
     </message>
@@ -3666,59 +3665,59 @@ Níl suíomh éigeantach ach is gnách go mbeadh ceann amháin ar a laghad sa ch
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="276"/>
       <source>Add default site if one is not found in the document</source>
-      <translation type="unfinished">Add default site if one is not found in the document</translation>
+      <translation>Cuir suíomh réamhshocraithe leis mura bhfuil ceann le fáil sa doiciméad</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="389"/>
       <source>If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</source>
-      <translation type="unfinished">If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</translation>
+      <translation>Mura bhfuil sé seiceáilte, ní dhéanfar grúpaí caighdeánacha FreeCAD (App::DocumentObjectGroup) a easpórtáil mar IfcGroup nó IfcElementAssembly.\nDéanfar a bpáistí a ath-thuismiú chuig coimeádán an ghrúpa a scipeáladh sa struchtúr IFC.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="392"/>
       <source>Export FreeCAD Groups</source>
-      <translation type="unfinished">Export FreeCAD Groups</translation>
+      <translation>Easpórtáil Grúpaí FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="410"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file.</source>
-      <translation type="unfinished">In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file.</translation>
+      <translation>I FreeCAD, is féidir grúpaí a neadú laistigh d’fhoirgnimh nó de stórais. Mura bhfuil an rogha seo ar fáil, sábhálfar grúpaí FreeCAD mar IfcGroups agus comhiomlánófar iad le struchtúr an fhoirgnimh. Ní mholtar eilimintí neamh-fhoirgnimh amhail IfcGroups a chomhiomlánú de réir chaighdeáin IFC. Dá bhrí sin, is féidir na grúpaí seo a easpórtáil mar IfcElementAssemblies freisin, rud a tháirgeann comhad atá comhoiriúnach le IFC.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="363"/>
       <source>IFC standard compliance</source>
-      <translation type="unfinished">IFC standard compliance</translation>
+      <translation>Comhlíonadh caighdeánach IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="289"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
-      <translation type="unfinished">If no building storey is found in the FreeCAD document, a default one will be added.
-A building storey is not mandatory but a common practice to have at least one in the file.</translation>
+      <translation>Mura bhfaightear aon urlár foirgnimh sa doiciméad FreeCAD, cuirfear ceann réamhshocraithe leis.
+Ní gá urlár foirgnimh a bheith ann ach is gnách go mbeadh ceann amháin ar a laghad sa chomhad.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="293"/>
       <source>Add default building storey if one is not found in the document</source>
-      <translation type="unfinished">Add default building storey if one is not found in the document</translation>
+      <translation>Cuir urlár réamhshocraithe foirgnimh leis mura bhfuil ceann le fáil sa doiciméad</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="316"/>
       <source>IFC file units</source>
-      <translation type="unfinished">IFC file units</translation>
+      <translation>Aonaid chomhaid IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="338"/>
       <source>Metric</source>
-      <translation type="unfinished">Metric</translation>
+      <translation>Méadrach</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="343"/>
       <source>Imperial</source>
-      <translation type="unfinished">Imperial</translation>
+      <translation>Impiriúil</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="14"/>
       <source>WebGL</source>
-      <translation type="unfinished">WebGL</translation>
+      <translation>WebGL</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="32"/>
@@ -3726,25 +3725,25 @@ A building storey is not mandatory but a common practice to have at least one in
 
 The default template is located at:
 &lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </source>
-      <translation type="unfinished">A custom WebGL HTML template is used for export. Otherwise, the default template will be used.
+      <translation>Úsáidtear teimpléad HTML WebGL saincheaptha le haghaidh easpórtála. Seachas sin, úsáidfear an teimpléad réamhshocraithe.
 
-The default template is located at:
-&lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </translation>
+Tá an teimpléad réamhshocraithe suite ag:
+&lt;eolaire suiteála FreeCAD&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="38"/>
       <source>Use custom export template</source>
-      <translation type="unfinished">Use custom export template</translation>
+      <translation>Úsáid teimpléad onnmhairithe saincheaptha</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="59"/>
       <source>Path to template</source>
-      <translation type="unfinished">Path to template</translation>
+      <translation>Cosán chuig an teimpléad</translation>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="70"/>
       <source>The path to the custom WebGL HTML template</source>
-      <translation type="unfinished">The path to the custom WebGL HTML template</translation>
+      <translation>An cosán chuig an teimpléad HTML saincheaptha WebGL</translation>
     </message>
   </context>
   <context>
@@ -3753,62 +3752,62 @@ The default template is located at:
       <location filename="../../ArchStructure.py" line="133"/>
       <location filename="../../ArchStructure.py" line="543"/>
       <source>Beam</source>
-      <translation type="unfinished">Beam</translation>
+      <translation>Bhíoma</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="136"/>
       <location filename="../../ArchStructure.py" line="544"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Colún</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="158"/>
       <source>StructuralSystem</source>
-      <translation type="unfinished">StructuralSystem</translation>
+      <translation>Córas Struchtúrach</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="223"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Cruthaigh Struchtúir Ó Roghnú</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="292"/>
       <source>Create Structural System</source>
-      <translation type="unfinished">Create Structural System</translation>
+      <translation>Córas Struchtúrach a Chruthú</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="364"/>
       <location filename="../../ArchStructure.py" line="427"/>
       <source>Create Structure</source>
-      <translation type="unfinished">Create Structure</translation>
+      <translation>Cruthaigh Struchtúr</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="393"/>
       <source>First point of the beam</source>
-      <translation type="unfinished">First point of the beam</translation>
+      <translation>An chéad phointe den bhíoma</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="395"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Bonnphointe an cholúin</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="419"/>
       <location filename="../../bimcommands/BimWall.py" line="174"/>
       <source>Next point</source>
-      <translation type="unfinished">Next point</translation>
+      <translation>An chéad phointe eile</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="538"/>
       <source>Structure options</source>
-      <translation type="unfinished">Structure options</translation>
+      <translation>Roghanna struchtúir</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="554"/>
       <location filename="../../ArchCommands.py" line="1699"/>
       <location filename="../../bimcommands/BimProfile.py" line="83"/>
       <source>Category</source>
-      <translation type="unfinished">Category</translation>
+      <translation>Catagóir</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
@@ -3816,11 +3815,11 @@ The default template is located at:
       <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>Réamhshocrú</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="570"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
+      <location filename="../../ArchStructure.py" line="570"/>
       <location filename="../../ArchCommands.py" line="1332"/>
       <location filename="../../bimcommands/BimWall.py" line="341"/>
       <location filename="../../bimcommands/BimPanel.py" line="194"/>
@@ -3828,17 +3827,17 @@ The default template is located at:
       <translation>Fad</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="584"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
+      <location filename="../../ArchStructure.py" line="584"/>
       <location filename="../../bimcommands/BimWall.py" line="348"/>
       <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="591"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
       <location filename="../../ArchRoof.py" line="1084"/>
+      <location filename="../../ArchStructure.py" line="591"/>
       <location filename="../../bimcommands/BimWall.py" line="355"/>
       <source>Height</source>
       <translation>Airde</translation>
@@ -3846,129 +3845,129 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="542"/>
       <source>Parameters of the structure</source>
-      <translation type="unfinished">Parameters of the structure</translation>
+      <translation>Paraiméadair an struchtúir</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="605"/>
       <source>Switch Length/Height</source>
-      <translation type="unfinished">Switch Length/Height</translation>
+      <translation>Fad/Airde an Lasc</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="607"/>
       <source>Switch Length/Width</source>
-      <translation type="unfinished">Switch Length/Width</translation>
+      <translation>Fad/Leithead an Athraigh</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1170"/>
       <location filename="../../ArchWall.py" line="721"/>
       <source>This mesh is an invalid solid</source>
-      <translation type="unfinished">This mesh is an invalid solid</translation>
+      <translation>Is soladach neamhbhailí an mogalra seo</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1289"/>
       <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
-      <translation type="unfinished">Facemaker returned an error</translation>
+      <translation>Thug Facemaker earráid ar ais</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1700"/>
       <source>Node Tools</source>
-      <translation type="unfinished">Node Tools</translation>
+      <translation>Uirlisí Nóid</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1725"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
-      <translation type="unfinished">Extends the nodes of this element to reach the nodes of another element</translation>
+      <translation>Síneann sé nóid an eilimint seo chun nóid eilimint eile a bhaint amach</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1736"/>
       <source>Connects nodes of this element with the nodes of another element</source>
-      <translation type="unfinished">Connects nodes of this element with the nodes of another element</translation>
+      <translation>Ceanglaíonn nóid an eilimint seo le nóid eilimint eile</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1747"/>
       <source>Toggles all structural nodes of the document on/off</source>
-      <translation type="unfinished">Toggles all structural nodes of the document on/off</translation>
+      <translation>Casann sé gach nód struchtúrach den doiciméad ar/as</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1754"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Uirlisí Easbhrúite</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="261"/>
       <source>Select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Roghnaigh an réad bonn ar dtús agus ansin na himill le húsáid mar chosáin easbhrúite</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="314"/>
       <source>Select at least an axis object</source>
-      <translation type="unfinished">Select at least an axis object</translation>
+      <translation>Roghnaigh réad ais amháin ar a laghad</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1142"/>
       <source>Error: The base shape could not be extruded along this tool object</source>
-      <translation type="unfinished">Error: The base shape could not be extruded along this tool object</translation>
+      <translation>Earráid: Níorbh fhéidir an cruth bonn a easbhrú feadh an réada uirlis seo</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1705"/>
       <source>Reset Nodes</source>
-      <translation type="unfinished">Reset Nodes</translation>
+      <translation>Athshocraigh Nóid</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1712"/>
       <source>Edit Nodes</source>
-      <translation type="unfinished">Edit Nodes</translation>
+      <translation>Nóid a Chur in Eagar</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1718"/>
       <source>Extend Nodes</source>
-      <translation type="unfinished">Extend Nodes</translation>
+      <translation>Nóid a Leathnú</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1731"/>
       <source>Connect Nodes</source>
-      <translation type="unfinished">Connect Nodes</translation>
+      <translation>Nóid Cheangail</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1742"/>
       <source>Toggle All Nodes</source>
-      <translation type="unfinished">Toggle All Nodes</translation>
+      <translation>Gach Nóid a Athrú</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1759"/>
       <location filename="../../ArchStructure.py" line="1961"/>
       <source>Select Tool</source>
-      <translation type="unfinished">Select Tool</translation>
+      <translation>Roghnaigh Uirlis</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1764"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
-      <translation type="unfinished">Selects object or edges to be used as a tool (extrusion path)</translation>
+      <translation>Roghnaíonn sé réad nó imill le húsáid mar uirlis (cosán easbhrúite)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1789"/>
       <location filename="../../ArchStructure.py" line="1839"/>
       <source>Choose another Structure object:</source>
-      <translation type="unfinished">Choose another Structure object:</translation>
+      <translation>Roghnaigh réad Struchtúir eile:</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1795"/>
       <location filename="../../ArchStructure.py" line="1845"/>
       <source>The chosen object is not a Structure</source>
-      <translation type="unfinished">The chosen object is not a Structure</translation>
+      <translation>Ní Struchtúr an réad roghnaithe</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1800"/>
       <location filename="../../ArchStructure.py" line="1850"/>
       <source>The chosen object has no structural nodes</source>
-      <translation type="unfinished">The chosen object has no structural nodes</translation>
+      <translation>Níl aon nóid struchtúracha ag an réad roghnaithe</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1805"/>
       <location filename="../../ArchStructure.py" line="1855"/>
       <source>One of these objects has more than 2 nodes</source>
-      <translation type="unfinished">One of these objects has more than 2 nodes</translation>
+      <translation>Tá níos mó ná 2 nód ag ceann de na réada seo</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1818"/>
@@ -3996,7 +3995,7 @@ The default template is located at:
     <message>
       <location filename="../../Arch.py" line="390"/>
       <source>Equipment</source>
-      <translation type="unfinished">Equipment</translation>
+      <translation>Trealamh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="61"/>
@@ -4011,7 +4010,7 @@ The default template is located at:
     <message>
       <location filename="../../Arch.py" line="175"/>
       <source>BuildingPart</source>
-      <translation type="unfinished">BuildingPart</translation>
+      <translation>Cuid Foirgnimh</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="96"/>
@@ -4041,7 +4040,7 @@ The default template is located at:
     <message>
       <location filename="../../Arch.py" line="1269"/>
       <source>Site</source>
-      <translation type="unfinished">Site</translation>
+      <translation>Suíomh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSite.py" line="58"/>
@@ -4088,12 +4087,12 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../ArchRoof.py" line="1080"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>Rith</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1083"/>
       <source>Overhang</source>
-      <translation type="unfinished">Overhang</translation>
+      <translation>Forchríoch</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSpace.py" line="70"/>
@@ -4102,8 +4101,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Roghnaigh réad bonn le do thoil</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1143"/>
       <location filename="../../ArchRoof.py" line="1068"/>
+      <location filename="../../Arch.py" line="1143"/>
       <source>Roof</source>
       <translation>Díon</translation>
     </message>
@@ -4459,37 +4458,37 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Má tá tic sa rogha seo, cuirfear luach airí Fritháireamh na fuinneoige leis an luach a iontráladh anseo</translation>
     </message>
     <message>
+      <location filename="../../ArchWindow.py" line="1642"/>
+      <location filename="../../ArchSpace.py" line="944"/>
+      <location filename="../../ArchAxis.py" line="955"/>
+      <location filename="../../ArchComponent.py" line="2384"/>
       <location filename="../../ArchSectionPlane.py" line="1737"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchComponent.py" line="2384"/>
-      <location filename="../../ArchWindow.py" line="1642"/>
-      <location filename="../../ArchAxis.py" line="955"/>
-      <location filename="../../ArchSpace.py" line="944"/>
       <source>Remove</source>
       <translation>Bain</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="339"/>
-      <location filename="../../ArchComponent.py" line="2385"/>
       <location filename="../../ArchWindow.py" line="1643"/>
-      <location filename="../../ArchAxis.py" line="956"/>
       <location filename="../../ArchSpace.py" line="938"/>
+      <location filename="../../ArchAxis.py" line="956"/>
+      <location filename="../../ArchComponent.py" line="2385"/>
+      <location filename="../../ArchAxisSystem.py" line="339"/>
       <source>Add</source>
       <translation>Cuir leis</translation>
     </message>
     <message>
-      <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchSectionPlane.py" line="1504"/>
-      <location filename="../../ArchGrid.py" line="384"/>
-      <location filename="../../ArchSite.py" line="1294"/>
-      <location filename="../../ArchReference.py" line="717"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchComponent.py" line="1915"/>
-      <location filename="../../ArchSchedule.py" line="766"/>
       <location filename="../../ArchWindow.py" line="1644"/>
+      <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchAxis.py" line="788"/>
       <location filename="../../ArchMaterial.py" line="470"/>
       <location filename="../../ArchMaterial.py" line="797"/>
+      <location filename="../../ArchSite.py" line="1294"/>
+      <location filename="../../ArchComponent.py" line="1915"/>
+      <location filename="../../ArchSectionPlane.py" line="1504"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
+      <location filename="../../ArchReference.py" line="717"/>
+      <location filename="../../ArchIFCView.py" line="63"/>
+      <location filename="../../ArchSchedule.py" line="766"/>
       <source>Edit</source>
       <translation>Eagar</translation>
     </message>
@@ -4505,8 +4504,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Sreanga</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2392"/>
       <location filename="../../ArchWindow.py" line="1650"/>
+      <location filename="../../ArchComponent.py" line="2392"/>
       <source>Components</source>
       <translation>Comhpháirteanna</translation>
     </message>
@@ -4518,8 +4517,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Ainm</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2460"/>
       <location filename="../../ArchWindow.py" line="1653"/>
+      <location filename="../../ArchComponent.py" line="2460"/>
       <location filename="../../ArchCommands.py" line="1701"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
@@ -4534,8 +4533,8 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Tiús</translation>
     </message>
     <message>
-      <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../ArchWindow.py" line="1656"/>
+      <location filename="../../ArchPrecast.py" line="1725"/>
       <location filename="../../bimcommands/BimWall.py" line="371"/>
       <source>Offset</source>
       <translation>Fritháireamh</translation>
@@ -4573,7 +4572,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../Arch.py" line="144"/>
       <source>Axis System</source>
-      <translation type="unfinished">Axis System</translation>
+      <translation>Córas Ais</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="85"/>
@@ -4591,10 +4590,10 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Roghnaigh ais amháin ar a laghad</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="104"/>
-      <location filename="../../ArchAxisSystem.py" line="337"/>
-      <location filename="../../ArchComponent.py" line="2391"/>
       <location filename="../../ArchAxis.py" line="954"/>
+      <location filename="../../ArchComponent.py" line="2391"/>
+      <location filename="../../ArchAxisSystem.py" line="337"/>
+      <location filename="../../Arch.py" line="104"/>
       <source>Axes</source>
       <translation>Aiseanna</translation>
     </message>
@@ -4604,10 +4603,10 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Comhpháirteanna córais ais</translation>
     </message>
     <message>
-      <location filename="../../importers/importWebGL.py" line="371"/>
-      <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="301"/>
       <location filename="../../importers/importOBJ.py" line="339"/>
+      <location filename="../../importers/importWebGL.py" line="371"/>
+      <location filename="../../importers/importJSON.py" line="62"/>
       <source>Successfully written</source>
       <translation>Scríofa go rathúil</translation>
     </message>
@@ -4654,7 +4653,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../Arch.py" line="429"/>
       <source>Fence</source>
-      <translation type="unfinished">Fence</translation>
+      <translation>Fál</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="595"/>
@@ -4674,7 +4673,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../Arch.py" line="1473"/>
       <source>Stairs</source>
-      <translation type="unfinished">Stairs</translation>
+      <translation>Staighre</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="1597"/>
@@ -4697,9 +4696,9 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
       <translation>Cruthaigh ilábhar</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="533"/>
       <location filename="../../ArchMaterial.py" line="880"/>
       <location filename="../../ArchMaterial.py" line="906"/>
+      <location filename="../../Arch.py" line="533"/>
       <source>Material</source>
       <translation>Ábhar</translation>
     </message>
@@ -4772,7 +4771,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../ArchGrid.py" line="492"/>
       <source>Delete Row</source>
-      <translation type="unfinished">Delete Row</translation>
+      <translation>Scrios an Ró</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="493"/>
@@ -4949,12 +4948,12 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../ArchPrecast.py" line="1724"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="651"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Painéal</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="717"/>
@@ -4975,7 +4974,7 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="217"/>
       <source>Rotate</source>
-      <translation type="unfinished">Rotate</translation>
+      <translation>Rothlaigh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="302"/>
@@ -4990,13 +4989,13 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../ArchPanel.py" line="532"/>
       <source>Error computing shape of</source>
-      <translation type="unfinished">Error computing shape of</translation>
+      <translation>Earráid ag ríomh cruth</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="2075"/>
       <location filename="../../ArchPanel.py" line="563"/>
       <source>Could not compute a shape</source>
-      <translation type="unfinished">Could not compute a shape</translation>
+      <translation>Níorbh fhéidir cruth a ríomh</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1398"/>
@@ -5006,29 +5005,29 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../ArchPanel.py" line="1402"/>
       <source>Edit views positions</source>
-      <translation type="unfinished">Edit views positions</translation>
+      <translation>Cuir suíomhanna radhairc in eagar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="435"/>
       <source>This object has no face</source>
-      <translation type="unfinished">This object has no face</translation>
+      <translation>Níl aghaidh ar an réad seo</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="355"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Balla Cuirtíní</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTruss.py" line="61"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <source>Select only one base object or none</source>
-      <translation type="unfinished">Select only one base object or none</translation>
+      <translation>Roghnaigh réad bonn amháin nó ceann ar bith</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="67"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="103"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>Cruthaigh Balla Imbhalla</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="752"/>
@@ -5038,140 +5037,140 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../Arch.py" line="799"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>Nascóir</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="62"/>
       <location filename="../../bimcommands/BimPipe.py" line="71"/>
       <source>Create Pipe</source>
-      <translation type="unfinished">Create Pipe</translation>
+      <translation>Cruthaigh Píopa</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="106"/>
       <source>Select exactly 2 or 3 pipe objects</source>
-      <translation type="unfinished">Select exactly 2 or 3 pipe objects</translation>
+      <translation>Roghnaigh 2 nó 3 réad píopa go díreach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="112"/>
       <source>Select only pipe objects</source>
-      <translation type="unfinished">Select only pipe objects</translation>
+      <translation>Roghnaigh réada píopa amháin</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="116"/>
       <source>Create Connector</source>
-      <translation type="unfinished">Create Connector</translation>
+      <translation>Cruthaigh Nascóir</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="185"/>
       <source>corrected 'Height' and 'Width' properties</source>
-      <translation type="unfinished">corrected 'Height' and 'Width' properties</translation>
+      <translation>airíonna 'Airde' agus 'Leithead' ceartaithe</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="222"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>Ní féidir an cosán bonn a thógáil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="238"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>Ní féidir an phróifíl a thógáil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="280"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>Ní féidir an píopa a thógáil</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="301"/>
       <source>The base object is not a Part</source>
-      <translation type="unfinished">The base object is not a Part</translation>
+      <translation>Ní Cuid an réad bonn</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="306"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>An iomarca sreanga sa chruth bonn</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="310"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>Tá an sreang bonn dúnta</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="331"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>Ní cuid 2T í an phróifíl</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="334"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>Níl an phróifíl dúnta</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="484"/>
       <source>Only the 3 first wires will be connected</source>
-      <translation type="unfinished">Only the 3 first wires will be connected</translation>
+      <translation>Ní bheidh ach na chéad 3 shreang ceangailte</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="505"/>
       <location filename="../../ArchPipe.py" line="569"/>
       <source>Common vertex not found</source>
-      <translation type="unfinished">Common vertex not found</translation>
+      <translation>Níor aimsíodh buaicphointe coitianta</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="526"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>Tá na píopaí ailínithe cheana féin</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="557"/>
       <source>Unable to revolve this connector</source>
-      <translation type="unfinished">Unable to revolve this connector</translation>
+      <translation>Ní féidir an nascóir seo a rothlú</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="581"/>
       <source>At least 2 pipes must align</source>
-      <translation type="unfinished">At least 2 pipes must align</translation>
+      <translation>Caithfidh dhá phíopa ar a laghad a bheith ailínithe</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="517"/>
       <source>Unable to retrieve value from object</source>
-      <translation type="unfinished">Unable to retrieve value from object</translation>
+      <translation>Ní féidir luach a aisghabháil ón réad</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="772"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>Bain scarbhileog</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="774"/>
       <source>Attach spreadsheet</source>
-      <translation type="unfinished">Attach spreadsheet</translation>
+      <translation>Ceangail scarbhileog</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="900"/>
       <source>Import CSV file</source>
-      <translation type="unfinished">Import CSV file</translation>
+      <translation>Iompórtáil comhad CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="937"/>
       <source>Export CSV file</source>
-      <translation type="unfinished">Export CSV file</translation>
+      <translation>Easpórtáil comhad CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1012"/>
       <source>Operation</source>
-      <translation type="unfinished">Operation</translation>
+      <translation>Oibríocht</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1425"/>
       <source>Export CSV File</source>
-      <translation type="unfinished">Export CSV File</translation>
+      <translation>Easpórtáil Comhad CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="964"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>Ní féidir an cineál comhaid sin a aithint</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1331"/>
@@ -5181,28 +5180,28 @@ Más Rith = 0 ansin ríomhtar an rith sa chaoi is go bhfuil an airde mar an gcé
     <message>
       <location filename="../../ArchCommands.py" line="1468"/>
       <source>Object does not have settable IFC attributes</source>
-      <translation type="unfinished">Object does not have settable IFC attributes</translation>
+      <translation>Níl tréithe IFC insocraithe ag an réad</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2461"/>
+      <location filename="../../ArchCommands.py" line="1702"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1014"/>
-      <location filename="../../ArchCommands.py" line="1702"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
       <translation>Luach</translation>
     </message>
     <message>
+      <location filename="../../ArchCommands.py" line="1703"/>
       <location filename="../../ArchSchedule.py" line="990"/>
       <location filename="../../ArchSchedule.py" line="1016"/>
-      <location filename="../../ArchCommands.py" line="1703"/>
       <source>Unit</source>
       <translation>Aonad</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="1194"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Sceideal</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="169"/>
@@ -5213,37 +5212,37 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>Is féidir leat aon rud seachas na réada seo a leanas a chur i réad Urláir: Suíomh, Foirgneamh, agus Urlár.
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+Ní cheadaítear don réad Urláir glacadh le réada Suímh, Foirgnimh, ná Urláir.
 
-Site, Building, and Floor objects will be removed from the selection.
+Bainfear réada Suímh, Foirgnimh, agus Urláir ón rogha.
 
-You can change that in the preferences.</translation>
+Is féidir leat é sin a athrú sna roghanna.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="179"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
+      <translation>Níl aon réad bailí sa roghnú.
 
-Floor creation aborted.</translation>
+Cruthú urláir curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="187"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>Cruthaigh Urlár</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="50"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>Cruthaigh Ais</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="961"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
+      <translation>Fad (mm) agus uillinneacha (céimeanna) idir aiseanna</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="964"/>
@@ -5269,27 +5268,27 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../importers/importOBJ.py" line="92"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation type="unfinished">Found a shape containing curves, triangulating</translation>
+      <translation>Fuarthas cruth ina bhfuil cuartha, ag triantánú</translation>
     </message>
     <message>
       <location filename="../../importers/importOBJ.py" line="450"/>
       <source>Successfully imported</source>
-      <translation type="unfinished">Successfully imported</translation>
+      <translation>Iompórtáladh go rathúil</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1120"/>
       <source>Error computing the shape of this object</source>
-      <translation type="unfinished">Error computing the shape of this object</translation>
+      <translation>Earráid ag ríomh cruth an réada seo</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1146"/>
       <source>has no solid</source>
-      <translation type="unfinished">has no solid</translation>
+      <translation>níl aon soladach ann</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1155"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation>tá cruth neamhbhailí air</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="192"/>
@@ -5300,38 +5299,38 @@ Floor creation aborted.</translation>
       <location filename="../../ArchPrecast.py" line="894"/>
       <location filename="../../ArchComponent.py" line="1159"/>
       <source>has a null shape</source>
-      <translation type="unfinished">has a null shape</translation>
+      <translation>tá cruth nialasach aige</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1397"/>
       <source>Could not project face from {self.obj.Label}
 </source>
-      <translation type="unfinished">Could not project face from {self.obj.Label}
+      <translation>Níorbh fhéidir aghaidh a theilgean ó {self.obj.Label}
 </translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1410"/>
       <source>Could not determine if a face from {self.obj.Label} is vertical: normalAt() failed
 </source>
-      <translation type="unfinished">Could not determine if a face from {self.obj.Label} is vertical: normalAt() failed
+      <translation>Níorbh fhéidir a chinneadh an bhfuil aghaidh ó {self.obj.Label} ingearach: theip ar normalAt()
 </translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1518"/>
       <source>Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
 </source>
-      <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
+      <translation>Earráid ag ríomh achar do {self.obj.Label}: ní féidir teilgean ná aghaidh a dhéanamh le gnáth-{face.normalAt(0, 0)}. Athshocrófar luachanna achar go 0.
 </translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2386"/>
       <source>Components of This Object</source>
-      <translation type="unfinished">Components of This Object</translation>
+      <translation>Comhpháirteanna an Réada seo</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2396"/>
       <source>Edit IFC Properties</source>
-      <translation type="unfinished">Edit IFC Properties</translation>
+      <translation>Cuir Airíonna IFC in Eagar</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2397"/>
@@ -5347,7 +5346,7 @@ Floor creation aborted.</translation>
       <location filename="../../ArchSite.py" line="1300"/>
       <location filename="../../ArchComponent.py" line="1922"/>
       <source>Toggle Subcomponents</source>
-      <translation type="unfinished">Toggle Subcomponents</translation>
+      <translation>Fo-chomhpháirteanna a scoránaigh</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2052"/>
@@ -5405,7 +5404,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2395"/>
       <source>Hosts</source>
-      <translation type="unfinished">Hosts</translation>
+      <translation>Óstaigh</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2459"/>
@@ -5443,7 +5442,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../Arch.py" line="1001"/>
       <source>Rebar</source>
-      <translation type="unfinished">Rebar</translation>
+      <translation>Rebar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="72"/>
@@ -5474,7 +5473,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1730"/>
       <source>Scope</source>
-      <translation type="unfinished">Scope</translation>
+      <translation>Raon feidhme</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1733"/>
@@ -5564,7 +5563,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="364"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1781"/>
@@ -5575,7 +5574,7 @@ Floor creation aborted.</translation>
       <location filename="../../Arch.py" line="234"/>
       <location filename="../../ArchBuilding.py" line="214"/>
       <source>Building</source>
-      <translation type="unfinished">Building</translation>
+      <translation>Foirgneamh</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="263"/>
@@ -5612,7 +5611,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../Arch.py" line="1331"/>
       <source>Space</source>
-      <translation type="unfinished">Space</translation>
+      <translation>Spás</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSpace.py" line="59"/>
@@ -5690,67 +5689,67 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../bimcommands/BimArchUtils.py" line="578"/>
       <location filename="../../bimcommands/BimArchUtils.py" line="603"/>
       <source>Merge Walls</source>
-      <translation type="unfinished">Merge Walls</translation>
+      <translation>Ballaí a Chumaisc</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="709"/>
       <source>Cannot compute blocks for wall</source>
-      <translation type="unfinished">Cannot compute blocks for wall</translation>
+      <translation>Ní féidir bloic a ríomh don bhalla</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="838"/>
       <source>Error: Unable to modify the base object of this wall</source>
-      <translation type="unfinished">Error: Unable to modify the base object of this wall</translation>
+      <translation>Earráid: Ní féidir bunréad an bhalla seo a mhodhnú</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="1755"/>
       <source>Flip Direction</source>
-      <translation type="unfinished">Flip Direction</translation>
+      <translation>Treo Smeach</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="493"/>
       <source>Invalid cut plane</source>
-      <translation type="unfinished">Invalid cut plane</translation>
+      <translation>Plána gearrtha neamhbhailí</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="795"/>
       <source>is not closed</source>
-      <translation type="unfinished">is not closed</translation>
+      <translation>níl sé dúnta</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="797"/>
       <source>is not valid</source>
-      <translation type="unfinished">is not valid</translation>
+      <translation>níl sé bailí</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="149"/>
       <source>Cannot add {0} as it is already referenced by {1}.</source>
-      <translation type="unfinished">Cannot add {0} as it is already referenced by {1}.</translation>
+      <translation>Ní féidir {0} a chur leis mar go bhfuil tagairt déanta dó cheana féin ag {1}.</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="232"/>
       <source>{0} is mapped to {1}, removing the former's Attachment Support to avoid cyclic dependency.</source>
-      <translation type="unfinished">{0} is mapped to {1}, removing the former's Attachment Support to avoid cyclic dependency.</translation>
+      <translation>Tá {0} mapáilte chuig {1}, ag baint Tacaíocht Ceangail an chéad cheann chun spleáchas timthriallach a sheachaint.</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="799"/>
       <source>does not contain any solid</source>
-      <translation type="unfinished">does not contain any solid</translation>
+      <translation>nach bhfuil aon soladach ann</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="805"/>
       <source>contains a non-closed solid</source>
-      <translation type="unfinished">contains a non-closed solid</translation>
+      <translation>ina bhfuil solad neamhdhúnta</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="809"/>
       <source>contains faces that are not part of any solid</source>
-      <translation type="unfinished">contains faces that are not part of any solid</translation>
+      <translation>ina bhfuil aghaidheanna nach cuid d'aon solad iad</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1323"/>
       <source>Survey</source>
-      <translation type="unfinished">Survey</translation>
+      <translation>Suirbhé</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1325"/>
@@ -5760,12 +5759,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1328"/>
       <source>Export CSV</source>
-      <translation type="unfinished">Export CSV</translation>
+      <translation>Easpórtáil CSV</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1333"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Limistéar</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1380"/>
@@ -5775,151 +5774,151 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1715"/>
       <source>The object does not have an IfcProperties attribute. Cancel spreadsheet creation for object:</source>
-      <translation type="unfinished">The object does not have an IfcProperties attribute. Cancel spreadsheet creation for object:</translation>
+      <translation>Níl tréith IfcProperties ag an réad. Cealaigh cruthú scarbhileog don réad:</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1476"/>
       <source>Disabling B-rep force flag of object</source>
-      <translation type="unfinished">Disabling B-rep force flag of object</translation>
+      <translation>Ag díchumasú bratach fórsa B-rep an réada</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1324"/>
       <source>Set Description</source>
-      <translation type="unfinished">Set Description</translation>
+      <translation>Socraigh cur síos</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1326"/>
       <source>Copy Total Length</source>
-      <translation type="unfinished">Copy Total Length</translation>
+      <translation>Fad Iomlán na Cóipeála</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1327"/>
       <source>Copy Total Area</source>
-      <translation type="unfinished">Copy Total Area</translation>
+      <translation>Cóipeáil an Achar Iomlán</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1484"/>
       <location filename="../../ArchCommands.py" line="1491"/>
       <source>Enabling B-rep force flag of object</source>
-      <translation type="unfinished">Enabling B-rep force flag of object</translation>
+      <translation>Ag cumasú bratach fórsa B-rep an réada</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="58"/>
       <source>Add space boundary</source>
-      <translation type="unfinished">Add space boundary</translation>
+      <translation>Cuir teorainn spáis leis</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="76"/>
       <source>Grouping</source>
-      <translation type="unfinished">Grouping</translation>
+      <translation>Grúpáil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="115"/>
       <source>Remove space boundary</source>
-      <translation type="unfinished">Remove space boundary</translation>
+      <translation>Bain teorainn an spáis</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="133"/>
       <source>Ungrouping</source>
-      <translation type="unfinished">Ungrouping</translation>
+      <translation>Ag díghrúpáil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="176"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Mogalra Scoilte</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="224"/>
       <source>Mesh to shape</source>
-      <translation type="unfinished">Mesh to shape</translation>
+      <translation>Mogalra chun cruth a thabhairt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="337"/>
       <source>No problems found!</source>
-      <translation type="unfinished">No problems found!</translation>
+      <translation>Níor aimsíodh aon fhadhbanna!</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="586"/>
       <source>The selected wall contains no subwalls to merge</source>
-      <translation type="unfinished">The selected wall contains no subwalls to merge</translation>
+      <translation>Níl aon fho-bhallaí sa bhalla roghnaithe le cumasc</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="589"/>
       <location filename="../../bimcommands/BimArchUtils.py" line="593"/>
       <source>Select only wall objects</source>
-      <translation type="unfinished">Select only wall objects</translation>
+      <translation>Roghnaigh rudaí balla amháin</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="601"/>
       <source>Walls with different 'Width', 'Height' and 'Align' properties cannot be merged</source>
-      <translation type="unfinished">Walls with different 'Width', 'Height' and 'Align' properties cannot be merged</translation>
+      <translation>Ní féidir ballaí a bhfuil airíonna 'Leithead', 'Airde' agus 'Ailíniú' éagsúla acu a chumasc</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="409"/>
       <location filename="../../bimcommands/BimArchUtils.py" line="442"/>
       <source>Create Component</source>
-      <translation type="unfinished">Create Component</translation>
+      <translation>Cruthaigh Comhpháirt</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1700"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Eochair</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="476"/>
       <source>Create IFC properties spreadsheet</source>
-      <translation type="unfinished">Create IFC properties spreadsheet</translation>
+      <translation>Cruthaigh scarbhileog airíonna IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="60"/>
       <source>Create Level</source>
-      <translation type="unfinished">Create Level</translation>
+      <translation>Cruthaigh Leibhéal</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="63"/>
       <source>Create Fence</source>
-      <translation type="unfinished">Create Fence</translation>
+      <translation>Cruthaigh Fál</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="284"/>
       <source>Create Box</source>
-      <translation type="unfinished">Create Box</translation>
+      <translation>Cruthaigh Bosca</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="59"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>Cruthaigh Radharc 2T</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1155"/>
       <source>Active</source>
-      <translation type="unfinished">Active</translation>
+      <translation>Gníomhach</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1166"/>
       <source>Set Working Plane</source>
-      <translation type="unfinished">Set Working Plane</translation>
+      <translation>Socraigh Plána Oibre</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
       <source>Write Camera Position</source>
-      <translation type="unfinished">Write Camera Position</translation>
+      <translation>Scríobh Suíomh an Cheamara</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
       <source>New Group</source>
-      <translation type="unfinished">New Group</translation>
+      <translation>Grúpa Nua</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
       <location filename="../../ArchMaterial.py" line="100"/>
+      <location filename="../../ArchBuildingPart.py" line="1186"/>
       <source>Reorder Children Alphabetically</source>
-      <translation type="unfinished">Reorder Children Alphabetically</translation>
+      <translation>Athordaigh na Leanaí in Aibítre</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1190"/>
       <source>Clone Level Up</source>
-      <translation type="unfinished">Clone Level Up</translation>
+      <translation>Leibhéal Clónála Suas</translation>
     </message>
   </context>
   <context>
@@ -5927,12 +5926,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="207"/>
       <source>Multiple Structures</source>
-      <translation type="unfinished">Multiple Structures</translation>
+      <translation>Ilstruchtúir</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="211"/>
       <source>Creates multiple BIM Structures from a selected base, using each selected edge as an extrusion path</source>
-      <translation type="unfinished">Creates multiple BIM Structures from a selected base, using each selected edge as an extrusion path</translation>
+      <translation>Cruthaíonn sé ilstruchtúir BIM ó bhonn roghnaithe, ag baint úsáide as gach imeall roghnaithe mar chonair easbhrúite</translation>
     </message>
   </context>
   <context>
@@ -5940,12 +5939,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="274"/>
       <source>Structural System</source>
-      <translation type="unfinished">Structural System</translation>
+      <translation>Córas Struchtúrach</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="278"/>
       <source>Create a structural system from a selected structure and axis</source>
-      <translation type="unfinished">Create a structural system from a selected structure and axis</translation>
+      <translation>Cruthaigh córas struchtúrach ó struchtúr agus ais roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -5958,7 +5957,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="334"/>
       <source>Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a structure from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Cruthaíonn struchtúr ón tús nó ó réad roghnaithe (sceitse, sreang, aghaidh nó soladach)</translation>
     </message>
   </context>
   <context>
@@ -5967,22 +5966,22 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../ArchStructure.py" line="783"/>
       <location filename="../../ArchStructure.py" line="1951"/>
       <source>An optional extrusion path for this element</source>
-      <translation type="unfinished">An optional extrusion path for this element</translation>
+      <translation>Cosán easbhrúite roghnach don eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="791"/>
       <source>The computed length of the extrusion path</source>
-      <translation type="unfinished">The computed length of the extrusion path</translation>
+      <translation>Fad ríofa an chosáin easbhrúite</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="803"/>
       <source>Start offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">Start offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Fad tosaigh an fhritháireamh feadh an chosáin easbhrúite (dearfach: síneadh, diúltach: bearradh)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="814"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>Fad an fhritháireamh deiridh feadh an chosáin easbhrúite (dearfach: síneadh, diúltach: bearradh)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="825"/>
@@ -6028,14 +6027,14 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="911"/>
-      <location filename="../../ArchWall.py" line="272"/>
       <location filename="../../ArchPanel.py" line="209"/>
+      <location filename="../../ArchWall.py" line="272"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Treo easbhrúite gnáth an réada seo (coinnigh (0,0,0) le haghaidh gnáth-uathoibríoch)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="919"/>
       <location filename="../../ArchPrecast.py" line="101"/>
+      <location filename="../../ArchStructure.py" line="919"/>
       <source>The structural nodes of this element</source>
       <translation>Nóid struchtúracha an eilimint seo</translation>
     </message>
@@ -6108,28 +6107,28 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Más fíor, ailínítear na heilimintí leis na haiseanna</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="195"/>
+      <location filename="../../ArchEquipment.py" line="103"/>
       <source>The model description of this equipment</source>
       <translation>Cur síos ar mhúnla an trealaimh seo</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="203"/>
+      <location filename="../../ArchEquipment.py" line="111"/>
       <source>The URL of the product page of this equipment</source>
       <translation>URL leathanach táirge an trealaimh seo</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="211"/>
+      <location filename="../../ArchEquipment.py" line="119"/>
       <location filename="../../ArchMaterial.py" line="208"/>
       <source>A standard code (MasterFormat, OmniClass,…)</source>
       <translation>Cód caighdeánach (MasterFormat, OmniClass,…)</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="219"/>
+      <location filename="../../ArchEquipment.py" line="127"/>
       <source>Additional snap points for this equipment</source>
       <translation>Pointí snap breise don trealamh seo</translation>
     </message>
     <message>
-      <location filename="../../ArchEquipment.py" line="229"/>
+      <location filename="../../ArchEquipment.py" line="137"/>
       <source>The electric power needed by this equipment in Watts</source>
       <translation>An chumhacht leictreach a theastaíonn ón trealamh seo i Vatanna</translation>
     </message>
@@ -6141,8 +6140,8 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Cineál an fhoirgnimh seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="230"/>
       <location filename="../../ArchFloor.py" line="236"/>
+      <location filename="../../ArchBuildingPart.py" line="230"/>
       <source>The height of this object</source>
       <translation>Airde an réada seo</translation>
     </message>
@@ -6157,26 +6156,26 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Leibhéal phointe (0,0,0) an leibhéil seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="258"/>
       <location filename="../../ArchFloor.py" line="244"/>
+      <location filename="../../ArchBuildingPart.py" line="258"/>
       <source>The computed floor area of this floor</source>
       <translation>Achar urláir ríofa an urláir seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="266"/>
       <location filename="../../ArchComponent.py" line="258"/>
+      <location filename="../../ArchBuildingPart.py" line="266"/>
       <source>An optional description for this component</source>
       <translation>Cur síos roghnach don chomhpháirt seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="274"/>
       <location filename="../../ArchComponent.py" line="266"/>
+      <location filename="../../ArchBuildingPart.py" line="274"/>
       <source>An optional tag for this component</source>
       <translation>Clib roghnach don chomhpháirt seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="282"/>
       <location filename="../../ArchSectionPlane.py" line="958"/>
+      <location filename="../../ArchBuildingPart.py" line="282"/>
       <source>The shape of this object</source>
       <translation>Cruth an réada seo</translation>
     </message>
@@ -6196,8 +6195,8 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Léarscáil MaterialName:SolidIndexesList a nascann ainmneacha ábhar le hinnéacsanna soladacha le húsáid agus tagairt á déanamh don réad seo ó chomhaid eile</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="522"/>
       <location filename="../../ArchSectionPlane.py" line="1130"/>
+      <location filename="../../ArchBuildingPart.py" line="522"/>
       <source>The line width of this object</source>
       <translation>Leithead líne an réada seo</translation>
     </message>
@@ -6254,102 +6253,102 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="630"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
-      <translation type="unfinished">If set to True, the working plane will be kept on Auto mode</translation>
+      <translation>Má shocraítear go Fíor, coinneofar an plána oibre i mód Uathoibríoch</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="640"/>
       <source>Camera position data associated with this object</source>
-      <translation type="unfinished">Camera position data associated with this object</translation>
+      <translation>Sonraí suíomh ceamara a bhaineann leis an réad seo</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="652"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
-      <translation type="unfinished">If set, the view stored in this object will be restored on double-click</translation>
+      <translation>Má shocraítear é, athchóireofar an radharc atá stóráilte sa réad seo nuair a chliceálann tú faoi dhó é</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="662"/>
       <source>If True, double-clicking this object in the tree activates it</source>
-      <translation type="unfinished">If True, double-clicking this object in the tree activates it</translation>
+      <translation>Más fíor é, gníomhaíonn cliceáil faoi dhó ar an réad seo sa chrann é</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="676"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
-      <translation type="unfinished">If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
+      <translation>Má tá sé seo cumasaithe, sábhálfar léiriú OpenInventor den réad seo sa chomhad FreeCAD, rud a ligfidh tagairt a dhéanamh dó i gcomhaid eile i mód éadrom.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="687"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
-      <translation type="unfinished">A slot to save the OpenInventor representation of this object, if enabled</translation>
+      <translation>Sliotán chun ionadaíocht OpenInventor an réada seo a shábháil, má tá sé cumasaithe</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="701"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
-      <translation type="unfinished">If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</translation>
+      <translation>Más fíor, taispeáin go nglacfaidh na rudaí atá sa Chuid Foirgnimh seo leis na socruithe líne, datha agus trédhearcachta seo</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="709"/>
       <source>The line width of child objects</source>
-      <translation type="unfinished">The line width of child objects</translation>
+      <translation>Leithead líne na n-ábhar linbh</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="718"/>
       <source>The line color of child objects</source>
-      <translation type="unfinished">The line color of child objects</translation>
+      <translation>Dath líne na n-ábhar linbh</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>The shape appearance of child objects</source>
-      <translation type="unfinished">The shape appearance of child objects</translation>
+      <translation>Cruth cuma na n-ábhar linbh</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="736"/>
       <source>The transparency of child objects</source>
-      <translation type="unfinished">The transparency of child objects</translation>
+      <translation>Trédhearcacht réada linbh</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="747"/>
       <source>Cut the view above this level</source>
-      <translation type="unfinished">Cut the view above this level</translation>
+      <translation>Gearr an radharc os cionn an leibhéil seo</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="757"/>
       <source>The distance between the level plane and the cut line</source>
-      <translation type="unfinished">The distance between the level plane and the cut line</translation>
+      <translation>An fad idir an plána leibhéalta agus an líne ghearrtha</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="766"/>
       <source>Turn cutting on when activating this level</source>
-      <translation type="unfinished">Turn cutting on when activating this level</translation>
+      <translation>Cas air gearradh nuair a ghníomhaítear an leibhéal seo</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="779"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
-      <translation type="unfinished">The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
+      <translation>An bosca gabhála le haghaidh réada nua-chruthaithe a léirítear mar [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="787"/>
       <source>Turns auto group box on/off</source>
-      <translation type="unfinished">Turns auto group box on/off</translation>
+      <translation>Casann bosca grúpa uathoibríoch air/as</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="795"/>
       <source>Automatically set size from contents</source>
-      <translation type="unfinished">Automatically set size from contents</translation>
+      <translation>Socraigh méid go huathoibríoch ón ábhar</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="803"/>
       <source>A margin to use when autosize is turned on</source>
-      <translation type="unfinished">A margin to use when autosize is turned on</translation>
+      <translation>Corrlach le húsáid nuair a bhíonn an méid uathoibríoch casta air</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="131"/>
       <source>Outside Diameter</source>
-      <translation type="unfinished">Outside Diameter</translation>
+      <translation>Trastomhas Lasmuigh</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="138"/>
       <source>Wall thickness</source>
-      <translation type="unfinished">Wall thickness</translation>
+      <translation>Tiús an bhalla</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="168"/>
@@ -6359,7 +6358,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../ArchProfile.py" line="395"/>
       <location filename="../../ArchProfile.py" line="444"/>
       <source>Width of the beam</source>
-      <translation type="unfinished">Width of the beam</translation>
+      <translation>Leithead an bhíoma</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="175"/>
@@ -6369,153 +6368,153 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../ArchProfile.py" line="402"/>
       <location filename="../../ArchProfile.py" line="451"/>
       <source>Height of the beam</source>
-      <translation type="unfinished">Height of the beam</translation>
+      <translation>Airde an bhíoma</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="182"/>
       <location filename="../../ArchProfile.py" line="458"/>
       <source>Thickness of the web</source>
-      <translation type="unfinished">Thickness of the web</translation>
+      <translation>Tiús an ghréasáin</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="189"/>
       <location filename="../../ArchProfile.py" line="465"/>
       <source>Thickness of the flanges</source>
-      <translation type="unfinished">Thickness of the flanges</translation>
+      <translation>Tiús na bhflanges</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="282"/>
       <source>Thickness of the sides</source>
-      <translation type="unfinished">Thickness of the sides</translation>
+      <translation>Tiús na dtaobhanna</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="347"/>
       <source>Thickness of the webs</source>
-      <translation type="unfinished">Thickness of the webs</translation>
+      <translation>Tiús na ngréasán</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="354"/>
       <source>Thickness of the flange</source>
-      <translation type="unfinished">Thickness of the flange</translation>
+      <translation>Tiús an fhlange</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="409"/>
       <source>Thickness of the legs</source>
-      <translation type="unfinished">Thickness of the legs</translation>
+      <translation>Tiús na gcosa</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="500"/>
       <source>Overall size</source>
-      <translation type="unfinished">Overall size</translation>
+      <translation>Méid iomlán</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="521"/>
       <source>T-nut slot width</source>
-      <translation type="unfinished">T-nut slot width</translation>
+      <translation>Leithead sliotán cnó-T</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="528"/>
       <source>T-nut slot depth</source>
-      <translation type="unfinished">T-nut slot depth</translation>
+      <translation>Doimhneacht sliotán cnó-T</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="542"/>
       <source>Internal hole diameter</source>
-      <translation type="unfinished">Internal hole diameter</translation>
+      <translation>Trastomhas inmheánach an phoill</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="549"/>
       <source>Corner fillet radius</source>
-      <translation type="unfinished">Corner fillet radius</translation>
+      <translation>Gais fillte cúinne</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="507"/>
       <source>Slot size</source>
-      <translation type="unfinished">Slot size</translation>
+      <translation>Méid sliotán</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="514"/>
       <source>Thickness of the wall</source>
-      <translation type="unfinished">Thickness of the wall</translation>
+      <translation>Tiús an bhalla</translation>
     </message>
     <message>
       <location filename="../../ArchProfile.py" line="535"/>
       <source>Internal core size</source>
-      <translation type="unfinished">Internal core size</translation>
+      <translation>Méid croí inmheánach</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="557"/>
       <source>The base terrain of this site</source>
-      <translation type="unfinished">The base terrain of this site</translation>
+      <translation>Bunáit an tsuímh seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="568"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
-      <translation type="unfinished">The street and house number of this site, with postal box or apartment number if needed</translation>
+      <translation>Uimhir sráide agus tí an tsuímh seo, mar aon le huimhir an bhosca poist nó an árasáin más gá</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="576"/>
       <source>The postal or zip code of this site</source>
-      <translation type="unfinished">The postal or zip code of this site</translation>
+      <translation>Cód poist nó cód zip an tsuímh seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="584"/>
       <source>The city of this site</source>
-      <translation type="unfinished">The city of this site</translation>
+      <translation>Cathair an tsuímh seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="592"/>
       <source>The region, province or county of this site</source>
-      <translation type="unfinished">The region, province or county of this site</translation>
+      <translation>Réigiún, cúige nó contae an tsuímh seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="600"/>
       <source>The country of this site</source>
-      <translation type="unfinished">The country of this site</translation>
+      <translation>Tír an tsuímh seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="608"/>
       <location filename="../../ArchSite.py" line="616"/>
       <source>The latitude of this site</source>
-      <translation type="unfinished">The latitude of this site</translation>
+      <translation>Domhanleithead an tsuímh seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="627"/>
       <source>Angle between the true North and the North direction in this document</source>
-      <translation type="unfinished">Angle between the true North and the North direction in this document</translation>
+      <translation>Uillinn idir an fíor-thuaisceart agus treo an tuaiscirt sa cháipéis seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="638"/>
       <source>The elevation of level 0 of this site</source>
-      <translation type="unfinished">The elevation of level 0 of this site</translation>
+      <translation>Airde leibhéal 0 den suíomh seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="648"/>
       <source>A URL that shows this site in a mapping website</source>
-      <translation type="unfinished">A URL that shows this site in a mapping website</translation>
+      <translation>URL a thaispeánann an suíomh seo i suíomh gréasáin mapála</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="656"/>
       <location filename="../../ArchComponent.py" line="240"/>
       <source>Other shapes that are appended to this object</source>
-      <translation type="unfinished">Other shapes that are appended to this object</translation>
+      <translation>Cruthanna eile atá curtha leis an réad seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="666"/>
       <location filename="../../ArchComponent.py" line="250"/>
       <source>Other shapes that are subtracted from this object</source>
-      <translation type="unfinished">Other shapes that are subtracted from this object</translation>
+      <translation>Cruthanna eile a bhaintear ón réad seo</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="277"/>
       <source>An optional standard (OmniClass, etc…) code for this component</source>
-      <translation type="unfinished">An optional standard (OmniClass, etc…) code for this component</translation>
+      <translation>Cód caighdeánach roghnach (OmniClass, srl…) don chomhpháirt seo</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="676"/>
       <location filename="../../ArchComponent.py" line="333"/>
       <source>The area of the projection of this object onto the XY plane</source>
-      <translation type="unfinished">The area of the projection of this object onto the XY plane</translation>
+      <translation>Achar teilgean an réada seo ar an eitleán XY</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="684"/>
@@ -6771,253 +6770,253 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchFrame.py" line="125"/>
       <source>The rotation of the profile around its extrusion axis</source>
-      <translation type="unfinished">The rotation of the profile around its extrusion axis</translation>
+      <translation>Rothlú an phróifíl timpeall a ais easbhrúite</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="133"/>
       <source>The type of edges to consider</source>
-      <translation type="unfinished">The type of edges to consider</translation>
+      <translation>An cineál imeall le breithniú</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="150"/>
       <source>If true, geometry is fused, otherwise a compound</source>
-      <translation type="unfinished">If true, geometry is fused, otherwise a compound</translation>
+      <translation>Más fíor, is comhleáite an geoiméadracht, nó is cumaisc í</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="144"/>
       <location filename="../../ArchSketchObject.py" line="54"/>
       <source>The objects that host this window</source>
-      <translation type="unfinished">The objects that host this window</translation>
+      <translation>Na réada a óstálann an fhuinneog seo</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="152"/>
       <source>The components of this window</source>
-      <translation type="unfinished">The components of this window</translation>
+      <translation>Comhpháirteanna na fuinneoige seo</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="164"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
-      <translation type="unfinished">The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</translation>
+      <translation>Doimhneacht an phoill a dhéanann an fhuinneog seo ina réad óstach. Más 0 é, ríomhfar an luach go huathoibríoch.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="175"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
-      <translation type="unfinished">An optional object that defines a volume to be subtracted from hosts of this window</translation>
+      <translation>Réad roghnach a shainíonn toirt atá le baint ó óstaigh na fuinneoige seo</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="183"/>
       <source>The width of this window</source>
-      <translation type="unfinished">The width of this window</translation>
+      <translation>Leithead na fuinneoige seo</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="191"/>
       <source>The height of this window</source>
-      <translation type="unfinished">The height of this window</translation>
+      <translation>Airde na fuinneoige seo</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="199"/>
       <source>The normal direction of this window</source>
-      <translation type="unfinished">The normal direction of this window</translation>
+      <translation>Gnáththreo na fuinneoige seo</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="211"/>
       <source>When normal direction is in auto mode (0,0,0), use reversed normal direction of the Base Sketch, i.e. -z.</source>
-      <translation type="unfinished">When normal direction is in auto mode (0,0,0), use reversed normal direction of the Base Sketch, i.e. -z.</translation>
+      <translation>Nuair a bhíonn an treo gnáth i mód uathoibríoch (0,0,0), bain úsáid as treo gnáth droim ar ais den Sceitse Bonn, i.e. -z.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="223"/>
       <source>The preset number this window is based on</source>
-      <translation type="unfinished">The preset number this window is based on</translation>
+      <translation>An uimhir réamhshocraithe ar a bhfuil an fhuinneog seo bunaithe</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="235"/>
       <source>The frame depth of this window. Measured from front face to back face horizontally (i.e. perpendicular to the window elevation plane).</source>
-      <translation type="unfinished">The frame depth of this window. Measured from front face to back face horizontally (i.e. perpendicular to the window elevation plane).</translation>
+      <translation>Doimhneacht fráma na fuinneoige seo. Tomhaiste ón aghaidh tosaigh go dtí an aghaidh chúl go cothrománach (i.e. ingearach le plána airde na fuinneoige).</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="243"/>
       <source>The offset size of this window</source>
-      <translation type="unfinished">The offset size of this window</translation>
+      <translation>Méid an fhritháireamh den fhuinneog seo</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="251"/>
       <source>The area of this window</source>
-      <translation type="unfinished">The area of this window</translation>
+      <translation>Achar na fuinneoige seo</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="259"/>
       <source>The width of louvre elements</source>
-      <translation type="unfinished">The width of louvre elements</translation>
+      <translation>Leithead eilimintí an louvre</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="267"/>
       <source>The space between louvre elements</source>
-      <translation type="unfinished">The space between louvre elements</translation>
+      <translation>An spás idir eilimintí an louvre</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="277"/>
       <source>Opens the subcomponents that have a hinge defined</source>
-      <translation type="unfinished">Opens the subcomponents that have a hinge defined</translation>
+      <translation>Osclaíonn sé na fo-chomhpháirteanna a bhfuil insí sainithe acu</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="288"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
-      <translation type="unfinished">The number of the wire that defines the hole. If 0, the value will be calculated automatically</translation>
+      <translation>Uimhir na sreinge a shainmhíníonn an poll. Más 0 é, ríomhfar an luach go huathoibríoch</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="296"/>
       <source>Shows plan opening symbols if available</source>
-      <translation type="unfinished">Shows plan opening symbols if available</translation>
+      <translation>Taispeánann siombailí oscailte plean más féidir</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="304"/>
       <source>Show elevation opening symbols if available</source>
-      <translation type="unfinished">Show elevation opening symbols if available</translation>
+      <translation>Taispeáin siombailí oscailte airde más féidir</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1380"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
-      <translation type="unfinished">The number of the wire that defines the hole. A value of 0 means automatic</translation>
+      <translation>Uimhir na sreinge a shainmhíníonn an poll. Ciallaíonn luach 0 go bhfuil sé uathoibríoch</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="74"/>
       <source>The axes this system is made of</source>
-      <translation type="unfinished">The axes this system is made of</translation>
+      <translation>Na haiseanna as a bhfuil an córas seo déanta</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="82"/>
       <source>The placement of this axis system</source>
-      <translation type="unfinished">The placement of this axis system</translation>
+      <translation>Suíomh an chórais ais seo</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="79"/>
       <source>The angle of the truss</source>
-      <translation type="unfinished">The angle of the truss</translation>
+      <translation>Uillinn an truss</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="88"/>
       <source>The slant type of this truss</source>
-      <translation type="unfinished">The slant type of this truss</translation>
+      <translation>Cineál claonta an truss seo</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="97"/>
       <source>The normal direction of this truss</source>
-      <translation type="unfinished">The normal direction of this truss</translation>
+      <translation>Treo gnáth an truss seo</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="106"/>
       <source>The height of the truss at the start position</source>
-      <translation type="unfinished">The height of the truss at the start position</translation>
+      <translation>Airde an truss ag an túsphointe</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="115"/>
       <source>The height of the truss at the end position</source>
-      <translation type="unfinished">The height of the truss at the end position</translation>
+      <translation>Airde an truss ag an suíomh deiridh</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="124"/>
       <source>An optional start offset for the top strut</source>
-      <translation type="unfinished">An optional start offset for the top strut</translation>
+      <translation>Fritháireamh tosaigh roghnach don strut barr</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="132"/>
       <source>An optional end offset for the top strut</source>
-      <translation type="unfinished">An optional end offset for the top strut</translation>
+      <translation>Fritháireamh deiridh roghnach don strut barr</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="142"/>
       <source>The height of the main top and bottom elements of the truss</source>
-      <translation type="unfinished">The height of the main top and bottom elements of the truss</translation>
+      <translation>Airde na bpríomheilimintí barr agus bun den truss</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="153"/>
       <source>The width of the main top and bottom elements of the truss</source>
-      <translation type="unfinished">The width of the main top and bottom elements of the truss</translation>
+      <translation>Leithead na bpríomheilimintí barr agus bun den truss</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="162"/>
       <source>The type of the middle element of the truss</source>
-      <translation type="unfinished">The type of the middle element of the truss</translation>
+      <translation>Cineál eilimint lár an truss</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="171"/>
       <source>The direction of the rods</source>
-      <translation type="unfinished">The direction of the rods</translation>
+      <translation>Treo na slata</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="180"/>
       <source>The diameter or side of the rods</source>
-      <translation type="unfinished">The diameter or side of the rods</translation>
+      <translation>Trastomhas nó taobh na slata</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="189"/>
       <source>The number of rod sections</source>
-      <translation type="unfinished">The number of rod sections</translation>
+      <translation>Líon na rannóga slat</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="198"/>
       <source>If the truss has a rod at its endpoint or not</source>
-      <translation type="unfinished">If the truss has a rod at its endpoint or not</translation>
+      <translation>Má tá slat ag ceannphointe an trus nó mura bhfuil</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="206"/>
       <source>How to draw the rods</source>
-      <translation type="unfinished">How to draw the rods</translation>
+      <translation>Conas na slata a tharraingt</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="85"/>
       <source>The length of these stairs, if no baseline is defined</source>
-      <translation type="unfinished">The length of these stairs, if no baseline is defined</translation>
+      <translation>Fad na staighrí seo, mura bhfuil aon bhunlíne sainithe</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="93"/>
       <source>The width of these stairs</source>
-      <translation type="unfinished">The width of these stairs</translation>
+      <translation>Leithead na staighre seo</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="101"/>
       <source>The total height of these stairs</source>
-      <translation type="unfinished">The total height of these stairs</translation>
+      <translation>Airde iomlán na staighre seo</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="112"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
-      <translation type="unfinished">The alignment of these stairs on their baseline, if applicable</translation>
+      <translation>Ailíniú na staighrí seo ar a mbunlíne, más infheidhme</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="126"/>
       <source>The width of a Landing (Second edge and after - First edge follows Width property)</source>
-      <translation type="unfinished">The width of a Landing (Second edge and after - First edge follows Width property)</translation>
+      <translation>Leithead Tuirlingthe (an dara himill agus ina dhiaidh - Leanann an chéad imeall an airí Leithead)</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="137"/>
       <source>The number of risers in these stairs</source>
-      <translation type="unfinished">The number of risers in these stairs</translation>
+      <translation>Líon na n-ardaitheoirí sna staighrí seo</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="145"/>
       <source>The depth of the treads of these stairs</source>
-      <translation type="unfinished">The depth of the treads of these stairs</translation>
+      <translation>Doimhneacht na gcéimeanna sna staighrí seo</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="154"/>
       <source>The height of the risers of these stairs</source>
-      <translation type="unfinished">The height of the risers of these stairs</translation>
+      <translation>Airde na staighrí seo</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="163"/>
       <source>The size of the nosing</source>
-      <translation type="unfinished">The size of the nosing</translation>
+      <translation>Méid an tsróine</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="171"/>
       <source>The thickness of the treads</source>
-      <translation type="unfinished">The thickness of the treads</translation>
+      <translation>Tiús na gcosán</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="190"/>
       <source>The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</source>
-      <translation type="unfinished">The Blondel ratio indicates comfortable stairs and should be between 62 and 64cm or 24.5 and 25.5in</translation>
+      <translation>Léiríonn an cóimheas Blondel staighrí compordacha agus ba chóir go mbeadh sé idir 62 agus 64cm nó 24.5 agus 25.5 orlach</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="200"/>
@@ -7286,259 +7285,259 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../ArchPrecast.py" line="161"/>
       <location filename="../../ArchPrecast.py" line="411"/>
       <source>The dents of this element</source>
-      <translation type="unfinished">The dents of this element</translation>
+      <translation>Na claiseanna den eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="287"/>
       <source>The chamfer length of this element</source>
-      <translation type="unfinished">The chamfer length of this element</translation>
+      <translation>Fad chamfer an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="295"/>
       <source>The base length of this element</source>
-      <translation type="unfinished">The base length of this element</translation>
+      <translation>Fad bonn an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="377"/>
       <source>The groove depth of this element</source>
-      <translation type="unfinished">The groove depth of this element</translation>
+      <translation>Doimhneacht na claise den eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="385"/>
       <source>The groove height of this element</source>
-      <translation type="unfinished">The groove height of this element</translation>
+      <translation>Airde na claise den eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="395"/>
       <source>The spacing between the grooves of this element</source>
-      <translation type="unfinished">The spacing between the grooves of this element</translation>
+      <translation>An spásáil idir claiseanna an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="403"/>
       <source>The number of grooves of this element</source>
-      <translation type="unfinished">The number of grooves of this element</translation>
+      <translation>Líon na gclaiseanna den eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="567"/>
       <source>The dent width of this element</source>
-      <translation type="unfinished">The dent width of this element</translation>
+      <translation>Leithead an chlaonáin den eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="692"/>
       <source>The type of this slab</source>
-      <translation type="unfinished">The type of this slab</translation>
+      <translation>Cineál an leac seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="701"/>
       <source>The size of the base of this element</source>
-      <translation type="unfinished">The size of the base of this element</translation>
+      <translation>Méid bhun an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="709"/>
       <source>The number of holes in this element</source>
-      <translation type="unfinished">The number of holes in this element</translation>
+      <translation>Líon na bpoll sa ghné seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="717"/>
       <source>The major radius of the holes of this element</source>
-      <translation type="unfinished">The major radius of the holes of this element</translation>
+      <translation>An ga mór de phoill an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="725"/>
       <source>The minor radius of the holes of this element</source>
-      <translation type="unfinished">The minor radius of the holes of this element</translation>
+      <translation>An ga beag de phoill an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="733"/>
       <source>The spacing between the holes of this element</source>
-      <translation type="unfinished">The spacing between the holes of this element</translation>
+      <translation>An spásáil idir poill an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="845"/>
       <source>The length of the down floor of this element</source>
-      <translation type="unfinished">The length of the down floor of this element</translation>
+      <translation>Fad urlár íochtarach an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="853"/>
       <source>The number of risers in this element</source>
-      <translation type="unfinished">The number of risers in this element</translation>
+      <translation>Líon na n-ardaitheoirí san eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="861"/>
       <source>The riser height of this element</source>
-      <translation type="unfinished">The riser height of this element</translation>
+      <translation>Airde an ardaitheora den eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="869"/>
       <source>The tread depth of this element</source>
-      <translation type="unfinished">The tread depth of this element</translation>
+      <translation>Doimhneacht tread an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="105"/>
       <source>The thickness or extrusion depth of this element</source>
-      <translation type="unfinished">The thickness or extrusion depth of this element</translation>
+      <translation>Tiús nó doimhneacht easbhrúite an eilimint seo</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="113"/>
       <source>The number of sheets to use</source>
-      <translation type="unfinished">The number of sheets to use</translation>
+      <translation>Líon na mbileog le húsáid</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="124"/>
       <source>The offset between this panel and its baseline</source>
-      <translation type="unfinished">The offset between this panel and its baseline</translation>
+      <translation>An fhritháireamh idir an painéal seo agus a bhunlíne</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="132"/>
       <source>The length of waves for corrugated elements</source>
-      <translation type="unfinished">The length of waves for corrugated elements</translation>
+      <translation>Fad na dtonnta le haghaidh eilimintí rocacha</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="140"/>
       <source>The height of waves for corrugated elements</source>
-      <translation type="unfinished">The height of waves for corrugated elements</translation>
+      <translation>Airde na dtonnta le haghaidh eilimintí rocacha</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="150"/>
       <source>The horizontal offset of waves for corrugated elements</source>
-      <translation type="unfinished">The horizontal offset of waves for corrugated elements</translation>
+      <translation>An fhritháireamh cothrománach tonnta le haghaidh eilimintí rocacha</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="160"/>
       <source>The direction of waves for corrugated elements</source>
-      <translation type="unfinished">The direction of waves for corrugated elements</translation>
+      <translation>Treo na dtonnta le haghaidh eilimintí rocacha</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="168"/>
       <source>The type of waves for corrugated elements</source>
-      <translation type="unfinished">The type of waves for corrugated elements</translation>
+      <translation>An cineál tonnta le haghaidh eilimintí rocacha</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="179"/>
       <source>If the wave also affects the bottom side or not</source>
-      <translation type="unfinished">If the wave also affects the bottom side or not</translation>
+      <translation>An mbíonn tionchar ag an tonn ar an taobh bun freisin nó nach mbíonn</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="187"/>
       <source>The area of this panel</source>
-      <translation type="unfinished">The area of this panel</translation>
+      <translation>Limistéar an phainéil seo</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="648"/>
       <source>The linked object</source>
-      <translation type="unfinished">The linked object</translation>
+      <translation>An réad nasctha</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="668"/>
       <location filename="../../ArchPanel.py" line="1026"/>
       <source>The size of the tag text</source>
-      <translation type="unfinished">The size of the tag text</translation>
+      <translation>Méid téacs an chlib</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="696"/>
       <location filename="../../ArchPanel.py" line="1054"/>
       <source>The font of the tag text</source>
-      <translation type="unfinished">The font of the tag text</translation>
+      <translation>Cló téacs an chlib</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="659"/>
       <source>The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</source>
-      <translation type="unfinished">The text to display. Can be %tag%, %label% or %description% to display the panel tag or label</translation>
+      <translation>An téacs le taispeáint. Is féidir é a bheith %tag%, %label% nó %description% chun an clib nó an lipéad painéil a thaispeáint</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="680"/>
       <location filename="../../ArchPanel.py" line="1038"/>
       <source>The position of the tag text. Keep (0,0,0) for center position</source>
-      <translation type="unfinished">The position of the tag text. Keep (0,0,0) for center position</translation>
+      <translation>Suíomh théacs an chlib. Coinnigh (0,0,0) don suíomh lárnach</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="688"/>
       <location filename="../../ArchPanel.py" line="1046"/>
       <source>The rotation of the tag text</source>
-      <translation type="unfinished">The rotation of the tag text</translation>
+      <translation>Rothlú téacs an chlib</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="707"/>
       <location filename="../../ArchPanel.py" line="1092"/>
       <source>If True, the object is rendered as a face, if possible.</source>
-      <translation type="unfinished">If True, the object is rendered as a face, if possible.</translation>
+      <translation>Más fíor, déantar an réad a rindreáil mar aghaidh, más féidir.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="718"/>
       <source>The allowed angles this object can be rotated to when placed on sheets</source>
-      <translation type="unfinished">The allowed angles this object can be rotated to when placed on sheets</translation>
+      <translation>Na huillinneacha ceadaithe ar féidir an réad seo a rothlú chucu nuair a chuirtear ar bhileoga é</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="729"/>
       <source>An offset value to move the cut plane from the center point</source>
-      <translation type="unfinished">An offset value to move the cut plane from the center point</translation>
+      <translation>Luach fritháireamh chun an plána gearrtha a bhogadh ón lárphointe</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="909"/>
       <location filename="../../ArchPanel.py" line="1269"/>
       <source>A margin inside the boundary</source>
-      <translation type="unfinished">A margin inside the boundary</translation>
+      <translation>Imeall taobh istigh den teorainn</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="917"/>
       <location filename="../../ArchPanel.py" line="1277"/>
       <source>Turns the display of the margin on/off</source>
-      <translation type="unfinished">Turns the display of the margin on/off</translation>
+      <translation>Casann sé taispeántas an imeall air/as</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1010"/>
       <source>The linked Panel cuts</source>
-      <translation type="unfinished">The linked Panel cuts</translation>
+      <translation>Gearrann an Painéal nasctha</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1018"/>
       <source>The tag text to display</source>
-      <translation type="unfinished">The tag text to display</translation>
+      <translation>Téacs an chlib le taispeáint</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1063"/>
       <source>The width of the sheet</source>
-      <translation type="unfinished">The width of the sheet</translation>
+      <translation>Leithead na bileoige</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1072"/>
       <source>The height of the sheet</source>
-      <translation type="unfinished">The height of the sheet</translation>
+      <translation>Airde na bileoige</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1081"/>
       <source>The fill ratio of this sheet</source>
-      <translation type="unfinished">The fill ratio of this sheet</translation>
+      <translation>Cóimheas líonta na bileoige seo</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1102"/>
       <source>Specifies an angle for the wood grain (Clockwise, 0 is North)</source>
-      <translation type="unfinished">Specifies an angle for the wood grain (Clockwise, 0 is North)</translation>
+      <translation>Sonraíonn sé uillinn don ghrán adhmaid (Deiseal, is é 0 an Tuaisceart)</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1112"/>
       <source>Specifies the scale applied to each panel view.</source>
-      <translation type="unfinished">Specifies the scale applied to each panel view.</translation>
+      <translation>Sonraíonn sé seo an scála a chuirtear i bhfeidhm ar gach radharc painéil.</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1121"/>
       <source>A list of possible rotations for the nester</source>
-      <translation type="unfinished">A list of possible rotations for the nester</translation>
+      <translation>Liosta de rothlaithe féideartha don neadóir</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1287"/>
       <source>Turns the display of the wood grain texture on/off</source>
-      <translation type="unfinished">Turns the display of the wood grain texture on/off</translation>
+      <translation>Casann sé taispeántas uigeacht gráin adhmaid air/as</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="99"/>
       <source>An optional host object for this curtain wall</source>
-      <translation type="unfinished">An optional host object for this curtain wall</translation>
+      <translation>Réad óstach roghnach don bhalla imbhalla seo</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="109"/>
       <source>The height of the curtain wall, if based on an edge</source>
-      <translation type="unfinished">The height of the curtain wall, if based on an edge</translation>
+      <translation>Airde an bhalla imbhalla, má tá sé bunaithe ar imeall</translation>
     </message>
     <message>
       <location filename="../../ArchCurtainWall.py" line="118"/>
@@ -7756,8 +7755,8 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Más fíor é, cuirtear línte breise le gach réad aonair leis na torthaí</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="253"/>
       <location filename="../../ArchSectionPlane.py" line="950"/>
+      <location filename="../../ArchFloor.py" line="253"/>
       <source>The placement of this object</source>
       <translation>Suíomh an réada seo</translation>
     </message>
@@ -7794,481 +7793,481 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchAxis.py" line="225"/>
       <source>The size of the axis bubbles</source>
-      <translation type="unfinished">The size of the axis bubbles</translation>
+      <translation>Méid na mboilgeog ais</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="234"/>
       <source>The numbering style</source>
-      <translation type="unfinished">The numbering style</translation>
+      <translation>An stíl uimhrithe</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="252"/>
       <source>The type of line to draw this axis</source>
-      <translation type="unfinished">The type of line to draw this axis</translation>
+      <translation>An cineál líne le tarraingt ar an ais seo</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="264"/>
       <source>Where to add bubbles to this axis: Start, end, both or none</source>
-      <translation type="unfinished">Where to add bubbles to this axis: Start, end, both or none</translation>
+      <translation>Cá háit le boilgeoga a chur leis an ais seo: Tús, deireadh, an dá cheann nó gan aon cheann</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="282"/>
       <source>The line width to draw this axis</source>
-      <translation type="unfinished">The line width to draw this axis</translation>
+      <translation>Leithead na líne chun an ais seo a tharraingt</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="291"/>
       <source>The color of this axis</source>
-      <translation type="unfinished">The color of this axis</translation>
+      <translation>Dath an ais seo</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="300"/>
       <source>The number of the first axis</source>
-      <translation type="unfinished">The number of the first axis</translation>
+      <translation>Uimhir an chéad ais</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="309"/>
       <source>The font to use for texts</source>
-      <translation type="unfinished">The font to use for texts</translation>
+      <translation>An cló le húsáid le haghaidh téacsanna</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="318"/>
       <source>The font size</source>
-      <translation type="unfinished">The font size</translation>
+      <translation>Méid an chló</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="327"/>
       <source>If true, show the labels</source>
-      <translation type="unfinished">If true, show the labels</translation>
+      <translation>Más fíor, taispeáin na lipéid</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="334"/>
       <source>A transformation to apply to each label</source>
-      <translation type="unfinished">A transformation to apply to each label</translation>
+      <translation>Claochlú le cur i bhfeidhm ar gach lipéad</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="224"/>
       <source>The base object this component is built upon</source>
-      <translation type="unfinished">The base object this component is built upon</translation>
+      <translation>An réad bunúsach ar a bhfuil an chomhpháirt seo tógtha</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="232"/>
       <source>The object this component is cloning</source>
-      <translation type="unfinished">The object this component is cloning</translation>
+      <translation>An réad atá á chlónáil ag an gcomhpháirt seo</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="285"/>
       <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
+      <translation>Ábhar don réad seo</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="301"/>
       <source>Specifies if moving this object moves its base instead</source>
-      <translation type="unfinished">Specifies if moving this object moves its base instead</translation>
+      <translation>Sonraíonn an mbogann bogadh an réada seo a bhun ina ionad</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="313"/>
       <source>Specifies if this object must move together when its host is moved</source>
-      <translation type="unfinished">Specifies if this object must move together when its host is moved</translation>
+      <translation>Sonraíonn an gcaithfidh an réad seo bogadh le chéile nuair a bhogtar a óstach</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="322"/>
       <source>The area of all vertical faces of this object</source>
-      <translation type="unfinished">The area of all vertical faces of this object</translation>
+      <translation>Achar na n-aghaidheanna ingearacha uile den réada seo</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="342"/>
       <source>The perimeter length of the horizontal area</source>
-      <translation type="unfinished">The perimeter length of the horizontal area</translation>
+      <translation>Fad imlíne an limistéir chothrománaigh</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="353"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
-      <translation type="unfinished">An optional higher-resolution mesh or shape for this object</translation>
+      <translation>Mogalra nó cruth roghnach ardtaifigh don réad seo</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="364"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
-      <translation type="unfinished">An optional axis or axis system on which this object should be duplicated</translation>
+      <translation>Ais nó córas ais roghnach ar cheart an réad seo a dhúbláil air</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1575"/>
       <source>Use the material color as this object's shape color, if available</source>
-      <translation type="unfinished">Use the material color as this object's shape color, if available</translation>
+      <translation>Úsáid dath an ábhair mar dhath cruth an réada seo, más féidir</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="88"/>
       <source>The diameter of the bar</source>
-      <translation type="unfinished">The diameter of the bar</translation>
+      <translation>Trastomhas an bharra</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="99"/>
       <source>The distance between the border of the beam and the first bar (concrete cover).</source>
-      <translation type="unfinished">The distance between the border of the beam and the first bar (concrete cover).</translation>
+      <translation>An fad idir teorainn an bhíoma agus an chéad bharra (clúdach coincréite).</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="110"/>
       <source>The distance between the border of the beam and the last bar (concrete cover).</source>
-      <translation type="unfinished">The distance between the border of the beam and the last bar (concrete cover).</translation>
+      <translation>An fad idir teorainn an bhíoma agus an barra deireanach (clúdach coincréite).</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="118"/>
       <source>The amount of bars</source>
-      <translation type="unfinished">The amount of bars</translation>
+      <translation>An méid barraí</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="126"/>
       <source>The spacing between the bars</source>
-      <translation type="unfinished">The spacing between the bars</translation>
+      <translation>An spásáil idir na barraí</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="138"/>
       <source>The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</source>
-      <translation type="unfinished">The total distance to span the rebars over. Keep 0 to automatically use the host shape size.</translation>
+      <translation>An fad iomlán le snáithiú thar na rebars. Coinnigh 0 chun méid chruth an óstaigh a úsáid go huathoibríoch.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="149"/>
       <source>The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</source>
-      <translation type="unfinished">The direction to use to spread the bars. Keep (0,0,0) for automatic direction.</translation>
+      <translation>An treo le húsáid chun na barraí a scaipeadh. Coinnigh (0,0,0) le haghaidh treo uathoibríoch.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="160"/>
       <source>The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</source>
-      <translation type="unfinished">The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.</translation>
+      <translation>An filléad atá le cur i bhfeidhm ar uillinn phróifíl an bhoinn. Déantar an luach seo a iolrú faoi thrastomhas an bharra.</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="168"/>
       <source>List of placement of all the bars</source>
-      <translation type="unfinished">List of placement of all the bars</translation>
+      <translation>Liosta de shuíomh na mbarraí uile</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="176"/>
       <source>The structure object that hosts this rebar</source>
-      <translation type="unfinished">The structure object that hosts this rebar</translation>
+      <translation>An réad struchtúir a óstálann an rebar seo</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="184"/>
       <source>The custom spacing of rebar</source>
-      <translation type="unfinished">The custom spacing of rebar</translation>
+      <translation>Spásáil saincheaptha an rebar</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="192"/>
       <source>Length of a single rebar</source>
-      <translation type="unfinished">Length of a single rebar</translation>
+      <translation>Fad rebar aonair</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="201"/>
       <source>Total length of all rebars</source>
-      <translation type="unfinished">Total length of all rebars</translation>
+      <translation>Fad iomlán na rebars uile</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="210"/>
       <source>The rebar mark</source>
-      <translation type="unfinished">The rebar mark</translation>
+      <translation>An marc rebar</translation>
     </message>
     <message>
       <location filename="../../ArchRebar.py" line="565"/>
       <source>Shape of rebar</source>
-      <translation type="unfinished">Shape of rebar</translation>
+      <translation>Cruth an rebar</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="969"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
-      <translation type="unfinished">The objects that must be considered by this section plane. Empty means the whole document.</translation>
+      <translation>Na rudaí a chaithfidh an plána rannóige seo a chur san áireamh. Ciallaíonn folamh an doiciméad ar fad.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="980"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
-      <translation type="unfinished">If false, non-solids will be cut too, with possible wrong results.</translation>
+      <translation>Más bréagach é, gearrfar neamh-sholaid freisin, agus d’fhéadfadh torthaí míchearta a bheith mar thoradh air sin.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="992"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
-      <translation type="unfinished">If True, resulting views will be clipped to the section plane area.</translation>
+      <translation>Más Fíor é, gearrfar na radhairc a eascraíonn as sin go dtí limistéar an eitleáin rannóige.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1003"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
-      <translation type="unfinished">If true, the color of the objects material will be used to fill cut areas.</translation>
+      <translation>Más fíor, úsáidfear dath ábhar an réada chun na limistéir ghearrtha a líonadh.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1015"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
-      <translation type="unfinished">Geometry further than this value will be cut off. Keep zero for unlimited.</translation>
+      <translation>Gearrfar amach geoiméadracht níos faide ná an luach seo. Coinnigh nialas le haghaidh gan teorainn.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1088"/>
       <source>The display length of this section plane</source>
-      <translation type="unfinished">The display length of this section plane</translation>
+      <translation>Fad taispeána an eitleáin rannóige seo</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1100"/>
       <source>The display height of this section plane</source>
-      <translation type="unfinished">The display height of this section plane</translation>
+      <translation>Airde taispeána an eitleáin rannóige seo</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1112"/>
       <source>The size of the arrows of this section plane</source>
-      <translation type="unfinished">The size of the arrows of this section plane</translation>
+      <translation>Méid na saigheada den eitleán trasghearrtha seo</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1121"/>
       <source>The transparency of this object</source>
-      <translation type="unfinished">The transparency of this object</translation>
+      <translation>Trédhearcacht an réada seo</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1139"/>
       <location filename="../../ArchSectionPlane.py" line="1156"/>
       <source>Show the cut in the 3D view</source>
-      <translation type="unfinished">Show the cut in the 3D view</translation>
+      <translation>Taispeáin an gearradh sa radharc 3D</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1147"/>
       <source>The color of this object</source>
-      <translation type="unfinished">The color of this object</translation>
+      <translation>Dath an réada seo</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1167"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
-      <translation type="unfinished">The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</translation>
+      <translation>An fad idir an plána gearrtha agus an gearradh radhairc iarbhír (coinnigh luach an-bheag é seo ach ní nialas)</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1176"/>
       <source>Show the label in the 3D view</source>
-      <translation type="unfinished">Show the label in the 3D view</translation>
+      <translation>Taispeáin an lipéad san amharc 3T</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1184"/>
       <location filename="../../ArchSpace.py" line="579"/>
+      <location filename="../../ArchSectionPlane.py" line="1184"/>
       <source>The name of the font</source>
-      <translation type="unfinished">The name of the font</translation>
+      <translation>Ainm an chló</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1193"/>
       <location filename="../../ArchSpace.py" line="597"/>
+      <location filename="../../ArchSectionPlane.py" line="1193"/>
       <source>The size of the text font</source>
-      <translation type="unfinished">The size of the text font</translation>
+      <translation>Méid an chló téacs</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="206"/>
       <source>The objects that make the boundaries of this space object</source>
-      <translation type="unfinished">The objects that make the boundaries of this space object</translation>
+      <translation>Na rudaí a chruthaíonn teorainneacha an réada spáis seo</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="214"/>
       <source>Identical to Horizontal Area</source>
-      <translation type="unfinished">Identical to Horizontal Area</translation>
+      <translation>Comhionann leis an Achar Cothrománach</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="222"/>
       <source>The finishing of the floor of this space</source>
-      <translation type="unfinished">The finishing of the floor of this space</translation>
+      <translation>Críochnú urláir an spáis seo</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="230"/>
       <source>The finishing of the walls of this space</source>
-      <translation type="unfinished">The finishing of the walls of this space</translation>
+      <translation>Críochnú bhallaí an spáis seo</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="238"/>
       <source>The finishing of the ceiling of this space</source>
-      <translation type="unfinished">The finishing of the ceiling of this space</translation>
+      <translation>Críochnú uasteorainn an spáis seo</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="249"/>
       <source>Objects that are included inside this space, such as furniture</source>
-      <translation type="unfinished">Objects that are included inside this space, such as furniture</translation>
+      <translation>Rudaí atá laistigh den spás seo, amhail troscán</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="257"/>
       <source>The type of this space</source>
-      <translation type="unfinished">The type of this space</translation>
+      <translation>Cineál an spáis seo</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="266"/>
       <source>The thickness of the floor finish</source>
-      <translation type="unfinished">The thickness of the floor finish</translation>
+      <translation>Tiús bailchríoch an urláir</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="276"/>
       <source>The number of people who typically occupy this space</source>
-      <translation type="unfinished">The number of people who typically occupy this space</translation>
+      <translation>Líon na ndaoine a bhíonn ina gcónaí sa spás seo de ghnáth</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="286"/>
       <source>The electric power needed to light this space in Watts</source>
-      <translation type="unfinished">The electric power needed to light this space in Watts</translation>
+      <translation>An chumhacht leictreach atá ag teastáil chun an spás seo a shoilsiú i Vatanna</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="297"/>
       <source>The electric power needed by the equipment of this space in Watts</source>
-      <translation type="unfinished">The electric power needed by the equipment of this space in Watts</translation>
+      <translation>An chumhacht leictreach atá ag teastáil ó threalamh an spáis seo i Vatanna</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="308"/>
       <source>If True, Equipment Power will be automatically filled by the equipment included in this space</source>
-      <translation type="unfinished">If True, Equipment Power will be automatically filled by the equipment included in this space</translation>
+      <translation>Más fíor, líonfar Cumhacht Trealaimh go huathoibríoch ag an trealamh atá san áireamh sa spás seo</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="316"/>
       <source>The type of air conditioning of this space</source>
-      <translation type="unfinished">The type of air conditioning of this space</translation>
+      <translation>Cineál aerchóirithe an spáis seo</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="327"/>
       <source>Specifies if this space is internal or external</source>
-      <translation type="unfinished">Specifies if this space is internal or external</translation>
+      <translation>Sonraíonn sé seo an spás inmheánach nó seachtrach atá ann</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="339"/>
       <source>Defines the calculation type for the horizontal area and its perimeter length</source>
-      <translation type="unfinished">Defines the calculation type for the horizontal area and its perimeter length</translation>
+      <translation>Sainmhíníonn sé an cineál ríofa don achar cothrománach agus fad a imlíne</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="570"/>
       <source>The text to show. Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data</source>
-      <translation type="unfinished">The text to show. Use $area, $label, $longname, $description or any other property name preceded with $ (case insensitive), or $floor, $walls, $ceiling for finishes, to insert the respective data</translation>
+      <translation>An téacs le taispeáint. Úsáid $area, $label, $longname, $description nó aon ainm maoine eile a bhfuil $ roimhe (neamhíogair i litreacha móra), nó $floor, $walls, $ceiling le haghaidh bailchríocha, chun na sonraí faoi seach a chur isteach</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="588"/>
       <source>The color of the area text</source>
-      <translation type="unfinished">The color of the area text</translation>
+      <translation>Dath téacs an limistéir</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="608"/>
       <source>The size of the first line of text</source>
-      <translation type="unfinished">The size of the first line of text</translation>
+      <translation>Méid an chéad líne téacs</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="619"/>
       <source>The space between the lines of text</source>
-      <translation type="unfinished">The space between the lines of text</translation>
+      <translation>An spás idir línte an téacs</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="631"/>
       <source>The position of the text. Leave (0,0,0) for automatic position</source>
-      <translation type="unfinished">The position of the text. Leave (0,0,0) for automatic position</translation>
+      <translation>Suíomh an téacs. Fág (0,0,0) le haghaidh suíomh uathoibríoch</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="639"/>
       <source>The justification of the text</source>
-      <translation type="unfinished">The justification of the text</translation>
+      <translation>An údar leis an téacs</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="651"/>
       <source>The number of decimals to use for calculated texts</source>
-      <translation type="unfinished">The number of decimals to use for calculated texts</translation>
+      <translation>Líon na ndeachúlacha le húsáid le haghaidh téacsanna ríofa</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="660"/>
       <source>Show the unit suffix</source>
-      <translation type="unfinished">Show the unit suffix</translation>
+      <translation>Taispeáin iarmhír an aonaid</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="238"/>
       <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
-      <translation type="unfinished">The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</translation>
+      <translation>Airde an bhalla seo. Coinnigh 0 le haghaidh uathoibríoch. Ní úsáidtear é má tá an balla seo bunaithe ar sholadach</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="248"/>
       <source>The area of this wall as a simple Height * Length calculation</source>
-      <translation type="unfinished">The area of this wall as a simple Height * Length calculation</translation>
+      <translation>Achar an bhalla seo mar ríomh simplí Airde * Fad</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="282"/>
       <source>The face number of the base object used to build this wall</source>
-      <translation type="unfinished">The face number of the base object used to build this wall</translation>
+      <translation>Uimhir aghaidhe an réada bhunúis a úsáideadh chun an balla seo a thógáil</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="192"/>
       <source>The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation type="unfinished">The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.</translation>
+      <translation>Leithead an bhalla seo. Ní úsáidtear é má tá an balla seo bunaithe ar aghaidh. Díchumasaítear é agus déantar neamhaird de má sholáthraíonn réad bonn (ArchSketch) an fhaisnéis.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="181"/>
       <source>The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</source>
-      <translation type="unfinished">The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</translation>
+      <translation>Fad an bhalla seo. Inléite amháin mura bhfuil an balla seo bunaithe ar sceitse neamhshrianta le himill aonair, nó ar Shreang Dréachta le himill aonair. Féach ar an vicí le haghaidh sonraí faoi conas a dhéantar fad a dhíorthú.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="205"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">This overrides Width attribute to set width of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>Sáraíonn sé seo an tréith Leithead chun leithead gach deighleog den bhalla a shocrú. Díchumasaítear agus déantar neamhaird de má sholáthraíonn an réad Base (ArchSketch) faisnéis Leithead, leis an modh getWidths() (Más nialas an luach, leanfar luach 'Leithead'). [FEABHSÚ le ArchSketch] Cuirtear an uirlis 'Cuir Leithead Deighleog Balla in Eagar' den chomhéadan úsáideora ar fáil i mbreiseán seachtrach SketchArch chun ligean d'úsáideoirí na luachanna a shocrú go hidirghníomhach. 'Toponaming-Tolerant' má úsáidtear ArchSketch i Base (agus má tá an breiseán SketchArch suiteáilte). Rabhadh: Ní 'Toponaming-Tolerant' é mura n-úsáidtear ach Sketch.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="216"/>
       <source>This overrides Align attribute to set align of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">This overrides Align attribute to set align of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>Sáraíonn sé seo an tréith Ailínigh chun ailíniú gach deighleog den bhalla a shocrú. Díchumasaítear agus déantar neamhaird de má sholáthraíonn an réad Base (ArchSketch) faisnéis Ailíniúcháin, leis an modh getAligns() (Mura bhfuil luach 'Clé, Deas, Lár', leanfar luach 'Ailínigh'). [FEABHSÚ le ArchSketch] Cuirtear an uirlis 'Cuir Ailínigh Deighleog Balla in Eagar' den chomhéadan úsáideora ar fáil i mbreiseán seachtrach SketchArch chun ligean d'úsáideoirí na luachanna a shocrú go hidirghníomhach. 'Toponaming-Tolerant' má úsáidtear ArchSketch i Base (agus má tá Breiseán SketchArch suiteáilte). Rabhadh: Ní 'Toponaming-Tolerant' má úsáidtear Sketch amháin.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="227"/>
       <source>This overrides Offset attribute to set offset of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. </source>
-      <translation type="unfinished">This overrides Offset attribute to set offset of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. </translation>
+      <translation>Sáraíonn sé seo an tréith Offset chun offset gach deighleog den bhalla a shocrú. Díchumasaítear agus neamhairdítear é má sholáthraíonn an réad Base (ArchSketch) faisnéis Offsets, leis an modh getOffsets() (Más nialas an luach, leanfar luach 'Offset'). [FEABHSÚCHÁIN ag ArchSketch] Cuirtear an uirlis 'Edit Wall Section Offset' den chomhéadan úsáideora ar fáil i mbreiseán seachtrach ('SketchArch') chun ligean d'úsáideoirí na himill a roghnú go hidirghníomhach. 'Toponaming-Tolerant' má úsáidtear ArchSketch i Base (agus má tá an breiseán SketchArch suiteáilte). Rabhadh: Ní 'Toponaming-Tolerant' é mura n-úsáidtear ach Sketch. Déantar neamhaird den mhaoin má sholáthair Base ArchSketch na himill roghnaithe </translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.</translation>
+      <translation>Ailíniú an bhalla seo ar a réad bonn, más infheidhme. Díchumasaítear agus déantar neamhaird de má sholáthraíonn an réad bonn (ArchSketch) an fhaisnéis.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
       <source>The offset between this wall and its baseline (only for left and right alignments). Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation type="unfinished">The offset between this wall and its baseline (only for left and right alignments). Disabled and ignored if Base object (ArchSketch) provides the information.</translation>
+      <translation>An t-easáit idir an balla seo agus a bhunlíne (le haghaidh ailínithe ar chlé agus ar dheis amháin). Díchumasaítear agus déantar neamhaird de má sholáthraíonn an réad Bun (ArchSketch) an fhaisnéis.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="308"/>
       <source>Enable this to make the wall generate blocks</source>
-      <translation type="unfinished">Enable this to make the wall generate blocks</translation>
+      <translation>Cumasaigh seo chun go nginfidh an balla bloic</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="316"/>
       <source>The length of each block</source>
-      <translation type="unfinished">The length of each block</translation>
+      <translation>Fad gach bloc</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="324"/>
       <source>The height of each block</source>
-      <translation type="unfinished">The height of each block</translation>
+      <translation>Airde gach bloc</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="334"/>
       <source>The horizontal offset of the first line of blocks</source>
-      <translation type="unfinished">The horizontal offset of the first line of blocks</translation>
+      <translation>An t-aschur cothrománach den chéad líne bloic</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="344"/>
       <source>The horizontal offset of the second line of blocks</source>
-      <translation type="unfinished">The horizontal offset of the second line of blocks</translation>
+      <translation>An fhritháireamh cothrománach den dara líne bloic</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="352"/>
       <source>The size of the joints between each block</source>
-      <translation type="unfinished">The size of the joints between each block</translation>
+      <translation>Méid na n-alt idir gach bloc</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="360"/>
       <source>The number of entire blocks</source>
-      <translation type="unfinished">The number of entire blocks</translation>
+      <translation>Líon na mbloc iomlán</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="369"/>
       <source>The number of broken blocks</source>
-      <translation type="unfinished">The number of broken blocks</translation>
+      <translation>Líon na mbloc briste</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="393"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>Imill roghnaithe (nó grúpa imill) den bhun-Sketch/ArchSketch, le húsáid chun cruth an Bhalla Áirse seo a chruthú (in ionad imill uile an Base Sketch/ArchSketch a úsáid de réir réamhshocraithe). Is uimhreacha innéacs na n-imeall nó na ngrúpaí a ionchurtar. Díchumasaítear agus déantar neamhaird díobh má sholáthraíonn an réad Base (ArchSketch) faisnéis faoi imill roghnaithe (mar Ais Balla), leis an modh getWallBaseShapeEdgesInfo(). [FEABHSÚ le ArchSketch] Cuirtear an uirlis 'Cuir Deighleog Balla in Eagar' den chomhéadan úsáideora ar fáil i mbreiseán seachtrach SketchArch chun ligean d'úsáideoirí na himill a (dhí)-roghnú go hidirghníomhach. 'Toponaming-Tolerant' má úsáidtear ArchSketch i Base (agus má tá Breiseán SketchArch suiteáilte). Rabhadh: Ní 'Toponaming-Tolerant' é mura n-úsáidtear ach Sketch.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="404"/>
       <source>Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </source>
-      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </translation>
+      <translation>Roghnaigh Tacar Airíonna Sainmhínithe ag an Úsáideoir le húsáid chun cruth athraitheach, sraitheanna den Bhalla Áirse a chruthú leis an ArchSketch céanna </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="962"/>
       <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
-      <translation type="unfinished">Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</translation>
+      <translation>Bain úsáid as sonraí bunúsacha ArchSketch (más in úsáid) (e.g. leithead, ailínithe, fritháireamh) in ionad airíonna Wall</translation>
     </message>
   </context>
   <context>
@@ -8276,12 +8275,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="2138"/>
       <source>Structure Tools</source>
-      <translation type="unfinished">Structure Tools</translation>
+      <translation>Uirlisí Struchtúir</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="2139"/>
       <source>Structure tools</source>
-      <translation type="unfinished">Structure tools</translation>
+      <translation>Uirlisí struchtúir</translation>
     </message>
   </context>
   <context>
@@ -8289,12 +8288,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="43"/>
       <source>Equipment</source>
-      <translation type="unfinished">Equipment</translation>
+      <translation>Trealamh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="47"/>
       <source>Creates an equipment from a selected object (Part or Mesh)</source>
-      <translation type="unfinished">Creates an equipment from a selected object (Part or Mesh)</translation>
+      <translation>Cruthaíonn sé trealamh ó réad roghnaithe (Cuid nó Mogalra)</translation>
     </message>
   </context>
   <context>
@@ -8302,7 +8301,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1250"/>
       <source>Writing camera position</source>
-      <translation type="unfinished">Writing camera position</translation>
+      <translation>Suíomh an cheamara á scríobh</translation>
     </message>
   </context>
   <context>
@@ -8310,62 +8309,62 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../InitGui.py" line="440"/>
       <source>&amp;2D Drafting</source>
-      <translation type="unfinished">&amp;2D Drafting</translation>
+      <translation>&amp;Dréachtú 2T</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="441"/>
       <source>&amp;3D/BIM</source>
-      <translation type="unfinished">&amp;3D/BIM</translation>
+      <translation>&amp;3T/BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="419"/>
       <source>Drafting Tools</source>
-      <translation type="unfinished">Drafting Tools</translation>
+      <translation>Uirlisí Dréachtaithe</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="420"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft Snap</translation>
+      <translation>Dréacht-Snap</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="421"/>
       <source>3D/BIM Tools</source>
-      <translation type="unfinished">3D/BIM Tools</translation>
+      <translation>Uirlisí 3T/BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="422"/>
       <source>Annotation Tools</source>
-      <translation type="unfinished">Annotation Tools</translation>
+      <translation>Uirlisí Anótála</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="423"/>
       <source>2D Tools</source>
-      <translation type="unfinished">2D Tools</translation>
+      <translation>Uirlisí 2T</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="424"/>
       <source>Manage Tools</source>
-      <translation type="unfinished">Manage Tools</translation>
+      <translation>Bainistigh Uirlisí</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="425"/>
       <source>General Tools</source>
-      <translation type="unfinished">General Tools</translation>
+      <translation>Uirlisí Ginearálta</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="426"/>
       <source>Object Tools</source>
-      <translation type="unfinished">Object Tools</translation>
+      <translation>Uirlisí Réada</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="427"/>
       <source>3D Tools</source>
-      <translation type="unfinished">3D Tools</translation>
+      <translation>Uirlisí 3T</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="442"/>
       <source>Reinforcement Tools</source>
-      <translation type="unfinished">Reinforcement Tools</translation>
+      <translation>Uirlisí Athneartaithe</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="443"/>
@@ -8375,37 +8374,37 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../InitGui.py" line="444"/>
       <source>&amp;Snapping</source>
-      <translation type="unfinished">&amp;Snapping</translation>
+      <translation>&amp;Snapping</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="445"/>
       <source>&amp;Modify</source>
-      <translation type="unfinished">&amp;Modify</translation>
+      <translation>&amp;Athraigh</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="447"/>
       <source>&amp;Manage</source>
-      <translation type="unfinished">&amp;Manage</translation>
+      <translation>&amp;Bainistigh</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="448"/>
       <source>&amp;Flamingo</source>
-      <translation type="unfinished">&amp;Flamingo</translation>
+      <translation>&amp;Flamingo</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="449"/>
       <source>&amp;Fasteners</source>
-      <translation type="unfinished">&amp;Fasteners</translation>
+      <translation>&amp;Dúntóirí</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="450"/>
       <source>&amp;Utils</source>
-      <translation type="unfinished">&amp;Utils</translation>
+      <translation>&amp;Fóntais</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="455"/>
       <source>Nudge</source>
-      <translation type="unfinished">Nudge</translation>
+      <translation>Broid</translation>
     </message>
   </context>
   <context>
@@ -8418,7 +8417,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimProfile.py" line="45"/>
       <source>Creates a profile</source>
-      <translation type="unfinished">Creates a profile</translation>
+      <translation>Cruthaíonn próifíl</translation>
     </message>
   </context>
   <context>
@@ -8426,12 +8425,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimSite.py" line="46"/>
       <source>Site</source>
-      <translation type="unfinished">Site</translation>
+      <translation>Suíomh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSite.py" line="48"/>
       <source>Creates a site including selected objects</source>
-      <translation type="unfinished">Creates a site including selected objects</translation>
+      <translation>Cruthaíonn suíomh lena n-áirítear réada roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -8444,7 +8443,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimRoof.py" line="46"/>
       <source>Creates a roof object from the selected wire.</source>
-      <translation type="unfinished">Creates a roof object from the selected wire.</translation>
+      <translation>Cruthaíonn sé réad dín ón sreang roghnaithe.</translation>
     </message>
   </context>
   <context>
@@ -8452,12 +8451,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="44"/>
       <source>Cut With Plane</source>
-      <translation type="unfinished">Cut With Plane</translation>
+      <translation>Gearr le Plána</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="45"/>
       <source>Cut an object with a plane</source>
-      <translation type="unfinished">Cut an object with a plane</translation>
+      <translation>Gearr réad le plána</translation>
     </message>
   </context>
   <context>
@@ -8470,7 +8469,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimReference.py" line="45"/>
       <source>Creates an external reference object</source>
-      <translation type="unfinished">Creates an external reference object</translation>
+      <translation>Cruthaíonn réad tagartha seachtrach</translation>
     </message>
   </context>
   <context>
@@ -8483,7 +8482,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimFrame.py" line="48"/>
       <source>Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</source>
-      <translation type="unfinished">Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.</translation>
+      <translation>Cruthaíonn sé seo réad fráma ó réad 2T plánach (an cosán/na cosáin easbhrúite) agus próifíl. Cinntigh go bhfuil na réada roghnaithe san ord sin.</translation>
     </message>
   </context>
   <context>
@@ -8496,7 +8495,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="55"/>
       <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
-      <translation type="unfinished">Creates a window object from a selected object (wire, rectangle or sketch)</translation>
+      <translation>Cruthaíonn sé réad fuinneoige ó réad roghnaithe (sreang, dronuilleog nó sceitse)</translation>
     </message>
   </context>
   <context>
@@ -8504,12 +8503,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="69"/>
       <source>Axis System</source>
-      <translation type="unfinished">Axis System</translation>
+      <translation>Córas Ais</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="73"/>
       <source>Creates an axis system from a set of axes</source>
-      <translation type="unfinished">Creates an axis system from a set of axes</translation>
+      <translation>Cruthaíonn córas ais ó shraith aiseanna</translation>
     </message>
   </context>
   <context>
@@ -8522,7 +8521,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimTruss.py" line="47"/>
       <source>Creates a truss object from the selected line or from scratch</source>
-      <translation type="unfinished">Creates a truss object from the selected line or from scratch</translation>
+      <translation>Cruthaíonn réad truss ón líne roghnaithe nó ón tús</translation>
     </message>
   </context>
   <context>
@@ -8530,12 +8529,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="43"/>
       <source>Stairs</source>
-      <translation type="unfinished">Stairs</translation>
+      <translation>Staighre</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="45"/>
       <source>Creates a flight of stairs</source>
-      <translation type="unfinished">Creates a flight of stairs</translation>
+      <translation>Cruthaíonn sé eitilt staighre</translation>
     </message>
   </context>
   <context>
@@ -8543,12 +8542,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimSpace.py" line="43"/>
       <source>Space</source>
-      <translation type="unfinished">Space</translation>
+      <translation>Spás</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSpace.py" line="47"/>
       <source>Creates a space object from selected boundary objects</source>
-      <translation type="unfinished">Creates a space object from selected boundary objects</translation>
+      <translation>Cruthaíonn réad spáis ó réada teorann roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -8556,12 +8555,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="42"/>
       <source>Fence</source>
-      <translation type="unfinished">Fence</translation>
+      <translation>Fál</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimFence.py" line="45"/>
       <source>Creates a fence object from a selected section, post and path</source>
-      <translation type="unfinished">Creates a fence object from a selected section, post and path</translation>
+      <translation>Cruthaíonn réad fál ó chuid, post agus cosán roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -8574,7 +8573,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="537"/>
       <source>Creates or edits the material definition of a selected object.</source>
-      <translation type="unfinished">Creates or edits the material definition of a selected object.</translation>
+      <translation>Cruthaíonn nó cuireann sé sainmhíniú ábhartha réada roghnaithe in eagar.</translation>
     </message>
   </context>
   <context>
@@ -8582,12 +8581,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="568"/>
       <source>Multi-Material</source>
-      <translation type="unfinished">Multi-Material</translation>
+      <translation>Ilábhar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="570"/>
       <source>Creates or edits multi-materials</source>
-      <translation type="unfinished">Creates or edits multi-materials</translation>
+      <translation>Cruthaíonn nó eagarthóiríonn ilábhair</translation>
     </message>
   </context>
   <context>
@@ -8595,12 +8594,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="600"/>
       <source>Material Tools</source>
-      <translation type="unfinished">Material Tools</translation>
+      <translation>Uirlisí Ábhartha</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="601"/>
       <source>Material tools</source>
-      <translation type="unfinished">Material tools</translation>
+      <translation>Uirlisí ábhair</translation>
     </message>
   </context>
   <context>
@@ -8613,67 +8612,67 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="112"/>
       <source>Creates a customizable grid object</source>
-      <translation type="unfinished">Creates a customizable grid object</translation>
+      <translation>Cruthaíonn réad eangaí saincheaptha</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="73"/>
       <source>The number of rows</source>
-      <translation type="unfinished">The number of rows</translation>
+      <translation>Líon na sraitheanna</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="81"/>
       <source>The number of columns</source>
-      <translation type="unfinished">The number of columns</translation>
+      <translation>Líon na gcolún</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="89"/>
       <source>The sizes of rows</source>
-      <translation type="unfinished">The sizes of rows</translation>
+      <translation>Méideanna na sraitheanna</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="97"/>
       <source>The sizes of columns</source>
-      <translation type="unfinished">The sizes of columns</translation>
+      <translation>Méideanna na gcolún</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="105"/>
       <source>The span ranges of cells that are merged together</source>
-      <translation type="unfinished">The span ranges of cells that are merged together</translation>
+      <translation>Raon na gcealla atá cumasctha le chéile</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="115"/>
       <source>The type of 3D points produced by this grid object</source>
-      <translation type="unfinished">The type of 3D points produced by this grid object</translation>
+      <translation>An cineál pointí 3T a tháirgeann an réad eangaí seo</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="124"/>
       <source>The total width of this grid</source>
-      <translation type="unfinished">The total width of this grid</translation>
+      <translation>Leithead iomlán an ghreille seo</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="132"/>
       <source>The total height of this grid</source>
-      <translation type="unfinished">The total height of this grid</translation>
+      <translation>Airde iomlán an ghreille seo</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="142"/>
       <source>Creates automatic column divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic column divisions (set to 0 to disable)</translation>
+      <translation>Cruthaíonn sé roinnte colún uathoibríoch (socraigh go 0 le díchumasú)</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="152"/>
       <source>Creates automatic row divisions (set to 0 to disable)</source>
-      <translation type="unfinished">Creates automatic row divisions (set to 0 to disable)</translation>
+      <translation>Cruthaíonn sé roinnt sraitheanna uathoibríocha (socraigh go 0 le díchumasú)</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="163"/>
       <source>When in edge midpoint mode, if this grid must reorient its children along edge normals or not</source>
-      <translation type="unfinished">When in edge midpoint mode, if this grid must reorient its children along edge normals or not</translation>
+      <translation>Nuair atá tú i mód lárphointe imeall, an gcaithfidh an eangach seo a leanaí a atreorú feadh gnáthphointí imeall nó nach gcaithfidh</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="171"/>
       <source>The indices of faces to hide</source>
-      <translation type="unfinished">The indices of faces to hide</translation>
+      <translation>Innéacsanna na n-aghaidheanna le ceilt</translation>
     </message>
   </context>
   <context>
@@ -8681,12 +8680,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="55"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>Painéal</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="60"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation type="unfinished">Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</translation>
+      <translation>Cruthaíonn sé réad painéil ón tús nó ó réad roghnaithe (sceitse, sreang, aghaidh nó soladach)</translation>
     </message>
   </context>
   <context>
@@ -8694,12 +8693,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="287"/>
       <source>Panel Cut</source>
-      <translation type="unfinished">Panel Cut</translation>
+      <translation>Gearradh Painéil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="289"/>
       <source>Creates 2D views of selected panels</source>
-      <translation type="unfinished">Creates 2D views of selected panels</translation>
+      <translation>Cruthaíonn sé radhairc 2T de phainéil roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -8707,12 +8706,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="320"/>
       <source>Panel Sheet</source>
-      <translation type="unfinished">Panel Sheet</translation>
+      <translation>Bileog Painéil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="324"/>
       <source>Creates a 2D sheet which can contain panel cuts</source>
-      <translation type="unfinished">Creates a 2D sheet which can contain panel cuts</translation>
+      <translation>Cruthaíonn sé bileog 2T ar féidir gearrthacha painéil a bheith inti</translation>
     </message>
   </context>
   <context>
@@ -8720,12 +8719,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="359"/>
       <source>Nest</source>
-      <translation type="unfinished">Nest</translation>
+      <translation>Nead</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="363"/>
       <source>Nests a series of selected shapes in a container</source>
-      <translation type="unfinished">Nests a series of selected shapes in a container</translation>
+      <translation>Neadaíonn sraith cruthanna roghnaithe i gcoimeádán</translation>
     </message>
   </context>
   <context>
@@ -8733,12 +8732,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="535"/>
       <source>Panel Tools</source>
-      <translation type="unfinished">Panel Tools</translation>
+      <translation>Uirlisí Painéil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="536"/>
       <source>Panel tools</source>
-      <translation type="unfinished">Panel tools</translation>
+      <translation>Uirlisí painéil</translation>
     </message>
   </context>
   <context>
@@ -8746,12 +8745,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="43"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>Balla Cuirtíní</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="48"/>
       <source>Creates a curtain wall object from selected line or from scratch</source>
-      <translation type="unfinished">Creates a curtain wall object from selected line or from scratch</translation>
+      <translation>Cruthaíonn réad balla imbhalla ón líne roghnaithe nó ón tús</translation>
     </message>
   </context>
   <context>
@@ -8764,7 +8763,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="47"/>
       <source>Creates a pipe object from a given wire or line</source>
-      <translation type="unfinished">Creates a pipe object from a given wire or line</translation>
+      <translation>Cruthaíonn réad píopa ó shreang nó líne ar leith</translation>
     </message>
   </context>
   <context>
@@ -8772,12 +8771,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="87"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>Nascóir</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="91"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation type="unfinished">Creates a connector between 2 or 3 selected pipes</translation>
+      <translation>Cruthaíonn sé nascóir idir 2 nó 3 phíopa roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -8785,12 +8784,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="132"/>
       <source>Pipe Tools</source>
-      <translation type="unfinished">Pipe Tools</translation>
+      <translation>Uirlisí Píopa</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="133"/>
       <source>Pipe tools</source>
-      <translation type="unfinished">Pipe tools</translation>
+      <translation>Uirlisí píopa</translation>
     </message>
   </context>
   <context>
@@ -8798,12 +8797,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="42"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>Sceideal</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="45"/>
       <source>Creates a schedule to collect data from the model</source>
-      <translation type="unfinished">Creates a schedule to collect data from the model</translation>
+      <translation>Cruthaíonn sé sceideal chun sonraí a bhailiú ón tsamhail</translation>
     </message>
   </context>
   <context>
@@ -8816,7 +8815,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="128"/>
       <source>Creates a Building Part object that represents a level, including selected objects</source>
-      <translation type="unfinished">Creates a Building Part object that represents a level, including selected objects</translation>
+      <translation>Cruthaíonn réad Cuid Foirgnimh a léiríonn leibhéal, lena n-áirítear réada roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -8829,7 +8828,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="45"/>
       <source>Creates a set of axes</source>
-      <translation type="unfinished">Creates a set of axes</translation>
+      <translation>Cruthaíonn sraith aiseanna</translation>
     </message>
   </context>
   <context>
@@ -8837,12 +8836,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="137"/>
       <source>Axis Tools</source>
-      <translation type="unfinished">Axis Tools</translation>
+      <translation>Uirlisí Ais</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="138"/>
       <source>Axis tools</source>
-      <translation type="unfinished">Axis tools</translation>
+      <translation>Uirlisí ais</translation>
     </message>
   </context>
   <context>
@@ -8850,12 +8849,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="43"/>
       <source>Custom Rebar</source>
-      <translation type="unfinished">Custom Rebar</translation>
+      <translation>Rebar Saincheaptha</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="48"/>
       <source>Creates a reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation type="unfinished">Creates a reinforcement bar from the selected face of solid object and/or a sketch</translation>
+      <translation>Cruthaíonn barra athneartaithe ón aghaidh roghnaithe den réada sholadaigh agus/nó sceitse</translation>
     </message>
   </context>
   <context>
@@ -8863,12 +8862,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="44"/>
       <source>Section Plane</source>
-      <translation type="unfinished">Section Plane</translation>
+      <translation>Eitleán Rannóige</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="48"/>
       <source>Creates a section plane object, including the selected objects</source>
-      <translation type="unfinished">Creates a section plane object, including the selected objects</translation>
+      <translation>Cruthaíonn réad eitleáin rannóige, lena n-áirítear na réada roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -8877,17 +8876,17 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../ArchBuilding.py" line="229"/>
       <location filename="../../bimcommands/BimBuildingPart.py" line="78"/>
       <source>Building</source>
-      <translation type="unfinished">Building</translation>
+      <translation>Foirgneamh</translation>
     </message>
     <message>
       <location filename="../../ArchBuilding.py" line="233"/>
       <source>Creates a building object including selected objects.</source>
-      <translation type="unfinished">Creates a building object including selected objects.</translation>
+      <translation>Cruthaíonn sé réad foirgníochta lena n-áirítear réada roghnaithe.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="80"/>
       <source>Creates a building object</source>
-      <translation type="unfinished">Creates a building object</translation>
+      <translation>Cruthaíonn réad foirgníochta</translation>
     </message>
   </context>
   <context>
@@ -8900,7 +8899,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimWall.py" line="59"/>
       <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
-      <translation type="unfinished">Creates a wall object from scratch or from a selected object (wire, face or solid)</translation>
+      <translation>Cruthaíonn sé réad balla ón tús nó ó réad roghnaithe (sreang, aghaidh nó soladach)</translation>
     </message>
   </context>
   <context>
@@ -8908,12 +8907,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="540"/>
       <source>Merge Walls</source>
-      <translation type="unfinished">Merge Walls</translation>
+      <translation>Ballaí a Chumaisc</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="543"/>
       <source>Merges the selected walls, if possible</source>
-      <translation type="unfinished">Merges the selected walls, if possible</translation>
+      <translation>Cuireann sé na ballaí roghnaithe le chéile, más féidir</translation>
     </message>
   </context>
   <context>
@@ -8921,12 +8920,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="42"/>
       <source>Add Component</source>
-      <translation type="unfinished">Add Component</translation>
+      <translation>Cuir Comhpháirt leis</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="45"/>
       <source>Adds the selected components to the active object</source>
-      <translation type="unfinished">Adds the selected components to the active object</translation>
+      <translation>Cuireann na comhpháirteanna roghnaithe leis an réad gníomhach</translation>
     </message>
   </context>
   <context>
@@ -8934,12 +8933,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="161"/>
       <source>Split Mesh</source>
-      <translation type="unfinished">Split Mesh</translation>
+      <translation>Mogalra Scoilte</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="164"/>
       <source>Splits selected meshes into independent components</source>
-      <translation type="unfinished">Splits selected meshes into independent components</translation>
+      <translation>Roinneann sé mogaill roghnaithe ina gcomhpháirteanna neamhspleácha</translation>
     </message>
   </context>
   <context>
@@ -8947,12 +8946,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="194"/>
       <source>Mesh to Shape</source>
-      <translation type="unfinished">Mesh to Shape</translation>
+      <translation>Mogalra go Cruth</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="197"/>
       <source>Turns selected meshes into Part shape objects</source>
-      <translation type="unfinished">Turns selected meshes into Part shape objects</translation>
+      <translation>Déanann mogaill roghnaithe réada cruth Cuid</translation>
     </message>
   </context>
   <context>
@@ -8960,12 +8959,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="240"/>
       <source>Select Non-Manifold Meshes</source>
-      <translation type="unfinished">Select Non-Manifold Meshes</translation>
+      <translation>Roghnaigh Mogaill Neamh-Ilghnéitheacha</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="244"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
-      <translation type="unfinished">Selects all non-manifold meshes from the document or from the selected groups</translation>
+      <translation>Roghnaíonn sé gach mogalra neamh-ilghnéitheach ón doiciméad nó ó na grúpaí roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -8973,12 +8972,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="299"/>
       <source>Close Holes</source>
-      <translation type="unfinished">Close Holes</translation>
+      <translation>Dún na Poill</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="302"/>
       <source>Closes holes in open shapes, turning them into solids</source>
-      <translation type="unfinished">Closes holes in open shapes, turning them into solids</translation>
+      <translation>Dúnann sé poill i gcruthanna oscailte, ag casadh ina solaid iad</translation>
     </message>
   </context>
   <context>
@@ -8986,12 +8985,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="324"/>
       <source>Check</source>
-      <translation type="unfinished">Check</translation>
+      <translation>Seiceáil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="325"/>
       <source>Checks the selected objects for problems</source>
-      <translation type="unfinished">Checks the selected objects for problems</translation>
+      <translation>Seiceálann sé na rudaí roghnaithe le haghaidh fadhbanna</translation>
     </message>
   </context>
   <context>
@@ -8999,12 +8998,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="353"/>
       <source>Survey</source>
-      <translation type="unfinished">Survey</translation>
+      <translation>Suirbhé</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="354"/>
       <source>Starts survey</source>
-      <translation type="unfinished">Starts survey</translation>
+      <translation>Tosaíonn suirbhé</translation>
     </message>
   </context>
   <context>
@@ -9017,7 +9016,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="399"/>
       <source>Creates an undefined architectural component</source>
-      <translation type="unfinished">Creates an undefined architectural component</translation>
+      <translation>Cruthaíonn comhpháirt ailtireachta neamhshainithe</translation>
     </message>
   </context>
   <context>
@@ -9025,12 +9024,12 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="428"/>
       <source>Clone Component</source>
-      <translation type="unfinished">Clone Component</translation>
+      <translation>Comhpháirt Chlónála</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="432"/>
       <source>Clones an object as an undefined architectural component</source>
-      <translation type="unfinished">Clones an object as an undefined architectural component</translation>
+      <translation>Clónálann sé réad mar chomhpháirt ailtireachta neamhshainithe</translation>
     </message>
   </context>
   <context>
@@ -9038,20 +9037,20 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="497"/>
       <source>Toggle Subcomponents</source>
-      <translation type="unfinished">Toggle Subcomponents</translation>
+      <translation>Fo-chomhpháirteanna a scoránaigh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="500"/>
       <source>Shows or hides the subcomponents of this object</source>
-      <translation type="unfinished">Shows or hides the subcomponents of this object</translation>
+      <translation>Taispeánann nó folaíonn sé fo-chomhpháirteanna an réada seo</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../ArchIFCView.py" line="73"/>
-      <location filename="../../ArchSite.py" line="1314"/>
       <location filename="../../ArchAxis.py" line="798"/>
+      <location filename="../../ArchSite.py" line="1314"/>
+      <location filename="../../ArchIFCView.py" line="73"/>
       <source>Transform</source>
       <translation>Claochlú</translation>
     </message>
@@ -9061,7 +9060,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../InitGui.py" line="479"/>
       <source>BIM</source>
-      <translation type="unfinished">BIM</translation>
+      <translation>BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="480"/>
@@ -9080,7 +9079,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <location filename="../../BimStatus.py" line="46"/>
       <location filename="../../BimStatus.py" line="56"/>
       <source>Custom…</source>
-      <translation type="unfinished">Custom…</translation>
+      <translation>Saincheaptha…</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="53"/>
@@ -9093,47 +9092,47 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../BimStatus.py" line="151"/>
       <source>Toggle report panels on/off (Ctrl+0)</source>
-      <translation type="unfinished">Toggle report panels on/off (Ctrl+0)</translation>
+      <translation>Painéil tuarascála a scoránaigh/a dhíchumasú (Ctrl+0)</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="170"/>
       <source>Toggle BIM views panel on/off (Ctrl+9)</source>
-      <translation type="unfinished">Toggle BIM views panel on/off (Ctrl+9)</translation>
+      <translation>Casadh/dícheangail painéal radhairc BIM (Ctrl+9)</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="186"/>
       <source>Toggle 3D view background between simple and gradient</source>
-      <translation type="unfinished">Toggle 3D view background between simple and gradient</translation>
+      <translation>Athraigh cúlra an radhairc 3T idir simplí agus grádán</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="212"/>
       <source>The value of the nudge movement (rotation is always 45°).CTRL+arrows to move
 CTRL+, to rotate leftCTRL+. to rotate right
 CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch between auto and manual mode</source>
-      <translation type="unfinished">The value of the nudge movement (rotation is always 45°).CTRL+arrows to move
-CTRL+, to rotate leftCTRL+. to rotate right
-CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch between auto and manual mode</translation>
+      <translation>Luach na gluaiseachta nudge (bíonn an rothlú 45° i gcónaí). CTRL+saigheada le bogadh
+CTRL+, le rothlú ar chlé CTRL+. le rothlú ar dheis
+CTRL+PgUp le heasbhrú a shíneadh CTRL+PgDown le heasbhrú a chrapadh CTRL+/ le hathrú idir mód uathoibríoch agus mód láimhe</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="43"/>
       <source>The BIM workbench is used to model buildings</source>
-      <translation type="unfinished">The BIM workbench is used to model buildings</translation>
+      <translation>Úsáidtear an binse oibre BIM chun foirgnimh a shamhaltú</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="44"/>
       <location filename="../../bimcommands/BimViews.py" line="161"/>
       <source>BIM</source>
-      <translation type="unfinished">BIM</translation>
+      <translation>BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="675"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>Ag snapáil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="153"/>
       <source>Box dimensions</source>
-      <translation type="unfinished">Box dimensions</translation>
+      <translation>Toisí an bhosca</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="48"/>
@@ -9145,7 +9144,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimIfcQuantities.py" line="49"/>
       <location filename="../../bimcommands/BimBox.py" line="165"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="50"/>
@@ -9156,94 +9155,94 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="90"/>
       <source>Search...</source>
-      <translation type="unfinished">Search...</translation>
+      <translation>Cuardaigh...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="91"/>
       <source>Searches classes</source>
-      <translation type="unfinished">Searches classes</translation>
+      <translation>Cuardaigh ranganna</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="110"/>
       <source>Editing</source>
-      <translation type="unfinished">Editing</translation>
+      <translation>Eagarthóireacht</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="69"/>
       <source>The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?</source>
-      <translation type="unfinished">The current document must be the main one. The other contains newer objects to merge into it. Ensure that only the objects intended for comparison are visible in both documents. Proceed?</translation>
+      <translation>Caithfidh an doiciméad reatha a bheith ar an bpríomhcháipéis. Tá réada nua sa cheann eile le cumasc leis. Cinntigh nach bhfuil ach na réada atá beartaithe le haghaidh comparáide le feiceáil sa dá dhoiciméad. Ar aghaidh?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="321"/>
       <source>objects still have the same shape but have a different material. Update them in the main document?</source>
-      <translation type="unfinished">objects still have the same shape but have a different material. Update them in the main document?</translation>
+      <translation>tá an cruth céanna fós ar réada ach tá ábhar difriúil iontu. An bhfuil tú ag iarraidh iad a nuashonrú sa phríomhdhoiciméad?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="376"/>
       <source>objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</source>
-      <translation type="unfinished">objects have no IFC ID in the main document, but an identical object with an ID exists in the new document. Transfer these IDs to the original objects?</translation>
+      <translation>níl aon ID IFC ag réada sa phríomhdhoiciméad, ach tá réad comhionann le haitheantas ann sa doiciméad nua. An bhfuil sé ceart na haitheantais seo a aistriú chuig na réada bunaidh?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="395"/>
       <source>objects had their name changed. Rename them?</source>
-      <translation type="unfinished">objects had their name changed. Rename them?</translation>
+      <translation>athraíodh ainm na n-ábhar. Athraigh ainm na n-ainmneacha?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="412"/>
       <source>objects had their properties changed. Update?</source>
-      <translation type="unfinished">objects had their properties changed. Update?</translation>
+      <translation>athraíodh airíonna réad. Nuashonrú?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="431"/>
       <source>objects have their location changed. Move them to their new position?</source>
-      <translation type="unfinished">objects have their location changed. Move them to their new position?</translation>
+      <translation>tá suíomh na n-ábhar athraithe. Bog iad go dtí a suíomh nua?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="450"/>
       <source>Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</source>
-      <translation type="unfinished">Colorize the objects that have moved in yellow in the other file (to serve as a diff)?</translation>
+      <translation>Na rudaí atá bogtha a dhathú i mbuí sa chomhad eile (le feidhmiú mar dhifríocht)?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="471"/>
       <source>Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</source>
-      <translation type="unfinished">Colorize the objects that have been modified in orange in the other file (to serve as a diff)?</translation>
+      <translation>Na rudaí atá modhnaithe a dhathú in oráiste sa chomhad eile (le feidhmiú mar dhifríocht)?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="494"/>
       <source>objects do not exist anymore in the new document. Move them to a 'To Delete' group?</source>
-      <translation type="unfinished">objects do not exist anymore in the new document. Move them to a 'To Delete' group?</translation>
+      <translation>níl na réada ann a thuilleadh sa cháipéis nua. Bog iad go grúpa 'Le Scriosadh'?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="509"/>
       <source>Colorize the objects that have been removed in red in the other file (to serve as a diff)?</source>
-      <translation type="unfinished">Colorize the objects that have been removed in red in the other file (to serve as a diff)?</translation>
+      <translation>Na rudaí atá bainte a dhathú i ndearg sa chomhad eile (le feidhmiú mar dhifríocht)?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="528"/>
       <source>Colorize the objects that have been added in green in the other file (to serve as a diff)?</source>
-      <translation type="unfinished">Colorize the objects that have been added in green in the other file (to serve as a diff)?</translation>
+      <translation>Na rudaí atá curtha leis a dhathú i nglas sa chomhad eile (le feidhmiú mar dhifríocht)?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="549"/>
       <source>Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</source>
-      <translation type="unfinished">Two documents are required to be open to run this tool. One which is the main document, and one that contains new objects to compare against the existing one. Make sure only the objects to compare in both documents are visible.</translation>
+      <translation>Ní mór dhá dhoiciméad a bheith oscailte chun an uirlis seo a rith. Ceann amháin arb é an príomhdhoiciméad é, agus ceann ina bhfuil réada nua le comparáid a dhéanamh leis an gceann atá ann cheana féin. Cinntigh nach bhfuil ach na réada le comparáid a dhéanamh sa dá dhoiciméad le feiceáil.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="91"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="460"/>
       <source>Create new material</source>
-      <translation type="unfinished">Create new material</translation>
+      <translation>Cruthaigh ábhar nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="92"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="461"/>
       <source>Create new multi-material</source>
-      <translation type="unfinished">Create new multi-material</translation>
+      <translation>Cruthaigh ilábhar nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
-      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
+      <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
       <source>Label</source>
       <translation>Lipéad</translation>
     </message>
@@ -9251,7 +9250,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimIfcElements.py" line="140"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="207"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>Cineál IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="141"/>
@@ -9259,20 +9258,20 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation>Ábhar</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <location filename="../../nativeifc/ifc_tools.py" line="60"/>
+      <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
-      <translation type="unfinished">IfcOpenShell was not found on this system. IFC support is disabled</translation>
+      <translation>Níor aimsíodh ifcOpenShell ar an gcóras seo. Tá tacaíocht IFC díchumasaithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="82"/>
       <source>Objects structure</source>
-      <translation type="unfinished">Objects structure</translation>
+      <translation>Struchtúr réada</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="92"/>
       <source>Attribute</source>
-      <translation type="unfinished">Attribute</translation>
+      <translation>Tréith</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="93"/>
@@ -9293,42 +9292,42 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="131"/>
       <source>Back</source>
-      <translation type="unfinished">Back</translation>
+      <translation>Ar ais</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="132"/>
       <source>Go back to last item selected</source>
-      <translation type="unfinished">Go back to last item selected</translation>
+      <translation>Téigh ar ais go dtí an mhír dheireanach a roghnaíodh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="137"/>
       <source>Insert</source>
-      <translation type="unfinished">Insert</translation>
+      <translation>Cuir isteach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="143"/>
       <source>Inserts the selected object and its children in the active document</source>
-      <translation type="unfinished">Inserts the selected object and its children in the active document</translation>
+      <translation>Cuirtear an réad roghnaithe agus a chlann isteach sa cháipéis ghníomhach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="149"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="150"/>
       <source>Turn mesh display on/off</source>
-      <translation type="unfinished">Turn mesh display on/off</translation>
+      <translation>Cas an taispeáint mogalra air/as</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="186"/>
       <source>Select an IFC file</source>
-      <translation type="unfinished">Select an IFC file</translation>
+      <translation>Roghnaigh comhad IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="188"/>
       <source>IFC files (*.ifc)</source>
-      <translation type="unfinished">IFC files (*.ifc)</translation>
+      <translation>Comhaid IFC (*.ifc)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="196"/>
@@ -9339,27 +9338,27 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimIfcExplorer.py" line="109"/>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="203"/>
       <source>IFC Explorer</source>
-      <translation type="unfinished">IFC Explorer</translation>
+      <translation>Taiscéalaí IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="126"/>
       <source>Open another IFC file</source>
-      <translation type="unfinished">Open another IFC file</translation>
+      <translation>Oscail comhad IFC eile</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="228"/>
       <source>IfcSite element was not found in %s. Unable to explore.</source>
-      <translation type="unfinished">IfcSite element was not found in %s. Unable to explore.</translation>
+      <translation>Ní bhfuarthas eilimint ifcSite i %s. Ní féidir iniúchadh a dhéanamh.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="485"/>
       <source>Error in entity</source>
-      <translation type="unfinished">Error in entity</translation>
+      <translation>Earráid san eintiteas</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="127"/>
       <source>Custom property sets can be defined in</source>
-      <translation type="unfinished">Custom property sets can be defined in</translation>
+      <translation>Is féidir tacair airíonna saincheaptha a shainiú i</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="132"/>
@@ -9379,17 +9378,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="208"/>
       <source>Search results</source>
-      <translation type="unfinished">Search results</translation>
+      <translation>Torthaí cuardaigh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="380"/>
       <source>Warning: object %1 has old-styled IfcProperties and cannot be updated</source>
-      <translation type="unfinished">Warning: object %1 has old-styled IfcProperties and cannot be updated</translation>
+      <translation>Rabhadh: tá seanstíl IfcProperties ag réad %1 agus ní féidir é a nuashonrú</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="670"/>
       <source>Please select or create a property set first in which the new property should be placed.</source>
-      <translation type="unfinished">Please select or create a property set first in which the new property should be placed.</translation>
+      <translation>Roghnaigh nó cruthaigh tacar airíonna ar dtús inar cheart an mhaoin nua a chur.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="685"/>
@@ -9399,22 +9398,22 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="686"/>
       <source>Property set name:</source>
-      <translation type="unfinished">Property set name:</translation>
+      <translation>Ainm an tacair maoine:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="51"/>
       <source>Area</source>
-      <translation type="unfinished">Area</translation>
+      <translation>Limistéar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="52"/>
       <source>Horizontal Area</source>
-      <translation type="unfinished">Horizontal Area</translation>
+      <translation>Achar Cothrománach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="53"/>
       <source>Vertical Area</source>
-      <translation type="unfinished">Vertical Area</translation>
+      <translation>Achar Ingearach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="54"/>
@@ -9424,37 +9423,37 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="186"/>
       <source>Add quantity set...</source>
-      <translation type="unfinished">Add quantity set...</translation>
+      <translation>Cuir socraithe cainníochta leis...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="203"/>
       <source>Adding quantity set</source>
-      <translation type="unfinished">Adding quantity set</translation>
+      <translation>Tacar cainníochta a chur leis</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="438"/>
       <source>Cannot save quantities settings for object %1</source>
-      <translation type="unfinished">Cannot save quantities settings for object %1</translation>
+      <translation>Ní féidir socruithe cainníochtaí a shábháil don réad %1</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="56"/>
       <source>Select Image</source>
-      <translation type="unfinished">Select Image</translation>
+      <translation>Roghnaigh Íomhá</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="58"/>
       <source>Image file (*.png *.jpg *.bmp)</source>
-      <translation type="unfinished">Image file (*.png *.jpg *.bmp)</translation>
+      <translation>Comhad íomhá (*.png *.jpg *.bmp)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="201"/>
       <source>Warning: The new layer was added to the project</source>
-      <translation type="unfinished">Warning: The new layer was added to the project</translation>
+      <translation>Rabhadh: Cuireadh an ciseal nua leis an tionscadal</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="207"/>
       <source>There is no IFC project in this document</source>
-      <translation type="unfinished">There is no IFC project in this document</translation>
+      <translation>Níl aon tionscadal IFC sa cháipéis seo</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="310"/>
@@ -9469,7 +9468,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="312"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Leithead líne</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="313"/>
@@ -9479,12 +9478,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="314"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>Dath líne</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="315"/>
       <source>Face color</source>
-      <translation type="unfinished">Face color</translation>
+      <translation>Dath aghaidhe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="316"/>
@@ -9494,7 +9493,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="317"/>
       <source>Line print color</source>
-      <translation type="unfinished">Line print color</translation>
+      <translation>Dath priontála líne</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="339"/>
@@ -9504,12 +9503,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="52"/>
       <source>Leader</source>
-      <translation type="unfinished">Leader</translation>
+      <translation>Ceannaire</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="77"/>
       <source>Create Leader</source>
-      <translation type="unfinished">Create Leader</translation>
+      <translation>Cruthaigh Ceannaire</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="187"/>
@@ -9529,37 +9528,37 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="347"/>
       <source>It is not possible to link because the main document is closed.</source>
-      <translation type="unfinished">It is not possible to link because the main document is closed.</translation>
+      <translation>Ní féidir nasc a dhéanamh mar go bhfuil an príomhdhoiciméad dúnta.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="307"/>
       <source>Save the working file before linking.</source>
-      <translation type="unfinished">Save the working file before linking.</translation>
+      <translation>Sábháil an comhad oibre sula ndéantar nascadh.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="500"/>
       <source>No structure in cache. Refresh required.</source>
-      <translation type="unfinished">No structure in cache. Refresh required.</translation>
+      <translation>Gan aon struchtúr sa taisce. Athnuachan ag teastáil.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="562"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
-      <translation type="unfinished">It is not possible to insert this object because the document has been closed.</translation>
+      <translation>Ní féidir an réad seo a chur isteach mar go bhfuil an doiciméad dúnta.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="608"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
-      <translation type="unfinished">Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</translation>
+      <translation>Earráid: Ní féidir comhaid SAT a allmhairiú - ní mór breiseán InventorLoader nó CadExchanger a shuiteáil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="634"/>
       <source>Error: Unable to download</source>
-      <translation type="unfinished">Error: Unable to download</translation>
+      <translation>Earráid: Ní féidir íoslódáil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="675"/>
       <source>Insertion point</source>
-      <translation type="unfinished">Insertion point</translation>
+      <translation>Pointe ionchuir</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="686"/>
@@ -9574,7 +9573,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="688"/>
       <source>Top center</source>
-      <translation type="unfinished">Top center</translation>
+      <translation>Lár barr</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="689"/>
@@ -9584,17 +9583,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="690"/>
       <source>Middle left</source>
-      <translation type="unfinished">Middle left</translation>
+      <translation>Lár ar chlé</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="691"/>
       <source>Middle center</source>
-      <translation type="unfinished">Middle center</translation>
+      <translation>Lár-lár</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="692"/>
       <source>Middle right</source>
-      <translation type="unfinished">Middle right</translation>
+      <translation>Lár ar dheis</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="693"/>
@@ -9604,7 +9603,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="694"/>
       <source>Bottom center</source>
-      <translation type="unfinished">Bottom center</translation>
+      <translation>Lár bun</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="695"/>
@@ -9614,22 +9613,22 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="801"/>
       <source>Could not fetch library contents</source>
-      <translation type="unfinished">Could not fetch library contents</translation>
+      <translation>Níorbh fhéidir ábhar na leabharlainne a fháil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="805"/>
       <source>No results fetched from online library</source>
-      <translation type="unfinished">No results fetched from online library</translation>
+      <translation>Níor aimsíodh aon torthaí ón leabharlann ar líne</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="863"/>
       <source>Warning, this can take several minutes!</source>
-      <translation type="unfinished">Warning, this can take several minutes!</translation>
+      <translation>Rabhadh, d’fhéadfadh sé seo roinnt nóiméad a thógáil!</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="88"/>
       <source>Select material</source>
-      <translation type="unfinished">Select material</translation>
+      <translation>Roghnaigh ábhar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="122"/>
@@ -9649,17 +9648,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="129"/>
       <source> Material Operations</source>
-      <translation type="unfinished"> Material Operations</translation>
+      <translation> Oibríochtaí Ábhartha</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="135"/>
       <source>New Material</source>
-      <translation type="unfinished">New Material</translation>
+      <translation>Ábhar Nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="141"/>
       <source>Create new Multi-Material</source>
-      <translation type="unfinished">Create new Multi-Material</translation>
+      <translation>Cruthaigh Ilábhar Nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="148"/>
@@ -9669,11 +9668,11 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="157"/>
       <source>Delete Unused</source>
-      <translation type="unfinished">Delete Unused</translation>
+      <translation>Scrios Neamhúsáidte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="96"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
+      <location filename="../../bimcommands/BimViews.py" line="96"/>
       <source>Rename</source>
       <translation>Athainmnigh</translation>
     </message>
@@ -9685,11 +9684,11 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="179"/>
       <source>Merge To…</source>
-      <translation type="unfinished">Merge To…</translation>
+      <translation>Cumaisc le…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="92"/>
       <location filename="../../bimcommands/BimMaterial.py" line="181"/>
+      <location filename="../../bimcommands/BimViews.py" line="92"/>
       <source>Delete</source>
       <translation>Scrios</translation>
     </message>
@@ -9697,53 +9696,53 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../../bimcommands/BimMaterial.py" line="237"/>
       <location filename="../../bimcommands/BimMaterial.py" line="247"/>
       <source>Merging duplicate material</source>
-      <translation type="unfinished">Merging duplicate material</translation>
+      <translation>Ábhar dúblach á chumasc</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="256"/>
       <source>Unable to delete material</source>
-      <translation type="unfinished">Unable to delete material</translation>
+      <translation>Ní féidir ábhar a scriosadh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="260"/>
       <source>InList not empty</source>
-      <translation type="unfinished">InList not empty</translation>
+      <translation>Níl an liosta folamh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="287"/>
       <source>Deleting unused material</source>
-      <translation type="unfinished">Deleting unused material</translation>
+      <translation>Ábhar neamhúsáidte a scriosadh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="337"/>
       <source>Select material to merge to</source>
-      <translation type="unfinished">Select material to merge to</translation>
+      <translation>Roghnaigh ábhar le cumasc leis</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="382"/>
       <source>This material is used by:</source>
-      <translation type="unfinished">This material is used by:</translation>
+      <translation>Úsáidtear an t-ábhar seo ag:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="92"/>
       <location filename="../../bimcommands/BimPreflight.py" line="185"/>
       <source>Press to perform the test</source>
-      <translation type="unfinished">Press to perform the test</translation>
+      <translation>Brúigh chun an tástáil a dhéanamh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="164"/>
       <source>Passed</source>
-      <translation type="unfinished">Passed</translation>
+      <translation>Rite</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="165"/>
       <source>This test has succeeded.</source>
-      <translation type="unfinished">This test has succeeded.</translation>
+      <translation>D’éirigh leis an tástáil seo.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="176"/>
       <source>This test has failed. Press the button to know more</source>
-      <translation type="unfinished">This test has failed. Press the button to know more</translation>
+      <translation>Theip ar an tástáil seo. Brúigh an cnaipe le tuilleadh eolais a fháil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="184"/>
@@ -9753,152 +9752,152 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="297"/>
       <source>ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.</source>
-      <translation type="unfinished">ifcopenshell is not installed on the system or not available to FreeCAD. This library is responsible for IFC support in FreeCAD, and therefore IFC support is currently disabled. Check %1 to obtain more information.</translation>
+      <translation>Níl ifcopenshell suiteáilte ar an gcóras nó níl sé ar fáil do FreeCAD. Tá an leabharlann seo freagrach as tacaíocht IFC i FreeCAD, agus dá bhrí sin tá tacaíocht IFC díchumasaithe faoi láthair. Seiceáil %1 chun tuilleadh eolais a fháil.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="328"/>
       <source>The version of Ifcopenshell installed on the system could not be parsed</source>
-      <translation type="unfinished">The version of Ifcopenshell installed on the system could not be parsed</translation>
+      <translation>Níorbh fhéidir an leagan de Ifcopenshell atá suiteáilte ar an gcóras a pharsáil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="340"/>
       <source>The version of Ifcopenshell installed on the system will produce files with this schema version:</source>
-      <translation type="unfinished">The version of Ifcopenshell installed on the system will produce files with this schema version:</translation>
+      <translation>Ginfidh an leagan de Ifcopenshell atá suiteáilte ar an gcóras comhaid leis an leagan scéime seo:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="441"/>
       <source>The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:</source>
-      <translation type="unfinished">The following building objects have been found to not be included in any Site. You can resolve the situation by creating a Site object, if none is present in your model, and drag and drop the building objects into it in the tree view:</translation>
+      <translation>Fuarthas amach nach bhfuil na réada foirgnimh seo a leanas san áireamh in aon Suíomh. Is féidir leat an scéal a réiteach trí réad Suímh a chruthú, mura bhfuil aon cheann i do mhúnla, agus na réada foirgnimh a tharraingt agus a scaoileadh isteach ann sa radharc crainn:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="487"/>
       <source>The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:</source>
-      <translation type="unfinished">The following building storey (building parts with their IFC role set as "building storey") objects have been found to not be included in any building. Resolve the situation by creating a building object, if none is present in the model, and drag and drop the building storey objects into it in the tree view:</translation>
+      <translation>Fuarthas amach nach bhfuil na réada stór foirgnimh seo a leanas (codanna foirgnimh a bhfuil a ról IFC socraithe mar "stór foirgnimh") san áireamh in aon fhoirgneamh. Réitigh an scéal trí réad foirgnimh a chruthú, mura bhfuil aon cheann i láthair sa mhúnla, agus tarraing agus scaoil na réada stór foirgnimh isteach ann sa radharc crainn:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="548"/>
       <source>The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:</source>
-      <translation type="unfinished">The following BIM objects have been found to not be included in any building storey (building parts with their IFC role set as "building storey"). Resolve the situation by creating a building storey object, if none is present in the model, and drag and drop these objects into it in the tree view:</translation>
+      <translation>Fuarthas amach nach bhfuil na réada BIM seo a leanas san áireamh in aon urlár foirgnimh (codanna foirgnimh a bhfuil a ról IFC socraithe mar "urlár foirgnimh"). Réitigh an scéal trí réad urláir foirgnimh a chruthú, mura bhfuil aon cheann i láthair sa mhúnla, agus na réada seo a tharraingt agus a scaoileadh isteach ann sa radharc crainn:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="685"/>
       <source>The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:</source>
-      <translation type="unfinished">The objects below have length, width or height properties, but these properties won't be explicitly exported to IFC. This is not necessarily an issue, unless these quantities are desired to be exported:</translation>
+      <translation>Tá airíonna faid, leithead nó airde ag na réada thíos, ach ní dhéanfar na hairíonna seo a onnmhairiú go sainráite chuig IFC. Ní fadhb í seo i gcónaí, mura bhfuiltear ag iarraidh na cainníochtaí seo a onnmhairiú:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="693"/>
       <source>To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</source>
-      <translation type="unfinished">To enable exporting of these quantities, use the IFC quantities manager tool located under menu Manage -&gt; Manage IFC Quantities</translation>
+      <translation>Chun onnmhairiú na gcainníochtaí seo a chumasú, bain úsáid as an uirlis bhainisteora cainníochtaí IFC atá suite faoin roghchlár Bainistigh -&gt; Bainistigh Cainníochtaí IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="765"/>
       <source>To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
-      <translation type="unfinished">To add common property sets to these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</translation>
+      <translation>Chun tacair airíonna coitianta a chur leis na réada seo, bain úsáid as an uirlis bainisteoir airíonna IFC atá suite faoin roghchlár Bainistigh -&gt; Bainistigh Airíonna IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="858"/>
       <source>To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</source>
-      <translation type="unfinished">To fix the property sets of these objects, use the IFC properties manager tool located under menu Manage -&gt; Manage IFC Properties</translation>
+      <translation>Chun tacair airíonna na réad seo a shocrú, bain úsáid as an uirlis bainisteoir airíonna IFC atá suite faoin roghchlár Bainistigh -&gt; Bainistigh Airíonna IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1074"/>
       <source>An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!</source>
-      <translation type="unfinished">An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, for inspection. Be sure to delete the TinyLinesResult object when done!</translation>
+      <translation>Tá réad breise, ar a dtugtar "TinyLinesResult", curtha leis an tsamhail seo, agus roghnaithe. Tá na línte beaga bídeacha go léir a fuarthas ann, le haghaidh iniúchta. Bí cinnte an réad TinyLinesResult a scriosadh nuair a bheidh tú críochnaithe!</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="386"/>
       <source>The following types were not found in the project:</source>
-      <translation type="unfinished">The following types were not found in the project:</translation>
+      <translation>Ní bhfuarthas na cineálacha seo a leanas sa tionscadal:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="595"/>
       <source>The following BIM objects have the "Undefined" type:</source>
-      <translation type="unfinished">The following BIM objects have the "Undefined" type:</translation>
+      <translation>Tá an cineál "Gan Sainmhíniú" ag na réada BIM seo a leanas:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="600"/>
       <source>The following objects are not BIM objects:</source>
-      <translation type="unfinished">The following objects are not BIM objects:</translation>
+      <translation>Ní réada BIM iad na réada seo a leanas:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="607"/>
       <source>You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</source>
-      <translation type="unfinished">You can turn these objects into BIM objects by using the Modify -&gt; Add Component tool.</translation>
+      <translation>Is féidir leat na rudaí seo a thiontú ina rudaí BIM trí úsáid a bhaint as an uirlis Modify -&gt; Add Component.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="642"/>
       <source>The following BIM objects have an invalid or non-solid geometry:</source>
-      <translation type="unfinished">The following BIM objects have an invalid or non-solid geometry:</translation>
+      <translation>Tá geoiméadracht neamhbhailí nó neamh-sholadach ag na réada BIM seo a leanas:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="757"/>
       <source>The objects below have a defined IFC type but do not have the associated common property set:</source>
-      <translation type="unfinished">The objects below have a defined IFC type but do not have the associated common property set:</translation>
+      <translation>Tá cineál IFC sainithe ag na réada thíos ach níl an tacar airíonna coiteanna gaolmhara acu:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="839"/>
       <source>The objects below have a common property set but that property set doesn't contain all the needed properties:</source>
-      <translation type="unfinished">The objects below have a common property set but that property set doesn't contain all the needed properties:</translation>
+      <translation>Tá tacar airíonna coiteann ag na réada thíos ach níl na hairíonna riachtanacha go léir sa tacar airíonna sin:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="848"/>
       <source>Verify which properties a certain property set must contain on %1</source>
-      <translation type="unfinished">Verify which properties a certain property set must contain on %1</translation>
+      <translation>Fíoraigh cé na hairíonna a chaithfidh a bheith i sraith airíonna áirithe ar %1</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="887"/>
       <source>The following BIM objects have no material attributed:</source>
-      <translation type="unfinished">The following BIM objects have no material attributed:</translation>
+      <translation>Níl aon ábhar curtha i leith na réada BIM seo a leanas:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="928"/>
       <source>The following BIM objects have no defined standard code:</source>
-      <translation type="unfinished">The following BIM objects have no defined standard code:</translation>
+      <translation>Níl aon chód caighdeánach sainithe ag na réada BIM seo a leanas:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="978"/>
       <source>The following BIM objects are not extrusions:</source>
-      <translation type="unfinished">The following BIM objects are not extrusions:</translation>
+      <translation>Ní easbhrúiteáin iad na réada BIM seo a leanas:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1015"/>
       <source>The following BIM objects are not standard cases:</source>
-      <translation type="unfinished">The following BIM objects are not standard cases:</translation>
+      <translation>Ní cásanna caighdeánacha iad na réada BIM seo a leanas:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1064"/>
       <source>The objects below have lines smaller than 1/32 inch or 0.79 mm, which is the smallest line size that Revit accepts. These objects will be discarded when imported into Revit:</source>
-      <translation type="unfinished">The objects below have lines smaller than 1/32 inch or 0.79 mm, which is the smallest line size that Revit accepts. These objects will be discarded when imported into Revit:</translation>
+      <translation>Tá línte níos lú ná 1/32 orlach nó 0.79 mm ag na réada thíos, arb é an méid líne is lú a nglacann Revit leis. Caithfear na réada seo amach nuair a allmhairítear isteach i Revit iad:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1080"/>
       <source>Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</source>
-      <translation type="unfinished">Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</translation>
+      <translation>Leid: Is fearr a fheictear na torthaí i mód Sreangfhráma (roghchlár Amharc -&gt; Stíl Tarraingthe -&gt; Sreangfhráma)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="295"/>
       <source>Building Layout</source>
-      <translation type="unfinished">Building Layout</translation>
+      <translation>Leagan Amach Foirgnimh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="321"/>
       <source>Building Outline</source>
-      <translation type="unfinished">Building Outline</translation>
+      <translation>Imlíne Foirgnimh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="340"/>
       <source>Building Label</source>
-      <translation type="unfinished">Building Label</translation>
+      <translation>Lipéad Foirgnimh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="350"/>
       <source>Vertical Axes</source>
-      <translation type="unfinished">Vertical Axes</translation>
+      <translation>Aiseanna Ingearacha</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="361"/>
       <source>Horizontal Axes</source>
-      <translation type="unfinished">Horizontal Axes</translation>
+      <translation>Aiseanna Cothrománacha</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="371"/>
@@ -9918,128 +9917,128 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="447"/>
       <source>Preset name</source>
-      <translation type="unfinished">Preset name</translation>
+      <translation>Ainm réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="496"/>
       <source>User preset</source>
-      <translation type="unfinished">User preset</translation>
+      <translation>Réamhshocrú úsáideora</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="786"/>
       <source>Template successfully loaded into the current document</source>
-      <translation type="unfinished">Template successfully loaded into the current document</translation>
+      <translation>Luchtaíodh an teimpléad go rathúil isteach sa cháipéis reatha</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <source>New Group</source>
-      <translation type="unfinished">New Group</translation>
+      <translation>Grúpa Nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="650"/>
       <source>Save template file</source>
-      <translation type="unfinished">Save template file</translation>
+      <translation>Sábháil comhad teimpléid</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="659"/>
       <source>Template saved successfully</source>
-      <translation type="unfinished">Template saved successfully</translation>
+      <translation>Sábháilte an teimpléad go rathúil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="672"/>
       <source>Open template file</source>
-      <translation type="unfinished">Open template file</translation>
+      <translation>Oscail comhad teimpléid</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReorder.py" line="52"/>
       <source>You must choose a group object before using this command</source>
-      <translation type="unfinished">You must choose a group object before using this command</translation>
+      <translation>Ní mór duit réad grúpa a roghnú sula n-úsáideann tú an t-ordú seo</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="138"/>
       <source>Some additional workbenches are not installed, that extend BIM functionality:</source>
-      <translation type="unfinished">Some additional workbenches are not installed, that extend BIM functionality:</translation>
+      <translation>Níl roinnt binse oibre breise suiteáilte, rud a leathnaíonn feidhmiúlacht BIM:</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="142"/>
       <source>Install them from menu Tools -&gt; Addon Manager.</source>
-      <translation type="unfinished">Install them from menu Tools -&gt; Addon Manager.</translation>
+      <translation>Suiteáil iad ón roghchlár Uirlisí -&gt; Bainisteoir Breiseán.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="181"/>
       <source>Unit system updated for active document</source>
-      <translation type="unfinished">Unit system updated for active document</translation>
+      <translation>Córas aonaid nuashonraithe don doiciméad gníomhach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="185"/>
       <source>Unit system updated for all opened documents</source>
-      <translation type="unfinished">Unit system updated for all opened documents</translation>
+      <translation>Córas aonaid nuashonraithe do gach doiciméad oscailte</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="631"/>
       <source>IfcOpenShell not found</source>
-      <translation type="unfinished">IfcOpenShell not found</translation>
+      <translation>Níor aimsíodh IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="635"/>
       <source>IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.</source>
-      <translation type="unfinished">IfcOpenShell is needed to import and export IFC files. It appears to be missing on the system. Download and install it now? It will be installed in FreeCAD's macros directory.</translation>
+      <translation>Tá ifcOpenShell ag teastáil chun comhaid IFC a allmhairiú agus a onnmhairiú. Is cosúil go bhfuil sé ar iarraidh ar an gcóras. An bhfuil tú ag iarraidh é a íoslódáil agus a shuiteáil anois? Suiteálfar é in eolaire macraí FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="62"/>
       <source>Select a planar object</source>
-      <translation type="unfinished">Select a planar object</translation>
+      <translation>Roghnaigh réad plánach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="76"/>
       <source>Slab</source>
-      <translation type="unfinished">Slab</translation>
+      <translation>Leac</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="62"/>
       <source>Select page template</source>
-      <translation type="unfinished">Select page template</translation>
+      <translation>Roghnaigh teimpléad leathanaigh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="74"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>Teimpléad</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTrash.py" line="52"/>
       <source>Trash</source>
-      <translation type="unfinished">Trash</translation>
+      <translation>Bruscar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="130"/>
       <source>Unable to access the tutorial. Verify the internet connection (This is needed only once).</source>
-      <translation type="unfinished">Unable to access the tutorial. Verify the internet connection (This is needed only once).</translation>
+      <translation>Ní féidir rochtain a fháil ar an rang teagaisc. Fíoraigh an nasc idirlín (Ní gá é seo ach uair amháin).</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="158"/>
       <source>Downloading images…</source>
-      <translation type="unfinished">Downloading images…</translation>
+      <translation>Ag íoslódáil íomhánna…</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="242"/>
       <source>BIM Tutorial - step</source>
-      <translation type="unfinished">BIM Tutorial - step</translation>
+      <translation>Ranganna Teagaisc BIM - céim</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="136"/>
       <source>Draft clones are not supported yet!</source>
-      <translation type="unfinished">Draft clones are not supported yet!</translation>
+      <translation>Ní thacaítear le clónanna dréachta go fóill!</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="140"/>
       <source>The selected object is not a clone</source>
-      <translation type="unfinished">The selected object is not a clone</translation>
+      <translation>Ní clón é an réad roghnaithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="143"/>
       <source>Select exactly one object</source>
-      <translation type="unfinished">Select exactly one object</translation>
+      <translation>Roghnaigh réad amháin go díreach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="94"/>
@@ -10049,32 +10048,32 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimViews.py" line="120"/>
       <source>Creates a new level</source>
-      <translation type="unfinished">Creates a new level</translation>
+      <translation>Cruthaíonn leibhéal nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="123"/>
       <source>Creates a new working plane proxy</source>
-      <translation type="unfinished">Creates a new working plane proxy</translation>
+      <translation>Cruthaíonn seachfhreastalaí eitleáin oibre nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="124"/>
       <source>Deletes the selected item</source>
-      <translation type="unfinished">Deletes the selected item</translation>
+      <translation>Scriosann sé an mhír roghnaithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="89"/>
       <source>Active</source>
-      <translation type="unfinished">Active</translation>
+      <translation>Gníomhach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="90"/>
       <source>New Level</source>
-      <translation type="unfinished">New Level</translation>
+      <translation>Leibhéal Nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="91"/>
       <source>New Working Plane Proxy</source>
-      <translation type="unfinished">New Working Plane Proxy</translation>
+      <translation>Seachfhreastalaí Nua ar an bPlána Oibre</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="93"/>
@@ -10084,42 +10083,42 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimViews.py" line="95"/>
       <source>Save View Position</source>
-      <translation type="unfinished">Save View Position</translation>
+      <translation>Sábháil Suíomh an Amhairc</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="127"/>
       <source>Toggles the visibility of selected items</source>
-      <translation type="unfinished">Toggles the visibility of selected items</translation>
+      <translation>Athraíonn infheictheacht na míreanna roghnaithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="130"/>
       <source>Turns all items off except the selected ones</source>
-      <translation type="unfinished">Turns all items off except the selected ones</translation>
+      <translation>Múchann sé gach mír seachas na cinn roghnaithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="133"/>
       <source>Saves the current camera position to the selected items</source>
-      <translation type="unfinished">Saves the current camera position to the selected items</translation>
+      <translation>Sábhálann sé suíomh reatha an cheamara sna míreanna roghnaithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="134"/>
       <source>Renames the selected item</source>
-      <translation type="unfinished">Renames the selected item</translation>
+      <translation>Athainmníonn an mhír roghnaithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="135"/>
       <source>Activates the selected item</source>
-      <translation type="unfinished">Activates the selected item</translation>
+      <translation>Gníomhaíonn sé an mhír roghnaithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="309"/>
       <source>2D Views</source>
-      <translation type="unfinished">2D Views</translation>
+      <translation>Radharcanna 2T</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="322"/>
       <source>Sheets</source>
-      <translation type="unfinished">Sheets</translation>
+      <translation>Bileoga</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>
@@ -10129,266 +10128,266 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="127"/>
       <source>The active document is already an IFC document</source>
-      <translation type="unfinished">The active document is already an IFC document</translation>
+      <translation>Is doiciméad IFC cheana féin an doiciméad gníomhach</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="76"/>
       <source>The IFC file is not saved. Save once to have an existing IFC file to compare with. Then, run this command again.</source>
-      <translation type="unfinished">The IFC file is not saved. Save once to have an existing IFC file to compare with. Then, run this command again.</translation>
+      <translation>Níl an comhad IFC sábháilte. Sábháil uair amháin le go mbeidh comhad IFC ann cheana féin le comparáid a dhéanamh leis. Ansin, rith an t-ordú seo arís.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="88"/>
       <source>No changes to display.</source>
-      <translation type="unfinished">No changes to display.</translation>
+      <translation>Gan aon athruithe le taispeáint.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="73"/>
       <source>IfcOpenShell update</source>
-      <translation type="unfinished">IfcOpenShell update</translation>
+      <translation>Nuashonrú IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="77"/>
       <source>The update is installed in your FreeCAD's user directory and will not affect the rest of your system.</source>
-      <translation type="unfinished">The update is installed in your FreeCAD's user directory and will not affect the rest of your system.</translation>
+      <translation>Tá an nuashonrú suiteáilte in eolaire úsáideora do FreeCAD agus ní bheidh tionchar aige ar an gcuid eile de do chóras.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="79"/>
       <source>An update to your installed IfcOpenShell version is available</source>
-      <translation type="unfinished">An update to your installed IfcOpenShell version is available</translation>
+      <translation>Tá nuashonrú ar fáil ar an leagan IfcOpenShell atá suiteáilte agat</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="81"/>
       <source>Would you like to install that update?</source>
-      <translation type="unfinished">Would you like to install that update?</translation>
+      <translation>Ar mhaith leat an nuashonrú sin a shuiteáil?</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="85"/>
       <source>Your version of IfcOpenShell is already up to date</source>
-      <translation type="unfinished">Your version of IfcOpenShell is already up to date</translation>
+      <translation>Tá do leagan de IfcOpenShell cothrom le dáta cheana féin</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="88"/>
       <source>No existing IfcOpenShell installation found on this system.</source>
-      <translation type="unfinished">No existing IfcOpenShell installation found on this system.</translation>
+      <translation>Ní bhfuarthas aon suiteáil IfcOpenShell atá ann cheana ar an gcóras seo.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="90"/>
       <source>Would you like to install the most recent version?</source>
-      <translation type="unfinished">Would you like to install the most recent version?</translation>
+      <translation>Ar mhaith leat an leagan is déanaí a shuiteáil?</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="97"/>
       <source>IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</source>
-      <translation type="unfinished">IfcOpenShell is not installed, and FreeCAD failed to find a suitable version to install. You can still install IfcOpenShell manually, visit https://wiki.freecad.org/IfcOpenShell for further instructions.</translation>
+      <translation>Níl IfcOpenShell suiteáilte, agus theip ar FreeCAD leagan oiriúnach a aimsiú le suiteáil. Is féidir leat IfcOpenShell a shuiteáil de láimh fós, tabhair cuairt ar https://wiki.freecad.org/IfcOpenShell le haghaidh tuilleadh treoracha.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="105"/>
       <source>IfcOpenShell update successfully installed.</source>
-      <translation type="unfinished">IfcOpenShell update successfully installed.</translation>
+      <translation>Suiteáladh nuashonrú IfcOpenShell go rathúil.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="143"/>
       <source>Unable to run pip. Ensure pip is installed on your system.</source>
-      <translation type="unfinished">Unable to run pip. Ensure pip is installed on your system.</translation>
+      <translation>Ní féidir pip a rith. Cinntigh go bhfuil pip suiteáilte ar do chóras.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="36"/>
       <source>Strict IFC mode is ON (all objects are IFC)</source>
-      <translation type="unfinished">Strict IFC mode is ON (all objects are IFC)</translation>
+      <translation>Tá mód IFC dian AR SIÚL (is IFC gach réad)</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="39"/>
       <source>Strict IFC mode is OFF (IFC and non-IFC objects allowed)</source>
-      <translation type="unfinished">Strict IFC mode is OFF (IFC and non-IFC objects allowed)</translation>
+      <translation>Tá mód IFC dian AS (ceadaítear réada IFC agus neamh-IFC)</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation type="unfinished">Add IFC property...</translation>
+      <translation>Cuir airíonna IFC leis...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation type="unfinished">Add standard IFC Property Set...</translation>
+      <translation>Cuir Tacar Maoine IFC caighdeánach leis...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="140"/>
       <source>No Property set provided</source>
-      <translation type="unfinished">No Property set provided</translation>
+      <translation>Níor soláthraíodh aon tacar maoine</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="151"/>
       <source>add property</source>
-      <translation type="unfinished">add property</translation>
+      <translation>cuir maoin leis</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="214"/>
       <source>Property set already exists</source>
-      <translation type="unfinished">Property set already exists</translation>
+      <translation>Tá an tacar maoine ann cheana féin</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="218"/>
       <source>add property set</source>
-      <translation type="unfinished">add property set</translation>
+      <translation>cuir tacar maoine leis</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="226"/>
       <source>Property already exists</source>
-      <translation type="unfinished">Property already exists</translation>
+      <translation>Tá an mhaoin ann cheana féin</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="72"/>
       <source>Viewed lines</source>
-      <translation type="unfinished">Viewed lines</translation>
+      <translation>Línte a breathnaíodh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="83"/>
       <source>Cut lines</source>
-      <translation type="unfinished">Cut lines</translation>
+      <translation>Línte gearrtha</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="376"/>
       <source>Removing property</source>
-      <translation type="unfinished">Removing property</translation>
+      <translation>Ag baint maoine</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="381"/>
       <source>Removing property set</source>
-      <translation type="unfinished">Removing property set</translation>
+      <translation>Ag baint tacair airíonna</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_types.py" line="167"/>
       <source>Error: Incompatible type</source>
-      <translation type="unfinished">Error: Incompatible type</translation>
+      <translation>Earráid: Cineál neamh-chomhoiriúnach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="160"/>
       <source>Error: Select exactly one base face</source>
-      <translation type="unfinished">Error: Select exactly one base face</translation>
+      <translation>Earráid: Roghnaigh aghaidh bhunúsach amháin go díreach</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="76"/>
       <source>No section view, Draft object, or page found or selected in the document</source>
-      <translation type="unfinished">No section view, Draft object, or page found or selected in the document</translation>
+      <translation>Níor aimsíodh ná níor roghnaíodh aon radharc alt, réad Dréachta, ná leathanach sa cháipéis</translation>
     </message>
     <message>
       <location filename="../../importers/importSH3DHelper.py" line="524"/>
       <source>Merging imported element '{id}' with existing element of type '{type(fc_object)}'</source>
-      <translation type="unfinished">Merging imported element '{id}' with existing element of type '{type(fc_object)}'</translation>
+      <translation>Ag cumasc an eilimint allmhairithe '{id}' le heilimint atá ann cheana féin de chineál '{type(fc_object)}'</translation>
     </message>
     <message>
       <location filename="../../importers/importSH3DHelper.py" line="527"/>
       <source>No element found with id '{id}' and type '{sh_type}'</source>
-      <translation type="unfinished">No element found with id '{id}' and type '{sh_type}'</translation>
+      <translation>Níor aimsíodh aon eilimint leis an aitheantas '{id}' agus an cineál '{sh_type}'</translation>
     </message>
     <message>
       <location filename="../../importers/importSH3DHelper.py" line="3263"/>
       <source>Type of &lt;{elm.tag}&gt; #{i} is not supported: '{attribute}'. Skipping!</source>
-      <translation type="unfinished">Type of &lt;{elm.tag}&gt; #{i} is not supported: '{attribute}'. Skipping!</translation>
+      <translation>Ní thacaítear leis an gcineál &lt;{elm.tag}&gt; #{i}: '{attribute}'. Ag scipeáil!</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="130"/>
       <source>Custom WebGL template file '{}' could not be read.
 
 Do you want to proceed using the default template?</source>
-      <translation type="unfinished">Custom WebGL template file '{}' could not be read.
+      <translation>Níorbh fhéidir comhad teimpléid saincheaptha WebGL '{}' a léamh.
 
-Do you want to proceed using the default template?</translation>
+Ar mhaith leat leanúint ar aghaidh ag baint úsáide as an teimpléad réamhshocraithe?</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="134"/>
       <source>WebGL Template Not Found</source>
-      <translation type="unfinished">WebGL Template Not Found</translation>
+      <translation>Teimpléad WebGL Gan Aimsiú</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="169"/>
       <source>The default WebGL export template is not available at path: {}
 
 Please check your FreeCAD installation or provide a custom template under menu Preferences → Import-Export → WebGL.</source>
-      <translation type="unfinished">The default WebGL export template is not available at path: {}
+      <translation>Níl an teimpléad réamhshocraithe easpórtála WebGL ar fáil ag an gcosán: {}
 
-Please check your FreeCAD installation or provide a custom template under menu Preferences → Import-Export → WebGL.</translation>
+Seiceáil do shuiteáil FreeCAD nó cuir teimpléad saincheaptha ar fáil faoin roghchlár Roghanna → Iompórtáil-Easpórtáil → WebGL.</translation>
     </message>
     <message>
       <location filename="../../importers/importWebGL.py" line="175"/>
       <source>WebGL Export Template Error</source>
-      <translation type="unfinished">WebGL Export Template Error</translation>
+      <translation>Earráid Teimpléid Easpórtála WebGL</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="105"/>
       <source>Deactivate Container</source>
-      <translation type="unfinished">Deactivate Container</translation>
+      <translation>Díghníomhachtaigh Coimeádán</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="107"/>
       <source>Make Active Container</source>
-      <translation type="unfinished">Make Active Container</translation>
+      <translation>Déan Coimeádán Gníomhach</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="111"/>
       <source>Expand Children</source>
-      <translation type="unfinished">Expand Children</translation>
+      <translation>Leathnaigh Leanaí</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="115"/>
       <source>Collapse Children</source>
-      <translation type="unfinished">Collapse Children</translation>
+      <translation>Laghdaigh Leanaí</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="120"/>
       <source>Remove Shape</source>
-      <translation type="unfinished">Remove Shape</translation>
+      <translation>Bain Cruth</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="122"/>
       <source>Load Shape</source>
-      <translation type="unfinished">Load Shape</translation>
+      <translation>Luchtaigh Cruth</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="126"/>
       <source>Load Representation</source>
-      <translation type="unfinished">Load Representation</translation>
+      <translation>Ionadaíocht Luchtaigh</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="130"/>
       <source>Add Geometry Properties</source>
-      <translation type="unfinished">Add Geometry Properties</translation>
+      <translation>Cuir Airíonna Geoiméadrachta leis</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="133"/>
       <source>Show Geometry Tree</source>
-      <translation type="unfinished">Show Geometry Tree</translation>
+      <translation>Taispeáin Crann Geoiméadrachta</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="137"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="604"/>
       <source>Expand Property Sets</source>
-      <translation type="unfinished">Expand Property Sets</translation>
+      <translation>Leathnaigh Tacair Airíonna</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="141"/>
       <source>Load Material</source>
-      <translation type="unfinished">Load Material</translation>
+      <translation>Ábhar Luchtaigh</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="145"/>
       <source>Convert to Type</source>
-      <translation type="unfinished">Convert to Type</translation>
+      <translation>Tiontaigh go Cineál</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="429"/>
       <source>View Diff</source>
-      <translation type="unfinished">View Diff</translation>
+      <translation>Féach ar an Difríocht</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="433"/>
       <source>Save IFC File</source>
-      <translation type="unfinished">Save IFC File</translation>
+      <translation>Sábháil Comhad IFC</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="436"/>
       <source>Save IFC File As…</source>
-      <translation type="unfinished">Save IFC File As…</translation>
+      <translation>Sábháil Comhad IFC Mar…</translation>
     </message>
   </context>
   <context>
@@ -10396,12 +10395,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../InitGui.py" line="315"/>
       <source>Reinforcement Tools</source>
-      <translation type="unfinished">Reinforcement Tools</translation>
+      <translation>Uirlisí Athneartaithe</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="316"/>
       <source>Reinforcement tools</source>
-      <translation type="unfinished">Reinforcement tools</translation>
+      <translation>Uirlisí athneartaithe</translation>
     </message>
   </context>
   <context>
@@ -10409,12 +10408,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBackground.py" line="38"/>
       <source>Toggle Background</source>
-      <translation type="unfinished">Toggle Background</translation>
+      <translation>Cúlra a Athraigh</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBackground.py" line="42"/>
       <source>Toggles the background of the 3D view between simple and gradient</source>
-      <translation type="unfinished">Toggles the background of the 3D view between simple and gradient</translation>
+      <translation>Athraíonn sé cúlra an radhairc 3T idir simplí agus grádán</translation>
     </message>
   </context>
   <context>
@@ -10422,12 +10421,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBeam.py" line="48"/>
       <source>Beam</source>
-      <translation type="unfinished">Beam</translation>
+      <translation>Bhíoma</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBeam.py" line="49"/>
       <source>Creates a beam between two points</source>
-      <translation type="unfinished">Creates a beam between two points</translation>
+      <translation>Cruthaíonn bhíoma idir dhá phointe</translation>
     </message>
   </context>
   <context>
@@ -10435,12 +10434,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBox.py" line="39"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>Bosca</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="42"/>
       <source>Graphically creates a generic box in the current document</source>
-      <translation type="unfinished">Graphically creates a generic box in the current document</translation>
+      <translation>Cruthaíonn sé bosca ginearálta go grafach sa cháipéis reatha</translation>
     </message>
   </context>
   <context>
@@ -10448,7 +10447,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="38"/>
       <source>Shape Builder</source>
-      <translation type="unfinished">Shape Builder</translation>
+      <translation>Tógálaí Cruthanna</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="39"/>
@@ -10466,7 +10465,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="50"/>
       <source>Creates a building part object that represents a level</source>
-      <translation type="unfinished">Creates a building part object that represents a level</translation>
+      <translation>Cruthaíonn réad cuid foirgnimh a léiríonn leibhéal</translation>
     </message>
   </context>
   <context>
@@ -10479,7 +10478,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimClone.py" line="46"/>
       <source>Clones selected objects to another location</source>
-      <translation type="unfinished">Clones selected objects to another location</translation>
+      <translation>Clónálann sé réada roghnaithe chuig suíomh eile</translation>
     </message>
   </context>
   <context>
@@ -10487,12 +10486,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="48"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Colún</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="49"/>
       <source>Creates a column at a specified location</source>
-      <translation type="unfinished">Creates a column at a specified location</translation>
+      <translation>Cruthaíonn colún ag suíomh sonraithe</translation>
     </message>
   </context>
   <context>
@@ -10505,7 +10504,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="39"/>
       <source>Creates an intersection of two shapes</source>
-      <translation type="unfinished">Creates an intersection of two shapes</translation>
+      <translation>Cruthaíonn sé trasnú dhá chruth</translation>
     </message>
   </context>
   <context>
@@ -10513,22 +10512,22 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimConvert.py" line="38"/>
       <source>Convert to BIM</source>
-      <translation type="unfinished">Convert to BIM</translation>
+      <translation>Tiontaigh go BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimConvert.py" line="39"/>
       <source>Converts any object to a BIM component</source>
-      <translation type="unfinished">Converts any object to a BIM component</translation>
+      <translation>Tiontaíonn sé aon réad go comhpháirt BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="38"/>
       <source>Remove From Group</source>
-      <translation type="unfinished">Remove From Group</translation>
+      <translation>Bain den Ghrúpa</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUngroup.py" line="41"/>
       <source>Removes this object from its parent group</source>
-      <translation type="unfinished">Removes this object from its parent group</translation>
+      <translation>Baintear an réad seo as a ghrúpa tuismitheora</translation>
     </message>
   </context>
   <context>
@@ -10541,7 +10540,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimCopy.py" line="44"/>
       <source>Copies selected objects to another location</source>
-      <translation type="unfinished">Copies selected objects to another location</translation>
+      <translation>Cóipeálann sé rudaí roghnaithe chuig suíomh eile</translation>
     </message>
   </context>
   <context>
@@ -10554,7 +10553,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimCut.py" line="38"/>
       <source>Creates a difference between two shapes</source>
-      <translation type="unfinished">Creates a difference between two shapes</translation>
+      <translation>Cruthaíonn sé difríocht idir dhá chruth</translation>
     </message>
   </context>
   <context>
@@ -10562,12 +10561,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="38"/>
       <source>IFC Diff</source>
-      <translation type="unfinished">IFC Diff</translation>
+      <translation>Difríocht IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="41"/>
       <source>Shows the difference between two IFC-based documents</source>
-      <translation type="unfinished">Shows the difference between two IFC-based documents</translation>
+      <translation>Taispeánann sé an difríocht idir dhá dhoiciméad bunaithe ar IFC</translation>
     </message>
   </context>
   <context>
@@ -10580,7 +10579,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDoor.py" line="44"/>
       <source>Places a door at a given location</source>
-      <translation type="unfinished">Places a door at a given location</translation>
+      <translation>Cuireann doras in áit ar leith</translation>
     </message>
   </context>
   <context>
@@ -10588,18 +10587,18 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTrash.py" line="82"/>
       <source>Deletes from the trash bin all objects that are not used by any other</source>
-      <translation type="unfinished">Deletes from the trash bin all objects that are not used by any other</translation>
+      <translation>Scriosann sé as an mbosca bruscair gach rud nach n-úsáideann aon duine eile</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
       <location filename="../../bimcommands/BimTrash.py" line="78"/>
+      <location filename="../../bimcommands/BimEmptyTrash.py" line="38"/>
       <source>Empty Trash</source>
-      <translation type="unfinished">Empty Trash</translation>
+      <translation>Folmhaigh an Bruscar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEmptyTrash.py" line="42"/>
       <source>Deletes all objects from the trash bin that are not used by any other</source>
-      <translation type="unfinished">Deletes all objects from the trash bin that are not used by any other</translation>
+      <translation>Scriosann sé gach rud ón mbosca bruscair nach n-úsáideann aon duine eile</translation>
     </message>
   </context>
   <context>
@@ -10607,12 +10606,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimExamples.py" line="38"/>
       <source>BIM Examples</source>
-      <translation type="unfinished">BIM Examples</translation>
+      <translation>Samplaí BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimExamples.py" line="42"/>
       <source>Download examples of BIM files made with FreeCAD</source>
-      <translation type="unfinished">Download examples of BIM files made with FreeCAD</translation>
+      <translation>Íoslódáil samplaí de chomhaid BIM a rinneadh le FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -10625,7 +10624,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimExtrude.py" line="39"/>
       <source>Extrudes a selected 2D shape</source>
-      <translation type="unfinished">Extrudes a selected 2D shape</translation>
+      <translation>Easbhrúitear cruth 2T roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -10633,7 +10632,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimFence.py" line="59"/>
       <source>Select a section, post and path in exactly this order to build a fence.</source>
-      <translation type="unfinished">Select a section, post and path in exactly this order to build a fence.</translation>
+      <translation>Roghnaigh cuid, post agus cosán san ord seo go díreach chun fál a thógáil.</translation>
     </message>
   </context>
   <context>
@@ -10646,7 +10645,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="38"/>
       <source>Creates a union of several shapes</source>
-      <translation type="unfinished">Creates a union of several shapes</translation>
+      <translation>Cruthaíonn sé aontas de roinnt cruthanna</translation>
     </message>
   </context>
   <context>
@@ -10654,12 +10653,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimGlue.py" line="38"/>
       <source>Glue</source>
-      <translation type="unfinished">Glue</translation>
+      <translation>Gliú</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimGlue.py" line="41"/>
       <source>Joins selected shapes into one non-parametric shape</source>
-      <translation type="unfinished">Joins selected shapes into one non-parametric shape</translation>
+      <translation>Ceanglaíonn cruthanna roghnaithe i gcruth neamhpharaiméadrach amháin</translation>
     </message>
   </context>
   <context>
@@ -10667,12 +10666,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimHelp.py" line="38"/>
       <source>BIM Help</source>
-      <translation type="unfinished">BIM Help</translation>
+      <translation>Cabhair BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimHelp.py" line="42"/>
       <source>Opens the BIM help page on the FreeCAD documentation website</source>
-      <translation type="unfinished">Opens the BIM help page on the FreeCAD documentation website</translation>
+      <translation>Osclaíonn sé leathanach cabhrach BIM ar shuíomh Gréasáin dhoiciméadúcháin FreeCAD</translation>
     </message>
   </context>
   <context>
@@ -10680,12 +10679,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="38"/>
       <source>Image Plane</source>
-      <translation type="unfinished">Image Plane</translation>
+      <translation>Plána Íomhá</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimImagePlane.py" line="39"/>
       <source>Creates a plane from an image</source>
-      <translation type="unfinished">Creates a plane from an image</translation>
+      <translation>Cruthaíonn sé eitleán ó íomhá</translation>
     </message>
   </context>
   <context>
@@ -10693,12 +10692,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="45"/>
       <source>Leader</source>
-      <translation type="unfinished">Leader</translation>
+      <translation>Ceannaire</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="48"/>
       <source>Creates a polyline with an arrow at its endpoint</source>
-      <translation type="unfinished">Creates a polyline with an arrow at its endpoint</translation>
+      <translation>Cruthaíonn sé polalíne le saighead ag a chríochphointe</translation>
     </message>
   </context>
   <context>
@@ -10706,12 +10705,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="86"/>
       <source>Objects Library</source>
-      <translation type="unfinished">Objects Library</translation>
+      <translation>Leabharlann Réada</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="87"/>
       <source>Opens the objects library</source>
-      <translation type="unfinished">Opens the objects library</translation>
+      <translation>Osclaíonn an leabharlann réad</translation>
     </message>
   </context>
   <context>
@@ -10724,7 +10723,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="65"/>
       <source>Sets or creates a material for selected objects</source>
-      <translation type="unfinished">Sets or creates a material for selected objects</translation>
+      <translation>Socraíonn nó cruthaíonn ábhar do réada roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -10732,12 +10731,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimMoveView.py" line="38"/>
       <source>Move View</source>
-      <translation type="unfinished">Move View</translation>
+      <translation>Bog an Radharc</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMoveView.py" line="39"/>
       <source>Moves this view to an existing page</source>
-      <translation type="unfinished">Moves this view to an existing page</translation>
+      <translation>Bogann sé an radharc seo chuig leathanach atá ann cheana féin</translation>
     </message>
   </context>
   <context>
@@ -10745,7 +10744,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="127"/>
       <source>Nudge Switch</source>
-      <translation type="unfinished">Nudge Switch</translation>
+      <translation>Brúigh Lasc</translation>
     </message>
   </context>
   <context>
@@ -10753,7 +10752,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="153"/>
       <source>Nudge Up</source>
-      <translation type="unfinished">Nudge Up</translation>
+      <translation>Brúigh Suas</translation>
     </message>
   </context>
   <context>
@@ -10761,7 +10760,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="173"/>
       <source>Nudge Down</source>
-      <translation type="unfinished">Nudge Down</translation>
+      <translation>Brúigh Síos</translation>
     </message>
   </context>
   <context>
@@ -10769,7 +10768,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="193"/>
       <source>Nudge Left</source>
-      <translation type="unfinished">Nudge Left</translation>
+      <translation>Brúigh ar Chlé</translation>
     </message>
   </context>
   <context>
@@ -10777,7 +10776,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="213"/>
       <source>Nudge Right</source>
-      <translation type="unfinished">Nudge Right</translation>
+      <translation>Brúigh ar Dheis</translation>
     </message>
   </context>
   <context>
@@ -10785,7 +10784,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="233"/>
       <source>Nudge Extend</source>
-      <translation type="unfinished">Nudge Extend</translation>
+      <translation>Brúigh Leathnú</translation>
     </message>
   </context>
   <context>
@@ -10793,7 +10792,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="257"/>
       <source>Nudge Shrink</source>
-      <translation type="unfinished">Nudge Shrink</translation>
+      <translation>Brúigh Laghdaigh</translation>
     </message>
   </context>
   <context>
@@ -10801,7 +10800,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="281"/>
       <source>Nudge Rotate Left</source>
-      <translation type="unfinished">Nudge Rotate Left</translation>
+      <translation>Brúigh Rothlaigh Ar Chlé</translation>
     </message>
   </context>
   <context>
@@ -10809,7 +10808,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimNudge.py" line="310"/>
       <source>Nudge Rotate Right</source>
-      <translation type="unfinished">Nudge Rotate Right</translation>
+      <translation>Brúigh Rothlaigh ar Dheis</translation>
     </message>
   </context>
   <context>
@@ -10817,12 +10816,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="38"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>Fritháireamh 2T</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimOffset.py" line="39"/>
       <source>Utility to offset planar shapes</source>
-      <translation type="unfinished">Utility to offset planar shapes</translation>
+      <translation>Fóntais chun cruthanna plánacha a fhritháireamh</translation>
     </message>
   </context>
   <context>
@@ -10830,12 +10829,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="64"/>
       <source>Preflight Checks</source>
-      <translation type="unfinished">Preflight Checks</translation>
+      <translation>Seiceálacha Réamheitilte</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="68"/>
       <source>Checks several characteristics of this model before exporting to IFC</source>
-      <translation type="unfinished">Checks several characteristics of this model before exporting to IFC</translation>
+      <translation>Seiceálann sé roinnt tréithe den mhúnla seo sula ndéantar é a onnmhairiú chuig IFC</translation>
     </message>
   </context>
   <context>
@@ -10843,12 +10842,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimProject.py" line="38"/>
       <source>IFC Project</source>
-      <translation type="unfinished">IFC Project</translation>
+      <translation>Tionscadal IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProject.py" line="39"/>
       <source>Creates an empty NativeIFC project</source>
-      <translation type="unfinished">Creates an empty NativeIFC project</translation>
+      <translation>Cruthaíonn tionscadal NativeIFC folamh</translation>
     </message>
   </context>
   <context>
@@ -10856,12 +10855,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimResetCloneColors.py" line="38"/>
       <source>Reset Colors</source>
-      <translation type="unfinished">Reset Colors</translation>
+      <translation>Athshocraigh Dathanna</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimResetCloneColors.py" line="42"/>
       <source>Resets the colors of this object from its cloned original</source>
-      <translation type="unfinished">Resets the colors of this object from its cloned original</translation>
+      <translation>Athshocraíonn sé dathanna an réada seo óna bhunleagan clónáilte</translation>
     </message>
   </context>
   <context>
@@ -10869,12 +10868,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="39"/>
       <source>Rewire</source>
-      <translation type="unfinished">Rewire</translation>
+      <translation>Athshreangú</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="40"/>
       <source>Recreates wires from selected objects</source>
-      <translation type="unfinished">Recreates wires from selected objects</translation>
+      <translation>Athchruthaíonn sreanga ó réada roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -10882,12 +10881,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="51"/>
       <source>Create 2D view</source>
-      <translation type="unfinished">Create 2D view</translation>
+      <translation>Cruthaigh radharc 2T</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="135"/>
       <source>Create 2D Cut</source>
-      <translation type="unfinished">Create 2D Cut</translation>
+      <translation>Cruthaigh Gearradh 2T</translation>
     </message>
   </context>
   <context>
@@ -10895,12 +10894,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>Sketch</source>
-      <translation type="unfinished">Sketch</translation>
+      <translation>Sceitse</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="41"/>
       <source>Creates a new sketch in the current working plane</source>
-      <translation type="unfinished">Creates a new sketch in the current working plane</translation>
+      <translation>Cruthaíonn sé sceitse nua sa phlána oibre reatha</translation>
     </message>
   </context>
   <context>
@@ -10908,12 +10907,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="43"/>
       <source>Slab</source>
-      <translation type="unfinished">Slab</translation>
+      <translation>Leac</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSlab.py" line="44"/>
       <source>Creates a slab from a planar shape</source>
-      <translation type="unfinished">Creates a slab from a planar shape</translation>
+      <translation>Cruthaíonn leac ó chruth plánach</translation>
     </message>
   </context>
   <context>
@@ -10921,12 +10920,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>New Page</source>
-      <translation type="unfinished">New Page</translation>
+      <translation>Leathanach Nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>
       <source>Creates a new TechDraw page from a template</source>
-      <translation type="unfinished">Creates a new TechDraw page from a template</translation>
+      <translation>Cruthaíonn leathanach TechDraw nua ó theimpléad</translation>
     </message>
   </context>
   <context>
@@ -10939,7 +10938,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimText.py" line="40"/>
       <source>Create a text in the current 3D view or TechDraw page</source>
-      <translation type="unfinished">Create a text in the current 3D view or TechDraw page</translation>
+      <translation>Cruthaigh téacs san amharc 3T reatha nó ar leathanach TechDraw</translation>
     </message>
   </context>
   <context>
@@ -10947,12 +10946,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTrash.py" line="39"/>
       <source>Move to Trash</source>
-      <translation type="unfinished">Move to Trash</translation>
+      <translation>Bog go dtí an Bruscar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTrash.py" line="42"/>
       <source>Moves the selected objects to the trash folder</source>
-      <translation type="unfinished">Moves the selected objects to the trash folder</translation>
+      <translation>Bogann sé na rudaí roghnaithe chuig an bhfillteán bruscair</translation>
     </message>
   </context>
   <context>
@@ -10960,12 +10959,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="50"/>
       <source>BIM Tutorial</source>
-      <translation type="unfinished">BIM Tutorial</translation>
+      <translation>Ranganna Teagaisc BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTutorial.py" line="53"/>
       <source>Starts or continues the BIM in-game tutorial</source>
-      <translation type="unfinished">Starts or continues the BIM in-game tutorial</translation>
+      <translation>Tosaíonn nó leanann sé ar aghaidh leis an rang teagaisc BIM sa chluiche</translation>
     </message>
   </context>
   <context>
@@ -10973,12 +10972,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="39"/>
       <source>Unclone</source>
-      <translation type="unfinished">Unclone</translation>
+      <translation>Díchlónáil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="43"/>
       <source>Creates a selected clone object independent from its original</source>
-      <translation type="unfinished">Creates a selected clone object independent from its original</translation>
+      <translation>Cruthaíonn réad clón roghnaithe neamhspleách ar a bhunaidh</translation>
     </message>
   </context>
   <context>
@@ -10986,12 +10985,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimViews.py" line="44"/>
       <source>Views Manager</source>
-      <translation type="unfinished">Views Manager</translation>
+      <translation>Bainisteoir Radharcanna</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="45"/>
       <source>Shows or hides the views manager</source>
-      <translation type="unfinished">Shows or hides the views manager</translation>
+      <translation>Taispeánann nó folaíonn sé an bainisteoir radhairc</translation>
     </message>
   </context>
   <context>
@@ -10999,12 +10998,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="38"/>
       <source>Working Plane Front</source>
-      <translation type="unfinished">Working Plane Front</translation>
+      <translation>Tosaigh an Phlána Oibre</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="39"/>
       <source>Sets the working plane to Front</source>
-      <translation type="unfinished">Sets the working plane to Front</translation>
+      <translation>Socraíonn an plána oibre go dtí an Tosaigh</translation>
     </message>
   </context>
   <context>
@@ -11012,12 +11011,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="53"/>
       <source>Working Plane Side</source>
-      <translation type="unfinished">Working Plane Side</translation>
+      <translation>Taobh an Phlána Oibre</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="54"/>
       <source>Sets the working plane to Side</source>
-      <translation type="unfinished">Sets the working plane to Side</translation>
+      <translation>Socraíonn an plána oibre go Taobh</translation>
     </message>
   </context>
   <context>
@@ -11025,12 +11024,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="68"/>
       <source>Working Plane Top</source>
-      <translation type="unfinished">Working Plane Top</translation>
+      <translation>Barr an Phlána Oibre</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="69"/>
       <source>Sets the working plane to Top</source>
-      <translation type="unfinished">Sets the working plane to Top</translation>
+      <translation>Socraíonn an plána oibre go Barr</translation>
     </message>
   </context>
   <context>
@@ -11038,12 +11037,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="83"/>
       <source>Working Plane View</source>
-      <translation type="unfinished">Working Plane View</translation>
+      <translation>Radharc Plána Oibre</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWPCommands.py" line="87"/>
       <source>Aligns the view to the current item in BIM Views window or to the current working plane</source>
-      <translation type="unfinished">Aligns the view to the current item in BIM Views window or to the current working plane</translation>
+      <translation>Ailíníonn sé an radharc leis an mír reatha i bhfuinneog Radharcanna BIM nó leis an eitleán oibre reatha</translation>
     </message>
   </context>
   <context>
@@ -11051,12 +11050,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="52"/>
       <source>Shows the current unsaved changes in the IFC file</source>
-      <translation type="unfinished">Shows the current unsaved changes in the IFC file</translation>
+      <translation>Taispeánann na hathruithe neamhshábháilte reatha sa chomhad IFC</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="54"/>
       <source>IFC Diff</source>
-      <translation type="unfinished">IFC Diff</translation>
+      <translation>Difríocht IFC</translation>
     </message>
   </context>
   <context>
@@ -11064,12 +11063,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="75"/>
       <source>Expands the children of the selected objects or document</source>
-      <translation type="unfinished">Expands the children of the selected objects or document</translation>
+      <translation>Leathnaíonn sé seo páistí na réada nó an doiciméid roghnaithe</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="77"/>
       <source>IFC Expand</source>
-      <translation type="unfinished">IFC Expand</translation>
+      <translation>IFC Leathnú</translation>
     </message>
   </context>
   <context>
@@ -11077,12 +11076,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="115"/>
       <source>Converts the active document to an IFC document</source>
-      <translation type="unfinished">Converts the active document to an IFC document</translation>
+      <translation>Tiontaíonn sé an doiciméad gníomhach go doiciméad IFC</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="117"/>
       <source>Convert Document</source>
-      <translation type="unfinished">Convert Document</translation>
+      <translation>Tiontaigh Doiciméad</translation>
     </message>
   </context>
   <context>
@@ -11090,12 +11089,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="141"/>
       <source>Converts the current selection to an IFC project</source>
-      <translation type="unfinished">Converts the current selection to an IFC project</translation>
+      <translation>Tiontaíonn sé an roghnú reatha go tionscadal IFC</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="143"/>
       <source>Convert to IFC Project</source>
-      <translation type="unfinished">Convert to IFC Project</translation>
+      <translation>Tiontaigh go tionscadal IFC</translation>
     </message>
   </context>
   <context>
@@ -11103,12 +11102,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="179"/>
       <source>Saves the current IFC document</source>
-      <translation type="unfinished">Saves the current IFC document</translation>
+      <translation>Sábháil an doiciméad IFC reatha</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="181"/>
       <source>Save IFC File</source>
-      <translation type="unfinished">Save IFC File</translation>
+      <translation>Sábháil Comhad IFC</translation>
     </message>
   </context>
   <context>
@@ -11116,12 +11115,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="212"/>
       <source>Saves the current IFC document as another file</source>
-      <translation type="unfinished">Saves the current IFC document as another file</translation>
+      <translation>Sábhálann sé an doiciméad IFC reatha mar chomhad eile</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="214"/>
       <source>Save IFC File As…</source>
-      <translation type="unfinished">Save IFC File As…</translation>
+      <translation>Sábháil Comhad IFC Mar…</translation>
     </message>
   </context>
   <context>
@@ -11129,12 +11128,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="42"/>
       <source>Shows a dialog to update IfcOpenShell</source>
-      <translation type="unfinished">Shows a dialog to update IfcOpenShell</translation>
+      <translation>Taispeánann sé dialóg chun IfcOpenShell a nuashonrú</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="44"/>
       <source>IfcOpenShell Update</source>
-      <translation type="unfinished">IfcOpenShell Update</translation>
+      <translation>Nuashonrú IfcOpenShell</translation>
     </message>
   </context>
   <context>
@@ -11142,22 +11141,22 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="17"/>
       <source>BIM Setup</source>
-      <translation type="unfinished">BIM Setup</translation>
+      <translation>Socrú BIM</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="230"/>
       <source>Preferred working units</source>
-      <translation type="unfinished">Preferred working units</translation>
+      <translation>Aonaid oibre is fearr</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="313"/>
       <source>Default size of a grid square</source>
-      <translation type="unfinished">Default size of a grid square</translation>
+      <translation>Méid réamhshocraithe cearnóg eangaí</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="108"/>
       <source>Main grid line every</source>
-      <translation type="unfinished">Main grid line every</translation>
+      <translation>Príomhlíne eangaí gach</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="337"/>
@@ -11169,12 +11168,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="152"/>
       <source>Default text size</source>
-      <translation type="unfinished">Default text size</translation>
+      <translation>Méid téacs réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="57"/>
       <source>Default dimension style</source>
-      <translation type="unfinished">Default dimension style</translation>
+      <translation>Stíl toise réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="64"/>
@@ -11184,22 +11183,22 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="237"/>
       <source>Open a new document at startup</source>
-      <translation type="unfinished">Open a new document at startup</translation>
+      <translation>Oscail doiciméad nua ag an am tosaithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="327"/>
       <source>Default line width</source>
-      <translation type="unfinished">Default line width</translation>
+      <translation>Leithead líne réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="159"/>
       <source>Number of backup files</source>
-      <translation type="unfinished">Number of backup files</translation>
+      <translation>Líon na gcomhad cúltaca</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="290"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part colors &amp;gt; Default line width, Draft &amp;gt; Visual settings &amp;gt; Default line width&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part colors &amp;gt; Default line width, Draft &amp;gt; Visual settings &amp;gt; Default line width&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Leithead líne réamhshocraithe. Suíomh i roghanna: &lt;span style=" font-weight:600;"&gt;Taispeáin &amp;gt; Dathanna coda &amp;gt; Leithead líne réamhshocraithe, Dréacht &amp;gt; Socruithe amhairc &amp;gt; Leithead líne réamhshocraithe&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="293"/>
@@ -11209,12 +11208,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="283"/>
       <source>Default font</source>
-      <translation type="unfinished">Default font</translation>
+      <translation>Cló réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="574"/>
       <source>Auto (continuously adapts to the current view)</source>
-      <translation type="unfinished">Auto (continuously adapts to the current view)</translation>
+      <translation>Uathoibríoch (ag oiriúnú go leanúnach don radharc reatha)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="579"/>
@@ -11234,102 +11233,102 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="223"/>
       <source>Default grid position</source>
-      <translation type="unfinished">Default grid position</translation>
+      <translation>Suíomh réamhshocraithe an ghreille</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="556"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font family, TechDraw &amp;gt; TechDraw 1 &amp;gt; Label Font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font family, TechDraw &amp;gt; TechDraw 1 &amp;gt; Label Font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cló réamhshocraithe. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Dréacht &amp;gt; Téacsanna agus toisí &amp;gt; Teaghlach clónna, TechDraw &amp;gt; TechDraw 1 &amp;gt; Cló Lipéid&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="543"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow size, Draft &amp;gt; Texts and dimensions &amp;gt; Arrow size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow size, Draft &amp;gt; Texts and dimensions &amp;gt; Arrow size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Méid réamhshocraithe na saighead. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Méid na saighead, Dréacht &amp;gt; Téacsanna agus toisí &amp;gt; Méid na saighead&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="23"/>
       <source>This dialog will help set FreeCAD up for efficient BIM workflow by setting a couple FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under the edit -&gt; preferences menu.</source>
-      <translation type="unfinished">This dialog will help set FreeCAD up for efficient BIM workflow by setting a couple FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under the edit -&gt; preferences menu.</translation>
+      <translation>Cabhróidh an dialóg seo le FreeCAD a shocrú le haghaidh sreabhadh oibre BIM éifeachtach trí chúpla rogha FreeCAD a shocrú. Is féidir rochtain a fháil ar an dialóg seo arís am ar bith ón roghchlár Bainistigh -&gt; Socraigh, agus tá níos mó roghanna ar fáil faoin roghchlár eagar -&gt; roghanna.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="33"/>
       <source>Hover the mouse on each setting for additional info</source>
-      <translation type="unfinished">Hover the mouse on each setting for additional info</translation>
+      <translation>Bog an luch thar gach socrú le haghaidh tuilleadh eolais</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="81"/>
       <source>Choose one of the presets in this list to fill all the settings below with predetermined values</source>
-      <translation type="unfinished">Choose one of the presets in this list to fill all the settings below with predetermined values</translation>
+      <translation>Roghnaigh ceann de na réamhshocruithe sa liosta seo chun na socruithe go léir thíos a líonadh le luachanna réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="85"/>
       <source>Choose the preferred working unit</source>
-      <translation type="unfinished">Choose the preferred working unit</translation>
+      <translation>Roghnaigh an t-aonad oibre is fearr leat</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="100"/>
       <source>US/Imperial</source>
-      <translation type="unfinished">US/Imperial</translation>
+      <translation>SAM/Impireach</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="115"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The preferred unit that will be used everywhere: in dialogs, measurements and dimensions. However, any other unit can be entered anytime. Changing the default unit system anytime will not cause any modification to the model. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Default unit system&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The preferred unit that will be used everywhere: in dialogs, measurements and dimensions. However, any other unit can be entered anytime. Changing the default unit system anytime will not cause any modification to the model. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Default unit system&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An t-aonad is fearr a úsáidfear i ngach áit: i ndialóga, i dtomhais agus i dtoisí. Mar sin féin, is féidir aon aonad eile a iontráil am ar bith. Ní bheidh aon mhodhnú ar an tsamhail mar thoradh ar an gcóras aonad réamhshocraithe a athrú am ar bith. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Ginearálta &amp;gt; Córas aonad réamhshocraithe&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="119"/>
       <source>Millimeters</source>
-      <translation type="unfinished">Millimeters</translation>
+      <translation>Milliméadair</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="134"/>
       <source>Inches</source>
-      <translation type="unfinished">Inches</translation>
+      <translation>Orlach</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="139"/>
       <source>Feet</source>
-      <translation type="unfinished">Feet</translation>
+      <translation>Cosa</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="144"/>
       <source>Architectural</source>
-      <translation type="unfinished">Architectural</translation>
+      <translation>Ailtireachta</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="166"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of decimals preferred in the interface controls and measurements. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Units &amp;gt; Number of decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of decimals preferred in the interface controls and measurements. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Units &amp;gt; Number of decimals&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Líon na ndeachúlacha is fearr sna rialuithe agus sna tomhais chomhéadain. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Ginearálta &amp;gt;Aonaid &amp;gt;Líon na ndeachúlacha&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="189"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Arrow style, TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow Style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Arrow style, TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow Style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stíl thoise réamhshocraithe. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Dréacht &amp;gt; Téacsanna agus toisí &amp;gt; Stíl saighead, TechDraw &amp;gt; TechDraw 2 &amp;gt; Stíl Saighead&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="193"/>
       <source>dot</source>
-      <translation type="unfinished">dot</translation>
+      <translation>ponc</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="198"/>
       <source>arrow</source>
-      <translation type="unfinished">arrow</translation>
+      <translation>saighead</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="203"/>
       <source>slash</source>
-      <translation type="unfinished">slash</translation>
+      <translation>slais</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="208"/>
       <source>thick slash</source>
-      <translation type="unfinished">thick slash</translation>
+      <translation>slais thiubh</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="356"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of faces in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Shape color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of faces in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Shape color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An dath réamhshocraithe d’aghaidheanna sa radharc 3T. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Taispeáint &amp;gt; Dath Dearaidh Cuid/Cuid &amp;gt; Dealramh Crutha &amp;gt; Dath an Chrutha&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="363"/>
@@ -11339,7 +11338,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="370"/>
       <source>Helpers</source>
-      <translation type="unfinished">Helpers</translation>
+      <translation>Cúntóirí</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="377"/>
@@ -11349,27 +11348,27 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="384"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helper colors&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color for helper objects such as grids and axes. Location in preferences: &lt;span style=" font-weight:600;"&gt;BIM  &amp;gt; Defaults &amp;gt; Helper colors&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An dath réamhshocraithe do réada cúnta ar nós eangacha agus aiseanna. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;BIM &amp;gt; Réamhshocruithe &amp;gt; Dathanna cúnta&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="391"/>
       <source>Lines</source>
-      <translation type="unfinished">Lines</translation>
+      <translation>Línte</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="398"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of lines in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Default line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of lines in the 3D view. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part/Part Design Color &amp;gt; Shape Appearance &amp;gt; Default line color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An dath réamhshocraithe do línte san amharc 3T. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Taispeáint &amp;gt; Dath Dearaidh Cuid/Cuid &amp;gt; Dealramh Crutha &amp;gt; Dath réamhshocraithe líne&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="419"/>
       <source>Gradient bottom</source>
-      <translation type="unfinished">Gradient bottom</translation>
+      <translation>Bun grádáin</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="433"/>
       <source>Plain background</source>
-      <translation type="unfinished">Plain background</translation>
+      <translation>Cúlra simplí</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="440"/>
@@ -11379,154 +11378,154 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="447"/>
       <source>The background color when simple color is enabled</source>
-      <translation type="unfinished">The background color when simple color is enabled</translation>
+      <translation>Dath an chúlra nuair a bhíonn dath simplí cumasaithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="463"/>
       <source>The altitude of the camera when a blank file is created. Recommended values are between 5 (view a few centimeters wide) and 5000 (view a few meters wide)</source>
-      <translation type="unfinished">The altitude of the camera when a blank file is created. Recommended values are between 5 (view a few centimeters wide) and 5000 (view a few meters wide)</translation>
+      <translation>Airde an cheamara nuair a chruthaítear comhad bán. Is iad na luachanna molta ná idir 5 (radhairc cúpla ceintiméadar ar leithead) agus 5000 (radhairc cúpla méadar ar leithead)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="476"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name (optional). You can also add an email address like this: John Doe &amp;lt;john@doe.com&amp;gt;. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Author name&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Name (optional). You can also add an email address like this: John Doe &amp;lt;john@doe.com&amp;gt;. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Author name&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ainm (roghnach). Is féidir leat seoladh ríomhphoist mar seo a chur leis freisin: John Doe &amp;lt;john@doe.com&amp;gt;. Suíomh i roghanna: &lt;span style=" font-weight:600;"&gt;Ginearálta &amp;gt;Doiciméad &amp;gt;Ainm an údair&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="506"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional license to use for new files. Keep &amp;quot;All rights reserved&amp;quot; if no license is preferred. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Default license&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional license to use for new files. Keep &amp;quot;All rights reserved&amp;quot; if no license is preferred. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Default license&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ceadúnas roghnach le húsáid le haghaidh comhad nua. Coinnigh &amp;quot;Gach ceart ar cosaint&amp;quot; mura bhfuil ceadúnas ar bith roghnaithe. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Ginearálta &amp;gt; Doiciméad &amp;gt; Ceadúnas réamhshocraithe&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="563"/>
       <source>Default author for new files</source>
-      <translation type="unfinished">Default author for new files</translation>
+      <translation>Údar réamhshocraithe do chomhaid nua</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="636"/>
       <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</translation>
+      <translation>Tá &lt;b&gt;IfcOpenShell&lt;/b&gt; ar iarraidh ar do chóras. Tá IfcOpenShell ag teastáil chun comhaid IFC a allmhairiú nó a easpórtáil chuig/ó FreeCAD. Seiceáil &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;an leathanach vicí seo&lt;/a&gt; le tuilleadh eolais a fháil, nó &lt;a href="#install"&gt;íoslódáil agus suiteáil é&lt;/a&gt; go díreach.&lt;/p&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cé mhéad cearnóg bheag idir gach príomhlíne den eangach. Suíomh i roghanna: &lt;span style=" font-weight:600;"&gt;Dréacht &amp;gt; Eangach agus snapáil &amp;gt; Príomhlíne gach&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="179"/>
       <source> square(s)</source>
-      <translation type="unfinished"> square(s)</translation>
+      <translation> cearnóg(anna)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="303"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of backup files to keep when saving a file. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Maximum number of backup files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The number of backup files to keep when saving a file. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Maximum number of backup files&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Líon na gcomhad cúltaca le coinneáil agus comhad á shábháil. Suíomh i roghanna: &lt;span style=" font-weight:600;"&gt;Ginearálta &amp;gt; Doiciméad &amp;gt; Uasmhéid na gcomhad cúltaca&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="510"/>
       <source>All rights reserved (no specific license)</source>
-      <translation type="unfinished">All rights reserved (no specific license)</translation>
+      <translation>Gach ceart ar cosaint (gan ceadúnas sonrach)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="320"/>
       <source>Default license for new files</source>
-      <translation type="unfinished">Default license for new files</translation>
+      <translation>Ceadúnas réamhshocraithe le haghaidh comhad nua</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="334"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seo méid an chearnóige is lú den eangach. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Dréacht &amp;gt; Eangach agus snapáil &amp;gt; Spásáil eangach&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="349"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An dath réamhshocraithe do gheoiméadracht na tógála. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Dréacht &amp;gt; Ginearálta &amp;gt; Dath geoiméadracht na tógála&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="486"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts and dimension texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font size, TechDraw &amp;gt; TechDraw 2 &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts and dimension texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font size, TechDraw &amp;gt; TechDraw 2 &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An méid réamhshocraithe do théacsanna agus do théacsanna toisí. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Dréacht &amp;gt; Téacsanna agus toisí &amp;gt; Méid cló, TechDraw &amp;gt; TechDraw 2 &amp;gt; Méid cló&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="499"/>
       <source>Default dimension arrow size</source>
-      <translation type="unfinished">Default dimension arrow size</translation>
+      <translation>Méid saighead toise réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="603"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Tip&lt;/span&gt;: The appropriate snapping modes on the Snapping toolbar can be set. Enabling only the snap positions needed will make drawing in FreeCAD considerably faster.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Tip&lt;/span&gt;: The appropriate snapping modes on the Snapping toolbar can be set. Enabling only the snap positions needed will make drawing in FreeCAD considerably faster.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Leid&lt;/span&gt;: Is féidir na modhanna snapála cuí a shocrú ar an mbarra uirlisí Snapála. Má chumasaítear na suíomhanna snapála is gá amháin, beidh an líníocht i FreeCAD i bhfad níos tapúla.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="613"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Tip&lt;/b&gt;: The currently installed FreeCAD version is %1. Consider using the &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;latest development version %2&lt;/span&gt;&lt;/a&gt;, which brings all the latest improvements to FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Tip&lt;/b&gt;: The currently installed FreeCAD version is %1. Consider using the &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;latest development version %2&lt;/span&gt;&lt;/a&gt;, which brings all the latest improvements to FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;b&gt;Leid&lt;/b&gt;: Is é %1 an leagan de FreeCAD atá suiteáilte faoi láthair. Smaoinigh ar an &lt;a href="https://github.com/FreeCAD/FreeCAD/releases"&gt;&lt;span style=" text-decoration: underline; color:#0000ff;"&gt;leagan forbartha is déanaí %2&lt;/span&gt;&lt;/a&gt; a úsáid, a thugann na feabhsuithe is déanaí go léir do FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="626"/>
       <source>Missing Workbenches</source>
-      <translation type="unfinished">Missing Workbenches</translation>
+      <translation>Binse Oibre ar Iarraidh</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="244"/>
       <source>Fill with default values</source>
-      <translation type="unfinished">Fill with default values</translation>
+      <translation>Líon isteach le luachanna réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="90"/>
       <location filename="../ui/dialogSetup.ui" line="124"/>
       <source>Centimeters</source>
-      <translation type="unfinished">Centimeters</translation>
+      <translation>Ceintiméadair</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="95"/>
       <location filename="../ui/dialogSetup.ui" line="129"/>
       <source>Meters</source>
-      <translation type="unfinished">Meters</translation>
+      <translation>Méadair</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="216"/>
       <source>Default camera altitude</source>
-      <translation type="unfinished">Default camera altitude</translation>
+      <translation>Airde réamhshocraithe an cheamara</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="71"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to make FreeCAD start with a new blank document. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Create new document at startup&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Check this to make FreeCAD start with a new blank document. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Create new document at startup&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seiceáil seo chun FreeCAD a thosú le doiciméad bán nua. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Ginearálta &amp;gt; Doiciméad &amp;gt; Cruthaigh doiciméad nua ag an am tosaithe&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="405"/>
       <source>Gradient top:</source>
-      <translation type="unfinished">Gradient top:</translation>
+      <translation>Barr grádáin:</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="412"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The top color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The top color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An dath is airde de ghrádán chúlra an radhairc 3T. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Taispeáin &amp;gt; Dathanna &amp;gt; Grádán datha&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="426"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The bottom color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The bottom color of the 3D view background gradient. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Colors &amp;gt; Color gradient&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Dath bun an ghrádáin chúlra radhairc 3T. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Taispeáin &amp;gt; Dathanna &amp;gt; Grádán datha&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="570"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An áit a bhfuil an eangach le feiceáil ag am tosaithe FreeCAD. Suíomh sna roghanna: &lt;span style=" font-weight:600;"&gt;Dréacht &amp;gt; Ginearálta &amp;gt; Plána oibre réamhshocraithe&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="454"/>
       <source>The color to use for texts and dimensions</source>
-      <translation type="unfinished">The color to use for texts and dimensions</translation>
+      <translation>An dath le húsáid le haghaidh téacsanna agus toisí</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="253"/>
       <source>3D view background</source>
-      <translation type="unfinished">3D view background</translation>
+      <translation>Cúlra radhairc 3T</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="267"/>
       <source>Geometry color</source>
-      <translation type="unfinished">Geometry color</translation>
+      <translation>Dath geoiméadrachta</translation>
     </message>
   </context>
   <context>
@@ -11534,12 +11533,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="276"/>
       <source>Remove Shape From BIM</source>
-      <translation type="unfinished">Remove Shape From BIM</translation>
+      <translation>Bain Cruth as BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="279"/>
       <source>Removes cubic shapes from BIM components</source>
-      <translation type="unfinished">Removes cubic shapes from BIM components</translation>
+      <translation>Baintear cruthanna ciúbacha as comhpháirteanna BIM</translation>
     </message>
   </context>
   <context>
@@ -11547,12 +11546,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="43"/>
       <source>2D Drawing</source>
-      <translation type="unfinished">2D Drawing</translation>
+      <translation>Líníocht 2T</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="47"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
-      <translation type="unfinished">Creates a drawing container to contain elements of a 2D view</translation>
+      <translation>Cruthaíonn sé coimeádán líníochta chun eilimintí radhairc 2T a choinneáil</translation>
     </message>
   </context>
   <context>
@@ -11561,7 +11560,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../../BimStatus.py" line="129"/>
       <source>BIM status widget</source>
       <comment>A context menu action used to show or hide this toolbar widget</comment>
-      <translation type="unfinished">BIM status widget</translation>
+      <translation>Giuirléid stádais BIM</translation>
     </message>
   </context>
   <context>
@@ -11569,7 +11568,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../InitGui.py" line="272"/>
       <source>Generic 3D Tools</source>
-      <translation type="unfinished">Generic 3D Tools</translation>
+      <translation>Uirlisí 3T Ginearálacha</translation>
     </message>
   </context>
   <context>
@@ -11577,7 +11576,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../InitGui.py" line="291"/>
       <source>Create 2D Views</source>
-      <translation type="unfinished">Create 2D Views</translation>
+      <translation>Cruthaigh Radharcanna 2T</translation>
     </message>
   </context>
   <context>
@@ -11585,12 +11584,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="99"/>
       <source>Remove Component</source>
-      <translation type="unfinished">Remove Component</translation>
+      <translation>Bain Comhpháirt</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="103"/>
       <source>Removes the selected components from their parents, or creates a hole in a component</source>
-      <translation type="unfinished">Removes the selected components from their parents, or creates a hole in a component</translation>
+      <translation>Baintear na comhpháirteanna roghnaithe óna dtuismitheoirí, nó cruthaítear poll i gcomhpháirt</translation>
     </message>
   </context>
   <context>
@@ -11598,12 +11597,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="372"/>
       <source>Toggle IFC B-Rep Flag</source>
-      <translation type="unfinished">Toggle IFC B-Rep Flag</translation>
+      <translation>Bratach IFC B-Rep a athrú</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="375"/>
       <source>Forces an object to be exported as B-rep or not</source>
-      <translation type="unfinished">Forces an object to be exported as B-rep or not</translation>
+      <translation>Éiríonn sé ar réad a easpórtáil mar B-rep nó nach ea</translation>
     </message>
   </context>
   <context>
@@ -11611,12 +11610,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="461"/>
       <source>New IFC Spreadsheet</source>
-      <translation type="unfinished">New IFC Spreadsheet</translation>
+      <translation>Scarbhileog IFC Nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="465"/>
       <source>Creates a spreadsheet to store IFC properties of an object</source>
-      <translation type="unfinished">Creates a spreadsheet to store IFC properties of an object</translation>
+      <translation>Cruthaíonn scarbhileog chun airíonna IFC réada a stóráil</translation>
     </message>
   </context>
   <context>
@@ -11624,12 +11623,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="43"/>
       <source>Manage Classification</source>
-      <translation type="unfinished">Manage Classification</translation>
+      <translation>Bainistigh Aicmiú</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimClassification.py" line="47"/>
       <source>Manages classification systems and apply classification to objects</source>
-      <translation type="unfinished">Manages classification systems and apply classification to objects</translation>
+      <translation>Bainistíonn córais aicmithe agus cuireann aicmiú i bhfeidhm ar réada</translation>
     </message>
   </context>
   <context>
@@ -11637,12 +11636,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimCompound.py" line="38"/>
       <source>Create Compound</source>
-      <translation type="unfinished">Create Compound</translation>
+      <translation>Cruthaigh Comhdhúil</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCompound.py" line="39"/>
       <source>Create a compound of several shapes</source>
-      <translation type="unfinished">Create a compound of several shapes</translation>
+      <translation>Cruthaigh comhdhúil de roinnt cruthanna</translation>
     </message>
   </context>
   <context>
@@ -11650,12 +11649,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="43"/>
       <source>Aligned Dimension</source>
-      <translation type="unfinished">Aligned Dimension</translation>
+      <translation>Toise Ailínithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="44"/>
       <source>Creates an aligned dimension</source>
-      <translation type="unfinished">Creates an aligned dimension</translation>
+      <translation>Cruthaíonn toise ailínithe</translation>
     </message>
   </context>
   <context>
@@ -11668,7 +11667,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="60"/>
       <source>Creates an horizontal dimension</source>
-      <translation type="unfinished">Creates an horizontal dimension</translation>
+      <translation>Cruthaíonn toise cothrománach</translation>
     </message>
   </context>
   <context>
@@ -11681,7 +11680,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="80"/>
       <source>Creates a vertical dimension</source>
-      <translation type="unfinished">Creates a vertical dimension</translation>
+      <translation>Cruthaíonn toise ingearach</translation>
     </message>
   </context>
   <context>
@@ -11689,12 +11688,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="39"/>
       <source>Manage IFC Elements</source>
-      <translation type="unfinished">Manage IFC Elements</translation>
+      <translation>Bainistigh Eilimintí IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="43"/>
       <source>Manages how the different elements of the BIM project will be exported to IFC</source>
-      <translation type="unfinished">Manages how the different elements of the BIM project will be exported to IFC</translation>
+      <translation>Bainistíonn conas a easpórtálfar eilimintí éagsúla an tionscadail BIM chuig IFC</translation>
     </message>
   </context>
   <context>
@@ -11702,12 +11701,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="44"/>
       <source>IFC Explorer</source>
-      <translation type="unfinished">IFC Explorer</translation>
+      <translation>Taiscéalaí IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="45"/>
       <source>Opens the IFC explorer utility</source>
-      <translation type="unfinished">Opens the IFC explorer utility</translation>
+      <translation>Osclaíonn an fóntais taiscéalaí IFC</translation>
     </message>
   </context>
   <context>
@@ -11715,12 +11714,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="44"/>
       <source>Manage IFC Properties</source>
-      <translation type="unfinished">Manage IFC Properties</translation>
+      <translation>Bainistigh Airíonna IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="48"/>
       <source>Manages the different IFC properties of the BIM objects</source>
-      <translation type="unfinished">Manages the different IFC properties of the BIM objects</translation>
+      <translation>Bainistíonn sé airíonna IFC éagsúla na n-ábhar BIM</translation>
     </message>
   </context>
   <context>
@@ -11728,12 +11727,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="72"/>
       <source>Manage IFC Quantities</source>
-      <translation type="unfinished">Manage IFC Quantities</translation>
+      <translation>Bainistigh Cainníochtaí IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="76"/>
       <source>Manages how the quantities of different elements of the BIM project will be exported to IFC</source>
-      <translation type="unfinished">Manages how the quantities of different elements of the BIM project will be exported to IFC</translation>
+      <translation>Bainistíonn conas a easpórtálfar cainníochtaí eilimintí éagsúla den tionscadal BIM chuig IFC</translation>
     </message>
   </context>
   <context>
@@ -11741,12 +11740,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="55"/>
       <source>Manage Layers</source>
-      <translation type="unfinished">Manage Layers</translation>
+      <translation>Bainistigh Sraitheanna</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="58"/>
       <source>Sets/modifies the different layers of your BIM project</source>
-      <translation type="unfinished">Sets/modifies the different layers of your BIM project</translation>
+      <translation>Socraíonn/modhannaíonn sé na sraitheanna éagsúla de do thionscadal BIM</translation>
     </message>
   </context>
   <context>
@@ -11754,12 +11753,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="43"/>
       <source>Setup Project</source>
-      <translation type="unfinished">Setup Project</translation>
+      <translation>Tionscadal a Chur Ar Bun</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="44"/>
       <source>Creates or manages a BIM project</source>
-      <translation type="unfinished">Creates or manages a BIM project</translation>
+      <translation>Cruthaíonn nó bainistíonn tionscadal BIM</translation>
     </message>
   </context>
   <context>
@@ -11767,12 +11766,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="38"/>
       <source>Re-Extrude</source>
-      <translation type="unfinished">Re-Extrude</translation>
+      <translation>Ath-easbhrúite</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="41"/>
       <source>Recreates an extruded structure from a selected face</source>
-      <translation type="unfinished">Recreates an extruded structure from a selected face</translation>
+      <translation>Athchruthaíonn struchtúr easbhrúite ó aghaidh roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -11780,12 +11779,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimReorder.py" line="39"/>
       <source>Reorder Children</source>
-      <translation type="unfinished">Reorder Children</translation>
+      <translation>Athordaigh Leanaí</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReorder.py" line="41"/>
       <source>Reorders children of the selected object</source>
-      <translation type="unfinished">Reorders children of the selected object</translation>
+      <translation>Athordaíonn sé páistí an réada roghnaithe</translation>
     </message>
   </context>
   <context>
@@ -11793,12 +11792,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="42"/>
       <source>BIM Setup</source>
-      <translation type="unfinished">BIM Setup</translation>
+      <translation>Socrú BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="45"/>
       <source>Sets common FreeCAD preferences for a BIM workflow</source>
-      <translation type="unfinished">Sets common FreeCAD preferences for a BIM workflow</translation>
+      <translation>Socraíonn sé roghanna coitianta FreeCAD le haghaidh sreabhadh oibre BIM</translation>
     </message>
   </context>
   <context>
@@ -11806,12 +11805,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
       <source>Section View</source>
-      <translation type="unfinished">Section View</translation>
+      <translation>Radharc na Rannóige</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="114"/>
       <source>Section Cut</source>
-      <translation type="unfinished">Section Cut</translation>
+      <translation>Gearradh Roinne</translation>
     </message>
   </context>
   <context>
@@ -11819,12 +11818,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimSimpleCopy.py" line="38"/>
       <source>Create Simple Copy</source>
-      <translation type="unfinished">Create Simple Copy</translation>
+      <translation>Cruthaigh Cóip Shimplí</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSimpleCopy.py" line="39"/>
       <source>Creates a simple non-parametric copy</source>
-      <translation type="unfinished">Creates a simple non-parametric copy</translation>
+      <translation>Cruthaíonn cóip shimplí neamhpharaiméadrach</translation>
     </message>
   </context>
   <context>
@@ -11832,16 +11831,16 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="38"/>
       <source>New View</source>
-      <translation type="unfinished">New View</translation>
+      <translation>Radharc Nua</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="44"/>
       <source>Inserts a drawing view on a page.
 To choose where to insert the view when multiple pages are available,
 select both the view and the page before executing the command.</source>
-      <translation type="unfinished">Inserts a drawing view on a page.
-To choose where to insert the view when multiple pages are available,
-select both the view and the page before executing the command.</translation>
+      <translation>Cuireann sé radharc líníochta isteach ar leathanach.
+Chun a roghnú cá háit le cur an radharc isteach nuair a bhíonn leathanaigh iolracha ar fáil,
+roghnaigh an radharc agus an leathanach araon sula ndéantar an t-ordú a fhorghníomhú.</translation>
     </message>
   </context>
   <context>
@@ -11849,12 +11848,12 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../../bimcommands/BimTogglePanels.py" line="40"/>
       <source>Toggle Bottom Panels</source>
-      <translation type="unfinished">Toggle Bottom Panels</translation>
+      <translation>Painéil Bhun a Athsholáthar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTogglePanels.py" line="41"/>
       <source>Toggles bottom dock panels on/off</source>
-      <translation type="unfinished">Toggles bottom dock panels on/off</translation>
+      <translation>Casann sé painéil duga bun air/as</translation>
     </message>
   </context>
   <context>
@@ -11862,12 +11861,12 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../../bimcommands/BimWelcome.py" line="39"/>
       <source>BIM Welcome Screen</source>
-      <translation type="unfinished">BIM Welcome Screen</translation>
+      <translation>Scáileán Fáilte BIM</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWelcome.py" line="40"/>
       <source>Shows the BIM workbench welcome screen</source>
-      <translation type="unfinished">Shows the BIM workbench welcome screen</translation>
+      <translation>Taispeánann sé scáileán fáilte an bhinse oibre BIM</translation>
     </message>
   </context>
   <context>
@@ -11875,12 +11874,12 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="38"/>
       <source>Manage Doors and Windows</source>
-      <translation type="unfinished">Manage Doors and Windows</translation>
+      <translation>Bainistigh Doirse agus Fuinneoga</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="42"/>
       <source>Manages the different doors and windows of the BIM project</source>
-      <translation type="unfinished">Manages the different doors and windows of the BIM project</translation>
+      <translation>Bainistíonn sé na doirse agus na fuinneoga éagsúla den tionscadal BIM</translation>
     </message>
   </context>
   <context>
@@ -11888,32 +11887,32 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="14"/>
       <source>Classification Manager</source>
-      <translation type="unfinished">Classification Manager</translation>
+      <translation>Bainisteoir Aicmithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="42"/>
       <source>Objects &amp;&amp; Materials</source>
-      <translation type="unfinished">Objects &amp;&amp; Materials</translation>
+      <translation>Réada &amp;&amp; Ábhair</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="48"/>
       <source>Only visible objects</source>
-      <translation type="unfinished">Only visible objects</translation>
+      <translation>Réada infheicthe amháin</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="60"/>
       <source>Sort by</source>
-      <translation type="unfinished">Sort by</translation>
+      <translation>Sórtáil de réir</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="68"/>
       <source>Alphabetical</source>
-      <translation type="unfinished">Alphabetical</translation>
+      <translation>In ord aibítre</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="77"/>
       <source>IFC type</source>
-      <translation type="unfinished">IFC type</translation>
+      <translation>Cineál IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="86"/>
@@ -11923,12 +11922,12 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="91"/>
       <source>Model structure</source>
-      <translation type="unfinished">Model structure</translation>
+      <translation>Struchtúr samhail</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="120"/>
       <source>Object/Material</source>
-      <translation type="unfinished">Object/Material</translation>
+      <translation>Réad/Ábhar</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="125"/>
@@ -11938,42 +11937,42 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogClassification.ui" line="134"/>
       <source>Available classification systems</source>
-      <translation type="unfinished">Available classification systems</translation>
+      <translation>Córais aicmithe atá ar fáil</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="140"/>
       <source>Classification systems found on this computer</source>
-      <translation type="unfinished">Classification systems found on this computer</translation>
+      <translation>Córais aicmithe aimsithe ar an ríomhaire seo</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="176"/>
       <source>Apply the selected class to selected objects</source>
-      <translation type="unfinished">Apply the selected class to selected objects</translation>
+      <translation>Cuir an rang roghnaithe i bhfeidhm ar na réada roghnaithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="179"/>
       <source>&lt;&lt; Apply to Selected</source>
-      <translation type="unfinished">&lt;&lt; Apply to Selected</translation>
+      <translation>&lt;&lt; Cuir i bhFeidhm ar Roghnaithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="186"/>
       <source>Use this class as object name</source>
-      <translation type="unfinished">Use this class as object name</translation>
+      <translation>Úsáid an rang seo mar ainm réada</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="189"/>
       <source>&lt;&lt; Set as Name</source>
-      <translation type="unfinished">&lt;&lt; Set as Name</translation>
+      <translation>&lt;&lt; Socraigh mar Ainm</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="198"/>
       <source>Prefix with classification system name</source>
-      <translation type="unfinished">Prefix with classification system name</translation>
+      <translation>Réimír le hainm an chórais aicmithe</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="212"/>
       <source>XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</source>
-      <translation type="unfinished">XML or IFC files of several classification systems can be downloaded from &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; and placed in %s</translation>
+      <translation>Is féidir comhaid XML nó IFC de roinnt córas aicmithe a íoslódáil ó &lt;a href="https://github.com/Moult/IfcClassification"&gt;https://github.com/Moult/IfcClassification&lt;/a&gt; agus a chur i %s</translation>
     </message>
   </context>
   <context>
@@ -11981,7 +11980,7 @@ select both the view and the page before executing the command.</translation>
     <message>
       <location filename="../ui/dialogDiff.ui" line="14"/>
       <source>IFC Difference</source>
-      <translation type="unfinished">IFC Difference</translation>
+      <translation>Difríocht IFC</translation>
     </message>
   </context>
 </TS>

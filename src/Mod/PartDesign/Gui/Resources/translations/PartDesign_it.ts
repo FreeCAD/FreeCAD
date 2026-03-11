@@ -627,7 +627,7 @@ in modo da evitare l'intersezione automatica.</translation>
     <message>
       <location filename="../../Command.cpp" line="1330"/>
       <source>Revolve</source>
-      <translation>Rivoluziona</translation>
+      <translation>Rivoluzione</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
@@ -2916,7 +2916,7 @@ misurata lungo la direzione specificata</translation>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="193"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="202"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
@@ -3190,11 +3190,11 @@ misurata lungo la direzione specificata</translation>
       <translation>In questo documento non c'è nessun piano valido</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="257"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Nel pannello azioni c'è già una finestra di dialogo aperta</translation>
     </message>
@@ -3234,11 +3234,11 @@ misurata lungo la direzione specificata</translation>
       <translation>Nel documento non è disponibile nessuno schizzo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="258"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>Chiudere questa finestra di dialogo?</translation>
     </message>
@@ -3465,14 +3465,14 @@ This may lead to unexpected results.</source>
       <translation>Non è possibile eseguire un'operazione sottrattiva senza una funzione di base disponibile</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <source>Vertical sketch axis</source>
       <translation>Asse verticale dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="440"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="440"/>
       <source>Horizontal sketch axis</source>
       <translation>Asse orizzontale dello schizzo</translation>
     </message>
@@ -3482,7 +3482,7 @@ This may lead to unexpected results.</source>
       <translation>Linea di costruzione %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="85"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="94"/>
       <source>Face</source>
       <translation>Faccia</translation>
     </message>
@@ -3526,10 +3526,10 @@ Per i documenti legacy con oggetti Part Design privi di corpo, utilizzare la fun
       <translation>Per poter utilizzare questa funzione essa deve appartenere a un oggetto parte del documento.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProvider.cpp" line="92"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
+      <location filename="../../ViewProvider.cpp" line="92"/>
       <source>Edit %1</source>
       <translation>Edita %1</translation>
     </message>
@@ -4460,20 +4460,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Impossibile eseguire l'operazione booleana con una forma di base non valida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
       <location filename="../../../App/FeaturePipe.cpp" line="480"/>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Il risultato ha più solidi: abilita 'Consenti Composta' nel corpo attivo.</translation>
     </message>
@@ -4508,10 +4508,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>L'estrusione fusa risultante è nulla.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forma risultante non è un solido</translation>
     </message>
@@ -4593,9 +4593,9 @@ over 90: larger hole radius at the bottom</source>
       <translation>Creazione fallita perché la direzione è ortogonale al vettore normale dello schizzo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>Creazione di una faccia dallo schizzo fallita</translation>
     </message>
@@ -4605,20 +4605,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Gli angoli di scanalatura si annullano a vicenda</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <location filename="../../../App/FeatureGroove.cpp" line="171"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>L'asse di rivoluzione interseca lo schizzo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
       <location filename="../../../App/FeatureGroove.cpp" line="263"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
       <source>Could not revolve the sketch!</source>
       <translation>Impossibile fare la rivoluzione dello schizzo!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
       <location filename="../../../App/FeatureGroove.cpp" line="275"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Impossibile creare la faccia dallo schizzo.
@@ -4668,9 +4668,9 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Errore: la faccia deve essere planare</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>Errore: il risultato non è un solido</translation>
     </message>
@@ -4830,8 +4830,8 @@ Non è consentito intersecare entità schizzo o più facce in uno schizzo per cr
       <translation>Loft: impossibile creare una faccia dallo schizzo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="444"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <source>Loft: Failed to create shell</source>
       <translation>Loft: Creazione della shell non riuscita</translation>
     </message>
@@ -4943,16 +4943,16 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Impossibile sottrarre la funzione primitiva senza la funzione di base</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>Tipo di operazione sconosciuto</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>Esecuzione dell'operazione booleana non riuscita</translation>
     </message>
@@ -5070,8 +5070,8 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Gli angoli di rivoluzione si annullano a vicenda</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <source>Reference axis is invalid</source>
       <translation>Asse di riferimento non valido</translation>
     </message>

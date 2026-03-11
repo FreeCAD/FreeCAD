@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="1493"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1494"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="1548"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1549"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="998"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="999"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="1383"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1384"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="172"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="173"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="1131"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1132"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="1312"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1313"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="1085"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1087"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="399"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="400"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="1635"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1636"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="1580"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1581"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="1454"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1455"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="486"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="487"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="559"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="560"/>
@@ -276,7 +276,7 @@
     <message>
       <location filename="../../Command.cpp" line="1415"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1416"/>
@@ -294,7 +294,7 @@
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="345"/>
@@ -312,7 +312,7 @@
     <message>
       <location filename="../../Command.cpp" line="258"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="259"/>
@@ -330,7 +330,7 @@
     <message>
       <location filename="../../Command.cpp" line="1757"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1758"/>
@@ -348,7 +348,7 @@
     <message>
       <location filename="../../Command.cpp" line="806"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="807"/>
@@ -366,7 +366,7 @@
     <message>
       <location filename="../../Command.cpp" line="693"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="694"/>
@@ -384,7 +384,7 @@
     <message>
       <location filename="../../Command.cpp" line="1026"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1027"/>
@@ -402,7 +402,7 @@
     <message>
       <location filename="../../Command.cpp" line="873"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="874"/>
@@ -425,7 +425,7 @@
     <message>
       <location filename="../../Command.cpp" line="1228"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1229"/>
@@ -443,7 +443,7 @@
     <message>
       <location filename="../../Command.cpp" line="1262"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1263"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../../Command.cpp" line="1180"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1181"/>
@@ -479,7 +479,7 @@
     <message>
       <location filename="../../Command.cpp" line="1852"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1853"/>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="969"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="970"/>
@@ -515,7 +515,7 @@
     <message>
       <location filename="../../Command.cpp" line="1683"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1684"/>
@@ -533,7 +533,7 @@
     <message>
       <location filename="../../Command.cpp" line="1720"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1721"/>
@@ -551,7 +551,7 @@
     <message>
       <location filename="../../Command.cpp" line="1354"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1355"/>
@@ -569,7 +569,7 @@
     <message>
       <location filename="../../Command.cpp" line="1803"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1804"/>
@@ -587,7 +587,7 @@
     <message>
       <location filename="../../Command.cpp" line="940"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="941"/>
@@ -605,7 +605,7 @@
     <message>
       <location filename="../../Command.cpp" line="86"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="87"/>
@@ -623,7 +623,7 @@
     <message>
       <location filename="../../Command.cpp" line="585"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="586"/>
@@ -641,7 +641,7 @@
     <message>
       <location filename="../../Command.cpp" line="642"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="643"/>
@@ -1214,7 +1214,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="163"/>
@@ -1303,7 +1303,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="20"/>
       <source>Export</source>
-      <translation type="unfinished">Export</translation>
+      <translation>Easpórtáil</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="28"/>
@@ -1348,7 +1348,7 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="138"/>
@@ -1543,7 +1543,7 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../RemeshGmsh.cpp" line="100"/>
       <source>Automatic</source>
-      <translation type="unfinished">Automatic</translation>
+      <translation>Uathoibríoch</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="101"/>
@@ -1726,7 +1726,7 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Am</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="191"/>
@@ -1954,7 +1954,7 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="428"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
   </context>
   <context>
@@ -2274,7 +2274,7 @@ Tabhair cuairt ar https://openscad.org/ chun é a shuiteáil.</translation>
       <location filename="../../ViewProvider.cpp" line="1701"/>
       <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Fág Mód Faisnéise</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1771"/>
@@ -2372,7 +2372,7 @@ Tabhair cuairt ar https://openscad.org/ chun é a shuiteáil.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh Boolean</source>
-      <translation type="unfinished">Mesh Boolean</translation>
+      <translation>Mogalra Boolean</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

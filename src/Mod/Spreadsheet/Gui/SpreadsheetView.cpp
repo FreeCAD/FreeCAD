@@ -161,7 +161,7 @@ SheetView::~SheetView()
     delete delegate;
 }
 
-bool SheetView::onMsg(const char* pMsg, const char**)
+bool SheetView::onMsg(const char* pMsg)
 {
     if (strcmp("Undo", pMsg) == 0) {
         getGuiDocument()->undo(1);
@@ -249,9 +249,6 @@ bool SheetView::onHasMsg(const char* pMsg) const
         return true;
     }
     if (strcmp(pMsg, "PrintPdf") == 0) {
-        return true;
-    }
-    else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
     }
 

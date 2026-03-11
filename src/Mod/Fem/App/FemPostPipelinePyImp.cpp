@@ -22,15 +22,12 @@
 
 #include <Python.h>
 
-
 #include <Base/FileInfo.h>
 #include <Base/UnitPy.h>
 
-// clang-format off
 #include "FemPostPipeline.h"
 #include "FemPostPipelinePy.h"
 #include "FemPostPipelinePy.cpp"
-// clang-format on
 
 #ifdef FC_USE_VTK_PYTHON
 # include <vtkPythonUtil.h>
@@ -304,7 +301,29 @@ PyObject* FemPostPipelinePy::renameArrays(PyObject* args)
     Py_Return;
 }
 
-PyObject* FemPostPipelinePy::getOutputAlgorithm(PyObject* args)
+PyObject* FemPostPipelinePy::addArrayFromFunction(PyObject* args)
+{
+    PyObject* pyObj;
+    if (!PyArg_ParseTuple(args, "O!", &(PyDict_Type), &pyObj)) {
+        return nullptr;
+    }
+
+    Py::Dict pyFunctions {pyObj};
+    std::map<std::string, std::string> functions {};
+    for (auto&& [key, value] : pyFunctions) {
+        if (!key.isString() || !value.isString()) {
+            PyErr_SetString(PyExc_TypeError, "Functions must be string objects");
+            return nullptr;
+        }
+        functions.emplace(key.as_string(), static_cast<Py::Object>(value).as_string());
+    }
+
+    getFemPostPipelinePtr()->addArrayFromFunction(functions);
+
+    Py_Return;
+}
+
+PyObject* FemPostPipelinePy::getOutputAlgorithm([[maybe_unused]] PyObject* args)
 {
 #ifdef FC_USE_VTK_PYTHON
     // we take no arguments
@@ -318,10 +337,24 @@ PyObject* FemPostPipelinePy::getOutputAlgorithm(PyObject* args)
 
     return py_algorithm;
 #else
-    (void)args;
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
     return nullptr;
 #endif
+}
+
+PyObject* FemPostPipelinePy::setTimeInfo(PyObject* args)
+{
+    const char* frameType;
+    PyObject* unitPy;
+
+    if (!PyArg_ParseTuple(args, "sO!", &frameType, &(Base::UnitPy::Type), &unitPy)) {
+        return nullptr;
+    }
+
+    Base::Unit unit = *(static_cast<Base::UnitPy*>(unitPy)->getUnitPtr());
+    getFemPostPipelinePtr()->setTimeInfo(std::string(frameType), unit);
+
+    Py_Return;
 }
 
 PyObject* FemPostPipelinePy::getCustomAttributes(const char* /*attr*/) const

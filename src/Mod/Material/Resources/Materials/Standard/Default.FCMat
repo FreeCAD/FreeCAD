@@ -3,7 +3,7 @@
 General:
   UUID: "7f9fd73b-50c9-41d8-b7b2-575a030c1eeb"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Default"
   Description: "Generic material with density of 1"
 Inherits:

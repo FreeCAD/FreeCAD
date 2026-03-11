@@ -178,6 +178,7 @@ class CalculiXTools(ObjectTools):
                 pipeline.renameArrays(self.frd_var_conversion(self.obj.AnalysisType))
                 if self.obj.DisplaceMesh:
                     self._generate_disp_mesh(pipeline)
+                self._set_time_info(pipeline)
                 break
 
         if create:
@@ -239,6 +240,15 @@ class CalculiXTools(ObjectTools):
             pipeline.Data = mb
         except Exception as e:
             pass
+
+    def _set_time_info(self, pipeline):
+        match self.obj.AnalysisType:
+            case "frequency":
+                pipeline.setTimeInfo("Frequency", FreeCAD.Units.Frequency)
+            case "buckling":
+                pipeline.setTimeInfo("Buckling factor", FreeCAD.Units.Unit())
+            case _:
+                pipeline.setTimeInfo("TimeStep", FreeCAD.Units.TimeSpan)
 
     def version(self):
         p = QProcess()

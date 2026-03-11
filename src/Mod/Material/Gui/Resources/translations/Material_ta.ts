@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="146"/>
       <source>Inspect Appearance</source>
-      <translation type="unfinished">Inspect Appearance</translation>
+      <translation>தோற்றத்தை சரிபார்க்கவும்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Inspects the appearance properties of the selected object</source>
-      <translation type="unfinished">Inspects the appearance properties of the selected object</translation>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருளின் தோற்ற பண்புகளை ஆய்வு செய்கிறது</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
-      <translation type="unfinished">Inspect the appearance properties of the selected object</translation>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருளின் தோற்ற பண்புகளை ஆய்வு செய்யவும்</translation>
     </message>
   </context>
   <context>
@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Inspect Material</source>
-      <translation type="unfinished">Inspect Material</translation>
+      <translation>பொருள் ஆய்வு</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Inspects the material properties of the selected object</source>
-      <translation type="unfinished">Inspects the material properties of the selected object</translation>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருளின் பொருள் பண்புகளை ஆய்வு செய்கிறது</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
-      <translation type="unfinished">Inspect the material properties of the selected object</translation>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருளின் பொருள் பண்புகளை ஆய்வு செய்யவும்</translation>
     </message>
   </context>
   <context>
@@ -42,17 +42,17 @@
     <message>
       <location filename="../../Array2D.ui" line="14"/>
       <source>2D Array</source>
-      <translation type="unfinished">2D Array</translation>
+      <translation>2டி வரிசை</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="79"/>
       <source>Delete Row</source>
-      <translation type="unfinished">Delete Row</translation>
+      <translation>வரிசையை நீக்கு</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="138"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>சூழல் பட்டியல்</translation>
     </message>
   </context>
   <context>
@@ -60,36 +60,36 @@
     <message>
       <location filename="../../Array3D.ui" line="14"/>
       <source>3D Array</source>
-      <translation type="unfinished">3D Array</translation>
+      <translation>திரும்பி வா ஆரி</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="77"/>
       <location filename="../../Array3D.cpp" line="81"/>
       <source>Delete Row</source>
-      <translation type="unfinished">Delete Row</translation>
+      <translation>வரிசையை நீக்கு</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="231"/>
       <location filename="../../Array3D.cpp" line="302"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>சூழல் பட்டியல்</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
+      <translation>நீக்குவதை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>வரிசையை நீக்கவா?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation type="unfinished">Removing this will also remove all 2D contents.</translation>
+      <translation>இதை அகற்றினால் அனைத்து 2D உள்ளடக்கங்களும் அகற்றப்படும்.</translation>
     </message>
   </context>
   <context>
@@ -97,12 +97,12 @@
     <message>
       <location filename="../../ArrayDelegate.cpp" line="148"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>பொய்</translation>
     </message>
     <message>
       <location filename="../../ArrayDelegate.cpp" line="149"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>உண்மை</translation>
     </message>
   </context>
   <context>
@@ -110,12 +110,12 @@
     <message>
       <location filename="../../BaseDelegate.cpp" line="430"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>பொய்</translation>
     </message>
     <message>
       <location filename="../../BaseDelegate.cpp" line="431"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>உண்மை</translation>
     </message>
   </context>
   <context>
@@ -123,22 +123,22 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display Properties</source>
-      <translation type="unfinished">Display Properties</translation>
+      <translation>காட்சி பண்புகள்</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
       <source>Viewing Mode</source>
-      <translation type="unfinished">Viewing Mode</translation>
+      <translation>பார்க்கும் முறை</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>ஆவண சாளரம்</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>சூழ்ச்சி முறை</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="199"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>வரி அகலம்</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="237"/>
@@ -163,17 +163,17 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
       <source>Line transparency</source>
-      <translation type="unfinished">Line transparency</translation>
+      <translation>வரி வெளிப்படைத்தன்மை</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="365"/>
       <source>Color plot</source>
-      <translation type="unfinished">Color plot</translation>
+      <translation>வண்ண சூழ்ச்சி</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="372"/>
       <source>Custom appearance</source>
-      <translation type="unfinished">Custom appearance</translation>
+      <translation>விருப்ப தோற்றம்</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
@@ -183,7 +183,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="389"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>வரி நிறம்</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="338"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>படிவம்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="35"/>
@@ -206,27 +206,27 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="57"/>
       <source>Name of the active document</source>
-      <translation type="unfinished">Name of the active document</translation>
+      <translation>செயலில் உள்ள ஆவணத்தின் பெயர்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>ஆவணத்தின் பெயர்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>சிட்டை / உள் பெயர்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
+      <translation>துணை வடிவம் / வகை</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>வடிவம்.TypeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -246,27 +246,27 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="202"/>
       <source>Diffuse color</source>
-      <translation type="unfinished">Diffuse color</translation>
+      <translation>பரவலான நிறம்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="211"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>சுற்றுப்புற நிறம்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="220"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>உமிழும் நிறம்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="229"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>கண்கவர் நிறம்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="238"/>
       <source>Shininess</source>
-      <translation type="unfinished">Shininess</translation>
+      <translation>பளபளப்பு</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="248"/>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>படிவம்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="35"/>
@@ -289,27 +289,27 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="57"/>
       <source>Name of the active document</source>
-      <translation type="unfinished">Name of the active document</translation>
+      <translation>செயலில் உள்ள ஆவணத்தின் பெயர்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="50"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>ஆவணத்தின் பெயர்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation type="unfinished">Label / internal name</translation>
+      <translation>சிட்டை / உள் பெயர்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation type="unfinished">Sub.Shape / Type</translation>
+      <translation>துணை வடிவம் / வகை</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation type="unfinished">Shape.TypeID / TypeID</translation>
+      <translation>வடிவம்.TypeID / TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -319,33 +319,33 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>இடைநிலைப்பலகைக்கு நகலெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
       <source>Document: </source>
-      <translation type="unfinished">Document: </translation>
+      <translation>ஆவணம்:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="166"/>
       <source>Label: </source>
-      <translation type="unfinished">Label: </translation>
+      <translation>லேபிள்:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal name: </source>
-      <translation type="unfinished">Internal name: </translation>
+      <translation>உள் பெயர்:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
       <location filename="../../DlgInspectMaterial.cpp" line="331"/>
       <source>Type: </source>
-      <translation type="unfinished">Type: </translation>
+      <translation>வகை:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="192"/>
       <source>TypeID: </source>
-      <translation type="unfinished">TypeID: </translation>
+      <translation>வகை ஐடி:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="221"/>
@@ -354,7 +354,7 @@
       <location filename="../../DlgInspectMaterial.cpp" line="292"/>
       <location filename="../../DlgInspectMaterial.cpp" line="314"/>
       <source>Name: </source>
-      <translation type="unfinished">Name: </translation>
+      <translation>பெயர்:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="246"/>
@@ -368,65 +368,65 @@
       <location filename="../../DlgInspectMaterial.cpp" line="266"/>
       <location filename="../../DlgInspectMaterial.cpp" line="341"/>
       <source>UUID: </source>
-      <translation type="unfinished">UUID: </translation>
+      <translation>UUID:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="269"/>
       <location filename="../../DlgInspectMaterial.cpp" line="344"/>
       <source>Library: </source>
-      <translation type="unfinished">Library: </translation>
+      <translation>நூலகம்:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library directory: </source>
-      <translation type="unfinished">Library directory: </translation>
+      <translation>நூலக அடைவு:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
       <source>Subdirectory: </source>
-      <translation type="unfinished">Subdirectory: </translation>
+      <translation>துணை அடைவு:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub directory: </source>
-      <translation type="unfinished">Sub directory: </translation>
+      <translation>துணை அடைவு:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
       <source>Appearance models:</source>
-      <translation type="unfinished">Appearance models:</translation>
+      <translation>தோற்ற மாதிரிகள்:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="371"/>
       <source>Physical models:</source>
-      <translation type="unfinished">Physical models:</translation>
+      <translation>உடல் மாதிரிகள்:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="377"/>
       <source>Appearance properties:</source>
-      <translation type="unfinished">Appearance properties:</translation>
+      <translation>தோற்ற பண்புகள்:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="383"/>
       <source>Physical properties:</source>
-      <translation type="unfinished">Physical properties:</translation>
+      <translation>இயற்பியல் பண்புகள்:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="279"/>
       <location filename="../../DlgInspectMaterial.cpp" line="350"/>
       <source>Inherits:</source>
-      <translation type="unfinished">Inherits:</translation>
+      <translation>மரபுரிமை:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
-      <translation type="unfinished">Model UUID: </translation>
+      <translation>மாதிரி UUID:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
       <source>Has value: </source>
-      <translation type="unfinished">Has value: </translation>
+      <translation>மதிப்பு உள்ளது:</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -453,12 +453,12 @@
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="14"/>
       <location filename="../../DlgSettingsDefaultMaterial.ui" line="20"/>
       <source>Default Material</source>
-      <translation type="unfinished">Default Material</translation>
+      <translation>இயல்புநிலை பொருள்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsDefaultMaterial.cpp" line="52"/>
       <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
+      <translation>உடல்</translation>
     </message>
   </context>
   <context>
@@ -471,119 +471,119 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="34"/>
       <source>Use built-in materials</source>
-      <translation type="unfinished">Use built-in materials</translation>
+      <translation>உள்ளமைக்கப்பட்ட பொருட்களைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="53"/>
       <source>Use materials from external workbenches</source>
-      <translation type="unfinished">Use materials from external workbenches</translation>
+      <translation>வெளிப்புற பணியிடங்களிலிருந்து பொருட்களைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="118"/>
       <source>User directory</source>
-      <translation type="unfinished">User directory</translation>
+      <translation>பயனர் அடைவு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="23"/>
       <source>Card Resources</source>
-      <translation type="unfinished">Card Resources</translation>
+      <translation>அட்டை வளங்கள்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="31"/>
       <source>The cards built-in to FreeCAD will be listed as available</source>
-      <translation type="unfinished">The cards built-in to FreeCAD will be listed as available</translation>
+      <translation>FreeCAD இல் உள்ளமைக்கப்பட்ட அட்டைகள் கிடைக்கும்படி பட்டியலிடப்படும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="50"/>
       <source>Use materials added by external workbenches</source>
-      <translation type="unfinished">Use materials added by external workbenches</translation>
+      <translation>வெளிப்புற பணிப்பெட்டிகளால் சேர்க்கப்பட்ட பொருட்களைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="69"/>
       <source>Cards from FreeCAD’s preferences directory are also listed as available</source>
-      <translation type="unfinished">Cards from FreeCAD’s preferences directory are also listed as available</translation>
+      <translation>FreeCAD இன் விருப்பத்தேர்வுகள் கோப்பகத்தின் அட்டைகளும் கிடைக்கக்கூடியவையாக பட்டியலிடப்பட்டுள்ளன</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation type="unfinished">Use materials from the Materials preference directory</translation>
+      <translation>பொருட்கள் முன்னுரிமை கோப்பகத்திலிருந்து பொருட்களைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Material cards from the specified directory will also be listed as available</source>
-      <translation type="unfinished">Material cards from the specified directory will also be listed as available</translation>
+      <translation>குறிப்பிட்ட கோப்பகத்தில் உள்ள மெட்டீரியல் கார்டுகளும் கிடைக்கும்படி பட்டியலிடப்படும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="91"/>
       <source>Use materials from user-defined directory</source>
-      <translation type="unfinished">Use materials from user-defined directory</translation>
+      <translation>பயனர் வரையறுக்கப்பட்ட கோப்பகத்திலிருந்து பொருட்களைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="154"/>
       <source>Card Sorting and Duplicates</source>
-      <translation type="unfinished">Card Sorting and Duplicates</translation>
+      <translation>அட்டை வரிசையாக்கம் மற்றும் நகல்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="160"/>
       <source>Duplicate cards will be deleted from the displayed material card list</source>
-      <translation type="unfinished">Duplicate cards will be deleted from the displayed material card list</translation>
+      <translation>காட்டப்படும் மெட்டீரியல் அட்டை பட்டியலிலிருந்து நகல் கார்டுகள் நீக்கப்படும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="163"/>
       <source>Delete card duplicates</source>
-      <translation type="unfinished">Delete card duplicates</translation>
+      <translation>அட்டை நகல்களை நீக்கு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="179"/>
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
-      <translation type="unfinished">Material cards appear sorted by their resources (locations).
-If unchecked, they will be sorted by their name.</translation>
+      <translation>மெட்டீரியல் கார்டுகள் அவற்றின் ஆதாரங்களின்படி (இருப்பிடங்கள்) வரிசைப்படுத்தப்படும். 
+தேர்வு செய்யப்படவில்லை என்றால், அவை அவற்றின் பெயரால் வரிசைப்படுத்தப்படும்.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="183"/>
       <source>Sort by resources</source>
-      <translation type="unfinished">Sort by resources</translation>
+      <translation>ஆதாரங்களின்படி வரிசைப்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="202"/>
       <source>Material Selector</source>
-      <translation type="unfinished">Material Selector</translation>
+      <translation>பொருள் தேர்வி</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="208"/>
       <location filename="../../DlgSettingsMaterial.ui" line="291"/>
       <source>Show favorites</source>
-      <translation type="unfinished">Show favorites</translation>
+      <translation>பிடித்தவற்றைக் காட்டு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="224"/>
       <location filename="../../DlgSettingsMaterial.ui" line="307"/>
       <source>Show recent</source>
-      <translation type="unfinished">Show recent</translation>
+      <translation>சமீபத்தியதைக் காட்டு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="240"/>
       <location filename="../../DlgSettingsMaterial.ui" line="323"/>
       <source>Show empty libraries</source>
-      <translation type="unfinished">Show empty libraries</translation>
+      <translation>வெற்று நூலகங்களைக் காட்டு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="256"/>
       <location filename="../../DlgSettingsMaterial.ui" line="339"/>
       <source>Show empty folders</source>
-      <translation type="unfinished">Show empty folders</translation>
+      <translation>வெற்று கோப்புறைகளைக் காட்டு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="269"/>
       <location filename="../../DlgSettingsMaterial.ui" line="352"/>
       <source>Show legacy files</source>
-      <translation type="unfinished">Show legacy files</translation>
+      <translation>மரபு கோப்புகளைக் காட்டு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="285"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>மெட்டீரியல் எடிட்டர்</translation>
     </message>
   </context>
   <context>
@@ -591,12 +591,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="14"/>
       <source>Image</source>
-      <translation type="unfinished">Image</translation>
+      <translation>படம்</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="30"/>
       <source>Thumbnail</source>
-      <translation type="unfinished">Thumbnail</translation>
+      <translation>சிறுபடம்</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="95"/>
@@ -611,22 +611,22 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="111"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>அகலம்</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="195"/>
       <source>Select an image</source>
-      <translation type="unfinished">Select an image</translation>
+      <translation>ஒரு படத்தைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="206"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
-      <translation type="unfinished">Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</translation>
+      <translation>படக் கோப்புகள் (*.jpg *.jpeg *.png *.bmp);; அனைத்து கோப்புகளும் (*)</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="218"/>
       <source>Image files (*.svg);;All files (*)</source>
-      <translation type="unfinished">Image files (*.svg);;All files (*)</translation>
+      <translation>படக் கோப்புகள் (*.svg); அனைத்து கோப்புகளும் (*)</translation>
     </message>
   </context>
   <context>
@@ -634,12 +634,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ListEdit.ui" line="14"/>
       <source>List Edit</source>
-      <translation type="unfinished">List Edit</translation>
+      <translation>பட்டியல் திருத்தம்</translation>
     </message>
     <message>
       <location filename="../../ListEdit.ui" line="41"/>
       <source>Delete Row</source>
-      <translation type="unfinished">Delete Row</translation>
+      <translation>வரிசையை நீக்கு</translation>
     </message>
   </context>
   <context>
@@ -647,12 +647,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialDelegate.cpp" line="474"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>பொய்</translation>
     </message>
     <message>
       <location filename="../../MaterialDelegate.cpp" line="475"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>உண்மை</translation>
     </message>
   </context>
   <context>
@@ -660,12 +660,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialSave.ui" line="14"/>
       <source>Save Material</source>
-      <translation type="unfinished">Save Material</translation>
+      <translation>பொருள் சேமிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="22"/>
       <source>Library</source>
-      <translation type="unfinished">Library</translation>
+      <translation>நூலகம்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="70"/>
@@ -675,12 +675,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialSave.ui" line="104"/>
       <source>Save as inherited</source>
-      <translation type="unfinished">Save as inherited</translation>
+      <translation>பரம்பரையாக சேமிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
       <source>New Folder</source>
-      <translation type="unfinished">New Folder</translation>
+      <translation>புதிய கோப்புறை</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="96"/>
@@ -690,63 +690,63 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="198"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
-      <translation type="unfinished">Saving over the original file may cause other documents to break. This is not recommended.</translation>
+      <translation>அசல் கோப்பில் சேமிப்பதால் மற்ற ஆவணங்கள் உடைந்து போகலாம். இது பரிந்துரைக்கப்படவில்லை.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="222"/>
       <source>Save as new material</source>
-      <translation type="unfinished">Save as new material</translation>
+      <translation>புதிய பொருளாக சேமிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="195"/>
       <source>Save over &apos;%1&apos;?</source>
-      <translation type="unfinished">Save over &apos;%1&apos;?</translation>
+      <translation>&apos;% 1&apos;க்கு மேல் சேமிக்கவா?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="220"/>
       <source>Confirm Save as New Material</source>
-      <translation type="unfinished">Confirm Save as New Material</translation>
+      <translation>புதிய பொருளாக சேமிப்பதை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="225"/>
       <source>This material already exists in this library. Save as a new material?</source>
-      <translation type="unfinished">This material already exists in this library. Save as a new material?</translation>
+      <translation>இந்த பொருள் ஏற்கனவே இந்த நூலகத்தில் உள்ளது. புதிய பொருளாக சேமிக்கவா?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Confirm Save as Copy</source>
-      <translation type="unfinished">Confirm Save as Copy</translation>
+      <translation>நகலாக சேமி என்பதை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="249"/>
       <source>Save as copy</source>
-      <translation type="unfinished">Save as copy</translation>
+      <translation>நகலாக சேமிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="252"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
-      <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
+      <translation>நகலை சேமிப்பது பரிந்துரைக்கப்படவில்லை, ஏனெனில் அது மற்ற ஆவணங்களை உடைக்கும். ஒரு புதிய பொருளாக சேமிக்க பரிந்துரைக்கப்படுகிறது.</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="255"/>
       <source>Save Copy</source>
-      <translation type="unfinished">Save Copy</translation>
+      <translation>நகலை சேமிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save As New</source>
-      <translation type="unfinished">Save As New</translation>
+      <translation>புதியதாக சேமிக்கவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="488"/>
       <location filename="../../MaterialSave.cpp" line="498"/>
       <source>New folder</source>
-      <translation type="unfinished">New folder</translation>
+      <translation>புதிய கோப்புறை</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="538"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>சூழல் பட்டியல்</translation>
     </message>
   </context>
   <context>
@@ -754,19 +754,19 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="139"/>
       <source>Launch Editor</source>
-      <translation type="unfinished">Launch Editor</translation>
+      <translation>எடிட்டரை துவக்கவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="312"/>
       <location filename="../../MaterialTreeWidget.cpp" line="533"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>பிடித்தவை</translation>
     </message>
     <message>
       <location filename="../../MaterialTreeWidget.cpp" line="312"/>
       <location filename="../../MaterialTreeWidget.cpp" line="540"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>அண்மைக் கால</translation>
     </message>
   </context>
   <context>
@@ -794,12 +794,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="91"/>
       <source>Source URL</source>
-      <translation type="unfinished">Source URL</translation>
+      <translation>மூல முகவரி</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="101"/>
       <source>Description</source>
-      <translation type="unfinished">Description</translation>
+      <translation>விவரம்</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="108"/>
@@ -809,22 +809,22 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="141"/>
       <source>Author</source>
-      <translation type="unfinished">Author</translation>
+      <translation>நூலாசிரியர்</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source reference</source>
-      <translation type="unfinished">Source reference</translation>
+      <translation>ஆதார குறிப்பு</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>பிடித்தவைகளில் சேர்க்கிறது அல்லது நீக்குகிறது</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="205"/>
       <source>Toggle Favorite</source>
-      <translation type="unfinished">Toggle Favorite</translation>
+      <translation>பிடித்ததை நிலைமாற்று</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="164"/>
@@ -834,27 +834,27 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="188"/>
       <source>&amp;New</source>
-      <translation type="unfinished">&amp;New</translation>
+      <translation>&amp;புதிய</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="195"/>
       <source>Inherit New</source>
-      <translation type="unfinished">Inherit New</translation>
+      <translation>புதிய மரபுரிமை</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="215"/>
       <source>Physical</source>
-      <translation type="unfinished">Physical</translation>
+      <translation>உடல்</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="236"/>
       <source>Add physical model</source>
-      <translation type="unfinished">Add physical model</translation>
+      <translation>உடல் மாதிரியைச் சேர்க்கவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="246"/>
       <source>Delete physical model</source>
-      <translation type="unfinished">Delete physical model</translation>
+      <translation>உடல் மாதிரியை நீக்கு</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="262"/>
@@ -864,12 +864,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="286"/>
       <source>Add appearance model</source>
-      <translation type="unfinished">Add appearance model</translation>
+      <translation>தோற்ற மாதிரியைச் சேர்க்கவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="296"/>
       <source>Delete appearance model</source>
-      <translation type="unfinished">Delete appearance model</translation>
+      <translation>தோற்ற மாதிரியை நீக்கு</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="484"/>
@@ -879,17 +879,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="606"/>
       <source>Old Format Material</source>
-      <translation type="unfinished">Old Format Material</translation>
+      <translation>பழைய வடிவமைப்பு பொருள்</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
-      <translation type="unfinished">This file is in the old material card format.</translation>
+      <translation>இந்தக் கோப்பு பழைய மெட்டீரியல் அட்டை வடிவத்தில் உள்ளது.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="694"/>
       <source>This card uses the old format and must be saved before use</source>
-      <translation type="unfinished">This card uses the old format and must be saved before use</translation>
+      <translation>இந்த அட்டை பழைய வடிவமைப்பைப் பயன்படுத்துகிறது மற்றும் பயன்படுத்துவதற்கு முன் சேமிக்கப்பட வேண்டும்</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="754"/>
@@ -918,12 +918,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="879"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>பிடித்தவை</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="886"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>அண்மைக் கால</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1151"/>
@@ -933,17 +933,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1318"/>
       <source>Context Menu</source>
-      <translation type="unfinished">Context Menu</translation>
+      <translation>சூழல் பட்டியல்</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Inherit From</source>
-      <translation type="unfinished">Inherit From</translation>
+      <translation>இருந்து மரபுரிமை</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1324"/>
       <source>Inherit New Material</source>
-      <translation type="unfinished">Inherit New Material</translation>
+      <translation>புதிய பொருளைப் பெறுங்கள்</translation>
     </message>
   </context>
   <context>
@@ -951,7 +951,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="14"/>
       <source>Material Models</source>
-      <translation type="unfinished">Material Models</translation>
+      <translation>பொருள் மாதிரிகள்</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="41"/>
@@ -968,7 +968,7 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../ModelSelect.ui" line="56"/>
       <location filename="../../ModelSelect.cpp" line="364"/>
       <source>Description</source>
-      <translation type="unfinished">Description</translation>
+      <translation>விவரம்</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="63"/>
@@ -983,12 +983,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Adds or removes to/from favorites</source>
-      <translation type="unfinished">Adds or removes to/from favorites</translation>
+      <translation>பிடித்தவைகளில் சேர்க்கிறது அல்லது நீக்குகிறது</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="162"/>
       <source>Toggle Favorites</source>
-      <translation type="unfinished">Toggle Favorites</translation>
+      <translation>பிடித்தவைகளை நிலைமாற்று</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
@@ -1000,17 +1000,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ModelSelect.cpp" line="337"/>
       <source>Favorites</source>
-      <translation type="unfinished">Favorites</translation>
+      <translation>பிடித்தவை</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="342"/>
       <source>Recent</source>
-      <translation type="unfinished">Recent</translation>
+      <translation>அண்மைக் கால</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="361"/>
       <source>Inherited</source>
-      <translation type="unfinished">Inherited</translation>
+      <translation>பரம்பரை</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="362"/>
@@ -1033,7 +1033,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../TextEdit.ui" line="14"/>
       <source>Text Edit</source>
-      <translation type="unfinished">Text Edit</translation>
+      <translation>உரை திருத்து</translation>
     </message>
   </context>
   <context>
@@ -1041,32 +1041,32 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="14"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>மெட்டீரியல் எடிட்டர்</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material Card</source>
-      <translation type="unfinished">Material Card</translation>
+      <translation>பொருள் அட்டை</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation type="unfinished">Opens the Product URL of this material in an external browser</translation>
+      <translation>இந்த பொருளின் தயாரிப்பு முகவரி ஐ வெளிப்புற உலாவியில் திறக்கும்</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
       <source>Existing material cards</source>
-      <translation type="unfinished">Existing material cards</translation>
+      <translation>தற்போதுள்ள பொருள் அட்டைகள்</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="67"/>
       <source>Opens an existing material card</source>
-      <translation type="unfinished">Opens an existing material card</translation>
+      <translation>ஏற்கனவே உள்ள பொருள் அட்டையைத் திறக்கும்</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="70"/>
       <source>Open…</source>
-      <translation type="unfinished">Open…</translation>
+      <translation>திற…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
@@ -1076,27 +1076,27 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material Parameter</source>
-      <translation type="unfinished">Material Parameter</translation>
+      <translation>பொருள் அளவுரு</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add/Remove Parameter</source>
-      <translation type="unfinished">Add/Remove Parameter</translation>
+      <translation>அளவுருவைச் சேர்க்கவும்/அகற்றவும்</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>சொத்து சேர்க்கவும்</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="133"/>
       <source>Delete Property</source>
-      <translation type="unfinished">Delete Property</translation>
+      <translation>சொத்தை நீக்கு</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation type="unfinished">Saves this material as a card</translation>
+      <translation>இந்த பொருளை அட்டையாக சேமிக்கிறது</translation>
     </message>
   </context>
   <context>
@@ -1112,7 +1112,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../AppMatGui.cpp" line="108"/>
       <source>Material Workbench</source>
-      <translation type="unfinished">Material Workbench</translation>
+      <translation>பொருள் வொர்க் பெஞ்ச்</translation>
     </message>
     <message>
       <location filename="../../AppMatGui.cpp" line="110"/>
@@ -1124,56 +1124,56 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialSave.cpp" line="192"/>
       <source>Confirm Overwrite</source>
-      <translation type="unfinished">Confirm Overwrite</translation>
+      <translation>மேலெழுதுவதை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="382"/>
       <location filename="../../MaterialSave.cpp" line="383"/>
       <source>No writeable library</source>
-      <translation type="unfinished">No writeable library</translation>
+      <translation>எழுதக்கூடிய நூலகம் இல்லை</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="570"/>
       <source>Delete &apos;%1&apos;?</source>
-      <translation type="unfinished">Delete &apos;%1&apos;?</translation>
+      <translation>&apos;% 1&apos; ஐ நீக்கவா?</translation>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="574"/>
       <source>Removing this will also remove all contents.</source>
-      <translation type="unfinished">Removing this will also remove all contents.</translation>
+      <translation>இதை அகற்றினால் அனைத்து உள்ளடக்கங்களும் அகற்றப்படும்.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>Save the material before using it.</source>
-      <translation type="unfinished">Save the material before using it.</translation>
+      <translation>பொருளைப் பயன்படுத்துவதற்கு முன் சேமிக்கவும்.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1345"/>
       <source>Unsaved Material</source>
-      <translation type="unfinished">Unsaved Material</translation>
+      <translation>சேமிக்கப்படாத பொருள்</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1346"/>
       <source>Save changes to the material before closing?</source>
-      <translation type="unfinished">Save changes to the material before closing?</translation>
+      <translation>மூடுவதற்கு முன் பொருளில் மாற்றங்களைச் சேமிக்கவா?</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1347"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>இல்லையெனில், அனைத்து மாற்றங்களும் இழக்கப்படும்.</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
-      <translation type="unfinished">Confirm Delete</translation>
+      <translation>நீக்குவதை உறுதிப்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
-      <translation type="unfinished">Delete the row?</translation>
+      <translation>வரிசையை நீக்கவா?</translation>
     </message>
   </context>
   <context>
@@ -1181,13 +1181,13 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>&amp;Appearance</source>
-      <translation type="unfinished">&amp;Appearance</translation>
+      <translation>&amp;தோற்றம்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <location filename="../../Command.cpp" line="91"/>
       <source>Sets the display properties of the selected object</source>
-      <translation type="unfinished">Sets the display properties of the selected object</translation>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருளின் காட்சி பண்புகளை அமைக்கிறது</translation>
     </message>
   </context>
   <context>
@@ -1195,13 +1195,13 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>&amp;Material</source>
-      <translation type="unfinished">&amp;Material</translation>
+      <translation>&amp;பொருள்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <location filename="../../Command.cpp" line="120"/>
       <source>Sets the material of the selected object</source>
-      <translation type="unfinished">Sets the material of the selected object</translation>
+      <translation>தேர்ந்தெடுக்கப்பட்ட பொருளின் பொருளை அமைக்கிறது</translation>
     </message>
   </context>
   <context>
@@ -1222,27 +1222,27 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="14"/>
       <source>Materials Migration</source>
-      <translation type="unfinished">Materials Migration</translation>
+      <translation>பொருட்கள் இடம்பெயர்வு</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="27"/>
       <source>Select material libraries to migrate. Existing materials will not be overwritten.</source>
-      <translation type="unfinished">Select material libraries to migrate. Existing materials will not be overwritten.</translation>
+      <translation>இடம்பெயர்வதற்கு பொருள் நூலகங்களைத் தேர்ந்தெடுக்கவும். ஏற்கனவே உள்ள பொருட்கள் மேலெழுதப்படாது.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="20"/>
       <source>Select material libraries</source>
-      <translation type="unfinished">Select material libraries</translation>
+      <translation>பொருள் நூலகங்களைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="34"/>
       <source>Select model libraries</source>
-      <translation type="unfinished">Select model libraries</translation>
+      <translation>மாதிரி நூலகங்களைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
       <source>Select model libraries to migrate. Existing models will not be overwritten.</source>
-      <translation type="unfinished">Select model libraries to migrate. Existing models will not be overwritten.</translation>
+      <translation>நகர்த்துவதற்கு மாதிரி நூலகங்களைத் தேர்ந்தெடுக்கவும். ஏற்கனவே உள்ள மாதிரிகள் மேலெழுதப்படாது.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="48"/>
@@ -1252,7 +1252,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="178"/>
       <source>&amp;Migrate</source>
-      <translation type="unfinished">&amp;Migrate</translation>
+      <translation>&amp;இடம்பெயர்வு</translation>
     </message>
   </context>
   <context>
@@ -1260,17 +1260,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="14"/>
       <source>External Interface</source>
-      <translation type="unfinished">External Interface</translation>
+      <translation>வெளிப்புற இடைமுகம்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="20"/>
       <source>Use External Interface</source>
-      <translation type="unfinished">Use External Interface</translation>
+      <translation>வெளிப்புற இடைமுகத்தைப் பயன்படுத்தவும்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="29"/>
       <source>External interface</source>
-      <translation type="unfinished">External interface</translation>
+      <translation>வெளிப்புற இடைமுகம்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="65"/>
@@ -1280,18 +1280,18 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="91"/>
       <source>Model cache size</source>
-      <translation type="unfinished">Model cache size</translation>
+      <translation>மாதிரி கேச் அளவு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="98"/>
       <location filename="../../DlgSettingsExternal.ui" line="124"/>
       <source>Hit rate</source>
-      <translation type="unfinished">Hit rate</translation>
+      <translation>செய் விகிதம்</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.ui" line="134"/>
       <source>Material cache size</source>
-      <translation type="unfinished">Material cache size</translation>
+      <translation>பொருள் கேச் அளவு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsExternal.cpp" line="95"/>
@@ -1304,7 +1304,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="75"/>
       <source>Migrating models…</source>
-      <translation type="unfinished">Migrating models…</translation>
+      <translation>மாடல்களை நகர்த்துகிறது…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="81"/>
@@ -1312,7 +1312,7 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../TaskMigrateExternal.cpp" line="105"/>
       <location filename="../../TaskMigrateExternal.cpp" line="117"/>
       <source>  Library: </source>
-      <translation type="unfinished">  Library: </translation>
+      <translation>நூலகம்:</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="85"/>
@@ -1320,28 +1320,28 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../TaskMigrateExternal.cpp" line="109"/>
       <location filename="../../TaskMigrateExternal.cpp" line="121"/>
       <source>done</source>
-      <translation type="unfinished">done</translation>
+      <translation>முடிந்தது</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="87"/>
       <source>Validating models…</source>
-      <translation type="unfinished">Validating models…</translation>
+      <translation>மாதிரிகளை சரிபார்க்கிறது…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="99"/>
       <source>Migrating materials…</source>
-      <translation type="unfinished">Migrating materials…</translation>
+      <translation>இடம்பெயர்ந்த பொருட்கள்…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="111"/>
       <source>Validating materials…</source>
-      <translation type="unfinished">Validating materials…</translation>
+      <translation>பொருட்களை சரிபார்க்கிறது…</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="145"/>
       <location filename="../../TaskMigrateExternal.cpp" line="148"/>
       <source>Unknown exception - aborted</source>
-      <translation type="unfinished">Unknown exception - aborted</translation>
+      <translation>அறியப்படாத விதிவிலக்கு - கைவிடப்பட்டது</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="125"/>
@@ -1350,7 +1350,7 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../TaskMigrateExternal.cpp" line="137"/>
       <location filename="../../TaskMigrateExternal.cpp" line="141"/>
       <source>Aborted</source>
-      <translation type="unfinished">Aborted</translation>
+      <translation>கைவிடப்பட்டது</translation>
     </message>
   </context>
   <context>
@@ -1368,7 +1368,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Edits material properties</source>
-      <translation type="unfinished">Edits material properties</translation>
+      <translation>பொருள் பண்புகளைத் திருத்துகிறது</translation>
     </message>
   </context>
   <context>
@@ -1376,17 +1376,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="202"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>இடம்பெயரும்</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Migrates the materials to the external materials manager</source>
-      <translation type="unfinished">Migrates the materials to the external materials manager</translation>
+      <translation>பொருட்களை வெளிப்புற பொருட்கள் மேலாளருக்கு மாற்றுகிறது</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <source>Migrate existing materials to the external materials manager</source>
-      <translation type="unfinished">Migrate existing materials to the external materials manager</translation>
+      <translation>ஏற்கனவே உள்ள பொருட்களை வெளிப்புற பொருட்கள் மேலாளருக்கு மாற்றவும்</translation>
     </message>
   </context>
   <context>
@@ -1394,17 +1394,17 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="180"/>
       <source>Basic appearance</source>
-      <translation type="unfinished">Basic appearance</translation>
+      <translation>அடிப்படை தோற்றம்</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="185"/>
       <source>Texture appearance</source>
-      <translation type="unfinished">Texture appearance</translation>
+      <translation>அமைப்பு தோற்றம்</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayPropertiesImp.cpp" line="190"/>
       <source>All materials</source>
-      <translation type="unfinished">All materials</translation>
+      <translation>அனைத்து பொருட்கள்</translation>
     </message>
   </context>
 </TS>

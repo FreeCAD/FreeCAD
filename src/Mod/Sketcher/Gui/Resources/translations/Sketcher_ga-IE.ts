@@ -1111,7 +1111,7 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
     <message>
       <location filename="../../Command.cpp" line="175"/>
       <source>Too many objects selected</source>
-      <translation type="unfinished">Too many objects selected</translation>
+      <translation>An iomarca rudaí roghnaithe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -1130,32 +1130,6 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Ná ceangail</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="369"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2018"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2228"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2350"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="242"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="489"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="578"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="632"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1021"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1142"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="162"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="173"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="114"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
       <location filename="../../CommandConstraints.cpp" line="170"/>
       <location filename="../../CommandConstraints.cpp" line="177"/>
       <location filename="../../CommandConstraints.cpp" line="2815"/>
@@ -1276,6 +1250,32 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <location filename="../../CommandConstraints.cpp" line="10453"/>
       <location filename="../../CommandConstraints.cpp" line="10528"/>
       <location filename="../../CommandConstraints.cpp" line="10540"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="114"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="162"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="173"/>
+      <location filename="../../CommandSketcherTools.cpp" line="369"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2018"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2228"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2350"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="242"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="489"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="578"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="632"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1021"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1142"/>
       <source>Wrong selection</source>
       <translation>Rogha mícheart</translation>
     </message>
@@ -1418,9 +1418,9 @@ srianta neamhbhailí, agus geoiméadracht dhíghrádaithe</translation>
       <translation>Ní ionann líon na réad roghnaithe agus 3</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="783"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="621"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1183"/>
-      <location filename="../../CommandConstraints.cpp" line="783"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
@@ -1818,14 +1818,14 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
       <translation>Roghnaigh srian aontoiseach ón sceitse.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="126"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="156"/>
       <location filename="../../CommandConstraints.cpp" line="10406"/>
       <location filename="../../CommandConstraints.cpp" line="10418"/>
       <location filename="../../CommandConstraints.cpp" line="10454"/>
       <location filename="../../CommandConstraints.cpp" line="10529"/>
       <location filename="../../CommandConstraints.cpp" line="10541"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="126"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="156"/>
       <source>Select constraints from the sketch.</source>
       <translation>Roghnaigh srianta ón sceitse.</translation>
     </message>
@@ -1856,7 +1856,7 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
       <location filename="../../CommandSketcherBSpline.cpp" line="1000"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1079"/>
       <source>Selection is empty</source>
-      <translation type="unfinished">Selection is empty</translation>
+      <translation>Tá an rogha folamh</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="243"/>
@@ -1909,7 +1909,7 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="86"/>
       <source>Wrong Selection</source>
-      <translation type="unfinished">Wrong Selection</translation>
+      <translation>Rogha Mícheart</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="87"/>
@@ -2047,12 +2047,12 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="113"/>
       <source>Vertical</source>
-      <translation type="unfinished">Vertical</translation>
+      <translation>Ingearach</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="114"/>
       <source>Horizontal</source>
-      <translation type="unfinished">Horizontal</translation>
+      <translation>Cothrománach</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="115"/>
@@ -2062,7 +2062,7 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="116"/>
       <source>Perpendicular</source>
-      <translation type="unfinished">Perpendicular</translation>
+      <translation>Ingearach</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="117"/>
@@ -2082,7 +2082,7 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="120"/>
       <source>Block</source>
-      <translation type="unfinished">Block</translation>
+      <translation>Bloc</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="121"/>
@@ -2117,7 +2117,7 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="127"/>
       <source>Weight</source>
-      <translation type="unfinished">Weight</translation>
+      <translation>Meáchan</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="128"/>
@@ -2285,7 +2285,7 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../EditDatumDialog.cpp" line="166"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Fad:</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10206"/>
@@ -2368,7 +2368,7 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="354"/>
       <source>B-spline</source>
-      <translation type="unfinished">B-spline</translation>
+      <translation>B-splíne</translation>
     </message>
   </context>
   <context>
@@ -2506,7 +2506,7 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="850"/>
       <source>Hidden</source>
-      <translation type="unfinished">Hidden</translation>
+      <translation>I bhfolach</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="855"/>
@@ -2590,12 +2590,12 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>Ais-X</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="36"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Ais-Y</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="43"/>
@@ -2618,17 +2618,17 @@ Teaglaim inghlactha: dhá chuar; críochphointe agus cuar; dhá chríochphointe;
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="26"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>Plána XY</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="36"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ-eitleán</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="43"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ-eitleán</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="72"/>
@@ -3567,7 +3567,7 @@ Mar sin féin, níor aimsíodh aon srianta a nascann leis na críochphointí.</t
       <location filename="../../TaskSketcherElements.cpp" line="2082"/>
       <location filename="../../TaskSketcherElements.cpp" line="2083"/>
       <source>B-spline</source>
-      <translation type="unfinished">B-spline</translation>
+      <translation>B-splíne</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1974"/>
@@ -3978,7 +3978,7 @@ Déantar é seo trí gheoiméadrachtaí agus srianta an sceitse a anailísiú.</
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="416"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="417"/>
@@ -4431,7 +4431,7 @@ Tá algartam Eigen Sparse QR optamaithe do mhaitrísí tanaí; is gnách go mbí
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Constraints</source>
-      <translation type="unfinished">Constraints</translation>
+      <translation>Srianta</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -4494,7 +4494,7 @@ Tá algartam Eigen Sparse QR optamaithe do mhaitrísí tanaí; is gnách go mbí
       <location filename="../../SketcherSettingsGrid.ui" line="178"/>
       <location filename="../../SketcherSettingsGrid.ui" line="316"/>
       <source>Line pattern</source>
-      <translation type="unfinished">Line pattern</translation>
+      <translation>Patrún líne</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
@@ -4549,7 +4549,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <location filename="../../SketcherSettingsGrid.ui" line="198"/>
       <location filename="../../SketcherSettingsGrid.ui" line="336"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Leithead líne</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="208"/>
@@ -4560,7 +4560,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <location filename="../../SketcherSettingsGrid.ui" line="233"/>
       <location filename="../../SketcherSettingsGrid.ui" line="368"/>
       <source>Line color</source>
-      <translation type="unfinished">Line color</translation>
+      <translation>Dath líne</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="272"/>
@@ -4618,35 +4618,35 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="213"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1290"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1870"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2307"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="202"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="387"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="672"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="749"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="153"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="221"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="141"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="343"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="476"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="510"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="230"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="141"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="213"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="188"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="202"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="230"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="268"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="348"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="153"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1290"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1870"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2307"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="343"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="350"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="221"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
@@ -4682,16 +4682,16 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
       <translation>Tá faisnéis innéacs neamhbhailí sa srian agus tá sé mífhoirmithe.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1077"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="517"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="660"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="908"/>
       <location filename="../../CommandConstraints.cpp" line="431"/>
       <location filename="../../CommandConstraints.cpp" line="511"/>
       <location filename="../../CommandConstraints.cpp" line="608"/>
       <location filename="../../CommandConstraints.cpp" line="698"/>
       <location filename="../../CommandConstraints.cpp" line="6595"/>
       <location filename="../../CommandConstraints.cpp" line="6799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1077"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="517"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="660"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="908"/>
       <source>Invalid Constraint</source>
       <translation>Srian Neamhbhailí</translation>
     </message>
@@ -4728,176 +4728,176 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="388"/>
       <source>Error creating B-spline</source>
-      <translation type="unfinished">Error creating B-spline</translation>
+      <translation>Earráid ag cruthú B-spline</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="673"/>
       <source>Error deleting last pole/knot</source>
-      <translation type="unfinished">Error deleting last pole/knot</translation>
+      <translation>Earráid ag scriosadh an chuaille/an snaidhm dheireanaigh</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="750"/>
       <source>Error adding B-spline pole/knot</source>
-      <translation type="unfinished">Error adding B-spline pole/knot</translation>
+      <translation>Earráid ag cur cuaille/snaidhm B-splíne leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
       <source>Failed to add carbon copy</source>
-      <translation type="unfinished">Failed to add carbon copy</translation>
+      <translation>Theip ar chóip charbóin a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="222"/>
       <source>Failed to add circle</source>
-      <translation type="unfinished">Failed to add circle</translation>
+      <translation>Theip ar an gciorcal a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
       <source>Failed to extend edge</source>
-      <translation type="unfinished">Failed to extend edge</translation>
+      <translation>Theip ar an imeall a shíneadh</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
       <source>Failed to add external geometry</source>
-      <translation type="unfinished">Failed to add external geometry</translation>
+      <translation>Theip ar gheoiméadracht sheachtrach a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="231"/>
       <source>Failed to create fillet</source>
-      <translation type="unfinished">Failed to create fillet</translation>
+      <translation>Theip ar chruthú filléad</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="142"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="142"/>
       <source>Failed to add line</source>
-      <translation type="unfinished">Failed to add line</translation>
+      <translation>Theip ar líne a chur leis</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerCircle.h" line="228"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="148"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="140"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="520"/>
       <location filename="../../DrawSketchHandlerArc.h" line="297"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="220"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="195"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="237"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="180"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="160"/>
       <location filename="../../DrawSketchHandlerScale.h" line="160"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="153"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="160"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="140"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="180"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="520"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="148"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="237"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="195"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="228"/>
       <source>Tool execution aborted</source>
-      <translation type="unfinished">Tool execution aborted</translation>
+      <translation>Cuireadh deireadh le forghníomhú na huirlise</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPoint.h" line="110"/>
       <source>Failed to add point</source>
-      <translation type="unfinished">Failed to add point</translation>
+      <translation>Theip ar phointe a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
       <source>Failed to add polygon</source>
-      <translation type="unfinished">Failed to add polygon</translation>
+      <translation>Theip ar pholagán a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="514"/>
       <source>Failed to add box</source>
-      <translation type="unfinished">Failed to add box</translation>
+      <translation>Theip ar an mbosca a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="189"/>
       <source>Failed to add slot</source>
-      <translation type="unfinished">Failed to add slot</translation>
+      <translation>Theip ar an sliotán a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
       <source>Failed to add edge</source>
-      <translation type="unfinished">Failed to add edge</translation>
+      <translation>Theip ar imeall a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
       <source>Failed to trim edge</source>
-      <translation type="unfinished">Failed to trim edge</translation>
+      <translation>Theip ar an imeall a bhearradh</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1224"/>
       <location filename="../../EditDatumDialog.cpp" line="62"/>
       <location filename="../../EditDatumDialog.cpp" line="294"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1224"/>
       <source>Value Error</source>
-      <translation type="unfinished">Value Error</translation>
+      <translation>Earráid Luach</translation>
     </message>
     <message>
       <location filename="../../DrawSketchDefaultHandler.h" line="978"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
-      <translation type="unfinished">Autoconstraints cause redundancy. Removing them</translation>
+      <translation>Is cúis le srianta uathoibríocha iomarcaíocht. Baintear iad</translation>
     </message>
     <message>
       <location filename="../../DrawSketchDefaultHandler.h" line="998"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
-      <translation type="unfinished">Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</translation>
+      <translation>Ní uathshrianadh é srian iomarcach. Níor cuireadh aon uathshrianta ná srianta breise leis. Tuairiscigh le do thoil!</translation>
     </message>
     <message>
       <location filename="../../DrawSketchDefaultHandler.h" line="1049"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
-      <translation type="unfinished">Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</translation>
+      <translation>Iomarcaíocht/Srianadh Coimhlinte Gan Choinne. Seiceáil srianta agus uathshrianta na hoibríochta seo.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="417"/>
       <source>Offset Error</source>
-      <translation type="unfinished">Offset Error</translation>
+      <translation>Earráid Fritháireamh</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="418"/>
       <source>Offset could not be created.</source>
-      <translation type="unfinished">Offset could not be created.</translation>
+      <translation>Níorbh fhéidir an fritháireamh a chruthú.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1213"/>
       <source>Invalid Value</source>
-      <translation type="unfinished">Invalid Value</translation>
+      <translation>Luach Neamhbhailí</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1214"/>
       <source>Offset value can't be 0.</source>
-      <translation type="unfinished">Offset value can't be 0.</translation>
+      <translation>Ní féidir leis an luach fritháireamh a bheith 0.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="214"/>
       <source>Failed to add arc slot</source>
-      <translation type="unfinished">Failed to add arc slot</translation>
+      <translation>Theip ar shliotán stua a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="231"/>
       <source>Failed to add ellipse</source>
-      <translation type="unfinished">Failed to add ellipse</translation>
+      <translation>Theip ar an eilips a chur leis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="174"/>
       <source>Failed to rotate</source>
-      <translation type="unfinished">Failed to rotate</translation>
+      <translation>Theip ar rothlú</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="121"/>
       <source>Invalid scale factor. Scale factor must be a positive number.</source>
-      <translation type="unfinished">Invalid scale factor. Scale factor must be a positive number.</translation>
+      <translation>Fachtóir scála neamhbhailí. Ní mór don fhachtóir scála a bheith ina uimhir dhearfach.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="152"/>
       <source>Failed to scale</source>
-      <translation type="unfinished">Failed to scale</translation>
+      <translation>Theip ar an scálú</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="147"/>
       <source>Failed to translate</source>
-      <translation type="unfinished">Failed to translate</translation>
+      <translation>Theip ar an aistriúchán</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
       <source>Failed to create symmetry</source>
-      <translation type="unfinished">Failed to create symmetry</translation>
+      <translation>Theip ar shiméadracht a chruthú</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="63"/>
       <source>Invalid constraint name (must only contain alphanumericals and underscores, and must not start with digit)</source>
-      <translation type="unfinished">Invalid constraint name (must only contain alphanumericals and underscores, and must not start with digit)</translation>
+      <translation>Ainm srianta neamhbhailí (ní mór ach alfa-uimhriúla agus fo-línte a bheith ann, agus ní mór dó tosú le digit)</translation>
     </message>
   </context>
   <context>
@@ -4910,7 +4910,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
     <message>
       <location filename="../../CommandConstraints.cpp" line="3163"/>
       <source>Constrains contextually based on the selection. The type can be changed with the M key.</source>
-      <translation type="unfinished">Constrains contextually based on the selection. The type can be changed with the M key.</translation>
+      <translation>Cuireann sé srian ar chomhthéacs bunaithe ar an roghnú. Is féidir an cineál a athrú leis an eochair M.</translation>
     </message>
   </context>
   <context>
@@ -4923,7 +4923,7 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
     <message>
       <location filename="../../CommandConstraints.cpp" line="1561"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>Uirlisí toise</translation>
     </message>
   </context>
   <context>
@@ -4931,12 +4931,12 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="14"/>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Foirm</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="22"/>
       <source>Mode (M)</source>
-      <translation type="unfinished">Mode (M)</translation>
+      <translation>Mód (M)</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="46"/>
@@ -4947,72 +4947,72 @@ Athraíonn an spásáil ghreille má éiríonn sé níos lú ná an méid pictei
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="94"/>
       <source>Parameter 1</source>
-      <translation type="unfinished">Parameter 1</translation>
+      <translation>Paraiméadar 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="115"/>
       <source>Parameter 2</source>
-      <translation type="unfinished">Parameter 2</translation>
+      <translation>Paraiméadar 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="136"/>
       <source>Parameter 3</source>
-      <translation type="unfinished">Parameter 3</translation>
+      <translation>Paraiméadar 3</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="157"/>
       <source>Parameter 4</source>
-      <translation type="unfinished">Parameter 4</translation>
+      <translation>Paraiméadar 4</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="178"/>
       <source>Parameter 5</source>
-      <translation type="unfinished">Parameter 5</translation>
+      <translation>Paraiméadar 5</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="199"/>
       <source>Parameter 6</source>
-      <translation type="unfinished">Parameter 6</translation>
+      <translation>Paraiméadar 6</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="220"/>
       <source>Parameter 7</source>
-      <translation type="unfinished">Parameter 7</translation>
+      <translation>Paraiméadar 7</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="241"/>
       <source>Parameter 8</source>
-      <translation type="unfinished">Parameter 8</translation>
+      <translation>Paraiméadar 8</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="262"/>
       <source>Parameter 9</source>
-      <translation type="unfinished">Parameter 9</translation>
+      <translation>Paraiméadar 9</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="283"/>
       <source>Parameter 10</source>
-      <translation type="unfinished">Parameter 10</translation>
+      <translation>Paraiméadar 10</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="305"/>
       <source>Checkbox 1 toolTip</source>
-      <translation type="unfinished">Checkbox 1 toolTip</translation>
+      <translation>Leid uirlis bosca seiceála 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="308"/>
       <source>Checkbox 1</source>
-      <translation type="unfinished">Checkbox 1</translation>
+      <translation>Bosca seiceála 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="327"/>
       <source>Checkbox 2 toolTip</source>
-      <translation type="unfinished">Checkbox 2 toolTip</translation>
+      <translation>Leid uirlis bosca seiceála 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="330"/>
       <source>Checkbox 2</source>
-      <translation type="unfinished">Checkbox 2</translation>
+      <translation>Bosca seiceála 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="349"/>
@@ -5169,7 +5169,7 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="178"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="211"/>
@@ -5319,7 +5319,7 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Buaicphointe</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
@@ -5349,7 +5349,7 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="198"/>
       <source>Geometry</source>
-      <translation type="unfinished">Geometry</translation>
+      <translation>Geoiméadracht</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
@@ -5465,7 +5465,7 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="536"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="537"/>
@@ -5491,7 +5491,7 @@ Ina áit sin, cuirtear srianta comhionanna i bhfeidhm idir na réada bunaidh agu
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="499"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="500"/>
@@ -6381,7 +6381,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="706"/>
       <source>Rectangle</source>
-      <translation type="unfinished">Rectangle</translation>
+      <translation>Dronuilleog</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="707"/>
@@ -6394,7 +6394,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="766"/>
       <source>Rectangle</source>
-      <translation type="unfinished">Rectangle</translation>
+      <translation>Dronuilleog</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="767"/>
@@ -6433,7 +6433,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="878"/>
       <source>Polygon</source>
-      <translation type="unfinished">Polygon</translation>
+      <translation>Polagán</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="879"/>
@@ -6459,7 +6459,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="981"/>
       <source>Square</source>
-      <translation type="unfinished">Square</translation>
+      <translation>Cearnóg</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="982"/>
@@ -6485,7 +6485,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1043"/>
       <source>Hexagon</source>
-      <translation type="unfinished">Hexagon</translation>
+      <translation>Heicseagán</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1044"/>
@@ -6524,7 +6524,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1136"/>
       <source>Polygon</source>
-      <translation type="unfinished">Polygon</translation>
+      <translation>Polagán</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1137"/>
@@ -6537,7 +6537,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1174"/>
       <source>Slot</source>
-      <translation type="unfinished">Slot</translation>
+      <translation>Sliotán</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1175"/>
@@ -6550,7 +6550,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1230"/>
       <source>Slot</source>
-      <translation type="unfinished">Slot</translation>
+      <translation>Sliotán</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1231"/>
@@ -7578,7 +7578,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="297"/>
       <source>Value Error</source>
-      <translation type="unfinished">Value Error</translation>
+      <translation>Earráid Luach</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="358"/>

@@ -23,13 +23,13 @@
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2717"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Seasamh</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <source>Enum</source>
-      <translation type="unfinished">Enum</translation>
+      <translation>Enum</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyModel.cpp" line="274"/>
@@ -120,7 +120,7 @@
     <message>
       <location filename="../ManualAlignment.cpp" line="1085"/>
       <source>Align</source>
-      <translation type="unfinished">Align</translation>
+      <translation>Ailínigh</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="459"/>
@@ -128,10 +128,10 @@
       <translation>Socrúchán</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
+      <location filename="../Transform.cpp" line="108"/>
       <location filename="../TaskTransform.cpp" line="128"/>
       <location filename="../TaskTransform.cpp" line="808"/>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
       <source>Transform</source>
       <translation>Claochlú</translation>
     </message>
@@ -401,7 +401,7 @@ Tagróidh maoin an réada seo do mhaoin an Tacair Athróg.</translation>
     <message>
       <location filename="../Application.h" line="315"/>
       <source>&amp;Color</source>
-      <translation type="unfinished">&amp;Color</translation>
+      <translation>&amp;Dath</translation>
     </message>
     <message>
       <location filename="../Application.h" line="316"/>
@@ -621,7 +621,7 @@ ag cliceáil ar chlé nó ar dheis agus ag bogadh an luiche suas nó síos</tran
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="225"/>
       <source>Copy to Clipboard</source>
-      <translation type="unfinished">Copy to Clipboard</translation>
+      <translation>Cóipeáil chuig an nGearrthaisce</translation>
     </message>
     <message>
       <location filename="../Dialogs/AboutApplication.ui" line="261"/>
@@ -926,7 +926,7 @@ ag cliceáil ar chlé nó ar dheis agus ag bogadh an luiche suas nó síos</tran
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Cuir Maoin leis</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="37"/>
@@ -941,7 +941,7 @@ ag cliceáil ar chlé nó ar dheis agus ag bogadh an luiche suas nó síos</tran
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="58"/>
       <source>Tooltip</source>
-      <translation type="unfinished">Tooltip</translation>
+      <translation>Leid Uirlis</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="30"/>
@@ -999,17 +999,17 @@ ag cliceáil ar chlé nó ar dheis agus ag bogadh an luiche suas nó síos</tran
     <message>
       <location filename="../Dialogs/DlgAuthorization.ui" line="23"/>
       <source>Site</source>
-      <translation type="unfinished">Site</translation>
+      <translation>Suíomh</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAuthorization.ui" line="46"/>
       <source>Username</source>
-      <translation type="unfinished">Username</translation>
+      <translation>Ainm úsáideora</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAuthorization.ui" line="56"/>
       <source>Password</source>
-      <translation type="unfinished">Password</translation>
+      <translation>Pasfhocal</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgAuthorization.ui" line="36"/>
@@ -1123,7 +1123,7 @@ ag cliceáil ar chlé nó ar dheis agus ag bogadh an luiche suas nó síos</tran
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="74"/>
       <source>Tooltip</source>
-      <translation type="unfinished">Tooltip</translation>
+      <translation>Leid Uirlis</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="81"/>
@@ -1366,7 +1366,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboardImp.cpp" line="278"/>
       <source>Title</source>
-      <translation type="unfinished">Title</translation>
+      <translation>Teideal</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboardImp.cpp" line="434"/>
@@ -1384,7 +1384,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="63"/>
       <source>Category</source>
-      <translation type="unfinished">Category</translation>
+      <translation>Catagóir</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="119"/>
@@ -1967,22 +1967,22 @@ B'fhéidir earráid cead comhaid?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="47"/>
       <source>Diffuse color</source>
-      <translation type="unfinished">Diffuse color</translation>
+      <translation>Dath scaipthe</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="54"/>
       <source>Shininess</source>
-      <translation type="unfinished">Shininess</translation>
+      <translation>Lonrúlacht</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="78"/>
       <source>Ambient color</source>
-      <translation type="unfinished">Ambient color</translation>
+      <translation>Dath comhthimpeallach</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="114"/>
       <source>Specular color</source>
-      <translation type="unfinished">Specular color</translation>
+      <translation>Dath lonrach</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="131"/>
@@ -1992,7 +1992,7 @@ B'fhéidir earráid cead comhaid?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="148"/>
       <source>Emissive color</source>
-      <translation type="unfinished">Emissive color</translation>
+      <translation>Dath astaíochta</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="155"/>
@@ -2074,7 +2074,7 @@ Sonraigh eolaire eile.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="109"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Sábháil</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="73"/>
@@ -2374,7 +2374,7 @@ Sonraigh eolaire eile.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="96"/>
       <source>UUID</source>
-      <translation type="unfinished">UUID</translation>
+      <translation>UUID</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="119"/>
@@ -2626,7 +2626,7 @@ Sonraigh eolaire eile.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="111"/>
       <source>Discard Changes</source>
-      <translation type="unfinished">Discard Changes</translation>
+      <translation>Scrios Athruithe</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="118"/>
@@ -2856,7 +2856,7 @@ Cuimhnigh an socrú seo a thuairisciú mar chumasaithe agus tú ag lorg tacaíoc
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="479"/>
       <source>Marker size</source>
-      <translation type="unfinished">Marker size</translation>
+      <translation>Méid marcóra</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="394"/>
@@ -3321,7 +3321,7 @@ seachas an barra datha</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="313"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Méid</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="362"/>
@@ -3893,7 +3893,7 @@ Is féidir leat an fhoirm seo a úsáid freisin: John Doe &lt;john@doe.com&gt;</
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="14"/>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="378"/>
       <source>Navigation</source>
-      <translation type="unfinished">Navigation</translation>
+      <translation>Loingseoireacht</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="29"/>
@@ -4040,12 +4040,12 @@ Clár Casála Saor: rothlófar an chuid timpeall an ais-Z.
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
       <source>Trackball Classic</source>
-      <translation type="unfinished">Trackball Classic</translation>
+      <translation>Liathróid Rianaithe Clasaiceach</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="508"/>
       <source>Rounded Arcball</source>
-      <translation type="unfinished">Rounded Arcball</translation>
+      <translation>Liathróid Arc Babhta</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="516"/>
@@ -4265,7 +4265,7 @@ Ciallaíonn céim súmála '1' fachtóir 7.5 do gach céim súmála.</translatio
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="212"/>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="249"/>
       <source>Dimetric</source>
-      <translation>Dimetric</translation>
+      <translation>Déiméadrach</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="213"/>
@@ -4313,7 +4313,7 @@ Ciallaíonn céim súmála '1' fachtóir 7.5 do gach céim súmála.</translatio
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="220"/>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="257"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Saincheaptha</translation>
     </message>
   </context>
   <context>
@@ -4778,7 +4778,7 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
     <message>
       <location filename="../DocumentRecovery.ui" line="60"/>
       <source>Document name</source>
-      <translation type="unfinished">Document name</translation>
+      <translation>Ainm an doiciméid</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="65"/>
@@ -5055,7 +5055,7 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
     <message>
       <location filename="../MouseButtons.ui" line="68"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="88"/>
@@ -5270,7 +5270,7 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
     <message>
       <location filename="../Placement.ui" line="118"/>
       <source>Center</source>
-      <translation type="unfinished">Center</translation>
+      <translation>Lár</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="194"/>
@@ -5280,7 +5280,7 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
     <message>
       <location filename="../Placement.ui" line="204"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5373,12 +5373,12 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
     <message>
       <location filename="../RemoteDebugger.ui" line="30"/>
       <source>Password</source>
-      <translation type="unfinished">Password</translation>
+      <translation>Pasfhocal</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="64"/>
       <source>Address</source>
-      <translation type="unfinished">Address</translation>
+      <translation>Seoladh</translation>
     </message>
     <message>
       <location filename="../RemoteDebugger.ui" line="78"/>
@@ -5479,7 +5479,7 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
     <message>
       <location filename="../Dialogs/DlgObjectSelection.ui" line="14"/>
       <source>Object Selection</source>
-      <translation type="unfinished">Object Selection</translation>
+      <translation>Roghnú Réada</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.ui" line="32"/>
@@ -6048,66 +6048,66 @@ Sábháil na hathruithe go léir?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="157"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="303"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="492"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="135"/>
       <location filename="../InputVector.h" line="160"/>
       <location filename="../InputVector.h" line="281"/>
       <location filename="../InputVector.h" line="306"/>
       <location filename="../InputVector.h" line="479"/>
       <location filename="../InputVector.h" line="495"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Sainmhínithe ag an úsáideoir…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Treo mícheart</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="242"/>
       <location filename="../InputVector.h" line="377"/>
       <location filename="../InputVector.h" line="566"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>Ní féidir leis an treo a bheith ina veicteoir nialasach</translation>
     </message>
@@ -6566,7 +6566,7 @@ Conas is mian leat dul ar aghaidh?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="974"/>
       <source>Add Property</source>
-      <translation type="unfinished">Add Property</translation>
+      <translation>Cuir Maoin leis</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="982"/>
@@ -6587,12 +6587,12 @@ Conas is mian leat dul ar aghaidh?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1008"/>
       <source>Delete Property</source>
-      <translation type="unfinished">Delete Property</translation>
+      <translation>Scrios an Mhaoin</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1172"/>
       <source>Tooltip</source>
-      <translation type="unfinished">Tooltip</translation>
+      <translation>Leid Uirlis</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1199"/>
@@ -6607,7 +6607,7 @@ Conas is mian leat dul ar aghaidh?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1035"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Léiriú</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1200"/>
@@ -6943,7 +6943,7 @@ Sonraigh eolaire eile?</translation>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="41"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Seasamh</translation>
     </message>
   </context>
   <context>
@@ -7005,12 +7005,12 @@ Sonraigh eolaire eile?</translation>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="37"/>
       <source>Document window</source>
-      <translation type="unfinished">Document window</translation>
+      <translation>Fuinneog doiciméad</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="60"/>
       <source>Plot mode</source>
-      <translation type="unfinished">Plot mode</translation>
+      <translation>Mód plota</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="84"/>
@@ -7020,7 +7020,7 @@ Sonraigh eolaire eile?</translation>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="130"/>
       <source>Line width</source>
-      <translation type="unfinished">Line width</translation>
+      <translation>Leithead líne</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="168"/>
@@ -7033,7 +7033,7 @@ Sonraigh eolaire eile?</translation>
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="95"/>
       <source>A dialog is already open in the task panel</source>
-      <translation type="unfinished">A dialog is already open in the task panel</translation>
+      <translation>Tá dialóg oscailte cheana féin sa phainéal tascanna</translation>
     </message>
   </context>
   <context>
@@ -7174,7 +7174,7 @@ Sonraigh eolaire eile?</translation>
     <message>
       <location filename="Translator.cpp" line="197"/>
       <source>English</source>
-      <translation type="unfinished">English</translation>
+      <translation>Béarla</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="198"/>
@@ -8031,7 +8031,7 @@ Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
     <message>
       <location filename="../Application.cpp" line="1241"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
-      <translation type="unfinished">There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</translation>
+      <translation>Tharla earráidí agus an comhad á luchtú. B’fhéidir gur modhnaíodh roinnt sonraí nó nár aisghabhadh ar chor ar bith iad. Féach ar an radharc tuarascála le haghaidh tuilleadh eolais faoi na réada lena mbaineann.</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="1256"/>
@@ -8104,7 +8104,7 @@ Seiceáil an radharc tuairisce le haghaidh tuilleadh sonraí.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="2007"/>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>Greamaigh</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="2124"/>
@@ -8385,7 +8385,7 @@ Lean ar aghaidh?</translation>
     <message>
       <location filename="../Document.cpp" line="1420"/>
       <source>Are you sure you want to continue?</source>
-      <translation type="unfinished">Are you sure you want to continue?</translation>
+      <translation>An bhfuil tú cinnte gur mian leat leanúint ar aghaidh?</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1446"/>
@@ -8520,12 +8520,12 @@ Ar mhaith leat an comhad a shábháil faoi ainm difriúil?</translation>
     <message>
       <location filename="../Document.cpp" line="2818"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>Cealaigh</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2818"/>
       <source>Redo</source>
-      <translation type="unfinished">Redo</translation>
+      <translation>Athdhéan</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2821"/>
@@ -8632,8 +8632,8 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
       <translation>Soiligh an Roghnú</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <source>Transform</source>
       <translation>Claochlú</translation>
     </message>
@@ -8655,7 +8655,7 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
     <message>
       <location filename="../MainWindow.cpp" line="895"/>
       <source>Otherwise, all changes will be lost.</source>
-      <translation type="unfinished">Otherwise, all changes will be lost.</translation>
+      <translation>Seachas sin, caillfear na hathruithe go léir.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1021"/>
@@ -8762,8 +8762,8 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
       <translation>Theip ar tharraingt agus scaoil</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="900"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <source>Apply to all</source>
       <translation>Cuir i bhfeidhm ar gach duine</translation>
     </message>
@@ -8805,7 +8805,7 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3072"/>
       <source>Tracking</source>
-      <translation type="unfinished">Tracking</translation>
+      <translation>Rianú</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3074"/>
@@ -8897,7 +8897,7 @@ dhéantar ar an gcóip reatha.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="394"/>
       <source>Advanced</source>
-      <translation type="unfinished">Advanced</translation>
+      <translation>Ardleibhéil</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="399"/>
@@ -10578,17 +10578,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>Plána XY</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="36"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ-eitleán</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="43"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ-eitleán</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
@@ -10626,17 +10626,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>Plána XY</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="35"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ-eitleán</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="42"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ-eitleán</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="80"/>
@@ -10656,7 +10656,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="140"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="156"/>
@@ -10671,7 +10671,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="194"/>
       <source>Width</source>
-      <translation type="unfinished">Width</translation>
+      <translation>Leithead</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="214"/>
@@ -10982,7 +10982,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="311"/>
       <source>Size</source>
-      <translation type="unfinished">Size</translation>
+      <translation>Méid</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="346"/>
@@ -11187,7 +11187,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="41"/>
       <source>Language</source>
-      <translation type="unfinished">Language</translation>
+      <translation>Teanga</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
@@ -11226,7 +11226,7 @@ a mbeidh ponc/tréimhse le priontáil i gcónaí</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="211"/>
       <source>Theme</source>
-      <translation type="unfinished">Theme</translation>
+      <translation>Téama</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="218"/>
@@ -11326,7 +11326,7 @@ taispeánfaidh FreeCAD an splancscáileán.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="497"/>
       <source>Manage</source>
-      <translation type="unfinished">Manage</translation>
+      <translation>Bainistigh</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="504"/>
@@ -12291,7 +12291,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="36"/>
       <source>Local coordinate system</source>
-      <translation type="unfinished">Local coordinate system</translation>
+      <translation>Córas comhordanáidí áitiúil</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="41"/>
@@ -12340,12 +12340,12 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="252"/>
       <source>Translate</source>
-      <translation type="unfinished">Translate</translation>
+      <translation>Aistrigh</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="262"/>
       <source>Rotate</source>
-      <translation type="unfinished">Rotate</translation>
+      <translation>Rothlaigh</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="288"/>
@@ -12411,7 +12411,7 @@ neamh-theimhneach.</translation>
       <location filename="../TaskTransform.ui" line="600"/>
       <location filename="../TaskTransform.ui" line="613"/>
       <source>Rotation</source>
-      <translation type="unfinished">Rotation</translation>
+      <translation>Rothlú</translation>
     </message>
   </context>
   <context>
@@ -12497,7 +12497,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../TaskTransform.cpp" line="184"/>
       <source>Custom</source>
-      <translation type="unfinished">Custom</translation>
+      <translation>Saincheaptha</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="191"/>
@@ -12543,13 +12543,13 @@ neamh-theimhneach.</translation>
       <location filename="../InputHintWidget.cpp" line="252"/>
       <source>Enter</source>
       <extracomment>Keyboard key for numpad Enter</extracomment>
-      <translation type="unfinished">Enter</translation>
+      <translation>Iontráil</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="254"/>
       <source>Insert</source>
       <extracomment>Keyboard key for Insert</extracomment>
-      <translation type="unfinished">Insert</translation>
+      <translation>Cuir isteach</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="244"/>
@@ -12573,7 +12573,7 @@ neamh-theimhneach.</translation>
       <location filename="../InputHintWidget.cpp" line="258"/>
       <source>Pause</source>
       <extracomment>Keyboard key for Pause</extracomment>
-      <translation type="unfinished">Pause</translation>
+      <translation>Sos</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="260"/>
@@ -12597,7 +12597,7 @@ neamh-theimhneach.</translation>
       <location filename="../InputHintWidget.cpp" line="268"/>
       <source>Home</source>
       <extracomment>Keyboard key for Home</extracomment>
-      <translation type="unfinished">Home</translation>
+      <translation>Baile</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="270"/>
@@ -13023,7 +13023,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1608"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Athríomh</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1609"/>
@@ -13505,7 +13505,7 @@ Ar aghaidh?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="121"/>
       <source>New Group</source>
-      <translation type="unfinished">New Group</translation>
+      <translation>Grúpa Nua</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="122"/>
@@ -14465,7 +14465,7 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="62"/>
       <source>Generic</source>
-      <translation type="unfinished">Generic</translation>
+      <translation>Cineálach</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="65"/>
@@ -14506,7 +14506,7 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="502"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Léiriú</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="504"/>
@@ -14564,12 +14564,12 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
     <message>
       <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
-      <translation type="unfinished">Yes</translation>
+      <translation>Tá</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
-      <translation type="unfinished">No</translation>
+      <translation>Níl</translation>
     </message>
   </context>
   <context>
