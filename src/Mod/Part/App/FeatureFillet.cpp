@@ -164,7 +164,8 @@ App::DocumentObjectExecReturn* Fillet::execute()
                 );
             }
             return new App::DocumentObjectExecReturn(
-                "Fillet failed: the radius may be too large or incompatible with the selected edges. "
+                "Fillet failed: the radius may be too large or incompatible with the selected "
+                "edges. "
                 "Reduce the radius or select fewer edges."
             );
         }
