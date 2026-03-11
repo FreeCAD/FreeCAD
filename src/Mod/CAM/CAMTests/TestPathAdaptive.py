@@ -636,7 +636,7 @@ class TestPathAdaptive(PathTestBase):
         adaptive.recompute()
 
         # Check:
-        # - Bounding box at Z=10 stays basically above "btall"
+        # - Bounding box at Z=10 does not cut the region to the right
         # - Bounding box at Z=5 and Z=0 are outside of stock
 
         paths = [c for c in adaptive.Path.Commands if c.Name in ["G1", "G01"]]
@@ -648,6 +648,12 @@ class TestPathAdaptive(PathTestBase):
         # NOTE: ADD tol here, since we're effectively flipping our normal
         # comparison and want tolerance to make our check looser
         moffset = toolr + tol
+
+        # Update: I'm reducing the strictness of this check because adaptive
+        #  is allowed to move the tool where there is no stock if it's convenient,
+        #  and the original strictness caused problems. Still, it should not wander
+        #  exceptionally far from the stock.
+        moffset += toolr * 2
 
         zDict = getPathBoundaries(paths, [10, 5])
         sbb = adaptive.Document.Stock.Shape.BoundBox

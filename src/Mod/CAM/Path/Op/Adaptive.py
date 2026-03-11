@@ -600,7 +600,7 @@ def Execute(op, obj):
                 for seg in path:
                     # path is closed, so adding just the start point of each segment is sufficient
                     bbox.add(seg[0])
-            # TODO expand bbox for pofile mode
+            # TODO expand bbox for profile mode, and update ExecuteModelAware too
             for ca in PathOpUtil.getClearedAreas(op, bbox):
                 shape = ca.toTopoShape()
                 for wire in shape.Wires:
@@ -620,7 +620,7 @@ def Execute(op, obj):
             "tool": float(op.tool.Diameter),
             "tolerance": float(obj.Tolerance),
             "geometry": path2d,
-            "clearedArea": clearedArea,  # TODO add this to the model aware branch too
+            "clearedArea": clearedArea,
             "stockGeometry": stockPath2d,
             "stepover": float(obj.StepOver),
             "effectiveHelixDiameter": float(helixDiameter),
@@ -676,9 +676,7 @@ def Execute(op, obj):
             a2d.opType = opType
 
             # EXECUTE
-            results = a2d.Execute(
-                stockPath2d, path2d, clearedArea, progressFn
-            )  # TODO update model aware
+            results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
 
             # need to convert results to python object to be JSON serializable
             adaptiveResults = []
@@ -805,6 +803,24 @@ def ExecuteModelAware(op, obj):
         if hasattr(obj, "KeepToolDownRatio"):
             keepToolDownRatio = obj.KeepToolDownRatio.Value
 
+        clearedArea = []
+        if obj.UseRestMachining:
+            bbox = BoundBox()
+            for path in pathArray:
+                for seg in path:
+                    # path is closed, so adding just the start point of each segment is sufficient
+                    bbox.add(seg[0])
+            # TODO expand bbox for pofile mode
+            for ca in PathOpUtil.getClearedAreas(op, bbox):
+                shape = ca.toTopoShape()
+                for wire in shape.Wires:
+                    outputWire = []
+                    for edge in wire.Edges:
+                        assert edge.Curve.TypeId == "Part::GeomLine"
+                        v = edge.Vertexes[0].Point
+                        outputWire.append([v.x, v.y])
+                    clearedArea.append(outputWire)
+
         # These fields are used to determine if toolpaths should be recalculated
         outsideInputStateObject = {
             "tool": op.tool.Diameter.Value,
@@ -812,6 +828,7 @@ def ExecuteModelAware(op, obj):
             "geometry": [
                 k["path2d"] for k in regionOps if k["opType"] in [outsideClearing, outsideProfiling]
             ],
+            "clearedArea": clearedArea,
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
             "effectiveHelixDiameter": helixDiameter,
@@ -914,7 +931,7 @@ def ExecuteModelAware(op, obj):
                 a2d.opType = opType
 
                 rdict["toolpaths"] = a2d.Execute(
-                    stockPaths[rdict["startdepth"]], path2d, progressFn
+                    stockPaths[rdict["startdepth"]], path2d, clearedArea, progressFn
                 )
 
             # Sort regions to cut by either depth or area.
