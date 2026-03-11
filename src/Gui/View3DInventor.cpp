@@ -570,24 +570,27 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     return false;
 }
 
-const std::string& View3DInventor::getCamera() const
+const QString View3DInventor::getCamera() const
 {
     SoCamera* Cam = _viewer->getSoRenderManager()->getCamera();
     if (!Cam) {
         throw Base::RuntimeError("Could not find reference to 3D View camera");
     }
-    return SoFCDB::writeNodesToString(Cam);
+    QString camera;
+    camera.fromLatin1(SoFCDB::writeNodesToString(Cam).c_str());
+    return camera;
 }
 
-bool View3DInventor::setCamera(const char* pCamera)
+bool View3DInventor::setCamera(QString camera)
 {
     SoCamera* CamViewer = _viewer->getSoRenderManager()->getCamera();
     if (!CamViewer) {
         throw Base::RuntimeError("No camera set so far…");
     }
 
+    QByteArray latin1camera = camera.toLatin1();
     SoInput in;
-    in.setBuffer((void*)pCamera, std::strlen(pCamera));
+    in.setBuffer((void*)latin1camera.constData(), latin1camera.length());
 
     SoNode* Cam;
     SoDB::read(&in, Cam);

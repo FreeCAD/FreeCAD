@@ -2023,8 +2023,7 @@ void Document::SaveDocFile(Base::Writer& writer) const
     // save camera settings
     for (const auto& it : getMDIViews()) {
         if (auto* view3D = freecad_cast<View3DInventor*>(it)) {
-            const std::string& camera = view3D->getCamera();
-            if (saveCameraSettings(camera.c_str())) {
+            if (saveCameraSettings(view3D->getCamera().toLatin1())) {
                 break;
             }
         }
@@ -2213,8 +2212,7 @@ MDIView* Document::createView(const Base::Type& typeId, CreateViewMode mode)
             auto firstView = static_cast<View3DInventor*>(theViews.front());
             shareWidget = qobject_cast<QOpenGLWidget*>(firstView->getViewer()->getGLWidget());
 
-            const std::string& camera = firstView->getCamera();
-            saveCameraSettings(camera.c_str());
+            saveCameraSettings(firstView->getCamera().toLatin1());
         }
 
         auto view3D = new View3DInventor(this, getMainWindow(), shareWidget);

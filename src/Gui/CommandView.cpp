@@ -401,7 +401,7 @@ void StdCmdFreezeViews::activated(int iMsg)
             );
             return;
         }
-        const std::string& camera = view3d->getCamera();
+        const QString& camera = view3d->getCamera();
 
         QList<QAction*> acts = pcAction->actions();
         int index = 1;
@@ -410,7 +410,7 @@ void StdCmdFreezeViews::activated(int iMsg)
                 savedViews++;
                 QString viewnr = QString(QObject::tr("Restore View &%1")).arg(index);
                 (*it)->setText(viewnr);
-                (*it)->setToolTip(QString::fromLatin1(camera));
+                (*it)->setToolTip(camera);
                 (*it)->setVisible(true);
                 if (index < 10) {
                     (*it)->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(index)));
@@ -2646,24 +2646,25 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
         );
         return;
     }
-    std::string camera = view3d->getCamera();
+    QString camera = view3d->getCamera();
 
     // remove the #inventor line...
-    std::string::size_type pos = camera.find_first_of('\n');
-    camera.erase(0, pos);
+    std::string::size_type pos = camera.indexOf('\n');
+    camera.remove(0, pos);
 
     // remove all returns
-    while ((pos = camera.find('\n')) != std::string::npos) {
+    while ((pos = camera.indexOf('\n')) != -1) {
         camera.replace(pos, 1, " ");
     }
 
     // build up the command string
-    std::string command = "Gui.activeView().setCamera(\"";
+    QString command = "Gui.activeView().setCamera(\"";
     command += camera;
     command += "\")";
 
-    Base::Console().message("%s\n", camera.c_str());
-    getGuiApplication()->macroManager()->addLine(MacroManager::Gui, command.c_str());
+    QByteArray latin1camera = camera.toLatin1();
+    Base::Console().message("%s\n", latin1camera.constData());
+    getGuiApplication()->macroManager()->addLine(MacroManager::Gui, command.toLatin1());
 }
 
 bool StdCmdViewIvIssueCamPos::isActive()
