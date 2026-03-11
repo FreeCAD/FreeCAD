@@ -4116,11 +4116,13 @@ TopoShape& TopoShape::makeElementFillet(
             int ic = mkFillet.FaultyContour(1);
             switch (mkFillet.StripeStatus(ic)) {
                 case ChFiDS_WalkingFailure:
-                    FC_THROWM(Base::CADKernelError,
+                    FC_THROWM(
+                        Base::CADKernelError,
                         "Fillet failed: could not trace the blending surface along edge contour "
                             << ic
                             << ". The radius may be too large or the edge geometry too complex. "
-                               "Try reducing the radius or selecting fewer edges.");
+                               "Try reducing the radius or selecting fewer edges."
+                    );
                 case ChFiDS_StartsolFailure:
                     FC_THROWM(
                         Base::CADKernelError,

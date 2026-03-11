@@ -108,9 +108,11 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         Part::SignalException sig;
         mkChamfer.Build();
         if (!mkChamfer.IsDone()) {
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
                 "Chamfer failed: size is incompatible with the shape geometry. "
-                "Reduce the size, select fewer edges, or ensure edges have sufficient width."));
+                "Reduce the size, select fewer edges, or ensure edges have sufficient width."
+            ));
         }
         TopoDS_Shape shape = mkChamfer.Shape();
         if (shape.IsNull()) {
