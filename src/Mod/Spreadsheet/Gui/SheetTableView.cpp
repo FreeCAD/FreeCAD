@@ -484,6 +484,10 @@ bool SheetTableView::event(QEvent* event)
             default:
                 break;
         }
+        if (kevent->matches(QKeySequence::SelectAll)) {
+            QTableView::selectAll();
+            return true;
+        }
         if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
             deleteSelection();
         }
@@ -535,6 +539,9 @@ bool SheetTableView::event(QEvent* event)
             }
         }
 
+        if (kevent->matches(QKeySequence::SelectAll)) {
+            kevent->accept();
+        }
         if (kevent->matches(QKeySequence::Delete) || kevent->matches(QKeySequence::Backspace)) {
             kevent->accept();
         }
