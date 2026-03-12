@@ -171,17 +171,18 @@ SET(PathPythonToolsGui_SRCS
 )
 
 SET(PathPythonMachineUi_SRCS
-    Path/Machine/ui/__init__.py
+    Machine/ui/__init__.py
 )
 
 SET(PathPythonMachineUiEditor_SRCS
-    Path/Machine/ui/editor/machine_editor.py
-    Path/Machine/ui/editor/__init__.py
+    Machine/ui/editor/machine_editor.py
+    Machine/ui/editor/postprocessor_properties.py
+    Machine/ui/editor/__init__.py
 )
 
 SET(PathPythonMachineModels_SRCS
-    Path/Machine/models/__init__.py
-    Path/Machine/models/machine.py
+    Machine/models/__init__.py
+    Machine/models/machine.py
 )
 
 SET(PathPythonToolsToolBit_SRCS
@@ -927,21 +928,21 @@ INSTALL(
     FILES
         ${PathPythonMachineModels_SRCS}
     DESTINATION
-        Mod/CAM/Path/Machine/models
+        Mod/CAM/Machine/models
 )
 
 INSTALL(
     FILES
         ${PathPythonMachineUi_SRCS}
     DESTINATION
-        Mod/CAM/Path/Machine/ui
+        Mod/CAM/Machine/ui
 )
 
 INSTALL(
     FILES
         ${PathPythonMachineUiEditor_SRCS}
     DESTINATION
-        Mod/CAM/Path/Machine/ui/editor
+        Mod/CAM/Machine/ui/editor
 )
 
 INSTALL(

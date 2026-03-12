@@ -267,5 +267,6 @@ def show_examplegui():
     mw = FreeCADGui.getMainWindow()
     example_widget = QtGui.QDockWidget("FEM Examples", mw)
     example_widget.setWidget(FemExamples())
+    example_widget.setObjectName("FemExamples")
     mw.addDockWidget(QtCore.Qt.RightDockWidgetArea, example_widget)
     QtGui.QApplication.restoreOverrideCursor()

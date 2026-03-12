@@ -877,4 +877,5 @@ protected:
         dirVec.Normalize();
     }
 };
+
 }  // namespace SketcherGui
