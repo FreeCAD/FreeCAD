@@ -2027,7 +2027,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                     Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
                     Constr->LabelDistance = centerToToPos * arcDirection;
 
-                    
+
                     draw(true, false);
                     return;
                 }
