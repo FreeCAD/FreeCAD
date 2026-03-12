@@ -1688,6 +1688,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
         initialClearedPaths.push_back(p);
     }
+    SimplifyPolygons(initialClearedPaths);
 
     SimplifyPolygons(stockInputPaths);
 

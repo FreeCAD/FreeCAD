@@ -593,23 +593,7 @@ def Execute(op, obj):
         if hasattr(obj, "KeepToolDownRatio"):
             keepToolDownRatio = float(obj.KeepToolDownRatio)
 
-        clearedArea = []
-        if obj.UseRestMachining:
-            bbox = BoundBox()
-            for path in pathArray:
-                for seg in path:
-                    # path is closed, so adding just the start point of each segment is sufficient
-                    bbox.add(seg[0])
-            # TODO expand bbox for profile mode, and update ExecuteModelAware too
-            for ca in PathOpUtil.getClearedAreas(op, bbox):
-                shape = ca.toTopoShape()
-                for wire in shape.Wires:
-                    outputWire = []
-                    for edge in wire.Edges:
-                        assert edge.Curve.TypeId == "Part::GeomLine"
-                        v = edge.Vertexes[0].Point
-                        outputWire.append([v.x, v.y])
-                    clearedArea.append(outputWire)
+        clearedArea = get_cleared_area(op, obj, pathArray)
 
         # put here all properties that influence calculation of adaptive base paths,
 
@@ -708,6 +692,36 @@ def Execute(op, obj):
             sceneClean()
 
 
+def get_cleared_area(op, obj, pathArray, zOverride=None):
+    clearedArea = []
+    if obj.UseRestMachining:
+        bbox = BoundBox()
+        for path in pathArray:
+            for seg in path:
+                # path is closed, so adding just the start point of each segment is sufficient
+                bbox.add(seg[0][0], seg[0][1], zOverride if zOverride is not None else seg[0][2])
+
+        # If profiling, enlarge the bbox to cover the area that will actually be cleared
+        if obj.OperationType == "Profiling":
+            dxy = op.tool.Diameter.Value * 3  # slightly excessive, to ensure coverage
+            bbox.XMin -= dxy
+            bbox.YMin -= dxy
+            bbox.XMax += dxy
+            bbox.YMax += dxy
+
+        for ca in PathOpUtil.getClearedAreas(op, bbox):
+            shape = ca.toTopoShape()
+            for wire in shape.Wires:
+                outputWire = []
+                for edge in wire.Edges:
+                    assert edge.Curve.TypeId == "Part::GeomLine"
+                    v = edge.Vertexes[0].Point
+                    outputWire.append([v.x, v.y])
+                clearedArea.append(outputWire)
+
+    return clearedArea
+
+
 def ExecuteModelAware(op, obj):
     global sceneGraph
     global topZ
@@ -765,12 +779,14 @@ def ExecuteModelAware(op, obj):
         # NOTE: Pretty sure sorting is already guaranteed by how these are
         # created, but best to not assume that
         for rdict in op.outsidePathArray:
+            stockEdges = [list(zip(p, p[1:] + [p[0]])) for p in stockPaths[rdict["depths"][0]]]
             regionOps.append(
                 {
                     "opType": (
                         outsideClearing if obj.OperationType == "Clearing" else outsideProfiling
                     ),
                     "path2d": convertTo2d(rdict["edges"]),
+                    "clearedArea": get_cleared_area(op, obj, stockEdges, rdict["depths"][-1]),
                     "id": rdict["id"],
                     "children": rdict["children"],
                     # FIXME: Kinda gross- just use this to match up with the
@@ -782,12 +798,14 @@ def ExecuteModelAware(op, obj):
                 (sorted(rdict["depths"], reverse=True), regionOps[-1])
             )
         for rdict in op.insidePathArray:
+            edges = [list(zip(p, p[1:] + [p[0]])) for p in convertTo2d(rdict["edges"])]
             regionOps.append(
                 {
                     "opType": (
                         insideClearing if obj.OperationType == "Clearing" else insideProfiling
                     ),
                     "path2d": convertTo2d(rdict["edges"]),
+                    "clearedArea": get_cleared_area(op, obj, edges, min(rdict["depths"])),
                     "id": rdict["id"],
                     "children": rdict["children"],
                     # FIXME: Kinda gross- just use this to match up with the
@@ -803,32 +821,15 @@ def ExecuteModelAware(op, obj):
         if hasattr(obj, "KeepToolDownRatio"):
             keepToolDownRatio = obj.KeepToolDownRatio.Value
 
-        clearedArea = []
-        if obj.UseRestMachining:
-            bbox = BoundBox()
-            for path in pathArray:
-                for seg in path:
-                    # path is closed, so adding just the start point of each segment is sufficient
-                    bbox.add(seg[0])
-            # TODO expand bbox for pofile mode
-            for ca in PathOpUtil.getClearedAreas(op, bbox):
-                shape = ca.toTopoShape()
-                for wire in shape.Wires:
-                    outputWire = []
-                    for edge in wire.Edges:
-                        assert edge.Curve.TypeId == "Part::GeomLine"
-                        v = edge.Vertexes[0].Point
-                        outputWire.append([v.x, v.y])
-                    clearedArea.append(outputWire)
-
         # These fields are used to determine if toolpaths should be recalculated
         outsideInputStateObject = {
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
             "geometry": [
-                k["path2d"] for k in regionOps if k["opType"] in [outsideClearing, outsideProfiling]
+                (k["path2d"], k["clearedArea"])
+                for k in regionOps
+                if k["opType"] in [outsideClearing, outsideProfiling]
             ],
-            "clearedArea": clearedArea,
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
             "effectiveHelixDiameter": helixDiameter,
@@ -850,7 +851,9 @@ def ExecuteModelAware(op, obj):
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
             "geometry": [
-                k["path2d"] for k in regionOps if k["opType"] in [insideClearing, insideProfiling]
+                (k["path2d"], k["clearedArea"])
+                for k in regionOps
+                if k["opType"] in [insideClearing, insideProfiling]
             ],
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
@@ -915,6 +918,7 @@ def ExecuteModelAware(op, obj):
             # identical stepdowns
             for rdict in regionOps:
                 path2d = rdict["path2d"]
+                clearedArea = rdict["clearedArea"]
                 opType = rdict["opType"]
 
                 a2d = area.Adaptive2d()
@@ -985,12 +989,6 @@ def ExecuteModelAware(op, obj):
                     # Regions are only generated where stock needs to be
                     # removed, so we can't start at the cut level- we know
                     # there's material there.
-                    # TODO: Due to the adaptive algorithm currently not
-                    # processing holes in the stock when finding entry points,
-                    # this may result in a helix up to stepdown in height where
-                    # one isn't required. This should be fixed in FindEntryPoint
-                    # or FindEntryPointOutside in Adaptive.cpp, not bandaged
-                    # here.
 
                     TopDepth = min(
                         topZ,
