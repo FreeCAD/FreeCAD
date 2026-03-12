@@ -2085,13 +2085,14 @@ bool Adaptive2d::FindEntryPoint(
 
     if (!found) {
         cerr << "Start point not found!" << endl;
-        cout << "Tool bound paths (" << toolBoundPaths.size() << "):" << endl;
+        (*fout) << "Start point not found!" << endl;
+        (*fout) << "Tool bound paths (" << toolBoundPaths.size() << "):" << endl;
         for (const Path& path : toolBoundPaths) {
-            cout << "[" << endl;
+            (*fout) << "[" << endl;
             for (const IntPoint& p : path) {
-                cout << "(" << p.X << ", " << p.Y << ")" << endl;
+                (*fout) << "(" << p.X << ", " << p.Y << ")" << endl;
             }
-            cout << "]" << endl;
+            (*fout) << "]" << endl;
         }
     }
     if (found) {
@@ -2560,15 +2561,16 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
         bool leadInOk
             = MakeLeadPath(true, endPoint, revEndDir, endBeacon, cleared, toolBoundPaths, leadInPath);
         ReversePath(leadInPath);
-        cout << "MakeLeadIn:" << endl;
-        cout << "\trevEndDir (" << revEndDir.X << ", " << revEndDir.Y << ")" << endl;
-        cout << "\tendBoundaryDir (" << endBoundaryDir.X << ", " << endBoundaryDir.Y << ")" << endl;
-        cout << "\tendBeaconDir (" << endBeaconDir.X << ", " << endBeaconDir.Y << ")" << endl;
-        cout << "\tok? " << leadInOk << endl;
+        (*fout) << "MakeLeadIn:" << endl;
+        (*fout) << "\trevEndDir (" << revEndDir.X << ", " << revEndDir.Y << ")" << endl;
+        (*fout) << "\tendBoundaryDir (" << endBoundaryDir.X << ", " << endBoundaryDir.Y << ")"
+                << endl;
+        (*fout) << "\tendBeaconDir (" << endBeaconDir.X << ", " << endBeaconDir.Y << ")" << endl;
+        (*fout) << "\tok? " << leadInOk << endl;
         for (auto& p : leadInPath) {
-            cout << "\t(" << p.X << "," << p.Y << ")" << endl;
+            (*fout) << "\t(" << p.X << "," << p.Y << ")" << endl;
         }
-        cout << endl;
+        (*fout) << endl;
 
         if (!leadInOk) {
             Perf_AppendToolPath.Stop();
@@ -2743,15 +2745,16 @@ std::optional<std::pair<IntPoint, DoublePoint>> Adaptive2d::AppendToolPath(
             Path leadOutPath;
             bool ok
                 = MakeLeadPath(false, prevPoint, prevDir, beacon, cleared, toolBoundPaths, leadOutPath);
-            cout << "MakeLeadOut:" << endl;
-            cout << "\tstartDir (" << prevDir.X << ", " << prevDir.Y << ")" << endl;
-            cout << "\tstartBoundaryDir (" << boundaryDir.X << ", " << boundaryDir.Y << ")" << endl;
-            cout << "\tstartBeaconDir (" << beaconDir.X << ", " << beaconDir.Y << ")" << endl;
-            cout << "\tok? " << ok << endl;
+            (*fout) << "MakeLeadOut:" << endl;
+            (*fout) << "\tstartDir (" << prevDir.X << ", " << prevDir.Y << ")" << endl;
+            (*fout) << "\tstartBoundaryDir (" << boundaryDir.X << ", " << boundaryDir.Y << ")"
+                    << endl;
+            (*fout) << "\tstartBeaconDir (" << beaconDir.X << ", " << beaconDir.Y << ")" << endl;
+            (*fout) << "\tok? " << ok << endl;
             for (auto& p : leadOutPath) {
-                cout << "\t(" << p.X << "," << p.Y << ")" << endl;
+                (*fout) << "\t(" << p.X << "," << p.Y << ")" << endl;
             }
-            cout << endl;
+            (*fout) << endl;
 
             if (ok && leadOutPath.size() >= 1) {
                 // smooth path
@@ -3008,8 +3011,8 @@ void Adaptive2d::ProcessPolyNode(
     ClearedArea cleared(toolRadiusScaled);
     cleared.SetClearedPaths(initialClearedPaths);
 
-    cout << "Tool Radius Scaled: " << toolRadiusScaled << endl;
-    cout << "stepOverScaled: " << stepOverScaled << endl;
+    fout << "Tool Radius Scaled: " << toolRadiusScaled << endl;
+    fout << "stepOverScaled: " << stepOverScaled << endl;
 
     long stepScaled = long(MIN_STEP_CLIPPER);
 
@@ -3555,13 +3558,10 @@ void Adaptive2d::ProcessPolyNode(
             }
         );
 
-        cout << "Engagement points: [";
         fout << "Engagement points: [";
         for (const auto& p : engagePoints) {
-            cout << "(" << std::get<IntPoint>(p).X << "," << std::get<IntPoint>(p).Y << ")_";
             fout << "(" << std::get<IntPoint>(p).X << "," << std::get<IntPoint>(p).Y << ")_";
         }
-        cout << "]" << endl;
         fout << "]" << endl;
 
         double bestCost = __DBL_MAX__;
@@ -3681,14 +3681,13 @@ void Adaptive2d::ProcessPolyNode(
         entryPoint = linkPath.size() > 0
             ? IntPoint {linkPath[0].second[0].first * scaleFactor, linkPath[0].second[0].second * scaleFactor}
             : toolPos;
-        cout << "link path size " << linkPath.size() << endl;
+        fout << "link path size " << linkPath.size() << endl;
         output.StartPoint
             = DPoint(double(entryPoint.X) / scaleFactor, double(entryPoint.Y) / scaleFactor);
     }
     else {
         // Engagement failed; instead helix down
         fout << "Helix entry " << entryPoint << "\n";
-        cout << "No enage, helixing down\n";
         if (!FindEntryPoint(
                 progressPaths,
                 toolBoundPaths,
@@ -3709,8 +3708,6 @@ void Adaptive2d::ProcessPolyNode(
     output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
     output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
 
-    cout << "Entry point: (" << entryPoint.X << "," << entryPoint.Y << ") Start point: ("
-         << toolPos.X << "," << toolPos.Y << ")" << endl;
     fout << "Entry point: (" << entryPoint.X << "," << entryPoint.Y << ") Start point: ("
          << toolPos.X << "," << toolPos.Y << ")" << endl;
 
@@ -3875,7 +3872,6 @@ void Adaptive2d::ProcessPolyNode(
         }
         else {
             fout << "Rejected pass, too little area " << cumulativeCutArea << "\n\n";
-            cout << "Rejected pass, too little area " << cumulativeCutArea << "\n\n";
             bad_engage_count++;
         }
 
@@ -3932,14 +3928,15 @@ void Adaptive2d::ProcessPolyNode(
             }
 
             cerr << "NO ENGAGEMENTS LEFT BUT NOT ALL CELARED!!! " << endl;
+            fout << "NO ENGAGEMENTS LEFT BUT NOT ALL CELARED!!! " << endl;
             for (Path& path : remaining) {
-                cout << "[" << endl;
+                fout << "[" << endl;
                 for (IntPoint& p : path) {
-                    cout << "(" << p.X << ", " << p.Y << ")" << endl;
+                    fout << "(" << p.X << ", " << p.Y << ")" << endl;
                 }
-                cout << "]" << endl;
+                fout << "]" << endl;
             }
-            cout << endl;
+            fout << endl;
             break;
         }
     }
