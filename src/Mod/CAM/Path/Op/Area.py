@@ -286,12 +286,11 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.debug("sections = %s" % sections)
 
         # Rest machining
-        self.sectionShapes = self.sectionShapes + [section.toTopoShape() for section in sections]
         if hasattr(obj, "UseRestMachining") and obj.UseRestMachining:
             restSections = []
             for section in sections:
                 bbox = section.getShape().BoundBox
-                sectionClearedAreas = PathOpUtil.getClearedAreas(self, bbox)
+                sectionClearedAreas = PathOpUtil.getClearedAreas(obj, bbox)
                 restSection = section.getRestArea(
                     sectionClearedAreas, self.tool.Diameter.getValueAs("mm")
                 )
@@ -463,7 +462,6 @@ class ObjectOp(PathOp.ObjectOp):
             shapes = [j["shape"] for j in locations]
 
         sims = []
-        self.sectionShapes = []
         for shape, isHole, sub in shapes:
             profileEdgesIsOpen = False
 

@@ -709,7 +709,7 @@ def get_cleared_area(op, obj, pathArray, zOverride=None):
             bbox.XMax += dxy
             bbox.YMax += dxy
 
-        for ca in PathOpUtil.getClearedAreas(op, bbox):
+        for ca in PathOpUtil.getClearedAreas(obj, bbox):
             shape = ca.toTopoShape()
             for wire in shape.Wires:
                 outputWire = []

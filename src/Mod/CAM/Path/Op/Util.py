@@ -24,6 +24,8 @@
 
 import FreeCAD
 import Path
+import Path.Dressup.Utils as PathDressup
+import PathScripts.PathUtils as PathUtils
 import math
 
 # lazily loaded modules
@@ -429,26 +431,17 @@ def getClearedAreas(currentOp, bbox):
     - bbox: the cleared region is only generated where it is close enough to
       impact the bbox region
     """
-    z = bbox.ZMin
     clearedAreas = []
-    for op in currentOp.job.Operations.Group:
-        if currentOp in [x.Proxy for x in [op] + op.OutListRecursive if hasattr(x, "Proxy")]:
+    job = currentOp.Proxy.job
+    z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
+    for op in job.Operations.Group:
+        baseOp = PathDressup.baseOp(op)
+        if baseOp.Name == currentOp.Name:
             break
-        if hasattr(op, "Active") and op.Active and op.Path:
-            tool = (
-                op.Proxy.tool
-                if hasattr(op.Proxy, "tool")
-                else op.ToolController.Proxy.getTool(op.ToolController)
-            )
+        if getattr(baseOp, "Active", False) and op.Path:
+            tool = baseOp.ToolController.Tool
             diameter = tool.Diameter.getValueAs("mm")
-            dz = (
-                0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
-            )  # for drills, dz translates to the full width part of the tool
-            clearedAreas.append(
-                op.Path.getClearedArea(
-                    diameter,
-                    z + dz + currentOp.job.GeometryTolerance.getValueAs("mm"),
-                    bbox,
-                )
-            )
+            # for drills, dz translates to the full width part of the tool
+            dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
+            clearedAreas.append(op.Path.getClearedArea(diameter, z + dz, bbox))
     return clearedAreas
