@@ -1245,12 +1245,7 @@ Adaptive2d::Adaptive2d()
 //     3) if x<c2.X, additionally accumulate area in conventionalArea, for detection of conventional
 //     cutting
 // 4) Return <totalArea, conventionalArea>
-std::pair<double, double> Adaptive2d::CalcCutArea(
-    Clipper& clip,
-    IntPoint c1,
-    IntPoint c2,
-    ClearedArea& clearedArea
-)
+std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, ClearedArea& clearedArea)
 {
     double dist = sqrt(DistanceSqrd(c1, c2));
     if (dist < NTOL) {
@@ -1296,8 +1291,8 @@ std::pair<double, double> Adaptive2d::CalcCutArea(
         const double angle = std::numbers::pi / 2 - atan2(c2.Y - c1.Y, c2.X - c1.X);
         const double ca = cos(angle);
         const double sa = sin(angle);
-        c1 = {ca * c1.X - sa * c1.Y, sa * c1.X + ca * c1.Y};
-        c2 = {ca * c2.X - sa * c2.Y, sa * c2.X + ca * c2.Y};
+        c1 = {(long long)(ca * c1.X - sa * c1.Y), (long long)(sa * c1.X + ca * c1.Y)};
+        c2 = {(long long)(ca * c2.X - sa * c2.Y), (long long)(sa * c2.X + ca * c2.Y)};
         vector<vector<DoublePoint>> rotatedPolygons;
         for (vector<DoublePoint>& pgon : polygons) {
             vector<DoublePoint> rotated;
@@ -1312,7 +1307,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(
 
     // 1) Find all x-coordinates of interest:
     vector<double> xs;
-    for (const auto polygon : polygons) {
+    for (const auto& polygon : polygons) {
         // 1.a) All polygon vertices
         for (const auto p : polygon) {
             xs.push_back(p.X);
@@ -1320,7 +1315,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(
 
         // 1.b) Intersection of all polygons with c1
         // 1.c) Intersection of all polygons with c2
-        for (int i = 0; i < polygon.size(); i++) {
+        for (size_t i = 0; i < polygon.size(); i++) {
             const auto p0 = polygon[i];
             const auto p1 = polygon[(i + 1) % polygon.size()];
             if (Line2CircleIntersect(c1, toolRadiusScaled, p0, p1, inters)) {
@@ -1379,7 +1374,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(
     const vector<DoublePoint> circles = {c2, c1};
     double area = 0;
     double conventionalArea = 0;
-    for (int ix = 0; ix < xs.size() - 1; ix++) {
+    for (size_t ix = 0; ix < xs.size() - 1; ix++) {
         const double x0 = xs[ix];
         const double x1 = xs[ix + 1];
         if (x0 == x1) {
@@ -1392,11 +1387,11 @@ std::pair<double, double> Adaptive2d::CalcCutArea(
         // circle index and top/bottom flag)
 
         // y, polygon index (or polygons.size() + circle index), edge index (or 0/1 for top/bottom half)
-        vector<tuple<double, int, int>> ys;
+        vector<tuple<double, size_t, size_t>> ys;
 
-        for (int ipolygon = 0; ipolygon < polygons.size(); ipolygon++) {
+        for (size_t ipolygon = 0; ipolygon < polygons.size(); ipolygon++) {
             const auto polygon = polygons[ipolygon];
-            for (int iedge = 0; iedge < polygon.size(); iedge++) {
+            for (size_t iedge = 0; iedge < polygon.size(); iedge++) {
                 const auto p0 = polygon[iedge];
                 const auto p1 = polygon[(iedge + 1) % polygon.size()];
                 // note: we skip if the edge is vertical, p0.X == p1.X == xtest
@@ -1407,7 +1402,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(
             }
         }
 
-        for (int icircle = 0; icircle < circles.size(); icircle++) {
+        for (size_t icircle = 0; icircle < circles.size(); icircle++) {
             const DoublePoint c = circles[icircle];
             const double dx = abs(xtest - c.X);
             if (dx < toolRadiusScaled) {  // skip tangent; xtest can't be a tangent anyway
@@ -1430,13 +1425,13 @@ std::pair<double, double> Adaptive2d::CalcCutArea(
         // that crossing:
         //     Init (i.e. y=-inf): outsideCount = 1 (outside c2 and inside all other shapes)
         std::vector<bool> outside;
-        for (int i = 0; i < polygons.size() + circles.size(); i++) {
+        for (size_t i = 0; i < polygons.size() + circles.size(); i++) {
             outside.push_back(i == (polygons.size()));  // poly_0, ..., poly_n-1, c2, c1
         }
         int outsideCount = 1;
-        for (int iy = 0; iy < ys.size(); iy++) {
-            const int ishape = std::get<1>(ys[iy]);
-            const int ipart = std::get<2>(ys[iy]);
+        for (size_t iy = 0; iy < ys.size(); iy++) {
+            const size_t ishape = std::get<1>(ys[iy]);
+            const size_t ipart = std::get<2>(ys[iy]);
 
             const bool prevOutside = outside[ishape];
             const int prevCount = outsideCount;
@@ -1772,7 +1767,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // preserve Z value
     Paths toolBounds;
     for (const Path& path : inputPaths) {
-        int orientation = Orientation(path);
+        bool orientation = Orientation(path);
         int direction = (getPathNestingLevel(path, inputPaths) % 2 == 1) ? 1 : -1;
         bool z1 = false;
         for (const IntPoint& p : path) {
@@ -1815,7 +1810,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             Paths currentTBP;
             currentTBP.push_back(current);
 
-            for (int iother = 0; iother < toolBounds.size(); iother++) {
+            for (size_t iother = 0; iother < toolBounds.size(); iother++) {
                 const auto& other = toolBounds[iother];
 
                 if (PointInPolygon(other.front(), current) != 0) {
@@ -1829,7 +1824,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // ...again, clipper 1 doesn't perserve Z for offsets, so do this per-curve
             Paths finishingPass;
             for (const Path& path : currentTBP) {
-                int orientation = Orientation(path);
+                bool orientation = Orientation(path);
                 int direction = (getPathNestingLevel(path, toolBounds) % 2 == 1) ? 1 : -1;
                 bool finshing = false;
                 for (const IntPoint& p : path) {
@@ -2085,7 +2080,7 @@ bool Adaptive2d::IsAllowedToCutTrough(
                 long(p1.X + double(p2.X - p1.X) * p),
                 long(p1.Y + double(p2.Y - p1.Y) * p)
             );
-            double area = CalcCutArea(clip, toolPos1, toolPos2, cleared).first;
+            double area = CalcCutArea(toolPos1, toolPos2, cleared).first;
             // if we are cutting above optimal -> not clear to cut
             if (area > areaFactor * stepSize * optimalCutAreaPD) {
                 Perf_IsAllowedToCutTrough.Stop();
@@ -2731,7 +2726,7 @@ Paths PathIntersectArea(Clipper& clip, Path& subject, Paths& obj)
 
     // init z-data: p[i].z = 2 * i + 1, and new points are the average of their neighbors
     // this ensures new points have unique z but come between the points they're made from
-    for (int i = 0; i < subject.size(); i++) {
+    for (size_t i = 0; i < subject.size(); i++) {
         subject[i].Z = i * 2 + 1;
     }
     for (Path& path : obj) {
@@ -2760,8 +2755,7 @@ Paths PathIntersectArea(Clipper& clip, Path& subject, Paths& obj)
 
     // restore orientation
     for (Path& p : diff) {
-        bool needsReverse = false;
-        for (int i = 0; i < p.size() - 1; i++) {
+        for (size_t i = 0; i < p.size() - 1; i++) {
             if (p[i].Z != 0 && p[i + 1].Z != 0) {
                 if (p[i].Z + 1 != p[i + 1].Z && p[i].Z + 2 != p[i + 1].Z) {
                     ReversePath(p);
@@ -2791,7 +2785,7 @@ Paths PathIntersectArea(Clipper& clip, Path& subject, Paths& obj)
     if (start && end) {
         Path joined = *end;
         // append points from start, skipping the first, which is a repeat
-        for (int i = 1; i < start->size(); i++) {
+        for (size_t i = 1; i < start->size(); i++) {
             joined.push_back((*start)[i]);
         }
         result.push_back(joined);
@@ -2939,7 +2933,6 @@ void Adaptive2d::ProcessPolyNode(
         /******************************/
         Perf_PointIterations.Start();
         int iteration;
-        double prev_error = __DBL_MAX__;
         bool pointNotInterp;
         bool foundArea = false;
         IntPoint newToolPos;
@@ -2978,8 +2971,14 @@ void Adaptive2d::ProcessPolyNode(
                 Path triangle = {toolPos};
                 DoublePoint leftAngle = rotate(toolDir, -std::numbers::pi / 4);
                 DoublePoint rightAngle = rotate(toolDir, std::numbers::pi / 4);
-                triangle.push_back({toolPos.X + rightAngle.X * dist, toolPos.Y + rightAngle.Y * dist});
-                triangle.push_back({toolPos.X + leftAngle.X * dist, toolPos.Y + leftAngle.Y * dist});
+                triangle.push_back(
+                    {(long long)(toolPos.X + rightAngle.X * dist),
+                     (long long)(toolPos.Y + rightAngle.Y * dist)}
+                );
+                triangle.push_back(
+                    {(long long)(toolPos.X + leftAngle.X * dist),
+                     (long long)(toolPos.Y + leftAngle.Y * dist)}
+                );
 
                 clip.Clear();
                 clip.AddPath(triangle, PolyType::ptSubject, true);
@@ -3080,7 +3079,7 @@ void Adaptive2d::ProcessPolyNode(
                 continue;
             }
 
-            const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
+            const auto caRet = CalcCutArea(toolPos, newToolPos, cleared);
             area = std::get<0>(caRet);
             double conventionalArea = std::get<1>(caRet);
             double fractionConventional = (area == 0) ? 0 : conventionalArea / area;
@@ -3100,7 +3099,6 @@ void Adaptive2d::ProcessPolyNode(
             if (iteration == MAX_ITERATIONS - 1) {
                 out.tooManyIterations = true;
             }
-            prev_error = error;
         }
         Perf_PointIterations.Stop();
 
@@ -3139,12 +3137,14 @@ void Adaptive2d::ProcessPolyNode(
                 if (warnRotate) {
                     cerr << "Warning: unexpected number of rotate iterations." << endl;
                 }
+#else
+                UNUSED(warnRotate);
 #endif
                 out.failed = true;
             }
 
             if (recalcArea) {
-                const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
+                const auto caRet = CalcCutArea(toolPos, newToolPos, cleared);
                 area = std::get<0>(caRet);
                 areaPD = area / double(stepScaled);  // area per distance
                 double error = areaPD - targetAreaPD;
@@ -3211,7 +3211,6 @@ void Adaptive2d::ProcessPolyNode(
     };
 
     const auto _getEngagePoint = [&](const std::optional<IntPoint>& prevPos,
-                                     const std::optional<DoublePoint>& prevDir,
                                      long engagementProtrusion) {
         // engagePoint, engageDir, heuristicCost
         std::vector<std::tuple<IntPoint, DoublePoint, double>> engagePoints;
@@ -3252,7 +3251,7 @@ void Adaptive2d::ProcessPolyNode(
             else {
                 int iClosest = 0;
                 double dsqClosest = __DBL_MAX__;
-                for (int i = 0; i < engagePath.size(); i++) {
+                for (size_t i = 0; i < engagePath.size(); i++) {
                     double dsq = DistanceSqrd(*prevPos, engagePath[i]);
                     if (dsq < dsqClosest) {
                         dsqClosest = dsq;
@@ -3260,7 +3259,7 @@ void Adaptive2d::ProcessPolyNode(
                     }
                 }
 
-                for (int i = 0; i < engagePath.size(); i++) {
+                for (size_t i = 0; i < engagePath.size(); i++) {
                     rotated.push_back(engagePath[(i + iClosest) % engagePath.size()]);
                 }
             }
@@ -3270,7 +3269,7 @@ void Adaptive2d::ProcessPolyNode(
             for (Path& open : openPaths) {
                 bool added = false;
                 double dToGo = 0;  // first step is 0 -- start point
-                int seg = 0;
+                size_t seg = 0;
                 double segD = 0;
                 DoublePoint segDir = {1, 0};
                 while (!added && seg < open.size() - 1) {
@@ -3287,8 +3286,8 @@ void Adaptive2d::ProcessPolyNode(
                             dToGo = 0;
                             double interp = segD / segLen;
                             p = {
-                                p2.X * interp + p1.X * (1 - interp),
-                                p2.Y * interp + p1.Y * (1 - interp)
+                                (long long)(p2.X * interp + p1.X * (1 - interp)),
+                                (long long)(p2.Y * interp + p1.Y * (1 - interp))
                             };
                         }
                         else {
@@ -3347,7 +3346,7 @@ void Adaptive2d::ProcessPolyNode(
                     if (tp.first == MotionType::mtLinkNotClear) {
                         cost_mm += 10000;  // prioritize links that don't require retraction
                     }
-                    for (int i = 0; i < tp.second.size(); i++) {
+                    for (size_t i = 0; i < tp.second.size(); i++) {
                         DPoint cur = tp.second[i];
                         if (prev) {
                             double dx = cur.first - prev->first;
@@ -3378,8 +3377,7 @@ void Adaptive2d::ProcessPolyNode(
         }
     };
 
-    const auto getEngagePoint = [&](const std::optional<IntPoint>& prevPos,
-                                    const std::optional<DoublePoint>& prevDir) {
+    const auto getEngagePoint = [&](const std::optional<IntPoint>& prevPos) {
         Perf_NextEngagePoint.Start();
 
         // Compute how far into the material the first engagement should be
@@ -3393,10 +3391,10 @@ void Adaptive2d::ProcessPolyNode(
             = (long)min(protrusion, stepOverScaled * FINISHING_THICKNESS_SCALE);
 
         // Get engagement point. First attempt with the desired offsets, then fallback
-        auto result = _getEngagePoint(prevPos, prevDir, engagementProtrusion);
+        auto result = _getEngagePoint(prevPos, engagementProtrusion);
         if (!result) {
             // consider retry at tiny protrusion?
-            // result = _getEngagePoint(prevPos, prevDir, 4);
+            // result = _getEngagePoint(prevPos, 4);
         }
 
         // update cleared area
@@ -3405,7 +3403,9 @@ void Adaptive2d::ProcessPolyNode(
                 if (linkPath.first == MotionType::mtCutting) {
                     Path p;
                     for (const DPoint& dp : linkPath.second) {
-                        p.push_back({dp.first * scaleFactor, dp.second * scaleFactor});
+                        p.push_back(
+                            {(long long)(dp.first * scaleFactor), (long long)(dp.second * scaleFactor)}
+                        );
                     }
                     cleared.ExpandCleared(p);
                 }
@@ -3417,14 +3417,14 @@ void Adaptive2d::ProcessPolyNode(
     };
 
     AdaptiveOutput output;
-    std::optional<std::tuple<IntPoint, DoublePoint, TPaths>> engagePoint = getEngagePoint({}, {});
+    std::optional<std::tuple<IntPoint, DoublePoint, TPaths>> engagePoint = getEngagePoint({});
     TPaths linkPath;
     if (engagePoint) {
         toolPos = std::get<IntPoint>(*engagePoint);
         toolDir = std::get<DoublePoint>(*engagePoint);
         linkPath = std::get<TPaths>(*engagePoint);
         entryPoint = linkPath.size() > 0
-            ? IntPoint {linkPath[0].second[0].first * scaleFactor, linkPath[0].second[0].second * scaleFactor}
+            ? IntPoint {(long long)(linkPath[0].second[0].first * scaleFactor), (long long)(linkPath[0].second[0].second * scaleFactor)}
             : toolPos;
         output.StartPoint
             = DPoint(double(entryPoint.X) / scaleFactor, double(entryPoint.Y) / scaleFactor);
@@ -3469,7 +3469,9 @@ void Adaptive2d::ProcessPolyNode(
             if (lp.first == MotionType::mtCutting || lp.first == MotionType::mtLinkClear) {
                 Path scaledP;
                 for (auto& p : lp.second) {
-                    scaledP.push_back({p.first * scaleFactor, p.second * scaleFactor});
+                    scaledP.push_back(
+                        {(long long)(p.first * scaleFactor), (long long)(p.second * scaleFactor)}
+                    );
                 }
                 cleared.ExpandCleared(scaledP);
             }
@@ -3494,7 +3496,6 @@ void Adaptive2d::ProcessPolyNode(
             gyro.push_back(toolDir);
         }
 
-        double passLength = 0;
         //*******************************
         // LOOP - POINTS
         //*******************************
@@ -3544,7 +3545,6 @@ void Adaptive2d::ProcessPolyNode(
                 }
                 passToolPath.push_back(itResult.newToolPos);
                 perf_total_len += stepScaled;
-                passLength += stepScaled;
                 toolPos = itResult.newToolPos;
 
                 // append to progress info paths
@@ -3605,7 +3605,7 @@ void Adaptive2d::ProcessPolyNode(
         }
 
         clearedBeforePass.SetClearedPaths(cleared.GetCleared());
-        engagePoint = getEngagePoint({toolPos}, {toolDir});
+        engagePoint = getEngagePoint({toolPos});
         if (engagePoint) {
             toolPos = std::get<IntPoint>(*engagePoint);
             toolDir = std::get<DoublePoint>(*engagePoint);
@@ -3677,7 +3677,7 @@ void Adaptive2d::ProcessPolyNode(
                 Paths out;
                 clipof.Execute(out, offset);
 
-                int orientation = Orientation(fp);
+                bool orientation = Orientation(fp);
                 for (Path& p : out) {
                     if (Orientation(p) != orientation) {
                         ReversePath(p);
@@ -3770,7 +3770,10 @@ void Adaptive2d::ProcessPolyNode(
                     if (lp.first == MotionType::mtCutting) {
                         Path scaledP;
                         for (auto& p : lp.second) {
-                            scaledP.push_back({p.first * scaleFactor, p.second * scaleFactor});
+                            scaledP.push_back(
+                                {(long long)(p.first * scaleFactor),
+                                 (long long)(p.second * scaleFactor)}
+                            );
                         }
                         cleared.ExpandCleared(scaledP);
                     }

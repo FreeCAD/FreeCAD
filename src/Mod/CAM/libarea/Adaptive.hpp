@@ -146,12 +146,7 @@ private:
         DoublePoint& toolDir,
         long& helixRadiusScaled
     );
-    std::pair<double, double> CalcCutArea(
-        Clipper& clip,
-        IntPoint toolPos,
-        IntPoint newToolPos,
-        ClearedArea& clearedArea
-    );
+    std::pair<double, double> CalcCutArea(IntPoint toolPos, IntPoint newToolPos, ClearedArea& clearedArea);
     std::optional<TPaths> FindLinkPath(
         const std::optional<IntPoint>& prevPoint,
         const IntPoint& pathStart,
@@ -223,7 +218,7 @@ private:
     // a^2 = 2*R*x - x^2  (Eq2)
     // a ~= sqrt(2*R*x)  (Eq3; x<<R)
     //
-    // Construct right traingle with (R-x) of vertical radius from C2 and (R-y)
+    // Construct right triangle with (R-x) of vertical radius from C2 and (R-y)
     // of Llong. Third length is MSC - a (horizontal).
     // (MSC-a)^2 + (R-x)^2 = (R-y)^2
     // MSC^2 - 2*a*MSC + a^2 + R^2 - 2*R*x + x^2 = R^2 - 2*R*y + y^2
@@ -236,7 +231,7 @@ private:
     // MSC*sqrt(2*stepoverFactor/5) = y
     // MSC = y/sqrt(2*stepoverFactor/5)   (Eq4)
     //
-    // To ensure we don't evaluate a postive cut area as zero, we need y to
+    // To ensure we don't evaluate a positive cut area as zero, we need y to
     // measure > 1. The endpoints of y may be perturbed by up to sqrt(2)/2 each
     // due to integer rounding, so the true value of y must be at least 1+sqrt(2) ~= 2.4.
     // StepoverFactor may be as small as 1% = 0.01. Evaluating Eq4 with these values:
@@ -254,8 +249,6 @@ private:
     const size_t ANGLE_HISTORY_POINTS = 3;     // used for angle prediction
     const int DIRECTION_SMOOTHING_BUFLEN = 3;  // gyro points - used for angle smoothing
 
-
-    const double MIN_CUT_AREA_FACTOR = 0.1;  // used for filtering out of insignificant cuts
 
     const double CLEAN_PATH_TOLERANCE = 1.415;            // should be >sqrt(2)
     const double FINISHING_CLEAN_PATH_TOLERANCE = 1.415;  // should be >sqrt(2)
