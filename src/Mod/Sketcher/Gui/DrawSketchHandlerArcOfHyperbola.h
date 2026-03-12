@@ -167,8 +167,7 @@ public:
 
             double b = getMinorRadius(startingPoint);
             assert(
-                b > Precision::Confusion() 
-                && "DrawSketchHandlerArcOfHyperbola: Minor radius was unexpectedly set to invalid value"
+                b > Precision::Confusion() && "DrawSketchHandlerArcOfHyperbola: Minor radius was unexpectedly set to invalid value"
             );
 
             double startAngle = atanh((delta13Prime.y * a) / (delta13Prime.x * b));
