@@ -185,6 +185,23 @@ class RegressionTests(unittest.TestCase):
         for name, pos, normal, xaxis in expected_planes:
             check_plane(name, pos, normal, xaxis)
 
+    def test_transformShape_copy_returns_independent_shape(self):
+        shp = Part.makeBox(1, 2, 3)
+
+        # Regression: copy=True must return an independent shape object, even for identity transform.
+        cloned = shp.transformShape(FreeCAD.Matrix(), True)
+        self.assertIsNot(cloned, shp)
+        self.assertFalse(cloned.isEqual(shp))
+        self.assertAlmostEqual(shp.BoundBox.XMin, 0.0)
+
+        # Transforming the returned copy must not affect the original.
+        moved = cloned.transformShape(
+            FreeCAD.Placement(FreeCAD.Vector(5, 0, 0), FreeCAD.Rotation()).toMatrix(), False
+        )
+        self.assertIs(moved, cloned)
+        self.assertAlmostEqual(shp.BoundBox.XMin, 0.0)
+        self.assertAlmostEqual(cloned.BoundBox.XMin, 5.0)
+
     def tearDown(self):
         """Clean up our test, optionally preserving the test document"""
         # This flag allows doing something like this:
