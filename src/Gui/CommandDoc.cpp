@@ -1763,7 +1763,7 @@ StdCmdTransformManip::StdCmdTransformManip()
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_TransformManip";
     sPixmap = "Std_TransformManip";
-    sAccel = "Shift+T";
+    sAccel = "Ctrl+Alt+T";
 }
 
 void StdCmdTransformManip::activated(int iMsg)
