@@ -1910,11 +1910,11 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // 8) finishingPass = offset(currentTBP, finishingThickness), filtered for paths with Z=1
             // ...again, clipper 1 doesn't perserve Z for offsets, so do this per-curve
             Paths finishingPass;
-            for (Path path : currentTBP) {
+            for (const Path& path : currentTBP) {
                 int orientation = Orientation(path);
-                int direction = (getPathNestingLevel(path, inputPaths) % 2 == 1) ? 1 : -1;
+                int direction = (getPathNestingLevel(path, toolBounds) % 2 == 1) ? 1 : -1;
                 bool finshing = false;
-                for (IntPoint& p : path) {
+                for (const IntPoint& p : path) {
                     if (p.Z == 1) {
                         finshing = true;
                         break;
@@ -3689,7 +3689,16 @@ void Adaptive2d::ProcessPolyNode(
         // Engagement failed; instead helix down
         fout << "Helix entry " << entryPoint << "\n";
         cout << "No enage, helixing down\n";
-        if (!FindEntryPoint(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos, toolDir, helixRadiusScaled)) {
+        if (!FindEntryPoint(
+                progressPaths,
+                toolBoundPaths,
+                boundPaths,
+                cleared,
+                entryPoint,
+                toolPos,
+                toolDir,
+                helixRadiusScaled
+            )) {
             Perf_ProcessPolyNode.Stop();
             return;
         }
