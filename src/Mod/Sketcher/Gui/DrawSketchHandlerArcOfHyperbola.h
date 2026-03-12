@@ -112,15 +112,13 @@ public:
                 delta13.x * bDir.x + delta13.y * bDir.y
             );
 
-            double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
-            double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
+            // 0 if less than Precision::Confusion()
+            double b = getMinorRadius(onSketchPos);
 
-            if (denom <= Precision::Confusion() || b < Precision::Confusion()) {
-                a = 0;
-                b = 0;
+            double angleatpoint = 0;
+            if (b != 0) {
+                angleatpoint = atanh((delta13Prime.y * a) / (delta13Prime.x * b));
             }
-
-            double angleatpoint = atanh((delta13Prime.y * a) / (delta13Prime.x * b));
 
             for (int i = 16; i >= -16; i--) {
                 // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
@@ -139,7 +137,7 @@ public:
                 setPositionText(onSketchPos, text);
             }
 
-            if (denom > Precision::Confusion() && b > Precision::Confusion()) {
+            if (b != 0) {
                 drawEdit(EditCurve);
             }
             else {
@@ -167,13 +165,11 @@ public:
                 delta13.x * bDir.x + delta13.y * bDir.y
             );
 
-            double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
-            double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
-
-            if (denom <= Precision::Confusion()) {
-                a = 0;
-                b = 0;
-            }
+            double b = getMinorRadius(startingPoint);
+            assert(
+                b > Precision::Confusion() 
+                && "DrawSketchHandlerArcOfHyperbola: Minor radius was unexpectedly set to invalid value"
+            );
 
             double startAngle = atanh((delta13Prime.y * a) / (delta13Prime.x * b));
 
@@ -187,7 +183,7 @@ public:
 
             arcAngle = angleatpoint - startAngle;
 
-            if (abs((delta14Prime.y * a) / (delta14Prime.x * b)) > 1) {
+            if (std::abs((delta14Prime.y * a) / (delta14Prime.x * b)) > 1) {
                 arcAngle = 0;
             }
 
@@ -204,7 +200,7 @@ public:
                 SbString text;
                 std::string aString = lengthToDisplayFormat(a, 1);
                 std::string bString = lengthToDisplayFormat(b, 1);
-                std::string arcAngleString = angleToDisplayFormat(arcAngle / 2 * 180, 1);
+                std::string arcAngleString = angleToDisplayFormat(Base::toDegrees(arcAngle), 1);
                 text.sprintf(" (R%s, R%s, %s)", aString.c_str(), bString.c_str(), arcAngleString.c_str());
                 setPositionText(onSketchPos, text);
             }
@@ -229,7 +225,7 @@ public:
             EditCurve.resize(33);
             Mode = SelectMode::Third;
         }
-        else if (Mode == SelectMode::Third && validThirdPoint(onSketchPos)) {
+        else if (Mode == SelectMode::Third && getMinorRadius(onSketchPos) > Precision::Confusion()) {
             startingPoint = onSketchPos;
             arcAngle = 0.;
             Mode = SelectMode::Fourth;
@@ -263,8 +259,7 @@ public:
                 delta13.x * bDir.x + delta13.y * bDir.y
             );
 
-            double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
-            double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
+            double b = getMinorRadius(startingPoint);
 
             double startAngle = atanh((delta13Prime.y * a) / (delta13Prime.x * b));
 
@@ -429,7 +424,7 @@ private:
             });
     }
 
-    bool validThirdPoint(Base::Vector2d onSketchPos)
+    double getMinorRadius(const Base::Vector2d& onSketchPos)
     {
         Base::Vector2d delta12 = axisPoint - centerPoint;
 
@@ -445,9 +440,10 @@ private:
         );
 
         double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
-        double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
-
-        return denom > Precision::Confusion() && b > Precision::Confusion();
+        if (denom <= Precision::Confusion()) {
+            return 0;
+        }
+        return std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
     }
 
 protected:
