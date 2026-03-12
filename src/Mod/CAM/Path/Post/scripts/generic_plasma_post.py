@@ -50,6 +50,12 @@ Values = Dict[str, Any]
 POST_TYPE = "machine"
 
 
+# Round value to within precision (for the purposes of float comparisons)
+def CompValue(val):
+    # 5 significant digits should be precise enough (for plasma)
+    return round(val, 5)
+
+
 class GenericPlasma(PostProcessor):
     """
     The GenericPlasma post processor class.
@@ -88,7 +94,7 @@ class GenericPlasma(PostProcessor):
                 "max": 10000,
                 "help": translate(
                     "CAM",
-                    "Pierce delay in milliseconds to wait after torch ignites (M3/M4) before starting movement",
+                    "Pierce delay in milliseconds to wait after torch ignites (M3) before starting movement",
                 ),
             },
             {
@@ -104,6 +110,18 @@ class GenericPlasma(PostProcessor):
                 ),
             },
             {
+                "name": "marking_delay",
+                "type": "integer",
+                "label": translate("CAM", "Marking Delay"),
+                "default": 100,
+                "min": 0,
+                "max": 10000,
+                "help": translate(
+                    "CAM",
+                    "Marking delay in milliseconds to wait after torch ignites (M3) when making a mark",
+                ),
+            },
+            {
                 "name": "torch_zaxis_control",
                 "type": "bool",
                 "label": translate("CAM", "Torch Z-Axis Control"),
@@ -111,7 +129,7 @@ class GenericPlasma(PostProcessor):
                 "help": translate(
                     "CAM",
                     "Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement. "
-                    "When disabled, M3/M5 commands are output as-is.",
+                    "When disabled, any M3/M5 commands are output as-is.",
                 ),
             },
             {
@@ -142,14 +160,35 @@ class GenericPlasma(PostProcessor):
         )
         Path.Log.debug("Generic Plasma post processor initialized.")
 
+        # Torch commands
+        self.TorchIgniteCommand = Path.Command("M3")
+        self.TorchExtinguishCommand = Path.Command("M5")
+
         # State tracking for plasma-specific features
         self._torch_active = False
         self._last_z = None  # Track last Z position for direction detection
 
-    def _reset_plasma_state(self):
+    def _reset_plasma_state(self, item):
         """Reset plasma-specific state tracking for each operation."""
-        self._torch_active = False
-        self._last_z = None
+        reset_commands = []
+        clearance_height = self._get_operation_height(item, "ClearanceHeight", 0)
+
+        if self._torch_active is not False:
+            Path.Log.debug("Resetting torch to inactive")
+            self._torch_active = False
+            reset_commands.append(self.TorchExtinguishCommand)
+
+        if (
+            self._last_z is not None
+            and CompValue(clearance_height) != 0
+            and CompValue(self._last_z) != CompValue(clearance_height)
+        ):
+            Path.Log.debug("Resetting torch to clearence height")
+            self._last_z = clearance_height
+            move_cmd = Path.Command("G0", {"Z": clearance_height})
+            reset_commands.append(move_cmd)
+
+        return reset_commands
 
     def _get_property_value(self, name, default):
         """Get a property value from machine configuration with fallback to default."""
@@ -203,9 +242,13 @@ class GenericPlasma(PostProcessor):
             values["PREAMBLE"] = ""
 
     def _inject_pierce_delay(self, postables):
-        """Inject pierce delay after M3/M4 commands when torch is activated."""
-        pierce_delay_ms = self._get_property_value("pierce_delay", 1000)
+        """Inject pierce delay after torch ignition command."""
+        pierce_delay_ms = int(self._get_property_value("pierce_delay", 1000))
         if pierce_delay_ms <= 0:
+            return
+
+        # Marking doesn't pierce through stock (i.e. no delay needed)
+        if self._get_property_value("mark_entry_only", False):
             return
 
         # Convert milliseconds to seconds for G4 command
@@ -214,11 +257,13 @@ class GenericPlasma(PostProcessor):
         for section_name, sublist in postables:
             for item in sublist:
                 if hasattr(item, "Path") and item.Path:
-                    new_commands = []
+                    # Reset state for each operation
+                    new_commands = self._reset_plasma_state(item)
+
                     for cmd in item.Path.Commands:
                         new_commands.append(cmd)
                         # After torch on commands, inject G4 pause
-                        if cmd.Name in Constants.MCODE_SPINDLE_ON:
+                        if cmd.Name == self.TorchIgniteCommand.Name:
                             # Create G4 dwell command with P parameter (seconds)
                             pause_cmd = Path.Command("G4", {"P": pierce_delay_sec})
                             new_commands.append(pause_cmd)
@@ -226,8 +271,8 @@ class GenericPlasma(PostProcessor):
                     item.Path = Path.Path(new_commands)
 
     def _inject_cooling_delay(self, postables):
-        """Inject cooling delay after M5 commands when torch is extinguished."""
-        cooling_delay_ms = self._get_property_value("cooling_delay", 500)
+        """Inject cooling delay after torch extinguish command."""
+        cooling_delay_ms = int(self._get_property_value("cooling_delay", 500))
         if cooling_delay_ms <= 0:
             return
 
@@ -237,11 +282,13 @@ class GenericPlasma(PostProcessor):
         for section_name, sublist in postables:
             for item in sublist:
                 if hasattr(item, "Path") and item.Path:
-                    new_commands = []
+                    # Reset state for each operation
+                    new_commands = self._reset_plasma_state(item)
+
                     for cmd in item.Path.Commands:
                         new_commands.append(cmd)
                         # After torch off command, inject G4 pause
-                        if cmd.Name in Constants.MCODE_SPINDLE_OFF:
+                        if cmd.Name == self.TorchExtinguishCommand.Name:
                             # Create G4 dwell command with P parameter (seconds)
                             pause_cmd = Path.Command("G4", {"P": cooling_delay_sec})
                             new_commands.append(pause_cmd)
@@ -256,48 +303,49 @@ class GenericPlasma(PostProcessor):
         for section_name, sublist in postables:
             for item in sublist:
                 if hasattr(item, "Path") and item.Path:
-                    # Reset state for each operation
-                    self._reset_plasma_state()
-
                     # Get operation heights from the path object
                     pierce_height = self._get_operation_height(item, "StartDepth", 0)
                     cut_height = self._get_operation_height(item, "FinalDepth", 0)
 
-                    new_commands = []
+                    # Reset state for each operation
+                    new_commands = self._reset_plasma_state(item)
+
                     for cmd in item.Path.Commands:
-                        # Track Z movement direction
-                        z_direction = None
-                        if "Z" in cmd.Parameters:
-                            # This is a Z move - determine direction
-                            if self._last_z is not None and "Z" in cmd.Parameters:
-                                if cmd.Parameters["Z"] < self._last_z:
-                                    z_direction = "down"
-                                elif cmd.Parameters["Z"] > self._last_z:
-                                    z_direction = "up"
-                            self._last_z = cmd.Parameters["Z"]
+                        # Only track Z movements for this injection
+                        if "Z" not in cmd.Parameters:
+                            new_commands.append(cmd)
+                            continue
 
                         # Handle torch control based on Z movement
-                        # Torch ignites AT pierce_height but is TRIGGERED by move to cut_height
-                        if (
-                            z_direction == "down"
-                            and cmd.Parameters["Z"] >= cut_height
-                            and not self._torch_active
+                        # Torch ignites AT pierce_height but is TRIGGERED by a move to cut_height
+                        if not self._torch_active and CompValue(cmd.Parameters["Z"]) <= CompValue(
+                            cut_height
                         ):
-                            # Move to pierce height first if not already there
-                            if (
-                                not self._get_property_value("mark_entry_only", False)
-                                and self._last_z > pierce_height
-                            ):
-                                move_cmd = Path.Command("G0", {"Z": pierce_height})
-                                new_commands.append(move_cmd)
+                            if self._get_property_value("mark_entry_only", False):
+                                new_commands.append(cmd)
+                                new_commands.append(self.TorchIgniteCommand)
+                                self._torch_active = True
+                                continue
+                            else:
+                                # Move to pierce height first if not already there
+                                if self._last_z is None or CompValue(self._last_z) > CompValue(
+                                    pierce_height
+                                ):
+                                    move_cmd = Path.Command("G0", {"Z": pierce_height})
+                                    new_commands.append(move_cmd)
 
-                            # Insert M3 before Z- move (torch ignition)
-                            new_commands.append(Path.Command("M3"))
-                            self._torch_active = True
-                        elif z_direction == "up" and self._torch_active:
-                            # Insert M5 after Z+ move (torch extinguish)
-                            new_commands.append(Path.Command("M5"))
+                                # Insert torch ignition command before Z- move
+                                new_commands.append(self.TorchIgniteCommand)
+                                self._torch_active = True
+                        elif self._torch_active and CompValue(cmd.Parameters["Z"]) > CompValue(
+                            cut_height
+                        ):
+                            # Insert torch extinguish command before Z+ move
+                            new_commands.append(self.TorchExtinguishCommand)
                             self._torch_active = False
+
+                        # Update last Z position
+                        self._last_z = cmd.Parameters["Z"]
 
                         new_commands.append(cmd)
                     # Replace Path with modified command list
@@ -331,18 +379,19 @@ class GenericPlasma(PostProcessor):
         if not self._get_property_value("mark_entry_only", False):
             return
 
+        marking_delay_ms = int(self._get_property_value("marking_delay", 100))
+
+        # Convert milliseconds to seconds for G4 command
+        marking_delay_sec = marking_delay_ms / 1000.0
+
         for section_name, sublist in postables:
             for item in sublist:
                 if hasattr(item, "Path") and item.Path:
-                    # Reset state for each operation
-                    self._reset_plasma_state()
-
                     # Get operation heights from the path object
-                    # pierce_height = self._get_operation_height(item, "StartDepth", 0)
                     cut_height = self._get_operation_height(item, "FinalDepth", 0)
-                    # clearance_height = self._get_clearance_height(item, pierce_height + 10)
 
-                    new_commands = []
+                    # Reset state for each operation
+                    new_commands = self._reset_plasma_state(item)
                     first_entry_done = False
 
                     for cmd in item.Path.Commands:
@@ -351,33 +400,38 @@ class GenericPlasma(PostProcessor):
                             not first_entry_done
                             and "Z" in cmd.Parameters
                             and self._last_z is not None
-                            and cmd.Parameters["Z"] < self._last_z
-                            and cmd.Parameters["Z"] <= cut_height
+                            and CompValue(cmd.Parameters["Z"]) < CompValue(self._last_z)
+                            and CompValue(cmd.Parameters["Z"]) <= CompValue(cut_height)
                         ):
 
                             # Mark the entry point
-                            # 2. Move to cut height (torch on)
-                            new_commands.append(Path.Command("G1", {"Z": cut_height, "F": 200}))
+                            # 1. Keep move decending to cut height (torch on)
+                            new_commands.append(cmd)
 
-                            # 3. Very short delay (torch mark)
-                            new_commands.append(Path.Command("G4", {"P": 0.1}))
-
-                            # 4. Torch off
-                            new_commands.append(Path.Command("M5"))
+                            # 2. Very short delay (torch mark)
+                            if marking_delay_sec:
+                                new_commands.append(Path.Command("G4", {"P": marking_delay_sec}))
 
                             first_entry_done = True
-                            # Skip the original Z move since we handled it
-                            continue
 
-                        # Skip all movement commands for mark entry only mode
+                        # Skip remaining movement commands [while at cut height] until Z+ (retraction)
                         if (
                             cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
                             and "Z" in cmd.Parameters
                         ):
-                            # Only allow Z+ movements (retractions)
-                            if self._last_z is not None and cmd.Parameters["Z"] > self._last_z:
+                            # Check if this is a movement accending from cut height (retraction)
+                            if (
+                                not first_entry_done
+                                or self._last_z is not None
+                                and CompValue(cmd.Parameters["Z"]) > CompValue(self._last_z)
+                            ):
+                                # 3. Keep movement accending from cut height (torch off)
                                 new_commands.append(cmd)
-                        elif cmd.Name in Constants.MCODE_SPINDLE_ON + Constants.MCODE_SPINDLE_OFF:
+                                first_entry_done = False
+                        elif cmd.Name in [
+                            self.TorchIgniteCommand.Name,
+                            self.TorchExtinguishCommand.Name,
+                        ]:
                             # Skip torch commands in mark entry mode
                             continue
                         else:
@@ -390,22 +444,6 @@ class GenericPlasma(PostProcessor):
 
                     # Replace Path with modified command list
                     item.Path = Path.Path(new_commands)
-
-    def _get_clearance_height(self, item, default):
-        """Get clearance height from operation or use default."""
-        try:
-            # Try to get clearance height from operation
-            if hasattr(item, "ClearanceHeight"):
-                value = getattr(item, "ClearanceHeight")
-                if value is not None:
-                    return float(value)
-            elif hasattr(item, "Base") and hasattr(item.Base, "ClearanceHeight"):
-                value = getattr(item.Base, "ClearanceHeight")
-                if value is not None:
-                    return float(value)
-        except (AttributeError, TypeError, ValueError) as e:
-            Path.Log.debug(f"GenericPlasma: Could not get ClearanceHeight: {e}")
-        return default
 
     def _force_rapid_feeds(self, postables):
         """Replace all feed rates with rapid speeds for dry runs."""
