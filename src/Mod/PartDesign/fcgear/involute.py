@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # (c) 2014 David Douard <david.douard@gmail.com>
 # (c) 2023 Jonas Bähr <jonas.baehr@web.de>

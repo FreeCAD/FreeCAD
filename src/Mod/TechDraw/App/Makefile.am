@@ -1,3 +1,4 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 lib_LTLIBRARIES=libDrawing.la Drawing.la
 

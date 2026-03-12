@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # file types to ignore
 .*
 !*.gitattributes

@@ -1,3 +1,4 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 /*
 Development tools and related technology provided under license from 3Dconnexion.

@@ -1,4 +1,5 @@
 #pragma once
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 namespace Gui
 {

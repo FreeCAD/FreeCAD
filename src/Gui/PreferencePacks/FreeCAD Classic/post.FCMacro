@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Classic theme must delete any set value for the editor text so that it is calculated dynamically when needed
 import FreeCAD
 

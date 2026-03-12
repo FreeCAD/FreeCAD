@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 //
 //  ZipExtractor.swift
 //  FreeCAD QuickLook Swift Implementation

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Zlib
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 /*
 base64.cpp and base64.h

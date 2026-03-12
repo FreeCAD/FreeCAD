@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 import os
 import sys
 import logging

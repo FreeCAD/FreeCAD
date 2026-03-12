@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #pragma once
 
 #include <Gui/PropertyPage.h>

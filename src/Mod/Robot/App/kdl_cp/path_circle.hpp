@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 /***************************************************************************
   tag: Erwin Aertbelien  Mon Jan 10 16:38:39 CET 2005  path_circle.h

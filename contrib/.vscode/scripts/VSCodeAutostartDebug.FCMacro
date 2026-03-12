@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 import debugpy
 from multiprocessing.connection import Listener
 from freecad.utils import get_python_exe

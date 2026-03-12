@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Some configuration options for other environments
 # rpmbuild --without=bundled_zipios: don't use bundled version of zipios++
 %bcond_without  bundled_zipios

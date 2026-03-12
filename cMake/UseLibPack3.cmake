@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 set(ENV{PATH} "${FREECAD_LIBPACK_DIR};$ENV{PATH}")
 list(PREPEND CMAKE_PREFIX_PATH "${FREECAD_LIBPACK_DIR}")
 

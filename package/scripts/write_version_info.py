@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # call this file from within the FreeCAD git repo
 # this script creates a file with the important version information

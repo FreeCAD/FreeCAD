@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 """GUI tests for ArchReport features that require a running FreeCAD GUI.
 
 These tests inherit from the GUI test base `TestArchBaseGui` which skips

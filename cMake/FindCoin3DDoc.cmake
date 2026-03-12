@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Try to find Coin3D Doc
 # If found, this will define
 #

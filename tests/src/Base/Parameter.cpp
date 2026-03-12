@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #include <gtest/gtest.h>
 #include <boost/core/ignore_unused.hpp>
 #include <QLockFile>

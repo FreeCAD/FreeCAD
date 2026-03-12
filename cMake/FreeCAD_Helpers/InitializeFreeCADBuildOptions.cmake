@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 macro(InitializeFreeCADBuildOptions)
     # ==============================================================================
     # =================   All the options for the build process    =================

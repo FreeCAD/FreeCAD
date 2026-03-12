@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 
 SET(Stylesheets_Files
     "FreeCAD.qss"
