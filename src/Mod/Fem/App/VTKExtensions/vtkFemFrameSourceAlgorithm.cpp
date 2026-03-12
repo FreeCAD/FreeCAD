@@ -80,10 +80,9 @@ std::vector<double> vtkFemFrameSourceAlgorithm::getFrameValues()
     std::vector<double> tFrames(nblocks);
 
     for (unsigned long i = 0; i < nblocks; i++) {
-
         vtkDataObject* block = multiblock->GetBlock(i);
         // check if the TimeValue field is available
-        if (!block->GetFieldData()->HasArray("TimeValue")) {
+        if (!block || !block->GetFieldData() || !block->GetFieldData()->HasArray("TimeValue")) {
             // a frame with no valid value is a undefined state
             return std::vector<double>();
         }
@@ -94,7 +93,6 @@ std::vector<double> vtkFemFrameSourceAlgorithm::getFrameValues()
             // a frame with no valid value is a undefined state
             return std::vector<double>();
         }
-
         tFrames[i] = vtkFloatArray::SafeDownCast(TimeValue)->GetValue(0);
     }
 

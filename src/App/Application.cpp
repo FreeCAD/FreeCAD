@@ -1476,6 +1476,93 @@ void Application::addExportType(const char* filter, const char* moduleName)
     }
 }
 
+namespace {
+    // To enable changing languages while the program is running, cache the translatable export type
+    // entries so that their addition can be "replayed" when the language changes (after removing
+    // the originals).
+
+    struct TranslatableTypeCacheEntry {
+        std::string description;
+        const std::vector<std::string> extensions;
+        std::string moduleName;
+    };
+
+    class TranslatableTypeCache {
+    public:
+        TranslatableTypeCache() = default;
+        void addCacheEntry(TranslatableTypeCacheEntry entry) {
+            _cache.push_back(std::move(entry));
+        }
+        std::vector<TranslatableTypeCacheEntry> getCache() const {
+            return _cache;
+        }
+        void clear()
+        {
+            _cache.clear();
+        }
+    private:
+        std::vector<TranslatableTypeCacheEntry> _cache;
+    };
+
+    TranslatableTypeCache translatableExportTypeCache;
+
+    // Given a description string and a list of extensions, construct a type string that Qt's file
+    // dialogs will recognize
+    void appendTypeString(std::string &description, const std::vector<std::string> &extensions) {
+        description = fmt::format("{} (*.{})", description, fmt::join(extensions, " *."));
+    }
+}
+
+void Application::addTranslatableExportType(const std::string &description,
+                                            const std::vector<std::string> &extensions,
+                                            const std::string &moduleName)
+{
+    assert(!extensions.empty());  // Programming error, there must be extensions
+
+    // Branding: replace "FreeCAD" in a file type description with the branded application name
+    auto replaceFreeCAD =
+    [](std::string& s)
+    {
+        constexpr std::string_view freecad = "FreeCAD";
+        if (auto pos = s.find(freecad); pos != std::string::npos) {
+            s.replace(pos, freecad.size(), getExecutableName());
+            return true;  // Contained the app name
+        }
+        return false;  // Did NOT contain the app name
+    };
+
+    translatableExportTypeCache.addCacheEntry({description, extensions, moduleName});
+    auto translatedDescription = QCoreApplication::translate("FileFormat", description.c_str()).toStdString();
+    bool containsAppName = replaceFreeCAD(translatedDescription);  // Run *AFTER* translation
+    appendTypeString(translatedDescription, extensions);
+
+    FileTypeItem item;
+    item.filter = translatedDescription;
+    item.module = moduleName;
+    item.types = extensions;
+    item.translatable = true;
+
+    if (containsAppName) {
+        // put to the front of the array
+        _mExportTypes.insert(_mExportTypes.begin(),std::move(item));
+    }
+    else {
+        _mExportTypes.push_back(std::move(item));
+    }
+}
+
+void Application::retranslateExportTypes()
+{
+    auto cache = translatableExportTypeCache.getCache();
+    translatableExportTypeCache.clear();
+    std::erase_if(_mExportTypes, [](const FileTypeItem& item) {
+        return item.translatable;
+    });
+    for (const auto &cacheEntry : translatableExportTypeCache.getCache()) {
+        addTranslatableExportType(cacheEntry.description, cacheEntry.extensions, cacheEntry.moduleName);
+    }
+}
+
 void Application::changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName)
 {
     for (auto& it : _mExportTypes) {
@@ -3526,7 +3613,7 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
     const QString deskSess =
         QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),
                                                     QString());
-  
+
     const QString major = getValueOrEmpty(mConfig, "BuildVersionMajor");
     const QString minor = getValueOrEmpty(mConfig, "BuildVersionMinor");
     const QString point = getValueOrEmpty(mConfig, "BuildVersionPoint");

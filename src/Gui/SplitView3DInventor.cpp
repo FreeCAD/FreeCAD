@@ -141,7 +141,7 @@ const char* AbstractSplitView::getName() const
     return "SplitView3DInventor";
 }
 
-bool AbstractSplitView::onMsg(const char* pMsg, const char**)
+bool AbstractSplitView::onMsg(const char* pMsg)
 {
     if (strcmp("ViewFit", pMsg) == 0) {
         viewAll();
@@ -374,7 +374,7 @@ Py::Object AbstractSplitViewPy::fitAll(const Py::Tuple& args)
     }
 
     try {
-        getSplitViewPtr()->onMsg("ViewFit", nullptr);
+        getSplitViewPtr()->onMsg("ViewFit");
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -395,7 +395,7 @@ Py::Object AbstractSplitViewPy::viewBottom(const Py::Tuple& args)
     }
 
     try {
-        getSplitViewPtr()->onMsg("ViewBottom", nullptr);
+        getSplitViewPtr()->onMsg("ViewBottom");
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -417,7 +417,7 @@ Py::Object AbstractSplitViewPy::viewFront(const Py::Tuple& args)
     }
 
     try {
-        getSplitViewPtr()->onMsg("ViewFront", nullptr);
+        getSplitViewPtr()->onMsg("ViewFront");
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -439,7 +439,7 @@ Py::Object AbstractSplitViewPy::viewLeft(const Py::Tuple& args)
     }
 
     try {
-        getSplitViewPtr()->onMsg("ViewLeft", nullptr);
+        getSplitViewPtr()->onMsg("ViewLeft");
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -461,7 +461,7 @@ Py::Object AbstractSplitViewPy::viewRear(const Py::Tuple& args)
     }
 
     try {
-        getSplitViewPtr()->onMsg("ViewRear", nullptr);
+        getSplitViewPtr()->onMsg("ViewRear");
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -483,7 +483,7 @@ Py::Object AbstractSplitViewPy::viewRight(const Py::Tuple& args)
     }
 
     try {
-        getSplitViewPtr()->onMsg("ViewRight", nullptr);
+        getSplitViewPtr()->onMsg("ViewRight");
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -505,7 +505,7 @@ Py::Object AbstractSplitViewPy::viewTop(const Py::Tuple& args)
     }
 
     try {
-        getSplitViewPtr()->onMsg("ViewTop", nullptr);
+        getSplitViewPtr()->onMsg("ViewTop");
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());
@@ -527,7 +527,7 @@ Py::Object AbstractSplitViewPy::viewIsometric(const Py::Tuple& args)
     }
 
     try {
-        getSplitViewPtr()->onMsg("ViewAxo", nullptr);
+        getSplitViewPtr()->onMsg("ViewAxo");
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());

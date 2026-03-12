@@ -4,7 +4,7 @@ General:
   UUID: "0902d885-ac66-441e-9c3f-e0086a4817fc"
   Name: "Horizontal5"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   PAT:
     UUID: "0326c759-4e3d-46ca-bb7d-146ebebea65e"

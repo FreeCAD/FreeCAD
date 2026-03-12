@@ -32,7 +32,9 @@
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
 
+#include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
+#include <vtkCellData.h>
 #include <vtkDataArray.h>
 #include <vtkDataSetReader.h>
 #include <vtkDataSetWriter.h>
@@ -1063,6 +1065,80 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
     Base::Console().log("End: Create VTK result data from FreeCAD result data.\n");
 }
 
+void FemVTKTools::addArrayFromFunction(
+    vtkSmartPointer<vtkDataObject>& data,
+    const std::map<std::string, std::string>& functions
+)
+{
+    if (!data) {
+        return;
+    }
+
+    vtkNew<vtkArrayCalculator> calculator;
+    std::vector<vtkDataSet*> fields;
+
+    if (auto dataSet = vtkDataSet::SafeDownCast(data)) {
+        fields.emplace_back(dataSet);
+    }
+    else if (auto blocks = vtkMultiBlockDataSet::SafeDownCast(data)) {
+        for (unsigned int i = 0; i < blocks->GetNumberOfBlocks(); ++i) {
+            if (auto dataSet = vtkDataSet::SafeDownCast(blocks->GetBlock(i))) {
+                fields.emplace_back(dataSet);
+            }
+        }
+    }
+
+    for (auto f : fields) {
+        // clear all variables
+        calculator->RemoveAllVariables();
+        calculator->SetInputData(f);
+        auto pd = calculator->GetDataSetOutput()->GetPointData();
+        auto fpd = f->GetPointData();
+        if (!pd || !fpd) {
+            continue;
+        }
+        // add coordinate variable
+        calculator->AddCoordinateScalarVariable("coordsX", 0);
+        calculator->AddCoordinateScalarVariable("coordsY", 1);
+        calculator->AddCoordinateScalarVariable("coordsZ", 2);
+        calculator->AddCoordinateVectorVariable("coords");
+
+        // add fields
+        for (int i = 0; i < fpd->GetNumberOfArrays(); ++i) {
+            std::string name1 = fpd->GetArrayName(i);
+            std::string name2 = name1;
+            std::replace(name2.begin(), name2.end(), ' ', '_');
+            if (fpd->GetArray(i)->GetNumberOfComponents() == 1) {
+                calculator->AddScalarVariable(name2.c_str(), name1.c_str());
+            }
+            else if (fpd->GetArray(i)->GetNumberOfComponents() == 3) {
+                calculator->AddVectorVariable(name2.c_str(), name1.c_str());
+                // add vector components as scalar variable
+                calculator->AddScalarVariable((name2 + "_X").c_str(), name1.c_str(), 0);
+                calculator->AddScalarVariable((name2 + "_Y").c_str(), name1.c_str(), 1);
+                calculator->AddScalarVariable((name2 + "_Z").c_str(), name1.c_str(), 2);
+            }
+            else if (fpd->GetArray(i)->GetNumberOfComponents() == 6) {
+                // add tensor components as scalar variable
+                calculator->AddScalarVariable((name2 + "_XX").c_str(), name1.c_str(), 0);
+                calculator->AddScalarVariable((name2 + "_YY").c_str(), name1.c_str(), 1);
+                calculator->AddScalarVariable((name2 + "_ZZ").c_str(), name1.c_str(), 2);
+                calculator->AddScalarVariable((name2 + "_XY").c_str(), name1.c_str(), 3);
+                calculator->AddScalarVariable((name2 + "_YZ").c_str(), name1.c_str(), 4);
+                calculator->AddScalarVariable((name2 + "_ZX").c_str(), name1.c_str(), 5);
+            }
+        }
+
+        for (const auto& func : functions) {
+            calculator->SetResultArrayName(func.first.c_str());
+            calculator->SetFunction(func.second.c_str());
+            calculator->Update();
+            auto result = pd->GetAbstractArray(func.first.c_str());
+            f->GetPointData()->AddArray(result);
+        }
+    }
+}
+
 
 namespace FRDReader
 {
@@ -1177,7 +1253,7 @@ void valueFromLine<double>(const std::string_view::iterator& it, int digits, dou
 
 // add cell from sorted nodes
 template<typename T>
-void addCell(vtkSmartPointer<vtkCellArray>& cellArray, const std::vector<int>& topoElem)
+void addCell(vtkCellArray* cellArray, const std::vector<int>& topoElem)
 {
     vtkSmartPointer<T> cell = vtkSmartPointer<T>::New();
     cell->GetPointIds()->SetNumberOfIds(topoElem.size());
@@ -1190,7 +1266,7 @@ void addCell(vtkSmartPointer<vtkCellArray>& cellArray, const std::vector<int>& t
 
 // fill cell array
 void fillCell(
-    vtkSmartPointer<vtkCellArray>& cellArray,
+    vtkCellArray* cellArray,
     std::vector<int>& topoElem,
     std::vector<int>& vtkType,
     ElementType elemType
@@ -1363,7 +1439,9 @@ std::vector<int> readElements(
     std::ifstream& ifstr,
     const std::string& lines,
     const std::map<int, int>& mapNodes,
-    vtkSmartPointer<vtkCellArray>& cellArray
+    vtkCellArray* cellArray,
+    vtkIntArray* material,
+    vtkIntArray* group
 )
 {
     std::string line;
@@ -1379,6 +1457,12 @@ std::vector<int> readElements(
     std::map<int, int> mapElem;
     std::vector<int> topoElem;
     std::vector<int> vtkType;
+
+    material->SetNumberOfComponents(1);
+    material->SetName("Material");
+
+    group->SetNumberOfComponents(1);
+    group->SetName("Group");
 
     std::string_view view {lines};
 
@@ -1412,6 +1496,8 @@ std::vector<int> readElements(
             // add cell to cellArray
             if (topoElem.size() == mapCcxTypeNodes[static_cast<ElementType>(info[0])]) {
                 fillCell(cellArray, topoElem, vtkType, static_cast<ElementType>(info[0]));
+                group->InsertNextValue(info[1]);
+                material->InsertNextValue(info[2]);
                 topoElem.clear();
                 mapElem[elem] = elemID++;
             }
@@ -1657,6 +1743,8 @@ vtkSmartPointer<vtkMultiBlockDataSet> readFRD(std::ifstream& ifstr)
     std::string line;
     std::map<int, int> mapNodes;
     std::vector<int> cellTypes;
+    auto materialArray = vtkSmartPointer<vtkIntArray>::New();
+    auto groupArray = vtkSmartPointer<vtkIntArray>::New();
 
     while (std::getline(ifstr, line)) {
         std::string keyCode = "    2C";
@@ -1669,7 +1757,7 @@ vtkSmartPointer<vtkMultiBlockDataSet> readFRD(std::ifstream& ifstr)
         keyCode = "    3C";
         if (view.rfind(keyCode, 0) == 0) {
             // read elements block
-            cellTypes = readElements(ifstr, line, mapNodes, cells);
+            cellTypes = readElements(ifstr, line, mapNodes, cells, materialArray, groupArray);
         }
         keyCode = "    1P";
         if (view.rfind(keyCode, 0) == 0) {
@@ -1699,6 +1787,8 @@ vtkSmartPointer<vtkMultiBlockDataSet> readFRD(std::ifstream& ifstr)
                 grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
                 grid->SetPoints(points);
                 grid->SetCells(cellTypes.data(), cells);
+                grid->GetCellData()->AddArray(materialArray);
+                grid->GetCellData()->AddArray(groupArray);
 
                 // create TimeValue metadata
                 auto stepValue = createTimeValue(info.value);

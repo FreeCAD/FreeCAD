@@ -568,13 +568,13 @@ class ObjectDressup:
             iterEnd = begin + u * distance
             iterEnd.z = end.z + radius * (1 - math.cos(angle))
             param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-            commands.append(PathLanguage.MoveStraight(iterBegin, "G01", param))
+            commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
             iterBegin = copy.copy(iterEnd)
             angle -= stepAngle
 
         # last move to end point
         param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
-        commands.append(PathLanguage.MoveStraight(iterBegin, "G01", param))
+        commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
 
         return commands
 
@@ -603,13 +603,13 @@ class ObjectDressup:
             iterEnd.z = end.z + radius * (1 - math.cos(angle))
             if iterBegin:
                 param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-                commands.append(PathLanguage.MoveStraight(iterBegin, "G01", param))
+                commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
             iterBegin = copy.copy(iterEnd)
             angle -= stepAngle
 
         # last move to end point
         param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
-        commands.append(PathLanguage.MoveStraight(iterBegin, "G01", param))
+        commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
 
         return commands
 
@@ -634,7 +634,7 @@ class ObjectDressup:
 
         # last move to end point
         param = {"X": end.x, "Y": end.y, "Z": end.z, "F": feedRate}
-        commands.append(PathLanguage.MoveStraight(iterBegin, "G01", param))
+        commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
 
         return commands
 
@@ -663,7 +663,7 @@ class ObjectDressup:
 
             iterEnd.z = begin.z + radius * (1 - math.cos(angle))
             param = {"X": iterEnd.x, "Y": iterEnd.y, "Z": iterEnd.z, "F": feedRate}
-            commands.append(PathLanguage.MoveStraight(iterBegin, "G01", param))
+            commands.append(PathLanguage.MoveStraight(iterBegin, "G1", param))
             iterBegin = copy.copy(iterEnd)
             angle += stepAngle
 
@@ -1015,6 +1015,7 @@ class ObjectDressup:
             instr = self.source[start]
             newLength = length + instr.pathLength()
             newInstr = self.cutInstrBegin(obj, instr, newLength)
+            newInstr.setPositionEnd(instr.positionBegin())
             return [newInstr]
 
         return None
@@ -1051,6 +1052,7 @@ class ObjectDressup:
             instr = self.source[end]
             newLength = length + instr.pathLength()
             newInstr = self.cutInstrEnd(obj, instr, newLength)
+            newInstr = self.cutInstrBegin(obj, newInstr, length)
             return [newInstr]
 
         return None
@@ -1271,7 +1273,7 @@ class ObjectDressup:
                         commands = self.cutTravelEnd(obj, commands, abs(obj.OffsetOut.Value))
 
                     # Process positive Offset Lead-Out (overtravel)
-                    if obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retract":
+                    elif obj.OffsetOut.Value > 0 and obj.StyleOut != "No Retract":
                         overtravelOut = self.extendTravelOut(obj, obj.OffsetOut.Value)
                         if overtravelOut:
                             commands.extend(overtravelOut)

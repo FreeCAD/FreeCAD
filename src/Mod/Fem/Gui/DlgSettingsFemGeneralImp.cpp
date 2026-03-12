@@ -23,8 +23,8 @@
  ***************************************************************************/
 
 
-#include <App/Application.h>
-#include <Mod/Fem/App/FemTools.h>
+#include <Gui/Action.h>
+#include <Gui/Command.h>
 
 #include "DlgSettingsFemGeneralImp.h"
 #include "ui_DlgSettingsFemGeneral.h"
@@ -40,24 +40,7 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
 
     // fill solvers combo with available solvers
     ui->cmb_def_solver->clear();
-    std::vector<std::string> Solvers = {"None"};
-
-    if (!Fem::Tools::checkIfBinaryExists("Ccx", "ccx", "ccx").empty()) {
-        Solvers.emplace_back("CalculiX");
-    }
-    if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver").empty()) {
-        Solvers.emplace_back("Elmer");
-    }
-    // also check the multi-CPU Elmer build
-    else if (!Fem::Tools::checkIfBinaryExists("Elmer", "elmer", "ElmerSolver_mpi").empty()) {
-        Solvers.emplace_back("Elmer");
-    }
-    if (!Fem::Tools::checkIfBinaryExists("Mystran", "mystran", "mystran").empty()) {
-        Solvers.emplace_back("Mystran");
-    }
-    if (!Fem::Tools::checkIfBinaryExists("Z88", "z88", "z88r").empty()) {
-        Solvers.emplace_back("Z88");
-    }
+    std::vector<std::string> Solvers = {"None", "CalculiX", "Elmer", "Mystran", "Z88"};
 
     QStringList solversList;
     for (auto item : Solvers) {
@@ -65,15 +48,8 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
     }
     ui->cmb_def_solver->addItems(solversList);
 
-    // if the "DefaultSolver" parameter is not yet set and there is only
-    // one available solver, set this solver
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/General"
-    );
-    auto DefaultSolver = hGrp->GetInt("DefaultSolver", 0);
-    if (!DefaultSolver && ui->cmb_def_solver->count() == 2) {
-        ui->cmb_def_solver->setCurrentIndex(1);
-    }
+    ParameterGrp::handle hGrp = ui->cmb_def_solver->getWindowParameter();
+    ui->cmb_def_solver->setCurrentIndex(hGrp->GetInt(ui->cmb_def_solver->entryName(), 0));
 }
 
 DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp() = default;
@@ -92,6 +68,17 @@ void DlgSettingsFemGeneralImp::saveSettings()
     ui->le_wd_custom->onSave();
     ui->cb_overwrite_solver_working_directory->onSave();
     ui->cmb_def_solver->onSave();
+
+    // set default solver icon
+    Gui::CommandManager& cmdMgr = Gui::Application::Instance->commandManager();
+    Gui::Command* cmd = cmdMgr.getCommandByName("FEM_CompSolvers");
+    if (cmd) {
+        auto action = static_cast<Gui::ActionGroup*>(cmd->getAction());
+
+        ParameterGrp::handle hGrp = ui->cmb_def_solver->getWindowParameter();
+        int index = hGrp->GetInt(ui->cmb_def_solver->entryName(), 0);
+        action->setCheckedAction(index > 0 ? index - 1 : 0);
+    }
 }
 
 void DlgSettingsFemGeneralImp::loadSettings()

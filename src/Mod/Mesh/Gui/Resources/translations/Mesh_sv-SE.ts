@@ -615,7 +615,7 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Unifies the selected meshes</source>
-      <translation type="unfinished">Unifies the selected meshes</translation>
+      <translation>Förenar de valda näten</translation>
     </message>
   </context>
   <context>
@@ -679,7 +679,7 @@
     <message>
       <location filename="../../Command.cpp" line="603"/>
       <source>Mesh VertexCurvature</source>
-      <translation type="unfinished">Mesh VertexCurvature</translation>
+      <translation>Nätvertexkrökning</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.cpp" line="169"/>

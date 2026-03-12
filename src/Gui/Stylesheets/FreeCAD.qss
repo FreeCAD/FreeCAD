@@ -162,6 +162,11 @@ QColorDialog QLabel {
 }
 */
 
+QFrame[class="popup"] {
+  background-color: @DialogBackgroundColor;
+  border: 1px solid @GeneralBorderColor;
+}
+
 /* QMainWindow ------------------------------------------------------------
 
 This adjusts the splitter in the dock widget, not qsplitter
@@ -1278,14 +1283,14 @@ QToolButton:disabled {
 }
 
 QToolButton:checked {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonBottomBackgroundColor, stop:0.7 @ButtonTopBackgroundColor, stop:1 @ButtonTopBackgroundColor);
+  background-color: @ToolButtonCheckedBackground;
   border-radius: @InputFieldBorderRadius;
-  border: 1px solid @AccentColor;
+  border: 1px solid @ToolButtonCheckedBorderColor;
 }
 
 QToolButton:checked:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  color: @AccentColor;
+  border: 1px solid @ButtonBorderColor;
 }
 
 QToolButton:checked:hover {

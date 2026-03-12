@@ -452,8 +452,21 @@ class _Window(ArchComponent.Component):
                     e = obj.Base.Shape.Edges[hinge]
                     ev1 = e.Vertexes[0].Point
                     ev2 = e.Vertexes[-1].Point
-                    # choose the one with lowest z to draw the symbol
-                    if ev2.z < ev1.z:
+                    # To draw the symbol choose the point with the lowest global Z.
+                    # If the global Z-coordinates are equal compare the local
+                    # Z-, Y- or X-coordinates instead.
+                    tol = 1e-5
+                    if math.isclose(ev1.z, ev2.z, abs_tol=tol):
+                        # vector in LCS
+                        vec = obj.Base.Placement.Rotation.inverted().multVec(ev2 - ev1)
+                        # go through coords in reversed order (z-y-x)
+                        for coord in list(vec)[::-1]:
+                            if math.isclose(coord, 0, abs_tol=tol):
+                                continue
+                            if coord < 0:
+                                ev1, ev2 = ev2, ev1
+                            break
+                    elif ev2.z < ev1.z:
                         ev1, ev2 = ev2, ev1
                     # find the point most distant from the hinge
                     p = None
