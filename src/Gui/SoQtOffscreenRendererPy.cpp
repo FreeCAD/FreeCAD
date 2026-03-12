@@ -24,7 +24,7 @@
 #include <Base/Interpreter.h>
 
 #include "SoQtOffscreenRendererPy.h"
-#include <qbuffer.h>
+#include <QBuffer>
 
 
 using namespace Gui;
@@ -192,6 +192,7 @@ Py::Object SoQtOffscreenRendererPy::writeToBuffer(const Py::Tuple& args)
     
     return Py::Bytes(byteArray.data(), byteArray.size());
 }
+PYCXX_VARARGS_METHOD_DECL(SoQtOffscreenRendererPy, writeToBuffer)
 
 Py::Object SoQtOffscreenRendererPy::getWriteImageFiletypeInfo()
 {
@@ -236,6 +237,7 @@ void SoQtOffscreenRendererPy::init_type()
     );
     PYCXX_ADD_VARARGS_METHOD(render, render, "render(node)");
     PYCXX_ADD_VARARGS_METHOD(writeToImage, writeToImage, "writeToImage(string)");
+    PYCXX_ADD_VARARGS_METHOD(writeToBuffer, writeToBuffer, "writeToBuffer([string, int]) -> bytes");
     PYCXX_ADD_NOARGS_METHOD(
         getWriteImageFiletypeInfo,
         getWriteImageFiletypeInfo,
