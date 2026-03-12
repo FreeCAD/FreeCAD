@@ -171,25 +171,25 @@ Py::Object SoQtOffscreenRendererPy::writeToBuffer(const Py::Tuple& args)
 {
     const char* format = "PNG";
     int quality = -1;
-    
+
     if (!PyArg_ParseTuple(args.ptr(), "|si", &format, &quality)) {
         throw Py::Exception();
     }
 
     QImage img;
     renderer.writeToImage(img);
-    
-    QByteArray byteArray;
-    QBuffer    buffer(&byteArray);
-    buffer.open(QIODevice::WriteOnly);
-    
 
-    if ( !img.save(&buffer, format, quality) ) {
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+
+
+    if (!img.save(&buffer, format, quality)) {
         throw Py::RuntimeError("Failed to save image to buffer");
     }
-    
+
     buffer.close();
-    
+
     return Py::Bytes(byteArray.data(), byteArray.size());
 }
 PYCXX_VARARGS_METHOD_DECL(SoQtOffscreenRendererPy, writeToBuffer)
