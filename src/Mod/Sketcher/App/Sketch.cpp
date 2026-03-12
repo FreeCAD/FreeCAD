@@ -2266,7 +2266,13 @@ int Sketch::addConstraint(const Constraint* constraint)
                     Parameters.push_back(c.value);
                     DrivenParameters.push_back(c.value);
                 }
-                rtn = addDistanceConstraint(constraint->First, constraint->Second, c.value, c.driving);
+                rtn = addDistanceConstraint(
+                    constraint->First,
+                    constraint->Second,
+                    c.value,
+                    constraint->Orientation,
+                    c.driving
+                );
             }
             else if (constraint->Second != GeoEnum::GeoUndef) {
                 if (constraint->FirstPos != PointPos::none) {  // point to line distance
@@ -2283,6 +2289,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                         constraint->FirstPos,
                         constraint->Second,
                         c.value,
+                        constraint->Orientation,
                         c.driving
                     );
                 }
@@ -3515,7 +3522,14 @@ int Sketch::addDistanceConstraint(int geoId, double* value, bool driving)
 }
 
 // point to line or circular distance constraint
-int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double* value, bool driving)
+int Sketch::addDistanceConstraint(
+    int geoId1,
+    PointPos pos1,
+    int geoId2,
+    double* value,
+    ConstraintOrientation orientation,
+    bool driving
+)
 {
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
@@ -3530,7 +3544,14 @@ int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, double*
         GCS::Line& l2 = Lines[Geoms[geoId2].index];
 
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintP2LDistance(p1, l2, value, tag, driving);
+        GCSsys.addConstraintP2LDistance(
+            p1,
+            l2,
+            value,
+            orientation.testFlag(ConstraintOrientations::CounterClockwise),
+            tag,
+            driving
+        );
         return ConstraintsCounter;
     }
     else {
@@ -3579,7 +3600,13 @@ int Sketch::addDistanceConstraint(
 }
 
 // circular-(circular or line) distance constraint
-int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool driving)
+int Sketch::addDistanceConstraint(
+    int geoId1,
+    int geoId2,
+    double* value,
+    ConstraintOrientation orientation,
+    bool driving
+)
 {
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
@@ -3598,7 +3625,15 @@ int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool dr
 
         GCS::Line* l = &Lines[Geoms[geoId2].index];
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintC2LDistance(*c1, *l, value, tag, driving);
+        GCSsys.addConstraintC2LDistance(
+            *c1,
+            *l,
+            value,
+            orientation.testFlag(ConstraintOrientations::CounterClockwise),
+            orientation.testFlag(ConstraintOrientations::Internal),
+            tag,
+            driving
+        );
         return ConstraintsCounter;
     }
     else {
@@ -3620,7 +3655,16 @@ int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool dr
         }
 
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintC2CDistance(*c1, *c2, value, tag, driving);
+
+        std::optional<bool> c1Bigger = std::nullopt;
+        if (orientation.testFlag(ConstraintOrientations::Internal)) {
+            c1Bigger = false;
+        }
+        else if (orientation.testFlag(ConstraintOrientations::External)) {
+            c1Bigger = true;
+        }
+
+        GCSsys.addConstraintC2CDistance(*c1, *c2, value, c1Bigger, tag, driving);
         return ConstraintsCounter;
     }
 }

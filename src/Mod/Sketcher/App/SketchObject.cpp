@@ -110,6 +110,7 @@
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
+#include "Constraint.h"
 #include "SketchObjectPy.h"
 #include "SolverGeometryExtension.h"
 #include "ExternalGeometryFacade.h"
@@ -1034,6 +1035,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     std::vector<Constraint*> newVals(vals);
     newVals[ConstrId] = newVals[ConstrId]->clone();
     newVals[ConstrId]->isDriving = isdriving;
+    setOrientation(newVals[ConstrId], newVals[ConstrId]->isDriving);
 
     this->Constraints.setValues(std::move(newVals));
 
@@ -1096,6 +1098,8 @@ int SketchObject::setActive(int ConstrId, bool isactive)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = isactive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -1153,6 +1157,8 @@ int SketchObject::toggleActive(int ConstrId)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = !constNew->isActive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -2436,6 +2442,8 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
             AutoLockTangencyAndPerpty(cnew);
         }
 
+        setOrientation(cnew, false);
+
         addGeometryState(cnew);
 
         signalConstraintAdded(cnew);
@@ -2507,8 +2515,10 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
 
     Constraint* constNew = constraint.release();
 
-    if (constNew->Type == Tangent || constNew->Type == Perpendicular)
+    if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
         AutoLockTangencyAndPerpty(constNew);
+    }
+    setOrientation(constNew, false);
 
     addGeometryState(constNew);
 
@@ -3187,6 +3197,63 @@ void SketchObject::addConstraint(Sketcher::ConstraintType constrType, int firstG
         constrType, firstGeoId, firstPos, secondGeoId, secondPos, thirdGeoId, thirdPos);
 
     this->addConstraint(std::move(newConstr));
+}
+void SketchObject::setOrientation(Constraint* constr, bool reset)
+{
+    // Returns true if the points A-B-C truncated to 2d (x, y) are in a ccw order
+    auto ccw2d = [](const Base::Vector3d& A, const Base::Vector3d& B, const Base::Vector3d& C) -> ConstraintOrientations
+    {
+        double signedArea = B.x * C.y - B.y * C.x - A.x * C.y + A.y * C.x + A.x * B.y - A.y * B.x;
+        return signedArea > 0.0 ? ConstraintOrientations::CounterClockwise : ConstraintOrientations::Clockwise;
+    };
+
+    if (constr->Type != Distance || (!reset && !constr->Orientation.testFlag(ConstraintOrientations::None))) {
+        return;
+    }
+
+    // Try to find the orientation of point-line distance
+    if (constr->FirstPos != PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        auto* geo1AsLine = freecad_cast<const Part::GeomLineSegment*>(getGeometry(constr->Second));
+        if (geo1AsLine) {
+            constr->Orientation = ccw2d(geo1AsLine->getStartPoint(), geo1AsLine->getEndPoint(), getPoint(constr->First, constr->FirstPos));
+        }
+        return;
+    }
+
+    // Try to find the orientation of circle-circle distance or circle-line
+    if (constr->FirstPos == PointPos::none && constr->SecondPos == PointPos::none && constr->Second != GeoEnum::GeoUndef) {
+        const Part::Geometry* firGeo = getGeometry(constr->First);
+        const Part::Geometry* secGeo = getGeometry(constr->Second);
+        auto* geo1AsCirc = freecad_cast<const Part::GeomCircle*>(firGeo);
+        auto* geo2AsCirc = freecad_cast<const Part::GeomCircle*>(secGeo);
+
+        if (geo1AsCirc && geo2AsCirc) { // circle-circle distance
+
+            // If one of the circles is completely within the other, we will say that
+            // it is internal, if they are not within each other orcompletly intersect we won't
+            // make a call
+
+            double centerDistance = Base::Distance(geo1AsCirc->getLocation(), geo2AsCirc->getLocation());
+
+            auto circ1Radius = geo1AsCirc->getRadius();
+            auto circ2Radius = geo2AsCirc->getRadius();
+            if (centerDistance + circ1Radius < circ2Radius) {
+                constr->Orientation = ConstraintOrientations::Internal; // Circ1 is within circ2
+            } else if (centerDistance + circ2Radius < circ1Radius) {
+                constr->Orientation = ConstraintOrientations::External; // Circ2 is within circ1
+            }
+            return;
+        }
+
+        auto* geo2AsLine = freecad_cast<const Part::GeomLineSegment*>(secGeo);
+        if (geo1AsCirc && geo2AsLine) { // circle-line distance
+            bool internal = geo1AsCirc->getLocation().DistanceToLine(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint()-geo2AsLine->getStartPoint()) < geo1AsCirc->getRadius();
+            auto ccw = ccw2d(geo2AsLine->getStartPoint(), geo2AsLine->getEndPoint(), geo1AsCirc->getLocation());
+
+            constr->Orientation = ccw | (internal ? ConstraintOrientations::Internal : ConstraintOrientations::External);
+        }
+    }
+
 }
 
 std::unique_ptr<Constraint>
@@ -11330,6 +11397,16 @@ void SketchObject::migrateSketch()
 
             g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
         }
+    }
+
+    {
+        // Migrate point-line, circle-circle and circle-line distance from abs to signed
+        auto constraints = Constraints.getValues();
+        for (auto& constr : constraints) {
+            setOrientation(constr, false);
+        }
+
+        Constraints.setValues(std::move(constraints));
     }
 
     /* parabola axis as internal geometry */
