@@ -251,8 +251,10 @@ public:
     int addConstraint(const Constraint* constraint);
 
     /// Updates the internal constraints of the given indexes
-    bool updateConstraints(const std::vector<int>& constrIds,
-                           const std::vector<Constraint*>& ConstraintList);
+    bool updateConstraints(
+        const std::vector<int>& constrIds,
+        const std::vector<Constraint*>& ConstraintList
+    );
 
     /**
      *   add a fixed X coordinate constraint to a point

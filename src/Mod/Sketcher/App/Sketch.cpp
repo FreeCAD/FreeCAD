@@ -2581,8 +2581,10 @@ int Sketch::addConstraints(
     return rtn;
 }
 
-bool Sketch::updateConstraints(const std::vector<int>& constrIds,
-                               const std::vector<Constraint*>& ConstraintList)
+bool Sketch::updateConstraints(
+    const std::vector<int>& constrIds,
+    const std::vector<Constraint*>& ConstraintList
+)
 {
     if (Constrs.size() != ConstraintList.size()) {
         return false;
