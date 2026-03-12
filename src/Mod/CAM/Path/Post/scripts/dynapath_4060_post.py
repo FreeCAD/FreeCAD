@@ -68,20 +68,14 @@ M30
 
 parser = argparse.ArgumentParser(prog="delta_4060", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
-parser.add_argument(
-    "--no-comments", action="store_true", help="suppress comment output"
-)
-parser.add_argument(
-    "--line-numbers", action="store_true", help="prefix with line numbers"
-)
+parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
+parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
 parser.add_argument(
     "--no-show-editor",
     action="store_true",
     help="don't pop up editor before writing output",
 )
-parser.add_argument(
-    "--precision", default="3", help="number of digits of precision, default=3"
-)
+parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
     help='set commands to be issued before the first command, default="'
@@ -120,9 +114,7 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
-OUTPUT_DOUBLES = (
-    True  # if false duplicate axis values are suppressed if the same as previous line.
-)
+OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
 COMMAND_SPACE = ""
 LINENR = 0  # Line number starting value.
 DWELL_TIME = 1  # Number of seconds to allow spindle to come up to speed.
@@ -223,9 +215,7 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
         if not hasattr(obj, "Path"):
             print(
-                "the object "
-                + obj.Name
-                + " is not a path. Please select only path and Compounds."
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
             )
             return None
 
@@ -266,12 +256,7 @@ def export(objectslist, filename, argstring):
 
         # do the pre_op. Inserts "(T)" in comment to signify textfield.
         if OUTPUT_COMMENTS:
-            gcode += (
-                linenumber()
-                + "(T)"
-                + str.upper("begin operation: " + obj.Label)
-                + "$\n"
-            )
+            gcode += linenumber() + "(T)" + str.upper("begin operation: " + obj.Label) + "$\n"
             gcode += (
                 linenumber()
                 + "(T)"
@@ -286,12 +271,7 @@ def export(objectslist, filename, argstring):
         # turn coolant on if required
         if OUTPUT_COMMENTS:
             if not coolantMode == "None":
-                gcode += (
-                    linenumber()
-                    + "(T)"
-                    + str.upper("Coolant On:" + coolantMode)
-                    + "$\n"
-                )
+                gcode += linenumber() + "(T)" + str.upper("Coolant On:" + coolantMode) + "$\n"
         if coolantMode == "Flood":
             gcode += linenumber() + "M8" + "\n"
         if coolantMode == "Mist":
@@ -302,22 +282,12 @@ def export(objectslist, filename, argstring):
 
         # do the post_op
         if OUTPUT_COMMENTS:
-            gcode += (
-                linenumber()
-                + "(T)"
-                + str.upper("finish operation: " + obj.Label)
-                + "$\n"
-            )
+            gcode += linenumber() + "(T)" + str.upper("finish operation: " + obj.Label) + "$\n"
 
         # turn coolant off if required
         if not coolantMode == "None":
             if OUTPUT_COMMENTS:
-                gcode += (
-                    linenumber()
-                    + "(T)"
-                    + str.upper("Coolant Off:" + coolantMode)
-                    + "$\n"
-                )
+                gcode += linenumber() + "(T)" + str.upper("Coolant Off:" + coolantMode) + "$\n"
             gcode += linenumber() + "M9" + "\n"
 
     # do the post_amble
@@ -425,9 +395,7 @@ def parse(pathobj):
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
         if OUTPUT_COMMENTS:
-            out += (
-                linenumber() + "(T)" + str.upper("compound: " + pathobj.Label) + "$\n"
-            )
+            out += linenumber() + "(T)" + str.upper("compound: " + pathobj.Label) + "$\n"
         for p in pathobj.Group:
             out += parse(p)
         return out
@@ -494,18 +462,15 @@ def parse(pathobj):
                             # Your original Golden Logic
                             f_raw = float(c.Parameters.get("F", 20.0))
                             f_val = float(
-                                Units.Quantity(
-                                    f_raw, FreeCAD.Units.Velocity
-                                ).getValueAs(UNIT_SPEED_FORMAT)
+                                Units.Quantity(f_raw, FreeCAD.Units.Velocity).getValueAs(
+                                    UNIT_SPEED_FORMAT
+                                )
                             )
 
                         f_out = format(f_val, ".2f")
 
                         # FORCE the output for Tapping
-                        if (
-                            command in ("G84", "G74")
-                            or currLocation.get(param) != f_out
-                        ):
+                        if command in ("G84", "G74") or currLocation.get(param) != f_out:
                             outstring.append(param + f_out)
                             currLocation[param] = f_out
 
@@ -526,11 +491,7 @@ def parse(pathobj):
                                 if "Rapid" in p and ("Vert" in p or "Z" in p):
                                     val = getattr(tc, p)
                                     # Get the numerical value (Inches or MM)
-                                    temp_f = (
-                                        val.Value
-                                        if hasattr(val, "Value")
-                                        else float(val)
-                                    )
+                                    temp_f = val.Value if hasattr(val, "Value") else float(val)
                                     if temp_f > 0:
                                         f_raw = temp_f
                                         break
@@ -575,18 +536,12 @@ def parse(pathobj):
                     elif param == "X" and (command in QCYCLE_RANGE):
                         pos = Units.Quantity(c.Parameters["X"], FreeCAD.Units.Length)
                         outstring.append(
-                            param
-                            + format(
-                                float(pos.getValueAs(UNIT_FORMAT)), precision_string
-                            )
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                         )
                     elif param == "Y" and (command in QCYCLE_RANGE):
                         pos = Units.Quantity(c.Parameters["Y"], FreeCAD.Units.Length)
                         outstring.append(
-                            param
-                            + format(
-                                float(pos.getValueAs(UNIT_FORMAT)), precision_string
-                            )
+                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                         )
 
                     elif param == "S":
@@ -618,24 +573,17 @@ def parse(pathobj):
 
                         # I and J always post for standard G17 (XY) arcs
                         if param in ["I", "J"]:
-                            outstring.append(
-                                param + PostUtils.fmt(val, PRECISION, UNITS)
-                            )
+                            outstring.append(param + PostUtils.fmt(val, PRECISION, UNITS))
 
                         # K ONLY posts if we are in G18 or G19 (Vertical Arcs)
                         elif param == "K" and command in ["G18", "G19"]:
-                            outstring.append(
-                                param + PostUtils.fmt(val, PRECISION, UNITS)
-                            )
+                            outstring.append(param + PostUtils.fmt(val, PRECISION, UNITS))
 
                     # Converts "Q" to "K" as needed by Dynapath.
                     elif param == "Q":
                         pos = Units.Quantity(c.Parameters["Q"], FreeCAD.Units.Length)
                         outstring.append(
-                            "K"
-                            + format(
-                                float(pos.getValueAs(UNIT_FORMAT)), precision_string
-                            )
+                            "K" + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                         )
                     # Following inserts a 2nd reference plane in all canned cycles (dynapath).
                     # This provides the ability to manually go in and bump up the "O" offset in
@@ -655,9 +603,7 @@ def parse(pathobj):
                         # If R is 1.0 (exactly 1mm) or 0.0 (missing), hunt for the truth
                         if r_raw == 0.0 or abs(r_raw - 1.0) < 0.001:
                             tc = pathobj.ToolController
-                            r_attr = getattr(
-                                tc, "SafeHeight", getattr(tc, "RetractHeight", 1.0)
-                            )
+                            r_attr = getattr(tc, "SafeHeight", getattr(tc, "RetractHeight", 1.0))
                             r_raw = float(getattr(r_attr, "Value", r_attr))
 
                         # THE UNIT SCALER: If we are in G70 and value is 0.5 or higher,
@@ -679,14 +625,9 @@ def parse(pathobj):
                         ):
                             continue
                         else:
-                            pos = Units.Quantity(
-                                c.Parameters[param], FreeCAD.Units.Length
-                            )
+                            pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
-                                param
-                                + format(
-                                    float(pos.getValueAs(UNIT_FORMAT)), precision_string
-                                )
+                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                             )
             # save the last X, Y values
             if "X" in c.Parameters:
@@ -732,9 +673,7 @@ def parse(pathobj):
                 rpm = float(getattr(s_attr, "Value", s_attr))
 
                 # Hunt for Pitch or Stepover inside the Tool object
-                p_attr = getattr(
-                    tc, "Pitch", getattr(getattr(tc, "Tool", None), "Pitch", 0.03125)
-                )
+                p_attr = getattr(tc, "Pitch", getattr(getattr(tc, "Tool", None), "Pitch", 0.03125))
                 pitch = float(getattr(p_attr, "Value", p_attr))
 
                 # 2. Metric-to-Inch Safety
@@ -750,9 +689,7 @@ def parse(pathobj):
                 currLocation["F"] = f_out
 
             # prepend a line number and append a newline
-            if len(outstring) > 1 or any(
-                item.startswith(("E", "G80")) for item in outstring
-            ):
+            if len(outstring) > 1 or any(item.startswith(("E", "G80")) for item in outstring):
                 if OUTPUT_LINE_NUMBERS:
                     outstring.insert(0, (linenumber()))
 
