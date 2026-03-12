@@ -14,6 +14,7 @@ SET(Test_SRCS
     TestGui.py
     UnicodeTests.py
     UnitTests.py
+    Versioning.py
     Workbench.py
     unittestgui.py
     testmakeWireString.py
