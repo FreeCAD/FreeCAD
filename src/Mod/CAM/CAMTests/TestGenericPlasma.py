@@ -104,14 +104,14 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         - Input data: GenericPlasma postprocessor instance
 
         EXPECTED OUTPUT:
-        - Returns schema with pierce_delay, cooling_delay, torch_zaxis_control, force_rapid_feeds
+        - Returns schema with pierce_delay, cooling_delay, marking_delay, torch_zaxis_control, force_rapid_feeds
         - Properties should have correct types, defaults, and help text
         - This ensures the machine configuration editor can properly configure plasma features
         """
         schema = self.post.get_property_schema()
 
         # Check that we have the expected number of properties
-        self.assertEqual(len(schema), 4)
+        self.assertEqual(len(schema), 5)
 
         # Check pierce_delay property
         pierce_delay = next(prop for prop in schema if prop["name"] == "pierce_delay")
@@ -126,6 +126,13 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.assertEqual(cooling_delay["default"], 500)
         self.assertEqual(cooling_delay["min"], 0)
         self.assertEqual(cooling_delay["max"], 10000)
+
+        # Check marking_delay property
+        marking_delay = next(prop for prop in schema if prop["name"] == "marking_delay")
+        self.assertEqual(marking_delay["type"], "integer")
+        self.assertEqual(marking_delay["default"], 100)
+        self.assertEqual(marking_delay["min"], 0)
+        self.assertEqual(marking_delay["max"], 10000)
 
         # Check torch_zaxis_control property
         torch_control = next(prop for prop in schema if prop["name"] == "torch_zaxis_control")

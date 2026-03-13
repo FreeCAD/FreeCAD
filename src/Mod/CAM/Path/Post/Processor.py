@@ -1305,6 +1305,9 @@ class PostProcessor:
         # Build ordered postables for this job
         postables = self._buildPostList(early_tool_prep)
 
+        # Allow derived postprocessors to transform postables before expansion
+        self._expand_postprocessor_commands(postables)
+
         # ===== STAGE 2: COMMAND EXPANSION =====
         gcodeheader = self._build_header(postables)
         self._expand_canned_cycles(postables)
@@ -1936,6 +1939,19 @@ class PostProcessor:
 
         Args:
             gcode_sections: List of (section_name, gcode) tuples containing all generated G-code
+        """
+        pass
+
+    def _expand_postprocessor_commands(self, postables):
+        """
+        Hook for derived postprocessors to transform postables before command expansion.
+
+        Called after Stage 1 (ordering) and before Stage 2 (command expansion).
+        Derived postprocessors can override this to inject, remove, or modify
+        Path commands in the postables list before they are converted to G-code.
+
+        Args:
+            postables: List of (section_name, items) tuples
         """
         pass
 

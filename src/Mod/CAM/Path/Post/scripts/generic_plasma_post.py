@@ -392,12 +392,14 @@ class GenericPlasma(PostProcessor):
 
                     # Reset state for each operation
                     new_commands = self._reset_plasma_state(item)
-                    first_entry_done = False
+                    marked = False  # True once the first entry has been marked
+                    in_cut = False  # True while descending/at cut height
 
                     for cmd in item.Path.Commands:
                         # Check if this is a Z move to cut height (first entry)
                         if (
-                            not first_entry_done
+                            not marked
+                            and not in_cut
                             and "Z" in cmd.Parameters
                             and self._last_z is not None
                             and CompValue(cmd.Parameters["Z"]) < CompValue(self._last_z)
@@ -412,22 +414,24 @@ class GenericPlasma(PostProcessor):
                             if marking_delay_sec:
                                 new_commands.append(Path.Command("G4", {"P": marking_delay_sec}))
 
-                            first_entry_done = True
+                            marked = True
+                            in_cut = True
 
                         # Skip remaining movement commands [while at cut height] until Z+ (retraction)
-                        if (
+                        elif (
                             cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
                             and "Z" in cmd.Parameters
                         ):
-                            # Check if this is a movement accending from cut height (retraction)
-                            if (
-                                not first_entry_done
-                                or self._last_z is not None
-                                and CompValue(cmd.Parameters["Z"]) > CompValue(self._last_z)
-                            ):
-                                # 3. Keep movement accending from cut height (torch off)
+                            # Only keep movements that are ascending (retraction)
+                            if self._last_z is not None and CompValue(
+                                cmd.Parameters["Z"]
+                            ) > CompValue(self._last_z):
+                                # 3. Keep movement ascending from cut height (torch off)
                                 new_commands.append(cmd)
-                                first_entry_done = False
+                                in_cut = False
+                            elif not marked:
+                                # Before first mark, allow initial positioning moves
+                                new_commands.append(cmd)
                         elif cmd.Name in [
                             self.TorchIgniteCommand.Name,
                             self.TorchExtinguishCommand.Name,
@@ -559,44 +563,19 @@ class GenericPlasma(PostProcessor):
             Path.Log.error(f"Error showing plasma cutting dialog: {str(e)}")
             return True
 
-    def export2(self):
-        """Override export2 to inject plasma-specific commands before parent processing.
+    def _expand_postprocessor_commands(self, postables):
+        """Apply plasma-specific transformations to postables.
 
-        This handles torch control, pierce delays, cooling delays, and rapid feeds
-        before the parent's export2() processes the commands.
+        This hook is called by the parent's export2() between Stage 1 (ordering)
+        and Stage 2 (command expansion), ensuring transformations are applied to
+        the actual postables that get converted to G-code.
         """
-        Path.Log.debug("GenericPlasma.export2() starting plasma post-processing")
-
-        # Apply job property overrides FIRST so plasma injections use overridden values
-        self._apply_job_property_overrides()
-
-        # Get the postables list from parent (before processing)
-        postables = self._buildPostList()
-        Path.Log.debug(f"GenericPlasma: Processing {len(postables)} sections")
-
-        # Apply plasma-specific transformations (now with overridden property values)
+        Path.Log.debug("GenericPlasma: Applying plasma-specific transformations")
         self._inject_mark_entry_only(postables)
         self._inject_torch_control(postables)
         self._inject_pierce_delay(postables)
         self._inject_cooling_delay(postables)
         self._force_rapid_feeds(postables)
-
-        Path.Log.debug("GenericPlasma: Plasma transformations applied, calling parent export2()")
-        # Call parent export2 with modified postables (but skip override application since already done)
-        # We need to call parent's export2 but prevent double override application
-        return self._export2_without_overrides()
-
-    def _export2_without_overrides(self):
-        """Call parent export2 but skip job property override application."""
-        # Temporarily replace _apply_job_property_overrides with no-op
-        original_method = self._apply_job_property_overrides
-        self._apply_job_property_overrides = lambda: None
-
-        try:
-            return super().export2()
-        finally:
-            # Restore original method
-            self._apply_job_property_overrides = original_method
 
     @property
     def tooltip(self):
