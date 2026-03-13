@@ -5,7 +5,7 @@ project(freecad-launcher LANGUAGES CXX)
 if(DEFINED ENV{MACOS_DEPLOYMENT_TARGET})
     set(CMAKE_OSX_DEPLOYMENT_TARGET "$ENV{MACOS_DEPLOYMENT_TARGET}" CACHE STRING "Minimum OS X deployment version" FORCE)
 else()
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "11.0" CACHE STRING "Minimum OS X deployment version" FORCE)
 endif()
 set(CMAKE_CXX_STANDARD 17)
 
