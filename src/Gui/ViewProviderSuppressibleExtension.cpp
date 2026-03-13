@@ -90,14 +90,18 @@ QIcon ViewProviderSuppressibleExtension::extensionMergeColorfullOverlayIcons(con
 void ViewProviderSuppressibleExtension::extensionSetupContextMenu(QMenu* menu, QObject*, const char*)
 {
     auto vp = getExtendedViewProvider();
-    auto obj = vp->getObject()->getExtensionByType<App::SuppressibleExtension>();
+    auto obj = vp->getObject();
+    auto sObj = obj->getExtensionByType<App::SuppressibleExtension>();
     // Show Suppressed toggle action if the Suppressed property is visible
-    if (obj && !obj->Suppressed.testStatus(App::Property::Hidden)) {
-        Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    if (obj && !sObj->Suppressed.testStatus(App::Property::Hidden)) {
+        auto* func = new Gui::ActionFunction(menu);
         QAction* act = menu->addAction(QObject::tr("Suppressed"));
         act->setCheckable(true);
-        act->setChecked(obj->Suppressed.getValue());
-        func->trigger(act, [obj]() { obj->Suppressed.setValue(!obj->Suppressed.getValue()); });
+        act->setChecked(sObj->Suppressed.getValue());
+        func->trigger(act, [obj, sObj]() {
+            sObj->Suppressed.setValue(!sObj->Suppressed.getValue());
+            obj->getDocument()->recompute();
+        });
     }
 }
 
