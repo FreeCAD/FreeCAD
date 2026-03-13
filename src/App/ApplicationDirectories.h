@@ -187,12 +187,19 @@ namespace App {
         /// false if the temp directory creation failed.
         bool startSafeMode(std::map<std::string,std::string>& mConfig);
 
-        /// Take a path and add a version to it, if it's possible to do so. A version can be
-        /// appended only if a) the versioned subdirectory already exists, or b) pathToCheck/subdirs
-        /// does NOT yet exist. This does not actually create any directories, just determines
-        /// if we can append the versioned directory name to subdirs.
+        enum class MissingDirectoryBehavior : uint8_t {
+            create,
+            doNotAppend
+        };
+
+        /// Take a path and add a version to it, if it's possible to do so. When \a behavior is
+        /// `doNotAppend`, no directories are created: the most recent existing versioned
+        /// subdirectory is appended if one is found, or the current version is appended if the
+        /// base path does not yet exist. When \a behavior is `create`, the current version is
+        /// always appended and the directory is created on disk if it does not already exist.
         void appendVersionIfPossible(const std::filesystem::path& basePath,
-                                     std::vector<std::string> &subdirs) const;
+                                     std::vector<std::string> &subdirs,
+                                     MissingDirectoryBehavior behavior) const;
 
         static std::filesystem::path findPath(
             const std::filesystem::path& stdHome,
