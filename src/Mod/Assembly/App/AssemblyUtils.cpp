@@ -49,7 +49,7 @@
 #include "AssemblyObject.h"
 #include "AssemblyLink.h"
 
-#include "JointGroup.h"
+#include "Groups.h"
 
 
 namespace PartApp = Part;

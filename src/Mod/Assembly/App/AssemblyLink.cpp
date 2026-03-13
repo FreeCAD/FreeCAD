@@ -44,7 +44,7 @@
 
 #include "AssemblyObject.h"
 #include "AssemblyUtils.h"
-#include "JointGroup.h"
+#include "Groups.h"
 
 #include "AssemblyLink.h"
 #include "AssemblyLinkPy.h"
