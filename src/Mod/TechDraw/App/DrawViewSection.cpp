@@ -241,9 +241,31 @@ DrawViewSection::DrawViewSection()
                       "Rotation of hatch pattern in degrees anti-clockwise");
     ADD_PROPERTY_TYPE(HatchOffset, (0.0, 0.0, 0.0), fgroup, App::Prop_None, "Hatch pattern offset");
 
-    ADD_PROPERTY_TYPE(SectionLineStretch, (1.0), agroup, App::Prop_None,
+    // Default value was 1.0 before IgnoreSectionLineFudgeFactor was added
+    ADD_PROPERTY_TYPE(SectionLineStretch, (1.5), agroup, App::Prop_None,
                       "Adjusts the length of the section line.  1.0 is normal length.  1.1 would be 10% longer, 0.9 would be 10% shorter.");
     SectionLineStretch.setConstraints(&stretchRange);
+
+    // In QGIViewPart::drawSectionLine a fudge factor was previously unconditionally
+    // applied to the length of section lines. When SectionLineStretch was
+    // initially added, this fudge factor was still applied. Now we do not apply
+    // the fudge factor by default.
+    //
+    // But we need a way to keep the legacy behavior for section lines that were created
+    // before SectionLineStretch was added, or section lines that were created
+    // after SectionLineStretch was added but before we started ignoring the fudge factor
+    // (because the effective SectionLineStretch with the fudge factor is longer than
+    // the default setting).
+    //
+    // This hidden property is 'true' by default for all newly created section views,
+    // but when Restore'ing saved properties we will check whether the property was
+    // seen. If not (i.e. it is a section view created before the change) we set this
+    // property to 'false' so the legacy behavior will be used
+    ADD_PROPERTY_TYPE(IgnoreSectionLineFudgeFactor,
+                      (true),
+                      agroup,
+                      App::Prop_None,
+                      "Ignore the legacy 'fudge factor' when rendering the section line.");
 
     getParameters();
 
@@ -259,6 +281,9 @@ DrawViewSection::DrawViewSection()
     Direction.setStatus(App::Property::ReadOnly, true);
     Direction.setValue(SectionNormal.getValue());
 
+    // Do not allow direct modification of flag for section line fudge factor
+    IgnoreSectionLineFudgeFactor.setStatus(App::Property::ReadOnly, true);
+    IgnoreSectionLineFudgeFactor.setStatus(App::Property::Hidden, true);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -1224,10 +1249,28 @@ void DrawViewSection::setupObject()
     DrawViewPart::setupObject();
 }
 
+void DrawViewSection::Restore(Base::XMLReader &reader)
+{
+    m_sawSectionLineStretch = false;
+    m_sawIgnoreSectionLineFudgeFactor = false;
+
+    DrawViewPart::Restore(reader);
+
+    if (!m_sawSectionLineStretch) {
+        // default value is 1.5 for new instances, but restored instances
+        // need to have default value of 1.0
+        SectionLineStretch.setValue(1.0);
+    }
+
+    if (!m_sawIgnoreSectionLineFudgeFactor) {
+        // default value is 'true' for new instances, but restored instances
+        // need to have default value of 'false'
+        IgnoreSectionLineFudgeFactor.setValue(false);
+    }
+}
+
 void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
-    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
-
     if (prop == &SectionOrigin) {
         // SectionOrigin was PropertyVector then briefly PropertyPosition, now back to PropertyVector
         App::PropertyPosition tmp;
@@ -1251,6 +1294,14 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
             Direction.setValue(tmpValue);
         }
         return;
+    }
+
+    if (prop == &SectionLineStretch) {
+        m_sawSectionLineStretch = true;
+    }
+
+    if (prop == &IgnoreSectionLineFudgeFactor) {
+        m_sawIgnoreSectionLineFudgeFactor = true;
     }
 
     DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
