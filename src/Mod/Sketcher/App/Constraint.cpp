@@ -41,6 +41,7 @@
 
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
+#include <Mod/Part/App/Geometry.h>
 #include "Constraint.h"
 #include "ConstraintPy.h"
 
@@ -69,6 +70,39 @@ Constraint::Constraint()
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
 
     tag = gen();
+}
+
+Constraint::~Constraint() = default;
+
+Constraint::Constraint(const Constraint& other)
+    : Value(other.Value)
+    , Type(other.Type)
+    , AlignmentType(other.AlignmentType)
+    , Name(other.Name)
+    , MetaData(other.MetaData)
+    , LabelDistance(other.LabelDistance)
+    , LabelPosition(other.LabelPosition)
+    , isDriving(other.isDriving)
+    , InternalAlignmentIndex(other.InternalAlignmentIndex)
+    , isInVirtualSpace(other.isInVirtualSpace)
+    , isVisible(other.isVisible)
+    , isActive(other.isActive)
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    , First(other.First)
+    , Second(other.Second)
+    , Third(other.Third)
+    , FirstPos(other.FirstPos)
+    , SecondPos(other.SecondPos)
+    , ThirdPos(other.ThirdPos)
+#endif
+    , elements(other.elements)
+    , tag(other.tag)
+{
+    // Deep-clone canonical geometry
+    canonicalGeometry.reserve(other.canonicalGeometry.size());
+    for (const auto& geo : other.canonicalGeometry) {
+        canonicalGeometry.emplace_back(geo->clone());
+    }
 }
 
 Constraint* Constraint::clone() const
@@ -102,6 +136,12 @@ Constraint* Constraint::copy() const
     temp->Third = this->Third;
     temp->ThirdPos = this->ThirdPos;
 #endif
+
+    // Deep-clone canonical geometry
+    temp->canonicalGeometry.reserve(this->canonicalGeometry.size());
+    for (const auto& geo : this->canonicalGeometry) {
+        temp->canonicalGeometry.emplace_back(geo->clone());
+    }
 
     return temp;
 }
@@ -193,7 +233,24 @@ void Constraint::Save(Writer& writer) const
                         << "ElementPositions=\"" << positions << "\" ";
     }
 
-    writer.Stream() << "/>\n";
+    if (!canonicalGeometry.empty() && (Type == Group || Type == Text)) {
+        writer.Stream() << "CanonicalCount=\"" << canonicalGeometry.size() << "\"";
+        writer.Stream() << ">\n";
+        writer.incInd();
+        for (const auto& geo : canonicalGeometry) {
+            writer.Stream() << writer.ind() << "<Geometry type=\"" << geo->getTypeId().getName()
+                            << "\">\n";
+            writer.incInd();
+            geo->Save(writer);
+            writer.decInd();
+            writer.Stream() << writer.ind() << "</Geometry>\n";
+        }
+        writer.decInd();
+        writer.Stream() << writer.ind() << "</Constrain>\n";
+    }
+    else {
+        writer.Stream() << "/>\n";
+    }
 }
 
 void Constraint::Restore(XMLReader& reader)
@@ -305,6 +362,24 @@ void Constraint::Restore(XMLReader& reader)
                 const PointPos pos {reader.getAttribute<PointPos>(posNames[i])};
                 setElement(i, GeoElementId(geoId, pos));
             }
+        }
+    }
+
+    // Read canonical geometry for Group/Text constraints (non-self-closing element)
+    if (reader.hasAttribute("CanonicalCount")) {
+        int count = reader.getAttribute<int>("CanonicalCount");
+        if (count > 0) {
+            for (int i = 0; i < count; i++) {
+                reader.readElement("Geometry");
+                const char* typeName = reader.getAttribute<const char*>("type");
+                std::unique_ptr<Part::Geometry> newG(
+                    static_cast<Part::Geometry*>(Base::Type::fromName(typeName).createInstance())
+                );
+                newG->Restore(reader);
+                canonicalGeometry.push_back(std::move(newG));
+                reader.readEndElement("Geometry");
+            }
+            reader.readEndElement("Constrain");
         }
     }
 }
@@ -684,4 +759,19 @@ void Constraint::setIsTextHeight(bool isHeight)
     }
     j["isTextHeight"] = isHeight;
     MetaData = j.dump();
+}
+
+std::vector<const Part::Geometry*> Constraint::getCanonicalGeometry() const
+{
+    std::vector<const Part::Geometry*> result;
+    result.reserve(canonicalGeometry.size());
+    for (const auto& geo : canonicalGeometry) {
+        result.push_back(geo.get());
+    }
+    return result;
+}
+
+bool Constraint::hasCanonicalGeometry() const
+{
+    return !canonicalGeometry.empty();
 }

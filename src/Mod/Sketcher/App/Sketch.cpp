@@ -208,6 +208,10 @@ int Sketch::setUpSketch(
         }
     }
 
+    // Bootstrap canonical geometry for Group/Text constraints that don't have it.
+    // This handles old files and undo scenarios where canonical data is missing.
+    bootstrapCanonicalGeometry(GeoList, ConstraintList);
+
     std::vector<Part::Geometry*> intGeoList, extGeoList;
     std::copy(GeoList.begin(), GeoList.end() - extGeoCount, std::back_inserter(intGeoList));
     std::copy(GeoList.end() - extGeoCount, GeoList.end(), std::back_inserter(extGeoList));
@@ -265,6 +269,41 @@ int Sketch::setUpSketch(
     int extEnd = Geoms.size() - 1;
     for (int i = extStart; i <= extEnd; i++) {
         Geoms[i].external = true;
+    }
+
+    // Overwrite grouped geometry with world positions derived from canonical data.
+    // This ensures zero drift: world positions are always freshly computed from
+    // the immutable canonical geometry + current frame line.
+    for (const auto& c : ConstraintList) {
+        if ((c->Type != Group && c->Type != Text) || !c->hasCanonicalGeometry()) {
+            continue;
+        }
+        int frameGeoId = c->getGeoId(0);
+        if (frameGeoId < 0 || frameGeoId >= static_cast<int>(GeoList.size())) {
+            continue;
+        }
+        auto* frameLine = dynamic_cast<const Part::GeomLineSegment*>(GeoList[frameGeoId]);
+        if (!frameLine) {
+            continue;
+        }
+        Base::Matrix4D transform
+            = computeCanonicalToWorldTransform(frameLine->getStartPoint(), frameLine->getEndPoint());
+
+        auto canonical = c->getCanonicalGeometry();
+        for (size_t i = 0; i < canonical.size(); ++i) {
+            int groupedGeoId = c->getGeoId(static_cast<int>(i) + 1);
+            if (groupedGeoId == GeoEnum::GeoUndef) {
+                continue;
+            }
+            int internalId = checkGeoId(groupedGeoId);
+            if (internalId < 0 || internalId >= static_cast<int>(Geoms.size())) {
+                continue;
+            }
+            Part::Geometry* worldGeo = canonical[i]->clone();
+            worldGeo->transform(transform);
+            delete Geoms[internalId].geo;
+            Geoms[internalId].geo = worldGeo;
+        }
     }
 
     // The Geoms list might be empty after an undo/redo
@@ -4815,8 +4854,6 @@ bool Sketch::updateNonDrivingConstraints()
 
 int Sketch::solve()
 {
-    captureGroupStates();
-
     Base::TimeElapsed start_time;
     std::string solvername;
 
@@ -5578,109 +5615,126 @@ void Sketch::Restore(XMLReader&)
 
 // Group functions related -------------------------------------------------
 
-Sketch::GroupLineState Sketch::getGroupLineState(int geoId) const
+Base::Matrix4D Sketch::computeCanonicalToWorldTransform(
+    const Base::Vector3d& frameStart,
+    const Base::Vector3d& frameEnd
+)
 {
-    GroupLineState state;
-    state.startPoint = getPoint(geoId, PointPos::start);
-    state.endPoint = getPoint(geoId, PointPos::end);
-    return state;
+    Base::Vector3d dir = frameEnd - frameStart;
+    double length = dir.Length();
+
+    // Scale: canonical frame has length 1, world frame has length `length`
+    // Must be uniform (same in X, Y, Z) so gp_Trsf can represent it.
+    Base::Matrix4D S;
+    S[0][0] = length;
+    S[1][1] = length;
+    S[2][2] = length;
+
+    // Rotation: canonical frame is along X (angle=0), world frame is along `dir`
+    double angle = std::atan2(dir.y, dir.x);
+    double cosA = std::cos(angle);
+    double sinA = std::sin(angle);
+    Base::Matrix4D R;
+    R[0][0] = cosA;
+    R[0][1] = -sinA;
+    R[1][0] = sinA;
+    R[1][1] = cosA;
+
+    // Translation: canonical starts at origin, world starts at frameStart
+    Base::Matrix4D T;
+    T[0][3] = frameStart.x;
+    T[1][3] = frameStart.y;
+
+    return T * R * S;
 }
 
-void Sketch::captureGroupStates()
+void Sketch::bootstrapCanonicalGeometry(
+    const std::vector<Part::Geometry*>& GeoList,
+    const std::vector<Constraint*>& ConstraintList
+)
 {
-    preSolveGroupStates.clear();
-
-    // A set to keep track of which parameters we've already moved.
-    std::set<double*> movedParams;
-
-    for (const auto& constrDef : Constrs) {
-        const Constraint* c = constrDef.constr;
-
+    for (auto* c : ConstraintList) {
         if ((c->Type != Group && c->Type != Text) || !c->hasElement(1)) {
             continue;
         }
 
-        // --- Capture Frame State ---
+        int elementCount = 0;
+        for (int i = 1; c->hasElement(i); ++i) {
+            if (c->getGeoId(i) != GeoEnum::GeoUndef) {
+                ++elementCount;
+            }
+        }
+
+        // Rebuild if data is missing or out of sync with element count
+        if (c->hasCanonicalGeometry()
+            && static_cast<int>(c->canonicalGeometry.size()) == elementCount) {
+            continue;  // Already has matching canonical data
+        }
+        c->canonicalGeometry.clear();
+
+        // Compute world -> canonical transform from current frame line
         int frameGeoId = c->getGeoId(0);
-        preSolveGroupStates[frameGeoId] = getGroupLineState(frameGeoId);
+        if (frameGeoId < 0 || frameGeoId >= static_cast<int>(GeoList.size())) {
+            continue;
+        }
+        auto* frameLine = dynamic_cast<const Part::GeomLineSegment*>(GeoList[frameGeoId]);
+        if (!frameLine) {
+            continue;
+        }
+
+        Base::Vector3d start = frameLine->getStartPoint();
+        Base::Vector3d end = frameLine->getEndPoint();
+        if ((end - start).Length() < Precision::Confusion()) {
+            continue;  // Zero-length frame, cannot compute inverse transform
+        }
+
+        Base::Matrix4D canonToWorld = computeCanonicalToWorldTransform(start, end);
+        Base::Matrix4D worldToCanon = canonToWorld;
+        worldToCanon.inverseGauss();
+
+        for (int i = 1; c->hasElement(i); ++i) {
+            int geoId = c->getGeoId(i);
+            if (geoId == GeoEnum::GeoUndef || geoId < 0 || geoId >= static_cast<int>(GeoList.size())) {
+                continue;
+            }
+            std::unique_ptr<Part::Geometry> canonGeo(GeoList[geoId]->clone());
+            canonGeo->transform(worldToCanon);
+            c->canonicalGeometry.push_back(std::move(canonGeo));
+        }
     }
 }
 
 void Sketch::applyGroupTransformations()
 {
-    if (preSolveGroupStates.empty()) {
-        return;
-    }
-
     for (const auto& constrDef : Constrs) {
-        const Constraint* c = constrDef.constr;
-        if ((c->Type != Group && c->Type != Text) || !c->hasElement(1)) {
+        Constraint* c = constrDef.constr;
+        if ((c->Type != Group && c->Type != Text) || !c->hasCanonicalGeometry()) {
             continue;
         }
 
         int frameGeoId = c->getGeoId(0);
 
-        // Get the "before" and "after" states of the frame line
-        GroupLineState preSolveFrame = preSolveGroupStates.at(frameGeoId);
-        GroupLineState postSolveFrame = getGroupLineState(frameGeoId);
+        // Get the post-solve frame line position from Geoms
+        Base::Vector3d frameStart = getPoint(frameGeoId, PointPos::start);
+        Base::Vector3d frameEnd = getPoint(frameGeoId, PointPos::end);
 
-        // --- Calculate the Transformation ---
-        Base::Vector3d preVec = preSolveFrame.getVec();
-        Base::Vector3d postVec = postSolveFrame.getVec();
+        // Compute absolute transform from canonical (0,0)->(1,0) to post-solve frame
+        Base::Matrix4D transform = computeCanonicalToWorldTransform(frameStart, frameEnd);
 
-        // Handle potential zero-length lines to avoid division by zero
-        double preLen = preVec.Length();
-        double scale = (preLen > Precision::Confusion()) ? postVec.Length() / preLen : 1.0;
-
-        // --- Create the Transformation Matrix ---
-
-        // 1. T1: Matrix to translate the group to the origin (using pre-solve start point)
-        Base::Matrix4D T1;  // Identity
-        T1[0][3] = -preSolveFrame.startPoint.x;
-        T1[1][3] = -preSolveFrame.startPoint.y;
-        T1[2][3] = 0;
-
-        // 2. S: Matrix for scaling
-        Base::Matrix4D S;  // Identity
-        S[0][0] = scale;
-        S[1][1] = scale;
-        S[2][2] = scale;
-
-        // 3. R: Matrix for rotation
-        Base::Matrix4D R;  // Identity
-        if (preLen > Precision::Confusion()) {
-            // We can get the axis and angle from the two vectors and use rotLine
-            Base::Vector3d rotationAxis = preVec.Cross(postVec);
-            double rotationAngle = preVec.GetAngle(postVec);
-            // Only apply rotation if the vectors are not collinear
-            if (rotationAxis.Length() > Precision::Confusion()) {
-                R.rotLine(rotationAxis, rotationAngle);
-            }
-        }
-
-        // 4. T2: Matrix to translate the group to its new final position
-        Base::Matrix4D T2;  // Identity
-        T2[0][3] = postSolveFrame.startPoint.x;
-        T2[1][3] = postSolveFrame.startPoint.y;
-        T2[2][3] = 0;
-
-        // 5. Combine the matrices in the correct order: T_final = T2 * R * S * T1
-        Base::Matrix4D transform = T2 * R * S * T1;
-
-        // --- Loop through grouped elements and apply the transform ---
-        for (int i = 1; c->hasElement(i); ++i) {
-            int groupedGeoId = c->getGeoId(i);
+        // Apply transform to clones of canonical geometry
+        auto canonical = c->getCanonicalGeometry();
+        for (size_t i = 0; i < canonical.size(); ++i) {
+            int groupedGeoId = c->getGeoId(static_cast<int>(i) + 1);
             if (groupedGeoId == GeoEnum::GeoUndef) {
                 continue;
             }
 
-            // Get the slave's current (pre-solve) state
-            Part::Geometry* groupedGeo = Geoms[checkGeoId(groupedGeoId)].geo;
+            Part::Geometry* freshGeo = canonical[i]->clone();
+            freshGeo->transform(transform);
 
-            // Apply the calculated transformation
-            groupedGeo->transform(transform);
+            int internalId = checkGeoId(groupedGeoId);
+            delete Geoms[internalId].geo;
+            Geoms[internalId].geo = freshGeo;
         }
     }
-
-    preSolveGroupStates.clear();
 }

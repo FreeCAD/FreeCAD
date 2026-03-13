@@ -631,32 +631,19 @@ private:
     double moveStep;
 
     // Group related things :
-    /// container to store information about groups
-    struct GroupLineState
-    {
-        Base::Vector3d startPoint;
-        Base::Vector3d endPoint;
-
-        // Convenience method to get the length (scale)
-        double getLength() const
-        {
-            return (endPoint - startPoint).Length();
-        }
-
-        // Convenience method to get the orientation vector
-        Base::Vector3d getVec() const
-        {
-            return endPoint - startPoint;
-        }
-    };
-    // This map stores the state of group lines just BEFORE a solve.
-    // We will use this to calculate the transformation AFTER the solve.
-    // Key: GeoId of the frame line.
-    // Value: it's initial position.
-    std::map<int, GroupLineState> preSolveGroupStates;
-    void captureGroupStates();
     void applyGroupTransformations();
-    GroupLineState getGroupLineState(int geoId) const;
+    /// Bootstrap canonical geometry for constraints that don't have it yet.
+    void bootstrapCanonicalGeometry(
+        const std::vector<Part::Geometry*>& GeoList,
+        const std::vector<Constraint*>& ConstraintList
+    );
+
+public:
+    /// Compute the transform matrix from canonical frame (0,0)->(1,0) to world frame.
+    static Base::Matrix4D computeCanonicalToWorldTransform(
+        const Base::Vector3d& frameStart,
+        const Base::Vector3d& frameEnd
+    );
 
 public:
     GCS::Algorithm defaultSolver;
