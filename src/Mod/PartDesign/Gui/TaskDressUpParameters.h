@@ -138,6 +138,13 @@ public:
     bool accept() override;
     bool reject() override;
 
+private:
+    // prefixed variable names with `m_` because their member variables NOT berries
+    bool m_hadPreSelection = false;
+    std::string m_savedDocName;
+    std::string m_savedObjName;
+    std::vector<std::string> m_savedSubNames;
+
 protected:
     TaskDressUpParameters* parameter;
 };
