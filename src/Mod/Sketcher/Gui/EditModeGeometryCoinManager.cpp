@@ -119,8 +119,8 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfa
     gcconv.convert(geolistfacade);
 
     // set cross coordinates
-    editModeScenegraphNodes.RootCrossSet->numVertices.set1Value(0, 2);
-    editModeScenegraphNodes.RootCrossSet->numVertices.set1Value(1, 2);
+    editModeScenegraphNodes.RootCrossHSet->numVertices.set1Value(0, 2);
+    editModeScenegraphNodes.RootCrossVSet->numVertices.set1Value(0, 2);
 
     analysisResults.combRepresentationScale = gcconv.getCombRepresentationScale();
     analysisResults.boundingBoxMagnitudeOrder = exp(
@@ -203,7 +203,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(
 
     // Update Colors
 
-    SbColor* crosscolor = editModeScenegraphNodes.RootCrossMaterials->diffuseColor.startEditing();
+    SbColor* crosscolorH = editModeScenegraphNodes.RootCrossHMaterials->diffuseColor.startEditing();
+    SbColor* crosscolorV = editModeScenegraphNodes.RootCrossVMaterials->diffuseColor.startEditing();
     auto viewOrientationFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
 
     // Origin point
@@ -568,23 +569,23 @@ void EditModeGeometryCoinManager::updateGeometryColor(
         // colors of the cross
         if (l == 0) {  // only in layer 0
             if (ViewProviderSketchCoinAttorney::isCurveSelected(viewProvider, Sketcher::GeoEnum::HAxis)) {
-                crosscolor[0] = drawingParameters.SelectColor;
+                crosscolorH[0] = drawingParameters.SelectColor;
             }
             else if (preselectcross == 1) {  // cross only in layer 0
-                crosscolor[0] = drawingParameters.PreselectColor;
+                crosscolorH[0] = drawingParameters.PreselectColor;
             }
             else {
-                crosscolor[0] = drawingParameters.CrossColorH;
+                crosscolorH[0] = drawingParameters.CrossColorH;
             }
 
             if (ViewProviderSketchCoinAttorney::isCurveSelected(viewProvider, Sketcher::GeoEnum::VAxis)) {
-                crosscolor[1] = drawingParameters.SelectColor;
+                crosscolorV[0] = drawingParameters.SelectColor;
             }
             else if (preselectcross == 2) {
-                crosscolor[1] = drawingParameters.PreselectColor;
+                crosscolorV[0] = drawingParameters.PreselectColor;
             }
             else {
-                crosscolor[1] = drawingParameters.CrossColorV;
+                crosscolorV[0] = drawingParameters.CrossColorV;
             }
         }
 
@@ -592,7 +593,8 @@ void EditModeGeometryCoinManager::updateGeometryColor(
         editModeScenegraphNodes.PointsCoordinate[l]->point.finishEditing();
     }
 
-    editModeScenegraphNodes.RootCrossMaterials->diffuseColor.finishEditing();
+    editModeScenegraphNodes.RootCrossHMaterials->diffuseColor.finishEditing();
+    editModeScenegraphNodes.RootCrossVMaterials->diffuseColor.finishEditing();
 }
 
 void EditModeGeometryCoinManager::updateGeometryLayersConfiguration()
