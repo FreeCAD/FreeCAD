@@ -30,6 +30,7 @@
 import FreeCAD
 from FreeCAD import Units
 import Path
+from Path import Command
 import argparse
 import datetime
 import shlex
@@ -37,6 +38,7 @@ import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
+
 
 TOOLTIP = """
 This is a post processor file for the FreeCAD Path workbench. It is used to
@@ -420,7 +422,7 @@ def parse(pathobj):
         "P",
     ]
 
-    firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
+    firstmove = Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
     currLocation.update(firstmove.Parameters)  # set first location parameters
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
