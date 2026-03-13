@@ -16,6 +16,8 @@ features such as non-heuristic arc fitting.
 
 This epic is about upgrading from Clipper 1/libarea/kurve to Clipper 2, and the CAM improvements enabled by that upgrade.
 
+This epic is designed to fit with an [FPA grant proposal](https://github.com/FreeCAD/FPA-grant-proposals/issues/80).
+
 | In  | Out |
 | --- | --- |
 | Add Clipper 2 to FreeCAD | Research other new libraries to add to FreeCAD |
