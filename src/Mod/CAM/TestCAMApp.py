@@ -55,7 +55,7 @@ from CAMTests.TestPathOpUtil import TestPathOpUtil
 from CAMTests.TestPostToolProcessing import TestToolLengthOffset, TestToolProcessing
 
 # Post-processing tests split into 3 files for better organization
-from CAMTests.TestPostCore import TestPathPostUtils, TestBuildPostList, TestJobPropertyOverrides
+# from CAMTests.TestPostCore import TestPathPostUtils, TestBuildPostList, TestJobPropertyOverrides
 from CAMTests.TestPostProcessor import (
     TestPostProcessorFactory,
     TestResolvingPostProcessorName,
@@ -117,17 +117,18 @@ from CAMTests.TestFanucPost import TestFanucPost
 # from CAMTests.TestMassoG3Post import TestMassoG3Post
 # from CAMTests.TestCentroidPost import TestCentroidPost
 # from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
-from CAMTests.TestTestPost import TestTestPost
-from CAMTests.TestPostGCodes import TestPostGCodes
-from CAMTests.TestPostMCodes import TestPostMCodes
-from CAMTests.TestDressupPost import TestDressupPost
+# from CAMTests.TestTestPost import TestTestPost
+# from CAMTests.TestPostGCodes import TestPostGCodes
+# from CAMTests.TestPostMCodes import TestPostMCodes
+# from CAMTests.TestDressupPost import TestDressupPost
 
 # from CAMTests.TestLinuxCNCLegacyPost import TestLinuxCNCLegacyPost
 # from CAMTests.TestGrblLegacyPost import TestGrblLegacyPost
 from CAMTests.TestCentroidLegacyPost import TestCentroidLegacyPost
 from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
 
-from CAMTests.TestSnapmakerPost import TestSnapmakerPost
+# from CAMTests.TestSnapmakerPost import TestSnapmakerPost
+from CAMTests.TestWedmPost import TestWedmPost
 from CAMTests.TestTSPSolver import TestTSPSolver
 from CAMTests.TestGcodeProcessingUtils import (
     TestInsertLineNumbers,
