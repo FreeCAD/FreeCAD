@@ -2892,8 +2892,10 @@ int SketchObject::transferConstraints(
             // For example a B-spline pole being a point instead of a circle.
             continue;
         }
-        else if (vals[i]->involvesGeoIdAndPosId(fromGeoId, fromPosId)
-                 && !vals[i]->involvesGeoIdAndPosId(toGeoId, toPosId)) {
+        else if (
+            vals[i]->involvesGeoIdAndPosId(fromGeoId, fromPosId)
+            && !vals[i]->involvesGeoIdAndPosId(toGeoId, toPosId)
+        ) {
             std::unique_ptr<Constraint> constNew(newVals[i]->clone());
             constNew->substituteIndexAndPos(fromGeoId, fromPosId, toGeoId, toPosId);
             if (vals[i]->First < 0 && vals[i]->Second < 0) {
@@ -3269,7 +3271,9 @@ bool SketchObject::seekTrimPoints(
 
     // Not found in will be returned as -1, not as GeoUndef, Part WB is agnostic to the concept of
     // GeoUndef
-    if (!Part2DObject::seekTrimPoints(geos, GeoId, point, localindex1, intersect1, localindex2, intersect2)) {
+    if (
+        !Part2DObject::seekTrimPoints(geos, GeoId, point, localindex1, intersect1, localindex2, intersect2)
+    ) {
         return false;
     }
 
@@ -4767,10 +4771,12 @@ int SketchObject::addSymmetric(
                 createEqualityConstr(geoId1, geoId2);
                 createSymConstr(geoId1, geoId2, PointPos::mid, PointPos::mid);
             }
-            else if (geo->is<Part::GeomArcOfCircle>()        //
-                     || geo->is<Part::GeomArcOfEllipse>()    //
-                     || geo->is<Part::GeomArcOfHyperbola>()  //
-                     || geo->is<Part::GeomArcOfParabola>()) {
+            else if (
+                geo->is<Part::GeomArcOfCircle>()        //
+                || geo->is<Part::GeomArcOfEllipse>()    //
+                || geo->is<Part::GeomArcOfHyperbola>()  //
+                || geo->is<Part::GeomArcOfParabola>()
+            ) {
                 createEqualityConstr(geoId1, geoId2);
                 createSymConstr(
                     geoId1,

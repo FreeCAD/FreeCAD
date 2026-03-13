@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions to work with faces."""
+
 ## @package faces
 # \ingroup draftgeoutils
 # \brief Provides various functions to work with faces.

@@ -40,9 +40,8 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfEllipsePy::representation() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfEllipsePtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfEllipsePtr()->handle());
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
 
     gp_Ax1 axis = ellipse->Axis();
@@ -140,9 +139,8 @@ void ArcOfEllipsePy::setMinorRadius(Py::Float arg)
 
 Py::Object ArcOfEllipsePy::getEllipse() const
 {
-    Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(
-        getGeomArcOfEllipsePtr()->handle()
-    );
+    Handle(Geom_TrimmedCurve)
+        trim = Handle(Geom_TrimmedCurve)::DownCast(getGeomArcOfEllipsePtr()->handle());
     Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
     return Py::Object(new EllipsePy(new GeomEllipse(ellipse)), true);
 }

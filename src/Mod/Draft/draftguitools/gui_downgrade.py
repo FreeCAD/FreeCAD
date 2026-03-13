@@ -30,6 +30,7 @@ Downgrades 2D objects to simpler objects until it reaches
 simple Edge primitives. For example, a Draft Line to wire, and then
 to a series of edges.
 """
+
 ## @package gui_downgrade
 # \ingroup draftguitools
 # \brief Provides GUI tools to downgrade objects.

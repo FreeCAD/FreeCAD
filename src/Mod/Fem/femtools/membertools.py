@@ -27,7 +27,6 @@ This module contains function for managing a analysis and all the different
 types of objects it contains, helper for executing a simulation.
 """
 
-
 __title__ = "FEM analysis tools"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "https://www.freecad.org"

@@ -628,8 +628,10 @@ int ToolBarManager::toolBarIconSize(QWidget* widget) const
                 s *= 0.6;
             }
         }
-        else if (widget->parentWidget() == menuBarLeftAreaWidget
-                 || widget->parentWidget() == menuBarRightAreaWidget) {
+        else if (
+            widget->parentWidget() == menuBarLeftAreaWidget
+            || widget->parentWidget() == menuBarRightAreaWidget
+        ) {
             if (_menuBarIconSize > 0) {
                 s = _menuBarIconSize;
             }

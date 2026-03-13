@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create a fusion of two shapes."""
+
 ## @package fuse
 # \ingroup draftfunctions
 # \brief Provides functions to create a fusion of two shapes.

@@ -38,7 +38,6 @@ import shlex
 import re
 from builtins import open as pyopen
 
-
 TOOLTIP = """
 Generate G-code from a Path that is compatible with the Estlcam CNC controller.
 Have a look at https://www.estlcam.de/steuerung_cnc_programme_en.php

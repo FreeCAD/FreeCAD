@@ -29,6 +29,7 @@
 
 The copies will be created at the points of a point object.
 """
+
 ## @package gui_pointarray
 # \ingroup draftguitools
 # \brief Provides GUI tools to create PointArray objects.

@@ -802,16 +802,21 @@ private:
             && state() == SelectMode::SeekSecond) {
             setAngleSnapping(true, corner1);
         }
-        else if ((constructionMethod() == ConstructionMethod::CenterAnd3Points)
-                 && state() == SelectMode::SeekSecond) {
+        else if (
+            (constructionMethod() == ConstructionMethod::CenterAnd3Points)
+            && state() == SelectMode::SeekSecond
+        ) {
             setAngleSnapping(true, center);
         }
-        else if ((constructionMethod() == ConstructionMethod::ThreePoints)
-                 && state() == SelectMode::SeekThird) {
+        else if (
+            (constructionMethod() == ConstructionMethod::ThreePoints) && state() == SelectMode::SeekThird
+        ) {
             setAngleSnapping(true, cornersReversed ? corner4 : corner2);
         }
-        else if ((constructionMethod() == ConstructionMethod::CenterAnd3Points)
-                 && state() == SelectMode::SeekThird) {
+        else if (
+            (constructionMethod() == ConstructionMethod::CenterAnd3Points)
+            && state() == SelectMode::SeekThird
+        ) {
             setAngleSnapping(true, corner1);
         }
 
@@ -841,8 +846,10 @@ private:
                 if (state() == SelectMode::SeekSecond && !roundCorners && !makeFrame) {
                     setState(SelectMode::End);
                 }
-                else if ((state() == SelectMode::SeekThird && roundCorners && !makeFrame)
-                         || (state() == SelectMode::SeekThird && !roundCorners && makeFrame)) {
+                else if (
+                    (state() == SelectMode::SeekThird && roundCorners && !makeFrame)
+                    || (state() == SelectMode::SeekThird && !roundCorners && makeFrame)
+                ) {
                     setState(SelectMode::End);
                 }
                 else if (state() == SelectMode::SeekFourth) {
@@ -856,8 +863,10 @@ private:
                 if (state() == SelectMode::SeekThird && !roundCorners && !makeFrame) {
                     setState(SelectMode::End);
                 }
-                else if ((state() == SelectMode::SeekFourth && roundCorners && !makeFrame)
-                         || (state() == SelectMode::SeekFourth && !roundCorners && makeFrame)) {
+                else if (
+                    (state() == SelectMode::SeekFourth && roundCorners && !makeFrame)
+                    || (state() == SelectMode::SeekFourth && !roundCorners && makeFrame)
+                ) {
                     setState(SelectMode::End);
                 }
                 else {
@@ -2850,8 +2859,9 @@ void DSHRectangleController::computeNextDrawSketchHandlerMode()
                         handler->setNextState(SelectMode::End);
                     }
                 }
-                else if (handler->makeFrame
-                         && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
+                else if (
+                    handler->makeFrame && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing
+                ) {
 
                     handler->setNextState(SelectMode::End);
                 }
@@ -2886,8 +2896,9 @@ void DSHRectangleController::computeNextDrawSketchHandlerMode()
                         handler->setNextState(SelectMode::End);
                     }
                 }
-                else if (handler->makeFrame
-                         && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
+                else if (
+                    handler->makeFrame && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing
+                ) {
                     handler->setNextState(SelectMode::End);
                 }
             }

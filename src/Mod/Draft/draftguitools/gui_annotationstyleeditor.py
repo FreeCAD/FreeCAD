@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create and edit annotation styles."""
+
 ## @package gui_annotationstyleeditor
 # \ingroup draftguitools
 # \brief Provides GUI tools to create and edit annotation styles.

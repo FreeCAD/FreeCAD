@@ -26,7 +26,6 @@ import CAMTests.PathTestUtils as PathTestUtils
 from importlib import reload
 from Path.Post.scripts import grbl_legacy_post as postprocessor
 
-
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 

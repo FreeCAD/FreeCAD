@@ -114,8 +114,10 @@ private:
                     refGeoId = Sketcher::GeoEnum::VAxis;
                     refPosId = Sketcher::PointPos::none;
                 }
-                else if ((CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
-                         && isLineSegment(*obj->getGeometry(CrvId))) {  // Curves
+                else if (
+                    (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt)
+                    && isLineSegment(*obj->getGeometry(CrvId))
+                ) {  // Curves
                     refGeoId = CrvId;
                     refPosId = Sketcher::PointPos::none;
                 }

@@ -56,7 +56,9 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* o;
     double u1, u2;
     PyObject* sense = Py_True;
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Hyperbola2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (
+        PyArg_ParseTuple(args, "O!dd|O!", &(Part::Hyperbola2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)
+    ) {
         try {
             Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(
                 static_cast<Hyperbola2dPy*>(o)->getGeom2dHyperbolaPtr()->handle()
@@ -111,9 +113,8 @@ void ArcOfHyperbola2dPy::setMinorRadius(Py::Float arg)
 
 Py::Object ArcOfHyperbola2dPy::getHyperbola() const
 {
-    Handle(Geom2d_TrimmedCurve) trim = Handle(Geom2d_TrimmedCurve)::DownCast(
-        getGeom2dArcOfHyperbolaPtr()->handle()
-    );
+    Handle(Geom2d_TrimmedCurve)
+        trim = Handle(Geom2d_TrimmedCurve)::DownCast(getGeom2dArcOfHyperbolaPtr()->handle());
     Handle(Geom2d_Hyperbola) hyperbola = Handle(Geom2d_Hyperbola)::DownCast(trim->BasisCurve());
     return Py::asObject(new Hyperbola2dPy(new Geom2dHyperbola(hyperbola)));
 }

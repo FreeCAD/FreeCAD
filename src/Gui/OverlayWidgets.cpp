@@ -1549,8 +1549,10 @@ void OverlayTabWidget::setOverlayMode(bool enable)
     if (!enable && isTransparent()) {
         option = OverlayOption::ShowTab;
     }
-    else if (enable && !isTransparent()
-             && (autoMode == AutoMode::EditShow || autoMode == AutoMode::AutoHide)) {
+    else if (
+        enable && !isTransparent()
+        && (autoMode == AutoMode::EditShow || autoMode == AutoMode::AutoHide)
+    ) {
         option = OverlayOption::Disable;
     }
     else {

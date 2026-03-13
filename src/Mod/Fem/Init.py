@@ -47,7 +47,6 @@ import FreeCAD
 # needed imports
 from femtools.migrate_app import FemMigrateApp
 
-
 translate = FreeCAD.Qt.translate
 
 # migrate old FEM App objects

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Point object."""
+
 ## @package point
 # \ingroup draftobjects
 # \brief Provides the object code for the Point object.

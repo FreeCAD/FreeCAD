@@ -74,25 +74,22 @@ int OffsetCurve2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
 Py::Float OffsetCurve2dPy::getOffsetValue() const
 {
-    Handle(Geom2d_OffsetCurve) curve = Handle(Geom2d_OffsetCurve)::DownCast(
-        getGeometry2dPtr()->handle()
-    );
+    Handle(Geom2d_OffsetCurve)
+        curve = Handle(Geom2d_OffsetCurve)::DownCast(getGeometry2dPtr()->handle());
     return Py::Float(curve->Offset());
 }
 
 void OffsetCurve2dPy::setOffsetValue(Py::Float arg)
 {
-    Handle(Geom2d_OffsetCurve) curve = Handle(Geom2d_OffsetCurve)::DownCast(
-        getGeometry2dPtr()->handle()
-    );
+    Handle(Geom2d_OffsetCurve)
+        curve = Handle(Geom2d_OffsetCurve)::DownCast(getGeometry2dPtr()->handle());
     curve->SetOffsetValue((double)arg);
 }
 
 Py::Object OffsetCurve2dPy::getBasisCurve() const
 {
-    Handle(Geom2d_OffsetCurve) curve = Handle(Geom2d_OffsetCurve)::DownCast(
-        getGeometry2dPtr()->handle()
-    );
+    Handle(Geom2d_OffsetCurve)
+        curve = Handle(Geom2d_OffsetCurve)::DownCast(getGeometry2dPtr()->handle());
     Handle(Geom2d_Curve) basis = curve->BasisCurve();
     if (basis.IsNull()) {
         return Py::None();
@@ -109,16 +106,14 @@ void OffsetCurve2dPy::setBasisCurve(Py::Object arg)
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Curve2dPy::Type))) {
         Curve2dPy* pcGeo = static_cast<Curve2dPy*>(p);
-        Handle(Geom2d_Curve) curve = Handle(Geom2d_Curve)::DownCast(
-            pcGeo->getGeometry2dPtr()->handle()
-        );
+        Handle(Geom2d_Curve)
+            curve = Handle(Geom2d_Curve)::DownCast(pcGeo->getGeometry2dPtr()->handle());
         if (curve.IsNull()) {
             throw Py::TypeError("geometry is not a curve");
         }
 
-        Handle(Geom2d_OffsetCurve) curve2 = Handle(Geom2d_OffsetCurve)::DownCast(
-            getGeometry2dPtr()->handle()
-        );
+        Handle(Geom2d_OffsetCurve)
+            curve2 = Handle(Geom2d_OffsetCurve)::DownCast(getGeometry2dPtr()->handle());
         if (curve == curve2) {
             throw Py::RuntimeError("cannot set this curve as basis");
         }

@@ -31,6 +31,7 @@ Currently it only reads the following entities:
 Currently unsupported:
 * use, image.
 """
+
 ## @package importSVG
 #  \ingroup DRAFT
 #  \brief SVG file importer and exporter

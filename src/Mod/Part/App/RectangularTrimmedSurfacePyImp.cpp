@@ -122,9 +122,8 @@ PyObject* RectangularTrimmedSurfacePy::setTrim(PyObject* args)
     }
 
     try {
-        Handle(Geom_RectangularTrimmedSurface) surf = Handle(
-            Geom_RectangularTrimmedSurface
-        )::DownCast(getGeometryPtr()->handle());
+        Handle(Geom_RectangularTrimmedSurface)
+            surf = Handle(Geom_RectangularTrimmedSurface)::DownCast(getGeometryPtr()->handle());
         if (surf.IsNull()) {
             PyErr_SetString(PyExc_TypeError, "geometry is not a surface");
             return nullptr;
@@ -141,9 +140,8 @@ PyObject* RectangularTrimmedSurfacePy::setTrim(PyObject* args)
 
 Py::Object RectangularTrimmedSurfacePy::getBasisSurface() const
 {
-    Handle(Geom_RectangularTrimmedSurface) surf = Handle(Geom_RectangularTrimmedSurface)::DownCast(
-        getGeometryPtr()->handle()
-    );
+    Handle(Geom_RectangularTrimmedSurface)
+        surf = Handle(Geom_RectangularTrimmedSurface)::DownCast(getGeometryPtr()->handle());
     if (surf.IsNull()) {
         throw Py::TypeError("geometry is not a surface");
     }
