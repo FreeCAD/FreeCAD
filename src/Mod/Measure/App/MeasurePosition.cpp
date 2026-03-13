@@ -26,9 +26,9 @@
 #include <App/Application.h>
 #include <App/MeasureManager.h>
 #include <App/Document.h>
-
 #include "MeasurePosition.h"
-
+#include "Base/UnitsApi.h"
+#include "Base/Quantity.h"
 
 using namespace Measure;
 
@@ -130,14 +130,29 @@ QString MeasurePosition::getResultString()
         return {};
     }
 
-    Base::Vector3d value = Position.getValue();
-    QString unit = QString::fromStdString(Position.getUnit().getString());
-    int precision = 2;
+    Base::Vector3d position = Position.getValue();
+
+    std::string str_unit = Base::UnitsApi::getBasicLengthUnit();
+    Base::Quantity targetUnit(1.0, str_unit);
+
+    auto toUserUnit = [&](double component) {
+        Base::Quantity source(component, "mm");
+        return source.getValueAs(targetUnit);
+    };
+
+    double convertedX = toUserUnit(position.x);
+    double convertedY = toUserUnit(position.y);
+    double convertedZ = toUserUnit(position.z);
+
+    int precision = Base::UnitsApi::getDecimals();
+    QString unit = QString::fromStdString(str_unit);
     QString text;
 
-    QTextStream(&text) << "X: " << QString::number(value.x, 'f', precision) << " " << unit << Qt::endl
-                       << "Y: " << QString::number(value.y, 'f', precision) << " " << unit << Qt::endl
-                       << "Z: " << QString::number(value.z, 'f', precision) << " " << unit;
+    QTextStream(&text) << "X: " << QString::number(convertedX, 'f', precision) << " " << unit
+                       << Qt::endl
+                       << "Y: " << QString::number(convertedY, 'f', precision) << " " << unit
+                       << Qt::endl
+                       << "Z: " << QString::number(convertedZ, 'f', precision) << " " << unit;
     return text;
 }
 
