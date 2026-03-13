@@ -252,6 +252,8 @@ SET(PartGui_SRCS
     TaskCheckGeometry.h
     TaskAttacher.h
     TaskAttacher.cpp
+    Utils.cpp
+    Utils.h
 )
 
 SET(PartGuiIcon_SVG
