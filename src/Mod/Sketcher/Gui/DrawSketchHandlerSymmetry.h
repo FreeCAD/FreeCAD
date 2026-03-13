@@ -77,7 +77,7 @@ public:
         , refGeoId(Sketcher::GeoEnum::GeoUndef)
         , refPosId(Sketcher::PointPos::none)
         , deleteOriginal(false)
-        , createSymConstraints(false)
+        , createSymConstraints(true)
     {}
 
     DrawSketchHandlerSymmetry(const DrawSketchHandlerSymmetry&) = delete;
@@ -300,6 +300,8 @@ void DSHSymmetryController::configureToolWidget()
             )
         );
     }
+
+    syncCheckboxToHandler(WCheckbox::SecondBox, handler->createSymConstraints);
 }
 
 template<>
