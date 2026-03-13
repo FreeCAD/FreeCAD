@@ -134,3 +134,103 @@ std::string UnitsApi::schemaTranslate(const Quantity& quant)
     std::string dummy2;
     return schemas->currentSchema()->translate(quant, dummy1, dummy2);
 }
+
+std::string UnitsApi::toUnicodeSuperscript(const std::string& str)
+{
+    static constexpr auto superscripts = std::to_array<std::string_view>({
+        "\xe2\x81\xb0",  // ⁰ U+2070
+        "\xc2\xb9",      // ¹ U+00B9
+        "\xc2\xb2",      // ² U+00B2
+        "\xc2\xb3",      // ³ U+00B3
+        "\xe2\x81\xb4",  // ⁴ U+2074
+        "\xe2\x81\xb5",  // ⁵ U+2075
+        "\xe2\x81\xb6",  // ⁶ U+2076
+        "\xe2\x81\xb7",  // ⁷ U+2077
+        "\xe2\x81\xb8",  // ⁸ U+2078
+        "\xe2\x81\xb9",  // ⁹ U+2079
+    });
+    static const char* superscriptMinus = "\xe2\x81\xbb";  // ⁻ U+207B
+
+    std::string result;
+
+    enum State
+    {
+        Normal,
+        AfterCaret,
+        AfterCaretMinus,
+        InExponent
+    } state = Normal;
+
+    for (char ch : str) {
+        switch (state) {
+            case Normal:
+                if (ch == '^') {
+                    state = AfterCaret;
+                }
+                else {
+                    result += ch;
+                }
+                break;
+
+            case AfterCaret:
+                if (ch == '^') {
+                    result += '^';
+                }
+                else if (ch == '-') {
+                    state = AfterCaretMinus;
+                }
+                else if (ch >= '0' && ch <= '9') {
+                    result += superscripts[ch - '0'];
+                    state = InExponent;
+                }
+                else {
+                    result += '^';
+                    result += ch;
+                    state = Normal;
+                }
+                break;
+
+            case AfterCaretMinus:
+                if (ch >= '0' && ch <= '9') {
+                    result += superscriptMinus;
+                    result += superscripts[ch - '0'];
+                    state = InExponent;
+                }
+                else if (ch == '^') {
+                    result += '^';
+                    result += '-';
+                    state = AfterCaret;
+                }
+                else {
+                    result += '^';
+                    result += '-';
+                    result += ch;
+                    state = Normal;
+                }
+                break;
+
+            case InExponent:
+                if (ch >= '0' && ch <= '9') {
+                    result += superscripts[ch - '0'];
+                }
+                else if (ch == '^') {
+                    state = AfterCaret;
+                }
+                else {
+                    result += ch;
+                    state = Normal;
+                }
+                break;
+        }
+    }
+
+    if (state == AfterCaret) {
+        result += '^';
+    }
+    else if (state == AfterCaretMinus) {
+        result += '^';
+        result += '-';
+    }
+
+    return result;
+}
