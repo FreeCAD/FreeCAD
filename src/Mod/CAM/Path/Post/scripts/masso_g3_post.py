@@ -25,6 +25,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+#
+# DEPRECATED: This post processor is deprecated and replaced by the generic
+# post processor with Masso_G3.fcm machine configuration file.
+# Use the generic post processor instead.
 
 from typing import Any, Dict
 
@@ -46,6 +50,8 @@ else:
 # Define some types that are used throughout this file.
 #
 Values = Dict[str, Any]
+
+POST_TYPE = "machine"
 
 
 class Masso_G3(PostProcessor):

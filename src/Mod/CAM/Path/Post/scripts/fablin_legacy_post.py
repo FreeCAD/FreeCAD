@@ -25,6 +25,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+#
+# DEPRECATED: This post processor is deprecated and replaced by the generic
+# post processor with Generic_Fablin.fcm machine configuration file.
+# Use the generic post processor instead.
 
 import datetime
 import Path.Post.Utils as PostUtils

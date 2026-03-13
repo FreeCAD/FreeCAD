@@ -780,7 +780,7 @@ class TaskPanel:
         self.form.toolControllerList.resizeColumnsToContents()
 
         currentPostProcessor = self.obj.PostProcessor
-        postProcessors = Path.Preferences.allEnabledPostProcessors(["", currentPostProcessor])
+        postProcessors = Path.Preferences.allEnabledLegacyPostProcessors(["", currentPostProcessor])
         for post in postProcessors:
             self.form.postProcessor.addItem(post)
         # update the enumeration values, just to make sure all selections are valid
