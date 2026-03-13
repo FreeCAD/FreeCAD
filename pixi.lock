@@ -52,6 +52,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cmake-4.2.3-hc85cc9f_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/coin3d-4.0.3-hd74d64a_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/compiler-rt-21.1.0-hb700be7_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/compiler-rt_linux-64-21.1.0-hffcefe0_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/compilers-1.10.0-ha770c72_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/conda-23.9.0-py311h38be061_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/conda-devenv-3.5.0-pyhd8ed1ab_0.conda
@@ -482,6 +484,8 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/cmake-4.2.3-hc9d863e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/coin3d-4.0.3-h411181d_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/colorama-0.4.6-pyhd8ed1ab_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/compiler-rt-21.1.0-hfefdfc9_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/compiler-rt_linux-aarch64-21.1.0-hfefdfc9_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/compilers-1.10.0-h8af1aa0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/conda-23.9.0-py311hec3470c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/conda-devenv-3.5.0-pyhd8ed1ab_0.conda
@@ -3937,6 +3941,33 @@ packages:
   - pkg:pypi/colorama?source=hash-mapping
   size: 27011
   timestamp: 1733218222191
+- conda: https://conda.anaconda.org/conda-forge/linux-64/compiler-rt-21.1.0-hb700be7_1.conda
+  sha256: 83eab247aec8f3b572911c9177ea92e8331ad0f0c60dc62240fff0b4a60006cf
+  md5: 2bfac37e1d6538ceea96f925cd6649eb
+  depends:
+  - __glibc >=2.17,<3.0.a0
+  - clang 21.1.0.*
+  - compiler-rt_linux-64 21.1.0.*
+  - libgcc >=14
+  - libstdcxx >=14
+  license: Apache-2.0 WITH LLVM-exception
+  license_family: APACHE
+  purls: []
+  size: 114764
+  timestamp: 1757411303183
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/compiler-rt-21.1.0-hfefdfc9_1.conda
+  sha256: cceb3f0747c2afcf3d33da145e1805c137e6005ad7dd583cbe5d3b88f2bee4e7
+  md5: 99ece2dc9f1f13596a3335a42f4419fa
+  depends:
+  - clang 21.1.0.*
+  - compiler-rt_linux-aarch64 21.1.0.*
+  - libgcc >=14
+  - libstdcxx >=14
+  license: Apache-2.0 WITH LLVM-exception
+  license_family: APACHE
+  purls: []
+  size: 113664
+  timestamp: 1757411380324
 - conda: https://conda.anaconda.org/conda-forge/osx-64/compiler-rt-18.1.8-he914875_2.conda
   sha256: b3d23e4e53cf22c110d3816f3faa83dc0eb9842a7c3a98e4307977b7b6576bd8
   md5: 56e9de1d62975db80c58b00dd620c158
@@ -3975,6 +4006,32 @@ packages:
   purls: []
   size: 4688306
   timestamp: 1757412257734
+- conda: https://conda.anaconda.org/conda-forge/noarch/compiler-rt_linux-64-21.1.0-hffcefe0_1.conda
+  sha256: 312be33064c602bae3a2ccc775627172ae34472608bf81ab05e8e3352aac8763
+  md5: 752e27217ab0283c8b1e682e1a1ce0c6
+  depends:
+  - clang 21.1.0.*
+  constrains:
+  - clangxx 21.1.0
+  - compiler-rt 21.1.0
+  license: Apache-2.0 WITH LLVM-exception
+  license_family: APACHE
+  purls: []
+  size: 47880574
+  timestamp: 1757411233966
+- conda: https://conda.anaconda.org/conda-forge/noarch/compiler-rt_linux-aarch64-21.1.0-hfefdfc9_1.conda
+  sha256: c66f9dfca2fe7526ed8a8326528721379810a67e2b44467a47725d2dd23f7c2b
+  md5: fd3f949028da2634a4674c6c6bba905c
+  depends:
+  - clang 21.1.0.*
+  constrains:
+  - clangxx 21.1.0
+  - compiler-rt 21.1.0
+  license: Apache-2.0 WITH LLVM-exception
+  license_family: APACHE
+  purls: []
+  size: 31886196
+  timestamp: 1757411274496
 - conda: https://conda.anaconda.org/conda-forge/noarch/compiler-rt_osx-64-18.1.8-h138dee1_2.conda
   sha256: 35195a920e3dae8479d1e5295adf8003845ab9682747847a54585c9a2bdc6ad4
   md5: b457ba56dbaaa3e09b6ed2271f9cb1b3

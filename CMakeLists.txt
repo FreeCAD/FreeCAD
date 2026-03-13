@@ -50,6 +50,23 @@ endif()
 
 project(FreeCAD)
 
+# Sanitizer support
+option(FREECAD_USE_SANITIZER_ASAN "Enable AddressSanitizer ie. (ASan)" OFF) 
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    option(FREECAD_USE_SANITIZER_LSAN "Enable LeakSanitizer (LSan)" OFF)
+    option(FREECAD_USE_SANITIZER_TSAN "Enable ThreadSanitizer (TSan)" OFF)
+    option(FREECAD_USE_SANITIZER_UBSAN "Enable UndefinedBehaviorSanitizer (UBSan)" OFF)
+    option(FREECAD_USE_SANITIZER_MSAN "Enable MemorySanitizer (MSan)" OFF)
+endif()
+
+mark_as_advanced(
+    FREECAD_USE_SANITIZER_ASAN
+    FREECAD_USE_SANITIZER_LSAN
+    FREECAD_USE_SANITIZER_TSAN
+    FREECAD_USE_SANITIZER_UBSAN
+    FREECAD_USE_SANITIZER_MSAN
+)
+
 set(PACKAGE_VERSION_MAJOR "1")
 set(PACKAGE_VERSION_MINOR "2")
 set(PACKAGE_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
@@ -76,6 +93,7 @@ CheckInterModuleDependencies()
 FreeCADLibpackChecks()
 SetupDoxygen()
 SetupLibFmt()
+SetupSanitizers()
 SetupYamlCpp()
 SetupZipIos()
 find_package(ICU REQUIRED COMPONENTS uc i18n)
