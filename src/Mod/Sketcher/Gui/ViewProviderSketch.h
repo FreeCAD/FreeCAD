@@ -752,7 +752,7 @@ protected:
     /// get called if a subelement is double clicked while editing
     void editDoubleClicked();
     /// get called when an edge is double clicked to select/unselect the whole wire
-    void toggleWireSelelection(int geoId);
+    void toggleWireSelection(int geoId);
     //@}
 
     /** @name Solver Information */

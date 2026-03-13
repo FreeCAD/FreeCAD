@@ -1112,7 +1112,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     setSketchMode(STATUS_NONE);
                     return true;
                 case STATUS_SELECT_Wire: {
-                    toggleWireSelelection(preselection.PreselectCurve);
+                    toggleWireSelection(preselection.PreselectCurve);
                     setSketchMode(STATUS_NONE);
                     return true;
                 }
@@ -1358,7 +1358,7 @@ void ViewProviderSketch::editDoubleClicked()
             setSketchMode(STATUS_NONE);
         }
         else {
-            // We cannot do toggleWireSelelection directly here because the released event with
+            // We cannot do toggleWireSelection directly here because the released event with
             //STATUS_NONE return false which clears the selection.
             setSketchMode(STATUS_SELECT_Wire);
         }
@@ -1394,68 +1394,103 @@ void ViewProviderSketch::editDoubleClicked()
     }
 }
 
-void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
+void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
 {
     Sketcher::SketchObject* obj = getSketchObject();
 
     const Part::Geometry* geo1 = obj->getGeometry(clickedGeoId);
-    if (isPoint(*geo1) || isCircle(*geo1) || isEllipse(*geo1) || isPeriodicBSplineCurve(*geo1)) {
+    if (!geo1 || isPoint(*geo1) || isCircle(*geo1) || isEllipse(*geo1) || isPeriodicBSplineCurve(*geo1)) {
         return;
     }
 
-    const char* type1 = (clickedGeoId >= 0) ? "Edge" : "ExternalEdge";
-    std::stringstream ss1;
-    ss1 << type1 << clickedGeoId + 1;
-    bool selecting = isSelected(ss1.str());
+    auto getSelectionName = [](int id) {
+        std::stringstream ss;
+        if (id >= 0) {
+            ss << "Edge" << (id + 1);
+        }
+        else {
+            ss << "ExternalEdge" << (Sketcher::GeoEnum::RefExt - id + 1);
+        }
+        return ss.str();
+    };
 
-    std::vector<int> connectedEdges = { clickedGeoId };
+    bool selecting = isSelected(getSelectionName(clickedGeoId));
+
+    struct CandidateEdge {
+        int geoId;
+        Base::Vector3d pStart;
+        Base::Vector3d pEnd;
+    };
+    std::vector<CandidateEdge> candidateEdges;
+
+    auto addCandidate = [&obj, &candidateEdges](int geoId) {
+        const Part::Geometry* geo = obj->getGeometry(geoId);
+        if (!geo || isPoint(*geo) || isCircle(*geo) || isEllipse(*geo) || isPeriodicBSplineCurve(*geo)) {
+            return;
+        }
+        Base::Vector3d p1 = obj->getPoint(geoId, PointPos::start);
+        Base::Vector3d p2 = obj->getPoint(geoId, PointPos::end);
+        candidateEdges.push_back({geoId, p1, p2});
+    };
+
+    for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); geoId++) {
+        addCandidate(geoId);
+    }
+    for (int extGeoId = 0; extGeoId < obj->getExternalGeometryCount(); extGeoId++) {
+        addCandidate(Sketcher::GeoEnum::RefExt - extGeoId);
+    }
+
+    std::vector<CandidateEdge> connectedEdges;
+    auto itClicked = candidateEdges.end();
+    for (auto it = candidateEdges.begin(); it != candidateEdges.end(); ++it) {
+        if (it->geoId == clickedGeoId) {
+            itClicked = it;
+            break;
+        }
+    }
+
+    if (itClicked != candidateEdges.end()) {
+        connectedEdges.push_back(*itClicked);
+        candidateEdges.erase(itClicked);
+    }
+    else {
+        return;
+    }
+
     bool partHasBeenAdded = true;
     while (partHasBeenAdded) {
         partHasBeenAdded = false;
-        for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); geoId++) {
-            if (geoId == clickedGeoId || std::ranges::find(connectedEdges, geoId) != connectedEdges.end()) {
-                continue;
-            }
 
-            const Part::Geometry* geo = obj->getGeometry(geoId);
-            if (isPoint(*geo) || isCircle(*geo) || isEllipse(*geo) || isPeriodicBSplineCurve(*geo1)) {
-                continue;
-            }
-
-            Base::Vector3d p11 = obj->getPoint(geoId, PointPos::start);
-            Base::Vector3d p12 = obj->getPoint(geoId, PointPos::end);
+        for (auto it = candidateEdges.begin(); it != candidateEdges.end(); ++it) {
             bool connected = false;
-            for (auto conGeoId : connectedEdges) {
-                Base::Vector3d p21 = obj->getPoint(conGeoId, PointPos::start);
-                Base::Vector3d p22 = obj->getPoint(conGeoId, PointPos::end);
-                if ((p11 - p21).Length() < Precision::Confusion()
-                    || (p11 - p22).Length() < Precision::Confusion()
-                    || (p12 - p21).Length() < Precision::Confusion()
-                    || (p12 - p22).Length() < Precision::Confusion()) {
+            for (const auto& conEdge : connectedEdges) {
+                if ((it->pStart - conEdge.pStart).Length() < Precision::Confusion()
+                    || (it->pStart - conEdge.pEnd).Length() < Precision::Confusion()
+                    || (it->pEnd - conEdge.pStart).Length() < Precision::Confusion()
+                    || (it->pEnd - conEdge.pEnd).Length() < Precision::Confusion()) {
                     connected = true;
+                    break;
                 }
             }
 
             if (connected) {
-                connectedEdges.push_back(geoId);
+                connectedEdges.push_back(*it);
+                candidateEdges.erase(it);
                 partHasBeenAdded = true;
                 break;
             }
         }
     }
 
-    for (auto geoId : connectedEdges) {
-        std::stringstream ss;
-        const char* type = (geoId >= 0) ? "Edge" : "ExternalEdge";
-        ss << type << geoId + 1;
-        if (!selecting && isSelected(ss.str())) {
-            rmvSelection(ss.str());
+    for (const auto& edge : connectedEdges) {
+        std::string selName = getSelectionName(edge.geoId);
+        if (!selecting && isSelected(selName)) {
+            rmvSelection(selName);
         }
-        else if (selecting && !isSelected(ss.str())) {
-            addSelection2(ss.str());
+        else if (selecting && !isSelected(selName)) {
+            addSelection2(selName);
         }
     }
-
 }
 
 bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
