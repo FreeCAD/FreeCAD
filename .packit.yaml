@@ -52,13 +52,25 @@ jobs:
   branch: main
   additional_repos:
     - copr://bpostle/IfcOpenShell
-  owner: freecad
+  owner: '@freecad'
+  project: nightly
+- job: tests
+  identifier: main
+  trigger: commit
+  branch: main
+  manual_trigger: true
+  targets:
+    fedora-latest-stable:
+      without_opts:
+      - debug_info
+  fmf_path: package/fedora/tests
+  owner: '@freecad'
   project: nightly
 
 - job: copr_build
   identifier: release
   trigger: release
-  owner: freecad
+  owner: '@freecad'
   project: freecad
   additional_repos:
     - copr://bpostle/IfcOpenShell
