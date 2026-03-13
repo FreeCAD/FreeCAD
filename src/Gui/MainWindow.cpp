@@ -1734,6 +1734,8 @@ void MainWindow::delayedStartup()
                 Base::Interpreter().runString(command.c_str());
             }
             catch (const Base::SystemExitException&) {
+                // Properly quit the Qt event loop before propagating the exception
+                QApplication::quit();
                 throw;
             }
             catch (const Base::Exception& e) {
