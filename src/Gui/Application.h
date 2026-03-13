@@ -263,7 +263,6 @@ public:
     static void initOpenInventor();
     static void runInitGuiScript();
     static void runApplication();
-    static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
     void tryClose(QCloseEvent* e);
     //@}
 
@@ -339,6 +338,7 @@ private:
     /// workbench python dictionary
     PyObject* _pcWorkbenchDictionary;
     NavlibInterface* pNavlibInterface;
+    static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
 
     friend class ApplicationPy;
 };

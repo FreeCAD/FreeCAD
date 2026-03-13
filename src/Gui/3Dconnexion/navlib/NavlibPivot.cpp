@@ -257,7 +257,7 @@ long NavlibInterface::SetHitLookFrom(const navlib::point_t& eye)
 
     static unsigned long error_count = 0;  // Limit the number of error messages emitted.
     long error = GetIsViewPerspective(isPerspective);
-    if (error && error_count <= 0) {
+    if (error && error_count <= 10) {
         Base::Console().error("SetHitLookFrom: NavlibInterface::GetIsViewPerspective error %ld\n", error);
         error_count++;
     }
