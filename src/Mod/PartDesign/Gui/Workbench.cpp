@@ -24,6 +24,7 @@
 
 
 #include <App/Document.h>
+#include <App/Origin.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -86,10 +87,7 @@ void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) con
 
         body = PartDesignGui::getBodyFor(feature, false, false, true);
         // lote of assertion so feature should be marked as a tip
-        if (selection.size() == 1 && feature && body
-            && (feature->isDerivedFrom<PartDesign::Feature>()
-                || (feature->isDerivedFrom<Part::Feature>()
-                    && body->BaseFeature.getValue() == feature))) {
+        if (selection.size() == 1 && this->isFeatureEligibleForMoveTip(feature, body)) {
             *item << "PartDesign_MoveTip";
         }
 
@@ -472,6 +470,17 @@ void Workbench::deactivated()
     Gui::Command::doCommand(Gui::Command::Doc, "import PartDesignGui");
 
     Gui::Workbench::deactivated();
+}
+
+bool Workbench::isFeatureEligibleForMoveTip(
+    const App::DocumentObject* const feature,
+    const PartDesign::Body* const relatedBody
+) const
+{
+    return feature && relatedBody
+        && (feature->isDerivedFrom<PartDesign::Feature>() || feature->isDerivedFrom<App::Origin>()
+            || (feature->isDerivedFrom<Part::Feature>()
+                && relatedBody->BaseFeature.getValue() == feature));
 }
 
 Gui::MenuItem* Workbench::setupMenuBar() const
