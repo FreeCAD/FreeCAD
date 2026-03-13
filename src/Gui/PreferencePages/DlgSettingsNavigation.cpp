@@ -201,6 +201,10 @@ void DlgSettingsNavigation::loadSettings()
 #endif
     ui->naviCubeFontName->addItems(familyNames);
 
+    // mark this combobox to be excluded from preference search
+    // users do not search for specific font names aka. font family like "droid sans"
+    ui->naviCubeFontName->setProperty("doNotSearch", true);
+
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube");
     int indexFamilyNames = familyNames.indexOf(QString::fromStdString(hGrp->GetASCII("FontString")));
     ui->naviCubeFontName->setCurrentIndex(indexFamilyNames + 1);
