@@ -24,7 +24,7 @@
 
 #include <GC_MakeHyperbola.hxx>
 #include <Geom_Hyperbola.hxx>
-
+#include <Standard_Version.hxx>
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -99,7 +99,7 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
 
 
-#if OCC_VERSION_MAJOR < 8
+#if OCC_VERSION_HEX < 0x080000
         // This is a workaround do to fault in OCCT.
         // It is fixed in OCCT 8.0.0,
         gp_Pnt S1(v1.x, v1.y, v1.z);
