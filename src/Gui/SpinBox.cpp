@@ -203,6 +203,16 @@ void ExpressionSpinBox::openFormulaDialog()
         if (box->result() == QDialog::Accepted) {
             setExpression(box->getExpression());
         }
+        else if (box->clearedFormula()) {
+            setExpression(std::shared_ptr<Expression>());
+            lineedit->clear();
+            if (auto* intSpin = qobject_cast<QSpinBox*>(spinbox)) {
+                intSpin->setValue(0);
+            }
+            else if (auto* doubleSpin = qobject_cast<QDoubleSpinBox*>(spinbox)) {
+                doubleSpin->setValue(0.0);
+            }
+        }
         else if (box->discardedFormula()) {
             setExpression(std::shared_ptr<Expression>());
         }

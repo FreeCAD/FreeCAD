@@ -92,6 +92,11 @@ public:
         return discarded;
     }
 
+    bool clearedFormula() const
+    {
+        return cleared;
+    }
+
     QPoint expressionPosition() const;
 
 public Q_SLOTS:
@@ -134,6 +139,7 @@ private:
 private Q_SLOTS:
     void textChanged();
     void setDiscarded();
+    void setCleared();
     void onCheckVarSets(int state);
     void onVarSetSelected(int index);
     void onTextChangedGroup(const QString&);
@@ -145,6 +151,7 @@ private:
     std::shared_ptr<App::Expression> expression;
     App::ObjectIdentifier path;
     bool discarded;
+    bool cleared;
     const Base::Unit impliedUnit;
     NumberRange numberRange;
 
@@ -153,6 +160,7 @@ private:
     bool varSetsVisible;
     QPushButton* okBtn = nullptr;
     QPushButton* discardBtn = nullptr;
+    QPushButton* clearBtn = nullptr;
 
     EditFinishedComboBox comboBoxGroup;
 };
