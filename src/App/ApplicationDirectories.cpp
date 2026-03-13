@@ -157,7 +157,9 @@ fs::path ApplicationDirectories::findPath(const fs::path& stdHome, const fs::pat
     return appData;
 }
 
-void ApplicationDirectories::appendVersionIfPossible(const fs::path& basePath, std::vector<std::string> &subdirs) const
+void ApplicationDirectories::appendVersionIfPossible(const fs::path& basePath,
+                                                     std::vector<std::string> &subdirs,
+                                                     MissingDirectoryBehavior behavior) const
 {
     fs::path pathToCheck = basePath;
     for (const auto& it : subdirs) {
@@ -166,7 +168,16 @@ void ApplicationDirectories::appendVersionIfPossible(const fs::path& basePath, s
     if (isVersionedPath(pathToCheck)) {
         return; // Bail out if it's already versioned
     }
-    if (fs::exists(pathToCheck)) {
+    if (behavior == MissingDirectoryBehavior::create) {
+        // Always use the current version, creating the directory if needed
+        auto [major, minor] = _currentVersion;
+        auto versionString = versionStringForPath(major, minor);
+        subdirs.emplace_back(versionString);
+        auto versionedDir = pathToCheck / versionString;
+        if (!fs::exists(versionedDir)) {
+            fs::create_directories(versionedDir);
+        }
+    } else if (fs::exists(pathToCheck)) {
         std::string version = mostRecentAvailableConfigVersion(pathToCheck);
         if (!version.empty()) {
             subdirs.emplace_back(std::move(version));
@@ -223,7 +234,7 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
     // User data path
     //
     auto dataSubdirs = subdirs;
-    appendVersionIfPossible(dataHome, dataSubdirs);
+    appendVersionIfPossible(dataHome, dataSubdirs, MissingDirectoryBehavior::doNotAppend);
     fs::path data = findPath(dataHome, customData, dataSubdirs, true);
     _userAppData = data;
     mConfig["UserAppData"] = Base::FileInfo::pathToString(data) + PATHSEP;
@@ -232,7 +243,7 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
     // User config path
     //
     auto configSubdirs = subdirs;
-    appendVersionIfPossible(configHome, configSubdirs);
+    appendVersionIfPossible(configHome, configSubdirs, MissingDirectoryBehavior::doNotAppend);
     fs::path config = findPath(configHome, customHome, configSubdirs, true);
     _userConfig = config;
     mConfig["UserConfigPath"] = Base::FileInfo::pathToString(config) + PATHSEP;
@@ -240,9 +251,10 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
 
     // User cache path
     //
-    std::vector<std::string> cachedirs = subdirs;
-    cachedirs.emplace_back("Cache");
-    fs::path cache = findPath(cacheHome, customTemp, cachedirs, true);
+    std::vector<std::string> cacheDirs = subdirs;
+    appendVersionIfPossible(cacheHome, cacheDirs, MissingDirectoryBehavior::create);
+    cacheDirs.emplace_back("Cache");
+    fs::path cache = findPath(cacheHome, customTemp, cacheDirs, true);
     _userCache = cache;
     mConfig["UserCachePath"] = Base::FileInfo::pathToString(cache) + PATHSEP;
 
