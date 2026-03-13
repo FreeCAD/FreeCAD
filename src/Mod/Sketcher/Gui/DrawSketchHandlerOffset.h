@@ -27,10 +27,13 @@
 
 #include <FCConfig.h>
 
+#include <algorithm>
+#include <cmath>
 #include <limits>
 
 #include <QApplication>
 
+#include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -38,11 +41,14 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepOffsetAPI_MakeOffset.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepBuilderAPI.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
+#include <TopExp.hxx>
 #include <gp_Pln.hxx>
 
 #include <Base/Exception.h>
@@ -197,6 +203,7 @@ private:
         continuousMode = false;
         firstCurveCreated = getHighestCurveIndex() + 1;
 
+        collectBranchPoints();
         generateSourceWires();
     }
 
@@ -225,6 +232,7 @@ private:
     std::vector<std::vector<int>> vCCO;
     Base::Vector2d endpoint, pointOnSourceWire;
     std::vector<TopoDS_Wire> sourceWires;
+    std::vector<Base::Vector3d> branchPoints;  // Points where 3+ edges meet
 
     bool deleteOriginal, offsetLengthSet, offsetConstraint, onlySingleLines;
     double offsetLength;
@@ -241,6 +249,521 @@ private:
         // But if we set a plane, then the direction of offset is forced...
         // so we set a plane if and only if there are not a single sourceWires with more than single
         // line.
+
+        // For branching wires, compute offset geometry manually.
+        // Each edge is offset once (to exterior), then wedge connections are computed.
+        if (onlySingleLines && sourceWires.size() > 1 && !branchPoints.empty()) {
+            TopoDS_Compound compound;
+            BRep_Builder builder;
+            builder.MakeCompound(compound);
+
+            double tolerance = Precision::Confusion() * 10;
+            double absOffset = fabs(offsetLength);
+
+            // Track unique geometry by endpoints
+            std::vector<std::tuple<Base::Vector3d, Base::Vector3d>> addedLines;
+            std::vector<std::tuple<Base::Vector3d, double, double, double>> addedArcs;
+
+            auto lineExists = [&](const Base::Vector3d& p1, const Base::Vector3d& p2) {
+                for (const auto& [a, b] : addedLines) {
+                    if (((p1 - a).Length() < tolerance && (p2 - b).Length() < tolerance)
+                        || ((p1 - b).Length() < tolerance && (p2 - a).Length() < tolerance)) {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            auto addLineEdge = [&](const Base::Vector3d& p1, const Base::Vector3d& p2) {
+                if ((p1 - p2).Length() < tolerance) {
+                    return;
+                }
+                if (lineExists(p1, p2)) {
+                    return;
+                }
+
+                gp_Pnt gp1(p1.x, p1.y, p1.z);
+                gp_Pnt gp2(p2.x, p2.y, p2.z);
+                TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gp1, gp2).Edge();
+                builder.Add(compound, edge);
+                addedLines.push_back({p1, p2});
+            };
+
+            auto arcExists =
+                [&](const Base::Vector3d& center, double radius, double startAngle, double endAngle) {
+                    for (const auto& [c, r, s, e] : addedArcs) {
+                        if ((center - c).Length() < tolerance && fabs(radius - r) < tolerance) {
+                            auto norm = [](double a) {
+                                while (a < 0) {
+                                    a += 2 * M_PI;
+                                }
+                                while (a >= 2 * M_PI) {
+                                    a -= 2 * M_PI;
+                                }
+                                return a;
+                            };
+                            double ns = norm(startAngle), ne = norm(endAngle);
+                            double os = norm(s), oe = norm(e);
+                            if ((fabs(ns - os) < 0.1 && fabs(ne - oe) < 0.1)
+                                || (fabs(ns - oe) < 0.1 && fabs(ne - os) < 0.1)) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                };
+
+            auto addArcEdge =
+                [&](const Base::Vector3d& center, double radius, double startAngle, double endAngle) {
+                    if (fabs(endAngle - startAngle) < 0.01) {
+                        return;
+                    }
+                    if (arcExists(center, radius, startAngle, endAngle)) {
+                        return;
+                    }
+
+                    gp_Pnt c(center.x, center.y, center.z);
+                    gp_Circ circ(gp_Ax2(c, gp::DZ()), radius);
+                    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(circ, startAngle, endAngle).Edge();
+                    builder.Add(compound, edge);
+                    addedArcs.push_back({center, radius, startAngle, endAngle});
+                };
+
+            auto lineIntersection = [](const Base::Vector3d& p1,
+                                       const Base::Vector3d& d1,
+                                       const Base::Vector3d& p2,
+                                       const Base::Vector3d& d2,
+                                       Base::Vector3d& intersection) -> bool {
+                double denom = d1.x * d2.y - d1.y * d2.x;
+                if (fabs(denom) < 1e-10) {
+                    return false;
+                }
+                double t = ((p2.x - p1.x) * d2.y - (p2.y - p1.y) * d2.x) / denom;
+                intersection = p1 + d1 * t;
+                return true;
+            };
+
+            // Find intersections between a line (point + normalized direction) and a circle.
+            // Returns the number of intersections found (0, 1, or 2).
+            // Results are in result1/result2, with s1/s2 being the line parameters.
+            auto lineCircleIntersection = [](const Base::Vector3d& linePoint,
+                                             const Base::Vector3d& lineDir,
+                                             const Base::Vector3d& circCenter,
+                                             double circRadius,
+                                             Base::Vector3d& result1,
+                                             double& s1,
+                                             Base::Vector3d& result2,
+                                             double& s2) -> int {
+                double ax = linePoint.x - circCenter.x;
+                double ay = linePoint.y - circCenter.y;
+                // lineDir should be normalized, so A = 1
+                double B = 2.0 * (ax * lineDir.x + ay * lineDir.y);
+                double C = ax * ax + ay * ay - circRadius * circRadius;
+                double disc = B * B - 4.0 * C;
+                if (disc < 0) {
+                    return 0;
+                }
+                double sqrtDisc = sqrt(disc);
+                s1 = (-B + sqrtDisc) / 2.0;
+                s2 = (-B - sqrtDisc) / 2.0;
+                result1 = linePoint + lineDir * s1;
+                result2 = linePoint + lineDir * s2;
+                return (fabs(disc) < 1e-20) ? 1 : 2;
+            };
+
+            // Find intersection points of two circles with equal radii.
+            // Returns the number of intersections (0, 1, or 2).
+            auto circleCircleIntersection = [](const Base::Vector3d& c1,
+                                               const Base::Vector3d& c2,
+                                               double radius,
+                                               Base::Vector3d& result1,
+                                               Base::Vector3d& result2) -> int {
+                double dx = c2.x - c1.x;
+                double dy = c2.y - c1.y;
+                double d = sqrt(dx * dx + dy * dy);
+                if (d > 2.0 * radius || d < 1e-10) {
+                    return 0;
+                }
+                double a = d / 2.0;  // For equal radii: a = d/2
+                double hSq = radius * radius - a * a;
+                if (hSq < 0) {
+                    return 0;
+                }
+                double h = sqrt(hSq);
+                double mx = c1.x + dx / 2.0;
+                double my = c1.y + dy / 2.0;
+                result1 = Base::Vector3d(mx + h * dy / d, my - h * dx / d, 0);
+                result2 = Base::Vector3d(mx - h * dy / d, my + h * dx / d, 0);
+                return (fabs(hSq) < 1e-20) ? 1 : 2;
+            };
+
+            // Track which outer endpoints need semicircles vs partial arcs
+            // A geoId can have MULTIPLE arc ranges (from different wedges)
+            std::map<int, std::vector<std::pair<double, double>>> outerArcRanges;  // geoId -> list
+                                                                                   // of (startAngle,
+                                                                                   // endAngle) arcs
+                                                                                   // already drawn
+
+            for (const auto& branchPt : branchPoints) {
+                std::vector<int> sortedEdges = getEdgesSortedByAngle(branchPt);
+                size_t numEdges = sortedEdges.size();
+                if (numEdges < 2) {
+                    continue;
+                }
+
+                for (size_t i = 0; i < numEdges; i++) {
+                    int geoId1 = sortedEdges[i];
+                    int geoId2 = sortedEdges[(i + 1) % numEdges];
+
+                    Base::Vector3d e1p1, e1p2, e2p1, e2p2;
+                    getFirstSecondPoints(geoId1, e1p1, e1p2);
+                    getFirstSecondPoints(geoId2, e2p1, e2p2);
+
+                    Base::Vector3d e1Outer = ((e1p1 - branchPt).Length() < tolerance) ? e1p2 : e1p1;
+                    Base::Vector3d e2Outer = ((e2p1 - branchPt).Length() < tolerance) ? e2p2 : e2p1;
+
+                    Base::Vector3d dir1 = (e1Outer - branchPt).Normalize();
+                    Base::Vector3d dir2 = (e2Outer - branchPt).Normalize();
+
+                    Base::Vector3d perp1(-dir1.y, dir1.x, 0);
+                    Base::Vector3d perp2(dir2.y, -dir2.x, 0);
+
+                    Base::Vector3d off1Start = branchPt + perp1 * absOffset;
+                    Base::Vector3d off1End = e1Outer + perp1 * absOffset;
+                    Base::Vector3d off2Start = branchPt + perp2 * absOffset;
+                    Base::Vector3d off2End = e2Outer + perp2 * absOffset;
+
+                    Base::Vector3d intersection;
+                    bool intFound = lineIntersection(off1Start, dir1, off2Start, dir2, intersection);
+                    if (intFound) {
+                        double len1 = (e1Outer - branchPt).Length();
+                        double len2 = (e2Outer - branchPt).Length();
+                        double t1 = (intersection - off1Start).Dot(dir1) / len1;
+                        double t2 = (intersection - off2Start).Dot(dir2) / len2;
+
+                        if (t1 > 0 && t1 < 1 && t2 > 0 && t2 < 1) {
+                            // Concave: both lines trimmed to intersection
+                            addLineEdge(off1End, intersection);
+                            addLineEdge(intersection, off2End);
+                        }
+                        else if (t1 >= 1 && t2 >= 1) {
+                            // Large offset: offset lines would cross through the interior.
+                            // Connect via circle-circle intersection between the semicircles
+                            // at the two outer endpoints.
+                            Base::Vector3d cc1, cc2;
+                            int nCC = circleCircleIntersection(e1Outer, e2Outer, absOffset, cc1, cc2);
+                            if (nCC > 0) {
+                                // Pick the exterior intersection (further from branch point)
+                                Base::Vector3d ccPt = (nCC == 1)
+                                    ? cc1
+                                    : ((cc1 - branchPt).Length() > (cc2 - branchPt).Length() ? cc1
+                                                                                             : cc2);
+
+                                if (joinType == 0) {
+                                    // Clip each semicircle at ccPt, or extend beyond
+                                    // if ccPt falls outside the semicircle range.
+                                    auto inSemiRange = [](double angle, double centerAngle) {
+                                        double d = angle - centerAngle;
+                                        while (d > M_PI) {
+                                            d -= 2 * M_PI;
+                                        }
+                                        while (d < -M_PI) {
+                                            d += 2 * M_PI;
+                                        }
+                                        return fabs(d) <= M_PI / 2 + 0.05;
+                                    };
+
+                                    double aOff1 = atan2(off1End.y - e1Outer.y, off1End.x - e1Outer.x);
+                                    double aCc1 = atan2(ccPt.y - e1Outer.y, ccPt.x - e1Outer.x);
+                                    double cAngle1 = atan2(dir1.y, dir1.x);
+
+                                    if (inSemiRange(aCc1, cAngle1)) {
+                                        outerArcRanges[geoId1].push_back({aCc1, aOff1});
+                                    }
+                                    else {
+                                        // ccPt is outside geoId1's semicircle.
+                                        // Draw extension arc from semicircle boundary to ccPt.
+                                        double diff = aCc1 - aOff1;
+                                        while (diff > M_PI) {
+                                            diff -= 2 * M_PI;
+                                        }
+                                        while (diff < -M_PI) {
+                                            diff += 2 * M_PI;
+                                        }
+                                        if (diff > 0) {
+                                            addArcEdge(e1Outer, absOffset, aOff1, aOff1 + diff);
+                                        }
+                                        else {
+                                            addArcEdge(e1Outer, absOffset, aOff1 + diff, aOff1);
+                                        }
+                                    }
+
+                                    double aOff2 = atan2(off2End.y - e2Outer.y, off2End.x - e2Outer.x);
+                                    double aCc2 = atan2(ccPt.y - e2Outer.y, ccPt.x - e2Outer.x);
+                                    double cAngle2 = atan2(dir2.y, dir2.x);
+
+                                    if (inSemiRange(aCc2, cAngle2)) {
+                                        outerArcRanges[geoId2].push_back({aOff2, aCc2});
+                                    }
+                                    else {
+                                        double diff = aCc2 - aOff2;
+                                        while (diff > M_PI) {
+                                            diff -= 2 * M_PI;
+                                        }
+                                        while (diff < -M_PI) {
+                                            diff += 2 * M_PI;
+                                        }
+                                        if (diff > 0) {
+                                            addArcEdge(e2Outer, absOffset, aOff2, aOff2 + diff);
+                                        }
+                                        else {
+                                            addArcEdge(e2Outer, absOffset, aOff2 + diff, aOff2);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (t1 <= 0 && t2 <= 0) {
+                            // Both convex: full lines + arc at branch
+                            addLineEdge(off1End, off1Start);
+                            addLineEdge(off2Start, off2End);
+                            if (joinType == 0) {
+                                double angle1 = atan2(perp1.y, perp1.x);
+                                double angle2 = atan2(perp2.y, perp2.x);
+                                while (angle2 < angle1) {
+                                    angle2 += 2 * M_PI;
+                                }
+                                if (angle2 - angle1 > M_PI) {
+                                    double temp = angle1;
+                                    angle1 = angle2;
+                                    angle2 = temp + 2 * M_PI;
+                                }
+                                addArcEdge(branchPt, absOffset, angle1, angle2);
+                            }
+                        }
+                        else if (t1 > 0 && t1 < 1 && t2 >= 1) {
+                            // Mixed: t1 valid (concave side), t2 beyond edge 2's outer endpoint.
+                            // Use line-circle intersection: edge 1's offset line vs semicircle at
+                            // e2Outer. This gives a point on BOTH the offset line AND the semicircle.
+                            Base::Vector3d lc1, lc2;
+                            double s1, s2;
+                            int nLC = lineCircleIntersection(
+                                off1Start,
+                                dir1,
+                                e2Outer,
+                                absOffset,
+                                lc1,
+                                s1,
+                                lc2,
+                                s2
+                            );
+                            if (nLC > 0) {
+                                // Pick the intersection with larger s (closer to off1End)
+                                Base::Vector3d trimPt;
+                                if (nLC == 1 || s1 >= s2) {
+                                    trimPt = (s1 > 0) ? lc1 : lc2;
+                                }
+                                else {
+                                    trimPt = (s2 > 0) ? lc2 : lc1;
+                                }
+                                // Ensure we pick the one with the larger positive s value
+                                if (nLC == 2 && s1 > 0 && s2 > 0) {
+                                    trimPt = (s1 > s2) ? lc1 : lc2;
+                                }
+                                addLineEdge(off1End, trimPt);
+
+                                // Record the arc range covered by this connection
+                                double aTrim = atan2(trimPt.y - e2Outer.y, trimPt.x - e2Outer.x);
+                                double aOff2 = atan2(off2End.y - e2Outer.y, off2End.x - e2Outer.x);
+                                outerArcRanges[geoId2].push_back({aOff2, aTrim});
+                            }
+                            else {
+                                // Fallback: use line-line intersection (may leave a gap)
+                                addLineEdge(off1End, intersection);
+                            }
+                        }
+                        else if (t2 > 0 && t2 < 1 && t1 >= 1) {
+                            // Mixed: t2 valid (concave side), t1 beyond edge 1's outer endpoint.
+                            // Use line-circle intersection: edge 2's offset line vs semicircle at
+                            // e1Outer.
+                            Base::Vector3d lc1, lc2;
+                            double s1, s2;
+                            int nLC = lineCircleIntersection(
+                                off2Start,
+                                dir2,
+                                e1Outer,
+                                absOffset,
+                                lc1,
+                                s1,
+                                lc2,
+                                s2
+                            );
+                            if (nLC > 0) {
+                                Base::Vector3d trimPt;
+                                if (nLC == 1 || s1 >= s2) {
+                                    trimPt = (s1 > 0) ? lc1 : lc2;
+                                }
+                                else {
+                                    trimPt = (s2 > 0) ? lc2 : lc1;
+                                }
+                                if (nLC == 2 && s1 > 0 && s2 > 0) {
+                                    trimPt = (s1 > s2) ? lc1 : lc2;
+                                }
+                                addLineEdge(trimPt, off2End);
+
+                                double aTrim = atan2(trimPt.y - e1Outer.y, trimPt.x - e1Outer.x);
+                                double aOff1 = atan2(off1End.y - e1Outer.y, off1End.x - e1Outer.x);
+                                outerArcRanges[geoId1].push_back({aTrim, aOff1});
+                            }
+                            else {
+                                addLineEdge(intersection, off2End);
+                            }
+                        }
+                        else if (t1 <= 0 && t2 >= 1) {
+                            // Edge 1 convex (intersection behind branch), edge 2 beyond
+                            // Draw full line for edge 1, let semicircles handle the rest
+                            addLineEdge(off1End, off1Start);
+                        }
+                        else if (t2 <= 0 && t1 >= 1) {
+                            // Edge 2 convex, edge 1 beyond
+                            // Draw full line for edge 2, let semicircles handle the rest
+                            addLineEdge(off2Start, off2End);
+                        }
+                        else if (t1 <= 0 && t2 > 0 && t2 < 1) {
+                            // Edge 1 convex, edge 2 valid (concave)
+                            addLineEdge(off1End, off1Start);
+                            addLineEdge(intersection, off2End);
+                            if (joinType == 0) {
+                                double angle1 = atan2(perp1.y, perp1.x);
+                                double angle2
+                                    = atan2((intersection - branchPt).y, (intersection - branchPt).x);
+                                while (angle2 < angle1) {
+                                    angle2 += 2 * M_PI;
+                                }
+                                if (angle2 - angle1 > M_PI) {
+                                    std::swap(angle1, angle2);
+                                    while (angle2 < angle1) {
+                                        angle2 += 2 * M_PI;
+                                    }
+                                }
+                                addArcEdge(branchPt, absOffset, angle1, angle2);
+                            }
+                        }
+                        else if (t2 <= 0 && t1 > 0 && t1 < 1) {
+                            // Edge 2 convex, edge 1 valid (concave)
+                            addLineEdge(off1End, intersection);
+                            addLineEdge(off2Start, off2End);
+                            if (joinType == 0) {
+                                double angle1
+                                    = atan2((intersection - branchPt).y, (intersection - branchPt).x);
+                                double angle2 = atan2(perp2.y, perp2.x);
+                                while (angle2 < angle1) {
+                                    angle2 += 2 * M_PI;
+                                }
+                                if (angle2 - angle1 > M_PI) {
+                                    std::swap(angle1, angle2);
+                                    while (angle2 < angle1) {
+                                        angle2 += 2 * M_PI;
+                                    }
+                                }
+                                addArcEdge(branchPt, absOffset, angle1, angle2);
+                            }
+                        }
+                    }
+                }
+
+                // Add semicircular arcs at outer endpoints
+                for (int geoId : sortedEdges) {
+                    Base::Vector3d p1, p2;
+                    getFirstSecondPoints(geoId, p1, p2);
+                    Base::Vector3d outer = ((p1 - branchPt).Length() < tolerance) ? p2 : p1;
+
+                    bool isShared = false;
+                    for (int otherGeoId : listOfGeoIds) {
+                        if (otherGeoId == geoId) {
+                            continue;
+                        }
+                        Base::Vector3d op1, op2;
+                        if (getFirstSecondPoints(otherGeoId, op1, op2)) {
+                            if ((outer - op1).Length() < tolerance
+                                || (outer - op2).Length() < tolerance) {
+                                isShared = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!isShared) {
+                        Base::Vector3d dir = (outer - branchPt).Normalize();
+                        double centerAngle = atan2(dir.y, dir.x);
+                        double startAngle = centerAngle - M_PI / 2;
+                        double endAngle = centerAngle + M_PI / 2;
+
+                        // If this outer has partial arc coverage, compute complement
+                        if (outerArcRanges.count(geoId) && !outerArcRanges[geoId].empty()) {
+                            const auto& drawnArcs = outerArcRanges[geoId];
+
+                            // Normalize angles relative to the semicircle range
+                            auto normalizeToRange = [](double angle, double refAngle) {
+                                while (angle < refAngle - M_PI) {
+                                    angle += 2 * M_PI;
+                                }
+                                while (angle > refAngle + M_PI) {
+                                    angle -= 2 * M_PI;
+                                }
+                                return angle;
+                            };
+
+                            // Collect all drawn arc boundaries, normalized
+                            std::vector<std::pair<double, double>> normalizedArcs;
+                            for (const auto& [ds, de] : drawnArcs) {
+                                double normStart = normalizeToRange(ds, centerAngle);
+                                double normEnd = normalizeToRange(de, centerAngle);
+                                // Ensure start < end
+                                if (normStart > normEnd) {
+                                    std::swap(normStart, normEnd);
+                                }
+                                normalizedArcs.push_back({normStart, normEnd});
+                            }
+
+                            // Sort by start angle
+                            std::sort(normalizedArcs.begin(), normalizedArcs.end());
+
+                            // Find gaps in coverage and draw complement arcs
+                            double currentPos = startAngle;
+                            double angleTol = 0.05;
+
+                            for (const auto& [arcStart, arcEnd] : normalizedArcs) {
+                                // Gap before this arc?
+                                if (arcStart > currentPos + angleTol) {
+                                    addArcEdge(outer, absOffset, currentPos, arcStart);
+                                }
+                                // Move past this arc
+                                if (arcEnd > currentPos) {
+                                    currentPos = arcEnd;
+                                }
+                            }
+
+                            // Gap after all arcs to end of semicircle?
+                            if (currentPos < endAngle - angleTol) {
+                                addArcEdge(outer, absOffset, currentPos, endAngle);
+                            }
+                        }
+                        else {
+                            addArcEdge(outer, absOffset, startAngle, endAngle);
+                        }
+                    }
+                }
+            }
+
+            if (compound.NbChildren() == 0) {
+                return TopoDS_Shape();
+            }
+
+            return BRepBuilderAPI_Copy(compound).Shape();
+        }
+
+        // Original behavior for non-branching cases
         BRepOffsetAPI_MakeOffset mkOffset;
 
         if (onlySingleLines) {
@@ -398,16 +921,11 @@ private:
 
     void drawOffsetPreview()
     {
-        try {
-            std::vector<Part::Geometry*> geometriesToAdd;
-            std::vector<int> listOfOffsetGeoIds;
-            getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
+        std::vector<Part::Geometry*> geometriesToAdd;
+        std::vector<int> listOfOffsetGeoIds;
+        getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
-            drawEdit(geometriesToAdd);
-        }
-        catch (const Base::Exception& e) {
-            e.reportException();
-        }
+        drawEdit(geometriesToAdd);
     }
 
     void createOffset()
@@ -907,7 +1425,13 @@ private:
             int insertedIn = -1;
             for (size_t j = 0; j < vcc.size(); j++) {
                 for (size_t k = 0; k < vcc[j].size(); k++) {
-                    if (!areCoincident(geoId, vcc[j][k])) {
+                    Base::Vector3d coincidentPoint;
+                    if (!getCoincidentPoint(geoId, vcc[j][k], coincidentPoint)) {
+                        continue;
+                    }
+
+                    // Don't chain edges at branch points (where 3+ edges meet)
+                    if (isBranchPoint(coincidentPoint, listOfGeo)) {
                         continue;
                     }
 
@@ -1119,6 +1643,217 @@ private:
             || (p12 - p21).Length() < Precision::Confusion()
             || (p12 - p22).Length() < Precision::Confusion()
         );
+    }
+
+    // Returns the point where two edges meet (if any)
+    bool getCoincidentPoint(int geoId1, int geoId2, Base::Vector3d& coincidentPoint)
+    {
+        Base::Vector3d p11, p12, p21, p22;
+        if (!getFirstSecondPoints(geoId1, p11, p12) || !getFirstSecondPoints(geoId2, p21, p22)) {
+            return false;
+        }
+
+        if ((p11 - p21).Length() < Precision::Confusion()) {
+            coincidentPoint = p11;
+            return true;
+        }
+        if ((p11 - p22).Length() < Precision::Confusion()) {
+            coincidentPoint = p11;
+            return true;
+        }
+        if ((p12 - p21).Length() < Precision::Confusion()) {
+            coincidentPoint = p12;
+            return true;
+        }
+        if ((p12 - p22).Length() < Precision::Confusion()) {
+            coincidentPoint = p12;
+            return true;
+        }
+        return false;
+    }
+
+    // Checks if a point is a branch point (3+ edges meeting there)
+    bool isBranchPoint(const Base::Vector3d& point, const std::vector<int>& listOfGeo)
+    {
+        int edgeCount = 0;
+        for (int geoId : listOfGeo) {
+            Base::Vector3d p1, p2;
+            if (getFirstSecondPoints(geoId, p1, p2)) {
+                if ((point - p1).Length() < Precision::Confusion()
+                    || (point - p2).Length() < Precision::Confusion()) {
+                    edgeCount++;
+                    if (edgeCount >= 3) {
+                        return true;  // Early exit once we know it's a branch point
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    // Collect all branch points from the geometry list
+    void collectBranchPoints()
+    {
+        branchPoints.clear();
+
+        // Collect all endpoints
+        std::vector<Base::Vector3d> allEndpoints;
+        for (int geoId : listOfGeoIds) {
+            Base::Vector3d p1, p2;
+            if (getFirstSecondPoints(geoId, p1, p2)) {
+                allEndpoints.push_back(p1);
+                allEndpoints.push_back(p2);
+            }
+        }
+
+        // For each unique endpoint, check if it's a branch point
+        for (const auto& pt : allEndpoints) {
+            // Skip if we already have this point
+            bool alreadyAdded = false;
+            for (const auto& bp : branchPoints) {
+                if ((pt - bp).Length() < Precision::Confusion()) {
+                    alreadyAdded = true;
+                    break;
+                }
+            }
+            if (alreadyAdded) {
+                continue;
+            }
+
+            if (isBranchPoint(pt, listOfGeoIds)) {
+                branchPoints.push_back(pt);
+            }
+        }
+    }
+
+    // Check if a point is near any known branch point
+    bool isNearBranchPoint(const Base::Vector3d& point, double tolerance)
+    {
+        for (const auto& bp : branchPoints) {
+            if ((point - bp).Length() < tolerance) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Get the angle of an edge at a branch point (direction pointing away from branch)
+    double getEdgeAngleAtBranchPoint(int geoId, const Base::Vector3d& branchPt)
+    {
+        Base::Vector3d p1, p2;
+        if (!getFirstSecondPoints(geoId, p1, p2)) {
+            return 0.0;
+        }
+
+        // Determine which endpoint is at the branch point
+        Base::Vector3d direction;
+        if ((p1 - branchPt).Length() < Precision::Confusion()) {
+            direction = p2 - p1;  // Direction from branch point to other end
+        }
+        else {
+            direction = p1 - p2;  // Direction from branch point to other end
+        }
+
+        return atan2(direction.y, direction.x);
+    }
+
+    // Get edges connected to a branch point, sorted by angle
+    std::vector<int> getEdgesSortedByAngle(const Base::Vector3d& branchPt)
+    {
+        std::vector<std::pair<double, int>> angleGeoIdPairs;
+
+        for (int geoId : listOfGeoIds) {
+            Base::Vector3d p1, p2;
+            if (getFirstSecondPoints(geoId, p1, p2)) {
+                if ((p1 - branchPt).Length() < Precision::Confusion()
+                    || (p2 - branchPt).Length() < Precision::Confusion()) {
+                    double angle = getEdgeAngleAtBranchPoint(geoId, branchPt);
+                    angleGeoIdPairs.push_back({angle, geoId});
+                }
+            }
+        }
+
+        // Sort by angle
+        std::sort(angleGeoIdPairs.begin(), angleGeoIdPairs.end());
+
+        std::vector<int> sortedGeoIds;
+        for (const auto& pair : angleGeoIdPairs) {
+            sortedGeoIds.push_back(pair.second);
+        }
+        return sortedGeoIds;
+    }
+
+    // Create wires for adjacent pairs of edges at branch points
+    std::vector<TopoDS_Wire> createBranchPairWires()
+    {
+        std::vector<TopoDS_Wire> pairWires;
+        SketchObject* Obj = sketchgui->getSketchObject();
+
+        for (const auto& branchPt : branchPoints) {
+            std::vector<int> sortedEdges = getEdgesSortedByAngle(branchPt);
+
+            if (sortedEdges.size() < 2) {
+                continue;
+            }
+
+            gp_Pnt branchGp(branchPt.x, branchPt.y, branchPt.z);
+
+            // Create wires for each adjacent pair (including wrap-around)
+            for (size_t i = 0; i < sortedEdges.size(); i++) {
+                int geoId1 = sortedEdges[i];
+                int geoId2 = sortedEdges[(i + 1) % sortedEdges.size()];
+
+                // Get the edges
+                const Part::Geometry* pGeo1 = Obj->getGeometry(geoId1);
+                auto geoCopy1 = std::unique_ptr<Part::Geometry>(pGeo1->copy());
+                geoCopy1->reverseIfReversed();
+                TopoDS_Edge edge1 = TopoDS::Edge(geoCopy1->toShape());
+
+                const Part::Geometry* pGeo2 = Obj->getGeometry(geoId2);
+                auto geoCopy2 = std::unique_ptr<Part::Geometry>(pGeo2->copy());
+                geoCopy2->reverseIfReversed();
+                TopoDS_Edge edge2 = TopoDS::Edge(geoCopy2->toShape());
+
+                // Get vertices of edge1 to check orientation
+                TopoDS_Vertex v1First, v1Last;
+                TopExp::Vertices(edge1, v1First, v1Last);
+                gp_Pnt p1First = BRep_Tool::Pnt(v1First);
+                gp_Pnt p1Last = BRep_Tool::Pnt(v1Last);
+
+                // Edge1 should end at branch point (wire goes: outer1 -> branch -> outer2)
+                bool edge1EndsAtBranch = p1Last.Distance(branchGp) < Precision::Confusion();
+                bool edge1StartsAtBranch = p1First.Distance(branchGp) < Precision::Confusion();
+
+                if (edge1StartsAtBranch && !edge1EndsAtBranch) {
+                    edge1.Reverse();
+                }
+
+                // Get vertices of edge2 to check orientation
+                TopoDS_Vertex v2First, v2Last;
+                TopExp::Vertices(edge2, v2First, v2Last);
+                gp_Pnt p2First = BRep_Tool::Pnt(v2First);
+                gp_Pnt p2Last = BRep_Tool::Pnt(v2Last);
+
+                // Edge2 should start at branch point
+                bool edge2StartsAtBranch = p2First.Distance(branchGp) < Precision::Confusion();
+                bool edge2EndsAtBranch = p2Last.Distance(branchGp) < Precision::Confusion();
+
+                if (edge2EndsAtBranch && !edge2StartsAtBranch) {
+                    edge2.Reverse();
+                }
+
+                // Create wire with properly oriented edges
+                BRepBuilderAPI_MakeWire mkWire;
+                mkWire.Add(edge1);
+                mkWire.Add(edge2);
+
+                if (mkWire.IsDone()) {
+                    pairWires.push_back(mkWire.Wire());
+                }
+            }
+        }
+
+        return pairWires;
     }
 
     bool areTangentCoincident(int geoId1, int geoId2)
