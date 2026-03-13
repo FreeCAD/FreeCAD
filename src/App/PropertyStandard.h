@@ -492,7 +492,9 @@ public:
     void setValue()
     {}
     void setValue(const std::string& key, const std::string& value);
+    void setValue(const char *key,const char *value);
     void setValues(const std::map<std::string, std::string>&);
+    void setValues(std::map<std::string,std::string>&&);
 
     /// index operator
     const std::string& operator[](const std::string& key) const;
@@ -506,6 +508,7 @@ public:
     {
         return _lValueList;
     }
+    const char *getValue(const char *key) const;
 
     // virtual const char* getEditorName(void) const { return
     // "Gui::PropertyEditor::PropertyStringListItem"; }
