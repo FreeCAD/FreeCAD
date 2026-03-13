@@ -314,6 +314,10 @@ void DrawPage::requestPaint(void) { signalGuiPaint(this); }
 void DrawPage::onDocumentRestored()
 {
     if (canUpdate()) {
+        TechDraw::DrawTemplate* tmplte = dynamic_cast<TechDraw::DrawTemplate*>(Template.getValue());
+        if (tmplte) {
+            tmplte->recomputeFeature();
+        }
         updateAllViews();
     }
 
