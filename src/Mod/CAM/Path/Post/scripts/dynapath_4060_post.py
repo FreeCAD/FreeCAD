@@ -39,7 +39,6 @@ import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
 
-
 TOOLTIP = """
 This is a post processor file for the FreeCAD Path workbench. It is used to
 take a pseudo-G-code fragment outputted by a Path object, and output
