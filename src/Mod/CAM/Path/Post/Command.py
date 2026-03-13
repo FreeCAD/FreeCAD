@@ -90,9 +90,12 @@ class DlgSelectPostProcessor:
         if item.text() in self.tooltips:
             tooltip = self.tooltips[item.text()]
         else:
-            processor = PostProcessor.load(item.text())
-            self.tooltips[item.text()] = processor.tooltip
-            tooltip = processor.tooltip
+            try:
+                processor = PostProcessor.load(item.text())
+                self.tooltips[item.text()] = processor.tooltip
+                tooltip = processor.tooltip
+            except Exception as e:
+                tooltip = f"Error loading post processor: {e}"
         self.dialog.lwPostProcessor.setToolTip(tooltip)
 
     def exec_(self):
