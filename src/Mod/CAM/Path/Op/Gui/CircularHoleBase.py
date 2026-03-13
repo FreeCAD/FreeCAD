@@ -127,7 +127,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     UI and functionality for all circular hole based operations."""
 
     DataFeatureName = QtCore.Qt.ItemDataRole.UserRole
-    DataObject = QtCore.Qt.ItemDataRole.UserRole + 1
+    DataObjectName = QtCore.Qt.ItemDataRole.UserRole + 1
     DataObjectSub = QtCore.Qt.ItemDataRole.UserRole + 2
 
     InitBase = False
@@ -236,7 +236,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     item.setCheckState(QtCore.Qt.Unchecked)
                 name = "%s.%s" % (base.Name, sub)
                 item.setData(self.DataFeatureName, name)
-                item.setData(self.DataObject, base)
+                item.setData(self.DataObjectName, base.Name)
                 item.setData(self.DataObjectSub, sub)
 
                 if auto_mode:
@@ -292,14 +292,16 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             FreeCADGui.Selection.clearSelection()
             for row in selected_rows:
                 item = self.form.baseList.item(row, COL_FEATURE)
-                obj = item.data(self.DataObject)
+                obj_name = item.data(self.DataObjectName)
                 sub = str(item.data(self.DataObjectSub))
-                if obj is not None:
-                    Path.Log.debug("itemActivated() -> %s.%s" % (obj.Label, sub))
-                    if sub:
-                        FreeCADGui.Selection.addSelection(obj, sub)
-                    else:
-                        FreeCADGui.Selection.addSelection(obj)
+                if obj_name is not None:
+                    obj = FreeCAD.ActiveDocument.getObject(obj_name)
+                    if obj is not None:
+                        Path.Log.debug("itemActivated() -> %s.%s" % (obj.Label, sub))
+                        if sub:
+                            FreeCADGui.Selection.addSelection(obj, sub)
+                        else:
+                            FreeCADGui.Selection.addSelection(obj)
         else:
             self.form.deleteBase.setEnabled(False)
 
@@ -323,11 +325,14 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         newlist = []
         for i in range(self.form.baseList.rowCount()):
             item = self.form.baseList.item(i, COL_FEATURE)
-            obj = item.data(self.DataObject)
+            obj_name = item.data(self.DataObjectName)
             sub = str(item.data(self.DataObjectSub))
-            base = (obj, sub)
-            Path.Log.debug("keeping (%s.%s)" % (obj.Label, sub))
-            newlist.append(base)
+            if obj_name is not None:
+                obj = FreeCAD.ActiveDocument.getObject(obj_name)
+                if obj is not None:
+                    base = (obj, sub)
+                    Path.Log.debug("keeping (%s.%s)" % (obj.Label, sub))
+                    newlist.append(base)
         Path.Log.debug("obj.Base=%s newlist=%s" % (self.obj.Base, newlist))
         self.updating = True
         self.obj.Base = newlist
