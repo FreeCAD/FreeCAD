@@ -44,6 +44,7 @@
 #include <Base/Exception.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/Inventor/SoFCBoundingBox.h>
+#include <Gui/Inventor/So3DAnnotation.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeoList.h>
 
@@ -881,24 +882,68 @@ void EditModeCoinManager::updateGeometryLayersConfiguration()
     pEditModeGeometryCoinManager->updateGeometryLayersConfiguration();
 }
 
+void EditModeCoinManager::updateEditRootType()
+{
+    bool highlight = viewProvider.overlaySketch.getValue();
+    SoType targetType = highlight ? Gui::So3DAnnotation::getClassTypeId()
+                                  : SoSeparator::getClassTypeId();
+
+    if (editModeScenegraphNodes.ModeRoot
+        && editModeScenegraphNodes.ModeRoot->getTypeId() == targetType) {
+        return;
+    }
+
+    auto newModeRoot = static_cast<SoGroup*>(targetType.createInstance());
+    newModeRoot->ref();
+    newModeRoot->setName(highlight ? "ModeRoot_Annotation" : "ModeRoot_Separator");
+
+    if (editModeScenegraphNodes.ContentRoot) {
+        newModeRoot->addChild(editModeScenegraphNodes.ContentRoot);
+    }
+
+    if (!highlight) {
+        static_cast<SoSeparator*>(newModeRoot)->renderCaching = SoSeparator::OFF;
+    }
+
+    if (editModeScenegraphNodes.ModeRoot) {
+        editModeScenegraphNodes.EditRoot->replaceChild(editModeScenegraphNodes.ModeRoot, newModeRoot);
+        editModeScenegraphNodes.ModeRoot->unref();
+    }
+    else {
+        editModeScenegraphNodes.EditRoot->addChild(newModeRoot);
+    }
+
+    editModeScenegraphNodes.ModeRoot = newModeRoot;
+}
+
 void EditModeCoinManager::createEditModeInventorNodes()
 {
-    // 1 - Create the edit root node
+    // Create the fixed EditRoot node
     editModeScenegraphNodes.EditRoot = new SoSeparator;
     editModeScenegraphNodes.EditRoot->ref();  // Node is unref in the destructor of EditModeCoinManager
     editModeScenegraphNodes.EditRoot->setName("Sketch_EditRoot");
-    ViewProviderSketchCoinAttorney::addNodeToRoot(viewProvider, editModeScenegraphNodes.EditRoot);
     editModeScenegraphNodes.EditRoot->renderCaching = SoSeparator::OFF;
+    ViewProviderSketchCoinAttorney::addNodeToRoot(viewProvider, editModeScenegraphNodes.EditRoot);
 
-    // Create Geometry Coin nodes ++++++++++++++++++++++++++++++++++++++
-    pEditModeGeometryCoinManager->createEditModeInventorNodes();
+    // Create ContentRoot to hold all sketch content
+    editModeScenegraphNodes.ContentRoot = new SoSeparator;
+    editModeScenegraphNodes.ContentRoot->ref();
+    editModeScenegraphNodes.ContentRoot->setName("Sketch_ContentRoot");
+
+    // create ModeRoot.(EditRoot -> ModeRoot -> ContentRoot)
+    editModeScenegraphNodes.ModeRoot = nullptr;
+    updateEditRootType();
 
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
     SoGroup* crossRoot = new Gui::SoSkipBoundingGroup;
     editModeScenegraphNodes.pickStyleAxes = new SoPickStyle();
     editModeScenegraphNodes.pickStyleAxes->style = SoPickStyle::SHAPE;
     crossRoot->addChild(editModeScenegraphNodes.pickStyleAxes);
-    editModeScenegraphNodes.EditRoot->addChild(crossRoot);
+    editModeScenegraphNodes.ContentRoot->addChild(crossRoot);
+
+    // Create Geometry Coin nodes ++++++++++++++++++++++++++++++++++++++
+    pEditModeGeometryCoinManager->createEditModeInventorNodes();
+
     auto MtlBind = new SoMaterialBinding;
     MtlBind->setName("RootCrossMaterialBinding");
     MtlBind->value = SoMaterialBinding::PER_FACE;
@@ -926,7 +971,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
     // stuff for the Origin Point
     SoGroup* originPointRoot = new Gui::SoSkipBoundingGroup;
     originPointRoot->setName("OriginPointRoot_SkipBBox");
-    editModeScenegraphNodes.EditRoot->addChild(originPointRoot);
+    editModeScenegraphNodes.ContentRoot->addChild(originPointRoot);
 
     editModeScenegraphNodes.OriginPointMaterial = new SoMaterial;
     editModeScenegraphNodes.OriginPointMaterial->setName("OriginPointMaterial");
