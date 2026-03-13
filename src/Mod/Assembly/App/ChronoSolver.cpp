@@ -37,7 +37,7 @@
 # include <chrono/physics/ChLinkLockPulley.h>
 # include <chrono/physics/ChLinkLockScrew.h>
 # include <chrono/physics/ChLinkLock.h>
-# include <chrono/physics/ChLinkMate.h>   // ChLinkMateRackPinion has no Lock equivalent
+# include <chrono/physics/ChLinkMate.h>  // ChLinkMateRackPinion has no Lock equivalent
 # include <chrono/physics/ChSystemNSC.h>
 # include <chrono/solver/ChDirectSolverLS.h>
 # include <chrono/timestepper/ChAssemblyAnalysis.h>
@@ -321,13 +321,13 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
             auto p2 = body2->GetPos() + body2->GetRot().Rotate(frame2.GetPos());
             FC_MSG(
                 "  joint '" << joint->getName() << "'"
-                << "  body1='" << body1->GetName() << "'"
-                << "  body2='" << body2->GetName() << "'"
-                << "\n    world_pos1=(" << p1.x() << "," << p1.y() << "," << p1.z() << ")"
-                << "  world_pos2=(" << p2.x() << "," << p2.y() << "," << p2.z() << ")"
-                << "\n    world_z1=(" << z1.x() << "," << z1.y() << "," << z1.z() << ")"
-                << "  world_z2=(" << z2.x() << "," << z2.y() << "," << z2.z() << ")"
-                << "  z_dot=" << dot
+                            << "  body1='" << body1->GetName() << "'"
+                            << "  body2='" << body2->GetName() << "'"
+                            << "\n    world_pos1=(" << p1.x() << "," << p1.y() << "," << p1.z() << ")"
+                            << "  world_pos2=(" << p2.x() << "," << p2.y() << "," << p2.z() << ")"
+                            << "\n    world_z1=(" << z1.x() << "," << z1.y() << "," << z1.z() << ")"
+                            << "  world_z2=(" << z2.x() << "," << z2.y() << "," << z2.z() << ")"
+                            << "  z_dot=" << dot
             );
         }
         if (dot < 0.0) {
@@ -335,8 +335,8 @@ void ChronoAssembly::addJoint(std::shared_ptr<Joint> joint)
             if (debugLogging) {
                 auto z1n = body1->GetRot().Rotate(frame1.GetRot().GetAxisZ());
                 FC_MSG(
-                    "  -> flipped frame1 Z (Rx180); new world_z1=("
-                    << z1n.x() << "," << z1n.y() << "," << z1n.z() << ")"
+                    "  -> flipped frame1 Z (Rx180); new world_z1=(" << z1n.x() << "," << z1n.y()
+                                                                    << "," << z1n.z() << ")"
                 );
             }
         }
@@ -525,9 +525,7 @@ void ChronoAssembly::addLimit(std::shared_ptr<Limit> limit)
     auto key = std::make_pair(limit->getMarkerI(), limit->getMarkerJ());
     auto it = limitableJoints.find(key);
     if (it == limitableJoints.end()) {
-        FC_WARN(
-            "ChronoSolver: no limitable joint found for limit '" << limit->getName() << "'"
-        );
+        FC_WARN("ChronoSolver: no limitable joint found for limit '" << limit->getName() << "'");
         return;
     }
     auto& link = it->second;
@@ -561,9 +559,7 @@ void ChronoAssembly::addLimit(std::shared_ptr<Limit> limit)
             break;
 
         default:
-            FC_WARN(
-                "ChronoSolver: unknown limit class for limit '" << limit->getName() << "'"
-            );
+            FC_WARN("ChronoSolver: unknown limit class for limit '" << limit->getName() << "'");
     }
 }
 
@@ -583,8 +579,8 @@ void ChronoAssembly::dumpStructure() const
         auto z = frame.GetRot().GetAxisZ();
         FC_MSG(
             "  marker '" << name << "'"
-            << "  local_pos=(" << p.x() << "," << p.y() << "," << p.z() << ")"
-            << "  local_z=(" << z.x() << "," << z.y() << "," << z.z() << ")"
+                         << "  local_pos=(" << p.x() << "," << p.y() << "," << p.z() << ")"
+                         << "  local_z=(" << z.x() << "," << z.y() << "," << z.z() << ")"
         );
     }
 
@@ -596,9 +592,10 @@ void ChronoAssembly::dumpStructure() const
         auto rot = body->GetRot();
         FC_MSG(
             "[PART] '" << body->GetName() << "'"
-            << "  fixed=" << (body->IsFixed() ? "true" : "false")
-            << "  pos=(" << pos.x() << "," << pos.y() << "," << pos.z() << ")"
-            << "  rot(w,x,y,z)=(" << rot.e0() << "," << rot.e1() << "," << rot.e2() << "," << rot.e3() << ")"
+                       << "  fixed=" << (body->IsFixed() ? "true" : "false") << "  pos=(" << pos.x()
+                       << "," << pos.y() << "," << pos.z() << ")"
+                       << "  rot(w,x,y,z)=(" << rot.e0() << "," << rot.e1() << "," << rot.e2()
+                       << "," << rot.e3() << ")"
         );
         part->forEachMarker([&](const std::string& mname, const chrono::ChFrame<double>& frame) {
             auto lp = frame.GetPos();
@@ -607,8 +604,8 @@ void ChronoAssembly::dumpStructure() const
             auto wp = pos + rot.Rotate(lp);
             FC_MSG(
                 "  marker '" << mname << "'"
-                << "  world_pos=(" << wp.x() << "," << wp.y() << "," << wp.z() << ")"
-                << "  world_z=(" << wz.x() << "," << wz.y() << "," << wz.z() << ")"
+                             << "  world_pos=(" << wp.x() << "," << wp.y() << "," << wp.z() << ")"
+                             << "  world_z=(" << wz.x() << "," << wz.y() << "," << wz.z() << ")"
             );
         });
     }
@@ -621,7 +618,7 @@ void ChronoAssembly::dumpStructure() const
         }
         FC_MSG(
             "[LINK] '" << link->GetName() << "'"
-            << "  bilateral_dof=" << link->GetNumConstraintsBilateral()
+                       << "  bilateral_dof=" << link->GetNumConstraintsBilateral()
         );
     }
 
@@ -734,9 +731,11 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts)
             auto delta = (t.targetPos - t.startPos).Length();
             FC_MSG(
                 "  dragged '" << t.body->GetName() << "'"
-                << "  start=(" << t.startPos.x() << "," << t.startPos.y() << "," << t.startPos.z() << ")"
-                << "  target=(" << t.targetPos.x() << "," << t.targetPos.y() << "," << t.targetPos.z() << ")"
-                << "  delta=" << delta
+                              << "  start=(" << t.startPos.x() << "," << t.startPos.y() << ","
+                              << t.startPos.z() << ")"
+                              << "  target=(" << t.targetPos.x() << "," << t.targetPos.y() << ","
+                              << t.targetPos.z() << ")"
+                              << "  delta=" << delta
             );
         }
     }
