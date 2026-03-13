@@ -408,19 +408,19 @@ void DSHTextController::configureToolWidget()
                 }
             }
         }
-
-        onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
-        onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
-
-        onViewParameters[OnViewParameter::Third]->setLabelType(
-            Gui::SoDatumLabel::DISTANCE,
-            Gui::EditableDatumLabel::Function::Dimensioning
-        );
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(
-            Gui::SoDatumLabel::ANGLE,
-            Gui::EditableDatumLabel::Function::Dimensioning
-        );
     }
+
+    onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+    onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+
+    onViewParameters[OnViewParameter::Third]->setLabelType(
+        Gui::SoDatumLabel::DISTANCE,
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
+    onViewParameters[OnViewParameter::Fourth]->setLabelType(
+        Gui::SoDatumLabel::ANGLE,
+        Gui::EditableDatumLabel::Function::Dimensioning
+    );
 
     toolWidget->setLineEditText(
         SketcherToolDefaultWidget::LineEdit::FirstEdit,
@@ -769,3 +769,4 @@ std::list<Gui::InputHint> DrawSketchHandlerText::lookupTextHints(int method, int
 
 
 #endif  // SKETCHERGUI_DrawSketchHandlerText_H
+
