@@ -13,6 +13,7 @@ files: |
         src/Mod/BIM|
         src/Mod/CAM|
         src/Mod/Cloud|
+        src/Mod/Collaboration|
         src/Mod/Draft|
         src/Mod/Fem|
         src/Mod/Help|
