@@ -70,9 +70,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "ClearingPattern": [
                 (translate("CAM_Pocket", "ZigZag"), "ZigZag"),
                 (translate("CAM_Pocket", "Offset"), "Offset"),
-                (translate("CAM_Pocket", "ZigZagOffset"), "ZigZagOffset"),
                 (translate("CAM_Pocket", "Line"), "Line"),
                 (translate("CAM_Pocket", "Grid"), "Grid"),
+                (translate("CAM_Pocket", "No clearing"), "No clearing"),
             ],  # Fill Pattern
         }
 
@@ -102,7 +102,26 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         Can safely be overwritten by subclass."""
         pass
 
+    def areaOpOnChanged(self, obj, prop):
+        print("areaOpOnChanged PocketBase", prop)
+
+        if not obj.Document.Restoring:
+            if prop == "FinishOffset":
+                finishPassMode = 0 if obj.FinishOffset else 2
+                if hasattr(obj, "FinishOneStepDown"):
+                    obj.setEditorMode("FinishOneStepDown", finishPassMode)
+                if hasattr(obj, "FinishRampHelix"):
+                    obj.setEditorMode("FinishRampHelix", finishPassMode)
+
+            if prop == "ClearingPattern":
+                startAtMode = 0 if obj.ClearingPattern == "Offset" else 2
+                obj.setEditorMode("StartAt", startAtMode)
+                angleMode = 0 if obj.ClearingPattern not in ("Offset", "No clearing") else 2
+                obj.setEditorMode("Angle", angleMode)
+
     def opExecute(self, obj):
+        print("opExecute PocketBase")
+
         if len(obj.Base) == 0:
             return
         super().opExecute(obj)
@@ -140,6 +159,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             ),
         )
         obj.addProperty(
+            "App::PropertyLength",
+            "FinishOffset",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Offset for finish pass.",
+            ),
+        )
+        obj.addProperty(
             "App::PropertyEnumeration",
             "StartAt",
             "Pocket",
@@ -155,9 +183,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyFloat",
-            "ZigZagAngle",
+            "Angle",
             "Pocket",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of the zigzag pattern"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the grid, line and zigzag patterns"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -166,16 +194,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "MinTravel",
+            "App::PropertyLength",
+            "RetractThreshold",
             "Pocket",
-            QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "KeepToolDown",
-            "Pocket",
-            QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Set distance which will attempts to avoid unnecessary retractions.",
+            ),
         )
         obj.addProperty(
             "App::PropertyPercent",
@@ -201,10 +226,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
         self.initPocketOp(obj)
 
-    def areaOpRetractTool(self, obj):
-        Path.Log.debug("retracting tool: %d" % (not obj.KeepToolDown))
-        return not obj.KeepToolDown
-
     def areaOpUseProjection(self, obj):
         """areaOpUseProjection(obj) ... return False"""
         return False
@@ -217,22 +238,24 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["Coplanar"] = 0
         params["PocketMode"] = 1
         params["SectionCount"] = -1
-        params["Angle"] = obj.ZigZagAngle
+        params["Angle"] = obj.Angle
         params["FromCenter"] = obj.StartAt == "Center"
         params["PocketStepover"] = (self.radius * 2) * (float(obj.StepOver) / 100)
         extraOffset = obj.ExtraOffset.Value
         if self.pocketInvertExtraOffset():
-            extraOffset = 0 - extraOffset
-        params["PocketExtraOffset"] = extraOffset
+            extraOffset = -extraOffset
+        params["PocketExtraOffset"] = extraOffset + obj.FinishOffset.Value
         params["ToolRadius"] = self.radius
         params["PocketLastStepover"] = obj.PocketLastStepOver
 
         Pattern = {
             "ZigZag": 1,
             "Offset": 2,
-            "ZigZagOffset": 4,
+            "Spiral": 3,
+            "ZigZagOffset": 1,  # 4,
             "Line": 5,
             "Grid": 6,
+            "Triangle": 7,
         }
 
         params["PocketMode"] = Pattern.get(obj.ClearingPattern, 1)
@@ -240,6 +263,20 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         if obj.SplitArcs:
             params["Explode"] = True
             params["FitArcs"] = False
+
+        return params
+
+    def areaOpAreaParamsOffset(self, obj, isHole):
+        """areaOpAreaParamsOffset(obj, isHole) ... return dictionary with area parameters
+        This AreaParams using for finish Offset pass"""
+        params = {}
+        params["Fill"] = 0
+        params["Coplanar"] = 0
+        params["SectionCount"] = -1
+        params["Offset"] = -(self.radius + obj.ExtraOffset.Value)
+        params["ExtraPass"] = 0
+        params["Stepover"] = 0
+        params["JoinType"] = 0
 
         return params
 
@@ -268,6 +305,19 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 ),
             )
 
+        if not hasattr(obj, "RetractThreshold"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "RetractThreshold",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set distance which will attempts to avoid unnecessary retractions.",
+                ),
+            )
+
+        if hasattr(obj, "ZigZagAngle"):
+            obj.renameProperty("ZigZagAngle", "Angle")
         if hasattr(obj, "OffsetPattern"):
             obj.setGroupOfProperty("OffsetPattern", "Pocket")
             obj.renameProperty("OffsetPattern", "ClearingPattern")
@@ -275,6 +325,20 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             obj.removeProperty("RestMachiningRegions")
         if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
             obj.removeProperty("RestMachiningRegionsNeedRecompute")
+        if hasattr(obj, "KeepToolDown"):
+            if obj.KeepToolDown:
+                obj.setExpression("RetractThreshold", "1 * OpToolDiameter")
+            obj.removeProperty("KeepToolDown")
+
+        if not hasattr(obj, "FinishOffset"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "FinishOffset",
+                "Pocket",
+                QT_TRANSLATE_NOOP("App::Property", "Offset for finish pass."),
+            )
+            if obj.ClearingPattern == "ZigZagOffset":
+                obj.FinishOffset = 0.01
 
         Path.Log.track()
 
@@ -282,21 +346,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         """areaOpAreaParams(obj, isHole) ... return dictionary with pocket's path parameters"""
         params = {}
 
-        CutMode = ["Conventional", "Climb"]
+        CutMode = ("Conventional", "Climb")
         params["orientation"] = CutMode.index(obj.CutMode)
 
-        # if MinTravel is turned on, set path sorting to 3DSort
-        # 3DSort shouldn't be used without a valid start point. Can cause
-        # tool crash without it.
-        #
-        # ml: experimental feature, turning off for now (see https://forum.freecad.org/viewtopic.php?f=15&t=24422&start=30#p192458)
-        # realthunder: I've fixed it with a new sorting algorithm, which I
-        # tested fine, but of course need more test. Please let know if there is
-        # any problem
-        #
-        if obj.MinTravel and obj.UseStartPoint and obj.StartPoint is not None:
-            params["sort_mode"] = 3
-            params["threshold"] = self.radius * 2
         return params
 
 
@@ -305,9 +357,7 @@ def SetupProperties():
     setup.append("CutMode")
     setup.append("ExtraOffset")
     setup.append("StepOver")
-    setup.append("ZigZagAngle")
+    setup.append("Angle")
     setup.append("ClearingPattern")
     setup.append("StartAt")
-    setup.append("MinTravel")
-    setup.append("KeepToolDown")
     return setup
