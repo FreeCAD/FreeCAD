@@ -101,12 +101,15 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QDoubleSpinBox" name="dirX">
+         <widget class="Gui::QuantitySpinBox" name="dirX">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"></string>
           </property>
           <property name="minimum">
            <double>-2147480000.000000000000000</double>
@@ -124,12 +127,15 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="dirY">
+         <widget class="Gui::QuantitySpinBox" name="dirY">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"></string>
           </property>
           <property name="minimum">
            <double>-2147480000.000000000000000</double>
@@ -147,7 +153,7 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QDoubleSpinBox" name="dirZ">
+         <widget class="Gui::QuantitySpinBox" name="dirZ">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -156,6 +162,9 @@
           </property>
           <property name="keyboardTracking">
            <bool>false</bool>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"></string>
           </property>
           <property name="minimum">
            <double>-2147480000.000000000000000</double>
