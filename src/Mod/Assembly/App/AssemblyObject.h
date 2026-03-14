@@ -21,10 +21,9 @@
  *                                                                          *
  ***************************************************************************/
 
-
 #pragma once
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -32,16 +31,7 @@
 #include <App/Part.h>
 #include <App/PropertyLinks.h>
 
-#include <OndselSolver/enum.h>
-
-namespace MbD
-{
-class ASMTPart;
-class ASMTAssembly;
-class ASMTJoint;
-class ASMTMarker;
-class ASMTPart;
-}  // namespace MbD
+#include "Solver.h"
 
 namespace App
 {
@@ -88,9 +78,10 @@ public:
 
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
+
     /* Solve the assembly. It will update first the joints, solve, update placements of the parts
-    and redraw the joints Args : enableRedo : This store initial positions to enable undo while
-    being in an active transaction (joint creation).*/
+    and redraw the joints. Args: enableRedo stores initial positions to enable undo while being in
+    an active transaction (joint creation). */
     int solve(bool enableRedo = false, bool updateJCS = true);
     int generateSimulation(App::DocumentObject* sim);
     int updateForFrame(size_t index, bool updateJCS = true);
@@ -104,7 +95,6 @@ public:
 
     void exportAsASMT(std::string fileName);
 
-    Base::Placement getMbdPlacement(std::shared_ptr<MbD::ASMTPart> mbdPart);
     bool validateNewPlacements();
     void setNewPlacements();
     static void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
@@ -113,29 +103,31 @@ public:
     // This makes sure that LinkGroups or sub-assemblies have identity placements.
     void ensureIdentityPlacements();
 
-    // Ondsel Solver interface
-    std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();
-    void create_mbdSimulationParameters(App::DocumentObject* sim);
-    std::shared_ptr<MbD::ASMTPart> makeMbdPart(
+    // Solver interface — these are the primary methods for building the solver representation.
+    // The names have been updated to remove the "Mbd" prefix; implementations delegate to the
+    // abstract Solver::Assembly / Solver::Part / Solver::AssemblySolver interfaces.
+    void createSimulationParameters(App::DocumentObject* sim);
+
+    std::shared_ptr<Solver::Part> makeSolverPart(
         std::string& name,
         Base::Placement plc = Base::Placement(),
         double mass = 1.0
     );
-    std::shared_ptr<MbD::ASMTPart> getMbDPart(App::DocumentObject* obj);
-    // To help the solver, during dragging, we are bundling parts connected by a fixed joint.
-    // So several assembly components are bundled in a single ASMTPart.
-    // So we need to store the plc of each bundled object relative to the bundle origin (first obj
-    // of objectPartMap).
-    struct MbDPartData
+
+    std::shared_ptr<Solver::Part> getPart(App::DocumentObject* obj);
+
+    // To help the solver during dragging we bundle parts connected by a fixed joint into a
+    // single solver Part. We need to store the placement of each bundled object relative to
+    // the bundle origin (the first object in objectPartMap).
+    struct PartData
     {
-        std::shared_ptr<MbD::ASMTPart> part;
-        Base::Placement offsetPlc;  // This is the offset within the bundled parts
+        std::shared_ptr<Solver::Part> part;
+        Base::Placement offsetPlc;  // offset within the bundled part group
     };
-    MbDPartData getMbDData(App::DocumentObject* part);
-    std::shared_ptr<MbD::ASMTMarker> makeMbdMarker(std::string& name, Base::Placement& plc);
-    std::vector<std::shared_ptr<MbD::ASMTJoint>> makeMbdJoint(App::DocumentObject* joint);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointOfType(App::DocumentObject* joint, JointType jointType);
-    std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistance(App::DocumentObject* joint);
+
+    PartData getPartData(App::DocumentObject* part);
+
+    // Returns the full ASMT marker path after creating and adding the marker to the part.
     std::string handleOneSideOfJoint(
         App::DocumentObject* joint,
         const char* propRefName,
@@ -147,6 +139,12 @@ public:
         std::string& markerNameJ
     );
     int slidingPartIndex(App::DocumentObject* joint);
+
+    std::shared_ptr<Solver::Joint> makeJoint(App::DocumentObject* joint);
+    std::shared_ptr<Solver::Joint> makeJointOfType(App::DocumentObject* joint, JointType jointType);
+    std::shared_ptr<Solver::Joint> makeJointDistance(App::DocumentObject* joint);
+
+    bool isJointValid(App::DocumentObject* joint);
 
     void jointParts(std::vector<App::DocumentObject*> joints);
     JointGroup* getJointGroup() const;
@@ -209,8 +207,6 @@ public:
 
     std::vector<App::DocumentObject*> getMotionsFromSimulation(App::DocumentObject* sim);
 
-    bool isMbDJointValid(App::DocumentObject* joint);
-
     bool isEmpty() const;
     int numberOfComponents() const;
 
@@ -258,9 +254,10 @@ public:
     fastsignals::signal<void()> signalSolverUpdate;
 
 private:
-    std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
+    std::shared_ptr<Solver::AssemblySolver> solver;
+    std::shared_ptr<Solver::Assembly> assembly;
 
-    std::unordered_map<App::DocumentObject*, MbDPartData> objectPartMap;
+    std::unordered_map<App::DocumentObject*, PartData> objectPartMap;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
     std::vector<App::DocumentObject*> draggedParts;
     std::vector<App::DocumentObject*> motions;

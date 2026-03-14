@@ -147,6 +147,7 @@ sed = "*"
 ## macOS Dependencies (Apple Silicon)
 [target.osx-arm64.dependencies]
 sed = "*"
+pychrono = ">=9.0.1,<10"
 
 [target.win-64.dependencies]
 pthreads-win32 = "*"

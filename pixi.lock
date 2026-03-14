@@ -1229,6 +1229,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/cfgv-3.5.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/cgal-cpp-6.0.1-h39a0b02_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/charset-normalizer-3.4.4-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/chrono-9.0.1-py311hf0cf3c7_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/clang-18-18.1.8-default_h73dfc95_17.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/clang-18.1.8-default_hf9bcbb7_17.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/clang_impl_osx-arm64-18.1.8-h2ae9ea5_25.conda
@@ -1457,6 +1458,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/py-opencv-4.11.0-headless_py311h5ce6bc0_5.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pybind11-3.0.1-pyh7a1b43c_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pybind11-global-3.0.1-pyhc7ab6ef_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pychrono-9.0.1-py311h5bba073_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pycollada-0.9.3-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pycosat-0.6.6-py311h3696347_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pycparser-2.22-pyh29332c3_1.conda
@@ -3484,6 +3486,20 @@ packages:
   - pkg:pypi/charset-normalizer?source=hash-mapping
   size: 50965
   timestamp: 1760437331772
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/chrono-9.0.1-py311hf0cf3c7_2.conda
+  sha256: f5764bebc755c8cd18eb5a8959cc07e014c853279eab0a4d5940c86c93b70852
+  md5: 2888f57162f9c1cc20cc11d803334327
+  depends:
+  - llvm-openmp
+  - __osx >=11.0
+  - libcxx >=19
+  - llvm-openmp >=19.1.7
+  - python_abi 3.11.* *_cp311
+  license: BSD-3-Clause
+  license_family: BSD
+  purls: []
+  size: 461856300
+  timestamp: 1757147745748
 - conda: https://conda.anaconda.org/conda-forge/linux-64/clang-21.1.0-default_h36abe19_1.conda
   sha256: 5e112250853c16a9f2c3b4d7b553076ba765974ffb0c2d1321566b4f28b480e9
   md5: 2c539e1cb3e1af0dd4cb0f656e1093c0
@@ -18349,6 +18365,24 @@ packages:
   - pkg:pypi/pybind11-global?source=hash-mapping
   size: 228871
   timestamp: 1755953338243
+- conda: https://conda.anaconda.org/conda-forge/osx-arm64/pychrono-9.0.1-py311h5bba073_2.conda
+  sha256: 6c473c919e3900e2423e4cf72df9dbce7cc35bf753462e30b8a03f84de1a5052
+  md5: 3d66cd7dfedb1eef8f89b29dd5a092cf
+  depends:
+  - chrono ==9.0.1 py311hf0cf3c7_2
+  - python
+  - llvm-openmp
+  - llvm-openmp >=19.1.7
+  - __osx >=11.0
+  - libcxx >=19
+  - llvm-openmp >=19.1.7
+  - python_abi 3.11.* *_cp311
+  - chrono >=9.0.1,<9.1.0a0
+  license: BSD-3-Clause
+  license_family: BSD
+  purls: []
+  size: 3226908
+  timestamp: 1757147745749
 - conda: https://conda.anaconda.org/conda-forge/noarch/pycollada-0.9.3-pyhd8ed1ab_0.conda
   sha256: 1743c3be740be009ee7b9e6f32ed12524537d437ec701fd0e8fabfa7a4868b48
   md5: edd875ef7cbf171d45b9e735c216dbf7
