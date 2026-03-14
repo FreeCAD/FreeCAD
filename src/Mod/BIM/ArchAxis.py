@@ -696,6 +696,7 @@ class _ViewProviderAxis:
                                 try:
                                     fn = str(vobj.FontName)
                                 except Exception:
+                                    # Keep the default font if conversion fails.
                                     pass
                             fo.name = fn
                             fo.size = fs
@@ -772,6 +773,7 @@ class _ViewProviderAxis:
                                         try:
                                             fn = str(vobj.FontName)
                                         except Exception:
+                                            # Keep the default font if conversion fails.
                                             pass
                                 fo.name = fn
                                 fo.size = fs
