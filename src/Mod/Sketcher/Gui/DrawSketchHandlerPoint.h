@@ -267,6 +267,8 @@ void DSHPointController::addConstraints()
 
     auto x0 = onViewParameters[OnViewParameter::First]->getValue();
     auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
+    auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+    auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
 
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
@@ -283,20 +285,36 @@ void DSHPointController::addConstraints()
     }
     else {
         if (x0set) {
+            int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
             ConstraintToAttachment(
                 GeoElementId(firstCurve, PointPos::start),
                 GeoElementId::VAxis,
                 x0,
-                handler->sketchgui->getObject()
+                handler->sketchgui->getObject(),
+                !x0Expr.empty()
+            );
+            applyExpressionToLatestConstraint(
+                handler->getSketchObject(),
+                oldConstraintCount,
+                handler->sketchgui->getObject(),
+                x0Expr
             );
         }
 
         if (y0set) {
+            int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
             ConstraintToAttachment(
                 GeoElementId(firstCurve, PointPos::start),
                 GeoElementId::HAxis,
                 y0,
-                handler->sketchgui->getObject()
+                handler->sketchgui->getObject(),
+                !y0Expr.empty()
+            );
+            applyExpressionToLatestConstraint(
+                handler->getSketchObject(),
+                oldConstraintCount,
+                handler->sketchgui->getObject(),
+                y0Expr
             );
         }
     }

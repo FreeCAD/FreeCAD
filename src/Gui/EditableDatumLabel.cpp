@@ -30,19 +30,19 @@
 
 #include <QEvent>
 #include <QKeyEvent>
+#include <QLineEdit>
+#include <QApplication>
 #include <QPixmap>
 #include <QLabel>
-#include <QHBoxLayout>
 #include <QString>
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/InlineExpression.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
 #include "EditableDatumLabel.h"
-
-
 using namespace Gui;
 
 
@@ -161,6 +161,8 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 
     // Reset locked state when starting to edit
     this->resetLockedState();
+    expression.clear();
+    hasUserEditedText = false;
 
     QWidget* mdi = viewer->parentWidget();
 
@@ -175,9 +177,19 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->setAutoNormalize(false);
     spinBox->setKeyboardTracking(true);
     spinBox->installEventFilter(this);
+    auto* lineEdit = spinBox->findChild<QLineEdit*>();
+    if (lineEdit) {
+        lineEdit->installEventFilter(this);
+        connect(lineEdit, &QLineEdit::textEdited, this, [this](const QString&) {
+            hasUserEditedText = true;
+        });
+    }
 
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
+        if (lineEdit) {
+            lineEdit->installEventFilter(eventFilteringObj);
+        }
     }
 
     if (!visibleToMouse) {
@@ -198,9 +210,12 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
             return;
         }
 
+        expression = spinBox->takeUnboundExpressionText();
+
         if (!spinBox->hasValidInput()) {
             // unset parameters in DrawSketchController, this is needed in a case
             // when user removes values we reset state of the OVP
+            expression.clear();
             Q_EMIT this->parameterUnset();
             return;
         }
@@ -217,39 +232,80 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     };
 
     connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
+    connect(spinBox, &QuantitySpinBox::returnPressed, this, [this, validateAndFinish]() {
+        this->hasFinishedEditing = true;
+        validateAndFinish();
+    });
 }
 
 bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
 {
+    // handle key events relevant to expression input in OVA
     if (event->type() == QEvent::KeyPress) {
         auto* keyEvent = static_cast<QKeyEvent*>(event);
-        if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter
-            || keyEvent->key() == Qt::Key_Tab) {
+        const bool isEnter = keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter;
+        const bool isBacktab = keyEvent->key() == Qt::Key_Backtab
+            || (keyEvent->key() == Qt::Key_Tab && (keyEvent->modifiers() & Qt::ShiftModifier));
+        const bool isTab = keyEvent->key() == Qt::Key_Tab && !isBacktab;
 
-            if (auto* spinBox = qobject_cast<QAbstractSpinBox*>(watched)) {
-                // if tab has been pressed and user did not type anything previously,
-                // then just cycle but don't lock anything, otherwise we lock the label
-                if (keyEvent->key() == Qt::Key_Tab && !this->isSet) {
-                    if (!this->spinBox->hasValidInput()) {
-                        Q_EMIT this->spinBox->valueChanged(this->value);
+        if (isEnter || isTab || isBacktab) {
+
+            if (watched == spinBox || qobject_cast<QLineEdit*>(watched)) {
+                if (!this->spinBox) {
+                    return QObject::eventFilter(watched, event);
+                }
+                // Handle explicit completion shortcuts first.
+                // control + enter finalizes all OVA values
+                if (isEnter && (keyEvent->modifiers() & Qt::ControlModifier)) {
+                    Q_EMIT this->finishEditingOnAllOVPs();
+                    return true;
+                }
+
+                // enter finalizes the current value
+                if (isEnter) {
+                    this->hasFinishedEditing = true;
+                    if (this->spinBox->commitInlineExpressionTextForUi()) {
                         return true;
                     }
                     return false;
                 }
 
-                // for ctrl + enter we accept values as they are
-                if (keyEvent->modifiers() & Qt::ControlModifier) {
-                    Q_EMIT this->finishEditingOnAllOVPs();
+                // backtab is no-op
+                if (isBacktab) {
                     return true;
                 }
-                else {
-                    // regular enter
-                    this->hasFinishedEditing = true;
-                    Q_EMIT this->spinBox->valueChanged(this->value);
+
+                // Tab on untouched field should only cycle focus.
+                // if tab has been pressed and user did not type anything previously,
+                // then just cycle but don't lock anything, otherwise we lock the label
+                if (isTab && !this->isSet) {
+                    const bool hasTypedText = hasUserEditedText;
+                    if (hasTypedText) {
+                        // Continue to commit path below for typed expression/text.
+                    }
+                    else if (!this->spinBox->hasValidInput()) {
+                        this->hasFinishedEditing = false;
+                        Q_EMIT this->spinBox->valueChanged(this->value);
+                        return true;
+                    }
+                    else {
+                        this->hasFinishedEditing = false;
+                        return false;
+                    }
+                }
+
+                // Try inline-expression commit; fallback to numeric commit.
+                this->hasFinishedEditing = true;
+                if (this->commitPendingInlineExpression()) {
                     return true;
                 }
+                this->hasFinishedEditing = false;
+                this->setLockedAppearance(false);
+                this->setFocusToSpinbox();
+                return true;
             }
         }
+        // Any other key on a locked field unlocks visual state for editing.
         else if (this->hasFinishedEditing && keyEvent->key() != Qt::Key_Tab) {
             this->setLockedAppearance(false);
             return false;
@@ -296,6 +352,45 @@ double EditableDatumLabel::getValue() const
     return value;
 }
 
+std::string EditableDatumLabel::constraintExpression() const
+{
+    return expression;
+}
+
+bool EditableDatumLabel::commitPendingInlineExpression()
+{
+    if (!spinBox) {
+        return false;
+    }
+    auto* lineEdit = spinBox->findChild<QLineEdit*>();
+    const QString input = lineEdit ? lineEdit->text() : QString();
+    const QString normalized = InlineExpression::normalizeInput(input);
+
+    // Untouched OVA fields should not become explicit constraints on click-out.
+    // Keep this as a no-op commit so tool flow can continue.
+    if (!hasUserEditedText && !InlineExpression::looksLikeExpressionInput(normalized)) {
+        return true;
+    }
+
+    if (spinBox->commitInlineExpressionTextForUi()) {
+        return true;
+    }
+    if (!spinBox->hasValidInput()) {
+        return false;
+    }
+
+    if (InlineExpression::looksLikeExpressionInput(normalized)) {
+        return false;
+    }
+    const Base::Quantity quant = spinBox->valueFromText(input);
+    {
+        QSignalBlocker blocker(spinBox);
+        spinBox->setValue(quant);
+    }
+    Q_EMIT spinBox->valueChanged(spinBox->rawValue());
+    return true;
+}
+
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
     if (!spinBox) {
@@ -325,9 +420,15 @@ void EditableDatumLabel::setFocusToSpinbox()
         );
         return;
     }
-    if (!spinBox->hasFocus()) {
-        spinBox->setFocus();
-        spinBox->selectNumber();
+    QPointer<QuantitySpinBox> focused = spinBox;
+    QWidget* focusWidget = QApplication::focusWidget();
+    const bool focusWithinSpinbox = focused->hasFocus()
+        || (focusWidget && (focusWidget == focused || focused->isAncestorOf(focusWidget)));
+    if (!focusWithinSpinbox) {
+        focused->setFocus();
+        if (focused) {
+            focused->selectNumber();
+        }
     }
 }
 

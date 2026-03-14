@@ -26,15 +26,20 @@
 #include <QStyle>
 #include <QStyleOptionSpinBox>
 #include <QStylePainter>
+#include <QToolTip>
 
 #include <boost/math/special_functions/round.hpp>
 
+#include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/ExpressionParser.h>
+#include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 
 #include "SpinBox.h"
 #include "Command.h"
 #include "Dialogs/DlgExpressionInput.h"
+#include "InlineExpression.h"
 #include "QuantitySpinBox_p.h"
 #include "Widgets.h"
 
@@ -220,8 +225,13 @@ void ExpressionSpinBox::openFormulaDialog()
 bool ExpressionSpinBox::handleKeyEvent(const QString& text)
 {
     if (text == QLatin1String("=") && isBound()) {
-        openFormulaDialog();
-        return true;
+        // Only open the formula dialog if the input is empty.
+        // When the user is typing an assignment (e.g. "x=42"), '=' must be inserted.
+        if (!lineedit || lineedit->text().trimmed().isEmpty()) {
+            openFormulaDialog();
+            return true;
+        }
+        return false;
     }
 
     return false;
@@ -383,7 +393,12 @@ void UIntSpinBox::setRange(uint minVal, uint maxVal)
 
 QValidator::State UIntSpinBox::validate(QString& input, int& pos) const
 {
-    return d->mValidator->validate(input, pos);
+    QValidator::State state = d->mValidator->validate(input, pos);
+    if (state == QValidator::Invalid && InlineExpression::looksLikeExpressionInput(input)) {
+        return QValidator::Intermediate;
+    }
+
+    return state;
 }
 
 uint UIntSpinBox::value() const
@@ -470,6 +485,130 @@ void UIntSpinBox::setNumberExpression(App::NumberExpression* expr)
     setValue(boost::math::round(expr->getValue()));
 }
 
+Base::Type UIntSpinBox::determineInlineAssignmentType() const
+{
+    if (isBound()) {
+        if (const App::Property* prop = getPath().getProperty()) {
+            const Base::Type type = prop->getTypeId();
+            if (type.isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                return type;
+            }
+        }
+    }
+
+    return App::PropertyInteger::getClassTypeId();
+}
+
+UIntSpinBox::InlineCommitResult UIntSpinBox::commitInlineExpression(QString& error)
+{
+    QString text = InlineExpression::normalizeInput(lineEdit()->text());
+    if (text.isEmpty()) {
+        return InlineCommitResult::NotHandled;
+    }
+
+    const InlineExpression::Assignment assignment = InlineExpression::parseAssignment(text);
+    if (!assignment.isAssignment && !InlineExpression::looksLikeExpressionInput(text)) {
+        return InlineCommitResult::NotHandled;
+    }
+
+    App::Document* doc = nullptr;
+    App::DocumentObject* owner = InlineExpression::resolveExpressionOwner(
+        isBound() ? getPath().getDocumentObject() : nullptr,
+        doc
+    );
+    if (!owner || !doc) {
+        error = tr("Unknown document");
+        return InlineCommitResult::Error;
+    }
+
+    if (assignment.isAssignment) {
+        if (!InlineExpression::isValidName(assignment.name, error)) {
+            return InlineCommitResult::Error;
+        }
+
+        std::shared_ptr<App::Expression> rhsExpr;
+        Base::Quantity rhsQuantity;
+        QString rhsText = InlineExpression::qualifyDefaultVarSetNames(doc, assignment.valueExpr);
+        if (!InlineExpression::parseNumberExpression(owner, rhsText, rhsExpr, rhsQuantity, error)) {
+            return InlineCommitResult::Error;
+        }
+
+        App::DocumentObject* varSet = InlineExpression::resolveVarSet(doc, assignment, true, error);
+        if (!varSet) {
+            return InlineCommitResult::Error;
+        }
+
+        App::Property* prop = InlineExpression::ensureProperty(
+            varSet,
+            assignment.name,
+            determineInlineAssignmentType(),
+            InlineExpression::DefaultVarSetGroup
+        );
+        if (!prop) {
+            error = tr("Could not create variable property.");
+            return InlineCommitResult::Error;
+        }
+
+        if (!InlineExpression::assignExpressionToProperty(varSet, prop, rhsExpr.get(), error)) {
+            return InlineCommitResult::Error;
+        }
+
+        const std::string refExpr = InlineExpression::makeReferenceExpression(varSet, assignment.name);
+        if (refExpr.empty()) {
+            error = tr("Could not create variable reference expression.");
+            return InlineCommitResult::Error;
+        }
+
+        if (isBound()) {
+            std::shared_ptr<App::Expression> ref;
+            try {
+                ref.reset(ExpressionParser::parse(getPath().getDocumentObject(), refExpr.c_str()));
+            }
+            catch (const Base::Exception& e) {
+                error = QString::fromUtf8(e.what());
+                return InlineCommitResult::Error;
+            }
+
+            if (!ref) {
+                error = tr("Invalid expression.");
+                return InlineCommitResult::Error;
+            }
+
+            setExpression(ref);
+            updateExpression();
+            return InlineCommitResult::Success;
+        }
+
+        setValue(boost::math::round(rhsQuantity.getValue()));
+        return InlineCommitResult::Success;
+    }
+
+    QString parseText = InlineExpression::qualifyDefaultVarSetNames(doc, text);
+    std::shared_ptr<App::Expression> expr;
+    Base::Quantity quantity;
+    if (!InlineExpression::parseNumberExpression(owner, parseText, expr, quantity, error)) {
+        return InlineCommitResult::Error;
+    }
+
+    if (isBound()) {
+        setExpression(expr);
+        updateExpression();
+        return InlineCommitResult::Success;
+    }
+
+    setValue(boost::math::round(quantity.getValue()));
+    return InlineCommitResult::Success;
+}
+
+void UIntSpinBox::showInlineExpressionError(const QString& error)
+{
+    if (error.isEmpty()) {
+        return;
+    }
+    lineedit->setToolTip(error);
+    QToolTip::showText(mapToGlobal(QPoint(0, height())), error, this);
+}
+
 void UIntSpinBox::resizeEvent(QResizeEvent* event)
 {
     QAbstractSpinBox::resizeEvent(event);
@@ -478,9 +617,36 @@ void UIntSpinBox::resizeEvent(QResizeEvent* event)
 
 void UIntSpinBox::keyPressEvent(QKeyEvent* event)
 {
+    const bool isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
+    if (isEnter) {
+        QString error;
+        const InlineCommitResult result = commitInlineExpression(error);
+        if (result == InlineCommitResult::Success) {
+            QAbstractSpinBox::keyPressEvent(event);
+            return;
+        }
+        if (result == InlineCommitResult::Error) {
+            showInlineExpressionError(error);
+            return;
+        }
+    }
+
     if (!handleKeyEvent(event->text())) {
         QAbstractSpinBox::keyPressEvent(event);
     }
+}
+
+void UIntSpinBox::focusOutEvent(QFocusEvent* event)
+{
+    QString error;
+    const InlineCommitResult result = commitInlineExpression(error);
+    if (result == InlineCommitResult::Error) {
+        showInlineExpressionError(error);
+        QAbstractSpinBox::focusOutEvent(event);
+        return;
+    }
+    QToolTip::hideText();
+    QAbstractSpinBox::focusOutEvent(event);
 }
 
 void UIntSpinBox::paintEvent(QPaintEvent*)

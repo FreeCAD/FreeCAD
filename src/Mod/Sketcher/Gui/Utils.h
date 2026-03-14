@@ -223,10 +223,23 @@ void ConstraintToAttachment(
     Sketcher::GeoElementId element,
     Sketcher::GeoElementId attachment,
     double distance,
-    App::DocumentObject* obj
+    App::DocumentObject* obj,
+    bool forceDimensional = false
 );
 
-void ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj);
+bool applyExpressionToLatestConstraint(
+    Sketcher::SketchObject* sketch,
+    int previousConstraintCount,
+    App::DocumentObject* obj,
+    const std::string& expression
+);
+
+void ConstraintLineByAngle(
+    int geoId,
+    double angle,
+    App::DocumentObject* obj,
+    bool forceDimensional = false
+);
 void Constraint2LinesByAngle(int geoId1, int geoId2, double angle, App::DocumentObject* obj);
 
 // convenience functions for cursor coordinates

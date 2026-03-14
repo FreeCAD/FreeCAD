@@ -2921,6 +2921,12 @@ void DSHRectangleController::addConstraints()
     auto width = onViewParameters[OnViewParameter::Fourth]->getValue();
     auto radius = onViewParameters[OnViewParameter::Fifth]->getValue();
     auto thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
+    auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+    auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+    auto lengthExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+    auto widthExpr = onViewParameters[OnViewParameter::Fourth]->constraintExpression();
+    auto radiusExpr = onViewParameters[OnViewParameter::Fifth]->constraintExpression();
+    auto thicknessExpr = onViewParameters[OnViewParameter::Sixth]->constraintExpression();
 
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
@@ -2951,6 +2957,9 @@ void DSHRectangleController::addConstraints()
         widthSet = onViewParameters[OnViewParameter::Fifth]->isSet;
         radiusSet = onViewParameters[OnViewParameter::Seventh]->isSet;
         thicknessSet = onViewParameters[OnViewParameter::Eighth]->isSet;
+        widthExpr = onViewParameters[OnViewParameter::Fifth]->constraintExpression();
+        radiusExpr = onViewParameters[OnViewParameter::Seventh]->constraintExpression();
+        thicknessExpr = onViewParameters[OnViewParameter::Eighth]->constraintExpression();
     }
 
     using namespace Sketcher;
@@ -2967,14 +2976,31 @@ void DSHRectangleController::addConstraints()
     }
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstPointId, PointPos::start), GeoElementId::VAxis, x0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstPointId, PointPos::start),
+            GeoElementId::VAxis,
+            x0,
+            obj,
+            !x0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstPointId, PointPos::start), GeoElementId::HAxis, y0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstPointId, PointPos::start),
+            GeoElementId::HAxis,
+            y0,
+            obj,
+            !y0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
 
     auto constraintlength = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         int curveId = reverse ? firstCurve : firstCurve + 1;
 
         Gui::cmdAppObjectArgs(
@@ -2986,9 +3012,11 @@ void DSHRectangleController::addConstraints()
             2,
             fabs(length)
         );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, lengthExpr);
     };
 
     auto constraintwidth = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         int curveId = reverse ? firstCurve + 1 : firstCurve;
 
         Gui::cmdAppObjectArgs(
@@ -3000,6 +3028,7 @@ void DSHRectangleController::addConstraints()
             2,
             fabs(width)
         );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, widthExpr);
     };
 
     // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose. No
@@ -3127,18 +3156,21 @@ void DSHRectangleController::addConstraints()
     }
 
     if (radiusSet && radius > Precision::Confusion()) {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(
             obj,
             "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
             firstCurve + 5,  // NOLINT
             radius
         );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, radiusExpr);
     }
 
     bool negThicknessEqualRadius = fabs(radius + thickness) < Precision::Confusion();
     // in the case where negative thickness = radius, the inner rectangle has its corner
     // constrained to the mid of the arcs of the outer rectangle. So thickness would be redundant
     if (thicknessSet && !negThicknessEqualRadius) {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(
             obj,
             "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
@@ -3146,6 +3178,12 @@ void DSHRectangleController::addConstraints()
             1,
             firstCurve,
             fabs(thickness)
+        );
+        applyExpressionToLatestConstraint(
+            handler->getSketchObject(),
+            oldConstraintCount,
+            obj,
+            thicknessExpr
         );
     }
 }
