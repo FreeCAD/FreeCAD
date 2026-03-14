@@ -202,6 +202,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "and disabled UseStartPoint",
                 ),
             ),
+            (
+                "App::PropertyBool",
+                "HelixRamp",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Create helix ramp for closed path\nHelix pitch limits by 'Step Down'",
+                ),
+            ),
         ]
 
     @classmethod
