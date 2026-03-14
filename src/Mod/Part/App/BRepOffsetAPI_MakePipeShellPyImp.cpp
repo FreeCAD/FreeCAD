@@ -30,7 +30,7 @@
 #include <gp_Pnt.hxx>
 #include <Standard_Version.hxx>
 #include <TopoDS.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_ListOfShape.hxx>
 
 
 #include <Base/GeometryPyCXX.h>

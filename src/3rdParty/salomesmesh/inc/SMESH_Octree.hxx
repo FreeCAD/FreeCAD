@@ -31,7 +31,7 @@
 
 #include "SMESH_Utils.hxx"
 #include "SMESH_tree.hxx"
-#include <Bnd_B3d.hxx>
+#include <Bnd_B3.hxx>
 
 //================================================================================
 /*!

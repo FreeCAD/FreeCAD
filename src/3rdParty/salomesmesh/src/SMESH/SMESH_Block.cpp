@@ -38,7 +38,7 @@
 #include <BRepTools_WireExplorer.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
-#include <Bnd_B2d.hxx>
+#include <Bnd_B2.hxx>
 #include <Bnd_Box.hxx>
 #include <Extrema_ExtPC.hxx>
 #include <Extrema_ExtPS.hxx>
@@ -48,7 +48,6 @@
 #include <ShapeAnalysis.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
