@@ -646,9 +646,14 @@ class _ViewProviderAxis:
                         bubbles, texts = get_axis_bubble_data(vobj.Object, vobj)
                         self.bubbledata = bubbles
                         for i, cir in enumerate(bubbles):
-                            local_pts = [vobj.Object.Placement.inverse().multVec(v.Point) for v in cir.Vertexes]
+                            local_pts = [
+                                vobj.Object.Placement.inverse().multVec(v.Point)
+                                for v in cir.Vertexes
+                            ]
                             if hasattr(cir, "Curve") and isinstance(cir.Curve, Part.Circle):
-                                local_center = vobj.Object.Placement.inverse().multVec(cir.Curve.Center)
+                                local_center = vobj.Object.Placement.inverse().multVec(
+                                    cir.Curve.Center
+                                )
                                 local_cir = Part.makeCircle(cir.Curve.Radius, local_center)
                                 buf = local_cir.writeInventor()
                                 try:
@@ -688,7 +693,9 @@ class _ViewProviderAxis:
                                 fs = vobj.BubbleSize * 0.75
                             center_world = texts[i][1]
                             center_local = vobj.Object.Placement.inverse().multVec(center_world)
-                            txpos = FreeCAD.Vector(center_local.x, center_local.y - fs / 2.5, center_local.z)
+                            txpos = FreeCAD.Vector(
+                                center_local.x, center_local.y - fs / 2.5, center_local.z
+                            )
                             tr.translation.setValue(tuple(txpos))
                             fo = coin.SoFont()
                             fn = params.get_param("textfont")
