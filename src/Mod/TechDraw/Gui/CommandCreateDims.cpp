@@ -209,6 +209,9 @@ public:
         , partFeat(pFeat)
         , dims({})
         , blockRemoveSel(false)
+        , AreaLeaderPoint(Base::Vector3d(0.0, 0.0, 0.0))
+        , hasAreaLeaderPoint(false)
+
     {
     }
     ~TDHandlerDimension()
@@ -473,6 +476,14 @@ public:
                 else {
                     ReferenceVector& selVector = getSelectionVector(addedRef);
                     selVector.push_back(addedRef);
+                    
+                    if (DrawUtil::getGeomTypeFromName(addedRef.getSubName())
+                        == "Face") {
+                        
+                        QPointF p = getDimPositionToBe(mousePos);
+                        AreaLeaderPoint = Base::Vector3d(Rez::appX(p.x()), Rez::appX(p.y()), 0.0);
+                        hasAreaLeaderPoint = true;
+                    }
 
                     availableDimension = AvailableDimension::FIRST;
                     bool selAllowed = makeAppropriateDimension();
@@ -590,6 +601,9 @@ protected:
     std::vector<DrawViewDimension*> dims;
 
     bool blockRemoveSel;
+
+    Base::Vector3d AreaLeaderPoint;
+    bool hasAreaLeaderPoint;
 
     void handleInitialSelection()
     {
@@ -1034,6 +1048,14 @@ protected:
         DrawViewDimension* dim = dimMaker(partFeat, "Area", { ref }, {});
 
         dims.push_back(dim);
+
+        if (hasAreaLeaderPoint) {
+            dim->UseAreaLeaderPoint.setValue(true);
+            dim->AreaLeaderPoint.setValue(AreaLeaderPoint);
+            dim->recomputeFeature();
+            hasAreaLeaderPoint = false;
+        }
+
         moveDimension(mousePos, dim);
     }
 
