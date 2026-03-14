@@ -55,8 +55,7 @@ if [ -x /c/ProgramData/chocolatey/tools/shimgen.exe ]; then
     popd
 fi
 
-python_version=$("${copy_dir}"/bin/python.exe -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
-version_name="FreeCAD_${BUILD_TAG}-Windows-$(uname -m)-${python_version}"
+version_name="FreeCAD_${BUILD_TAG}-Windows-$(uname -m)"
 
 echo -e "################"
 echo -e "version_name:  ${version_name}"
