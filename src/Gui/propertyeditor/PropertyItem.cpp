@@ -4755,6 +4755,7 @@ void LinkLabel::onEditClicked()
 {
     if (!dlg) {
         dlg = new DlgPropertyLink(this);
+        dlg->setWindowFlags(Qt::Dialog | Qt::WindowStaysOnTopHint);
         dlg->init(objProp, true);
         connect(dlg, &DlgPropertyLink::accepted, this, &LinkLabel::onLinkChanged);
     }
