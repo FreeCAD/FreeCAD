@@ -509,7 +509,7 @@ def offsetWire(
                 elif curAlign == "Center":
                     nedge = offset(curredge, delta, trim=True)
             if curOrientation == "Reversed":
-                # save nedge before Reversing in list 
+                # save nedge before Reversing in list
                 if not nedge.isClosed():
                     orgNedges.append(nedge)
                 else:
