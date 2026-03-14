@@ -463,7 +463,7 @@ def offsetWire(
             # TODO arc always in counter-clockwise directinon
             # ... ( not necessarily 'reversed')
             if curOrientation == "Reversed":
-                # save nedge before Reversing in list
+                # save in a list the nedge before reversing
                 if not nedge.isClosed():
                     orgNedges.append(nedge)
                 else:
@@ -483,6 +483,8 @@ def offsetWire(
                     ).toShape()
                     # TODO any better solution than to calculate midpoint
                     # of arc to reverse?
+            else:
+                orgNedges.append(None)
 
         elif offsetMode in ["BasewireMode"]:
             if not (curOrientation == firstOrientation) != (curDir == firstDir):
@@ -509,7 +511,7 @@ def offsetWire(
                 elif curAlign == "Center":
                     nedge = offset(curredge, delta, trim=True)
             if curOrientation == "Reversed":
-                # save nedge before Reversing in list
+                # save in a list the nedge before reversing
                 if not nedge.isClosed():
                     orgNedges.append(nedge)
                 else:
@@ -529,6 +531,9 @@ def offsetWire(
                     ).toShape()
                     # TODO any better solution than to calculate midpoint
                     # of arc to reverse?
+            else:
+                orgNedges.append(None)
+
         else:
             print(" something wrong ")
             return None
