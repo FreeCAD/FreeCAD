@@ -58,6 +58,7 @@
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
+#include <ChFiDS_ErrorStatus.hxx>
 #include <BRepLib.hxx>
 #include <BRepOffsetAPI_DraftAngle.hxx>
 #include <BRepOffsetAPI_MakeFilling.hxx>
@@ -4105,7 +4106,78 @@ TopoShape& TopoShape::makeElementFillet(
         }
         mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
     }
-    return makeElementShape(mkFillet, shape, op);
+    try {
+        return makeElementShape(mkFillet, shape, op);
+    }
+    catch (const Standard_Failure& e) {
+        // Build() was called lazily inside Shape(); diagnostics are now populated.
+        int nFaulty = mkFillet.NbFaultyContours();
+        if (nFaulty > 0) {
+            int ic = mkFillet.FaultyContour(1);
+            switch (mkFillet.StripeStatus(ic)) {
+                case ChFiDS_WalkingFailure:
+                    FC_THROWM(
+                        Base::CADKernelError,
+                        "Fillet failed: could not trace the blending surface along edge contour "
+                            << ic
+                            << ". The radius may be too large or the edge geometry too complex. "
+                               "Try reducing the radius or selecting fewer edges."
+                    );
+                case ChFiDS_StartsolFailure:
+                    FC_THROWM(
+                        Base::CADKernelError,
+                        "Fillet failed to start on edge contour "
+                            << ic
+                            << ": the radius may be too large. "
+                               "Reduce the radius or fillet this edge separately."
+                    );
+                case ChFiDS_TwistedSurface:
+                    FC_THROWM(
+                        Base::CADKernelError,
+                        "Fillet failed on edge contour "
+                            << ic
+                            << ": the blending surface would be self-intersecting. "
+                               "Try reducing the radius or selecting a different edge."
+                    );
+                case ChFiDS_Error:
+                    FC_THROWM(
+                        Base::CADKernelError,
+                        "Fillet failed on edge contour "
+                            << ic
+                            << ": OCC internal geometry error. "
+                               "Check that selected edges are valid and the shape has no defects."
+                    );
+                default:
+                    break;
+            }
+            FC_THROWM(
+                Base::CADKernelError,
+                "Fillet failed on " << nFaulty
+                                    << " edge contour(s). "
+                                       "Reduce the radius or fillet edges individually."
+            );
+        }
+        int nVerts = mkFillet.NbFaultyVertices();
+        if (nVerts > 0) {
+            FC_THROWM(
+                Base::CADKernelError,
+                "Fillet failed at " << nVerts
+                                    << " vertex/vertices. "
+                                       "The radius may be causing conflicts where edges meet. "
+                                       "Try reducing the radius or filleting edges individually."
+            );
+        }
+        if (mkFillet.HasResult()) {
+            FC_THROWM(
+                Base::CADKernelError,
+                "Fillet partially applied: some edges could not be filleted. "
+                "Reduce the radius or fillet edges individually."
+            );
+        }
+        // Diagnostics empty: failure occurred before OCC could track faulty contours.
+        // Surface the raw OCC message without speculative hints — the cause is unknown here.
+        FC_THROWM(Base::CADKernelError, "Fillet failed: " << e.GetMessageString());
+    }
 }
 
 TopoShape& TopoShape::makeElementChamfer(
@@ -4168,7 +4240,21 @@ TopoShape& TopoShape::makeElementChamfer(
         }
     }
     Part::SignalException sig;
-    return makeElementShape(mkChamfer, shape, op);
+    try {
+        return makeElementShape(mkChamfer, shape, op);
+    }
+    catch (const Standard_Failure& e) {
+        std::string msg = e.GetMessageString();
+        if (msg.find("command not done") != std::string::npos) {
+            FC_THROWM(
+                Base::CADKernelError,
+                "Chamfer failed: the parameters are incompatible with this shape geometry. "
+                "Try reducing the size, selecting fewer edges, "
+                "or ensuring the selected edges have sufficient width."
+            );
+        }
+        throw;
+    }
 }
 
 TopoShape& TopoShape::makeElementGeneralFuse(

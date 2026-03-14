@@ -203,13 +203,23 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         this->Shape.setValue(shape);
         return App::DocumentObject::StdReturn;
     }
+    catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
     catch (Standard_Failure& e) {
-        return new App::DocumentObjectExecReturn(e.GetMessageString());
+        // Surface the raw OCC message with context; do not assume a single cause.
+        std::string msg = e.GetMessageString();
+        std::string fullMsg = "Chamfer failed: " + msg
+            + ". Check that the size is not too large, edges are valid, "
+              "and the shape has no degenerate edges.";
+        return new App::DocumentObjectExecReturn(fullMsg.c_str());
     }
     catch (...) {
-        return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "Chamfer failed: OCC kernel error in chamfer computation")
-        );
+        return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+            "Exception",
+            "Chamfer failed: size may be too large for adjacent edges sharing a vertex. "
+            "Reduce the size or chamfer edges individually."
+        ));
     }
 }
 
