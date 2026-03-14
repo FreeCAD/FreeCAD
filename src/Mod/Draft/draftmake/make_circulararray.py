@@ -30,6 +30,7 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
+import WorkingPlane
 import draftmake.make_array as make_array
 import draftutils.utils as utils
 
@@ -43,7 +44,7 @@ def make_circular_array(
     tan_distance=50,
     number=3,
     symmetry=1,
-    axis=App.Vector(0, 0, 1),
+    axis=None,
     center=App.Vector(0, 0, 0),
     use_link=True,
 ):
@@ -88,7 +89,8 @@ def make_circular_array(
         Et cetera.
 
     axis: Base::Vector3, optional
-        It defaults to `App.Vector(0, 0, 1)` or the `+Z` axis.
+        It defaults to the active Draft working plane axis if available,
+        otherwise to `App.Vector(0, 0, 1)` or the `+Z` axis.
         The unit vector indicating the axis of rotation.
 
     center: Base::Vector3, optional
@@ -149,6 +151,12 @@ def make_circular_array(
     except TypeError:
         _err(translate("draft", "Wrong input: must be an integer number."))
         return None
+
+    if axis is None:
+        if App.GuiUp:
+            axis = WorkingPlane.get_working_plane(update=False).axis
+        else:
+            axis = App.Vector(0, 0, 1)
 
     try:
         utils.type_check([(axis, App.Vector), (center, App.Vector)], name=_name)
