@@ -410,7 +410,12 @@ void StdCmdFreezeViews::activated(int iMsg)
                 savedViews++;
                 QString viewnr = QString(QObject::tr("Restore View &%1")).arg(index);
                 (*it)->setText(viewnr);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
                 (*it)->setToolTip(QString::fromLatin1(camera));
+#else
+                (*it)->setToolTip(QString::fromLatin1(camera.c_str()));
+#endif
+
                 (*it)->setVisible(true);
                 if (index < 10) {
                     (*it)->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(index)));
