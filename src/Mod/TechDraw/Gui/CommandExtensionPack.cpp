@@ -471,7 +471,7 @@ bool CmdTechDrawExtensionThreadBoltSide::isActive()
 
 void execThreadHoleBottom(Gui::Command* cmd)
 {
-    constexpr double ThreadFactor{1.177};           // factor above is 1.176. should they be the same?
+    constexpr double ThreadFactor{1.176};
     // add cosmetic thread to bottom view of hole
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
