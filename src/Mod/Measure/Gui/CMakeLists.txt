@@ -44,6 +44,8 @@ SET(MeasureGui_SRCS
     ViewProviderMeasureAngle.h
     ViewProviderMeasureDistance.cpp
     ViewProviderMeasureDistance.h
+    SoScreenSpaceScale.cpp
+    SoScreenSpaceScale.h
     DlgPrefsMeasureAppearanceImp.ui
     DlgPrefsMeasureAppearanceImp.cpp
     DlgPrefsMeasureAppearanceImp.h
