@@ -100,6 +100,9 @@ public:
      */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
 
+    gp_Vec calculateOffsetVector(LinearPatternDirection dir) const;
+    std::vector<gp_Vec> calculateSteps(LinearPatternDirection dir, const gp_Vec& offsetVector) const;
+
 protected:
     void handleChangedPropertyType(
         Base::XMLReader& reader,
@@ -120,9 +123,6 @@ private:
 
     void updateSpacings();
     void updateSpacings(LinearPatternDirection dir);
-
-    gp_Vec calculateOffsetVector(LinearPatternDirection dir) const;
-    std::vector<gp_Vec> calculateSteps(LinearPatternDirection dir, const gp_Vec& offsetVector) const;
 };
 
 }  // namespace PartDesign
