@@ -45,15 +45,15 @@
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
-
 #include <Base/Color.h>
+
+#include <App/AutoTransaction.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
-#include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
+#include <App/SuppressibleExtension.h>
 
-#include "Tree.h"
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "Document.h"
@@ -61,6 +61,7 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
+#include "Tree.h"
 #include "TreeParams.h"
 #include "View3DInventor.h"
 #include "ViewProviderDocumentObject.h"
@@ -6107,8 +6108,17 @@ Gui::ViewProviderDocumentObject* DocumentObjectItem::object() const
 
 void DocumentObjectItem::testStatus(bool resetStatus)
 {
-    QIcon icon, icon2;
-    testStatus(resetStatus, icon, icon2);
+    // check if the object is suppressed and apply strikethrough
+    auto docObj = object()->getObject();
+    bool suppressed = false;
+    if (docObj && docObj->hasExtension(App::SuppressibleExtension::getExtensionClassTypeId())) {
+        suppressed = docObj->getExtensionByType<App::SuppressibleExtension>()->Suppressed.getValue();
+    }
+    QFont f = font(0);
+    if (f.strikeOut() != suppressed) {
+        f.setStrikeOut(suppressed);
+        setFont(0, f);
+    }
 }
 
 namespace
