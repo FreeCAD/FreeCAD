@@ -23,7 +23,8 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
         self.target = FreeCAD.Vector(10, 0, 0)
         self.local_clearance = 2.0
         self.global_clearance = 5.0
-        self.tool = Part.makeCylinder(1, 5)
+        self.tooldiamter = 2
+        self.tool = Part.makeCylinder(self.tooldiamter / 2, 5)
 
     def test_simple_move(self):
         cmds = generator.get_linking_moves(
@@ -31,7 +32,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             target_position=self.target,
             local_clearance=self.local_clearance,
             global_clearance=self.global_clearance,
-            tool_shape=self.tool,
             solids=[],
         )
         self.assertGreater(len(cmds), 0)
@@ -43,7 +43,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             target_position=self.start,
             local_clearance=self.local_clearance,
             global_clearance=self.global_clearance,
-            tool_shape=self.tool,
             solids=[],
         )
         self.assertEqual(len(cmds), 0)
@@ -55,7 +54,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 target_position=self.target,
                 local_clearance=self.local_clearance,
                 global_clearance=self.global_clearance,
-                tool_shape=self.tool,
                 retract_height_offset=-1,
             )
 
@@ -66,7 +64,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 target_position=self.target,
                 local_clearance=10.0,
                 global_clearance=5.0,
-                tool_shape=self.tool,
             )
 
     def test_path_blocked_by_solid(self):
@@ -78,7 +75,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 target_position=self.target,
                 local_clearance=self.local_clearance,
                 global_clearance=self.global_clearance,
-                tool_shape=self.tool,
                 solids=[blocking_box],
             )
 
@@ -91,7 +87,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 target_position=self.target,
                 local_clearance=5,
                 global_clearance=11,
-                tool_shape=self.tool,
                 tolerance=1.1,
                 solids=[blocking_box],
             )
@@ -106,7 +101,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             target_position=target,
             local_clearance=self.local_clearance,
             global_clearance=self.global_clearance,
-            tool_shape=self.tool,
             solids=[],
         )
 
@@ -140,7 +134,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             target_position=target,
             local_clearance=self.local_clearance,
             global_clearance=self.global_clearance,
-            tool_shape=self.tool,
             solids=[],
         )
 
@@ -153,6 +146,38 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             msg="Final plunge should go to target Z=-2",
         )
 
+    def test_path_blocked_by_tooldiameter(self):
+        blocking_box1 = Part.makeBox(1, 10, 10)
+        blocking_box1.translate(FreeCAD.Vector(5, -11, 0))
+        blocking_box2 = Part.makeBox(1, 10, 10)
+        blocking_box2.translate(FreeCAD.Vector(5, 1, 0))
+        with self.assertRaises(RuntimeError):
+            generator.get_linking_moves(
+                start_position=self.start,
+                target_position=self.target,
+                local_clearance=self.local_clearance,
+                global_clearance=self.global_clearance,
+                tool_diameter=self.tooldiamter,
+                tolerance=0.001,
+                solids=[blocking_box1, blocking_box2],
+            )
+
+    def test_path_blocked_by_toolshape(self):
+        blocking_box1 = Part.makeBox(1, 10, 10)
+        blocking_box1.translate(FreeCAD.Vector(5, -11, 0))
+        blocking_box2 = Part.makeBox(1, 10, 10)
+        blocking_box2.translate(FreeCAD.Vector(5, 1, 0))
+        with self.assertRaises(RuntimeError):
+            generator.get_linking_moves(
+                start_position=self.start,
+                target_position=self.target,
+                local_clearance=self.local_clearance,
+                global_clearance=self.global_clearance,
+                tool_shape=self.tool,
+                tolerance=0.001,
+                solids=[blocking_box1, blocking_box2],
+            )
+
     @unittest.skip("not yet implemented")
     def test_zero_retract_offset_uses_local_clearance(self):
         cmds = generator.get_linking_moves(
@@ -160,7 +185,6 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
             target_position=FreeCAD.Vector(10, 0, 5),
             local_clearance=self.local_clearance,
             global_clearance=self.global_clearance,
-            tool_shape=self.tool,
             retract_height_offset=0,
         )
         self.assertTrue(any(cmd for cmd in cmds if cmd.Parameters.get("Z") == self.local_clearance))
