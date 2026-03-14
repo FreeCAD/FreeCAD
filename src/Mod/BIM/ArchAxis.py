@@ -635,173 +635,70 @@ class _ViewProviderAxis:
                         self.bubbles.addChild(self.bubblestyle)
                         self.bubbletexts = []
                         self.bubbledata = []
-                        pos = ["Start"]
-                        if hasattr(vobj, "BubblePosition"):
-                            if vobj.BubblePosition in [
-                                "Both",
-                                "Arrow left",
-                                "Arrow right",
-                                "Bar left",
-                                "Bar right",
-                            ]:
-                                pos = ["Start", "End"]
-                            elif vobj.BubblePosition == "None":
-                                pos = []
+                        bubbles, texts = get_axis_bubble_data(vobj.Object, vobj)
+                        self.bubbledata = bubbles
+                        for i, cir in enumerate(bubbles):
+                            local_pts = [vobj.Object.Placement.inverse().multVec(v.Point) for v in cir.Vertexes]
+                            if hasattr(cir, "Curve") and isinstance(cir.Curve, Part.Circle):
+                                local_center = vobj.Object.Placement.inverse().multVec(cir.Curve.Center)
+                                local_cir = Part.makeCircle(cir.Curve.Radius, local_center)
+                                buf = local_cir.writeInventor()
+                                try:
+                                    cin = coin.SoInput()
+                                    cin.setBuffer(buf)
+                                    cob = coin.SoDB.readAll(cin)
+                                except Exception:
+                                    buf = buf.replace("\n", "")
+                                    pts = re.findall(r"point \[(.*?)\]", buf)[0]
+                                    pts = pts.split(",")
+                                    pc = []
+                                    for point in pts:
+                                        v = point.strip().split()
+                                        pc.append([float(v[0]), float(v[1]), float(v[2])])
+                                    coords = coin.SoCoordinate3()
+                                    coords.point.setValues(0, len(pc), pc)
+                                    line = coin.SoLineSet()
+                                    line.numVertices.setValue(-1)
+                                else:
+                                    coords = cob.getChild(1).getChild(0).getChild(2)
+                                    line = cob.getChild(1).getChild(0).getChild(3)
                             else:
-                                pos = [vobj.BubblePosition]
-                        e = len(vobj.Object.Shape.Edges)
-                        if getattr(vobj.Object, "Limit", 0):
-                            e //= 2
-                        n = len(getattr(vobj.Object, "Distances", []))
-                        for i in range(min(e, n)):
-                            for p in pos:
-                                if getattr(vobj.Object, "Limit", 0):
-                                    verts = [
-                                        vobj.Object.Placement.inverse().multVec(
-                                            vobj.Object.Shape.Edges[i * 2].Vertexes[0].Point
-                                        ),
-                                        vobj.Object.Placement.inverse().multVec(
-                                            vobj.Object.Shape.Edges[i * 2 + 1].Vertexes[0].Point
-                                        ),
-                                    ]
-                                else:
-                                    verts = [
-                                        vobj.Object.Placement.inverse().multVec(v.Point)
-                                        for v in vobj.Object.Shape.Edges[i].Vertexes
-                                    ]
-                                arrow = None
-                                if p == "Start":
-                                    p1 = verts[0]
-                                    p2 = verts[1]
-                                    if vobj.BubblePosition.endswith("left"):
-                                        arrow = True
-                                    elif vobj.BubblePosition.endswith("right"):
-                                        arrow = False
-                                else:
-                                    p1 = verts[1]
-                                    p2 = verts[0]
-                                    if vobj.BubblePosition.endswith("left"):
-                                        arrow = False
-                                    elif vobj.BubblePosition.endswith("right"):
-                                        arrow = True
-                                dv = p2.sub(p1)
-                                dv.normalize()
-                                if hasattr(vobj.BubbleSize, "Value"):
-                                    rad = vobj.BubbleSize.Value / 2
-                                else:
-                                    rad = vobj.BubbleSize / 2
-                                center = p2.add(Vector(dv).multiply(rad))
-                                normal = vobj.Object.Placement.Rotation.multVec(Vector(0, 0, 1))
-                                chord = dv.cross(normal)
-                                if arrow:
-                                    p3 = p2.add(Vector(chord).multiply(rad / 2).negative())
-                                    if vobj.BubblePosition.startswith("Arrow"):
-                                        p4 = p3.add(Vector(dv).multiply(rad * 2).negative())
-                                        p5 = p2.add(Vector(dv).multiply(rad).negative()).add(
-                                            Vector(chord).multiply(rad * 1.5).negative()
-                                        )
-                                        pts = [tuple(p3), tuple(p5), tuple(p4), tuple(p3)]
-                                        center = p5.add(Vector(chord).multiply(rad * 2.5))
-                                    else:
-                                        p4 = p3.add(Vector(dv).multiply(rad / 2).negative())
-                                        p5 = p4.add(Vector(chord).multiply(rad * 1.5).negative())
-                                        p6 = p5.add(Vector(dv).multiply(rad / 2))
-                                        pts = [
-                                            tuple(p3),
-                                            tuple(p6),
-                                            tuple(p5),
-                                            tuple(p4),
-                                            tuple(p3),
-                                        ]
-                                        center = p5.add(Vector(chord).multiply(rad * 3))
-                                    coords = coin.SoCoordinate3()
-                                    coords.point.setValues(0, len(pts), pts)
-                                    line = coin.SoFaceSet()
-                                    line.numVertices.setValue(-1)
-                                    cir = Part.makePolygon(pts)
-                                    cir.Placement = vobj.Object.Placement
-                                    self.bubbledata.append(cir)
-                                elif arrow == False:
-                                    p3 = p2.add(Vector(chord).multiply(rad / 2))
-                                    if vobj.BubblePosition.startswith("Arrow"):
-                                        p4 = p3.add(Vector(dv).multiply(rad * 2).negative())
-                                        p5 = p2.add(Vector(dv).multiply(rad).negative()).add(
-                                            Vector(chord).multiply(rad * 1.5)
-                                        )
-                                        pts = [tuple(p3), tuple(p4), tuple(p5), tuple(p3)]
-                                        center = p5.add(
-                                            Vector(chord).multiply(rad * 2.5).negative()
-                                        )
-                                    else:
-                                        p4 = p3.add(Vector(dv).multiply(rad / 2).negative())
-                                        p5 = p4.add(Vector(chord).multiply(rad * 1.5))
-                                        p6 = p5.add(Vector(dv).multiply(rad / 2))
-                                        pts = [
-                                            tuple(p3),
-                                            tuple(p4),
-                                            tuple(p5),
-                                            tuple(p6),
-                                            tuple(p3),
-                                        ]
-                                        center = p5.add(Vector(chord).multiply(rad * 3).negative())
-                                    coords = coin.SoCoordinate3()
-                                    coords.point.setValues(0, len(pts), pts)
-                                    line = coin.SoFaceSet()
-                                    line.numVertices.setValue(-1)
-                                    cir = Part.makePolygon(pts)
-                                    cir.Placement = vobj.Object.Placement
-                                    self.bubbledata.append(cir)
-                                else:
-                                    cir = Part.makeCircle(rad, center)
-                                    buf = cir.writeInventor()
-                                    try:
-                                        cin = coin.SoInput()
-                                        cin.setBuffer(buf)
-                                        cob = coin.SoDB.readAll(cin)
-                                    except Exception:
-                                        # workaround for pivy SoInput.setBuffer() bug
-                                        buf = buf.replace("\n", "")
-                                        pts = re.findall(r"point \[(.*?)\]", buf)[0]
-                                        pts = pts.split(",")
-                                        pc = []
-                                        for point in pts:
-                                            v = point.strip().split()
-                                            pc.append([float(v[0]), float(v[1]), float(v[2])])
-                                        coords = coin.SoCoordinate3()
-                                        coords.point.setValues(0, len(pc), pc)
-                                        line = coin.SoLineSet()
-                                        line.numVertices.setValue(-1)
-                                    else:
-                                        coords = cob.getChild(1).getChild(0).getChild(2)
-                                        line = cob.getChild(1).getChild(0).getChild(3)
-                                    cir.Placement = vobj.Object.Placement
-                                    self.bubbledata.append(cir)
-                                self.bubbles.addChild(coords)
-                                self.bubbles.addChild(line)
-                                st = coin.SoSeparator()
-                                tr = coin.SoTransform()
-                                fs = rad * 1.5
-                                if hasattr(vobj, "FontSize"):
-                                    fs = vobj.FontSize.Value
-                                txpos = FreeCAD.Vector(center.x, center.y - fs / 2.5, center.z)
-                                tr.translation.setValue(tuple(txpos))
-                                fo = coin.SoFont()
-                                fn = params.get_param("textfont")
-                                if hasattr(vobj, "FontName"):
-                                    if vobj.FontName:
-                                        try:
-                                            fn = str(vobj.FontName)
-                                        except Exception:
-                                            pass
-                                fo.name = fn
-                                fo.size = fs
-                                tx = coin.SoAsciiText()
-                                tx.justification = coin.SoText2.CENTER
-                                self.bubbletexts.append((tx, vobj.Object.Placement.multVec(center)))
-                                st.addChild(tr)
-                                st.addChild(fo)
-                                st.addChild(tx)
-                                self.bubbles.addChild(st)
+                                pc = [tuple(p) for p in local_pts]
+                                coords = coin.SoCoordinate3()
+                                coords.point.setValues(0, len(pc), pc)
+                                line = coin.SoFaceSet()
+                                line.numVertices.setValue(-1)
+                            self.bubbles.addChild(coords)
+                            self.bubbles.addChild(line)
+                            st = coin.SoSeparator()
+                            tr = coin.SoTransform()
+                            if hasattr(vobj, "FontSize"):
+                                fs = vobj.FontSize.Value
+                            elif hasattr(vobj.BubbleSize, "Value"):
+                                fs = vobj.BubbleSize.Value * 0.75
+                            else:
+                                fs = vobj.BubbleSize * 0.75
+                            center_world = texts[i][1]
+                            center_local = vobj.Object.Placement.inverse().multVec(center_world)
+                            txpos = FreeCAD.Vector(center_local.x, center_local.y - fs / 2.5, center_local.z)
+                            tr.translation.setValue(tuple(txpos))
+                            fo = coin.SoFont()
+                            fn = params.get_param("textfont")
+                            if hasattr(vobj, "FontName") and vobj.FontName:
+                                try:
+                                    fn = str(vobj.FontName)
+                                except Exception:
+                                    pass
+                            fo.name = fn
+                            fo.size = fs
+                            tx = coin.SoAsciiText()
+                            tx.justification = coin.SoText2.CENTER
+                            tx.string.setValue(texts[i][0])
+                            self.bubbletexts.append((tx, center_world))
+                            st.addChild(tr)
+                            st.addChild(fo)
+                            st.addChild(tx)
+                            self.bubbles.addChild(st)
                         self.bubbleset.addChild(self.bubbles)
                         self.onChanged(vobj, "NumberingStyle")
             if prop in ["FontName", "FontSize"]:
