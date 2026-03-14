@@ -39,6 +39,7 @@
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "ui_TaskRichAnno.h" //This will include mrichtextedit.h if the .ui file uses MRichTextEdit
 #include "TaskRichAnno.h"
@@ -227,6 +228,15 @@ void TaskRichAnno::finishSetup()
     // Get the internal document of the toolbar and link it to the QGIRichAnno
     textEditChild->setDocument(m_qgiAnno->document());
 
+
+    // setDocument() calls document->setDefaultFont(widgetFont); restore osifont.
+
+    if (m_qgiAnno) {
+        QFont labelFont = m_toolbar->getDefFont();
+        labelFont.setPointSize(qRound(Preferences::dimFontSizeMM() * 2.0));
+        m_qgiAnno->document()->setDefaultFont(labelFont);
+    }
+
     // Connect signals to keep things in sync
     connect(m_qgiAnno,
             &QGIRichAnno::selectionChanged,
@@ -281,8 +291,12 @@ void TaskRichAnno::finishSetup()
             this,
             &TaskRichAnno::refocusAnnotation);
 
-    onViewSelectionChanged();  // Sync initial cursor to hidden editor
+    // setEditMode must run before onViewSelectionChanged to prime the cursor with osifont.
     m_qgiAnno->setEditMode(true);
+
+
+    onViewSelectionChanged();  // Sync primed cursor to hidden editor
+
 
     if (graphicsView) {
         // Install the event filter on the viewport, which receives the mouse events.
@@ -920,3 +934,4 @@ void TaskDlgRichAnno::autoClosedOnTransactionChange()
 }
 
 #include <Mod/TechDraw/Gui/moc_TaskRichAnno.cpp>
+
