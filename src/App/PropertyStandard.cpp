@@ -83,6 +83,10 @@ PropertyInteger::~PropertyInteger() = default;
 
 void PropertyInteger::setValue(long lValue)
 {
+    if (lValue == _lValue) {
+        return;
+    }
+
     aboutToSetValue();
     _lValue = lValue;
     hasSetValue();
@@ -101,9 +105,7 @@ PyObject* PropertyInteger::getPyObject()
 void PropertyInteger::setPyObject(PyObject* value)
 {
     if (PyLong_Check(value)) {
-        aboutToSetValue();
-        _lValue = PyLong_AsLong(value);
-        hasSetValue();
+        setValue(PyLong_AsLong(value));
     }
     else {
         std::string error = std::string("type must be int, not ");
@@ -128,15 +130,13 @@ void PropertyInteger::Restore(Base::XMLReader& reader)
 Property* PropertyInteger::Copy() const
 {
     PropertyInteger* p = new PropertyInteger();
-    p->_lValue = _lValue;
+    p->setValue(_lValue);
     return p;
 }
 
 void PropertyInteger::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _lValue = dynamic_cast<const PropertyInteger&>(from)._lValue;
-    hasSetValue();
+    setValue(dynamic_cast<const PropertyInteger&>(from)._lValue);
 }
 
 void PropertyInteger::setPathValue(const ObjectIdentifier& path, const boost::any& value)
@@ -316,6 +316,10 @@ void PropertyEnumeration::setEnums(const std::vector<std::string>& Enums)
 
 void PropertyEnumeration::setValue(const char* value)
 {
+    if (_enum == value) {
+        return;
+    }
+
     aboutToSetValue();
     _enum.setValue(value);
     hasSetValue();
@@ -323,6 +327,10 @@ void PropertyEnumeration::setValue(const char* value)
 
 void PropertyEnumeration::setValue(long value)
 {
+    if (value == _enum.getInt()) {
+        return;
+    }
+
     aboutToSetValue();
     _enum.setValue(value);
     hasSetValue();
@@ -330,6 +338,10 @@ void PropertyEnumeration::setValue(long value)
 
 void PropertyEnumeration::setValue(const Enumeration& source)
 {
+    if (source == _enum) {
+        return;
+    }
+
     aboutToSetValue();
     _enum = source;
     hasSetValue();
@@ -421,8 +433,6 @@ void PropertyEnumeration::Restore(Base::XMLReader& reader)
     // get the value of my Attribute
     long val = reader.getAttribute<long>("value");
 
-    aboutToSetValue();
-
     if (reader.hasAttribute("CustomEnum")) {
         reader.readElement("CustomEnumList");
         int count = reader.getAttribute<long>("count");
@@ -441,15 +451,16 @@ void PropertyEnumeration::Restore(Base::XMLReader& reader)
     if (val < 0) {
         // If the enum is empty at this stage do not print a warning
         if (_enum.hasEnums()) {
-            Base::Console().developerWarning(std::string("PropertyEnumeration"),
-                                             "Enumeration index %d is out of range, ignore it\n",
-                                             val);
+            Base::Console().developerWarning(
+                std::string("PropertyEnumeration"),
+                "Enumeration index %d is out of range, ignore it\n",
+                val
+            );
         }
         val = getValue();
     }
 
-    _enum.setValue(val);
-    hasSetValue();
+    setValue(val);
 }
 
 PyObject* PropertyEnumeration::getPyObject()
@@ -466,22 +477,20 @@ void PropertyEnumeration::setPyObject(PyObject* value)
     if (PyLong_Check(value)) {
         long val = PyLong_AsLong(value);
         if (_enum.isValid()) {
-            aboutToSetValue();
-            _enum.setValue(val, true);
-            hasSetValue();
+            setValue(val);
         }
         return;
     }
     else if (PyUnicode_Check(value)) {
         std::string str = PyUnicode_AsUTF8(value);
         if (_enum.contains(str.c_str())) {
-            aboutToSetValue();
-            _enum.setValue(str);
-            hasSetValue();
+            setValue(str.c_str());
         }
         else {
-            FC_THROWM(Base::ValueError,
-                      "'" << str << "' is not part of the enumeration in " << getFullName());
+            FC_THROWM(
+                Base::ValueError,
+                "'" << str << "' is not part of the enumeration in " << getFullName()
+            );
         }
         return;
     }
@@ -507,12 +516,10 @@ void PropertyEnumeration::setPyObject(PyObject* value)
                 values[i] = Py::Object(seq[i].ptr()).as_string();
             }
 
-            aboutToSetValue();
             _enum.setEnums(values);
             if (idx >= 0) {
-                _enum.setValue(idx, true);
+                setValue(idx);
             }
-            hasSetValue();
             return;
         }
         catch (Py::Exception&) {
@@ -521,10 +528,11 @@ void PropertyEnumeration::setPyObject(PyObject* value)
         }
     }
 
-    FC_THROWM(Base::TypeError,
-              "PropertyEnumeration "
-                  << getFullName()
-                  << " expects type to be int, string, or list(string), or list(list, int)");
+    FC_THROWM(
+        Base::TypeError,
+        "PropertyEnumeration "
+            << getFullName() << " expects type to be int, string, or list(string), or list(list, int)"
+    );
 }
 
 Property* PropertyEnumeration::Copy() const
@@ -651,6 +659,26 @@ PropertyIntegerConstraint::~PropertyIntegerConstraint()
     }
 }
 
+void PropertyIntegerConstraint::setValue(long lValue)
+{
+    if (_ConstStruct) {
+        if (lValue > _ConstStruct->UpperBound) {
+            lValue = _ConstStruct->UpperBound;
+        }
+        else if (lValue < _ConstStruct->LowerBound) {
+            lValue = _ConstStruct->LowerBound;
+        }
+    }
+
+    if (lValue == _lValue) {
+        return;
+    }
+
+    aboutToSetValue();
+    _lValue = lValue;
+    hasSetValue();
+}
+
 void PropertyIntegerConstraint::setConstraints(const Constraints* sConstrain)
 {
     if (_ConstStruct != sConstrain) {
@@ -696,52 +724,37 @@ long PropertyIntegerConstraint::getStepSize() const
 void PropertyIntegerConstraint::setPyObject(PyObject* value)
 {
     if (PyLong_Check(value)) {
-        long temp = PyLong_AsLong(value);
-        if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound) {
-                temp = _ConstStruct->UpperBound;
-            }
-            else if (temp < _ConstStruct->LowerBound) {
-                temp = _ConstStruct->LowerBound;
-            }
-        }
-
-        aboutToSetValue();
-        _lValue = temp;
-        hasSetValue();
+        setValue(PyLong_AsLong(value));
     }
     else {
-        long valConstr[] = {0,
-                            std::numeric_limits<int>::lowest(),
-                            std::numeric_limits<int>::max(),
-                            1};
+        long valConstr[] = {0, std::numeric_limits<int>::lowest(), std::numeric_limits<int>::max(), 1};
 
         if (PyDict_Check(value)) {
             Py::Tuple dummy;
-            static const std::array<const char*, 5> kw = {"value",
-                                                          "min",
-                                                          "max",
-                                                          "step",
-                                                          nullptr};
+            static const std::array<const char*, 5> kw = {"value", "min", "max", "step", nullptr};
 
-            if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(),
-                                                     value,
-                                                     "l|lll",
-                                                      kw,
-                                                     &(valConstr[0]),
-                                                     &(valConstr[1]),
-                                                     &(valConstr[2]),
-                                                     &(valConstr[3]))) {
+            if (!Base::Wrapped_ParseTupleAndKeywords(
+                    dummy.ptr(),
+                    value,
+                    "l|lll",
+                    kw,
+                    &(valConstr[0]),
+                    &(valConstr[1]),
+                    &(valConstr[2]),
+                    &(valConstr[3])
+                )) {
                 throw Py::Exception();
             }
         }
         else if (PyTuple_Check(value)) {
-            if (!PyArg_ParseTuple(value,
-                                  "llll",
-                                  &(valConstr[0]),
-                                  &(valConstr[1]),
-                                  &(valConstr[2]),
-                                  &(valConstr[3]))) {
+            if (!PyArg_ParseTuple(
+                    value,
+                    "llll",
+                    &(valConstr[0]),
+                    &(valConstr[1]),
+                    &(valConstr[2]),
+                    &(valConstr[3])
+                )) {
                 throw Py::Exception();
             }
         }
@@ -756,24 +769,15 @@ void PropertyIntegerConstraint::setPyObject(PyObject* value)
         c->LowerBound = valConstr[1];
         c->UpperBound = valConstr[2];
         c->StepSize = std::max<long>(1, valConstr[3]);
-        if (valConstr[0] > c->UpperBound) {
-            valConstr[0] = c->UpperBound;
-        }
-        else if (valConstr[0] < c->LowerBound) {
-            valConstr[0] = c->LowerBound;
-        }
         setConstraints(c);
 
-        aboutToSetValue();
-        _lValue = valConstr[0];
-        hasSetValue();
+        setValue(valConstr[0]);
     }
 }
 
 void PropertyIntegerConstraint::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind()
-                    << "<Integer value=\"" << _lValue << "\"";
+    writer.Stream() << writer.ind() << "<Integer value=\"" << _lValue << "\"";
     if (_ConstStruct && _ConstStruct->isDeletable()) {
         long minimum = _ConstStruct->LowerBound;
         long maximum = _ConstStruct->UpperBound;
@@ -1069,6 +1073,10 @@ PropertyFloat::~PropertyFloat() = default;
 
 void PropertyFloat::setValue(double lValue)
 {
+    if (lValue == _dValue) {
+        return;
+    }
+
     aboutToSetValue();
     _dValue = lValue;
     hasSetValue();
@@ -1087,14 +1095,10 @@ PyObject* PropertyFloat::getPyObject()
 void PropertyFloat::setPyObject(PyObject* value)
 {
     if (PyFloat_Check(value)) {
-        aboutToSetValue();
-        _dValue = PyFloat_AsDouble(value);
-        hasSetValue();
+        setValue(PyFloat_AsDouble(value));
     }
     else if (PyLong_Check(value)) {
-        aboutToSetValue();
-        _dValue = PyLong_AsLong(value);
-        hasSetValue();
+        setValue(PyLong_AsLong(value));
     }
     else {
         std::string error = std::string("type must be float or int, not ");
@@ -1119,15 +1123,13 @@ void PropertyFloat::Restore(Base::XMLReader& reader)
 Property* PropertyFloat::Copy() const
 {
     PropertyFloat* p = new PropertyFloat();
-    p->_dValue = _dValue;
+    p->setValue(_dValue);
     return p;
 }
 
 void PropertyFloat::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _dValue = dynamic_cast<const PropertyFloat&>(from)._dValue;
-    hasSetValue();
+    setValue(dynamic_cast<const PropertyFloat&>(from)._dValue);
 }
 
 void PropertyFloat::setPathValue(const ObjectIdentifier& path, const boost::any& value)
@@ -1183,6 +1185,26 @@ PropertyFloatConstraint::~PropertyFloatConstraint()
     }
 }
 
+void PropertyFloatConstraint::setValue(double lValue)
+{
+    if (_ConstStruct) {
+        if (lValue > _ConstStruct->UpperBound) {
+            lValue = _ConstStruct->UpperBound;
+        }
+        else if (lValue < _ConstStruct->LowerBound) {
+            lValue = _ConstStruct->LowerBound;
+        }
+    }
+
+    if (lValue == _dValue) {
+        return;
+    }
+
+    aboutToSetValue();
+    _dValue = lValue;
+    hasSetValue();
+}
+
 void PropertyFloatConstraint::setConstraints(const Constraints* sConstrain)
 {
     if (_ConstStruct != sConstrain) {
@@ -1225,67 +1247,41 @@ double PropertyFloatConstraint::getStepSize() const
 void PropertyFloatConstraint::setPyObject(PyObject* value)
 {
     if (PyFloat_Check(value)) {
-        double temp = PyFloat_AsDouble(value);
-        if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound) {
-                temp = _ConstStruct->UpperBound;
-            }
-            else if (temp < _ConstStruct->LowerBound) {
-                temp = _ConstStruct->LowerBound;
-            }
-        }
-
-        aboutToSetValue();
-        _dValue = temp;
-        hasSetValue();
+        setValue(PyFloat_AsDouble(value));
     }
     else if (PyLong_Check(value)) {
-        double temp = static_cast<double>(PyLong_AsLong(value));
-        if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound) {
-                temp = _ConstStruct->UpperBound;
-            }
-            else if (temp < _ConstStruct->LowerBound) {
-                temp = _ConstStruct->LowerBound;
-            }
-        }
-
-        aboutToSetValue();
-        _dValue = temp;
-        hasSetValue();
+        setValue(static_cast<double>(PyLong_AsLong(value)));
     }
     else {
-        double valConstr[] = {0.0,
-                              std::numeric_limits<double>::lowest(),
-                              std::numeric_limits<double>::max(),
-                              1.0};
+        double valConstr[]
+            = {0.0, std::numeric_limits<double>::lowest(), std::numeric_limits<double>::max(), 1.0};
 
         if (PyDict_Check(value)) {
             Py::Tuple dummy;
-            static const std::array<const char*, 5> kw = {"value",
-                                                          "min",
-                                                          "max",
-                                                          "step",
-                                                           nullptr};
+            static const std::array<const char*, 5> kw = {"value", "min", "max", "step", nullptr};
 
-            if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(),
-                                                     value,
-                                                     "d|ddd",
-                                                     kw,
-                                                     &(valConstr[0]),
-                                                     &(valConstr[1]),
-                                                     &(valConstr[2]),
-                                                     &(valConstr[3]))) {
+            if (!Base::Wrapped_ParseTupleAndKeywords(
+                    dummy.ptr(),
+                    value,
+                    "d|ddd",
+                    kw,
+                    &(valConstr[0]),
+                    &(valConstr[1]),
+                    &(valConstr[2]),
+                    &(valConstr[3])
+                )) {
                 throw Py::Exception();
             }
         }
         else if (PyTuple_Check(value)) {
-            if (!PyArg_ParseTuple(value,
-                                  "dddd",
-                                  &(valConstr[0]),
-                                  &(valConstr[1]),
-                                  &(valConstr[2]),
-                                  &(valConstr[3]))) {
+            if (!PyArg_ParseTuple(
+                    value,
+                    "dddd",
+                    &(valConstr[0]),
+                    &(valConstr[1]),
+                    &(valConstr[2]),
+                    &(valConstr[3])
+                )) {
                 throw Py::Exception();
             }
         }
@@ -1306,24 +1302,15 @@ void PropertyFloatConstraint::setPyObject(PyObject* value)
         c->LowerBound = valConstr[1];
         c->UpperBound = valConstr[2];
         c->StepSize = stepSize;
-        if (valConstr[0] > c->UpperBound) {
-            valConstr[0] = c->UpperBound;
-        }
-        else if (valConstr[0] < c->LowerBound) {
-            valConstr[0] = c->LowerBound;
-        }
         setConstraints(c);
 
-        aboutToSetValue();
-        _dValue = valConstr[0];
-        hasSetValue();
+        setValue(valConstr[0]);
     }
 }
 
 void PropertyFloatConstraint::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind()
-                    << "<Float value=\"" << _dValue << "\"";
+    writer.Stream() << writer.ind() << "<Float value=\"" << _dValue << "\"";
     if (_ConstStruct && _ConstStruct->isDeletable()) {
         double minimum = _ConstStruct->LowerBound;
         double maximum = _ConstStruct->UpperBound;
@@ -1377,8 +1364,8 @@ TYPESYSTEM_SOURCE(App::PropertyPrecision, App::PropertyFloatConstraint)
 //**************************************************************************
 // Construction/Destruction
 //
-const PropertyFloatConstraint::Constraints PrecisionStandard = {
-    0.0, std::numeric_limits<double>::max(), 0.001};
+const PropertyFloatConstraint::Constraints PrecisionStandard
+    = {0.0, std::numeric_limits<double>::max(), 0.001};
 
 PropertyPrecision::PropertyPrecision()
 {
@@ -1442,8 +1429,7 @@ void PropertyFloatList::Save(Base::Writer& writer) const
     }
     else {
         writer.Stream() << writer.ind() << "<FloatList file=\""
-                        << (getSize() ? writer.addFile(getName(), this) : "") << "\"/>"
-                        << std::endl;
+                        << (getSize() ? writer.addFile(getName(), this) : "") << "\"/>" << std::endl;
     }
 }
 
@@ -1607,8 +1593,7 @@ void PropertyString::Save(Base::Writer& writer) const
     auto verifyXMLString = [this](std::string& input) {
         const std::string output = this->validateXMLString(input);
         if (output != input) {
-            Base::Console().warning("XML output: Validate invalid string:\n'%s'\n'%s'\n",
-                                    input, output);
+            Base::Console().warning("XML output: Validate invalid string:\n'%s'\n'%s'\n", input, output);
         }
         return output;
     };
@@ -1700,7 +1685,7 @@ void PropertyString::setPathValue(const ObjectIdentifier& path, const boost::any
         setValue(boost::any_cast<Quantity>(value).getUserString().c_str());
     }
     else if (value.type() == typeid(std::string)) {
-        setValue(boost::any_cast<const std::string &>(value));
+        setValue(boost::any_cast<const std::string&>(value));
     }
     else {
         Base::PyGILStateLocker lock;
@@ -1857,12 +1842,10 @@ PyObject* PropertyStringList::getPyObject()
     PyObject* list = PyList_New(getSize());
 
     for (int i = 0; i < getSize(); i++) {
-        PyObject* item =
-            PyUnicode_DecodeUTF8(_lValueList[i].c_str(), _lValueList[i].size(), nullptr);
+        PyObject* item = PyUnicode_DecodeUTF8(_lValueList[i].c_str(), _lValueList[i].size(), nullptr);
         if (!item) {
             Py_DECREF(list);
-            throw Base::UnicodeError(
-                "UTF8 conversion failure at PropertyStringList::getPyObject()");
+            throw Base::UnicodeError("UTF8 conversion failure at PropertyStringList::getPyObject()");
         }
         PyList_SetItem(list, i, item);
     }
@@ -2125,6 +2108,10 @@ PropertyBool::~PropertyBool() = default;
 
 void PropertyBool::setValue(bool lValue)
 {
+    if (lValue == _lValue) {
+        return;
+    }
+
     aboutToSetValue();
     _lValue = lValue;
     hasSetValue();
@@ -2177,15 +2164,13 @@ void PropertyBool::Restore(Base::XMLReader& reader)
 Property* PropertyBool::Copy() const
 {
     PropertyBool* p = new PropertyBool();
-    p->_lValue = _lValue;
+    p->setValue(_lValue);
     return p;
 }
 
 void PropertyBool::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _lValue = dynamic_cast<const PropertyBool&>(from)._lValue;
-    hasSetValue();
+    setValue(dynamic_cast<const PropertyBool&>(from)._lValue);
 }
 
 void PropertyBool::setPathValue(const ObjectIdentifier& path, const boost::any& value)
@@ -2329,7 +2314,7 @@ namespace
 {
 /// The definition of "alpha" was corrected in FreeCAD 1.1 -- returns true if the reader is working
 /// on a file that pre-dates that correction.
-bool readerRequiresAlphaConversion(const Base::XMLReader &reader)
+bool readerRequiresAlphaConversion(const Base::XMLReader& reader)
 {
     return Base::getVersion(reader.ProgramVersion) < Base::Version::v1_1;
 }
@@ -2342,7 +2327,7 @@ void convertAlphaInMaterial(App::Material& material)
     material.specularColor.a = 1.0F - material.specularColor.a;
     material.emissiveColor.a = 1.0F - material.emissiveColor.a;
 }
-}
+}  // namespace
 
 TYPESYSTEM_SOURCE(App::PropertyColor, App::Property)
 
@@ -2464,8 +2449,9 @@ void PropertyColor::setPyObject(PyObject* value)
         cCol.setPackedValue(PyLong_AsUnsignedLong(value));
     }
     else {
-        std::string error =
-            std::string("type must be integer or tuple of float or tuple integer, not ");
+        std::string error = std::string(
+            "type must be integer or tuple of float or tuple integer, not "
+        );
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }
@@ -2557,8 +2543,7 @@ void PropertyColorList::Save(Base::Writer& writer) const
 {
     if (!writer.isForceXML()) {
         writer.Stream() << writer.ind() << "<ColorList file=\""
-                        << (getSize() ? writer.addFile(getName(), this) : "") << "\"/>"
-                        << std::endl;
+                        << (getSize() ? writer.addFile(getName(), this) : "") << "\"/>" << std::endl;
     }
 }
 
