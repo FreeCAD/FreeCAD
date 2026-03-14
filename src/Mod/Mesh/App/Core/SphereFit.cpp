@@ -350,8 +350,6 @@ void SphereFit::addObservationU(double a[4], double li, double pi, Matrix4x4& at
         double aipi = a[i] * pi;
         for (int j = i; j < 4; ++j) {
             atpa(i, j) += aipi * a[j];
-            // atpa(j, i) = atpa(i, j);	// it's a symmetrical matrix, we'll set this later after all
-            // observations processed
         }
         atpl(i) += aipi * li;
     }
@@ -382,10 +380,7 @@ bool SphereFit::computeResiduals(
     sigma0 = 0.0;
     double a[4] {}, b[3] {};
     double f0 {}, qw {};
-    // double maxdVx = 0.0;
-    // double maxdVy = 0.0;
-    // double maxdVz = 0.0;
-    // double rmsVv = 0.0;
+
     std::vector<Base::Vector3d>::iterator vIt = residuals.begin();
     for (auto cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt, ++vIt) {
         // if (using this point) { // currently all given points are used (could modify this if
@@ -413,22 +408,11 @@ bool SphereFit::computeResiduals(
         v.y = vy;
         v.z = vz;
 
-        // double vv = v.x * v.x + v.y * v.y + v.z * v.z;
-        // rmsVv += vv * vv;
-
-        // sigma0 += v.x * w[0] * v.x + v.y * w[1] * v.y + v.z * w[2] * v.z;
         sigma0 += v.x * v.x + v.y * v.y + v.z * v.z;
 
         if ((dVx > vConvLimit) || (dVy > vConvLimit) || (dVz > vConvLimit)) {
             vConverged = false;
         }
-
-        // if (dVx > maxdVx)
-        //	maxdVx = dVx;
-        // if (dVy > maxdVy)
-        //	maxdVy = dVy;
-        // if (dVz > maxdVz)
-        //	maxdVz = dVz;
     }
 
     // Compute degrees of freedom and sigma0
@@ -444,10 +428,6 @@ bool SphereFit::computeResiduals(
     else {
         sigma0 = sqrt(sigma0 / (double)df);
     }
-
-    // rmsVv = sqrt(rmsVv / (double)nPtsUsed);
-    // Base::Console().message("X: %0.3e %0.3e %0.3e %0.3e , Max dV: %0.4f %0.4f %0.4f , RMS Vv:
-    // %0.4f\n", x(0), x(1), x(2), x(3), maxdVx, maxdVy, maxdVz, rmsVv);
 
     return true;
 }
