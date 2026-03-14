@@ -697,6 +697,8 @@ class StockFromExistingEdit(StockEdit):
                 excludeIndexes.append(index)
             elif not model.ViewObject.ShowInTree:
                 excludeIndexes.append(index)
+            elif model.isDerivedFrom("PartDesign::Feature"):
+                excludeIndexes.append(index)
 
         for i in sorted(excludeIndexes, reverse=True):
             del solids[i]
