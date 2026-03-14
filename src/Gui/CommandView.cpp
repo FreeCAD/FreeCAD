@@ -394,7 +394,7 @@ void StdCmdFreezeViews::activated(int iMsg)
     else if (iMsg == 3) {
         // Create a new view
         auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
-        if (view3d == nullptr) {
+        if (!view3d) {
             Base::Console().developerError(
                 "StdCmdFreezeViews",
                 "Expected the active view to be View3DInventor\n"
@@ -410,7 +410,7 @@ void StdCmdFreezeViews::activated(int iMsg)
                 savedViews++;
                 QString viewnr = QString(QObject::tr("Restore View &%1")).arg(index);
                 (*it)->setText(viewnr);
-                (*it)->setToolTip(QString::fromLatin1(camera));
+                (*it)->setToolTip(QString::fromLatin1(camera.c_str()));
                 (*it)->setVisible(true);
                 if (index < 10) {
                     (*it)->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(index)));
@@ -2639,7 +2639,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
-    if (view3d == nullptr) {
+    if (!view3d) {
         Base::Console().developerError(
             "StdCmdViewIvIssueCameraPos",
             "Expected the active view to be View3DInventor\n"
