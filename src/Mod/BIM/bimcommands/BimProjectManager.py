@@ -370,7 +370,7 @@ class BIM_ProjectManager:
                 msg.setInformativeText(
                     translate("BIM", "Please set the level height to a non-zero value.")
                 )
-                msg.exec_()
+                msg.exec()
             if self.form.countLevels.value() and levelHeight:
                 h = 0
                 alabels = []
