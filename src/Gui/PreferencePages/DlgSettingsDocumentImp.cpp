@@ -25,6 +25,12 @@
 #include <zlib.h>
 #include <App/License.h>
 #include <Gui/AutoSaver.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QSpinBox>
+#include <QLineEdit>
+#include <QTimer>
+
 
 #include "DlgSettingsDocumentImp.h"
 #include "ui_DlgSettingsDocument.h"
@@ -71,6 +77,18 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp(QWidget* parent)
         qOverload<int>(&QComboBox::currentIndexChanged),
         this,
         &DlgSettingsDocumentImp::onLicenseTypeChanged
+    );
+    connect(
+        ui->prefSaveBackupFiles,
+        &QCheckBox::stateChanged,
+        this,
+        &DlgSettingsDocumentImp::onSaveBackupFilesChanged
+    );
+    connect(
+        ui->prefCountBackupFiles,
+        qOverload<int>(&QSpinBox::valueChanged),
+        this,
+        &DlgSettingsDocumentImp::onCountBackupFilesChanged
     );
 }
 
@@ -187,6 +205,35 @@ void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
         // Other
         ui->prefLicenseUrl->clear();
         ui->prefLicenseUrl->setReadOnly(false);
+    }
+}
+
+void DlgSettingsDocumentImp::onCountBackupFilesChanged(int state)
+{
+    if (state == 0) {
+        ui->prefSaveBackupFiles->setCheckState(Qt::CheckState::Unchecked);
+    }
+}
+
+void DlgSettingsDocumentImp::onSaveBackupFilesChanged(int state)
+{
+    if (state == Qt::CheckState::Unchecked) {
+        ui->prefCountBackupFiles->setEnabled(false);
+        if (auto* le = ui->prefCountBackupFiles->findChild<QLineEdit*>()) {
+            // deselects the value and removes the highlight which doesn't clear otherwise
+            QTimer::singleShot(0, le, [le]() {
+                le->deselect();
+                le->setSelection(0, 0);
+                le->setCursorPosition(0);
+                le->clearFocus();
+            });
+        }
+    }
+    else {
+        ui->prefCountBackupFiles->setEnabled(true);
+        if (ui->prefCountBackupFiles->value() == 0) {
+            ui->prefCountBackupFiles->setValue(1);
+        }
     }
 }
 
