@@ -857,6 +857,9 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     def supportsPanels(self):
         return self.features & PathOp.FeatureBasePanels
 
+    def supportsModels(self):
+        return self.features & PathOp.FeatureBaseModels
+
     def featureName(self):
         if self.supportsEdges() and self.supportsFaces():
             return "features"
@@ -875,8 +878,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             if not self.supportsFaces() and sel.SubObjects[0].ShapeType == "Face":
                 return False
         else:
-            if not self.supportsPanels() or "Panel" not in sel.Object.Name:
+            if not self.supportsPanels() and "Panel" in sel.Object.Name:
                 return False
+            if self.supportsModels() and sel.Object and sel.Object.isDerivedFrom("Part::Feature"):
+                return True
+            return False
         return True
 
     def addBaseGeometry(self, selection):
@@ -886,8 +892,12 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             # check each selection
             if self.selectionSupportedAsBaseGeometry(sel, False):
                 added = True
-                for sub in sel.SubElementNames:
-                    self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                if sel.SubElementNames:
+                    for sub in sel.SubElementNames:
+                        self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                else:
+                    self.obj.Proxy.addBase(self.obj, sel.Object, "")
+
         return added
 
     def addBase(self):
