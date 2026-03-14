@@ -231,8 +231,8 @@ class PathBoundary:
 
         cmd = path.Commands[0]
         pos = cmd.Placement.Base  # bogus m/c position to create first edge
-        bogusX = True
-        bogusY = True
+        bogusX = True  # true for start moves, than position X not defined
+        bogusY = True  # true for start moves, than position Y not defined
         commands = [cmd]
         lastExit = None
         for cmd in path.Commands[1:]:
@@ -241,28 +241,31 @@ class PathBoundary:
                     bogusX = "X" not in cmd.Parameters
                 if bogusY:
                     bogusY = "Y" not in cmd.Parameters
+                if (bogusX or bogusY) and cmd.z == self.clearanceHeight:
+                    # append first move to clearance height
+                    commands.append(cmd)
+                    continue
                 edge = Path.Geom.edgeForCmd(cmd, pos)
                 if edge and cmd.Name in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges
                     outside = edge.cut(self.boundary).Edges
-                    if 1 == len(inside) and 0 == len(outside):
+                    if not self.inside:
+                        inside, outside = outside, inside
+                    if inside and not outside:
                         commands.append(cmd)
-                if edge and not cmd.Name in Path.Geom.CmdMoveDrill:
+                if edge and cmd.Name not in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges
                     outside = edge.cut(self.boundary).Edges
                     if not self.inside:  # UI "inside boundary" param
-                        tmp = inside
-                        inside = outside
-                        outside = tmp
+                        inside, outside = outside, inside
                     # it's really a shame that one cannot trust the sequence and/or
                     # orientation of edges
                     if 1 == len(inside) and 0 == len(outside):
                         Path.Log.track(_vstr(pos), _vstr(lastExit), " + ", cmd)
                         # cmd fully included by boundary
                         if lastExit:
-                            if not (
-                                bogusX or bogusY
-                            ):  # don't insert false paths based on bogus m/c position
+                            if not (bogusX or bogusY):
+                                # don't insert false paths based on bogus m/c position
                                 commands.extend(
                                     self.boundaryCommands(lastExit, pos, tc.VertFeed.Value)
                                 )
@@ -306,9 +309,9 @@ class PathBoundary:
                                     commands.extend(
                                         Path.Geom.cmdsForEdge(
                                             e,
-                                            flip,
-                                            tc.HorizFeed.Value,
-                                            tc.VertFeed.Value,
+                                            flip=flip,
+                                            hSpeed=tc.HorizFeed.Value,
+                                            vSpeed=tc.VertFeed.Value,
                                         )
                                     )
                                     # restore G0 movement
