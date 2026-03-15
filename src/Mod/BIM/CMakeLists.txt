@@ -146,6 +146,7 @@ SET(bimcommands_SRCS
     bimcommands/BimLayers.py
     bimcommands/BimLeader.py
     bimcommands/BimLibrary.py
+    bimcommands/BimLink.py
     bimcommands/BimMaterial.py
     bimcommands/BimMoveView.py
     bimcommands/BimNudge.py

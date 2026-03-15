@@ -853,3 +853,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
 if __name__ == "__main__":
     Snapmaker(None).visible_parser.format_help()
+
+
+# Class aliases for PostProcessorFactory
+# The factory looks for a class with title-cased postname (e.g., "Snapmaker_Legacy")
+snapmaker_legacy = Snapmaker  # What factory expects
+Snapmaker_Legacy = Snapmaker  # Fallback for different title() behavior

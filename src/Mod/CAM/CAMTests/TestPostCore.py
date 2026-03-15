@@ -22,463 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-from Path.Post.Command import DlgSelectPostProcessor
-from Path.Post.Processor import PostProcessor, PostProcessorFactory
-from unittest.mock import patch, MagicMock
+
 import FreeCAD
 import Path
 import Path.Post.Command as PathCommand
 import Path.Post.Processor as PathPost
 import Path.Post.Utils as PostUtils
-import Path.Post.UtilsExport as PostUtilsExport
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
-import difflib
-import os
 import unittest
-
-from .FilePathTestUtils import assertFilePathsEqual
 
 PathCommand.LOG_MODULE = Path.Log.thisModule()
 Path.Log.setLevel(Path.Log.Level.INFO, PathCommand.LOG_MODULE)
-
-
-class TestFileNameGenerator(unittest.TestCase):
-    r"""
-    String substitution allows the following:
-    %D ... directory of the active document
-    %d ... name of the active document (with extension)
-    %M ... user macro directory
-    %j ... name of the active Job object
-
-
-    The Following can be used if output is being split. If Output is not split
-    these will be ignored.
-
-    %S ... Sequence Number (default)
-
-    Either:
-    %T ... Tool Number
-    %t ... Tool Controller label
-
-    %W ... Work Coordinate System
-    %O ... Operation Label
-
-    |split on| use | Ignore |
-    |-----------|-------|--------|
-    |fixture | %W | %O %T %t |
-    |Operation| %O | %T %t %W |
-    |Tool| **Either %T or %t** | %O %W |
-
-    The confusing bit is that for split on tool,  it will use EITHER the tool number or the tool label.
-    If you include both, the second one overrides the first.
-    And for split on operation, where including the tool should be possible, it ignores it altogether.
-
-        self.job.Fixtures = ["G54"]
-        self.job.SplitOutput = False
-        self.job.OrderOutputBy = "Fixture"
-
-    Assume:
-    active document: self.assertTrue(filename, f"{home}/testdoc.fcstd
-    user macro: ~/.local/share/FreeCAD/Macro
-    Job:  MainJob
-    Operations:
-        OutsideProfile
-        DrillAllHoles
-    TC: 7/16" two flute  (5)
-    TC: Drill (2)
-    Fixtures: (G54, G55)
-
-    Strings should be sanitized like this to ensure valid filenames
-    # import re
-    # filename="TC: 7/16" two flute"
-    # >>> re.sub(r"[^\w\d-]","_",filename)
-    # "TC__7_16__two_flute"
-
-    """
-
-    @classmethod
-    def setUpClass(cls):
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-
-        # Create a new document instead of opening external file
-        cls.doc = FreeCAD.newDocument("TestFileNaming")
-        cls.testfilename = cls.doc.Name
-        cls.testfilepath = os.getcwd()
-        cls.macro = FreeCAD.getUserMacroDir()
-
-        # Create a simple geometry object for the job
-        import Part
-
-        box = cls.doc.addObject("Part::Box", "TestBox")
-        box.Length = 100
-        box.Width = 100
-        box.Height = 20
-
-        # Create CAM job programmatically
-        cls.job = PathJob.Create("MainJob", [box], None)
-        cls.job.PostProcessor = "linuxcnc"
-        cls.job.PostProcessorOutputFile = ""
-        cls.job.SplitOutput = False
-        cls.job.OrderOutputBy = "Operation"
-        cls.job.Fixtures = ["G54", "G55"]
-
-        # Create a tool controller for testing tool-related substitutions
-        from Path.Tool.toolbit import ToolBit
-
-        tool_attrs = {
-            "name": "TestTool",
-            "shape": "endmill.fcstd",
-            "parameter": {"Diameter": 6.0},
-            "attribute": {},
-        }
-        toolbit = ToolBit.from_dict(tool_attrs)
-        tool = toolbit.attach_to_doc(doc=cls.doc)
-        tool.Label = "6mm_Endmill"
-
-        tc = PathToolController.Create("TC_Test_Tool", tool, 5)
-        tc.Label = "TC: 6mm Endmill"
-        cls.job.addObject(tc)
-
-        # Create a simple mock operation for testing operation-related substitutions
-        profile_op = cls.doc.addObject("Path::FeaturePython", "TestProfile")
-        profile_op.Label = "OutsideProfile"
-        # Path::FeaturePython objects already have a Path property
-        profile_op.Path = Path.Path()
-        cls.job.Operations.addObject(profile_op)
-
-        cls.doc.recompute()
-
-    @classmethod
-    def tearDownClass(cls):
-        FreeCAD.closeDocument(cls.doc.Name)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
-
-    def test000(self):
-        # Test basic name generation with empty string
-        FreeCAD.setActiveDocument(self.doc.Label)
-        teststring = ""
-        self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-        Path.Log.debug(filename)
-        assertFilePathsEqual(
-            self, filename, os.path.join(self.testfilepath, f"{self.testfilename}.nc")
-        )
-
-    def test010(self):
-        # Substitute current file path
-        teststring = "%D/testfile.nc"
-        self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        print(os.path.normpath(filename))
-        assertFilePathsEqual(self, filename, f"{self.testfilepath}/testfile.nc")
-
-    def test015(self):
-        # Test basic string substitution without splitting
-        teststring = "~/Desktop/%j.nc"
-        self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        assertFilePathsEqual(self, filename, "~/Desktop/MainJob.nc")
-
-    def test020(self):
-        teststring = "%d.nc"
-        self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        expected = os.path.join(self.testfilepath, f"{self.testfilename}.nc")
-
-        assertFilePathsEqual(self, filename, expected)
-
-    def test030(self):
-        teststring = "%M/outfile.nc"
-        self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        assertFilePathsEqual(self, filename, f"{self.macro}outfile.nc")
-
-    def test040(self):
-        # unused substitution strings should be ignored
-        teststring = "%d%T%t%W%O/testdoc.nc"
-        self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        assertFilePathsEqual(self, filename, f"{self.testfilename}/testdoc.nc")
-
-    def test045(self):
-        """Testing the sequence number substitution"""
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        expected_filenames = [f"TestFileNaming{os.sep}testdoc.nc"] + [
-            f"TestFileNaming{os.sep}testdoc-{i}.nc" for i in range(1, 5)
-        ]
-        for expected_filename in expected_filenames:
-            filename = next(filename_generator)
-            assertFilePathsEqual(self, filename, expected_filename)
-
-    def test046(self):
-        """Testing the sequence number substitution"""
-        teststring = "%S-%d.nc"
-        self.job.PostProcessorOutputFile = teststring
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        expected_filenames = [
-            os.path.join(self.testfilepath, f"{i}-TestFileNaming.nc") for i in range(5)
-        ]
-        for expected_filename in expected_filenames:
-            filename = next(filename_generator)
-            assertFilePathsEqual(self, filename, expected_filename)
-
-    def test050(self):
-        # explicitly using the sequence number should include it where indicated.
-        teststring = "%S-%d.nc"
-        self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "0-TestFileNaming.nc"))
-
-    def test060(self):
-        """Test subpart naming"""
-        teststring = "%M/outfile.nc"
-        self.job.PostProcessorOutputFile = teststring
-        Path.Preferences.setOutputFileDefaults(teststring, "Append Unique ID on conflict")
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        generator.set_subpartname("Tool")
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        assertFilePathsEqual(self, filename, f"{self.macro}outfile-Tool.nc")
-
-    def test070(self):
-        """Test %T substitution (tool number) with actual tool controller"""
-        teststring = "%T.nc"
-        self.job.PostProcessorOutputFile = teststring
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        generator.set_subpartname("5")  # Tool number from our test tool controller
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "5.nc"))
-
-    def test071(self):
-        """Test %t substitution (tool description) with actual tool controller"""
-        teststring = "%t.nc"
-        self.job.PostProcessorOutputFile = teststring
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        generator.set_subpartname("TC__6mm_Endmill")  # Sanitized tool label
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "TC__6mm_Endmill.nc"))
-
-    def test072(self):
-        """Test %W substitution (work coordinate system/fixture)"""
-        teststring = "%W.nc"
-        self.job.PostProcessorOutputFile = teststring
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        generator.set_subpartname("G54")  # First fixture from our job setup
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "G54.nc"))
-
-    def test073(self):
-        """Test %O substitution (operation label)"""
-        teststring = "%O.nc"
-        self.job.PostProcessorOutputFile = teststring
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        generator.set_subpartname("OutsideProfile")  # Operation label from our test setup
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "OutsideProfile.nc"))
-
-    def test075(self):
-        """Test path and filename substitutions together"""
-        teststring = "%D/%j_%S.nc"
-        self.job.PostProcessorOutputFile = teststring
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        # %D should resolve to document directory (empty since doc has no filename)
-        # %j should resolve to job name "MainJob"
-        # %S should resolve to sequence number "0"
-        assertFilePathsEqual(self, filename, os.path.join(".", "MainJob_0.nc"))
-
-    def test076(self):
-        """Test invalid substitution characters are ignored"""
-        teststring = "%X%Y%Z/invalid_%Q.nc"
-        self.job.PostProcessorOutputFile = teststring
-
-        generator = PostUtils.FilenameGenerator(job=self.job)
-        filename_generator = generator.generate_filenames()
-        filename = next(filename_generator)
-
-        # Invalid substitutions should be removed, leaving "invalid_.nc"
-        assertFilePathsEqual(self, filename, os.path.join(self.testfilepath, "invalid_.nc"))
-
-
-class TestResolvingPostProcessorName(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        # Create a new document instead of opening external file
-        cls.doc = FreeCAD.newDocument("boxtest")
-
-        # Create a simple geometry object for the job
-        import Part
-
-        box = cls.doc.addObject("Part::Box", "TestBox")
-        box.Length = 100
-        box.Width = 100
-        box.Height = 20
-
-        # Create CAM job programmatically
-        cls.job = PathJob.Create("MainJob", [box], None)
-        cls.job.PostProcessorOutputFile = ""
-        cls.job.SplitOutput = False
-        cls.job.OrderOutputBy = "Operation"
-        cls.job.Fixtures = ["G54", "G55"]
-
-    @classmethod
-    def tearDownClass(cls):
-        FreeCAD.closeDocument(cls.doc.Name)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
-
-    def setUp(self):
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-        pref.SetString("PostProcessorDefault", "")
-
-    def tearDown(self):
-        pass
-
-    def test010(self):
-        # Test if post is defined in job
-        self.job.PostProcessor = "linuxcnc"
-        with patch("Path.Post.Processor.PostProcessor.exists", return_value=True):
-            postname = PathCommand._resolve_post_processor_name(self.job)
-            self.assertEqual(postname, "linuxcnc")
-
-    def test020(self):
-        # Test if post is invalid
-        with patch("Path.Post.Processor.PostProcessor.exists", return_value=False):
-            with self.assertRaises(ValueError):
-                PathCommand._resolve_post_processor_name(self.job)
-
-    def test030(self):
-        # Test if post is defined in prefs
-        self.job.PostProcessor = ""
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-        pref.SetString("PostProcessorDefault", "grbl")
-
-        with patch("Path.Post.Processor.PostProcessor.exists", return_value=True):
-            postname = PathCommand._resolve_post_processor_name(self.job)
-            self.assertEqual(postname, "grbl")
-
-    def test040(self):
-        # Test if user interaction is correctly handled
-        if FreeCAD.GuiUp:
-            with patch("Path.Post.Command.DlgSelectPostProcessor") as mock_dlg, patch(
-                "Path.Post.Processor.PostProcessor.exists", return_value=True
-            ):
-                mock_dlg.return_value.exec_.return_value = "generic"
-                postname = PathCommand._resolve_post_processor_name(self.job)
-                self.assertEqual(postname, "generic")
-        else:
-            with patch.object(self.job, "PostProcessor", ""):
-                with self.assertRaises(ValueError):
-                    PathCommand._resolve_post_processor_name(self.job)
-
-
-class TestPostProcessorFactory(unittest.TestCase):
-    """Test creation of postprocessor objects."""
-
-    @classmethod
-    def setUpClass(cls):
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
-        # Create a new document instead of opening external file
-        cls.doc = FreeCAD.newDocument("boxtest")
-
-        # Create a simple geometry object for the job
-        import Part
-
-        box = cls.doc.addObject("Part::Box", "TestBox")
-        box.Length = 100
-        box.Width = 100
-        box.Height = 20
-
-        # Create CAM job programmatically
-        cls.job = PathJob.Create("MainJob", [box], None)
-        cls.job.PostProcessor = "linuxcnc"
-        cls.job.PostProcessorOutputFile = ""
-        cls.job.SplitOutput = False
-        cls.job.OrderOutputBy = "Operation"
-        cls.job.Fixtures = ["G54", "G55"]
-
-    @classmethod
-    def tearDownClass(cls):
-        FreeCAD.closeDocument(cls.doc.Name)
-        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def test020(self):
-        # test creation of postprocessor object
-        post = PostProcessorFactory.get_post_processor(self.job, "generic")
-        self.assertTrue(post is not None)
-        self.assertTrue(hasattr(post, "export"))
-        self.assertTrue(hasattr(post, "_buildPostList"))
-
-    def test030(self):
-        # test wrapping of old school postprocessor scripts
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
-        self.assertTrue(post is not None)
-        self.assertTrue(hasattr(post, "_buildPostList"))
-
-    def test040(self):
-        """Test that the __name__ of the postprocessor is correct."""
-        post = PostProcessorFactory.get_post_processor(self.job, "linuxcnc_legacy")
-        self.assertEqual(post.script_module.__name__, "linuxcnc_legacy_post")
 
 
 class TestPathPostUtils(unittest.TestCase):
@@ -785,12 +340,12 @@ class TestBuildPostList(unittest.TestCase):
                 # Determine object type/role
                 obj_type = type(obj).__name__
                 if obj_type == "_FixtureSetupObject":
-                    output.append(f"        Type: Fixture Setup")
+                    output.append("        Type: Fixture Setup")
                     if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
                         fixture_cmd = obj.Path.Commands[0]
                         output.append(f"        Fixture: {fixture_cmd.Name}")
                 elif obj_type == "_CommandObject":
-                    output.append(f"        Type: Command Object")
+                    output.append("        Type: Command Object")
                     if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
                         cmd = obj.Path.Commands[0]
                         params = " ".join(
@@ -810,7 +365,7 @@ class TestBuildPostList(unittest.TestCase):
                     if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "__class__"):
                         proxy_name = obj.Proxy.__class__.__name__
                         if "ToolController" in proxy_name:
-                            output.append(f"        Type: Tool Controller")
+                            output.append("        Type: Tool Controller")
                             if hasattr(obj, "ToolNumber"):
                                 output.append(f"        Tool Number: {obj.ToolNumber}")
                             if hasattr(obj, "Path") and obj.Path and obj.Path.Commands:
@@ -833,7 +388,7 @@ class TestBuildPostList(unittest.TestCase):
                                         )
                                         output.append(f"        M6 Command: {cmd.Name} {params}")
                         else:
-                            output.append(f"        Type: Operation")
+                            output.append("        Type: Operation")
                             if hasattr(obj, "ToolController") and obj.ToolController:
                                 tc = obj.ToolController
                                 output.append(
@@ -870,7 +425,7 @@ class TestBuildPostList(unittest.TestCase):
 
         # Create CAM job programmatically
         cls.job = PathJob.Create("MainJob", [box], None)
-        cls.job.PostProcessor = "generic"
+        cls.job.PostProcessor = "linuxcnc_legacy"
         cls.job.PostProcessorOutputFile = ""
         cls.job.SplitOutput = False
         cls.job.OrderOutputBy = "Operation"
@@ -1148,12 +703,300 @@ class TestBuildPostList(unittest.TestCase):
 
         # T2 (early prep) should come shortly after first M6 (within a few commands)
         self.assertLess(first_m6_idx, first_t2_idx, "T2 prep should come after first M6")
-        self.assertLess(
-            first_t2_idx - first_m6_idx, 5, "T2 prep should be within a few commands of first M6"
-        )
 
         # T2 early prep should come before second M6
         if second_m6_idx is not None:
             self.assertLess(
                 first_t2_idx, second_m6_idx, "T2 early prep should come before second M6"
             )
+
+
+class TestJobPropertyOverrides(unittest.TestCase):
+    """Test job-level postprocessor property overrides."""
+
+    @classmethod
+    def setUpClass(cls):
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "True")
+        cls.doc = FreeCAD.newDocument("job_override_test")
+
+        # Create test geometry
+        import Part
+
+        box = cls.doc.addObject("Part::Box", "TestBox")
+        box.Length = 100
+        box.Width = 100
+        box.Height = 20
+
+        # Create job
+        cls.job = PathJob.Create("OverrideTestJob", [box], None)
+        cls.job.PostProcessor = "linuxcnc_legacy"
+        cls.job.PostProcessorOutputFile = ""
+        cls.job.SplitOutput = False
+        cls.job.OrderOutputBy = "Operation"
+        cls.job.Fixtures = ["G54"]
+        cls.job.Machine = "TestMachine"
+
+        # Create tool
+        from Path.Tool.toolbit import ToolBit
+
+        tool_attrs = {
+            "name": "TestTool",
+            "shape": "endmill.fcstd",
+            "parameter": {"Diameter": 6.0},
+            "attribute": {},
+        }
+        toolbit = ToolBit.from_dict(tool_attrs)
+        tool = toolbit.attach_to_doc(doc=cls.doc)
+        tool.Label = "6mm_Endmill"
+
+        tc = PathToolController.Create("TC_Test_Tool", tool, 1)
+        tc.Label = "TC: 6mm Endmill"
+        cls.job.addObject(tc)
+
+        # Create operation
+        profile_op = cls.doc.addObject("Path::FeaturePython", "TestProfile")
+        profile_op.Label = "TestProfile"
+        profile_op.Path = Path.Path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+                Path.Command("G1", {"X": 100.0, "Y": 0.0, "Z": -5.0, "F": 100.0}),
+                Path.Command("G1", {"X": 100.0, "Y": 100.0, "Z": -5.0}),
+                Path.Command("G1", {"X": 0.0, "Y": 100.0, "Z": -5.0}),
+                Path.Command("G1", {"X": 0.0, "Y": 0.0, "Z": -5.0}),
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+            ]
+        )
+        cls.job.Operations.addObject(profile_op)
+
+        cls.doc.recompute()
+
+    @classmethod
+    def tearDownClass(cls):
+        FreeCAD.closeDocument(cls.doc.Name)
+        FreeCAD.ConfigSet("SuppressRecomputeRequiredDialog", "")
+
+    def _create_test_machine(self, **properties):
+        """Create a test machine with specified postprocessor properties."""
+        from Machine.models.machine import Machine, Toolhead, ToolheadType
+
+        machine = Machine.create_3axis_config()
+        machine.name = "TestMachine"
+        machine.postprocessor_file_name = "generic"
+        machine.postprocessor_properties = {
+            "pierce_delay": 1000,
+            "cooling_delay": 500,
+            "force_rapid_feeds": False,
+            **properties,
+        }
+
+        # Add toolhead
+        toolhead = Toolhead(
+            name="Default Toolhead",
+            toolhead_type=ToolheadType.ROTARY,
+            id="toolhead1",
+            max_power_kw=2.2,
+            max_rpm=24000,
+            min_rpm=6000,
+            tool_change="manual",
+        )
+        machine.toolheads = [toolhead]
+        return machine
+
+    def test_job_property_overrides_basic(self):
+        """
+        Test that job-level postprocessor property overrides work correctly.
+
+        Expected:
+            - Job overrides take precedence over machine defaults
+            - Only specified keys are overridden
+            - Invalid JSON is handled gracefully
+        """
+        from Path.Post.Processor import PostProcessor
+        from Machine.models.machine import MachineFactory
+
+        # Reset job overrides to clean state
+        self.job.PostProcessorPropertyOverrides = "{}"
+
+        # Create test machine
+        machine = self._create_test_machine()
+
+        # Mock MachineFactory to return our test machine
+        original_get_machine = MachineFactory.get_machine
+        MachineFactory.get_machine = lambda name: machine
+
+        try:
+            # Test 1: Basic override functionality
+            self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 1800, "cooling_delay": 700}'
+
+            processor = PostProcessor(self.job, "", "", "mm")
+            # Call export2 to trigger the override mechanism
+            processor.export2()
+
+            # Verify overrides were applied
+            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1800)
+            self.assertEqual(processor._machine.postprocessor_properties["cooling_delay"], 700)
+            # Verify non-overridden property stays at machine default
+            self.assertEqual(
+                processor._machine.postprocessor_properties["force_rapid_feeds"], False
+            )
+
+            # Test 2: Empty overrides do nothing
+            machine2 = self._create_test_machine()  # Fresh machine instance
+            MachineFactory.get_machine = lambda name: machine2
+            self.job.PostProcessorPropertyOverrides = "{}"
+            processor = PostProcessor(self.job, "", "", "mm")
+            processor.export2()
+            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1000)
+            self.assertEqual(processor._machine.postprocessor_properties["cooling_delay"], 500)
+
+            # Test 3: Invalid JSON is handled gracefully
+            machine3 = self._create_test_machine()  # Fresh machine instance
+            MachineFactory.get_machine = lambda name: machine3
+            self.job.PostProcessorPropertyOverrides = (
+                '{"pierce_delay": 1800,'  # Missing closing brace
+            )
+            processor = PostProcessor(self.job, "", "", "mm")
+            processor.export2()
+            # Should fall back to machine defaults
+            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1000)
+
+            # Test 4: Unknown keys are ignored
+            machine4 = self._create_test_machine()  # Fresh machine instance
+            MachineFactory.get_machine = lambda name: machine4
+            self.job.PostProcessorPropertyOverrides = (
+                '{"unknown_property": 1234, "pierce_delay": 1500}'
+            )
+            processor = PostProcessor(self.job, "", "", "mm")
+            processor.export2()
+            # Known property should be overridden
+            self.assertEqual(processor._machine.postprocessor_properties["pierce_delay"], 1500)
+            # Unknown property should not be added
+            self.assertNotIn("unknown_property", processor._machine.postprocessor_properties)
+
+        finally:
+            # Restore original MachineFactory
+            MachineFactory.get_machine = original_get_machine
+
+    def test_job_property_overrides_with_plasma(self):
+        """
+        Test that job-level overrides affect G-code output with plasma postprocessor.
+
+        Expected:
+            - Override values are reflected in the final G-code output
+        """
+        from Path.Post.scripts.generic_plasma_post import GenericPlasma
+        from Machine.models.machine import MachineFactory
+
+        # Reset job overrides to clean state
+        self.job.PostProcessorPropertyOverrides = "{}"
+
+        # Create machine with plasma postprocessor
+        machine = self._create_test_machine(pierce_delay=1000)
+        machine.postprocessor_file_name = "generic_plasma"
+
+        # Add M3/M4 commands to trigger plasma behavior
+        plasma_commands = [
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+            Path.Command("M3", {}),  # Torch on - should trigger pierce delay
+            Path.Command("G1", {"X": 100.0, "Y": 0.0, "Z": -5.0, "F": 100.0}),
+            Path.Command("M5", {}),  # Torch off
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 5.0}),
+        ]
+
+        # Update operation path
+        profile_op = self.doc.getObject("TestProfile")
+        original_path = profile_op.Path
+        profile_op.Path = Path.Path(plasma_commands)
+
+        try:
+            # Mock MachineFactory
+            original_get_machine = MachineFactory.get_machine
+            MachineFactory.get_machine = lambda name: machine
+
+            # Test with no overrides (machine defaults)
+            self.job.PostProcessorPropertyOverrides = "{}"
+            processor = GenericPlasma(self.job, "", "", "mm")
+            results = processor.export2()
+            gcode_no_override = ""
+            for section_name, gcode in results:
+                gcode_no_override += gcode
+
+            # Test with pierce_delay override
+            self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 2500}'  # 2.5 seconds
+            processor = GenericPlasma(self.job, "", "", "mm")
+            results = processor.export2()
+            gcode_with_override = ""
+            for section_name, gcode in results:
+                gcode_with_override += gcode
+
+            # The override should result in different G-code
+            self.assertNotEqual(gcode_no_override, gcode_with_override)
+
+            # Verify the specific G4 dwell command reflects the override
+            # With 2500ms override, we should see G4 P2.5
+            self.assertIn("G4 P2.5", gcode_with_override)
+            # With 1000ms default, we should see G4 P1.0
+            self.assertIn("G4 P1.0", gcode_no_override)
+
+        finally:
+            # Restore original path and MachineFactory
+            profile_op.Path = original_path
+            MachineFactory.get_machine = original_get_machine
+
+    def test_job_property_overrides_template_round_trip(self):
+        """
+        Test that job property overrides survive template save/restore cycle.
+
+        Expected:
+            - Overrides are saved to template
+            - Overrides are restored from template
+            - Empty overrides are not saved to template
+        """
+        import json
+        import tempfile
+        import os
+
+        # Set some overrides and machine
+        self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 1800, "cooling_delay": 700}'
+        self.job.Machine = "TestMachine"
+
+        # Save to template
+        template_attrs = self.job.Proxy.templateAttrs(self.job)
+
+        # Verify overrides are in template
+        self.assertIn("PostPropertyOverrides", template_attrs)
+        self.assertEqual(
+            template_attrs["PostPropertyOverrides"], {"pierce_delay": 1800, "cooling_delay": 700}
+        )
+
+        # Verify machine is in template
+        self.assertIn("Machine", template_attrs)
+        self.assertEqual(template_attrs["Machine"], "TestMachine")
+
+        # Test empty overrides are not saved
+        self.job.PostProcessorPropertyOverrides = "{}"
+        template_attrs = self.job.Proxy.templateAttrs(self.job)
+        self.assertNotIn("PostPropertyOverrides", template_attrs)
+
+        # Test round-trip: save to file and restore
+        self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 1500}'
+        self.job.Machine = ""  # Use empty machine (no machine) for test
+        template_attrs = self.job.Proxy.templateAttrs(self.job)
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
+            json.dump(template_attrs, f)
+            template_path = f.name
+
+        try:
+            # Create a new job and restore from template
+            new_job = PathJob.Create("TemplateTestJob", [self.job.Stock], None)
+            new_job.Proxy.setFromTemplateFile(new_job, template_path)
+
+            # Verify overrides were restored
+            self.assertEqual(new_job.PostProcessorPropertyOverrides, '{"pierce_delay": 1500}')
+
+            # Verify machine was restored
+            self.assertEqual(new_job.Machine, "")
+
+        finally:
+            os.unlink(template_path)

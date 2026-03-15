@@ -1,4 +1,8 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+include_directories(
+    SYSTEM
+    ${CMAKE_SOURCE_DIR}/src/3rdParty/json/single_include/nlohmann/
+)
 
 add_library(Sketcher SHARED)
 
@@ -54,6 +58,8 @@ SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 SET(Features_SRCS
     SketchObjectSF.cpp
     SketchObjectSF.h
+    SketchGeometry.cpp
+    SketchGeometry.h
     SketchGeometryExtension.cpp
     SketchGeometryExtension.h
     ExternalGeometryExtension.cpp
@@ -62,6 +68,10 @@ SET(Features_SRCS
     SolverGeometryExtension.h
     SketchObject.cpp
     SketchObject.h
+    SketchObjectGeometry.cpp
+    SketchObjectExternal.cpp
+    SketchObjectConstraints.cpp
+    SketchObjectOperations.cpp
     SketchAnalysis.h
     SketchAnalysis.cpp
     Analyse.h

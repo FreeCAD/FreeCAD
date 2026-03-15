@@ -70,6 +70,10 @@ else:
 class _Rebar(ArchComponent.Component):
     "A parametric reinforcement bar (rebar) object"
 
+    # Configure App::Link shadowing, so that linked rebars can have independent Host properties
+    # without triggering a deep copy of the geometry. See ArchComponent.Component.appLinkExecute()
+    LinkOverrideProperties = ["Host"]
+
     def __init__(self, obj):
 
         ArchComponent.Component.__init__(self, obj)

@@ -71,7 +71,7 @@ public:
         return "DockWindow";
     }
     /// Message handler
-    bool onMsg(const char*, const char**) override
+    bool onMsg(const char*) override
     {
         return false;
     }

@@ -253,7 +253,7 @@ PyMethodDef ApplicationPy::Methods[] = {
     {"SendMsgToActiveView",
      (PyCFunction)ApplicationPy::sSendActiveView,
      METH_VARARGS,
-     "SendMsgToActiveView(name, suppress=False) -> str or None\n"
+     "SendMsgToActiveView(name, suppress=False) -> None\n"
      "\n"
      "Send message to the active view. Deprecated, use class View.\n"
      "\n"
@@ -262,7 +262,7 @@ PyMethodDef ApplicationPy::Methods[] = {
     {"sendMsgToFocusView",
      (PyCFunction)ApplicationPy::sSendFocusView,
      METH_VARARGS,
-     "sendMsgToFocusView(name, suppress=False) -> str or None\n"
+     "sendMsgToFocusView(name, suppress=False) -> None\n"
      "\n"
      "Send message to the focused view.\n"
      "\n"
@@ -928,16 +928,10 @@ PyObject* ApplicationPy::sSendActiveView(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    const char* ppReturn = nullptr;
-    if (!Application::Instance->sendMsgToActiveView(psCommandStr, &ppReturn)) {
+    if (!Application::Instance->sendMsgToActiveView(psCommandStr)) {
         if (!Base::asBoolean(suppress)) {
             Base::Console().warning("Unknown view command: %s\n", psCommandStr);
         }
-    }
-
-    // Print the return value to the output
-    if (ppReturn) {
-        return Py_BuildValue("s", ppReturn);
     }
 
     Py_Return;
@@ -952,16 +946,10 @@ PyObject* ApplicationPy::sSendFocusView(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    const char* ppReturn = nullptr;
-    if (!Application::Instance->sendMsgToFocusView(psCommandStr, &ppReturn)) {
+    if (!Application::Instance->sendMsgToFocusView(psCommandStr)) {
         if (!Base::asBoolean(suppress)) {
             Base::Console().warning("Unknown view command: %s\n", psCommandStr);
         }
-    }
-
-    // Print the return value to the output
-    if (ppReturn) {
-        return Py_BuildValue("s", ppReturn);
     }
 
     Py_Return;
