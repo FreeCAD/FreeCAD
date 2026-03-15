@@ -410,7 +410,7 @@ void StdCmdFreezeViews::activated(int iMsg)
                 savedViews++;
                 QString viewnr = QString(QObject::tr("Restore View &%1")).arg(index);
                 (*it)->setText(viewnr);
-                (*it)->setToolTip(QString::fromLatin1(camera));
+                (*it)->setToolTip(QString::fromStdString(camera));
                 (*it)->setVisible(true);
                 if (index < 10) {
                     (*it)->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(index)));
@@ -432,7 +432,7 @@ void StdCmdFreezeViews::activated(int iMsg)
         QString data = acts[iMsg]->toolTip();
         MDIView* view = getGuiApplication()->activeView();
         if (auto* view3D = freecad_cast<View3DInventor*>(view)) {
-            view3D->setCamera(data.toLatin1());
+            view3D->setCamera(data.toStdString().c_str());
         }
     }
 }
