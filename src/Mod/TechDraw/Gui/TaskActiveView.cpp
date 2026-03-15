@@ -27,7 +27,10 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/GeoFeature.h>
+#include <App/PropertyStandard.h>
 #include <Base/Console.h>
+#include <Base/Color.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -35,6 +38,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/ViewProvider.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -56,8 +61,8 @@ constexpr int SXGAHeight{1024};
 
 // ctor for creation
 TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
-    : ui(new Ui_TaskActiveView), m_pageFeat(pageFeat), m_imageFeat(nullptr),
-      m_previewImageFeat(nullptr), m_btnOK(nullptr), m_btnCancel(nullptr)
+    : ui(new Ui_TaskActiveView), m_pageFeat(pageFeat), m_imageFeat(nullptr), m_btnOK(nullptr),
+      m_btnCancel(nullptr)
 {
     ui->setupUi(this);
 
@@ -66,88 +71,158 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
 
     setUiPrimary();
     connect(ui->cbCrop, &QCheckBox::clicked, this, &TaskActiveView::onCropChanged);
-
-    // For live preview
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
-
-    m_previewImageFeat = createActiveView();
-    if (!m_previewImageFeat) {
-        Gui::Command::abortCommand();
-        this->setEnabled(false);
-        return;
-    }
-
-    connect(ui->qsbWidth, &Gui::QuantitySpinBox::editingFinished, this, &TaskActiveView::updatePreview);
-    connect(ui->qsbHeight, &Gui::QuantitySpinBox::editingFinished, this, &TaskActiveView::updatePreview);
-    connect(ui->cbUse3d, &QCheckBox::clicked, this, &TaskActiveView::updatePreview);
-    connect(ui->cbNoBG, &QCheckBox::clicked, this, &TaskActiveView::updatePreview);
-    connect(ui->ccBgColor, &QPushButton::clicked, this, &TaskActiveView::updatePreview);
-    connect(ui->cbCrop, &QCheckBox::clicked, this, &TaskActiveView::updatePreview);
-
-    updatePreview();
+    connect(ui->cb3DPDFExport, &QCheckBox::clicked, this, &TaskActiveView::on3DPDFExportChanged);
 }
 
-TaskActiveView::~TaskActiveView()
+TaskActiveView::~TaskActiveView() {}
+
+void TaskActiveView::updateTask()
 {
-    if (m_previewImageFeat) {
-        Gui::Command::abortCommand();
+    //    blockUpdate = true;
+
+    //    blockUpdate = false;
+}
+
+void TaskActiveView::changeEvent(QEvent* e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
     }
 }
 
-bool TaskActiveView::accept()
+void TaskActiveView::setUiPrimary()
 {
-    if (m_previewImageFeat) {
-        Gui::Command::commitCommand();
-        m_imageFeat = m_previewImageFeat;
-        m_previewImageFeat = nullptr;
-    }
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
-    return true;
+    //    Base::Console().message("TAV::setUiPrimary()\n");
+    setWindowTitle(QObject::tr("ActiveView to TD View"));
+    ui->cbCrop->setChecked(false);
+    ui->cb3DPDFExport->setChecked(false);
+
+    enableCrop(false);
+    // cropping is in mm, but image size is in pixels/scene units
+    ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
+    ui->qsbHeight->setValue(Rez::appX(SXGAHeight));
 }
 
-bool TaskActiveView::reject()
+void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
+
+
+std::vector<App::DocumentObject*> getVisible3DObjects(App::Document* doc, Gui::Document* guiDoc)
 {
-    if (m_previewImageFeat) {
-        Gui::Command::abortCommand();
-        m_previewImageFeat = nullptr;
+    std::vector<App::DocumentObject*> visibleObjects;
+
+    if (!doc || !guiDoc) {
+        return visibleObjects;
     }
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
-    return true;
+
+    // Get all objects in the document
+    auto allObjects = doc->getObjects();
+
+    for (auto* obj : allObjects) {
+        // Check if object has a Shape property (Part objects) or Mesh property (Mesh objects)
+        App::Property* shapeProp = obj->getPropertyByName("Shape");
+        App::Property* meshProp = obj->getPropertyByName("Mesh");
+        if (!shapeProp && !meshProp) {
+            continue;
+        }
+
+        // Check if it's a relevant 3D object type (Part, Mesh, or GeoFeature)
+        if (obj->isDerivedFrom(Part::Feature::getClassTypeId()) ||
+            obj->isDerivedFrom(Mesh::Feature::getClassTypeId()) ||
+            obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+
+            // Check if the object is visible in the 3D view
+            Gui::ViewProvider* vp = guiDoc->getViewProvider(obj);
+            if (vp && vp->isVisible()) {
+                visibleObjects.push_back(obj);
+            }
+        }
+    }
+    return visibleObjects;
 }
 
-void TaskActiveView::updatePreview()
+TechDraw::DrawViewImage* TaskActiveView::createActiveView()
 {
-    if (!m_previewImageFeat) {
-        return;
+    //    Base::Console().message("TAV::createActiveView()\n");
+
+    //make sure there is an 3D MDI to grab!!
+    if (!Gui::getMainWindow()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Main Window"),
+                             QObject::tr("Cannot find the main window"));
+        return nullptr;
     }
 
+    App::Document* pageDocument = m_pageFeat->getDocument();
+    std::string documentName = m_pageFeat->getDocument()->getName();
+    Gui::Document* pageGuiDocument =
+        Gui::Application::Instance->getDocument(pageDocument->getName());
+
+    //if the active view is a 3d window, use that.
     View3DInventor* view3d = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
     if (!view3d) {
-        Gui::Document* pageGuiDocument =
-            Gui::Application::Instance->getDocument(m_pageFeat->getDocument()->getName());
+        // active view is not a 3D view, try to find one in the current document
         auto views3dAll = pageGuiDocument->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
         if (!views3dAll.empty()) {
             view3d = qobject_cast<View3DInventor*>(views3dAll.front());
-        } else {
-             auto mdiWindows = Gui::getMainWindow()->windows();
-             for (auto& mdi : mdiWindows) {
-                 auto mdiView = qobject_cast<View3DInventor*>(mdi);
-                 if (mdiView) {
-                     view3d = mdiView;
-                     break;
-                 }
-             }
+        }
+        else {
+            //this code is only for the rare case where the page's document does not have a
+            //3D window.  It might occur if the user closes the 3D window, but leaves, for
+            //example, a DrawPage window open.
+            //the active window is not a 3D view, and the page's document does not have a
+            //3D view, so try to find one somewhere among the open windows.
+            auto mdiWindows = Gui::getMainWindow()->windows();
+            for (auto& mdi : mdiWindows) {
+                auto mdiView = qobject_cast<View3DInventor*>(mdi);
+                if (mdiView) {
+                    view3d = mdiView;
+                    break;
+                }
+            }
         }
     }
     if (!view3d) {
-        Base::Console().warning("TaskActiveView::updatePreview - No 3D View found.\n");
-        return;
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No 3D Viewer"),
+                             QObject::tr("Cannot find a 3D viewer"));
+        return nullptr;
     }
 
-    App::Document* doc = m_previewImageFeat->getDocument();
-    std::string pageName = m_pageFeat->getNameInDocument();
-    std::string imageName = m_previewImageFeat->getNameInDocument();
+    //we are sure we have a 3D window!
 
+    // Capture visible 3D objects that will be represented in this ActiveView
+    std::vector<App::DocumentObject*> visible3DObjects = getVisible3DObjects(pageDocument, pageGuiDocument);
+
+    const std::string objectName{"ActiveView"};
+    std::string imageName = m_pageFeat->getDocument()->getUniqueObjectName(objectName.c_str());
+    std::string generatedSuffix {imageName.substr(objectName.length())};
+    std::string imageType = "TechDraw::DrawViewImage";
+
+    std::string pageName = m_pageFeat->getNameInDocument();
+
+    //the Page's document may not be the active one, so we need to get the right
+    //document by name instead of using ActiveDocument
+    Command::doCommand(Command::Doc, "App.getDocument('%s').addObject('%s','%s')",
+                       documentName.c_str(), imageType.c_str(), imageName.c_str());
+
+    Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawActiveView', 'ActiveView', '%s')",
+              imageName.c_str(), imageName.c_str());
+
+    Command::doCommand(Command::Doc, "App.getDocument('%s').%s.addView(App.getDocument('%s').%s)",
+                       documentName.c_str(), pageName.c_str(), documentName.c_str(),
+                       imageName.c_str());
+
+    App::Document* doc = m_pageFeat->getDocument();
+    std::string special = "/" + imageName + "image.png";
+    std::string dir = doc->TransientDir.getValue();
+    std::string fileSpec = dir + special;
+
+    //fixes fail to create 2nd Active view with same name in old docs
+    Base::FileInfo fi(fileSpec);
+    if (fi.exists()) {
+        //old filename were unique by pageName + imageName only
+        fi.deleteFile();
+    }
+
+    //better way of making temp file name
     std::string baseName = pageName + imageName;
     std::string tempName =
         Base::FileInfo::getTempFileName(baseName.c_str(), doc->TransientDir.getValue()) + ".png";
@@ -167,28 +242,82 @@ void TaskActiveView::updatePreview()
         imageHeight = Rez::guiX(ui->qsbHeight->rawValue());
     }
 
-    QImage image(imageWidth, imageHeight, QImage::Format_ARGB32_Premultiplied);
-    image.fill(Qt::transparent);
+    bool enable3DPDFExport = ui->cb3DPDFExport->isChecked();
+    // if (enable3DPDFExport) {
+    //     Base::Console().message("3D PDF Export is enabled for this ActiveView\n");
+    // }
+
+    QImage image(imageWidth, imageHeight,
+                 QImage::Format_RGB32);    //arbitrary initial image size.
+    image.fill(QColor(Qt::transparent));
     Grabber3d::quickView(view3d, bg, image);
-    if (!image.save(QString::fromStdString(tempName), "PNG")) {
-         Base::Console().error("ActiveView could not save file: %s\n", tempName.c_str());
+    bool success = image.save(QString::fromStdString(tempName));
+
+    if (!success) {
+        Base::Console().error("ActiveView could not save file: %s\n", fileSpec.c_str());
     }
 
     tempName = DU::cleanFilespecBackslash(tempName);
-    m_previewImageFeat->ImageFile.setValue(tempName);
-    m_previewImageFeat->Width.setValue(ui->qsbWidth->rawValue());
-    m_previewImageFeat->Height.setValue(ui->qsbHeight->rawValue());
+    Command::doCommand(Command::Doc, "App.getDocument('%s').%s.ImageFile = '%s'",
+                       documentName.c_str(), imageName.c_str(), tempName.c_str());
+    Command::doCommand(Command::Doc, "App.getDocument('%s').%s.Width = %.5f", documentName.c_str(),
+                       imageName.c_str(), ui->qsbWidth->rawValue());
+    Command::doCommand(Command::Doc, "App.getDocument('%s').%s.Height = %.5f", documentName.c_str(),
+                       imageName.c_str(), ui->qsbHeight->rawValue());
 
-    if (auto* guiDoc = Gui::Application::Instance->getDocument(doc)) {
-        if (auto* vp = guiDoc->getViewProvider(m_previewImageFeat)) {
-            if (auto* vpImage = freecad_cast<ViewProviderImage*>(vp)) {
+    App::DocumentObject* newObj = m_pageFeat->getDocument()->getObject(imageName.c_str());
+    TechDraw::DrawViewImage* newImg = dynamic_cast<TechDraw::DrawViewImage*>(newObj);
+    if (!newObj || !newImg)
+        throw Base::RuntimeError("TaskActiveView - new image object not found");
+    
+    // Set the Source property to reference the captured 3D objects
+    newImg->Source.setValues(visible3DObjects);
+    
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(newImg->getDocument());
+    if (guiDoc) {
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(newImg);
+        if (vp) {
+            auto vpImage = freecad_cast<ViewProviderImage*>(vp);
+            if (vpImage) {
                 vpImage->Crop.setValue(ui->cbCrop->isChecked());
+                vpImage->Enable3DPDFExport.setValue(ui->cb3DPDFExport->isChecked());
+                
+                // Store background settings
+                vpImage->NoBackground.setValue(ui->cbNoBG->isChecked());
+                vpImage->SolidBackground.setValue(ui->cbbg->isChecked()); // Note: using "cbbg" from UI file
+                
+                // Store background color
+                QColor bgColor = ui->ccBgColor->color();
+                Base::Color freecadColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF(), bgColor.alphaF());
+                vpImage->BackgroundColor.setValue(freecadColor);
+                
             }
         }
     }
 
-    m_previewImageFeat->recomputeFeature();
+    return newImg;
 }
+
+void TaskActiveView::onCropChanged()
+{
+    enableCrop(ui->cbCrop->isChecked());
+}
+
+void TaskActiveView::on3DPDFExportChanged()
+{
+    // Handle 3D PDF export option change
+    // For now, just log the state change
+    Base::Console().message("3D PDF Export option changed to: %s\n", 
+                           ui->cb3DPDFExport->isChecked() ? "enabled" : "disabled");
+}
+
+void TaskActiveView::enableCrop(bool state)
+{
+    ui->qsbHeight->setEnabled(state);
+    ui->qsbWidth->setEnabled(state);
+}
+
+//******************************************************************************
 
 void TaskActiveView::saveButtons(QPushButton* btnOK, QPushButton* btnCancel)
 {
@@ -202,77 +331,36 @@ void TaskActiveView::enableTaskButtons(bool b)
     m_btnCancel->setEnabled(b);
 }
 
-void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
+//******************************************************************************
 
-// Slots
-void TaskActiveView::onCropChanged()
+bool TaskActiveView::accept()
 {
-    enableCrop(ui->cbCrop->isChecked());
-}
-
-// Private helper methods
-void TaskActiveView::setUiPrimary()
-{
-    setWindowTitle(QObject::tr("Insert Active View"));
-    ui->cbCrop->setChecked(false);
-    enableCrop(false);
-    ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
-    ui->qsbHeight->setValue(Rez::appX(SXGAHeight));
-}
-
-void TaskActiveView::enableCrop(bool state)
-{
-    ui->qsbHeight->setEnabled(state);
-    ui->qsbWidth->setEnabled(state);
-}
-
-TechDraw::DrawViewImage* TaskActiveView::createActiveView()
-{
-    View3DInventor* view3d = qobject_cast<View3DInventor*>(Gui::getMainWindow()->activeWindow());
-    if (!view3d) {
-        // Fallback 1: Try to find a 3D view in the page's document
-        Gui::Document* pageGuiDocument =
-            Gui::Application::Instance->getDocument(m_pageFeat->getDocument()->getName());
-        if (pageGuiDocument) {
-            auto views3dAll = pageGuiDocument->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
-            if (!views3dAll.empty()) {
-                view3d = qobject_cast<View3DInventor*>(views3dAll.front());
-            }
-        }
+    //    Base::Console().message("TAV::accept()\n");
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
+    m_imageFeat = createActiveView();
+    //    m_imageFeat->requestPaint();
+    if (m_imageFeat) {
+        m_imageFeat->recomputeFeature();
     }
-    if (!view3d) {
-        // This check is simplified as the more complex fallback is in updatePreview
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No 3D Viewer"),
-                             QObject::tr("Can not find a 3D viewer"));
-        return nullptr;
-    }
+    Gui::Command::updateActive();
+    Gui::Command::commitCommand();
 
-    App::Document* pageDocument = m_pageFeat->getDocument();
-    const std::string objectName{"ActiveView"};
-    const std::string imageType = "TechDraw::DrawViewImage";
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    std::string sObjName = pageDocument->getUniqueObjectName(objectName.c_str());
-
-    pageDocument->addObject(imageType.c_str(), sObjName.c_str());
-    App::DocumentObject* newObj = pageDocument->getObject(sObjName.c_str());
-
-    m_pageFeat->addView(newObj);
-    newObj->Label.setValue("ActiveView");
-
-    return static_cast<TechDraw::DrawViewImage*>(newObj);
+    return true;
 }
 
-void TaskActiveView::changeEvent(QEvent* e)
+bool TaskActiveView::reject()
 {
-    if (e->type() == QEvent::LanguageChange) {
-        ui->retranslateUi(this);
-    }
-}
+    //    Base::Console().message("TAV::reject()\n");
+    //nothing to remove.
 
-void TaskActiveView::updateTask()
-{
-}
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
+    return false;
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 TaskDlgActiveView::TaskDlgActiveView(TechDraw::DrawPage* page) : TaskDialog()
 {
     widget = new TaskActiveView(page);
@@ -283,6 +371,23 @@ TaskDlgActiveView::TaskDlgActiveView(TechDraw::DrawPage* page) : TaskDialog()
 }
 
 TaskDlgActiveView::~TaskDlgActiveView() {}
+
+void TaskDlgActiveView::update()
+{
+    //    widget->updateTask();
+}
+
+void TaskDlgActiveView::modifyStandardButtons(QDialogButtonBox* box)
+{
+    QPushButton* btnOK = box->button(QDialogButtonBox::Ok);
+    QPushButton* btnCancel = box->button(QDialogButtonBox::Cancel);
+    widget->saveButtons(btnOK, btnCancel);
+}
+
+//==== calls from the TaskView ===============================================================
+void TaskDlgActiveView::open() {}
+
+void TaskDlgActiveView::clicked(int) {}
 
 bool TaskDlgActiveView::accept()
 {
@@ -295,19 +400,5 @@ bool TaskDlgActiveView::reject()
     widget->reject();
     return true;
 }
-
-void TaskDlgActiveView::modifyStandardButtons(QDialogButtonBox* box)
-{
-    QPushButton* btnOK = box->button(QDialogButtonBox::Ok);
-    QPushButton* btnCancel = box->button(QDialogButtonBox::Cancel);
-    widget->saveButtons(btnOK, btnCancel);
-}
-
-void TaskDlgActiveView::open() {}
-
-void TaskDlgActiveView::clicked(int) {}
-
-void TaskDlgActiveView::update() {}
-
 
 #include <Mod/TechDraw/Gui/moc_TaskActiveView.cpp>
