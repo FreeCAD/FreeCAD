@@ -394,7 +394,7 @@ void StdCmdFreezeViews::activated(int iMsg)
     else if (iMsg == 3) {
         // Create a new view
         auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
-        if (view3d == nullptr) {
+        if (!view3d) {
             Base::Console().developerError(
                 "StdCmdFreezeViews",
                 "Expected the active view to be View3DInventor\n"
@@ -2639,7 +2639,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
-    if (view3d == nullptr) {
+    if (!view3d) {
         Base::Console().developerError(
             "StdCmdViewIvIssueCameraPos",
             "Expected the active view to be View3DInventor\n"

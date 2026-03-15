@@ -251,7 +251,7 @@ public:
     void setUserSchema(int userSchema)
     {
         App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc != nullptr) {
+        if (doc) {
             if (doc->UnitSystem.getValue() != userSchema) {
                 doc->UnitSystem.setValue(userSchema);
             }
@@ -275,7 +275,7 @@ private:
         bool ignore = hGrpu->GetBool("IgnoreProjectSchema", false);
         App::Document* doc = App::GetApplication().getActiveDocument();
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
-        if (doc != nullptr && !ignore) {
+        if (doc && !ignore) {
             userSchema = doc->UnitSystem.getValue();
         }
         auto actions = menu()->actions();
@@ -937,7 +937,7 @@ int MainWindow::confirmSave(App::Document* doc, QWidget* parent, bool addCheckbo
         const QList<QWidget*> listOfMDIs = this->windows();
         for (QWidget* widget : listOfMDIs) {
             auto mdiView = qobject_cast<MDIView*>(widget);
-            if (mdiView != nullptr && mdiView->getAppDocument() == doc) {
+            if (mdiView && mdiView->getAppDocument() == doc) {
                 this->setActiveWindow(mdiView);
             }
         }
@@ -974,7 +974,7 @@ bool MainWindow::closeAllDocuments(bool close)
     // moves the active document to the front
     MDIView* activeView = this->activeWindow();
     App::Document* activeDoc = (activeView ? activeView->getAppDocument() : nullptr);
-    if (activeDoc != nullptr) {
+    if (activeDoc) {
         for (auto it = ++docs.begin(); it != docs.end(); it++) {
             if (*it == activeDoc) {
                 docs.erase(it);

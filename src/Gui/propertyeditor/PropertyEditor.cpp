@@ -828,7 +828,7 @@ void PropertyEditor::setFirstLevelExpanded(bool doExpand)
         }
 
         auto* item = static_cast<PropertyItem*>(index.internalPointer());
-        if (item == nullptr || item->childCount() <= 0) {
+        if (!item || item->childCount() <= 0) {
             return;
         }
 
@@ -1157,7 +1157,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             break;
         case MA_AddProp: {
             App::PropertyContainer* container = getSelectedPropertyContainer();
-            if (container == nullptr) {
+            if (!container) {
                 return;
             }
             App::AutoTransaction committer("Add property");

@@ -324,7 +324,7 @@ void WorkbenchTabWidget::updateWorkbenchList()
         addWorkbenchTab(action);
     }
 
-    if (temporaryWorkbenchAction != nullptr) {
+    if (temporaryWorkbenchAction) {
         setTemporaryWorkbenchTab(temporaryWorkbenchAction);
     }
 

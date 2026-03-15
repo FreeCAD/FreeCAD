@@ -631,7 +631,7 @@ Application::Application(bool GUIenabled)
     PyObject* module = PyImport_AddModule("FreeCADGui");
     PyMethodDef* meth = FreeCADGui_methods;
     PyObject* dict = PyModule_GetDict(module);
-    for (; meth->ml_name != nullptr; meth++) {
+    for (; meth->ml_name; meth++) {
         PyObject* descr;
         descr = PyCFunction_NewEx(meth, nullptr, nullptr);
         if (!descr) {
@@ -2790,7 +2790,7 @@ void Application::setStyle(const QString& name)
         return qobject_cast<FreeCADStyle*>(style) != nullptr;
     };
 
-    if (auto* current = qApp->style(); current != nullptr && requiresEventFilter(current)) {
+    if (auto* current = qApp->style(); current && requiresEventFilter(current)) {
         qApp->removeEventFilter(current);
     }
 
