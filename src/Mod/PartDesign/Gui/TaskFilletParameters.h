@@ -61,6 +61,7 @@ protected:
     double getLength() const;
     void setButtons(const selectionModes mode) override;
     void changeEvent(QEvent* e) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
