@@ -26,11 +26,14 @@
 
 #include "MappedName.h"
 
+
 #include "Base/Console.h"
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <iostream>
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+#include <unordered_set>
 
 
 FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
@@ -49,6 +52,187 @@ void MappedName::compact() const
     }
 }
 
+std::vector<std::string> MappedName::splitToSections(const std::string data, const char deliminator) {
+    std::stringstream ss;
+    std::vector<std::string> sections { };
+    int escapeLevel = 0;
+    
+    for (size_t i = 0; i < data.size(); i++) {
+        char currentChar = data[i];
+
+        if (currentChar == '^') {
+            escapeLevel++;
+        } else if ((currentChar == deliminator && escapeLevel == 0) || (i + 1) == data.size()) {
+            if (currentChar != deliminator) {
+                ss << currentChar;
+            }
+
+            sections.push_back(ss.str());
+            ss.str("");
+            
+            continue;
+        } else {
+            escapeLevel = 0;
+        }
+
+        // if the escaped character is the same as the selected deliminator, then remove just one escape
+        if (escapeLevel > 0 && ((i + 1) != data.size() && data[i + 1] == deliminator)) {
+            continue;
+        }
+
+        ss << currentChar;
+    }
+
+    return sections;
+}
+
+std::vector<std::string> MappedName::toSections() const {
+    return MappedName::splitToSections(toString(), '|');
+}
+
+MappedNameDataTree MappedName::getNameDataTree() const {
+    // made up of triple nested string vectors
+    // std::vector<std::vector<std::vector<std::string>>>
+    MappedNameDataTree tree;
+    std::vector<std::string> mainSections = toSections();
+
+    for (const auto &mainSection : mainSections) {
+        std::vector<std::string> sectionDataSplit = MappedName::splitToSections(mainSection, (*Data::SECTION_SUB_DELIMINATOR));
+        std::vector<std::vector<std::string>> addInfo;
+        int sectionsToAdd = 8;
+
+        for (const auto &subSection : sectionDataSplit) {
+            std::vector<std::string> sectionDataList;
+
+            if (boost::algorithm::contains(subSection, Data::SUB_SECTION_LIST_DELIMINATOR)) {
+                sectionDataList = MappedName::splitToSections(subSection, (*Data::SUB_SECTION_LIST_DELIMINATOR));
+            } else {
+                sectionDataList = { subSection };
+            }
+
+            sectionsToAdd--;
+            addInfo.push_back(sectionDataList);
+        }
+
+        for (int i = 0; i < sectionsToAdd; i++) {
+            addInfo.push_back({Data::EMPTY_VALUE});
+        }
+
+        tree.push_back(addInfo);
+    }
+
+    return tree;
+}
+
+MappedName MappedName::fromNameDataTree(const MappedNameDataTree tree) {
+    std::stringstream ss;
+
+    for (size_t i = 0; i < tree.size(); ++i) {
+        const auto& mainSection = tree[i];
+        std::stringstream mainSectionStream;
+
+        for (size_t j = 0; j < mainSection.size(); ++j) {
+            const auto& subSection = mainSection[j];
+            std::stringstream subSectionStream;
+
+            for (size_t k = 0; k < subSection.size(); ++k) {
+                subSectionStream << escapeString(subSection[k]);
+
+                if (k + 1 < subSection.size())
+                    subSectionStream << (*Data::SUB_SECTION_LIST_DELIMINATOR);
+            }
+
+            mainSectionStream << subSectionStream.str();
+
+            if (j + 1 < mainSection.size())
+                mainSectionStream << (*Data::SECTION_SUB_DELIMINATOR);
+        }
+
+        ss << mainSectionStream.str();
+
+        if ((i + 1) < tree.size())
+            ss << (*Data::NAME_SECTION_DELIMINATOR);
+    }
+
+    return MappedName(ss.str());
+}
+
+std::string MappedName::escapeString(const std::string stringToEscape) {
+    std::stringstream ss;
+    std::unordered_set<char> charsToEscape {
+        (*Data::NAME_SECTION_DELIMINATOR),
+        (*Data::SECTION_SUB_DELIMINATOR),
+        (*Data::SUB_SECTION_LIST_DELIMINATOR)
+    };
+
+    for (size_t i = 0; i < stringToEscape.size(); i++) {
+        char currentChar = stringToEscape[i];
+
+        if (charsToEscape.contains(currentChar)) {
+            ss << Data::SUB_SECTION_ESCAPE_CHAR;
+        }
+
+        ss << currentChar;
+    }
+
+    return ss.str();
+}
+
+
+// IMPORTANT: make sure the placement of the sub-sections in the return
+// string matches what is described in ElementNamingUtils.h
+std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
+                                    std::vector<MappedName> referenceNames,
+                                    int iterationTag,
+                                    const char* opCode,
+                                    int index,
+                                    char elementType,
+                                    int duplicateCount,
+                                    std::string mapperInfo)
+{
+    std::stringstream ss;
+    std::string opCodeString = (opCode == nullptr || strlen(opCode) == 0) ? "MKR" : opCode;
+
+    if (referenceIDs.empty()) {
+        ss << Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < referenceIDs.size(); i++) {
+            if (i != 0) {
+                ss << Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            ss << referenceIDs[i];
+        }
+    }
+
+    ss << Data::SECTION_SUB_DELIMINATOR;
+
+    if (referenceNames.empty()) {
+        ss << Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < referenceNames.size(); i++) {
+            if (i != 0)
+                ss << Data::SUB_SECTION_LIST_DELIMINATOR;
+
+            ss << MappedName::escapeString(referenceNames[i].toString());
+        }
+    }
+
+    ss << Data::SECTION_SUB_DELIMINATOR 
+       << iterationTag
+       << Data::SECTION_SUB_DELIMINATOR
+       << opCodeString
+       << Data::SECTION_SUB_DELIMINATOR
+       << index
+       << Data::SECTION_SUB_DELIMINATOR
+       << elementType
+       << Data::SECTION_SUB_DELIMINATOR
+       << duplicateCount
+       << Data::SECTION_SUB_DELIMINATOR
+       << mapperInfo;
+    
+    return ss.str();
+}
 
 MappedName::MappedName(const char* name, int size) : raw(false)
 {

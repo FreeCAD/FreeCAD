@@ -10,6 +10,11 @@
 namespace App
 {
 
+enum HistoryAlgorithm : int {
+    V1 = 0,
+    V2 = 1
+};
+
 /// Return type for lookups of new and old style sub-element names
 struct ElementNamePair
 {
@@ -90,6 +95,18 @@ constexpr const char* POSTFIX_MODGEN                    = ";:MG";
 constexpr const char* POSTFIX_DUPLICATE                 = ";D";
 /// Label to use for element index in element mapping.
 constexpr const char* ELEMENT_MAP_INDEX                 = "_";
+/// Empty sub-section value for V2.
+constexpr const char* EMPTY_VALUE                       = "_";
+/// Sub-section list deliminator.
+constexpr const char* SUB_SECTION_LIST_DELIMINATOR      = ",";
+/// Section sub deliminator.
+constexpr const char* SECTION_SUB_DELIMINATOR           = ";";
+/// Section data deliminator.
+constexpr const char* SECTION_DATA_DELIMINATOR          = ":";
+/// Name section deliminator.
+constexpr const char* NAME_SECTION_DELIMINATOR          = "|";
+/// Escape character for mapped names in sub-sections
+constexpr const char* SUB_SECTION_ESCAPE_CHAR           = "^";
 
 /// @}
 

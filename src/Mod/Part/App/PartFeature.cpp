@@ -174,6 +174,125 @@ App::ElementNamePair Feature::getElementName(const char* name, ElementNameType t
     return getExportElementName(prop->getShape(), name);
 }
 
+// This is the name matching algorithms used for the V2 algorithm.
+bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName &name2, bool log)
+{
+    if (!name1 || !name2)
+        return false;
+    
+    Data::MappedNameDataTree name1Tree = name1.getNameDataTree();
+    Data::MappedNameDataTree name2Tree = name2.getNameDataTree();
+
+    if (name1Tree.size() && name2Tree.size()) {
+        std::vector<std::pair<std::vector<std::vector<std::string>>, std::vector<std::vector<std::string>>>> pairedCheckSections = { };
+
+        pairedCheckSections.push_back({name1Tree[0], name2Tree[0]});
+
+        name1Tree.erase(name1Tree.begin());
+        name2Tree.erase(name2Tree.begin());
+
+        // This loop pairs sections together for checking later.
+        for (const auto &largeTreeSection : std::max(name1Tree, name2Tree)) {
+            for (const auto &smallTreeSection : std::min(name1Tree, name2Tree)) {
+                if (
+                    (largeTreeSection[2][0] != "_" && smallTreeSection[2][0] == largeTreeSection[2][0])
+                    && (largeTreeSection[3][0] != "_" && smallTreeSection[3][0] == largeTreeSection[3][0])
+                ) {
+                    pairedCheckSections.push_back({largeTreeSection, smallTreeSection});
+                }
+            }
+        }
+
+        // i don't know why this wouldn't have any sections in it, but it's good to check anyways.
+        if (pairedCheckSections.size()) {
+            for (const auto &checkSections : pairedCheckSections) {
+                // first we need to check reference IDs
+                int refIDInterference = 0;
+                size_t linkedNameInterference = 0;
+
+                for (const std::string &largeListID : std::max(checkSections.first[0], checkSections.second[0])) {
+                    for (const std::string &smallListID : std::min(checkSections.first[0], checkSections.second[0])) {
+                        if (largeListID == smallListID) {
+                            refIDInterference++;
+                        }
+                    }
+                }
+
+                for (const std::string &largeListName : std::max(checkSections.first[1], checkSections.second[1])) {
+                    for (const std::string &smallListName : std::min(checkSections.first[1], checkSections.second[1])) {
+                        if ((largeListName == smallListName)
+                            || (largeListName != "_" 
+                                && smallListName != "_" 
+                                && doNamesMatch(Data::MappedName(largeListName), Data::MappedName(smallListName), false)))
+                        {
+                            linkedNameInterference++;
+                        }
+                    }
+                }
+
+                bool linkedNamePass = false;
+
+                if (checkSections.first[7][0] == "CON" && checkSections.first[7][0] == checkSections.second[7][0]) {
+                    if (linkedNameInterference >= 2)
+                    {
+                        linkedNamePass = true;
+                    }
+                }
+
+                if (linkedNameInterference == checkSections.first[1].size() && linkedNameInterference == checkSections.second[1].size()) {
+                    linkedNamePass = true;
+                }
+
+                if (linkedNamePass
+                     && (refIDInterference >= 2
+                         || checkSections.first[0] == checkSections.second[0]))
+                {
+                    auto modifiedFirstSection = checkSections.first;
+                    auto modifiedSecondSection = checkSections.second;
+
+                    // remove the reference ID and linked names lists to make a direct equality check much easier.
+                    modifiedFirstSection.erase(modifiedFirstSection.begin());
+                    modifiedSecondSection.erase(modifiedSecondSection.begin());
+
+                    modifiedFirstSection.erase(modifiedFirstSection.begin());
+                    modifiedSecondSection.erase(modifiedSecondSection.begin());
+
+                    if (modifiedFirstSection != modifiedSecondSection) {
+                        return false;
+                    } else {
+                        if (log)
+                            Base::Console().log("Name match resolved name %s as equivelent to %s", name1.toString(), name2.toString());
+                    }
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+
+    return true;
+}
+
+// This is the name matching algorithms used for the V2 algorithm.
+std::vector<Data::MappedName> Feature::findSimilarNames(const Data::MappedName &searchName, const TopoShape &searchShape)
+{
+    std::vector<Data::MappedName> ret { };
+
+    if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2 && searchName.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        for (const Data::MappedElement &loopNamePair : searchShape.getElementMap()) {
+            if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
+                ret.push_back(loopNamePair.name);
+            }
+        }
+    }
+
+    return ret;
+}
+
 App::ElementNamePair Feature::getExportElementName(TopoShape shape, const char* name) const
 {
     Data::MappedElement mapped = shape.getElementName(name);
@@ -354,6 +473,13 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape, const char* 
                     auto newMapped = TopoShape::chooseMatchingSubShapeByPlaneOrLine(shape, searchShape);
                     if (!newMapped.name.empty()) {
                         mapped = newMapped;
+                    } else {
+                        std::vector<Data::MappedName> foundNames = findSimilarNames(mapped.name, shape);
+
+                        if (foundNames.size()) {
+                            mapped.name = foundNames[0];
+                            mapped.index = shape.getIndexedName(mapped.name);
+                        }
                     }
                 }
                 for (auto& name : names) {
