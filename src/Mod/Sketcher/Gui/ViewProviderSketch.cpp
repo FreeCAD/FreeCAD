@@ -1352,7 +1352,6 @@ void ViewProviderSketch::editDoubleClicked()
         }
 
         if (textConstrId != -1) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify Text constraint"));
             EditTextDialog editTextDialog(this, textConstrId);
             editTextDialog.exec();
             setSketchMode(STATUS_NONE);

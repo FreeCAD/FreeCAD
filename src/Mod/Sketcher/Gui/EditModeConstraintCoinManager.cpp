@@ -832,6 +832,7 @@ Restart:
                             points[j].setValue(0.0f, 0.0f, 0.0f);
                         }
                         coords->point.finishEditing();
+                        break;
                     }
 
                     // 1. Get the original min/max points and dimensions
