@@ -637,7 +637,7 @@ QWidget* TreeWidgetItemDelegate::createEditor(
 
     DynamicQLineEdit* editor;
     if (TreeParams::getLabelExpression()) {
-        DynamicQLineEdit* le = new DynamicQLineEdit(parent);
+        auto* le = new DynamicQLineEdit(parent);
         le->setAutoApply(true);
         le->setFrame(false);
         le->bind(App::ObjectIdentifier(prop));
@@ -1281,8 +1281,8 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     contextMenu.addSeparator();
     contextMenu.addMenu(&settingsMenu);
 
-    QAction* action = new QAction(tr("Show Description"), this);
-    QAction* internalNameAction = new QAction(tr("Show Internal Name"), this);
+    auto* action = new QAction(tr("Show Description"), this);
+    auto* internalNameAction = new QAction(tr("Show Internal Name"), this);
     action->setStatusTip(
         tr("Shows a description column for items. An item's description can be set by editing the "
            "'label2' property.")
@@ -4343,7 +4343,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
         "User parameter:BaseApp/Preferences/TreeView"
     );
     unsigned long col = hGrp->GetUnsigned("TreeEditColor", 563609599);
-    QColor color(Base::Color::fromPackedRGB<QColor>(col));
+    auto color(Base::Color::fromPackedRGB<QColor>(col));
 
     if (!getTree()->editingItem) {
         auto doc = Application::Instance->editDocument();
@@ -4949,7 +4949,7 @@ void DocumentItem::sortObjectItems()
             updateItemsVisibility(sortedItem, false);
         }
 
-        std::vector<bool>::const_iterator expFrom = expansion.cbegin();
+        auto expFrom = expansion.cbegin();
         sortedItem->applyExpandedSnapshot(expansion, expFrom);
     }
 }
@@ -5349,11 +5349,14 @@ void DocumentItem::slotRecomputedObject(const App::DocumentObject& obj)
     slotRecomputed(*obj.getDocument(), {const_cast<App::DocumentObject*>(&obj)});
 }
 
-void DocumentItem::slotRecomputed(const App::Document&, const std::vector<App::DocumentObject*>& objs)
+void DocumentItem::slotRecomputed(const App::Document& doc, const std::vector<App::DocumentObject*>& objs)
 {
+    const auto& allObjs = doc.getObjects();
+    std::unordered_set<App::DocumentObject*> validObjs(allObjs.begin(), allObjs.end());
+
     auto tree = getTree();
     for (auto obj : objs) {
-        if (!obj->isValid()) {
+        if (validObjs.contains(obj) && !obj->isValid()) {
             tree->ChangedObjects[obj].set(TreeWidget::CS_Error);
         }
     }

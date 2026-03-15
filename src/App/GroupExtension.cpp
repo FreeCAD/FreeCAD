@@ -182,7 +182,7 @@ void GroupExtension::removeObjectFromDocument(DocumentObject* obj)
 
     // remove all children
     if (obj->hasExtension(GroupExtension::getExtensionClassTypeId())) {
-        GroupExtension* grp = static_cast<GroupExtension*>(
+        auto* grp = static_cast<GroupExtension*>(
             obj->getExtension(GroupExtension::getExtensionClassTypeId()));
 
         // recursive call to remove all subgroups
