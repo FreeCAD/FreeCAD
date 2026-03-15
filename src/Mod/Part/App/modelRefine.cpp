@@ -1216,10 +1216,10 @@ bool FaceUniter::process()
                 for (; workShellExplorer.More(); workShellExplorer.Next()) {
                     const TopoDS_Shape &workShellSubShape = workShellExplorer.Value();
 
-                    if (sew.IsModified(workShellSubShape)) {
+                    if (sew.IsModifiedSubShape(workShellSubShape)) {
                         // we add a modified shape entry even if `workShellSubShape` is already present as a key
                         // for extra info to give the topological naming method.
-                        modifiedShapes.emplace_back(workShellSubShape, sew.Modified(workShellSubShape));
+                        modifiedShapes.emplace_back(workShellSubShape, sew.ModifiedSubShape(workShellSubShape));
                     }
                 }
             }
