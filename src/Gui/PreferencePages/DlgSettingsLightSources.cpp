@@ -351,7 +351,7 @@ void DlgSettingsLightSources::resetSettingsToDefaults()
 
 void DlgSettingsLightSources::zoomIn() const
 {
-    if (camera == nullptr) {
+    if (!camera) {
         return;
     }
 
@@ -360,7 +360,7 @@ void DlgSettingsLightSources::zoomIn() const
 
 void DlgSettingsLightSources::zoomOut() const
 {
-    if (camera == nullptr) {
+    if (!camera) {
         return;
     }
 

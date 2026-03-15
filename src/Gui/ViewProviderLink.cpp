@@ -3934,7 +3934,7 @@ void ViewProviderLink::getPropertyMap(std::map<std::string, App::Property*>& Map
 void ViewProviderLink::visitProperties(const std::function<void(App::Property*)>& visitor) const
 {
     inherited::visitProperties(visitor);
-    if (childVp != nullptr) {
+    if (childVp) {
         childVp->visitProperties(visitor);
     }
 }

@@ -71,7 +71,7 @@ long NavlibInterface::GetPivotPosition(navlib::point_t&) const
 
 long NavlibInterface::SetPivotPosition(const navlib::point_t& position)
 {
-    if (pivot.pTransform == nullptr)
+    if (!pivot.pTransform)
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     pivot.pTransform->translation.setValue(position.x, position.y, position.z);
@@ -86,7 +86,7 @@ long NavlibInterface::IsUserPivot(navlib::bool_t& userPivot) const
 
 long NavlibInterface::GetPivotVisible(navlib::bool_t& visible) const
 {
-    if (pivot.pVisibility == nullptr)
+    if (!pivot.pVisibility)
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     visible = pivot.pVisibility->whichChild.getValue() == SO_SWITCH_ALL;
@@ -96,7 +96,7 @@ long NavlibInterface::GetPivotVisible(navlib::bool_t& visible) const
 
 long NavlibInterface::SetPivotVisible(bool visible)
 {
-    if (pivot.pVisibility == nullptr)
+    if (!pivot.pVisibility)
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     if (visible)
@@ -115,11 +115,11 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     const Gui::View3DInventorViewer* const inventorViewer = currentView.pView3d->getViewer();
-    if (inventorViewer == nullptr)
+    if (!inventorViewer)
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     SoNode* pSceneGraph = inventorViewer->getSceneGraph();
-    if (pSceneGraph == nullptr)
+    if (!pSceneGraph)
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     // Prepare the ray-picking object
@@ -131,7 +131,7 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
     // Get the camera rotation
     SoCamera* pCamera = getCamera<SoCamera*>();
 
-    if (pCamera == nullptr)
+    if (!pCamera)
         return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
     pCamera->orientation.getValue().getValue(cameraMatrix);
@@ -177,7 +177,7 @@ long NavlibInterface::GetHitLookAt(navlib::point_t& position) const
         SoPickedPoint* pickedPoint = rayPickAction.getPickedPoint();
 
         // Check if there was a hit
-        if (pickedPoint != nullptr) {
+        if (pickedPoint) {
             SbVec3f hitPoint = pickedPoint->getPoint();
             float distance = (origin - hitPoint).length();
 
@@ -213,7 +213,7 @@ long NavlibInterface::GetSelectionExtents(navlib::box_t& extents) const
                       Gui::ViewProvider* pViewProvider =
                           Gui::Application::Instance->getViewProvider(selection.pObject);
 
-                      if (pViewProvider == nullptr)
+                      if (!pViewProvider)
                           return navlib::make_result_code(navlib::navlib_errc::no_data_available);
 
                       boundingBox.Add(pViewProvider->getBoundingBox(selection.SubName, true));
@@ -254,7 +254,7 @@ long NavlibInterface::SetHitLookFrom(const navlib::point_t& eye)
     }
     else {
         auto pCamera = getCamera<SoCamera*>();
-        if (pCamera == nullptr) {
+        if (!pCamera) {
             return navlib::make_result_code(navlib::navlib_errc::no_data_available);
         }
 

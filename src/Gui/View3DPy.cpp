@@ -2341,7 +2341,7 @@ Py::Object View3DInventorPy::getSceneGraph()
 {
     try {
         SoNode* scene = getView3DInventorPtr()->getViewer()->getSceneGraph();
-        if (scene == nullptr) {
+        if (!scene) {
             return Py::None();
         }
         PyObject* proxy = nullptr;
