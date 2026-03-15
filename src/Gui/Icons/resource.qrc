@@ -452,4 +452,7 @@
         <file alias="CONTRIBUTORS">../../Doc/CONTRIBUTORS</file>
         <file alias="PRIVACY_POLICY">../../../PRIVACY_POLICY.md</file>
     </qresource>
+    <qresource prefix="/patterns">
+        <file alias="checkerboard_pattern.png">../Inventor/Background/checkerboard_pattern.png</file>
+    </qresource>
 </RCC>
