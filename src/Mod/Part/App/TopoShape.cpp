@@ -171,7 +171,6 @@
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
-#include "TopoShape.h"
 #include "BRepMesh.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "CrossSection.h"
@@ -180,7 +179,9 @@
 #include "Interface.h"
 #include "modelRefine.h"
 #include "PartPyCXX.h"
+#include "ProgressIndicator.h"
 #include "Tools.h"
+#include "TopoShape.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompSolidPy.h"
 #include "TopoShapeEdgePy.h"
@@ -189,7 +190,6 @@
 #include "TopoShapeSolidPy.h"
 #include "TopoShapeVertexPy.h"
 #include "TopoShapeWirePy.h"
-#include "OCCTProgressIndicator.h"
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)
 
@@ -1779,7 +1779,7 @@ TopoDS_Shape TopoShape::cut(const std::vector<TopoDS_Shape>& shapes, Standard_Re
         mkCut.setAutoFuzzy();
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkCut.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkCut.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkCut.Build();
 #endif
@@ -1828,7 +1828,7 @@ TopoDS_Shape TopoShape::common(const std::vector<TopoDS_Shape>& shapes, Standard
         mkCommon.setAutoFuzzy();
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkCommon.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkCommon.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkCommon.Build();
 #endif
@@ -1877,7 +1877,7 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
         mkFuse.setAutoFuzzy();
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkFuse.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkFuse.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkFuse.Build();
 #endif
@@ -1903,7 +1903,7 @@ TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate
     mkSection.Init2(shape);
     mkSection.Approximation(approximate);
 #if OCC_VERSION_HEX >= 0x070600
-    mkSection.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkSection.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkSection.Build();
 #endif
@@ -1944,7 +1944,7 @@ TopoDS_Shape TopoShape::section(
         mkSection.setAutoFuzzy();
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkSection.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkSection.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkSection.Build();
 #endif
@@ -2017,7 +2017,7 @@ TopoDS_Shape TopoShape::generalFuse(
     }
     mkGFA.SetNonDestructive(Standard_True);
 #if OCC_VERSION_HEX >= 0x070600
-    mkGFA.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkGFA.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkGFA.Build();
 #endif
@@ -2087,7 +2087,7 @@ TopoDS_Shape TopoShape::makePipeShell(
     }
 
 #if OCC_VERSION_HEX >= 0x070600
-    mkPipeShell.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkPipeShell.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkPipeShell.Build();
 #endif
@@ -2646,7 +2646,7 @@ TopoDS_Shape TopoShape::makeLoft(
     aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
                                                // #edges, orientation, "origin" to match.
 #if OCC_VERSION_HEX >= 0x070600
-    aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     aGenerator.Build();
 #endif
@@ -2812,7 +2812,7 @@ TopoDS_Shape TopoShape::makeOffsetShape(
         aGenerator.AddWire(originalWire);
         aGenerator.AddWire(offsetWire);
 #if OCC_VERSION_HEX >= 0x070600
-        aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+        aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
         aGenerator.Build();
 #endif
@@ -3175,7 +3175,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
 
 #if OCC_VERSION_HEX >= 0x070600
-                mkWire.Build(OCCTProgressIndicator::getAppIndicator().Start());
+                mkWire.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
                 mkWire.Build();
 #endif
@@ -3191,7 +3191,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
                 mkFace.addWire(w);
             }
 #if OCC_VERSION_HEX >= 0x070600
-            mkFace.Build(OCCTProgressIndicator::getAppIndicator().Start());
+            mkFace.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
             mkFace.Build();
 #endif
@@ -4035,7 +4035,7 @@ TopoDS_Shape TopoShape::defeaturing(const std::vector<TopoDS_Shape>& s) const
         defeat.AddFaceToRemove(it);
     }
 #if OCC_VERSION_HEX >= 0x070600
-    defeat.Build(OCCTProgressIndicator::getAppIndicator().Start());
+    defeat.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     defeat.Build();
 #endif
@@ -4282,7 +4282,7 @@ TopoShape& TopoShape::makeFace(const std::vector<TopoShape>& shapes, const char*
         }
     }
 #if OCC_VERSION_HEX >= 0x070600
-    mkFace->Build(OCCTProgressIndicator::getAppIndicator().Start());
+    mkFace->Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
     mkFace->Build();
 #endif

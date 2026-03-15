@@ -569,6 +569,8 @@ SET(Part_SRCS
     Interface.cpp
     Interface.h
     PreCompiled.h
+    ProgressIndicator.cpp
+    ProgressIndicator.h
     Services.cpp
     Services.h
     SignalException.cpp
