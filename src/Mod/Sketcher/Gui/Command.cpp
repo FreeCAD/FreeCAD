@@ -238,6 +238,17 @@ void CmdSketcherNewSketch::activated(int iMsg)
         std::vector<Gui::SelectionObject> objects = Gui::Selection().getSelectionEx();
         App::PropertyLinkSubList support;
         Gui::Selection().getAsPropertyLinkSubList(support);
+
+        // check if selected object is attached under any Link object
+        // if yes, then set support of created Sketch to this Link object
+        if (const auto LinkParentName = objects[0].getLinkParent(); LinkParentName && !LinkParentName.value().empty()) {
+            const auto LinkParentObj = objects[0].getObject()->getDocument()->getObject(LinkParentName.value().c_str());
+            auto subValues = support.getSubValues();
+            const std::string linkedObjName = support.getValue()->getNameInDocument();
+            std::transform(subValues.begin(), subValues.end(),  subValues.begin(), [linkedObjName](const auto& val)->std::string{return linkedObjName + "." + val; });
+            support.setValue(LinkParentObj, subValues);
+        }
+
         std::string supportString = support.getPyReprString();
 
         // create Sketch on Face
