@@ -24,6 +24,8 @@
 
 
 #include <QAction>
+#include <QEvent>
+#include <QKeyEvent>
 #include <QListWidget>
 #include <QMessageBox>
 
@@ -75,6 +77,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
     for (const auto& string : strings) {
         ui->listWidgetReferences->addItem(QString::fromStdString(string));
     }
+    ui->listWidgetReferences->installEventFilter(this);
 
     QMetaObject::connectSlotsByName(this);
 
@@ -194,6 +197,26 @@ void TaskFilletParameters::changeEvent(QEvent* e)
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
     }
+}
+
+bool TaskFilletParameters::eventFilter(QObject* watched, QEvent* event)
+{
+    if (watched == ui->listWidgetReferences && event->type() == QEvent::KeyPress) {
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
+        const Qt::KeyboardModifiers ignoredModifiers = Qt::ShiftModifier | Qt::KeypadModifier;
+        if ((keyEvent->modifiers() & ~ignoredModifiers) == Qt::NoModifier
+            && (keyEvent->key() == Qt::Key_Down || keyEvent->key() == Qt::Key_Up)) {
+            const int row = ui->listWidgetReferences->currentRow();
+            const int last = ui->listWidgetReferences->count() - 1;
+            if ((keyEvent->key() == Qt::Key_Down && row >= last)
+                || (keyEvent->key() == Qt::Key_Up && row <= 0)) {
+                keyEvent->accept();
+                return true;
+            }
+        }
+    }
+
+    return TaskDressUpParameters::eventFilter(watched, event);
 }
 
 void TaskFilletParameters::apply()
