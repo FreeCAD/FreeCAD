@@ -2185,6 +2185,13 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         return;
     }
 
+    if (geometryRefs2d == DimensionGeometry::isViewReference && references3d.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            QObject::tr("Incorrect Selection"),
+            QObject::tr("Cannot make 3D dimension without 3d references"));
+        return;
+    }
+
     //what 3d geometry configuration did we receive?
     DimensionGeometry geometryRefs3d{DimensionGeometry::isInvalid};
     if (geometryRefs2d == DimensionGeometry::isViewReference && !references3d.empty()) {
@@ -2193,7 +2200,6 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
             acceptableGeometry,
             minimumCounts,
             acceptableDimensionGeometrys);
-
         if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                 QObject::tr("Incorrect Selection"),
