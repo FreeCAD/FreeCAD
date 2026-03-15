@@ -273,12 +273,6 @@ class ObjectOp(object):
         )
         obj.Workplane = FreeCAD.Vector(0, 0, 1)
 
-        # Add attachment extension to enable attaching operations to geometry
-        # This allows operations to automatically position/orient based on attached faces
-        # Only add to real objects, not OpPrototypes
-        if hasattr(obj, "hasExtension") and not obj.hasExtension("Part::AttachExtension"):
-            obj.addExtension("Part::AttachExtensionPython")
-
         features = self.opFeatures(obj)
 
         if FeatureBaseGeometry & features:
@@ -1138,11 +1132,6 @@ class ObjectOp(object):
         # now that all op values are set make sure the user properties get updated accordingly,
         # in case they still have an expression referencing any op values
         obj.recompute()
-
-        # Update placement from attachment if operation is attached to geometry
-        # This must be called before path generation to ensure correct positioning
-        if hasattr(obj, "positionBySupport"):
-            obj.positionBySupport()
 
         self.commandlist = []
         self.commandlist.append(Path.Command("(%s)" % obj.Label))
