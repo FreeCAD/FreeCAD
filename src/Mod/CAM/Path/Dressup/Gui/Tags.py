@@ -478,12 +478,15 @@ class PathDressupTagViewProvider:
         #    tag.purgeTouched()
 
     def setEdit(self, vobj, mode=0):
-        panel = PathDressupTagTaskPanel(vobj.Object, self)
-        self.setupTaskPanel(panel)
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        elif mode == 0:
+            panel = PathDressupTagTaskPanel(vobj.Object, self)
+            self.setupTaskPanel(panel)
         return True
 
     def unsetEdit(self, vobj, mode):
-        if hasattr(self, "panel") and self.panel:
+        if mode == 0 and hasattr(self, "panel") and self.panel:
             self.panel.abort()
 
     def setupTaskPanel(self, panel):
