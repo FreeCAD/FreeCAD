@@ -25,12 +25,14 @@
 
 #include <limits>
 
+#include <Adaptor2d_Line2d.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepClass_FaceClassifier.hxx>
 #include <BRepLProp_CLProps.hxx>
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLib.hxx>
@@ -220,6 +222,84 @@ Base::Vector3d ShapeUtils::findCentroidVec(const TopoDS_Shape& shape, const gp_A
     return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
+std::optional<gp_Pnt> ShapeUtils::findPointInsideFace(const TopoDS_Face& face)
+{
+    if (face.IsNull()) {
+        return std::nullopt;
+    }
+
+    Standard_Real uMin;
+    Standard_Real uMax;
+    Standard_Real vMin;
+    Standard_Real vMax;
+    BRepTools::UVBounds(face, uMin, uMax, vMin, vMax);
+
+    // Get something like "face center" and the bounding box diagonal
+    gp_Pnt2d center((uMin + uMax)/2.0, (vMin + vMax)/2.0);
+    Standard_Real diagonal = sqrt(DU::sqr(uMax - uMin) + DU::sqr(vMax - vMin));
+
+    // We will be trying these directions
+    gp_Dir2d directions[2] = { gp_Dir2d(1.0, 0.0), gp_Dir2d(0.0, 1.0) };
+
+    BRepClass_FaceClassifier classifier;
+    BRepClass_Intersector intersector;
+    for (gp_Dir2d direction : directions) {
+        // Create a line through the bounding box center with current direction, but starting outside the box
+        gp_Lin2d centerLine(center.Translated(-diagonal*gp_Vec2d(direction)), direction);
+
+        // For all edges try to compute the intersection points
+        std::vector<std::pair<Standard_Real, Standard_Real>> intersectionIntervals;
+        for (TopExp_Explorer explorer(face, TopAbs_EDGE); explorer.More(); explorer.Next()) {
+            // Perform the intersection between our line segment and the edge curve
+            intersector.Perform(centerLine, 2.0*diagonal, Precision::Confusion(),
+                                BRepClass_Edge(TopoDS::Edge(explorer.Current()), face));
+
+            // Save all found intersection points, we will prune them later
+            for (Standard_Integer i = 1; i <= intersector.NbPoints(); ++i) {
+                intersectionIntervals.push_back(std::make_pair(intersector.Point(i).ParamOnFirst(), 0.0));
+            }
+        }
+
+        // Sort the intervals by the intersection parameter value, it will serve as interval's left boundary
+        std::sort(intersectionIntervals.begin(), intersectionIntervals.end(),
+                  [](auto a, auto b) { return a.first < b.first; });
+
+        unsigned int storeIndex = 0;
+        unsigned int scanIndex = 1;
+        while (scanIndex < intersectionIntervals.size()) {
+            // Construct the interval only if its length is greater than our tolerance
+            if (intersectionIntervals[scanIndex].first > intersectionIntervals[storeIndex].first + Precision::Confusion()) {
+                intersectionIntervals[storeIndex++].second = intersectionIntervals[scanIndex].first;
+                intersectionIntervals[storeIndex].first = intersectionIntervals[scanIndex].first;
+            }
+            ++scanIndex;
+        }
+
+        // We need at least one interval to perform the point-inside-face test
+        if (storeIndex > 0) {
+            // Sort the intervals by their sizes, largest first
+            intersectionIntervals.resize(storeIndex);
+            std::sort(intersectionIntervals.begin(), intersectionIntervals.end(),
+                      [](auto a, auto b) { return a.second - a.first > b.second - b.first; });
+
+            Adaptor2d_Line2d lineAdaptor;
+            lineAdaptor.Load(centerLine);
+            for (auto interval : intersectionIntervals) {
+                // Test the points in the middle of the intersection intervals
+                gp_Pnt2d testPoint = lineAdaptor.Value((interval.first + interval.second)/2.0);
+
+                classifier.Perform(face, testPoint, Precision::Confusion());
+                if (classifier.State() == TopAbs_IN) {
+                    BRepAdaptor_Surface adaptor = BRepAdaptor_Surface(face);
+                    return adaptor.Value(testPoint.X(), testPoint.Y());
+                }
+            }
+        }
+    }
+
+    // No luck in any direction, this is weird...
+    return std::nullopt;
+}
 
 //!scales & mirrors a shape about a center
 TopoDS_Shape ShapeUtils::mirrorShapeVec(const TopoDS_Shape& input, const Base::Vector3d& inputCenter,
@@ -331,6 +411,12 @@ TopoDS_Shape ShapeUtils::invertGeometry(const TopoDS_Shape s)
     mirrorY.SetMirror(mirrorPlane);
     BRepBuilderAPI_Transform mkTrf(s, mirrorY, true);
     return mkTrf.Shape();
+}
+
+gp_Pnt ShapeUtils::fromQt(gp_Pnt point)
+{
+    point.SetY(-point.Y());
+    return point;
 }
 
 //! transforms a shape defined in invertedY (Qt) coordinates into one defined by

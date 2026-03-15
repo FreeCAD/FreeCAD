@@ -35,7 +35,9 @@
 // actual drawing routines in Gui
 
 
+#include <BOPAlgo_Builder.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
+#include <BRepClass_FaceClassifier.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -46,6 +48,7 @@
 #include <BRep_Tool.hxx>
 #include <Bnd_Box.hxx>
 #include <HLRAlgo_Projector.hxx>
+#include <IntCurvesFace_Intersector.hxx>
 #include <QtConcurrentRun>
 #include <ShapeAnalysis.hxx>
 #include <TopExp.hxx>
@@ -512,15 +515,106 @@ void DrawViewPart::extractFaces()
         return;
     }
 
-    if (newFaceFinder()) {
-        findFacesNew(goEdges);
-    } else {
-        findFacesOld(goEdges);
+    switch (faceFinderVersion()) {
+        case FaceFinderVersion::v0_17:
+            findFacesV0_17(goEdges);
+            break;
+        case FaceFinderVersion::v0_21:
+            findFacesV0_21(goEdges);
+            break;
+        default:
+            findFacesV1_2(goEdges);
+            break;
+    }
+}
+
+void DrawViewPart::findFacesV1_2(const std::vector<BaseGeomPtr> &goEdges)
+{
+    geometryObject->clearFaceGeom();
+
+    // Run the General Fuse algorithm on unbounded planar face and use our edges to split it into smaller faces
+    BOPAlgo_Builder builder;
+    builder.SetFuzzyValue(FUZZYADJUST*EWTOLERANCE);
+    builder.SetNonDestructive(Standard_False); // Allow in-place modifications
+    builder.SetGlue(BOPAlgo_GlueOff);          // No gluing needed as all intersections are real
+    builder.SetCheckInverted(Standard_False);  // No solids in the input list
+    builder.SetUseOBB(Standard_True);          // Use oriented bound boxes
+    builder.SetRunParallel(Standard_True);     // Speed up the process, if possible
+
+    builder.AddArgument(BRepBuilderAPI_MakeFace(gp_Pln()));
+    for (auto edge : goEdges) {
+        builder.AddArgument(edge->getOCCEdge());
+    }
+
+    builder.Perform();
+    if (builder.HasErrors()) {
+        Standard_SStream errStream;
+        builder.DumpErrors(errStream);
+        const std::string &errStr = errStream.str();
+        Base::Console().error("FaceFinder v1.2: OCC General Fuse algorithm failed with error(s):\n%s\n", errStr.c_str());
+        return;
+    }
+    if (builder.HasWarnings()) {
+        Standard_SStream warnStream;
+        builder.DumpWarnings(warnStream);
+        const std::string &warnStr = warnStream.str();
+        Base::Console().warning("FaceFinder v1.2: OCC General Fuse algorithm raised warning(s):\n%s\n", warnStr.c_str());
+    }
+
+    // Go through the resulting faces while discarding the hole-in-plane face and the really tiny ones
+    const TopoDS_Shape& resultShape = builder.Shape();
+    if (resultShape.IsNull()) {
+        Base::Console().warning("FaceFinder v1.2: OCC General Fuse resulting shape is null\n");
+        return;
+    }
+
+    constexpr double minimumArea = 0.000001; // Arbitrary throwaway face area, taken from Face Finder v0.21
+    gp_Pnt2d infinityPoint(Precision::Infinite(), Precision::Infinite());
+    BRepClass_FaceClassifier classifier;
+    std::vector<TopoDS_Face> faces;
+
+    for (TopExp_Explorer explorer(resultShape, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        TopoDS_Face face = TopoDS::Face(explorer.Current());
+
+        classifier.Perform(face, infinityPoint, Precision::Confusion());
+        if (classifier.State() == TopAbs_IN) {
+            // Infinity point is a part of this face, i.e. this is the hole-in-plane face
+            continue;
+        }
+
+        TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(face);
+        double faceArea = ShapeAnalysis::ContourArea(outerWire);
+        if (faceArea <= minimumArea) {
+            // This face is just too small, we will not include it in the result
+            continue;
+        }
+
+        faces.push_back(face);
+    }
+
+    for (unsigned int i = 0; i < faces.size(); ++i) {
+        geometryObject->addFaceGeom(std::make_shared<Face>(faces[i]));
+    }
+
+    if (identifyVoids()) {
+        showProgressMessage(getNameInDocument(), "is identifying faces representing voids");
+
+        std::vector<FaceRepresentation> faceReps = getFaceRepresentations(faces);
+        const std::vector<FacePtr> &faceGeoms = geometryObject->getFaceGeometry();
+
+        for (unsigned int i = 0; i < faces.size(); ++i) {
+            if (faceReps[i] == FaceRepresentation::Failed) {
+                Base::Console().warning("FaceFinder v1.2: Unable to find a single point inside Face%d\n", i);
+            }
+            else {
+                faceGeoms[i]->setHole(faceReps[i] == FaceRepresentation::Hollow);
+            }
+        }
     }
 }
 
 // use the revised face finder algo
-void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
+void DrawViewPart::findFacesV0_21(const std::vector<BaseGeomPtr> &goEdges)
 {
     std::vector<TopoDS_Edge> closedEdges;
     std::vector<TopoDS_Edge> cleanEdges = DrawProjectSplit::scrubEdges(goEdges, closedEdges);
@@ -587,7 +681,7 @@ void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
 
 // original face finding method.  This is retained only to produce the same face geometry in older
 // documents.
-void DrawViewPart::findFacesOld(const std::vector<BaseGeomPtr> &goEdges)
+void DrawViewPart::findFacesV0_17(const std::vector<BaseGeomPtr> &goEdges)
 {
     //make a copy of the input edges so the loose tolerances of face finding are
     //not applied to the real edge geometry.  See TopoDS_Shape::TShape().
@@ -1011,6 +1105,57 @@ TopoDS_Shape DrawViewPart::getEdgeCompound() const
     return TopoDS_Shape();
 }
 
+std::vector<FaceRepresentation> DrawViewPart::getFaceRepresentations(const std::vector<TopoDS_Face>& faces) const
+{
+    std::vector<FaceRepresentation> result(faces.size(), FaceRepresentation::Hollow);
+
+    // Create the projector the same way GeometryObject::projectShape() does
+    HLRAlgo_Projector projector;
+    if (this->Perspective.getValue()) {
+        double focusLength = std::max(Precision::Confusion(), this->Focus.getValue());
+        projector = HLRAlgo_Projector(getProjectionCS(), focusLength);
+    }
+    else {
+        projector = HLRAlgo_Projector(getProjectionCS());
+    }
+
+    // Take the shape used to create the projection, scale it and rotate it, as processed earlier by HLR
+    TopoDS_Shape shape = ShapeUtils::scaleShape(m_saveShape, this->getScale());
+    shape = ShapeUtils::rotateShape(shape, getProjectionCS(), this->Rotation.getValue());
+
+    // Go through all 3D faces of the source shape we are projecting
+    for (TopExp_Explorer explorer(shape, TopAbs_FACE); explorer.More(); explorer.Next()) {
+        IntCurvesFace_Intersector intersector(TopoDS::Face(explorer.Current()), FUZZYADJUST*EWTOLERANCE);
+
+        // Now for each of our 2D faces of the drawing
+        for (unsigned int i = 0; i < faces.size(); ++i) {
+            if (result[i] != FaceRepresentation::Hollow) {
+                // This drawing face has been already marked as solid or problematic
+                continue;
+            }
+
+            // Get random point lying inside the drawing face
+            std::optional<gp_Pnt> facePointOpt = ShapeUtils::findPointInsideFace(faces[i]);
+            if (!facePointOpt) {
+                result[i] = FaceRepresentation::Failed;
+                continue;
+            }
+
+            // Get the projection ray, i.e. line of all points projected on the drawing screen as our point
+            gp_Pnt facePoint = ShapeUtils::fromQt(*facePointOpt);
+            gp_Lin ray = projector.Shoot(facePoint.X(), facePoint.Y());
+
+            // If there was any intersection of our ray through the tested 3D face, mark the drawing face as solid
+            intersector.Perform(ray, -Precision::Infinite(), +Precision::Infinite());
+            if (intersector.NbPnt() > 0) {
+                result[i] = FaceRepresentation::Opaque;
+            }
+        }
+    }
+
+    return result;
+}
+
 // returns the (unscaled) size of the visible lines along the alignment vector.
 // alignment vector is already projected onto our CS, so only has X,Y components
 // used in calculating the length of a section line
@@ -1218,9 +1363,14 @@ bool DrawViewPart::handleFaces()
     return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", true);
 }
 
-bool DrawViewPart::newFaceFinder()
+FaceFinderVersion DrawViewPart::faceFinderVersion()
 {
-    return Preferences::getPreferenceGroup("General")->GetBool("NewFaceFinder", false);
+    return Preferences::faceFinderVersion();
+ }
+
+bool DrawViewPart::identifyVoids()
+{
+    return Preferences::getPreferenceGroup("General")->GetBool("IdentifyVoids", true);
 }
 
 //! remove features that are useless without this DVP

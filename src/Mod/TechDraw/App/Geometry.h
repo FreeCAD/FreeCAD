@@ -355,13 +355,21 @@ using WirePtr = std::shared_ptr<Wire>;
 class TechDrawExport Face
 {
     public:
-        Face() = default;
+        Face() : hole(false) { };
+        explicit Face(const TopoDS_Face &f);
         ~Face();
+
+        bool isHole() { return hole; }
+        void setHole(bool hole) { this->hole = hole; }
+
         TopoDS_Face toOccFace() const;
         std::vector<Wire *> wires;
 
         double getArea() const;
         Base::Vector3d getCenter() const;
+
+    protected:
+        bool hole;
 };
 using FacePtr = std::shared_ptr<Face>;
 

@@ -69,7 +69,7 @@
           </property>
          </widget>
         </item>
-        <item row="8" column="0">
+        <item row="9" column="0">
          <widget class="QLabel" name="label_5">
           <property name="text">
            <string>Edge fuzz</string>
@@ -77,18 +77,20 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbNewFaceFinder">
+         <widget class="Gui::PrefCheckBox" name="cbIdentifyVoids">
           <property name="toolTip">
-           <string>If checked, FreeCAD will use the new face finder algorithm. If not checked, FreeCAD will use the legacy face finder algorithm.</string>
+           <string>If checked and the face finder algorithm supports it, FreeCAD will attempt
+to decide, whether each drawing face represents either the material, or a hole.
+For large amount of faces the detection can become slow.</string>
           </property>
           <property name="text">
-           <string>Use new face finder algorithm</string>
+           <string>Identify faces representing voids</string>
           </property>
           <property name="checked">
            <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>NewFaceFinder</cstring>
+           <cstring>IdentifyVoids</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/General</cstring>
@@ -222,7 +224,7 @@ can be a performance penalty in complex models.</string>
           </property>
          </widget>
         </item>
-        <item row="7" column="2">
+        <item row="8" column="2">
          <widget class="Gui::PrefSpinBox" name="sbScrubCount">
           <property name="toolTip">
            <string>The number of times FreeCAD should try to remove overlapping edges returned by the hidden line removal algorithm. A value of 0 indicates no scrubbing, 1 indicates a single pass and 2 indicates a second pass should be performed. Values above 2 are generally not productive. Each pass adds to the time required to produce the drawing.</string>
@@ -248,6 +250,63 @@ can be a performance penalty in complex models.</string>
          </widget>
         </item>
         <item row="7" column="0">
+         <widget class="QLabel" name="lblFaceFinderVer">
+          <property name="text">
+           <string>Face finder algorithm</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <spacer name="hsFaceFinderVer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="7" column="2">
+         <widget class="Gui::PrefComboBox" name="cbFaceFinderVer">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Use newest or one of the legacy of face finder algorithms</string>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FaceFinderVersion</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>FreeCAD v0.17</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>FreeCAD v0.21</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>FreeCAD v1.2</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="8" column="0">
          <widget class="QLabel" name="label_3">
           <property name="font">
            <font>
@@ -259,14 +318,14 @@ can be a performance penalty in complex models.</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="0">
+        <item row="10" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
            <string>Mark fuzz</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="2">
+        <item row="12" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxPat">
           <property name="toolTip">
            <string>Maximum hatch line segments to use
@@ -295,7 +354,7 @@ when hatching a face with a PAT pattern</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="0">
+        <item row="11" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
            <string>Max SVG hatch tiles</string>
@@ -345,7 +404,7 @@ when hatching a face with a PAT pattern</string>
           </property>
          </widget>
         </item>
-        <item row="9" column="2">
+        <item row="10" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbMarkFuzz">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -393,7 +452,7 @@ Each unit is approx. 0.1 mm wide</string>
           </property>
          </spacer>
         </item>
-        <item row="8" column="2">
+        <item row="9" column="2">
          <widget class="Gui::PrefDoubleSpinBox" name="pdsbEdgeFuzz">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -453,14 +512,14 @@ Each unit is approximately 0.1mm wide</string>
           </property>
          </widget>
         </item>
-        <item row="11" column="0">
+        <item row="12" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
            <string>Maximum PAT hatch segments</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="2">
+        <item row="11" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
           <property name="toolTip">
            <string>Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
@@ -626,6 +685,11 @@ Increase the limit if necessary.</string>
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

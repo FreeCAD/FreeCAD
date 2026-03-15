@@ -34,6 +34,7 @@
 # include <BRepLib.hxx>
 # include <BRepLProp_CLProps.hxx>
 # include <BRepTools.hxx>
+# include <BRepTools_WireExplorer.hxx>
 # include <BRepLProp_CurveTool.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeEllipse.hxx>
@@ -101,9 +102,8 @@ Wire::Wire()
 
 Wire::Wire(const TopoDS_Wire &w)
 {
-    TopExp_Explorer edges(w, TopAbs_EDGE);
-    for (; edges.More(); edges.Next()) {
-        const auto edge( TopoDS::Edge(edges.Current()) );
+    for (BRepTools_WireExplorer explorer(w); explorer.More(); explorer.Next()) {
+        TopoDS_Edge edge = explorer.Current();
         BaseGeomPtr bg = BaseGeom::baseFactory(edge);
         if (bg) {
             geoms.push_back(bg);
@@ -134,6 +134,14 @@ TopoDS_Wire Wire::toOccWire() const
 void Wire::dump(std::string s)
 {
     BRepTools::Write(toOccWire(), s.c_str());            //debug
+}
+
+Face::Face(const TopoDS_Face& f) : hole(false)
+{
+    for (TopExp_Explorer explorer(f, TopAbs_WIRE); explorer.More(); explorer.Next()) {
+        const auto wire(TopoDS::Wire(explorer.Current()));
+        wires.push_back(new Wire(wire));
+    }
 }
 
 // note that the face returned is inverted in Y
@@ -499,10 +507,6 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
           Handle(Geom_BezierCurve) bez = adapt.Bezier();
           //if (bez->Degree() < 4) {
           result = std::make_shared<BezierSegment>(edge);
-          if (edge.Orientation() == TopAbs_REVERSED) {
-              result->reversed = true;
-          }
-
           //    OCC is quite happy with Degree > 3 but QtGui handles only 2, 3
       } break;
       case GeomAbs_BSplineCurve: {
@@ -791,7 +795,6 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
 
     startAngle = fmod(f, 2.0*std::numbers::pi);
     endAngle = fmod(l, 2.0*std::numbers::pi);
-
 
     cw = (a < 0) ? true: false;
     largeArc = (fabs(l-f) > std::numbers::pi) ? true : false;
@@ -1649,7 +1652,10 @@ TopoDS_Edge GeometryUtils::asCircle(const TopoDS_Edge& splineEdge, bool& arc)
     if (!mkArc.IsDone()) {
         throw Base::RuntimeError("GU::asCircle failed to create arc");
     }
-    return BRepBuilderAPI_MakeEdge(circleArc);
+
+    TopoDS_Edge result = BRepBuilderAPI_MakeEdge(circleArc);
+    result.Orientation(splineEdge.Orientation());
+    return result;
 }
 
 bool GeometryUtils::isLine(const TopoDS_Edge& occEdge)
