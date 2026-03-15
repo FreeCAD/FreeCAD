@@ -2343,7 +2343,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         Data::IndexedName ancestorIndexName = Data::IndexedName::fromConst(shapeName(it->second).c_str(), ancestorIndex);
                         Data::MappedName ancestorMappedName = getMappedName(ancestorIndexName);
 
-                        if (ancestorMappedName) {
+                        if (ancestorMappedName && std::find(linkedAncestorNames.begin(), linkedAncestorNames.end(), ancestorMappedName) == linkedAncestorNames.end()) {
                             linkedAncestorNames.push_back(ancestorMappedName);
                         }
                     }
@@ -2389,7 +2389,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         if (subshapeIndexName) {
                             Data::MappedName subshapeName = getMappedName(subshapeIndexName);
 
-                            if (subshapeName) {
+                            if (subshapeName && std::find(linkedConnectedNames.begin(), linkedConnectedNames.end(), subshapeName) == linkedConnectedNames.end()) {
                                 linkedConnectedNames.push_back(subshapeName);
                             }
                         }
