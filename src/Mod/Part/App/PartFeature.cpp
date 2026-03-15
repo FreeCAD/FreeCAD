@@ -233,9 +233,7 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
                 bool linkedNamePass = false;
 
                 if (checkSections.first[7][0] == "CON" && checkSections.first[7][0] == checkSections.second[7][0]) {
-                    if (linkedNameInterference >= 2 
-                        && (linkedNameInterference >= checkSections.first[1].size() 
-                            || linkedNameInterference >= checkSections.second[1].size()))
+                    if (linkedNameInterference >= 2)
                     {
                         linkedNamePass = true;
                     }
