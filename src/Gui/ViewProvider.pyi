@@ -276,17 +276,26 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def getBoundingBox(
-        self, subName: Optional[str] = None, transform: bool = True, view: Any = None, /
+        self,
+        subname: Optional[str] = None,
+        transform: bool = True,
+        view: Any = None,
+        mat: Any = None,
+        depth: int = 0,
     ) -> BoundBox:
         """
         Obtain the bounding box of this view object.
 
-        subName : str
-            Name referring a sub-object. Optional.
+        subname : str, optional
+            Name referring a sub-object.
         transform: bool
             Whether to apply the transformation matrix of this view provider.
-        view: View3DInventorPy
-            Default to active view. Optional.
+        view: View3DInventorPy, optional
+            The view to use. Defaults to active view.
+        mat: Matrix, optional
+            Initial transformation matrix.
+        depth: int
+            Current recursion depth.
         """
         ...
     Annotation: Any = ...
