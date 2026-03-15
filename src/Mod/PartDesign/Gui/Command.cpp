@@ -204,12 +204,7 @@ void CmdPartDesignPlane::activated(int iMsg)
 
 bool CmdPartDesignPlane::isActive()
 {
-    if (getActiveGuiDocument()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return getActiveGuiDocument() && !Gui::Control().activeDialog();
 }
 
 DEF_STD_CMD_A(CmdPartDesignLine)
@@ -234,12 +229,7 @@ void CmdPartDesignLine::activated(int iMsg)
 
 bool CmdPartDesignLine::isActive()
 {
-    if (getActiveGuiDocument()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return getActiveGuiDocument() && !Gui::Control().activeDialog();
 }
 
 DEF_STD_CMD_A(CmdPartDesignPoint)
@@ -264,12 +254,7 @@ void CmdPartDesignPoint::activated(int iMsg)
 
 bool CmdPartDesignPoint::isActive()
 {
-    if (getActiveGuiDocument()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return getActiveGuiDocument() && !Gui::Control().activeDialog();
 }
 
 DEF_STD_CMD_A(CmdPartDesignCS)
@@ -294,12 +279,7 @@ void CmdPartDesignCS::activated(int iMsg)
 
 bool CmdPartDesignCS::isActive()
 {
-    if (getActiveGuiDocument()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return getActiveGuiDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -1242,7 +1222,7 @@ void CmdPartDesignPad::activated(int iMsg)
 
 bool CmdPartDesignPad::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -1271,7 +1251,7 @@ void CmdPartDesignPocket::activated(int iMsg)
 
 bool CmdPartDesignPocket::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -1316,7 +1296,7 @@ void CmdPartDesignHole::activated(int iMsg)
 
 bool CmdPartDesignHole::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -1378,7 +1358,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
 
 bool CmdPartDesignRevolution::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -1448,7 +1428,7 @@ void CmdPartDesignGroove::activated(int iMsg)
 
 bool CmdPartDesignGroove::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -1497,7 +1477,7 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
 
 bool CmdPartDesignAdditivePipe::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 
@@ -1547,7 +1527,7 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
 
 bool CmdPartDesignSubtractivePipe::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 
@@ -1597,7 +1577,7 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
 
 bool CmdPartDesignAdditiveLoft::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 
@@ -1647,7 +1627,7 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
 
 bool CmdPartDesignSubtractiveLoft::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -1730,7 +1710,7 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
 
 bool CmdPartDesignAdditiveHelix::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 
@@ -1790,7 +1770,7 @@ void CmdPartDesignSubtractiveHelix::activated(int iMsg)
 
 bool CmdPartDesignSubtractiveHelix::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -1974,7 +1954,7 @@ void CmdPartDesignFillet::activated(int iMsg)
 
 bool CmdPartDesignFillet::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -2003,7 +1983,7 @@ void CmdPartDesignChamfer::activated(int iMsg)
 
 bool CmdPartDesignChamfer::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -2072,7 +2052,7 @@ void CmdPartDesignDraft::activated(int iMsg)
 
 bool CmdPartDesignDraft::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 
@@ -2131,7 +2111,7 @@ void CmdPartDesignThickness::activated(int iMsg)
 
 bool CmdPartDesignThickness::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -2258,7 +2238,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
 
 bool CmdPartDesignMirrored::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -2327,7 +2307,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
 
 bool CmdPartDesignLinearPattern::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -2389,7 +2369,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
 
 bool CmdPartDesignPolarPattern::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -2432,7 +2412,7 @@ void CmdPartDesignScaled::activated(int iMsg)
 
 bool CmdPartDesignScaled::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -2561,7 +2541,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 
 bool CmdPartDesignMultiTransform::isActive()
 {
-    return hasActiveDocument();
+    return hasActiveDocument() && !Gui::Control().activeDialog();
 }
 
 //===========================================================================
@@ -2625,12 +2605,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
 
 bool CmdPartDesignBoolean::isActive()
 {
-    if (getActiveGuiDocument()) {
-        return true;
-    }
-    else {
-        return false;
-    }
+    return getActiveGuiDocument() && !Gui::Control().activeDialog();
 }
 
 // Command group for datums =============================================
