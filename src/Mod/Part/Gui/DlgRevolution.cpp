@@ -23,8 +23,10 @@
  ***************************************************************************/
 
 #include <limits>
+#include <algorithm>
 
 #include <QMessageBox>
+#include <QHeaderView>
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <Precision.hxx>
@@ -56,6 +58,31 @@
 
 
 using namespace PartGui;
+
+namespace
+{
+void adjustTreeHeightToContent(QTreeWidget* tree, int minRows = 2, int maxRows = 6)
+{
+    if (!tree) {
+        return;
+    }
+
+    const int rowCount = tree->topLevelItemCount();
+    const int visibleRows = std::max(minRows, std::min(maxRows, rowCount > 0 ? rowCount : 1));
+    int rowHeight = tree->sizeHintForRow(0);
+    if (rowHeight <= 0) {
+        rowHeight = tree->fontMetrics().height() + 6;
+    }
+
+    const int headerHeight = tree->header() && !tree->header()->isHidden() ? tree->header()->height()
+                                                                           : 0;
+    const int frame = 2 * tree->frameWidth();
+    const int totalHeight = frame + headerHeight + visibleRows * rowHeight + 2;
+
+    tree->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    tree->setFixedHeight(totalHeight);
+}
+}  // namespace
 
 class DlgRevolution::EdgeSelection: public Gui::SelectionFilterGate
 {
@@ -376,6 +403,7 @@ void DlgRevolution::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
+        adjustTreeHeightToContent(ui->treeWidget);
         return;
     }
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
@@ -413,6 +441,8 @@ void DlgRevolution::findShapes()
             item->setIcon(0, vp->getIcon());
         }
     }
+
+    adjustTreeHeightToContent(ui->treeWidget);
 }
 
 void DlgRevolution::accept()

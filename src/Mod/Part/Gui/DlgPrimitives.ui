@@ -405,18 +405,18 @@
             </item>
             </layout>
           </item>
-         <item row="1" column="0">
+          <item row="1" column="0">
            <spacer>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Expanding</enum>
+             <enum>QSizePolicy::Minimum</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
               <width>20</width>
-              <height>51</height>
+              <height>0</height>
              </size>
             </property>
            </spacer>
