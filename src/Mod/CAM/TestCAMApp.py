@@ -110,6 +110,7 @@ from CAMTests.TestPathVoronoi import TestPathVoronoi
 
 from CAMTests.TestGenericPost import TestGenericPost
 from CAMTests.TestGenericPlasma import TestGenericPlasma
+from CAMTests.TestDynapath4060Post import TestDynapath4060Post
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
 from CAMTests.TestFanucPost import TestFanucPost
 
