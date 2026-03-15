@@ -910,6 +910,11 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_Transient | Prop_ReadOnly),
                       "Transient directory, where the files live while the document is open");
+    ADD_PROPERTY_TYPE(DocumentCacheDir,
+                      (""),
+                      0,
+                      Prop_None,
+                      "Cache directory for this document");
     ADD_PROPERTY_TYPE(Tip,
                       (nullptr),
                       0,
@@ -1068,6 +1073,9 @@ void Document::Restore(Base::XMLReader& reader)
     // value could be invalid.
     FileName.setValue(FilePath.c_str());
     Label.setValue(DocLabel.c_str());
+    if (auto* docCacheDirProp = freecad_cast<PropertyPath*>(getPropertyByName("DocumentCacheDir"))) {
+        reader.setDocumentCacheDir(docCacheDirProp->getValue());
+    }
 
     // SchemeVersion "2"
     if (scheme == 2) {
@@ -1625,10 +1633,12 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
     return objs;
 }
 
-void Document::addRecomputeObject(DocumentObject* obj) // NOLINT
+void Document::addRecomputeObject(DocumentObject* obj, bool forMigration) // NOLINT
 {
     if (testStatus(Status::Restoring) && obj) {
-        setStatus(Status::RecomputeOnRestore, true);
+        if (forMigration) {
+            setStatus(Status::RecomputeOnRestore, true);
+        }
         d->touchedObjs.insert(obj);
         obj->touch();
     }
@@ -1866,6 +1876,11 @@ bool Document::saveToFile(const char* filename) const
         Base::ofstream file(tmp, std::ios::out | std::ios::binary);
 
         Base::ZipWriter writer(file);
+        if (auto* cacheDirProp =
+            freecad_cast<PropertyPath*>(getPropertyByName("DocumentCacheDir"))) {
+
+            writer.setDocumentCacheDir(cacheDirProp->getValue());
+        }
         if (!file.is_open()) {
             throw Base::FileException("Failed to open file", tmp);
         }
@@ -1889,6 +1904,7 @@ bool Document::saveToFile(const char* filename) const
         signalSaveDocument(writer);
 
         // write additional files
+        writer.writeFilesToCacheDir();
         writer.writeFiles();
         if (writer.hasErrors()) {
             // retrieve Writer error strings
@@ -2049,6 +2065,7 @@ void Document::restore(const char* filename,
     // Note: This file doesn't need to be available if the document has been created
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
+    reader.readFilesFromCacheDir();
     reader.readFiles(zipstream);
 
     DocumentP::checkStringHasher(reader);

@@ -219,6 +219,10 @@ public:
     unsigned int getAttributeCount() const;
     /// check if the read element has a special attribute
     bool hasAttribute(const char* AttrName) const;
+    void setDocumentCacheDir(const std::string& dir)
+    {
+        documentCacheDir = dir;
+    }
 
 private:
     // all explicit template instantiations - this is for getting
@@ -278,6 +282,7 @@ public:
     /// add a read request of a persistent object
     const char* addFile(const char* Name, Base::Persistence* Object);
     /// process the requested file writes
+    void readFilesFromCacheDir() const;
     void readFiles(zipios::ZipInputStream& zipstream) const;
     /// Returns whether reader has any registered filenames
     bool hasFilenames() const;
@@ -392,11 +397,16 @@ public:
     std::vector<FileEntry> FileList;
 
 private:
+    void readFileFromCacheDir(const FileEntry& entry) const;
+
+private:
     mutable std::vector<std::string> FailedFiles;
 
     std::bitset<32> StatusBits;
 
     std::unique_ptr<std::istream> CharStream;
+
+    std::string documentCacheDir;
 };
 
 class BaseExport Reader: public std::istream

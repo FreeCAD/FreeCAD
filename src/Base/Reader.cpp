@@ -433,6 +433,45 @@ void Base::XMLReader::readBinFile(const char* filename)
     to.close();
 }
 
+void Base::XMLReader::readFileFromCacheDir(const FileEntry& entry) const
+{
+    try {
+        Base::FileInfo fi(documentCacheDir + "/" + entry.FileName);
+        if (fi.exists()) {
+            Base::ifstream from(fi, std::ios::in | std::ios::binary);
+            if (!from) {
+                throw Base::FileException("XMLReader::readFilesFromCacheDir() Could not open file!");
+            }
+            Base::Reader reader(from, entry.FileName, FileVersion);
+            entry.Object->RestoreDocFile(reader);
+            if (reader.getLocalReader()) {
+                reader.getLocalReader()->readFilesFromCacheDir();
+            }
+        }
+    }
+    catch (...) {
+        // For any exception we just continue with the next file.
+        // All what we need to do is to notify the user about the
+        // failure.
+        Base::Console().error(
+            "Reading failed from cache file: %s\n",
+            (documentCacheDir + "/" + entry.FileName).c_str()
+        );
+        FailedFiles.push_back(entry.FileName);
+    }
+}
+
+void Base::XMLReader::readFilesFromCacheDir() const
+{
+    if (documentCacheDir.empty()) {
+        return;
+    }
+
+    for (const auto& entry : FileList) {
+        readFileFromCacheDir(entry);
+    }
+}
+
 void Base::XMLReader::readFiles(zipios::ZipInputStream& zipstream) const
 {
     // It's possible that not all objects inside the document could be created, e.g. if a module

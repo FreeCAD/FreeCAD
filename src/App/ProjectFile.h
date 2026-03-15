@@ -77,6 +77,7 @@ public:
         std::string company;
         std::string createdBy;
         std::string creationDate;
+        std::string documentCacheDir;
         std::string label;
         std::string lastModifiedBy;
         std::string lastModifiedDate;
@@ -148,6 +149,11 @@ public:
      */
     bool containsFile(const std::string& name) const;
     /**
+     * If the project file contains the file \a name in the document cache true
+     * is returned and false otherwise
+     */
+    bool containsFileInDocumentCache(const std::string& name) const;
+    /**
      * Retrieves a list of input file names referenced to the given object name.
      * This method does the same as @ref getPropertyFiles() unless that it only
      * returns the file names.
@@ -166,6 +172,10 @@ public:
      * Directly extracts the content of an input file of @a name.
      */
     void readInputFileDirect(const std::string& name, std::ostream& str);
+    /**
+     * Reads the content of an input file in the document cache of @a name.
+     */
+    void readInputFileFromDocumentCache(const std::string& name, std::ostream& str) const;
     /**
      * Replaces the input file @a name with the content of the given @a stream.
      * The method returns the file name of the newly created project file.
