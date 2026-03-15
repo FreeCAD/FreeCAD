@@ -1077,8 +1077,18 @@ const SelectionChanges& SelectionSingleton::getPreselection() const
 // add a SelectionGate to control what is selectable
 void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve)
 {
-    if (ActiveGate) {
-        rmvSelectionGate();
+    if (ActiveGate && ActiveGate != PersistentGate) {
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            // if a document is about to be closed it has no MDI view any more
+            Gui::MDIView* mdi = doc->getActiveView();
+            if (mdi) {
+                mdi->restoreOverrideCursor();
+            }
+        }
+
+        delete ActiveGate;
+        ActiveGate = nullptr;
     }
 
     ActiveGate = gate;
@@ -1089,9 +1099,63 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode 
 void SelectionSingleton::rmvSelectionGate()
 {
     if (ActiveGate) {
+        if (ActiveGate == PersistentGate) {
+            return;
+        }
+
         delete ActiveGate;
         ActiveGate = nullptr;
+        if (PersistentGate) {
+            ActiveGate = PersistentGate;
+            gateResolve = persistentGateResolve;
+        }
 
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            // if a document is about to be closed it has no MDI view any more
+            Gui::MDIView* mdi = doc->getActiveView();
+            if (mdi) {
+                mdi->restoreOverrideCursor();
+            }
+        }
+    }
+}
+
+void SelectionSingleton::setPersistentSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve)
+{
+    if (PersistentGate) {
+        if (ActiveGate == PersistentGate) {
+            ActiveGate = nullptr;
+        }
+        delete PersistentGate;
+    }
+
+    PersistentGate = gate;
+    persistentGateResolve = resolve;
+
+    if (!ActiveGate) {
+        ActiveGate = PersistentGate;
+        gateResolve = persistentGateResolve;
+    }
+}
+
+void SelectionSingleton::clearPersistentSelectionGate()
+{
+    if (!PersistentGate) {
+        return;
+    }
+
+    if (ActiveGate == PersistentGate) {
+        delete ActiveGate;
+        ActiveGate = nullptr;
+    }
+    else {
+        delete PersistentGate;
+    }
+
+    PersistentGate = nullptr;
+
+    if (!ActiveGate) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
             // if a document is about to be closed it has no MDI view any more
@@ -2179,7 +2243,9 @@ SelectionSingleton::SelectionSingleton()
     hy = 0;
     hz = 0;
     ActiveGate = nullptr;
+    PersistentGate = nullptr;
     gateResolve = ResolveMode::OldStyleElement;
+    persistentGateResolve = ResolveMode::OldStyleElement;
     // NOLINTBEGIN
     App::GetApplication().signalDeletedObject.connect(
         std::bind(&Gui::SelectionSingleton::slotDeletedObject, this, sp::_1)
@@ -2194,7 +2260,15 @@ SelectionSingleton::SelectionSingleton()
  * A destructor.
  * A more elaborate description of the destructor.
  */
-SelectionSingleton::~SelectionSingleton() = default;
+SelectionSingleton::~SelectionSingleton()
+{
+    if (ActiveGate && ActiveGate != PersistentGate) {
+        delete ActiveGate;
+    }
+    if (PersistentGate) {
+        delete PersistentGate;
+    }
+}
 
 SelectionSingleton* SelectionSingleton::_pcSingleton = nullptr;
 
@@ -2436,7 +2510,22 @@ PyMethodDef SelectionSingleton::Methods[] = {
      METH_VARARGS,
      "removeSelectionGate() -> None\n"
      "\n"
-     "Remove the active selection gate."},
+     "Remove the active temporary selection gate."},
+    {"setPersistentSelectionGate",
+     (PyCFunction)SelectionSingleton::sSetPersistentSelectionGate,
+     METH_VARARGS,
+     "setPersistentSelectionGate(filter, resolve=ResolveMode.OldStyleElement) -> None\n"
+     "\n"
+     "Set a persistent selection gate that is restored after temporary gates are removed.\n"
+     "\n"
+     "filter : str\n"
+     "resolve : int"},
+    {"clearPersistentSelectionGate",
+     (PyCFunction)SelectionSingleton::sClearPersistentSelectionGate,
+     METH_VARARGS,
+     "clearPersistentSelectionGate() -> None\n"
+     "\n"
+     "Clear the persistent selection gate."},
     {"setVisible",
      (PyCFunction)SelectionSingleton::sSetVisible,
      METH_VARARGS,
@@ -3070,6 +3159,36 @@ PyObject* SelectionSingleton::sRemoveSelectionGate(PyObject* /*self*/, PyObject*
     PY_TRY
     {
         Selection().rmvSelectionGate();
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sSetPersistentSelectionGate(PyObject* /*self*/, PyObject* args)
+{
+    char* filter;
+    int resolve = 1;
+    if (!PyArg_ParseTuple(args, "s|i", &filter, &resolve)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        Selection().setPersistentSelectionGate(new SelectionFilterGate(filter), toEnum(resolve));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* SelectionSingleton::sClearPersistentSelectionGate(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        Selection().clearPersistentSelectionGate();
         Py_Return;
     }
     PY_CATCH;

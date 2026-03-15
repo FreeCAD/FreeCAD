@@ -417,8 +417,15 @@ public:
     const SelectionChanges& getPreselection() const;
     /// add a SelectionGate to control what is selectable
     void addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve = ResolveMode::OldStyleElement);
-    /// remove the active SelectionGate
+    /// remove the active temporary SelectionGate
     void rmvSelectionGate();
+    /// set a SelectionGate that persists after temporary gates are removed
+    void setPersistentSelectionGate(
+        Gui::SelectionGate* gate,
+        ResolveMode resolve = ResolveMode::OldStyleElement
+    );
+    /// clear the persistent SelectionGate
+    void clearPersistentSelectionGate();
 
     int disableCommandLog();
     int enableCommandLog(bool silent = false);
@@ -739,6 +746,8 @@ protected:
     static PyObject* sRemSelObserver(PyObject* self, PyObject* args);
     static PyObject* sAddSelectionGate(PyObject* self, PyObject* args);
     static PyObject* sRemoveSelectionGate(PyObject* self, PyObject* args);
+    static PyObject* sSetPersistentSelectionGate(PyObject* self, PyObject* args);
+    static PyObject* sClearPersistentSelectionGate(PyObject* self, PyObject* args);
     static PyObject* sGetPickedList(PyObject* self, PyObject* args);
     static PyObject* sEnablePickedList(PyObject* self, PyObject* args);
     static PyObject* sPreselect(PyObject* self, PyObject* args);
@@ -839,7 +848,9 @@ protected:
     float hx, hy, hz;
 
     Gui::SelectionGate* ActiveGate;
+    Gui::SelectionGate* PersistentGate;
     ResolveMode gateResolve;
+    ResolveMode persistentGateResolve;
 
     int logDisabled = 0;
     bool logHasSelection = false;
