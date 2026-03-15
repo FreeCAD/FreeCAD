@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MATGUI_DIALOGMATERIALIMP_H
-#define MATGUI_DIALOGMATERIALIMP_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -95,6 +94,7 @@ public:
     ~TaskMaterial() override;
 
 public:
+    bool accept() override;
     bool reject() override;
 
     bool isAllowedAlterDocument() const override
@@ -117,5 +117,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DIALOGMATERIALIMP_H

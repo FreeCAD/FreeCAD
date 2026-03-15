@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskAttacher_H
-#define GUI_TASKVIEW_TaskAttacher_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/DocumentObserver.h>
@@ -89,6 +88,9 @@ public:
     {
         return completed;
     }
+
+Q_SIGNALS:
+    void placementUpdated();
 
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
@@ -235,5 +237,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

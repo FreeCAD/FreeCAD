@@ -22,13 +22,10 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef APP_MAPPED_NAME_H
-#define APP_MAPPED_NAME_H
+#pragma once
 
 #include <memory>
 #include <string>
-
-#include <boost/algorithm/string/predicate.hpp>
 
 #include <QByteArray>
 #include <QHash>
@@ -72,18 +69,7 @@ public:
      * @param[in] size Optional, the length of the name string. If not
      * provided, the string must be null-terminated.
      */
-    explicit MappedName(const char* name, int size = -1)
-        : raw(false)
-    {
-        if (!name) {
-            return;
-        }
-        if (boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
-            name += ELEMENT_MAP_PREFIX_SIZE;
-        }
-
-        data = size < 0 ? QByteArray(name) : QByteArray(name, size);
-    }
+    explicit MappedName(const char* name, int size = -1);
 
     /**
      * @brief Create a MappedName from a C++ std::string.
@@ -1318,6 +1304,3 @@ struct MappedNameRef
 
 
 }  // namespace Data
-
-
-#endif  // APP_MAPPED_NAME_H

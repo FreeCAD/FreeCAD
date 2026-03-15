@@ -2193,7 +2193,7 @@ void MeshOutput::SaveXML(Base::Writer& writer) const
 bool MeshOutput::Save3MF(std::ostream& output) const
 {
     Writer3MF writer(output);
-    writer.AddMesh(_rclMesh, _transform);
+    writer.AddMesh(_rclMesh, _transform, objectName);
     return writer.Save();
 }
 

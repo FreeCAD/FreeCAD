@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __OpenCascadeAll__
-#define __OpenCascadeAll__
+#pragma once
 
 // OpenCASCADE
 
@@ -516,5 +515,3 @@
 #include <XSControl_TransferReader.hxx>
 #include <XSControl_TransferWriter.hxx>
 #include <XSControl_WorkSession.hxx>
-
-#endif  // __OpenCascadeAll__

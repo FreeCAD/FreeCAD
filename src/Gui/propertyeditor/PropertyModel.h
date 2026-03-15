@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYMODEL_H
-#define PROPERTYMODEL_H
+#pragma once
 
 #include <QAbstractItemModel>
 #include <QStringList>
@@ -105,6 +104,3 @@ private:
 
 }  // namespace PropertyEditor
 }  // namespace Gui
-
-
-#endif  // PROPERTYMODEL_H

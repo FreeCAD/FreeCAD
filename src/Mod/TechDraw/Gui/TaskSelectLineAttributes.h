@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
-#define TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -143,5 +142,3 @@ private:
 }; // class TaskDlgSelectLineAttributes
 
 } // namespace TechDrawGui
-
-#endif // #ifndef TECHDRAWGUI_TASKSELECTLINEATTRIBUTES_H

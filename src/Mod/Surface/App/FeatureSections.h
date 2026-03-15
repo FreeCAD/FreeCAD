@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATURESECTIONS_H
-#define SURFACE_FEATURESECTIONS_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartSpline.h>
@@ -52,5 +51,3 @@ public:
 };
 
 }  // Namespace Surface
-
-#endif

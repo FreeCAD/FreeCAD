@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DressUp_H
-#define PARTDESIGN_DressUp_H
+#pragma once
 
 #include "FeatureAddSub.h"
 
@@ -72,6 +73,3 @@ protected:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_DressUp_H

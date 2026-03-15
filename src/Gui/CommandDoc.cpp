@@ -791,17 +791,20 @@ bool StdCmdSaveAs::isActive()
 //===========================================================================
 DEF_STD_CMD_A(StdCmdSaveCopy)
 
+
 StdCmdSaveCopy::StdCmdSaveCopy()
     : Command("Std_SaveCopy")
 {
     sGroup = "File";
-    sMenuText = QT_TR_NOOP("Save Cop&y");
+    sMenuText = QT_TR_NOOP("Save a Cop&y…");
 
     sToolTipText = QT_TR_NOOP("Saves a copy of the active document under a new file name");
     sWhatsThis = "Std_SaveCopy";
     sStatusTip = sToolTipText;
     sPixmap = "Std_SaveCopy";
+    sAccel = "Ctrl+Alt+Shift+S";
 }
+
 
 void StdCmdSaveCopy::activated(int iMsg)
 {

@@ -4,7 +4,7 @@ General:
   UUID: "e8555d5c-c9ff-458f-9ad3-ecabd02b5327"
   Name: "steel"
   Author: "David Carter"
-  License: "All rights reserved"
+  License: "CC-BY-4.0"
 AppearanceModels:
   Pattern File:
     UUID: "c6596294-e97d-4812-87db-28e1d66521a3"

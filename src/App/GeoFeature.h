@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_GEOFEATURE_H
-#define APP_GEOFEATURE_H
+#pragma once
 
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
@@ -216,6 +215,3 @@ protected:
 };
 
 }  // namespace App
-
-
-#endif  // APP_GEOFEATURE_H

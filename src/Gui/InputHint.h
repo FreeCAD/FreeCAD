@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_INPUTHINT_H
-#define GUI_INPUTHINT_H
+#pragma once
 
 #include "FCGlobal.h"
 
@@ -322,5 +321,3 @@ static std::list<InputHint> lookupHints(
 }
 
 }  // namespace Gui
-
-#endif  // GUI_INPUTHINT_H

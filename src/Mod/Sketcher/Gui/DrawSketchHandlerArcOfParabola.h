@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcOfParabola_H
-#define SKETCHERGUI_DrawSketchHandlerArcOfParabola_H
+#pragma once
 
 #include <boost/math/special_functions/fpclassify.hpp>
 
@@ -379,5 +378,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcOfParabola_H

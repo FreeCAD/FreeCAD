@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLYGUI_COMMANDS_H
-#define ASSEMBLYGUI_COMMANDS_H
+#pragma once
 
 #include <Mod/Assembly/App/AssemblyObject.h>
 
@@ -32,5 +31,3 @@ namespace AssemblyGui
 void CreateAssemblyCommands();
 
 }  // namespace AssemblyGui
-
-#endif  // ASSEMBLYGUI_COMMANDS_H

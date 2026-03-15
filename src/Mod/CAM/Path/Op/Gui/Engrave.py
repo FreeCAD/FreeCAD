@@ -53,16 +53,13 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     def super(self):
         return super(TaskPanelBaseGeometryPage, self)
 
-    def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
+    def selectionSupportedAsBaseGeometry(self, sel, ignoreErrors):
         # allow selection of an entire 2D object, which is generally not the case
-        if (
-            len(selection) == 1
-            and not selection[0].HasSubObjects
-            and selection[0].Object.isDerivedFrom("Part::Part2DObject")
-        ):
+        if not sel.HasSubObjects and sel.Object.isDerivedFrom("Part::Part2DObject"):
             return True
+
         # Let general logic handle all other cases.
-        return self.super().selectionSupportedAsBaseGeometry(selection, ignoreErrors)
+        return self.super().selectionSupportedAsBaseGeometry(sel, ignoreErrors)
 
     def addBaseGeometry(self, selection):
         added = False

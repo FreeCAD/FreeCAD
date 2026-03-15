@@ -380,8 +380,8 @@
       <translation>Уставіць слупкі</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <location filename="../../SheetTableView.cpp" line="679"/>
+      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <source>Clear Cells</source>
       <translation>Ачысціць клеткі</translation>
     </message>
@@ -675,8 +675,8 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Усе (*)</translation>
     </message>
@@ -1207,12 +1207,12 @@ Defaults to: %V = %A
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>New zoom level:</source>
       <translation>Новы ўзровень маштабавання:</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>Zoom Level</source>
       <translation>Узровень маштабавання</translation>
     </message>

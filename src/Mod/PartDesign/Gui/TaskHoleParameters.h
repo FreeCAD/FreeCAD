@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskHoleParameters_H
-#define GUI_TASKVIEW_TaskHoleParameters_H
+#pragma once
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
@@ -171,5 +172,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

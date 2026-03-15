@@ -24,8 +24,7 @@
 //! MeasureInfo.h
 //! ancestor class and the various flavours of MeasureXXXXXInfo.
 
-#ifndef PART_MEASUREINFO_H
-#define PART_MEASUREINFO_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -191,5 +190,3 @@ public:
 using CallbackRegistrationList = std::vector<CallbackRegistrationRecord>;
 
 }  // end namespace Part
-
-#endif

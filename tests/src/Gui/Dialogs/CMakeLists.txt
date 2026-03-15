@@ -1,0 +1,1 @@
+setup_qt_test(DlgVersionMigrator)

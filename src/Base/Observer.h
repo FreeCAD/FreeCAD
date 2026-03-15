@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_OBSERVER_H
-#define BASE_OBSERVER_H
+#pragma once
 
 #include <cstring>
 #include <set>
@@ -261,6 +260,3 @@ extern template class Base_EXPORT Subject<const char*>;
 #endif
 
 }  // namespace Base
-
-
-#endif  // BASE_OBSERVER_H

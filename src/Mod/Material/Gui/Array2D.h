@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_ARRAY2D_H
-#define MATGUI_ARRAY2D_H
+#pragma once
 
 #include <memory>
 
@@ -80,5 +79,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_ARRAY2D_H

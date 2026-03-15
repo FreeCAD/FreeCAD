@@ -21,8 +21,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                 *
  *                                                                          *
  ****************************************************************************/
-#ifndef GUI_DLGOBJECTSELECTION_H
-#define GUI_DLGOBJECTSELECTION_H
+#pragma once
 
 #include <QDialog>
 #include <QTimer>
@@ -152,5 +151,3 @@ private:
 }  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::DlgObjectSelection::SelectionOptions);
-
-#endif  // GUI_DLGOBJECTSELECTION_H

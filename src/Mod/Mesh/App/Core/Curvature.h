@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHCORE_CURVATURE_H
-#define MESHCORE_CURVATURE_H
+#pragma once
 
 #include "Definitions.h"
 #include <Base/Vector3D.h>
@@ -84,5 +83,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESHCORE_CURVATURE_H

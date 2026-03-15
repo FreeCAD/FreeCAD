@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_CLIPPING_H
-#define GUI_DIALOG_CLIPPING_H
+#pragma once
 
 #include <QDialog>
 #include <FCGlobal.h>
@@ -74,5 +73,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_CLIPPING_H

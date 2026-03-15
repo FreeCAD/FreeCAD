@@ -24,6 +24,7 @@
 import FreeCAD
 import Path
 import glob
+import importlib.util
 import os
 import pathlib
 from collections import defaultdict
@@ -51,6 +52,7 @@ PostProcessorDefaultArgs = "PostProcessorDefaultArgs"
 PostProcessorBlacklist = "PostProcessorBlacklist"
 PostProcessorOutputFile = "PostProcessorOutputFile"
 PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
+PostProcessorShowEditor = "PostProcessorShowEditor"
 
 ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
@@ -220,6 +222,81 @@ def allEnabledPostProcessors(include=None):
     return enabled
 
 
+_post_type_cache = {}
+_post_type_cache_keys = None
+
+
+def classifyPostProcessor(name):
+    """Classify a postprocessor as 'machine', 'legacy', or 'unknown'.
+
+    Checks for a POST_TYPE module-level constant in the post's .py file.
+    Returns 'machine' for new-style posts, 'legacy' for old-style,
+    'unknown' if the file cannot be found or loaded.
+    """
+    global _post_type_cache, _post_type_cache_keys
+
+    # Invalidate cache if the available post list has changed
+    current_keys = tuple(allAvailablePostProcessors())
+    if current_keys != _post_type_cache_keys:
+        _post_type_cache = {}
+        _post_type_cache_keys = current_keys
+
+    if name in _post_type_cache:
+        return _post_type_cache[name]
+
+    module_name = f"{name}_post"
+    for search_path in searchPathsPost():
+        module_path = os.path.join(search_path, f"{module_name}.py")
+        if not os.path.isfile(module_path):
+            continue
+        try:
+            spec = importlib.util.spec_from_file_location(module_name, module_path)
+            if spec and spec.loader:
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                post_type = getattr(module, "POST_TYPE", "legacy")
+                _post_type_cache[name] = post_type
+                return post_type
+        except Exception:
+            continue
+    _post_type_cache[name] = "unknown"
+    return "unknown"
+
+
+def allAvailableLegacyPostProcessors():
+    """Return only legacy postprocessors."""
+    return [p for p in allAvailablePostProcessors() if classifyPostProcessor(p) == "legacy"]
+
+
+def allAvailableMachinePostProcessors():
+    """Return only new-style machine postprocessors."""
+    return [p for p in allAvailablePostProcessors() if classifyPostProcessor(p) == "machine"]
+
+
+def allEnabledLegacyPostProcessors(include=None):
+    """Return enabled legacy postprocessors (for Job context)."""
+    blacklist = postProcessorBlacklist()
+    enabled = [p for p in allAvailableLegacyPostProcessors() if p not in blacklist]
+    if include:
+        legacy_include = [p for p in include if p == "" or classifyPostProcessor(p) == "legacy"]
+        postlist = list(set(legacy_include + enabled))
+        postlist.sort()
+        return postlist
+    return enabled
+
+
+def allEnabledMachinePostProcessors(include=None):
+    """Return enabled machine postprocessors (for Machine editor context)."""
+    blacklist = postProcessorBlacklist()
+    enabled = [p for p in allAvailableMachinePostProcessors() if p not in blacklist]
+    if include:
+        machine_include = [p for p in include if p == "" or classifyPostProcessor(p) == "machine"]
+        postlist = list(set(machine_include + enabled))
+        postlist.sort()
+        return postlist
+    return enabled
+
+
 def defaultPostProcessor():
     pref = preferences()
     return pref.GetString(PostProcessorDefault, "")
@@ -321,6 +398,26 @@ def defaultOutputFile():
 def defaultOutputPolicy():
     pref = preferences()
     return pref.GetString(PostProcessorOutputPolicy, "")
+
+
+def showEditorOnPostProcess():
+    """Get user preference for showing editor before writing G-code.
+
+    Returns:
+        bool: True to show editor, False to skip it (default: True)
+    """
+    pref = preferences()
+    return pref.GetBool(PostProcessorShowEditor, True)
+
+
+def setShowEditorOnPostProcess(show: bool):
+    """Set user preference for showing editor before writing G-code.
+
+    Args:
+        show: True to show editor, False to skip it
+    """
+    pref = preferences()
+    pref.SetBool(PostProcessorShowEditor, show)
 
 
 def defaultStockTemplate():

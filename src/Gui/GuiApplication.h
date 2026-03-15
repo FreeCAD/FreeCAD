@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_APPLICATION_H
-#define GUI_APPLICATION_H
+#pragma once
 
 #include "GuiApplicationNativeEventAware.h"
 #include <Base/Interpreter.h>  // For Base::SystemExitException
@@ -94,5 +93,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_APPLICATION_H

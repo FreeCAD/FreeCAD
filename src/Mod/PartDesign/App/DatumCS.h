@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMCS_H
-#define PARTDESIGN_DATUMCS_H
+#pragma once
 
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -57,6 +58,3 @@ public:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_DATUMCS_H

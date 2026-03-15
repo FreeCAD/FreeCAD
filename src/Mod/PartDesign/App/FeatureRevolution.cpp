@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -214,9 +216,8 @@ App::DocumentObjectExecReturn* Revolution::execute()
                 upToFace.move(invObjLoc);
             }
             else {
-                throw Base::RuntimeError(
-                    "ProfileBased: Revolution up to first/last is not yet supported"
-                );
+                // TODO: Implement finding the first face this revolution would intersect with
+                return new App::DocumentObjectExecReturn("Revolve up to first is not yet supported");
             }
 
             if (Reversed.getValue()) {

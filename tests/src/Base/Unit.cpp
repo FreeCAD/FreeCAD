@@ -154,3 +154,4 @@ TEST(Unit, representation_no_name)
     const auto actual = unit.representation();
     EXPECT_EQ(actual, expect);
 }
+// NOLINTEND

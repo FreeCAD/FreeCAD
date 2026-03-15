@@ -22,14 +22,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_Recompute_H
-#define SKETCHERGUI_Recompute_H
+#pragma once
 
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <QListWidget>
+#include <QMap>
+#include <QString>
 
 #include "AutoConstraint.h"
 #include "ViewProviderSketchGeometryExtension.h"
@@ -249,6 +250,8 @@ inline void scrollTo(QListWidget* list, int i, bool select)
     }
 }
 
+QMap<QString, QString> findAvailableFontFiles();
+
 }  // namespace SketcherGui
 
 /// converts a 2D vector into a 3D vector in the XY plane
@@ -313,5 +316,3 @@ void setSafeGeomLayerId(T geom, int layerindex)
 
     vpext->setVisualLayerId(layerindex);
 }
-
-#endif  // SKETCHERGUI_Recompute_H

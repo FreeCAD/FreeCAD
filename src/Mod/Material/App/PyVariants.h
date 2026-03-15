@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_PYVARIANTS_H
-#define MATERIAL_PYVARIANTS_H
+#pragma once
 
 #include <QMetaType>
 
@@ -40,5 +39,3 @@ extern MaterialsExport PyObject* _pyObjectFromVariant(const QVariant& value);
 extern MaterialsExport Py::List getList(const QVariant& value);
 
 }  // namespace Materials
-
-#endif  // MATERIAL_PYVARIANTS_H

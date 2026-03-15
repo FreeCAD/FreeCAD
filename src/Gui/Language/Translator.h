@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TRANSLATOR_H
-#define GUI_TRANSLATOR_H
+#pragma once
 
 #include <QObject>
 #include <list>
@@ -110,5 +109,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TRANSLATOR_H

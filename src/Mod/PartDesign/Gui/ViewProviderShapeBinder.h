@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -20,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_ViewProviderShapeBinder_H
-#define PARTGUI_ViewProviderShapeBinder_H
+#pragma once
 
 #include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/ViewProvider.h>
@@ -102,6 +103,3 @@ private:
 using ViewProviderSubShapeBinderPython = Gui::ViewProviderFeaturePythonT<ViewProviderSubShapeBinder>;
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderShapeBinder_H

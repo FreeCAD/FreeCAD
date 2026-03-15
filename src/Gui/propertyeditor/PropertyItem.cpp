@@ -574,18 +574,14 @@ void PropertyItem::setPropertyName(const QString& name, const QString& realName)
     setObjectName(propName);
 
     QString display;
-    bool upper = false;
+    // Camel case splitting
     for (auto&& i : name) {
         if (i.isUpper() && !display.isEmpty()) {
-            // if there is a sequence of capital letters do not insert spaces
-            if (!upper) {
-                QChar last = display.at(display.length() - 1);
-                if (!last.isSpace()) {
-                    display += QLatin1String(" ");
-                }
+            QChar last = display.at(display.length() - 1);
+            if (last.isLower()) {
+                display += QLatin1String(" ");
             }
         }
-        upper = i.isUpper();
         display += i;
     }
 
@@ -878,6 +874,15 @@ QVariant PropertyStringItem::editorData(QWidget* editor) const
 {
     auto le = qobject_cast<QLineEdit*>(editor);
     return {le->text()};
+}
+
+QVariant PropertyStringItem::toolTip(const App::Property* prop) const
+{
+    // For the FileName property, show the actual file path in the tooltip
+    if (prop && std::string(prop->getName()) == "FileName") {
+        return value(prop);
+    }
+    return PropertyItem::toolTip(prop);
 }
 
 // --------------------------------------------------------------------

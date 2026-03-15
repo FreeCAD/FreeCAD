@@ -154,6 +154,7 @@ public:
     bool hasFaces()         const { return s_fcs > 0; }
 
     bool has1Face()              const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 1; }
+    bool hasFacesOnly()          const { return s_pts == 0 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs >  0; }
 
     bool has1Point()             const { return s_pts == 1 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
     bool has2Points()            const { return s_pts == 2 && s_lns == 0 && s_cir == 0 && s_ell == 0 && s_spl == 0 && s_fcs == 0; }
@@ -709,7 +710,12 @@ protected:
         bool selAllowed = false;
 
         GeomSelectionSizes selection(selPoints.size(), selLine.size(), selCircleArc.size(), selEllipseArc.size(), selSplineAndCo.size(), selFaces.size());
-        if (selection.hasFaces()) {
+
+        // if we drop a dimension text on a face, interpreting selection with hasFaces() will cause
+        // us to try to create an area dim instead of positioning the text.  Since we do not have a
+        // dimension type that involves faces + some other geometry, we must use hasFacesOnly() to
+        // determine if we are creating an area.
+        if (selection.hasFacesOnly()) {
             makeCts_Faces(selAllowed);
             if (!selection.has1Face()) {
                 Base::Console().warning("Multiple faces are selected. Using first.\n");

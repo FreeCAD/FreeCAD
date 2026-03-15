@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELAUNAY2_H
-#define WM4DELAUNAY2_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Delaunay1.h"
@@ -173,5 +172,3 @@ typedef Delaunay2<float> Delaunay2f;
 typedef Delaunay2<double> Delaunay2d;
 
 }
-
-#endif

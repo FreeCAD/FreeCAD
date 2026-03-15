@@ -688,64 +688,64 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Διαγραφή</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="196"/>
+      <location filename="../../MaterialSave.cpp" line="198"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Η αποθήκευση πάνω από το αρχικό αρχείο μπορεί να προκαλέσει τη διακοπή της λειτουργίας άλλων εγγράφων. 
 Αυτό δε συνιστάται.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="220"/>
+      <location filename="../../MaterialSave.cpp" line="222"/>
       <source>Save as new material</source>
       <translation>Αποθήκευση ως νέο υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="193"/>
+      <location filename="../../MaterialSave.cpp" line="195"/>
       <source>Save over &apos;%1&apos;?</source>
       <translation>Αποθήκευση πάνω από &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="218"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>Confirm Save as New Material</source>
       <translation>Επιβεβαίωση αποθήκευσης ως νέο υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="223"/>
+      <location filename="../../MaterialSave.cpp" line="225"/>
       <source>This material already exists in this library. Save as a new material?</source>
       <translation>Αυτό το υλικό υπάρχει ήδη σε αυτή τη βιβλιοθήκη. Αποθήκευση ως νέο υλικό;</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Confirm Save as Copy</source>
       <translation>Επιβεβαίωση Αποθήκευσης ως Αντίγραφο</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="247"/>
+      <location filename="../../MaterialSave.cpp" line="249"/>
       <source>Save as copy</source>
       <translation>Αποθήκευση ως αντίγραφο</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="250"/>
+      <location filename="../../MaterialSave.cpp" line="252"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
       <translation>Η αποθήκευση αντιγράφου δεν συνιστάται καθώς μπορεί να προκαλέσει προβλήματα σε άλλα έγγραφα. Συνιστάται η αποθήκευση ως νέο υλικό.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="253"/>
+      <location filename="../../MaterialSave.cpp" line="255"/>
       <source>Save Copy</source>
       <translation>Αποθήκευση αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="254"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save As New</source>
       <translation>Αποθήκευση ως Νέο</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="486"/>
-      <location filename="../../MaterialSave.cpp" line="496"/>
+      <location filename="../../MaterialSave.cpp" line="488"/>
+      <location filename="../../MaterialSave.cpp" line="498"/>
       <source>New folder</source>
       <translation>Νέος φάκελος</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="536"/>
+      <location filename="../../MaterialSave.cpp" line="538"/>
       <source>Context Menu</source>
       <translation>Μενού Περιβάλλοντος</translation>
     </message>
@@ -1123,23 +1123,23 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="190"/>
+      <location filename="../../MaterialSave.cpp" line="192"/>
       <source>Confirm Overwrite</source>
       <translation>Επιβεβαίωση Αντικατάστασης</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="380"/>
-      <location filename="../../MaterialSave.cpp" line="381"/>
+      <location filename="../../MaterialSave.cpp" line="382"/>
+      <location filename="../../MaterialSave.cpp" line="383"/>
       <source>No writeable library</source>
       <translation>Καμία εγγράψιμη βιβλιοθήκη</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../MaterialSave.cpp" line="570"/>
       <source>Delete &apos;%1&apos;?</source>
       <translation>Διαγραφή &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="572"/>
+      <location filename="../../MaterialSave.cpp" line="574"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Η Αφαίρεση αυτού, θα αφαιρέσει επίσης όλα τα περιεχόμενα.</translation>
     </message>
@@ -1166,7 +1166,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="565"/>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation>Επιβεβαίωση διαγραφής</translation>
     </message>

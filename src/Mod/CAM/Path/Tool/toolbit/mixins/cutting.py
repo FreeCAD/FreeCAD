@@ -31,7 +31,8 @@ class CuttingToolMixin:
     It is used to determine if the tool bit can be used for chip removal.
     """
 
-    def __init__(self, obj, *args, **kwargs):
+    def _init_cutting_properties(self, obj):
+        """Initialize cutting tool properties. Must be called explicitly after obj is created."""
         obj.addProperty(
             "App::PropertyLength",
             "Chipload",

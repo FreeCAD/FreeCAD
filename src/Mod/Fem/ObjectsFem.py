@@ -448,7 +448,7 @@ def makeMaterialMechanicalNonlinear(doc, base_material, name="MaterialMechanical
     from femobjects import material_mechanicalnonlinear
 
     material_mechanicalnonlinear.MaterialMechanicalNonlinear(obj)
-    obj.LinearBaseMaterial = base_material
+    base_material.Nonlinear = obj
     if FreeCAD.GuiUp:
         from femviewprovider import view_material_mechanicalnonlinear
 

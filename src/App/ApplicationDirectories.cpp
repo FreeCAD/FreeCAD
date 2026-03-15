@@ -138,7 +138,10 @@ fs::path ApplicationDirectories::findPath(const fs::path& stdHome, const fs::pat
     // If a custom user home path is given, then don't modify it
     if (customHome.empty()) {
         for (const auto& it : subdirs) {
-            appData = appData / it;
+            if (!it.empty()) {
+                // Refuse to add an empty directory path component
+                appData = appData / it;
+            }
         }
     }
 

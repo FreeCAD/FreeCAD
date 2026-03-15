@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef MEASURE_MEASUREBASE_H
-#define MEASURE_MEASUREBASE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -163,6 +162,3 @@ private:
 
 
 }  // namespace Measure
-
-
-#endif  // MEASURE_MEASUREBASE_H

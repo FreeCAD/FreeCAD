@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_UILOADER_H
-#define GUI_UILOADER_H
+#pragma once
 
 #if !defined(__MINGW32__)
 # define HAVE_QT_UI_TOOLS
@@ -187,5 +186,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_UILOADER_H

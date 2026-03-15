@@ -16,8 +16,7 @@
 //
 // Version: 4.0.2 (2006/08/30)
 
-#ifndef WM4TRIANGULATEEC_H
-#define WM4TRIANGULATEEC_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Query2.h"
@@ -291,5 +290,3 @@ private:
 };
 
 }
-
-#endif
