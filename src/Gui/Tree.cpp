@@ -735,6 +735,13 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
 
     this->recomputeObjectAction = new QAction(this);
     connect(this->recomputeObjectAction, &QAction::triggered, this, &TreeWidget::onRecomputeObject);
+    if (auto recomputeCmd
+        = Gui::Application::Instance->commandManager().getCommandByName("Std_Recompute")) {
+        // Register command action on the tree so its shortcut can trigger from the main window.
+        recomputeCmd->addTo(this);
+        this->recomputeObjectAction->setShortcut(recomputeCmd->getShortcut());
+        this->recomputeObjectAction->setShortcutVisibleInContextMenu(true);
+    }
     this->searchObjectsAction = new QAction(this);
     this->searchObjectsAction->setText(tr("Search Objects"));
     this->searchObjectsAction->setStatusTip(tr("Searches for objects in the tree"));
@@ -1546,22 +1553,12 @@ void TreeWidget::onMarkRecompute()
 
 void TreeWidget::onRecomputeObject()
 {
-    std::vector<App::DocumentObject*> objs;
-    const auto items = selectedItems();
-    for (auto ti : items) {
-        if (ti->type() == ObjectType) {
-            auto objitem = static_cast<DocumentObjectItem*>(ti);
-            objs.push_back(objitem->object()->getObject());
-            objs.back()->enforceRecompute();
-        }
-    }
-    if (objs.empty()) {
+    if (auto cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_Recompute")) {
+        cmd->invoke(0, Command::TriggerAction);
         return;
     }
-    App::AutoTransaction committer("Recompute object");
-    objs.front()->getDocument()->recompute(objs, true);
+    Base::Console().error("TreeWidget::onRecomputeObject: Std_Recompute command not found\n");
 }
-
 
 DocumentItem* TreeWidget::getDocumentItem(const Gui::Document* doc) const
 {

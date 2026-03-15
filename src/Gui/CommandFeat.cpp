@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <unordered_map>
+#include <unordered_set>
 
 #include <App/DocumentObjectGroup.h>
 #include <App/GroupExtension.h>
@@ -56,12 +58,42 @@ StdCmdFeatRecompute::StdCmdFeatRecompute()
     sWhatsThis = "Std_Recompute";
     sStatusTip = sToolTipText;
     sPixmap = "view-refresh";
-    sAccel = "Ctrl+R";
+    sAccel = "Ctrl+Shift+R";
 }
 
 void StdCmdFeatRecompute::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    std::unordered_map<App::Document*, std::vector<App::DocumentObject*>> selectedObjectsByDocument;
+    std::unordered_set<App::DocumentObject*> uniqueObjects;
+
+    const auto selection = Selection().getCompleteSelection();
+    for (const auto& selObj : selection) {
+        App::DocumentObject* obj = selObj.pObject;
+        if (!obj || !uniqueObjects.insert(obj).second) {
+            continue;
+        }
+
+        obj->enforceRecompute();
+        selectedObjectsByDocument[obj->getDocument()].push_back(obj);
+    }
+
+    if (selectedObjectsByDocument.empty()) {
+        const auto doc = this->getDocument();
+        if (!doc) {
+            return;
+        }
+
+        App::AutoTransaction committer("Recompute");
+        doc->recompute();
+        return;
+    }
+
+    App::AutoTransaction committer("Recompute object");
+    for (auto& [doc, objects] : selectedObjectsByDocument) {
+        doc->recompute(objects, true);
+    }
 }
 
 //===========================================================================
