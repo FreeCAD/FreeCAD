@@ -185,6 +185,7 @@ private:
 class DimensionWidget: public QPushButton, WindowParameter
 {
     Q_OBJECT
+    int fixedWidthValue = 0;
 
 public:
     explicit DimensionWidget(QWidget* parent)
@@ -192,15 +193,13 @@ public:
         , WindowParameter("Units")
     {
         setFlat(true);
-        setText(qApp->translate("Gui::MainWindow", "Dimension"));
-        setMinimumWidth(120);
-
+        setStyleSheet("QPushButton { text-align: left; padding-right: 6px; }");
         // create the action buttons
-        auto* menu = new QMenu(this);
-        auto* actionGrp = new QActionGroup(menu);
+        auto* unitMenu = new QMenu(this);
+        auto* actionGrp = new QActionGroup(unitMenu);
 
         auto setAction = [&, index {0}](const std::string&) mutable {
-            QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(index));
+            QAction* action = unitMenu->addAction(QStringLiteral("UnitSchema%1").arg(index));
             actionGrp->addAction(action);
             action->setCheckable(true);
             action->setData(index++);
@@ -219,12 +218,49 @@ public:
                 view->setShowAll(show);
             }
         });
-        setMenu(menu);
+        setMenu(unitMenu);
         retranslateUi();
         unitChanged();
         getWindowParameter()->Attach(this);
-    }
 
+        Gui::Application::Instance->signalActiveDocument.connect([this](const Gui::Document&) {
+            unitChanged();
+        });
+
+        Gui::Application::Instance->signalDeleteDocument.connect([this](const Gui::Document&) {
+            unitChanged();
+        });
+        // fixed width
+        QFontMetrics fm(this->font());
+
+        int maxWidth = 0;
+
+        auto actionsList = menu()->actions();
+
+        for (QAction* act : actionsList) {
+            int w = fm.horizontalAdvance(extractUnits(act->text()));
+            if (w > maxWidth) {
+                maxWidth = w;
+            }
+        }
+
+        maxWidth += 40;
+
+        fixedWidthValue = maxWidth;
+        setMinimumWidth(maxWidth);
+        setMaximumWidth(maxWidth);
+        setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    }
+    QString padded(const QString& s)
+    {
+        return QStringLiteral("  ") + s;  // 2-space indent
+    }
+    QSize sizeHint() const override
+    {
+        QSize s = QPushButton::sizeHint();
+        s.setWidth(fixedWidthValue);  // use your computed width
+        return s;
+    }
     ~DimensionWidget() override
     {
         getWindowParameter()->Detach(this);
@@ -233,15 +269,21 @@ public:
     void OnChange(Base::Subject<const char*>& rCaller, const char* sReason) override
     {
         Q_UNUSED(rCaller)
-        if (strcmp(sReason, "UserSchema") == 0) {
-            unitChanged();
+
+        // Preferences change triggers these
+        if (strcmp(sReason, "UserSchema") == 0 || strcmp(sReason, "Units") == 0
+            || strcmp(sReason, "IgnoreProjectSchema") == 0) {
+            QTimer::singleShot(0, this, [this]() {
+                retranslateUi();
+                unitChanged();
+            });
         }
     }
-
     void changeEvent(QEvent* event) override
     {
         if (event->type() == QEvent::LanguageChange) {
             retranslateUi();
+            unitChanged();
         }
         else {
             QPushButton::changeEvent(event);
@@ -267,24 +309,52 @@ public:
     }
 
 private:
+    QString extractUnits(const QString& schema)
+    {
+        int l = schema.indexOf('(');
+        int r = schema.indexOf(')');
+
+        if (l != -1 && r != -1 && r > l) {
+            return schema.mid(l + 1, r - l - 1);
+        }
+
+        return schema;  // fallback
+    }
     void unitChanged()
     {
-        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Units"
-        );
-        bool ignore = hGrpu->GetBool("IgnoreProjectSchema", false);
+        auto actions = menu()->actions();
+        if (actions.empty()) {
+            return;
+        }
+
+        int userSchema = 0;
+
         App::Document* doc = App::GetApplication().getActiveDocument();
-        int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
-        if (doc != nullptr && !ignore) {
+
+        if (doc) {
             userSchema = doc->UnitSystem.getValue();
         }
-        auto actions = menu()->actions();
-        if (Q_UNLIKELY(userSchema < 0 || userSchema >= actions.size())) {
+        else {
+            userSchema = getWindowParameter()->GetInt("UserSchema", 0);
+        }
+
+        // clamp safely
+        if (userSchema < 0 || userSchema >= actions.size()) {
             userSchema = 0;
         }
-        actions[userSchema]->setChecked(true);
-    }
 
+        actions[userSchema]->setChecked(true);
+        QString full = actions[userSchema]->text();
+        QString units = extractUnits(full);
+        QAction* act = actions[userSchema];
+        if (!act || act->text().isEmpty()) {
+            setText("Units");
+            return;
+        }
+
+        setText(padded(units));  // short text
+        setToolTip(full);        // full schema on hover
+    }
     void retranslateUi()
     {
         auto actions = menu()->actions();
