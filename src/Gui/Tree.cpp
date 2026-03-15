@@ -1169,8 +1169,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
                 }
             }
             contextMenu.addAction(this->selectDependentsAction);
-            if (doc == App::GetApplication().getActiveDocument()
-                && this->skipRecomputeCommand != nullptr) {
+            if (doc == App::GetApplication().getActiveDocument() && this->skipRecomputeCommand) {
                 // if active document is selected, use Command
                 this->skipRecomputeCommand->addTo(&contextMenu);
             }

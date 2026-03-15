@@ -1220,7 +1220,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
             // If the previous flat button animation is still active then apply the rotation to the
             // previous target orientation, otherwise apply the rotation to the current camera
             // orientation
-            if (m_flatButtonAnimation != nullptr
+            if (m_flatButtonAnimation
                 && m_flatButtonAnimation->state() == QAbstractAnimation::Running) {
                 m_flatButtonTargetOrientation = rotation * m_flatButtonTargetOrientation;
             }

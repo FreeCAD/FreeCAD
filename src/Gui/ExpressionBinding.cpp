@@ -97,7 +97,7 @@ void ExpressionBinding::bind(const App::ObjectIdentifier& _path)
 {
     const Property* prop = _path.getProperty();
 
-    Q_ASSERT(prop != nullptr);
+    Q_ASSERT(prop);
 
     path = prop->canonicalPath(_path);
 
@@ -133,7 +133,7 @@ std::shared_ptr<App::Expression> ExpressionBinding::getExpression() const
 {
     DocumentObject* docObj = path.getDocumentObject();
 
-    Q_ASSERT(isBound() && docObj != nullptr);
+    Q_ASSERT(isBound() && docObj);
 
     return docObj->getExpression(path).expression;
 }
