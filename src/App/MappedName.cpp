@@ -246,8 +246,9 @@ MappedName::MappedName(const char* name, int size) : raw(false)
     data = size < 0 ? QByteArray(name) : QByteArray(name, size);
 }
 
-MappedName::MappedName(const std::string& nameString)
+MappedName::MappedName(const std::string& nameString, const App::HistoryAlgorithm historyAlgorithm)
     : raw(false)
+    , usedHistoryAlgorithm(historyAlgorithm)
 {
     auto size = nameString.size();
     const char* name = nameString.c_str();

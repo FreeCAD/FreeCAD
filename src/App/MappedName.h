@@ -31,6 +31,7 @@
 #include <QHash>
 #include <QVector>
 #include <utility>
+#include <boost/algorithm/string/predicate.hpp>
 
 #include "ElementNamingUtils.h"
 #include "IndexedName.h"
@@ -80,18 +81,7 @@ public:
      * @param nameString The new name. A deep copy is made.
      * @param historyAlgorithm The algorithm used to make `nameString`. Defaulted to `V1`.
      */
-    explicit MappedName(const std::string& nameString, const App::HistoryAlgorithm historyAlgorithm = App::HistoryAlgorithm::V2)
-        : raw(false)
-        , usedHistoryAlgorithm(historyAlgorithm)
-    {
-        auto size = nameString.size();
-        const char* name = nameString.c_str();
-        if (boost::starts_with(nameString, ELEMENT_MAP_PREFIX)) {
-            name += ELEMENT_MAP_PREFIX_SIZE;
-            size -= ELEMENT_MAP_PREFIX_SIZE;
-        }
-        data = QByteArray(name, static_cast<int>(size));
-    }
+    explicit MappedName(const std::string& nameString, const App::HistoryAlgorithm historyAlgorithm = App::HistoryAlgorithm::V2);
 
     /**
      * @brief Create a MappedName from an IndexedName.
