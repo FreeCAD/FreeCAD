@@ -690,18 +690,16 @@ std::shared_ptr<Area> Area::getClearedArea(
     Base::BoundBox3d bbox
 )
 {
-    build();
-
     // Precision losses in arc/segment conversions (multiples of Accuracy):
     // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc
     // (libarea/Curve.cpp) 1 in gcode arc to segment 1 in Thicken() cleared area 2 in getRestArea
     // target area offset in and back out Oversize cleared areas by buffer to smooth out imprecision
     // in arc/segment conversion. getRestArea() will compensate for this
-    AreaParams params = myParams;
-    params.Accuracy = myParams.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
+    AreaParams params = {};
+    const double buffer = params.Accuracy * 3;
+    params.Accuracy = params.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
     params.SubjectFill = ClipperLib::pftNonZero;
     params.ClipFill = ClipperLib::pftNonZero;
-    const double buffer = myParams.Accuracy * 3;
 
     // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all
     // off those arcs will be converted back to segments again for clipper differencing in

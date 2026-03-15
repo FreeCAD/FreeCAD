@@ -31,12 +31,14 @@
 
 import Path
 import Path.Op.Base as PathOp
+import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 import FreeCAD
 import time
 import json
 import math
 import area
+from FreeCAD import BoundBox
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
@@ -119,12 +121,12 @@ def discretize(edge, flipDirection=False):
 
 
 def GenerateGCode(op, obj, adaptiveResults):
-    if not adaptiveResults or not adaptiveResults[0]["AdaptivePaths"]:
-        return
 
     # minLiftDistance = op.tool.Diameter
     helixRadius = 0
     for region in adaptiveResults:
+        if not region["AdaptivePaths"]:
+            continue
         p1 = region["HelixCenterPoint"]
         p2 = region["StartPoint"]
         helixRadius = max(math.dist(p1[:2], p2[:2]), helixRadius)
@@ -155,6 +157,8 @@ def GenerateGCode(op, obj, adaptiveResults):
     lz = obj.StartDepth.Value
 
     for region in adaptiveResults:
+        if not region["AdaptivePaths"]:
+            continue
         passStartDepth = region.get("TopDepth", obj.StartDepth.Value)
 
         depthParams = PathUtils.depth_params(
@@ -589,12 +593,15 @@ def Execute(op, obj):
         if hasattr(obj, "KeepToolDownRatio"):
             keepToolDownRatio = float(obj.KeepToolDownRatio)
 
+        clearedArea = get_cleared_area(op, obj, pathArray)
+
         # put here all properties that influence calculation of adaptive base paths,
 
         inputStateObject = {
             "tool": float(op.tool.Diameter),
             "tolerance": float(obj.Tolerance),
             "geometry": path2d,
+            "clearedArea": clearedArea,
             "stockGeometry": stockPath2d,
             "stepover": float(obj.StepOver),
             "effectiveHelixDiameter": float(helixDiameter),
@@ -650,7 +657,7 @@ def Execute(op, obj):
             a2d.opType = opType
 
             # EXECUTE
-            results = a2d.Execute(stockPath2d, path2d, progressFn)
+            results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
 
             # need to convert results to python object to be JSON serializable
             adaptiveResults = []
@@ -680,6 +687,36 @@ def Execute(op, obj):
             obj.ViewObject.Visibility = oldObjVisibility
             job.ViewObject.Visibility = oldJobVisibility
             sceneClean()
+
+
+def get_cleared_area(op, obj, pathArray, zOverride=None):
+    clearedArea = []
+    if obj.UseRestMachining:
+        bbox = BoundBox()
+        for path in pathArray:
+            for seg in path:
+                # path is closed, so adding just the start point of each segment is sufficient
+                bbox.add(seg[0][0], seg[0][1], zOverride if zOverride is not None else seg[0][2])
+
+        # If profiling, enlarge the bbox to cover the area that will actually be cleared
+        if obj.OperationType == "Profiling":
+            dxy = op.tool.Diameter.Value * 3  # slightly excessive, to ensure coverage
+            bbox.XMin -= dxy
+            bbox.YMin -= dxy
+            bbox.XMax += dxy
+            bbox.YMax += dxy
+
+        for ca in PathOpUtil.getClearedAreas(obj, bbox):
+            shape = ca.toTopoShape()
+            for wire in shape.Wires:
+                outputWire = []
+                for edge in wire.Edges:
+                    assert edge.Curve.TypeId == "Part::GeomLine"
+                    v = edge.Vertexes[0].Point
+                    outputWire.append([v.x, v.y])
+                clearedArea.append(outputWire)
+
+    return clearedArea
 
 
 def ExecuteModelAware(op, obj):
@@ -739,12 +776,14 @@ def ExecuteModelAware(op, obj):
         # NOTE: Pretty sure sorting is already guaranteed by how these are
         # created, but best to not assume that
         for rdict in op.outsidePathArray:
+            stockEdges = [list(zip(p, p[1:] + [p[0]])) for p in stockPaths[rdict["depths"][0]]]
             regionOps.append(
                 {
                     "opType": (
                         outsideClearing if obj.OperationType == "Clearing" else outsideProfiling
                     ),
                     "path2d": convertTo2d(rdict["edges"]),
+                    "clearedArea": get_cleared_area(op, obj, stockEdges, rdict["depths"][-1]),
                     "id": rdict["id"],
                     "children": rdict["children"],
                     # FIXME: Kinda gross- just use this to match up with the
@@ -756,12 +795,14 @@ def ExecuteModelAware(op, obj):
                 (sorted(rdict["depths"], reverse=True), regionOps[-1])
             )
         for rdict in op.insidePathArray:
+            edges = [list(zip(p, p[1:] + [p[0]])) for p in convertTo2d(rdict["edges"])]
             regionOps.append(
                 {
                     "opType": (
                         insideClearing if obj.OperationType == "Clearing" else insideProfiling
                     ),
                     "path2d": convertTo2d(rdict["edges"]),
+                    "clearedArea": get_cleared_area(op, obj, edges, min(rdict["depths"])),
                     "id": rdict["id"],
                     "children": rdict["children"],
                     # FIXME: Kinda gross- just use this to match up with the
@@ -782,7 +823,9 @@ def ExecuteModelAware(op, obj):
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
             "geometry": [
-                k["path2d"] for k in regionOps if k["opType"] in [outsideClearing, outsideProfiling]
+                (k["path2d"], k["clearedArea"])
+                for k in regionOps
+                if k["opType"] in [outsideClearing, outsideProfiling]
             ],
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
@@ -802,7 +845,9 @@ def ExecuteModelAware(op, obj):
             "tool": op.tool.Diameter.Value,
             "tolerance": obj.Tolerance,
             "geometry": [
-                k["path2d"] for k in regionOps if k["opType"] in [insideClearing, insideProfiling]
+                (k["path2d"], k["clearedArea"])
+                for k in regionOps
+                if k["opType"] in [insideClearing, insideProfiling]
             ],
             "stockGeometry": stockPaths,
             "stepover": obj.StepOver,
@@ -867,6 +912,7 @@ def ExecuteModelAware(op, obj):
             # identical stepdowns
             for rdict in regionOps:
                 path2d = rdict["path2d"]
+                clearedArea = rdict["clearedArea"]
                 opType = rdict["opType"]
 
                 a2d = area.Adaptive2d()
@@ -883,7 +929,7 @@ def ExecuteModelAware(op, obj):
                 a2d.opType = opType
 
                 rdict["toolpaths"] = a2d.Execute(
-                    stockPaths[rdict["startdepth"]], path2d, progressFn
+                    stockPaths[rdict["startdepth"]], path2d, clearedArea, progressFn
                 )
 
             # Sort regions to cut by either depth or area.
@@ -937,12 +983,6 @@ def ExecuteModelAware(op, obj):
                     # Regions are only generated where stock needs to be
                     # removed, so we can't start at the cut level- we know
                     # there's material there.
-                    # TODO: Due to the adaptive algorithm currently not
-                    # processing holes in the stock when finding entry points,
-                    # this may result in a helix up to stepdown in height where
-                    # one isn't required. This should be fixed in FindEntryPoint
-                    # or FindEntryPointOutside in Adaptive.cpp, not bandaged
-                    # here.
 
                     TopDepth = min(
                         topZ,
@@ -1924,6 +1964,15 @@ class PathAdaptive(PathOp.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyBool",
+            "UseRestMachining",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Skips machining regions that have already been cleared by previous operations.",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
             "OrderCutsByRegion",
             "Adaptive",
             QT_TRANSLATE_NOOP(
@@ -1978,6 +2027,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.KeepToolDownRatio = 3.0
         obj.UseHelixArcs = False
         obj.UseOutline = False
+        obj.UseRestMachining = False
         obj.OrderCutsByRegion = False
         obj.ModelAwareExperiment = False
         FeatureExtensions.set_default_property_values(obj, job)
@@ -2019,6 +2069,17 @@ class PathAdaptive(PathOp.ObjectOp):
                 "UseOutline",
                 "Adaptive",
                 "Uses the outline of the base geometry.",
+            )
+
+        if not hasattr(obj, "UseRestMachining"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseRestMachining",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Skips machining regions that have already been cleared by previous operations.",
+                ),
             )
 
         if not hasattr(obj, "OrderCutsByRegion"):
@@ -2123,6 +2184,7 @@ def SetupProperties():
         "HelixMaxDiameterPercent",
         "HelixMinDiameterPercent",
         "UseOutline",
+        "UseRestMachining",
         "OrderCutsByRegion",
     ]
     return setup

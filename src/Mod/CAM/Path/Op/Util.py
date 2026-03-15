@@ -24,6 +24,8 @@
 
 import FreeCAD
 import Path
+import Path.Dressup.Utils as PathDressup
+import PathScripts.PathUtils as PathUtils
 import math
 
 # lazily loaded modules
@@ -419,3 +421,27 @@ def offsetWire(wire, base, offset, forward, Side=None):
         edges.reverse()
 
     return orientWire(Part.Wire(edges), None)
+
+
+def getClearedAreas(currentOp, bbox):
+    """
+    Returns the cleared area relevant to the operation
+    - currentOp: the operation we are checking for. Only operations performed
+      before this operation will be considered
+    - bbox: the cleared region is only generated where it is close enough to
+      impact the bbox region
+    """
+    clearedAreas = []
+    job = currentOp.Proxy.job
+    z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
+    for op in job.Operations.Group:
+        baseOp = PathDressup.baseOp(op)
+        if baseOp.Name == currentOp.Name:
+            break
+        if getattr(baseOp, "Active", False) and op.Path:
+            tool = baseOp.ToolController.Tool
+            diameter = tool.Diameter.getValueAs("mm")
+            # for drills, dz translates to the full width part of the tool
+            dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
+            clearedAreas.append(op.Path.getClearedArea(diameter, z + dz, bbox))
+    return clearedAreas
