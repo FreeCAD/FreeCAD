@@ -565,6 +565,25 @@ get date suffix according to the specified format</string>
         </item>
        </layout>
       </item>
+      <item row="10" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefDisableVersionCheckOnSave">
+        <property name="toolTip">
+         <string>Suppresses the version mismatch warning when saving files created with an older FreeCAD version</string>
+        </property>
+        <property name="text">
+         <string>Suppress older version warning on save</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DisableVersionCheckOnSave</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
