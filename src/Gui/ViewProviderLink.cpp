@@ -2063,7 +2063,11 @@ QPixmap ViewProviderLink::getOverlayPixmap() const
         return BitmapFactory().pixmapFromSvg("LinkSubOverlay", QSizeF(px, px));
     }
     else {
-        return BitmapFactory().pixmapFromSvg("LinkOverlay", QSizeF(px, px));
+        return BitmapFactory().pixmapFromSvg(
+            getObject()->getLinkedObject()->getDocument()->isReadOnlyFile() ? "LinkOverlayReadOnly"
+                                                                            : "LinkOverlay",
+            QSizeF(px, px)
+        );
     }
 }
 

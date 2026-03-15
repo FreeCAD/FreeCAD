@@ -762,7 +762,8 @@ public:
 
     /// Check whether the document is autoCreated.
     bool isAutoCreated() const;
-
+    /// check whether the document is read-only (loaded from a read-only file)
+    bool isReadOnlyFile() const;
     /**
      * @brief Recompute touched features.
      *

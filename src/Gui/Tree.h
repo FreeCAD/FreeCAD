@@ -127,6 +127,8 @@ public:
 
     static void synchronizeSelectionCheckBoxes();
     static void updateVisibilityIcons();
+    static std::unique_ptr<QPixmap> documentPixmap;
+    static std::unique_ptr<QPixmap> documentPartialPixmap;
 
     QList<QTreeWidgetItem*> childrenOfItem(const QTreeWidgetItem& item) const;
 
@@ -349,6 +351,7 @@ public:
     void updateItemsVisibility(QTreeWidgetItem* item, bool show);
     void updateLinks(const ViewProviderDocumentObject& view);
     ViewProviderDocumentObject* getViewProvider(App::DocumentObject*);
+    void setBaseIcon(int column, const QIcon& base);
 
     bool showHidden() const;
     void setShowHidden(bool show);
@@ -423,6 +426,8 @@ protected:
     using ViewParentMap
         = std::unordered_map<const ViewProvider*, std::vector<ViewProviderDocumentObject*>>;
     void populateParents(const ViewProvider* vp, ViewParentMap&);
+
+    void setReadOnlyIconOverlays(int column, QIcon& overlays);
 
 private:
     const char* treeName;  // for debugging purpose
@@ -530,6 +535,10 @@ private:
         const std::vector<bool>& snapshot,
         std::vector<bool>::const_iterator& from
     );
+
+    void setIconOverlays(int currentStatus, int w, QPixmap& overlays);
+    void generateIcon(int currentStatus, QIcon::Mode mode, QIcon& icon);
+    QIcon getVisibilityIcon(int currentStatus, QIcon& original_icon);
 
     QBrush bgBrush;
     DocumentItem* myOwner;
