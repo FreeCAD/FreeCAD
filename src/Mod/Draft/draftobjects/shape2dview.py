@@ -158,14 +158,17 @@ class Shape2DView(DraftObject):
         import DraftGeomUtils
 
         edges = []
-        _groups = TechDraw.projectEx(shape, direction)
-        for g in _groups[0:5]:
-            if not g.isNull():
-                edges.append(g)
-        if getattr(obj, "HiddenLines", False):
-            for g in _groups[5:]:
-                if not g.isNull():
-                    edges.append(g)
+        edge_compounds = TechDraw.projectEx(shape, direction)
+        if not getattr(obj, "HiddenLines", False):
+            edge_compounds = edge_compounds[0:5]
+        for compound in edge_compounds:
+            edges.extend(compound.Edges)
+        # remove overlapping edges:
+        if edges:
+            tmp = []
+            for wire in TechDraw.edgeWalker(edges):
+                tmp.extend(wire.Edges)
+            edges = tmp
         edges = self.cleanExcluded(obj, edges)
         if getattr(obj, "Tessellation", False):
             return DraftGeomUtils.cleanProjection(
@@ -174,29 +177,26 @@ class Shape2DView(DraftObject):
         else:
             return Part.makeCompound(edges)
 
-    def cleanExcluded(self, obj, shapes):
+    def cleanExcluded(self, obj, edges):
         """removes any edge touching exclusion points"""
         import Part
 
         MAXDIST = 0.0001
         if (not hasattr(obj, "ExclusionPoints")) or (not obj.ExclusionPoints):
-            return shapes
+            return edges
         # verts = [Part.Vertex(obj.Placement.multVec(p)) for p in obj.ExclusionPoints]
         verts = [Part.Vertex(p) for p in obj.ExclusionPoints]
         nedges = []
-        for s in shapes:
-            for e in s.Edges:
-                for v in verts:
-                    try:
-                        d = e.distToShape(v)
-                        if d and (d[0] <= MAXDIST):
-                            break
-                    except RuntimeError:
-                        print(
-                            "FIXME: shape2dview: distance unavailable for edge", e, "in", obj.Label
-                        )
-                else:
-                    nedges.append(e)
+        for e in edges:
+            for v in verts:
+                try:
+                    d = e.distToShape(v)
+                    if d and (d[0] <= MAXDIST):
+                        break
+                except RuntimeError:
+                    print("FIXME: shape2dview: distance unavailable for edge", e, "in", obj.Label)
+            else:
+                nedges.append(e)
         return nedges
 
     def excludeNames(self, obj, objs):
