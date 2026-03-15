@@ -27,8 +27,7 @@
  *plane placement.
  */
 
-#ifndef PARTATTACHER_H
-#define PARTATTACHER_H
+#pragma once
 
 #include <GProp_GProps.hxx>
 
@@ -584,5 +583,3 @@ public:
 };
 
 }  // namespace Attacher
-
-#endif  // PARTATTACHER_H

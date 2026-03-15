@@ -8,8 +8,7 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4CONVEXHULL1_H
-#define WM4CONVEXHULL1_H
+#pragma once
 
 // A fancy class to compute the minimum and maximum of a collection of
 // real-valued numbers, but this provides some convenience for ConvexHull2 and
@@ -71,5 +70,3 @@ typedef ConvexHull1<float> ConvexHull1f;
 typedef ConvexHull1<double> ConvexHull1d;
 
 }
-
-#endif

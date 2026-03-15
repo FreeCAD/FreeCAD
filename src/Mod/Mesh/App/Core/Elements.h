@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_ELEMENTS_H
-#define MESH_ELEMENTS_H
+#pragma once
 
 #include <cstring>
 #include <functional>
@@ -1298,5 +1297,3 @@ public:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESH_ELEMENTS_H

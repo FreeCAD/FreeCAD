@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMSHAPE_H
-#define PARTDESIGN_DATUMSHAPE_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <App/DocumentObserver.h>
@@ -182,6 +183,3 @@ protected:
 using SubShapeBinderPython = App::FeaturePythonT<SubShapeBinder>;
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_DATUMSHAPE_H

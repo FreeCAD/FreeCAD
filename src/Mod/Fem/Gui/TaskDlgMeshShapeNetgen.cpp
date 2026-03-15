@@ -78,6 +78,7 @@ void TaskDlgMeshShapeNetgen::clicked(int button)
             Gui::WaitCursor wc;
             // May throw an exception which we must handle here
             FemMeshShapeNetgenObject->execute();
+            FemMeshShapeNetgenObject->purgeTouched();
             param->setInfo();
             param->touched = false;
         }

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_MDIVIEWPYWRAP_H
-#define GUI_MDIVIEWPYWRAP_H
+#pragma once
 
 #include <memory>
 #include <Gui/MDIView.h>
@@ -56,7 +55,7 @@ public:
     ~MDIViewPyWrap() override;
 
     /// Message handler
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     /// Message handler test
     bool onHasMsg(const char* pMsg) const override;
     /// overwrite when checking on close state
@@ -87,5 +86,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MDIVIEWPYWRAP_H

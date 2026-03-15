@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_TASKDIMREPAIR_H
-#define TECHDRAW_TASKDIMREPAIR_H
+#pragma once
 
 #include <QListWidget>
 #include <QTableWidget>
@@ -118,5 +117,3 @@ private:
 };
 
 }//namespace TechDrawGui
-
-#endif// #ifndef TECHDRAW_TASKDIMREPAIR_H

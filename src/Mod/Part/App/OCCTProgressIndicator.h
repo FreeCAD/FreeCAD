@@ -20,8 +20,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef PART_OCCTPROGRESSINDICATOR_H
-#define PART_OCCTPROGRESSINDICATOR_H
+#pragma once
 
 #include <App/Application.h>
 #include <Base/ProgressIndicator.h>
@@ -78,5 +77,3 @@ public:
 #endif
 
 }  // namespace Part
-
-#endif  // PART_OCCTPROGRESSINDICATOR_H

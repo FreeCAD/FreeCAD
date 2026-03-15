@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_EVALUATION_H
-#define MESH_EVALUATION_H
+#pragma once
 
 #include <cmath>
 #include <list>
@@ -426,5 +425,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESH_EVALUATION_H

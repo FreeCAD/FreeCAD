@@ -411,22 +411,40 @@ PyObject* DocumentPy::addObject(PyObject* args, PyObject* kwd)
 
 PyObject* DocumentPy::removeObject(PyObject* args)
 {
-    char* sName;
-    if (!PyArg_ParseTuple(args, "s", &sName)) {
-        return nullptr;
-    }
+    char* sName {};
+    if (PyArg_ParseTuple(args, "s", &sName)) {
+        DocumentObject* object = getDocumentPtr()->getObject(sName);
+        if (object) {
+            getDocumentPtr()->removeObject(sName);
+            Py_Return;
+        }
 
-
-    DocumentObject* pcFtr = getDocumentPtr()->getObject(sName);
-    if (pcFtr) {
-        getDocumentPtr()->removeObject(sName);
-        Py_Return;
-    }
-    else {
         std::stringstream str;
         str << "No document object found with name '" << sName << "'" << std::ends;
         throw Py::ValueError(str.str());
     }
+
+    PyErr_Clear();
+    PyObject* objpy {};
+    if (PyArg_ParseTuple(args, "O!", &App::DocumentObjectPy::Type, &objpy)) {
+        DocumentObject* object = static_cast<App::DocumentObjectPy*>(objpy)->getDocumentObjectPtr();
+        if (!object) {
+            PyErr_Format(PyExc_RuntimeError, "Invalid document object");
+            return nullptr;
+        }
+
+        if (object->getDocument() == getDocumentPtr()) {
+            getDocumentPtr()->removeObject(object);
+            Py_Return;
+        }
+
+        std::stringstream str;
+        str << "Document object is not part of this document";
+        throw Py::ValueError(str.str());
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Expect str or DocumentObject");
+    return nullptr;
 }
 
 PyObject* DocumentPy::copyObject(PyObject* args, PyObject* kwd)

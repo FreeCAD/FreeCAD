@@ -77,10 +77,18 @@ TechDraw::DrawViewPart* TechDraw::getReferencesFromSelection(ReferenceVector& re
             }
         } else if (!selItem.getObject()->isDerivedFrom<TechDraw::DrawView>()) {
             App::DocumentObject* obj3d = selItem.getObject();
-            // this is a regular 3d reference in form obj + long subelement
-            for (auto& sub3d : selItem.getSubNames()) {
-                ReferenceEntry ref(obj3d, sub3d);
+            // obj3d is a point object, in which case the sub will be empty instead of
+            // containing Vertex1.  Inserting "Vertex1" here gets us through
+            // validation, but doesn't work in Measure::shapefinder.
+            if (ShapeExtractor::isPointType(obj3d)) {
+                ReferenceEntry ref(obj3d, "Vertex1");
                 references3d.push_back(ref);
+            } else {
+                // this is a regular 3d reference in form obj + long subelement
+                for (auto& sub3d : selItem.getSubNames()) {
+                    ReferenceEntry ref(obj3d, sub3d);
+                    references3d.push_back(ref);
+                }
             }
         }
     }

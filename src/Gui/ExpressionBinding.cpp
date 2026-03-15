@@ -334,6 +334,12 @@ QPixmap ExpressionWidget::getIcon(const char* name, const QSize& size) const
     return icon;
 }
 
+void ExpressionWidget::unbind()
+{
+    iconLabel->hide();
+    ExpressionBinding::unbind();
+}
+
 void ExpressionWidget::makeLabel(QLineEdit* le)
 {
     defaultPalette = le->palette();

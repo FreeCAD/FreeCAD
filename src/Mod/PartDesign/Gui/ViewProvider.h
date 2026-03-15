@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProvider_H
-#define PARTGUI_ViewProvider_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <Gui/ViewProviderFeaturePython.h>
@@ -120,6 +121,3 @@ private:
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderHole_H

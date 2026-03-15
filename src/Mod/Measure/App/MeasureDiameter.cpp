@@ -70,7 +70,7 @@ bool MeasureDiameter::isValidSelection(const App::MeasureSelection& selection)
     }
 
     if (type != App::MeasureElementType::CIRCLE && type != App::MeasureElementType::ARC
-        && type != App::MeasureElementType::CYLINDER) {
+        && type != App::MeasureElementType::CYLINDER && type != App::MeasureElementType::DISC) {
         return false;
     }
 
@@ -87,7 +87,7 @@ bool MeasureDiameter::isPrioritizedSelection(const App::MeasureSelection& select
     auto type = App::MeasureManager::getMeasureElementType(element);
 
     if (type == App::MeasureElementType::CIRCLE || type == App::MeasureElementType::ARC
-        || type == App::MeasureElementType::CYLINDER) {
+        || type == App::MeasureElementType::CYLINDER || type == App::MeasureElementType::DISC) {
         return true;
     }
 

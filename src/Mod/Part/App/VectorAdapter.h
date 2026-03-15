@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_VECTORADAPTER_H
-#define PART_VECTORADAPTER_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -99,5 +98,3 @@ private:
 
 
 }  // namespace Part
-
-#endif

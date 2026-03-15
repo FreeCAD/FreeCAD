@@ -115,7 +115,7 @@
       <location filename="../../AttacherTexts.cpp" line="863"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>Твердое тело</translation>
+      <translation>Тело</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="864"/>
@@ -314,7 +314,7 @@
       <location filename="../../AttacherTexts.cpp" line="577"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Линия, являющаяся осью охватывающей окружности изогнутого ребра. Дополнительная вершина определяет местоположение.</translation>
+      <translation>Линия, являющаяся осью окружности, охватывающей изгиб ребра. Опциональное указание вершины определяет местоположение.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="586"/>
@@ -5990,7 +5990,7 @@ Continue?</source>
       <translation>Редактор присоединения</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1003"/>
+      <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
       <translation>Внешний вид грани</translation>
     </message>

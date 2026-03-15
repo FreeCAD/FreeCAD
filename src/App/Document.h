@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_APP_DOCUMENT_H_
-#define SRC_APP_DOCUMENT_H_
+#pragma once
 
 #include <CXX/Objects.hxx>
 #include <Base/Observer.h>
@@ -499,6 +498,13 @@ public:
      */
     std::vector<DocumentObject*>
     addObjects(const char* sType, const std::vector<std::string>& objectNames, bool isNew = true);
+
+    /**
+     * @brief Remove an object from the document.
+     *
+     * @param[in] object The object to remove.
+     */
+    void removeObject(const DocumentObject* object);
 
     /**
      * @brief Remove an object from the document.
@@ -1470,5 +1476,3 @@ T* Document::addObject(const char* pObjectName, bool isNew, const char* viewType
 }
 
 }  // namespace App
-
-#endif  // SRC_APP_DOCUMENT_H_

@@ -40,6 +40,7 @@ import Path
 import os
 import re
 
+translate = FreeCAD.Qt.translate
 
 debug = False
 if debug:
@@ -56,8 +57,9 @@ if FreeCAD.GuiUp:
 
 
 class FilenameGenerator:
-    def __init__(self, job):
+    def __init__(self, job, file_extension=None):
         self.job = job
+        self._file_extension_override = file_extension
         self.subpartname = ""
         self.sequencenumber = 0
         path, filename, ext = self.get_path_and_filename_default()
@@ -69,7 +71,7 @@ class FilenameGenerator:
     def get_path_and_filename_default(self):
         outputpath = ""
         filename = ""
-        ext = ".nc"
+        ext = ""
 
         validPathSubstitutions = ["D", "d", "M", "j"]
         validFilenameSubstitutions = ["j", "d", "T", "t", "W", "O", "S"]
@@ -98,7 +100,13 @@ class FilenameGenerator:
                 os.getcwd()
             )  ## TODO: This should be avoided as it gives the Freecad executable's path in some systems (e.g. Windows)
 
-        if not ext:
+        if self._file_extension_override:
+            ext = (
+                f".{self._file_extension_override}"
+                if not self._file_extension_override.startswith(".")
+                else self._file_extension_override
+            )
+        elif not ext:
             ext = ".nc"
 
         # Check for invalid matches
@@ -216,7 +224,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         if parent is None:
             parent = FreeCADGui.getMainWindow()
         QtGui.QDialog.__init__(self, parent)
-
+        self.setWindowTitle(translate("CAM", "CAM Export Gcode"))
         layout = QtGui.QVBoxLayout(self)
 
         # self.editor = QtGui.QTextEdit()  # without lines enumeration
@@ -231,32 +239,22 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.editor.setPlainText(text)
         layout.addWidget(self.editor)
 
+        buttonBox = QtGui.QDialogButtonBox
+        self.buttons = buttonBox()
+        ok_button = self.buttons.addButton(buttonBox.Ok)
+        ok_button.setText(translate("CAM", "Save With Changes"))
+        cancel_button = self.buttons.addButton(buttonBox.Cancel)
         # buttons depending on the post processor used
         if refactored:
-            self.buttons = QtGui.QDialogButtonBox(
-                QtGui.QDialogButtonBox.Ok
-                | QtGui.QDialogButtonBox.Discard
-                | QtGui.QDialogButtonBox.Cancel,
-                QtCore.Qt.Horizontal,
-                self,
-            )
             # Swap the button text as to not change the old cancel behaviour for the user
-            self.buttons.button(QtGui.QDialogButtonBox.Discard).setIcon(
-                self.buttons.button(QtGui.QDialogButtonBox.Cancel).icon()
-            )
-            self.buttons.button(QtGui.QDialogButtonBox.Discard).setText(
-                self.buttons.button(QtGui.QDialogButtonBox.Cancel).text()
-            )
-            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setIcon(QtGui.QIcon())
-            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setText("Abort")
+            discard_button = self.buttons.addButton(buttonBox.Discard)
+            discard_button.setIcon(QtGui.QIcon())
+            discard_button.setText(translate("CAM", "Save Without Changes"))
+            cancel_button.setText(translate("CAM", "Abort"))
         else:
-            self.buttons = QtGui.QDialogButtonBox(
-                QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
-                QtCore.Qt.Horizontal,
-                self,
-            )
+            cancel_button.setText(translate("CAM", "Save Without Changes"))
 
-        self.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
+        ok_button.setDisabled(True)
         layout.addWidget(self.buttons)
 
         # restore placement and size

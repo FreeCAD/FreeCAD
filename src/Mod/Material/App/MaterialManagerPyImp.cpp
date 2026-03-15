@@ -145,7 +145,10 @@ Py::List MaterialManagerPy::getMaterialLibraries() const
         Py::Tuple libTuple(3);
         if (lib->isLocal()) {
             auto materialLibrary =
-                reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(lib);
+                std::dynamic_pointer_cast<Materials::MaterialLibraryLocal>(lib);
+            if (!materialLibrary) {
+                continue;
+            }
             libTuple.setItem(0, Py::String(materialLibrary->getName().toStdString()));
             libTuple.setItem(1, Py::String(materialLibrary->getDirectoryPath().toStdString()));
             libTuple.setItem(2,

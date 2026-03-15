@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _RobotAlgos_h_
-#define _RobotAlgos_h_
+#pragma once
 
 #include "kdl_cp/frames_io.hpp"
 #include <Base/Placement.h>
@@ -51,5 +50,3 @@ KDL::Frame toFrame(const Base::Placement& To);
 Base::Placement toPlacement(const KDL::Frame& frame);
 
 }  // namespace Robot
-
-#endif

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef APP_PROJECTFILE_H
-#define APP_PROJECTFILE_H
+#pragma once
 
 #include <Base/Type.h>
 #include <zipios++/zipfile.h>
@@ -206,5 +205,3 @@ private:
 
 
 }  // namespace App
-
-#endif  // APP_PROJECTFILE_H

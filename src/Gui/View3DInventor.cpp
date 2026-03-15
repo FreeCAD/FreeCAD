@@ -58,6 +58,7 @@
 #include <Gui/PreferencePages/DlgSettingsPDF.h>
 
 #include "View3DInventor.h"
+#include "Base/Exception.h"
 #include "View3DSettings.h"
 #include "Application.h"
 #include "BitmapFactory.h"
@@ -350,7 +351,7 @@ bool View3DInventor::containsViewProvider(const ViewProvider* vp) const
 
 // **********************************************************************************
 
-bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
+bool View3DInventor::onMsg(const char* pMsg)
 {
     if (strcmp("ViewFit", pMsg) == 0) {
         _viewer->viewAll();
@@ -384,17 +385,6 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     else if (strcmp("SetStereoOff", pMsg) == 0) {
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO);
         return true;
-    }
-    else if (strcmp("GetCamera", pMsg) == 0) {
-        SoCamera* Cam = _viewer->getSoRenderManager()->getCamera();
-        if (!Cam) {
-            return false;
-        }
-        *ppReturn = SoFCDB::writeNodesToString(Cam).c_str();
-        return true;
-    }
-    else if (strncmp("SetCamera", pMsg, 9) == 0) {
-        return setCamera(pMsg + 10);
     }
     else if (strncmp("Dump", pMsg, 4) == 0) {
         dump(pMsg + 5);
@@ -561,12 +551,6 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if (strcmp("ViewAxo", pMsg) == 0) {
         return true;
     }
-    else if (strcmp("GetCamera", pMsg) == 0) {
-        return true;
-    }
-    else if (strncmp("SetCamera", pMsg, 9) == 0) {
-        return true;
-    }
     else if (strncmp("Dump", pMsg, 4) == 0) {
         return true;
     }
@@ -584,6 +568,15 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     }
 
     return false;
+}
+
+const std::string& View3DInventor::getCamera() const
+{
+    SoCamera* Cam = _viewer->getSoRenderManager()->getCamera();
+    if (!Cam) {
+        throw Base::RuntimeError("Could not find reference to 3D View camera");
+    }
+    return SoFCDB::writeNodesToString(Cam);
 }
 
 bool View3DInventor::setCamera(const char* pCamera)

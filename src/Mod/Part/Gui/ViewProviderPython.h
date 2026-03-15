@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPYTHON_H
-#define PARTGUI_VIEWPROVIDERPYTHON_H
+#pragma once
 
 #include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/ViewProvider.h>
@@ -54,6 +53,3 @@ using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProviderPart>;
 using ViewProviderCustomPython = Gui::ViewProviderFeaturePythonT<ViewProviderCustom>;
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERPYTHON_H

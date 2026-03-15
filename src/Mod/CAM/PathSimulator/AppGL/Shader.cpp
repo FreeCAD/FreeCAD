@@ -33,6 +33,7 @@
 #include "GlUtils.h"
 #include "Shader.h"
 #include <iostream>
+#include <regex>
 #include <Base/Console.h>
 
 namespace MillSim
@@ -45,31 +46,31 @@ Shader::~Shader()
     Destroy();
 }
 
-void Shader::UpdateModelMat(mat4x4 tmat, mat4x4 nmat)
+void Shader::UpdateModelMat(const mat4x4& tmat, const mat4x4& nmat)
 {
     if (mModelPos >= 0) {
-        glUniformMatrix4fv(mModelPos, 1, GL_FALSE, (GLfloat*)tmat);
+        glUniformMatrix4fv(mModelPos, 1, GL_FALSE, (const GLfloat*)tmat);
     }
     if (mNormalRotPos >= 0) {
-        glUniformMatrix4fv(mNormalRotPos, 1, GL_FALSE, (GLfloat*)nmat);
+        glUniformMatrix4fv(mNormalRotPos, 1, GL_FALSE, (const GLfloat*)nmat);
     }
 }
 
-void Shader::UpdateProjectionMat(mat4x4 mat)
+void Shader::UpdateProjectionMat(const mat4x4& mat)
 {
     if (mProjectionPos >= 0) {
-        glUniformMatrix4fv(mProjectionPos, 1, GL_FALSE, (GLfloat*)mat);
+        glUniformMatrix4fv(mProjectionPos, 1, GL_FALSE, (const GLfloat*)mat);
     }
 }
 
-void Shader::UpdateViewMat(mat4x4 mat)
+void Shader::UpdateViewMat(const mat4x4& mat)
 {
     if (mViewPos >= 0) {
-        glUniformMatrix4fv(mViewPos, 1, GL_FALSE, (GLfloat*)mat);
+        glUniformMatrix4fv(mViewPos, 1, GL_FALSE, (const GLfloat*)mat);
     }
 }
 
-void Shader::UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient, float linearity)
+void Shader::UpdateEnvColor(const vec3& lightPos, const vec3& lightColor, const vec3& ambient, float linearity)
 {
     if (mLightPosPos >= 0) {
         glUniform3fv(mLightPosPos, 1, lightPos);
@@ -95,14 +96,14 @@ void Shader::UpdateScreenDimension(int width, int height)
     }
 }
 
-void Shader::UpdateObjColor(vec3 objColor)
+void Shader::UpdateObjColor(const vec3& objColor)
 {
     if (mObjectColorPos >= 0) {
         glUniform3fv(mObjectColorPos, 1, objColor);
     }
 }
 
-void Shader::UpdateObjColorAlpha(vec4 objColor)
+void Shader::UpdateObjColorAlpha(const vec4& objColor)
 {
     if (mObjectColorAlphaPos >= 0) {
         glUniform4fv(mObjectColorAlphaPos, 1, objColor);
@@ -199,13 +200,51 @@ bool CheckCompileResult(int shaderId, const char* shaderName, bool isVertex)
     return true;
 }
 
+static void preprocessVertexShader(std::string& shader, std::map<int, std::string>& attributes)
+{
+    // The new CAM simulator relies on "layout(location = x)" to specify vertex attributes. However,
+    // on macOS we're limited to OpenGL 2.1 and GLSL 1.20 and layout specifiers are not supported.
+    // We use a regex to search those specifiers and extract the information manually. This can then
+    // be used with glBindAttribLocation to achieve the same result.
+
+    const std::regex attributeRegex {
+        "layout\\s*\\(\\s*location\\s*=\\s*(\\d+)\\s*\\)\\s*attribute\\s+(\\w+)\\s+(\\w+);"
+    };
+
+    for (int i = 0; i < (int)shader.size();) {
+        std::smatch match;
+        if (!std::regex_search(shader.cbegin() + i, shader.cend(), match, attributeRegex)) {
+            break;
+        }
+
+        const int location = std::stoi(match[1]);
+        const std::string type = match[2];
+        const std::string name = match[3];
+
+        attributes[location] = name;
+
+        const std::string prefix {shader.cbegin(), match.prefix().second};
+        const std::string suffix = match.suffix().str();
+
+        const std::string decl = "attribute " + type + " " + name + ";";
+
+        shader = prefix + decl + suffix;
+        i += decl.length();
+    }
+}
+
 unsigned int Shader::CompileShader(const char* name, const char* _vertShader, const char* _fragShader)
 {
     vertShader = _vertShader;
     fragShader = _fragShader;
+
+    std::map<int, std::string> attributes;
+    preprocessVertexShader(vertShader, attributes);
+
     const GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
     GLint res = 0;
-    glShaderSource(vertex_shader, 1, &vertShader, NULL);
+    const char* vertShaderData[] = {vertShader.c_str()};
+    glShaderSource(vertex_shader, 1, vertShaderData, NULL);
     glCompileShader(vertex_shader);
     if (CheckCompileResult(vertex_shader, name, true)) {
         glDeleteShader(vertex_shader);
@@ -213,7 +252,8 @@ unsigned int Shader::CompileShader(const char* name, const char* _vertShader, co
     }
 
     const GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragShader, NULL);
+    const char* fragShaderData[] = {fragShader.c_str()};
+    glShaderSource(fragment_shader, 1, fragShaderData, NULL);
     glCompileShader(fragment_shader);
     if (CheckCompileResult(fragment_shader, name, false)) {
         glDeleteShader(fragment_shader);
@@ -224,6 +264,11 @@ unsigned int Shader::CompileShader(const char* name, const char* _vertShader, co
     shaderId = glCreateProgram();
     glAttachShader(shaderId, vertex_shader);
     glAttachShader(shaderId, fragment_shader);
+
+    for (auto [pos, name] : attributes) {
+        glBindAttribLocation(shaderId, pos, name.c_str());
+    }
+
     glLinkProgram(shaderId);
 
     glGetProgramiv(shaderId, GL_LINK_STATUS, &res);
@@ -279,13 +324,13 @@ void Shader::Destroy()
 
 
 const char* VertShader3DNorm = R"(
-    #version 330 core
+    #version 120
 
-    layout(location = 0) in vec3 aPosition;
-    layout(location = 1) in vec3 aNormal;
+    layout(location = 0) attribute vec3 aPosition;
+    layout(location = 1) attribute vec3 aNormal;
 
-    out vec3 Normal;
-    out vec3 Position;
+    varying vec3 Normal;
+    varying vec3 Position;
 
     uniform mat4 model;
     uniform mat4 view;
@@ -302,13 +347,13 @@ const char* VertShader3DNorm = R"(
 )";
 
 const char* VertShader3DInvNorm = R"(
-    #version 330 core
+    #version 120
 
-    layout(location = 0) in vec3 aPosition;
-    layout(location = 1) in vec3 aNormal;
+    layout(location = 0) attribute vec3 aPosition;
+    layout(location = 1) attribute vec3 aNormal;
 
-    out vec3 Normal;
-    out vec3 Position;
+    varying vec3 Normal;
+    varying vec3 Position;
 
     uniform mat4 model;
     uniform mat4 view;
@@ -325,12 +370,12 @@ const char* VertShader3DInvNorm = R"(
 
 
 const char* VertShader2DTex = R"(
-    #version 330 core
+    #version 120
 
-    layout(location = 0) in vec2 aPosition;
-    layout(location = 1) in vec2 aTexCoord;
+    layout(location = 0) attribute vec2 aPosition;
+    layout(location = 1) attribute vec2 aTexCoord;
 
-    out vec2 texCoord;
+    varying vec2 texCoord;
 
     uniform mat4 projection;
     uniform mat4 model;
@@ -343,29 +388,26 @@ const char* VertShader2DTex = R"(
 )";
 
 const char* FragShader2dTex = R"(
-    #version 330
+    #version 120
 
-    out vec4 FragColor;
-    in vec2 texCoord;
+    varying vec2 texCoord;
 
     uniform vec3 objectColor;
     uniform sampler2D texSlot;
 
     void main()
     {
-        vec4 texColor = texture(texSlot, texCoord);
-        FragColor = vec4(objectColor, 1.0) * texColor;
+        vec4 texColor = texture2D(texSlot, texCoord);
+        gl_FragColor = vec4(objectColor, 1.0) * texColor;
     }
 )";
 
 
 const char* FragShaderNorm = R"(
-    #version 330
+    #version 120
 
-    out vec4 FragColor;
-
-    in vec3 Normal;
-    in vec3 Position;
+    varying vec3 Normal;
+    varying vec3 Position;
 
     uniform vec3 lightPos;
     uniform vec3 lightColor;
@@ -379,33 +421,29 @@ const char* FragShaderNorm = R"(
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = diff * lightColor;
         vec3 result = (lightAmbient + diffuse) * objectColor;
-        FragColor = vec4(result, 1.0);
+        gl_FragColor = vec4(result, 1.0);
     }
 )";
 
 const char* FragShaderFlat = R"(
-    #version 330
+    #version 120
 
-    out vec4 FragColor;
-
-    in vec3 Normal;
-    in vec3 Position;
     uniform vec3 objectColor;
 
     void main()
     {
-        FragColor = vec4(objectColor, 1.0);
+        gl_FragColor = vec4(objectColor, 1.0);
     }
 )";
 
 
 const char* VertShader2DFbo = R"(
-    #version 330 core
+    #version 120
 
-    layout(location = 0) in vec2 aPosition;
-    layout(location = 1) in vec2 aTexCoord;
+    layout(location = 0) attribute vec2 aPosition;
+    layout(location = 1) attribute vec2 aTexCoord;
 
-    out vec2 texCoord;
+    varying vec2 texCoord;
 
     void main(void)
     {
@@ -415,27 +453,27 @@ const char* VertShader2DFbo = R"(
 )";
 
 const char* FragShader2dFbo = R"(
-    #version 330
+    #version 120
 
-    out vec4 FragColor;
-    in vec2 texCoord;
+    varying vec2 texCoord;
 
     uniform sampler2D texSlot;
 
     void main()
     {
-        vec4 tc = texture(texSlot, texCoord);
-        FragColor = tc;
+        vec4 tc = texture2D(texSlot, texCoord);
+        gl_FragColor = tc;
     }
 )";
 
 const char* VertShaderGeom = R"(
-    #version 330 core
-    layout (location = 0) in vec3 aPos;
-    layout (location = 1) in vec3 aNormal;
+    #version 120
 
-    out vec3 Position;
-    out vec3 Normal;
+    layout(location = 0) attribute vec3 aPosition;
+    layout(location = 1) attribute vec3 aNormal;
+
+    varying vec3 Position;
+    varying vec3 Normal;
 
     uniform bool invertedNormals;
 
@@ -445,10 +483,10 @@ const char* VertShaderGeom = R"(
 
     void main()
     {
-        vec4 viewPos = view * model * vec4(aPos, 1.0);
+        vec4 viewPos = view * model * vec4(aPosition, 1.0);
         Position = viewPos.xyz;
 
-        mat3 normalMatrix = transpose(inverse(mat3(view * model)));
+        mat3 normalMatrix = /* transpose(inverse( */ mat3(view * model) /* )) */;
         Normal = normalMatrix * (invertedNormals ? -aNormal : aNormal);
 
         gl_Position = projection * viewPos;
@@ -456,30 +494,26 @@ const char* VertShaderGeom = R"(
 )";
 
 const char* FragShaderGeom = R"(
-    #version 330 core
-    layout (location = 0) out vec4 ColorTex;
-    layout (location = 1) out vec3 PositionTex;
-    layout (location = 2) out vec3 NormalTex;
+    #version 120
 
-    in vec3 Position;
-    in vec3 Normal;
+    varying vec3 Position;
+    varying vec3 Normal;
 
     uniform vec3 objectColor;
 
     void main()
     {
         // Store position, normal, and diffuse color in textures
-        PositionTex = Position;
-        NormalTex = normalize(Normal);
-        ColorTex = vec4(objectColor, 1.0f);
+        gl_FragData[0] = vec4(objectColor, 1.0f);
+        gl_FragData[1] = vec4(Position, 0.0f);
+        gl_FragData[2] = vec4(normalize(Normal), 0.0f);
     }
 )";
 
 const char* FragShaderSSAO = R"(
-    #version 330 core
-    layout (location = 0) out float AoData;
+    #version 120
 
-    in vec2 texCoord;
+    varying vec2 texCoord;
 
     uniform sampler2D RandTex;
     uniform sampler2D PositionTex;
@@ -497,8 +531,8 @@ const char* FragShaderSSAO = R"(
     {
         // Create the random tangent space matrix
         vec2 randScale = vec2( screenWidth / 4.0, screenHeight / 4.0 );
-        vec3 randDir = normalize( texture(RandTex, texCoord.xy * randScale).xyz );
-        vec3 n = normalize( texture(NormalTex, texCoord).xyz );
+        vec3 randDir = normalize( texture2D(RandTex, texCoord.xy * randScale).xyz );
+        vec3 n = normalize( texture2D(NormalTex, texCoord).xyz );
         vec3 biTang = cross( n, randDir );
         if( length(biTang) < 0.0001 )  // If n and randDir are parallel, n is in x-y plane
             biTang = cross( n, vec3(0,0,1));
@@ -507,7 +541,7 @@ const char* FragShaderSSAO = R"(
         mat3 toCamSpace = mat3(tang, biTang, n);
 
         float occlusionSum = 0.0;
-        vec3 camPos = texture(PositionTex, texCoord).xyz;
+        vec3 camPos = texture2D(PositionTex, texCoord).xyz;
         for( int i = 0; i < kernelSize; i++ ) {
             vec3 samplePos = camPos + Radius * (toCamSpace * SampleKernel[i]);
 
@@ -517,7 +551,7 @@ const char* FragShaderSSAO = R"(
             p.xyz = p.xyz * 0.5 + 0.5;
 
             // Access camera space z-coordinate at that point
-            float surfaceZ = texture(PositionTex, p.xy).z;
+            float surfaceZ = texture2D(PositionTex, p.xy).z;
             float zDist = surfaceZ - camPos.z;
 
             // Count points that ARE occluded
@@ -525,18 +559,18 @@ const char* FragShaderSSAO = R"(
         }
 
         float occ = occlusionSum / kernelSize;
-        AoData = 1.0 - occ;
+        gl_FragData[0] = vec4(1.0 - occ);
     }
 )";
 
 
 const char* FragShaderSSAOBlur = R"(
-    #version 330 core
-    layout (location = 0) out float AoData;
-
-    in vec2 texCoord;
+    #version 120
 
     uniform sampler2D AoTex;
+
+    uniform float screenWidth;
+    uniform float screenHeight;
 
     void main()
     {
@@ -544,20 +578,19 @@ const char* FragShaderSSAOBlur = R"(
         float sum = 0.0;
         for( int x = -1; x <= 2; ++x ) {
             for( int y = -1; y <= 2; y++ ) {
-                sum += texelFetch( AoTex, pix + ivec2(x,y), 0).r;
+                sum += texture2D( AoTex, (pix + ivec2(x,y)) / vec2(screenWidth, screenHeight), 0).r;
             }
         }
 
         float ao = sum * (1.0 / 16.0);
-        AoData = ao;
+        gl_FragData[0] = vec4(ao);
     }
 )";
 
 const char* FragShaderSSAOLighting = R"(
-    #version 330 core
-    out vec4 FragColor;
+    #version 120
 
-    in vec2 texCoord;
+    varying vec2 texCoord;
 
     uniform vec3 lightPos;
     uniform vec3 lightColor;
@@ -580,25 +613,26 @@ const char* FragShaderSSAOLighting = R"(
 
     void main()
     {
-        vec3 pos = texture( PositionTex, texCoord ).xyz;
-        vec3 norm = texture( NormalTex, texCoord ).xyz;
-        vec4 DiffColorA = texture(ColorTex, texCoord);
+        vec3 pos = texture2D( PositionTex, texCoord ).xyz;
+        vec3 norm = texture2D( NormalTex, texCoord ).xyz;
+        vec4 DiffColorA = texture2D(ColorTex, texCoord);
         vec3 diffColor = DiffColorA.rgb;
-        float aoVal = ssaoActive ? texture( AoTex, texCoord).r : 1.0;
+        float aoVal = ssaoActive ? texture2D( AoTex, texCoord).r : 1.0;
 
         vec3 col = ambAndDiffuse(pos, norm, diffColor, aoVal);
         col = pow(col, vec3(1.0/2.2));
 
-        FragColor = vec4( col, DiffColorA.a );
+        gl_FragColor = vec4( col, DiffColorA.a );
     }
 )";
 
 const char* VertShader3DLine = R"(
-    #version 330 core
+    #version 120
 
-    layout(location = 0) in vec3 aPosition;
-    layout(location = 1) in int aIndex;
-    flat out int Index;
+    layout(location = 0) attribute vec3 aPosition;
+    layout(location = 1) attribute float aIndex;
+
+    varying float Index;
 
     uniform mat4 view;
     uniform mat4 projection;
@@ -611,19 +645,18 @@ const char* VertShader3DLine = R"(
 )";
 
 const char* FragShader3DLine = R"(
-    #version 330
+    #version 120
 
-    out vec4 FragColor;
+    varying float Index;
 
-    flat in int Index;
     uniform vec4 objectColorAlpha;
     uniform vec3 objectColor;
     uniform int curSegment;
 
     void main()
     {
-        if (Index > curSegment) FragColor = objectColorAlpha;
-        else FragColor = vec4(objectColor, objectColorAlpha.a);
+        if (Index > curSegment) gl_FragColor = objectColorAlpha;
+        else gl_FragColor = vec4(objectColor, objectColorAlpha.a);
     }
 )";
 

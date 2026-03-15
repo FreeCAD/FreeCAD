@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSolverObject_H
-#define Fem_FemSolverObject_H
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
@@ -42,6 +41,7 @@ public:
     ~FemSolverObject() override;
 
     App::PropertyLinkList Results;
+    App::PropertyPythonObject Tool;
     App::PropertyPath WorkingDirectory;
     // Attributes are implemented in the FemSolverObjectPython
 
@@ -61,6 +61,3 @@ public:
 using FemSolverObjectPython = App::FeaturePythonT<FemSolverObject>;
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemSolverObject_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_PRECISION_H
-#define BASE_PRECISION_H
+#pragma once
 
 #include <cmath>
 
@@ -228,5 +227,3 @@ public:
 };
 
 }  // namespace Base
-
-#endif  // BASE_PRECISION_H

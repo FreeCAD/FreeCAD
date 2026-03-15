@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY3TRATIONAL_H
-#define WM4QUERY3TRATIONAL_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Query3.h"
@@ -98,5 +97,3 @@ typedef Query3TRational<float> Query3TRationalf;
 typedef Query3TRational<double> Query3TRationald;
 
 }
-
-#endif

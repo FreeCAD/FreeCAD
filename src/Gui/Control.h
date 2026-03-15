@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_CONTROL_H
-#define GUI_CONTROL_H
+#pragma once
 
 // Std. configurations
 
@@ -136,5 +135,3 @@ inline ControlSingleton& Control()
 }
 
 }  // namespace Gui
-
-#endif  // GUI_CONTROL_H

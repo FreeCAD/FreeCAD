@@ -220,7 +220,22 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
                     return App::MeasureElementType::CYLINDER;
                 }
                 case GeomAbs_Plane: {
-                    return App::MeasureElementType::PLANE;
+                    TopExp_Explorer edges(face, TopAbs_EDGE);
+                    if (!edges.More()) {
+                        return App::MeasureElementType::PLANE;
+                    }
+                    TopoDS_Edge edge = TopoDS::Edge(edges.Current());
+                    edges.Next();
+                    if (edges.More()) {
+                        return App::MeasureElementType::PLANE;
+                    }
+
+                    BRepAdaptor_Curve adapt(edge);
+                    if (adapt.GetType() != GeomAbs_Circle) {
+                        return App::MeasureElementType::PLANE;
+                    }
+
+                    return App::MeasureElementType::DISC;
                 }
                 default: {
                     TopLoc_Location loc;
@@ -346,30 +361,35 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 {
     Base::Placement placement;  // curve center + orientation
     Base::Vector3d centerPoint;
-    ;
+
+    MeasureRadiusInfoPtr invalidRes
+        = std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
 
     TopoDS_Shape shape = getLocatedShape(subject);
 
     if (shape.IsNull()) {
-        return std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
+        return invalidRes;
     }
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
     if (sType != TopAbs_EDGE && sType != TopAbs_FACE) {
-        return std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
+        return invalidRes;
     }
 
     GProp_GProps gprops;
     TopoDS_Edge edge;
     TopoDS_Face face;
     gp_Pnt center;
+    double radius = 0.0;
 
     if (sType == TopAbs_EDGE) {
         BRepGProp::LinearProperties(shape, gprops);
         edge = TopoDS::Edge(shape);
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
-            center = adapt.Circle().Location();
+            gp_Circ circ = adapt.Circle();
+            center = circ.Location();
+            radius = circ.Radius();
         }
     }
     else if (sType == TopAbs_FACE) {
@@ -380,16 +400,43 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
             edge = TopoDS::Edge(exp.Current());
         }
         if (edge.IsNull()) {
-            return std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
+            return invalidRes;
         }
 
         BRepAdaptor_Surface surf(face);
         if (surf.GetType() == GeomAbs_Cylinder) {
             center = surf.Cylinder().Location();
+            radius = surf.Cylinder().Radius();
+        }
+
+        if (surf.GetType() == GeomAbs_Plane) {
+            TopExp_Explorer edges(face, TopAbs_EDGE);
+            if (!edges.More()) {
+                return invalidRes;
+            }
+            edge = TopoDS::Edge(edges.Current());
+            edges.Next();
+            if (edges.More()) {
+                return invalidRes;
+            }
+
+            BRepAdaptor_Curve adapt(edge);
+            if (adapt.GetType() != GeomAbs_Circle) {
+                return invalidRes;
+            }
+
+            gp_Circ circle = adapt.Circle();
+            center = circle.Location();
+            radius = circle.Radius();
         }
     }
+    if (radius <= 0.0) {
+        return invalidRes;
+    }
+
     // Get Center of mass as the attachment point of the label
     auto origin = gprops.CentreOfMass();
+
 
     centerPoint = Base::Vector3d(center.X(), center.Y(), center.Z());
 
@@ -401,7 +448,7 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 
     placement = Base::Placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), rot);
 
-    return std::make_shared<MeasureRadiusInfo>(true, getRadius(shape), centerPoint, placement);
+    return std::make_shared<MeasureRadiusInfo>(true, radius, centerPoint, placement);
 }
 
 

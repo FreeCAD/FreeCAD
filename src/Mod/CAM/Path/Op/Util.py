@@ -345,7 +345,8 @@ def offsetWire(wire, base, offset, forward, Side=None):
         if not longestWire or longestWire.Length < w.Length:
             longestWire = w
 
-    debugWire("outside", Part.Wire(outside))
+    if len(outside) >= 2:
+        debugWire("outside", Part.Wire(outside))
     debugWire("longest", longestWire)
 
     def isCircleAt(edge, center):
@@ -398,15 +399,16 @@ def offsetWire(wire, base, offset, forward, Side=None):
     # figure out if all the left sided edges or the right sided edges are the ones
     # that are 'outside'. However, we return the full side.
     edges = leftSideEdges
-    for e in longestWire.Edges:
-        for e0 in rightSideEdges:
-            if Path.Geom.edgesMatch(e, e0):
-                edges = rightSideEdges
-                Path.Log.debug("#use right side edges")
-                if not forward:
-                    Path.Log.debug("#reverse")
-                    edges.reverse()
-                return orientWire(Part.Wire(edges), None)
+    if longestWire:
+        for e in longestWire.Edges:
+            for e0 in rightSideEdges:
+                if Path.Geom.edgesMatch(e, e0):
+                    edges = rightSideEdges
+                    Path.Log.debug("#use right side edges")
+                    if not forward:
+                        Path.Log.debug("#reverse")
+                        edges.reverse()
+                    return orientWire(Part.Wire(edges), None)
 
     # at this point we have the correct edges and they are in the order for forward
     # traversal (climb milling). If that's not what we want just reverse the order,

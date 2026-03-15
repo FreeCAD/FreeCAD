@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_APP_APPLICATION_H_
-#define SRC_APP_APPLICATION_H_
+#pragma once
 
 #include <fastsignals/signal.h>
 #include <QtCore/qtextstream.h>
@@ -129,6 +128,15 @@ public:
     App::Document* newDocument(const char* proposedName = nullptr,
                                const char* proposedLabel = nullptr,
                                DocumentInitFlags CreateFlags = DocumentInitFlags());
+
+    /**
+     * @brief Closes the document and removes it from the application.
+     *
+     * @param[in] doc The document to close.
+     * @return Returns true if the document was found and closed, false otherwise.
+     */
+    bool closeDocument(const Document* doc);
+
     /**
      * @brief Closes the document and removes it from the application.
      *
@@ -596,6 +604,22 @@ public:
     void addExportType(const char* filter, const char* moduleName);
 
     /**
+     * @brief Register an export filetype with a translatable description
+     *
+     * @param[in] description A translatable string describing the file type. Must not contain the
+     * list of extensions.
+     * @param[in] extensions A list of supported extensions. Do not include the "*.", only the
+     * extension itself. For example, "txt", not "*.txt".
+     * @param[in] moduleName The name of the module handling the export.
+     */
+    void addTranslatableExportType(const std::string &description,
+                                   const std::vector<std::string> &extensions,
+                                   const std::string &moduleName);
+
+    /// Intended to be called when the language is changed, this retranslates the export type.
+    void retranslateExportTypes();
+
+    /**
      * @copydoc changeImportModule
      */
     void changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName);
@@ -987,6 +1011,7 @@ private:
         std::string filter;
         std::string module;
         std::vector<std::string> types;
+        bool translatable = false;
     };
 
     // open ending information
@@ -1035,6 +1060,3 @@ inline App::Application &GetApplication(){
 }
 
 } // namespace App
-
-
-#endif // SRC_APP_APPLICATION_H_

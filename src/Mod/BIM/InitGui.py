@@ -71,6 +71,10 @@ class BIMWorkbench(Workbench):
         from nativeifc import ifc_commands
 
         # build menus and toolbars
+
+        # as a workaround for issue #26539 a list without grouped commands
+        # is created later (self.draftingtools_for_watcher)
+        # https://github.com/FreeCAD/FreeCAD/issues/26539
         self.draftingtools = [
             "BIM_Sketch",
             "Draft_Line",
@@ -146,7 +150,7 @@ class BIMWorkbench(Workbench):
             "Draft_Rotate",
             "Draft_Scale",
             "Draft_Mirror",
-            "BIM_Clone",
+            "BIM_CloneTools",
             "BIM_Copy",
             "BIM_SimpleCopy",
             "BIM_Compound",
@@ -354,6 +358,18 @@ class BIMWorkbench(Workbench):
             def IsActive(self):
                 return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
 
+        class BIM_CloneTools:
+            def GetCommands(self):
+                return ("BIM_Clone", "BIM_LinkMake")
+
+            def GetResources(self):
+                label = QT_TRANSLATE_NOOP("BIM_CloneTools", "Cloning Tools")
+                tooltip = label
+                return {"MenuText": label, "ToolTip": tooltip, "Icon": "BIM_Clone"}
+
+            def IsActive(self):
+                return hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+
         # create generic tools command
         class BIM_GenericTools:
             def __init__(self, tools):
@@ -397,6 +413,16 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_ReportTools", BIM_ReportTools())
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
+        FreeCADGui.addCommand("BIM_CloneTools", BIM_CloneTools())
+
+        # workaround for issue #26539: create draftingtools list without grouped commands
+        # https://github.com/FreeCAD/FreeCAD/issues/26539
+        tmplist = self.draftingtools[:]
+        for itm in (("BIM_ArcTools", BIM_ArcTools), ("BIM_SplineTools", BIM_SplineTools)):
+            idx = tmplist.index(itm[0])
+            cmds = list(itm[1].GetCommands(itm[1]))
+            tmplist = tmplist[:idx] + cmds + tmplist[idx + 1 :]
+        self.draftingtools_for_watcher = tmplist
 
         # Inject some of the grouped commands
         self.bimtools.append("BIM_GenericTools")
@@ -636,7 +662,7 @@ class BIMWorkbench(Workbench):
 
         FreeCADGui.Control.addTaskWatcher(
             [
-                BimWatcher(self.draftingtools + self.annotationtools, "2D Geometry"),
+                BimWatcher(self.draftingtools_for_watcher + self.annotationtools, "2D Geometry"),
                 BimWatcher(self.bimtools, "3D/BIM Geometry"),
                 BimWatcher(self.modify, "Modify", invert=True),
             ]

@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
-#define GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H
+#pragma once
 
 #include "ViewProviderGeoFeatureGroup.h"
 
@@ -52,5 +51,3 @@ using ViewProviderOriginGroupExtensionPython
     = ViewProviderExtensionPythonT<Gui::ViewProviderOriginGroupExtension>;
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDERORIGINGROUPEXTENSION_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REENGUI_POISSON_H
-#define REENGUI_POISSON_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -72,5 +71,3 @@ private:
 };
 
 }  // namespace ReenGui
-
-#endif  // REENGUI_POISSON_H

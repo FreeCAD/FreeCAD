@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_SEQUENCER_H
-#define BASE_SEQUENCER_H
+#pragma once
 
 #include <cstddef>
 
@@ -392,5 +391,3 @@ inline SequencerBase& Sequencer()
 }
 
 }  // namespace Base
-
-#endif  // BASE_SEQUENCER_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_MESH_H
-#define MESH_MESH_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -500,6 +499,3 @@ private:
 };
 
 }  // namespace Mesh
-
-
-#endif  // MESH_MESH_H

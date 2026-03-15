@@ -139,6 +139,9 @@
           <property name="editable">
            <bool>false</bool>
           </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>Solver</cstring>
           </property>

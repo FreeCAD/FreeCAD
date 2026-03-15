@@ -109,7 +109,7 @@ class Bone(object):
 
 
 def kink_to_path(kink, g0=False):
-    return Path.Path([PathLanguage.instruction_to_command(instr) for instr in [kink.m0, kink.m1]])
+    return Path.Path([instr.toCommand() for instr in [kink.m0, kink.m1]])
 
 
 def bone_to_path(bone, g0=False):
@@ -124,7 +124,7 @@ def bone_to_path(bone, g0=False):
             param["Y"] = pos.y
         cmds.append(Path.Command("G0", param))
     for instr in [kink.m0, bone.instr[0], bone.instr[1], kink.m1]:
-        cmds.append(PathLanguage.instruction_to_command(instr))
+        cmds.append(instr.toCommand())
     return Path.Path(cmds)
 
 

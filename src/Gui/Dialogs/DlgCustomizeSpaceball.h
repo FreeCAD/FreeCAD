@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
-#define GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QComboBox>
@@ -187,5 +186,3 @@ private:
 };
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGCUSTOMIZESPACEBALL_H

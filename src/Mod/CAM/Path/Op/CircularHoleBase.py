@@ -88,24 +88,20 @@ class ObjectOp(PathOp.ObjectOp):
         Can safely be overwritten by subclasses."""
         pass
 
-    def holeDiameter(self, obj, base, sub):
-        """holeDiameter(obj, base, sub) ... returns the diameter of the specified hole."""
+    def holeDiameter(self, base, sub):
+        """holeDiameter(base, sub) ... returns the diameter of the specified hole."""
         try:
             shape = base.Shape.getElement(sub)
-            if shape.ShapeType == "Vertex":
+            if isinstance(shape, Part.Vertex):
                 return 0
 
-            if shape.ShapeType == "Edge" and type(shape.Curve) == Part.Circle:
+            if isinstance(shape, Part.Edge) and isinstance(shape.Curve, Part.Circle):
                 return shape.Curve.Radius * 2
 
-            if shape.ShapeType == "Face":
-                for i in range(len(shape.Edges)):
-                    if (
-                        type(shape.Edges[i].Curve) == Part.Circle
-                        and shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength * 1.1
-                        and shape.Edges[i].Curve.Radius * 2 > shape.BoundBox.XLength * 0.9
-                    ):
-                        return shape.Edges[i].Curve.Radius * 2
+            if isinstance(shape, Part.Face):
+                for edge in shape.Edges:
+                    if isinstance(edge.Curve, Part.Circle):
+                        return edge.Curve.Radius * 2
 
             # for all other shapes the diameter is just the dimension in X.
             # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
@@ -121,23 +117,26 @@ class ObjectOp(PathOp.ObjectOp):
 
         return 0
 
-    def holePosition(self, obj, base, sub):
-        """holePosition(obj, base, sub) ... returns a Vector for the position defined by the given features.
+    def holePosition(self, base, sub):
+        """holePosition(base, sub) ... returns a Vector for the position defined by the given features.
         Note that the value for Z is set to 0."""
 
         try:
             shape = base.Shape.getElement(sub)
-            if shape.ShapeType == "Vertex":
+            if isinstance(shape, Part.Vertex):
                 return FreeCAD.Vector(shape.X, shape.Y, 0)
 
-            if shape.ShapeType == "Edge" and hasattr(shape.Curve, "Center"):
+            if isinstance(shape, Part.Edge) and isinstance(shape.Curve, Part.Circle):
                 return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
-            if shape.ShapeType == "Face":
-                if hasattr(shape.Surface, "Center"):
+            if isinstance(shape, Part.Face):
+                if isinstance(shape.Surface, Part.Cylinder):
                     return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
-                if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
-                    return shape.Edges[0].Curve.Center
+                if all(isinstance(e.Curve, Part.Circle) for e in shape.Edges):
+                    center = shape.Edges[0].Curve.Center
+                    if all(Path.Geom.pointsCoincide(center, e.Curve.Center) for e in shape.Edges):
+                        return FreeCAD.Vector(center.x, center.y, 0)
+
         except Part.OCCError as e:
             Path.Log.error(e)
 
@@ -174,13 +173,13 @@ class ObjectOp(PathOp.ObjectOp):
             for sub in subs:
                 Path.Log.debug("processing {} in {}".format(sub, base.Name))
                 if self.isHoleEnabled(obj, base, sub):
-                    pos = self.holePosition(obj, base, sub)
+                    pos = self.holePosition(base, sub)
                     if pos:
                         holes.append(
                             {
                                 "x": pos.x,
                                 "y": pos.y,
-                                "r": self.holeDiameter(obj, base, sub),
+                                "r": self.holeDiameter(base, sub),
                             }
                         )
 
@@ -207,12 +206,12 @@ class ObjectOp(PathOp.ObjectOp):
             return
 
         matchvector = None if job.JobType == "Multiaxis" else FreeCAD.Vector(0, 0, 1)
-        tooldiameter = obj.ToolController.Tool.Diameter
+        tooldiameter = obj.ToolController.Tool.Diameter.Value
 
         features = []
         for base in self.model:
             features.extend(
-                Drillable.getDrillableTargets(base, ToolDiameter=tooldiameter, vector=matchvector)
+                Drillable.getDrillableTargets(base, toolDiameter=tooldiameter, vector=matchvector)
             )
         obj.Base = features
         obj.Disabled = []

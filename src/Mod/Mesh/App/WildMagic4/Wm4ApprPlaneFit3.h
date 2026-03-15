@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4APPRPLANEFIT3_H
-#define WM4APPRPLANEFIT3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Plane3.h"
@@ -41,5 +40,3 @@ Plane3<Real> OrthogonalPlaneFit3 (int iQuantity,
     const Vector3<Real>* akPoint);
 
 }
-
-#endif

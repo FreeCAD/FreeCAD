@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_BomGroup_H
-#define ASSEMBLY_BomGroup_H
+#pragma once
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -53,6 +52,3 @@ public:
 
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_BomGroup_H

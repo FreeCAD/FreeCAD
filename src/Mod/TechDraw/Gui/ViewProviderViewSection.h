@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
-#define TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -64,6 +63,3 @@ public:
 };
 
 } // namespace TechDrawGui
-
-
-#endif // TECHDRAWGUI_VIEWPROVIDERVIEWSECTION_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGFILLETEDGES_H
-#define PARTGUI_DLGFILLETEDGES_H
+#pragma once
 
 #include <QDialog>
 #include <QItemDelegate>
@@ -229,5 +228,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGFILLETEDGES_H
