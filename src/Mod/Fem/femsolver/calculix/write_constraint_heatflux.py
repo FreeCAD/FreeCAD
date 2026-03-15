@@ -67,11 +67,13 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
             heatflux_obj.AmbientTemp.getValueAs("K").Value, heatflux_obj.Emissivity
         )
 
-    elif heatflux_obj.ConstraintType == "DFlux":
+    elif heatflux_obj.ConstraintType == "Flux":
         heatflux_key_word = "DFLUX"
         heatflux_facetype = "S"
         heatflux_facesubtype = ""
-        heatflux_values = "{:.13G}".format(heatflux_obj.DFlux.getValueAs("t/s^3").Value)
+        heatflux_values = "{:.13G}".format(
+            heatflux_obj.DistributedHeatFlux.getValueAs("t/s^3").Value
+        )
 
     else:
         return

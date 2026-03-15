@@ -60,9 +60,9 @@ TaskFemConstraintInitialTemperature::TaskFemConstraintInitialTemperature(
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     // Fill data into dialog elements
-    ui->if_temperature->setValue(pcConstraint->initialTemperature.getQuantityValue());
+    ui->if_temperature->setValue(pcConstraint->InitialTemperature.getQuantityValue());
 
-    ui->if_temperature->bind(pcConstraint->initialTemperature);
+    ui->if_temperature->bind(pcConstraint->InitialTemperature);
 }
 
 TaskFemConstraintInitialTemperature::~TaskFemConstraintInitialTemperature() = default;
@@ -102,7 +102,7 @@ bool TaskDlgFemConstraintInitialTemperature::accept()
     try {
         Gui::Command::doCommand(
             Gui::Command::Doc,
-            "App.ActiveDocument.%s.initialTemperature = \"%s\"",
+            "App.ActiveDocument.%s.InitialTemperature = \"%s\"",
             name.c_str(),
             parameterTemperature->get_temperature().c_str()
         );
