@@ -46,30 +46,41 @@ else:
 class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     """Page controller class for Helix operations."""
 
+    def initPage(self, obj):
+        self.helixPitchSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.helixPitch, obj, "HelixPitch"
+        )
+        self.radialStockToLeaveOuterSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.radialStockToLeaveOuter, obj, "RadialStockToLeaveOuter"
+        )
+
     def getForm(self):
         """getForm() ... return UI"""
-
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
+
         comboToPropertyMap = [("startAt", "StartAt"), ("cutMode", "CutMode")]
-
         enumTups = PathHelix.ObjectHelix.helixOpPropertyEnumerations(dataType="raw")
-
         self.populateCombobox(form, enumTups, comboToPropertyMap)
+
         return form
+
+    def updateQuantitySpinBoxes(self, index=None):
+        self.helixPitchSpinBox.updateWidget()
+        self.radialStockToLeaveOuterSpinBox.updateWidget()
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         Path.Log.track()
+        self.helixPitchSpinBox.updateProperty()
+        self.radialStockToLeaveOuterSpinBox.updateProperty()
+
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
         if obj.StartAt != str(self.form.startAt.currentData()):
             obj.StartAt = str(self.form.startAt.currentData())
+
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
-        PathGuiUtil.updateInputField(obj, "HelixPitch", self.form.helixPitch)
-        PathGuiUtil.updateInputField(
-            obj, "RadialStockToLeaveOuter", self.form.radialStockToLeaveOuter
-        )
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -77,31 +88,24 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         Path.Log.track()
+        self.updateQuantitySpinBoxes()
 
         self.form.stepOverPercent.setValue(obj.StepOver)
+
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.StartAt, self.form.startAt)
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
-        self.form.helixPitch.setText(
-            FreeCAD.Units.Quantity(obj.HelixPitch.Value, FreeCAD.Units.Length).UserString
-        )
-        self.form.radialStockToLeaveOuter.setText(
-            FreeCAD.Units.Quantity(
-                obj.RadialStockToLeaveOuter.Value, FreeCAD.Units.Length
-            ).UserString
-        )
-
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
 
         signals.append(self.form.helixPitch.editingFinished)
+        signals.append(self.form.radialStockToLeaveOuter.editingFinished)
         signals.append(self.form.stepOverPercent.editingFinished)
-        signals.append(self.form.radialStockToLeaveOuter.editingFinished)
-        signals.append(self.form.radialStockToLeaveOuter.editingFinished)
+
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startAt.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
