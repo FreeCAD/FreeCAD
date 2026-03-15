@@ -57,6 +57,24 @@ else:
 # module functions ###############################################
 
 
+def is_type_or_link(obj, type_name):
+    """Checks if the given object or its linked object is of the specified type.
+
+    Parameters
+    ----------
+    obj: <App::DocumentObject>
+        The object to check.
+    type_name: str
+        The type to check against (e.g., 'Window', 'Wall').
+    """
+    if not obj:
+        return False
+
+    target = obj.getLinkedObject() if hasattr(obj, "getLinkedObject") else obj
+
+    return Draft.getType(target) == type_name
+
+
 def getStringList(objects):
     """getStringList(objects): returns a string defining a list
     of objects"""
@@ -136,12 +154,10 @@ def addComponents(objectsList, host):
         x = getattr(host, "Axes", [])
         for o in objectsList:
             if hasattr(o, "Shape"):
-                if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                if is_type_or_link(o, "Window"):
+                    ensure_link_overrides(o)
+                    if hasattr(o, "Hosts") and host not in o.Hosts:
+                        o.Hosts += [host]
                 elif o in outList:
                     FreeCAD.Console.PrintWarning(
                         translate(
@@ -206,12 +222,10 @@ def removeComponents(objectsList, host=None):
                 host.Axes = a
             s = host.Subtractions
             for o in objectsList:
-                if Draft.getType(o) == "Window":
-                    if hasattr(o, "Hosts"):
-                        if not host in o.Hosts:
-                            g = o.Hosts
-                            g.append(host)
-                            o.Hosts = g
+                if is_type_or_link(o, "Window"):
+                    ensure_link_overrides(o)
+                    if hasattr(o, "Hosts") and host not in o.Hosts:
+                        o.Hosts += [host]
                 elif not o in s:
                     s.append(o)
                     if FreeCAD.GuiUp:
@@ -281,8 +295,13 @@ def removeComponents(objectsList, host=None):
                     if o in a:
                         a.remove(o)
                         h.Objects = a
-            if hasattr(o, "Hosts") and Draft.getType(o) == "Window":
+            if hasattr(o, "Hosts") and is_type_or_link(o, "Window"):
+                ensure_link_overrides(o)
+                # Ensure the hosts are recomputed upon window removal
+                old_hosts = o.Hosts[:]
                 o.Hosts = []
+                for old_host in old_hosts:
+                    old_host.touch()
 
 
 def makeComponent(baseobj=None, name=None, delete=False):
@@ -1727,3 +1746,70 @@ def makeIfcSpreadsheet(archobj=None):
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
     else:
         return ifc_spreadsheet
+
+
+def override_link_properties(link_obj, prop_names):
+    """
+    Injects local properties into a Link object to 'shadow' its source's properties.
+
+    By creating a local property, the Link can then to hold instance-specific data (like a Window's
+    'Hosts' list) without modifying the source and without triggering the heavy CopyOnChange
+    deep-copy mechanism of App::Link.
+
+    This function must be called before the Link's first recompute, which is when the core merges
+    the source's properties into the Link. This is typically achieved by calling it from within the
+    `appLinkExecute` method of the source object, or by forcefully calling it via
+    `ensure_link_overrides` if the user interacts with an unrecomputed Link.
+
+    See: https://wiki.freecad.org/Std_LinkMake#Copy_on_Change
+
+    Parameters
+    ----------
+    link_obj : <App::DocumentObject>
+        The newly created Link object (`App::Link`) that will receive the overridden properties.
+    prop_names : list of str
+        A list of property names (e.g., `["Hosts"]`) to extract from the source object and
+        recreate locally on the Link object.
+    """
+    if not link_obj or not prop_names:
+        return
+
+    # Check if we have a linked object
+    source_obj = link_obj.LinkedObject
+    if not source_obj:
+        return
+
+    for prop_name in prop_names:
+        # If the property is not in PropertiesList, the Link has not yet merged the source's
+        # properties (i.e. we're running inside the `appLinkExecute` hook), or the property
+        # genuinely doesn't exist.
+        if prop_name not in link_obj.PropertiesList:
+
+            prop_type = source_obj.getTypeIdOfProperty(prop_name)
+            if not prop_type:  # Property doesn't exist on the source
+                continue
+
+            prop_group = source_obj.getGroupOfProperty(prop_name)
+            prop_doc = source_obj.getDocumentationOfProperty(prop_name)
+
+            # Inject the shadow property locally on the Link
+            link_obj.addProperty(prop_type, prop_name, prop_group, prop_doc, locked=True)
+
+            # Initialize with the source's current value when the link is created. Afterwards, the
+            # user can change the Link's property independently, and it won't affect the source or
+            # trigger a deep copy.
+            prop_value = getattr(source_obj, prop_name)
+            setattr(link_obj, prop_name, prop_value)
+
+
+def ensure_link_overrides(obj):
+    """
+    Ensures that a Link object has its required override properties set up. This acts as a safeguard
+    if a user modifies a Link before it has been recomputed for the first time (which normally
+    triggers appLinkExecute).
+    """
+    if obj.isDerivedFrom("App::Link"):
+        source = obj.LinkedObject
+        if source and hasattr(source, "Proxy") and hasattr(source.Proxy, "LinkOverrideProperties"):
+            # Force the override injection on the spot
+            override_link_properties(obj, source.Proxy.LinkOverrideProperties)

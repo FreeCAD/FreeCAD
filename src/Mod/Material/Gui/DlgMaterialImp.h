@@ -94,6 +94,7 @@ public:
     ~TaskMaterial() override;
 
 public:
+    bool accept() override;
     bool reject() override;
 
     bool isAllowedAlterDocument() const override

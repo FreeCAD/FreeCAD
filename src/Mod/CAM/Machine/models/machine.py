@@ -1575,11 +1575,34 @@ class MachineFactory:
     # Default configuration directory
     _config_dir = None
 
+    # Callback registry for configuration changes
+    _callbacks = []
+
     @classmethod
     def set_config_directory(cls, directory):
         """Set the directory for storing machine configuration files"""
         cls._config_dir = pathlib.Path(directory)
         cls._config_dir.mkdir(parents=True, exist_ok=True)
+
+    @classmethod
+    def register_callback(cls, callback):
+        """Register a callback to be called when machine configurations change"""
+        cls._callbacks.append(callback)
+
+    @classmethod
+    def unregister_callback(cls, callback):
+        """Unregister a callback"""
+        if callback in cls._callbacks:
+            cls._callbacks.remove(callback)
+
+    @classmethod
+    def _notify_callbacks(cls, event_type, machine_name=None):
+        """Notify all registered callbacks of a configuration change"""
+        for callback in cls._callbacks:
+            try:
+                callback(event_type, machine_name)
+            except Exception as e:
+                Path.Log.error(f"Error in machine factory callback: {e}")
 
     @classmethod
     def get_config_directory(cls):
@@ -1825,6 +1848,9 @@ class MachineFactory:
             FileNotFoundError: If no machine with that name is found
             ValueError: If the loaded data is not a valid machine configuration
         """
+        if not machine_name:
+            return None
+
         # Get list of available machine files
         machine_files = cls.list_configuration_files()
 

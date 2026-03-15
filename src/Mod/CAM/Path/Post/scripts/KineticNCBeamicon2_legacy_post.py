@@ -22,6 +22,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************/
+#
+# DEPRECATED: This post processor is deprecated and replaced by the generic
+# post processor with Generic_KineticNC.fcm machine configuration file.
+# Use the generic post processor instead.
 
 # ****************************************************************************
 # *   Modifications by Samuel Mayer (samuel.mayer@posteo.de)                 *
@@ -42,7 +46,6 @@ import argparse
 import datetime
 import shlex
 from PathScripts import PathUtils
-import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
 
 TOOLTIP = """

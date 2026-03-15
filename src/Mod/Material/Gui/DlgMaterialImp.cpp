@@ -30,6 +30,7 @@
 
 #include <Base/Console.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/DockWindowManager.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
@@ -258,17 +259,26 @@ TaskMaterial::TaskMaterial()
     taskbox = new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set Material"));
 }
 
 TaskMaterial::~TaskMaterial() = default;
 
 QDialogButtonBox::StandardButtons TaskMaterial::getStandardButtons() const
 {
-    return QDialogButtonBox::Close;
+    return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+}
+
+bool TaskMaterial::accept()
+{
+    Gui::Command::commitCommand();
+    return true;
 }
 
 bool TaskMaterial::reject()
 {
+    Gui::Command::abortCommand();
     widget->reject();
     return (widget->result() == QDialog::Rejected);
 }

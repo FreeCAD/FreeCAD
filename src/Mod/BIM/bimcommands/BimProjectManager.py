@@ -206,7 +206,6 @@ class BIM_ProjectManager:
                 self.project = ifc_tools.convert_document(doc, silent=True)
 
         # Human
-        human = None
         if self.form.addHumanFigure.isChecked():
             from draftguitools import gui_trackers
 
@@ -297,21 +296,8 @@ class BIM_ProjectManager:
                             self.building.addObject(grp)
 
             # Human figure
-            if self.form.addHumanFigure.isChecked():
-                if not human:
-                    # TODO embed this
-                    humanpath = os.path.join(
-                        os.path.dirname(__file__), "geometry", "human figure.brep"
-                    )
-                    if os.path.exists(humanpath):
-                        humanshape = Part.Shape()
-                        humanshape.importBrep(humanpath)
-                        human = FreeCAD.ActiveDocument.addObject("Part::Feature", "Human")
-                        human.Shape = humanshape
-                        human.Placement.move(FreeCAD.Vector(500, 500, 0))
-                    if human:
-                        grp.addObject(human)
-                    # TODO: nativeifc
+            if human:
+                grp.addObject(human)
 
             # Outline
             if buildingWidth and buildingLength:
@@ -374,6 +360,17 @@ class BIM_ProjectManager:
                     grp.addObject(axisV)
                 if axisH:
                     grp.addObject(axisH)
+            if self.form.countLevels.value() and not levelHeight:
+                from PySide import QtGui
+
+                msg = QtGui.QMessageBox(self.form)
+                msg.setIcon(QtGui.QMessageBox.Warning)
+                msg.setWindowTitle(translate("BIM", "Zero Level Height"))
+                msg.setText(translate("BIM", "Level height is zero. No levels will be created."))
+                msg.setInformativeText(
+                    translate("BIM", "Please set the level height to a non-zero value.")
+                )
+                msg.exec()
             if self.form.countLevels.value() and levelHeight:
                 h = 0
                 alabels = []
