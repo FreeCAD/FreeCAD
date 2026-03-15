@@ -1173,15 +1173,25 @@ void LinkView::renderDoubleSide(bool enable)
 {
     if (!pcShapeHints) {
         pcShapeHints = new SoShapeHints;
-        pcShapeHints->shapeType = SoShapeHints::SOLID;
+
+        // Explicitly ignore fields we don't want to override.
+        pcShapeHints->shapeType.setIgnored(true);
+        pcShapeHints->faceType.setIgnored(true);
+        pcShapeHints->creaseAngle.setIgnored(true);
+
         pcLinkRoot->insertChild(pcShapeHints, 0);
     }
+
+    // Set the proper winding order based on the transform determinant
     if (enable) {
         pcShapeHints->vertexOrdering = SoShapeHints::CLOCKWISE;
     }
     else {
         pcShapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     }
+
+    // Force the override, but because the other fields are ignored,
+    // this will ONLY override the vertexOrdering.
     pcShapeHints->setOverride(true);
 }
 
