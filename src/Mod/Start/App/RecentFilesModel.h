@@ -41,6 +41,7 @@ public:
     explicit RecentFilesModel(QObject* parent = nullptr);
 
     void loadRecentFiles();
+    void recentFileAdded(const QString& filename);
 
 private:
     Base::Reference<ParameterGrp> _parameterGroup;
