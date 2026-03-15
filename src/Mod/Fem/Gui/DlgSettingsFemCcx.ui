@@ -85,65 +85,13 @@
          </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QLabel" name="l_editor">
-          <property name="text">
-           <string>Input file editor</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="Gui::PrefCheckBox" name="cb_int_editor">
-          <property name="text">
-           <string>Use internal editor for *.inp files</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UseInternalEditor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="l_ext_editor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>External editor</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="Gui::PrefFileChooser" name="fc_ext_editor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ExternalEditorPath</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Fem/Ccx</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
          <widget class="QLabel" name="l_editor_2">
           <property name="text">
            <string>Input file splitting</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="1">
+        <item row="4" column="1">
          <widget class="Gui::PrefCheckBox" name="cb_split_inp_writer">
           <property name="enabled">
            <bool>true</bool>
@@ -913,37 +861,5 @@ Only takes effect if 'Pipeline only' is enabled</string>
   <include location="Resources/Fem.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>cb_int_editor</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>l_ext_editor</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>65</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>148</x>
-     <y>88</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>cb_int_editor</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>fc_ext_editor</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>406</x>
-     <y>65</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>406</x>
-     <y>88</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
 </ui>

@@ -22,6 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QMessageBox>
+#include <QStandardPaths>
 
 #include <Gui/Action.h>
 #include <Gui/Command.h>
@@ -50,6 +52,19 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
 
     ParameterGrp::handle hGrp = ui->cmb_def_solver->getWindowParameter();
     ui->cmb_def_solver->setCurrentIndex(hGrp->GetInt(ui->cmb_def_solver->entryName(), 0));
+
+    connect(
+        ui->fc_ext_editor,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemGeneralImp::onfileNameSelected
+    );
+    connect(
+        ui->fc_wd_custom,
+        &Gui::PrefFileChooser::fileNameSelected,
+        this,
+        &DlgSettingsFemGeneralImp::oncustomDirSelected
+    );
 }
 
 DlgSettingsFemGeneralImp::~DlgSettingsFemGeneralImp() = default;
@@ -65,8 +80,9 @@ void DlgSettingsFemGeneralImp::saveSettings()
     ui->cb_wd_temp->onSave();
     ui->cb_wd_beside->onSave();
     ui->cb_wd_custom->onSave();
-    ui->le_wd_custom->onSave();
-    ui->cb_overwrite_solver_working_directory->onSave();
+    ui->fc_wd_custom->onSave();
+    ui->fc_ext_editor->onSave();
+
     ui->cmb_def_solver->onSave();
 
     // set default solver icon
@@ -92,8 +108,9 @@ void DlgSettingsFemGeneralImp::loadSettings()
     ui->cb_wd_temp->onRestore();
     ui->cb_wd_beside->onRestore();
     ui->cb_wd_custom->onRestore();
-    ui->le_wd_custom->onRestore();
-    ui->cb_overwrite_solver_working_directory->onRestore();
+    ui->fc_wd_custom->onRestore();
+    ui->fc_ext_editor->onRestore();
+
     ui->cmb_def_solver->onRestore();
 }
 
@@ -107,6 +124,20 @@ void DlgSettingsFemGeneralImp::changeEvent(QEvent* e)
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+void DlgSettingsFemGeneralImp::onfileNameSelected(const QString& fileName)
+{
+    if (!fileName.isEmpty() && QStandardPaths::findExecutable(fileName).isEmpty()) {
+        QMessageBox::critical(this, tr("General"), tr("Executable '%1' not found").arg(fileName));
+    }
+}
+
+void DlgSettingsFemGeneralImp::oncustomDirSelected(const QString& dirName)
+{
+    if (!dirName.isEmpty() && !QDir(dirName).exists()) {
+        QMessageBox::critical(this, tr("General"), tr("Directory '%1' not found").arg(dirName));
     }
 }
 

@@ -360,6 +360,11 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 prop.handle_change_type(
                     obj, "App::PropertyEnumeration", lambda x: False if x == "linear" else True
                 )
+
+            # Migrate group of properties for old projects
+            if obj.getGroupOfProperty(prop.name) != prop.group:
+                obj.setGroupOfProperty(prop.name, prop.group)
+
         # remove old properties
         try:
             obj.AutomaticIncrementation = not obj.getPropertyByName(
