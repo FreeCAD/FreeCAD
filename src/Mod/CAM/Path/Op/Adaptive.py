@@ -578,14 +578,12 @@ def Execute(op, obj):
         if obj.OperationType == "Clearing":
             if obj.Side == "Outside":
                 opType = area.AdaptiveOperationType.ClearingOutside
-
             else:
                 opType = area.AdaptiveOperationType.ClearingInside
 
         else:  # profiling
             if obj.Side == "Outside":
                 opType = area.AdaptiveOperationType.ProfilingOutside
-
             else:
                 opType = area.AdaptiveOperationType.ProfilingInside
 
@@ -628,12 +626,11 @@ def Execute(op, obj):
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
             if FreeCAD.GuiUp:
-                for (
-                    path
-                ) in tpaths:  # path[0] contains the MotionType, #path[1] contains list of points
+                for path in tpaths:
+                    # path[0] contains the MotionType
+                    # path[1] contains list of points
                     if path[0] == area.AdaptiveMotionType.Cutting:
                         sceneDrawPath(path[1], (0, 0, 1))
-
                     else:
                         sceneDrawPath(path[1], (1, 0, 1))
 
@@ -883,12 +880,11 @@ def ExecuteModelAware(op, obj):
         # progress callback fn, if return true it will stop processing
         def progressFn(tpaths):
             if FreeCAD.GuiUp:
-                for (
-                    path
-                ) in tpaths:  # path[0] contains the MotionType, #path[1] contains list of points
+                for path in tpaths:
+                    # path[0] contains the MotionType
+                    # path[1] contains list of points
                     if path[0] == area.AdaptiveMotionType.Cutting:
                         sceneDrawPath(path[1], (0, 0, 1))
-
                     else:
                         sceneDrawPath(path[1], (1, 0, 1))
 
@@ -935,15 +931,11 @@ def ExecuteModelAware(op, obj):
             # Sort regions to cut by either depth or area.
             # TODO: Bonus points for ordering to minimize rapids
             cutlist = list()
-            # Region IDs that have been cut already
-            cutids = list()
-            # Create sorted list of unique depths
-            # NOTE: reverse because we cut top-down!
-            depths = list()
             # NOTE: alltuples is sorted by depth already
             alltuples = outsidePathArray2dDepthTuples + insidePathArray2dDepthTuples
-            for t in alltuples:
-                depths += [d for d in t[0]]
+            # Create sorted list of unique depths
+            depths = [d for t in alltuples for d in t[0]]
+            # NOTE: reverse because we cut top-down!
             depths = sorted(list(set(depths)), reverse=True)
             if obj.OrderCutsByRegion:
                 # Translate child ID numbers to an actual reference to the
@@ -1142,11 +1134,11 @@ def projectFacesToXY(faces, minEdgeLength=1e-10):
         # removeSplitter is sometimes required to make concatenate succeed.
         try:
             fusion = fusion.removeSplitter()
-        except:
+        except Exception:
             Path.Log.warning("projectFacesToXY: removeSplitter failure")
         try:
             fusion = DraftGeomUtils.concatenate(fusion)
-        except:
+        except Exception:
             Path.Log.warning("projectFacesToXY: concatenate failure")
         return fusion
     else:
@@ -1170,10 +1162,7 @@ def _getSolidProjection(shp, z):
         FreeCAD.Vector(bb.XMin, bb.YMin, z),
     )
     aboveSolids = shp.common(bbCutTop).Solids
-
-    faces = list()
-    for s in aboveSolids:
-        faces += s.Faces
+    faces = [s.Faces for s in aboveSolids]
 
     return projectFacesToXY(faces)
 
@@ -1197,12 +1186,9 @@ def _workingEdgeHelperRoughing(op, obj, depths):
         Part.makeFace(TechDraw.findShapeOutline(s, 1, projdir)) for s in shps.Solids
     ]
 
-    lastdepth = obj.StartDepth.Value
-
     for depth in depths:
         # If we have no stock to machine, just skip all the rest of the math
         if depth >= op.stock.Shape.BoundBox.ZMax:
-            lastdepth = depth
             continue
 
         # NOTE: To "leave" stock along Z without actually checking any face
@@ -1286,7 +1272,6 @@ def _workingEdgeHelperRoughing(op, obj, depths):
             for f in finalCut.Faces:
                 addNew = True
                 # Brute-force search all existing regions to see if any are the same
-                newtop = lastdepth
                 for rdict in insideRegions:
                     # FIXME: Smarter way to do this than a full cut operation?
                     if not rdict["region"].cut(f).Wires:
@@ -1296,8 +1281,6 @@ def _workingEdgeHelperRoughing(op, obj, depths):
                 if addNew:
                     insideRegions.append({"region": f, "depths": [depth]})
 
-        # Update the last depth step
-        lastdepth = depth
     # end for depth
 
     return insideRegions, outsideRegions
@@ -1357,9 +1340,7 @@ def _workingEdgeHelperManual(op, obj, depths):
     edgefaces = list()
     if selectedEdges:
         pp = [projface.makeParallelProjection(e, projdir).Wires[0] for e in selectedEdges]
-        ppe = list()
-        for w in pp:
-            ppe += w.Edges
+        ppe = [w.Edges for w in pp]
         edgeWires = DraftGeomUtils.findWires(ppe)
         edgefaces = Part.makeFace(edgeWires).Faces
 
@@ -1371,12 +1352,9 @@ def _workingEdgeHelperManual(op, obj, depths):
         Path.Log.warning("Selected faces/wires have no projection on the XY plane")
         return insideRegions, outsideRegions
 
-    lastdepth = obj.StartDepth.Value
-
     for depth in depths:
         # If our depth is above the top of the stock, there's nothing to machine
         if depth >= op.stock.Shape.BoundBox.ZMax:
-            lastdepth = depth
             continue
 
         # NOTE: See note in _workingEdgeHelperRoughing- tl;dr slice stock
@@ -1442,7 +1420,6 @@ def _workingEdgeHelperManual(op, obj, depths):
             for f in finalCut.Faces:
                 addNew = True
                 # Brute-force search all existing regions to see if any are the same
-                newtop = lastdepth
                 for rdict in insideRegions:
                     # FIXME: Smarter way to do this than a full cut operation?
                     if not rdict["region"].cut(f).Wires:
@@ -1452,8 +1429,6 @@ def _workingEdgeHelperManual(op, obj, depths):
                 if addNew:
                     insideRegions.append({"region": f, "depths": [depth]})
 
-        # Update the last depth step
-        lastdepth = depth
     # end for depth
 
     return insideRegions, outsideRegions
@@ -1468,14 +1443,11 @@ def _get_working_edges(op, obj):
     """
     all_regions = list()
     edge_list = list()
-    avoidFeatures = list()
     rawEdges = list()
 
     # Get extensions and identify faces to avoid
     extensions = FeatureExtensions.getExtensions(obj)
-    for e in extensions:
-        if e.avoid:
-            avoidFeatures.append(e.feature)
+    avoidFeatures = [e.feature for e in extensions if e.avoid]
 
     # Get faces selected by user
     for base, subs in obj.Base:
