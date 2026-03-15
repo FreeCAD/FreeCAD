@@ -58,6 +58,93 @@ using namespace Base;
 namespace Gui
 {
 
+QString formatDisplayValue(
+    const QLocale& locale,
+    const Base::Quantity& quantity,
+    double factor,
+    const QString& unitStr
+)
+{
+    QLocale displayLocale(locale);
+    const auto& format = quantity.getFormat();
+    if (format.option != Base::QuantityFormat::None) {
+        displayLocale.setNumberOptions(static_cast<QLocale::NumberOptions>(format.option));
+    }
+
+    QString number = displayLocale.toString(
+        quantity.getValue() / factor,
+        format.toFormat(),
+        format.getPrecision()
+    );
+    if (qAbs(quantity.getValue()) >= 1000.0) {
+        number.remove(locale.groupSeparator());
+    }
+    if (unitStr.isEmpty()) {
+        return number;
+    }
+
+    static const QStringList compactUnits {
+        QStringLiteral("°"),
+        QStringLiteral("′"),
+        QStringLiteral("″"),
+        QStringLiteral("'"),
+        QStringLiteral("\"")
+    };
+    const QString separator = compactUnits.contains(unitStr) ? QString() : QStringLiteral(" ");
+    return number + separator + unitStr;
+}
+
+bool tryUpdateDisplayContextFromText(
+    const QLocale& locale,
+    const QString& text,
+    const Base::Quantity& quantity,
+    double& unitFactor,
+    double* unitValue,
+    QString& unitStr
+)
+{
+    QString expr = QStringLiteral("^([%1%2]?[0-9\\%3]*)\\%4?([0-9]+(%5[%1%2]?[0-9]+)?)")
+                       .arg(locale.negativeSign())
+                       .arg(locale.positiveSign())
+                       .arg(locale.groupSeparator())
+                       .arg(locale.decimalPoint())
+                       .arg(locale.exponential());
+    auto rmatch = QRegularExpression(expr).match(text.trimmed());
+    if (!rmatch.hasMatch()) {
+        return false;
+    }
+
+    const QString numberText = rmatch.captured(0);
+    const QString candidateUnit = text.trimmed().mid(rmatch.capturedLength()).trimmed();
+    if (candidateUnit.isEmpty()) {
+        return false;
+    }
+
+    bool ok = false;
+    const double candidateValue = locale.toDouble(numberText, &ok);
+    if (!ok) {
+        return false;
+    }
+
+    try {
+        const auto unitQuantity = Base::Quantity::parse(
+            QStringLiteral("1%1").arg(candidateUnit).toStdString()
+        );
+        if (!quantity.isDimensionlessOrUnit(unitQuantity.getUnit())) {
+            return false;
+        }
+        unitFactor = unitQuantity.getValue();
+        if (unitValue) {
+            *unitValue = candidateValue;
+        }
+        unitStr = candidateUnit;
+        return unitFactor != 0.0 || quantity.getValue() == 0.0;
+    }
+    catch (const Base::ParserError&) {
+        return false;
+    }
+}
+
 class QuantitySpinBoxPrivate
 {
 public:
@@ -66,7 +153,9 @@ public:
         , pendingEmit(false)
         , normalize(true)
         , checkRangeInExpression(false)
+        , preserveDisplayOnNextSetValue(false)
         , unitValue(0)
+        , unitFactor(1.0)
         , maximum(std::numeric_limits<double>::max())
         , minimum(-std::numeric_limits<double>::max())
         , singleStep(1.0)
@@ -306,11 +395,13 @@ public:
     bool pendingEmit;
     bool normalize;
     bool checkRangeInExpression;
+    bool preserveDisplayOnNextSetValue;
     QString validStr;
     Base::Quantity quantity;
     Base::Quantity cached;
     Base::Unit unit;
     double unitValue;
+    double unitFactor;
     QString unitStr;
     double maximum;
     double minimum;
@@ -482,6 +573,7 @@ void QuantitySpinBox::updateText(const Quantity& quant)
 
     double dFactor;
     QString txt = getUserString(quant, dFactor, d->unitStr);
+    d->unitFactor = dFactor;
     d->unitValue = quant.getValue() / dFactor;
     updateEdit(txt);
     handlePendingEmit();
@@ -564,6 +656,7 @@ bool QuantitySpinBox::isNormalized()
 void QuantitySpinBox::setValue(const Base::Quantity& value)
 {
     Q_D(QuantitySpinBox);
+    d->preserveDisplayOnNextSetValue = false;
     d->quantity = value;
     // check limits
     if (d->quantity.getValue() > d->maximum) {
@@ -585,8 +678,43 @@ void QuantitySpinBox::setValue(double value)
     Base::QuantityFormat currentformat = d->quantity.getFormat();
     auto quantity = Base::Quantity(value, d->unit);
     quantity.setFormat(currentformat);
+    const bool preserveDisplay = d->preserveDisplayOnNextSetValue;
+    d->preserveDisplayOnNextSetValue = false;
+    if (!preserveDisplay || d->unitStr.isEmpty()) {
+        setValue(quantity);
+        return;
+    }
 
-    setValue(quantity);
+    double displayFactor = d->unitFactor;
+    QString displayUnit = d->unitStr;
+    if (!tryUpdateDisplayContextFromText(
+            d->locale,
+            lineEdit()->text(),
+            d->quantity,
+            displayFactor,
+            nullptr,
+            displayUnit
+        )) {
+        setValue(quantity);
+        return;
+    }
+
+    d->quantity = quantity;
+    // check limits
+    if (d->quantity.getValue() > d->maximum) {
+        d->quantity.setValue(d->maximum);
+    }
+    if (d->quantity.getValue() < d->minimum) {
+        d->quantity.setValue(d->minimum);
+    }
+
+    d->unitFactor = displayFactor;
+    d->unitStr = displayUnit;
+    d->cached = d->quantity;
+    d->pendingEmit = true;
+    d->unitValue = d->quantity.getValue() / d->unitFactor;
+    updateEdit(formatDisplayValue(d->locale, d->quantity, d->unitFactor, d->unitStr));
+    updateFromCache(true, false);
 }
 
 bool QuantitySpinBox::autoNormalize() const
@@ -686,11 +814,18 @@ void QuantitySpinBox::updateFromCache(bool notify, bool updateUnit /* = true */)
 {
     Q_D(QuantitySpinBox);
     if (d->pendingEmit) {
-        double factor;
         const Base::Quantity& res = d->cached;
-        auto tmpUnit(d->unitStr);
-        QString text = getUserString(res, factor, updateUnit ? d->unitStr : tmpUnit);
-        d->unitValue = res.getValue() / factor;
+        QString text;
+        if (updateUnit) {
+            double factor;
+            text = getUserString(res, factor, d->unitStr);
+            d->unitFactor = factor;
+            d->unitValue = res.getValue() / factor;
+        }
+        else {
+            text = lineEdit()->text();
+            d->unitValue = res.getValue() / d->unitFactor;
+        }
         d->quantity = res;
 
         // signaling
@@ -874,7 +1009,24 @@ QAbstractSpinBox::StepEnabled QuantitySpinBox::stepEnabled() const
 void QuantitySpinBox::stepBy(int steps)
 {
     Q_D(QuantitySpinBox);
-    updateFromCache(false);
+    const Base::Quantity& current = d->pendingEmit ? d->cached : d->quantity;
+    const bool preserveDisplay = tryUpdateDisplayContextFromText(
+        d->locale,
+        lineEdit()->text(),
+        current,
+        d->unitFactor,
+        &d->unitValue,
+        d->unitStr
+    );
+    if (!preserveDisplay && d->pendingEmit) {
+        updateFromCache(false);
+    }
+    else if (preserveDisplay) {
+        updateFromCache(false, false);
+    }
+    else {
+        updateFromCache(false);
+    }
 
     double step = d->singleStep * steps;
     double val = d->unitValue + step;
@@ -885,10 +1037,23 @@ void QuantitySpinBox::stepBy(int steps)
         val = d->minimum;
     }
 
-    Quantity quant(val, d->unitStr.toStdString());
+    Quantity quant(d->quantity);
+    quant.setValue(val * d->unitFactor);
     quant.setFormat(d->quantity.getFormat());
-    updateText(quant);
-    updateFromCache(true);
+    if (!preserveDisplay) {
+        d->preserveDisplayOnNextSetValue = false;
+        updateText(quant);
+        updateFromCache(true);
+    }
+    else {
+        d->preserveDisplayOnNextSetValue = true;
+        d->cached = quant;
+        d->pendingEmit = true;
+        d->unitValue = val;
+        updateEdit(formatDisplayValue(d->locale, quant, d->unitFactor, d->unitStr));
+        updateFromCache(true, false);
+    }
+
     update();
     selectNumber();
 }
