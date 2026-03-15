@@ -43,6 +43,7 @@
 
 #include <Base/Parameter.h>
 #include <App/Application.h>
+#include <App/Document.h>
 
 #include "FileDialog.h"
 #include "MainWindow.h"
@@ -50,6 +51,45 @@
 
 
 using namespace Gui;
+
+namespace
+{
+QString getActiveDocumentDirectory()
+{
+    App::Document* activeDoc = App::GetApplication().getActiveDocument();
+    if (!activeDoc) {
+        return {};
+    }
+
+    const QString docPath = QString::fromUtf8(activeDoc->FileName.getValue());
+    if (docPath.isEmpty()) {
+        return {};
+    }
+
+    const QFileInfo fileInfo(docPath);
+    const QString dirPath = fileInfo.absolutePath();
+    if (dirPath.isEmpty()) {
+        return {};
+    }
+
+    const QDir docDir(dirPath);
+    if (!docDir.exists()) {
+        return {};
+    }
+
+    return docDir.path();
+}
+
+QString getPreferredDialogDirectory()
+{
+    QString dirName = getActiveDocumentDirectory();
+    if (!dirName.isEmpty()) {
+        return dirName;
+    }
+
+    return FileDialog::getWorkingDirectory();
+}
+}  // namespace
 
 // An raii-helper struct to disable actions while dialogs are open
 // At least on macos, shortcuts for enabled actions will still trigger while dialogs are open
@@ -151,7 +191,7 @@ QList<QUrl> FileDialog::fetchSidebarUrls()
     list << QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     list << QStandardPaths::writableLocation(QStandardPaths::PicturesLocation);
-    list << getWorkingDirectory();
+    list << getPreferredDialogDirectory();
     list << restoreLocation();
     list << QDir::currentPath();
 
@@ -240,12 +280,12 @@ QString FileDialog::getSaveFileName(
     QString dirName = dir;
     bool hasFilename = false;
     if (dirName.isEmpty()) {
-        dirName = getWorkingDirectory();
+        dirName = getPreferredDialogDirectory();
     }
     else {
         QFileInfo fi(dir);
         if (fi.isRelative()) {
-            dirName = getWorkingDirectory();
+            dirName = getPreferredDialogDirectory();
             dirName += QLatin1String("/");
             dirName += fi.fileName();
         }
@@ -342,7 +382,12 @@ QString FileDialog::getExistingDirectory(
 )
 {
     ActionDisabler actionDisabler {};
-    QString path = QFileDialog::getExistingDirectory(parent, caption, dir, options);
+    QString dirName = dir;
+    if (dirName.isEmpty()) {
+        dirName = getPreferredDialogDirectory();
+    }
+
+    QString path = QFileDialog::getExistingDirectory(parent, caption, dirName, options);
     // valid path was selected
     if (!path.isEmpty()) {
         QDir d(path);
@@ -368,7 +413,7 @@ QString FileDialog::getOpenFileName(
     ActionDisabler actionDisabler {};
     QString dirName = dir;
     if (dirName.isEmpty()) {
-        dirName = getWorkingDirectory();
+        dirName = getPreferredDialogDirectory();
     }
 
     QString windowTitle = caption;
@@ -433,7 +478,7 @@ QStringList FileDialog::getOpenFileNames(
     ActionDisabler actionDisabler {};
     QString dirName = dir;
     if (dirName.isEmpty()) {
-        dirName = getWorkingDirectory();
+        dirName = getPreferredDialogDirectory();
     }
 
     QString windowTitle = caption;
@@ -562,7 +607,7 @@ FileOptionsDialog::FileOptionsDialog(QWidget* parent, Qt::WindowFlags fl)
     extensionButton->setText(tr("Extended"));
 
     setOption(QFileDialog::DontUseNativeDialog);
-    setDirectory(FileDialog::getWorkingDirectory());
+    setDirectory(getPreferredDialogDirectory());
 
     // search for the grid layout and add the new button
     auto grid = this->findChild<QGridLayout*>();
@@ -849,7 +894,7 @@ void FileChooser::chooseFile()
     ActionDisabler actionDisabler {};
     QString prechosenDirectory = lineEdit->text();
     if (prechosenDirectory.isEmpty()) {
-        prechosenDirectory = FileDialog::getWorkingDirectory();
+        prechosenDirectory = getPreferredDialogDirectory();
     }
 
     QFileDialog::Options dlgOpt;
