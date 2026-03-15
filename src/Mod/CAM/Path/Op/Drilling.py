@@ -337,27 +337,21 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 # For G99 mode, tool is at StartDepth (R-plane) after previous hole
                 # Check if direct move at retract plane would collide with model
                 current_pos = machinestate.getPosition()
-                target_at_retract_plane = FreeCAD.Vector(startPoint.x, startPoint.y, current_pos.z)
-
-                # Check collision at the retract plane (current Z height)
-                collision_detected = linking.check_collision(
+                target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
+                linking_moves = linking.get_linking_moves(
                     start_position=current_pos,
-                    target_position=target_at_retract_plane,
+                    target_position=target_at_safe_height,
+                    local_clearance=safe_height,
+                    global_clearance=obj.ClearanceHeight.Value,
+                    tool_shape=self.tool.Shape,
                     solids=solids,
                 )
-
-                if collision_detected:
+                """if linking_moves contains only 2 commands this means
+                it not contains vertical moves to clearance height
+                and this commands should be skipped"""
+                if len(linking_moves) > 2:
                     # Cannot traverse at retract plane - need to break cycle group
                     # Retract to safe height, traverse, then plunge to safe height for new cycle
-                    target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
-                    linking_moves = linking.get_linking_moves(
-                        start_position=current_pos,
-                        target_position=target_at_safe_height,
-                        local_clearance=safe_height,
-                        global_clearance=obj.ClearanceHeight.Value,
-                        tool_shape=self.tool.Shape,
-                        solids=solids,
-                    )
                     self.commandlist.extend(linking_moves)
                     machinestate.addCommands(linking_moves)
                 # else: no collision - G99 cycle continues, tool stays at retract plane
