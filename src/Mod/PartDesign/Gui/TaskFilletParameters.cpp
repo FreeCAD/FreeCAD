@@ -78,7 +78,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderDressUp* DressUpView, QWi
         ui->listWidgetReferences->addItem(QString::fromStdString(string));
     }
 
-    ui->listWidgetReferences->installEventFilter(this);// to catch key events for the list widget
+    ui->listWidgetReferences->installEventFilter(this);  // to catch key events for the list widget
 
 
     QMetaObject::connectSlotsByName(this);
