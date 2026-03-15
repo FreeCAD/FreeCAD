@@ -519,6 +519,8 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         ccx_stdout, ccx_stderr = p.communicate()
         ccx_stdout = ccx_stdout.decode()
         m = re.search(r"(\d+).(\d+)", ccx_stdout)
+        if m is None:
+            return (float("nan"), float("nan"))
         return (int(m.group(1)), int(m.group(2)))
 
     def ccx_run(self):
