@@ -76,6 +76,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     DlgSettingsGeneral::attachObserver();
     new PrefPageProducer<DlgSettingsDocumentImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsSelection>        ( QT_TRANSLATE_NOOP("QObject","General") );
+    new PrefPageProducer<DlgCustomKeyboardImp>        ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsCacheDirectory>   ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsNotificationArea> ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsReportView>       ( QT_TRANSLATE_NOOP("QObject","General") );
@@ -94,7 +95,6 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     // ADD YOUR CUSTOMIZE PAGES HERE
     //
     //
-    new CustomPageProducer<DlgCustomKeyboardImp>;
     new CustomPageProducer<DlgCustomToolbarsImp>;
     new CustomPageProducer<DlgCustomActionsImp>;
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
