@@ -1,5 +1,7 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2026 Théo Veilleux-Trinh <theo.veilleux.trinh@proton.me>*
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,61 +23,37 @@
  ***************************************************************************/
 
 
-#pragma once
+#ifndef APP_TRANSACTIONDEFS_H_
+#define APP_TRANSACTIONDEFS_H_
 
-#include <QDialog>
-#include <FCGlobal.h>
+#include <string>
 
-namespace App
-{
+namespace App {
+
 class Document;
-}
 
-namespace Gui
-{
-class View3DInventor;
-namespace Dialog
-{
+constexpr int NullTransaction = 0;
 
-/**
- * @author Werner Mayer
- */
-class GuiExport Clipping: public QDialog
-{
-    Q_OBJECT
-
-public:
-    static Clipping* makeDockWidget(Gui::View3DInventor*, App::Document* showOn);
-    Clipping(Gui::View3DInventor* view, App::Document* showOn, QWidget* parent = nullptr);
-    ~Clipping() override;
-
-protected:
-    void setupConnections();
-    void onActiveDocument(const App::Document& doc);
-    void onGroupBoxXToggled(bool);
-    void onGroupBoxYToggled(bool);
-    void onGroupBoxZToggled(bool);
-    void onClipXValueChanged(double);
-    void onClipYValueChanged(double);
-    void onClipZValueChanged(double);
-    void onFlipClipXClicked();
-    void onFlipClipYClicked();
-    void onFlipClipZClicked();
-    void onGroupBoxViewToggled(bool);
-    void onClipViewValueChanged(double);
-    void onFromViewClicked();
-    void onAdjustViewdirectionToggled(bool);
-    void onDirXValueChanged(double);
-    void onDirYValueChanged(double);
-    void onDirZValueChanged(double);
-
-public:
-    void reject() override;
-
-private:
-    class Private;
-    Private* d;
+struct TransactionName {
+    // Name of the transaction as it will appear in the GUI
+    std::string name;
+    
+    // If true, the transaction is allowed to be renamed
+    bool temporary { false };
 };
 
-}  // namespace Dialog
-}  // namespace Gui
+struct TransactionDescription {
+    // Document on which the transaction was first created
+    // useful for mass transaction (e.g. delete from an assembly)
+    // where other documents may use the same transaction id
+    Document* initiator { nullptr };
+    TransactionName name;
+};
+
+enum class TransactionCloseMode {
+    Commit = 0,
+    Abort = 1,
+};
+}
+
+#endif

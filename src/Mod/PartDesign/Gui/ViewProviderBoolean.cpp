@@ -34,6 +34,7 @@
 
 #include <Base/ServiceProvider.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>

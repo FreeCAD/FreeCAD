@@ -128,7 +128,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch Text"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch Text"));
 
             // Add the Handle Line
             Gui::cmdAppObjectArgs(
@@ -174,7 +174,7 @@ private:
                 constrBoolStr
             );
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             Gui::NotifyError(
@@ -183,7 +183,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add text")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
         }
     }
 

@@ -87,6 +87,7 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::GeomFillSurface* obj);
+    void setSelectionGate();
 
 protected:
     void changeEvent(QEvent* e) override;

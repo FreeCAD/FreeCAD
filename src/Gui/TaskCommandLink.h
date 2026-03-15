@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2026 Théo Veilleux-Trinh <theo.veilleux.trinh@proton.me>*
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,62 +20,61 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #pragma once
 
-#include <QDialog>
-#include <FCGlobal.h>
+#include "TaskView/TaskDialog.h"
+#include "TaskView/TaskView.h"
+
+#include <QTreeWidgetItem>
+
+#include <functional>
+#include <vector>
 
 namespace App
 {
-class Document;
+class DocumentObject;
 }
 
 namespace Gui
 {
-class View3DInventor;
-namespace Dialog
-{
+class Document;
+class Ui_TaskCommandLinkDialog;
 
-/**
- * @author Werner Mayer
- */
-class GuiExport Clipping: public QDialog
+class TaskCommandLink: public Gui::TaskView::TaskBox
+{
+public:
+    TaskCommandLink();
+    ~TaskCommandLink();
+
+    std::vector<App::DocumentObject*> selectedObjects();
+
+private:
+    void buildObjectsList();
+
+private:
+    Ui_TaskCommandLinkDialog* ui {nullptr};
+    QWidget* proxy {nullptr};
+};
+
+class TaskCommandLinkDialog: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    static Clipping* makeDockWidget(Gui::View3DInventor*, App::Document* showOn);
-    Clipping(Gui::View3DInventor* view, App::Document* showOn, QWidget* parent = nullptr);
-    ~Clipping() override;
+    TaskCommandLinkDialog(std::function<void(std::vector<App::DocumentObject*>)> executor_);
+    ~TaskCommandLinkDialog() override = default;
 
-protected:
-    void setupConnections();
-    void onActiveDocument(const App::Document& doc);
-    void onGroupBoxXToggled(bool);
-    void onGroupBoxYToggled(bool);
-    void onGroupBoxZToggled(bool);
-    void onClipXValueChanged(double);
-    void onClipYValueChanged(double);
-    void onClipZValueChanged(double);
-    void onFlipClipXClicked();
-    void onFlipClipYClicked();
-    void onFlipClipZClicked();
-    void onGroupBoxViewToggled(bool);
-    void onClipViewValueChanged(double);
-    void onFromViewClicked();
-    void onAdjustViewdirectionToggled(bool);
-    void onDirXValueChanged(double);
-    void onDirYValueChanged(double);
-    void onDirZValueChanged(double);
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Ok | QDialogButtonBox::Cancel;
+    }
 
-public:
-    void reject() override;
+    void open() override;
+    bool accept() override;
 
 private:
-    class Private;
-    Private* d;
+    TaskCommandLink* commandLink {nullptr};
+    Gui::Document* document {nullptr};
+    std::function<void(std::vector<App::DocumentObject*>)> executor;
 };
-
-}  // namespace Dialog
 }  // namespace Gui

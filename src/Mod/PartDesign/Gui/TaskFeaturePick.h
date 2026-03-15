@@ -129,7 +129,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
+
     bool isAllowedAlterDocument() const override
     {
         return false;
