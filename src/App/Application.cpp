@@ -2492,7 +2492,9 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
 void Application::initConfig(int argc, char ** argv)
 {
     // find the home path....
-    mConfig["AppHomePath"] = ApplicationDirectories::findHomePath(argv[0]).string();
+    mConfig["AppHomePath"] = Base::FileInfo::pathToString(
+        ApplicationDirectories::findHomePath(argv[0])
+    );
 
     // Version of the application extracted from SubWCRef into src/Build/Version.h
     // We only set these keys if not yet defined. Therefore it suffices to search
