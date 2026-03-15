@@ -581,9 +581,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def _processEachModel(self, obj):
         shapeTups = []
         for base in self.model:
-            if hasattr(base, "Shape"):
+            if not hasattr(base, "Shape"):
+                continue
+            if isinstance(base.Shape, Part.Compound):
+                shapes = [shape for shape in base.Shape.SubShapes]
+            else:
+                shapes = [base.Shape]
+            for shape in shapes:
                 env = PathUtils.getEnvelope(
-                    partshape=base.Shape, subshape=None, depthparams=self.depthparams
+                    partshape=shape, subshape=None, depthparams=self.depthparams
                 )
                 if env:
                     shapeTups.append((env, False))
