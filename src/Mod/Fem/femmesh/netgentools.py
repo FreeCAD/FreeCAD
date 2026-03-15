@@ -175,10 +175,18 @@ def run_netgen(
                 shape.solids.solids[n - 1].maxh = l
 
     if zrefine in ["Custom", "Regular"]:
-        for sol in shape.solids:
-            bottom = sol.faces.Min(zrefine_direction)
-            top = sol.faces.Max(zrefine_direction)
-            bottom.Identify(top, "bot-top", type=occ.IdentificationType.CLOSESURFACES)
+        # try solid extrusion
+        if shape.solids:
+            for sol in shape.solids:
+                bottom = sol.faces.Min(zrefine_direction)
+                top = sol.faces.Max(zrefine_direction)
+                bottom.Identify(top, "bot-top", type=occ.IdentificationType.CLOSESURFACES)
+        else:
+            # else try shell extrusion
+            for face in shape.faces:
+                bottom = face.edges.Min(zrefine_direction)
+                top = face.edges.Max(zrefine_direction)
+                bottom.Identify(top, "bot-top", type=occ.IdentificationType.CLOSESURFACES)
 
     with ngcore.TaskManager():
         meshing.SetMessageImportance(verbosity)
