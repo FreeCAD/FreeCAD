@@ -1339,13 +1339,19 @@ void ViewProviderSketch::editDoubleClicked()
         int geoId = preselection.PreselectCurve;
         Sketcher::SketchObject* sketch = getSketchObject();
 
-        // Check if the preselected edge is the handle of a Text constraint
+        // Check if the preselected edge belongs to a Text constraint
+        // (either the frame line or any grouped geometry element)
         int textConstrId = -1;
         const auto& constraints = sketch->Constraints.getValues();
         for (int i = 0; i < static_cast<int>(constraints.size()); ++i) {
-            if (constraints[i]->Type == Sketcher::Text && constraints[i]->hasElement(0)) {
-                if (constraints[i]->getGeoId(0) == geoId) {
-                    textConstrId = i;
+            if (constraints[i]->Type == Sketcher::Text) {
+                for (int j = 0; constraints[i]->hasElement(j); ++j) {
+                    if (constraints[i]->getGeoId(j) == geoId) {
+                        textConstrId = i;
+                        break;
+                    }
+                }
+                if (textConstrId != -1) {
                     break;
                 }
             }
