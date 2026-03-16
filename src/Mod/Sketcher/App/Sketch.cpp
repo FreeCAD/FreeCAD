@@ -109,6 +109,13 @@ void Sketch::clear()
         delete fixParam;
     }
     FixParameters.clear();
+    for (auto param : PassiveGroupParams) {
+        delete param;
+    }
+    PassiveGroupParams.clear();
+    groupVertexCanonicals.clear();
+    groupEdgeExtraParams.clear();
+    externalGroupVertexGeoIds.clear();
 
     param2geoelement.clear();
     pDependencyGroups.clear();
@@ -263,6 +270,55 @@ int Sketch::setUpSketch(
 
     buildInternalAlignmentGeometryMap(ConstraintList);
 
+    // Pre-scan: identify grouped vertices with external constraints.
+    // These need solver params + DerivedPoint; others become passive.
+    externalGroupVertexGeoIds.clear();
+    for (const auto& c : ConstraintList) {
+        if (c->Type == Group || c->Type == Text || c->Type == Block || !c->isActive) {
+            continue;
+        }
+        bool hasNonGroupRef = false;
+        std::vector<std::pair<int, PointPos>> groupVertexRefs;
+        for (int j = 0; c->hasElement(j); ++j) {
+            int geoId = c->getGeoId(j);
+            PointPos posId = c->getPosId(j);
+            if (inGroupGeoIds.count(geoId)) {
+                if (posId != PointPos::none) {
+                    groupVertexRefs.emplace_back(geoId, posId);
+                }
+                else {
+                    // Edge ref to grouped geometry: promote the vertices
+                    // that the GCS edge primitive references, so the solver
+                    // can enforce edge constraints via DerivedPoint.
+                    if (geoId >= 0 && geoId < static_cast<int>(intGeoList.size())) {
+                        const Part::Geometry* geo = intGeoList[geoId];
+                        if (geo->is<Part::GeomLineSegment>()) {
+                            groupVertexRefs.emplace_back(geoId, PointPos::start);
+                            groupVertexRefs.emplace_back(geoId, PointPos::end);
+                        }
+                        else if (geo->is<Part::GeomArcOfCircle>()) {
+                            groupVertexRefs.emplace_back(geoId, PointPos::start);
+                            groupVertexRefs.emplace_back(geoId, PointPos::end);
+                            groupVertexRefs.emplace_back(geoId, PointPos::mid);
+                        }
+                        else if (geo->is<Part::GeomCircle>()) {
+                            groupVertexRefs.emplace_back(geoId, PointPos::mid);
+                        }
+                    }
+                }
+            }
+            else {
+                hasNonGroupRef = true;
+            }
+        }
+        // Only mark as external if constraint connects to something outside group
+        if (hasNonGroupRef) {
+            for (const auto& ref : groupVertexRefs) {
+                externalGroupVertexGeoIds.insert(ref);
+            }
+        }
+    }
+
     addGeometry(intGeoList, onlyBlockedGeometry, inGroupGeoIds);
     int extStart = Geoms.size();
     addGeometry(extGeoList, true);
@@ -303,12 +359,49 @@ int Sketch::setUpSketch(
             worldGeo->transform(transform);
             delete Geoms[internalId].geo;
             Geoms[internalId].geo = worldGeo;
+
+            // Sync solver parameter values from the new world geometry
+            auto vertices = extractVertices(worldGeo);
+            for (const auto& [pos, pointPos] : vertices) {
+                int pointId = getPointId(groupedGeoId, pointPos);
+                if (pointId >= 0 && pointId < static_cast<int>(Points.size())) {
+                    *Points[pointId].x = pos.x;
+                    *Points[pointId].y = pos.y;
+                }
+            }
+
+            // Sync arc/circle extra params (radius, angles)
+            auto extraIt = groupEdgeExtraParams.find(internalId);
+            if (extraIt != groupEdgeExtraParams.end()) {
+                auto& extra = extraIt->second;
+                if (auto* arc = dynamic_cast<Part::GeomArcOfCircle*>(worldGeo)) {
+                    if (extra.rad) {
+                        *extra.rad = arc->getRadius();
+                    }
+                    if (extra.startAngle && extra.endAngle) {
+                        double sa, ea;
+                        arc->getRange(sa, ea, true);
+                        *extra.startAngle = sa;
+                        *extra.endAngle = ea;
+                    }
+                }
+                else if (auto* circle = dynamic_cast<Part::GeomCircle*>(worldGeo)) {
+                    if (extra.rad) {
+                        *extra.rad = circle->getRadius();
+                    }
+                }
+            }
         }
     }
 
     // The Geoms list might be empty after an undo/redo
     if (!Geoms.empty()) {
-        // Disable any constraint that act on geometries that are in a group.
+        // Disable constraints where ALL references are inside the same group
+        // (intra-group constraints are redundant with DerivedPoint).
+        // Edge refs to grouped geometry with supported types (Line, Arc, Circle)
+        // are now enforceable since we create GCS edge primitives.
+        // Edge refs to unsupported grouped types (def.type == None) will
+        // naturally fail in constraint adders (getGCSCurveByGeoId returns null).
         for (size_t i = 0; i < ConstraintList.size(); ++i) {
             const auto& c = ConstraintList[i];
 
@@ -316,16 +409,97 @@ int Sketch::setUpSketch(
                 continue;
             }
 
+            bool hasNonGroupRef = false;
+            int groupRefCount = 0;
+
             for (int j = 0; c->hasElement(j); ++j) {
-                if (inGroupGeoIds.count(c->getGeoId(j))) {
-                    unenforceableConstraints[i] = true;
-                    break;
+                int geoId = c->getGeoId(j);
+                if (inGroupGeoIds.count(geoId)) {
+                    groupRefCount++;
                 }
+                else {
+                    hasNonGroupRef = true;
+                }
+            }
+
+            // Unenforceable only if all refs are inside the group (2+)
+            if (groupRefCount >= 2 && !hasNonGroupRef) {
+                unenforceableConstraints[i] = true;
             }
         }
 
         addConstraints(ConstraintList, unenforceableConstraints);
     }
+
+    // Add DerivedPoint constraints AFTER addConstraints so that tag allocation
+    // (via ConstraintsCounter) doesn't shift the tag-to-constraint-index mapping.
+    for (const auto& c : ConstraintList) {
+        if ((c->Type != Group && c->Type != Text) || !c->hasCanonicalGeometry()) {
+            continue;
+        }
+        int frameGeoId = c->getGeoId(0);
+        int frameInternalId = checkGeoId(frameGeoId);
+        if (frameInternalId < 0) {
+            continue;
+        }
+
+        int frameStartPtId = getPointId(frameGeoId, PointPos::start);
+        int frameEndPtId = getPointId(frameGeoId, PointPos::end);
+        if (frameStartPtId < 0 || frameEndPtId < 0) {
+            continue;
+        }
+
+        // Skip zero-length frame (degenerate)
+        double fdx = *Points[frameEndPtId].x - *Points[frameStartPtId].x;
+        double fdy = *Points[frameEndPtId].y - *Points[frameStartPtId].y;
+        if (fdx * fdx + fdy * fdy < Precision::SquareConfusion()) {
+            continue;
+        }
+
+        // Use tag -2 (InternalHardConstraint) so that:
+        // - Diagnosis ignores them (tag < 0 → not in DoF/redundancy report)
+        // - clearTemporaryConstraints() doesn't remove them (only clears tag -1)
+        // - initSolution() partitions them into the hard subsystem alongside
+        //   user constraints, so the rigid group relationship is exactly
+        //   satisfied (not compromised as a soft objective)
+        int derivedTag = GCS::InternalHardConstraint;
+
+        auto canonical = c->getCanonicalGeometry();
+        for (size_t i = 0; i < canonical.size(); ++i) {
+            int groupedGeoId = c->getGeoId(static_cast<int>(i) + 1);
+            if (groupedGeoId == GeoEnum::GeoUndef) {
+                continue;
+            }
+
+            auto canonVertices = extractVertices(canonical[i]);
+            for (const auto& [canonPos, pointPos] : canonVertices) {
+                int qPointId = getPointId(groupedGeoId, pointPos);
+                if (qPointId < 0 || qPointId >= static_cast<int>(Points.size())) {
+                    continue;
+                }
+
+                // Store canonical data for ALL grouped vertices (for post-solve
+                // computation and dynamic promotion during drag).
+                groupVertexCanonicals[qPointId]
+                    = {canonPos.x, canonPos.y, frameStartPtId, frameEndPtId};
+
+                // Only create DerivedPoint for externally-constrained vertices.
+                // Passive vertices are computed post-solve from frame.
+                if (externalGroupVertexGeoIds.count({groupedGeoId, pointPos})) {
+                    GCSsys.addConstraintDerivedPoint(
+                        Points[frameStartPtId],
+                        Points[frameEndPtId],
+                        Points[qPointId],
+                        canonPos.x,
+                        canonPos.y,
+                        derivedTag,
+                        true
+                    );
+                }
+            }
+        }
+    }
+
     clearTemporaryConstraints();
     GCSsys.declareUnknowns(Parameters);
     GCSsys.declareDrivenParams(DrivenParameters);
@@ -723,6 +897,8 @@ const char* nameByType(Sketch::GeoType type)
             return "arcofparabola";
         case Sketch::BSpline:
             return "bspline";
+        case Sketch::GeoGroup:
+            return "group";
         case Sketch::None:
         default:
             return "unknown";
@@ -819,6 +995,119 @@ int Sketch::addGeometry(
         if (isInGroup) {
             GeoDef def;
             def.geo = (*it)->clone();
+            def.isGrouped = true;
+
+            // Extract vertices and create solver parameters + GCS::Points
+            // Vertices with external constraints go to Parameters (solver unknowns);
+            // others go to PassiveGroupParams (computed post-solve from frame).
+            auto vertices = extractVertices(*it);
+            for (const auto& [pos, pointPos] : vertices) {
+                double* px = new double(pos.x);
+                double* py = new double(pos.y);
+                bool isExternal = externalGroupVertexGeoIds.count({geoIdCounter, pointPos}) > 0;
+                if (isExternal) {
+                    Parameters.push_back(px);
+                    Parameters.push_back(py);
+                }
+                else {
+                    PassiveGroupParams.push_back(px);
+                    PassiveGroupParams.push_back(py);
+                }
+
+                GCS::Point gcsPoint;
+                gcsPoint.x = px;
+                gcsPoint.y = py;
+
+                int pointId = static_cast<int>(Points.size());
+                Points.push_back(gcsPoint);
+
+                switch (pointPos) {
+                    case PointPos::start:
+                        def.startPointId = pointId;
+                        break;
+                    case PointPos::end:
+                        def.endPointId = pointId;
+                        break;
+                    case PointPos::mid:
+                        def.midPointId = pointId;
+                        break;
+                    default:
+                        break;
+                }
+
+                // Populate param2geoelement (using Geoms.size() as the index
+                // since def hasn't been pushed yet)
+                int geoIndex = static_cast<int>(Geoms.size());
+                param2geoelement.emplace(
+                    std::piecewise_construct,
+                    std::forward_as_tuple(gcsPoint.x),
+                    std::forward_as_tuple(geoIndex, pointPos, 0)
+                );
+                param2geoelement.emplace(
+                    std::piecewise_construct,
+                    std::forward_as_tuple(gcsPoint.y),
+                    std::forward_as_tuple(geoIndex, pointPos, 1)
+                );
+            }
+
+            // Create GCS edge primitives so that edge constraints
+            // (PointOnObject, Tangent, Parallel, etc.) work on grouped geometry.
+            // The curve params are passive constants — not added to the solver.
+            if ((*it)->is<Part::GeomLineSegment>()) {
+                def.type = Line;
+                GCS::Line l;
+                l.p1 = Points[def.startPointId];
+                l.p2 = Points[def.endPointId];
+                def.index = static_cast<int>(Lines.size());
+                Lines.push_back(l);
+            }
+            else if ((*it)->is<Part::GeomArcOfCircle>()) {
+                def.type = Arc;
+                auto* partArc = static_cast<const Part::GeomArcOfCircle*>(*it);
+                double sa, ea;
+                partArc->getRange(sa, ea, true);
+                double* rad = new double(partArc->getRadius());
+                double* startAngle = new double(sa);
+                double* endAngle = new double(ea);
+                PassiveGroupParams.push_back(rad);
+                PassiveGroupParams.push_back(startAngle);
+                PassiveGroupParams.push_back(endAngle);
+
+                GCS::Arc a;
+                a.start = Points[def.startPointId];
+                a.end = Points[def.endPointId];
+                a.center = Points[def.midPointId];
+                a.rad = rad;
+                a.startAngle = startAngle;
+                a.endAngle = endAngle;
+                def.index = static_cast<int>(Arcs.size());
+                Arcs.push_back(a);
+
+                // Store extra params for post-solve sync
+                int geoIndex = static_cast<int>(Geoms.size());
+                groupEdgeExtraParams[geoIndex] = {rad, startAngle, endAngle};
+            }
+            else if ((*it)->is<Part::GeomCircle>()) {
+                def.type = Circle;
+                auto* partCircle = static_cast<const Part::GeomCircle*>(*it);
+                double* rad = new double(partCircle->getRadius());
+                PassiveGroupParams.push_back(rad);
+
+                GCS::Circle c;
+                c.center = Points[def.midPointId];
+                c.rad = rad;
+                def.index = static_cast<int>(Circles.size());
+                Circles.push_back(c);
+
+                int geoIndex = static_cast<int>(Geoms.size());
+                groupEdgeExtraParams[geoIndex] = {rad, nullptr, nullptr};
+            }
+            else {
+                // Unsupported grouped edge type (Ellipse, BSpline, etc.)
+                // Edge constraints on these remain unenforceable.
+                def.type = None;
+            }
+
             Geoms.push_back(def);
         }
         else {
@@ -5041,7 +5330,6 @@ int Sketch::internalSolve(std::string& solvername, int level)
 int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
 {
     if (hasConflicts()) {
-        // don't try to move sketches that contain conflicting constraints
         isInitMove = false;
         return -1;
     }
@@ -5072,7 +5360,89 @@ int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
         int geoId = checkGeoId(pair.GeoId);
         Sketcher::PointPos pos = pair.Pos;
 
-        if (Geoms[geoId].type == Point) {
+        if (Geoms[geoId].isGrouped) {
+            // Grouped geometry: drag by constraining available vertices.
+            // DerivedPoint constraints propagate movement to the frame.
+            // Must be checked before type-specific cases since grouped geo
+            // now has type = Line/Arc/Circle.
+            if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid) {
+                int pointId = getPointId(geoId, pos);
+                if (pointId >= 0 && pointId < int(Points.size())) {
+                    // Promote passive vertex to solver unknown if needed
+                    auto it = groupVertexCanonicals.find(pointId);
+                    if (it != groupVertexCanonicals.end()
+                        && !externalGroupVertexGeoIds.count({geoId, pos})) {
+                        // Move params from PassiveGroupParams to Parameters
+                        Parameters.push_back(Points[pointId].x);
+                        Parameters.push_back(Points[pointId].y);
+                        std::erase(PassiveGroupParams, Points[pointId].x);
+                        std::erase(PassiveGroupParams, Points[pointId].y);
+                        // Create DerivedPoint constraint
+                        auto& canon = it->second;
+                        GCSsys.addConstraintDerivedPoint(
+                            Points[canon.frameStartPtId],
+                            Points[canon.frameEndPtId],
+                            Points[pointId],
+                            canon.u,
+                            canon.v,
+                            GCS::InternalHardConstraint,
+                            true
+                        );
+                    }
+
+                    GCS::Point& p = Points[pointId];
+                    GCS::Point p0;
+                    p0.x = &MoveParameters.emplace_back(*p.x);
+                    p0.y = &MoveParameters.emplace_back(*p.y);
+                    GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
+                }
+            }
+            else if (pos == PointPos::none) {
+                // Edge drag: constrain the frame line endpoints instead of the
+                // grouped geometry's vertices. This gives the solver a direct
+                // handle on the rigid frame, so real constraints (e.g. DistanceX
+                // on another vertex) are properly enforced via DerivedPoint.
+                int frameGeoId = -1;
+                for (const auto& cd : Constrs) {
+                    if (cd.constr->Type == Group || cd.constr->Type == Text) {
+                        for (int j = 1; cd.constr->hasElement(j); ++j) {
+                            if (cd.constr->getGeoId(j) == geoId) {
+                                frameGeoId = cd.constr->getGeoId(0);
+                                break;
+                            }
+                        }
+                        if (frameGeoId >= 0) {
+                            break;
+                        }
+                    }
+                }
+                if (frameGeoId >= 0 && Geoms[frameGeoId].type == Line) {
+                    // Use the same logic as Line edge drag
+                    GCS::Point p1, p2;
+                    GCS::Line& l = Lines[Geoms[frameGeoId].index];
+                    p1.x = &MoveParameters.emplace_back(*l.p1.x);
+                    p1.y = &MoveParameters.emplace_back(*l.p1.y);
+                    p2.x = &MoveParameters.emplace_back(*l.p2.x);
+                    p2.y = &MoveParameters.emplace_back(*l.p2.y);
+                    GCSsys.addConstraintP2PCoincident(p1, l.p1, GCS::DefaultTemporaryConstraint);
+                    GCSsys.addConstraintP2PCoincident(p2, l.p2, GCS::DefaultTemporaryConstraint);
+                }
+                else {
+                    // Fallback: constrain available vertices directly
+                    for (auto ptPos : {PointPos::start, PointPos::end, PointPos::mid}) {
+                        int pointId = getPointId(geoId, ptPos);
+                        if (pointId >= 0 && pointId < int(Points.size())) {
+                            GCS::Point& p = Points[pointId];
+                            GCS::Point p0;
+                            p0.x = &MoveParameters.emplace_back(*p.x);
+                            p0.y = &MoveParameters.emplace_back(*p.y);
+                            GCSsys.addConstraintP2PCoincident(p0, p, GCS::DefaultTemporaryConstraint);
+                        }
+                    }
+                }
+            }
+        }
+        else if (Geoms[geoId].type == Point) {
             if (pos == PointPos::start) {
                 GCS::Point& point = Points[Geoms[geoId].startPointId];
                 GCS::Point p0;
@@ -5274,6 +5644,8 @@ int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
 
     InitParameters = MoveParameters;
 
+    // Re-declare unknowns to pick up any promoted passive vertices
+    GCSsys.declareUnknowns(Parameters);
     GCSsys.initSolution();
     isInitMove = true;
 
@@ -5398,7 +5770,27 @@ int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds, Base::Vec
             int geoId = checkGeoId(pair.GeoId);
             Sketcher::PointPos pos = pair.Pos;
 
-            if (Geoms[geoId].type == Point) {
+            if (Geoms[geoId].isGrouped) {
+                // Must check isGrouped before type-specific cases since grouped
+                // geo now has type = Line/Arc/Circle.
+                if (pos == PointPos::start || pos == PointPos::end || pos == PointPos::mid) {
+                    MoveParameters[i] = toPoint.x;
+                    MoveParameters[i + 1] = toPoint.y;
+                    i += 2;
+                }
+                else if (pos == PointPos::none) {
+                    // Edge drag uses frame line endpoints (4 params), same as Line edge drag.
+                    // Center the frame line on toPoint while preserving its half-length.
+                    double dx = (InitParameters[i + 2] - InitParameters[i]) * 0.5;
+                    double dy = (InitParameters[i + 3] - InitParameters[i + 1]) * 0.5;
+                    MoveParameters[i] = toPoint.x - dx;
+                    MoveParameters[i + 1] = toPoint.y - dy;
+                    MoveParameters[i + 2] = toPoint.x + dx;
+                    MoveParameters[i + 3] = toPoint.y + dy;
+                    i += 4;
+                }
+            }
+            else if (Geoms[geoId].type == Point) {
                 if (pos == PointPos::start) {
                     MoveParameters[i] = toPoint.x;
                     MoveParameters[i + 1] = toPoint.y;
@@ -5615,6 +6007,54 @@ void Sketch::Restore(XMLReader&)
 
 // Group functions related -------------------------------------------------
 
+std::vector<std::pair<Base::Vector3d, PointPos>> Sketch::extractVertices(const Part::Geometry* geo)
+{
+    std::vector<std::pair<Base::Vector3d, PointPos>> result;
+    if (!geo) {
+        return result;
+    }
+
+    if (auto* pt = dynamic_cast<const GeomPoint*>(geo)) {
+        result.emplace_back(pt->getPoint(), PointPos::start);
+    }
+    else if (auto* line = dynamic_cast<const GeomLineSegment*>(geo)) {
+        result.emplace_back(line->getStartPoint(), PointPos::start);
+        result.emplace_back(line->getEndPoint(), PointPos::end);
+    }
+    else if (auto* arc = dynamic_cast<const GeomArcOfCircle*>(geo)) {
+        result.emplace_back(arc->getStartPoint(true), PointPos::start);
+        result.emplace_back(arc->getCenter(), PointPos::mid);
+        result.emplace_back(arc->getEndPoint(true), PointPos::end);
+    }
+    else if (auto* circle = dynamic_cast<const GeomCircle*>(geo)) {
+        result.emplace_back(circle->getCenter(), PointPos::mid);
+    }
+    else if (auto* ellipse = dynamic_cast<const GeomEllipse*>(geo)) {
+        result.emplace_back(ellipse->getCenter(), PointPos::mid);
+    }
+    else if (auto* aoe = dynamic_cast<const GeomArcOfEllipse*>(geo)) {
+        result.emplace_back(aoe->getStartPoint(true), PointPos::start);
+        result.emplace_back(aoe->getCenter(), PointPos::mid);
+        result.emplace_back(aoe->getEndPoint(true), PointPos::end);
+    }
+    else if (auto* aoh = dynamic_cast<const GeomArcOfHyperbola*>(geo)) {
+        result.emplace_back(aoh->getStartPoint(true), PointPos::start);
+        result.emplace_back(aoh->getCenter(), PointPos::mid);
+        result.emplace_back(aoh->getEndPoint(true), PointPos::end);
+    }
+    else if (auto* aop = dynamic_cast<const GeomArcOfParabola*>(geo)) {
+        result.emplace_back(aop->getStartPoint(true), PointPos::start);
+        result.emplace_back(aop->getCenter(), PointPos::mid);
+        result.emplace_back(aop->getEndPoint(true), PointPos::end);
+    }
+    else if (auto* bsp = dynamic_cast<const GeomBSplineCurve*>(geo)) {
+        result.emplace_back(bsp->getStartPoint(), PointPos::start);
+        result.emplace_back(bsp->getEndPoint(), PointPos::end);
+    }
+
+    return result;
+}
+
 Base::Matrix4D Sketch::computeCanonicalToWorldTransform(
     const Base::Vector3d& frameStart,
     const Base::Vector3d& frameEnd
@@ -5735,6 +6175,40 @@ void Sketch::applyGroupTransformations()
             int internalId = checkGeoId(groupedGeoId);
             delete Geoms[internalId].geo;
             Geoms[internalId].geo = freshGeo;
+
+            // Sync Points[] doubles from the transformed geometry.
+            // This is essential for passive (non-solver) vertices whose
+            // doubles aren't updated by the solver.
+            auto vertices = extractVertices(freshGeo);
+            for (const auto& [pos, pointPos] : vertices) {
+                int pointId = getPointId(groupedGeoId, pointPos);
+                if (pointId >= 0 && pointId < static_cast<int>(Points.size())) {
+                    *Points[pointId].x = pos.x;
+                    *Points[pointId].y = pos.y;
+                }
+            }
+
+            // Sync arc/circle extra params (radius, angles) from transformed geometry
+            auto extraIt = groupEdgeExtraParams.find(internalId);
+            if (extraIt != groupEdgeExtraParams.end()) {
+                auto& extra = extraIt->second;
+                if (auto* arc = dynamic_cast<Part::GeomArcOfCircle*>(freshGeo)) {
+                    if (extra.rad) {
+                        *extra.rad = arc->getRadius();
+                    }
+                    if (extra.startAngle && extra.endAngle) {
+                        double sa, ea;
+                        arc->getRange(sa, ea, true);
+                        *extra.startAngle = sa;
+                        *extra.endAngle = ea;
+                    }
+                }
+                else if (auto* circle = dynamic_cast<Part::GeomCircle*>(freshGeo)) {
+                    if (extra.rad) {
+                        *extra.rad = circle->getRadius();
+                    }
+                }
+            }
         }
     }
 }

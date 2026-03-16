@@ -902,6 +902,20 @@ int System::addConstraintArcLength(Arc& a, double* distance, int tagId, bool dri
 }
 
 
+int System::addConstraintDerivedPoint(Point& p1, Point& p2, Point& q, double u, double v, int tagId, bool driving)
+{
+    Constraint* constr0 = new ConstraintDerivedPoint(p1, p2, q, u, v, 0);
+    constr0->setTag(tagId);
+    constr0->setDriving(driving);
+    addConstraint(constr0);
+
+    Constraint* constr1 = new ConstraintDerivedPoint(p1, p2, q, u, v, 1);
+    constr1->setTag(tagId);
+    constr1->setDriving(driving);
+    return addConstraint(constr1);
+}
+
+
 // derived constraints
 
 int System::addConstraintP2PCoincident(Point& p1, Point& p2, int tagId, bool driving)
@@ -1846,7 +1860,9 @@ void System::initSolution(Algorithm alg)
             clists[cid],
             std::back_inserter(clist0),
             std::back_inserter(clist1),
-            [](auto constr) { return constr->getTag() >= 0; }
+            [](auto constr) {
+                return constr->getTag() >= 0 || constr->getTag() == InternalHardConstraint;
+            }
         );
 
         if (!clist0.empty()) {
@@ -4558,6 +4574,73 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
     subsysA->calcJacobi(plistAB, JA);
     subsysA->calcResidual(resA);
 
+    // When DerivedPoint constraints are in the hard system alongside user constraints,
+    // the hard Jacobian can become rank-deficient (more constraints than independent
+    // equations). Detect this and reduce to independent rows so qp_eq can proceed.
+    std::vector<int> indepRows;
+    int csizeA_orig = csizeA;
+    Eigen::VectorXd resA_full;
+    {
+        Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJAT(JA.transpose());
+        int effectiveRank = qrJAT.rank();
+        if (effectiveRank < csizeA) {
+            indepRows.resize(effectiveRank);
+            auto perm = qrJAT.colsPermutation();
+            for (int i = 0; i < effectiveRank; i++) {
+                indepRows[i] = perm.indices()[i];
+            }
+            std::sort(indepRows.begin(), indepRows.end());
+
+            // Reduce JA and resA to independent rows
+            Eigen::MatrixXd JA_r(effectiveRank, xsize);
+            Eigen::VectorXd resA_r(effectiveRank);
+            for (int i = 0; i < effectiveRank; i++) {
+                JA_r.row(i) = JA.row(indepRows[i]);
+                resA_r(i) = resA(indepRows[i]);
+            }
+            JA = JA_r;
+            resA = resA_r;
+            csizeA = effectiveRank;
+
+            lambda.resize(csizeA);
+            lambda.setZero();
+            lambda0.resize(csizeA);
+            lambda0.setZero();
+            lambdadir.resize(csizeA);
+            lambdadir.setZero();
+
+            resA_full.resize(csizeA_orig);
+        }
+    }
+
+    // Helpers for recomputing JA/resA with row reduction applied
+    auto calcReducedResidual = [&]() {
+        if (!indepRows.empty()) {
+            subsysA->calcResidual(resA_full);
+            for (int i = 0; i < csizeA; i++) {
+                resA(i) = resA_full(indepRows[i]);
+            }
+        }
+        else {
+            subsysA->calcResidual(resA);
+        }
+    };
+    auto calcReducedJacobiAndResidual = [&]() {
+        if (!indepRows.empty()) {
+            Eigen::MatrixXd JA_f;
+            subsysA->calcJacobi(plistAB, JA_f);
+            subsysA->calcResidual(resA_full);
+            for (int i = 0; i < csizeA; i++) {
+                JA.row(i) = JA_f.row(indepRows[i]);
+                resA(i) = resA_full(indepRows[i]);
+            }
+        }
+        else {
+            subsysA->calcJacobi(plistAB, JA);
+            subsysA->calcResidual(resA);
+        }
+    };
+
     // double convergence = isFine ? XconvergenceFine : XconvergenceRough;
     int maxIterNumber
         = (isRedundantsolving
@@ -4603,7 +4686,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
             x = x0 + alpha * xdir;
             subsysA->setParams(plistAB, x);
             subsysB->setParams(plistAB, x);
-            subsysA->calcResidual(resA);
+            calcReducedResidual();
             double f = subsysB->error() + mu * resA.lpNorm<1>();
 
             // line search, Eq. 18.28
@@ -4614,7 +4697,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
                     x += xdir1;  // = x0 + alpha * xdir + xdir1
                     subsysA->setParams(plistAB, x);
                     subsysB->setParams(plistAB, x);
-                    subsysA->calcResidual(resA);
+                    calcReducedResidual();
                     f = subsysB->error() + mu * resA.lpNorm<1>();
                     if (f < f0 + eta * alpha * deriv) {
                         break;
@@ -4627,7 +4710,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
                 x = x0 + alpha * xdir;
                 subsysA->setParams(plistAB, x);
                 subsysB->setParams(plistAB, x);
-                subsysA->calcResidual(resA);
+                calcReducedResidual();
                 f = subsysB->error() + mu * resA.lpNorm<1>();
                 if (alpha < 1e-8) {  // let the linesearch fail
                     break;
@@ -4640,8 +4723,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
         y = grad - JA.transpose() * lambda;
         {
             subsysB->calcGrad(plistAB, grad);
-            subsysA->calcJacobi(plistAB, JA);
-            subsysA->calcResidual(resA);
+            calcReducedJacobiAndResidual();
         }
         y = grad - JA.transpose() * lambda - y;  // Eq. 18.13
 

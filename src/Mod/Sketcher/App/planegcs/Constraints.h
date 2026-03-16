@@ -84,6 +84,7 @@ enum ConstraintType
     AngleViaPointAndTwoParams = 34,
     AngleViaTwoPoints = 35,
     ArcLength = 36,
+    DerivedPoint = 37,
 };
 
 enum InternalAlignmentType
@@ -1385,6 +1386,48 @@ private:
 public:
     ConstraintArcLength(Arc& a, double* d);
     ConstraintType getTypeId() override;
+};
+
+// DerivedPoint
+// Ties a point Q to a frame defined by P1->P2 with stored (u, v) coordinates.
+// Q = P1 + u*(P2-P1) + v*perp(P2-P1)  where perp(dx,dy) = (-dy, dx)
+// Uses a component parameter (0=X, 1=Y) so each instance is one scalar equation.
+class ConstraintDerivedPoint: public Constraint
+{
+private:
+    double* p1x()
+    {
+        return pvec[0];
+    }
+    double* p1y()
+    {
+        return pvec[1];
+    }
+    double* p2x()
+    {
+        return pvec[2];
+    }
+    double* p2y()
+    {
+        return pvec[3];
+    }
+    double* qx()
+    {
+        return pvec[4];
+    }
+    double* qy()
+    {
+        return pvec[5];
+    }
+    double u, v;
+    int component;  // 0 = X equation, 1 = Y equation
+
+public:
+    ConstraintDerivedPoint(Point& p1, Point& p2, Point& q, double u, double v, int component);
+    ConstraintType getTypeId() override;
+    void rescale(double coef = 1.) override;
+    double error() override;
+    double grad(double* param) override;
 };
 
 }  // namespace GCS

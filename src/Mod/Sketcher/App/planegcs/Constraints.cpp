@@ -3215,4 +3215,104 @@ void ConstraintArcLength::evaluate()
     *distance() = (endA - startA) * *arc.rad;
 }
 
+// --------------------------------------------------------
+// ConstraintDerivedPoint
+ConstraintDerivedPoint::ConstraintDerivedPoint(
+    Point& p1,
+    Point& p2,
+    Point& q,
+    double u_,
+    double v_,
+    int component_
+)
+    : u(u_)
+    , v(v_)
+    , component(component_)
+{
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    pvec.push_back(q.x);
+    pvec.push_back(q.y);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintDerivedPoint::getTypeId()
+{
+    return DerivedPoint;
+}
+
+void ConstraintDerivedPoint::rescale(double coef)
+{
+    scale = coef;
+}
+
+double ConstraintDerivedPoint::error()
+{
+    // E0 = Qx - P1x - u*(P2x - P1x) + v*(P2y - P1y)
+    //    = Qx - P1x*(1-u) - u*P2x + v*P2y - v*P1y
+    // E1 = Qy - P1y - u*(P2y - P1y) - v*(P2x - P1x)
+    //    = Qy - P1y*(1-u) - u*P2y - v*P2x + v*P1x
+    double dx = *p2x() - *p1x();
+    double dy = *p2y() - *p1y();
+    if (component == 0) {
+        return scale * (*qx() - *p1x() - u * dx + v * dy);
+    }
+    else {
+        return scale * (*qy() - *p1y() - u * dy - v * dx);
+    }
+}
+
+double ConstraintDerivedPoint::grad(double* param)
+{
+    double deriv = 0.;
+    if (component == 0) {
+        // dE0/dP1x = -(1-u), dE0/dP1y = -v, dE0/dP2x = -u, dE0/dP2y = v
+        // dE0/dQx = 1, dE0/dQy = 0
+        if (param == p1x()) {
+            deriv = -(1. - u);
+        }
+        if (param == p1y()) {
+            deriv = -v;
+        }
+        if (param == p2x()) {
+            deriv = -u;
+        }
+        if (param == p2y()) {
+            deriv = v;
+        }
+        if (param == qx()) {
+            deriv = 1.;
+        }
+        if (param == qy()) {
+            deriv = 0.;
+        }
+    }
+    else {
+        // dE1/dP1x = v, dE1/dP1y = -(1-u), dE1/dP2x = -v, dE1/dP2y = -u
+        // dE1/dQx = 0, dE1/dQy = 1
+        if (param == p1x()) {
+            deriv = v;
+        }
+        if (param == p1y()) {
+            deriv = -(1. - u);
+        }
+        if (param == p2x()) {
+            deriv = -v;
+        }
+        if (param == p2y()) {
+            deriv = -u;
+        }
+        if (param == qx()) {
+            deriv = 0.;
+        }
+        if (param == qy()) {
+            deriv = 1.;
+        }
+    }
+    return scale * deriv;
+}
+
 }  // namespace GCS

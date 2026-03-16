@@ -100,7 +100,10 @@ enum DebugMode
 //          constraint, the center is moved).
 enum SpecialTag
 {
-    DefaultTemporaryConstraint = -1
+    DefaultTemporaryConstraint = -1,
+    // Hard constraint invisible to diagnosis. Used for DerivedPoint constraints
+    // that must be enforced exactly during drag but shouldn't affect DoF count.
+    InternalHardConstraint = -2
 };
 
 class SketcherExport System
@@ -480,6 +483,15 @@ public:
     int addConstraintC2LDistance(Circle& c, Line& l, double* dist, int tagId, bool driving = true);
     int addConstraintP2CDistance(Point& p, Circle& c, double* distance, int tagId = 0, bool driving = true);
     int addConstraintArcLength(Arc& a, double* dist, int tagId, bool driving = true);
+    int addConstraintDerivedPoint(
+        Point& p1,
+        Point& p2,
+        Point& q,
+        double u,
+        double v,
+        int tagId = 0,
+        bool driving = true
+    );
 
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(

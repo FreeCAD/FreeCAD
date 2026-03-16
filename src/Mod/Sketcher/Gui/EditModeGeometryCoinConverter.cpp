@@ -91,8 +91,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
                            int coinLayer,
                            EditModeGeometryCoinConverter::PointsMode pointmode,
                            int numberCurves,
-                           int sublayer,
-                           bool isGroupMember = false
+                           int sublayer
                        ) {
         // Determine how many vertices this geometry has.
         int numberPoints = 0;
@@ -112,35 +111,31 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         // This loop simulates the creation of vertices for THIS geometry.
         // It runs for all geometries to keep vertexCounter in sync with SketchObject.
         for (int i = 0; i < numberPoints; i++) {
-            // If the point is NOT part of a group member, we add it to the physical
-            // Coin maps that are used for drawing and picking.
-            if (!isGroupMember) {
-                // Determine the PointPos for this specific vertex of the geometry.
-                Sketcher::PointPos pos;
-                if (i == 0) {
-                    pos = (pointmode == PointsMode::InsertMidOnly) ? Sketcher::PointPos::mid
-                                                                   : Sketcher::PointPos::start;
-                }
-                else if (i == 1) {
-                    pos = Sketcher::PointPos::end;
-                }
-                else {
-                    pos = Sketcher::PointPos::mid;
-                }
-
-                // Map: (GeoId, PosId) -> (physicalIndex, layer)
-                coinMapping.GeoElementId2SetId.emplace(
-                    std::piecewise_construct,
-                    std::forward_as_tuple(geoId, pos),
-                    std::forward_as_tuple(pointCounter[coinLayer]++, coinLayer)
-                );
-
-                // Map: physicalIndex -> logical info
-                coinMapping.PointIdToGeoId[coinLayer].push_back(geoId);
-                coinMapping.PointIdToPosId[coinLayer].push_back(pos);
-                // This is the key: store the correct, globally-incremented logical VertexId.
-                coinMapping.PointIdToVertexId[coinLayer].push_back(vertexCounter);
+            // Determine the PointPos for this specific vertex of the geometry.
+            Sketcher::PointPos pos;
+            if (i == 0) {
+                pos = (pointmode == PointsMode::InsertMidOnly) ? Sketcher::PointPos::mid
+                                                               : Sketcher::PointPos::start;
             }
+            else if (i == 1) {
+                pos = Sketcher::PointPos::end;
+            }
+            else {
+                pos = Sketcher::PointPos::mid;
+            }
+
+            // Map: (GeoId, PosId) -> (physicalIndex, layer)
+            coinMapping.GeoElementId2SetId.emplace(
+                std::piecewise_construct,
+                std::forward_as_tuple(geoId, pos),
+                std::forward_as_tuple(pointCounter[coinLayer]++, coinLayer)
+            );
+
+            // Map: physicalIndex -> logical info
+            coinMapping.PointIdToGeoId[coinLayer].push_back(geoId);
+            coinMapping.PointIdToPosId[coinLayer].push_back(pos);
+            // This is the key: store the correct, globally-incremented logical VertexId.
+            coinMapping.PointIdToVertexId[coinLayer].push_back(vertexCounter);
 
             // ALWAYS increment the logical vertex counter to stay in sync with SketchObject.
             vertexCounter++;
@@ -174,9 +169,6 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
 
         auto coinLayer = geometryLayerParameters.getSafeCoinLayer(layerId);
 
-        auto* obj = viewProvider.getSketchObject();
-        bool isGroupMember = GeoId >= 0 && obj->isInGroup(GeoId, false);
-
         if (type == Part::GeomPoint::getClassTypeId()) {  // add a point
             convert<
                 Part::GeomPoint,
@@ -196,19 +188,13 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
                 Part::GeomLineSegment,
                 EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
                 EditModeGeometryCoinConverter::CurveMode::StartEndPointsOnly,
-                EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(
-                geom,
-                GeoId,
-                subLayerId,
-                isGroupMember
-            );
+                EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId, subLayerId);
             setTracking(
                 GeoId,
                 coinLayer,
                 EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
                 1,
-                subLayerId,
-                isGroupMember
+                subLayerId
             );
         }
         else if (type.isDerivedFrom(Part::GeomConic::getClassTypeId())) {  // add a closed curve conic
@@ -216,19 +202,13 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
                 Part::GeomConic,
                 EditModeGeometryCoinConverter::PointsMode::InsertMidOnly,
                 EditModeGeometryCoinConverter::CurveMode::ClosedCurve,
-                EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(
-                geom,
-                GeoId,
-                subLayerId,
-                isGroupMember
-            );
+                EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId, subLayerId);
             setTracking(
                 GeoId,
                 coinLayer,
                 EditModeGeometryCoinConverter::PointsMode::InsertMidOnly,
                 1,
-                subLayerId,
-                isGroupMember
+                subLayerId
             );
         }
         else if (type.isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())) {  // add an arc of conic
@@ -236,19 +216,13 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
                 Part::GeomArcOfConic,
                 EditModeGeometryCoinConverter::PointsMode::InsertStartEndMid,
                 EditModeGeometryCoinConverter::CurveMode::OpenCurve,
-                EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(
-                geom,
-                GeoId,
-                subLayerId,
-                isGroupMember
-            );
+                EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom, GeoId, subLayerId);
             setTracking(
                 GeoId,
                 coinLayer,
                 EditModeGeometryCoinConverter::PointsMode::InsertStartEndMid,
                 1,
-                subLayerId,
-                isGroupMember
+                subLayerId
             );
             arcGeoIds.push_back(GeoId);
         }
@@ -261,16 +235,14 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
                 EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitudeAndBSplineCurvature>(
                 geom,
                 GeoId,
-                subLayerId,
-                isGroupMember
+                subLayerId
             );
             setTracking(
                 GeoId,
                 coinLayer,
                 EditModeGeometryCoinConverter::PointsMode::InsertStartEnd,
                 1,
-                subLayerId,
-                isGroupMember
+                subLayerId
             );
             bsplineGeoIds.push_back(GeoId);
         }
@@ -324,8 +296,7 @@ template<
 void EditModeGeometryCoinConverter::convert(
     const Sketcher::GeometryFacade* geometryfacade,
     [[maybe_unused]] int geoid,
-    [[maybe_unused]] int subLayer,
-    bool isGroupMember
+    [[maybe_unused]] int subLayer
 )
 {
     auto geo = static_cast<const GeoType*>(geometryfacade->getGeometry());
@@ -343,23 +314,21 @@ void EditModeGeometryCoinConverter::convert(
     };
 
     // Points
-    if (!isGroupMember) {
-        if constexpr (pointmode == PointsMode::InsertSingle) {
-            addPoint(Points[coinLayer], geo->getPoint());
-        }
-        else if constexpr (pointmode == PointsMode::InsertStartEnd) {
-            addPoint(Points[coinLayer], geo->getStartPoint());
-            addPoint(Points[coinLayer], geo->getEndPoint());
-        }
-        else if constexpr (pointmode == PointsMode::InsertStartEndMid) {
-            // All in this group are Trimmed Curves (see Geometry.h)
-            addPoint(Points[coinLayer], geo->getStartPoint(/*emulateCCW=*/true));
-            addPoint(Points[coinLayer], geo->getEndPoint(/*emulateCCW=*/true));
-            addPoint(Points[coinLayer], geo->getCenter());
-        }
-        else if constexpr (pointmode == PointsMode::InsertMidOnly) {
-            addPoint(Points[coinLayer], geo->getCenter());
-        }
+    if constexpr (pointmode == PointsMode::InsertSingle) {
+        addPoint(Points[coinLayer], geo->getPoint());
+    }
+    else if constexpr (pointmode == PointsMode::InsertStartEnd) {
+        addPoint(Points[coinLayer], geo->getStartPoint());
+        addPoint(Points[coinLayer], geo->getEndPoint());
+    }
+    else if constexpr (pointmode == PointsMode::InsertStartEndMid) {
+        // All in this group are Trimmed Curves (see Geometry.h)
+        addPoint(Points[coinLayer], geo->getStartPoint(/*emulateCCW=*/true));
+        addPoint(Points[coinLayer], geo->getEndPoint(/*emulateCCW=*/true));
+        addPoint(Points[coinLayer], geo->getCenter());
+    }
+    else if constexpr (pointmode == PointsMode::InsertMidOnly) {
+        addPoint(Points[coinLayer], geo->getCenter());
     }
 
     // Curves

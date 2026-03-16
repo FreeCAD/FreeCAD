@@ -158,8 +158,7 @@ private:
     void convert(
         const Sketcher::GeometryFacade* geometryfacade,
         [[maybe_unused]] int geoId,
-        [[maybe_unused]] int subLayerId = 0,
-        bool isGroupMember = false
+        [[maybe_unused]] int subLayerId = 0
     );
 
 private:

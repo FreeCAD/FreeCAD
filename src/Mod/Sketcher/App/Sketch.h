@@ -552,7 +552,8 @@ public:
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
         ArcOfParabola = 8,
-        BSpline = 9
+        BSpline = 9,
+        GeoGroup = 10  // Grouped geometry: vertices + optional solver curves for edge constraints
     };
 
 private:
@@ -570,6 +571,7 @@ private:
     {
         Part::Geometry* geo {};  ///< Pointer to the geometry
         GeoType type = None;     ///< Type of the geometry
+        bool isGrouped = false;  ///< true for geometry inside a Group/Text constraint
         bool external = false;   ///< Flag for external geometries
         int index = -1;          ///< Index in the corresponding storage vector (Lines, Arcs, ...)
         int startPointId = -1;   ///< Index in Points of the start point of this geometry
@@ -611,9 +613,36 @@ private:
     std::map<double*, std::tuple<int, Sketcher::PointPos, int>> param2geoelement;
 
     // solving parameters
-    std::vector<double*> Parameters;        // with memory allocation
-    std::vector<double*> DrivenParameters;  // with memory allocation
-    std::vector<double*> FixParameters;     // with memory allocation
+    std::vector<double*> Parameters;          // with memory allocation
+    std::vector<double*> DrivenParameters;    // with memory allocation
+    std::vector<double*> FixParameters;       // with memory allocation
+    std::vector<double*> PassiveGroupParams;  // grouped vertex params NOT in solver (with memory
+                                              // allocation)
+
+    // Canonical data for each grouped vertex, keyed by pointId.
+    // Used to compute positions post-solve and to create DerivedPoint
+    // dynamically when promoting a passive vertex for drag.
+    struct GroupVertexCanonical
+    {
+        double u, v;         // canonical (u,v) coordinates
+        int frameStartPtId;  // index into Points[]
+        int frameEndPtId;
+    };
+    std::map<int, GroupVertexCanonical> groupVertexCanonicals;
+
+    // Extra GCS params (radius, angles) for grouped arc/circle geometry.
+    // Keyed by Geoms index. The doubles are owned by PassiveGroupParams.
+    struct GroupEdgeExtraParams
+    {
+        double* rad = nullptr;
+        double* startAngle = nullptr;
+        double* endAngle = nullptr;
+    };
+    std::map<int, GroupEdgeExtraParams> groupEdgeExtraParams;
+
+    // (geoId, PointPos) pairs of grouped vertices with external constraints.
+    // These need DerivedPoint constraints + solver params; others are passive.
+    std::set<std::pair<int, Sketcher::PointPos>> externalGroupVertexGeoIds;
     std::vector<double> MoveParameters, InitParameters;
     std::vector<GCS::Point> Points;
     std::vector<GCS::Line> Lines;
@@ -639,6 +668,10 @@ private:
     );
 
 public:
+    /// Extract all constrainable vertices from a geometry element.
+    /// Returns (position, PointPos) pairs for each vertex the geometry exposes.
+    static std::vector<std::pair<Base::Vector3d, PointPos>> extractVertices(const Part::Geometry* geo);
+
     /// Compute the transform matrix from canonical frame (0,0)->(1,0) to world frame.
     static Base::Matrix4D computeCanonicalToWorldTransform(
         const Base::Vector3d& frameStart,

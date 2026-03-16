@@ -1188,11 +1188,24 @@ bool SketchObject::isConstraintActiveInSketch(const Sketcher::Constraint* cstr) 
         return true;
     }
 
-    // If the constraint is not deactivated, it could still constraint something in a group
+    // Intra-group constraints (all elements within groups, no outside ref)
+    // are not active because they are redundant with DerivedPoint constraints.
+    // Edge and vertex refs to grouped geometry with at least one non-group ref
+    // ARE active — grouped geometry now has GCS edge primitives + DerivedPoint.
+    bool hasNonGroupRef = false;
+    int groupRefCount = 0;
     for (int j = 0; cstr->hasElement(j); ++j) {
-        if (isInGroup(cstr->getGeoId(j), false)) {
-            return false;
+        int geoId = cstr->getGeoId(j);
+        if (isInGroup(geoId, false)) {
+            groupRefCount++;
         }
+        else {
+            hasNonGroupRef = true;
+        }
+    }
+    // Intra-group: 2+ grouped refs with nothing outside
+    if (groupRefCount >= 2 && !hasNonGroupRef) {
+        return false;
     }
     return true;
 }

@@ -1631,13 +1631,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         return; // don't drag externals
     }
 
-    // If we are trying to drag an edge that is in a group, we drag the group handle instead.
-    int oldgeoId = geoId;
-    geoId = getSketchObject()->getGroupHandleIfInGroup(geoId);
-    if (oldgeoId != geoId) {
-        // if replaced then we want to move the edge of the handle, not a point.
-        pos = PointPos::none;
-    }
+    // With DerivedPoint constraints, grouped geometry vertices are solver entities.
+    // Dragging them propagates to the frame line through the solver automatically.
+    // No need to redirect to the group handle anymore.
 
     drag.reset();
     setSketchMode(STATUS_SKETCH_Drag);
@@ -1648,9 +1644,6 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         if (geoIdi < 0) {
             continue; //skip externals
         }
-
-        // If in a group, we drag the group handle instead.
-        geoIdi = getSketchObject()->getGroupHandleIfInGroup(geoIdi);
 
         if (geoIdi == geoId) {
             // geoId is already added because it was the preselected.
@@ -1785,7 +1778,8 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
 
         if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()
             || isEllipse(*geo) || isArcOfEllipse(*geo)
-            || isArcOfHyperbola(*geo) || isArcOfParabola(*geo)) {
+            || isArcOfHyperbola(*geo) || isArcOfParabola(*geo)
+            || getSketchObject()->isInGroup(geoId, false)) {
             setRelative();
         }
 
@@ -2323,15 +2317,6 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int GeoId = std::atoi(&shapetype[4]) - 1;
                         selection.SelCurvSet.insert(GeoId);
 
-                        // Check if this is in a group.
-                        // If so we cancel this addition and select the group instead
-                        int handleId = getSketchObject()->getGroupHandleIfInGroup(GeoId);
-                        if (handleId != GeoId) {
-                            // Remove the selected edge
-                            Gui::Selection().rmvSelection(msg.pDocName, msg.pObjectName, msg.pSubName);
-                            std::string sub = "Edge" + std::to_string(handleId + 1);
-                            Gui::Selection().addSelection(msg.pDocName, msg.pObjectName, sub.c_str());
-                        }
                     }
                     else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
                         int GeoId = std::atoi(&shapetype[12]) - 1;
@@ -2522,15 +2507,6 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         }
         else if (result.GeoIndex != -1
                  && result.GeoIndex != preselection.PreselectCurve) {// if a new curve is hit
-
-            // If the picked edge is part of a text/group, treat the handle as the preselected item
-            int handleId = getSketchObject()->getGroupHandleIfInGroup(result.GeoIndex);
-            if (handleId != result.GeoIndex) {
-                if (handleId == preselection.PreselectCurve) {
-                    return false;
-                }
-                result.GeoIndex = handleId;
-            }
 
             std::stringstream ss;
             if (result.GeoIndex >= 0)
