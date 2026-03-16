@@ -3653,7 +3653,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../../PlaneWidget.ui" line="20"/>
       <source>Origin</source>
-      <translation>Origo</translation>
+      <translation>Nulpunkt</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="26"/>

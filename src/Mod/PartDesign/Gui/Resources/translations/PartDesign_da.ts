@@ -573,7 +573,7 @@ så profilet ikke overlapper sig selv.</translation>
     <message>
       <location filename="../../Command.cpp" line="1256"/>
       <source>Pocket</source>
-      <translation>Indpresning</translation>
+      <translation>Fordybning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1257"/>
@@ -627,7 +627,7 @@ så profilet ikke overlapper sig selv.</translation>
     <message>
       <location filename="../../Command.cpp" line="1330"/>
       <source>Revolve</source>
-      <translation>Drejning</translation>
+      <translation>Rotation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
@@ -1707,7 +1707,7 @@ Juster parametrene og prøv igen.</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="602"/>
       <source>No shape selected</source>
-      <translation>Ingen figur er markeret</translation>
+      <translation>Ingen figur er valgt</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="685"/>

@@ -1272,7 +1272,7 @@ des plans vertical et horizontal avec un sommet ou le long d'une ligne.</transla
     <message>
       <location filename="../../Command.cpp" line="1417"/>
       <source>Boolean Operation</source>
-      <translation>Créer une opération booléenne</translation>
+      <translation>Opérateurs booléens</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1418"/>
@@ -2472,7 +2472,7 @@ Remarque : le placement est exprimé dans l'espace local de l'objet auquel il es
       <location filename="../../DlgBooleanOperation.ui" line="14"/>
       <location filename="../../DlgBooleanOperation.ui" line="20"/>
       <source>Boolean Operation</source>
-      <translation>Opérations booléennes</translation>
+      <translation>Opérateurs booléens</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="32"/>
@@ -2492,7 +2492,7 @@ Remarque : le placement est exprimé dans l'espace local de l'objet auquel il es
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Section</source>
-      <translation>Créer une section</translation>
+      <translation>Section</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -6114,7 +6114,7 @@ Continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean Tools</source>
-      <translation>Outils booléens</translation>
+      <translation>Outils des opérateurs booléens</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>

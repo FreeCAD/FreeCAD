@@ -992,7 +992,7 @@ para que se evite la auto intersección.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>Edge Tools</source>
-      <translation type="unfinished">Edge Tools</translation>
+      <translation>Herramientas de aristas</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -2435,7 +2435,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="534"/>
       <source>Direction/edge</source>
-      <translation type="unfinished">Direction/edge</translation>
+      <translation>Dirección/arista</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="551"/>

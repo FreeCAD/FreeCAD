@@ -481,7 +481,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="4357"/>
       <location filename="../../CommandConstraints.cpp" line="4538"/>
       <source>Add point on object constraint</source>
-      <translation>Tilføj punkt-på-objekt relation</translation>
+      <translation>Tilføj punkt på objekt relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2470"/>
@@ -896,7 +896,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="204"/>
       <source>Add sketch arc slot</source>
-      <translation>Tilføj oval</translation>
+      <translation>Tilføj cirkulært spor</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="147"/>
@@ -1085,7 +1085,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../Command.cpp" line="125"/>
       <source>Broken link to support subelements</source>
-      <translation type="unfinished">Broken link to support subelements</translation>
+      <translation>Brudt link for at understøtte underelementer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="128"/>
@@ -1368,7 +1368,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3731"/>
       <source>Select one vertex from the sketch other than the origin.</source>
-      <translation>Vælg et punkt fra skitsen bortset fra origo.</translation>
+      <translation>Vælg et punkt fra skitsen bortset fra nulpunkt.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3736"/>
@@ -2019,7 +2019,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="115"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
-      <translation>Origo for den markerede skitse falder ikke sammen med origo for denne skitse. Hold Ctrl+Alt nede for at se bort fra dette.</translation>
+      <translation>Nulpunket for den markerede skitse falder ikke sammen med nulpunkt for denne skitse. Hold Ctrl+Alt nede for at se bort fra dette.</translation>
     </message>
   </context>
   <context>
@@ -2476,7 +2476,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="105"/>
       <source>Select Origin</source>
-      <translation>Vælg origo</translation>
+      <translation>Vælg nulpunkt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="107"/>
@@ -2600,7 +2600,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="43"/>
       <source>Origin</source>
-      <translation>Origo</translation>
+      <translation>Nulpunkt</translation>
     </message>
   </context>
   <context>
@@ -3422,7 +3422,7 @@ Men der blev ikke fundet geometrier der relaterer til endepunkterne.</translatio
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1572"/>
       <source>Impossible to update visibility tracking:</source>
-      <translation type="unfinished">Impossible to update visibility tracking:</translation>
+      <translation>Umuligt at opdatere sporing af synligheder:</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1601"/>
@@ -5426,7 +5426,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="659"/>
       <source>Keep original geometries (U)</source>
-      <translation>Behold originale geometrier (E)</translation>
+      <translation>Behold originale geometrier (U)</translation>
     </message>
   </context>
   <context>
@@ -7021,12 +7021,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="428"/>
       <source>Select Origin</source>
-      <translation>Vælg origo</translation>
+      <translation>Vælg nulpunkt</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="429"/>
       <source>Selects the local origin point of the sketch</source>
-      <translation>Vælger det lokale origo for skitsen</translation>
+      <translation>Vælger det lokale nulpunkt for skitsen</translation>
     </message>
   </context>
   <context>

@@ -1365,7 +1365,7 @@ Cliccando con il tasto sinistro su uno spazio vuoto si convalida la quota corren
       <location filename="../../CommandExtensionPack.cpp" line="552"/>
       <location filename="../../CommandExtensionPack.cpp" line="686"/>
       <source>Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods</source>
-      <translation>Aggiunge un filetto cosmetico in vista superiore o inferiore a bulloni/viti/barre selezionati</translation>
+      <translation>Aggiunge un filetto cosmetico in vista superiore o inferiore a madreviti</translation>
     </message>
   </context>
   <context>
@@ -1385,7 +1385,7 @@ Cliccando con il tasto sinistro su uno spazio vuoto si convalida la quota corren
       <location filename="../../CommandExtensionPack.cpp" line="448"/>
       <location filename="../../CommandExtensionPack.cpp" line="679"/>
       <source>Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines</source>
-      <translation>Aggiunge un filetto cosmetico alla vista laterale di un bullone/vite/asta tra due linee parallele selezionate</translation>
+      <translation>Aggiunge un filetto cosmetico in vista laterale a madreviti</translation>
     </message>
   </context>
   <context>
@@ -1404,12 +1404,12 @@ Cliccando con il tasto sinistro su uno spazio vuoto si convalida la quota corren
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="500"/>
       <source>Adds a cosmetic thread to the top or bottom view of selected holes or circles</source>
-      <translation>Aggiunge un filetto cosmetico in vista superiore o inferiore a fori o cerchi</translation>
+      <translation>Aggiunge un filetto cosmetico in pianta a fori su cerchi selezionati</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="672"/>
       <source>Adds a cosmetic thread to the top or bottom view of holes or circles</source>
-      <translation>Aggiunge un filetto cosmetico in vista superiore o inferiore a fori o cerchi</translation>
+      <translation>Aggiunge un filetto cosmetico in pianta a fori o cerchi</translation>
     </message>
   </context>
   <context>
@@ -1428,12 +1428,12 @@ Cliccando con il tasto sinistro su uno spazio vuoto si convalida la quota corren
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="397"/>
       <source>Adds a cosmetic thread to the side view of a hole or circle</source>
-      <translation>Aggiunge un filetto cosmetico in vista laterale a fori o cerchi</translation>
+      <translation>Aggiunge un filetto cosmetico in vista laterale su fori</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="664"/>
       <source>Adds a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation>Aggiunge un filetto cosmetico alla vista laterale di un foro tra due linee parallele selezionate</translation>
+      <translation>Aggiunge un filetto cosmetico in vista laterale a un foro tra due linee parallele selezionate</translation>
     </message>
   </context>
   <context>
@@ -1451,7 +1451,7 @@ Cliccando con il tasto sinistro su uno spazio vuoto si convalida la quota corren
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="583"/>
       <source>Add a cosmetic thread to the side view of a selected hole between two selected parallel lines</source>
-      <translation>Aggiungi un filetto cosmetico alla vista laterale di un foro tra due linee parallele selezionate</translation>
+      <translation>Aggiungi un filetto cosmetico in vista laterale di un foro tra due linee parallele selezionate</translation>
     </message>
   </context>
   <context>
@@ -3713,12 +3713,12 @@ Se non è selezionato alcun oggetto, si apre un browser di file per selezionare 
     <message>
       <location filename="../../CommandDecorate.cpp" line="103"/>
       <source>No TechDraw Page</source>
-      <translation type="unfinished">No TechDraw Page</translation>
+      <translation>Nessuna pagina di TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="104"/>
       <source>Need a TechDraw Page for this command</source>
-      <translation type="unfinished">Need a TechDraw Page for this command</translation>
+      <translation>Per questo comando serve una pagina di TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="173"/>
@@ -5880,7 +5880,7 @@ Le modifiche non hanno alcun effetto sulle quote esistenti.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Control when the view boundary frames and labels are displayed.&lt;/p&gt;&lt;p&gt;Auto: Show on hover, On: Always show, Off: Never show.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Controlla quando vengono visualizzati le cornici e le etichette delle viste.&lt;/p&gt;&lt;p&gt;Auto: mostra al passaggio del mouse, On: mostra sempre, Off: mai.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="863"/>
@@ -5900,12 +5900,12 @@ Le modifiche non hanno alcun effetto sulle quote esistenti.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="878"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Manuale</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="886"/>
       <source>View frames mode</source>
-      <translation type="unfinished">View frames mode</translation>
+      <translation>Visualizza modalità cornice</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="910"/>
@@ -6230,7 +6230,7 @@ Fast, but result is a collection of short straight lines.</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Frames</source>
-      <translation type="unfinished">Toggle &amp;Frames</translation>
+      <translation>Attiva/Disattiva cornice</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="96"/>
@@ -10237,7 +10237,7 @@ c'è una finestra di dialogo Azioni aperta.</translation>
       <location filename="../../CommandDecorate.cpp" line="76"/>
       <location filename="../../CommandDecorate.cpp" line="77"/>
       <source>Turn View Frames On/Off</source>
-      <translation type="unfinished">Turn View Frames On/Off</translation>
+      <translation>Attiva o disattiva la vista cornici</translation>
     </message>
   </context>
 </TS>

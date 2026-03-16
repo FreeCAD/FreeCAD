@@ -1888,7 +1888,7 @@ nel widget Scala in Draft. Se la scala è 1:100 il moltiplicatore è 100.</trans
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="211"/>
       <source>If checked, the dimension line is displayed by default</source>
-      <translation>Se selezionata, la linea di misura viene visualizzata per impostazione predefinita</translation>
+      <translation>Se selezionato, la linea di misura viene visualizzata per impostazione predefinita</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="214"/>
@@ -2080,7 +2080,7 @@ a raw wire from the original shape is added</source>
     <message>
       <location filename="../ui/preferences-svg.ui" line="117"/>
       <source>Check to cut shapes according to the even/odd SVG fill rule</source>
-      <translation type="unfinished">Check to cut shapes according to the even/odd SVG fill rule</translation>
+      <translation>Spunta per ritagliare le forme secondo la regola di riempimento SVG pari/dispari</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
@@ -2096,8 +2096,8 @@ a raw wire from the original shape is added</source>
       <location filename="../ui/preferences-svg.ui" line="166"/>
       <source>The number of decimal places used in internal coordinate operations (for example 3 = 0.001).
 	The optimal value depends on the absolute size of the import. Typical values are between 1 and 5.</source>
-      <translation type="unfinished">The number of decimal places used in internal coordinate operations (for example 3 = 0.001).
-	The optimal value depends on the absolute size of the import. Typical values are between 1 and 5.</translation>
+      <translation>Il numero di cifre decimali utilizzate nelle operazioni interne sulle coordinate (ad esempio 3 = 0,001).
+Il valore ottimale dipende dalla dimensione assoluta dell'importazione. I valori tipici sono compresi tra 1 e 5.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="205"/>
@@ -2157,7 +2157,7 @@ Questo valore è la lunghezza massima del segmento.</translation>
     <message>
       <location filename="../ui/preferences-oca.ui" line="46"/>
       <source>Imports the areas (3D faces) too</source>
-      <translation type="unfinished">Imports the areas (3D faces) too</translation>
+      <translation>Importa anche le aree (facce 3D)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-oca.ui" line="49"/>
@@ -2182,7 +2182,7 @@ Questo valore è la lunghezza massima del segmento.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="583"/>
       <source>All objects containing faces will be exported as 3D polyface meshes</source>
-      <translation type="unfinished">All objects containing faces will be exported as 3D polyface meshes</translation>
+      <translation>Tutti gli oggetti contenenti facce verranno esportati come mesh poligonali 3D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="633"/>
@@ -2276,15 +2276,12 @@ l'addon 'dxf_library' da Addon Manager.</translation>
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
 workbench. </source>
-      <translation type="unfinished">Creates fully parametric Draft objects. Block definitions are imported as
-reusable objects (Part Compounds) and instances become `App::Link` objects,
-maintaining the block structure. Best for full integration with the Draft
-workbench. </translation>
+      <translation>Crea oggetti Draft completamente parametrici. Le definizioni dei blocchi vengono importate come oggetti riutilizzabili (Parti composte) e le istanze diventano oggetti `App::Link`, mantenendo la struttura del blocco. Ideale per la piena integrazione con l'ambiente di lavoro Draft. </translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="123"/>
       <source>Editable Draft objects (highest fidelity, slowest)</source>
-      <translation type="unfinished">Editable Draft objects (highest fidelity, slowest)</translation>
+      <translation>Oggetti Draft modificabili (massima fedeltà, velocità di elaborazione più bassa)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="132"/>
@@ -2300,15 +2297,12 @@ workbench. </translation>
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing and Part workbench integration.</source>
-      <translation type="unfinished">Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
-definitions are imported as reusable objects (Part Compounds) and instances
-become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing and Part workbench integration.</translation>
+      <translation>Crea oggetti Part parametrici (ad esempio, Part::Line, Part::Circle). Le definizioni dei blocchi vengono importate come oggetti riutilizzabili (Part Compounds) e le istanze diventano oggetti `App::Link`, mantenendo la struttura del blocco. Ideale per l'elaborazione successiva basata su script e l'integrazione con l'ambiente Part.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="151"/>
       <source>Editable Part primitives (high fidelity, slower)</source>
-      <translation type="unfinished">Editable Part primitives (high fidelity, slower)</translation>
+      <translation>Primitive di parti modificabili (alta fedeltà, più lente)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="170"/>
@@ -2320,7 +2314,7 @@ objects, maintaining the block structure. Good for referencing and measuring.</s
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
       <source>Individual Part shapes (balanced, recommended)</source>
-      <translation type="unfinished">Individual Part shapes (balanced, recommended)</translation>
+      <translation>Forme individuali di Part (bilanciato, consigliato)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="197"/>
@@ -2334,7 +2328,7 @@ del layer. Ideale per l'importazione e la visualizzazione di file molto grandi c
     <message>
       <location filename="../ui/preferences-dxf.ui" line="202"/>
       <source>Fused Part shapes (lowest fidelity, fastest)</source>
-      <translation type="unfinished">Fused Part shapes (lowest fidelity, fastest)</translation>
+      <translation>Forme di Part fuse (fedeltà più bassa, velocità maggiore)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="224"/>
@@ -2373,32 +2367,31 @@ in feet: 304.8</source>
       <location filename="../ui/preferences-dxf.ui" line="323"/>
       <source>If checked, entities from the paper space will also be imported. By default,
 only model space is imported</source>
-      <translation type="unfinished">If checked, entities from the paper space will also be imported. By default,
-only model space is imported</translation>
+      <translation>Se selezionato, verranno importate anche le entità dallo spazio carta. Per impostazione predefinita, viene importato solo lo spazio modello</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="327"/>
       <source>Paper space objects</source>
-      <translation type="unfinished">Paper space objects</translation>
+      <translation>Oggetti dello spazio carta</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="340"/>
       <source>If checked, anonymous blocks (whose names begin with *) will also be imported.
 These are often used for hatches and dimensions</source>
-      <translation type="unfinished">If checked, anonymous blocks (whose names begin with *) will also be imported.
-These are often used for hatches and dimensions</translation>
+      <translation>Se selezionato, verranno importati anche i blocchi anonimi (i cui nomi iniziano con *).
+Questi vengono spesso utilizzati per tratteggi e quote</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="344"/>
       <source>Anonymous blocks (*-blocks)</source>
-      <translation type="unfinished">Anonymous blocks (*-blocks)</translation>
+      <translation>Blocchi anonimi (*-blocchi)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="360"/>
       <source>If checked, the boundaries of hatch objects will be imported as closed wires.
 (Legacy importer only)</source>
-      <translation type="unfinished">If checked, the boundaries of hatch objects will be imported as closed wires.
-(Legacy importer only)</translation>
+      <translation>Se selezionato, i contorni degli oggetti tratteggiati verranno importati come linee chiuse.
+(Solo per l'importatore legacy)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="364"/>
@@ -2414,41 +2407,37 @@ These are often used for hatches and dimensions</translation>
       <location filename="../ui/preferences-dxf.ui" line="388"/>
       <source>If checked, colors will be set as specified in the DXF file whenever
 possible. Otherwise, default FreeCAD colors are applied</source>
-      <translation type="unfinished">If checked, colors will be set as specified in the DXF file whenever
-possible. Otherwise, default FreeCAD colors are applied</translation>
+      <translation>Se selezionato, i colori verranno impostati come specificato nel file DXF, ove possibile. Altrimenti, verranno applicati i colori predefiniti di FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="411"/>
       <source>If checked, imported texts will get the standard Draft text size, instead of
 the size defined in the DXF document. (Legacy importer only)</source>
-      <translation type="unfinished">If checked, imported texts will get the standard Draft text size, instead of
-the size defined in the DXF document. (Legacy importer only)</translation>
+      <translation>Se selezionato, i testi importati avranno la dimensione standard del testo di Draft, anziché la dimensione definita nel documento DXF. (Solo per l'importatore legacy)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="430"/>
       <source>Advanced processing</source>
-      <translation type="unfinished">Advanced processing</translation>
+      <translation>Elaborazione avanzata</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="442"/>
       <source>If checked, the legacy importer will attempt to join coincident geometric
 objects into wires. This can be slow for large files. (Legacy importer only)</source>
-      <translation type="unfinished">If checked, the legacy importer will attempt to join coincident geometric
-objects into wires. This can be slow for large files. (Legacy importer only)</translation>
+      <translation>Se selezionato, l'importatore legacy tenterà di unire gli oggetti geometrici coincidenti in linee. Questa operazione può risultare lenta per file di grandi dimensioni. (Solo per l'importatore legacy)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="462"/>
       <source>If checked, polylines that have a width property will be rendered as faces
 representing that width. (Legacy importer only)</source>
-      <translation type="unfinished">If checked, polylines that have a width property will be rendered as faces
-representing that width. (Legacy importer only)</translation>
+      <translation>Se selezionato, le polilinee che hanno la proprietà larghezza verranno visualizzate come facce con tale larghezza. (Solo per l'importatore legacy)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="482"/>
       <source>If checked, the legacy importer will attempt to create Sketcher objects
 instead of Draft or Part objects. This overrides the 'Import As' setting</source>
-      <translation type="unfinished">If checked, the legacy importer will attempt to create Sketcher objects
-instead of Draft or Part objects. This overrides the 'Import As' setting</translation>
+      <translation>Se selezionato, l'importatore legacy tenterà di creare oggetti Sketcher
+anziché oggetti Draft o Part. Questa opzione sovrascrive l'impostazione "Importa come"</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="486"/>
@@ -2464,12 +2453,12 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
     <message>
       <location filename="../ui/preferences-dxf.ui" line="541"/>
       <source>Maximum spline segment</source>
-      <translation type="unfinished">Maximum spline segment</translation>
+      <translation>Segmento spline massimo</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="551"/>
       <source>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</source>
-      <translation type="unfinished">Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</translation>
+      <translation>Lunghezza massima di ciascun segmento della polilinea. Il valore '0' considera l'intera spline come un segmento rettilineo.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="586"/>
@@ -2583,8 +2572,8 @@ Le linee principali della griglia sono più spesse delle linee secondarie della 
       <location filename="../ui/preferences-draftsnap.ui" line="26"/>
       <source>If checked, the grid will always be visible in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
-      <translation>Se selezionata, la griglia sarà sempre visibile in nuove viste.
-Usa Draft Attiva/disattiva griglia per cambiarla per la vista attiva.</translation>
+      <translation>Se selezionato, la griglia sarà sempre visibile nelle nuove viste.
+Utilizzare Attiva/disattiva griglia di Draft per modificare questa impostazione nella vista attiva.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="188"/>
@@ -2610,8 +2599,8 @@ Usa Draft Attiva/disattiva griglia per cambiarla per la vista attiva.</translati
       <location filename="../ui/preferences-draftsnap.ui" line="49"/>
       <source>If checked, the grid will be visible during commands in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
-      <translation>Se selezionata, la griglia sarà visibile durante i comandi nelle nuove viste.
-Usare Draft Attiva/Disattiva Griglia per cambiare l'impostazione per la vista attiva.</translation>
+      <translation>Se selezionato, la griglia sarà visibile durante l'esecuzione dei comandi nelle nuove viste.
+Utilizzare Attiva/disattiva griglia di Draft per modificare questa impostazione nella vista attiva.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="53"/>
@@ -3020,7 +3009,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="825"/>
       <source>If checked, the Draft Scale Widget is displayed in the Draft Status Bar</source>
-      <translation type="unfinished">If checked, the Draft Scale Widget is displayed in the Draft Status Bar</translation>
+      <translation>Se selezionato, il widget Scala di Draft viene visualizzato nella barra di stato di Draft</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="828"/>
@@ -3054,7 +3043,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../../DraftGui.py" line="657"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
-      <translation type="unfinished">If checked, the next dimension will be placed in a chain with the previously placed Dimension</translation>
+      <translation>Se selezionato, la quota successiva verrà inserita in serie con la quota inserita in precedenza</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="671"/>
@@ -4518,32 +4507,32 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="679"/>
       <source>Make Sharp</source>
-      <translation type="unfinished">Make Sharp</translation>
+      <translation>Rendi appuntito</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="681"/>
       <source>Make Tangent</source>
-      <translation type="unfinished">Make Tangent</translation>
+      <translation>Rendi tangente</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="685"/>
       <source>Make Symmetric</source>
-      <translation type="unfinished">Make Symmetric</translation>
+      <translation>Rendi simmetrico</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="694"/>
       <source>Reverse Curve</source>
-      <translation type="unfinished">Reverse Curve</translation>
+      <translation>Inverti curva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="700"/>
       <source>Open Curve</source>
-      <translation type="unfinished">Open Curve</translation>
+      <translation>Apri curva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="703"/>
       <source>Close Curve</source>
-      <translation type="unfinished">Close Curve</translation>
+      <translation>Chiudi curva</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="816"/>
@@ -4613,7 +4602,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <location filename="../../draftguitools/gui_ellipses.py" line="224"/>
       <location filename="../../draftguitools/gui_rectangles.py" line="222"/>
       <source>%1 pick opposite point</source>
-      <translation type="unfinished">%1 pick opposite point</translation>
+      <translation>%1 scegliere il punto opposto</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_facebinders.py" line="76"/>
@@ -4681,7 +4670,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="165"/>
       <source>Pick the opposite point of the selection rectangle</source>
-      <translation type="unfinished">Pick the opposite point of the selection rectangle</translation>
+      <translation>Selezionare il punto opposto del rettangolo di selezione</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_stretch.py" line="459"/>
@@ -4752,7 +4741,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="102"/>
       <source>Cannot clone objects without a shape, skipping them</source>
-      <translation type="unfinished">Cannot clone objects without a shape, skipping them</translation>
+      <translation>Impossibile clonare oggetti senza una forma, verranno ignorati</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="75"/>
@@ -4871,7 +4860,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="244"/>
       <source>In linear mode, at least 1 axis must be selected</source>
-      <translation type="unfinished">In linear mode, at least 1 axis must be selected</translation>
+      <translation>In modalità lineare, è necessario selezionare almeno 1 asse</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
@@ -4882,7 +4871,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="389"/>
       <location filename="../../drafttaskpanels/task_polararray.py" line="289"/>
       <source>Create link array:</source>
-      <translation type="unfinished">Create link array:</translation>
+      <translation>Crea una serie di link:</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="407"/>

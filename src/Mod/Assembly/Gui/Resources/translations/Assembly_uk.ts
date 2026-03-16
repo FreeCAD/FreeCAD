@@ -1476,12 +1476,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandInsertLink.py" line="219"/>
       <source>Partially loaded</source>
-      <translation type="unfinished">Partially loaded</translation>
+      <translation>Частково завантажено</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
-      <translation type="unfinished">Fully load document</translation>
+      <translation>Завантажити документ повністю</translation>
     </message>
   </context>
   <context>

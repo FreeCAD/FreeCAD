@@ -794,7 +794,7 @@ Décocher pour utiliser le système de coordonnées du plan de travail.</transla
       <location filename="../ui/TaskShapeString.ui" line="58"/>
       <location filename="../ui/TaskShapeString.ui" line="75"/>
       <source>Enter coordinates or pick a point with the mouse</source>
-      <translation>Entrer les coordonnées ou choisir un point avec la souris</translation>
+      <translation>Saisir des coordonnées ou choisir un point avec la souris</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="96"/>
@@ -2532,17 +2532,17 @@ Les lignes principales de la grille sont plus épaisses que les lignes secondair
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="298"/>
       <source>Snapping and Modifier Keys</source>
-      <translation>Touches d'aimantation et de modification</translation>
+      <translation>Touches d'aimantation et des modificateurs</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="396"/>
       <source>Snap modifier</source>
-      <translation>Touche pour l'aimantation</translation>
+      <translation>Touche du modificateur pour l'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="412"/>
       <source>The Snap modifier key</source>
-      <translation>La touche pour l'aimantation</translation>
+      <translation>La touche du modificateur pour l'aimantation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="430"/>
@@ -2561,17 +2561,17 @@ Les lignes principales de la grille sont plus épaisses que les lignes secondair
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="443"/>
       <source>Constrain modifier</source>
-      <translation>Touche pour les contraintes</translation>
+      <translation>Modificateur des contraintes</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="478"/>
       <source>Alt modifier</source>
-      <translation>Touche pour Alt</translation>
+      <translation>Touche du modificateur Alt</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="485"/>
       <source>The Alt modifier key. The function of this key depends on the command.</source>
-      <translation>La touche de modification pour Alt : la fonction de cette touche dépend de la commande.</translation>
+      <translation>La touche du modificateur Alt : la fonction de cette touche dépend de la commande.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="26"/>
@@ -2674,7 +2674,7 @@ vert ou bleu s'ils correspondent à l'axe X, Y ou Z du système de coordonnées 
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="450"/>
       <source>The constrain modifier key</source>
-      <translation>La touche de modification de la contrainte</translation>
+      <translation>La touche du modificateur de la contrainte</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="304"/>
@@ -2709,8 +2709,7 @@ vert ou bleu s'ils correspondent à l'axe X, Y ou Z du système de coordonnées 
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="374"/>
       <source>If checked, snapping is activated without the need to press the Snap modifier key</source>
-      <translation>Si cette option est cochée, l'aimantation sera activée sans qu'il
-soit nécessaire d'appuyer sur la touche pour l'aimantation.</translation>
+      <translation>Si cette option est cochée, l'aimantation sera activée sans qu'il soit nécessaire d'appuyer sur la touche du modificateur pour l'aimantation.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="275"/>
@@ -3265,7 +3264,7 @@ point à définir</translation>
     <message>
       <location filename="../../DraftGui.py" line="590"/>
       <source>Enter Point</source>
-      <translation>Entrer un point</translation>
+      <translation>Saisir un point</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="594"/>
@@ -3342,7 +3341,7 @@ Décocher pour utiliser le système de coordonnées du plan de travail.</transla
     <message>
       <location filename="../../DraftGui.py" line="591"/>
       <source>Enter a point with given coordinates</source>
-      <translation>Entrer un point avec les coordonnées données</translation>
+      <translation>Saisir un point à partir des coordonnées fournies</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="625"/>

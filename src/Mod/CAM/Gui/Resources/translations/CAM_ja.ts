@@ -1485,7 +1485,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="241"/>
       <source>If selected the operation uses the outline of the selected base geometry and ignores all holes and islands</source>
-      <translation type="unfinished">If selected the operation uses the outline of the selected base geometry and ignores all holes and islands</translation>
+      <translation>選択した場合、工程は選択されたベースジオメトリーの輪郭を使用し、すべての穴と島状形状を無視します。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="251"/>
@@ -1500,7 +1500,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="265"/>
       <source>Check to skip machining regions that have already been cleared by previous operations</source>
-      <translation type="unfinished">Check to skip machining regions that have already been cleared by previous operations</translation>
+      <translation>前の工程ですでに除去されている加工領域をスキップする場合はチェック</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
@@ -1759,7 +1759,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="388"/>
       <source>Choose the path orientation with regard to the features selected</source>
-      <translation type="unfinished">Choose the path orientation with regard to the features selected</translation>
+      <translation>選択されたフィーチャーに関するパスの方向を選択</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="392"/>
@@ -1860,12 +1860,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
       <source>Avoid last X faces</source>
-      <translation type="unfinished">Avoid last X faces</translation>
+      <translation>最後のX面を回避</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
       <source>Avoid cutting the last &apos;n&apos; faces in the base geometry list of selected faces</source>
-      <translation type="unfinished">Avoid cutting the last &apos;n&apos; faces in the base geometry list of selected faces</translation>
+      <translation>選択面のベースジオメトリーリストの最後の「n」面を切削しない。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="154"/>
@@ -1875,12 +1875,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="169"/>
       <source>Additional offset to the selected bounding box along the X axis</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the X axis</translation>
+      <translation>X軸に沿った選択バウンディングボックスへの追加オフセット</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="179"/>
       <source>Additional offset to the selected bounding box along the Y axis</source>
-      <translation type="unfinished">Additional offset to the selected bounding box along the Y axis</translation>
+      <translation>Y軸に沿った選択バウンディングボックスへの追加オフセット</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="191"/>
@@ -1922,7 +1922,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="284"/>
       <source>Boundary enforcement</source>
-      <translation type="unfinished">Boundary enforcement</translation>
+      <translation>境界制約</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="297"/>
@@ -1944,7 +1944,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="294"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
-      <translation type="unfinished">Enable separate optimization of transitions between, and breaks within, each step over path.</translation>
+      <translation>各ステップオーバーのパス間の遷移と中断の最適化を有効にします。</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
@@ -2098,7 +2098,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="205"/>
       <source>Rapid horizontal speed assigned as HorizRapid to new ToolController</source>
-      <translation type="unfinished">Rapid horizontal speed assigned as HorizRapid to new ToolController</translation>
+      <translation>新しいツールコントローラーにHorizeRapidとして割り当てられる高速水平速度</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="212"/>
@@ -2139,7 +2139,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="198"/>
       <source>Lead in/out</source>
-      <translation type="unfinished">Lead in/out</translation>
+      <translation>リードイン/アウト</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
@@ -2200,7 +2200,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="147"/>
       <source>After carving, travel again the path to remove artifacts and imperfections</source>
-      <translation type="unfinished">After carving, travel again the path to remove artifacts and imperfections</translation>
+      <translation>彫刻後、アーティファクトと欠陥を取り除くためにパスを再度移動</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="153"/>
@@ -2371,9 +2371,9 @@ If the specified height is 0 the dressup will use half the height of the part. S
       <source>Radius of the fillet on the tag&apos;s top edge.
 
 If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</source>
-      <translation type="unfinished">Radius of the fillet on the tag&apos;s top edge.
+      <translation>タグの上部エッジのフィレット半径。
 
-If the radius is bigger than that which the tag shape itself supports, the resulting shape will be that of a dome.</translation>
+それ自体が支持するタグ形状よりも半径が大きい場合、結果形状はドーム型の半径となります。</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="106"/>
@@ -2425,11 +2425,11 @@ If the radius is bigger than that which the tag shape itself supports, the resul
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
 If left empty no template will be preselected.</source>
-      <translation type="unfinished">The default template to be selected when creating a new job.
+      <translation>新規ジョブ作成時に選択されるデフォルトのテンプレート。
 
-This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
+ほとんどすべてのジョブを、同じ様な設定の同じマシンで処理する場合に便利です。
 
-If left empty no template will be preselected.</translation>
+空のままにすると、テンプレートは事前に選択されません。</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="72"/>
@@ -2836,7 +2836,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
       <location filename="../preferences/Advanced.ui" line="64"/>
       <location filename="../preferences/Advanced.ui" line="83"/>
       <source>Suppress warning whenever a path selection mode is activated</source>
-      <translation type="unfinished">Suppress warning whenever a path selection mode is activated</translation>
+      <translation>パス選択モードが有効な時は警告を抑制</translation>
     </message>
     <message>
       <location filename="../preferences/Advanced.ui" line="67"/>
@@ -3007,7 +3007,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="87"/>
       <source>On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.</source>
-      <translation type="unfinished">On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.</translation>
+      <translation>プロファイルのどちらの側にボーンが挿入されるか - これはまた、どちらのコーナーがドレスアップされるかを決定します。 デフォルト値はドレスアップされてるプロファイルに基づいて決定されます。</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="94"/>
@@ -3272,7 +3272,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="209"/>
       <source>G/s</source>
-      <translation type="unfinished">G/s</translation>
+      <translation>G/s</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathSimulator.ui" line="300"/>
@@ -5345,7 +5345,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Surface.py" line="376"/>
       <location filename="../../../Path/Op/Waterline.py" line="420"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
-      <translation type="unfinished">Enable separate optimization of transitions between, and breaks within, each step over path.</translation>
+      <translation>各ステップオーバーのパス間の遷移と中断の最適化を有効にします。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="385"/>
@@ -5417,7 +5417,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="399"/>
       <source>Set to True to get lead in and lead out arcs at the start and end of the thread cut</source>
-      <translation type="unfinished">Set to True to get lead in and lead out arcs at the start and end of the thread cut</translation>
+      <translation>True に設定すると、ねじ切りの開始と終了でのリードインとリードアウトの円弧を取得</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="405"/>
@@ -5454,12 +5454,12 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="349"/>
       <source>Vcarve Tolerance</source>
-      <translation type="unfinished">Vcarve Tolerance</translation>
+      <translation>Vカーブの誤差許容値</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="213"/>
       <source>Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate the mesh. Smaller values increase processing time a lot.</translation>
+      <translation>値を小さくすると、より細かく、より正確なメッシュとなります。小さい値にするほど、処理時間が大幅に増加します。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="222"/>
@@ -5474,7 +5474,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="310"/>
       <source>Set to clear last layer in a `Multi-pass` operation.</source>
-      <translation type="unfinished">Set to clear last layer in a `Multi-pass` operation.</translation>
+      <translation>「マルチ・パス」工程で最終レイヤーを除去するよう設定</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="360"/>
@@ -5513,13 +5513,13 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Gui/Array.py" line="114"/>
       <location filename="../../../Path/Dressup/Array.py" line="109"/>
       <source>Percent of copies to randomly offset</source>
-      <translation type="unfinished">Percent of copies to randomly offset</translation>
+      <translation>ランダムにオフセットするコピーのパーセント</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="120"/>
       <location filename="../../../Path/Dressup/Array.py" line="115"/>
       <source>Maximum random offset of copies</source>
-      <translation type="unfinished">Maximum random offset of copies</translation>
+      <translation>コピーの最大ランダムオフセット</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="126"/>
@@ -5588,18 +5588,18 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="292"/>
       <source>The parametrized body representing the tool bit</source>
-      <translation type="unfinished">The parametrized body representing the tool bit</translation>
+      <translation>ツールビットを表すパラメータ化されたボディー</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="299"/>
       <source>The unique ID of the toolbit</source>
-      <translation type="unfinished">The unique ID of the toolbit</translation>
+      <translation>ツールビットのユニークID</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="324"/>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="811"/>
       <source>Tool material</source>
-      <translation type="unfinished">Tool material</translation>
+      <translation>ツール材質</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="767"/>
@@ -5681,22 +5681,22 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="64"/>
       <source>An optional comment for this operation</source>
-      <translation type="unfinished">An optional comment for this operation</translation>
+      <translation>この工程のオプションコメント</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="71"/>
       <source>User assigned label</source>
-      <translation type="unfinished">User assigned label</translation>
+      <translation>ユーザー割り当てラベル</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="41"/>
       <source>Add an optional or mandatory stop to the program</source>
-      <translation type="unfinished">Add an optional or mandatory stop to the program</translation>
+      <translation>プログラムにオプションまたは必須の停止を追加</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/mixins/cutting.py" line="39"/>
       <source>Chipload per tooth</source>
-      <translation type="unfinished">Chipload per tooth</translation>
+      <translation>1刃あたりのチプロード</translation>
     </message>
   </context>
   <context>
@@ -5856,7 +5856,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="547"/>
       <source>The GeometryTolerance for this Job is 0.0.</source>
-      <translation type="unfinished">The GeometryTolerance for this Job is 0.0.</translation>
+      <translation>このジョブの幾何公差は0.0です。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="548"/>
@@ -5871,7 +5871,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="799"/>
       <source>Canceling 3D Surface operation. Error creating OCL cutter.</source>
-      <translation type="unfinished">Canceling 3D Surface operation. Error creating OCL cutter.</translation>
+      <translation>3D表面工程をキャンセルしています。OCLカッターの作成中にエラーが発生しました。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1010"/>
@@ -5881,7 +5881,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1015"/>
       <source>Canceled 3D Surface operation.</source>
-      <translation type="unfinished">Canceled 3D Surface operation.</translation>
+      <translation>3D表面工程をキャンセルしました。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="1115"/>
@@ -5926,7 +5926,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2710"/>
       <source>OCL tool not available. Cannot determine is cutter has tilt available.</source>
-      <translation type="unfinished">OCL tool not available. Cannot determine is cutter has tilt available.</translation>
+      <translation>OCLツールが利用できません。傾斜付きカッターが利用可能かどうか判断できません。</translation>
     </message>
   </context>
   <context>
@@ -5939,22 +5939,22 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="116"/>
       <source>Cannot calculate the Center Of Mass.</source>
-      <translation type="unfinished">Cannot calculate the Center Of Mass.</translation>
+      <translation>重心を計算できません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="119"/>
       <source>Using Center of Boundbox instead.</source>
-      <translation type="unfinished">Using Center of Boundbox instead.</translation>
+      <translation>代わりに、バウンディングボックスの中心を使用します。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="489"/>
       <source>Face selection is unavailable for Rotational scans.</source>
-      <translation type="unfinished">Face selection is unavailable for Rotational scans.</translation>
+      <translation>回転スキャンでは面の選択はできません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="491"/>
       <source>Ignoring selected faces.</source>
-      <translation type="unfinished">Ignoring selected faces.</translation>
+      <translation>選択面を無視します。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="590"/>
@@ -6388,7 +6388,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="26"/>
       <source>Lead In</source>
-      <translation type="unfinished">Lead In</translation>
+      <translation>リードイン</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="70"/>
@@ -6400,38 +6400,38 @@ Aborting op creation</translation>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="60"/>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="136"/>
       <source>Radius/length</source>
-      <translation type="unfinished">Radius/length</translation>
+      <translation>半径/長さ</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="80"/>
       <source>Offset Entrance Location</source>
-      <translation type="unfinished">Offset Entrance Location</translation>
+      <translation>入口位置をオフセット</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="90"/>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="166"/>
       <source>Invert Direction</source>
-      <translation type="unfinished">Invert Direction</translation>
+      <translation>方向を反転</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="102"/>
       <source>Lead Out</source>
-      <translation type="unfinished">Lead Out</translation>
+      <translation>リードアウト</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="156"/>
       <source>Offset Exit Location</source>
-      <translation type="unfinished">Offset Exit Location</translation>
+      <translation>出口位置をオフセット</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="189"/>
       <source>Rapid plunge</source>
-      <translation type="unfinished">Rapid plunge</translation>
+      <translation>高速プランジ加工</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="196"/>
       <source>Retract Threshold</source>
-      <translation type="unfinished">Retract Threshold</translation>
+      <translation>引き上げのしきい値</translation>
     </message>
     <message>
       <location filename="../panels/DressUpLeadInOutEdit.ui" line="186"/>
@@ -6792,7 +6792,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="350"/>
       <source>Corrects Z depth using a probe map</source>
-      <translation type="unfinished">Corrects Z depth using a probe map</translation>
+      <translation>プローブマップを使用してZ深さを修正</translation>
     </message>
   </context>
   <context>
@@ -7274,7 +7274,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="87"/>
       <source>Work Offsets</source>
-      <translation type="unfinished">Work Offsets</translation>
+      <translation>ワークのオフセット</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="90"/>
@@ -7376,12 +7376,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="461"/>
       <source>Tool Controller &apos;{}&apos; has no spindlespeed</source>
-      <translation type="unfinished">Tool Controller &apos;{}&apos; has no spindlespeed</translation>
+      <translation>ツールコントローラー &apos;{}&apos; に主軸速度がありません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="487"/>
       <source>Tool Controller &apos;{}&apos; is not used</source>
-      <translation type="unfinished">Tool Controller &apos;{}&apos; is not used</translation>
+      <translation>ツールコントローラー &apos;{}&apos; は使用されません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="350"/>
@@ -7453,7 +7453,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1636"/>
       <source>Clearing</source>
-      <translation type="unfinished">Clearing</translation>
+      <translation>クリアリング</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1637"/>
@@ -7596,7 +7596,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="75"/>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="67"/>
       <source>%s is not a Base Model object of the job %s</source>
-      <translation type="unfinished">%s is not a Base Model object of the job %s</translation>
+      <translation>%s は、 ジョブ %s のベースモデル・オブジェクトではありません</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="70"/>
@@ -8122,7 +8122,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="261"/>
       <source>Start to End</source>
-      <translation type="unfinished">Start to End</translation>
+      <translation>最初～最後</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="262"/>
@@ -8254,18 +8254,18 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1231"/>
       <source>Selected geometry not parallel.</source>
-      <translation type="unfinished">Selected geometry not parallel.</translation>
+      <translation>選択したジオメトリーは平行ではありません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1305"/>
       <source>The selected face is not oriented vertically:</source>
-      <translation type="unfinished">The selected face is not oriented vertically:</translation>
+      <translation>選択した面が垂直方向を向いていません：</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1750"/>
       <location filename="../../../Path/Op/Slot.py" line="1758"/>
       <source>Current offset value produces negative radius.</source>
-      <translation type="unfinished">Current offset value produces negative radius.</translation>
+      <translation>現在のオフセット値は負の半径を生成します。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Slot.py" line="281"/>
@@ -8473,12 +8473,12 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="284"/>
       <source>LeftHand</source>
-      <translation type="unfinished">LeftHand</translation>
+      <translation>左手</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="288"/>
       <source>RightHand</source>
-      <translation type="unfinished">RightHand</translation>
+      <translation>右手</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="294"/>
@@ -8516,7 +8516,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="222"/>
       <source>Vcarve</source>
-      <translation type="unfinished">Vcarve</translation>
+      <translation>Vカーブ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="223"/>
@@ -9151,7 +9151,7 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="45"/>
       <source>Flutes</source>
-      <translation type="unfinished">Flutes</translation>
+      <translation>溝</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="57"/>
@@ -9168,7 +9168,7 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="49"/>
       <source>Overall tool length</source>
-      <translation type="unfinished">Overall tool length</translation>
+      <translation>ツール全体長さ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="61"/>
@@ -9183,12 +9183,12 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="53"/>
       <source>Shank diameter</source>
-      <translation type="unfinished">Shank diameter</translation>
+      <translation>シャンクの直径</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="61"/>
       <source>Ballend</source>
-      <translation type="unfinished">Ballend</translation>
+      <translation>ボールエンド</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="37"/>
@@ -9201,7 +9201,7 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="61"/>
       <source>Tip diameter</source>
-      <translation type="unfinished">Tip diameter</translation>
+      <translation>先端の直径</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="69"/>
@@ -9211,24 +9211,24 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="67"/>
       <source>Unknown custom shape</source>
-      <translation type="unfinished">Unknown custom shape</translation>
+      <translation>不明なカスタム形状</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="37"/>
       <source>Crest height</source>
-      <translation type="unfinished">Crest height</translation>
+      <translation>頂点の高さ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="65"/>
       <source>Cutting angle</source>
-      <translation type="unfinished">Cutting angle</translation>
+      <translation>切削角度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="45"/>
       <source>Dovetail height</source>
-      <translation type="unfinished">Dovetail height</translation>
+      <translation>ダブテールの高さ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="49"/>
@@ -9251,18 +9251,18 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="77"/>
       <source>Dovetail</source>
-      <translation type="unfinished">Dovetail</translation>
+      <translation>ダブテール</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="57"/>
       <source>Tip angle</source>
-      <translation type="unfinished">Tip angle</translation>
+      <translation>先端角度</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="61"/>
       <source>Endmill</source>
-      <translation type="unfinished">Endmill</translation>
+      <translation>エンドミル</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/probe.py" line="37"/>
@@ -9287,12 +9287,12 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="57"/>
       <source>Reamer</source>
-      <translation type="unfinished">Reamer</translation>
+      <translation>リーマー</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="37"/>
       <source>Blade thickness</source>
-      <translation type="unfinished">Blade thickness</translation>
+      <translation>刃の厚み</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="41"/>
@@ -9307,7 +9307,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="69"/>
       <source>Slitting Saw</source>
-      <translation type="unfinished">Slitting Saw</translation>
+      <translation>スリットソー</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="37"/>
@@ -9317,12 +9317,12 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="41"/>
       <source>Tap diameter</source>
-      <translation type="unfinished">Tap diameter</translation>
+      <translation>タップの直径</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="49"/>
       <source>Overall length of tap</source>
-      <translation type="unfinished">Overall length of tap</translation>
+      <translation>タップ全体長さ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="61"/>
@@ -9337,7 +9337,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="73"/>
       <source>Thread Mill</source>
-      <translation type="unfinished">Thread Mill</translation>
+      <translation>スレッドミル</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="69"/>
@@ -9352,12 +9352,12 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="73"/>
       <source>Bullnose</source>
-      <translation type="unfinished">Bullnose</translation>
+      <translation>丸面</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
       <source>Cutting radius</source>
-      <translation type="unfinished">Cutting radius</translation>
+      <translation>切削半径</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
@@ -9367,12 +9367,12 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="55"/>
       <source>Included Taper angle</source>
-      <translation type="unfinished">Included Taper angle</translation>
+      <translation>テーパー角度を含む</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="59"/>
       <source>Diameter at top of Taper</source>
-      <translation type="unfinished">Diameter at top of Taper</translation>
+      <translation>テーパー上部の直径</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="67"/>
@@ -9386,7 +9386,7 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="59"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="53"/>
       <source>Shank diameter</source>
-      <translation type="unfinished">Shank diameter</translation>
+      <translation>シャフトの直径</translation>
     </message>
   </context>
   <context>
@@ -9500,7 +9500,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/library/ui/properties.py" line="80"/>
       <source>Library Properties - {current_name or self.library.label}</source>
-      <translation type="unfinished">Library Properties - {current_name or self.library.label}</translation>
+      <translation>ライブラリー・プロパティ - {current_name または self.library.label}</translation>
     </message>
   </context>
   <context>

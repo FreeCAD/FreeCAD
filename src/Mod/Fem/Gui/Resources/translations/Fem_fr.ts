@@ -7730,12 +7730,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="740"/>
       <source>Clear FEM Mesh</source>
-      <translation>Supprimer le maillage FEM</translation>
+      <translation>Supprimer le maillage de l'atelier FEM</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="741"/>
       <source>Clears the mesh of a FEM mesh object</source>
-      <translation>Supprime le maillage d'un objet Mesh de FEM.</translation>
+      <translation>Supprime le maillage d'un objet Mesh de l'atelier FEM.</translation>
     </message>
   </context>
   <context>
