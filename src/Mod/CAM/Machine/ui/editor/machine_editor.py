@@ -318,6 +318,20 @@ class DataclassGUIGenerator:
         return group, widgets
 
 
+class _TemplateComboBox(QtGui.QComboBox):
+    """QComboBox that keeps the popup open when a folder item is clicked."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._skip_next_hide = False
+
+    def hidePopup(self):
+        if self._skip_next_hide:
+            self._skip_next_hide = False
+            return
+        super().hidePopup()
+
+
 class MachineEditorDialog(QtGui.QDialog):
     """A dialog to edit machine JSON assets with proper form fields."""
 
@@ -804,18 +818,45 @@ class MachineEditorDialog(QtGui.QDialog):
         if self.machine:
             self.machine.description = text
 
-    def _on_template_changed(self, index):
-        """Handle template selection changes."""
-        template_path = self.template_combo.itemData(index)
+    def _populate_template_tree(self, parent_item, tree_items, doc_icon, folder_icon):
+        """Recursively add ('file'|'dir', name, data) items under parent_item."""
+        for kind, name, data in tree_items:
+            if kind == "file":
+                item = QtGui.QStandardItem(doc_icon, name)
+                item.setData(data, QtCore.Qt.UserRole)
+                parent_item.appendRow(item)
+            elif kind == "dir":
+                item = QtGui.QStandardItem(folder_icon, name)
+                item.setFlags(QtCore.Qt.ItemIsEnabled)
+                item.setData(None, QtCore.Qt.UserRole)
+                parent_item.appendRow(item)
+                self._populate_template_tree(item, data, doc_icon, folder_icon)
+
+    def _on_template_tree_clicked(self, model_index):
+        """Handle a click in the template tree popup.
+
+        Folder items (non-selectable) are toggled expand/collapse; the popup
+        stays open via _TemplateComboBox._skip_next_hide.
+        Leaf items (selectable) load the template and close the popup.
+        """
+        if not (model_index.flags() & QtCore.Qt.ItemIsSelectable):
+            # Folder node: toggle expansion, keep popup open
+            self.template_combo._skip_next_hide = True
+            if self._template_tree_view.isExpanded(model_index):
+                self._template_tree_view.collapse(model_index)
+            else:
+                self._template_tree_view.expand(model_index)
+            return
+
+        template_path = model_index.data(QtCore.Qt.UserRole)
+        display_text = model_index.data(QtCore.Qt.DisplayRole) or ""
 
         if template_path is None:
-            # "Custom" selected - reset to default empty machine
             self.machine = Machine(name="New Machine")
+            display_text = translate("CAM_MachineEditor", "Custom")
         else:
-            # Load the selected template
             try:
                 self.machine = MachineFactory.load_configuration(template_path)
-                # Clear the name so user can provide their own
                 self.machine.name = "New Machine"
             except Exception as e:
                 Path.Log.error(f"Failed to load template: {e}")
@@ -826,10 +867,9 @@ class MachineEditorDialog(QtGui.QDialog):
                 )
                 return
 
-        # Repopulate the entire UI with the loaded machine
+        self.template_combo.setEditText(display_text)
+        self.template_combo.hidePopup()
         self.populate_from_machine(self.machine)
-
-        # Set focus to name field for editing
         self.name_edit.setFocus()
         self.name_edit.selectAll()
 
@@ -928,30 +968,55 @@ class MachineEditorDialog(QtGui.QDialog):
 
         # Template selector (only for new machines)
         if self.is_new_machine:
-            self.template_combo = QtGui.QComboBox()
-            self.template_combo.addItem(translate("CAM_MachineEditor", "Custom"), None)
+            self.template_model = QtGui.QStandardItemModel()
 
-            # Add user's own machines
+            self._template_tree_view = QtGui.QTreeView()
+            self._template_tree_view.setHeaderHidden(True)
+
+            self.template_combo = _TemplateComboBox()
+            self.template_combo.setEditable(True)
+            self.template_combo.lineEdit().setReadOnly(True)
+            self.template_combo.setView(self._template_tree_view)
+            self.template_combo.setModel(self.template_model)
+
+            style = QtGui.QApplication.style()
+            doc_icon = style.standardIcon(QtGui.QStyle.SP_FileIcon)
+            folder_icon = style.standardIcon(QtGui.QStyle.SP_DirIcon)
+
+            # "Custom" entry (no icon, no path)
+            custom_item = QtGui.QStandardItem(translate("CAM_MachineEditor", "Custom"))
+            custom_item.setData(None, QtCore.Qt.UserRole)
+            self.template_model.appendRow(custom_item)
+
+            # User's saved machines — document icon
             user_machines = MachineFactory.list_configuration_files()
-            if len(user_machines) > 1:  # More than just "<any>"
-                self.template_combo.insertSeparator(self.template_combo.count())
+            if len(user_machines) > 1:
                 for name, filename in user_machines:
-                    if filename:  # Skip "<any>"
-                        # Get full path using the factory method
-                        config_dir = MachineFactory.get_config_directory()
-                        user_path = config_dir / filename
-                        display_name = f"📁 {name}"
-                        self.template_combo.addItem(display_name, str(user_path))
+                    if filename:
+                        user_path = MachineFactory.get_config_directory() / filename
+                        item = QtGui.QStandardItem(doc_icon, name)
+                        item.setData(str(user_path), QtCore.Qt.UserRole)
+                        self.template_model.appendRow(item)
 
-            # Add built-in templates using MachineFactory method
-            builtin_templates = MachineFactory.list_builtin_templates()
-            if builtin_templates:
-                self.template_combo.insertSeparator(self.template_combo.count())
-                for name, filepath in builtin_templates:
-                    display_name = f"📋 {name}"
-                    self.template_combo.addItem(display_name, filepath)
+            # Built-in templates — document icon
+            for name, filepath in MachineFactory.list_builtin_templates():
+                item = QtGui.QStandardItem(doc_icon, name)
+                item.setData(filepath, QtCore.Qt.UserRole)
+                self.template_model.appendRow(item)
 
-            self.template_combo.currentIndexChanged.connect(self._on_template_changed)
+            # Addon templates — folder per addon, recursive tree
+            for namespace, subtree in MachineFactory.get_addon_machine_tree():
+                ns_item = QtGui.QStandardItem(folder_icon, namespace)
+                ns_item.setFlags(QtCore.Qt.ItemIsEnabled)  # visible but not selectable
+                ns_item.setData(None, QtCore.Qt.UserRole)
+                self.template_model.appendRow(ns_item)
+                self._populate_template_tree(ns_item, subtree, doc_icon, folder_icon)
+
+            self._template_tree_view.expandAll()
+            self.template_combo.setCurrentIndex(0)
+            self.template_combo.setEditText(translate("CAM_MachineEditor", "Custom"))
+
+            self._template_tree_view.clicked.connect(self._on_template_tree_clicked)
             self.template_combo.setToolTip(
                 translate("CAM_MachineEditor", "Load settings from an existing machine template")
             )
