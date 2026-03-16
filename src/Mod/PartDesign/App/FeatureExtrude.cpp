@@ -965,6 +965,20 @@ void FeatureExtrude::onDocumentRestored()
         Type.setValue("Length");
         Type2.setValue("Length");
         SideType.setValue("Two sides");
+
+        // The old TwoLengths code path (generatePrism) always extruded in +dir:
+        //   offset = -L2 * dir  (Reversed=false) or -L * dir (Reversed=true)
+        //   extrude = (L+L2) * dir
+        // The new "Two sides" code extrudes Side 1 in dir, Side 2 in -dir,
+        // with Reversed toggling the sign of dir. To preserve the same OCC
+        // topology (face/edge ordering), we toggle Reversed so the effective
+        // extrusion direction matches the old +dir, and swap Length/Length2
+        // to keep the correct offset for each side.
+        Reversed.setValue(!Reversed.getValue());
+        double origL = Length.getValue();
+        double origL2 = Length2.getValue();
+        Length.setValue(origL2);
+        Length2.setValue(origL);
     }
     else if (Midplane.getValue()) {
         Midplane.setValue(false);
