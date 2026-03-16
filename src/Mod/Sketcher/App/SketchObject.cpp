@@ -278,8 +278,6 @@ void SketchObject::buildShape()
                                                       'V',
                                                       0,
                                                       "SRC");
-        } else {
-            // unimplemented algorithm, do not touch the name.
         }
 
         vertex.setElementName(
