@@ -27,6 +27,7 @@
 #include <QAction>
 #include <QApplication>
 #include <QKeyEvent>
+#include <QListWidget>
 #include <QListWidgetItem>
 #include <QTimer>
 
@@ -337,6 +338,7 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
     deleteAction->setShortcutVisibleInContextMenu(true);
     parentList->addAction(deleteAction);
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
+    parentList->installEventFilter(this);
 }
 
 bool TaskDressUpParameters::event(QEvent* event)
@@ -354,6 +356,30 @@ bool TaskDressUpParameters::event(QEvent* event)
     }
 
     return TaskBox::event(event);
+}
+
+bool TaskDressUpParameters::eventFilter(QObject* watched, QEvent* event)
+{
+    if (event->type() == QEvent::KeyPress) {
+        auto* listWidget = qobject_cast<QListWidget*>(watched);
+        auto* keyEvent = static_cast<QKeyEvent*>(event);  // NOLINT
+        if (listWidget && keyEvent) {
+            const Qt::KeyboardModifiers ignoredModifiers = Qt::ShiftModifier | Qt::KeypadModifier;
+            if ((keyEvent->modifiers() & ~ignoredModifiers) == Qt::NoModifier
+                && (keyEvent->key() == Qt::Key_Down || keyEvent->key() == Qt::Key_Up)) {
+                const int row = listWidget->currentRow();
+                const int last = listWidget->count() - 1;
+                if (row >= 0
+                    && ((keyEvent->key() == Qt::Key_Down && row >= last)
+                        || (keyEvent->key() == Qt::Key_Up && row <= 0))) {
+                    keyEvent->accept();
+                    return true;
+                }
+            }
+        }
+    }
+
+    return TaskFeatureParameters::eventFilter(watched, event);
 }
 
 void TaskDressUpParameters::keyPressEvent(QKeyEvent* ke)
