@@ -9,7 +9,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string></string>
 	<key>CFBundleIconFile</key>
-	<string>freecad.icns</string>
+	<string>FreeCAD.icon</string>
 	<key>CFBundleIdentifier</key>
 	<string>org.freecad.FreeCAD</string>
 	<key>CFBundleInfoDictionaryVersion</key>
