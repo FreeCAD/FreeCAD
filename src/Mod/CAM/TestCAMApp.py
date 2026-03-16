@@ -129,6 +129,7 @@ from CAMTests.TestDressupPost import TestDressupPost
 from CAMTests.TestCentroidLegacyPost import TestCentroidLegacyPost
 from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
 
+from CAMTests.TestOpenSBPPost import TestOpenSBPPost
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
 from CAMTests.TestSVGPost import TestSVGPost
 from CAMTests.TestTSPSolver import TestTSPSolver
