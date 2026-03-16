@@ -1,10 +1,8 @@
 name: Build Release
 on:
   release:
-    types: [created]
-  schedule:
-   - cron: "0 0 * * 3"
-  workflow_dispatch:
+    types: [published, created] # Parte se crei una release
+  workflow_dispatch:            # Parte se clicchi "Run workflow" (Manuale)
 
 permissions:
   contents: write
