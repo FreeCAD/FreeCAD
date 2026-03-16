@@ -109,6 +109,7 @@ public:
     Part ::PropertyPartShape InternalShape;
     App ::PropertyPrecision InternalTolerance;
     App ::PropertyBool MakeInternals;
+    App ::PropertyInteger _ExternalGeoVersion;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;

@@ -117,6 +117,11 @@ SketchObject::SketchObject() : geoLastId(0)
                       "Internal Geometry",
                       App::Prop_None,
                       "Enables selection of closed profiles within a sketch as input for operations");
+    ADD_PROPERTY_TYPE(_ExternalGeoVersion,
+                      (0),
+                      "Compatibility",
+                      (App::PropertyType)(App::Prop_Hidden | App::Prop_ReadOnly),
+                      "Version of external geometry projection algorithm");
 
     Geometry.setOrderRelevant(true);
 
@@ -167,6 +172,7 @@ void SketchObject::setupObject()
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
     ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
     MakeInternals.setValue(hGrpp->GetBool("MakeInternals", false));
+    _ExternalGeoVersion.setValue(1);
     inherited::setupObject();
 }
 
