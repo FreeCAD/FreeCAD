@@ -761,6 +761,36 @@ void Constraint::setIsTextHeight(bool isHeight)
     MetaData = j.dump();
 }
 
+HelperFlags Constraint::getHelperFlags() const
+{
+    if (MetaData.empty()) {
+        return {};
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("helperFlags")) {
+            return HelperFlags(static_cast<HelperFlag>(j["helperFlags"].get<int>()));
+        }
+    }
+    catch (...) {
+    }
+    return {};
+}
+
+void Constraint::setHelperFlags(HelperFlags flags)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["helperFlags"] = flags.toUnderlyingType();
+    MetaData = j.dump();
+}
+
 std::vector<const Part::Geometry*> Constraint::getCanonicalGeometry() const
 {
     std::vector<const Part::Geometry*> result;

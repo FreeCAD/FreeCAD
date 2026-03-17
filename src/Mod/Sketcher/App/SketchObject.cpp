@@ -1081,10 +1081,10 @@ void SketchObject::storeCanonicalGroupGeometry(int constraintId)
 
 std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateBBoxHelperLines(
     const std::vector<const Part::Geometry*>& canonicalGeometry,
-    uint16_t flags)
+    HelperFlags flags)
 {
     std::vector<std::unique_ptr<Part::Geometry>> helpers;
-    if (flags == 0 || canonicalGeometry.empty()) {
+    if (!static_cast<bool>(flags) || canonicalGeometry.empty()) {
         return helpers;
     }
 
@@ -1115,16 +1115,16 @@ std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateBBoxHelperLin
         return line;
     };
 
-    if (flags & BBoxBottom) {
+    if (flags.testFlag(HelperFlag::BBoxBottom)) {
         helpers.push_back(makeLine(xMin, yMin, xMax, yMin));
     }
-    if (flags & BBoxTop) {
+    if (flags.testFlag(HelperFlag::BBoxTop)) {
         helpers.push_back(makeLine(xMin, yMax, xMax, yMax));
     }
-    if (flags & BBoxLeft) {
+    if (flags.testFlag(HelperFlag::BBoxLeft)) {
         helpers.push_back(makeLine(xMin, yMin, xMin, yMax));
     }
-    if (flags & BBoxRight) {
+    if (flags.testFlag(HelperFlag::BBoxRight)) {
         helpers.push_back(makeLine(xMax, yMin, xMax, yMax));
     }
 
@@ -1135,10 +1135,10 @@ std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateTextMetricHel
     const Part::TextMetrics& metrics,
     double xMin,
     double xMax,
-    uint16_t flags)
+    HelperFlags flags)
 {
     std::vector<std::unique_ptr<Part::Geometry>> helpers;
-    if (flags == 0 || !metrics.valid) {
+    if (!static_cast<bool>(flags) || !metrics.valid) {
         return helpers;
     }
 
@@ -1149,19 +1149,19 @@ std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateTextMetricHel
         return line;
     };
 
-    if (flags & MetricBaseline) {
+    if (flags.testFlag(HelperFlag::MetricBaseline)) {
         helpers.push_back(makeLine(xMin, 0.0, xMax));
     }
-    if (flags & MetricXHeight) {
+    if (flags.testFlag(HelperFlag::MetricXHeight)) {
         helpers.push_back(makeLine(xMin, metrics.xHeight, xMax));
     }
-    if (flags & MetricCapHeight) {
+    if (flags.testFlag(HelperFlag::MetricCapHeight)) {
         helpers.push_back(makeLine(xMin, metrics.capHeight, xMax));
     }
-    if (flags & MetricAscender) {
+    if (flags.testFlag(HelperFlag::MetricAscender)) {
         helpers.push_back(makeLine(xMin, metrics.ascender, xMax));
     }
-    if (flags & MetricDescender) {
+    if (flags.testFlag(HelperFlag::MetricDescender)) {
         helpers.push_back(makeLine(xMin, metrics.descender, xMax));
     }
 

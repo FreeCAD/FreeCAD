@@ -65,25 +65,6 @@ namespace Sketcher
 
 class SketchAnalysis;
 
-/// Bitmask flags for bounding box helper lines (lower 4 bits)
-enum HelperBBoxFlag : uint16_t
-{
-    BBoxBottom = 1,
-    BBoxTop = 2,
-    BBoxLeft = 4,
-    BBoxRight = 8,
-};
-
-/// Bitmask flags for typography metric helper lines (upper bits)
-enum HelperMetricFlag : uint16_t
-{
-    MetricBaseline = 16,
-    MetricXHeight = 32,
-    MetricCapHeight = 64,
-    MetricAscender = 128,
-    MetricDescender = 256,
-};
-
 struct ExternalToAdd
 {
     App::DocumentObject* obj;
@@ -387,7 +368,7 @@ public:
     /// Returns line segments in canonical space, tagged with Helper flag.
     static std::vector<std::unique_ptr<Part::Geometry>> generateBBoxHelperLines(
         const std::vector<const Part::Geometry*>& canonicalGeometry,
-        uint16_t flags
+        HelperFlags flags
     );
     /// Generate typography metric helper lines spanning [xMin, xMax].
     /// Returns horizontal line segments in canonical space, tagged with Helper flag.
@@ -395,7 +376,7 @@ public:
         const Part::TextMetrics& metrics,
         double xMin,
         double xMax,
-        uint16_t flags
+        HelperFlags flags
     );
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);

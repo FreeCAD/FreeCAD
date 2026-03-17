@@ -27,6 +27,7 @@
 #include <array>
 #include <memory>
 
+#include <Base/Bitmask.h>
 #include <Base/Persistence.h>
 #include <Base/Quantity.h>
 #include <boost/uuid/uuid.hpp>
@@ -44,6 +45,30 @@ class Geometry;
 // Will be used when everything has been migrated to new api.
 #define SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS 1
 
+
+namespace Sketcher
+{
+
+/// Bitmask flags for helper lines (bbox edges and typography metrics).
+/// Lower bits = bounding box edges, upper bits = text metric lines.
+enum class HelperFlag
+{
+    None = 0,
+    BBoxBottom = 1,
+    BBoxTop = 2,
+    BBoxLeft = 4,
+    BBoxRight = 8,
+    MetricBaseline = 16,
+    MetricXHeight = 32,
+    MetricCapHeight = 64,
+    MetricAscender = 128,
+    MetricDescender = 256,
+};
+using HelperFlags = Base::Flags<HelperFlag>;
+
+}  // namespace Sketcher
+
+ENABLE_BITMASK_OPERATORS(Sketcher::HelperFlag)
 
 namespace Sketcher
 {
@@ -256,6 +281,8 @@ public:
     void setFont(const std::string& font);
     bool getIsTextHeight() const;
     void setIsTextHeight(bool val);
+    HelperFlags getHelperFlags() const;
+    void setHelperFlags(HelperFlags flags);
 
     /// Canonical geometry for Group/Text constraints (elements 1+ in canonical frame).
     /// The canonical frame is (0,0)->(1,0). World positions are derived from this
