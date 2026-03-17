@@ -158,7 +158,8 @@ private:
     void convert(
         const Sketcher::GeometryFacade* geometryfacade,
         [[maybe_unused]] int geoId,
-        [[maybe_unused]] int subLayerId = 0
+        [[maybe_unused]] int subLayerId = 0,
+        bool skipPoints = false
     );
 
 private:

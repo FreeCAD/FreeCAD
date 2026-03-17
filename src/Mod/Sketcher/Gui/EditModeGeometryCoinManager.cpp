@@ -344,6 +344,7 @@ void EditModeGeometryCoinManager::updateGeometryColor(
             auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
             bool isExternal = GeoId < -1;
 
+
             if (geom) {
                 z = viewOrientationFactor * zNormPoint;
 

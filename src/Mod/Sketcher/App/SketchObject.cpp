@@ -10696,6 +10696,29 @@ bool SketchObject::isGroupHandle(int geoId) const
     return false;
 }
 
+bool SketchObject::isTextInnerGeometry(int geoId) const
+{
+    const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
+
+    for (const auto& constr : vals) {
+        if (constr->Type != Text) {
+            continue;
+        }
+        // Check elements 1+ (skip frame line at 0)
+        for (int i = 1; constr->hasElement(i); ++i) {
+            if (constr->getGeoId(i) == geoId) {
+                // It's in a Text constraint — check if it's a helper (interactive)
+                const Part::Geometry* geo = getGeometry(geoId);
+                if (geo && GeometryFacade::getHelper(geo)) {
+                    return false;  // helpers are interactive
+                }
+                return true;  // text glyph geometry — not interactive
+            }
+        }
+    }
+    return false;
+}
+
 int SketchObject::getGroupHandleIfInGroup(int geoId)
 {
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();

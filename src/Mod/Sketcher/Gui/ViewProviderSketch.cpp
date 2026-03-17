@@ -1637,9 +1637,12 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         return; // don't drag externals
     }
 
-    // With DerivedPoint constraints, grouped geometry vertices are solver entities.
-    // Dragging them propagates to the frame line through the solver automatically.
-    // No need to redirect to the group handle anymore.
+    // Text inner geometry is not individually draggable — redirect to group handle.
+    if (getSketchObject()->isTextInnerGeometry(geoId)) {
+        geoId = getSketchObject()->getGroupHandleIfInGroup(geoId);
+        pos = Sketcher::PointPos::none;
+    }
+    // For Group constraints, dragging propagates to the frame line through the solver.
 
     drag.reset();
     setSketchMode(STATUS_SKETCH_Drag);
@@ -2321,8 +2324,19 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                     std::string shapetype(msg.pSubName);
                     if (shapetype.size() > 4 && shapetype.substr(0, 4) == "Edge") {
                         int GeoId = std::atoi(&shapetype[4]) - 1;
-                        selection.SelCurvSet.insert(GeoId);
 
+                        // Redirect text inner geometry selection to the group handle
+                        if (getSketchObject()->isTextInnerGeometry(GeoId)) {
+                            int handleId = getSketchObject()->getGroupHandleIfInGroup(GeoId);
+                            Gui::Selection().rmvSelection(
+                                msg.pDocName, msg.pObjectName, msg.pSubName);
+                            std::string sub = "Edge" + std::to_string(handleId + 1);
+                            Gui::Selection().addSelection(
+                                msg.pDocName, msg.pObjectName, sub.c_str());
+                            return;
+                        }
+
+                        selection.SelCurvSet.insert(GeoId);
                     }
                     else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
                         int GeoId = std::atoi(&shapetype[12]) - 1;
@@ -2497,6 +2511,15 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
 
         if (result.PointIndex != -1
             && result.PointIndex != preselection.PreselectPoint) {// if a new point is hit
+            // Skip preselection of text inner geometry points
+            {
+                int ptGeoId;
+                Sketcher::PointPos ptPos;
+                getSketchObject()->getGeoVertexIndex(result.PointIndex, ptGeoId, ptPos);
+                if (getSketchObject()->isTextInnerGeometry(ptGeoId)) {
+                    return false;
+                }
+            }
             std::stringstream ss;
             ss << "Vertex" << result.PointIndex + 1;
             bool accepted =
@@ -2513,6 +2536,16 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         }
         else if (result.GeoIndex != -1
                  && result.GeoIndex != preselection.PreselectCurve) {// if a new curve is hit
+
+            // Text inner geometry (glyphs) is not individually interactive.
+            // Redirect preselection to the group handle (frame line).
+            if (getSketchObject()->isTextInnerGeometry(result.GeoIndex)) {
+                int handleId = getSketchObject()->getGroupHandleIfInGroup(result.GeoIndex);
+                if (handleId == preselection.PreselectCurve) {
+                    return false;
+                }
+                result.GeoIndex = handleId;
+            }
 
             std::stringstream ss;
             if (result.GeoIndex >= 0)

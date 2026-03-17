@@ -151,6 +151,10 @@ public:
      */
     bool isInGroup(int geoId, bool includeHandle = true) const;
     bool isGroupHandle(int geoId) const;
+    /// Returns true if geoId belongs to a Text constraint's inner geometry
+    /// (glyph shapes, not the frame line or helper lines). These elements
+    /// should not be individually selectable or preselectable.
+    bool isTextInnerGeometry(int geoId) const;
     /*!
      \brief Returns geoId if it's not in a group. Or the group handle if it is in a group.
      \param geoId - the geometry id in the sketch
