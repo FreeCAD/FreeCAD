@@ -40,7 +40,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="lColor">
         <property name="text">
-         <string>Color</string>
+         <string>Text color</string>
         </property>
        </widget>
       </item>
