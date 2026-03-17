@@ -76,8 +76,6 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
     ui->checkBox_baseline->setChecked(flags.testFlag(Sketcher::HelperFlag::MetricBaseline));
     ui->checkBox_xHeight->setChecked(flags.testFlag(Sketcher::HelperFlag::MetricXHeight));
     ui->checkBox_capHeight->setChecked(flags.testFlag(Sketcher::HelperFlag::MetricCapHeight));
-    ui->checkBox_ascender->setChecked(flags.testFlag(Sketcher::HelperFlag::MetricAscender));
-    ui->checkBox_descender->setChecked(flags.testFlag(Sketcher::HelperFlag::MetricDescender));
 
     // Gray out metric checkboxes for metrics the font doesn't provide
     if (!constraint->getHasXHeight()) {
@@ -141,12 +139,6 @@ void EditTextDialog::on_buttonBox_accepted()
     if (ui->checkBox_capHeight->isChecked()) {
         newFlags.setFlag(Sketcher::HelperFlag::MetricCapHeight);
     }
-    if (ui->checkBox_ascender->isChecked()) {
-        newFlags.setFlag(Sketcher::HelperFlag::MetricAscender);
-    }
-    if (ui->checkBox_descender->isChecked()) {
-        newFlags.setFlag(Sketcher::HelperFlag::MetricDescender);
-    }
 
     Sketcher::HelperFlags oldFlags = constraint->getHelperFlags();
 
@@ -206,8 +198,6 @@ void EditTextDialog::on_buttonBox_accepted()
             Sketcher::HelperFlag::MetricBaseline,
             Sketcher::HelperFlag::MetricXHeight,
             Sketcher::HelperFlag::MetricCapHeight,
-            Sketcher::HelperFlag::MetricAscender,
-            Sketcher::HelperFlag::MetricDescender,
         };
 
         auto geometry = sketch->Geometry.getValues();

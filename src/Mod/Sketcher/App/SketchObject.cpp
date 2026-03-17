@@ -1074,8 +1074,7 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
             HelperFlags allBBox = HelperFlag::BBoxBottom | HelperFlag::BBoxTop
                 | HelperFlag::BBoxLeft | HelperFlag::BBoxRight;
             HelperFlags allMetric = HelperFlag::MetricBaseline | HelperFlag::MetricXHeight
-                | HelperFlag::MetricCapHeight | HelperFlag::MetricAscender
-                | HelperFlag::MetricDescender;
+                | HelperFlag::MetricCapHeight;
 
             auto bboxHelpers = generateBBoxHelperLines(
                 constr->getCanonicalGeometry(), allBBox);
@@ -1271,12 +1270,6 @@ std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateTextMetricHel
     }
     if (flags.testFlag(HelperFlag::MetricCapHeight)) {
         helpers.push_back(makeLine(xMin, metrics.capHeight, xMax));
-    }
-    if (flags.testFlag(HelperFlag::MetricAscender)) {
-        helpers.push_back(makeLine(xMin, metrics.ascender, xMax));
-    }
-    if (flags.testFlag(HelperFlag::MetricDescender)) {
-        helpers.push_back(makeLine(xMin, metrics.descender, xMax));
     }
 
     return helpers;

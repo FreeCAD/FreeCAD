@@ -61,8 +61,6 @@ enum class HelperFlag
     MetricBaseline = 16,
     MetricXHeight = 32,
     MetricCapHeight = 64,
-    MetricAscender = 128,
-    MetricDescender = 256,
 };
 using HelperFlags = Base::Flags<HelperFlag>;
 

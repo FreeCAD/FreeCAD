@@ -198,8 +198,6 @@ private:
                     HF::MetricBaseline,
                     HF::MetricXHeight,
                     HF::MetricCapHeight,
-                    HF::MetricAscender,
-                    HF::MetricDescender,
                 };
                 Sketcher::HelperFlags enabledFlags(static_cast<HF>(defaultHelperFlags));
 
