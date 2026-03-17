@@ -397,6 +397,7 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_ReportTools", BIM_ReportTools())
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools())
         FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews())
+        FreeCADGui.addCommand("BIM_CloneTools", BIM_CloneTools())
 
         # load rebar tools (Reinforcement addon)
         try:
