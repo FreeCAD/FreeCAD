@@ -584,7 +584,7 @@ class BIMWorkbench(Workbench):
                     continue
                 idx = lst.index(itm[0])
                 cmds = list(itm[1].GetCommands(itm[1]))
-                lst = lst[:idx] + cmds + lst[idx+1:]
+                lst = lst[:idx] + cmds + lst[idx + 1 :]
             setattr(self, attr, lst)
 
     def loadPreferences(self):
