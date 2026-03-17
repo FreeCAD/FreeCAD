@@ -908,7 +908,7 @@ double SketchObject::getDatum(int ConstrId) const
     return this->Constraints[ConstrId]->getValue();
 }
 
-int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont, bool isHeight, bool isConstruction, int helperFlags)
+int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont, bool isConstruction, int helperFlags)
 {
 ;    // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -930,7 +930,6 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     // First we replace the old geometries by the new text.
     const std::string oldText = constr->getText();
     const std::string oldFont = constr->getFont();
-    const bool oldIsHeight = constr->getIsTextHeight();
     int handleGeoId = constr->getGeoId(0);
     int firstTextGeoId = constr->getGeoId(1);
     bool hasExistingText = firstTextGeoId != GeoEnum::GeoUndef;
@@ -977,17 +976,14 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
         }
     }
     double wireWidth = 1.0;
-    double wireHeight = 1.0;
     if (!wireBBox.IsVoid()) {
         wireWidth = wireBBox.CornerMax().X() - wireBBox.CornerMin().X();
-        wireHeight = wireBBox.CornerMax().Y() - wireBBox.CornerMin().Y();
     }
 
     Part::transformAndConvertToGeometry(canonicalGeos,
                                     shapes,
                                     Base::Vector3d(0, 0, 0),
-                                    Base::Vector3d(1, 0, 0),
-                                    isHeight);
+                                    Base::Vector3d(1, 0, 0));
 
     // Compute canonical -> world transform using the actual frame line
     Base::Matrix4D canonToWorld = Sketch::computeCanonicalToWorldTransform(
@@ -1023,7 +1019,6 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     }
     constr->setText(newText);
     constr->setFont(newFont);
-    constr->setIsTextHeight(isHeight);
     constr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlags)));
     constr->setMetricAvailability(textMetrics.hasXHeight, textMetrics.hasCapHeight);
 
@@ -1060,8 +1055,8 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
             // Transform text metrics from wire space to canonical space.
             // Since the baseline is at y=0 in both spaces, we only need to
             // apply the same scale that transformAndConvertToGeometry uses:
-            // 1/baseWidth (width mode) or 1/baseHeight (height mode).
-            double wireDimension = isHeight ? wireHeight : wireWidth;
+            // 1/baseWidth (width mode).
+            double wireDimension = wireWidth;
             double metricScale = (wireDimension > Precision::Confusion())
                 ? 1.0 / wireDimension
                 : 1.0;
@@ -1124,7 +1119,6 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     if (err) {
         constr->setText(oldText);
         constr->setFont(oldFont);
-        constr->setIsTextHeight(oldIsHeight);
     }
 
     return err;

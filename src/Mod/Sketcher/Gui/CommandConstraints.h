@@ -144,7 +144,6 @@ bool addListConstraint(
     const std::string& constraintType,
     Base::Vector2d frame_p1 = Base::Vector2d(),
     Base::Vector2d frame_p2 = Base::Vector2d(),
-    bool isTextHeight = true,
     const std::string& text = "",
     const std::string& font = ""
 );

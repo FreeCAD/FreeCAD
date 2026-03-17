@@ -158,7 +158,8 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    // Attempt to parse (string, list, string, string, bool) for 'Text'
+    // Attempt to parse (string, list, string, string[, ignored]) for 'Text'
+    // The optional trailing argument is accepted for backward compatibility but ignored.
     if (PyArg_ParseTuple(
             args,
             "sO!ss|O",
@@ -181,14 +182,6 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             // Set the specific members for the Text constraint
             constraint->setText(text_str);
             constraint->setFont(font_str);
-
-            // Check and set the optional boolean
-            if (py_is_height && PyBool_Check(py_is_height)) {
-                constraint->setIsTextHeight(py_is_height == Py_True);
-            }
-            else {
-                constraint->setIsTextHeight(true);
-            }
 
             return 0;  // Success!
         }

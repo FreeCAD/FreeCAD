@@ -7466,15 +7466,12 @@ int cubic_cb(const FT_Vector* pt0, const FT_Vector* pt1, const FT_Vector* pt2, v
  * @param baseShapes        Input vector of raw TopoDS_Shape objects at origin.
  * @param p1                The start point (typically bottom-left) of placement.
  * @param p2                The end point, which defines the size and orientation.
- * @param height            If true, the distance p1-p2 defines the height.
- *                          If false, it defines the width.
  */
 void transformAndConvertToGeometry(
     std::vector<std::unique_ptr<Part::Geometry>>& geos,
     const std::vector<TopoDS_Shape>& baseShapes,
     const Base::Vector3d& p1,
-    const Base::Vector3d& p2,
-    bool height
+    const Base::Vector3d& p2
 )
 {
     if (baseShapes.empty()) {
@@ -7505,31 +7502,18 @@ void transformAndConvertToGeometry(
     Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
     bndBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
     double baseWidth = xmax - xmin;
-    double baseHeight = ymax - ymin;
 
     // Move the geometry's left edge to x=0 and keep the baseline at y=0.
     // This means the frame line (y=0) IS the typographic baseline.
     // Descenders extend below y=0, ascenders above.
     gp_Vec initialTranslationVec(-xmin, 0.0, 0.0);
 
-    // 2. Determine scale and rotation
-    double angle;
-    double scale;
-
-    if (height) {
-        if (baseHeight < Precision::Confusion()) {
-            return;
-        }
-        scale = length / baseHeight;
-        angle = std::atan2(dir.y, dir.x) - 0.5 * M_PI;
+    // 2. Determine scale and rotation (always width mode)
+    if (baseWidth < Precision::Confusion()) {
+        return;
     }
-    else {  // Width mode
-        if (baseWidth < Precision::Confusion()) {
-            return;
-        }
-        scale = length / baseWidth;
-        angle = std::atan2(dir.y, dir.x);
-    }
+    double scale = length / baseWidth;
+    double angle = std::atan2(dir.y, dir.x);
 
     // 3. Construct the final transformation matrix
     gp_Trsf initialTranslate;

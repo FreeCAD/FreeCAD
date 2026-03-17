@@ -358,7 +358,6 @@ public:
         int ConstrId,
         std::string& newText,
         std::string& newFont,
-        bool isHeight,
         bool isConstruction = false,
         int helperFlags = 0
     );

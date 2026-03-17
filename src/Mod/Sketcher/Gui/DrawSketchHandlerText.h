@@ -56,7 +56,6 @@ namespace ConstructionMethods
 enum class TextConstructionMethod
 {
     Width,
-    Height,
     End  // Must be the last one
 };
 
@@ -155,9 +154,7 @@ private:
 
             std::string escText = escapeForPython(text);
             std::string escFont = escapeForPython(font);
-            bool isHeight = constructionMethod() == ConstructionMethod::Height;
             const char* constrBoolStr = isConstructionMode() ? "True" : "False";
-            const char* heightBoolStr = isHeight ? "True" : "False";
 
             // Add the 'Text' Constraint (Empty)
             // We initialize the constraint containing ONLY the handle (element 0).
@@ -165,11 +162,10 @@ private:
             // associated with Python serialization.
             Gui::cmdAppObjectArgs(
                 getSketchObject(),
-                "addConstraint(Sketcher.Constraint('Text', [%d, 0], '%s', '%s', %s))",
+                "addConstraint(Sketcher.Constraint('Text', [%d, 0], '%s', '%s'))",
                 handleId,
                 escText.c_str(),
-                escFont.c_str(),
-                heightBoolStr
+                escFont.c_str()
             );
 
             // Generate Text Geometry by calling setTextAndFont on the new constraint.
@@ -180,11 +176,10 @@ private:
             Gui::cmdAppObjectArgs(
                 getSketchObject(),
                 "setTextAndFont(len(App.ActiveDocument.getObject('%s').Constraints)-1, '%s', '%s', "
-                "%s, %s, %d)",
+                "%s, %d)",
                 getSketchObject()->getNameInDocument(),
                 escText.c_str(),
                 escFont.c_str(),
-                heightBoolStr,
                 constrBoolStr,
                 defaultHelperFlags
             );
@@ -382,8 +377,7 @@ private:
             ShapeGeometry,
             cachedBaseShapes,
             toVector3d(startPoint),
-            toVector3d(endPoint),
-            constructionMethod() == ConstructionMethod::Height
+            toVector3d(endPoint)
         );
 
         // 3. Set construction mode on the newly created geometry
@@ -565,9 +559,6 @@ void DSHTextControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
 
             if (fourthParam->isSet) {
                 double angle = Base::toRadians(fourthParam->getValue());
-                if (handler->constructionMethod() == ConstructionMethod::Height) {
-                    angle += M_PI * 0.5;
-                }
                 Base::Vector2d dir(cos(angle), sin(angle));
                 onSketchPos.ProjectToLine(onSketchPos - handler->startPoint, dir);
                 onSketchPos += handler->startPoint;
@@ -618,15 +609,7 @@ void DSHTextController::adaptParameters(Base::Vector2d onSketchPos)
                 setOnViewParameterValue(OnViewParameter::Third, vec.Length());
             }
 
-            double range;
-            if (handler->constructionMethod() == ConstructionMethod::Height) {
-                Base::Vector2d norm(vec.y, -vec.x);
-                Base::Vector2d textAlignPoint = handler->startPoint + norm;
-                range = (textAlignPoint - handler->startPoint).Angle();
-            }
-            else {
-                range = (handler->endPoint - handler->startPoint).Angle();
-            }
+            double range = (handler->endPoint - handler->startPoint).Angle();
 
 
             if (!fourthParam->isSet) {
@@ -723,10 +706,6 @@ void DSHTextController::addConstraints()
 
     auto constraintp4angle = [&]() {
         double angle = Base::toRadians(p4);
-        if (handler->constructionMethod() == ConstructionMethod::Height) {
-            angle += M_PI * 0.5;
-        }
-
         ConstraintLineByAngle(firstCurve, angle, obj);
     };
 
@@ -804,14 +783,6 @@ DrawSketchHandlerText::HintTable DrawSketchHandlerText::getTextHintTable()
     const auto switchHint = switchModeHint();
     return {
         // Structure: {constructionMethod, state, {hints...}}
-        {static_cast<int>(ConstructionMethod::Height),
-         0,
-         {{QObject::tr("%1 pick bottom-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
-        {static_cast<int>(ConstructionMethod::Height),
-         1,
-         {{QObject::tr("%1 pick top-left point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
         {static_cast<int>(ConstructionMethod::Width),
          0,
          {{QObject::tr("%1 pick bottom-left point"), {Gui::InputHint::UserInput::MouseLeft}},

@@ -117,7 +117,6 @@ void EditTextDialog::on_buttonBox_accepted()
     std::string newText = ui->lineEdit_text->text().toStdString();
     QString selectedFontName = ui->comboBox_font->currentText();
     std::string newFontPath = fontPathMap.value(selectedFontName).toStdString();
-    bool newIsHeight = false;  // always width mode
 
     // Collect helper flags from checkboxes
     Sketcher::HelperFlags newFlags;
@@ -151,8 +150,7 @@ void EditTextDialog::on_buttonBox_accepted()
 
     Sketcher::HelperFlags oldFlags = constraint->getHelperFlags();
 
-    bool textChanged = newText != constraint->getText() || newFontPath != constraint->getFont()
-        || newIsHeight != constraint->getIsTextHeight();
+    bool textChanged = newText != constraint->getText() || newFontPath != constraint->getFont();
     bool helpersChanged = !newFlags.isEqual(oldFlags);
 
     if (!textChanged && !helpersChanged) {
@@ -176,11 +174,10 @@ void EditTextDialog::on_buttonBox_accepted()
             std::string escFont = escapeForPython(newFontPath);
             Gui::cmdAppObjectArgs(
                 sketch,
-                "setTextAndFont(%i, '%s', '%s', %s, %s, %i)",
+                "setTextAndFont(%i, '%s', '%s', %s, %i)",
                 constrIndex,
                 escText.c_str(),
                 escFont.c_str(),
-                newIsHeight ? "True" : "False",
                 isConstruction ? "True" : "False",
                 newFlags.toUnderlyingType()
             );

@@ -10566,7 +10566,6 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
                        const std::string& constraintType,
                        Base::Vector2d frame_p1,
                        Base::Vector2d frame_p2,
-                       bool isTextHeight,
                        const std::string& text,
                        const std::string& font)
 {
@@ -10660,11 +10659,10 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
         std::string escaped_font = escapeForPython(font);
         Gui::cmdAppObjectArgs(
             Obj,
-            "addConstraint(Sketcher.Constraint('Text', %s, '%s', '%s', %s))",
+            "addConstraint(Sketcher.Constraint('Text', %s, '%s', '%s'))",
             elements_list_string.c_str(),
             escaped_text.c_str(),
-            escaped_font.c_str(),
-            isTextHeight ? "True" : "False");
+            escaped_font.c_str());
     }
     else {
         Base::Console().error("Unsupported list constraint type: %s\n", constraintType.c_str());

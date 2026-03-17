@@ -1437,8 +1437,7 @@ PartExport void transformAndConvertToGeometry(
     std::vector<std::unique_ptr<Part::Geometry>>& geos,
     const std::vector<TopoDS_Shape>& baseShapes,
     const Base::Vector3d& p1,
-    const Base::Vector3d& p2,
-    bool height
+    const Base::Vector3d& p2
 );
 
 PartExport std::vector<TopoDS_Shape> makeTextWires(

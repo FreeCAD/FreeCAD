@@ -279,8 +279,6 @@ public:
     void setText(const std::string& text);
     std::string getFont() const;
     void setFont(const std::string& font);
-    bool getIsTextHeight() const;
-    void setIsTextHeight(bool val);
     HelperFlags getHelperFlags() const;
     void setHelperFlags(HelperFlags flags);
     bool getHasXHeight() const;

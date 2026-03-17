@@ -731,36 +731,6 @@ void Constraint::setFont(const std::string& font)
     MetaData = j.dump();
 }
 
-bool Constraint::getIsTextHeight() const
-{
-    if (MetaData.empty()) {
-        return true;  // Default value
-    }
-    try {
-        auto j = nlohmann::json::parse(MetaData);
-        if (j.contains("isTextHeight")) {
-            return j["isTextHeight"].get<bool>();
-        }
-    }
-    catch (...) {
-    }
-    return true;  // Default value
-}
-
-void Constraint::setIsTextHeight(bool isHeight)
-{
-    nlohmann::json j;
-    if (!MetaData.empty()) {
-        try {
-            j = nlohmann::json::parse(MetaData);
-        }
-        catch (...) {
-        }
-    }
-    j["isTextHeight"] = isHeight;
-    MetaData = j.dump();
-}
-
 HelperFlags Constraint::getHelperFlags() const
 {
     if (MetaData.empty()) {
