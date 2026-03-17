@@ -1447,4 +1447,23 @@ PartExport std::vector<TopoDS_Shape> makeTextWires(
     double height = 1.0,
     double tracking = 0.0
 );
+
+struct PartExport TextMetrics
+{
+    double ascender = 0;   // in wire space (scaled from font units)
+    double descender = 0;  // negative, in wire space
+    double xHeight = 0;
+    double capHeight = 0;
+    double textWidth = 0;  // total advance in wire space
+    bool valid = false;
+};
+
+PartExport std::vector<TopoDS_Shape> makeTextWires(
+    std::string& text,
+    std::string& fontFile,
+    TextMetrics& metrics,
+    double height = 1.0,
+    double tracking = 0.0
+);
+
 }  // namespace Part

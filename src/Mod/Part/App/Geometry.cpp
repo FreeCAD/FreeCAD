@@ -128,6 +128,7 @@
 #include FT_OUTLINE_H
 
 #include <hb.h>
+#include <hb-ot.h>
 
 // headers to scale text correctly
 #include <BRepBndLib.hxx>
@@ -7594,10 +7595,23 @@ void transformAndConvertToGeometry(
     }
 }
 
+// Convenience wrapper without metrics output
+std::vector<TopoDS_Shape> makeTextWires(
+    std::string& text,
+    std::string& fontFile,
+    double height,
+    double tracking
+)
+{
+    TextMetrics unused;
+    return makeTextWires(text, fontFile, unused, height, tracking);
+}
+
 // The core logic, refactored from FT2FC to be Python-independent
 std::vector<TopoDS_Shape> makeTextWires(
     std::string& text,
     std::string& fontFile,
+    TextMetrics& metrics,
     double height,
     double tracking
 )
@@ -7656,6 +7670,7 @@ std::vector<TopoDS_Shape> makeTextWires(
 
     // We want a nominal height of 1.0 for the base shapes
     double scaleFactor = (height / unitsPerEM);
+
     FT_Outline_Funcs ftCallbacks = {move_cb, line_cb, quad_cb, cubic_cb, 0, 0};
     FT_UInt ftLoadFlags = FT_LOAD_NO_SCALE | FT_LOAD_NO_BITMAP;
 
@@ -7670,6 +7685,27 @@ std::vector<TopoDS_Shape> makeTextWires(
     );
     auto* hbFace = hb_face_create(hbBlob, 0);
     auto* hbFont = hb_font_create(hbFace);
+
+    // Extract font metrics via HarfBuzz (reads OS/2 table internally).
+    // Fallback ratios approximate typical Latin font proportions.
+    constexpr double xHeightToAscenderRatio = 0.52;
+    constexpr double capHeightToAscenderRatio = 0.71;
+
+    hb_font_extents_t fontExtents;
+    hb_font_get_extents_for_direction(hbFont, HB_DIRECTION_LTR, &fontExtents);
+    metrics.ascender = fontExtents.ascender * scaleFactor;
+    metrics.descender = fontExtents.descender * scaleFactor;
+
+    hb_position_t metricVal;
+    bool hasXHeight = hb_ot_metrics_get_position(hbFont, HB_OT_METRICS_TAG_X_HEIGHT, &metricVal)
+        && metricVal > 0;
+    metrics.xHeight = hasXHeight ? metricVal * scaleFactor
+                                 : metrics.ascender * xHeightToAscenderRatio;
+
+    bool hasCapHeight = hb_ot_metrics_get_position(hbFont, HB_OT_METRICS_TAG_CAP_HEIGHT, &metricVal)
+        && metricVal > 0;
+    metrics.capHeight = hasCapHeight ? metricVal * scaleFactor
+                                     : metrics.ascender * capHeightToAscenderRatio;
 
     auto* hbBuf = hb_buffer_create();
     hb_buffer_add_utf8(hbBuf, text.c_str(), -1, 0, -1);
@@ -7722,6 +7758,9 @@ std::vector<TopoDS_Shape> makeTextWires(
         penPos += xAdvance;
         currentTracking += tracking;
     }
+
+    metrics.textWidth = penPos * scaleFactor + currentTracking;
+    metrics.valid = true;
 
     hb_buffer_destroy(hbBuf);
     hb_font_destroy(hbFont);
