@@ -291,17 +291,6 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
 
         return self.removalshapes
 
-    # Support methods
-    def isVerticalExtrusionFace(self, face):
-        fBB = face.BoundBox
-        if Path.Geom.isRoughly(fBB.ZLength, 0.0):
-            return False
-        extr = face.extrude(FreeCAD.Vector(0.0, 0.0, fBB.ZLength))
-        if hasattr(extr, "Volume"):
-            if Path.Geom.isRoughly(extr.Volume, 0.0):
-                return True
-        return False
-
     def classifySub(self, bs, sub):
         """classifySub(bs, sub)...
         Given a base and a sub-feature name, returns True
@@ -352,8 +341,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         elif isinstance(face.Surface, Part.SurfaceOfExtrusion):
             # extrusion wall
             Path.Log.debug("type() == Part.SurfaceOfExtrusion")
-            # Save face to self.horiz for processing or display error
-            if self.isVerticalExtrusionFace(face):
+            if Path.Geom.isRoughly(abs(face.Surface.Direction.z), 1.0):
+                # it's a vertical face
                 self.vert.append(face)
                 return True
             else:
