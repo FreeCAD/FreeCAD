@@ -37,11 +37,12 @@
 
 #include "Mod/Measure/App/MassPropertiesResult.h"
 
-namespace MassPropertiesGui {
+namespace MassPropertiesGui
+{
 
 class TaskMassPropertiesWidget;
 
-class TaskMassProperties : public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
+class TaskMassProperties: public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
 {
 public:
     TaskMassProperties();
@@ -95,6 +96,6 @@ private:
     std::vector<MassPropertiesInput> objectsToMeasure;
 };
 
-} // namespace MassPropertiesGui
+}  // namespace MassPropertiesGui
 
-#endif // MASSPROPERTIES_TASKMASSPROPERTIES_H
+#endif  // MASSPROPERTIES_TASKMASSPROPERTIES_H

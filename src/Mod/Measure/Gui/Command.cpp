@@ -104,7 +104,7 @@ StdCmdMassProperties::StdCmdMassProperties()
 void StdCmdMassProperties::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    
+
     MassPropertiesGui::TaskMassProperties* task = new MassPropertiesGui::TaskMassProperties();
     task->setDocumentName(this->getDocument()->getName());
     Gui::Control().showDialog(task);

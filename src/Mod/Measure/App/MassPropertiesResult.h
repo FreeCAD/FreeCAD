@@ -35,9 +35,13 @@
 
 
 class TopoDS_Shape;
-namespace App { class DocumentObject; }
+namespace App
+{
+class DocumentObject;
+}
 
-struct MeasureExport MassPropertiesData {
+struct MeasureExport MassPropertiesData
+{
     double volume;
     double mass;
     double density;
@@ -54,7 +58,7 @@ struct MeasureExport MassPropertiesData {
     double inertiaJox;
     double inertiaJoy;
     double inertiaJoz;
-    
+
     double inertiaJxy;
     double inertiaJzx;
     double inertiaJzy;
@@ -69,7 +73,8 @@ struct MeasureExport MassPropertiesData {
     double axisInertia;
 };
 
-struct MeasureExport MassPropertiesInput {
+struct MeasureExport MassPropertiesInput
+{
     App::DocumentObject* object = nullptr;
     TopoDS_Shape shape;
     Base::Placement placement;
@@ -82,4 +87,4 @@ MeasureExport MassPropertiesData CalculateMassProperties(
     const Base::Placement* referencePlacement = nullptr
 );
 
-#endif // SHAPE_PROPERTIES_H
+#endif  // SHAPE_PROPERTIES_H

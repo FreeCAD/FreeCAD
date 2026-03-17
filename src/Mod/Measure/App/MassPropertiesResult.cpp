@@ -55,9 +55,10 @@ MassPropertiesData CalculateMassProperties(
     const Base::Placement* referencePlacement
 )
 {
-    MassPropertiesData data{};
-    if (objects.empty())
+    MassPropertiesData data {};
+    if (objects.empty()) {
         return data;
+    }
 
     GProp_GProps globalMassProps;
     GProp_GProps globalSurfaceProps;
@@ -89,9 +90,18 @@ MassPropertiesData CalculateMassProperties(
             Base::Matrix4D matrix = object.placement.toMatrix();
             gp_Trsf trsf;
             trsf.SetValues(
-                matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
-                matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
-                matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3]
+                matrix[0][0],
+                matrix[0][1],
+                matrix[0][2],
+                matrix[0][3],
+                matrix[1][0],
+                matrix[1][1],
+                matrix[1][2],
+                matrix[1][3],
+                matrix[2][0],
+                matrix[2][1],
+                matrix[2][2],
+                matrix[2][3]
             );
             BRepBuilderAPI_Transform transformer(shape, trsf, true);
             shape = transformer.Shape();
@@ -131,7 +141,9 @@ MassPropertiesData CalculateMassProperties(
                 else {
                     density = mat.getPhysicalQuantity(QStringLiteral("Density")).getValue();
                 }
-            } catch (...) {}
+            }
+            catch (...) {
+            }
         }
         else {
             Base::Console().message("Density property not found for material. Using default value.\n");
@@ -151,15 +163,17 @@ MassPropertiesData CalculateMassProperties(
         hasShape = true;
     }
 
-    if (!hasShape)
+    if (!hasShape) {
         return data;
+    }
 
     data.volume = totalVolume;
     data.mass = globalMassProps.Mass();
     data.surfaceArea = globalSurfaceProps.Mass();
 
-    if (data.volume > 0.0)
+    if (data.volume > 0.0) {
         data.density = data.mass / data.volume;
+    }
 
     gp_Pnt cog = globalMassProps.CentreOfMass();
     data.cogX = cog.X();
@@ -175,7 +189,7 @@ MassPropertiesData CalculateMassProperties(
     gp_Mat inertia = globalMassProps.MatrixOfInertia();
 
     GProp_PrincipalProps principal;
-    
+
     if (mode == "Center of gravity") {
         data.inertiaJox = inertia(1, 1);
         data.inertiaJoy = inertia(2, 2);
@@ -226,8 +240,8 @@ MassPropertiesData CalculateMassProperties(
 
         auto axisMoment = [&](const Base::Vector3d& u) {
             return u.x * (inertia(1, 1) * u.x + inertia(1, 2) * u.y + inertia(1, 3) * u.z)
-                 + u.y * (inertia(2, 1) * u.x + inertia(2, 2) * u.y + inertia(2, 3) * u.z)
-                 + u.z * (inertia(3, 1) * u.x + inertia(3, 2) * u.y + inertia(3, 3) * u.z);
+                + u.y * (inertia(2, 1) * u.x + inertia(2, 2) * u.y + inertia(2, 3) * u.z)
+                + u.z * (inertia(3, 1) * u.x + inertia(3, 2) * u.y + inertia(3, 3) * u.z);
         };
 
         data.inertiaJx = axisMoment(data.principalAxisX);
@@ -243,11 +257,11 @@ MassPropertiesData CalculateMassProperties(
         if (auto referenceDatumElement = dynamic_cast<const App::DatumElement*>(referenceDatum)) {
             lcs = referenceDatumElement->getLCS();
         }
-        
-        
+
+
         if (referenceDatum->isDerivedFrom<App::Line>()) {
             App::Line const* line = static_cast<App::Line const*>(referenceDatum);
-    
+
             Base::Vector3d axisOrigin = line->getBasePoint();
             Base::Vector3d axisDir = line->getDirection();
             axisDir.Normalize();
@@ -259,64 +273,63 @@ MassPropertiesData CalculateMassProperties(
                 axisDir = referencePlacement->getRotation().multVec(axisDir);
                 axisDir.Normalize();
             }
-            
+
             Base::Vector3d r(cog.X() - axisOrigin.x, cog.Y() - axisOrigin.y, cog.Z() - axisOrigin.z);
-            
+
             double projection = r.Dot(axisDir);
             Base::Vector3d parallel = axisDir * projection;
-            
+
             Base::Vector3d perpendicular = r - parallel;
             double d = perpendicular.Length();
-            
-            double I_cog_axis = inertia(1,1) * axisDir.x * axisDir.x +
-                                inertia(2,2) * axisDir.y * axisDir.y +
-                                inertia(3,3) * axisDir.z * axisDir.z +
-                                2.0 * inertia(1,2) * axisDir.x * axisDir.y +
-                                2.0 * inertia(1,3) * axisDir.x * axisDir.z +
-                                2.0 * inertia(2,3) * axisDir.y * axisDir.z;
-            
+
+            double I_cog_axis = inertia(1, 1) * axisDir.x * axisDir.x
+                + inertia(2, 2) * axisDir.y * axisDir.y + inertia(3, 3) * axisDir.z * axisDir.z
+                + 2.0 * inertia(1, 2) * axisDir.x * axisDir.y
+                + 2.0 * inertia(1, 3) * axisDir.x * axisDir.z
+                + 2.0 * inertia(2, 3) * axisDir.y * axisDir.z;
+
             data.axisInertia = I_cog_axis + data.mass * d * d;
-            
+
             return data;
         }
-        
+
         if (!lcs) {
             lcs = dynamic_cast<const App::LocalCoordinateSystem*>(referenceDatum);
             if (!lcs) {
                 return data;
             }
         }
-        
+
 
         Base::Placement placement = lcs->Placement.getValue();
         if (referencePlacement) {
             placement = *referencePlacement;
         }
         Base::Vector3d customOrigin = placement.getPosition();
-        
+
         Base::Matrix4D transform = placement.toMatrix();
-        
+
         gp_Mat R;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 R.SetValue(i + 1, j + 1, transform[i][j]);
             }
         }
-        
+
         double dx = cog.X() - customOrigin.x;
         double dy = cog.Y() - customOrigin.y;
         double dz = cog.Z() - customOrigin.z;
-        
+
         double m = globalMassProps.Mass();
-        
-        double r_dot_r = dx*dx + dy*dy + dz*dz;
-        
+
+        double r_dot_r = dx * dx + dy * dy + dz * dz;
+
         gp_Mat I_parallel;
 
-        I_parallel.SetValue(1, 1, m * (r_dot_r - dx*dx));
-        I_parallel.SetValue(2, 2, m * (r_dot_r - dy*dy));
-        I_parallel.SetValue(3, 3, m * (r_dot_r - dz*dz));
-        
+        I_parallel.SetValue(1, 1, m * (r_dot_r - dx * dx));
+        I_parallel.SetValue(2, 2, m * (r_dot_r - dy * dy));
+        I_parallel.SetValue(3, 3, m * (r_dot_r - dz * dz));
+
 
         I_parallel.SetValue(1, 2, -m * dx * dy);
         I_parallel.SetValue(2, 1, -m * dx * dy);
@@ -324,39 +337,41 @@ MassPropertiesData CalculateMassProperties(
         I_parallel.SetValue(3, 1, -m * dx * dz);
         I_parallel.SetValue(2, 3, -m * dy * dz);
         I_parallel.SetValue(3, 2, -m * dy * dz);
-        
+
         gp_Mat I_translated = inertia.Added(I_parallel);
-        
+
         gp_Mat R_transpose = R.Transposed();
         gp_Mat I_temp = R_transpose.Multiplied(I_translated);
         gp_Mat I_custom = I_temp.Multiplied(R);
-        
+
         data.inertiaJox = I_custom(1, 1);
         data.inertiaJoy = I_custom(2, 2);
         data.inertiaJoz = I_custom(3, 3);
         data.inertiaJxy = I_custom(1, 2);
         data.inertiaJzx = I_custom(1, 3);
         data.inertiaJzy = I_custom(2, 3);
-        
+
         math_Matrix I_mat(1, 3, 1, 3);
-        for (int r = 1; r <= 3; r++)
-            for (int c = 1; c <= 3; c++)
+        for (int r = 1; r <= 3; r++) {
+            for (int c = 1; c <= 3; c++) {
                 I_mat(r, c) = I_custom.Value(r, c);
-        
+            }
+        }
+
         math_Jacobi jacobi(I_mat);
-        
+
         data.inertiaJx = jacobi.Value(1);
         data.inertiaJy = jacobi.Value(2);
         data.inertiaJz = jacobi.Value(3);
-        
+
         math_Vector v1(1, 3);
         math_Vector v2(1, 3);
         math_Vector v3(1, 3);
-        
+
         jacobi.Vector(1, v1);
         jacobi.Vector(2, v2);
         jacobi.Vector(3, v3);
-        
+
         data.principalAxisX = Base::Vector3d(v1(1), v1(2), v1(3));
         data.principalAxisY = Base::Vector3d(v2(1), v2(2), v2(3));
         data.principalAxisZ = Base::Vector3d(v3(1), v3(2), v3(3));

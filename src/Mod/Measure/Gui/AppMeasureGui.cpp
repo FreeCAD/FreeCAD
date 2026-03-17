@@ -106,7 +106,7 @@ PyMOD_INIT_FUNC(MeasureGui)
     MeasureGui::ViewProviderMeasureRadius              ::init();
     MeasureGui::ViewProviderMeasureDiameter            ::init();
     MeasureGui::ViewProviderMeasureCOM                 ::init();
-    
+
     MassPropertiesGui::ViewProviderMassPropertiesResult::init();
     // clang-format on
 
