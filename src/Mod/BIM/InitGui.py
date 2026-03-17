@@ -559,14 +559,14 @@ class BIMWorkbench(Workbench):
 
         t1 = QT_TRANSLATE_NOOP("Workbench", "&2D Drafting")
         t2 = QT_TRANSLATE_NOOP("Workbench", "&3D/BIM")
-        t3 = QT_TRANSLATE_NOOP("Workbench", "Reinforcement Tools")
+        t3 = QT_TRANSLATE_NOOP("Workbench", "&Reinforcement Tools")
         t4 = QT_TRANSLATE_NOOP("Workbench", "&Annotation")
         t5 = QT_TRANSLATE_NOOP("Workbench", "&Snapping")
-        t6 = QT_TRANSLATE_NOOP("Workbench", "&Modify")
-        t7 = QT_TRANSLATE_NOOP("Workbench", "&Manage")
+        t6 = QT_TRANSLATE_NOOP("Workbench", "M&odify")
+        t7 = QT_TRANSLATE_NOOP("Workbench", "Ma&nage")
         # t8 =  QT_TRANSLATE_NOOP("Workbench", "&IFC")
         t9 = QT_TRANSLATE_NOOP("Workbench", "&Flamingo")
-        t10 = QT_TRANSLATE_NOOP("Workbench", "&Fasteners")
+        t10 = QT_TRANSLATE_NOOP("Workbench", "Fas&teners")
         t11 = QT_TRANSLATE_NOOP("Workbench", "&Utils")
         t12 = QT_TRANSLATE_NOOP("Workbench", "Nudge")
 
