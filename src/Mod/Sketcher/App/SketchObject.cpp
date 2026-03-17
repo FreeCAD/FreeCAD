@@ -28,9 +28,11 @@
 #include <limits>
 #include <vector>
 
+#include <Bnd_Box.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Section.h>
+#include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
@@ -1075,6 +1077,95 @@ void SketchObject::storeCanonicalGroupGeometry(int constraintId)
         canonGeo->transform(worldToCanon);
         constr->canonicalGeometry.push_back(std::move(canonGeo));
     }
+}
+
+std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateBBoxHelperLines(
+    const std::vector<const Part::Geometry*>& canonicalGeometry,
+    uint16_t flags)
+{
+    std::vector<std::unique_ptr<Part::Geometry>> helpers;
+    if (flags == 0 || canonicalGeometry.empty()) {
+        return helpers;
+    }
+
+    Bnd_Box bbox;
+    for (const auto* geo : canonicalGeometry) {
+        if (!geo) {
+            continue;
+        }
+        if (auto shape = geo->toShape(); !shape.IsNull()) {
+            BRepBndLib::Add(shape, bbox, false);
+        }
+    }
+    if (bbox.IsVoid()) {
+        return helpers;
+    }
+
+    gp_Pnt minPt = bbox.CornerMin();
+    gp_Pnt maxPt = bbox.CornerMax();
+    double xMin = minPt.X();
+    double yMin = minPt.Y();
+    double xMax = maxPt.X();
+    double yMax = maxPt.Y();
+
+    auto makeLine = [](double x1, double y1, double x2, double y2) {
+        auto line = std::make_unique<Part::GeomLineSegment>();
+        line->setPoints(Base::Vector3d(x1, y1, 0), Base::Vector3d(x2, y2, 0));
+        GeometryFacade::setHelper(line.get(), true);
+        return line;
+    };
+
+    if (flags & BBoxBottom) {
+        helpers.push_back(makeLine(xMin, yMin, xMax, yMin));
+    }
+    if (flags & BBoxTop) {
+        helpers.push_back(makeLine(xMin, yMax, xMax, yMax));
+    }
+    if (flags & BBoxLeft) {
+        helpers.push_back(makeLine(xMin, yMin, xMin, yMax));
+    }
+    if (flags & BBoxRight) {
+        helpers.push_back(makeLine(xMax, yMin, xMax, yMax));
+    }
+
+    return helpers;
+}
+
+std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateTextMetricHelperLines(
+    const Part::TextMetrics& metrics,
+    double xMin,
+    double xMax,
+    uint16_t flags)
+{
+    std::vector<std::unique_ptr<Part::Geometry>> helpers;
+    if (flags == 0 || !metrics.valid) {
+        return helpers;
+    }
+
+    auto makeLine = [](double x1, double y, double x2) {
+        auto line = std::make_unique<Part::GeomLineSegment>();
+        line->setPoints(Base::Vector3d(x1, y, 0), Base::Vector3d(x2, y, 0));
+        GeometryFacade::setHelper(line.get(), true);
+        return line;
+    };
+
+    if (flags & MetricBaseline) {
+        helpers.push_back(makeLine(xMin, 0.0, xMax));
+    }
+    if (flags & MetricXHeight) {
+        helpers.push_back(makeLine(xMin, metrics.xHeight, xMax));
+    }
+    if (flags & MetricCapHeight) {
+        helpers.push_back(makeLine(xMin, metrics.capHeight, xMax));
+    }
+    if (flags & MetricAscender) {
+        helpers.push_back(makeLine(xMin, metrics.ascender, xMax));
+    }
+    if (flags & MetricDescender) {
+        helpers.push_back(makeLine(xMin, metrics.descender, xMax));
+    }
+
+    return helpers;
 }
 
 int SketchObject::setDriving(int ConstrId, bool isdriving)

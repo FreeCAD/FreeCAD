@@ -65,6 +65,25 @@ namespace Sketcher
 
 class SketchAnalysis;
 
+/// Bitmask flags for bounding box helper lines (lower 4 bits)
+enum HelperBBoxFlag : uint16_t
+{
+    BBoxBottom = 1,
+    BBoxTop = 2,
+    BBoxLeft = 4,
+    BBoxRight = 8,
+};
+
+/// Bitmask flags for typography metric helper lines (upper bits)
+enum HelperMetricFlag : uint16_t
+{
+    MetricBaseline = 16,
+    MetricXHeight = 32,
+    MetricCapHeight = 64,
+    MetricAscender = 128,
+    MetricDescender = 256,
+};
+
 struct ExternalToAdd
 {
     App::DocumentObject* obj;
@@ -364,6 +383,20 @@ public:
     /// Store canonical geometry for a Group/Text constraint by transforming
     /// current world geometry into the canonical frame (0,0)->(1,0).
     void storeCanonicalGroupGeometry(int constraintId);
+    /// Generate bounding box helper lines from canonical geometry.
+    /// Returns line segments in canonical space, tagged with Helper flag.
+    static std::vector<std::unique_ptr<Part::Geometry>> generateBBoxHelperLines(
+        const std::vector<const Part::Geometry*>& canonicalGeometry,
+        uint16_t flags
+    );
+    /// Generate typography metric helper lines spanning [xMin, xMax].
+    /// Returns horizontal line segments in canonical space, tagged with Helper flag.
+    static std::vector<std::unique_ptr<Part::Geometry>> generateTextMetricHelperLines(
+        const Part::TextMetrics& metrics,
+        double xMin,
+        double xMax,
+        uint16_t flags
+    );
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);
     /// get the driving status of this constraint
