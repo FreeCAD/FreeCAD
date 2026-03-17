@@ -131,6 +131,8 @@ public:  // Utility methods
     static InternalType::InternalType getInternalType(const Part::Geometry* geometry);
     static void setInternalType(Part::Geometry* geometry, InternalType::InternalType type);
     static bool getBlocked(const Part::Geometry* geometry);
+    static bool getHelper(const Part::Geometry* geometry);
+    static void setHelper(Part::Geometry* geometry, bool helper);
     static int getId(const Part::Geometry* geometry);
     static void setId(const Part::Geometry* geometry, int id);
 
@@ -210,6 +212,15 @@ public:
     inline void setConstruction(bool construction)
     {
         this->setGeometryMode(GeometryMode::Construction, construction);
+    }
+
+    bool getHelper() const
+    {
+        return this->testGeometryMode(GeometryMode::Helper);
+    }
+    void setHelper(bool helper = true)
+    {
+        this->setGeometryMode(GeometryMode::Helper, helper);
     }
 
     bool isInternalAligned() const

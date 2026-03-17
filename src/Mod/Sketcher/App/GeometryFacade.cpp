@@ -201,6 +201,22 @@ bool GeometryFacade::getBlocked(const Part::Geometry* geometry)
     return gf->getBlocked();
 }
 
+bool GeometryFacade::getHelper(const Part::Geometry* geometry)
+{
+    throwOnNullPtr(geometry);
+
+    auto gf = GeometryFacade::getFacade(geometry);
+    return gf->getHelper();
+}
+
+void GeometryFacade::setHelper(Part::Geometry* geometry, bool helper)
+{
+    throwOnNullPtr(geometry);
+
+    auto gf = GeometryFacade::getFacade(geometry);
+    gf->setHelper(helper);
+}
+
 PyObject* GeometryFacade::getPyObject()
 {
     return new GeometryFacadePy(new GeometryFacade(this->Geo));
