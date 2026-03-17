@@ -114,7 +114,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="lType">
         <property name="text">
-         <string>Type</string>
+         <string comment="Label for the background type combobox">Type</string>
         </property>
        </widget>
       </item>
