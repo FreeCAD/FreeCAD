@@ -459,6 +459,9 @@ void QuantitySpinBox::resizeEvent(QResizeEvent* event)
 void QuantitySpinBox::moveCursor()
 {
     Q_D(QuantitySpinBox);
+    if (!d->adjustableWidth) {
+        return;
+    }
     QLineEdit* edit = lineEdit();
     int cursor = edit->cursorPosition();
     const int maxCursor = qMax(0, edit->displayText().size() - 1 /*space*/ - d->unitStr.size());
