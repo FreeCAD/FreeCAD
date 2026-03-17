@@ -361,9 +361,9 @@ void TaskMassProperties::removeTemporaryObjects()
         return;
     }
 
-    if (doc->getObject("Center_of_Gravity") 
-        || doc->getObject("Center_of_Volume") 
-        || doc->getObject("Principal_Axes_LCS")) {
+    if (!doc->getObject("Center_of_Gravity")
+        && !doc->getObject("Center_of_Volume")
+        && !doc->getObject("Principal_Axes_LCS")) {
         return;
     }
 
