@@ -124,7 +124,7 @@ class BIMWorkbench(Workbench):
             "Arch_Truss",
             "Arch_Equipment",
             "Arch_Rebar",
-            "BIM_GenericTools".
+            "BIM_GenericTools",
         ]
 
         self.modify_gen = [
