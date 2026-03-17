@@ -32,6 +32,7 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
+#include <Gui/Selection/Selection.h>
 
 //===============================================================================
 // PartCmdSelectFilter (dropdown toolbar button for Vertex, Edge & Face Selection)
@@ -202,6 +203,7 @@ PartCmdVertexSelection::PartCmdVertexSelection()
 void PartCmdVertexSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    Gui::Selection().rmvAllSelectionGates();
     doCommand(Command::Gui, "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Vertex SELECT App::Link SUBELEMENT Vertex')");
 }
 
@@ -227,6 +229,7 @@ PartCmdEdgeSelection::PartCmdEdgeSelection()
 void PartCmdEdgeSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    Gui::Selection().rmvAllSelectionGates();
     doCommand(Command::Gui, "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge SELECT App::Link SUBELEMENT Edge')");
 }
 
@@ -252,6 +255,7 @@ PartCmdFaceSelection::PartCmdFaceSelection()
 void PartCmdFaceSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    Gui::Selection().rmvAllSelectionGates();
     doCommand(Command::Gui, "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Face SELECT App::Link SUBELEMENT Face')");
 }
 
@@ -277,7 +281,7 @@ PartCmdRemoveSelectionGate::PartCmdRemoveSelectionGate()
 void PartCmdRemoveSelectionGate::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.Selection.removeSelectionGate()");
+    Gui::Selection().rmvAllSelectionGates();
 }
 
 void CreatePartSelectCommands()

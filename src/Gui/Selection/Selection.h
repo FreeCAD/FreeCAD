@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <deque>
 #include <list>
 #include <string>
@@ -419,6 +420,8 @@ public:
     void addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve = ResolveMode::OldStyleElement);
     /// remove the active SelectionGate
     void rmvSelectionGate();
+    // remove all selection gates including any saved/stacked gates
+    void rmvAllSelectionGates();
 
     int disableCommandLog();
     int enableCommandLog(bool silent = false);
@@ -840,6 +843,10 @@ protected:
 
     Gui::SelectionGate* ActiveGate;
     ResolveMode gateResolve;
+
+    std::string savedFilterStr;
+    ResolveMode savedGateResolve = ResolveMode::OldStyleElement;
+    Gui::SelectionGate* restoredGate = nullptr;
 
     int logDisabled = 0;
     bool logHasSelection = false;
