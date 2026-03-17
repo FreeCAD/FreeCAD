@@ -149,7 +149,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>The color of a solid background</string>
+         <string>Sets the background color</string>
         </property>
        </widget>
       </item>
