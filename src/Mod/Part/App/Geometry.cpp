@@ -7507,8 +7507,10 @@ void transformAndConvertToGeometry(
     double baseWidth = xmax - xmin;
     double baseHeight = ymax - ymin;
 
-    // This transform will move the geometry's bottom-left corner to the origin (0,0,0)
-    gp_Vec initialTranslationVec(-xmin, -ymin, 0.0);
+    // Move the geometry's left edge to x=0 and keep the baseline at y=0.
+    // This means the frame line (y=0) IS the typographic baseline.
+    // Descenders extend below y=0, ascenders above.
+    gp_Vec initialTranslationVec(-xmin, 0.0, 0.0);
 
     // 2. Determine scale and rotation
     double angle;
@@ -7697,15 +7699,15 @@ std::vector<TopoDS_Shape> makeTextWires(
     metrics.descender = fontExtents.descender * scaleFactor;
 
     hb_position_t metricVal;
-    bool hasXHeight = hb_ot_metrics_get_position(hbFont, HB_OT_METRICS_TAG_X_HEIGHT, &metricVal)
+    metrics.hasXHeight = hb_ot_metrics_get_position(hbFont, HB_OT_METRICS_TAG_X_HEIGHT, &metricVal)
         && metricVal > 0;
-    metrics.xHeight = hasXHeight ? metricVal * scaleFactor
-                                 : metrics.ascender * xHeightToAscenderRatio;
+    metrics.xHeight = metrics.hasXHeight ? metricVal * scaleFactor
+                                         : metrics.ascender * xHeightToAscenderRatio;
 
-    bool hasCapHeight = hb_ot_metrics_get_position(hbFont, HB_OT_METRICS_TAG_CAP_HEIGHT, &metricVal)
+    metrics.hasCapHeight = hb_ot_metrics_get_position(hbFont, HB_OT_METRICS_TAG_CAP_HEIGHT, &metricVal)
         && metricVal > 0;
-    metrics.capHeight = hasCapHeight ? metricVal * scaleFactor
-                                     : metrics.ascender * capHeightToAscenderRatio;
+    metrics.capHeight = metrics.hasCapHeight ? metricVal * scaleFactor
+                                             : metrics.ascender * capHeightToAscenderRatio;
 
     auto* hbBuf = hb_buffer_create();
     hb_buffer_add_utf8(hbBuf, text.c_str(), -1, 0, -1);

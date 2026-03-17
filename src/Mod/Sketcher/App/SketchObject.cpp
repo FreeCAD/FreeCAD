@@ -908,7 +908,7 @@ double SketchObject::getDatum(int ConstrId) const
     return this->Constraints[ConstrId]->getValue();
 }
 
-int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont, bool isHeight, bool isConstruction)
+int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont, bool isHeight, bool isConstruction, int helperFlags)
 {
 ;    // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -965,7 +965,24 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     // This canonical geometry is stored in the constraint and never modified.
     // World geometry is always derived from canonical + current frame transform.
     std::vector<std::unique_ptr<Part::Geometry>> canonicalGeos;
-    std::vector<TopoDS_Shape> shapes = Part::makeTextWires(newText, newFont);
+    Part::TextMetrics textMetrics;
+    std::vector<TopoDS_Shape> shapes = Part::makeTextWires(newText, newFont, textMetrics);
+
+    // Compute wire-space bounding box width (same value transformAndConvertToGeometry
+    // uses for scaling). This is needed to map font metrics to canonical space.
+    Bnd_Box wireBBox;
+    for (const auto& shape : shapes) {
+        if (!shape.IsNull()) {
+            BRepBndLib::Add(shape, wireBBox, false);
+        }
+    }
+    double wireWidth = 1.0;
+    double wireHeight = 1.0;
+    if (!wireBBox.IsVoid()) {
+        wireWidth = wireBBox.CornerMax().X() - wireBBox.CornerMin().X();
+        wireHeight = wireBBox.CornerMax().Y() - wireBBox.CornerMin().Y();
+    }
+
     Part::transformAndConvertToGeometry(canonicalGeos,
                                     shapes,
                                     Base::Vector3d(0, 0, 0),
@@ -1007,6 +1024,8 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     constr->setText(newText);
     constr->setFont(newFont);
     constr->setIsTextHeight(isHeight);
+    constr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlags)));
+    constr->setMetricAvailability(textMetrics.hasXHeight, textMetrics.hasCapHeight);
 
     // Store canonical geometry in the constraint (source of truth for zero-drift).
     constr->canonicalGeometry.clear();
@@ -1016,6 +1035,84 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
             Sketcher::GeometryFacade::setConstruction(canonClone.get(), isConstruction);
         }
         constr->canonicalGeometry.push_back(std::move(canonClone));
+    }
+
+    // Always generate all helper lines (bbox edges + metric lines) and store
+    // in canonical geometry. They start visible but the Gui side will hide
+    // them based on helperFlags. This avoids dynamic add/delete of helpers.
+    constr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlags)));
+
+    if (textMetrics.valid) {
+        Bnd_Box canonBBox;
+        for (const auto& geo : constr->canonicalGeometry) {
+            TopoDS_Shape shape = geo->toShape();
+            if (!shape.IsNull()) {
+                BRepBndLib::Add(shape, canonBBox, false);
+            }
+        }
+
+        if (!canonBBox.IsVoid()) {
+            double xMin = canonBBox.CornerMin().X();
+            double xMax = canonBBox.CornerMax().X();
+            double yMin = canonBBox.CornerMin().Y();
+            double yMax = canonBBox.CornerMax().Y();
+
+            // Transform text metrics from wire space to canonical space.
+            // Since the baseline is at y=0 in both spaces, we only need to
+            // apply the same scale that transformAndConvertToGeometry uses:
+            // 1/baseWidth (width mode) or 1/baseHeight (height mode).
+            double wireDimension = isHeight ? wireHeight : wireWidth;
+            double metricScale = (wireDimension > Precision::Confusion())
+                ? 1.0 / wireDimension
+                : 1.0;
+
+            Part::TextMetrics canonMetrics;
+            canonMetrics.baseline = 0.0;  // baseline = frame line = y=0
+            canonMetrics.ascender = textMetrics.ascender * metricScale;
+            canonMetrics.descender = textMetrics.descender * metricScale;
+            canonMetrics.xHeight = textMetrics.xHeight * metricScale;
+            canonMetrics.capHeight = textMetrics.capHeight * metricScale;
+            canonMetrics.textWidth = textMetrics.textWidth;
+            canonMetrics.valid = true;
+
+            // Generate ALL bbox + metric helpers (flags=all bits set)
+            HelperFlags allBBox = HelperFlag::BBoxBottom | HelperFlag::BBoxTop
+                | HelperFlag::BBoxLeft | HelperFlag::BBoxRight;
+            HelperFlags allMetric = HelperFlag::MetricBaseline | HelperFlag::MetricXHeight
+                | HelperFlag::MetricCapHeight | HelperFlag::MetricAscender
+                | HelperFlag::MetricDescender;
+
+            auto bboxHelpers = generateBBoxHelperLines(
+                constr->getCanonicalGeometry(), allBBox);
+            auto metricHelpers = generateTextMetricHelperLines(
+                canonMetrics, xMin, xMax, allMetric);
+
+            std::vector<Part::Geometry*> helperRawPtrs;
+            for (auto& h : bboxHelpers) {
+                Part::Geometry* worldGeo = h->clone();
+                worldGeo->transform(canonToWorld);
+                helperRawPtrs.push_back(worldGeo);
+                constr->canonicalGeometry.push_back(std::move(h));
+            }
+            for (auto& h : metricHelpers) {
+                Part::Geometry* worldGeo = h->clone();
+                worldGeo->transform(canonToWorld);
+                helperRawPtrs.push_back(worldGeo);
+                constr->canonicalGeometry.push_back(std::move(h));
+            }
+
+            if (!helperRawPtrs.empty()) {
+                int beforeHelpers = getHighestCurveIndex();
+                addGeometry(helperRawPtrs, /*construction=*/true);
+                int afterHelpers = getHighestCurveIndex();
+                for (int i = beforeHelpers + 1; i <= afterHelpers; ++i) {
+                    constr->addElement(GeoElementId(i));
+                }
+                for (auto* ptr : helperRawPtrs) {
+                    delete ptr;
+                }
+            }
+        }
     }
 
     if (hasExistingText) {
@@ -1079,6 +1176,27 @@ void SketchObject::storeCanonicalGroupGeometry(int constraintId)
     }
 }
 
+int SketchObject::updateGroupHelperLines(int ConstrId, int helperFlagsInt)
+{
+    // Store the helper flags on the constraint metadata.
+    // Actual visibility toggling is handled by the Gui (EditTextDialog).
+    Base::StateLocker lock(managedoperation, true);
+
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+    if (ConstrId < 0 || ConstrId >= static_cast<int>(vals.size())) {
+        return -1;
+    }
+
+    auto* constr = vals[ConstrId];
+    if ((constr->Type != Group && constr->Type != Text) || !constr->hasElement(0)) {
+        return -1;
+    }
+
+    constr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlagsInt)));
+    this->Constraints.touch();
+    return 0;
+}
+
 std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateBBoxHelperLines(
     const std::vector<const Part::Geometry*>& canonicalGeometry,
     HelperFlags flags)
@@ -1112,6 +1230,7 @@ std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateBBoxHelperLin
         auto line = std::make_unique<Part::GeomLineSegment>();
         line->setPoints(Base::Vector3d(x1, y1, 0), Base::Vector3d(x2, y2, 0));
         GeometryFacade::setHelper(line.get(), true);
+        GeometryFacade::setConstruction(line.get(), true);
         return line;
     };
 
@@ -1146,11 +1265,12 @@ std::vector<std::unique_ptr<Part::Geometry>> SketchObject::generateTextMetricHel
         auto line = std::make_unique<Part::GeomLineSegment>();
         line->setPoints(Base::Vector3d(x1, y, 0), Base::Vector3d(x2, y, 0));
         GeometryFacade::setHelper(line.get(), true);
+        GeometryFacade::setConstruction(line.get(), true);
         return line;
     };
 
     if (flags.testFlag(HelperFlag::MetricBaseline)) {
-        helpers.push_back(makeLine(xMin, 0.0, xMax));
+        helpers.push_back(makeLine(xMin, metrics.baseline, xMax));
     }
     if (flags.testFlag(HelperFlag::MetricXHeight)) {
         helpers.push_back(makeLine(xMin, metrics.xHeight, xMax));

@@ -469,8 +469,13 @@ void EditModeGeometryCoinManager::updateGeometryColor(
                 auto* obj = viewProvider.getSketchObject();
                 bool isGroupMember = GeoId >= 0 && obj->isInGroup(GeoId, false);
                 if (isGroupMember) {
-                    // We use the same color as group handle.
-                    GeoId = obj->getGroupHandleIfInGroup(GeoId);
+                    // Helper lines use their own style (construction/blue-dashed)
+                    // instead of inheriting the frame line's color.
+                    auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
+                    if (!geom || !geom->getHelper()) {
+                        // Non-helper group members use the same color as group handle.
+                        GeoId = obj->getGroupHandleIfInGroup(GeoId);
+                    }
                 }
 
                 bool selected = ViewProviderSketchCoinAttorney::isCurveSelected(viewProvider, GeoId);

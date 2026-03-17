@@ -762,19 +762,21 @@ PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* kwd)
     char* textStr;
     char* fontStr;
     PyObject* isHeightObj = Py_True;
-    PyObject* isConstrObj = Py_False;  // Default to null (parameter not provided)
+    PyObject* isConstrObj = Py_False;
+    int helperFlags = 0;
 
-    // "iss|O!O!" (int, str, str, | bool, bool)
+    // "iss|O!O!i" (int, str, str, | bool, bool, int)
     if (!PyArg_ParseTuple(
             args,
-            "iss|O!O!",
+            "iss|O!O!i",
             &constrIndex,
             &textStr,
             &fontStr,
             &PyBool_Type,
             &isHeightObj,
             &PyBool_Type,
-            &isConstrObj
+            &isConstrObj,
+            &helperFlags
         )) {
         return nullptr;
     }
@@ -788,7 +790,8 @@ PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* kwd)
         text,
         font,
         Base::asBoolean(isHeightObj),
-        Base::asBoolean(isConstrObj)
+        Base::asBoolean(isConstrObj),
+        helperFlags
     );
 
     // Handle errors returned from the C++ function
@@ -804,6 +807,27 @@ PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* kwd)
             str << "Failed to set text/font for constraint with index " << constrIndex
                 << ". The operation would result in an invalid sketch.";
         }
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return nullptr;
+    }
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::updateGroupHelperLines(PyObject* args, PyObject* /*kwd*/)
+{
+    int constrIndex = -1;
+    int helperFlags = 0;
+
+    if (!PyArg_ParseTuple(args, "i|i", &constrIndex, &helperFlags)) {
+        return nullptr;
+    }
+
+    int err = this->getSketchObjectPtr()->updateGroupHelperLines(constrIndex, helperFlags);
+
+    if (err) {
+        std::stringstream str;
+        str << "Failed to update helper lines for constraint " << constrIndex;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return nullptr;
     }

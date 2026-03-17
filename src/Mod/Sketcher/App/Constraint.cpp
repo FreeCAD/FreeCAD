@@ -791,6 +791,53 @@ void Constraint::setHelperFlags(HelperFlags flags)
     MetaData = j.dump();
 }
 
+bool Constraint::getHasXHeight() const
+{
+    if (MetaData.empty()) {
+        return false;
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("hasXHeight")) {
+            return j["hasXHeight"].get<bool>();
+        }
+    }
+    catch (...) {
+    }
+    return false;
+}
+
+bool Constraint::getHasCapHeight() const
+{
+    if (MetaData.empty()) {
+        return false;
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("hasCapHeight")) {
+            return j["hasCapHeight"].get<bool>();
+        }
+    }
+    catch (...) {
+    }
+    return false;
+}
+
+void Constraint::setMetricAvailability(bool hasXHeight, bool hasCapHeight)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["hasXHeight"] = hasXHeight;
+    j["hasCapHeight"] = hasCapHeight;
+    MetaData = j.dump();
+}
+
 std::vector<const Part::Geometry*> Constraint::getCanonicalGeometry() const
 {
     std::vector<const Part::Geometry*> result;

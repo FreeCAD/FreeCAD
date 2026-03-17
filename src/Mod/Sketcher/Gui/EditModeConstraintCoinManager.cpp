@@ -826,11 +826,17 @@ Restart:
                     Bnd_Box bbox;
                     if (Constr->hasCanonicalGeometry()) {
                         for (const auto* geo : Constr->getCanonicalGeometry()) {
-                            if (geo) {
-                                TopoDS_Shape shape = geo->toShape();
-                                if (!shape.IsNull()) {
-                                    BRepBndLib::Add(shape, bbox, false);
-                                }
+                            if (!geo) {
+                                continue;
+                            }
+                            // Skip hidden helpers (layer 2) so bbox matches visible geometry
+                            if (GeometryFacade::getHelper(geo)
+                                && getSafeGeomLayerId(geo) == 2) {  // Layer::Hidden
+                                continue;
+                            }
+                            TopoDS_Shape shape = geo->toShape();
+                            if (!shape.IsNull()) {
+                                BRepBndLib::Add(shape, bbox, false);
                             }
                         }
                     }

@@ -72,7 +72,7 @@ using DSHTextController = DrawSketchDefaultWidgetController<
     /*WidgetComboboxesT =*/WidgetComboboxes<2, 2>,  // NOLINT
     /*WidgetLineEditsT =*/WidgetLineEdits<1, 1>,    // NOLINT
     ConstructionMethods::TextConstructionMethod,
-    /*bool PFirstComboboxIsConstructionMethod =*/true>;
+    /*bool PFirstComboboxIsConstructionMethod =*/false>;
 
 using DSHTextControllerBase = DSHTextController::ControllerBase;
 
@@ -141,6 +141,18 @@ private:
             );
             handleId = getHighestCurveIndex();
 
+            // Hide the frame line by default — it's a solver anchor, not
+            // user-facing geometry. Users can reveal it via the "Bottom"
+            // bounding box helper checkbox in the Edit Text dialog.
+            {
+                auto geometry = getSketchObject()->Geometry.getValues();
+                auto newGeometry(geometry);
+                auto* geo = geometry[handleId]->clone();
+                setSafeGeomLayerId(geo, 2);  // Layer::Hidden
+                newGeometry[handleId] = geo;
+                getSketchObject()->Geometry.setValues(std::move(newGeometry));
+            }
+
             std::string escText = escapeForPython(text);
             std::string escFont = escapeForPython(font);
             bool isHeight = constructionMethod() == ConstructionMethod::Height;
@@ -163,16 +175,80 @@ private:
             // Generate Text Geometry by calling setTextAndFont on the new constraint.
             // This triggers the C++ logic to generate the exact geometry and insert it
             // into the sketch, ensuring closed wires and perfect precision.
+            // MetricBaseline = 16 — baseline helper line is on by default
+            constexpr int defaultHelperFlags = 16;
             Gui::cmdAppObjectArgs(
                 getSketchObject(),
                 "setTextAndFont(len(App.ActiveDocument.getObject('%s').Constraints)-1, '%s', '%s', "
-                "%s, %s)",
+                "%s, %s, %d)",
                 getSketchObject()->getNameInDocument(),
                 escText.c_str(),
                 escFont.c_str(),
                 heightBoolStr,
-                constrBoolStr
+                constrBoolStr,
+                defaultHelperFlags
             );
+
+            // Hide helper geometry that isn't enabled by default.
+            // We must set the hidden layer on BOTH the sketch geometry AND
+            // the canonical geometry, because the solver clones from canonical
+            // on every solve and would reset the layer otherwise.
+            {
+                using HF = Sketcher::HelperFlag;
+                static const HF helperOrder[] = {
+                    HF::BBoxBottom,
+                    HF::BBoxTop,
+                    HF::BBoxLeft,
+                    HF::BBoxRight,
+                    HF::MetricBaseline,
+                    HF::MetricXHeight,
+                    HF::MetricCapHeight,
+                    HF::MetricAscender,
+                    HF::MetricDescender,
+                };
+                Sketcher::HelperFlags enabledFlags(static_cast<HF>(defaultHelperFlags));
+
+                auto* sketch = getSketchObject();
+                const auto& constraints = sketch->Constraints.getValues();
+                auto* constr = constraints.back();
+                auto geometry = sketch->Geometry.getValues();
+                auto newGeometry(geometry);
+                bool anyChanged = false;
+                int helperIdx = 0;
+                for (int i = 1; constr->hasElement(i); ++i) {
+                    int geoId = constr->getGeoId(i);
+                    if (geoId < 0 || geoId >= static_cast<int>(geometry.size())
+                        || !Sketcher::GeometryFacade::getHelper(geometry[geoId])) {
+                        continue;
+                    }
+                    // Hide this helper unless its flag is enabled
+                    bool shouldHide = helperIdx >= static_cast<int>(std::size(helperOrder))
+                        || !enabledFlags.testFlag(helperOrder[helperIdx]);
+                    if (shouldHide) {
+                        auto* geo = geometry[geoId]->clone();
+                        setSafeGeomLayerId(geo, 2);  // Layer::Hidden
+                        newGeometry[geoId] = geo;
+                        anyChanged = true;
+                    }
+                    helperIdx++;
+                }
+                // Same for canonical geometry
+                helperIdx = 0;
+                for (auto& canonGeo : constr->canonicalGeometry) {
+                    if (!Sketcher::GeometryFacade::getHelper(canonGeo.get())) {
+                        continue;
+                    }
+                    bool shouldHide = helperIdx >= static_cast<int>(std::size(helperOrder))
+                        || !enabledFlags.testFlag(helperOrder[helperIdx]);
+                    if (shouldHide) {
+                        setSafeGeomLayerId(canonGeo.get(), 2);  // Layer::Hidden
+                    }
+                    helperIdx++;
+                }
+                if (anyChanged) {
+                    sketch->Geometry.setValues(std::move(newGeometry));
+                }
+            }
 
             Gui::Command::commitCommand();
         }
@@ -358,11 +434,8 @@ template<>
 void DSHTextController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {
-            QApplication::translate("TaskSketcherTool_c1_text", "Width"),
-            QApplication::translate("TaskSketcherTool_c1_text", "Height")
-        };
-        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+        // Hide the Width/Height mode combobox — always use Width mode
+        toolWidget->setComboboxVisible(WCombobox::FirstCombo, false);
 
         toolWidget->setLineEditLabel(
             WLineEdit::FirstEdit,

@@ -359,8 +359,11 @@ public:
         std::string& newText,
         std::string& newFont,
         bool isHeight,
-        bool isConstruction = false
+        bool isConstruction = false,
+        int helperFlags = 0
     );
+    /// Regenerate helper lines for a Group/Text constraint.
+    int updateGroupHelperLines(int ConstrId, int helperFlags = 0);
     /// Store canonical geometry for a Group/Text constraint by transforming
     /// current world geometry into the canonical frame (0,0)->(1,0).
     void storeCanonicalGroupGeometry(int constraintId);

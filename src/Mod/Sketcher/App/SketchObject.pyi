@@ -410,12 +410,18 @@ class SketchObject(Part2DObject):
         ...
 
     def setTextAndFont(
-        self, constraint: int, text: str, font: str, isheight: bool, isConstruction: bool
+        self,
+        constraint: int,
+        text: str,
+        font: str,
+        isheight: bool,
+        isConstruction: bool,
+        helperFlags: int = 0,
     ) -> None:
         """
         Set the text and font of a Text constraint.
 
-        setTextAndFont(constraint: int, text: str, font: str, isHeight: bool, isConstruction: bool)
+        setTextAndFont(constraint: int, text: str, font: str, isHeight: bool, isConstruction: bool, helperFlags: int = 0)
 
             Args:
                 constraint: The index of the Text constraint.
@@ -423,6 +429,19 @@ class SketchObject(Part2DObject):
                 font: The full path to the font file (.ttf, .otf, etc.).
                 isHeight: Is the line handle of the group the height of the text.
                 isConstruction: Are text geometry construction of not.
+                helperFlags: Bitmask of HelperFlag values for helper lines.
+        """
+        ...
+
+    def updateGroupHelperLines(self, constraint: int, helperFlags: int = 0) -> None:
+        """
+        Regenerate helper lines for a Group/Text constraint.
+
+        updateGroupHelperLines(constraint: int, helperFlags: int = 0)
+
+            Args:
+                constraint: The index of the Group/Text constraint.
+                helperFlags: Bitmask of HelperFlag values for helper lines.
         """
         ...
 

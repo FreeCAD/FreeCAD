@@ -1450,12 +1450,15 @@ PartExport std::vector<TopoDS_Shape> makeTextWires(
 
 struct PartExport TextMetrics
 {
+    double baseline = 0;   // y=0 in wire space, but may differ in canonical space
     double ascender = 0;   // in wire space (scaled from font units)
     double descender = 0;  // negative, in wire space
     double xHeight = 0;
     double capHeight = 0;
     double textWidth = 0;  // total advance in wire space
     bool valid = false;
+    bool hasXHeight = false;    // true if font provides xHeight (not a fallback)
+    bool hasCapHeight = false;  // true if font provides capHeight (not a fallback)
 };
 
 PartExport std::vector<TopoDS_Shape> makeTextWires(
