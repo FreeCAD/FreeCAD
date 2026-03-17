@@ -122,10 +122,6 @@ if(BUILD_MEASURE)
     add_subdirectory(Measure)
 endif(BUILD_MEASURE)
 
-if(BUILD_MASSPROPERTIES)
-    add_subdirectory(MassProperties)
-endif(BUILD_MASSPROPERTIES)
-
 if(BUILD_TECHDRAW)
     add_subdirectory(TechDraw)
 endif(BUILD_TECHDRAW)
