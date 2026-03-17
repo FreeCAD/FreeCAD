@@ -69,6 +69,7 @@ protected:
     void slotDeleteDocument(const Gui::Document&);
     void slotDeleteObject(const Gui::ViewProvider&);
     void updatePanel();
+    void syncMaterialWidget();
     int getFirstIndex() const;
 
 private:
