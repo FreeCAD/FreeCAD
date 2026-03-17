@@ -65,6 +65,7 @@
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
+#include <Mod/Sketcher/App/Sketch.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 #include "EditModeConstraintCoinManager.h"
@@ -799,81 +800,101 @@ Restart:
                 case Text:
                 case Group: {
                     if (Constr->isElementsEmpty()) {
-                        break;  // Nothing to do if the group is empty
+                        break;
                     }
 
-                    Bnd_Box totalBBox;
-                    int elementIndex = 0;
-                    while (Constr->hasElement(elementIndex)) {
-                        auto element = Constr->getElement(elementIndex);
-                        if (element.GeoId < -extGeoCount || element.GeoId >= intGeoCount) {
-                            elementIndex++;
-                            continue;
+                    // 1. Compute canonical-to-world transform from the frame line
+                    //    (element 0). Falls back to identity if no valid frame line.
+                    Base::Matrix4D canonToWorld;  // identity by default
+                    auto frameElement = Constr->getElement(0);
+                    if (frameElement.GeoId >= -extGeoCount && frameElement.GeoId < intGeoCount) {
+                        const Part::Geometry* frameGeo = geolistfacade.getGeometryFromGeoId(
+                            frameElement.GeoId
+                        );
+                        if (frameGeo && frameGeo->is<Part::GeomLineSegment>()) {
+                            auto* line = static_cast<const Part::GeomLineSegment*>(frameGeo);
+                            canonToWorld = Sketch::computeCanonicalToWorldTransform(
+                                line->getStartPoint(),
+                                line->getEndPoint()
+                            );
                         }
-                        const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(element.GeoId);
-                        if (!geo) {
-                            elementIndex++;
-                            continue;
-                        }
-                        TopoDS_Shape shape = geo->toShape();
-                        if (!shape.IsNull()) {
-                            BRepBndLib::Add(shape, totalBBox, false);
-                        }
-                        elementIndex++;
                     }
 
-                    if (!totalBBox.HasFinitePart() || totalBBox.IsVoid()) {
-                        // If no valid box, hide the geometry by setting all points to the origin.
+                    // 2. Compute bounding box in canonical space.
+                    //    Prefer stored canonical geometry; otherwise transform world
+                    //    geometry by the inverse (identity inverse = identity = AABB).
+                    Bnd_Box bbox;
+                    if (Constr->hasCanonicalGeometry()) {
+                        for (const auto* geo : Constr->getCanonicalGeometry()) {
+                            if (geo) {
+                                TopoDS_Shape shape = geo->toShape();
+                                if (!shape.IsNull()) {
+                                    BRepBndLib::Add(shape, bbox, false);
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        Base::Matrix4D worldToCanon(canonToWorld);
+                        worldToCanon.inverse();
+
+                        int idx = 1;  // skip frame line at element 0
+                        while (Constr->hasElement(idx)) {
+                            auto el = Constr->getElement(idx++);
+                            if (el.GeoId < -extGeoCount || el.GeoId >= intGeoCount) {
+                                continue;
+                            }
+                            const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(el.GeoId);
+                            if (!geo) {
+                                continue;
+                            }
+                            std::unique_ptr<Part::Geometry> cGeo(geo->clone());
+                            cGeo->transform(worldToCanon);
+                            TopoDS_Shape shape = cGeo->toShape();
+                            if (!shape.IsNull()) {
+                                BRepBndLib::Add(shape, bbox, false);
+                            }
+                        }
+                    }
+
+                    if (!bbox.HasFinitePart() || bbox.IsVoid()) {
                         SoCoordinate3* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
-
-                        // Use startEditing() to get a writable pointer to the internal array.
-                        SbVec3f* points = coords->point.startEditing();
+                        SbVec3f* pts = coords->point.startEditing();
                         for (int j = 0; j < 5; ++j) {
-                            points[j].setValue(0.0f, 0.0f, 0.0f);
+                            pts[j].setValue(0.0f, 0.0f, 0.0f);
                         }
                         coords->point.finishEditing();
+                        break;
                     }
 
-                    // 1. Get the original min/max points and dimensions
-                    gp_Pnt min_pnt_orig = totalBBox.CornerMin();
-                    gp_Pnt max_pnt_orig = totalBBox.CornerMax();
-                    double width = max_pnt_orig.X() - min_pnt_orig.X();
-                    double height = max_pnt_orig.Y() - min_pnt_orig.Y();
+                    // 3. Inflate bbox by 5% and compute canonical corners
+                    gp_Pnt minPt = bbox.CornerMin();
+                    gp_Pnt maxPt = bbox.CornerMax();
+                    double offset = ((maxPt.X() - minPt.X()) + (maxPt.Y() - minPt.Y())) / 2.0 * 0.05;
+                    double xMin = minPt.X() - offset;
+                    double yMin = minPt.Y() - offset;
+                    double xMax = maxPt.X() + offset;
+                    double yMax = maxPt.Y() + offset;
 
-                    // 2. Calculate the offset amount
-                    // Using the average of width and height is a good heuristic for a uniform
-                    // offset.
-                    double offset = (width + height) / 2.0 * 0.05;  // 5% of the average dimension
+                    // 4. Transform canonical corners to world space
+                    auto toWorld = [&](double cx, double cy) -> SbVec3f {
+                        Base::Vector3d p = canonToWorld * Base::Vector3d(cx, cy, 0);
+                        return SbVec3f(float(p.x), float(p.y), zConstrH);
+                    };
 
-                    // 3. Create new, "inflated" corner points by applying the offset
-                    gp_Pnt min_pnt(
-                        min_pnt_orig.X() - offset,
-                        min_pnt_orig.Y() - offset,
-                        min_pnt_orig.Z()
-                    );
-                    gp_Pnt max_pnt(
-                        max_pnt_orig.X() + offset,
-                        max_pnt_orig.Y() + offset,
-                        max_pnt_orig.Z()
-                    );
+                    SbVec3f p0 = toWorld(xMin, yMin);
+                    SbVec3f p1 = toWorld(xMax, yMin);
+                    SbVec3f p2 = toWorld(xMax, yMax);
+                    SbVec3f p3 = toWorld(xMin, yMax);
 
-                    // 4. Define the 4 corners of the rectangle using the inflated points
-                    SbVec3f p0(min_pnt.X(), min_pnt.Y(), zConstrH);  // bottom-left
-                    SbVec3f p1(max_pnt.X(), min_pnt.Y(), zConstrH);  // bottom-right
-                    SbVec3f p2(max_pnt.X(), max_pnt.Y(), zConstrH);  // top-right
-                    SbVec3f p3(min_pnt.X(), max_pnt.Y(), zConstrH);  // top-left
-
-                    // 3. Get the SoCoordinate3 node we created in rebuildConstraintNodes
-                    //    Index 0: SoMaterial, Index 1: SoDrawStyle, Index 2: SoCoordinate3
+                    // 5. Set the 5 coin3d points (4 corners + close)
                     SoCoordinate3* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
-
-                    // 4. Update the points in the node to draw the rectangle
                     SbVec3f* points = coords->point.startEditing();
                     points[0] = p0;
                     points[1] = p1;
                     points[2] = p2;
                     points[3] = p3;
-                    points[4] = p0;  // Repeat the first point to close the loop
+                    points[4] = p0;  // Close the loop
                     coords->point.finishEditing();
 
                 } break;
