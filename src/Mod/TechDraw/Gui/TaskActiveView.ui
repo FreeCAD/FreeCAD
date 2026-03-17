@@ -44,7 +44,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>Crops captured image to this height</string>
+         <string>Crops the captured image to this height</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
