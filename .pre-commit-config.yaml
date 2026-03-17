@@ -79,3 +79,11 @@ repos:
     rev: 07a0f7667439f60724899f6ae288e4a4f572e0e1  # frozen: v22.1.2
     hooks:
         -   id: clang-format
+-   repo: local
+    hooks:
+    -   id: version-sync
+        name: Verify version consistency
+        entry: python src/Tools/sync_version.py --check
+        language: python
+        files: '(version\.json|pixi\.toml|recipe\.yaml|declarations\.nsh|freecad\.spec)'
+        pass_filenames: false

@@ -48,10 +48,19 @@ if(FREECAD_USE_CCACHE)
     endif()
 endif()
 
-project(FreeCAD)
+# Version and Package Name are set in the version.json file and propagate to all other
+# files with version information in them either via CMake or via the sync_version.py
+# script (in src/Tools/)
+file(READ "${CMAKE_SOURCE_DIR}/version.json" VERSION_JSON)
+string(JSON _PROJECT_NAME GET ${VERSION_JSON} "name")
+string(JSON PACKAGE_VERSION_MAJOR GET ${VERSION_JSON} "version_major")
+string(JSON PACKAGE_VERSION_MINOR GET ${VERSION_JSON} "version_minor")
+string(JSON PACKAGE_VERSION_PATCH GET ${VERSION_JSON} "version_patch")
+string(JSON PACKAGE_VERSION_SUFFIX GET ${VERSION_JSON} "version_suffix")
+string(JSON PACKAGE_BUILD_VERSION GET ${VERSION_JSON} "build_version")
 
 # Sanitizer support
-option(FREECAD_USE_SANITIZER_ASAN "Enable AddressSanitizer ie. (ASan)" OFF) 
+option(FREECAD_USE_SANITIZER_ASAN "Enable AddressSanitizer ie. (ASan)" OFF)
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     option(FREECAD_USE_SANITIZER_LSAN "Enable LeakSanitizer (LSan)" OFF)
     option(FREECAD_USE_SANITIZER_TSAN "Enable ThreadSanitizer (TSan)" OFF)
@@ -72,6 +81,7 @@ set(PACKAGE_VERSION_MINOR "2")
 set(PACKAGE_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
 set(PACKAGE_VERSION_SUFFIX "dev") # either "dev" for development snapshot or "" (empty string)
 set(PACKAGE_BUILD_VERSION "0") # used when the same FreeCAD version will be re-released (for example using an updated LibPack)
+project(${_PROJECT_NAME})
 string(TIMESTAMP PACKAGE_COPYRIGHT_YEAR "%Y")
 
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
