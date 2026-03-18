@@ -2961,9 +2961,60 @@ int SketchObject::delConstraint(int ConstrId, DeleteOptions options)
         return -1;
     }
 
-    // Reactivate internal constraints before removing a group constraint
+    // When removing a group constraint, reactivate internal constraints
+    // and collect helper/frame geoIds for cleanup after constraint removal
+    std::vector<int> groupCleanupGeoIds;
     if (vals[ConstrId]->isGroupType()) {
         reactivateInternalConstraints(ConstrId);
+
+        const auto* constr = vals[ConstrId];
+        // Collect frame line (always hidden, always remove)
+        int frameGeoId = constr->getGeoId(0);
+        if (frameGeoId >= 0) {
+            groupCleanupGeoIds.push_back(frameGeoId);
+        }
+        // Collect only HIDDEN helper geometry (visible helpers are kept
+        // as regular construction geometry the user can interact with).
+        // Use helperFlags to determine which are visible.
+        HelperFlags flags = constr->getHelperFlags();
+        int helperIdx = 0;
+        int helperOrderSize = (constr->Type == Text)
+            ? static_cast<int>(HelperOrder.size())
+            : BBoxHelperCount;
+        std::vector<int> visibleHelperGeoIds;
+        for (int i = 1; constr->hasElement(i); ++i) {
+            int geoId = constr->getGeoId(i);
+            if (geoId < 0) {
+                continue;
+            }
+            const Part::Geometry* geo = getGeometry(geoId);
+            if (!geo || !GeometryFacade::getHelper(geo)) {
+                continue;
+            }
+            bool isVisible = helperIdx < helperOrderSize
+                && flags.testFlag(HelperOrder[helperIdx]);
+            if (!isVisible) {
+                groupCleanupGeoIds.push_back(geoId);
+            }
+            else {
+                visibleHelperGeoIds.push_back(geoId);
+            }
+            helperIdx++;
+        }
+        // Clear Helper flag on visible helpers through Geometry.setValues()
+        // so undo can properly restore them.
+        if (!visibleHelperGeoIds.empty()) {
+            auto geometry = Geometry.getValues();
+            auto newGeometry(geometry);
+            for (int geoId : visibleHelperGeoIds) {
+                if (geoId >= 0 && geoId < static_cast<int>(geometry.size())) {
+                    auto* geo = geometry[geoId]->clone();
+                    GeometryFacade::setHelper(geo, false);
+                    newGeometry[geoId] = geo;
+                }
+            }
+            Geometry.setValues(std::move(newGeometry));
+        }
     }
 
     std::vector<Constraint*> newVals(vals);
@@ -2971,6 +3022,11 @@ int SketchObject::delConstraint(int ConstrId, DeleteOptions options)
     removeGeometryState(*ctriter);
     newVals.erase(ctriter);
     this->Constraints.setValues(std::move(newVals));
+
+    // Clean up helper and frame geometry after group constraint removal
+    if (!groupCleanupGeoIds.empty()) {
+        delGeometries(groupCleanupGeoIds);
+    }
 
     // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
     if (noRecomputes && !options.testFlag(DeleteOption::NoSolve)) {

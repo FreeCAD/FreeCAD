@@ -4224,6 +4224,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                     if (geo && Sketcher::GeometryFacade::getHelper(geo)) {
                         // Find which constraint owns this helper and clear its flag
                         auto* sketch = getSketchObject();
+                        bool foundOwner = false;
                         for (int ci = 0; ci < static_cast<int>(constraints.size()); ++ci) {
                             const auto* c = constraints[ci];
                             if (!c->isGroupType()) {
@@ -4249,6 +4250,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                                     applyHelperVisibility(
                                         sketch, ci, flags,
                                         Sketcher::HelperOrder.data(), helperCount);
+                                    foundOwner = true;
                                     break;
                                 }
                                 if (Sketcher::GeometryFacade::getHelper(
@@ -4257,7 +4259,10 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                                 }
                             }
                         }
-                        continue;  // skip normal deletion for helpers
+                        if (foundOwner) {
+                            continue;  // hide instead of delete
+                        }
+                        // Orphaned helper (constraint was deleted) — allow normal deletion
                     }
 
                     delInternalGeometries.insert(GeoId);
