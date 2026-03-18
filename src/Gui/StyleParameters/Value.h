@@ -113,6 +113,7 @@ enum class TupleKind : std::uint8_t
     Padding,
     Margins,
     BorderThickness,
+    BorderColors,
     Corners,
     LinearGradient,
     RadialGradient,
@@ -129,6 +130,8 @@ constexpr const char* tupleKindName(TupleKind kind)
             return "Margins";
         case TupleKind::BorderThickness:
             return "BorderThickness";
+        case TupleKind::BorderColors:
+            return "BorderColors";
         case TupleKind::Corners:
             return "Corners";
         case TupleKind::LinearGradient:
