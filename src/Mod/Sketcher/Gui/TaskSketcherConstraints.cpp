@@ -52,6 +52,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "EditDatumDialog.h"
+#include "EditGroupDialog.h"
 #include "EditTextDialog.h"
 #include "TaskSketcherConstraints.h"
 #include "Utils.h"
@@ -1276,6 +1277,11 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
     }
     else if (it->constraintType() == Sketcher::Text) {
         auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr);
+        editDialog->exec();
+        delete editDialog;
+    }
+    else if (it->constraintType() == Sketcher::Group) {
+        auto* editDialog = new EditGroupDialog(this->sketchView, it->ConstraintNbr);
         editDialog->exec();
         delete editDialog;
     }

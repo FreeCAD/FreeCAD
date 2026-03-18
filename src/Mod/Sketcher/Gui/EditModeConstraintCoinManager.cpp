@@ -1867,6 +1867,13 @@ void EditModeConstraintCoinManager::updateConstraintColor(
             }
             else if (hasMaterial) {
                 m->diffuseColor = drawingParameters.SelectColor;
+                // For Group/Text bbox: change dashed line to solid on select
+                if (constraint->isGroupType() && s->getNumChildren() > 1) {
+                    auto* ds = dynamic_cast<SoDrawStyle*>(s->getChild(1));
+                    if (ds) {
+                        ds->linePattern = 0xFFFF;  // solid
+                    }
+                }
             }
             else if (type == Sketcher::Coincident) {
                 selectpoint(constraint->First, constraint->FirstPos);
@@ -1903,6 +1910,13 @@ void EditModeConstraintCoinManager::updateConstraintColor(
             }
             else if (hasMaterial) {
                 m->diffuseColor = drawingParameters.PreselectColor;
+                // For Group/Text bbox: change dashed line to solid on preselect
+                if (constraint->isGroupType() && s->getNumChildren() > 1) {
+                    auto* ds = dynamic_cast<SoDrawStyle*>(s->getChild(1));
+                    if (ds) {
+                        ds->linePattern = 0xFFFF;  // solid
+                    }
+                }
             }
         }
         else {
@@ -1927,6 +1941,13 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                     ? (constraint->isDriving ? drawingParameters.ConstrDimColor
                                              : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
+                // Restore dashed pattern for Group/Text bbox
+                if (constraint->isGroupType() && s->getNumChildren() > 1) {
+                    auto* ds = dynamic_cast<SoDrawStyle*>(s->getChild(1));
+                    if (ds) {
+                        ds->linePattern = 0x0F0F;  // dashed
+                    }
+                }
             }
         }
     }
@@ -2363,6 +2384,16 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
 
     // Handle selection of datum labels (e.g., radius, distance dimensions).
     if (dynamic_cast<SoDatumLabel*>(tail)) {
+        for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
+            if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
+                constrIndices.insert(i);
+                break;
+            }
+        }
+    }
+
+    // Handle selection of Group/Text bounding box rectangles (SoLineSet).
+    if (dynamic_cast<SoLineSet*>(tail)) {
         for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
             if (editModeScenegraphNodes.constrGroup->getChild(i) == sep) {
                 constrIndices.insert(i);
