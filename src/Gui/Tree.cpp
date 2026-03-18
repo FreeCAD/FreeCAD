@@ -1207,7 +1207,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
                 QString label = QString::fromUtf8((*it)->Label.getValue());
                 QAction* action = subMenuGroup.addAction(label);
                 action->setCheckable(true);
-                action->setStatusTip(tr("Activate document %1").arg(label));
+                action->setStatusTip(tr("Activates document %1").arg(label));
                 action->setData(QByteArray((*it)->getName()));
                 if (*it == activeDoc) {
                     active = action;
