@@ -1241,7 +1241,7 @@ void TaskMassProperties::saveResult()
     doc->openTransaction("Add Mass Properties");
 
     Measure::Result::init();
-    
+
     auto group = dynamic_cast<App::DocumentObjectGroup*>(doc->getObject("Measurements"));
 
     if (!group || !group->isValid()) {
