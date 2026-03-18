@@ -140,18 +140,6 @@ private:
             );
             handleId = getHighestCurveIndex();
 
-            // Hide the frame line by default — it's a solver anchor, not
-            // user-facing geometry. Users can reveal it via the "Bottom"
-            // bounding box helper checkbox in the Edit Text dialog.
-            {
-                auto geometry = getSketchObject()->Geometry.getValues();
-                auto newGeometry(geometry);
-                auto* geo = geometry[handleId]->clone();
-                setSafeGeomLayerId(geo, 2);  // Layer::Hidden
-                newGeometry[handleId] = geo;
-                getSketchObject()->Geometry.setValues(std::move(newGeometry));
-            }
-
             std::string escText = escapeForPython(text);
             std::string escFont = escapeForPython(font);
             const char* constrBoolStr = isConstructionMode() ? "True" : "False";
@@ -171,7 +159,7 @@ private:
             // Generate Text Geometry by calling setTextAndFont on the new constraint.
             // This triggers the C++ logic to generate the exact geometry and insert it
             // into the sketch, ensuring closed wires and perfect precision.
-            // MetricBaseline = 16 — baseline helper line is on by default
+            // MetricBaseline = 16 — baseline helper line is on by default for text
             constexpr int defaultHelperFlags = 16;
             Gui::cmdAppObjectArgs(
                 getSketchObject(),
@@ -184,66 +172,21 @@ private:
                 defaultHelperFlags
             );
 
-            // Hide helper geometry that isn't enabled by default.
-            // We must set the hidden layer on BOTH the sketch geometry AND
-            // the canonical geometry, because the solver clones from canonical
-            // on every solve and would reset the layer otherwise.
-            {
-                using HF = Sketcher::HelperFlag;
-                static const HF helperOrder[] = {
-                    HF::BBoxBottom,
-                    HF::BBoxTop,
-                    HF::BBoxLeft,
-                    HF::BBoxRight,
-                    HF::MetricBaseline,
-                    HF::MetricXHeight,
-                    HF::MetricCapHeight,
-                };
-                Sketcher::HelperFlags enabledFlags(static_cast<HF>(defaultHelperFlags));
-
-                auto* sketch = getSketchObject();
-                const auto& constraints = sketch->Constraints.getValues();
-                auto* constr = constraints.back();
-                auto geometry = sketch->Geometry.getValues();
-                auto newGeometry(geometry);
-                bool anyChanged = false;
-                int helperIdx = 0;
-                for (int i = 1; constr->hasElement(i); ++i) {
-                    int geoId = constr->getGeoId(i);
-                    if (geoId < 0 || geoId >= static_cast<int>(geometry.size())
-                        || !Sketcher::GeometryFacade::getHelper(geometry[geoId])) {
-                        continue;
-                    }
-                    // Hide this helper unless its flag is enabled
-                    bool shouldHide = helperIdx >= static_cast<int>(std::size(helperOrder))
-                        || !enabledFlags.testFlag(helperOrder[helperIdx]);
-                    if (shouldHide) {
-                        auto* geo = geometry[geoId]->clone();
-                        setSafeGeomLayerId(geo, 2);  // Layer::Hidden
-                        newGeometry[geoId] = geo;
-                        anyChanged = true;
-                    }
-                    helperIdx++;
-                }
-                // Same for canonical geometry
-                helperIdx = 0;
-                for (auto& canonGeo : constr->canonicalGeometry) {
-                    if (!Sketcher::GeometryFacade::getHelper(canonGeo.get())) {
-                        continue;
-                    }
-                    bool shouldHide = helperIdx >= static_cast<int>(std::size(helperOrder))
-                        || !enabledFlags.testFlag(helperOrder[helperIdx]);
-                    if (shouldHide) {
-                        setSafeGeomLayerId(canonGeo.get(), 2);  // Layer::Hidden
-                    }
-                    helperIdx++;
-                }
-                if (anyChanged) {
-                    sketch->Geometry.setValues(std::move(newGeometry));
-                }
-            }
-
             Gui::Command::commitCommand();
+
+            // Hide frame line and non-enabled helpers AFTER commit
+            // (recompute during commit would overwrite layer changes)
+            {
+                auto* sketch = getSketchObject();
+                int constrIdx = sketch->Constraints.getSize() - 1;
+                applyHelperVisibility(
+                    sketch,
+                    constrIdx,
+                    Sketcher::HelperFlags(static_cast<Sketcher::HelperFlag>(defaultHelperFlags)),
+                    Sketcher::HelperOrder.data(),
+                    static_cast<int>(Sketcher::HelperOrder.size())
+                );
+            }
         }
         catch (const Base::Exception& e) {
             Gui::NotifyError(

@@ -384,6 +384,10 @@ public:
         double xMax,
         HelperFlags flags
     );
+    /// Generate and add bbox helper lines for a Group/Text constraint.
+    /// Helpers are added to sketch geometry, constraint elements, and canonical
+    /// geometry. Returns 0 on success.
+    int generateAndAddBBoxHelpers(int constraintId);
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);
     /// get the driving status of this constraint

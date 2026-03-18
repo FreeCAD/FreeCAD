@@ -1040,3 +1040,66 @@ QMap<QString, QString> SketcherGui::findAvailableFontFiles()
     }
     return fontMap;
 }
+
+void SketcherGui::applyHelperVisibility(
+    Sketcher::SketchObject* sketch,
+    int constrIndex,
+    Sketcher::HelperFlags flags,
+    const Sketcher::HelperFlag* helperOrder,
+    int helperOrderSize
+)
+{
+    const auto* constr = sketch->Constraints.getValues()[constrIndex];
+    auto geometry = sketch->Geometry.getValues();
+    auto newGeometry(geometry);
+    bool anyChanged = false;
+
+    // Hide the frame line (element 0)
+    int frameGeoId = constr->getGeoId(0);
+    if (frameGeoId >= 0 && frameGeoId < static_cast<int>(geometry.size())) {
+        int currentLayer = getSafeGeomLayerId(geometry[frameGeoId]);
+        if (currentLayer != 2) {
+            auto* geo = geometry[frameGeoId]->clone();
+            setSafeGeomLayerId(geo, 2);  // Layer::Hidden
+            newGeometry[frameGeoId] = geo;
+            anyChanged = true;
+        }
+    }
+
+    // Show/hide helper geometry based on flags
+    int helperIdx = 0;
+    for (int i = 1; constr->hasElement(i); ++i) {
+        int geoId = constr->getGeoId(i);
+        if (geoId < 0 || geoId >= static_cast<int>(geometry.size())) {
+            continue;
+        }
+        if (!Sketcher::GeometryFacade::getHelper(geometry[geoId])) {
+            continue;
+        }
+
+        bool shouldBeVisible = helperIdx < helperOrderSize && flags.testFlag(helperOrder[helperIdx]);
+        int targetLayer = shouldBeVisible ? 0 : 2;  // 0=Default, 2=Hidden
+
+        int currentLayer = getSafeGeomLayerId(geometry[geoId]);
+        if (currentLayer != targetLayer) {
+            auto* geo = geometry[geoId]->clone();
+            setSafeGeomLayerId(geo, targetLayer);
+            newGeometry[geoId] = geo;
+            anyChanged = true;
+        }
+
+        // Update canonical geometry layer (so solver clones inherit it)
+        int canonIdx = i - 1;
+        auto* mutableConstr = const_cast<Sketcher::Constraint*>(constr);
+        if (canonIdx >= 0 && canonIdx < static_cast<int>(mutableConstr->canonicalGeometry.size())) {
+            setSafeGeomLayerId(mutableConstr->canonicalGeometry[canonIdx].get(), targetLayer);
+        }
+
+        helperIdx++;
+    }
+
+    if (anyChanged) {
+        sketch->Geometry.setValues(std::move(newGeometry));
+        sketch->solve();
+    }
+}

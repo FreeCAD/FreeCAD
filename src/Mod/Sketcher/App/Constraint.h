@@ -64,6 +64,22 @@ enum class HelperFlag
 };
 using HelperFlags = Base::Flags<HelperFlag>;
 
+/// Canonical order of all helper line types. The first BBoxHelperCount entries
+/// are bbox edges (used by both Group and Text), followed by typography metrics
+/// (Text only). Group constraints use HelperOrder.data() with BBoxHelperCount.
+constexpr std::array<HelperFlag, 7> HelperOrder = {{
+    HelperFlag::BBoxBottom,
+    HelperFlag::BBoxTop,
+    HelperFlag::BBoxLeft,
+    HelperFlag::BBoxRight,
+    HelperFlag::MetricBaseline,
+    HelperFlag::MetricXHeight,
+    HelperFlag::MetricCapHeight,
+}};
+/// Number of bbox-only helpers (first N entries of HelperOrder).
+/// Used by Group constraints which only have bbox edges, not metrics.
+constexpr int BBoxHelperCount = 4;
+
 }  // namespace Sketcher
 
 ENABLE_BITMASK_OPERATORS(Sketcher::HelperFlag)
@@ -137,6 +153,12 @@ public:
     Constraint& operator=(Constraint&&) = delete;
 
     ~Constraint() override;
+
+    /// Returns true if this is a collection constraint (Group or Text).
+    bool isGroupType() const
+    {
+        return Type == Group || Type == Text;
+    }
 
     // does copy the tag, it will be treated as a rename by the expression engine.
     Constraint* clone() const;

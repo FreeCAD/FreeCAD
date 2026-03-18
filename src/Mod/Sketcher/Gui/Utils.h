@@ -252,6 +252,19 @@ inline void scrollTo(QListWidget* list, int i, bool select)
 
 QMap<QString, QString> findAvailableFontFiles();
 
+/** Update visibility of frame line and helper geometry for a Group/Text constraint.
+ * Helpers are shown/hidden based on the helperFlags bitmask. The frame line is
+ * always hidden. Updates both world geometry and canonical geometry layers
+ * (so the solver preserves visibility on clone). Calls solve() for visual refresh.
+ */
+void applyHelperVisibility(
+    Sketcher::SketchObject* sketch,
+    int constrIndex,
+    Sketcher::HelperFlags flags,
+    const Sketcher::HelperFlag* helperOrder,
+    int helperOrderSize
+);
+
 }  // namespace SketcherGui
 
 /// converts a 2D vector into a 3D vector in the XY plane

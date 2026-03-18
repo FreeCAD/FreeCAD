@@ -1169,6 +1169,75 @@ void SketchObject::storeCanonicalGroupGeometry(int constraintId)
     }
 }
 
+int SketchObject::generateAndAddBBoxHelpers(int constraintId)
+{
+    Base::StateLocker lock(managedoperation, true);
+
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+    if (constraintId < 0 || constraintId >= static_cast<int>(vals.size())) {
+        return -1;
+    }
+
+    auto* constr = vals[constraintId];
+    if ((constr->Type != Group && constr->Type != Text) || !constr->hasCanonicalGeometry()) {
+        return -1;
+    }
+
+    // Get frame line for world transform
+    int frameGeoId = constr->getGeoId(0);
+    auto* frameLine = dynamic_cast<const Part::GeomLineSegment*>(getGeometry(frameGeoId));
+    if (!frameLine) {
+        return -1;
+    }
+
+    Base::Matrix4D canonToWorld = Sketch::computeCanonicalToWorldTransform(
+        frameLine->getStartPoint(), frameLine->getEndPoint());
+
+    // Compute bbox of non-helper canonical geometry
+    Bnd_Box canonBBox;
+    for (const auto& geo : constr->canonicalGeometry) {
+        if (!geo || GeometryFacade::getHelper(geo.get())) {
+            continue;
+        }
+        TopoDS_Shape shape = geo->toShape();
+        if (!shape.IsNull()) {
+            BRepBndLib::Add(shape, canonBBox, false);
+        }
+    }
+    if (canonBBox.IsVoid()) {
+        return -1;
+    }
+
+    // Generate all 4 bbox helper lines
+    HelperFlags allBBox = HelperFlag::BBoxBottom | HelperFlag::BBoxTop
+        | HelperFlag::BBoxLeft | HelperFlag::BBoxRight;
+    auto bboxHelpers = generateBBoxHelperLines(
+        constr->getCanonicalGeometry(), allBBox);
+
+    // Transform to world and add to sketch
+    std::vector<Part::Geometry*> helperRawPtrs;
+    for (auto& h : bboxHelpers) {
+        Part::Geometry* worldGeo = h->clone();
+        worldGeo->transform(canonToWorld);
+        helperRawPtrs.push_back(worldGeo);
+        constr->canonicalGeometry.push_back(std::move(h));
+    }
+
+    if (!helperRawPtrs.empty()) {
+        int beforeHelpers = getHighestCurveIndex();
+        addGeometry(helperRawPtrs, /*construction=*/true);
+        int afterHelpers = getHighestCurveIndex();
+        for (int i = beforeHelpers + 1; i <= afterHelpers; ++i) {
+            constr->addElement(GeoElementId(i));
+        }
+        for (auto* ptr : helperRawPtrs) {
+            delete ptr;
+        }
+    }
+
+    return 0;
+}
+
 int SketchObject::updateGroupHelperLines(int ConstrId, int helperFlagsInt)
 {
     // Store the helper flags on the constraint metadata.
@@ -1382,7 +1451,7 @@ bool SketchObject::isConstraintActiveInSketch(const Sketcher::Constraint* cstr) 
         return false;
     }
 
-    if (cstr->Type == Group || cstr->Type == Text) {
+    if (cstr->isGroupType()) {
         return true;
     }
 
@@ -10669,7 +10738,7 @@ bool SketchObject::isInGroup(int geoId, bool includeHandle) const
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (const auto& constr : vals) {
-        if (constr->Type == Group || constr->Type == Text) {
+        if (constr->isGroupType()) {
             // First is the group construction line. We include it or not in our search.
             int iStart = includeHandle ? 0 : 1;
             for (int i = iStart; constr->hasElement(i); ++i) {
@@ -10687,7 +10756,7 @@ bool SketchObject::isGroupHandle(int geoId) const
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (const auto& constr : vals) {
-        if (constr->Type == Group || constr->Type == Text) {
+        if (constr->isGroupType()) {
             if (constr->getGeoId(0) == geoId) {
                 return true;
             }
@@ -10724,7 +10793,7 @@ int SketchObject::getGroupHandleIfInGroup(int geoId)
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (const auto& constr : vals) {
-        if (constr->Type == Group || constr->Type == Text) {
+        if (constr->isGroupType()) {
             // First is the group construction line.
             int groupHandleGeoId = -1;
             for (int i = 0; constr->hasElement(i); ++i) {

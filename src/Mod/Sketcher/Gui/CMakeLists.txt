@@ -22,6 +22,7 @@ set(SketcherGui_UIC_SRCS
     TaskSketcherValidation.ui
     InsertDatum.ui
     EditTextDialog.ui
+    EditGroupDialog.ui
     SketchOrientationDialog.ui
     SketchMirrorDialog.ui
     SketcherSettings.ui
@@ -141,6 +142,9 @@ SET(SketcherGui_SRCS
     EditTextDialog.ui
     EditTextDialog.cpp
     EditTextDialog.h
+    EditGroupDialog.ui
+    EditGroupDialog.cpp
+    EditGroupDialog.h
     PropertyVisualLayerList.cpp
     PropertyVisualLayerList.h
     SketchOrientationDialog.cpp

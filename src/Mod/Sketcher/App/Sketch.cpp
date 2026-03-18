@@ -207,7 +207,7 @@ int Sketch::setUpSketch(
     // The geometries that are in groups are going to be ignored by the solver.
     std::set<int> inGroupGeoIds;
     for (const auto& c : ConstraintList) {
-        if (c->Type == Group || c->Type == Text) {
+        if (c->isGroupType()) {
             // Start from index 1, as 0 is the frame.
             for (int i = 1; c->hasElement(i); ++i) {
                 inGroupGeoIds.insert(c->getGeoId(i));
@@ -274,7 +274,7 @@ int Sketch::setUpSketch(
     // These need solver params + DerivedPoint; others become passive.
     externalGroupVertexGeoIds.clear();
     for (const auto& c : ConstraintList) {
-        if (c->Type == Group || c->Type == Text || c->Type == Block || !c->isActive) {
+        if (c->isGroupType() || c->Type == Block || !c->isActive) {
             continue;
         }
         bool hasNonGroupRef = false;
@@ -405,7 +405,7 @@ int Sketch::setUpSketch(
         for (size_t i = 0; i < ConstraintList.size(); ++i) {
             const auto& c = ConstraintList[i];
 
-            if (c->Type == Group || c->Type == Text) {
+            if (c->isGroupType()) {
                 continue;
             }
 
@@ -5404,7 +5404,7 @@ int Sketch::initMove(const std::vector<GeoElementId>& geoEltIds, bool fine)
                 // on another vertex) are properly enforced via DerivedPoint.
                 int frameGeoId = -1;
                 for (const auto& cd : Constrs) {
-                    if (cd.constr->Type == Group || cd.constr->Type == Text) {
+                    if (cd.constr->isGroupType()) {
                         for (int j = 1; cd.constr->hasElement(j); ++j) {
                             if (cd.constr->getGeoId(j) == geoId) {
                                 frameGeoId = cd.constr->getGeoId(0);

@@ -10532,6 +10532,16 @@ void CmdSketcherConstrainGroup::activated(int iMsg)
 
     commitCommand();
 
+    // Hide the frame line and helper geometry AFTER commit (so recompute
+    // doesn't overwrite our layer changes)
+    {
+        int lastConstrIdx = Obj->Constraints.getSize() - 1;
+        // No flags enabled = all helpers hidden
+        applyHelperVisibility(
+            Obj, lastConstrIdx, Sketcher::HelperFlags(),
+            Sketcher::HelperOrder.data(), Sketcher::BBoxHelperCount);
+    }
+
     getSelection().clearSelection();
 }
 
@@ -10622,8 +10632,9 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
         gp_Pnt max_pnt = totalBBox.CornerMax();
 
         // --- 2. Define and create the Construction Line "Frame" ---
+        // Frame runs horizontally along the bottom (same as Text baseline).
         frame_p1 = Base::Vector2d(min_pnt.X(), min_pnt.Y());
-        frame_p2 = Base::Vector2d(min_pnt.X(), max_pnt.Y());
+        frame_p2 = Base::Vector2d(max_pnt.X(), min_pnt.Y());
     }
 
     Gui::cmdAppObjectArgs(Obj,
@@ -10674,6 +10685,9 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
     // providing the source of truth for zero-drift group transformations.
     int lastConstrIdx = Obj->Constraints.getSize() - 1;
     Obj->storeCanonicalGroupGeometry(lastConstrIdx);
+
+    // Generate bbox helper lines for the group
+    Obj->generateAndAddBBoxHelpers(lastConstrIdx);
 
     // We remove the internal alignment of the geometries that were grouped.
     std::sort(geoIdsWithInternalGeos.begin(), geoIdsWithInternalGeos.end(), std::greater<>());

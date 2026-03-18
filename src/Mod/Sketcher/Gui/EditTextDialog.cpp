@@ -184,83 +184,14 @@ void EditTextDialog::on_buttonBox_accepted()
             );
         }
 
-        // Toggle visibility of helper geometry based on checkboxes.
-        // Helpers are always generated in order: BBoxBottom, BBoxTop,
-        // BBoxLeft, BBoxRight, Baseline, XHeight, CapHeight, Ascender, Descender.
-        // We set layers on both world geometry AND canonical geometry,
-        // because the solver clones from canonical on every solve.
-        constraint = sketch->Constraints[constrIndex];
-        static const Sketcher::HelperFlag helperOrder[] = {
-            Sketcher::HelperFlag::BBoxBottom,
-            Sketcher::HelperFlag::BBoxTop,
-            Sketcher::HelperFlag::BBoxLeft,
-            Sketcher::HelperFlag::BBoxRight,
-            Sketcher::HelperFlag::MetricBaseline,
-            Sketcher::HelperFlag::MetricXHeight,
-            Sketcher::HelperFlag::MetricCapHeight,
-        };
-
-        auto geometry = sketch->Geometry.getValues();
-        auto newGeometry(geometry);
-        bool anyLayerChanged = false;
-        int helperIdx = 0;
-
-        // Build a map of canonical geometry index for each helper element
-        std::vector<int> helperCanonicalIndices;
-        for (int i = 1; constraint->hasElement(i); ++i) {
-            int geoId = constraint->getGeoId(i);
-            if (geoId < 0 || geoId >= static_cast<int>(geometry.size())) {
-                continue;
-            }
-            if (!Sketcher::GeometryFacade::getHelper(geometry[geoId])) {
-                continue;
-            }
-            // Map this helper to its canonical index (elements 1..N map to canonical 0..N-1,
-            // but we need the canonical index of THIS element)
-            helperCanonicalIndices.push_back(i - 1);  // element i maps to canonical[i-1]
-        }
-
-        // Reset helperIdx and iterate again to toggle
-        for (int i = 1; constraint->hasElement(i); ++i) {
-            int geoId = constraint->getGeoId(i);
-            if (geoId < 0 || geoId >= static_cast<int>(geometry.size())) {
-                continue;
-            }
-            if (!Sketcher::GeometryFacade::getHelper(geometry[geoId])) {
-                continue;
-            }
-            if (helperIdx < static_cast<int>(std::size(helperOrder))) {
-                bool shouldBeVisible = newFlags.testFlag(helperOrder[helperIdx]);
-                int targetLayer = shouldBeVisible ? 0 : 2;  // 0=Default, 2=Hidden
-
-                // Update world geometry layer
-                int currentLayer = getSafeGeomLayerId(geometry[geoId]);
-                if (currentLayer != targetLayer) {
-                    auto* geo = geometry[geoId]->clone();
-                    setSafeGeomLayerId(geo, targetLayer);
-                    newGeometry[geoId] = geo;
-                    anyLayerChanged = true;
-                }
-
-                // Update canonical geometry layer (so solver clones inherit it)
-                int canonIdx = i - 1;  // element i maps to canonical[i-1]
-                if (canonIdx >= 0
-                    && canonIdx < static_cast<int>(
-                           const_cast<Sketcher::Constraint*>(constraint)->canonicalGeometry.size()
-                       )) {
-                    setSafeGeomLayerId(
-                        const_cast<Sketcher::Constraint*>(constraint)->canonicalGeometry[canonIdx].get(),
-                        targetLayer
-                    );
-                }
-            }
-            helperIdx++;
-        }
-
-        if (anyLayerChanged) {
-            sketch->Geometry.setValues(std::move(newGeometry));
-            sketch->solve();
-        }
+        // Toggle visibility using shared utility
+        applyHelperVisibility(
+            sketch,
+            constrIndex,
+            newFlags,
+            Sketcher::HelperOrder.data(),
+            static_cast<int>(Sketcher::HelperOrder.size())
+        );
 
         Gui::Command::commitCommand();
     }

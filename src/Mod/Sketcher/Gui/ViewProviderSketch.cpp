@@ -73,6 +73,7 @@
 
 #include "DrawSketchHandler.h"
 #include "EditDatumDialog.h"
+#include "EditGroupDialog.h"
 #include "EditTextDialog.h"
 #include "EditModeCoinManager.h"
 #include "SnapManager.h"
@@ -1339,28 +1340,35 @@ void ViewProviderSketch::editDoubleClicked()
         int geoId = preselection.PreselectCurve;
         Sketcher::SketchObject* sketch = getSketchObject();
 
-        // Check if the preselected edge belongs to a Text constraint
-        // (either the frame line or any grouped geometry element)
-        int textConstrId = -1;
+        // Check if the preselected edge belongs to a Text or Group constraint
+        int foundConstrId = -1;
+        Sketcher::ConstraintType foundConstrType = Sketcher::None;
         const auto& constraints = sketch->Constraints.getValues();
         for (int i = 0; i < static_cast<int>(constraints.size()); ++i) {
-            if (constraints[i]->Type == Sketcher::Text) {
+            if (constraints[i]->isGroupType()) {
                 for (int j = 0; constraints[i]->hasElement(j); ++j) {
                     if (constraints[i]->getGeoId(j) == geoId) {
-                        textConstrId = i;
+                        foundConstrId = i;
+                        foundConstrType = constraints[i]->Type;
                         break;
                     }
                 }
-                if (textConstrId != -1) {
+                if (foundConstrId != -1) {
                     break;
                 }
             }
         }
 
-        if (textConstrId != -1) {
+        if (foundConstrId != -1 && foundConstrType == Sketcher::Text) {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify Text constraint"));
-            EditTextDialog editTextDialog(this, textConstrId);
+            EditTextDialog editTextDialog(this, foundConstrId);
             editTextDialog.exec();
+            setSketchMode(STATUS_NONE);
+        }
+        else if (foundConstrId != -1 && foundConstrType == Sketcher::Group) {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify Group constraint"));
+            EditGroupDialog editGroupDialog(this, foundConstrId);
+            editGroupDialog.exec();
             setSketchMode(STATUS_NONE);
         }
         else {
@@ -1395,6 +1403,12 @@ void ViewProviderSketch::editDoubleClicked()
                     QT_TRANSLATE_NOOP("Command", "Modify Text constraint"));
                 EditTextDialog editTextDialog(this, id);
                 editTextDialog.exec();
+            }
+            else if (Constr->Type == Sketcher::Group) {
+                Gui::Command::openCommand(
+                    QT_TRANSLATE_NOOP("Command", "Modify Group constraint"));
+                EditGroupDialog editGroupDialog(this, id);
+                editGroupDialog.exec();
             }
         }
     }

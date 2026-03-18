@@ -233,7 +233,7 @@ void Constraint::Save(Writer& writer) const
                         << "ElementPositions=\"" << positions << "\" ";
     }
 
-    if (!canonicalGeometry.empty() && (Type == Group || Type == Text)) {
+    if (!canonicalGeometry.empty() && isGroupType()) {
         writer.Stream() << "CanonicalCount=\"" << canonicalGeometry.size() << "\"";
         writer.Stream() << ">\n";
         writer.incInd();
