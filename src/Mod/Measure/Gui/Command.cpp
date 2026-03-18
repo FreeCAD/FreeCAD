@@ -95,9 +95,9 @@ StdCmdMassProperties::StdCmdMassProperties()
 {
     sGroup = "MassProperties";
     sMenuText = QT_TR_NOOP("Mass Properties");
-    sToolTipText = QT_TR_NOOP("Calculate mass properties of selected objects");
+    sToolTipText = QT_TR_NOOP("Calculates mass properties of selected objects");
     sWhatsThis = "Std_MassProperties";
-    sStatusTip = QT_TR_NOOP("Calculate mass properties of selected objects");
+    sStatusTip = sToolTipText;
     sPixmap = "MassPropertiesIcon";
 }
 

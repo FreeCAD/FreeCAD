@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2026 Morten Vajhøj
 // SPDX-FileNotice: Part of the FreeCAD project.
 
 /******************************************************************************
- *                                                                            *
- *   © 2026 Morten Vajhøj                                                     *
  *                                                                            *
  *   FreeCAD is free software: you can redistribute it and/or modify          *
  *   it under the terms of the GNU Lesser General Public License as           *
@@ -963,7 +962,7 @@ void TaskMassProperties::tryupdate()
         edit->setCursorPosition(0);
     };
 
-    const QString densitySuffix = objectsToMeasure.size() > 1 ? tr(" (Avg)") : QString();
+    const QString densitySuffix = objectsToMeasure.size() > 1 ? tr(" (Average)") : QString();
 
     setText(panel->ui.volumeEdit, info.volume, Base::Unit::Volume);
     setText(panel->ui.massEdit, info.mass, Base::Unit::Mass);
@@ -1170,7 +1169,7 @@ void TaskMassProperties::saveResult()
 
     doc->openTransaction("Add Mass Properties");
 
-    MassProperties::Result::init();
+    Measure::Result::init();
     
     auto group = dynamic_cast<App::DocumentObjectGroup*>(doc->getObject("Measurements"));
     
@@ -1178,7 +1177,7 @@ void TaskMassProperties::saveResult()
         group = doc->addObject<App::DocumentObjectGroup>("Measurements");
     }
 
-    auto* obj = doc->addObject("MassProperties::Result", "MassProperties");
+    auto* obj = doc->addObject("Measure::Result", "MassProperties");
     if (!obj) {
         doc->abortTransaction();
         return;

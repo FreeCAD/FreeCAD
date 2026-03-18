@@ -110,7 +110,7 @@ PyMOD_INIT_FUNC(Measure)
     Measure::MeasureArea ::init();
     Measure::MeasureDiameter ::init();
     Measure::MeasureRadius ::init();
-    MassProperties::Result ::init();
+    Measure::Result ::init();
 
     // Add fundamental umf Measure Types
 
