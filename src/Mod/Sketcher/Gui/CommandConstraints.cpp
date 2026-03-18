@@ -10689,6 +10689,10 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
     // Generate bbox helper lines for the group
     Obj->generateAndAddBBoxHelpers(lastConstrIdx);
 
+    // Deactivate constraints that only reference geometry within the group
+    // (e.g., Horizontal on a grouped line would prevent rotation)
+    Obj->deactivateInternalConstraints(lastConstrIdx);
+
     // We remove the internal alignment of the geometries that were grouped.
     std::sort(geoIdsWithInternalGeos.begin(), geoIdsWithInternalGeos.end(), std::greater<>());
     for (auto& geoId : geoIdsWithInternalGeos) {

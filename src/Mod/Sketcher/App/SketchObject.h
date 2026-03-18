@@ -388,6 +388,12 @@ public:
     /// Helpers are added to sketch geometry, constraint elements, and canonical
     /// geometry. Returns 0 on success.
     int generateAndAddBBoxHelpers(int constraintId);
+    /// Deactivate constraints that only reference geometry within a group.
+    /// These are "internal" constraints that would over-constrain the group
+    /// (e.g., Horizontal on a line inside the group prevents rotation).
+    void deactivateInternalConstraints(int groupConstrId);
+    /// Reactivate constraints that were deactivated by deactivateInternalConstraints.
+    void reactivateInternalConstraints(int groupConstrId);
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);
     /// get the driving status of this constraint

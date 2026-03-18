@@ -1238,6 +1238,97 @@ int SketchObject::generateAndAddBBoxHelpers(int constraintId)
     return 0;
 }
 
+void SketchObject::deactivateInternalConstraints(int groupConstrId)
+{
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+    if (groupConstrId < 0 || groupConstrId >= static_cast<int>(vals.size())) {
+        return;
+    }
+
+    const auto* groupConstr = vals[groupConstrId];
+    if (!groupConstr->isGroupType()) {
+        return;
+    }
+
+    // Collect all geoIds in this group (including frame line)
+    std::set<int> groupGeoIds;
+    for (int i = 0; groupConstr->hasElement(i); ++i) {
+        int geoId = groupConstr->getGeoId(i);
+        if (geoId != GeoEnum::GeoUndef) {
+            groupGeoIds.insert(geoId);
+        }
+    }
+
+    // Find constraints that ONLY reference geometry within the group
+    for (int ci = 0; ci < static_cast<int>(vals.size()); ++ci) {
+        auto* c = vals[ci];
+        if (ci == groupConstrId || !c->isActive || c->isGroupType()) {
+            continue;
+        }
+
+        // Check if all referenced geoIds are within the group
+        bool allInternal = true;
+        auto checkGeoId = [&](int geoId) {
+            if (geoId != GeoEnum::GeoUndef && groupGeoIds.find(geoId) == groupGeoIds.end()) {
+                allInternal = false;
+            }
+        };
+        checkGeoId(c->First);
+        checkGeoId(c->Second);
+        checkGeoId(c->Third);
+
+        if (allInternal && c->First != GeoEnum::GeoUndef) {
+            setActive(ci, false);
+            setVirtualSpace(ci, true);
+        }
+    }
+}
+
+void SketchObject::reactivateInternalConstraints(int groupConstrId)
+{
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+    if (groupConstrId < 0 || groupConstrId >= static_cast<int>(vals.size())) {
+        return;
+    }
+
+    const auto* groupConstr = vals[groupConstrId];
+    if (!groupConstr->isGroupType()) {
+        return;
+    }
+
+    // Collect all geoIds in this group
+    std::set<int> groupGeoIds;
+    for (int i = 0; groupConstr->hasElement(i); ++i) {
+        int geoId = groupConstr->getGeoId(i);
+        if (geoId != GeoEnum::GeoUndef) {
+            groupGeoIds.insert(geoId);
+        }
+    }
+
+    // Find inactive constraints that only reference geometry within the group
+    for (int ci = 0; ci < static_cast<int>(vals.size()); ++ci) {
+        auto* c = vals[ci];
+        if (ci == groupConstrId || c->isActive || c->isGroupType()) {
+            continue;
+        }
+
+        bool allInternal = true;
+        auto checkGeoId = [&](int geoId) {
+            if (geoId != GeoEnum::GeoUndef && groupGeoIds.find(geoId) == groupGeoIds.end()) {
+                allInternal = false;
+            }
+        };
+        checkGeoId(c->First);
+        checkGeoId(c->Second);
+        checkGeoId(c->Third);
+
+        if (allInternal && c->First != GeoEnum::GeoUndef) {
+            setActive(ci, true);
+            setVirtualSpace(ci, false);
+        }
+    }
+}
+
 int SketchObject::updateGroupHelperLines(int ConstrId, int helperFlagsInt)
 {
     // Store the helper flags on the constraint metadata.
@@ -2868,6 +2959,11 @@ int SketchObject::delConstraint(int ConstrId, DeleteOptions options)
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
     if (ConstrId < 0 || ConstrId >= int(vals.size())) {
         return -1;
+    }
+
+    // Reactivate internal constraints before removing a group constraint
+    if (vals[ConstrId]->isGroupType()) {
+        reactivateInternalConstraints(ConstrId);
     }
 
     std::vector<Constraint*> newVals(vals);
