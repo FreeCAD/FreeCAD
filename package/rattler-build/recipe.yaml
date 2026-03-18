@@ -100,7 +100,7 @@ requirements:
 
   host:
     - coin3d
-    - eigen
+    - eigen >=3.3,<5
     - fmt
     - freetype
     - hdf5

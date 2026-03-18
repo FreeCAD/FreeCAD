@@ -102,7 +102,9 @@ void EditTextDialog::on_buttonBox_accepted()
     }
 
     // Open a command to make the change undo-able
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify sketch text constraint"));
+    sketchView->getDocument()->openCommand(
+        QT_TRANSLATE_NOOP("Command", "Modify sketch text constraint")
+    );
 
     try {
         // Find if it was construction geometry to preserve that state
@@ -127,10 +129,10 @@ void EditTextDialog::on_buttonBox_accepted()
             isConstruction ? "True" : "False"
         );
 
-        Gui::Command::commitCommand();
+        sketchView->getDocument()->commitCommand();
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        sketchView->getDocument()->abortCommand();
         Base::Console().error("Failed to modify text constraint: %s\n", e.what());
     }
 }

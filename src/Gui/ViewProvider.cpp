@@ -191,7 +191,10 @@ void ViewProvider::setEditViewer(View3DInventorViewer*, int ModNum)
 
 void ViewProvider::unsetEditViewer(View3DInventorViewer*)
 {}
-
+void ViewProvider::setActive(bool active)
+{
+    Q_UNUSED(active);
+}
 bool ViewProvider::isUpdatesEnabled() const
 {
     return testStatus(UpdateData);

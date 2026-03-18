@@ -43,6 +43,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 
+#include <App/AutoTransaction.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
@@ -395,7 +396,7 @@ void QGIRichAnno::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
         if (!m_isDraggingMidResize) {  // First actual move during this resize op
             if (!Gui::Control().activeDialog()) {
-                Gui::Command::openCommand(
+                m_tid = Gui::Command::openActiveDocumentCommand(
                     QObject::tr("Resize Rich Annotation").toStdString().c_str());
             }
             m_transactionOpen = true;
@@ -495,7 +496,7 @@ void QGIRichAnno::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
             // Only commit if actual dragging (and thus property changes) occurred.
             // m_isDraggingMidResize flag indicates if mouseMoveEvent was processed.
             if (!Gui::Control().activeDialog()) {
-                Gui::Command::commitCommand();
+                Gui::Command::commitCommand(m_tid);
             }
             m_transactionOpen = false;
             widthChanged();
@@ -531,7 +532,7 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
             // To avoid partial changes, might need to revert or just abort.
             // For simplicity, we commit if open. A better way would be to store original values and revert.
             if (!Gui::Control().activeDialog()) {
-                Gui::Command::commitCommand();
+                Gui::Command::commitCommand(m_tid);
             }
             m_transactionOpen = false;
         }

@@ -109,7 +109,8 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     graphicsView = m_vpp->getQGVPage();
     m_toolbar = new MRichTextEdit(graphicsView->viewport());
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Annotation"));
+    m_tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Annotation"));
+
 
     ui->setupUi(this);
 
@@ -149,7 +150,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
         m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(baseFeat);
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
+    m_tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
 
     ui->setupUi(this);
     m_title = QObject::tr("Rich Text Creator");
@@ -675,7 +676,7 @@ void TaskRichAnno::createAnnoFeature(const QPointF* scenePos)
     }
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(annoName.c_str());
     if (!obj) {
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(m_tid);
         throw Base::RuntimeError("TaskRichAnno - new RichAnno object not found");
     }
     if (obj->isDerivedFrom<TechDraw::DrawRichAnno>()) {
@@ -833,7 +834,7 @@ bool TaskRichAnno::accept()
         m_qgiAnno->setEditMode(false);
     }
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(m_tid);
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     m_annoFeat->getDocument()->recompute();
@@ -853,7 +854,7 @@ bool TaskRichAnno::reject()
     
     removeViewFilter();
 
-    Gui::Command::abortCommand();
+    Gui::Command::abortCommand(m_tid);
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     if (!m_createMode) {  // Feature gone and m_annoFeat dangling if we are creating!

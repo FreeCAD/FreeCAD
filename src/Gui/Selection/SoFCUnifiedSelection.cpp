@@ -791,7 +791,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
         // Ex:  Body.Pad.Face9  to Body.Pad.;g3;SKT;:H12dc,E;FAC;:H12dc:4,F;:G0;XTR;:H12dc:8,F.Face9
         getFullSubElementName(subName);
         const char* subSelected
-            = Gui::Selection().getSelectedElement(vpd->getObject(), subName.c_str());
+            = Gui::Selection().getSelectedElement(vpd->getObject(), subName.c_str()).c_str();
 
         FC_TRACE(
             "select " << (subSelected ? subSelected : "'null'") << ", " << objectName << ", " << subName

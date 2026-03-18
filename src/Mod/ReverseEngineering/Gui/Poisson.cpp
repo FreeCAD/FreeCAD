@@ -84,13 +84,13 @@ bool PoissonWidget::accept()
 
         Gui::WaitCursor wc;
         Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Poisson reconstruction"));
+        d->obj.getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Poisson reconstruction"));
         Gui::Command::runCommand(Gui::Command::Doc, command.toLatin1());
-        Gui::Command::commitCommand();
+        d->obj.getDocument()->commitTransaction();
         Gui::Command::updateActive();
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        d->obj.getDocument()->abortTransaction();
         QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
