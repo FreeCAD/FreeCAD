@@ -173,7 +173,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         auto coinLayer = geometryLayerParameters.getSafeCoinLayer(layerId);
 
         // Text inner geometry (glyphs) should not have visible/pickable points
-        bool skipPoints = GeoId >= 0 && viewProvider.getSketchObject()->isTextInnerGeometry(GeoId);
+        bool skipPoints = GeoId >= 0
+            && viewProvider.getSketchObject()->isNonInteractiveGroupGeometry(GeoId);
 
         if (type == Part::GeomPoint::getClassTypeId()) {  // add a point
             convert<

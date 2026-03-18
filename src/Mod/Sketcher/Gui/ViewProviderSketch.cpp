@@ -1652,7 +1652,7 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
     }
 
     // Text inner geometry is not individually draggable — redirect to group handle.
-    if (getSketchObject()->isTextInnerGeometry(geoId)) {
+    if (getSketchObject()->isNonInteractiveGroupGeometry(geoId)) {
         geoId = getSketchObject()->getGroupHandleIfInGroup(geoId);
         pos = Sketcher::PointPos::none;
     }
@@ -2340,7 +2340,7 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int GeoId = std::atoi(&shapetype[4]) - 1;
 
                         // Redirect text inner geometry selection to the group handle
-                        if (getSketchObject()->isTextInnerGeometry(GeoId)) {
+                        if (getSketchObject()->isNonInteractiveGroupGeometry(GeoId)) {
                             int handleId = getSketchObject()->getGroupHandleIfInGroup(GeoId);
                             Gui::Selection().rmvSelection(
                                 msg.pDocName, msg.pObjectName, msg.pSubName);
@@ -2530,7 +2530,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
                 int ptGeoId;
                 Sketcher::PointPos ptPos;
                 getSketchObject()->getGeoVertexIndex(result.PointIndex, ptGeoId, ptPos);
-                if (getSketchObject()->isTextInnerGeometry(ptGeoId)) {
+                if (getSketchObject()->isNonInteractiveGroupGeometry(ptGeoId)) {
                     return false;
                 }
             }
@@ -2553,7 +2553,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
 
             // Text inner geometry (glyphs) is not individually interactive.
             // Redirect preselection to the group handle (frame line).
-            if (getSketchObject()->isTextInnerGeometry(result.GeoIndex)) {
+            if (getSketchObject()->isNonInteractiveGroupGeometry(result.GeoIndex)) {
                 int handleId = getSketchObject()->getGroupHandleIfInGroup(result.GeoIndex);
                 if (handleId == preselection.PreselectCurve) {
                     return false;

@@ -10861,23 +10861,29 @@ bool SketchObject::isGroupHandle(int geoId) const
     return false;
 }
 
-bool SketchObject::isTextInnerGeometry(int geoId) const
+bool SketchObject::isNonInteractiveGroupGeometry(int geoId) const
 {
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (const auto& constr : vals) {
-        if (constr->Type != Text) {
+        if (!constr->isGroupType()) {
+            continue;
+        }
+        // Text is always non-interactive; Group is non-interactive when not exposed
+        bool isNonInteractive =
+            constr->Type == Text || !constr->getExposedInnerGeo();
+        if (!isNonInteractive) {
             continue;
         }
         // Check elements 1+ (skip frame line at 0)
         for (int i = 1; constr->hasElement(i); ++i) {
             if (constr->getGeoId(i) == geoId) {
-                // It's in a Text constraint — check if it's a helper (interactive)
+                // Helpers are always interactive regardless of the flag
                 const Part::Geometry* geo = getGeometry(geoId);
                 if (geo && GeometryFacade::getHelper(geo)) {
-                    return false;  // helpers are interactive
+                    return false;
                 }
-                return true;  // text glyph geometry — not interactive
+                return true;
             }
         }
     }

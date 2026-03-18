@@ -50,6 +50,7 @@ EditGroupDialog::EditGroupDialog(ViewProviderSketch* viewProvider, int constrain
     ui->checkBox_bboxTop->setChecked(flags.testFlag(Sketcher::HelperFlag::BBoxTop));
     ui->checkBox_bboxLeft->setChecked(flags.testFlag(Sketcher::HelperFlag::BBoxLeft));
     ui->checkBox_bboxRight->setChecked(flags.testFlag(Sketcher::HelperFlag::BBoxRight));
+    ui->checkBox_exposeInnerGeo->setChecked(constraint->getExposedInnerGeo());
 }
 
 EditGroupDialog::~EditGroupDialog()
@@ -76,12 +77,15 @@ void EditGroupDialog::on_buttonBox_accepted()
         newFlags.setFlag(Sketcher::HelperFlag::BBoxRight);
     }
 
+    bool exposeInnerGeo = ui->checkBox_exposeInnerGeo->isChecked();
+
     Sketcher::HelperFlags oldFlags = constraint->getHelperFlags();
-    if (newFlags.isEqual(oldFlags)) {
+    bool oldExposeInnerGeo = constraint->getExposedInnerGeo();
+    if (newFlags.isEqual(oldFlags) && exposeInnerGeo == oldExposeInnerGeo) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify group helper lines"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify group settings"));
 
     try {
         // Store flags via Python for undo journaling
@@ -91,6 +95,11 @@ void EditGroupDialog::on_buttonBox_accepted()
             constrIndex,
             newFlags.toUnderlyingType()
         );
+
+        // Store the non-interactive flag and force visual rebuild
+        const_cast<Sketcher::Constraint*>(constraint)->setExposedInnerGeo(exposeInnerGeo);
+        sketch->Constraints.touch();
+        sketch->solve();
 
         // Toggle visibility using shared utility
         applyHelperVisibility(

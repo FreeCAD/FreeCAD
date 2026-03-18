@@ -304,6 +304,9 @@ public:
     bool getHasXHeight() const;
     bool getHasCapHeight() const;
     void setMetricAvailability(bool hasXHeight, bool hasCapHeight);
+    /// Whether inner geometry of this group is non-interactive (like Text).
+    bool getExposedInnerGeo() const;
+    void setExposedInnerGeo(bool nonInteractive);
 
     /// Canonical geometry for Group/Text constraints (elements 1+ in canonical frame).
     /// The canonical frame is (0,0)->(1,0). World positions are derived from this

@@ -808,6 +808,36 @@ void Constraint::setMetricAvailability(bool hasXHeight, bool hasCapHeight)
     MetaData = j.dump();
 }
 
+bool Constraint::getExposedInnerGeo() const
+{
+    if (MetaData.empty()) {
+        return true;  // default: inner geometry is exposed (interactive)
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("exposedInnerGeo")) {
+            return j["exposedInnerGeo"].get<bool>();
+        }
+    }
+    catch (...) {
+    }
+    return true;  // default: exposed
+}
+
+void Constraint::setExposedInnerGeo(bool exposed)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["exposedInnerGeo"] = exposed;
+    MetaData = j.dump();
+}
+
 std::vector<const Part::Geometry*> Constraint::getCanonicalGeometry() const
 {
     std::vector<const Part::Geometry*> result;
