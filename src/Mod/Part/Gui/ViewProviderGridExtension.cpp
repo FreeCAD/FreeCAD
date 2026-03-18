@@ -191,7 +191,7 @@ bool GridExtensionP::checkCameraTranslationChange(const Gui::View3DInventorViewe
 {
     // Then we check if user moved by more than 10% of camera dimension (must be after updating
     // camera dimension).
-    SbVec3f newCamCenterPointOnFocalPlane = viewer->getCenterPointOnFocalPlane();
+    SbVec3f newCamCenterPointOnFocalPlane = viewer->getFocalPoint();
 
     if ((camCenterPointOnFocalPlane - newCamCenterPointOnFocalPlane).length()
         > 0.1 * camMaxDimension) {

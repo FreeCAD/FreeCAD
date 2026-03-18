@@ -201,6 +201,10 @@ class Component(ArchIFC.IfcProduct):
         The object to turn into an Arch Component
     """
 
+    # List of properties to override in App::Link.
+    # Subclasses which require overrides (e.g. Window, Rebar) should populate the overrides list.
+    LinkOverrideProperties = []
+
     def __init__(self, obj):
         obj.Proxy = self
         self.Type = "Component"
@@ -1325,6 +1329,20 @@ class Component(ArchIFC.IfcProduct):
             if self._isInternalLinkgroup(inObj):
                 return True
         return False
+
+    def appLinkExecute(self, obj, linkObj, index, linkElement):
+        """
+        App::Link hook: called when a link to a BIM object is created.
+        Used to setup shadow properties for lightweight instancing.
+        """
+        # Shadow the given property so multiple links can have independent values without triggering
+        # a deep copy of the BIM object geometry.
+        if self.LinkOverrideProperties:
+            ArchCommands.override_link_properties(linkObj, self.LinkOverrideProperties)
+
+        # Execute features in the SketchArch External Add-on, if present
+        if hasattr(self, "executeSketchArchFeatures"):
+            self.executeSketchArchFeatures(obj, linkObj, index, linkElement)
 
 
 class AreaCalculator:

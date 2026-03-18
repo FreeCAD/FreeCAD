@@ -631,7 +631,7 @@ Application::Application(bool GUIenabled)
     PyObject* module = PyImport_AddModule("FreeCADGui");
     PyMethodDef* meth = FreeCADGui_methods;
     PyObject* dict = PyModule_GetDict(module);
-    for (; meth->ml_name != nullptr; meth++) {
+    for (; meth->ml_name; meth++) {
         PyObject* descr;
         descr = PyCFunction_NewEx(meth, nullptr, nullptr);
         if (!descr) {
@@ -876,10 +876,8 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                         "User parameter:BaseApp/Preferences/View"
                     );
                     if (hGrp->GetBool("AutoFitToView", true)) {
-                        MDIView* view = doc->getActiveView();
-                        if (view) {
-                            const char* ret = nullptr;
-                            if (view->onMsg("ViewFit", &ret)) {
+                        if (MDIView* view = doc->getActiveView()) {
+                            if (view->onMsg("ViewFit")) {
                                 updateActions(true);
                             }
                         }
@@ -1404,10 +1402,10 @@ void Application::onLastWindowClosed(Gui::Document* pcDoc)
 }
 
 /// send Messages to the active view
-bool Application::sendMsgToActiveView(const char* pMsg, const char** ppReturn)
+bool Application::sendMsgToActiveView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
-    bool res = pView ? pView->onMsg(pMsg, ppReturn) : false;
+    bool res = pView ? pView->onMsg(pMsg) : false;
     updateActions(true);
     return res;
 }
@@ -1419,7 +1417,7 @@ bool Application::sendHasMsgToActiveView(const char* pMsg)
 }
 
 /// send Messages to the active view
-bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
+bool Application::sendMsgToFocusView(const char* pMsg)
 {
     MDIView* pView = getMainWindow()->activeWindow();
     if (!pView) {
@@ -1427,7 +1425,7 @@ bool Application::sendMsgToFocusView(const char* pMsg, const char** ppReturn)
     }
     for (auto focus = qApp->focusWidget(); focus; focus = focus->parentWidget()) {
         if (focus == pView) {
-            bool res = pView->onMsg(pMsg, ppReturn);
+            bool res = pView->onMsg(pMsg);
             updateActions(true);
             return res;
         }
@@ -2792,7 +2790,7 @@ void Application::setStyle(const QString& name)
         return qobject_cast<FreeCADStyle*>(style) != nullptr;
     };
 
-    if (auto* current = qApp->style(); current != nullptr && requiresEventFilter(current)) {
+    if (auto* current = qApp->style(); current && requiresEventFilter(current)) {
         qApp->removeEventFilter(current);
     }
 

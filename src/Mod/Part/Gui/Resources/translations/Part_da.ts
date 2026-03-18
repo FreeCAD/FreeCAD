@@ -19,7 +19,7 @@
       <location filename="../../AttacherTexts.cpp" line="844"/>
       <source>Edge</source>
       <comment>Attacher reference type</comment>
-      <translation>Linje</translation>
+      <translation>Kant</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="845"/>
@@ -85,7 +85,7 @@
       <location filename="../../AttacherTexts.cpp" line="857"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
-      <translation>Dreje</translation>
+      <translation>Rotation</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="858"/>
@@ -121,7 +121,7 @@
       <location filename="../../AttacherTexts.cpp" line="864"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
-      <translation type="unfinished">Wire</translation>
+      <translation>Tråd</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
       <location filename="../../AttacherTexts.cpp" line="736"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Objektes origo</translation>
+      <translation>Objektes nulpunkt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="737"/>
@@ -178,7 +178,7 @@
       <location filename="../../AttacherTexts.cpp" line="764"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>På linje</translation>
+      <translation>På kant</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="765"/>
@@ -202,13 +202,13 @@
       <location filename="../../AttacherTexts.cpp" line="784"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Massemidtpunkt</translation>
+      <translation>Tyngdepunkt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="785"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Massemidtpunktet for alle referencer (der antages ens massefylder).</translation>
+      <translation>Tyngdepunktet for alle referencer (der antages ens massefylder).</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="793"/>
@@ -404,7 +404,7 @@
       <location filename="../../AttacherTexts.cpp" line="643"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Tangent til flade (U)</translation>
+      <translation>Tangent til overflade (U)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="644"/>
@@ -417,7 +417,7 @@
       <location filename="../../AttacherTexts.cpp" line="652"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Tangent til flade (V)</translation>
+      <translation>Tangent til overflade (V)</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="661"/>
@@ -495,7 +495,7 @@
       <location filename="../../AttacherTexts.cpp" line="711"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>Normal til flade</translation>
+      <translation>Normal til overflade</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="712"/>
@@ -522,19 +522,19 @@
       <location filename="../../AttacherTexts.cpp" line="306"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>Forskyd origo</translation>
+      <translation>Forskyd nulpunkt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Origo forskydes ti at matche et punkt. Orientering styres af placeringsegenskaber.</translation>
+      <translation>Nulpunkt forskydes ti at matche et punkt. Orientering styres af placeringsegenskaber.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="316"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XY</translation>
+      <translation>Objekter XY</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="317"/>
@@ -546,7 +546,7 @@
       <location filename="../../AttacherTexts.cpp" line="325"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's XZ</translation>
+      <translation>Objekter XZ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="326"/>
@@ -558,7 +558,7 @@
       <location filename="../../AttacherTexts.cpp" line="334"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Object's YZ</translation>
+      <translation>Objekter YZ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="335"/>
@@ -570,7 +570,7 @@
       <location filename="../../AttacherTexts.cpp" line="343"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY parallelt med plan</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="344"/>
@@ -582,7 +582,7 @@
       <location filename="../../AttacherTexts.cpp" line="353"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Plane face</translation>
+      <translation>Plan flade</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="354"/>
@@ -594,7 +594,7 @@
       <location filename="../../AttacherTexts.cpp" line="362"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Tangent to surface</translation>
+      <translation>Tangent til overflade</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="363"/>
@@ -656,7 +656,7 @@
       <location filename="../../AttacherTexts.cpp" line="420"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Roter det valgte</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="421"/>
@@ -731,19 +731,19 @@
       <location filename="../../AttacherTexts.cpp" line="64"/>
       <source>Translate origin</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>Forskyd origo</translation>
+      <translation>Forskyd nulpunkt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="65"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Origo forskydes ti at matche et punkt. Orientering styres af placeringsegenskaber.</translation>
+      <translation>Nulpunkt forskydes ti at matche et punkt. Orientering styres af placeringsegenskaber.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="74"/>
       <source>Object's X Y Z</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Y Z</translation>
+      <translation>Objekter X Y Z</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="75"/>
@@ -755,7 +755,7 @@
       <location filename="../../AttacherTexts.cpp" line="83"/>
       <source>Object's X Z Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's X Z Y</translation>
+      <translation>Objekter X Z Y</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="84"/>
@@ -767,7 +767,7 @@
       <location filename="../../AttacherTexts.cpp" line="92"/>
       <source>Object's Y Z X</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Object's Y Z X</translation>
+      <translation>Objekter Y Z X</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="93"/>
@@ -779,7 +779,7 @@
       <location filename="../../AttacherTexts.cpp" line="101"/>
       <source>XY parallel to plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY parallel to plane</translation>
+      <translation>XY parallelt med plan</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="102"/>
@@ -791,7 +791,7 @@
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY on plane</translation>
+      <translation>XY på plan</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
@@ -803,25 +803,25 @@
       <location filename="../../AttacherTexts.cpp" line="120"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY tangent to surface</translation>
+      <translation>XY tangent til overflade</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="121"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">X' Y' plane is made tangent to surface at vertex.</translation>
+      <translation>X' Y' plan er lavet tangent til overfladen på punkter.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="129"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Z tangent to edge</translation>
+      <translation>Z tangent til kant</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</translation>
+      <translation>Z' akse er justeret til at være tangent til kanten. Valgfri punkter link definerer hvor.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="139"/>
@@ -859,7 +859,7 @@
       <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Revolution Section</translation>
+      <translation>Roter det valgte</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="180"/>
@@ -883,7 +883,7 @@
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY-plane by 3 points</translation>
+      <translation>XY-plan med 3 punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="190"/>
@@ -895,7 +895,7 @@
       <location filename="../../AttacherTexts.cpp" line="198"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ-plane by 3 points</translation>
+      <translation>XY-plan med 3 punkter</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="199"/>
@@ -1066,7 +1066,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="20"/>
       <source>First Limit</source>
-      <translation type="unfinished">First Limit</translation>
+      <translation>Første Grænse</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="40"/>
@@ -1102,7 +1102,7 @@
       <location filename="../../DlgBlock.ui" line="68"/>
       <location filename="../../DlgBlock.ui" line="229"/>
       <source>Up to face</source>
-      <translation>Op til ansigt</translation>
+      <translation>Op til flade</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="76"/>
@@ -1114,7 +1114,7 @@
       <location filename="../../DlgBlock.ui" line="93"/>
       <location filename="../../DlgBlock.ui" line="254"/>
       <source>Limit</source>
-      <translation type="unfinished">Limit</translation>
+      <translation>Grænse</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
@@ -1138,7 +1138,7 @@
       <location filename="../../DlgBlock.ui" line="264"/>
       <location filename="../../DlgBlock.ui" line="316"/>
       <source>No selection</source>
-      <translation>Ingen valg</translation>
+      <translation>Ingen valgt</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="115"/>
@@ -1148,7 +1148,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="162"/>
       <source>Reverse</source>
-      <translation>Omvendt</translation>
+      <translation>Modsat</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="169"/>
@@ -1176,7 +1176,7 @@
     <message>
       <location filename="../../Command.cpp" line="2407"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2408"/>
@@ -1199,7 +1199,7 @@
     <message>
       <location filename="../../Command.cpp" line="2329"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2330"/>
@@ -1217,7 +1217,7 @@
     <message>
       <location filename="../../Command.cpp" line="2363"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2364"/>
@@ -1235,7 +1235,7 @@
     <message>
       <location filename="../../Command.cpp" line="1416"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1417"/>
@@ -1253,7 +1253,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="113"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="114"/>
@@ -1273,7 +1273,7 @@
     <message>
       <location filename="../../Command.cpp" line="133"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="134"/>
@@ -1291,7 +1291,7 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="177"/>
@@ -1309,7 +1309,7 @@
     <message>
       <location filename="../../Command.cpp" line="1715"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1716"/>
@@ -1327,7 +1327,7 @@
     <message>
       <location filename="../../Command.cpp" line="1620"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1621"/>
@@ -1337,7 +1337,7 @@
     <message>
       <location filename="../../Command.cpp" line="1622"/>
       <source>Chamfers the selected edges of a shape</source>
-      <translation type="unfinished">Chamfers the selected edges of a shape</translation>
+      <translation>Rejf de valgte kanter af en form</translation>
     </message>
   </context>
   <context>
@@ -1345,7 +1345,7 @@
     <message>
       <location filename="../../Command.cpp" line="390"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="391"/>
@@ -1363,7 +1363,7 @@
     <message>
       <location filename="../../Command.cpp" line="817"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="818"/>
@@ -1381,7 +1381,7 @@
     <message>
       <location filename="../../Command.cpp" line="568"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="569"/>
@@ -1399,7 +1399,7 @@
     <message>
       <location filename="../../Command.cpp" line="1936"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1937"/>
@@ -1417,7 +1417,7 @@
     <message>
       <location filename="../../Command.cpp" line="682"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="683"/>
@@ -1435,7 +1435,7 @@
     <message>
       <location filename="../../Command.cpp" line="934"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="935"/>
@@ -1453,7 +1453,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="201"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="202"/>
@@ -1473,7 +1473,7 @@
     <message>
       <location filename="../../Command.cpp" line="1676"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1677"/>
@@ -1491,7 +1491,7 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
@@ -1509,7 +1509,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="69"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="70"/>
@@ -1529,7 +1529,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="460"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="461"/>
@@ -1547,7 +1547,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="357"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="358"/>
@@ -1565,7 +1565,7 @@
     <message>
       <location filename="../../Command.cpp" line="1140"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1141"/>
@@ -1583,7 +1583,7 @@
     <message>
       <location filename="../../Command.cpp" line="1448"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1449"/>
@@ -1601,7 +1601,7 @@
     <message>
       <location filename="../../Command.cpp" line="1592"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1593"/>
@@ -1619,7 +1619,7 @@
     <message>
       <location filename="../../Command.cpp" line="467"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="468"/>
@@ -1637,7 +1637,7 @@
     <message>
       <location filename="../../Command.cpp" line="1066"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1067"/>
@@ -1655,7 +1655,7 @@
     <message>
       <location filename="../../Command.cpp" line="1196"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1197"/>
@@ -1673,7 +1673,7 @@
     <message>
       <location filename="../../Command.cpp" line="1745"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1746"/>
@@ -1691,7 +1691,7 @@
     <message>
       <location filename="../../Command.cpp" line="1505"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1506"/>
@@ -1709,7 +1709,7 @@
     <message>
       <location filename="../../Command.cpp" line="1256"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1257"/>
@@ -1727,7 +1727,7 @@
     <message>
       <location filename="../../Command.cpp" line="1648"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1649"/>
@@ -1745,12 +1745,12 @@
     <message>
       <location filename="../../Command.cpp" line="1803"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1804"/>
       <source>3D Offset</source>
-      <translation type="unfinished">3D Offset</translation>
+      <translation>3D Forskydning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1805"/>
@@ -1763,12 +1763,12 @@
     <message>
       <location filename="../../Command.cpp" line="1870"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>2D Forskydning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1872"/>
@@ -1781,7 +1781,7 @@
     <message>
       <location filename="../../Command.cpp" line="87"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="88"/>
@@ -1799,7 +1799,7 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="142"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="143"/>
@@ -1817,7 +1817,7 @@
     <message>
       <location filename="../../Command.cpp" line="219"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="220"/>
@@ -1835,7 +1835,7 @@
     <message>
       <location filename="../../Command.cpp" line="2437"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2438"/>
@@ -1859,7 +1859,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="385"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="386"/>
@@ -1877,7 +1877,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1349"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1350"/>
@@ -1895,17 +1895,17 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1564"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1565"/>
       <source>Revolve</source>
-      <translation>Dreje</translation>
+      <translation>Rotation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Revolves the selected shape</source>
-      <translation type="unfinished">Revolves the selected shape</translation>
+      <translation>Roter den valgte form</translation>
     </message>
   </context>
   <context>
@@ -1913,7 +1913,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="2185"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2186"/>
@@ -1931,12 +1931,12 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="996"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="997"/>
       <source>Section</source>
-      <translation type="unfinished">Section</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="998"/>
@@ -1949,7 +1949,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="114"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="115"/>
@@ -1967,12 +1967,12 @@ af projektionen.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="239"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="240"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>Simpel Kopi</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="241"/>
@@ -1985,7 +1985,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="55"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="56"/>
@@ -2003,7 +2003,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="157"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="158"/>
@@ -2023,7 +2023,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1774"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1775"/>
@@ -2041,7 +2041,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="2038"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2039"/>
@@ -2069,7 +2069,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="245"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandParametric.cpp" line="246"/>
@@ -2081,7 +2081,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="247"/>
       <source>Creates a solid torus</source>
-      <translation type="unfinished">Creates a solid torus</translation>
+      <translation>Opretter en massiv Kegle</translation>
     </message>
   </context>
   <context>
@@ -2089,7 +2089,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="327"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="328"/>
@@ -2133,12 +2133,12 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1025"/>
       <source>Section</source>
-      <translation type="unfinished">Section</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>Import Part</source>
-      <translation type="unfinished">Import Part</translation>
+      <translation>Importer part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1225"/>
@@ -2148,7 +2148,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="1363"/>
       <source>Reverse</source>
-      <translation>Omvendt</translation>
+      <translation>Modsat</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1524"/>
@@ -2183,17 +2183,17 @@ af projektionen.</translation>
     <message>
       <location filename="../../Command.cpp" line="2587"/>
       <source>Add datum plane</source>
-      <translation type="unfinished">Add datum plane</translation>
+      <translation>Tilføj konstruktionsplan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2620"/>
       <source>Add datum line</source>
-      <translation type="unfinished">Add datum line</translation>
+      <translation>Tilføj konstruktionslinje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2653"/>
       <source>Add datum point</source>
-      <translation type="unfinished">Add datum point</translation>
+      <translation>Tilføj konstruktionspunkt</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="70"/>
@@ -2203,7 +2203,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="200"/>
       <source>Points from geometry</source>
-      <translation type="unfinished">Points from geometry</translation>
+      <translation>Punkt fra geometri</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="404"/>
@@ -2223,7 +2223,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1450"/>
       <source>Edit attachment</source>
-      <translation type="unfinished">Edit attachment</translation>
+      <translation>Rediger Vedhæftning</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.cpp" line="489"/>
@@ -2238,12 +2238,12 @@ af projektionen.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="267"/>
       <source>Edge</source>
-      <translation>Linje</translation>
+      <translation>Kant</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="309"/>
       <source>Wire</source>
-      <translation type="unfinished">Wire</translation>
+      <translation>Tråd</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="364"/>
@@ -2274,7 +2274,7 @@ af projektionen.</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="211"/>
       <source>Edit mirror</source>
-      <translation type="unfinished">Edit mirror</translation>
+      <translation>Rediger spejling</translation>
     </message>
   </context>
   <context>
@@ -2341,7 +2341,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="325"/>
       <source>Around Z-axis</source>
-      <translation type="unfinished">Around Z-axis</translation>
+      <translation>Omkring Z-akse</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="344"/>
@@ -2418,7 +2418,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Sektioner</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -2428,7 +2428,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation>Tælle</translation>
+      <translation>Tæl</translation>
     </message>
     <message>
       <location filename="../../CrossSections.cpp" line="341"/>
@@ -2462,7 +2462,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Section</source>
-      <translation type="unfinished">Section</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -2479,7 +2479,7 @@ Note: The placement is expressed in local space of object being attached.</trans
       <location filename="../../DlgBooleanOperation.ui" line="86"/>
       <location filename="../../DlgBooleanOperation.ui" line="124"/>
       <source>Shells</source>
-      <translation type="unfinished">Shells</translation>
+      <translation>Skal</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="91"/>
@@ -2491,7 +2491,7 @@ Note: The placement is expressed in local space of object being attached.</trans
       <location filename="../../DlgBooleanOperation.ui" line="96"/>
       <location filename="../../DlgBooleanOperation.ui" line="134"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="114"/>
@@ -2511,7 +2511,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="435"/>
       <source>No active document available</source>
-      <translation>Ingen aktive dokument</translation>
+      <translation>Intet aktivt dokument tilgængeligt</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.cpp" line="414"/>
@@ -2549,7 +2549,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1204"/>
       <source>Chamfer Edges</source>
-      <translation type="unfinished">Chamfer Edges</translation>
+      <translation>Rejfning af kanter</translation>
     </message>
   </context>
   <context>
@@ -2756,12 +2756,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgExtrusion.ui" line="185"/>
       <source>Along</source>
-      <translation type="unfinished">Along</translation>
+      <translation>Langs</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="224"/>
       <source>Against</source>
-      <translation type="unfinished">Against</translation>
+      <translation>Imod</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="243"/>
@@ -2896,22 +2896,22 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="14"/>
       <source>Fillet Edges</source>
-      <translation type="unfinished">Fillet Edges</translation>
+      <translation>Runding af kanter</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Form</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="40"/>
       <source>No selection</source>
-      <translation>Ingen valg</translation>
+      <translation>Ingen valgt</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
       <source>Selected shape</source>
-      <translation type="unfinished">Selected shape</translation>
+      <translation>Valgte form</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="51"/>
@@ -2926,12 +2926,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="63"/>
       <source>Select edges</source>
-      <translation type="unfinished">Select edges</translation>
+      <translation>Vælg kanter</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="73"/>
       <source>Select faces</source>
-      <translation type="unfinished">Select faces</translation>
+      <translation>Vælg flader</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="80"/>
@@ -2951,17 +2951,17 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="118"/>
       <source>Constant Radius</source>
-      <translation type="unfinished">Constant Radius</translation>
+      <translation>Konstant Radius</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="123"/>
       <source>Variable Radius</source>
-      <translation type="unfinished">Variable Radius</translation>
+      <translation>Variabel Radius</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="291"/>
       <source>Chamfer type</source>
-      <translation type="unfinished">Chamfer type</translation>
+      <translation>Type af rejfning</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="292"/>
@@ -2971,12 +2971,12 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="296"/>
       <source>Edges to chamfer</source>
-      <translation type="unfinished">Edges to chamfer</translation>
+      <translation>Kanter som skal rejfning</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="988"/>
       <source>Start length</source>
-      <translation type="unfinished">Start length</translation>
+      <translation>Start længde</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="293"/>
@@ -2986,7 +2986,7 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="290"/>
       <source>Chamfer parameters</source>
-      <translation type="unfinished">Chamfer parameters</translation>
+      <translation>Parametre for rejfning</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="294"/>
@@ -3001,22 +3001,22 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="298"/>
       <source>Size2</source>
-      <translation type="unfinished">Size2</translation>
+      <translation>Størrelse2</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="301"/>
       <source>Fillet parameter</source>
-      <translation type="unfinished">Fillet parameter</translation>
+      <translation>Parametre for runding</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="302"/>
       <source>Fillet type</source>
-      <translation type="unfinished">Fillet type</translation>
+      <translation>Rundings type</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="303"/>
       <source>Edges to fillet</source>
-      <translation type="unfinished">Edges to fillet</translation>
+      <translation>Kanter der skal rundes</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="304"/>
@@ -3027,13 +3027,13 @@ If both lengths are zero, magnitude of direction is used.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="305"/>
       <source>End radius</source>
-      <translation>Slutningen radius</translation>
+      <translation>Slut radius</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="820"/>
       <location filename="../../DlgFilletEdges.cpp" line="883"/>
       <source>Edge%1</source>
-      <translation type="unfinished">Edge%1</translation>
+      <translation>Kant%1</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="978"/>
@@ -3063,12 +3063,12 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1040"/>
       <source>No shape selected</source>
-      <translation>Ingen figur er markeret</translation>
+      <translation>Ingen figur er valgt</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="1098"/>
       <source>No edge selected</source>
-      <translation type="unfinished">No edge selected</translation>
+      <translation>Intet valgt element</translation>
     </message>
   </context>
   <context>
@@ -3722,17 +3722,17 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.cpp" line="2325"/>
       <location filename="../../DlgPrimitives.cpp" line="2332"/>
       <source>Create %1</source>
-      <translation>Oprette %1</translation>
+      <translation>Opret %1</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2298"/>
       <source>No active document</source>
-      <translation>Ingen aktive dokument</translation>
+      <translation>Ingen aktiv dokument</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="2648"/>
       <source>&amp;Create</source>
-      <translation>&amp; Opret</translation>
+      <translation>&amp;Opret</translation>
     </message>
   </context>
   <context>
@@ -3820,7 +3820,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
       <source>No active document</source>
-      <translation>Ingen aktive dokument</translation>
+      <translation>Ingen aktiv dokument</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
@@ -3833,32 +3833,32 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Dreje</translation>
+      <translation>Rotation</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="42"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Form</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="56"/>
       <source>Revolution Axis</source>
-      <translation type="unfinished">Revolution Axis</translation>
+      <translation>Rotations akse</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="64"/>
       <source>Center X</source>
-      <translation type="unfinished">Center X</translation>
+      <translation>Center X</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="84"/>
       <source>Center Y</source>
-      <translation type="unfinished">Center Y</translation>
+      <translation>Center Y</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="104"/>
       <source>Center Z</source>
-      <translation type="unfinished">Center Z</translation>
+      <translation>Center Z</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="146"/>
@@ -4424,12 +4424,12 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="14"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Spejl</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="20"/>
       <source>Base Point</source>
-      <translation type="unfinished">Base Point</translation>
+      <translation>Basispunkt</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="26"/>
@@ -4449,7 +4449,7 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="98"/>
       <source>Mirror plane</source>
-      <translation type="unfinished">Mirror plane</translation>
+      <translation>Spejlings plan</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="106"/>
@@ -4469,38 +4469,38 @@ the sketch plane's normal vector will be used</translation>
     <message>
       <location filename="../../Mirroring.ui" line="121"/>
       <source>Use selected reference</source>
-      <translation type="unfinished">Use selected reference</translation>
+      <translation>Brug valgt reference</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="142"/>
       <source>Shapes</source>
-      <translation type="unfinished">Shapes</translation>
+      <translation>Former</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="150"/>
       <location filename="../../Mirroring.cpp" line="240"/>
       <source>Selecting</source>
-      <translation type="unfinished">Selecting</translation>
+      <translation>Udvælgelse</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>
       <source>Mirror plane reference</source>
-      <translation type="unfinished">Mirror plane reference</translation>
+      <translation>Spejl plan reference</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="235"/>
       <source>Select reference</source>
-      <translation type="unfinished">Select reference</translation>
+      <translation>Vælg reference</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="311"/>
       <source>Select a shape for mirroring.</source>
-      <translation type="unfinished">Select a shape for mirroring.</translation>
+      <translation>Vælg en form til spejling.</translation>
     </message>
     <message>
       <location filename="../../Mirroring.cpp" line="319"/>
       <source>No such document '%1'.</source>
-      <translation type="unfinished">No such document '%1'.</translation>
+      <translation>Intet sådant dokument '%1'.</translation>
     </message>
   </context>
   <context>
@@ -4908,7 +4908,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="322"/>
       <source>Around Z-axis</source>
-      <translation type="unfinished">Around Z-axis</translation>
+      <translation>Omkring Z-akse</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="335"/>
@@ -4945,7 +4945,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="413"/>
       <source>Not attached</source>
-      <translation>Ikke fundet</translation>
+      <translation>Ikke vedhæftet</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="421"/>
@@ -4975,7 +4975,7 @@ of the object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="922"/>
       <source>Edge</source>
-      <translation>Linje</translation>
+      <translation>Kant</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="929"/>
@@ -5399,7 +5399,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="144"/>
@@ -5658,7 +5658,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
-      <translation>Linje</translation>
+      <translation>Kant</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
@@ -5688,7 +5688,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Wire</source>
-      <translation type="unfinished">Wire</translation>
+      <translation>Tråd</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>
@@ -6362,7 +6362,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="733"/>
       <source>Not attached</source>
-      <translation>Ikke fundet</translation>
+      <translation>Ikke vedhæftet</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
@@ -6410,12 +6410,12 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="37"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="38"/>
       <source>Shells</source>
-      <translation type="unfinished">Shells</translation>
+      <translation>Skal</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="39"/>
@@ -6435,7 +6435,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="51"/>
       <source>Shapes</source>
-      <translation type="unfinished">Shapes</translation>
+      <translation>Former</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="76"/>
@@ -6475,7 +6475,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="131"/>
       <source>Center of mass</source>
-      <translation>Massemidtpunkt</translation>
+      <translation>Tyngdepunkt</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="152"/>
@@ -6535,64 +6535,64 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>X faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Z faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>Skalér objektet med en enkelt faktor i alle retninger.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>Uniform Skalering</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Y faktor</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction</translation>
+      <translation>Angiv en anden skala faktor for hver retning</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-uniform scaling</source>
-      <translation type="unfinished">Non-uniform scaling</translation>
+      <translation>Ikke-ensartet skalering</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shapes to be scaled</source>
-      <translation type="unfinished">Select shapes to be scaled</translation>
+      <translation>Vælg figurer der skal skaleres</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
       <source>Shape</source>
-      <translation type="unfinished">Shape</translation>
+      <translation>Form</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>Ingen skalerbare figurer valgt</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="216"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Dokumentet '%1' eksisterer ikke.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="275"/>
       <location filename="../../DlgScale.cpp" line="283"/>
       <source>Creating scale failed.
 %1</source>
-      <translation type="unfinished">Creating scale failed.
+      <translation>Oprettelse af skalering mislykkedes.
 %1</translation>
     </message>
   </context>
@@ -6601,7 +6601,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="1476"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1477"/>
@@ -6611,7 +6611,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="1478"/>
       <source>Scales the selected shape</source>
-      <translation type="unfinished">Scales the selected shape</translation>
+      <translation>Skalerer den valgte form</translation>
     </message>
   </context>
   <context>
@@ -6689,7 +6689,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="41"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="66"/>
@@ -6773,7 +6773,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2537"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2538"/>
@@ -6791,7 +6791,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2676"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2677"/>
@@ -6817,7 +6817,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2575"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2576"/>
@@ -6835,7 +6835,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2608"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2609"/>
@@ -6853,7 +6853,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2641"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2642"/>
@@ -7059,12 +7059,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection Filter</source>
-      <translation>Begræns valg</translation>
+      <translation>Udvælgelses filter</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <source>Changes the selection filter</source>
-      <translation>Begrænser valget af geometrier</translation>
+      <translation>Ændre udvælgelses filter</translation>
     </message>
   </context>
   <context>
@@ -7111,12 +7111,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="268"/>
       <source>No Selection Filters</source>
-      <translation>Vælg alt</translation>
+      <translation>Ingen udvælgelses filter</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="269"/>
       <source>Clears all selection filters</source>
-      <translation>Rydder alle begrænsninger på valg</translation>
+      <translation>Rydder alle udvælgelses filter</translation>
     </message>
   </context>
   <context>

@@ -1973,138 +1973,18 @@ class MachineEditorDialog(QtGui.QDialog):
         )
         self.post_processor_combo.setToolTip(self.postProcessorDefaultTooltip)
 
-        # Populate postprocessor list - only show new-style post processors with property schema support
-        Path.Log.info("Machine Editor: Starting postprocessor filtering...")
-
-        # Clear any existing items first
+        # Populate postprocessor list - only show new-style machine post processors
         self.post_processor_combo.clear()
-        Path.Log.debug(
-            f"Machine Editor: Cleared combo box (now has {self.post_processor_combo.count()} items)"
-        )
-
-        postProcessors = Path.Preferences.allEnabledPostProcessors([""])
-        found_generic = False
-        total_postprocessors = len(postProcessors)
-        new_style_count = 0
-
-        Path.Log.debug(
-            f"Machine Editor: Filtering {total_postprocessors} postprocessors for new-style architecture"
-        )
-        Path.Log.debug(f"Machine Editor: Postprocessors found: {postProcessors}")
-
+        postProcessors = Path.Preferences.allEnabledMachinePostProcessors([""])
         for post in postProcessors:
-            Path.Log.debug(f"Machine Editor: Processing postprocessor: {post}")
-            if post == "generic_plasma":
-                Path.Log.debug("Machine Editor: *** Processing generic_plasma specifically ***")
-            # Check if this is a new-style post processor by testing for property schema support
-            try:
-                processor = PostProcessorFactory.get_post_processor(None, post)
-                Path.Log.debug(
-                    f"Machine Editor: Loaded processor for {post}: {processor.__class__.__name__ if processor else 'None'}"
-                )
-
-                if not processor:
-                    Path.Log.debug(f"Machine Editor: Skipped {post} - could not load")
-                    continue
-
-                # Skip WrapperPost instances - these are legacy script-based post processors
-                if processor.__class__.__name__ == "WrapperPost":
-                    Path.Log.debug(f"Machine Editor: Skipped WrapperPost (legacy script): {post}")
-                    continue
-
-                # Check if it's a PostProcessor subclass (works for both instances and uninitialized objects)
-                from Path.Post.Processor import PostProcessor
-
-                processor_class = processor.__class__
-
-                if not issubclass(processor_class, PostProcessor):
-                    Path.Log.debug(f"Machine Editor: Skipped non-PostProcessor subclass: {post}")
-                    continue
-
-                # Check for schema methods (these are class methods, so check on the class)
-                has_get_property_schema = hasattr(
-                    processor_class, "get_property_schema"
-                ) and callable(getattr(processor_class, "get_property_schema"))
-                has_get_common_property_schema = hasattr(
-                    processor_class, "get_common_property_schema"
-                ) and callable(getattr(processor_class, "get_common_property_schema"))
-
-                Path.Log.debug(
-                    f"Machine Editor: {post} - has_get_property_schema: {has_get_property_schema}, has_get_common_property_schema: {has_get_common_property_schema}"
-                )
-
-                if has_get_property_schema and has_get_common_property_schema:
-
-                    # Test that the methods actually return meaningful schema data
-                    try:
-                        common_schema = processor_class.get_common_property_schema()
-                        specific_schema = processor_class.get_property_schema()
-
-                        Path.Log.debug(
-                            f"Machine Editor: {post} - common_schema type: {type(common_schema)}, len: {len(common_schema) if hasattr(common_schema, '__len__') else 'N/A'}"
-                        )
-                        Path.Log.debug(
-                            f"Machine Editor: {post} - specific_schema type: {type(specific_schema)}, len: {len(specific_schema) if hasattr(specific_schema, '__len__') else 'N/A'}"
-                        )
-
-                        # New-style post processors should return non-empty lists with proper structure
-                        if (
-                            isinstance(common_schema, list)
-                            and len(common_schema) > 0
-                            and isinstance(specific_schema, list)
-                            and all(
-                                isinstance(prop, dict) and "name" in prop for prop in common_schema
-                            )
-                        ):
-                            # This is a proper new-style post processor
-                            self.post_processor_combo.addItem(post)
-                            new_style_count += 1
-                            Path.Log.debug(f"Machine Editor: Added new-style postprocessor: {post}")
-                            if post == "generic":
-                                found_generic = True
-                        else:
-                            Path.Log.debug(
-                                f"Machine Editor: Skipped postprocessor with invalid schema: {post}"
-                            )
-                            Path.Log.debug(
-                                f"Machine Editor: {post} - common_schema valid: {isinstance(common_schema, list) and len(common_schema) > 0}"
-                            )
-                            Path.Log.debug(
-                                f"Machine Editor: {post} - specific_schema valid: {isinstance(specific_schema, list)}"
-                            )
-                            if isinstance(common_schema, list) and len(common_schema) > 0:
-                                prop_names = [
-                                    prop.get("name", "NO_NAME") for prop in common_schema[:3]
-                                ]  # First 3 props
-                                Path.Log.debug(
-                                    f"Machine Editor: {post} - sample prop names: {prop_names}"
-                                )
-                    except Exception as schema_error:
-                        Path.Log.debug(
-                            f"Machine Editor: Schema test failed for {post}: {schema_error}"
-                        )
-                        import traceback
-
-                        Path.Log.debug(
-                            f"Machine Editor: Schema test traceback for {post}: {traceback.format_exc()}"
-                        )
-                else:
-                    Path.Log.debug(f"Machine Editor: Skipped legacy postprocessor: {post}")
-            except Exception as e:
-                # Skip post processors that can't be instantiated or don't support new architecture
-                import traceback
-
-                Path.Log.debug(f"Machine Editor: Error loading postprocessor {post}: {e}")
-                Path.Log.debug(f"Machine Editor: Traceback: {traceback.format_exc()}")
-                continue
+            self.post_processor_combo.addItem(post)
 
         # Ensure generic post processor is always available as fallback
-        if not found_generic:
+        if self.post_processor_combo.findText("generic") < 0:
             self.post_processor_combo.addItem("generic")
-            Path.Log.debug("Machine Editor: Added generic postprocessor as fallback")
 
         Path.Log.info(
-            f"Machine Editor: Showing {new_style_count} new-style postprocessors (filtered from {total_postprocessors} total)"
+            f"Machine Editor: Showing {self.post_processor_combo.count()} machine postprocessors"
         )
 
         # Connect signals

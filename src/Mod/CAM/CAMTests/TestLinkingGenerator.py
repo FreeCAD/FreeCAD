@@ -82,6 +82,20 @@ class TestGetLinkingMoves(PathTestUtils.PathTestBase):
                 solids=[blocking_box],
             )
 
+    def test_path_blocked_by_solid_with_tolerance(self):
+        blocking_box = Part.makeBox(1, 10, 10)
+        blocking_box.translate(FreeCAD.Vector(5, -5, 0))
+        with self.assertRaises(RuntimeError):
+            generator.get_linking_moves(
+                start_position=self.start,
+                target_position=self.target,
+                local_clearance=5,
+                global_clearance=11,
+                tool_shape=self.tool,
+                tolerance=1.1,
+                solids=[blocking_box],
+            )
+
     def test_plunge_to_zero_depth(self):
         """Test that plunge moves correctly go to Z=0 (regression test for depth==0 bug)"""
         start = FreeCAD.Vector(0, 0, 1)  # Start below clearance

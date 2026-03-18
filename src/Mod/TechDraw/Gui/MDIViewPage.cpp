@@ -179,7 +179,7 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
     blockSceneSelection(false);
 }
 
-bool MDIViewPage::onMsg(const char* pMsg, const char**)
+bool MDIViewPage::onMsg(const char* pMsg)
 {
     Gui::Document* doc(getGuiDocument());
 

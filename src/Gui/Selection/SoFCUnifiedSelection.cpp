@@ -1315,7 +1315,7 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
     }
 
     auto front = dynamic_cast<SoFCSelectionRoot*>(stack.front());
-    if (front == nullptr) {
+    if (!front) {
         return SoFCSelectionContextBasePtr();
     }
 
@@ -1341,7 +1341,7 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext2(
     }
 
     auto* back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
-    if (back == nullptr || back->contextMap2.empty()) {
+    if (!back || back->contextMap2.empty()) {
         return ret;
     }
 
@@ -1387,7 +1387,7 @@ std::pair<bool, SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionConte
 
     if (res.first) {
         auto back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
-        if (back != nullptr) {
+        if (back) {
             stack.back() = _node;
             if (create) {
                 res.second = &back->contextMap2[stack];
@@ -1406,7 +1406,7 @@ std::pair<bool, SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionConte
     }
     else {
         auto front = dynamic_cast<SoFCSelectionRoot*>(stack.front());
-        if (front != nullptr) {
+        if (front) {
             stack.front() = _node;
             if (create) {
                 res.second = &front->contextMap[stack];
@@ -2027,7 +2027,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                         continue;
                     }
                     auto node = dynamic_cast<SoFCSelectionRoot*>(path->getNode(i));
-                    if (node != nullptr && node->selectionStyle.getValue() == SoFCSelectionRoot::Box) {
+                    if (node && node->selectionStyle.getValue() == SoFCSelectionRoot::Box) {
                         bbox = true;
                         break;
                     }

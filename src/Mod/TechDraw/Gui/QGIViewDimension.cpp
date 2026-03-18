@@ -2038,6 +2038,12 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
     Base::Vector2d angleVertex = fromQtApp(anglePoints.vertex());
     Base::Vector2d firstDimPoint = fromQtApp(anglePoints.first());
     Base::Vector2d secondDimPoint = fromQtApp(anglePoints.second());
+    
+    bool supplementary = dimension->ShowSupplementary.getValue();
+    if (supplementary) {
+        // flip the first point wrt. vertex to opposite side
+        firstDimPoint = angleVertex - (firstDimPoint - angleVertex);
+    }
 
     double endAngle = (secondDimPoint - angleVertex).Angle();
     double startAngle = (firstDimPoint - angleVertex).Angle();
@@ -2074,7 +2080,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
             jointDirections[0] = getAsmeRefJointPoint(labelRectangle, false) - angleVertex;
             jointDirections[1] = getAsmeRefJointPoint(labelRectangle, true) - angleVertex;
         }
-
+         
         // Get radiuses of the angle dimension arcs
         double arcRadii[2];
         arcRadii[0] = jointDirections[0].Length();
@@ -2202,7 +2208,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
 
         if (arrowCount > 1) {
             extensionTarget = computeExtensionLinePoints(
-                firstDimPoint, angleVertex + Base::Vector2d::FromPolar(arcRadius, startAngle),
+                supplementary ? angleVertex : firstDimPoint, angleVertex + Base::Vector2d::FromPolar(arcRadius, startAngle),
                 startAngle, getDefaultExtensionLineOverhang(), gapSize, extensionOrigin);
             anglePath.moveTo(toQtGui(extensionOrigin));
             anglePath.lineTo(toQtGui(extensionTarget));
