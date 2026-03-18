@@ -215,6 +215,11 @@ jobs:
           mkdir -p ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
+    # Version consistency check
+      - name: Check version sync
+        if: always()
+        run: python3 src/Tools/sync_version.py --check
+
     # Generic lints steps
       - name: Check File Case Sensitivity
         uses: credfeto/action-case-checker@cb652aeab29ed363bbdb7d9ee1bfcc010c46cac5 # v1.3.0
