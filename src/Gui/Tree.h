@@ -127,8 +127,6 @@ public:
 
     static void synchronizeSelectionCheckBoxes();
     static void updateVisibilityIcons();
-    static std::unique_ptr<QPixmap> documentPixmap;
-    static std::unique_ptr<QPixmap> documentPartialPixmap;
 
     QList<QTreeWidgetItem*> childrenOfItem(const QTreeWidgetItem& item) const;
 
