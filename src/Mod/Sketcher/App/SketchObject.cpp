@@ -756,7 +756,8 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
         constr->addElement(GeoElementId(i));
     }
     constr->setText(newText);
-    constr->setFont(newFont);
+    Base::FileInfo fi(newFont);
+    constr->setFont(fi.fileNamePure());
     constr->setIsTextHeight(isHeight);
 
     if (hasExistingText) {

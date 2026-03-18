@@ -63,7 +63,6 @@ private:
     QMap<QString, QString> fontPathMap;
 
     void populateFontList();
-    QString findFontNameFromPath(const QString& path) const;
 };
 
 }  // namespace SketcherGui
