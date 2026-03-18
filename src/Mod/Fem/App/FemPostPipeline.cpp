@@ -571,6 +571,9 @@ void FemPostPipeline::setTimeInfo(const std::string& frameType, const Base::Unit
         fd_block->AddArray(timeInfo);
         for (unsigned int i = 0; i < multiblock->GetNumberOfBlocks(); ++i) {
             vtkDataObject* grid = multiblock->GetBlock(i);
+            if (!grid) {
+                continue;
+            }
             auto fd_grid = grid->GetFieldData();
             if (fd_grid) {
                 // add time info to each grid
@@ -757,6 +760,13 @@ void FemPostPipeline::renameArrays(const std::map<std::string, std::string>& nam
     }
 
     Data.touch();
+}
+
+void FemPostPipeline::addArrayFromFunction(const std::map<std::string, std::string>& functions)
+{
+    auto data = Data.getValue();
+    FemVTKTools::addArrayFromFunction(data, functions);
+    Data.setValue(data);
 }
 
 PyObject* FemPostPipeline::getPyObject()

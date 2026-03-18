@@ -26,8 +26,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
@@ -128,10 +128,10 @@
       <translation>Placering</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
+      <location filename="../Transform.cpp" line="108"/>
       <location filename="../TaskTransform.cpp" line="128"/>
       <location filename="../TaskTransform.cpp" line="808"/>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
       <source>Transform</source>
       <translation>Omvandla</translation>
     </message>
@@ -2727,7 +2727,7 @@ kommer att visas i det nedre vänstra hörnet i öppnade filer</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="315"/>
       <source>Use OpenGL VBO (Vertex Buffer Object)</source>
-      <translation>Använd OpenGL VBO (Vertex Buffer Object)</translation>
+      <translation>Använd OpenGL VBO (vertex Buffer Object)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="330"/>
@@ -2792,7 +2792,7 @@ kommer att visas i det nedre vänstra hörnet i öppnade filer</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="458"/>
       <source>Backface pass</source>
-      <translation type="unfinished">Backface pass</translation>
+      <translation>Baksidepass</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="492"/>
@@ -2840,7 +2840,7 @@ can be rendered directly by the GPU.
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
 report this setting as enabled when seeking support.</source>
-      <translation>Om du väljer detta alternativ kommer Vertex Buffer Objects (VBO) att användas.
+      <translation>Om du väljer detta alternativ kommer vertex Buffer Objects (VBO) att användas.
 Ett VBO är en OpenGL-funktion som tillhandahåller metoder för att ladda upp
 vertexdata (position, normalvektor, färg etc.) till grafikkortet.
 VBO:er ger betydande prestandavinster eftersom data ligger i grafikminnet
@@ -2883,7 +2883,7 @@ but slower response to any scene changes.</source>
       <translation>"Cachelagring av rendering" är ett annat sätt att säga "Renderingsacceleration".
 Det finns 3 alternativ tillgängliga för att uppnå detta:
 1) 'Auto' (standard), låt Coin3D bestämma var cache ska lagras.
-2) 'Distribuerad', slå på cache manuellt för alla view provider root node.
+2) 'Distribuerad', slå på cache manuellt för alla vy provider root node.
 3) 'Centraliserad', stäng manuellt av cache i alla noder hos alla visningsleverantörer, och
 endast cache i rotnoden för scengrafen. Detta ger den snabbaste renderingshastigheten
 men långsammare svar på eventuella scenförändringar.</translation>
@@ -5712,7 +5712,7 @@ som ursprungligen valdes innan denna dialog öppnades</translation>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="669"/>
       <source>Mark to Recompute</source>
-      <translation>Markera för att räkna om</translation>
+      <translation>Markera för att beräkna om</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="671"/>
@@ -6054,66 +6054,66 @@ Spara alla ändringar?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="157"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="303"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="492"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="135"/>
       <location filename="../InputVector.h" line="160"/>
       <location filename="../InputVector.h" line="281"/>
       <location filename="../InputVector.h" line="306"/>
       <location filename="../InputVector.h" line="479"/>
       <location filename="../InputVector.h" line="495"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Användardefinierad…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Fel riktning</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="242"/>
       <location filename="../InputVector.h" line="377"/>
       <location filename="../InputVector.h" line="566"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>Riktningen får inte vara noll vektorn</translation>
     </message>
@@ -7739,7 +7739,7 @@ Ange en annan katalog?</translation>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="86"/>
       <source>Grid snap in</source>
-      <translation type="unfinished">Grid snap in</translation>
+      <translation>Rutnätsfäst</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="97"/>
@@ -8638,8 +8638,8 @@ Välj "Avbryt" för att avbryta</translation>
       <translation>Förtydliga markering</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <source>Transform</source>
       <translation>Transformera</translation>
     </message>
@@ -8768,8 +8768,8 @@ Välj "Avbryt" för att avbryta</translation>
       <translation>Drag &amp; släpp misslyckades</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="900"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <source>Apply to all</source>
       <translation>Ansök till alla</translation>
     </message>
@@ -10770,13 +10770,13 @@ efter att FreeCAD startas</translation>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="591"/>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="606"/>
       <source>ComboBox</source>
-      <translation type="unfinished">ComboBox</translation>
+      <translation>Kombilista</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="592"/>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="607"/>
       <source>TabBar</source>
-      <translation type="unfinished">TabBar</translation>
+      <translation>Flikfält</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="598"/>
@@ -12367,7 +12367,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="320"/>
       <source>Match W/Z</source>
-      <translation type="unfinished">Match W/Z</translation>
+      <translation>Matcha W/Z</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="336"/>
@@ -12397,7 +12397,7 @@ regionen inte är ogenomskinliga.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="435"/>
       <source>Dragger</source>
-      <translation type="unfinished">Dragger</translation>
+      <translation>Draghandtag</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="465"/>

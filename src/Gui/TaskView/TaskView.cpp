@@ -717,7 +717,6 @@ void TaskView::removeDialog()
     tryRestoreWidth();
     triggerMinimumSizeHint();
 
-    clearFocus();
     OverlayManager::instance()->refresh();
 }
 void TaskView::setShowTaskWatcher(bool show)

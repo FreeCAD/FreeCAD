@@ -120,6 +120,7 @@ public:
     static const Unit AngleOfFriction;
     static const Unit Area;
     static const Unit CompressiveStrength;
+    static const Unit Concentration;
     static const Unit CurrentDensity;
     static const Unit Density;
     static const Unit DissipationRate;

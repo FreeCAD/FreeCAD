@@ -505,6 +505,102 @@ class CAMSanity:
         Path.Log.debug("get_output_url")
 
         generator = ReportGenerator.ReportGenerator(self.data, embed_images=True)
-        html = generator.generate_html()
-        generator = None
-        return html
+        return generator.get_output_report()
+
+    def validate_for_postprocessing(self):
+        """
+        Lightweight validation for post-processing without full report generation.
+
+        Returns:
+            tuple: (has_critical_issues, all_squawks, critical_squawks)
+        """
+        all_squawks = []
+
+        # Collect squawks from key validation methods
+        all_squawks.extend(self._toolData().get("squawkData", []))
+
+        # Add basic job structure validation
+        job_squawks = self._validate_job_structure()
+        all_squawks.extend(job_squawks)
+
+        # Identify critical squawks that should block post-processing
+        critical_squawks = []
+        for squawk in all_squawks:
+            if squawk["squawkType"] in ("WARNING", "CAUTION"):
+                note = squawk["Note"].lower()
+                # Critical issues for post-processing
+                if any(
+                    keyword in note
+                    for keyword in [
+                        "no feedrate",
+                        "no spindlespeed",
+                        "no tool controllers",
+                        "no operations",
+                        "no model",
+                        "no base",
+                    ]
+                ):
+                    critical_squawks.append(squawk)
+
+        has_critical = len(critical_squawks) > 0
+        return has_critical, all_squawks, critical_squawks
+
+    def _validate_job_structure(self):
+        """
+        Validate basic job structure for post-processing.
+
+        Returns:
+            list: List of squawk dictionaries for job structure issues
+        """
+        job_squawks = []
+
+        # Check if job has operations
+        if not hasattr(self.job, "Operations") or not self.job.Operations:
+            job_squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "No operations found in job"),
+                    squawkType="WARNING",
+                )
+            )
+
+        # Check if job has model
+        if not hasattr(self.job, "Model") or not self.job.Model:
+            job_squawks.append(
+                self.squawk(
+                    "CAMSanity",
+                    translate("CAM_Sanity", "No model/base geometry found in job"),
+                    squawkType="WARNING",
+                )
+            )
+
+        return job_squawks
+
+    @staticmethod
+    def validate_job_for_postprocessing(job):
+        """
+        Static convenience method to validate a job for post-processing.
+
+        Args:
+            job: FreeCAD CAM job object
+
+        Returns:
+            tuple: (has_critical_issues, all_squawks, critical_squawks)
+        """
+        # Create a minimal CAMSanity instance for validation
+        # Use a dummy output file since we won't generate reports
+        import tempfile
+        import os
+
+        with tempfile.NamedTemporaryFile(suffix=".html", delete=False) as tmp_file:
+            dummy_output = tmp_file.name
+
+        try:
+            sanity = CAMSanity(job, dummy_output)
+            return sanity.validate_for_postprocessing()
+        finally:
+            # Clean up the temporary file
+            try:
+                os.unlink(dummy_output)
+            except:
+                pass

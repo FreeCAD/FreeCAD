@@ -72,7 +72,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             model = base[0]
             for sub in base[1]:
                 pos = proxy.holePosition(model, sub)
-                self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub))
+                self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(model, sub))
 
     def test02(self):
         """Verify Helix generates proper holes for rotated model"""
@@ -88,9 +88,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 for sub in base[1]:
                     pos = proxy.holePosition(model, sub)
                     # Path.Log.track(deg, pos, pos.Length)
-                    self.assertRoughly(
-                        round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
-                    )
+                    self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(model, sub))
 
     def test03(self):
         """Verify Helix generates proper holes for rotated base model"""
@@ -112,9 +110,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 for sub in base[1]:
                     pos = proxy.holePosition(model, sub)
                     # Path.Log.track(deg, pos, pos.Length)
-                    self.assertRoughly(
-                        round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
-                    )
+                    self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(model, sub))
 
     def test04(self):
         """Verify Helix generates proper holes for rotated clone base model"""
@@ -136,9 +132,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 for sub in base[1]:
                     pos = proxy.holePosition(model, sub)
                     # Path.Log.track(deg, pos, pos.Length)
-                    self.assertRoughly(
-                        round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
-                    )
+                    self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(model, sub))
 
     def testPathDirection(self):
         """Verify that the generated paths obeys the given parameters"""

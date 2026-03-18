@@ -976,6 +976,7 @@ protected:
 
         if (sketchobject->getLastHasRedundancies()) {
             Base::Console().warning(
+                sketchobject->getFullLabel(),
                 QT_TRANSLATE_NOOP("Notifications", "Autoconstraints cause redundancy. Removing them") "\n"
             );
 

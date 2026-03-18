@@ -7,8 +7,7 @@
       <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation type="unfinished">Stores the last user choice of whether to apply CopyOnChange setup to all links
-that reference the same configurable object</translation>
+      <translation>Stórálann sé rogha dheireanach an úsáideora maidir le cibé acu an gcuirfear socrú CopyOnChange i bhfeidhm ar gach nasc a thagraíonn don réad inchumraithe céanna</translation>
     </message>
   </context>
   <context>
@@ -35,9 +34,9 @@ that reference the same configurable object</translation>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
-      <translation type="unfinished">
-It is recommended that the user right-click the root of the document and select Mark to recompute.
-The user should then click the Refresh button in the main toolbar.
+      <translation>
+Moltar don úsáideoir cliceáil ar dheis ar fhréamh an doiciméid agus Marcáil le hathríomh a roghnú.
+Ansin, ba chóir don úsáideoir cliceáil ar an gcnaipe Athnuachan sa phríomhbharra uirlisí.
 </translation>
     </message>
   </context>
@@ -46,32 +45,32 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="265"/>
       <source>X-axis</source>
-      <translation type="unfinished">X-axis</translation>
+      <translation>Ais-X</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="266"/>
       <source>Y-axis</source>
-      <translation type="unfinished">Y-axis</translation>
+      <translation>Ais-Y</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="267"/>
       <source>Z-axis</source>
-      <translation type="unfinished">Z-axis</translation>
+      <translation>Ais-Z</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="268"/>
       <source>XY-plane</source>
-      <translation type="unfinished">XY-plane</translation>
+      <translation>Plána XY</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="269"/>
       <source>XZ-plane</source>
-      <translation type="unfinished">XZ-plane</translation>
+      <translation>XZ-eitleán</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="270"/>
       <source>YZ-plane</source>
-      <translation type="unfinished">YZ-plane</translation>
+      <translation>YZ-eitleán</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="271"/>

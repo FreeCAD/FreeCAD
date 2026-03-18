@@ -99,7 +99,7 @@ protected Q_SLOTS:
     void refocusAnnotation();
 
     void onViewSelectionChanged();
-    void onViewPositionChanged(const QPointF& scenePos);
+    void onViewPositionChanged();
 
 private:
     void removeViewFilter();

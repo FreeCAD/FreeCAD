@@ -697,6 +697,8 @@ class StockFromExistingEdit(StockEdit):
                 excludeIndexes.append(index)
             elif not model.ViewObject.ShowInTree:
                 excludeIndexes.append(index)
+            elif model.isDerivedFrom("PartDesign::Feature"):
+                excludeIndexes.append(index)
 
         for i in sorted(excludeIndexes, reverse=True):
             del solids[i]
@@ -780,7 +782,7 @@ class TaskPanel:
         self.form.toolControllerList.resizeColumnsToContents()
 
         currentPostProcessor = self.obj.PostProcessor
-        postProcessors = Path.Preferences.allEnabledPostProcessors(["", currentPostProcessor])
+        postProcessors = Path.Preferences.allEnabledLegacyPostProcessors(["", currentPostProcessor])
         for post in postProcessors:
             self.form.postProcessor.addItem(post)
         # update the enumeration values, just to make sure all selections are valid

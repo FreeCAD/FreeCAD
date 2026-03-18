@@ -292,20 +292,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="68"/>
-      <location filename="../../CommandExport.cpp" line="61"/>
-      <location filename="../../CommandExport.cpp" line="142"/>
-      <location filename="../../Command.cpp" line="102"/>
-      <location filename="../../Command.cpp" line="165"/>
-      <location filename="../../Command.cpp" line="267"/>
-      <location filename="../../CommandTrajectory.cpp" line="107"/>
-      <location filename="../../CommandTrajectory.cpp" line="178"/>
-      <location filename="../../CommandTrajectory.cpp" line="199"/>
-      <location filename="../../CommandTrajectory.cpp" line="484"/>
-      <source>Wrong selection</source>
-      <translation>தவறான தேர்வு</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Select VRML file for Robot</source>
       <translation>ரோபோவிற்கு VRML கோப்பைத் தேர்ந்தெடுக்கவும்</translation>
@@ -326,6 +312,20 @@
       <translation>காபிம கோப்புகள் (*.csv)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="102"/>
+      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="267"/>
+      <location filename="../../CommandTrajectory.cpp" line="107"/>
+      <location filename="../../CommandTrajectory.cpp" line="178"/>
+      <location filename="../../CommandTrajectory.cpp" line="199"/>
+      <location filename="../../CommandTrajectory.cpp" line="484"/>
+      <location filename="../../CommandInsertRobot.cpp" line="68"/>
+      <location filename="../../CommandExport.cpp" line="61"/>
+      <location filename="../../CommandExport.cpp" line="142"/>
+      <source>Wrong selection</source>
+      <translation>தவறான தேர்வு</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Select one Robot to set home position</source>
       <translation>வீட்டு நிலையை அமைக்க ஒரு ரோபோவைத் தேர்ந்தெடுக்கவும்</translation>
@@ -336,10 +336,10 @@
       <translation>ஒரு ரோபோவைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="143"/>
       <location filename="../../Command.cpp" line="268"/>
       <location filename="../../CommandTrajectory.cpp" line="108"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="143"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>ஒரு ரோபோ மற்றும் ஒரு பாதை பொருளைத் தேர்ந்தெடுக்கவும்.</translation>
     </message>

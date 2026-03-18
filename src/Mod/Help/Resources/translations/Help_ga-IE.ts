@@ -17,8 +17,8 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation type="unfinished">Fetches the documentation from pages rendered on GitHub.
-This is currently not available.</translation>
+      <translation>Faigheann sé an doiciméadú ó leathanaigh a rindreáiltear ar GitHub.
+Níl sé seo ar fáil faoi láthair.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>
@@ -27,33 +27,33 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-You can easily download the documentation for offline use by using the Addon
-Manager and installing the &quot;offline-documentation&quot; addon. If this
-field is left blank, FreeCAD will automatically search for the help files at
-the default location ($USERAPPDATADIR/Mod/offline-documentation).</translation>
+      <translation>Socraigh seo go URL saincheaptha nó an fillteán ina bhfuil na comhaid chabhrach suite.
+Is féidir leat an doiciméadú a íoslódáil go héasca le húsáid as líne trí úsáid a bhaint as an mBainisteoir
+Breiseán agus an breiseán &quot;offline-documentation&quot; a shuiteáil. Má fhágtar an réimse seo bán,
+déanfaidh FreeCAD cuardach uathoibríoch ar na comhaid chabhrach ag an suíomh réamhshocraithe
+($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="53"/>
       <source>Custom location</source>
-      <translation type="unfinished">Custom location</translation>
+      <translation>Suíomh saincheaptha</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="123"/>
       <source>FreeCAD Wiki (online)</source>
-      <translation type="unfinished">FreeCAD Wiki (online)</translation>
+      <translation>Vicí FreeCAD (ar líne)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="33"/>
       <source>GitHub (online)</source>
-      <translation type="unfinished">GitHub (online)</translation>
+      <translation>GitHub (ar líne)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="72"/>
       <source>A translation suffix to use, for example &quot;fr&quot;
 to get French translation of the documentation.</source>
-      <translation type="unfinished">A translation suffix to use, for example &quot;fr&quot;
-to get French translation of the documentation.</translation>
+      <translation>Iarmhír aistriúcháin le húsáid, mar shampla &quot;fr&quot;
+chun aistriúchán Fraincise den doiciméadacht a fháil.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="86"/>
@@ -62,23 +62,24 @@ Documentation can be downloaded for offline use via the Addon Manager and instal
 &quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
 automatically search for the help files at the default location
 ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation type="unfinished">Set this to a custom URL or the folder where the help files are located.
-Documentation can be downloaded for offline use via the Addon Manager and installing the
-&quot;offline-documentation&quot; addon. If this field is left blank, FreeCAD will
-automatically search for the help files at the default location
+      <translation>Socraigh seo go URL saincheaptha nó an fillteán ina bhfuil na comhaid chabhrach suite.
+Is féidir doiciméadacht a íoslódáil le húsáid as líne tríd an mBainisteoir Breiseán
+agus tríd an mbreiseán &quot;offline-documentation&quot; a shuiteáil. Má fhágtar an
+réimse seo bán, déanfaidh FreeCAD cuardach uathoibríoch ar na comhaid chabhrach
+ag an suíomh réamhshocraithe
 ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="112"/>
       <source>Translation suffix</source>
-      <translation type="unfinished">Translation suffix</translation>
+      <translation>Iarmhír aistriúcháin</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="119"/>
       <source>The documentation pages will be fetched from the official
 FreeCADwiki at https://wiki.freecad.org</source>
-      <translation type="unfinished">The documentation pages will be fetched from the official
-FreeCADwiki at https://wiki.freecad.org</translation>
+      <translation>Gheofar na leathanaigh dhoiciméadúcháin ón suíomh oifigiúil
+FreeCADwiki ag https://wiki.freecad.org</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="139"/>
@@ -86,15 +87,15 @@ FreeCADwiki at https://wiki.freecad.org</translation>
 of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
 custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
 &apos;Pandoc&apos; Python module should be installed for optimal results.</source>
-      <translation type="unfinished">The documentation pages will be fetched from an automatic Markdown conversion
-of the FreeCAD wiki,hosted on FreeCAD&apos;s GitHub account. This can be styled with a
-custom stylesheet below and can look nicer than the wiki option. The &apos;Markdown&apos; or
-&apos;Pandoc&apos; Python module should be installed for optimal results.</translation>
+      <translation>Gheofar na leathanaigh dhoiciméadúcháin ó chomhshó uathoibríoch Markdown den vicí FreeCAD,
+atá á óstáil ar chuntas GitHub FreeCAD. Is féidir stíl a chur air seo le bileog stíle saincheaptha thíos agus
+is féidir go mbeidh cuma níos deise air ná an rogha vicí. Ba chóir an modúl Python &apos;Markdown&apos; nó
+&apos;Pandoc&apos; a shuiteáil chun na torthaí is fearr a fháil.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="145"/>
       <source>Markdown version (online)</source>
-      <translation type="unfinished">Markdown version (online)</translation>
+      <translation>Leagan Markdown (ar líne)</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="164"/>
@@ -104,51 +105,51 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation type="unfinished">Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</translation>
+      <translation>Tabhair faoi deara: mura bhfuil comhpháirteanna Gréasáin PySide le fáil ar an gcóras, osclófar leathanaigh chabhrach sa bhrabhsálaí gréasáin réamhshocraithe beag beann ar na roghanna thíos.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation type="unfinished">The documentation will open in the default web browser</translation>
+      <translation>Osclófar an doiciméadú sa bhrabhsálaí gréasáin réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
       <source>In the default web browser</source>
-      <translation type="unfinished">In the default web browser</translation>
+      <translation>Sa bhrabhsálaí gréasáin réamhshocraithe</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="199"/>
       <source>The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">The documentation will open in a new tab inside the FreeCAD interface. This requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Osclófar an doiciméadú i gcluaisín nua laistigh de chomhéadan FreeCAD. Éilíonn sé seo an chomhpháirt PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation type="unfinished">Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
-Requires the PySide QtWebengineWidgets component.</translation>
+      <translation>Osclaítear an doiciméadú i ndialóg in-dockáilte laistigh de FreeCAD, rud a ligeann d’obair chomhuaineach sa radharc 3T.
+Éilíonn sé an chomhpháirt PySide QtWebengineWidgets.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="249"/>
       <source>Custom stylesheet</source>
-      <translation type="unfinished">Custom stylesheet</translation>
+      <translation>Bileog stíle saincheaptha</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="256"/>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
-      <translation type="unfinished">Specify the path to an alternative CSS file for styling Markdown pages.
-This only applies if Markdown is selected above.</translation>
+      <translation>Sonraigh an cosán chuig comhad CSS malartach chun leathanaigh Markdown a stíliú.
+Ní bhaineann sé seo ach amháin má tá Markdown roghnaithe thuas.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
       <source>In a FreeCAD tab</source>
-      <translation type="unfinished">In a FreeCAD tab</translation>
+      <translation>I gcluaisín FreeCAD</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="225"/>
       <source>In a separate, embeddable dialog</source>
-      <translation type="unfinished">In a separate, embeddable dialog</translation>
+      <translation>I ndialóg ar leithligh, inleabaithe</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="241"/>
@@ -161,22 +162,22 @@ This only applies if Markdown is selected above.</translation>
     <message>
       <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>Níorbh fhéidir ábhar an leathanaigh seo a aisghabháil. Seiceáil na socruithe faoin roghchlár Eagar → Sainroghanna → Ginearálta → Cabhair le do thoil</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
-      <translation type="unfinished">Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</translation>
+      <translation>Níorbh fhéidir suíomh na gcomhad cabhrach a chinneadh. Seiceáil na socruithe faoin roghchlár Eagar → Roghanna → Ginearálta → Cabhair</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation type="unfinished">PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</translation>
+      <translation>Níl modúl PySide QtWebEngineWidgets ar fáil. Déantar rindreáil chabhrach leis an mbrabhsálaí córais</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
-      <translation type="unfinished">There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</translation>
+      <translation>Níl aon rindreálaí Markdown suiteáilte ar do chóras, mar sin rindreáiltear an leathanach cabhrach seo mar atá. Suiteáil na modúil Markdown nó Pandoc Python le do thoil chun rindreáil an leathanaigh seo a fheabhsú.</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="119"/>

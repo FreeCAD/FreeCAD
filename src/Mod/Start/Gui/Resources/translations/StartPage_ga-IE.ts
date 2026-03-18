@@ -70,7 +70,7 @@
     <message>
       <location filename="../../StartView.cpp" line="221"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Tionól</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="226"/>
