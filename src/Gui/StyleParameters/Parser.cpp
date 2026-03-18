@@ -297,6 +297,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         {"shades", shades},
         {"padding", [&args]() -> Value { return Padding(args).tuple(); }},
         {"margins", [&args]() -> Value { return Margins(args).tuple(); }},
+        {"border_colors", [&args]() -> Value { return BorderColors(args).tuple(); }},
         {"border_thickness", [&args]() -> Value { return BorderThickness(args).tuple(); }},
         {"border_radius", [&args]() -> Value { return Corners(args).tuple(); }},
         {"linear_gradient", [&args]() -> Value { return LinearGradient(args).tuple(); }},
