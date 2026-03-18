@@ -107,7 +107,7 @@ void EditTextDialog::on_buttonBox_accepted()
 
     // Check if anything changed
     if (newText == constraint->getText() && selectedFontName.toStdString() == constraint->getFont()
-         && newIsHeight == constraint->getIsTextHeight()) {
+        && newIsHeight == constraint->getIsTextHeight()) {
         return;  // Nothing to do
     }
 
