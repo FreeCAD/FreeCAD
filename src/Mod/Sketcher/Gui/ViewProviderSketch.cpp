@@ -4219,6 +4219,47 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
             if (it->size() > 4 && it->substr(0, 4) == "Edge") {
                 int GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
                 if (GeoId >= 0) {
+                    // If this is a helper line, hide it instead of deleting
+                    const Part::Geometry* geo = getSketchObject()->getGeometry(GeoId);
+                    if (geo && Sketcher::GeometryFacade::getHelper(geo)) {
+                        // Find which constraint owns this helper and clear its flag
+                        auto* sketch = getSketchObject();
+                        for (int ci = 0; ci < static_cast<int>(constraints.size()); ++ci) {
+                            const auto* c = constraints[ci];
+                            if (!c->isGroupType()) {
+                                continue;
+                            }
+                            int helperIdx = 0;
+                            for (int j = 1; c->hasElement(j); ++j) {
+                                if (c->getGeoId(j) == GeoId) {
+                                    // Clear this helper's flag
+                                    Sketcher::HelperFlags flags = c->getHelperFlags();
+                                    if (helperIdx < static_cast<int>(
+                                            Sketcher::HelperOrder.size())) {
+                                        flags.setFlag(
+                                            Sketcher::HelperOrder[helperIdx], false);
+                                    }
+                                    const_cast<Sketcher::Constraint*>(c)
+                                        ->setHelperFlags(flags);
+
+                                    // Determine helper count based on constraint type
+                                    int helperCount = (c->Type == Sketcher::Text)
+                                        ? static_cast<int>(Sketcher::HelperOrder.size())
+                                        : Sketcher::BBoxHelperCount;
+                                    applyHelperVisibility(
+                                        sketch, ci, flags,
+                                        Sketcher::HelperOrder.data(), helperCount);
+                                    break;
+                                }
+                                if (Sketcher::GeometryFacade::getHelper(
+                                        sketch->getGeometry(c->getGeoId(j)))) {
+                                    helperIdx++;
+                                }
+                            }
+                        }
+                        continue;  // skip normal deletion for helpers
+                    }
+
                     delInternalGeometries.insert(GeoId);
 
                     // Handle group deletion
