@@ -226,7 +226,7 @@ def process_body(body, returnObj, names, i):
 def isBodySubObject(obj):
     return (
         obj.isDerivedFrom("Sketcher::SketchObject")
-        or obj.isDerivedFrom("PartDesign::Datum")
+        or obj.isDerivedFrom("Part::Datum")
         or obj.isDerivedFrom("App::DatumElement")
         or obj.isDerivedFrom("App::LocalCoordinateSystem")
     )
@@ -795,7 +795,7 @@ def getObjMassAndCom(obj, containingPart=None):
         obj = obj.getLinkedObject()
 
     if obj.TypeId == "PartDesign::Body":
-        part = part.Tip
+        obj = obj.Tip
 
     if obj.isDerivedFrom("Part::Feature"):
         mass = obj.Shape.Volume
