@@ -202,7 +202,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           # NOTE: The sign tool is ONLY available as a prerelease package, they never issue real releases.
-          dotnet tool install --global --prerelease sign --version 0.9.1-beta.26127.1
+          dotnet tool install --global --prerelease sign
           echo "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           dotnet --info
           sign --version
