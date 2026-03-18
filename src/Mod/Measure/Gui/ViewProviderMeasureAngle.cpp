@@ -225,34 +225,37 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         else {
             xAxis = (loc1 - originVector).Normalized();
         }
-        gp_Vec zAxis;
-        gp_Vec yAxis;
+        gp_Vec zAxis = adjustedVector2.Crossed(adjustedVector1);
 
         if (measurementCase == MeasureAngle::MeasurementCase::EdgeEdge) {
             xAxis = adjustedVector1.Normalized();
         }
-        if (measurementCase == MeasureAngle::MeasurementCase::FaceFace) {
+        else if (measurementCase == MeasureAngle::MeasurementCase::FaceFace) {
             zAxis = adjustedVector1.Crossed(adjustedVector2);
         }
-        else {
-            zAxis = adjustedVector2.Crossed(adjustedVector1);
-        }
-        zAxis.Normalize();
-        yAxis = zAxis.Crossed(xAxis).Normalized();
-        xAxis = zAxis.Crossed(yAxis).Normalized();
+
+        // we need left handed system, to acchive this we invert the x and z axes
+        Base::Vector3d bxAxis(-xAxis.X(), -xAxis.Y(), -xAxis.Z());
+        Base::Vector3d bzAxis(-zAxis.X(), -zAxis.Y(), -zAxis.Z());
+        Base::Rotation rot(
+            Base::Rotation::makeRotationByAxes(bxAxis, Base::Vector3d(0.0, 0.0, 0.0), bzAxis, "ZXY")
+        );
+
+        Base::Matrix4D m4;
+        rot.getValue(m4);
 
         dimSys = SbMatrix(
-            xAxis.X(),
-            yAxis.X(),
-            zAxis.X(),
+            m4[0][0],
+            m4[0][1],
+            m4[0][2],
             dimensionOriginPoint.X(),
-            xAxis.Y(),
-            yAxis.Y(),
-            zAxis.Y(),
+            m4[1][0],
+            m4[1][1],
+            m4[1][2],
             dimensionOriginPoint.Y(),
-            xAxis.Z(),
-            yAxis.Z(),
-            zAxis.Z(),
+            m4[2][0],
+            m4[2][1],
+            m4[2][2],
             dimensionOriginPoint.Z(),
             0.0,
             0.0,
@@ -639,7 +642,14 @@ void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureO
             return;
         }
 
-        SbMatrix invMatrix = getMatrix().inverse();
+        SbMatrix invMatrix;
+        try {
+            invMatrix = getMatrix().inverse();
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().error("Error in ViewProviderMeasureAngle::positionAnno: %s\n", e.what());
+            return;
+        }
         SbVec3f localLoc1;
         SbVec3f localLoc2;
         invMatrix.multVecMatrix(SbVec3f(loc1.X(), loc1.Y(), loc1.Z()), localLoc1);
@@ -653,6 +663,7 @@ void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureO
 
     auto pos = SbVec3f(radius * std::cos(angle), radius * std::sin(angle), 0);
     setLabelTranslation(pos);
+    onLabelMoved();
 }
 
 void ViewProviderMeasureAngle::onLabelMoved()
@@ -661,7 +672,7 @@ void ViewProviderMeasureAngle::onLabelMoved()
         || !dynamic_cast<MeasureGui::TaskMeasure*>(Gui::Control().activeDialog())) {
         return;
     }
-    SbVec3f trans = pDragger->translation.getValue();
+    SbVec3f trans = pLabelTranslation->translation.getValue();
 
     // The 4 sectors are defined by the two intersecting lines
     float measuredAngle = fieldAngle.getValue();
@@ -689,7 +700,7 @@ void ViewProviderMeasureAngle::onLabelMoved()
     }
 }
 
-void ViewProviderMeasureAngle::onLabelMoveEnd()
+void ViewProviderMeasureAngle::onLabelMoveFinish()
 {
     if (!Gui::Control().activeDialog()
         || !dynamic_cast<MeasureGui::TaskMeasure*>(Gui::Control().activeDialog())) {

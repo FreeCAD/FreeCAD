@@ -306,7 +306,7 @@ bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
         return true;
     }
 
-    // get geometricall same vertex
+    // get geometrically same vertex
     TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
     TopExp::Vertices(e1, v1_1, v1_2);
     TopExp::Vertices(e2, v2_1, v2_2);

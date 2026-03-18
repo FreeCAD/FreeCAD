@@ -319,8 +319,6 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
 void ViewProviderMeasureBase::draggerChangedCallback(void* data, SoDragger*)
 {
     auto me = static_cast<ViewProviderMeasureBase*>(data);
-    SbVec3f pos = me->pDragger->translation.getValue();
-    me->LabelPosition.setValue(Base::Vector3d(pos[0], pos[1], pos[2]));
     me->onLabelMoved();
 }
 
