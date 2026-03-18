@@ -164,11 +164,11 @@ class DraftWorkbench(FreeCADGui.Workbench):
         FreeCAD.Console.PrintLog("Loading Draft workbench, done.\n")
 
     def Activated(self):
+        """When entering the workbench."""
 
         import WorkingPlane
         from draftutils import grid_observer
 
-        """When entering the workbench."""
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
@@ -194,11 +194,11 @@ class DraftWorkbench(FreeCADGui.Workbench):
         FreeCAD.Console.PrintLog("Draft workbench activated.\n")
 
     def Deactivated(self):
+        """When quitting the workbench."""
 
         import WorkingPlane
         from draftutils import grid_observer
 
-        """When quitting the workbench."""
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
