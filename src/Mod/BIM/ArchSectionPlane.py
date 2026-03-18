@@ -1470,12 +1470,12 @@ class _ViewProviderSectionPlane:
             if hasattr(self, "txtfont") and hasattr(vobj, "FontSize"):
                 self.txtfont.size = vobj.FontSize.Value
         return
-        
+
     def onDelete(self, vobj, subelements):
 
         vobj.CutView = False
         return True
-            
+
     def dumps(self):
 
         return None
