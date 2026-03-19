@@ -210,6 +210,10 @@ SET(PartGui_SRCS
     ViewProvider2DObject.h
     ViewProviderMirror.cpp
     ViewProviderMirror.h
+    ViewProviderSectionAnalysis.cpp
+    ViewProviderSectionAnalysis.h
+    TaskSectionAnalysis.cpp
+    TaskSectionAnalysis.h
     ViewProviderPython.cpp
     ViewProviderPython.h
     ViewProviderBoolean.cpp

@@ -2447,6 +2447,98 @@ bool CmdPartProjectionOnSurface::isActive()
 }
 
 //===========================================================================
+// Part_SectionAnalysis
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartSectionAnalysis)
+
+CmdPartSectionAnalysis::CmdPartSectionAnalysis()
+    : Command("Part_SectionAnalysis")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Section Analysis");
+    sToolTipText = QT_TR_NOOP(
+        "Creates a section analysis of the selected shape with a cutting plane"
+    );
+    sWhatsThis = "Part_SectionAnalysis";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_SectionAnalysis";
+}
+
+void CmdPartSectionAnalysis::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    auto sel = Gui::Selection().getSelectionEx();
+    if (sel.empty()) {
+        return;
+    }
+
+    auto* source = sel.front().getObject();
+    std::string objName = source->getNameInDocument();
+    std::string docName = getDocument()->getName();
+
+    // Snap initial cutting plane to the nearest principal axis based on camera direction
+    SbVec3f viewDir(0, 0, -1);
+    auto* mdiView = qobject_cast<Gui::View3DInventor*>(Gui::Application::Instance->activeView());
+    if (mdiView) {
+        viewDir = mdiView->getViewer()->getViewDirection();
+    }
+    float vx, vy, vz;
+    viewDir.getValue(vx, vy, vz);
+
+    // Find which axis the camera is most aligned with and snap to it
+    float ax = std::abs(vx), ay = std::abs(vy), az = std::abs(vz);
+    float nx = 0, ny = 0, nz = 0;
+    if (ax >= ay && ax >= az) {
+        nx = (vx < 0) ? 1.0f : -1.0f;  // face toward camera
+    }
+    else if (ay >= ax && ay >= az) {
+        ny = (vy < 0) ? 1.0f : -1.0f;
+    }
+    else {
+        nz = (vz < 0) ? 1.0f : -1.0f;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Section Analysis"));
+    doCommand(Doc,
+        "App.getDocument('%s').addObject('Part::SectionAnalysis', 'SectionAnalysis')",
+        docName.c_str());
+    doCommand(Doc,
+        "App.getDocument('%s').ActiveObject.Source = App.getDocument('%s').getObject('%s')",
+        docName.c_str(), docName.c_str(), objName.c_str());
+
+    // Set the plane normal to the snapped axis
+    doCommand(Doc,
+        "App.getDocument('%s').ActiveObject.PlaneNormal = FreeCAD.Vector(%f, %f, %f)",
+        docName.c_str(), nx, ny, nz);
+
+    // Center the offset on the bounding box along the normal
+    doCommand(Doc,
+        "__sa = App.getDocument('%s').ActiveObject\n"
+        "__bb = __sa.Source.Shape.BoundBox\n"
+        "__n = __sa.PlaneNormal\n"
+        "__center = (__bb.XMin + __bb.XMax) / 2 * __n.x + "
+        "(__bb.YMin + __bb.YMax) / 2 * __n.y + "
+        "(__bb.ZMin + __bb.ZMax) / 2 * __n.z\n"
+        "__sa.PlaneOffset = __center\n"
+        "del __sa, __bb, __n, __center",
+        docName.c_str());
+
+    // Don't commitCommand() here — leave the transaction open.
+    // The task panel's accept() commits it, reject()/Cancel aborts and removes the object.
+    updateActive();
+
+    // Enter edit mode
+    doCommand(Gui, "Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)");
+}
+
+bool CmdPartSectionAnalysis::isActive()
+{
+    return PartGui::hasShapesInSelection() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
 // Part_SectionCut
 //===========================================================================
 
@@ -2729,6 +2821,7 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdColorPerFace());
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
+    rcCmdMgr.addCommand(new CmdPartSectionAnalysis());
     rcCmdMgr.addCommand(new CmdPartSectionCut());
 
     rcCmdMgr.addCommand(new CmdPartCoordinateSystem());
