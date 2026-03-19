@@ -395,7 +395,7 @@
          <string>Disable recompute while dragging</string>
         </property>
         <property name="toolTip">
-         <string>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button</string>
+         <string>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button.</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DelayedGizmoUpdate</cstring>
