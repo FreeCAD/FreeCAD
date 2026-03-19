@@ -1,0 +1,656 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+/***************************************************************************
+ *   Copyright (c) 2026 FreeCAD contributors                              *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <cstring>
+
+#include <QAction>
+#include <QMenu>
+
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
+
+#include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/nodes/SoClipPlane.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoIndexedFaceSet.h>
+#include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTextureCoordinatePlane.h>
+
+#include <App/Document.h>
+#include <App/Material.h>
+#include <Gui/Application.h>
+#include <Gui/Control.h>
+#include <Gui/Document.h>
+#include <Inventor/draggers/SoDragger.h>
+
+#include <Gui/Inventor/Draggers/SoLinearDragger.h>
+#include <Gui/Selection/Selection.h>
+#include <Gui/ViewProvider.h>
+#include <Mod/Part/App/FeatureSectionAnalysis.h>
+
+#include "ViewProviderSectionAnalysis.h"
+#include "TaskSectionAnalysis.h"
+
+
+using namespace PartGui;
+
+PROPERTY_SOURCE(PartGui::ViewProviderSectionAnalysis, PartGui::ViewProviderPart)
+
+ViewProviderSectionAnalysis::ViewProviderSectionAnalysis()
+{
+    sPixmap = "Part_SectionAnalysis";
+
+    // Default section face color: reddish-orange (like Fusion 360 hatching)
+    App::Material mat;
+    mat.diffuseColor.set(0.8f, 0.3f, 0.2f, 0.0f);
+    ShapeAppearance.setValues({mat});
+}
+
+ViewProviderSectionAnalysis::~ViewProviderSectionAnalysis()
+{
+    removeClipPlane();
+    if (pcClipPlane) {
+        pcClipPlane->unref();
+        pcClipPlane = nullptr;
+    }
+    if (pcHatchTexture) {
+        pcHatchTexture->unref();
+        pcHatchTexture = nullptr;
+    }
+    if (pcHatchCoordGen) {
+        pcHatchCoordGen->unref();
+        pcHatchCoordGen = nullptr;
+    }
+}
+
+void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
+{
+    ViewProviderPart::attach(pcFeat);
+
+    // Create the translucent cutting plane visual
+    pcPlaneRoot = new SoSeparator();
+    pcPlaneRoot->setName("SectionPlaneVisual");
+
+    auto* pickStyle = new SoPickStyle();
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    pcPlaneRoot->addChild(pickStyle);
+
+    pcPlaneHints = new SoShapeHints();
+    pcPlaneHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
+    pcPlaneHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
+    pcPlaneRoot->addChild(pcPlaneHints);
+
+    pcPlaneMaterial = new SoMaterial();
+    pcPlaneMaterial->diffuseColor.setValue(0.3f, 0.6f, 0.9f);
+    pcPlaneMaterial->transparency.setValue(0.7f);
+    pcPlaneRoot->addChild(pcPlaneMaterial);
+
+    pcPlaneCoords = new SoCoordinate3();
+    pcPlaneRoot->addChild(pcPlaneCoords);
+
+    pcPlaneFaceSet = new SoFaceSet();
+    pcPlaneFaceSet->numVertices.set1Value(0, 4);
+    pcPlaneRoot->addChild(pcPlaneFaceSet);
+
+    pcPlaneBorderMaterial = new SoMaterial();
+    pcPlaneBorderMaterial->diffuseColor.setValue(0.2f, 0.4f, 0.8f);
+    pcPlaneBorderMaterial->transparency.setValue(0.0f);
+    pcPlaneRoot->addChild(pcPlaneBorderMaterial);
+
+    auto* borderStyle = new SoDrawStyle();
+    borderStyle->lineWidth.setValue(2.0f);
+    pcPlaneRoot->addChild(borderStyle);
+
+    pcPlaneBorderLines = new SoIndexedLineSet();
+    static const int32_t borderIndices[] = {0, 1, 2, 3, 0, -1};
+    pcPlaneBorderLines->coordIndex.setValues(0, 6, borderIndices);
+    pcPlaneRoot->addChild(pcPlaneBorderLines);
+
+    // Wrap plane in a switch so we can hide it
+    pcPlaneSwitch = new SoSwitch();
+    pcPlaneSwitch->addChild(pcPlaneRoot);
+    pcPlaneSwitch->whichChild = SO_SWITCH_ALL;
+    pcRoot->addChild(pcPlaneSwitch);
+
+    // Create hatching texture — single-direction diagonal lines
+    pcHatchTexture = new SoTexture2();
+    pcHatchTexture->ref();
+    {
+        const int sz = 64;
+        const int spacing = 6;
+        const int lineWidth = 1;
+        unsigned char* img = new unsigned char[sz * sz * 4];
+        std::memset(img, 0, sz * sz * 4);
+        for (int y = 0; y < sz; y++) {
+            for (int x = 0; x < sz; x++) {
+                int idx = (y * sz + x) * 4;
+                int diag = (x + y) % spacing;
+                if (diag < lineWidth) {
+                    img[idx] = 20;
+                    img[idx + 1] = 20;
+                    img[idx + 2] = 20;
+                    img[idx + 3] = 160;
+                }
+            }
+        }
+        pcHatchTexture->image.setValue(SbVec2s(sz, sz), 4, img);
+        pcHatchTexture->wrapS = SoTexture2::REPEAT;
+        pcHatchTexture->wrapT = SoTexture2::REPEAT;
+        pcHatchTexture->model = SoTexture2::DECAL;
+        delete[] img;
+    }
+
+    // Auto-generate texture coordinates by projecting onto a plane
+    // This maps the hatch pattern in world space at a fixed scale
+    pcHatchCoordGen = new SoTextureCoordinatePlane();
+    pcHatchCoordGen->ref();
+    // 1 texture repeat per 5mm — wider spacing for cleaner look
+    float scale = 1.0f / 5.0f;
+    pcHatchCoordGen->directionS.setValue(SbVec3f(scale, 0, 0));
+    pcHatchCoordGen->directionT.setValue(SbVec3f(0, scale, 0));
+
+    // Create the clip plane node (not yet inserted into source VP)
+    pcClipPlane = new SoClipPlane();
+    pcClipPlane->ref();
+
+    updatePlaneVisual();
+}
+
+void ViewProviderSectionAnalysis::installClipPlane()
+{
+    if (clipInstalled) {
+        return;
+    }
+
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat) {
+        return;
+    }
+
+    App::DocumentObject* source = feat->Source.getValue();
+    if (!source) {
+        return;
+    }
+
+    auto* sourceVP = Gui::Application::Instance->getViewProvider(source);
+    if (!sourceVP) {
+        return;
+    }
+
+    updateClipPlaneEquation();
+
+    SoSeparator* sourceRoot = dynamic_cast<SoSeparator*>(sourceVP->getRoot());
+    if (sourceRoot) {
+        sourceRoot->insertChild(pcClipPlane, 0);
+        clipInstalled = true;
+        clipInstalledOn = source;
+    }
+}
+
+void ViewProviderSectionAnalysis::removeClipPlane()
+{
+    if (!clipInstalled || !pcClipPlane) {
+        return;
+    }
+
+    if (clipInstalledOn) {
+        auto* sourceVP = Gui::Application::Instance->getViewProvider(clipInstalledOn);
+        if (sourceVP) {
+            SoSeparator* sourceRoot = dynamic_cast<SoSeparator*>(sourceVP->getRoot());
+            if (sourceRoot) {
+                int idx = sourceRoot->findChild(pcClipPlane);
+                if (idx >= 0) {
+                    sourceRoot->removeChild(idx);
+                }
+            }
+        }
+    }
+
+    clipInstalled = false;
+    clipInstalledOn = nullptr;
+}
+
+void ViewProviderSectionAnalysis::updateClipPlaneEquation()
+{
+    if (!pcClipPlane) {
+        return;
+    }
+
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat) {
+        return;
+    }
+
+    Base::Vector3d n = feat->PlaneNormal.getValue();
+    double d = feat->PlaneOffset.getValue();
+    bool flip = feat->FlipCut.getValue();
+
+    double len = n.Length();
+    if (len < 1e-10) {
+        return;
+    }
+    n = n / len;
+
+    if (flip) {
+        n = -n;
+        d = -d;
+    }
+
+    // The cutting plane passes through point (n * d) with normal n.
+    // OCCT keeps the negative-normal side (where n.p < d).
+    // SoClipPlane keeps the positive-normal half-space.
+    // So we negate the normal to keep the same side as OCCT.
+    SbVec3f planePoint(n.x * d, n.y * d, n.z * d);
+    SbVec3f clipNormal(-n.x, -n.y, -n.z);
+    pcClipPlane->plane.setValue(SbPlane(clipNormal, planePoint));
+    pcClipPlane->on.setValue(TRUE);
+}
+
+void ViewProviderSectionAnalysis::updatePlaneVisual()
+{
+    if (!pcPlaneCoords || !pcPlaneFaceSet) {
+        return;
+    }
+
+    // Default to hidden — will be enabled if we successfully compute coordinates
+    pcPlaneFaceSet->numVertices.set1Value(0, 0);
+    pcPlaneBorderLines->coordIndex.setNum(0);  // clear border indices too
+
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat) {
+        return;
+    }
+
+    App::DocumentObject* source = feat->Source.getValue();
+    if (!source) {
+        return;
+    }
+
+    TopoDS_Shape sourceShape = Part::Feature::getShape(source,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    if (sourceShape.IsNull()) {
+        return;
+    }
+
+    Bnd_Box bbox;
+    BRepBndLib::Add(sourceShape, bbox);
+    if (bbox.IsVoid()) {
+        return;
+    }
+
+    double xmin, ymin, zmin, xmax, ymax, zmax;
+    bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+
+    Base::Vector3d n = feat->PlaneNormal.getValue();
+    double d = feat->PlaneOffset.getValue();
+    double len = n.Length();
+    if (len < 1e-10) {
+        return;
+    }
+    n = n / len;
+
+    // Build orthonormal frame on the cutting plane
+    Base::Vector3d u, v;
+    if (std::abs(n.x) < 0.9) {
+        u = Base::Vector3d(1, 0, 0).Cross(n);
+    }
+    else {
+        u = Base::Vector3d(0, 1, 0).Cross(n);
+    }
+    u.Normalize();
+    v = n.Cross(u);
+    v.Normalize();
+
+    // Project bbox corners onto plane tangent axes
+    double umin_p = 1e20, umax_p = -1e20, vmin_p = 1e20, vmax_p = -1e20;
+    double corners[8][3] = {{xmin, ymin, zmin}, {xmax, ymin, zmin}, {xmin, ymax, zmin},
+                             {xmax, ymax, zmin}, {xmin, ymin, zmax}, {xmax, ymin, zmax},
+                             {xmin, ymax, zmax}, {xmax, ymax, zmax}};
+    for (auto& c : corners) {
+        Base::Vector3d pt(c[0], c[1], c[2]);
+        umin_p = std::min(umin_p, pt * u);
+        umax_p = std::max(umax_p, pt * u);
+        vmin_p = std::min(vmin_p, pt * v);
+        vmax_p = std::max(vmax_p, pt * v);
+    }
+
+    // Cap the plane size to bbox diagonal to prevent blowup at steep angles
+    double bboxDiag = std::sqrt((xmax - xmin) * (xmax - xmin) + (ymax - ymin) * (ymax - ymin)
+                                + (zmax - zmin) * (zmax - zmin));
+    double maxExtent = bboxDiag * 0.7;
+    double umid = (umin_p + umax_p) / 2.0;
+    double vmid = (vmin_p + vmax_p) / 2.0;
+    double uHalf = std::min((umax_p - umin_p) / 2.0, maxExtent);
+    double vHalf = std::min((vmax_p - vmin_p) / 2.0, maxExtent);
+
+    // Add 15% margin
+    uHalf *= 1.15;
+    vHalf *= 1.15;
+
+    // Center point on the cutting plane
+    Base::Vector3d bboxCenter((xmin + xmax) / 2, (ymin + ymax) / 2, (zmin + zmax) / 2);
+    double distToPlane = n * bboxCenter - d;
+    Base::Vector3d planeCenter = bboxCenter - n * distToPlane;
+
+    Base::Vector3d p0 = planeCenter + u * (umid - uHalf - (bboxCenter * u)) + v * (vmid - vHalf - (bboxCenter * v));
+    Base::Vector3d p1 = planeCenter + u * (umid + uHalf - (bboxCenter * u)) + v * (vmid - vHalf - (bboxCenter * v));
+    Base::Vector3d p2 = planeCenter + u * (umid + uHalf - (bboxCenter * u)) + v * (vmid + vHalf - (bboxCenter * v));
+    Base::Vector3d p3 = planeCenter + u * (umid - uHalf - (bboxCenter * u)) + v * (vmid + vHalf - (bboxCenter * v));
+
+    pcPlaneCoords->point.set1Value(0, SbVec3f(p0.x, p0.y, p0.z));
+    pcPlaneCoords->point.set1Value(1, SbVec3f(p1.x, p1.y, p1.z));
+    pcPlaneCoords->point.set1Value(2, SbVec3f(p2.x, p2.y, p2.z));
+    pcPlaneCoords->point.set1Value(3, SbVec3f(p3.x, p3.y, p3.z));
+
+    // Now safe to render the quad and border
+    pcPlaneFaceSet->numVertices.set1Value(0, 4);
+    static const int32_t borderIndices[] = {0, 1, 2, 3, 0, -1};
+    pcPlaneBorderLines->coordIndex.setValues(0, 6, borderIndices);
+}
+
+void ViewProviderSectionAnalysis::setHatching(bool on)
+{
+    if (!pcHatchTexture || !pcHatchCoordGen || !pcRoot) {
+        return;
+    }
+
+    if (on) {
+        // Find the SoBrepFaceSet/SoIndexedFaceSet in our scene graph
+        SoSearchAction sa;
+        sa.setType(SoIndexedFaceSet::getClassTypeId());
+        sa.setInterest(SoSearchAction::FIRST);
+        sa.apply(pcRoot);
+        SoPath* path = sa.getPath();
+        if (path && path->getLength() >= 2) {
+            auto* parent = static_cast<SoSeparator*>(path->getNodeFromTail(1));
+            int faceIdx = parent->findChild(path->getTail());
+            if (faceIdx >= 0 && parent->findChild(pcHatchTexture) < 0) {
+                // Insert coordinate generator first, then texture — both before the faceset
+                parent->insertChild(pcHatchTexture, faceIdx);
+                parent->insertChild(pcHatchCoordGen, faceIdx);
+            }
+        }
+    }
+    else {
+        // Remove both nodes
+        SoSearchAction sa;
+        sa.setNode(pcHatchTexture);
+        sa.setInterest(SoSearchAction::FIRST);
+        sa.apply(pcRoot);
+        SoPath* path = sa.getPath();
+        if (path && path->getLength() >= 2) {
+            auto* parent = static_cast<SoSeparator*>(path->getNodeFromTail(1));
+            parent->removeChild(pcHatchTexture);
+        }
+
+        SoSearchAction sa2;
+        sa2.setNode(pcHatchCoordGen);
+        sa2.setInterest(SoSearchAction::FIRST);
+        sa2.apply(pcRoot);
+        SoPath* path2 = sa2.getPath();
+        if (path2 && path2->getLength() >= 2) {
+            auto* parent = static_cast<SoSeparator*>(path2->getNodeFromTail(1));
+            parent->removeChild(pcHatchCoordGen);
+        }
+    }
+}
+
+void ViewProviderSectionAnalysis::setupDragger()
+{
+    if (pcDraggerContainer) {
+        return;
+    }
+
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat || !feat->Source.getValue()) {
+        return;
+    }
+
+    Base::Vector3d n = feat->PlaneNormal.getValue();
+    double d = feat->PlaneOffset.getValue();
+    double len = n.Length();
+    if (len < 1e-10) {
+        return;
+    }
+    n = n / len;
+
+    Base::Vector3d draggerDir = feat->FlipCut.getValue() ? -n : n;
+
+    // Position at bbox center projected onto cutting plane
+    TopoDS_Shape sourceShape = Part::Feature::getShape(feat->Source.getValue(),
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    if (sourceShape.IsNull()) {
+        return;
+    }
+
+    Bnd_Box bbox;
+    BRepBndLib::Add(sourceShape, bbox);
+    if (bbox.IsVoid()) {
+        return;
+    }
+
+    double xmin, ymin, zmin, xmax, ymax, zmax;
+    bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+    Base::Vector3d bboxCenter((xmin + xmax) / 2, (ymin + ymax) / 2, (zmin + zmax) / 2);
+    double distToPlane = n * bboxCenter - d;
+    Base::Vector3d planeCenter = bboxCenter - n * distToPlane;
+
+    pcDraggerContainer = new Gui::SoLinearDraggerContainer();
+    pcDraggerContainer->ref();
+    pcDraggerContainer->translation.setValue(SbVec3f(planeCenter.x, planeCenter.y, planeCenter.z));
+    pcDraggerContainer->setPointerDirection(SbVec3f(draggerDir.x, draggerDir.y, draggerDir.z));
+
+    auto* dragger = pcDraggerContainer->getDragger();
+    dragger->translationIncrement.setValue(0.1);  // 0.1mm steps for fine control
+    dragger->color.setValue(SbColor(0.2f, 0.5f, 0.9f));
+    dragger->activeColor.setValue(SbColor(0.3f, 0.7f, 1.0f));
+
+    dragger->addMotionCallback(draggerMotionCB, this);
+    dragger->addFinishCallback(draggerFinishCB, this);
+
+    draggerStartOffset = d;
+    pcRoot->addChild(pcDraggerContainer);
+}
+
+void ViewProviderSectionAnalysis::removeDragger()
+{
+    if (pcDraggerContainer) {
+        pcRoot->removeChild(pcDraggerContainer);
+        pcDraggerContainer->unref();
+        pcDraggerContainer = nullptr;
+    }
+}
+
+void ViewProviderSectionAnalysis::updateDragger()
+{
+    if (pcDraggerContainer) {
+        removeDragger();
+        setupDragger();
+    }
+}
+
+void ViewProviderSectionAnalysis::draggerMotionCB(void* data, SoDragger*)
+{
+    auto* vp = static_cast<ViewProviderSectionAnalysis*>(data);
+    if (!vp || !vp->pcDraggerContainer) {
+        return;
+    }
+
+    auto* feat = vp->getObject<Part::SectionAnalysis>();
+    if (!feat) {
+        return;
+    }
+
+    auto* dragger = vp->pcDraggerContainer->getDragger();
+    int steps = dragger->translationIncrementCount.getValue();
+    double increment = dragger->translationIncrement.getValue();
+    double newOffset = vp->draggerStartOffset + steps * increment;
+
+    feat->PlaneOffset.setValue(newOffset);
+    feat->getDocument()->recomputeFeature(feat);
+
+    // Sync the task panel UI
+    Gui::TaskView::TaskDialog* activeDlg = Gui::Control().activeDialog();
+    auto* saDlg = qobject_cast<TaskSectionAnalysis*>(activeDlg);
+    if (saDlg) {
+        saDlg->updateFromFeature();
+    }
+}
+
+void ViewProviderSectionAnalysis::draggerFinishCB(void* data, SoDragger*)
+{
+    auto* vp = static_cast<ViewProviderSectionAnalysis*>(data);
+    if (!vp) {
+        return;
+    }
+
+    auto* feat = vp->getObject<Part::SectionAnalysis>();
+    if (!feat) {
+        return;
+    }
+
+    vp->draggerStartOffset = feat->PlaneOffset.getValue();
+    if (vp->pcDraggerContainer) {
+        vp->pcDraggerContainer->getDragger()->translationIncrementCount.setValue(0);
+    }
+}
+
+void ViewProviderSectionAnalysis::show()
+{
+    installClipPlane();
+    if (pcPlaneSwitch) {
+        pcPlaneSwitch->whichChild = SO_SWITCH_ALL;
+    }
+    ViewProviderPart::show();
+}
+
+void ViewProviderSectionAnalysis::hide()
+{
+    removeClipPlane();
+    if (pcPlaneSwitch) {
+        pcPlaneSwitch->whichChild = SO_SWITCH_NONE;
+    }
+    ViewProviderPart::hide();
+}
+
+void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
+{
+    ViewProviderPart::updateData(prop);
+
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat || !prop) {
+        return;
+    }
+
+    if (prop == &feat->PlaneNormal || prop == &feat->PlaneOffset || prop == &feat->FlipCut) {
+        updateClipPlaneEquation();
+        updatePlaneVisual();
+        // Reposition dragger on normal/flip change (not during offset drag)
+        if (pcDraggerContainer && (prop == &feat->PlaneNormal || prop == &feat->FlipCut)) {
+            updateDragger();
+        }
+    }
+
+    if (prop == &feat->Source) {
+        removeClipPlane();
+        if (Visibility.getValue()) {
+            installClipPlane();
+        }
+        updatePlaneVisual();
+    }
+}
+
+void ViewProviderSectionAnalysis::onChanged(const App::Property* prop)
+{
+    ViewProviderPart::onChanged(prop);
+}
+
+void ViewProviderSectionAnalysis::setupContextMenu(QMenu* menu, QObject* receiver,
+                                                    const char* member)
+{
+    addDefaultAction(menu, QObject::tr("Edit Section Analysis"));
+    ViewProviderPart::setupContextMenu(menu, receiver, member);
+}
+
+bool ViewProviderSectionAnalysis::onDelete(const std::vector<std::string>&)
+{
+    removeDragger();
+    removeClipPlane();
+    return true;
+}
+
+bool ViewProviderSectionAnalysis::setEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument()->getDocument());
+        TaskSectionAnalysis* saDlg = qobject_cast<TaskSectionAnalysis*>(dlg);
+        if (saDlg && saDlg->getObject() != this->getObject()) {
+            saDlg = nullptr;
+        }
+        if (dlg && !saDlg) {
+            if (dlg->canClose()) {
+                Gui::Control().closeDialog(getDocument()->getDocument());
+            }
+            else {
+                return false;
+            }
+        }
+
+        Gui::Selection().clearSelection();
+        setupDragger();
+
+        if (saDlg) {
+            Gui::Control().showDialog(saDlg, getDocument()->getDocument());
+        }
+        else {
+            Gui::Control().showDialog(
+                new TaskSectionAnalysis(getObject<Part::SectionAnalysis>()),
+                getDocument()->getDocument());
+        }
+
+        return true;
+    }
+    else {
+        return ViewProviderPart::setEdit(ModNum);
+    }
+}
+
+void ViewProviderSectionAnalysis::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        removeDragger();
+        Gui::Control().closeDialog(nullptr);
+    }
+    else {
+        ViewProviderPart::unsetEdit(ModNum);
+    }
+}

@@ -760,6 +760,7 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ViewIvIssueCamPos"
           << "Std_AxisCross"
           << "Std_ToggleClipPlane"
+          << "Part_SectionAnalysis"
           << "Std_TextureMapping"
 #ifdef BUILD_VR
           << "Std_ViewVR"
