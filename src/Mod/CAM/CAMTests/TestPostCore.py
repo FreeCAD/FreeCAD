@@ -752,7 +752,7 @@ class TestBuildPostList(unittest.TestCase):
         postlist = self.pp._buildPostList()
         _, sublist = postlist[0]
         tc_items = [item for item in sublist if item.item_type == "tool_controller"]
-        self.assertGreater(len(tc_items), 0)
+        self.assertTrue(len(tc_items) > 0, "Expected at least one tool_controller item")
         for tc_item in tc_items:
             self.assertIn("tool_number", tc_item.data)
             self.assertIsInstance(tc_item.data["tool_number"], (int, float))
