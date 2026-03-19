@@ -634,7 +634,8 @@ std::string Constraint::getFont() const
     try {
         auto j = nlohmann::json::parse(MetaData);
         if (j.contains("font")) {
-            return j["font"].get<std::string>();
+            Base::FileInfo fi(j["font"].get<std::string>());
+            return fi.fileNamePure();
         }
     }
     catch (...) {
@@ -644,6 +645,9 @@ std::string Constraint::getFont() const
 
 void Constraint::setFont(const std::string& font)
 {
+    Base::FileInfo fi(font);
+    std::string fontName = fi.fileNamePure();
+
     nlohmann::json j;
     if (!MetaData.empty()) {
         try {
@@ -652,7 +656,7 @@ void Constraint::setFont(const std::string& font)
         catch (...) {
         }
     }
-    j["font"] = font;
+    j["font"] = fontName;
     MetaData = j.dump();
 }
 
