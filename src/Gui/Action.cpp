@@ -879,7 +879,7 @@ RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
     this->groupAction()->addAction(&sep);
 
     //: Empties the list of recent files
-    clearRecentFilesListAction.setText(tr("Clear Recent Files..."));
+    clearRecentFilesListAction.setText(tr("Clear Recent Files…"));
     clearRecentFilesListAction.setIcon(QIcon(QStringLiteral(":/icons/edit-delete.svg")));
     clearRecentFilesListAction.setToolTip({});
     this->groupAction()->addAction(&clearRecentFilesListAction);
@@ -889,8 +889,7 @@ RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
         QMessageBox::StandardButton reply = QMessageBox::question(
             getMainWindow(),
             tr("Clear Recent Files"),
-            tr("Are you sure you want to clear the list of recent files?\n This action can not be "
-               "undone!"),
+            tr("Clear the list of recent files?"),
             QMessageBox::Yes | QMessageBox::No,
             QMessageBox::No
         );
