@@ -60,7 +60,7 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
 
     // Initialize Font
     populateFontList();
-    QString currentFontName = findFontNameFromPath(QString::fromStdString(constraint->getFont()));
+    QString currentFontName = QString::fromStdString(constraint->getFont());
     if (!currentFontName.isEmpty()) {
         int idx = ui->comboBox_font->findText(currentFontName, Qt::MatchFixedString);
         if (idx != -1) {
