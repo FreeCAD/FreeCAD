@@ -28,7 +28,6 @@
 # include <QMessageBox>
 #endif
 
-#include <Base/FileInfo.h>
 #include <Gui/CommandT.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -61,8 +60,7 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
 
     // Initialize Font
     populateFontList();
-    Base::FileInfo fi(constraint->getFont());
-    QString currentFontName = QString::fromStdString(fi.fileNamePure());
+    QString currentFontName = findFontNameFromPath(QString::fromStdString(constraint->getFont()));
     if (!currentFontName.isEmpty()) {
         int idx = ui->comboBox_font->findText(currentFontName, Qt::MatchFixedString);
         if (idx != -1) {
