@@ -35,7 +35,6 @@
 #include <boost/range/adaptor/reversed.hpp>
 
 #include <App/Application.h>
-#include <Base/FileInfo.h>
 #include <Base/Tools.h>
 #include <Base/Tools2D.h>
 #include <Gui/Action.h>
@@ -10666,8 +10665,7 @@ bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
     }
     else if (constraintType == "Text") {
         std::string escaped_text = escapeForPython(text);
-        Base::FileInfo fi(font);
-        std::string escaped_font = escapeForPython(fi.fileNamePure());
+        std::string escaped_font = escapeForPython(font);
         Gui::cmdAppObjectArgs(
             Obj,
             "addConstraint(Sketcher.Constraint('Text', %s, '%s', '%s', %s))",
