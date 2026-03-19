@@ -1,32 +1,134 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg version="1.1" height="64px" width="64px" xmlns="http://www.w3.org/2000/svg">
-  <title>Part_SectionAnalysis</title>
+<svg
+   version="1.1"
+   height="64px"
+   width="64px"
+   id="svg7"
+   sodipodi:docname="Part_SectionAnalysis.svg"
+   inkscape:version="1.3.1 (91b66b0, 2023-11-16)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs7" />
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="7.7085897"
+     inkscape:cx="27.631513"
+     inkscape:cy="34.377235"
+     inkscape:window-width="1512"
+     inkscape:window-height="637"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg7" />
+  <title
+     id="title1">Part_SectionAnalysis</title>
   <!-- Section analysis icon: a cube cut by a plane with hatched cross-section -->
-
   <!-- Back half of cube (darker, clipped) -->
-  <path d="M 12,18 L 32,8 L 52,18 L 52,46 L 32,56 L 12,46 Z"
-        fill="#4a90d9" fill-opacity="0.4" stroke="#2c5aa0" stroke-width="1.5"/>
-
+  <path
+     d="M 14.08675,47.237963 12,46 V 18 L 32,8 52,18 v 28 l -2.735377,1.497414"
+     fill="#4a90d9"
+     fill-opacity="0.4"
+     stroke="#2c5aa0"
+     stroke-width="1.5"
+     id="path1"
+     inkscape:label="path1"
+     sodipodi:nodetypes="ccccccc"
+     style="display:inline" />
   <!-- Cutting plane (translucent) -->
-  <rect x="8" y="16" width="48" height="32" rx="1"
-        fill="#3498db" fill-opacity="0.25" stroke="#2980b9" stroke-width="1.5"/>
-
   <!-- Cross-section hatching on the cutting plane -->
-  <g stroke="#cc4433" stroke-width="1.2" stroke-opacity="0.8">
-    <line x1="14" y1="44" x2="26" y2="20"/>
-    <line x1="22" y1="44" x2="34" y2="20"/>
-    <line x1="30" y1="44" x2="42" y2="20"/>
-    <line x1="38" y1="44" x2="50" y2="20"/>
+  <g
+     stroke="#cc4433"
+     stroke-width="1.2"
+     stroke-opacity="0.8"
+     id="g4"
+     transform="matrix(0.99661446,-0.0280545,0.03159823,1.3273147,-0.90304294,-5.4796645)"
+     inkscape:label="g4"
+     style="display:inline">
+    <line
+       x1="14"
+       y1="44"
+       x2="26"
+       y2="20"
+       id="line1"
+       inkscape:label="line1" />
+    <line
+       x1="30"
+       y1="44"
+       x2="42"
+       y2="20"
+       id="line3" />
+    <line
+       x1="22"
+       y1="44"
+       x2="34"
+       y2="20"
+       id="line2" />
+    <line
+       x1="38.150566"
+       y1="44.072891"
+       x2="49.849434"
+       y2="19.927107"
+       id="line4"
+       inkscape:label="line4" />
   </g>
-
   <!-- Cross-section face outline on the cutting plane -->
-  <path d="M 20,24 L 44,24 L 44,40 L 20,40 Z"
-        fill="#e06040" fill-opacity="0.35" stroke="#cc4433" stroke-width="1.5"/>
-
   <!-- Front half of cube outline -->
-  <path d="M 12,18 L 32,8 L 52,18 L 32,28 Z"
-        fill="#5dade2" fill-opacity="0.6" stroke="#2c5aa0" stroke-width="1.5"/>
-  <line x1="32" y1="28" x2="32" y2="56" stroke="#2c5aa0" stroke-width="1.5"/>
-  <line x1="12" y1="18" x2="12" y2="46" stroke="#2c5aa0" stroke-width="1.5"/>
-  <line x1="52" y1="18" x2="52" y2="46" stroke="#2c5aa0" stroke-width="1.5"/>
+  <path
+     d="m 51.137071,18 -3.21199,1.639727 M 15.815469,19.510002 12.992655,18 32,7.9748237 51.137071,18"
+     fill="#5dade2"
+     fill-opacity="0.6"
+     stroke="#2c5aa0"
+     stroke-width="1.46913"
+     id="path5"
+     inkscape:label="path5"
+     sodipodi:nodetypes="cccccc" />
+  <line
+     x1="12"
+     y1="18"
+     x2="12"
+     y2="46"
+     stroke="#2c5aa0"
+     stroke-width="1.5"
+     id="line6"
+     inkscape:label="line6" />
+  <line
+     x1="52"
+     y1="18"
+     x2="52"
+     y2="46"
+     stroke="#2c5aa0"
+     stroke-width="1.5"
+     id="line7" />
+  <rect
+     x="4.6684389"
+     y="14.024371"
+     width="54.12075"
+     height="44.949253"
+     rx="1.1275156"
+     fill="#3498db"
+     fill-opacity="0.25"
+     stroke="#2980b9"
+     stroke-width="1.88773"
+     id="rect1"
+     inkscape:label="rect1"
+     style="display:inline;fill:none" />
+  <path
+     d="M 14.299779,19.655712 H 48.886662 V 52.352058 H 14.299779 Z"
+     fill="#e06040"
+     fill-opacity="0.35"
+     stroke="#cc4433"
+     stroke-width="2.57414"
+     id="path4"
+     inkscape:label="path4"
+     style="display:inline" />
 </svg>

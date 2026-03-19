@@ -131,8 +131,6 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     pcPlaneRoot->addChild(borderStyle);
 
     pcPlaneBorderLines = new SoIndexedLineSet();
-    static const int32_t borderIndices[] = {0, 1, 2, 3, 0, -1};
-    pcPlaneBorderLines->coordIndex.setValues(0, 6, borderIndices);
     pcPlaneRoot->addChild(pcPlaneBorderLines);
 
     // Wrap plane in a switch so we can hide it
@@ -587,11 +585,6 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
         }
         updatePlaneVisual();
     }
-}
-
-void ViewProviderSectionAnalysis::onChanged(const App::Property* prop)
-{
-    ViewProviderPart::onChanged(prop);
 }
 
 void ViewProviderSectionAnalysis::setupContextMenu(QMenu* menu, QObject* receiver,

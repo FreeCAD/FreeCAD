@@ -62,7 +62,6 @@ public:
 
     void attach(App::DocumentObject* pcFeat) override;
     void updateData(const App::Property* prop) override;
-    void onChanged(const App::Property* prop) override;
 
     void show() override;
     void hide() override;
