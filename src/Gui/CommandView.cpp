@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include <sstream>
+#include <vector>
+#include <tuple>
+
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -394,7 +397,7 @@ void StdCmdFreezeViews::activated(int iMsg)
     else if (iMsg == 3) {
         // Create a new view
         auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
-        if (view3d == nullptr) {
+        if (!view3d) {
             Base::Console().developerError(
                 "StdCmdFreezeViews",
                 "Expected the active view to be View3DInventor\n"
@@ -410,7 +413,7 @@ void StdCmdFreezeViews::activated(int iMsg)
                 savedViews++;
                 QString viewnr = QString(QObject::tr("Restore View &%1")).arg(index);
                 (*it)->setText(viewnr);
-                (*it)->setToolTip(QString::fromLatin1(camera));
+                (*it)->setToolTip(QString::fromStdString(camera));
                 (*it)->setVisible(true);
                 if (index < 10) {
                     (*it)->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(index)));
@@ -432,7 +435,7 @@ void StdCmdFreezeViews::activated(int iMsg)
         QString data = acts[iMsg]->toolTip();
         MDIView* view = getGuiApplication()->activeView();
         if (auto* view3D = freecad_cast<View3DInventor*>(view)) {
-            view3D->setCamera(data.toLatin1());
+            view3D->setCamera(data.toStdString().c_str());
         }
     }
 }
@@ -640,7 +643,34 @@ void StdCmdFreezeViews::languageChange()
 // Std_ToggleClipPlane
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdToggleClipPlane)
+class StdCmdToggleClipPlane: public Gui::Command
+{
+public:
+    StdCmdToggleClipPlane();
+    virtual ~StdCmdToggleClipPlane()
+    {}
+    virtual const char* className() const
+    {
+        return "StdCmdToggleClipPlane";
+    }
+
+protected:
+    virtual void activated(int iMsg);
+    virtual bool isActive(void);
+    virtual Gui::Action* createAction(void);
+
+private:
+    StdCmdToggleClipPlane(const StdCmdToggleClipPlane&) = delete;
+    StdCmdToggleClipPlane(StdCmdToggleClipPlane&&) = delete;
+    StdCmdToggleClipPlane& operator=(const StdCmdToggleClipPlane&) = delete;
+    StdCmdToggleClipPlane& operator=(StdCmdToggleClipPlane&&) = delete;
+
+    void garbageCollect();
+    bool hasClipping(App::Document* doc) const;
+
+private:
+    std::vector<std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>> clippings;
+};
 
 StdCmdToggleClipPlane::StdCmdToggleClipPlane()
     : Command("Std_ToggleClipPlane")
@@ -663,11 +693,15 @@ Action* StdCmdToggleClipPlane::createAction()
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
-    if (!clipping) {
+    App::Document* doc = getActiveDocument();
+    if (!doc) {
+        return;
+    }
+    garbageCollect();  // remove dead pointers
+    if (!hasClipping(doc)) {
         auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
         if (view) {
-            clipping = Gui::Dialog::Clipping::makeDockWidget(view);
+            clippings.push_back(std::make_pair(doc, Gui::Dialog::Clipping::makeDockWidget(view, doc)));
         }
     }
 }
@@ -676,6 +710,31 @@ bool StdCmdToggleClipPlane::isActive()
 {
     auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     return view ? true : false;
+}
+
+void StdCmdToggleClipPlane::garbageCollect()
+{
+    // We assume the vector to be small
+    std::vector<std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>> newClippings;
+    newClippings.reserve(clippings.size());
+    std::copy_if(
+        clippings.begin(),
+        clippings.end(),
+        std::back_inserter(newClippings),
+        [](const std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>& clipPair) -> bool {
+            return clipPair.second != nullptr;
+        }
+    );
+    clippings = newClippings;
+}
+bool StdCmdToggleClipPlane::hasClipping(App::Document* doc) const
+{
+    return std::ranges::find(
+               clippings,
+               doc,
+               &std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>::first
+           )
+        != clippings.end();
 }
 
 //===========================================================================
@@ -2639,7 +2698,7 @@ void StdCmdViewIvIssueCamPos::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
-    if (view3d == nullptr) {
+    if (!view3d) {
         Base::Console().developerError(
             "StdCmdViewIvIssueCameraPos",
             "Expected the active view to be View3DInventor\n"
@@ -3431,7 +3490,7 @@ StdCmdTextureMapping::StdCmdTextureMapping()
 void StdCmdTextureMapping::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new Gui::Dialog::TaskTextureMapping);
+    Gui::Control().showDialog(new Gui::Dialog::TaskTextureMapping, getDocument());
 }
 
 bool StdCmdTextureMapping::isActive()

@@ -708,8 +708,12 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     )
     adaptive_op_variables = determine_adaptive_op(values, pathobj)
 
-    # Apply arc splitting if requested
     path_to_process = pathobj.Path
+
+    # Process canned cycles for drilling operations
+    path_to_process = PostUtils.cannedCycleTerminator(path_to_process)
+
+    # Apply arc splitting if requested
     if values["SPLIT_ARCS"]:
         path_to_process = PostUtils.splitArcs(path_to_process)
 

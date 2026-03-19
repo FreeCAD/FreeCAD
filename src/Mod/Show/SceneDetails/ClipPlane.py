@@ -60,7 +60,9 @@ class ClipPlane(SceneDetail):
 
     def _viewer(self):
         if self.doc is None:
-            gdoc = Gui.editDocument()
+            # Originaly used edit document but now multiple documents can
+            # be in edit so use the active document as fall back
+            gdoc = Gui.ActiveDocument
         else:
             gdoc = Gui.getDocument(self.doc.Name)
         v = gdoc.activeView()

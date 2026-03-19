@@ -1002,7 +1002,7 @@ appelés coupes transversales). Sa forme est ensuite soustraite du solide exista
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
       <source>Boolean Tools</source>
-      <translation>Outils booléens</translation>
+      <translation>Outils des opérateurs booléens</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="56"/>

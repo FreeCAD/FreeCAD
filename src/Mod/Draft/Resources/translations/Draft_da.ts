@@ -3502,7 +3502,7 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
     <message>
       <location filename="../../DraftGui.py" line="2067"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="2068"/>
@@ -3709,7 +3709,7 @@ or try saving to a lower DWG version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="582"/>
       <source>Wire</source>
-      <translation type="unfinished">Wire</translation>
+      <translation>Tråd</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="615"/>

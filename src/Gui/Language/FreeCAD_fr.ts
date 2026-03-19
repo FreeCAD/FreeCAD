@@ -6387,7 +6387,7 @@ sur Alt + bouton droit de la souris OU les touches Pg.Suiv/Pg.Préc du clavier</
     <message>
       <location filename="../Widgets.cpp" line="409"/>
       <source>Press modifier keys</source>
-      <translation>Appuyez sur les touches de modification</translation>
+      <translation>Appuyer sur les touches de modificateur</translation>
     </message>
   </context>
   <context>

@@ -495,6 +495,14 @@ class GeometryElementsSelection(QtGui.QWidget):
             # but close only one SelectionObserver on leaving the task panel
             self.sel_server = FemSelectionObserver(self.selectionParser, print_message)
 
+    def attachSelection(self):
+        if self.sel_server:
+            FreeCADGui.Selection.addObserver(self.sel_server)
+
+    def detachSelection(self):
+        if self.sel_server:
+            FreeCADGui.Selection.removeObserver(self.sel_server)
+
     def selectionParser(self, selection):
         if hasattr(selection[0], "Shape") and selection[1]:
             FreeCAD.Console.PrintMessage(

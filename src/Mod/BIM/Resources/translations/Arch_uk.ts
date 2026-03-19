@@ -5384,7 +5384,7 @@ Floor creation aborted.</source>
       <location filename="../../ArchComponent.py" line="1498"/>
       <source>Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
 </source>
-      <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
+      <translation>Помилка обчислення площі {self.obj.Label}: неможливо спроєктувати неплоскі грані з отворами. Розмір площі буде скинутий в 0.
 </translation>
     </message>
     <message>

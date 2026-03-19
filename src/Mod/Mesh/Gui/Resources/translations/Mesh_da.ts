@@ -973,7 +973,7 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="255"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="424"/>
       <source>No selection</source>
-      <translation>Ingen valg</translation>
+      <translation>Ingen valgt</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
@@ -1265,7 +1265,7 @@
     <message>
       <location filename="../../DlgRegularSolid.ui" line="809"/>
       <source>&amp;Create</source>
-      <translation>&amp; Opret</translation>
+      <translation>&amp;Opret</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="812"/>
@@ -1285,12 +1285,12 @@
       <location filename="../../DlgRegularSolidImp.cpp" line="203"/>
       <location filename="../../DlgRegularSolidImp.cpp" line="211"/>
       <source>Create %1</source>
-      <translation>Oprette %1</translation>
+      <translation>Opret %1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolidImp.cpp" line="122"/>
       <source>No active document</source>
-      <translation>Ingen aktive dokument</translation>
+      <translation>Ingen aktiv dokument</translation>
     </message>
   </context>
   <context>
@@ -1663,7 +1663,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="308"/>
       <source>No selection</source>
-      <translation>Ingen valg</translation>
+      <translation>Ingen valgt</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="308"/>

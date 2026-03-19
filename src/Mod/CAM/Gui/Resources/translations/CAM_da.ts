@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="307"/>
       <source>From Shape</source>
-      <translation type="unfinished">From Shape</translation>
+      <translation>Fra Form</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="308"/>
       <source>Creates a toolpath from a selected shape</source>
-      <translation type="unfinished">Creates a toolpath from a selected shape</translation>
+      <translation>Opretter en værktøjsbane ud fra en valgt form</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="213"/>
       <source>Select Workplane for Path Area</source>
-      <translation type="unfinished">Select Workplane for Path Area</translation>
+      <translation>Vælg arbejdsplan for bearbejdnings område</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="275"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>New Job</source>
-      <translation type="unfinished">New Job</translation>
+      <translation>Nyt Job</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Base Model Selection</source>
-      <translation type="unfinished">Base Model Selection</translation>
+      <translation>Grundmodel Udvælgelse</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -146,7 +146,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="14"/>
       <source>Job Template Export</source>
-      <translation type="unfinished">Job Template Export</translation>
+      <translation>Job Skabelon Eksport</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="23"/>
@@ -161,12 +161,12 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="73"/>
       <source>Setup Sheet</source>
-      <translation type="unfinished">Setup Sheet</translation>
+      <translation>Opstiller ark</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
       <source>If enabled, include all post processing settings in the template</source>
-      <translation type="unfinished">If enabled, include all post processing settings in the template</translation>
+      <translation>Hvis aktiveret, inkluder alle post processing i skabelonen</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="85"/>
       <source>Operation heights</source>
-      <translation type="unfinished">Operation heights</translation>
+      <translation>Operationens højder</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="95"/>
@@ -211,7 +211,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="108"/>
       <source>Tool rapid speeds</source>
-      <translation type="unfinished">Tool rapid speeds</translation>
+      <translation>Værktøj ilgang hastigheder</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="118"/>
@@ -221,7 +221,7 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="121"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Køling Type</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="131"/>
@@ -248,7 +248,7 @@ Note that this option is disabled if a stock object from an existing solid is us
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="150"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Råmateriale</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="159"/>
@@ -266,7 +266,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="166"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>Forlæng</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="182"/>
@@ -316,7 +316,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="14"/>
       <source>Create Property</source>
-      <translation type="unfinished">Create Property</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="20"/>
@@ -371,7 +371,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="117"/>
       <source>Check to create several properties in a batch</source>
-      <translation type="unfinished">Check to create several properties in a batch</translation>
+      <translation>Vælg for at oprette flere egenskaber i et gang</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="120"/>
@@ -656,17 +656,17 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="59"/>
       <source>Select one or more features in the 3D view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</source>
-      <translation type="unfinished">Select one or more features in the 3D view and press &apos;Add&apos; to add them as the base items for this operation. Selected features can be deleted entirely.</translation>
+      <translation>Vælg en eller flere funktioner i 3D-visningen, og tryk på &apos;Tilføj&apos; for at tilføje dem som de grund elementer for denne operation. Valgte funktioner kan slettes helt.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="69"/>
       <source>Add selected features to the list of base geometries for this operation</source>
-      <translation type="unfinished">Add selected features to the list of base geometries for this operation</translation>
+      <translation>Tilføj markerede funktioner til listen over grundgeometrier for denne operation</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="79"/>
       <source>Remove the selected list items from the list of base geometries. The operation will not be applied to them.</source>
-      <translation type="unfinished">Remove the selected list items from the list of base geometries. The operation will not be applied to them.</translation>
+      <translation>Fjern de valgte liste punkter fra listen over grundgeometrier. Handlingen vil ikke blive anvendt på dem.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="89"/>
@@ -676,7 +676,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="99"/>
       <source>All objects will be processed using the same operation properties</source>
-      <translation type="unfinished">All objects will be processed using the same operation properties</translation>
+      <translation>Alle objekter vil blive behandlet ved hjælp af de samme operationsegenskaber</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
@@ -737,12 +737,12 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="59"/>
       <source>Remove selected list items from the list of base geometries. The operation is no longer applied to them.</source>
-      <translation type="unfinished">Remove selected list items from the list of base geometries. The operation is no longer applied to them.</translation>
+      <translation>Fjern de valgte liste punkter fra listen over grundgeometrier. Handlingen vil ikke længere blive anvendt på dem.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
       <source>Remove all list items and fill list with all eligible features from the job&apos;s base object.</source>
-      <translation type="unfinished">Remove all list items and fill list with all eligible features from the job&apos;s base object.</translation>
+      <translation>Fjern alle liste elementer og udfylde listen med alle kvalificerede funktioner fra jobbet&apos;s grundobjekt.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="72"/>
@@ -752,7 +752,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="79"/>
       <source>All objects will be processed using the same operation properties.</source>
-      <translation type="unfinished">All objects will be processed using the same operation properties.</translation>
+      <translation>Alle objekter vil blive behandlet ved hjælp af de samme operationsegenskaber.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="20"/>
@@ -782,29 +782,29 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="70"/>
       <source>All locations will be processed using the same operation properties</source>
-      <translation type="unfinished">All locations will be processed using the same operation properties</translation>
+      <translation>Alle placeringer vil blive behandlet ved hjælp af de samme operationsegenskaber</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="50"/>
       <source>Remove selected location from the list. The operation is no longer applied to them.</source>
-      <translation type="unfinished">Remove selected location from the list. The operation is no longer applied to them.</translation>
+      <translation>Fjern de valgte placeringer fra listen. Handlingen vil ikke længere blive anvendt på dem.</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="63"/>
       <source>Edit</source>
-      <translation>Redigér</translation>
+      <translation>Rediger</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
       <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start depth</source>
-      <translation type="unfinished">Start depth</translation>
+      <translation>Start dybde</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
       <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <source>Start depth of the operation. The highest point in Z-axis the operation needs to process.</source>
-      <translation type="unfinished">Start depth of the operation. The highest point in Z-axis the operation needs to process.</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
@@ -816,13 +816,13 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
       <source>Final depth</source>
-      <translation type="unfinished">Final depth</translation>
+      <translation>Slut dybde</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
       <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
-      <translation type="unfinished">The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</translation>
+      <translation>Operationens dybde, som svarer til den laveste værdi i Z-aksen, operationen skal forsætte.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
@@ -833,17 +833,17 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <location filename="../panels/SetupGlobal.ui" line="68"/>
       <source>Step down</source>
-      <translation type="unfinished">Step down</translation>
+      <translation>Trin ned</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
       <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</source>
-      <translation type="unfinished">The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</translation>
+      <translation>Dybden i Z-akse, operationen bevæger sig nedad mellem de forskellige lag. Denne værdi afhænger af det anvendte værktøj, det materiale, der skal skæres, køles til rådighed, og mange andre faktorer. Konsultere værktøjet producenter datablade for den korrekte værdi.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <source>Finish step down</source>
-      <translation type="unfinished">Finish step down</translation>
+      <translation>Slet trin ned</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
@@ -858,32 +858,32 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="57"/>
       <source>Max diameter</source>
-      <translation type="unfinished">Max diameter</translation>
+      <translation>Maks. diameter</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <source>Transfer the Z value of the selected feature as the final depth for the operation.</source>
-      <translation type="unfinished">Transfer the Z value of the selected feature as the final depth for the operation.</translation>
+      <translation>Overfør Z-værdien fra den valgte element som den slutdybde for operationen.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
       <source>Safe height</source>
-      <translation type="unfinished">Safe height</translation>
+      <translation>Sikkerheds højde</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="54"/>
       <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
-      <translation type="unfinished">The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</translation>
+      <translation>Højden over, som det er sikkert at flytte værktøjet med ilgang. Under denne højde udføres alle side- og nedadgående bevægelser med moderate hastigheder.</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="24"/>
       <source>Clearance height</source>
-      <translation type="unfinished">Clearance height</translation>
+      <translation>Frihøjde</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="31"/>
       <source>The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</source>
-      <translation type="unfinished">The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</translation>
+      <translation>Højden hvor sideværts bevægelse af værktøjet ikke hindres af nogen fiksture eller materiale selv.</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="255"/>
@@ -931,7 +931,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="227"/>
       <source>If greater than zero it limits the helix ramp diameter, otherwise 75 percent of tool diameter is used</source>
-      <translation type="unfinished">If greater than zero it limits the helix ramp diameter, otherwise 75 percent of tool diameter is used</translation>
+      <translation>Hvis større end nul, begrænser det helix rampe diameter, ellers 75% af værktøjets diameter anvendes</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="210"/>
@@ -1013,7 +1013,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="146"/>
       <source>XY stock to leave</source>
-      <translation type="unfinished">XY stock to leave</translation>
+      <translation>XY slettillæg</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
@@ -1024,7 +1024,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="196"/>
       <source>Use outline</source>
-      <translation type="unfinished">Use outline</translation>
+      <translation>Brug Yderkontur</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="203"/>
@@ -1144,17 +1144,17 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="102"/>
       <source>Extend depth</source>
-      <translation type="unfinished">Extend depth</translation>
+      <translation>Udvid dybde</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="122"/>
       <source>Drill tip</source>
-      <translation type="unfinished">Drill tip</translation>
+      <translation>Bor spids</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="127"/>
       <source>2x drill tip</source>
-      <translation type="unfinished">2x drill tip</translation>
+      <translation>2x borspids</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="152"/>
@@ -1164,7 +1164,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="162"/>
       <source>Retract</source>
-      <translation type="unfinished">Retract</translation>
+      <translation>Tilbagetræk</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="176"/>
@@ -1175,7 +1175,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../panels/PageOpTappingEdit.ui" line="32"/>
       <location filename="../panels/PageOpDrillingEdit.ui" line="142"/>
       <source>Dwell</source>
-      <translation type="unfinished">Dwell</translation>
+      <translation>Dvale</translation>
     </message>
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="14"/>
@@ -1218,17 +1218,17 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="183"/>
       <source>Feed retract</source>
-      <translation type="unfinished">Feed retract</translation>
+      <translation>Tilbagetræk med tilspænding</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="186"/>
       <source>G85: Retract from the hole at the given feedrate instead of rapid move</source>
-      <translation type="unfinished">G85: Retract from the hole at the given feedrate instead of rapid move</translation>
+      <translation>G85: Tilbagetræk fra hullet på den givne tilspænding i stedet for ilgang</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
       <source>Start from</source>
-      <translation type="unfinished">Start from</translation>
+      <translation>Start fra</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="77"/>
@@ -1243,12 +1243,12 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="86"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Udvendig</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="101"/>
       <source>The direction for the helix, clockwise or counterclockwise</source>
-      <translation type="unfinished">The direction for the helix, clockwise or counterclockwise</translation>
+      <translation>Retningen for helix, med uret eller mod uret</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="144"/>
@@ -1350,7 +1350,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
       <source>Cut Mode</source>
-      <translation type="unfinished">Cut Mode</translation>
+      <translation>Bearbejdnings retning</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="105"/>
@@ -1367,7 +1367,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
       <source>Pattern</source>
-      <translation type="unfinished">Pattern</translation>
+      <translation>Mønster</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
@@ -1495,7 +1495,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
       <source>Min travel</source>
-      <translation type="unfinished">Min travel</translation>
+      <translation>Min. vandring</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="265"/>
@@ -1505,7 +1505,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
       <source>Use rest machining</source>
-      <translation type="unfinished">Use rest machining</translation>
+      <translation>Brug restbearbejdning</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="174"/>
@@ -1572,7 +1572,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpDeburrEdit.ui" line="145"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="96"/>
       <source>The direction in which the profile is performed, clockwise or counterclockwise</source>
-      <translation type="unfinished">The direction in which the profile is performed, clockwise or counterclockwise</translation>
+      <translation>Den retning, hvori profilen udføres, med uret eller mod uret</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="121"/>
@@ -1684,7 +1684,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="104"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="176"/>
       <source>Center of mass</source>
-      <translation>Massemidtpunkt</translation>
+      <translation>Tyngdepunkt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="109"/>
@@ -1806,7 +1806,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="405"/>
       <source>Enable to reverse the cut direction of the slot path</source>
-      <translation type="unfinished">Enable to reverse the cut direction of the slot path</translation>
+      <translation>Aktivér for at vende retningen af spor værktøjsbane.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="408"/>
@@ -1839,7 +1839,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpWaterlineEdit.ui" line="124"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
       <source>Cut pattern</source>
-      <translation type="unfinished">Cut pattern</translation>
+      <translation>Bearbejdnings mønster</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="136"/>
@@ -1964,7 +1964,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="166"/>
       <source>Step over</source>
-      <translation>Spring over</translation>
+      <translation>Overlap</translation>
     </message>
     <message>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="179"/>
@@ -1990,7 +1990,7 @@ A step over of 100% results in no overlap between two different cycles.</transla
     <message>
       <location filename="../panels/SetupGlobal.ui" line="30"/>
       <source>Depths</source>
-      <translation type="unfinished">Depths</translation>
+      <translation>Dybder</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="43"/>
@@ -2022,7 +2022,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="87"/>
       <source>Heights</source>
-      <translation type="unfinished">Heights</translation>
+      <translation>Højder</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="93"/>
@@ -2139,12 +2139,12 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="198"/>
       <source>Lead in/out</source>
-      <translation type="unfinished">Lead in/out</translation>
+      <translation>Indløb / udløb</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
       <source>Pitch</source>
-      <translation type="unfinished">Pitch</translation>
+      <translation>Stigning</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="36"/>
@@ -2330,7 +2330,7 @@ If the width is set to 0 the dressup will try to guess a reasonable value based 
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="42"/>
       <source>Default height</source>
-      <translation type="unfinished">Default height</translation>
+      <translation>Standard højde</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="49"/>
@@ -2527,7 +2527,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../preferences/PathJob.ui" line="353"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Råmateriale</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="80"/>
@@ -3087,7 +3087,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="63"/>
       <source>Pivot height</source>
-      <translation type="unfinished">Pivot height</translation>
+      <translation>Pivot højde</translation>
     </message>
     <message>
       <location filename="../panels/DragKnifeEdit.ui" line="70"/>
@@ -3454,7 +3454,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="45"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Råmateriale</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="89"/>
@@ -3630,17 +3630,17 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="641"/>
       <source>Start depth</source>
-      <translation type="unfinished">Start depth</translation>
+      <translation>Start dybde</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="657"/>
       <source>Final depth</source>
-      <translation type="unfinished">Final depth</translation>
+      <translation>Slut dybde</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="673"/>
       <source>Step down</source>
-      <translation type="unfinished">Step down</translation>
+      <translation>Trin ned</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="777"/>
@@ -3655,7 +3655,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="635"/>
       <source>Depths</source>
-      <translation type="unfinished">Depths</translation>
+      <translation>Dybder</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="725"/>
@@ -3680,9 +3680,9 @@ Default: &quot;OpStockZMax+SetupSheet.SafeHeightOffset&quot;</translation>
       <source>SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
 
 Default: &quot;5mm&quot;</source>
-      <translation type="unfinished">SafeHeightOffset can be for expressions to set the SafeHeight for new operations.
+      <translation>SafeHeightOffset kan være for udtryk til at indstille SafeHeight for nye operationer.
 
-Default: &quot;5mm&quot;</translation>
+Standard: &quot;5mm&quot;</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1430"/>
@@ -3741,7 +3741,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="692"/>
       <source>Heights</source>
-      <translation type="unfinished">Heights</translation>
+      <translation>Højder</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="698"/>
@@ -4078,7 +4078,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Base/SetupSheet.py" line="133"/>
       <location filename="../../../Path/Base/SetupSheet.py" line="394"/>
       <source>Default coolant mode.</source>
-      <translation type="unfinished">Default coolant mode.</translation>
+      <translation>Standard kølings metode.</translation>
     </message>
     <message>
       <location filename="../../../Path/Base/SetupSheet.py" line="142"/>
@@ -4137,7 +4137,7 @@ Default: 3 mm</translation>
       <location filename="../../../Path/Dressup/Boundary.py" line="84"/>
       <location filename="../../../Path/Dressup/Boundary.py" line="112"/>
       <source>Keep tool down.</source>
-      <translation type="unfinished">Keep tool down.</translation>
+      <translation>Behold værktøj nede.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/DogboneII.py" line="204"/>
@@ -4452,7 +4452,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Main/Job.py" line="322"/>
       <source>The base objects for all operations</source>
-      <translation type="unfinished">The base objects for all operations</translation>
+      <translation>Grundobjekterne for alle operationer</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="352"/>
@@ -4573,7 +4573,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1710"/>
       <source>Max length of keep tool down path compared to direct distance between points</source>
-      <translation type="unfinished">Max length of keep tool down path compared to direct distance between points</translation>
+      <translation>Maks. længde af holde værktøjet nede bane i forhold til direkte afstand mellem punkter</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1683"/>
@@ -4783,7 +4783,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../../../Path/Op/Base.py" line="307"/>
       <source>Lower limit of the turning diameter</source>
-      <translation type="unfinished">Lower limit of the turning diameter</translation>
+      <translation>Nedre grænse for drejediameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="313"/>
@@ -4794,7 +4794,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <location filename="../../../Path/Op/Base.py" line="424"/>
       <location filename="../../../CAMTests/TestRefactoredTestPost.py" line="665"/>
       <source>Coolant option for this operation</source>
-      <translation type="unfinished">Coolant option for this operation</translation>
+      <translation>Kølings valg for denne operation</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="82"/>
@@ -4834,7 +4834,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="138"/>
       <source>How to join chamfer segments</source>
-      <translation type="unfinished">How to join chamfer segments</translation>
+      <translation>Sådan slutter du dig rejfe segmenter</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="103"/>
@@ -4861,13 +4861,13 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="141"/>
       <source>The time to dwell between peck cycles</source>
-      <translation type="unfinished">The time to dwell between peck cycles</translation>
+      <translation>Dvaletiden  mellem spånbrud</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="110"/>
       <location filename="../../../Path/Op/Drilling.py" line="147"/>
       <source>Enable dwell</source>
-      <translation type="unfinished">Enable dwell</translation>
+      <translation>Aktiver dvale</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="119"/>
@@ -4886,7 +4886,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="174"/>
       <source>The height where cutting feed rate starts and retract height for peck operation</source>
-      <translation type="unfinished">The height where cutting feed rate starts and retract height for peck operation</translation>
+      <translation>Højde, hvor tilspænding starter og trækker højden tilbage til spånbrud</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="180"/>
@@ -4931,7 +4931,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Helix.py" line="161"/>
       <location filename="../../../Path/Op/Helix.py" line="223"/>
       <source>The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)</source>
-      <translation type="unfinished">The direction of the circular cuts, ClockWise (Climb), or CounterClockWise (Conventional)</translation>
+      <translation>Retningen af cirkulære bevægelser, med uret retning(Medfræsning), eller imod urets retning(Modfræsning)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="150"/>
@@ -5007,12 +5007,12 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="160"/>
       <source>Angle of the zigzag pattern</source>
-      <translation type="unfinished">Angle of the zigzag pattern</translation>
+      <translation>Vinkel på zigzag-mønsteret</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="166"/>
       <source>Clearing pattern to use</source>
-      <translation type="unfinished">Clearing pattern to use</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="172"/>
@@ -5223,7 +5223,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="169"/>
       <source>Additional offset to the selected bounding box</source>
-      <translation type="unfinished">Additional offset to the selected bounding box</translation>
+      <translation>Yderligere offset til den valgte afgrænsningsboks</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="175"/>
@@ -5304,7 +5304,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Surface.py" line="310"/>
       <location filename="../../../Path/Op/Waterline.py" line="354"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
-      <translation type="unfinished">Set the Z-axis depth offset from the target surface.</translation>
+      <translation>Indstil Z-aksens dybde forskydning fra slutoverfladen.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="325"/>
@@ -5367,7 +5367,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="328"/>
       <source>Set thread orientation</source>
-      <translation type="unfinished">Set thread orientation</translation>
+      <translation>Set gevind orientering</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="335"/>
@@ -5485,7 +5485,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Gui/Array.py" line="54"/>
       <location filename="../../../Path/Dressup/Array.py" line="49"/>
       <source>Pattern method</source>
-      <translation type="unfinished">Pattern method</translation>
+      <translation>Mønster metode</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="108"/>
@@ -5656,7 +5656,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="104"/>
       <source>The time to dwell at bottom of tapping cycle</source>
-      <translation type="unfinished">The time to dwell at bottom of tapping cycle</translation>
+      <translation>Dvaletid på bunden af gevindcyklus</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="125"/>
@@ -5666,7 +5666,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="134"/>
       <source>The height where feed starts and height during retract tool when path is finished while in a peck operation</source>
-      <translation type="unfinished">The height where feed starts and height during retract tool when path is finished while in a peck operation</translation>
+      <translation>Højden hvor tilspænding starter og højden under tilbagetrækning af værktøj, når bearbejdningen er færdig, mens spånbrud</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Tapping.py" line="140"/>
@@ -5774,7 +5774,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Helix.py" line="105"/>
       <location filename="../../../Path/Op/Profile.py" line="223"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Yderside</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="106"/>
@@ -5838,7 +5838,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Gui/PocketBase.py" line="83"/>
       <source>Pass Extension</source>
-      <translation type="unfinished">Pass Extension</translation>
+      <translation>Bane forlængelse</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PocketBase.py" line="89"/>
@@ -5969,7 +5969,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/SurfaceSupport.py" line="2588"/>
       <source>Diameter dimension missing from ToolBit shape.</source>
-      <translation type="unfinished">Diameter dimension missing from ToolBit shape.</translation>
+      <translation>Diameter dimension mangler fra værktøjets form.</translation>
     </message>
   </context>
   <context>
@@ -6005,7 +6005,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="102"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Råmateriale</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="105"/>
@@ -6199,7 +6199,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="945"/>
       <source>Heights</source>
-      <translation type="unfinished">Heights</translation>
+      <translation>Højder</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1015"/>
@@ -6211,7 +6211,7 @@ If it is necessary to set the FinalDepth manually please select a different oper
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1038"/>
       <source>Depths</source>
-      <translation type="unfinished">Depths</translation>
+      <translation>Dybder</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="1139"/>
@@ -6491,7 +6491,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="63"/>
       <source>No Retract</source>
-      <translation type="unfinished">No Retract</translation>
+      <translation>Ingen Tilbagetræk</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="64"/>
@@ -6882,7 +6882,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
       <source>Ok</source>
-      <translation>OK</translation>
+      <translation>Ok</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1667"/>
@@ -6992,7 +6992,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="349"/>
       <source>Count</source>
-      <translation>Tælle</translation>
+      <translation>Tæl</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="431"/>
@@ -7017,7 +7017,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="58"/>
       <source>New Job</source>
-      <translation type="unfinished">New Job</translation>
+      <translation>Nyt Job</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="60"/>
@@ -7115,7 +7115,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="76"/>
       <source>Fixtures</source>
-      <translation type="unfinished">Fixtures</translation>
+      <translation>Fiksturer</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="100"/>
@@ -7140,7 +7140,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="115"/>
       <source>Cycle Time</source>
-      <translation type="unfinished">Cycle Time</translation>
+      <translation>Cyklustid</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="107"/>
@@ -7200,7 +7200,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
       <source>Tool Shape</source>
-      <translation type="unfinished">Tool Shape</translation>
+      <translation>Værktøjs Form</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
@@ -7245,12 +7245,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="114"/>
       <source>Coolant Mode</source>
-      <translation type="unfinished">Coolant Mode</translation>
+      <translation>Kølings metoder</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="116"/>
       <source>Part</source>
-      <translation>Del</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="117"/>
@@ -7444,12 +7444,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1632"/>
       <source>Outside</source>
-      <translation type="unfinished">Outside</translation>
+      <translation>Udvendig</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1633"/>
       <source>Inside</source>
-      <translation type="unfinished">Inside</translation>
+      <translation>Indvendig</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1636"/>
@@ -7482,12 +7482,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="363"/>
       <source>Flood</source>
-      <translation type="unfinished">Flood</translation>
+      <translation>Udvendig</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="364"/>
       <source>Mist</source>
-      <translation type="unfinished">Mist</translation>
+      <translation>Indvendig</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="466"/>
@@ -7555,7 +7555,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="887"/>
       <source>Cycletime Error</source>
-      <translation type="unfinished">Cycletime Error</translation>
+      <translation>Cyklus tid Fejlgrænse</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="829"/>
@@ -7570,7 +7570,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="117"/>
       <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
-      <translation type="unfinished">Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</translation>
+      <translation>Hullens diameter kan være unøjagtig på grund af meshing af fladen. Overvej at vælge hullets kant.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="149"/>
@@ -7580,7 +7580,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="190"/>
       <source>Final depth set below ZMin of face(s) selected.</source>
-      <translation type="unfinished">Final depth set below ZMin of face(s) selected.</translation>
+      <translation>Slut dybde sat under ZMin af de valgte flade(r).</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="321"/>
@@ -7604,7 +7604,7 @@ Aborting op creation</translation>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="113"/>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="177"/>
       <source>No valid toolcontroller</source>
-      <translation type="unfinished">No valid toolcontroller</translation>
+      <translation>Ingen gyldig strying</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="182"/>
@@ -7634,7 +7634,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="118"/>
       <source>This operation requires a tool controller with a threadmilling tool</source>
-      <translation type="unfinished">This operation requires a tool controller with a threadmilling tool</translation>
+      <translation>Denne operation kræver en styring med et gevindfræser</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/refactored_masso_g3_post.py" line="57"/>
@@ -7654,7 +7654,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/library/serializers/camotics.py" line="67"/>
       <source>Camotics Tool Library</source>
-      <translation type="unfinished">Camotics Tool Library</translation>
+      <translation>Camitics Værktøjs Bibliotek</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/serializers/fctl.py" line="43"/>
@@ -7669,7 +7669,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="57"/>
       <source>Drill</source>
-      <translation type="unfinished">Drill</translation>
+      <translation>Bor</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/ballend.py" line="47"/>
@@ -7719,7 +7719,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/threadmill.py" line="47"/>
       <source>{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle</source>
-      <translation type="unfinished">{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle</translation>
+      <translation>{diameter} gevindfræser, {flutes}-skær, {cutting_angle} skærevinkel</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/vbit.py" line="45"/>
@@ -7759,7 +7759,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/editor.py" line="97"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Egenskaber</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/selector.py" line="40"/>
@@ -7779,7 +7779,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/browser.py" line="550"/>
       <source>Are you sure you want to remove the selected toolbit(s) from the library?</source>
-      <translation type="unfinished">Are you sure you want to remove the selected toolbit(s) from the library?</translation>
+      <translation>Er du sikker på, at du vil fjerne de valgte værktøj(er) fra biblioteket?</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/browser.py" line="579"/>
@@ -7805,8 +7805,8 @@ Aborting op creation</translation>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="411"/>
       <source>Are you sure you want to remove the library &apos;{0}&apos;?
 This will not delete the toolbits contained within it.</source>
-      <translation type="unfinished">Are you sure you want to remove the library &apos;{0}&apos;?
-This will not delete the toolbits contained within it.</translation>
+      <translation>Er du sikker på, at du vil fjerne biblioteket &apos;{0}&apos;?
+Dette vil ikke slette, værktøjerne indeholdt i det.</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="289"/>
@@ -7818,7 +7818,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="431"/>
       <source>Failed to delete library &apos;{0}&apos;: {1}</source>
-      <translation type="unfinished">Failed to delete library &apos;{0}&apos;: {1}</translation>
+      <translation>Mislykkedes at slette bibliotek &apos;{0}&apos;: {1}</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="471"/>
@@ -7828,12 +7828,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="508"/>
       <source>New Toolbit</source>
-      <translation type="unfinished">New Toolbit</translation>
+      <translation>Nyt Værktøj</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="529"/>
       <source>Error Creating Toolbit</source>
-      <translation type="unfinished">Error Creating Toolbit</translation>
+      <translation>Fejl ved oprettelse af værktøj</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="546"/>
@@ -7851,7 +7851,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="610"/>
       <source>Failed to import toolbit from &apos;{file_path}&apos; to library &apos;{current_library.label}&apos;.</source>
-      <translation type="unfinished">Failed to import toolbit from &apos;{file_path}&apos; to library &apos;{current_library.label}&apos;.</translation>
+      <translation>Kunne ikke importere værktøj fra &apos;{file_path}&apos; til bibliotek &apos;{current_library.label}&apos;.</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="622"/>
@@ -7861,7 +7861,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="631"/>
       <source>Please select only one toolbit to export.</source>
-      <translation type="unfinished">Please select only one toolbit to export.</translation>
+      <translation>Vælg kun ét værktøj at eksportere.</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/bullnose.py" line="50"/>
@@ -7896,7 +7896,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="431"/>
       <source>Are you sure you want to delete the selected toolbit(s)? This is not reversible. The toolbits will be removed from disk and from all libraries that contain them.</source>
-      <translation type="unfinished">Are you sure you want to delete the selected toolbit(s)? This is not reversible. The toolbits will be removed from disk and from all libraries that contain them.</translation>
+      <translation>Er du sikker på, at du vil slette de valgte værktøj(er)? Dette er ikke reversibelt. Værktøjerne vil blive fjernet fra harddisken og fra alle biblioteker, der indeholder dem.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="219"/>
@@ -8010,7 +8010,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="72"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Råmateriale</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Pocket.py" line="118"/>
@@ -8040,7 +8040,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="68"/>
       <source>Edge</source>
-      <translation>Linje</translation>
+      <translation>Kant</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
@@ -8235,7 +8235,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1117"/>
       <source>Current tool larger than arc diameter.</source>
-      <translation type="unfinished">Current tool larger than arc diameter.</translation>
+      <translation>Aktive værktøj er større end buens diameter.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1190"/>
@@ -8289,7 +8289,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="437"/>
       <source>Stock</source>
-      <translation type="unfinished">Stock</translation>
+      <translation>Råmateriale</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="440"/>
@@ -8434,7 +8434,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="250"/>
       <source>Custom Internal</source>
-      <translation type="unfinished">Custom Internal</translation>
+      <translation>Brugerdefineret Indvendig</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="254"/>
@@ -8444,7 +8444,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="258"/>
       <source>Imperial External (3A)</source>
-      <translation type="unfinished">Imperial External (3A)</translation>
+      <translation>Tomme Udvendig (3A)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="262"/>
@@ -8454,22 +8454,22 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="266"/>
       <source>Imperial Internal (3B)</source>
-      <translation type="unfinished">Imperial Internal (3B)</translation>
+      <translation>Tomme Indvendig (3B)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="270"/>
       <source>Metric External (4G6G)</source>
-      <translation type="unfinished">Metric External (4G6G)</translation>
+      <translation>Metrisk Ekstern (4G6G)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="274"/>
       <source>Metric External (6G)</source>
-      <translation type="unfinished">Metric External (6G)</translation>
+      <translation>Metrisk Udvendig (6G)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="278"/>
       <source>Metric Internal (6H)</source>
-      <translation type="unfinished">Metric Internal (6H)</translation>
+      <translation>Metrisk Indvendig (6H)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="284"/>
@@ -8479,17 +8479,17 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="288"/>
       <source>RightHand</source>
-      <translation type="unfinished">RightHand</translation>
+      <translation>Højre</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="294"/>
       <source>Climb</source>
-      <translation type="unfinished">Climb</translation>
+      <translation>Medfræsning</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="298"/>
       <source>Conventional</source>
-      <translation type="unfinished">Conventional</translation>
+      <translation>Mod fræsning</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="253"/>
@@ -8499,7 +8499,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="257"/>
       <source>Creates a Thread Milling toolpath from features of a base object</source>
-      <translation type="unfinished">Creates a Thread Milling toolpath from features of a base object</translation>
+      <translation>Laver et gevindfræsning værktøjsbane ud fra egenskaber i basisobjektet</translation>
     </message>
   </context>
   <context>
@@ -8587,12 +8587,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Deburr.py" line="142"/>
       <source>Deburr</source>
-      <translation type="unfinished">Deburr</translation>
+      <translation>Afgrat</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Deburr.py" line="143"/>
       <source>Creates a Deburr toolpath along Edges or around Faces</source>
-      <translation type="unfinished">Creates a Deburr toolpath along Edges or around Faces</translation>
+      <translation>Opretter en Afgrate værktøjsbane langs kanter eller omkring flader</translation>
     </message>
   </context>
   <context>
@@ -8710,7 +8710,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Post/scripts/gcode_pre.py" line="225"/>
       <source>No active document</source>
-      <translation>Ingen aktive dokument</translation>
+      <translation>Ingen aktiv dokument</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/scripts/gcode_pre.py" line="228"/>
@@ -8728,7 +8728,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="132"/>
       <source>Reverse</source>
-      <translation>Omvendt</translation>
+      <translation>Modsat</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Controller.py" line="133"/>
@@ -8777,12 +8777,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="379"/>
       <source>Error Saving Library</source>
-      <translation type="unfinished">Error Saving Library</translation>
+      <translation>Fejl, ved gem af bibliotek</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="60"/>
       <source>Toolbit Selector</source>
-      <translation type="unfinished">Toolbit Selector</translation>
+      <translation>Værktøjs vælger</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="88"/>
@@ -9039,7 +9039,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Base/Gui/PropertyBag.py" line="433"/>
       <source>Creates an object which can be used to store reference properties</source>
-      <translation type="unfinished">Creates an object which can be used to store reference properties</translation>
+      <translation>Opretter et objekt som kan bruges til at gemme referenceegenskaber</translation>
     </message>
   </context>
   <context>
@@ -9104,7 +9104,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/cmd.py" line="82"/>
       <source>Opens an editor to manage toolbit libraries</source>
-      <translation type="unfinished">Opens an editor to manage toolbit libraries</translation>
+      <translation>Åbner en editor til håndtering af værktøjsbiblioteker</translation>
     </message>
   </context>
   <context>
@@ -9120,7 +9120,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="37"/>
       <source>Cutting edge height</source>
-      <translation type="unfinished">Cutting edge height</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="49"/>
@@ -9169,7 +9169,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="49"/>
       <source>Overall tool length</source>
-      <translation type="unfinished">Overall tool length</translation>
+      <translation>Total værktøjs længde</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="61"/>
@@ -9184,12 +9184,12 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="53"/>
       <source>Shank diameter</source>
-      <translation type="unfinished">Shank diameter</translation>
+      <translation>Skaft diameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="61"/>
       <source>Ballend</source>
-      <translation type="unfinished">Ballend</translation>
+      <translation>Kuglefræser</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="37"/>
@@ -9202,7 +9202,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="61"/>
       <source>Tip diameter</source>
-      <translation type="unfinished">Tip diameter</translation>
+      <translation>Spids diameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="69"/>
@@ -9235,7 +9235,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="41"/>
       <source>Major diameter</source>
-      <translation type="unfinished">Major diameter</translation>
+      <translation>Yderdiameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="61"/>
@@ -9252,7 +9252,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="77"/>
       <source>Dovetail</source>
-      <translation type="unfinished">Dovetail</translation>
+      <translation>Svalehale fræser</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="49"/>
@@ -9268,7 +9268,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/probe.py" line="37"/>
       <source>Ball diameter</source>
-      <translation type="unfinished">Ball diameter</translation>
+      <translation>Kugle diameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/probe.py" line="41"/>
@@ -9288,7 +9288,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/reamer.py" line="57"/>
       <source>Reamer</source>
-      <translation type="unfinished">Reamer</translation>
+      <translation>Rival</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="37"/>
@@ -9298,7 +9298,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="41"/>
       <source>Cap diameter</source>
-      <translation type="unfinished">Cap diameter</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="45"/>
@@ -9323,7 +9323,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="49"/>
       <source>Overall length of tap</source>
-      <translation type="unfinished">Overall length of tap</translation>
+      <translation>Total længde på tap</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="61"/>
@@ -9348,12 +9348,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="65"/>
       <source>Corner radius</source>
-      <translation type="unfinished">Corner radius</translation>
+      <translation>Hjørne radius</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="73"/>
       <source>Bullnose</source>
-      <translation type="unfinished">Bullnose</translation>
+      <translation>Endefræser med hjørne radius</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="48"/>
@@ -9363,7 +9363,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
       <source>Radius Mill</source>
-      <translation type="unfinished">Radius Mill</translation>
+      <translation>Radius fræser</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="55"/>
@@ -9378,7 +9378,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="67"/>
       <source>Tapered Ball Nose</source>
-      <translation type="unfinished">Tapered Ball Nose</translation>
+      <translation>Konisk kugle fræser</translation>
     </message>
   </context>
   <context>
@@ -9387,7 +9387,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="59"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="53"/>
       <source>Shank diameter</source>
-      <translation type="unfinished">Shank diameter</translation>
+      <translation>Skaft diameter</translation>
     </message>
   </context>
   <context>
@@ -9395,7 +9395,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="53"/>
       <source>New Toolbit</source>
-      <translation type="unfinished">New Toolbit</translation>
+      <translation>Nyt Værktøj</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="54"/>
@@ -9416,7 +9416,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/tablecell.py" line="111"/>
       <source>Pocket</source>
-      <translation>Indpresning</translation>
+      <translation>Fordybning</translation>
     </message>
   </context>
   <context>
@@ -9459,7 +9459,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../panels/ToolControllerEdit.ui" line="201"/>
       <source>Reverse</source>
-      <translation>Omvendt</translation>
+      <translation>Modsat</translation>
     </message>
   </context>
   <context>
@@ -9467,12 +9467,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/cmd.py" line="52"/>
       <source>Add toolbit…</source>
-      <translation type="unfinished">Add toolbit…</translation>
+      <translation>Tilføj værktøj...</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/cmd.py" line="55"/>
       <source>Opens the toolbit selection dialog</source>
-      <translation type="unfinished">Opens the toolbit selection dialog</translation>
+      <translation>Åbner dialogen til valg af værktøjer</translation>
     </message>
   </context>
   <context>
@@ -9480,7 +9480,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../panels/LibraryProperties.ui" line="14"/>
       <source>Library Property Editor</source>
-      <translation type="unfinished">Library Property Editor</translation>
+      <translation>Biblioteks Egenskabseditor</translation>
     </message>
     <message>
       <location filename="../panels/LibraryProperties.ui" line="34"/>
@@ -9501,7 +9501,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/properties.py" line="80"/>
       <source>Library Properties - {current_name or self.library.label}</source>
-      <translation type="unfinished">Library Properties - {current_name or self.library.label}</translation>
+      <translation>Biblioteksegenskaber - {current_name or self.library.label}</translation>
     </message>
   </context>
   <context>

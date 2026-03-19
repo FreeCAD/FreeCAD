@@ -76,9 +76,9 @@ if [ -d "${conda_env}/PlugIns" ]; then
     mv ${conda_env}/PlugIns ${conda_env}/..
 fi
 
-if [[ "${SIGN_RELEASE}" == "true" ]]; then
+if [[ "${MACOS_SIGN_RELEASE}" == "true" ]]; then
     # create the signed dmg
-    ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
+    ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${MACOS_SIGNING_KEY_ID} -o "${version_name}.dmg"
 else
     # Ad-hoc sign for local builds (required for QuickLook extensions to register)
     if [ -d "FreeCAD.app/Contents/PlugIns" ]; then

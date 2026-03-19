@@ -75,7 +75,7 @@ Man bør derefter klikke på Opdater knappen i hovedværktøjslinjen.
     <message>
       <location filename="../../Datums.cpp" line="271"/>
       <source>Origin</source>
-      <translation>Origo</translation>
+      <translation>Nulpunkt</translation>
     </message>
   </context>
 </TS>
