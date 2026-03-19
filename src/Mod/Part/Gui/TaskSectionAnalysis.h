@@ -106,7 +106,6 @@ public:
 
     bool accept() override;
     bool reject() override;
-    void clicked(int) override;
     Part::SectionAnalysis* getObject() const;
     void updateFromFeature();
 

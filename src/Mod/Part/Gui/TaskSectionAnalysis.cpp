@@ -570,7 +570,7 @@ void SectionAnalysisWidget::onFlipToggled(bool on)
 void SectionAnalysisWidget::onSectionColorChanged(const QColor& color)
 {
     // Update the section face color on the ViewProvider
-    auto* vp = dynamic_cast<PartGui::ViewProviderPart*>(
+    auto* vp = dynamic_cast<PartGui::ViewProviderSectionAnalysis*>(
         Gui::Application::Instance->getViewProvider(feature));
     if (vp) {
         App::Material mat;
@@ -643,7 +643,7 @@ void SectionAnalysisWidget::updateFromFeature()
         normalZ->setEnabled(false);
     }
     else {
-        presetCombo->setCurrentIndex(3);
+        presetCombo->setCurrentIndex(4);
         normalX->setEnabled(true);
         normalY->setEnabled(true);
         normalZ->setEnabled(true);
@@ -732,9 +732,6 @@ void TaskSectionAnalysis::updateFromFeature()
 {
     widget->updateFromFeature();
 }
-
-void TaskSectionAnalysis::clicked(int)
-{}
 
 bool TaskSectionAnalysis::accept()
 {

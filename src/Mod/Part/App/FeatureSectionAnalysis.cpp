@@ -75,19 +75,16 @@ short SectionAnalysis::mustExecute() const
     return Feature::mustExecute();
 }
 
-void SectionAnalysis::onChanged(const App::Property* prop)
-{
-    Feature::onChanged(prop);
-}
-
 void SectionAnalysis::collectSectionFaces(const TopoDS_Shape& solid,
                                           const gp_Pln& slicePlane,
-                                          double d,
-                                          double a,
-                                          double b,
-                                          double c,
                                           std::vector<TopoDS_Face>& faces) const
 {
+    // Extract plane coefficients: ax + by + cz + d_coeff = 0
+    // The offset-from-origin is -d_coeff.
+    double a, b, c, d_coeff;
+    slicePlane.Coefficients(a, b, c, d_coeff);
+    double d = -d_coeff;
+
     // Create a face on the cutting plane
     BRepBuilderAPI_MakeFace mkFace(slicePlane);
     TopoDS_Face planeFace = mkFace.Face();
@@ -165,21 +162,19 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
 
     // Process solids — wrap each in try/catch since assemblies may have invalid shapes
     TopExp_Explorer xp;
-    bool hasSolids = false;
     int solidCount = 0;
     for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
         solidCount++;
         try {
-            collectSectionFaces(xp.Current(), slicePlane, d, a, b, c, sectionFaces);
+            collectSectionFaces(xp.Current(), slicePlane, sectionFaces);
         }
         catch (...) {
             Base::Console().log("SectionAnalysis: solid %d failed boolean cut, skipping\n", solidCount);
         }
-        hasSolids = true;
     }
 
     // Process non-solid shells and faces
-    if (!hasSolids) {
+    if (solidCount == 0) {
         try {
             BRepAlgoAPI_Section cs(sourceShape, slicePlane);
             if (cs.IsDone()) {
