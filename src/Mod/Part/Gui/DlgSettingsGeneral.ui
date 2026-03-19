@@ -80,7 +80,7 @@
          <string>Automatically refine model after applying operations</string>
         </property>
         <property name="toolTip">
-         <string>Automatically runs a refinement pass after creating Part Design features to remove removable lines and clean up the geometry</string>
+         <string>Automatically runs a refinement pass after creating Part Design features to remove unnecessary edges and clean up the geometry</string>
         </property>
         <property name="checked">
          <bool>true</bool>
