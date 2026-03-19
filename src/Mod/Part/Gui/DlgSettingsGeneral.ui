@@ -303,7 +303,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="enableGizmos">
         <property name="toolTip">
-         <string>Enable draggers for interactive editing of supported feature parameters</string>
+         <string>Enables draggers for interactive editing of supported feature parameters</string>
         </property>
         <property name="text">
          <string>Show interactive draggers when editing features</string>
