@@ -310,11 +310,7 @@ public:
      * @return The new transaction ID.
      */
 
-     int setActiveTransaction(TransactionName name);
-
-    /// Return the current global transaction name and ID if such a global transaction is
-    /// setup (uncommon)
-    std::string getActiveTransaction(int *tid=nullptr) const;
+    int setActiveTransaction(TransactionName name);
 
     int openGlobalTransaction(TransactionName name);
     int getGlobalTransaction() const;
