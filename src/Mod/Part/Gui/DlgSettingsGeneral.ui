@@ -157,7 +157,7 @@
         <item>
          <widget class="Gui::PrefComboBox" name="comboDefaultProfileTypeForHole">
           <property name="toolTip">
-           <string>Choose which geometry types of the selected profile are accepted as the Part Design Hole command</string>
+           <string>Specifies which profile geometry types are accepted by the Part Design Hole feature</string>
           </property>
           <property name="currentIndex">
            <number>1</number>
