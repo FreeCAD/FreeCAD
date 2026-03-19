@@ -786,6 +786,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
             "pierce_delay": 1000,
             "cooling_delay": 500,
             "force_rapid_feeds": False,
+            "show_dialog": False,  # Disable dialogs for automated tests
             **properties,
         }
 
@@ -909,13 +910,15 @@ class TestJobPropertyOverrides(unittest.TestCase):
         profile_op.Path = Path.Path(plasma_commands)
 
         try:
-            # Mock MachineFactory
+            # Mock MachineFactory to return our test machine with dialog disabled
             original_get_machine = MachineFactory.get_machine
             MachineFactory.get_machine = lambda name: machine
 
             # Test with no overrides (machine defaults)
             self.job.PostProcessorPropertyOverrides = "{}"
             processor = GenericPlasma(self.job, "", "", "mm")
+            # Ensure the processor uses our test machine with dialog disabled
+            processor._machine = machine
             results = processor.export2()
             gcode_no_override = ""
             for section_name, gcode in results:
@@ -924,6 +927,8 @@ class TestJobPropertyOverrides(unittest.TestCase):
             # Test with pierce_delay override
             self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 2500}'  # 2.5 seconds
             processor = GenericPlasma(self.job, "", "", "mm")
+            # Ensure the processor uses our test machine with dialog disabled
+            processor._machine = machine
             results = processor.export2()
             gcode_with_override = ""
             for section_name, gcode in results:
