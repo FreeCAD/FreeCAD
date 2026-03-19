@@ -936,9 +936,19 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     bool handleLast = handleGeoId > firstTextGeoId;
 
     if (hasExistingText) {
-        // Check if text is construction or normal geos
-        auto* geo1 = getGeometry(firstTextGeoId);
-        isConstruction = GeometryFacade::getConstruction(geo1);
+        // Detect construction mode from the first non-helper text geo
+        // (helpers are always construction, so skip them)
+        for (int i = 1; constr->hasElement(i); ++i) {
+            int geoId = constr->getGeoId(i);
+            if (geoId == GeoEnum::GeoUndef) {
+                continue;
+            }
+            const Part::Geometry* geo = getGeometry(geoId);
+            if (geo && !GeometryFacade::getHelper(geo)) {
+                isConstruction = GeometryFacade::getConstruction(geo);
+                break;
+            }
+        }
 
         // Delete all the old text geos. Not the handle!
         std::vector<int> geoIdsToDelete;
@@ -989,124 +999,120 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     Base::Matrix4D canonToWorld = Sketch::computeCanonicalToWorldTransform(
         line->getStartPoint(), line->getEndPoint());
 
-    // Build world geometry by cloning canonical and transforming
-    int lastGeoid = getHighestCurveIndex();
-    std::vector<Part::Geometry*> newGeosRawPtrs;
-    newGeosRawPtrs.reserve(canonicalGeos.size());
+    // --- Generate helper canonical geometry from text bbox/metrics ---
 
-    for (auto& geo_ptr : canonicalGeos) {
-        Part::Geometry* worldGeo = geo_ptr->clone();
-        worldGeo->transform(canonToWorld);
-        if (isConstruction) {
-            Sketcher::GeometryFacade::setConstruction(worldGeo, isConstruction);
-        }
-        newGeosRawPtrs.push_back(worldGeo);
-    }
-    addGeometry(newGeosRawPtrs);
-
-    int newLastGeoid = getHighestCurveIndex();
-
-    // If there was text geos, they were deleted, which deleted the text constraint.
-    // In this case create a new constraint to replace it.
-    if (hasExistingText) {
-        constr = new Constraint();
-        constr->Type = Text;
-        constr->truncateElements(0); // remove the First/Second/Third that are created automatically
-        constr->addElement(GeoElementId(handleGeoId));
-    }
-    for (int i = lastGeoid + 1; i <= newLastGeoid; ++i) {
-        constr->addElement(GeoElementId(i));
-    }
-    constr->setText(newText);
-    constr->setFont(newFont);
-    constr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlags)));
-    constr->setMetricAvailability(textMetrics.hasXHeight, textMetrics.hasCapHeight);
-
-    // Store canonical geometry in the constraint (source of truth for zero-drift).
-    constr->canonicalGeometry.clear();
-    for (auto& geo_ptr : canonicalGeos) {
-        std::unique_ptr<Part::Geometry> canonClone(geo_ptr->clone());
-        if (isConstruction) {
-            Sketcher::GeometryFacade::setConstruction(canonClone.get(), isConstruction);
-        }
-        constr->canonicalGeometry.push_back(std::move(canonClone));
-    }
-
-    // Always generate all helper lines (bbox edges + metric lines) and store
-    // in canonical geometry. They start visible but the Gui side will hide
-    // them based on helperFlags. This avoids dynamic add/delete of helpers.
-    constr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlags)));
-
+    std::vector<std::unique_ptr<Part::Geometry>> helperCanonicals;
     if (textMetrics.valid) {
         Bnd_Box canonBBox;
-        for (const auto& geo : constr->canonicalGeometry) {
+        for (const auto& geo : canonicalGeos) {
             TopoDS_Shape shape = geo->toShape();
             if (!shape.IsNull()) {
                 BRepBndLib::Add(shape, canonBBox, false);
             }
         }
-
         if (!canonBBox.IsVoid()) {
             double xMin = canonBBox.CornerMin().X();
             double xMax = canonBBox.CornerMax().X();
-            double yMin = canonBBox.CornerMin().Y();
-            double yMax = canonBBox.CornerMax().Y();
-
-            // Transform text metrics from wire space to canonical space.
-            // Since the baseline is at y=0 in both spaces, we only need to
-            // apply the same scale that transformAndConvertToGeometry uses:
-            // 1/baseWidth (width mode).
-            double wireDimension = wireWidth;
-            double metricScale = (wireDimension > Precision::Confusion())
-                ? 1.0 / wireDimension
-                : 1.0;
+            double metricScale = (wireWidth > Precision::Confusion())
+                ? 1.0 / wireWidth : 1.0;
 
             Part::TextMetrics canonMetrics;
-            canonMetrics.baseline = 0.0;  // baseline = frame line = y=0
+            canonMetrics.baseline = 0.0;
             canonMetrics.ascender = textMetrics.ascender * metricScale;
             canonMetrics.descender = textMetrics.descender * metricScale;
             canonMetrics.xHeight = textMetrics.xHeight * metricScale;
             canonMetrics.capHeight = textMetrics.capHeight * metricScale;
-            canonMetrics.textWidth = textMetrics.textWidth;
             canonMetrics.valid = true;
 
-            // Generate ALL bbox + metric helpers (flags=all bits set)
             HelperFlags allBBox = HelperFlag::BBoxBottom | HelperFlag::BBoxTop
                 | HelperFlag::BBoxLeft | HelperFlag::BBoxRight;
-            HelperFlags allMetric = HelperFlag::MetricBaseline | HelperFlag::MetricXHeight
-                | HelperFlag::MetricCapHeight;
+            HelperFlags allMetric = HelperFlag::MetricBaseline
+                | HelperFlag::MetricXHeight | HelperFlag::MetricCapHeight;
 
-            auto bboxHelpers = generateBBoxHelperLines(
-                constr->getCanonicalGeometry(), allBBox);
+            std::vector<const Part::Geometry*> textGeoRawPtrs;
+            for (const auto& g : canonicalGeos) {
+                textGeoRawPtrs.push_back(g.get());
+            }
+            auto bboxHelpers = generateBBoxHelperLines(textGeoRawPtrs, allBBox);
             auto metricHelpers = generateTextMetricHelperLines(
                 canonMetrics, xMin, xMax, allMetric);
 
-            std::vector<Part::Geometry*> helperRawPtrs;
             for (auto& h : bboxHelpers) {
-                Part::Geometry* worldGeo = h->clone();
-                worldGeo->transform(canonToWorld);
-                helperRawPtrs.push_back(worldGeo);
-                constr->canonicalGeometry.push_back(std::move(h));
+                helperCanonicals.push_back(std::move(h));
             }
             for (auto& h : metricHelpers) {
-                Part::Geometry* worldGeo = h->clone();
-                worldGeo->transform(canonToWorld);
-                helperRawPtrs.push_back(worldGeo);
-                constr->canonicalGeometry.push_back(std::move(h));
-            }
-
-            if (!helperRawPtrs.empty()) {
-                int beforeHelpers = getHighestCurveIndex();
-                addGeometry(helperRawPtrs, /*construction=*/true);
-                int afterHelpers = getHighestCurveIndex();
-                for (int i = beforeHelpers + 1; i <= afterHelpers; ++i) {
-                    constr->addElement(GeoElementId(i));
-                }
-                for (auto* ptr : helperRawPtrs) {
-                    delete ptr;
-                }
+                helperCanonicals.push_back(std::move(h));
             }
         }
+    }
+
+    // --- Add geometry: HELPERS FIRST (lower geoIds), then TEXT (higher geoIds) ---
+
+    // Add helper world geometry first
+    std::vector<Part::Geometry*> helperWorldPtrs;
+    for (const auto& hc : helperCanonicals) {
+        Part::Geometry* worldGeo = hc->clone();
+        worldGeo->transform(canonToWorld);
+        helperWorldPtrs.push_back(worldGeo);
+    }
+    int beforeHelpers = getHighestCurveIndex();
+    if (!helperWorldPtrs.empty()) {
+        addGeometry(helperWorldPtrs, /*construction=*/true);
+    }
+    int afterHelpers = getHighestCurveIndex();
+    for (auto* ptr : helperWorldPtrs) {
+        delete ptr;
+    }
+
+    // Add text world geometry second
+    std::vector<Part::Geometry*> textWorldPtrs;
+    for (const auto& geo_ptr : canonicalGeos) {
+        Part::Geometry* worldGeo = geo_ptr->clone();
+        worldGeo->transform(canonToWorld);
+        if (isConstruction) {
+            Sketcher::GeometryFacade::setConstruction(worldGeo, isConstruction);
+        }
+        textWorldPtrs.push_back(worldGeo);
+    }
+    int beforeText = getHighestCurveIndex();
+    addGeometry(textWorldPtrs);
+    int afterText = getHighestCurveIndex();
+    for (auto* ptr : textWorldPtrs) {
+        delete ptr;
+    }
+
+    // --- Build constraint: [frame, helpers, text] ---
+
+    if (hasExistingText) {
+        constr = new Constraint();
+        constr->Type = Text;
+        constr->truncateElements(0);
+        constr->addElement(GeoElementId(handleGeoId));
+    }
+    for (int i = beforeHelpers + 1; i <= afterHelpers; ++i) {
+        constr->addElement(GeoElementId(i));
+    }
+    for (int i = beforeText + 1; i <= afterText; ++i) {
+        constr->addElement(GeoElementId(i));
+    }
+
+    constr->setText(newText);
+    constr->setFont(newFont);
+    constr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlags)));
+    constr->setMetricAvailability(textMetrics.hasXHeight, textMetrics.hasCapHeight);
+
+    // --- Build canonical: [helper canonicals, text canonicals] ---
+
+    constr->canonicalGeometry.clear();
+    for (auto& hc : helperCanonicals) {
+        constr->canonicalGeometry.push_back(std::move(hc));
+    }
+    for (auto& geo_ptr : canonicalGeos) {
+        std::unique_ptr<Part::Geometry> cc(geo_ptr->clone());
+        if (isConstruction) {
+            Sketcher::GeometryFacade::setConstruction(cc.get(), isConstruction);
+        }
+        constr->canonicalGeometry.push_back(std::move(cc));
     }
 
     if (hasExistingText) {

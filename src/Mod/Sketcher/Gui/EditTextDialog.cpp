@@ -153,13 +153,18 @@ void EditTextDialog::on_buttonBox_accepted()
 
     try {
         if (textChanged) {
-            // Find if it was construction geometry to preserve that state
-            int firstTextGeoId = constraint->getGeoId(1);
+            // Find if text was construction geometry (skip helpers which are always construction)
             bool isConstruction = false;
-            if (firstTextGeoId != Sketcher::GeoEnum::GeoUndef) {
-                isConstruction = Sketcher::GeometryFacade::getConstruction(
-                    sketch->getGeometry(firstTextGeoId)
-                );
+            for (int i = 1; constraint->hasElement(i); ++i) {
+                int geoId = constraint->getGeoId(i);
+                if (geoId == Sketcher::GeoEnum::GeoUndef) {
+                    continue;
+                }
+                const Part::Geometry* geo = sketch->getGeometry(geoId);
+                if (geo && !Sketcher::GeometryFacade::getHelper(geo)) {
+                    isConstruction = Sketcher::GeometryFacade::getConstruction(geo);
+                    break;
+                }
             }
 
             std::string escText = escapeForPython(newText);
@@ -184,10 +189,17 @@ void EditTextDialog::on_buttonBox_accepted()
             );
         }
 
+        // When text changes, setTextAndFont may recreate the constraint
+        // at a new index. Find the actual index.
+        int actualConstrIndex = constrIndex;
+        if (textChanged) {
+            actualConstrIndex = sketch->Constraints.getSize() - 1;
+        }
+
         // Toggle visibility using shared utility
         applyHelperVisibility(
             sketch,
-            constrIndex,
+            actualConstrIndex,
             newFlags,
             Sketcher::HelperOrder.data(),
             static_cast<int>(Sketcher::HelperOrder.size())
