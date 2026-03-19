@@ -56,6 +56,7 @@
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
+#include <Mod/PartDesign/App/PartDesignParameter.h>
 
 #include "DlgActiveBody.h"
 #include "ReferenceSelection.h"
@@ -515,6 +516,7 @@ void CmdPartDesignClone::activated(int iMsg)
         auto objCmd = getObjectCmd(obj);
         std::string cloneName = getUniqueObjectName("Clone", obj);
         std::string bodyName = getUniqueObjectName("Body", obj);
+        bool allowCompound = PartDesign::PartDesignParameter::instance()->getAllowCompoundDefault();
 
         // Create body and clone
         Gui::cmdAppDocument(
@@ -529,19 +531,13 @@ void CmdPartDesignClone::activated(int iMsg)
         auto bodyObj = obj->getDocument()->getObject(bodyName.c_str());
         auto cloneObj = obj->getDocument()->getObject(cloneName.c_str());
 
-        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup(
-            "BaseApp/Preferences/Mod/PartDesign"
-        );
-
-        bool allowCompound = hGrp->GetBool("AllowCompoundDefault", true);
-
         // In the first step set the group link and tip of the body
-        Gui::cmdAppObject(bodyObj, std::stringstream() << "Group = [" << getObjectCmd(cloneObj) << "]");
-        Gui::cmdAppObject(bodyObj, std::stringstream() << "Tip = " << getObjectCmd(cloneObj));
         Gui::cmdAppObject(
             bodyObj,
-            std::stringstream() << "AllowCompound = " << (allowCompound ? "True" : "False")
+            std::stringstream() << "AllowCompound = " << Gui::asString(allowCompound)
         );
+        Gui::cmdAppObject(bodyObj, std::stringstream() << "Group = [" << getObjectCmd(cloneObj) << "]");
+        Gui::cmdAppObject(bodyObj, std::stringstream() << "Tip = " << getObjectCmd(cloneObj));
 
         // In the second step set the link of the base feature
         Gui::cmdAppObject(cloneObj, std::stringstream() << "BaseFeature = " << objCmd);
