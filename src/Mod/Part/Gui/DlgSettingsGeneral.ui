@@ -370,7 +370,7 @@
          <string>Show interactive draggers when editing features</string>
         </property>
         <property name="toolTip">
-         <string>Enables on-screen handles (draggers) in the 3D view, allowing to modify dimensions and parameters of the feature being edited interactively via dragging the mouse</string>
+         <string>Enables on-screen handles (draggers) in the 3D view for interactively modifying dimensions and parameters of the feature being edited by dragging</string>
         </property>
         <property name="checked">
          <bool>true</bool>
