@@ -314,7 +314,7 @@ class CommandPathPost:
                 self._write_file(fname, final_gcode, policy)
 
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        # FreeCAD.ActiveDocument.recompute()
 
 
 class CommandPathPostSelected(CommandPathPost):

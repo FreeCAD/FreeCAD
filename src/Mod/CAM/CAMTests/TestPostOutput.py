@@ -28,6 +28,7 @@ from Machine.models.machine import Machine
 import FreeCAD
 import Path
 import Path.Post.Command as PathCommand
+import Path.Post.PostList as PostList
 import Path.Post.Utils as PostUtils
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
@@ -1238,39 +1239,61 @@ class TestExport2Integration(unittest.TestCase):
 
     def test110_tool_length_offset_enabled(self):
         """
-        Test that _expand_tool_length_offset adds G43 after M6 when enabled.
+        Test that _expand_tool_length_offset adds G43 after M6 in a tool controller path.
 
-        When output_tool_length_offset=True and the operation path contains
-        an M6 tool change, G43 is injected immediately after it.
+        G43 (tool length offset) must be injected immediately after M6 in the tool
+        controller postable's path.  M6 belongs in the tool_controller postable — not
+        in operation paths — so the test builds a postlist directly rather than using
+        the full export2 pipeline.
 
-        Expected:
-            BEFORE: M6 T1
-                    G0 X10 Y20 Z5
+        Given:  A tool_controller postable whose path is [M6 T1]
+                followed by an operation postable [G0 ...]
+        When:   _expand_tool_length_offset is called with output_tool_length_offset=True
+        Then:   The tool_controller path becomes [M6 T1, G43 H1]
 
-            AFTER:  M6 T1
-                    G43 H1
-                    G0 X10 Y20 Z5
+        Example:
+            BEFORE TC path:  M6 T1
+            AFTER TC path:   M6 T1
+                             G43 H1
         """
         config = self._get_full_machine_config()
         config["output"]["output_tool_length_offset"] = True
         machine = Machine.from_dict(config)
+        post = self._create_postprocessor(machine)
 
-        with self._modify_operation_path(
-            [
-                Path.Command("M6", {"T": 1}),
-                Path.Command("G0", {"X": 10.0, "Y": 20.0, "Z": 5.0}),
-                Path.Command("G1", {"X": 20.0, "Y": 30.0, "Z": -5.0, "F": 100.0}),
-            ]
-        ):
-            results = self._run_export2(machine)
-            gcode = self._get_all_gcode(results)
-            lines = [line.strip() for line in gcode.split("\n") if line.strip()]
+        tc_item = PostList.Postable(
+            item_type="tool_controller",
+            label="6mm Endmill",
+            path=Path.Path([Path.Command("M6", {"T": 1})]),
+            source=None,
+            data={"tool_number": 1},
+        )
+        op_item = PostList.Postable(
+            item_type="operation",
+            label="TestProfile",
+            path=Path.Path(
+                [
+                    Path.Command("G0", {"X": 10.0, "Y": 20.0, "Z": 5.0}),
+                    Path.Command("G1", {"X": 20.0, "Y": 30.0, "Z": -5.0, "F": 100.0}),
+                ]
+            ),
+            source=None,
+            data={},
+        )
+        postables = [("allitems", [tc_item, op_item])]
 
-            g43_lines = [line for line in lines if line.startswith("G43")]
-            self.assertGreater(len(g43_lines), 0, "Should have G43 tool length offset command")
+        post._expand_tool_length_offset(postables)
 
-            for g43_line in g43_lines:
-                self.assertIn("H", g43_line, f"G43 should have H parameter: {g43_line}")
+        tc_commands = [cmd.Name for cmd in tc_item.path.Commands]
+        self.assertIn("G43", tc_commands, "G43 should be injected into TC path after M6")
+
+        m6_idx = tc_commands.index("M6")
+        self.assertEqual(
+            tc_commands[m6_idx + 1], "G43", "G43 must immediately follow M6 in TC path"
+        )
+        g43_cmd = tc_item.path.Commands[m6_idx + 1]
+        self.assertIn("H", g43_cmd.Parameters, "G43 should carry an H (tool number) parameter")
+        self.assertEqual(g43_cmd.Parameters["H"], 1, "G43 H value must match the T number in M6")
 
     def test111_tool_length_offset_disabled(self):
         """
