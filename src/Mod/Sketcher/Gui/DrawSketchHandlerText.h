@@ -27,7 +27,6 @@
 
 #include <QMap>
 
-#include <Base/FileInfo.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
@@ -143,8 +142,6 @@ private:
             handleId = getHighestCurveIndex();
 
             std::string escText = escapeForPython(text);
-            Base::FileInfo fi(font);
-            std::string escFontName = escapeForPython(fi.fileNamePure());
             std::string escFontPath = escapeForPython(font);
             bool isHeight = constructionMethod() == ConstructionMethod::Height;
             const char* constrBoolStr = isConstructionMode() ? "True" : "False";
@@ -159,7 +156,7 @@ private:
                 "addConstraint(Sketcher.Constraint('Text', [%d, 0], '%s', '%s', %s))",
                 handleId,
                 escText.c_str(),
-                escFontName.c_str(),
+                escFontPath.c_str(),
                 heightBoolStr
             );
 
