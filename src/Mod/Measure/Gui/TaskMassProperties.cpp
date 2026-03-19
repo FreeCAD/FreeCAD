@@ -99,6 +99,10 @@ public:
 
     QWidget* takePage(QWidget* page)
     {
+        if (auto* pageLayout = page->layout()) {
+            pageLayout->setContentsMargins(10, 10, 10, 10);
+        }
+
         ui.mainLayout->removeWidget(page);
         page->setParent(nullptr);
         return page;
@@ -256,8 +260,6 @@ TaskMassProperties::TaskMassProperties()
     auto addTaskBox = [this](const char* icon, const QString& title, QWidget* page) {
         auto* box = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap(icon), title, true, nullptr);
         auto* layout = box->groupLayout();
-        layout->setContentsMargins(10, 10, 10, 10);
-        layout->setSpacing(8);
         layout->addWidget(page);
         Content.emplace_back(box);
     };
