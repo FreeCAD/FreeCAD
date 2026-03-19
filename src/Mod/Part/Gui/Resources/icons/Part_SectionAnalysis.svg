@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.1" height="64px" width="64px" xmlns="http://www.w3.org/2000/svg">
+  <title>Part_SectionAnalysis</title>
+  <!-- Section analysis icon: a cube cut by a plane with hatched cross-section -->
+
+  <!-- Back half of cube (darker, clipped) -->
+  <path d="M 12,18 L 32,8 L 52,18 L 52,46 L 32,56 L 12,46 Z"
+        fill="#4a90d9" fill-opacity="0.4" stroke="#2c5aa0" stroke-width="1.5"/>
+
+  <!-- Cutting plane (translucent) -->
+  <rect x="8" y="16" width="48" height="32" rx="1"
+        fill="#3498db" fill-opacity="0.25" stroke="#2980b9" stroke-width="1.5"/>
+
+  <!-- Cross-section hatching on the cutting plane -->
+  <g stroke="#cc4433" stroke-width="1.2" stroke-opacity="0.8">
+    <line x1="14" y1="44" x2="26" y2="20"/>
+    <line x1="22" y1="44" x2="34" y2="20"/>
+    <line x1="30" y1="44" x2="42" y2="20"/>
+    <line x1="38" y1="44" x2="50" y2="20"/>
+  </g>
+
+  <!-- Cross-section face outline on the cutting plane -->
+  <path d="M 20,24 L 44,24 L 44,40 L 20,40 Z"
+        fill="#e06040" fill-opacity="0.35" stroke="#cc4433" stroke-width="1.5"/>
+
+  <!-- Front half of cube outline -->
+  <path d="M 12,18 L 32,8 L 52,18 L 32,28 Z"
+        fill="#5dade2" fill-opacity="0.6" stroke="#2c5aa0" stroke-width="1.5"/>
+  <line x1="32" y1="28" x2="32" y2="56" stroke="#2c5aa0" stroke-width="1.5"/>
+  <line x1="12" y1="18" x2="12" y2="46" stroke="#2c5aa0" stroke-width="1.5"/>
+  <line x1="52" y1="18" x2="52" y2="46" stroke="#2c5aa0" stroke-width="1.5"/>
+</svg>
