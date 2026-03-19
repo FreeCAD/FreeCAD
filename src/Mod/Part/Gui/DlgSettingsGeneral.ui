@@ -273,7 +273,7 @@
          <string>Show final result by default when editing features</string>
         </property>
         <property name="toolTip">
-         <string>Displays the fully computed model in the 3D view while editing a feature, allowing you to see the final context rather than just the isolated feature</string>
+         <string>Displays the fully computed model in the 3D view while editing a feature, showing the final context rather than just the isolated feature</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowFinal</cstring>
