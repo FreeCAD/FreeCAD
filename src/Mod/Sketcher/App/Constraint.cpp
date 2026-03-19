@@ -35,6 +35,7 @@
 
 #include <fmt/ranges.h>
 
+#include <Base/FileInfo.h>
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
