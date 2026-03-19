@@ -55,16 +55,9 @@ public:
         return "PartGui::ViewProviderSectionAnalysis";
     }
 
-protected:
-    void onChanged(const App::Property* prop) override;
-
 private:
     void collectSectionFaces(const TopoDS_Shape& solid,
                              const gp_Pln& slicePlane,
-                             double d,
-                             double a,
-                             double b,
-                             double c,
                              std::vector<TopoDS_Face>& faces) const;
 };
 
