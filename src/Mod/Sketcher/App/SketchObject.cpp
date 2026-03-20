@@ -935,34 +935,43 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     bool hasExistingText = firstTextGeoId != GeoEnum::GeoUndef;
     bool handleLast = handleGeoId > firstTextGeoId;
 
+    // Identify which elements are helpers vs text geos
+    bool helpersExist = false;
+    std::vector<int> oldTextGeoIds;
+
     if (hasExistingText) {
         // Detect construction mode from the first non-helper text geo
-        // (helpers are always construction, so skip them)
         for (int i = 1; constr->hasElement(i); ++i) {
             int geoId = constr->getGeoId(i);
             if (geoId == GeoEnum::GeoUndef) {
                 continue;
             }
             const Part::Geometry* geo = getGeometry(geoId);
-            if (geo && !GeometryFacade::getHelper(geo)) {
-                isConstruction = GeometryFacade::getConstruction(geo);
-                break;
+            if (geo && GeometryFacade::getHelper(geo)) {
+                helpersExist = true;
+            }
+            else if (geo) {
+                if (oldTextGeoIds.empty()) {
+                    isConstruction = GeometryFacade::getConstruction(geo);
+                }
+                oldTextGeoIds.push_back(geoId);
             }
         }
 
-        // Delete all the old text geos. Not the handle!
-        std::vector<int> geoIdsToDelete;
-        for (int i = 1; constr->hasElement(i); ++i) {
-            if (constr->getGeoId(i) == GeoEnum::GeoUndef) {
-                continue;
+        if (!helpersExist) {
+            // No helpers — use the original delGeometries approach
+            std::vector<int> geoIdsToDelete;
+            for (int i = 1; constr->hasElement(i); ++i) {
+                if (constr->getGeoId(i) == GeoEnum::GeoUndef) {
+                    continue;
+                }
+                geoIdsToDelete.push_back(constr->getGeoId(i));
+                if (handleLast) {
+                    --handleGeoId;
+                }
             }
-            geoIdsToDelete.push_back(constr->getGeoId(i));
-            if (handleLast) {
-                --handleGeoId; // handle line is added after all text geos.
-            }
+            delGeometries(geoIdsToDelete);
         }
-
-        delGeometries(geoIdsToDelete);
     }
 
     auto* line = dynamic_cast<const Part::GeomLineSegment*>(getGeometry(handleGeoId));
@@ -1046,87 +1055,206 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
         }
     }
 
-    // --- Add geometry: HELPERS FIRST (lower geoIds), then TEXT (higher geoIds) ---
+    if (helpersExist) {
+        // --- ATOMIC TEXT REPLACEMENT: helpers stay, only text geos swapped ---
+        // Everything is built in memory and set in one transaction.
 
-    // Add helper world geometry first
-    std::vector<Part::Geometry*> helperWorldPtrs;
-    for (const auto& hc : helperCanonicals) {
-        Part::Geometry* worldGeo = hc->clone();
-        worldGeo->transform(canonToWorld);
-        helperWorldPtrs.push_back(worldGeo);
-    }
-    int beforeHelpers = getHighestCurveIndex();
-    if (!helperWorldPtrs.empty()) {
-        addGeometry(helperWorldPtrs, /*construction=*/true);
-    }
-    int afterHelpers = getHighestCurveIndex();
-    for (auto* ptr : helperWorldPtrs) {
-        delete ptr;
-    }
+        std::vector<int> sortedDelGeoIds(oldTextGeoIds);
+        std::ranges::sort(sortedDelGeoIds);
 
-    // Add text world geometry second
-    std::vector<Part::Geometry*> textWorldPtrs;
-    for (const auto& geo_ptr : canonicalGeos) {
-        Part::Geometry* worldGeo = geo_ptr->clone();
-        worldGeo->transform(canonToWorld);
-        if (isConstruction) {
-            Sketcher::GeometryFacade::setConstruction(worldGeo, isConstruction);
+        // 1. Build new geometry list: remove old text geos, append new text
+        std::vector<Part::Geometry*> newGeoVals(getInternalGeometry());
+        for (auto it = sortedDelGeoIds.rbegin(); it != sortedDelGeoIds.rend(); ++it) {
+            newGeoVals.erase(newGeoVals.begin() + *it);
         }
-        textWorldPtrs.push_back(worldGeo);
-    }
-    int beforeText = getHighestCurveIndex();
-    addGeometry(textWorldPtrs);
-    int afterText = getHighestCurveIndex();
-    for (auto* ptr : textWorldPtrs) {
-        delete ptr;
-    }
-
-    // --- Build constraint: [frame, helpers, text] ---
-
-    if (hasExistingText) {
-        constr = new Constraint();
-        constr->Type = Text;
-        constr->truncateElements(0);
-        constr->addElement(GeoElementId(handleGeoId));
-    }
-    for (int i = beforeHelpers + 1; i <= afterHelpers; ++i) {
-        constr->addElement(GeoElementId(i));
-    }
-    for (int i = beforeText + 1; i <= afterText; ++i) {
-        constr->addElement(GeoElementId(i));
-    }
-
-    constr->setText(newText);
-    constr->setFont(newFont);
-    constr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlags)));
-    constr->setMetricAvailability(textMetrics.hasXHeight, textMetrics.hasCapHeight);
-
-    // --- Build canonical: [helper canonicals, text canonicals] ---
-
-    constr->canonicalGeometry.clear();
-    for (auto& hc : helperCanonicals) {
-        constr->canonicalGeometry.push_back(std::move(hc));
-    }
-    for (auto& geo_ptr : canonicalGeos) {
-        std::unique_ptr<Part::Geometry> cc(geo_ptr->clone());
-        if (isConstruction) {
-            Sketcher::GeometryFacade::setConstruction(cc.get(), isConstruction);
+        int newTextStartGeoId = static_cast<int>(newGeoVals.size());
+        for (const auto& geo_ptr : canonicalGeos) {
+            Part::Geometry* worldGeo = geo_ptr->clone();
+            worldGeo->transform(canonToWorld);
+            if (isConstruction) {
+                GeometryFacade::setConstruction(worldGeo, isConstruction);
+            }
+            generateId(worldGeo);
+            newGeoVals.push_back(worldGeo);
         }
-        constr->canonicalGeometry.push_back(std::move(cc));
+        int newTextEndGeoId = static_cast<int>(newGeoVals.size()) - 1;
+
+        // 2. Clone constraints, detach text geoIds from the TEXT constraint
+        //    clone, then apply geoId shifts. All on clones — live data untouched.
+        std::vector<Constraint*> newConstraints;
+        for (const auto& c : this->Constraints.getValues()) {
+            newConstraints.push_back(c->clone());
+        }
+        // Save pointer to our Text constraint clone (before shift/erase changes indices)
+        Constraint* textConstr = newConstraints[ConstrId];
+
+        // Detach text elements from the cloned Text constraint and compact
+        {
+            auto* tc = textConstr;
+            std::set<int> delSet(sortedDelGeoIds.begin(), sortedDelGeoIds.end());
+
+            // Mark for removal
+            int canonIdx = 0;
+            for (int i = 1; tc->hasElement(i); ++i) {
+                int geoId = tc->getGeoId(i);
+                if (geoId != GeoEnum::GeoUndef && delSet.count(geoId)) {
+                    tc->setGeoId(i, GeoEnum::GeoUndef);
+                    if (canonIdx < static_cast<int>(tc->canonicalGeometry.size())) {
+                        tc->canonicalGeometry[canonIdx].reset();
+                    }
+                }
+                canonIdx++;
+            }
+
+            // Compact: rebuild element list without GeoUndef entries
+            std::vector<GeoElementId> kept;
+            kept.push_back(GeoElementId(tc->getGeoId(0)));  // frame
+            for (int i = 1; tc->hasElement(i); ++i) {
+                int geoId = tc->getGeoId(i);
+                if (geoId != GeoEnum::GeoUndef) {
+                    kept.push_back(GeoElementId(geoId));
+                }
+            }
+            tc->truncateElements(0);
+            for (const auto& elem : kept) {
+                tc->addElement(elem);
+            }
+            std::erase_if(tc->canonicalGeometry,
+                [](const auto& p) { return !p; });
+        }
+        // Apply geoId shifts for removed geos
+        for (auto itGeo = sortedDelGeoIds.rbegin();
+             itGeo != sortedDelGeoIds.rend(); ++itGeo) {
+            for (auto& c : newConstraints) {
+                changeConstraintAfterDeletingGeo(c, *itGeo);
+            }
+        }
+        // Remove destroyed constraints (text constraint is protected by detach)
+        std::erase_if(newConstraints,
+            [](const auto& c) { return c->Type == ConstraintType::None; });
+
+        // 4. Update the Text constraint (pointer saved before shift/erase)
+
+        // Add new text element refs
+        for (int i = newTextStartGeoId; i <= newTextEndGeoId; ++i) {
+            textConstr->addElement(GeoElementId(i));
+        }
+
+        // Update canonical: update helper positions in-place (preserves
+        // extensions like visual layer), then append text canonicals.
+        // Helper canonicals are at the front, text canonicals after.
+        // Remove old text canonicals (non-helper entries at the end).
+        std::erase_if(textConstr->canonicalGeometry,
+            [](const auto& p) { return p && !GeometryFacade::getHelper(p.get()); });
+        // Update helper canonical positions from new text dimensions
+        for (size_t i = 0; i < helperCanonicals.size()
+             && i < textConstr->canonicalGeometry.size(); ++i) {
+            auto& oldCanon = textConstr->canonicalGeometry[i];
+            auto& newCanon = helperCanonicals[i];
+            // Copy geometry from new to old (preserving old's extensions)
+            auto* oldLine = dynamic_cast<Part::GeomLineSegment*>(oldCanon.get());
+            auto* newLine = dynamic_cast<Part::GeomLineSegment*>(newCanon.get());
+            if (oldLine && newLine) {
+                oldLine->setPoints(newLine->getStartPoint(), newLine->getEndPoint());
+            }
+        }
+        // Append text canonicals
+        for (const auto& geo_ptr : canonicalGeos) {
+            std::unique_ptr<Part::Geometry> cc(geo_ptr->clone());
+            if (isConstruction) {
+                GeometryFacade::setConstruction(cc.get(), isConstruction);
+            }
+            textConstr->canonicalGeometry.push_back(std::move(cc));
+        }
+
+        // Update metadata
+        textConstr->setText(newText);
+        textConstr->setFont(newFont);
+        textConstr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlags)));
+        textConstr->setMetricAvailability(textMetrics.hasXHeight, textMetrics.hasCapHeight);
+
+        // 5. Set atomically — one undo step
+        {
+            Base::StateLocker preventUpdate(internaltransaction, true);
+            this->Geometry.setValues(std::move(newGeoVals));
+            this->Constraints.setValues(std::move(newConstraints));
+        }
+        Geometry.touch();
+    }
+    else {
+        // --- INITIAL CREATION or no helpers: helpers first, then text ---
+
+        // Add helper world geometry first (lower geoIds)
+        std::vector<Part::Geometry*> helperWorldPtrs;
+        for (const auto& hc : helperCanonicals) {
+            Part::Geometry* worldGeo = hc->clone();
+            worldGeo->transform(canonToWorld);
+            helperWorldPtrs.push_back(worldGeo);
+        }
+        int beforeHelpers = getHighestCurveIndex();
+        if (!helperWorldPtrs.empty()) {
+            addGeometry(helperWorldPtrs, /*construction=*/true);
+        }
+        int afterHelpers = getHighestCurveIndex();
+        for (auto* ptr : helperWorldPtrs) {
+            delete ptr;
+        }
+
+        // Add text world geometry second (higher geoIds)
+        std::vector<Part::Geometry*> textWorldPtrs;
+        for (const auto& geo_ptr : canonicalGeos) {
+            Part::Geometry* worldGeo = geo_ptr->clone();
+            worldGeo->transform(canonToWorld);
+            if (isConstruction) {
+                Sketcher::GeometryFacade::setConstruction(worldGeo, isConstruction);
+            }
+            textWorldPtrs.push_back(worldGeo);
+        }
+        int beforeText = getHighestCurveIndex();
+        addGeometry(textWorldPtrs);
+        int afterText = getHighestCurveIndex();
+        for (auto* ptr : textWorldPtrs) {
+            delete ptr;
+        }
+
+        // Build constraint: [frame, helpers, text]
+        if (hasExistingText) {
+            constr = new Constraint();
+            constr->Type = Text;
+            constr->truncateElements(0);
+            constr->addElement(GeoElementId(handleGeoId));
+        }
+        for (int i = beforeHelpers + 1; i <= afterHelpers; ++i) {
+            constr->addElement(GeoElementId(i));
+        }
+        for (int i = beforeText + 1; i <= afterText; ++i) {
+            constr->addElement(GeoElementId(i));
+        }
+
+        constr->setText(newText);
+        constr->setFont(newFont);
+        constr->setHelperFlags(HelperFlags(static_cast<HelperFlag>(helperFlags)));
+        constr->setMetricAvailability(textMetrics.hasXHeight, textMetrics.hasCapHeight);
+
+        // Build canonical: [helper canonicals, text canonicals]
+        constr->canonicalGeometry.clear();
+        for (auto& hc : helperCanonicals) {
+            constr->canonicalGeometry.push_back(std::move(hc));
+        }
+        for (auto& geo_ptr : canonicalGeos) {
+            std::unique_ptr<Part::Geometry> cc(geo_ptr->clone());
+            if (isConstruction) {
+                Sketcher::GeometryFacade::setConstruction(cc.get(), isConstruction);
+            }
+            constr->canonicalGeometry.push_back(std::move(cc));
+        }
+
+        if (hasExistingText) {
+            addConstraint(constr);
+        }
     }
 
-    if (hasExistingText) {
-        addConstraint(constr);
-    }
-
-    int err = solve();
-
-    if (err) {
-        constr->setText(oldText);
-        constr->setFont(oldFont);
-    }
-
-    return err;
+    return solve();
 }
 
 void SketchObject::storeCanonicalGroupGeometry(int constraintId)
