@@ -46,14 +46,14 @@
 #include <Inventor/nodes/SoTextureCoordinatePlane.h>
 
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <App/Material.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Inventor/draggers/SoDragger.h>
-
-#include <Gui/Inventor/Draggers/SoLinearDragger.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/FeatureSectionAnalysis.h>
 
@@ -422,124 +422,16 @@ void ViewProviderSectionAnalysis::setHatching(bool on)
     }
 }
 
-void ViewProviderSectionAnalysis::setupDragger()
+void ViewProviderSectionAnalysis::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
-    if (pcDraggerContainer) {
-        return;
-    }
-
-    auto* feat = getObject<Part::SectionAnalysis>();
-    if (!feat || !feat->Source.getValue()) {
-        return;
-    }
-
-    Base::Vector3d n = feat->PlaneNormal.getValue();
-    double d = feat->PlaneOffset.getValue();
-    double len = n.Length();
-    if (len < 1e-10) {
-        return;
-    }
-    n = n / len;
-
-    Base::Vector3d draggerDir = feat->FlipCut.getValue() ? -n : n;
-
-    // Position at bbox center projected onto cutting plane
-    TopoDS_Shape sourceShape = Part::Feature::getShape(feat->Source.getValue(),
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
-    if (sourceShape.IsNull()) {
-        return;
-    }
-
-    Bnd_Box bbox;
-    BRepBndLib::Add(sourceShape, bbox);
-    if (bbox.IsVoid()) {
-        return;
-    }
-
-    double xmin, ymin, zmin, xmax, ymax, zmax;
-    bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-    Base::Vector3d bboxCenter((xmin + xmax) / 2, (ymin + ymax) / 2, (zmin + zmax) / 2);
-    double distToPlane = n * bboxCenter - d;
-    Base::Vector3d planeCenter = bboxCenter - n * distToPlane;
-
-    pcDraggerContainer = new Gui::SoLinearDraggerContainer();
-    pcDraggerContainer->ref();
-    pcDraggerContainer->translation.setValue(SbVec3f(planeCenter.x, planeCenter.y, planeCenter.z));
-    pcDraggerContainer->setPointerDirection(SbVec3f(draggerDir.x, draggerDir.y, draggerDir.z));
-
-    auto* dragger = pcDraggerContainer->getDragger();
-    dragger->translationIncrement.setValue(0.1);  // 0.1mm steps for fine control
-    dragger->color.setValue(SbColor(0.2f, 0.5f, 0.9f));
-    dragger->activeColor.setValue(SbColor(0.3f, 0.7f, 1.0f));
-
-    dragger->addMotionCallback(draggerMotionCB, this);
-    dragger->addFinishCallback(draggerFinishCB, this);
-
-    draggerStartOffset = d;
-    pcRoot->addChild(pcDraggerContainer);
+    // The base class ViewProviderDragger::setEditViewer handles attaching
+    // the gizmoContainer (set via setGizmoContainer) to the viewer
+    ViewProviderDragger::setEditViewer(viewer, ModNum);
 }
 
-void ViewProviderSectionAnalysis::removeDragger()
+void ViewProviderSectionAnalysis::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
-    if (pcDraggerContainer) {
-        pcRoot->removeChild(pcDraggerContainer);
-        pcDraggerContainer->unref();
-        pcDraggerContainer = nullptr;
-    }
-}
-
-void ViewProviderSectionAnalysis::updateDragger()
-{
-    if (pcDraggerContainer) {
-        removeDragger();
-        setupDragger();
-    }
-}
-
-void ViewProviderSectionAnalysis::draggerMotionCB(void* data, SoDragger*)
-{
-    auto* vp = static_cast<ViewProviderSectionAnalysis*>(data);
-    if (!vp || !vp->pcDraggerContainer) {
-        return;
-    }
-
-    auto* feat = vp->getObject<Part::SectionAnalysis>();
-    if (!feat) {
-        return;
-    }
-
-    auto* dragger = vp->pcDraggerContainer->getDragger();
-    int steps = dragger->translationIncrementCount.getValue();
-    double increment = dragger->translationIncrement.getValue();
-    double newOffset = vp->draggerStartOffset + steps * increment;
-
-    feat->PlaneOffset.setValue(newOffset);
-    feat->getDocument()->recomputeFeature(feat);
-
-    // Sync the task panel UI
-    Gui::TaskView::TaskDialog* activeDlg = Gui::Control().activeDialog();
-    auto* saDlg = qobject_cast<TaskSectionAnalysis*>(activeDlg);
-    if (saDlg) {
-        saDlg->updateFromFeature();
-    }
-}
-
-void ViewProviderSectionAnalysis::draggerFinishCB(void* data, SoDragger*)
-{
-    auto* vp = static_cast<ViewProviderSectionAnalysis*>(data);
-    if (!vp) {
-        return;
-    }
-
-    auto* feat = vp->getObject<Part::SectionAnalysis>();
-    if (!feat) {
-        return;
-    }
-
-    vp->draggerStartOffset = feat->PlaneOffset.getValue();
-    if (vp->pcDraggerContainer) {
-        vp->pcDraggerContainer->getDragger()->translationIncrementCount.setValue(0);
-    }
+    ViewProviderDragger::unsetEditViewer(viewer);
 }
 
 void ViewProviderSectionAnalysis::show()
@@ -572,10 +464,6 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
     if (prop == &feat->PlaneNormal || prop == &feat->PlaneOffset || prop == &feat->FlipCut) {
         updateClipPlaneEquation();
         updatePlaneVisual();
-        // Reposition dragger on normal/flip change (not during offset drag)
-        if (pcDraggerContainer && (prop == &feat->PlaneNormal || prop == &feat->FlipCut)) {
-            updateDragger();
-        }
     }
 
     if (prop == &feat->Source) {
@@ -596,7 +484,6 @@ void ViewProviderSectionAnalysis::setupContextMenu(QMenu* menu, QObject* receive
 
 bool ViewProviderSectionAnalysis::onDelete(const std::vector<std::string>&)
 {
-    removeDragger();
     removeClipPlane();
     return true;
 }
@@ -619,14 +506,15 @@ bool ViewProviderSectionAnalysis::setEdit(int ModNum)
         }
 
         Gui::Selection().clearSelection();
-        setupDragger();
 
         if (saDlg) {
             Gui::Control().showDialog(saDlg, getDocument()->getDocument());
         }
         else {
+            // The task panel sets up gizmos via GizmoContainer::create(vp)
+            // setEditViewer() will then attach them to the 3D viewer
             Gui::Control().showDialog(
-                new TaskSectionAnalysis(getObject<Part::SectionAnalysis>()),
+                new TaskSectionAnalysis(getObject<Part::SectionAnalysis>(), this),
                 getDocument()->getDocument());
         }
 
@@ -640,7 +528,6 @@ bool ViewProviderSectionAnalysis::setEdit(int ModNum)
 void ViewProviderSectionAnalysis::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
-        removeDragger();
         Gui::Control().closeDialog(nullptr);
     }
     else {
