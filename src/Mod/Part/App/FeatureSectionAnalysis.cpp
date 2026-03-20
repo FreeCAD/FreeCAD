@@ -59,7 +59,7 @@ SectionAnalysis::SectionAnalysis()
     ADD_PROPERTY_TYPE(PlaneNormal, (Base::Vector3d(0, 0, 1)), "Section Analysis",
         App::Prop_None, "Normal of the cutting plane");
     ADD_PROPERTY_TYPE(PlaneOffset, (0.0), "Section Analysis", App::Prop_None,
-        "Distance along the normal from origin");
+        "Distance of cutting plane from origin along the normal direction");
     ADD_PROPERTY_TYPE(FlipCut, (false), "Section Analysis", App::Prop_None,
         "Flip which side of the plane is visible");
 
