@@ -453,12 +453,15 @@ void QuantitySpinBox::resizeEvent(QResizeEvent* event)
 {
     QAbstractSpinBox::resizeEvent(event);
     resizeWidget();
-    moveCursor();
+    clampCursorBeforeUnit();
 }
 
-void QuantitySpinBox::moveCursor()
+void QuantitySpinBox::clampCursorBeforeUnit()
 {
     Q_D(QuantitySpinBox);
+    if (!d->adjustableWidth) {
+        return;
+    }
     QLineEdit* edit = lineEdit();
     int cursor = edit->cursorPosition();
     const int maxCursor = qMax(0, edit->displayText().size() - 1 /*space*/ - d->unitStr.size());
@@ -490,7 +493,7 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
         returnPressed();
     }
     else {
-        moveCursor();
+        clampCursorBeforeUnit();
     }
 }
 
@@ -529,7 +532,7 @@ void QuantitySpinBox::updateEdit(const QString& text)
         edit->setSelection(0, cursor);
     }
     else {
-        moveCursor();
+        clampCursorBeforeUnit();
     }
 }
 

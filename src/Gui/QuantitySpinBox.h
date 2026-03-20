@@ -198,7 +198,7 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
-    void moveCursor();
+    void clampCursorBeforeUnit();
     void validateInput() override;
     void updateText(const Base::Quantity&);
     void updateEdit(const QString& text);
