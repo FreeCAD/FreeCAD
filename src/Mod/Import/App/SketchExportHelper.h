@@ -21,7 +21,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
+#pragma once
 
 #include <Mod/Import/ImportGlobal.h>
 

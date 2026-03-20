@@ -34,10 +34,11 @@
 #include <Gui/ViewProviderCoordinateSystem.h>
 
 
+class SoSwitch;
+
 namespace PartDesignGui
 {
 
-class SoSwitch;
 class Ui_TaskFeaturePick;
 class TaskFeaturePick: public Gui::TaskView::TaskBox,
                        public Gui::SelectionObserver,

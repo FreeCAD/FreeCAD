@@ -20,6 +20,7 @@
  *   <https://www.gnu.org/licenses/>.                                       *
  *                                                                          *
  ***************************************************************************/
+#pragma once
 
 #include "FCGlobal.h"
 
