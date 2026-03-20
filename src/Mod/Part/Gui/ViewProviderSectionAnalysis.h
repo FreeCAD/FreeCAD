@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include <Mod/Part/PartGlobal.h>
 
 #include <Mod/Part/Gui/ViewProvider.h>
@@ -90,7 +92,8 @@ private:
     SoTexture2* pcHatchTexture = nullptr;
     SoTextureCoordinatePlane* pcHatchCoordGen = nullptr;
     bool clipInstalled = false;
-    App::DocumentObject* clipInstalledOn = nullptr;
+    bool hatchEnabled = false;
+    std::vector<App::DocumentObject*> clippedObjects;
 };
 
 }  // namespace PartGui

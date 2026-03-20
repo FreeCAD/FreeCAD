@@ -32,7 +32,9 @@
 class QComboBox;
 class QCheckBox;
 class QDoubleSpinBox;
+class QLabel;
 class QSlider;
+class QTimer;
 
 namespace Gui
 {
@@ -70,6 +72,7 @@ public:
     void updateFromFeature();
     void setupGizmos();
     void updateGizmoPositions();
+    Gui::GizmoContainer* getGizmoContainer() const { return gizmoContainer.get(); }
 
 private:
     void setupUi();
@@ -79,8 +82,8 @@ private:
     void onNormalXChanged(double val);
     void onNormalYChanged(double val);
     void onNormalZChanged(double val);
-    void onAngleXChanged(double val);
-    void onAngleZChanged(double val);
+    void onAngle1Changed(double val);
+    void onAngle2Changed(double val);
     void applyAngles();
     void onOffsetChanged(double val);
     void onSliderMoved(int val);
@@ -89,6 +92,7 @@ private:
     void onHatchToggled(bool on);
     void onUpdateViewToggled(bool on);
     void recompute();
+    void deferRecompute();
 
     Part::SectionAnalysis* feature;
     ViewProviderSectionAnalysis* viewProvider;
@@ -98,19 +102,23 @@ private:
     QDoubleSpinBox* normalZ = nullptr;
     Gui::QuantitySpinBox* offsetSpin = nullptr;
     QSlider* offsetSlider = nullptr;
-    Gui::QuantitySpinBox* angleXSpin = nullptr;
-    Gui::QuantitySpinBox* angleZSpin = nullptr;
+    QLabel* angleLabel1 = nullptr;
+    QLabel* angleLabel2 = nullptr;
+    Gui::QuantitySpinBox* angle1Spin = nullptr;
+    Gui::QuantitySpinBox* angle2Spin = nullptr;
     QCheckBox* flipCheck = nullptr;
     Gui::ColorButton* sectionColorBtn = nullptr;
     QCheckBox* hatchCheck = nullptr;
     QCheckBox* updateViewCheck = nullptr;
-    double sliderMin = -100.0;
+    double sliderMin = 0.0;
     double sliderMax = 100.0;
+    double offsetBase = 0.0;  // projMin — added to spinbox value to get PlaneOffset
+    QTimer* recomputeTimer = nullptr;
 
     // Gizmos — the GizmoContainer owns the gizmo lifetimes
     Gui::LinearGizmo* offsetGizmo = nullptr;
-    Gui::RotationGizmo* angleXGizmo = nullptr;
-    Gui::RotationGizmo* angleZGizmo = nullptr;
+    Gui::RotationGizmo* angle1Gizmo = nullptr;
+    Gui::RotationGizmo* angle2Gizmo = nullptr;
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
 };
 
@@ -127,6 +135,7 @@ public:
     bool reject() override;
     Part::SectionAnalysis* getObject() const;
     void updateFromFeature();
+    Gui::GizmoContainer* getGizmoContainer() const;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {
