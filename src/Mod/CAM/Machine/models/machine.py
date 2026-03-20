@@ -1794,6 +1794,7 @@ class MachineFactory:
                     if machines_dir.is_dir():
                         cls.register_addon_machine_dir(machines_dir)
             except Exception:
+                # fail silently if this doesn't work
                 pass
 
     @classmethod
@@ -1842,6 +1843,7 @@ class MachineFactory:
                     if children:
                         items.append(("dir", entry.name, children))
         except Exception:
+            # fail silently if this doesn't work
             pass
         return items
 

@@ -394,6 +394,7 @@ def addAddonAssetPath(addon_dir: str) -> None:
 
             MachineFactory.register_addon_machine_dir(machines_dir)
         except ImportError:
+            # fail silently if the machine module is not available
             pass
 
 
