@@ -37,7 +37,9 @@
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
+#include <Gui/Application.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
@@ -303,12 +305,14 @@ void QGIViewDimension::datumLabelDragFinished()
     }
 
     double x = Rez::appX(datumLabel->X()), y = Rez::appX(datumLabel->Y());
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
+
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
+
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
                             dim->getNameInDocument(), x);
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
                             dim->getNameInDocument(), -y);
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 }
 
 //this is for formatting and finding centers, not display
@@ -2038,6 +2042,12 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
     Base::Vector2d angleVertex = fromQtApp(anglePoints.vertex());
     Base::Vector2d firstDimPoint = fromQtApp(anglePoints.first());
     Base::Vector2d secondDimPoint = fromQtApp(anglePoints.second());
+    
+    bool supplementary = dimension->ShowSupplementary.getValue();
+    if (supplementary) {
+        // flip the first point wrt. vertex to opposite side
+        firstDimPoint = angleVertex - (firstDimPoint - angleVertex);
+    }
 
     double endAngle = (secondDimPoint - angleVertex).Angle();
     double startAngle = (firstDimPoint - angleVertex).Angle();
@@ -2074,7 +2084,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
             jointDirections[0] = getAsmeRefJointPoint(labelRectangle, false) - angleVertex;
             jointDirections[1] = getAsmeRefJointPoint(labelRectangle, true) - angleVertex;
         }
-
+         
         // Get radiuses of the angle dimension arcs
         double arcRadii[2];
         arcRadii[0] = jointDirections[0].Length();
@@ -2202,7 +2212,7 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
 
         if (arrowCount > 1) {
             extensionTarget = computeExtensionLinePoints(
-                firstDimPoint, angleVertex + Base::Vector2d::FromPolar(arcRadius, startAngle),
+                supplementary ? angleVertex : firstDimPoint, angleVertex + Base::Vector2d::FromPolar(arcRadius, startAngle),
                 startAngle, getDefaultExtensionLineOverhang(), gapSize, extensionOrigin);
             anglePath.moveTo(toQtGui(extensionOrigin));
             anglePath.lineTo(toQtGui(extensionTarget));

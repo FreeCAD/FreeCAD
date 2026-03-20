@@ -112,6 +112,12 @@ inline const UnitsSchemaSpec s3
         { "Angle", {
             { 0               , "°"          , 1.0             }}
         },
+        { "ElectricCurrent", {
+            { 1e-6            , "nA"         , 1e-9            },
+            { 1e-3            , "\xC2\xB5""A", 1e-6            },
+            { 1               , "mA"         , 1e-3            },
+            { 0               , "A"          , 1.0             }}
+        },
         { "Mass", {
             { 1e-6            , "\xC2\xB5g"  , 1e-9            },
             { 1e-3            , "mg"         , 1e-6            },
@@ -123,6 +129,17 @@ inline const UnitsSchemaSpec s3
             { 1e-4            , "kg/m^3"     , 1e-9            },
             { 1.0             , "kg/cm^3"    , 1e-3            },
             { 0               , "kg/mm^3"    , 1.0             }}
+        },
+        { "Concentration", {
+            { 1e-9            , "\xC2\xB5mol/l", 1e-12         },
+            { 1e-6            , "mmol/l"     , 1e-9            },
+            { 0               , "mol/l"      , 1e-6            }}
+        },
+        { "AmountOfSubstance", {
+            { 1e-6            , "nmol"       , 1e-9            },
+            { 1e-3            , "\xC2\xB5mol", 1e-6            },
+            { 1               , "mmol"       , 1e-3            },
+            { 0               , "mol"        , 1.0             }}
         },
         { "ThermalConductivity", {
             { 1e6             , "W/m/K"      , 1e3             },
@@ -175,6 +192,8 @@ inline const UnitsSchemaSpec s3
             { 0               , "MN"         , 1e9             }}
         },
         { "Power", {
+            { 1               , "nW"         , 1e-3            },
+            { 1e3             , "\xC2\xB5W"  , 1               },
             { 1e6             , "mW"         , 1e3             },
             { 1e9             , "W"          , 1e6             },
             { 0               , "kW"         , 1e9             }}

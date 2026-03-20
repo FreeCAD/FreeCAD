@@ -168,15 +168,13 @@ def get_dir_setting():
 
 def get_default_solver():
     """Return default solver name."""
-    solver_map = {0: None}
-    if get_binary("Calculix", True):
-        solver_map[1] = "CalculiX"
-    if get_binary("ElmerSolver", True):
-        solver_map[len(solver_map)] = "Elmer"
-    if get_binary("Mystran", True):
-        solver_map[len(solver_map)] = "Mystran"
-    if get_binary("Z88", True):
-        solver_map[len(solver_map)] = "Z88"
+    solver_map = {
+        0: None,
+        1: "CalculiX",
+        2: "Elmer",
+        3: "Mystran",
+        4: "Z88",
+    }
     param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
     return solver_map[param_group.GetInt("DefaultSolver", 0)]
 

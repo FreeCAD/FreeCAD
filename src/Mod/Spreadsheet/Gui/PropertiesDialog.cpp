@@ -266,7 +266,7 @@ PropertiesDialog::~PropertiesDialog()
 void PropertiesDialog::apply()
 {
     if (!ranges.empty()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Set cell properties"));
+        sheet->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Set cell properties"));
         std::vector<Range>::const_iterator i = ranges.begin();
         bool changes = false;
 
@@ -332,11 +332,11 @@ void PropertiesDialog::apply()
             }
         }
         if (changes) {
-            Gui::Command::commitCommand();
+            sheet->getDocument()->commitTransaction();
             Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
         else {
-            Gui::Command::abortCommand();
+            sheet->getDocument()->abortTransaction();
         }
     }
 }

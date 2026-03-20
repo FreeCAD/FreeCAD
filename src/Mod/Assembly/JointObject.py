@@ -1081,16 +1081,26 @@ class ViewProviderJoint:
     def redrawJointPlacement(self, jcs, plc, ref):
         if ref:
             jcs.whichChild = coin.SO_SWITCH_ALL
-            jcs.set_marker_placement(plc, ref)
+            self.setJCSPosition(jcs, plc, ref)
         else:
             jcs.whichChild = coin.SO_SWITCH_NONE
 
     def showPreviewJCS(self, visible, placement=None, ref=None):
         if visible:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_ALL
-            self.switch_JCS_preview.set_marker_placement(placement, ref)
+            self.setJCSPosition(self.switch_JCS_preview, placement, ref)
         else:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_NONE
+
+    def setJCSPosition(self, jcs, plc, ref):
+        assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
+        if assembly and ref and plc:
+            asm_global_plc = assembly.getGlobalPlacement()
+            if asm_global_plc != App.Placement():
+                global_plc = UtilsAssembly.getJcsGlobalPlc(plc, ref)
+                plc = asm_global_plc.inverse() * global_plc
+                ref = None
+        jcs.set_marker_placement(plc, ref)
 
     def setPickableState(self, state: bool):
         """Set JCS selectable or unselectable in 3D view"""
@@ -1176,7 +1186,7 @@ class ViewProviderJoint:
         return None
 
     def doubleClicked(self, vobj):
-        App.closeActiveTransaction(True)  # Close the auto-transaction
+        App.ActiveDocument.abortTransaction()  # Close the auto-transaction
 
         task = Gui.Control.activeTaskDialog()
         if task:
@@ -1524,7 +1534,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.creating = False
             self.joint = jointObj
             self.jointName = jointObj.Label
-            App.setActiveTransaction("Edit " + self.jointName + " Joint")
+            Gui.ActiveDocument.openCommand("Edit " + self.jointName + " Joint")
 
             self.updateTaskboxFromJoint()
             self.visibilityBackup = self.joint.Visibility
@@ -1534,9 +1544,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.creating = True
             self.jointName = self.jForm.jointType.currentText().replace(" ", "")
             if self.activeType == "Part":
-                App.setActiveTransaction("Transform")
+                Gui.ActiveDocument.openCommand("Transform")
             else:
-                App.setActiveTransaction("Create " + self.jointName + " Joint")
+                Gui.ActiveDocument.openCommand("Create " + self.jointName + " Joint")
 
             self.refs = []
             self.presel_ref = None
@@ -1624,12 +1634,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.assembly.recompute(True)
 
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
         return True
 
     def reject(self):
         self.deactivate()
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         self.assembly.recompute(True)
         return True
 
@@ -1642,7 +1652,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.removeSelectionGate()
         Gui.Selection.removeObserver(self)
         Gui.Selection.setSelectionStyle(Gui.Selection.SelectionStyle.NormalSelection)
-        App.closeActiveTransaction(True)
+        App.ActiveDocument.abortTransaction()
 
     def deactivate(self):
         global activeTask
@@ -2208,6 +2218,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if not sub_name:
             self.presel_ref = None
             return
+
+        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
 
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 

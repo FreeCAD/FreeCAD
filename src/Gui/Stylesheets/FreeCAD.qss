@@ -162,6 +162,11 @@ QColorDialog QLabel {
 }
 */
 
+QFrame[class="popup"] {
+  background-color: @DialogBackgroundColor;
+  border: 1px solid @GeneralBorderColor;
+}
+
 /* QMainWindow ------------------------------------------------------------
 
 This adjusts the splitter in the dock widget, not qsplitter

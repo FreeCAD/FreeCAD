@@ -39,7 +39,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="9004"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Begränsa bilens radie/diameter</translation>
+      <translation>Villkor automatisk radie/diameter</translation>
     </message>
   </context>
   <context>
@@ -1130,32 +1130,6 @@ ogiltiga begränsningar och degenererad geometri</translation>
       <translation>Fäst inte</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="369"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2018"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2228"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2350"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="242"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="489"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="578"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="632"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1021"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1142"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="162"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="173"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="114"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
       <location filename="../../CommandConstraints.cpp" line="170"/>
       <location filename="../../CommandConstraints.cpp" line="177"/>
       <location filename="../../CommandConstraints.cpp" line="2815"/>
@@ -1276,6 +1250,32 @@ ogiltiga begränsningar och degenererad geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="10453"/>
       <location filename="../../CommandConstraints.cpp" line="10528"/>
       <location filename="../../CommandConstraints.cpp" line="10540"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="114"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="125"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="155"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="162"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="173"/>
+      <location filename="../../CommandSketcherTools.cpp" line="369"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1013"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1340"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1350"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1412"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1944"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1954"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2018"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2228"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2285"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2350"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="242"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="489"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="578"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="632"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1021"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1142"/>
       <source>Wrong selection</source>
       <translation>Felaktigt val</translation>
     </message>
@@ -1418,9 +1418,9 @@ ogiltiga begränsningar och degenererad geometri</translation>
       <translation>Antalet valda objekt är inte 3</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="783"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="621"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1183"/>
-      <location filename="../../CommandConstraints.cpp" line="783"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
@@ -1818,14 +1818,14 @@ Godkända kombinationer: två kurvor; en ändpunkt och en kurva; två ändpunkte
       <translation>Välj en dimensionell begränsning från skissen.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="126"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="156"/>
       <location filename="../../CommandConstraints.cpp" line="10406"/>
       <location filename="../../CommandConstraints.cpp" line="10418"/>
       <location filename="../../CommandConstraints.cpp" line="10454"/>
       <location filename="../../CommandConstraints.cpp" line="10529"/>
       <location filename="../../CommandConstraints.cpp" line="10541"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="115"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="126"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="156"/>
       <source>Select constraints from the sketch.</source>
       <translation>Välj begränsningar från skissen.</translation>
     </message>
@@ -2441,7 +2441,7 @@ Godkända kombinationer: två kurvor; en ändpunkt och en kurva; två ändpunkte
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="93"/>
       <source>Radius Dimension</source>
-      <translation>Radie Dimension</translation>
+      <translation>Radiemått</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="95"/>
@@ -2461,7 +2461,7 @@ Godkända kombinationer: två kurvor; en ändpunkt och en kurva; två ändpunkte
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="99"/>
       <source>Angle Dimension</source>
-      <translation>Vinkel Dimension</translation>
+      <translation>Vinkelmått</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="101"/>
@@ -2693,7 +2693,7 @@ i kopiorna, så att en förändring i det ursprungliga elementet återspeglas i 
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="99"/>
       <source>Constrain inter-element separation</source>
-      <translation>Begränsa separation mellan element</translation>
+      <translation>Villkor separation mellan element</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="119"/>
@@ -4615,35 +4615,35 @@ Rutnätets avstånd ändras om det blir mindre än den angivna pixelstorleken.</
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="213"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1290"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1870"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2307"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="202"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="387"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="672"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="749"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="153"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="221"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="141"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="343"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="476"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="510"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="230"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="141"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="213"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="188"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="202"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="230"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="268"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="348"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="153"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1290"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1870"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2307"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="343"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="350"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="221"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
@@ -4679,16 +4679,16 @@ Rutnätets avstånd ändras om det blir mindre än den angivna pixelstorleken.</
       <translation>Begränsningen har ogiltig indexinformation och är missformad.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1077"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="517"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="660"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="908"/>
       <location filename="../../CommandConstraints.cpp" line="431"/>
       <location filename="../../CommandConstraints.cpp" line="511"/>
       <location filename="../../CommandConstraints.cpp" line="608"/>
       <location filename="../../CommandConstraints.cpp" line="698"/>
       <location filename="../../CommandConstraints.cpp" line="6595"/>
       <location filename="../../CommandConstraints.cpp" line="6799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1077"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="517"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="660"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="908"/>
       <source>Invalid Constraint</source>
       <translation>Ogiltig begränsning</translation>
     </message>
@@ -4763,24 +4763,24 @@ Rutnätets avstånd ändras om det blir mindre än den angivna pixelstorleken.</
       <translation>Misslyckades med att skapa filé</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="142"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="142"/>
       <source>Failed to add line</source>
       <translation>Misslyckades med att lägga till rad</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerCircle.h" line="228"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="148"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="140"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="520"/>
       <location filename="../../DrawSketchHandlerArc.h" line="297"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="220"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="195"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="237"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="180"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="160"/>
       <location filename="../../DrawSketchHandlerScale.h" line="160"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="153"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="160"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="140"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="180"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="520"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="148"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="237"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="195"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="228"/>
       <source>Tool execution aborted</source>
       <translation>Verktygsexekvering avbruten</translation>
     </message>
@@ -4815,11 +4815,11 @@ Rutnätets avstånd ändras om det blir mindre än den angivna pixelstorleken.</
       <translation>Misslyckades med att trimma kanten</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1224"/>
       <location filename="../../EditDatumDialog.cpp" line="62"/>
       <location filename="../../EditDatumDialog.cpp" line="294"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1224"/>
       <source>Value Error</source>
-      <translation>Värdefel</translation>
+      <translation>Värde Fel</translation>
     </message>
     <message>
       <location filename="../../DrawSketchDefaultHandler.h" line="978"/>
@@ -5438,7 +5438,7 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
     <message>
       <location filename="../../CommandConstraints.cpp" line="1634"/>
       <source>Constrain tools</source>
-      <translation>Begränsa verktyg</translation>
+      <translation>Villkor verktyg</translation>
     </message>
   </context>
   <context>

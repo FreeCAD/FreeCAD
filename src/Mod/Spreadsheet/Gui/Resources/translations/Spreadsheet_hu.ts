@@ -380,8 +380,8 @@
       <translation>Oszlopok beszúrása</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <location filename="../../SheetTableView.cpp" line="679"/>
+      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <source>Clear Cells</source>
       <translation>Cellák törlése</translation>
     </message>
@@ -680,8 +680,8 @@ változtassa a tervezési konfigurációt. A tulajdonság létrejön, ha nem lé
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Összes (*)</translation>
     </message>

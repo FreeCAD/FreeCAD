@@ -69,6 +69,7 @@ using DSHRectangleController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0, 0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2, 2, 2>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0, 0, 0>,    // NOLINT
     ConstructionMethods::RectangleConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -502,11 +503,11 @@ private:
 
             createShape(false);
 
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -515,7 +516,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add box")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(

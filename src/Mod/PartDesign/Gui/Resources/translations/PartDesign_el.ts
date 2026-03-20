@@ -2917,7 +2917,7 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskSketchBasedParameters</name>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="193"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="202"/>
       <source>Face</source>
       <translation>Επιφάνεια</translation>
     </message>
@@ -3191,11 +3191,11 @@ measured along the specified direction</source>
       <translation>Δεν υπάρχουν έγκυρα επίπεδα σε αυτό το έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="257"/>
-      <location filename="../../ViewProvider.cpp" line="135"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
       <location filename="../../Command.cpp" line="1138"/>
       <location filename="../../SketchWorkflow.cpp" line="728"/>
+      <location filename="../../ViewProvider.cpp" line="135"/>
+      <location filename="../../ViewProviderDatum.cpp" line="257"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Ένα παράθυρο επιλογών είναι ήδη ανοιχτό στον πίνακα εργασιών</translation>
     </message>
@@ -3235,11 +3235,11 @@ measured along the specified direction</source>
       <translation>Δεν υπάρχει διαθέσιμο σκαρίφημα στο έγγραφο</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDatum.cpp" line="258"/>
-      <location filename="../../ViewProvider.cpp" line="136"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
+      <location filename="../../ViewProvider.cpp" line="136"/>
+      <location filename="../../ViewProviderDatum.cpp" line="258"/>
       <source>Close this dialog?</source>
       <translation>Κλείσιμο αυτού του διαλόγου?</translation>
     </message>
@@ -3473,14 +3473,14 @@ This may lead to unexpected results.</source>
       <translation>Δεν είναι εφικτό να δημιουργήσετε αφαιρετικό χαρακτηριστικό χωρίς κάποιο διαθέσιμο χαρακτηριστικό βάσης</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="439"/>
       <source>Vertical sketch axis</source>
       <translation>Κάθετος άξονας σκίτσου</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="440"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="440"/>
       <source>Horizontal sketch axis</source>
       <translation>Οριζόντιος άξονας σκίτσου</translation>
     </message>
@@ -3490,7 +3490,7 @@ This may lead to unexpected results.</source>
       <translation>Γραμμή κατασκευής %1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketchBasedParameters.cpp" line="85"/>
+      <location filename="../../TaskSketchBasedParameters.cpp" line="94"/>
       <source>Face</source>
       <translation>Όψη</translation>
     </message>
@@ -3533,10 +3533,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Προκειμένου να χρησιμοποιήσετε αυτό το χαρακτηριστικό θα πρέπει να ανήκει σε κάποιο εξάρτημα που βρίσκεται στο έγγραφο.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
-      <location filename="../../ViewProvider.cpp" line="92"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="63"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="62"/>
+      <location filename="../../ViewProvider.cpp" line="92"/>
       <source>Edit %1</source>
       <translation>Επεξεργασία %1</translation>
     </message>
@@ -4467,20 +4467,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Αδυναμία εκτέλεσης λογικής πράξης: Το σχήμα βάσης δεν είναι έγκυρο</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
-      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
       <location filename="../../../App/FeaturePipe.cpp" line="480"/>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
+      <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="331"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="375"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Το αποτέλεσμα έχει πολλαπλά στερεά: ενεργοποιήστε την επιλογή 'Να επιτρέπονται τα Σύνθετα' (Allow Compound) στο ενεργό Σώμα.</translation>
     </message>
@@ -4515,10 +4515,10 @@ over 90: larger hole radius at the bottom</source>
       <translation>Το κομμάτι που πρόσθεσες δεν κόλλησε πουθενά και χάθηκε.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <source>Resulting shape is not a solid</source>
       <translation>Το σχήμα που προκύπτει δεν είναι στερεό</translation>
     </message>
@@ -4599,9 +4599,9 @@ over 90: larger hole radius at the bottom</source>
       <translation>Η δημιουργία απέτυχε επειδή η κατεύθυνση είναι κάθετη προς το επίπεδο του σχεδίου</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <source>Creating a face from sketch failed</source>
       <translation>Η δημιουργία επιφάνειας από αυτό το σχέδιο απέτυχε</translation>
     </message>
@@ -4611,20 +4611,20 @@ over 90: larger hole radius at the bottom</source>
       <translation>Οι γωνίες της αυλάκωσης αλληλοαναιρούνται</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <location filename="../../../App/FeatureGroove.cpp" line="171"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="193"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>Ο άξονας περιστροφής τέμνει το σχέδιο</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
       <location filename="../../../App/FeatureGroove.cpp" line="263"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
       <source>Could not revolve the sketch!</source>
       <translation>Αδυναμία περιστροφής του σχεδίου!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
       <location filename="../../../App/FeatureGroove.cpp" line="275"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Αδυναμία δημιουργίας επιφάνειας από το σχέδιο.
@@ -4674,9 +4674,9 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Σφάλμα: Η επιφάνεια πρέπει να είναι επίπεδη</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <location filename="../../../App/FeatureHelix.cpp" line="443"/>
       <location filename="../../../App/FeatureHelix.cpp" line="484"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2422"/>
       <source>Error: Result is not a solid</source>
       <translation>Σφάλμα: Το αποτέλεσμα δεν είναι σταθερό (δεν έχει όγκο)</translation>
     </message>
@@ -4836,8 +4836,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>Μετάβαση (Loft): Η δημιουργία επιφάνειας από το σχέδιο απέτυχε</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <location filename="../../../App/FeaturePipe.cpp" line="444"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="301"/>
       <source>Loft: Failed to create shell</source>
       <translation>Μετάβαση (Loft): Αποτυχία δημιουργίας κελύφους</translation>
     </message>
@@ -4949,16 +4949,16 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Αδυναμία αφαίρεσης βασικού σχήματος χωρίς την ύπαρξη αρχικού αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="505"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="353"/>
       <source>Unknown operation type</source>
       <translation>Άγνωστος τύπος λειτουργίας</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="131"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="513"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="361"/>
       <source>Failed to perform boolean operation</source>
       <translation>Η εκτέλεση της λειτουργίας Boolean απέτυχε</translation>
     </message>
@@ -5077,8 +5077,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
 Οι Γωνίες περιστροφής αλληλοαναιρούνται</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="168"/>
       <source>Reference axis is invalid</source>
       <translation>Ο άξονας αναφοράς δεν είναι έγκυρος</translation>
     </message>

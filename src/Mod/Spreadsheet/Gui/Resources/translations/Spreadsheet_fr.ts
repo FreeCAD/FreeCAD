@@ -380,8 +380,8 @@
       <translation>Insérer des colonnes</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <location filename="../../SheetTableView.cpp" line="679"/>
+      <location filename="../../SpreadsheetView.cpp" line="193"/>
       <source>Clear Cells</source>
       <translation>Effacer des cellules</translation>
     </message>
@@ -679,8 +679,8 @@ créée si elle n'existe pas.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Tout (*)</translation>
     </message>

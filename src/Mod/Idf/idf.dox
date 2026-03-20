@@ -1,2 +1,15 @@
 /** \defgroup IDF Idf
- *  \ingroup UTILITIES */
+ *  \ingroup UTILITIES
+ *
+ *  \brief Import Intermediate %Data Format (IDF) files
+ *
+ *  <a href="https://en.wikipedia.org/wiki/Intermediate_Data_Format">IDF (Intermediate Data Format)</a> is a format used for interoperability between
+ *  Electronic Design %Automation (EDA) software and CAD software.
+ *
+ *  The IDF consists of two file types:
+ *  - EMN files: Contain PCB outline and part positions (component placement)
+ *  - EMP files: Contain part outlines and heights
+ *
+ *  The Idf module provides functions to open EMN and EMP files to import PCB
+ *  designs into FreeCAD.
+ */

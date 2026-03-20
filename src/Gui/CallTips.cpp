@@ -226,7 +226,7 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
     try {
         PyErr_Clear();
         Py::Module module("__main__");
-        if (module.ptr() == nullptr) {
+        if (!module.ptr()) {
             return tips;
         }
         Py::Dict dict = module.getDict();

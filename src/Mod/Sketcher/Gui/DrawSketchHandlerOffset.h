@@ -105,6 +105,7 @@ using DSHOffsetController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::OffsetConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -426,7 +427,7 @@ private:
             return;
         }
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
         Obj->addGeometry(std::move(geometriesToAdd));
@@ -441,7 +442,7 @@ private:
             makeOffsetConstraint(listOfOffsetGeoIds);
         }
 
-        Gui::Command::commitCommand();
+        commitCommand();
     }
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)

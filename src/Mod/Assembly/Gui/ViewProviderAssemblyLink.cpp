@@ -34,6 +34,7 @@
 #include <App/DocumentObject.h>
 #include <App/Part.h>
 
+#include <Gui/Action.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -136,16 +137,25 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
 
     func->trigger(act, [this]() {
         auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Toggle Rigid"));
+        getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle Rigid"));
         Gui::cmdAppObjectArgs(
             assemblyLink,
             "Rigid = %s",
             assemblyLink->Rigid.getValue() ? "False" : "True"
         );
 
-        Gui::Command::commitCommand();
+        getDocument()->commitCommand();
         Gui::Selection().clearSelection();
     });
+
+    Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
+    Gui::Command* cmd = mgr.getCommandByName("Assembly_LinkSelectLinked");
+    if (cmd) {
+        QAction* action = cmd->getAction()->action();
+        if (action) {
+            menu->addAction(action);
+        }
+    }
 
     Q_UNUSED(receiver)
     Q_UNUSED(member)

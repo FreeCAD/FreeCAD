@@ -34,6 +34,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import WorkingPlane
 import Draft_rc  # include resources, icons, ui files
 import DraftVecUtils
 from FreeCAD import Units as U
@@ -97,7 +98,7 @@ class TaskPanelCircularArray:
         self.center = App.Vector()
         # TODO: the axis is currently fixed, it should be editable
         # or selectable from the task panel
-        self.axis = App.Vector(0, 0, 1)
+        self.axis = WorkingPlane.get_working_plane(update=False).axis
         self.r_distance = 100
         self.tan_distance = 50
         self.number = 3

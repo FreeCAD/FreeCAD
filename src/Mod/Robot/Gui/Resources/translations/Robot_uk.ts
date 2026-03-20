@@ -292,9 +292,26 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandInsertRobot.cpp" line="68"/>
-      <location filename="../../CommandExport.cpp" line="61"/>
-      <location filename="../../CommandExport.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="52"/>
+      <source>Select VRML file for Robot</source>
+      <translation>Обрати файл VRML для Робота</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="54"/>
+      <source>VRML Files (*.wrl *.vrml)</source>
+      <translation>Файли VRML (*.wrl *.vrml)</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="66"/>
+      <source>Select Kinematic CSV file for Robot</source>
+      <translation>Обрати файл Kinematic CSV для Робота</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="68"/>
+      <source>CSV Files (*.csv)</source>
+      <translation>Файли CSV (*.csv)</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="102"/>
       <location filename="../../Command.cpp" line="165"/>
       <location filename="../../Command.cpp" line="267"/>
@@ -302,28 +319,11 @@
       <location filename="../../CommandTrajectory.cpp" line="178"/>
       <location filename="../../CommandTrajectory.cpp" line="199"/>
       <location filename="../../CommandTrajectory.cpp" line="484"/>
+      <location filename="../../CommandInsertRobot.cpp" line="68"/>
+      <location filename="../../CommandExport.cpp" line="61"/>
+      <location filename="../../CommandExport.cpp" line="142"/>
       <source>Wrong selection</source>
       <translation>Невірний вибір</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="52"/>
-      <source>Select VRML file for Robot</source>
-      <translation type="unfinished">Select VRML file for Robot</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="54"/>
-      <source>VRML Files (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML Files (*.wrl *.vrml)</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="66"/>
-      <source>Select Kinematic CSV file for Robot</source>
-      <translation type="unfinished">Select Kinematic CSV file for Robot</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="68"/>
-      <source>CSV Files (*.csv)</source>
-      <translation type="unfinished">CSV Files (*.csv)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
@@ -336,10 +336,10 @@
       <translation>Оберіть одного Робота</translation>
     </message>
     <message>
-      <location filename="../../CommandExport.cpp" line="62"/>
-      <location filename="../../CommandExport.cpp" line="143"/>
       <location filename="../../Command.cpp" line="268"/>
       <location filename="../../CommandTrajectory.cpp" line="108"/>
+      <location filename="../../CommandExport.cpp" line="62"/>
+      <location filename="../../CommandExport.cpp" line="143"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Виберіть один робот і одну траєкторію об'єкта.</translation>
     </message>

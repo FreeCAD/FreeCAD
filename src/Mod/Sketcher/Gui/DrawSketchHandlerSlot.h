@@ -55,10 +55,11 @@ using DSHSlotController = DrawSketchDefaultWidgetController<
     DrawSketchHandlerSlot,
     StateMachines::ThreeSeekEnd,
     /*PAutoConstraintSize =*/2,
-    /*OnViewParametersT =*/OnViewParameters<5>,   // NOLINT
-    /*WidgetParametersT =*/WidgetParameters<0>,   // NOLINT
-    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,   // NOLINT
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;  // NOLINT
+    /*OnViewParametersT =*/OnViewParameters<5>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<0>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;   // NOLINT
 
 using DSHSlotControllerBase = DSHSlotController::ControllerBase;
 
@@ -175,13 +176,13 @@ private:
         firstCurve = getHighestCurveIndex() + 1;
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add slot"));
 
             createShape(false);
 
             commandAddShapeGeometryAndConstraints();
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -190,7 +191,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add slot")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
