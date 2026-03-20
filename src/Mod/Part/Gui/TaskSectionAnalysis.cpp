@@ -54,6 +54,8 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
+#include <Gui/Inventor/Draggers/Gizmo.h>
+
 #include "TaskSectionAnalysis.h"
 #include "ViewProviderSectionAnalysis.h"
 
@@ -64,19 +66,113 @@ using namespace PartGui;
 // SectionAnalysisWidget
 // -----------------------------------------------------------------------
 
-SectionAnalysisWidget::SectionAnalysisWidget(Part::SectionAnalysis* feat, QWidget* parent)
+SectionAnalysisWidget::SectionAnalysisWidget(Part::SectionAnalysis* feat,
+                                               ViewProviderSectionAnalysis* vp,
+                                               QWidget* parent)
     : QWidget(parent)
     , feature(feat)
+    , viewProvider(vp)
 {
     setupUi();
     setupConnections();
     updateSliderRange();
+    setupGizmos();
 
     // Enable hatching by default
     onHatchToggled(true);
 }
 
 SectionAnalysisWidget::~SectionAnalysisWidget() = default;
+
+ViewProviderSectionAnalysis* SectionAnalysisWidget::getViewProvider() const
+{
+    return viewProvider;
+}
+
+void SectionAnalysisWidget::setupGizmos()
+{
+    if (!Gui::GizmoContainer::isEnabled() || !viewProvider) {
+        return;
+    }
+
+    offsetGizmo = new Gui::LinearGizmo(offsetSpin);
+    angleXGizmo = new Gui::RotationGizmo(angleXSpin);
+    angleZGizmo = new Gui::RotationGizmo(angleZSpin);
+
+    // GizmoContainer::create() registers with the ViewProviderDragger
+    // and setEditViewer() attaches it to the 3D viewer
+    gizmoContainer = Gui::GizmoContainer::create(
+        {offsetGizmo, angleXGizmo, angleZGizmo},
+        viewProvider);
+
+    updateGizmoPositions();
+}
+
+void SectionAnalysisWidget::updateGizmoPositions()
+{
+    if (!offsetGizmo || !viewProvider) {
+        return;
+    }
+
+    auto* feat = feature;
+    Base::Vector3d n = feat->PlaneNormal.getValue();
+    double d = feat->PlaneOffset.getValue();
+    double len = n.Length();
+    if (len < 1e-10) {
+        return;
+    }
+    n = n / len;
+
+    // Position at bbox center projected onto cutting plane
+    App::DocumentObject* source = feat->Source.getValue();
+    if (!source) {
+        return;
+    }
+
+    TopoDS_Shape sourceShape = Part::Feature::getShape(source,
+        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    if (sourceShape.IsNull()) {
+        return;
+    }
+
+    Bnd_Box bbox;
+    BRepBndLib::Add(sourceShape, bbox);
+    if (bbox.IsVoid()) {
+        return;
+    }
+
+    double xmin, ymin, zmin, xmax, ymax, zmax;
+    bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+    Base::Vector3d bboxCenter((xmin + xmax) / 2, (ymin + ymax) / 2, (zmin + zmax) / 2);
+    double distToPlane = n * bboxCenter - d;
+    Base::Vector3d planeCenter = bboxCenter - n * distToPlane;
+
+    Base::Vector3d dir = feat->FlipCut.getValue() ? -n : n;
+
+    // Offset arrow along the normal
+    offsetGizmo->Gizmo::setDraggerPlacement(planeCenter, dir);
+
+    // Build tangent axes perpendicular to the normal (same as applyAngles)
+    Base::Vector3d tangent1, tangent2;
+    if (std::abs(n.z) > 0.9) {
+        tangent1 = Base::Vector3d(1, 0, 0);
+        tangent2 = Base::Vector3d(0, 1, 0);
+    }
+    else if (std::abs(n.y) > 0.9) {
+        tangent1 = Base::Vector3d(1, 0, 0);
+        tangent2 = Base::Vector3d(0, 0, 1);
+    }
+    else {
+        tangent1 = Base::Vector3d(0, 1, 0);
+        tangent2 = Base::Vector3d(0, 0, 1);
+    }
+
+    // Place rotation arcs at the tip of the offset arrow, oriented along tangent axes
+    angleXGizmo->placeOverLinearGizmo(offsetGizmo);
+    SbVec3f arcPos = angleXGizmo->getDraggerPlacement().pos;
+    angleXGizmo->setDraggerPlacement(arcPos, SbVec3f(tangent1.x, tangent1.y, tangent1.z));
+    angleZGizmo->setDraggerPlacement(arcPos, SbVec3f(tangent2.x, tangent2.y, tangent2.z));
+}
 
 Part::SectionAnalysis* SectionAnalysisWidget::getObject() const
 {
@@ -151,22 +247,20 @@ void SectionAnalysisWidget::setupUi()
 
     // Angle adjustments (tilt the plane from the preset orientation)
     planeLayout->addWidget(new QLabel(tr("X Angle:"), this), 4, 0);
-    angleX = new QDoubleSpinBox(this);
-    angleX->setRange(-90.0, 90.0);
-    angleX->setDecimals(1);
-    angleX->setSingleStep(1.0);
-    angleX->setSuffix(QString::fromUtf8("\xc2\xb0"));  // degree sign
-    angleX->setValue(0.0);
-    planeLayout->addWidget(angleX, 4, 1);
+    angleXSpin = new Gui::QuantitySpinBox(this);
+    angleXSpin->setUnit(Base::Unit::Angle);
+    angleXSpin->setRange(-90.0, 90.0);
+    angleXSpin->setSingleStep(1.0);
+    angleXSpin->setValue(0.0);
+    planeLayout->addWidget(angleXSpin, 4, 1);
 
     planeLayout->addWidget(new QLabel(tr("Z Angle:"), this), 5, 0);
-    angleZ = new QDoubleSpinBox(this);
-    angleZ->setRange(-90.0, 90.0);
-    angleZ->setDecimals(1);
-    angleZ->setSingleStep(1.0);
-    angleZ->setSuffix(QString::fromUtf8("\xc2\xb0"));
-    angleZ->setValue(0.0);
-    planeLayout->addWidget(angleZ, 5, 1);
+    angleZSpin = new Gui::QuantitySpinBox(this);
+    angleZSpin->setUnit(Base::Unit::Angle);
+    angleZSpin->setRange(-90.0, 90.0);
+    angleZSpin->setSingleStep(1.0);
+    angleZSpin->setValue(0.0);
+    planeLayout->addWidget(angleZSpin, 5, 1);
 
     // Offset
     planeLayout->addWidget(new QLabel(tr("Offset:"), this), 6, 0);
@@ -223,9 +317,9 @@ void SectionAnalysisWidget::setupConnections()
             this, &SectionAnalysisWidget::onNormalYChanged);
     connect(normalZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &SectionAnalysisWidget::onNormalZChanged);
-    connect(angleX, qOverload<double>(&QDoubleSpinBox::valueChanged),
+    connect(angleXSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &SectionAnalysisWidget::onAngleXChanged);
-    connect(angleZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
+    connect(angleZSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &SectionAnalysisWidget::onAngleZChanged);
     connect(offsetSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &SectionAnalysisWidget::onOffsetChanged);
@@ -345,12 +439,12 @@ void SectionAnalysisWidget::onPresetChanged(int index)
     normalZ->setEnabled(false);
 
     // Reset angles when switching presets
-    angleX->blockSignals(true);
-    angleZ->blockSignals(true);
-    angleX->setValue(0.0);
-    angleZ->setValue(0.0);
-    angleX->blockSignals(false);
-    angleZ->blockSignals(false);
+    angleXSpin->blockSignals(true);
+    angleZSpin->blockSignals(true);
+    angleXSpin->setValue(0.0);
+    angleZSpin->setValue(0.0);
+    angleXSpin->blockSignals(false);
+    angleZSpin->blockSignals(false);
 
     // Auto-flip for presets where default normal faces away from typical viewing
     // View Direction (3) doesn't need flip since we already face toward camera
@@ -438,8 +532,8 @@ void SectionAnalysisWidget::applyAngles()
             break;
     }
 
-    double a1 = angleX->value() * M_PI / 180.0;
-    double a2 = angleZ->value() * M_PI / 180.0;
+    double a1 = angleXSpin->value().getValue() * M_PI / 180.0;
+    double a2 = angleZSpin->value().getValue() * M_PI / 180.0;
 
     // Build two tangent axes perpendicular to the base normal.
     // We rotate around these tangent axes (not global X/Z).
@@ -715,9 +809,10 @@ bool SectionAnalysisWidget::reject()
 // TaskSectionAnalysis
 // -----------------------------------------------------------------------
 
-TaskSectionAnalysis::TaskSectionAnalysis(Part::SectionAnalysis* feature)
+TaskSectionAnalysis::TaskSectionAnalysis(Part::SectionAnalysis* feature,
+                                         ViewProviderSectionAnalysis* vp)
 {
-    widget = new SectionAnalysisWidget(feature);
+    widget = new SectionAnalysisWidget(feature, vp);
     addTaskBox(Gui::BitmapFactory().pixmap("Part_SectionAnalysis"), widget);
 }
 
