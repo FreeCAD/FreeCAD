@@ -31,6 +31,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QSlider>
+#include <QTimer>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
@@ -47,6 +48,7 @@
 #include <Gui/QuantitySpinBox.h>
 #include <Base/Console.h>
 #include <Gui/View3DInventor.h>
+#include <Gui/ViewParams.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
 #include <App/Material.h>
@@ -55,6 +57,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Inventor/Draggers/SoRotationDragger.h>
 
 #include "TaskSectionAnalysis.h"
 #include "ViewProviderSectionAnalysis.h"
@@ -96,14 +99,71 @@ void SectionAnalysisWidget::setupGizmos()
     }
 
     offsetGizmo = new Gui::LinearGizmo(offsetSpin);
-    angleXGizmo = new Gui::RotationGizmo(angleXSpin);
-    angleZGizmo = new Gui::RotationGizmo(angleZSpin);
+    angle1Gizmo = new Gui::RotationGizmo(angle1Spin);
+    angle2Gizmo = new Gui::RotationGizmo(angle2Spin);
 
-    // GizmoContainer::create() registers with the ViewProviderDragger
-    // and setEditViewer() attaches it to the 3D viewer
     gizmoContainer = Gui::GizmoContainer::create(
-        {offsetGizmo, angleXGizmo, angleZGizmo},
+        {offsetGizmo, angle1Gizmo, angle2Gizmo},
         viewProvider);
+
+    // Determine the two tangent axes based on the current normal
+    Base::Vector3d n = feature->PlaneNormal.getValue();
+    double len = n.Length();
+    if (len > 1e-10) {
+        n = n / len;
+    }
+
+    Base::Vector3d tangent1, tangent2;
+    if (std::abs(n.z) > 0.9) {
+        tangent1 = Base::Vector3d(1, 0, 0);  // X
+        tangent2 = Base::Vector3d(0, 1, 0);  // Y
+    }
+    else if (std::abs(n.y) > 0.9) {
+        tangent1 = Base::Vector3d(1, 0, 0);  // X
+        tangent2 = Base::Vector3d(0, 0, 1);  // Z
+    }
+    else {
+        tangent1 = Base::Vector3d(0, 1, 0);  // Y
+        tangent2 = Base::Vector3d(0, 0, 1);  // Z
+    }
+
+    // Set arc colors from user preferences based on which real axis each controls
+    auto axisColor = [](const Base::Vector3d& axis) -> SbColor {
+        auto* vp = Gui::ViewParams::instance();
+        unsigned long packed = 0;
+        float transparency = 0;
+        SbColor c = {};
+
+        if (std::abs(axis.x) > 0.9) packed = vp->getAxisXColor();
+        else if (std::abs(axis.y) > 0.9) packed = vp->getAxisYColor();
+        else packed = vp->getAxisZColor();
+        c.setPackedValue(packed, transparency);
+        return c;
+    };
+
+    // Apply colors to the rotation dragger arcs
+    auto* arc1Dragger = angle1Gizmo->getDraggerContainer()->getDragger();
+    arc1Dragger->color.setValue(axisColor(tangent1));
+    arc1Dragger->activeColor.setValue(axisColor(tangent1));
+
+    auto* arc2Dragger = angle2Gizmo->getDraggerContainer()->getDragger();
+    arc2Dragger->color.setValue(axisColor(tangent2));
+    arc2Dragger->activeColor.setValue(axisColor(tangent2));
+
+    // Orient the arcs at 90 degrees to each other using the rotation field
+    // (same approach as SoTransformDragger::setupRotationDraggers)
+    float angle90 = static_cast<float>(M_PI / 2.0);
+    auto* container1 = angle1Gizmo->getDraggerContainer();
+    SbRotation rot1(SbVec3f(tangent1.x, tangent1.y, tangent1.z), 0);
+    container1->rotation.setValue(rot1);
+
+    auto* container2 = angle2Gizmo->getDraggerContainer();
+    SbRotation rot2(SbVec3f(0, 0, 1), angle90);
+    container2->rotation.setValue(rot2);
+
+    // Don't auto-orient with camera — keep arcs fixed in world space
+    angle1Gizmo->automaticOrientation = false;
+    angle2Gizmo->automaticOrientation = false;
 
     updateGizmoPositions();
 }
@@ -147,31 +207,20 @@ void SectionAnalysisWidget::updateGizmoPositions()
     double distToPlane = n * bboxCenter - d;
     Base::Vector3d planeCenter = bboxCenter - n * distToPlane;
 
-    Base::Vector3d dir = feat->FlipCut.getValue() ? -n : n;
+    // Gizmo lives in always-positive space [0, range].
+    // Origin at the near edge, arrow points along normal toward far edge.
+    // The spinbox value (0..range) maps directly to drag length.
+    Base::Vector3d nearEdge = planeCenter - n * (d - offsetBase);
+    offsetGizmo->Gizmo::setDraggerPlacement(nearEdge, n);
+    offsetGizmo->setMultFactor(1.0);
+    offsetGizmo->setAddFactor(0.0);
+    offsetGizmo->setDragLength(d - offsetBase);
 
-    // Offset arrow along the normal
-    offsetGizmo->Gizmo::setDraggerPlacement(planeCenter, dir);
-
-    // Build tangent axes perpendicular to the normal (same as applyAngles)
-    Base::Vector3d tangent1, tangent2;
-    if (std::abs(n.z) > 0.9) {
-        tangent1 = Base::Vector3d(1, 0, 0);
-        tangent2 = Base::Vector3d(0, 1, 0);
-    }
-    else if (std::abs(n.y) > 0.9) {
-        tangent1 = Base::Vector3d(1, 0, 0);
-        tangent2 = Base::Vector3d(0, 0, 1);
-    }
-    else {
-        tangent1 = Base::Vector3d(0, 1, 0);
-        tangent2 = Base::Vector3d(0, 0, 1);
-    }
-
-    // Place rotation arcs at the tip of the offset arrow, oriented along tangent axes
-    angleXGizmo->placeOverLinearGizmo(offsetGizmo);
-    SbVec3f arcPos = angleXGizmo->getDraggerPlacement().pos;
-    angleXGizmo->setDraggerPlacement(arcPos, SbVec3f(tangent1.x, tangent1.y, tangent1.z));
-    angleZGizmo->setDraggerPlacement(arcPos, SbVec3f(tangent2.x, tangent2.y, tangent2.z));
+    // Place rotation arcs at the arrow tip, separated along the normal direction
+    angle1Gizmo->sepDistance = 0;
+    angle1Gizmo->placeOverLinearGizmo(offsetGizmo);
+    angle2Gizmo->sepDistance = 3.0;  // 3mm behind the first arc
+    angle2Gizmo->placeOverLinearGizmo(offsetGizmo);
 }
 
 Part::SectionAnalysis* SectionAnalysisWidget::getObject() const
@@ -246,28 +295,51 @@ void SectionAnalysisWidget::setupUi()
     normalZ->setEnabled(isCustom);
 
     // Angle adjustments (tilt the plane from the preset orientation)
-    planeLayout->addWidget(new QLabel(tr("X Angle:"), this), 4, 0);
-    angleXSpin = new Gui::QuantitySpinBox(this);
-    angleXSpin->setUnit(Base::Unit::Angle);
-    angleXSpin->setRange(-90.0, 90.0);
-    angleXSpin->setSingleStep(1.0);
-    angleXSpin->setValue(0.0);
-    planeLayout->addWidget(angleXSpin, 4, 1);
+    angleLabel1 = new QLabel(tr("X Angle:"), this);
+    planeLayout->addWidget(angleLabel1, 4, 0);
+    angle1Spin = new Gui::QuantitySpinBox(this);
+    angle1Spin->setUnit(Base::Unit::Angle);
+    angle1Spin->setRange(-90.0, 90.0);
+    angle1Spin->setSingleStep(0.1);
+    angle1Spin->setValue(0.0);
+    planeLayout->addWidget(angle1Spin, 4, 1);
 
-    planeLayout->addWidget(new QLabel(tr("Z Angle:"), this), 5, 0);
-    angleZSpin = new Gui::QuantitySpinBox(this);
-    angleZSpin->setUnit(Base::Unit::Angle);
-    angleZSpin->setRange(-90.0, 90.0);
-    angleZSpin->setSingleStep(1.0);
-    angleZSpin->setValue(0.0);
-    planeLayout->addWidget(angleZSpin, 5, 1);
+    angleLabel2 = new QLabel(tr("Z Angle:"), this);
+    planeLayout->addWidget(angleLabel2, 5, 0);
+    angle2Spin = new Gui::QuantitySpinBox(this);
+    angle2Spin->setUnit(Base::Unit::Angle);
+    angle2Spin->setRange(-90.0, 90.0);
+    angle2Spin->setSingleStep(0.1);
+    angle2Spin->setValue(0.0);
+    planeLayout->addWidget(angle2Spin, 5, 1);
+
+    // Set angle labels based on initial preset
+    {
+        int idx = presetCombo->currentIndex();
+        if (idx == 0) {
+            angleLabel1->setText(tr("X Angle:"));
+            angleLabel2->setText(tr("Y Angle:"));
+        }
+        else if (idx == 1) {
+            angleLabel1->setText(tr("X Angle:"));
+            angleLabel2->setText(tr("Z Angle:"));
+        }
+        else if (idx == 2) {
+            angleLabel1->setText(tr("Y Angle:"));
+            angleLabel2->setText(tr("Z Angle:"));
+        }
+        else {
+            angleLabel1->setText(tr("Angle 1:"));
+            angleLabel2->setText(tr("Angle 2:"));
+        }
+    }
 
     // Offset
-    planeLayout->addWidget(new QLabel(tr("Offset:"), this), 6, 0);
+    planeLayout->addWidget(new QLabel(tr("Distance:"), this), 6, 0);
     offsetSpin = new Gui::QuantitySpinBox(this);
     offsetSpin->setUnit(Base::Unit::Length);
     offsetSpin->setRange(-1e9, 1e9);
-    offsetSpin->setSingleStep(1.0);
+    offsetSpin->setSingleStep(0.01);
     offsetSpin->setValue(feature->PlaneOffset.getValue());
     planeLayout->addWidget(offsetSpin, 6, 1);
 
@@ -317,10 +389,10 @@ void SectionAnalysisWidget::setupConnections()
             this, &SectionAnalysisWidget::onNormalYChanged);
     connect(normalZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
             this, &SectionAnalysisWidget::onNormalZChanged);
-    connect(angleXSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &SectionAnalysisWidget::onAngleXChanged);
-    connect(angleZSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &SectionAnalysisWidget::onAngleZChanged);
+    connect(angle1Spin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &SectionAnalysisWidget::onAngle1Changed);
+    connect(angle2Spin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &SectionAnalysisWidget::onAngle2Changed);
     connect(offsetSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &SectionAnalysisWidget::onOffsetChanged);
     connect(offsetSlider, &QSlider::valueChanged,
@@ -370,27 +442,30 @@ void SectionAnalysisWidget::updateSliderRange()
                              {xmax, ymax, zmin}, {xmin, ymin, zmax}, {xmax, ymin, zmax},
                              {xmin, ymax, zmax}, {xmax, ymax, zmax}};
 
-    sliderMin = 1e20;
-    sliderMax = -1e20;
+    double projMin = 1e20, projMax = -1e20;
     for (auto& corner : corners) {
         double proj = corner[0] * n.x + corner[1] * n.y + corner[2] * n.z;
-        sliderMin = std::min(sliderMin, proj);
-        sliderMax = std::max(sliderMax, proj);
+        projMin = std::min(projMin, proj);
+        projMax = std::max(projMax, proj);
     }
 
-    // Add small margin
-    double margin = (sliderMax - sliderMin) * 0.05;
-    sliderMin -= margin;
-    sliderMax += margin;
+    // Shift so the spinbox is always [0, range].  The gizmo only does
+    // positive values, so we stash projMin and add it back ourselves.
+    offsetBase = projMin;
+    sliderMin = 0.0;
+    sliderMax = projMax - projMin;
 
-    // Update spinbox range
     offsetSpin->setRange(sliderMin, sliderMax);
 
-    // Map current offset to slider position
-    double val = feature->PlaneOffset.getValue();
+    // Map current PlaneOffset to shifted spinbox value
+    double val = feature->PlaneOffset.getValue() - offsetBase;
+    offsetSpin->blockSignals(true);
+    offsetSpin->setValue(val);
+    offsetSpin->blockSignals(false);
+
     int sliderPos = 0;
     if (sliderMax > sliderMin) {
-        sliderPos = static_cast<int>((val - sliderMin) / (sliderMax - sliderMin) * 1000.0);
+        sliderPos = static_cast<int>(val / sliderMax * 1000.0);
         sliderPos = std::clamp(sliderPos, 0, 1000);
     }
     offsetSlider->blockSignals(true);
@@ -438,13 +513,33 @@ void SectionAnalysisWidget::onPresetChanged(int index)
     normalY->setEnabled(false);
     normalZ->setEnabled(false);
 
+    // Update angle labels for the selected preset
+    switch (index) {
+        case 0:  // XY (Z normal)
+            angleLabel1->setText(tr("X Angle:"));
+            angleLabel2->setText(tr("Y Angle:"));
+            break;
+        case 1:  // XZ (Y normal)
+            angleLabel1->setText(tr("X Angle:"));
+            angleLabel2->setText(tr("Z Angle:"));
+            break;
+        case 2:  // YZ (X normal)
+            angleLabel1->setText(tr("Y Angle:"));
+            angleLabel2->setText(tr("Z Angle:"));
+            break;
+        default:
+            angleLabel1->setText(tr("Angle 1:"));
+            angleLabel2->setText(tr("Angle 2:"));
+            break;
+    }
+
     // Reset angles when switching presets
-    angleXSpin->blockSignals(true);
-    angleZSpin->blockSignals(true);
-    angleXSpin->setValue(0.0);
-    angleZSpin->setValue(0.0);
-    angleXSpin->blockSignals(false);
-    angleZSpin->blockSignals(false);
+    angle1Spin->blockSignals(true);
+    angle2Spin->blockSignals(true);
+    angle1Spin->setValue(0.0);
+    angle2Spin->setValue(0.0);
+    angle1Spin->blockSignals(false);
+    angle2Spin->blockSignals(false);
 
     // Auto-flip for presets where default normal faces away from typical viewing
     // View Direction (3) doesn't need flip since we already face toward camera
@@ -482,23 +577,21 @@ void SectionAnalysisWidget::onPresetChanged(int index)
                 double centerProj = center.x * normal.x + center.y * normal.y
                     + center.z * normal.z;
                 feature->PlaneOffset.setValue(centerProj);
-                offsetSpin->blockSignals(true);
-                offsetSpin->setValue(centerProj);
-                offsetSpin->blockSignals(false);
             }
         }
     }
 
     updateSliderRange();
+    updateGizmoPositions();
     recompute();
 }
 
-void SectionAnalysisWidget::onAngleXChanged(double /*val*/)
+void SectionAnalysisWidget::onAngle1Changed(double /*val*/)
 {
     applyAngles();
 }
 
-void SectionAnalysisWidget::onAngleZChanged(double /*val*/)
+void SectionAnalysisWidget::onAngle2Changed(double /*val*/)
 {
     applyAngles();
 }
@@ -532,8 +625,9 @@ void SectionAnalysisWidget::applyAngles()
             break;
     }
 
-    double a1 = angleXSpin->value().getValue() * M_PI / 180.0;
-    double a2 = angleZSpin->value().getValue() * M_PI / 180.0;
+    // Negate X angle to match the gizmo arc drag direction
+    double a1 = -angle1Spin->value().getValue() * M_PI / 180.0;
+    double a2 = angle2Spin->value().getValue() * M_PI / 180.0;
 
     // Build two tangent axes perpendicular to the base normal.
     // We rotate around these tangent axes (not global X/Z).
@@ -595,10 +689,8 @@ void SectionAnalysisWidget::applyAngles()
 
     feature->PlaneNormal.setValue(n);
     feature->PlaneOffset.setValue(newOffset);
-    offsetSpin->blockSignals(true);
-    offsetSpin->setValue(newOffset);
-    offsetSpin->blockSignals(false);
     updateSliderRange();
+    updateGizmoPositions();
     recompute();
 }
 
@@ -628,37 +720,53 @@ void SectionAnalysisWidget::onNormalZChanged(double val)
 
 void SectionAnalysisWidget::onOffsetChanged(double val)
 {
-    feature->PlaneOffset.setValue(val);
+    feature->PlaneOffset.setValue(val + offsetBase);
 
-    // Update slider
     int sliderPos = 0;
-    if (sliderMax > sliderMin) {
-        sliderPos = static_cast<int>((val - sliderMin) / (sliderMax - sliderMin) * 1000.0);
+    if (sliderMax > 0) {
+        sliderPos = static_cast<int>(val / sliderMax * 1000.0);
         sliderPos = std::clamp(sliderPos, 0, 1000);
     }
     offsetSlider->blockSignals(true);
     offsetSlider->setValue(sliderPos);
     offsetSlider->blockSignals(false);
 
-    recompute();
+    updateGizmoPositions();
+    deferRecompute();
 }
 
 void SectionAnalysisWidget::onSliderMoved(int val)
 {
-    double offset = sliderMin + (sliderMax - sliderMin) * val / 1000.0;
+    double spinVal = sliderMax * val / 1000.0;
 
     offsetSpin->blockSignals(true);
-    offsetSpin->setValue(offset);
+    offsetSpin->setValue(spinVal);
     offsetSpin->blockSignals(false);
 
-    feature->PlaneOffset.setValue(offset);
-    recompute();
+    feature->PlaneOffset.setValue(spinVal + offsetBase);
+    updateGizmoPositions();
+    deferRecompute();
 }
 
 void SectionAnalysisWidget::onFlipToggled(bool on)
 {
     feature->FlipCut.setValue(on);
+    updateGizmoPositions();
     recompute();
+}
+
+void SectionAnalysisWidget::deferRecompute()
+{
+    // Delay the expensive OCCT recompute so interactive dragging stays responsive.
+    // The visual clip plane + plane quad update instantly via ViewProvider::updateData().
+    // The cross-section faces (OCCT boolean) update 300ms after the last change.
+    if (!recomputeTimer) {
+        recomputeTimer = new QTimer(this);
+        recomputeTimer->setSingleShot(true);
+        recomputeTimer->setInterval(300);
+        connect(recomputeTimer, &QTimer::timeout, this, [this]() { recompute(); });
+    }
+    recomputeTimer->start();
 }
 
 void SectionAnalysisWidget::onSectionColorChanged(const QColor& color)
@@ -757,7 +865,7 @@ bool SectionAnalysisWidget::accept()
     try {
         Gui::cmdAppObjectArgs(feature, "PlaneNormal = FreeCAD.Vector(%f, %f, %f)",
                               normalX->value(), normalY->value(), normalZ->value());
-        double offsetValue = offsetSpin->value().getValue();
+        double offsetValue = offsetSpin->value().getValue() + offsetBase;
         Gui::cmdAppObjectArgs(feature, "PlaneOffset = %f", offsetValue);
         Gui::cmdAppObjectArgs(feature, "FlipCut = %s",
                               flipCheck->isChecked() ? "True" : "False");
@@ -821,6 +929,11 @@ TaskSectionAnalysis::~TaskSectionAnalysis() = default;
 Part::SectionAnalysis* TaskSectionAnalysis::getObject() const
 {
     return widget->getObject();
+}
+
+Gui::GizmoContainer* TaskSectionAnalysis::getGizmoContainer() const
+{
+    return widget->getGizmoContainer();
 }
 
 void TaskSectionAnalysis::updateFromFeature()

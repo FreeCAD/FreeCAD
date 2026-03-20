@@ -185,56 +185,60 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderSectionAnalysis::installClipPlane()
 {
-    if (clipInstalled) {
-        return;
-    }
+    removeClipPlane();
 
     auto* feat = getObject<Part::SectionAnalysis>();
     if (!feat) {
         return;
     }
 
-    App::DocumentObject* source = feat->Source.getValue();
-    if (!source) {
-        return;
-    }
-
-    auto* sourceVP = Gui::Application::Instance->getViewProvider(source);
-    if (!sourceVP) {
-        return;
-    }
-
     updateClipPlaneEquation();
 
-    SoSeparator* sourceRoot = dynamic_cast<SoSeparator*>(sourceVP->getRoot());
-    if (sourceRoot) {
-        sourceRoot->insertChild(pcClipPlane, 0);
-        clipInstalled = true;
-        clipInstalledOn = source;
+    // Install the clip plane on ALL visible objects in the document,
+    // except the SectionAnalysis itself.  Coin3D supports shared nodes
+    // (multi-parent), so one pcClipPlane with one equation update
+    // affects every VP it is inserted into.
+    auto* doc = feat->getDocument();
+    for (auto* obj : doc->getObjects()) {
+        if (obj == feat) {
+            continue;
+        }
+        auto* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp || !vp->isVisible()) {
+            continue;
+        }
+        auto* root = dynamic_cast<SoSeparator*>(vp->getRoot());
+        if (!root) {
+            continue;
+        }
+        root->insertChild(pcClipPlane, 0);
+        clippedObjects.push_back(obj);
     }
+    clipInstalled = !clippedObjects.empty();
 }
 
 void ViewProviderSectionAnalysis::removeClipPlane()
 {
-    if (!clipInstalled || !pcClipPlane) {
+    if (!pcClipPlane) {
         return;
     }
 
-    if (clipInstalledOn) {
-        auto* sourceVP = Gui::Application::Instance->getViewProvider(clipInstalledOn);
-        if (sourceVP) {
-            SoSeparator* sourceRoot = dynamic_cast<SoSeparator*>(sourceVP->getRoot());
-            if (sourceRoot) {
-                int idx = sourceRoot->findChild(pcClipPlane);
-                if (idx >= 0) {
-                    sourceRoot->removeChild(idx);
-                }
-            }
+    for (auto* obj : clippedObjects) {
+        auto* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp) {
+            continue;
+        }
+        auto* root = dynamic_cast<SoSeparator*>(vp->getRoot());
+        if (!root) {
+            continue;
+        }
+        int idx = root->findChild(pcClipPlane);
+        if (idx >= 0) {
+            root->removeChild(idx);
         }
     }
-
+    clippedObjects.clear();
     clipInstalled = false;
-    clipInstalledOn = nullptr;
 }
 
 void ViewProviderSectionAnalysis::updateClipPlaneEquation()
@@ -377,6 +381,8 @@ void ViewProviderSectionAnalysis::updatePlaneVisual()
 
 void ViewProviderSectionAnalysis::setHatching(bool on)
 {
+    hatchEnabled = on;
+
     if (!pcHatchTexture || !pcHatchCoordGen || !pcRoot) {
         return;
     }
@@ -424,9 +430,19 @@ void ViewProviderSectionAnalysis::setHatching(bool on)
 
 void ViewProviderSectionAnalysis::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
-    // The base class ViewProviderDragger::setEditViewer handles attaching
-    // the gizmoContainer (set via setGizmoContainer) to the viewer
-    ViewProviderDragger::setEditViewer(viewer, ModNum);
+    Q_UNUSED(ModNum);
+    if (!viewer) {
+        return;
+    }
+
+    // Get the gizmo container from the active task panel
+    Gui::TaskView::TaskDialog* activeDlg = Gui::Control().activeDialog();
+    auto* saDlg = qobject_cast<TaskSectionAnalysis*>(activeDlg);
+    if (saDlg && saDlg->getGizmoContainer()) {
+        // Use identity placement — our gizmo positions are already in world space
+        Base::Placement identity;
+        saDlg->getGizmoContainer()->attachViewer(viewer, identity);
+    }
 }
 
 void ViewProviderSectionAnalysis::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -472,6 +488,12 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
             installClipPlane();
         }
         updatePlaneVisual();
+    }
+
+    // After a shape recompute, the face set geometry is rebuilt.
+    // Re-insert hatching texture nodes so they stay in front of the face set.
+    if (prop == &feat->Shape && hatchEnabled) {
+        setHatching(true);
     }
 }
 
