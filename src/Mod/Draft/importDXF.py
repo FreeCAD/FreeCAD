@@ -90,11 +90,14 @@ from PySide import QtCore, QtGui
 
 try:
     import Mesh
+
     mesh_available = True
 except ImportError:
-    mesh_available = False 
-    FCC.PrintWarning("Draft: The Mesh module is not available. "
-            "DXF features that require Mesh will be disabled.\n")
+    mesh_available = False
+    FCC.PrintWarning(
+        "Draft: The Mesh module is not available. "
+        "DXF features that require Mesh will be disabled.\n"
+    )
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -1219,8 +1222,9 @@ def drawMesh(mesh, forceShape=False):
     drawBlock
     """
     if not mesh_available:
-        FCC.PrintWarning("Draft cannot complete this DXF operation - "
-                         "the Mesh module is not installed.\n")
+        FCC.PrintWarning(
+            "Draft cannot complete this DXF operation - " "the Mesh module is not installed.\n"
+        )
         return None
     md = []
     if mesh.flags == 16:
