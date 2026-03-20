@@ -333,15 +333,11 @@ std::optional<gp_Pnt> ViewProviderHole::getHoleOrigin(const PartDesign::Hole* pc
     if (!pcHole) {
         return std::nullopt;
     }
-
-    auto* sketch = freecad_cast<Part::Part2DObject*>(pcHole->Profile.getValue());
-
-    if (!sketch) {
-        return std::nullopt;
+    if (auto* profile = pcHole->Profile.getValue()) {
+        const Base::Vector3d pos = profile->getPlacement().getPosition();
+        return Base::convertTo<gp_Pnt>(pos);
     }
-
-    const Base::Vector3d& pos = sketch->Placement.getValue().getPosition();
-    return Base::convertTo<gp_Pnt>(pos);
+    return std::nullopt;
 }
 
 std::vector<TopoDS_Face> ViewProviderHole::collectBoreFaces(const PartDesign::Hole* pcHole) const

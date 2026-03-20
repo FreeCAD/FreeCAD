@@ -1221,9 +1221,10 @@ PyObject* ApplicationPy::sGetActiveTransaction(PyObject* /*self*/, PyObject* arg
     PY_TRY
     {
         int id = 0;
-        std::string name = GetApplication().getActiveTransaction(&id);
-        if (name.empty() || id <= 0) {
-            Py_Return;
+        std::string name = "";
+        if (Document* doc = GetApplication().getActiveDocument()) {
+            id = doc->getBookedTransactionID();
+            name = GetApplication().getTransactionName(id);
         }
         Py::Tuple ret(2);
         ret.setItem(0, Py::String(name));
