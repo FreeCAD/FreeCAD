@@ -28,6 +28,7 @@
 #include <BOPTools_AlgoTools3D.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepGProp.hxx>
+#include <ElCLib.hxx>
 #include <GProp_GProps.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <TopExp_Explorer.hxx>
@@ -35,6 +36,8 @@
 #include <TopoDS.hxx>
 #include <Precision.hxx>
 #include <IntTools_Context.hxx>
+#include <IntAna_IntConicQuad.hxx>
+#include <IntAna_QuadQuadGeo.hxx>
 
 #include <Base/BoundBox.h>
 #include <Base/Converter.h>
@@ -170,7 +173,7 @@ DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, 
         dir = -dir;
     }
 
-    return {position, dir, tangent};
+    return {position, dir};
 }
 
 DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, Part::TopoShape& face)
@@ -244,4 +247,75 @@ Base::Vector3d getMidPointFromProfile(Part::TopoShape& profile)
     profile.getCenterOfGravity(midPoint);
 
     return midPoint;
+}
+
+std::optional<DraggerPlacementPropsWithNormals> getDraggerPlacementFromPlaneAndFace(
+    Part::TopoShape& face,
+    gp_Pln& plane
+)
+{
+    TopoDS_Face TDSFace = TopoDS::Face(face.getShape());
+    if (TDSFace.IsNull()) {
+        return std::nullopt;
+    }
+
+    auto cog = getCentreOfMassFromFace(TDSFace);
+    auto orientation = TDSFace.Orientation();
+
+    auto getPropsFromShapePlaneIntersection =
+        [&cog](auto&& shape, const gp_Pln& plane) -> std::optional<DraggerPlacementPropsWithNormals> {
+        if (plane.Axis().IsNormal(shape.Axis(), Precision::Angular())) {
+            return std::nullopt;
+        }
+
+        gp_Lin line(shape.Axis());
+        IntAna_IntConicQuad intersector(line, plane, Precision::Confusion());
+        if (intersector.IsDone() && intersector.NbPoints() > 0) {
+            auto pos = Base::convertTo<Base::Vector3d>(intersector.Point(1));
+            return DraggerPlacementPropsWithNormals {
+                .placementProps = {.position = pos, .dir = cog - pos},
+                .normalProps = std::nullopt
+            };
+        }
+        return std::nullopt;
+    };
+
+    auto getPropsFromPlanePlaneIntersection = [&cog, orientation](
+                                                  const gp_Pln&& facePlane,
+                                                  const gp_Pln& plane
+                                              ) -> std::optional<DraggerPlacementPropsWithNormals> {
+        if (plane.Axis().IsParallel(facePlane.Axis(), Precision::Angular())) {
+            return std::nullopt;
+        }
+
+        IntAna_QuadQuadGeo intersector(facePlane, plane, Precision::Angular(), Precision::Confusion());
+        if (intersector.IsDone() && intersector.NbSolutions() > 0) {
+            gp_Lin line = intersector.Line(1);
+            Standard_Real u = ElCLib::Parameter(line, Base::convertTo<gp_Pnt>(cog));
+            auto pos = Base::convertTo<Base::Vector3d>(ElCLib::Value(u, line));
+            auto lineDir = Base::convertTo<Base::Vector3d>(line.Direction());
+            auto faceNormal = Base::convertTo<Base::Vector3d>(facePlane.Axis().Direction());
+            if (orientation == TopAbs_REVERSED) {
+                faceNormal *= -1;
+            }
+
+            return DraggerPlacementPropsWithNormals {
+                .placementProps = {.position = pos, .dir = cog - pos},
+                .normalProps = DraggerNormalProps {.normal = lineDir, .faceNormal = faceNormal}
+            };
+        }
+        return std::nullopt;
+    };
+
+    BRepAdaptor_Surface adapt(TDSFace);
+    switch (adapt.GetType()) {
+        case GeomAbs_Cylinder:
+            return getPropsFromShapePlaneIntersection(adapt.Cylinder(), plane);
+        case GeomAbs_Cone:
+            return getPropsFromShapePlaneIntersection(adapt.Cone(), plane);
+        case GeomAbs_Plane:
+            return getPropsFromPlanePlaneIntersection(adapt.Plane(), plane);
+        default:
+            return std::nullopt;
+    }
 }

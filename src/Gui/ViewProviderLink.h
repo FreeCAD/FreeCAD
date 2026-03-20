@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef SRC_GUI_VIEWPROVIDER_LINK_H_
-#define SRC_GUI_VIEWPROVIDER_LINK_H_
+#pragma once
 
 #include <App/Link.h>
 #include <unordered_map>
@@ -392,6 +391,3 @@ private:
 using ViewProviderLinkPython = ViewProviderFeaturePythonT<ViewProviderLink>;
 
 }  // namespace Gui
-
-
-#endif  // SRC_GUI_VIEWPROVIDER_LINK_H_

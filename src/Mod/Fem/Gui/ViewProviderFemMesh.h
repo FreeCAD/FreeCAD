@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMMESH_H
-#define FEM_VIEWPROVIDERFEMMESH_H
+#pragma once
 
 #include <Gui/ViewProviderBuilder.h>
 #include <Gui/ViewProviderGeometryObject.h>
@@ -196,6 +195,3 @@ using ViewProviderFemMeshPython = Gui::ViewProviderFeaturePythonT<ViewProviderFe
 
 
 }  // namespace FemGui
-
-
-#endif  // FEM_VIEWPROVIDERFEMMESH_H

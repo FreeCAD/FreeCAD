@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPARAMETER_H
-#define GUI_DIALOG_DLGPARAMETER_H
+#pragma once
 
 #include <Base/Parameter.h>
 
@@ -384,5 +383,3 @@ protected:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGPARAMETER_H

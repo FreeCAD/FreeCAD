@@ -50,6 +50,23 @@ Model:
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Compressive_strength'
     Description: "Compressive strength in [FreeCAD Pressure unit]"
+  Elongation:
+    DisplayName: "Elongation"
+    Type: 'Float'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Elongation'
+    Description: >
+      Measure of ductility and formability. Increase in length a material
+      undergoes when stretched to its breaking point during a tensile test.
+      ΔL/L as percent value [unitless].
+  FractureStrength:
+    DisplayName: "Fracture Strength"
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: ''
+    Description: >
+      Actual fracture stress point where the final break occurs. This is often
+      lower than the UTS in the stress-strain curve [FreeCAD Pressure unit].
   FractureToughness:
     DisplayName: "Fracture Toughness"
     Type: 'Float'
@@ -59,18 +76,37 @@ Model:
       Unit MPa * m^0.5 is not possible ATM in FreeCAD thus String. Keep in mind
       the unit is fixed MPa * m^0.5.
       https://github.com/FreeCAD/FreeCAD/pull/2156
+  ReductionOfArea:
+    DisplayName: "Reduction Of Area (RA)"
+    Type: 'Float'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
+    Description: >
+      Measure of ductility by calculating the decrease in cross-sectional area
+      at the fracture point during a tensile test.
+      ΔArea/Area as percent value [unitless].
   UltimateStrain:
     DisplayName: "Ultimate Strain"
-    Type: 'Quantity'
-    Units: 'kPa'
+    Type: 'Float'
+    Units: ''
     URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
-    Description: " "
+    Description: >
+      Maximum deformation a material can endure before it fails or fractures.
+      ΔL/L as percent value [unitless].
   UltimateTensileStrength:
     DisplayName: "Ultimate Tensile Strength"
     Type: 'Quantity'
     Units: 'kPa'
     URL: 'https://en.wikipedia.org/wiki/Ultimate_tensile_strength'
     Description: "Ultimate tensile strength in [FreeCAD Pressure unit]"
+  YieldStrain:
+    DisplayName: "Yield Strain"
+    Type: 'Float'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Yield_(engineering)'
+    Description: >
+      Elastic strain approximate limit before bending/stretching becomes permanent.
+      ΔL/L as percent value [unitless].
   YieldStrength:
     DisplayName: "Yield Strength"
     Type: 'Quantity'

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawViewDimension_h_
-#define TechDraw_DrawViewDimension_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <Base/UnitsApi.h>
@@ -81,6 +80,7 @@ public:
 
     App::PropertyBool TheoreticalExact;
     App::PropertyBool Inverted;
+    App::PropertyBool ShowSupplementary;
     App::PropertyString FormatSpec;
     App::PropertyString FormatSpecOverTolerance;
     App::PropertyString FormatSpecUnderTolerance;
@@ -286,4 +286,3 @@ private:
 };
 
 }  // namespace TechDraw
-#endif

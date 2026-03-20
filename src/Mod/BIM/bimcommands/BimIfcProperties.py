@@ -682,7 +682,7 @@ class BIM_IfcProperties:
             name = translate("Arch", "New property set", None)
             res = QtGui.QInputDialog.getText(
                 None,
-                translate("BIM", "New property set"),
+                translate("BIM", "New Property Set"),
                 translate("BIM", "Property set name:"),
                 QtGui.QLineEdit.Normal,
                 name,

@@ -141,6 +141,9 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>Currently not implemented: this option does not yet modify automatically generated Part feature names</string>
+        </property>
         <property name="text">
          <string>Add name of base object</string>
         </property>
@@ -157,12 +160,6 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="title">
       <string>Features Settings</string>
      </property>
@@ -176,6 +173,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Specifies which profile geometry types are accepted by the Part Design Hole feature</string>
           </property>
           <property name="text">
            <string>Default profile type for holes</string>
@@ -251,14 +251,8 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBoxPreview">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
      <property name="title">
       <string>Preview</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_31">
       <item>
@@ -338,14 +332,8 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBoxExperimental">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
      <property name="title">
       <string>Experimental</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>

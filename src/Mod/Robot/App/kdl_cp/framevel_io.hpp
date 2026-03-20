@@ -17,8 +17,7 @@
  *      $Id: rframes_io.h,v 1.1.1.1 2002/08/26 14:14:21 rmoreas Exp $
  *      $Name:  $
  ****************************************************************************/
-#ifndef KDL_FRAMESVEL_IO
-#define KDL_FRAMESVEL_IO
+#pragma once
 
 #include "utilities/utility_io.h"
 #include "utilities/rall1d_io.h"
@@ -52,7 +51,3 @@ inline std::ostream& operator << (std::ostream& os,const TwistVel& r) {
 
 
 } // namespace Frame
-
-
-
-#endif

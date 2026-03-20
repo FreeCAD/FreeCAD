@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemMeshObject_H
-#define Fem_FemMeshObject_H
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
@@ -73,6 +72,3 @@ using FemMeshObjectPython = App::FeaturePythonT<FemMeshObject>;
 
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemMeshObject_H

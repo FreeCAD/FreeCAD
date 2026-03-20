@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatumCoordinateSystem_H
-#define PARTGUI_ViewProviderDatumCoordinateSystem_H
+#pragma once
 
 #include "ViewProviderDatum.h"
 
@@ -74,6 +75,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderDatumCoordinateSystem_H

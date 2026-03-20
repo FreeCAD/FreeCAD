@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
-#define GUI_TASKVIEW_TaskSketcherConstraints_H
+#pragma once
 
 #include <QListWidget>
 
@@ -120,6 +119,8 @@ private:
         {QT_TR_NOOP("Equality"), 1},
         {QT_TR_NOOP("Symmetric"), 1},
         {QT_TR_NOOP("Block"), 1},
+        {QT_TR_NOOP("Group"), 1},
+        {QT_TR_NOOP("Text"), 1},
         {QT_TR_NOOP("Internal Alignment"), 1},
         {QT_TR_NOOP("Datums"), 0},
         {QT_TR_NOOP("Horizontal Distance"), 1},
@@ -238,5 +239,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

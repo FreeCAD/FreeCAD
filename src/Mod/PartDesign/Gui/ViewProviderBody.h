@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,14 +23,14 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBody_H
-#define PARTGUI_ViewProviderBody_H
+#pragma once
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
+#include <fastsignals/signal.h>
 
 class SoGroup;
 class SoSeparator;
@@ -108,10 +110,12 @@ protected:
 
 private:
     static const char* BodyModeEnum[];
+
+    void afterRecompute(const App::Document&, const std::vector<App::DocumentObject*>& recomputedObjs);
+    fastsignals::scoped_connection m_RecomputedConn;
+    void onChangedObject(const Gui::ViewProvider& vp, const App::Property& prop);
+    fastsignals::scoped_connection m_ChangedConn;
+    void refreshOverlays();
 };
 
-
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderHole_H

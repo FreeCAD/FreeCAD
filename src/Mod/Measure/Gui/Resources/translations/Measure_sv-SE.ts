@@ -52,7 +52,7 @@
     <message>
       <location filename="../../../MeasureCOM.py" line="69"/>
       <source>The result location</source>
-      <translation type="unfinished">The result location</translation>
+      <translation>Resultatpositionen</translation>
     </message>
   </context>
   <context>
@@ -152,17 +152,17 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="318"/>
       <source>Center surface distance: %1</source>
-      <translation type="unfinished">Center surface distance: %1</translation>
+      <translation>Centerytavstånd: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="323"/>
       <source>Center axis distance: %1</source>
-      <translation type="unfinished">Center axis distance: %1</translation>
+      <translation>Centeraxelavstånd: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="326"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
-      <translation type="unfinished">Center axis distance: %1, Axis angle: %2</translation>
+      <translation>Centeraxelavstånd: %1, Axelvinkel: %2</translation>
     </message>
   </context>
   <context>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="98"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
-      <translation type="unfinished">Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</translation>
+      <translation>Automatisk sparande av den senaste mätningen när en ny mätning startar. Använd Shift-tangenten för att tillfälligt invertera beteendet.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="103"/>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="109"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation type="unfinished">If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</translation>
+      <translation>Om markerat kommer ny markering att läggas till mätningen. Om inte markerat måste Ctrl-tangenten tryckas för att lägga till en markering till aktuell mätning, annars startas en ny mätning</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="122"/>
@@ -278,7 +278,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="123"/>
       <source>Distance Free</source>
-      <translation type="unfinished">Distance Free</translation>
+      <translation>Fritt avstånd</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="131"/>

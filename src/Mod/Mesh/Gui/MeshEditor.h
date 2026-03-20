@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_MESHEDITOR_H
-#define MESHGUI_MESHEDITOR_H
+#pragma once
 
 #include <QObject>
 
@@ -188,6 +187,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_MESHEDITOR_H

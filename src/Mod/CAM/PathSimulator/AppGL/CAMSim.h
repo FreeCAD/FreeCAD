@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CAMSimulator_CAMSim_H
-#define CAMSimulator_CAMSim_H
+#pragma once
 
 #include <memory>
 #include <TopoDS_Shape.hxx>
@@ -69,12 +68,6 @@ public:
     );
     void SetBaseShape(const Part::TopoShape& baseShape, float resolution);
     void AddCommand(Command* cmd);
-
-public:
-    std::unique_ptr<SimStock> m_stock;
 };
 
 }  // namespace CAMSimulator
-
-
-#endif  // CAMSimulator_CAMSim_H

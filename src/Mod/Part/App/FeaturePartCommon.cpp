@@ -34,6 +34,8 @@
 #include "TopoShapeOpCode.h"
 #include "modelRefine.h"
 
+#include <Base/ProgramVersion.h>
+
 
 using namespace Part;
 
@@ -44,7 +46,6 @@ extern bool getRefineModelParameter();
 }  // namespace Part
 
 PROPERTY_SOURCE(Part::Common, Part::Boolean)
-
 
 Common::Common() = default;
 
@@ -63,6 +64,7 @@ BRepAlgoAPI_BooleanOperation* Common::makeOperation(const TopoDS_Shape& base, co
 
 PROPERTY_SOURCE(Part::MultiCommon, Part::Feature)
 
+const char* MultiCommon::BehaviorEnums[] = {"CommonOfAllShapes", "CommonOfFirstAndRest", nullptr};
 
 MultiCommon::MultiCommon()
 {
@@ -85,15 +87,36 @@ MultiCommon::MultiCommon()
         "Refine shape (clean up redundant edges) after this boolean operation"
     );
 
+    ADD_PROPERTY_TYPE(
+        Behavior,
+        (CommonOfAllShapes),
+        "Compatibility",
+        App::Prop_Hidden,
+        "Determines how the common operation is computed: either as the intersection of all "
+        "shapes, or the intersection of the first shape with all remaining shapes (for "
+        "compatibility with FreeCAD 1.0)."
+    );
+    Behavior.setEnums(BehaviorEnums);
+
     this->Refine.setValue(getRefineModelParameter());
 }
 
 short MultiCommon::mustExecute() const
 {
-    if (Shapes.isTouched()) {
+    if (Shapes.isTouched() || Behavior.isTouched()) {
         return 1;
     }
     return 0;
+}
+
+void MultiCommon::Restore(Base::XMLReader& reader)
+{
+    Feature::Restore(reader);
+
+    // For 1.0 and 1.0 only the order was common of first and the rest due to a bug
+    if (Base::getVersion(reader.ProgramVersion) == Base::Version::v1_0) {
+        Behavior.setValue(CommonOfFirstAndRest);
+    }
 }
 
 App::DocumentObjectExecReturn* MultiCommon::execute()
@@ -107,8 +130,31 @@ App::DocumentObjectExecReturn* MultiCommon::execute()
         shapes.push_back(sh);
     }
 
-    TopoShape res {0};
-    res.makeElementBoolean(Part::OpCodes::Common, shapes);
+    TopoShape res;
+
+    if (Behavior.getValue() == CommonOfAllShapes) {
+        // special case - if there is only one argument, and it is compound - expand it
+        if (shapes.size() == 1) {
+            TopoShape shape = shapes.front();
+
+            if (shape.shapeType() == TopAbs_COMPOUND) {
+                shapes.clear();
+                std::ranges::copy(shape.getSubTopoShapes(), std::back_inserter(shapes));
+            }
+        }
+
+        res = shapes.front();
+
+        // to achieve common of all shapes, we need to do it one shape at a time
+        for (const auto& tool : shapes) {
+            res = res.makeElementBoolean(OpCodes::Common, {res, tool});
+        }
+    }
+    else {
+        res = TopoShape(0);
+        res.makeElementBoolean(OpCodes::Common, shapes);
+    }
+
     if (res.isNull()) {
         throw Base::RuntimeError("Resulting shape is null");
     }

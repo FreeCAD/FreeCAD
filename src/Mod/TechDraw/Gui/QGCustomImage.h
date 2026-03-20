@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMIMAGE_H
-#define DRAWINGGUI_QGCUSTOMIMAGE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -65,5 +64,3 @@ protected:
 };
 
 } // namespace TechDrawGui
-
-#endif // DRAWINGGUI_QGCUSTOMIMAGE_H

@@ -73,7 +73,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo& info, HighlightMode mode, 
         return;
     }
 
-    if (TreeParams::getTreeActiveAutoExpand()) {
+    if (TreeParams::getTreeActiveAutoExpand() && (enable || vp->isAutoCollapseOnDeactivation())) {
         vp->getDocument()->signalExpandObject(
             *vp,
             enable ? TreeItemMode::ExpandPath : TreeItemMode::CollapseItem,
@@ -187,6 +187,9 @@ void Gui::ActiveObjectList::setObject(
     }
 
     if (!obj) {
+        if (_Doc) {
+            _Doc->signalActivatedViewProvider(nullptr, name);
+        }
         return;
     }
 
@@ -202,6 +205,11 @@ void Gui::ActiveObjectList::setObject(
 
     _ObjectMap[name] = info;
     setHighlight(info, mode, true);
+
+    auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+    if (vp) {
+        vp->getDocument()->signalActivatedViewProvider(vp, name);
+    }
 }
 
 bool Gui::ActiveObjectList::hasObject(const char* name) const

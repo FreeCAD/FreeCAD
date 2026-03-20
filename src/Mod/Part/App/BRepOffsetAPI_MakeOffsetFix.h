@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
-#define PART_BREPOFFSETAPI_MAKEOFFSETFIX_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -118,5 +117,3 @@ private:
 };
 
 }  // namespace Part
-
-#endif  // PART_BREPOFFSETAPI_MAKEOFFSETFIX_H

@@ -330,7 +330,7 @@ Gui::Action* StdCmdToggleSkipRecompute::createAction()
 void StdCmdToggleSkipRecompute::activated(int iMsg)
 {
     const auto doc = this->getDocument();
-    if (doc == nullptr) {
+    if (!doc) {
         return;
     }
 
@@ -345,7 +345,7 @@ void StdCmdToggleSkipRecompute::activated(int iMsg)
 bool StdCmdToggleSkipRecompute::isActive()
 {
     const auto doc = this->getDocument();
-    if (doc == nullptr) {
+    if (!doc) {
         return false;
     }
 

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATHSEGMENTWALKER_H
-#define PATHSEGMENTWALKER_H
+#pragma once
 
 #include <deque>
 
@@ -94,5 +93,3 @@ private:
 
 
 }  // namespace Path
-
-#endif  // PATHSEGMENTWALKER_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VTK_TOOLS_H
-#define FEM_VTK_TOOLS_H
+#pragma once
 
 #include <vtkDataSet.h>
 #include <vtkSmartPointer.h>
@@ -72,7 +71,10 @@ public:
     static void writeResult(const char* filename, const App::DocumentObject* res = nullptr);
 
     static void frdToVTK(const char* filename, bool binary = true);
+
+    static void addArrayFromFunction(
+        vtkSmartPointer<vtkDataObject>& data,
+        const std::map<std::string, std::string>& functions
+    );
 };
 }  // namespace Fem
-
-#endif  // FEM_VTK_TOOLS_H

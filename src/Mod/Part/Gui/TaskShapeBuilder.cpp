@@ -130,8 +130,7 @@ ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
     connect(d->ui.createButton, &QPushButton::clicked, this, &ShapeBuilderWidget::onCreateButtonClicked);
     connect(&d->bg, &QButtonGroup::idClicked, this, &ShapeBuilderWidget::switchMode);
 
-    d->gate = new ShapeSelection();
-    Gui::Selection().addSelectionGate(d->gate);
+    setSelectionGate();
 
     d->bg.button(0)->setChecked(true);
     switchMode(0);
@@ -604,6 +603,11 @@ bool ShapeBuilderWidget::accept()
 bool ShapeBuilderWidget::reject()
 {
     return true;
+}
+void ShapeBuilderWidget::setSelectionGate()
+{
+    d->gate = new ShapeSelection();
+    Gui::Selection().addSelectionGate(d->gate);
 }
 
 void ShapeBuilderWidget::changeEvent(QEvent* e)

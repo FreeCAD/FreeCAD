@@ -27,20 +27,19 @@
  * vtkSMPThreadLocalObject
  */
 
-#ifndef vtkSMPTools_h
-# define vtkSMPTools_h
+#pragma once
 
-# include "vtkCommonCoreModule.h"  // For export macro
-# include "vtkObject.h"
+#include "vtkCommonCoreModule.h"  // For export macro
+#include "vtkObject.h"
 
-# include "SMP/Common/vtkSMPToolsAPI.h"
-# include "vtkSMPThreadLocal.h"  // For Initialized
+#include "SMP/Common/vtkSMPToolsAPI.h"
+#include "vtkSMPThreadLocal.h"  // For Initialized
 
-# include <functional>   // For std::function
-# include <iterator>     // For std::iterator
-# include <type_traits>  // For std:::enable_if
+#include <functional>   // For std::function
+#include <iterator>     // For std::iterator
+#include <type_traits>  // For std:::enable_if
 
-# ifndef DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace vtk
 {
 namespace detail
@@ -228,7 +227,7 @@ using resolvedNotInt = typename std::enable_if<!std::is_integral<T>::value, void
 }  // namespace smp
 }  // namespace detail
 }  // namespace vtk
-# endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 class VTKCOMMONCORE_EXPORT vtkSMPTools
 {
@@ -481,13 +480,13 @@ public:
             , Backend(backend)
             , NestedParallelism(nestedParallelism)
         {}
-# ifndef DOXYGEN_SHOULD_SKIP_THIS
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
         Config(vtk::detail::smp::vtkSMPToolsAPI& API)
             : MaxNumberOfThreads(API.GetInternalDesiredNumberOfThread())
             , Backend(API.GetBackend())
             , NestedParallelism(API.GetNestedParallelism())
         {}
-# endif  // DOXYGEN_SHOULD_SKIP_THIS
+#endif  // DOXYGEN_SHOULD_SKIP_THIS
     };
 
     /**
@@ -606,5 +605,4 @@ public:
     }
 };
 
-#endif
 // VTK-HeaderTest-Exclude: vtkSMPTools.h

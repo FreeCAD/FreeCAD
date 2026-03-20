@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskAttacher_H
-#define GUI_TASKVIEW_TaskAttacher_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/DocumentObserver.h>
@@ -89,6 +88,9 @@ public:
     {
         return completed;
     }
+
+Q_SIGNALS:
+    void placementUpdated();
 
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
@@ -212,7 +214,7 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user presses the help button
+
     bool isAllowedAlterDocument() const override
     {
         return false;
@@ -232,8 +234,7 @@ protected:
     std::function<void()> onAccept;
     std::function<void()> onReject;
     bool accepted;
+    int tid;
 };
 
 }  // namespace PartGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

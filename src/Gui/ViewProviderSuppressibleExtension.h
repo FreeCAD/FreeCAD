@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERSUPPRESSIBLEEXTENSION_H
-#define VIEWPROVIDERSUPPRESSIBLEEXTENSION_H
+#pragma once
 
 #include "ViewProviderExtensionPython.h"
 
@@ -51,5 +50,3 @@ using ViewProviderSuppressibleExtensionPython
     = ViewProviderExtensionPythonT<Gui::ViewProviderSuppressibleExtension>;
 
 }  // namespace Gui
-
-#endif  // VIEWPROVIDERSUPPRESSIBLEEXTENSION_H

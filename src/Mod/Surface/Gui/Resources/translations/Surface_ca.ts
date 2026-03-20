@@ -487,8 +487,8 @@ Aquesta comanda només funciona amb objectes de malla.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <source>Edit Filling</source>
       <translation>Editar emplenat</translation>
     </message>

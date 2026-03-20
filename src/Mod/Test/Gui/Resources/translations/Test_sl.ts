@@ -66,7 +66,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="188"/>
       <source>Run</source>
-      <translation>Zaženi (postopek), </translation>
+      <translation>Zaženi</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="205"/>

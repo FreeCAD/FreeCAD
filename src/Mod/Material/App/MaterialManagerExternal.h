@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALMANAGEREXTERNAl_H
-#define MATERIAL_MATERIALMANAGEREXTERNAl_H
+#pragma once
 
 #include <memory>
 #include <lru/lru.hpp>
@@ -111,5 +110,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MATERIALMANAGEREXTERNAl_H

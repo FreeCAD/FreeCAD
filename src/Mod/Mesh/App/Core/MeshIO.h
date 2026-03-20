@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_IO_H
-#define MESH_IO_H
+#pragma once
 
 #include <App/Material.h>
 #include <Base/Matrix.h>
@@ -348,5 +347,3 @@ private:
 
 
 }  // namespace MeshCore
-
-#endif  // MESH_IO_H

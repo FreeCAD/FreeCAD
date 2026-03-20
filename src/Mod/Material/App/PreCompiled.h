@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_PRECOMPILED_H
-#define MATERIAL_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -57,6 +56,3 @@
 #include <QTextStream>
 #include <QUuid>
 #include <QVector>
-
-
-#endif  // MATERIAL_PRECOMPILED_H

@@ -456,6 +456,8 @@ App.Units.Minute        = App.Units.Quantity('min')
 App.Units.Hour          = App.Units.Quantity('h')
 
 App.Units.Ampere        = App.Units.Quantity('A')
+App.Units.NanoAmpere    = App.Units.Quantity('nA')
+App.Units.MicroAmpere   = App.Units.Quantity('uA')
 App.Units.MilliAmpere   = App.Units.Quantity('mA')
 App.Units.KiloAmpere    = App.Units.Quantity('kA')
 App.Units.MegaAmpere    = App.Units.Quantity('MA')
@@ -464,8 +466,10 @@ App.Units.Kelvin        = App.Units.Quantity('K')
 App.Units.MilliKelvin   = App.Units.Quantity('mK')
 App.Units.MicroKelvin   = App.Units.Quantity('uK')
 
-App.Units.MilliMole     = App.Units.Quantity('mmol')
 App.Units.Mole          = App.Units.Quantity('mol')
+App.Units.NanoMole      = App.Units.Quantity('nmol')
+App.Units.MicroMole     = App.Units.Quantity('umol')
+App.Units.MilliMole     = App.Units.Quantity('mmol')
 
 App.Units.Candela       = App.Units.Quantity('cd')
 
@@ -511,6 +515,8 @@ App.Units.KSI           = App.Units.Quantity('ksi')
 App.Units.MPSI          = App.Units.Quantity('Mpsi')
 
 App.Units.Watt          = App.Units.Quantity('W')
+App.Units.NanoWatt      = App.Units.Quantity('nW')
+App.Units.MicroWatt     = App.Units.Quantity('uW')
 App.Units.MilliWatt     = App.Units.Quantity('mW')
 App.Units.KiloWatt      = App.Units.Quantity('kW')
 App.Units.VoltAmpere    = App.Units.Quantity('VA')
@@ -1279,8 +1285,6 @@ class DirModScanner:
         if not base.exists():
             if warning:
                 Wrn(warning)
-            else:
-                Wrn(f"No modules found in {base!s}")
             return
 
         if warning:
@@ -1313,8 +1317,14 @@ class InitPipeline:
     """
 
     std_home = Path(App.getHomePath()).resolve()
-    std_lib = Path(App.getLibraryDir()).resolve()
     user_home = Path(App.getUserAppDataDir()).resolve()
+    try:
+        std_lib = Path(App.getLibraryDir()).resolve()
+    except OSError:
+        # The library path is not strictly required, so if the OS itself raises an error when trying
+        # to resolve it, just fall back to something reasonable. See #26864.
+        std_lib = std_home / "lib"
+        Log(f"Resolving library directory '{App.getLibraryDir()}' failed, using fallback '{std_lib}'")
     dir_mod_scanner = DirModScanner()
     ext_mod_scanner = ExtModScanner()
     search_paths = SearchPaths()

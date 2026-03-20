@@ -278,7 +278,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="123"/>
       <source>Distance Free</source>
-      <translation type="unfinished">Distance Free</translation>
+      <translation>Distancia libre</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="131"/>

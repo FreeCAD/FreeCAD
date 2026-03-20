@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_ARRAYMODEL_H
-#define MATGUI_ARRAYMODEL_H
+#pragma once
 
 #include <memory>
 
@@ -144,5 +143,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_ARRAYMODEL_H

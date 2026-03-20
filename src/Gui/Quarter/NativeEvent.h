@@ -1,5 +1,4 @@
-#ifndef QUARTER_NATIVEEVENT_H
-#define QUARTER_NATIVEEVENT_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -57,5 +56,3 @@ private:
 };
 
 }}}
-
-#endif // !QUARTER_NATIVEEVENT_H

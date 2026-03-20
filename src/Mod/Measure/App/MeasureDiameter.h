@@ -20,8 +20,7 @@
  ***************************************************************************/
 
 
-#ifndef MEASURE_MEASUREDIAMETER_H
-#define MEASURE_MEASUREDIAMETER_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -79,5 +78,3 @@ private:
 };
 
 }  // namespace Measure
-
-#endif  // MEASURE_MEASUREDIAMETER_H

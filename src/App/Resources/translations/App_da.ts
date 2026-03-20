@@ -29,7 +29,7 @@ that reference the same configurable object</source>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1110"/>
+      <location filename="../../Document.cpp" line="1117"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -75,7 +75,7 @@ Man bør derefter klikke på Opdater knappen i hovedværktøjslinjen.
     <message>
       <location filename="../../Datums.cpp" line="271"/>
       <source>Origin</source>
-      <translation>Origo</translation>
+      <translation>Nulpunkt</translation>
     </message>
   </context>
 </TS>

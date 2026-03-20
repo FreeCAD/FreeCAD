@@ -11,7 +11,7 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="95"/>
       <source>Welcome to %1</source>
-      <translation>Bienvenido a %1</translation>
+      <translation>Le damos la bienvenida a %1</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="98"/>

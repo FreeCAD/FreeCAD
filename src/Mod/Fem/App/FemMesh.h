@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_FEMMESH_H
-#define FEM_FEMMESH_H
+#pragma once
 
 #include <list>
 #include <memory>
@@ -253,6 +252,3 @@ inline SMESH_HypothesisPtr FemMesh::createHypothesis(int hypId)
 }
 
 }  // namespace Fem
-
-
-#endif  // FEM_FEMMESH_H

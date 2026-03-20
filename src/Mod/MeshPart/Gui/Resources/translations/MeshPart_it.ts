@@ -202,7 +202,7 @@
     <message>
       <location filename="../../CurveOnMesh.cpp" line="655"/>
       <source>No point was selected</source>
-      <translation type="unfinished">No point was selected</translation>
+      <translation>Nessun punto selezionato</translation>
     </message>
   </context>
   <context>
@@ -546,7 +546,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select the side to keep</source>
-      <translation type="unfinished">Select the side to keep</translation>
+      <translation>Seleziona il lato da mantenere</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -582,7 +582,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="54"/>
       <source>Finds a flat representation of a mesh</source>
-      <translation type="unfinished">Finds a flat representation of a mesh</translation>
+      <translation>Trova una rappresentazione piatta di una mesh</translation>
     </message>
   </context>
   <context>
@@ -595,7 +595,7 @@ Select a different shape.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="93"/>
       <source>Finds a flat representation of a face</source>
-      <translation type="unfinished">Finds a flat representation of a face</translation>
+      <translation>Trova una rappresentazione piatta di una faccia</translation>
     </message>
   </context>
 </TS>

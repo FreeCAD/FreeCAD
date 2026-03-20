@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTPRESSURE_H
-#define FEM_CONSTRAINTPRESSURE_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -57,5 +56,3 @@ protected:
 };
 
 }  // namespace Fem
-
-#endif  // FEM_CONSTRAINTPRESSURE_H

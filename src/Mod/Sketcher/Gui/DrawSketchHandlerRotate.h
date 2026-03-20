@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerRotate_H
-#define SKETCHERGUI_DrawSketchHandlerRotate_H
+#pragma once
 
 #include <QApplication>
 
@@ -54,7 +53,8 @@ using DSHRotateController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<4>,
     /*WidgetParametersT =*/WidgetParameters<1>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHRotateControllerBase = DSHRotateController::ControllerBase;
 
@@ -146,7 +146,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
 
             expressionHelper.storeOriginalExpressions(sketchgui->getSketchObject(), listOfGeoIds);
 
@@ -166,7 +166,7 @@ private:
                 deleteOriginalGeos();
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -176,7 +176,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to rotate")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
@@ -674,6 +674,3 @@ void DSHRotateController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerRotate_H

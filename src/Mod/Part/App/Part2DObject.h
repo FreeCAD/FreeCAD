@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PART2DOBJECT_H
-#define PART_PART2DOBJECT_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <Base/Axis.h>
@@ -109,6 +108,3 @@ public:
 using Part2DObjectPython = App::FeaturePythonT<Part2DObject>;
 
 }  // namespace Part
-
-
-#endif  // PART_PART2DOBJECT_H

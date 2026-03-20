@@ -234,7 +234,7 @@ class ViewProviderDraftAnnotation(object):
                                     setattr(vobj, visprop, value)
                                 except TypeError:
                                     pass
-                    break
+                        break
 
     def execute(self, vobj):
         """Execute when the object is created or recomputed."""

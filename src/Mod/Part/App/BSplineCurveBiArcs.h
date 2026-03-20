@@ -29,8 +29,7 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#ifndef PART_BSPLINECURVEBIARCS_H
-#define PART_BSPLINECURVEBIARCS_H
+#pragma once
 
 #include <list>
 
@@ -83,5 +82,3 @@ private:
 };
 
 }  // namespace Part
-
-#endif  // PART_BSPLINECURVEBIARCS_H

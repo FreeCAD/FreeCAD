@@ -369,3 +369,199 @@ class TestArchWall(TestArchBase.TestArchBase):
             delta=1e-6,
             msg="Placement.Rotation was not updated correctly.",
         )
+
+    def test_wall_makeblocks(self):
+        """Test the 'MakeBlocks' feature of Arch Wall.
+        This is a regression test for https://github.com/FreeCAD/FreeCAD/issues/26982, and
+        a basic, functional test for the MakeBlocks code path.
+        """
+        operation = "Checking Arch Wall MakeBlocks functional correctness..."
+        self.printTestMessage(operation)
+
+        # Block parameters
+        L, H, W = 1000.0, 600.0, 200.0
+        BL, BH = 400.0, 200.0  # Block Length and Height
+        O1, O2 = 0.0, 200.0  # Row offsets
+
+        # Create base line
+        p1 = App.Vector(0, 0, 0)
+        p2 = App.Vector(L, 0, 0)
+        line = Draft.makeLine(p1, p2)
+        self.document.recompute()
+
+        # Create wall based on line and block parameters
+        wall = Arch.makeWall(line, width=W, height=H)
+        wall.BlockLength = BL
+        wall.BlockHeight = BH
+        wall.Joint = 0  # For test and volume calculation simplicity
+        wall.OffsetFirst = O1
+        wall.OffsetSecond = O2
+
+        def calc_row(row_start):
+            """
+            Simulates the 1D block-segmentation logic for a single horizontal course.
+
+            This helper replicates the "sawing" algorithm found in _Wall.execute:
+            1. It places the first vertical joint at 'row_start'.
+            2. It advances the cutting position by 'BlockLength' (BL).
+            3. It measures the resulting segments between joints.
+            4. It classifies segments equal to 'BL' as 'Entire' and any
+               remainder (at the start or end of the row) as 'Broken'.
+
+            Args:
+                row_start (float): The distance from the start of the wall to the first vertical
+                                   joint.
+
+            Returns:
+                tuple (int, int): A pair of integers (entire_count, broken_count)
+                                  predicted for this specific row.
+            """
+            row_entire, row_broken = 0, 0
+            current_pos = row_start
+            last_pos = 0.0
+
+            # Mimic the logic in ArchWall:
+            # while offset < (Length - Joint): create cut at offset
+            # Perform the cuts and record the resulting segments
+            segments = []
+            while current_pos < L:
+                if current_pos > 0:
+                    segments.append(current_pos - last_pos)
+                    last_pos = current_pos
+                current_pos += BL
+            if last_pos < L:
+                segments.append(L - last_pos)
+
+            # Classify segments
+            for seg_len in segments:
+                if abs(seg_len - BL) < 0.1:  # Threshold for "Entire"
+                    row_entire += 1
+                else:
+                    row_broken += 1
+            return row_entire, row_broken
+
+        # Calculate expectations based on total courses (rows)
+        num_rows = int(H // BH)
+        expected_entire = 0
+        expected_broken = 0
+
+        # Effectively "lay the bricks" in a running bond pattern: alternate offsets per even/odd row
+        for r in range(num_rows):
+            ent, brk = calc_row(O1 if r % 2 == 0 else O2)
+            expected_entire += ent
+            expected_broken += brk
+
+        # Enable the feature, triggering the #26982 bug via the code path in _Wall.execute()
+        wall.MakeBlocks = True
+        self.document.recompute()
+
+        # Regression check: did we crash?
+        self.assertFalse(wall.Shape.isNull(), "Wall shape should not be null")
+
+        # Functional check: compare dynamic calculation to property values
+        self.assertEqual(
+            wall.CountEntire,
+            expected_entire,
+            f"Mismatch in Entire blocks. Expected {expected_entire}, got {wall.CountEntire}",
+        )
+        self.assertEqual(
+            wall.CountBroken,
+            expected_broken,
+            f"Mismatch in Broken blocks. Expected {expected_broken}, got {wall.CountBroken}",
+        )
+
+        # Integrity check: volume correctness
+        expected_vol = L * W * H
+        self.assertAlmostEqual(wall.Shape.Volume, expected_vol, places=3)
+
+    def test_debase_wall_stationary_children(self):
+        """Test that debasing a wall does not shift its children in world space."""
+        self.printTestMessage("Arch.debaseWall stationary children...")
+
+        # Create a base line offset by 5 meters for a clear distinction between local (0,0,0) and
+        # global coordinates.
+        # Line start/end: (5000,0,0) / (7000,0,0). Midpoint/new placement: (6000,0,0).
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
+        line.Placement.Base = App.Vector(5000, 0, 0)
+        self.document.recompute()
+
+        # Create the wall. Initially, wall.Placement is (0,0,0).
+        wall = Arch.makeWall(line, width=200, height=3000)
+        self.document.recompute()
+
+        # Create a set of different types of children, with different properties
+
+        # Child A: a standard Part::Box primitive. Lacks MoveWithHost property. It should be handled
+        # by the default move logic.
+        box = self.document.addObject("Part::Box", "ChildBox")
+        box.Placement.Base = App.Vector(5250, -150, 500)
+
+        # Child B: an ArchComponent with MoveWithHost=True. This should be explicitly included in
+        # the move logic.
+        comp_true_base = self.document.addObject("Part::Box", "CompTrueBase")
+        comp_true = Arch.makeComponent(comp_true_base, name="CompWithMove")
+        comp_true.MoveWithHost = True
+        comp_true.Placement.Base = App.Vector(5750, -150, 500)
+
+        # Child C: an ArchComponent with MoveWithHost=False. This should be ignored by the move
+        # logic.
+        comp_false_base = self.document.addObject("Part::Box", "CompFalseBase")
+        comp_false = Arch.makeComponent(comp_false_base, name="CompNoMove")
+        comp_false.MoveWithHost = False
+        comp_false.Placement.Base = App.Vector(6250, -150, 500)
+
+        # Child D: a hosted Arch.Window. This is not an Addition but is found via InList by
+        # getMovableChildren.
+        win_base = Draft.makeRectangle(length=500, height=800)
+        win_base.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)  # Orient vertically
+        win_base.Placement.Base = App.Vector(6500, 100, 1000)  # Position in wall center
+        self.document.recompute()
+        window = Arch.makeWindow(win_base)
+
+        # Add all children/guests to the wall
+        wall.Additions = [box, comp_true, comp_false]
+        window.Hosts = [wall]
+        self.document.recompute()
+
+        # Record initial global placements for all children/hosts before debasing.
+        initial_placements = {
+            "Box": box.Placement.copy(),
+            "CompTrue": comp_true.Placement.copy(),
+            "CompFalse": comp_false.Placement.copy(),
+            "Window": window.Placement.copy(),
+        }
+
+        # Perform the debase operation. This will reset wall.Placement from (0,0,0) to (6000,0,0)
+        # and trigger the onChanged -> getMovableChildren -> move logic.
+        Arch.debaseWall(wall)
+        self.document.recompute()
+
+        # All children must remain at their original global coordinates. Use subtests to get a clear
+        # report for each child type.
+        with self.subTest(child_type="Part Primitive (Box)"):
+            self.assertTrue(
+                box.Placement.Base.isEqual(initial_placements["Box"].Base, 1e-6),
+                f"Part Primitive Box position shifted! Expected {initial_placements['Box'].Base}, got {box.Placement.Base}",
+            )
+
+        with self.subTest(child_type="ArchComponent (MoveWithHost=True)"):
+            self.assertTrue(
+                comp_true.Placement.Base.isEqual(initial_placements["CompTrue"].Base, 1e-6),
+                f"Component with MoveWithHost=True position shifted! Expected {initial_placements['CompTrue'].Base}, got {comp_true.Placement.Base}",
+            )
+
+        with self.subTest(child_type="ArchComponent (MoveWithHost=False)"):
+            self.assertTrue(
+                comp_false.Placement.Base.isEqual(initial_placements["CompFalse"].Base, 1e-6),
+                f"Component with MoveWithHost=False position shifted! Expected {initial_placements['CompFalse'].Base}, got {comp_false.Placement.Base}",
+            )
+
+        with self.subTest(child_type="Hosted Window"):
+            self.assertTrue(
+                window.Placement.Base.isEqual(initial_placements["Window"].Base, 1e-6),
+                f"Hosted Window position shifted! Expected {initial_placements['Window'].Base}, got {window.Placement.Base}",
+            )
+
+        # Final verification that the wall itself was correctly debased
+        self.assertIsNone(wall.Base, "Wall was not successfully debased (Base still exists).")
+        self.assertAlmostEqual(wall.Placement.Base.x, 6000.0, places=3)

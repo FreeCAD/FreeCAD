@@ -232,7 +232,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="303"/>
       <source>Select 3 objects first</source>
-      <translation>Sélectionnez 3 objets en premier</translation>
+      <translation>Sélectionner d'abord 3 objets</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="337"/>

@@ -156,6 +156,16 @@ GeoFeatureGroupExtension::addObjects(std::vector<App::DocumentObject*> objects)
             continue;
         }
 
+        // Prevent from extracting children of nested groups fixed issue:#26743
+        // As groups manage their own local coordinate systems and children.
+        if (object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            if (!hasObject(object)) {
+                grp.push_back(object);
+                ret.push_back(object);
+            }
+            continue;
+        }
+
         // cross CoordinateSystem links are not allowed, so we need to move the whole link group
         std::vector<App::DocumentObject*> links = getCSRelevantLinks(object);
         links.push_back(object);

@@ -490,6 +490,7 @@ SET(Gui_UIC_SRCS
     InputVector.ui
     Placement.ui
     TaskTransform.ui
+    TaskCommandLink.ui
     TextureMapping.ui
     TaskView/TaskAppearance.ui
     TaskView/TaskOrientation.ui
@@ -578,6 +579,7 @@ SET(Dialog_CPP_SRCS
     TaskDlgRelocation.cpp
     Dialogs/DlgCheckableMessageBox.cpp
     TaskTransform.cpp
+    TaskCommandLink.cpp
     Dialogs/DlgUndoRedo.cpp
     InputVector.cpp
     Placement.cpp
@@ -620,6 +622,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgVersionMigrator.h
     TaskDlgRelocation.h
     TaskTransform.h
+    TaskCommandLink.h
     Dialogs/DlgUndoRedo.h
     InputVector.h
     Placement.h
@@ -1402,6 +1405,7 @@ SET(FreeCADGui_CPP_SRCS
     StartupProcess.cpp
     TransactionObject.cpp
     ToolHandler.cpp
+    StyleParameters/Value.cpp
     StyleParameters/Parser.cpp
     StyleParameters/ParameterManager.cpp
 )
@@ -1447,6 +1451,7 @@ SET(FreeCADGui_SRCS
     StatusBarLabel.h
     TransactionObject.h
     ToolHandler.h
+    StyleParameters/Value.h
     StyleParameters/Parser.h
     StyleParameters/ParameterManager.h
 )

@@ -61,6 +61,7 @@
 #include <Gui/SpinBox.h>
 #include <Gui/VectorListEditor.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/Document.h>
 
 // NOLINTBEGIN(cppcoreguidelines-pro-*,cppcoreguidelines-prefer-member-initializer)
 using namespace Gui::PropertyEditor;
@@ -574,18 +575,14 @@ void PropertyItem::setPropertyName(const QString& name, const QString& realName)
     setObjectName(propName);
 
     QString display;
-    bool upper = false;
+    // Camel case splitting
     for (auto&& i : name) {
         if (i.isUpper() && !display.isEmpty()) {
-            // if there is a sequence of capital letters do not insert spaces
-            if (!upper) {
-                QChar last = display.at(display.length() - 1);
-                if (!last.isSpace()) {
-                    display += QLatin1String(" ");
-                }
+            QChar last = display.at(display.length() - 1);
+            if (last.isLower()) {
+                display += QLatin1String(" ");
             }
         }
-        upper = i.isUpper();
         display += i;
     }
 
@@ -878,6 +875,15 @@ QVariant PropertyStringItem::editorData(QWidget* editor) const
 {
     auto le = qobject_cast<QLineEdit*>(editor);
     return {le->text()};
+}
+
+QVariant PropertyStringItem::toolTip(const App::Property* prop) const
+{
+    // For the FileName property, show the actual file path in the tooltip
+    if (prop && std::string(prop->getName()) == "FileName") {
+        return value(prop);
+    }
+    return PropertyItem::toolTip(prop);
 }
 
 // --------------------------------------------------------------------
@@ -2645,12 +2651,14 @@ PlacementEditor::~PlacementEditor() = default;
 
 void PlacementEditor::browse()
 {
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(
+        Gui::Application::Instance->activeDocument()->getDocument()
+    );
     Gui::Dialog::TaskPlacement* task {};
     task = qobject_cast<Gui::Dialog::TaskPlacement*>(dlg);
     if (dlg && !task) {
         // there is already another task dialog which must be closed first
-        Gui::Control().showDialog(dlg);
+        Gui::Control().showDialog(dlg, Gui::Application::Instance->activeDocument()->getDocument());
         return;
     }
     if (!task) {
@@ -2664,7 +2672,7 @@ void PlacementEditor::browse()
     task->setPropertyName(propertyname);
     task->setSelection(Gui::Selection().getSelectionEx());
     task->bindObject();
-    Gui::Control().showDialog(task);
+    Gui::Control().showDialog(task, Gui::Application::Instance->activeDocument()->getDocument());
 }
 
 void PlacementEditor::showValue(const QVariant& d)

@@ -38,7 +38,9 @@ class BIM_TogglePanels:
         return {
             "Pixmap": "BIM_TogglePanels",
             "MenuText": QT_TRANSLATE_NOOP("BIM_TogglePanels", "Toggle Bottom Panels"),
-            "ToolTip": QT_TRANSLATE_NOOP("BIM_TogglePanels", "Toggles bottom dock panels on/off"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "BIM_TogglePanels", "Toggles the bottom dock panels on/off"
+            ),
             "Accel": "Ctrl+0",
         }
 

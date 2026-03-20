@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATURECHAMFER_H
-#define PART_FEATURECHAMFER_H
+#pragma once
 
 #include "PartFeature.h"
 
@@ -52,6 +51,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATURECHAMFER_H

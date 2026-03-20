@@ -630,54 +630,49 @@ def get_svg(
 
                     # drawing arc
                     fill = "none"
+                    edges = []
                     if vobj.DisplayMode == "World":
-                        svg += get_path(
-                            obj,
-                            plane,
-                            fill,
-                            pathdata,
-                            stroke,
-                            linewidth,
-                            lstyle,
-                            fill_opacity=None,
-                            edges=[prx.circle],
-                        )
+                        edges = [prx.circle]
                     else:
                         if hasattr(prx, "circle1"):
-                            svg += get_path(
-                                obj,
-                                plane,
-                                fill,
-                                pathdata,
-                                stroke,
-                                linewidth,
-                                lstyle,
-                                fill_opacity=None,
-                                edges=[prx.circle1],
-                            )
-                            svg += get_path(
-                                obj,
-                                plane,
-                                fill,
-                                pathdata,
-                                stroke,
-                                linewidth,
-                                lstyle,
-                                fill_opacity=None,
-                                edges=[prx.circle2],
-                            )
+                            edges = [prx.circle1, prx.circle2]
                         else:
-                            svg += get_path(
-                                obj,
-                                plane,
-                                fill,
-                                pathdata,
-                                stroke,
-                                linewidth,
-                                lstyle,
-                                fill_opacity=None,
-                                edges=[prx.circle],
-                            )
+                            edges = [prx.circle]
+
+                    svg += get_path(
+                        obj, plane, fill, pathdata, stroke, linewidth, lstyle, edges=edges
+                    )
+
+                    # draw extlines
+                    if hasattr(vobj, "ExtLines") and vobj.ExtLines:
+                        p1 = get_proj(prx.p1, plane)
+                        p2 = get_proj(prx.p2, plane)
+                        p3 = get_proj(prx.p3, plane)
+                        p4 = get_proj(prx.p4, plane)
+                        d1 = (
+                            "M " + str(p1.x) + " " + str(p1.y) + " L " + str(p2.x) + " " + str(p2.y)
+                        )
+                        d2 = (
+                            "M " + str(p4.x) + " " + str(p4.y) + " L " + str(p3.x) + " " + str(p3.y)
+                        )
+                        svg += '<path d="' + d1 + '" '
+                        svg += 'fill="none" stroke="' + stroke + '" '
+                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'style="stroke-width:' + str(linewidth)
+                        svg += (
+                            ";stroke-miterlimit:4;stroke-dasharray:"
+                            + lstyle
+                            + ';stroke-linecap:square" />\n'
+                        )
+                        svg += '<path d="' + d2 + '" '
+                        svg += 'fill="none" stroke="' + stroke + '" '
+                        svg += 'stroke-width="' + str(linewidth) + ' px" '
+                        svg += 'style="stroke-width:' + str(linewidth)
+                        svg += (
+                            ";stroke-miterlimit:4;stroke-dasharray:"
+                            + lstyle
+                            + ';stroke-linecap:square" />\n'
+                        )
 
                     # drawing arrows
                     if (

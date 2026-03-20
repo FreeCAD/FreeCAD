@@ -11,7 +11,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>
       <source>Default Property Values</source>
-      <translation type="unfinished">Default Property Values</translation>
+      <translation>Privzeta lastnost vrednosti</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="142"/>
@@ -21,7 +21,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="59"/>
       <source>Text size</source>
-      <translation type="unfinished">Text size</translation>
+      <translation>Velikost besedila</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="66"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="112"/>
       <source>Background color</source>
-      <translation type="unfinished">Background color</translation>
+      <translation>Barva ozadja</translation>
     </message>
   </context>
   <context>
@@ -44,7 +44,7 @@
     <message>
       <location filename="../../../MeasureCOM.py" line="62"/>
       <source>Element to measure</source>
-      <translation type="unfinished">Element to measure</translation>
+      <translation>Element za merjenje</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../../MeasureCOM.py" line="69"/>
       <source>The result location</source>
-      <translation type="unfinished">The result location</translation>
+      <translation>Lokacija rezultata</translation>
     </message>
   </context>
   <context>
@@ -60,63 +60,63 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
       <source>Total area: %1</source>
-      <translation type="unfinished">Total area: %1</translation>
+      <translation>Skupna površina: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
       <location filename="../../QuickMeasure.cpp" line="260"/>
       <source>Nominal distance: %1</source>
-      <translation type="unfinished">Nominal distance: %1</translation>
+      <translation>Nominalna oddaljenost: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Area: %1</source>
-      <translation type="unfinished">Area: %1</translation>
+      <translation>Površina: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="230"/>
       <source>Area: %1, Radius: %2</source>
-      <translation type="unfinished">Area: %1, Radius: %2</translation>
+      <translation>Površina: %1, polmer: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="234"/>
       <source>Area: %1, Diameter: %2</source>
-      <translation type="unfinished">Area: %1, Diameter: %2</translation>
+      <translation>Površina: %1, premer: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="243"/>
       <source>Total area: %1, Axis distance: %2</source>
-      <translation type="unfinished">Total area: %1, Axis distance: %2</translation>
+      <translation>Skupna površina: %1, os oddaljenosti: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="248"/>
       <source>Total area: %1, Axis distance: %2, Axis angle: %3</source>
-      <translation type="unfinished">Total area: %1, Axis distance: %2, Axis angle: %3</translation>
+      <translation>Skupna površina: %1, os oddaljenosti: %2, os kota: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="257"/>
       <source>Total length: %1</source>
-      <translation type="unfinished">Total length: %1</translation>
+      <translation>Skupna dolžina: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="263"/>
       <source>Angle: %1, Total length: %2</source>
-      <translation type="unfinished">Angle: %1, Total length: %2</translation>
+      <translation>Kot: %1, skupna dolžina: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="267"/>
       <source>Length: %1</source>
-      <translation type="unfinished">Length: %1</translation>
+      <translation>Dolžina: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="270"/>
       <source>Radius: %1</source>
-      <translation type="unfinished">Radius: %1</translation>
+      <translation>Polmer: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="273"/>
       <source>Diameter: %1</source>
-      <translation type="unfinished">Diameter: %1</translation>
+      <translation>Premer: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="276"/>
@@ -126,43 +126,43 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="279"/>
       <source>Minimum distance: %1</source>
-      <translation type="unfinished">Minimum distance: %1</translation>
+      <translation>Minimalna oddaljenost: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="283"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Axis distance: %2</translation>
+      <translation>Minimalna oddaljenost: %1, os oddaljenosti: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="289"/>
       <source>Minimum distance: %1, Center distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Center distance: %2</translation>
+      <translation>Minimalna oddaljenost: %1, središče oddaljenosti: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="296"/>
       <location filename="../../QuickMeasure.cpp" line="313"/>
       <source>Total length: %1, Center distance: %2</source>
-      <translation type="unfinished">Total length: %1, Center distance: %2</translation>
+      <translation>Skupna dolžina: %1, središče oddaljenosti: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="303"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
-      <translation type="unfinished">Total length: %1, Center distance: %2, Axis angle: %3</translation>
+      <translation>Skupna dolžina: %1, središče oddaljenosti: %2, os kota: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="318"/>
       <source>Center surface distance: %1</source>
-      <translation type="unfinished">Center surface distance: %1</translation>
+      <translation>Središče površinske oddaljenosti: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="323"/>
       <source>Center axis distance: %1</source>
-      <translation type="unfinished">Center axis distance: %1</translation>
+      <translation>Središče osne oddaljenosti: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="326"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
-      <translation type="unfinished">Center axis distance: %1, Axis angle: %2</translation>
+      <translation>Središče osne oddaljenosti: %1, os kota: %2</translation>
     </message>
   </context>
   <context>
@@ -178,13 +178,13 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Izmeri</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Izmeri značilnost</translation>
     </message>
   </context>
   <context>
@@ -192,32 +192,32 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="67"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Merjenje</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="88"/>
       <source>Show Delta:</source>
-      <translation type="unfinished">Show Delta:</translation>
+      <translation>Prikaži delto:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="94"/>
       <source>Auto Save</source>
-      <translation type="unfinished">Auto Save</translation>
+      <translation>Samodejno shranjevanje</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="98"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
-      <translation type="unfinished">Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</translation>
+      <translation>Samodejno shranjevanje zadnje meritve ob začetku nove meritve. Uporabite tipko Shift, da začasno obrnete vedenje.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="103"/>
       <source>Additive Selection</source>
-      <translation type="unfinished">Additive Selection</translation>
+      <translation>Izbor aditivov</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="109"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation type="unfinished">If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</translation>
+      <translation>Če je označeno, bo meritvi dodan nov izbor. Če ni označeno, je treba pritisniti tipko Ctrl, da dodate izbiro trenutni meritvi, sicer se bo začela nova meritev</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="122"/>
@@ -232,17 +232,17 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="160"/>
       <source>Mode:</source>
-      <translation type="unfinished">Mode:</translation>
+      <translation>Način:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>Result:</source>
-      <translation type="unfinished">Result:</translation>
+      <translation>Rezultat:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="197"/>
       <source>Saves the measurement in the active document</source>
-      <translation type="unfinished">Saves the measurement in the active document</translation>
+      <translation>Shrani meritve v aktivnem dokumentu</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="203"/>
@@ -252,7 +252,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="204"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Zapri meritveno nalogo</translation>
     </message>
   </context>
   <context>
@@ -273,12 +273,12 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="115"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Oddaljenost</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="123"/>
       <source>Distance Free</source>
-      <translation type="unfinished">Distance Free</translation>
+      <translation>Prosta oddaljenost</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="131"/>
@@ -293,7 +293,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="147"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Položaj</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="155"/>

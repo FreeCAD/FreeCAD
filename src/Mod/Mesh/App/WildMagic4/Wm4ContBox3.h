@@ -8,8 +8,7 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4CONTBOX3_H
-#define WM4CONTBOX3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Box3.h"
@@ -46,5 +45,3 @@ template <class Real> WM4_FOUNDATION_ITEM
 Box3<Real> MergeBoxes (const Box3<Real>& rkBox0, const Box3<Real>& rkBox1);
 
 }
-
-#endif

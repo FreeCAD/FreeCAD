@@ -3,7 +3,7 @@
 General:
   UUID: "4151e19c-fd6a-4ca4-83d4-d5e17d76cb9c"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Brass"
   Description: "Defines the Brass appearance properties"
 AppearanceModels:

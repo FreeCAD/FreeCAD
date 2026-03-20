@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -28,6 +30,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Transactions.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Document.h>
@@ -68,9 +71,6 @@ TaskTransformedParameters::TaskTransformedParameters(
 {
     Gui::Document* doc = TransformedView->getDocument();
     this->attachDocument(doc);
-
-    // remember initial transaction ID
-    App::GetApplication().getActiveTransaction(&transactionID);
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters* parentTask)
@@ -274,16 +274,16 @@ void TaskTransformedParameters::setupTransaction()
         return;
     }
 
-    int tid = 0;
-    App::GetApplication().getActiveTransaction(&tid);
-    if (tid != 0 && tid == transactionID) {
+    int tid = obj->getDocument()->getBookedTransactionID();
+    if (tid != App::NullTransaction) {
         return;
     }
 
     // open a transaction if none is active
+    // where is this transaction commited - theo-vt?
     std::string name("Edit ");
     name += obj->Label.getValue();
-    transactionID = App::GetApplication().setActiveTransaction(name.c_str());
+    transactionID = obj->getDocument()->openTransaction(name.c_str());
 }
 
 void TaskTransformedParameters::setEnabledTransaction(bool on)
@@ -634,6 +634,5 @@ bool TaskDlgTransformedParameters::reject()
     parameter->exitSelectionMode();
     return TaskDlgFeatureParameters::reject();
 }
-
 
 #include "moc_TaskTransformedParameters.cpp"

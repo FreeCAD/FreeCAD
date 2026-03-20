@@ -80,12 +80,16 @@ const fs::path& ApplicationDirectories::getTempPath() const {
     return this->_temp;
 }
 
-fs::path ApplicationDirectories::getTempFileName(const std::string & filename) const {
+fs::path ApplicationDirectories::getTempFileName(const std::string & filename) const
+{
     auto tempPath = Base::FileInfo::pathToString(getTempPath());
     if (filename.empty()) {
-        return Base::FileInfo::getTempFileName(nullptr, tempPath.c_str());
+        return Base::FileInfo::stringToPath(Base::FileInfo::getTempFileName(nullptr, tempPath.c_str())
+        );
     }
-    return Base::FileInfo::getTempFileName(filename.c_str(), tempPath.c_str());
+    return Base::FileInfo::stringToPath(
+        Base::FileInfo::getTempFileName(filename.c_str(), tempPath.c_str())
+    );
 }
 
 const fs::path& ApplicationDirectories::getUserCachePath() const
@@ -138,7 +142,10 @@ fs::path ApplicationDirectories::findPath(const fs::path& stdHome, const fs::pat
     // If a custom user home path is given, then don't modify it
     if (customHome.empty()) {
         for (const auto& it : subdirs) {
-            appData = appData / it;
+            if (!it.empty()) {
+                // Refuse to add an empty directory path component
+                appData = appData / it;
+            }
         }
     }
 
@@ -179,7 +186,7 @@ void ApplicationDirectories::configurePaths(std::map<std::string,std::string>& m
     bool keepDeprecatedPaths = mConfig.contains("KeepDeprecatedPaths");
 
     // std paths
-    _home = fs::path(mConfig.at("AppHomePath"));
+    _home = Base::FileInfo::stringToPath(mConfig.at("AppHomePath"));
     mConfig["BinPath"] = mConfig.at("AppHomePath") + "bin" + PATHSEP;
     mConfig["DocPath"] = mConfig.at("AppHomePath") + "doc" + PATHSEP;
 
@@ -295,7 +302,7 @@ void ApplicationDirectories::configureResourceDirectory(const std::map<std::stri
         _resource = Base::FileInfo::stringToPath(mConfig.at("AppHomePath")) / path;
     }
 #else
-    _resource = fs::path(mConfig.at("AppHomePath"));
+    _resource = Base::FileInfo::stringToPath(mConfig.at("AppHomePath"));
 #endif
 }
 

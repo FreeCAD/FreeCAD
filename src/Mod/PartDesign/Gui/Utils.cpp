@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
@@ -284,7 +286,11 @@ App::Part* getActivePart()
 {
     Gui::MDIView* activeView = Gui::Application::Instance->activeView();
     if (activeView) {
-        return activeView->getActiveObject<App::Part*>(PARTKEY);
+        auto* obj = activeView->getActiveObject<App::Part*>(PARTKEY);
+        if (!obj) {
+            obj = activeView->getActiveObject<App::Part*>(ASSEMBLYKEY);
+        }
+        return obj;
     }
     else {
         return nullptr;

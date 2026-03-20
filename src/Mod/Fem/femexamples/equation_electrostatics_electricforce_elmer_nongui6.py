@@ -36,6 +36,7 @@ import Sketcher
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -44,7 +45,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["electrostatic potential"],
-        "solvers": ["elmer"],
+        "solvers": ["calculix", "elmer"],
         "material": "fluid",
         "equations": ["electrostatic"],
     }
@@ -178,6 +179,9 @@ def setup(doc=None, solvertype="elmer"):
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         ObjectsFem.makeEquationElectrostatic(doc, solver_obj)
         ObjectsFem.makeEquationElectricforce(doc, solver_obj)
+    elif solvertype == "calculix":
+        solver_obj = ObjectsFem.makeSolverCalculiX(doc, "SolverCalculiX")
+        solver_obj.AnalysisType = "electromagnetic"
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -213,12 +217,7 @@ def setup(doc=None, solvertype="elmer"):
     # constraint potential 1V
     name_pot2 = "ElectrostaticPotential2"
     con_elect_pot2 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot2)
-    con_elect_pot2.References = [
-        (geom_obj, "Face4"),
-        (geom_obj, "Face5"),
-        (geom_obj, "Face6"),
-        (geom_obj, "Face11"),
-    ]
+    con_elect_pot2.References = [(geom_obj, "Face4")]
     con_elect_pot2.Potential = "1 V"
     con_elect_pot2.CapacitanceBody = 2
     con_elect_pot2.CapacitanceBodyEnabled = True
@@ -245,29 +244,7 @@ def setup(doc=None, solvertype="elmer"):
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
-    from femmesh import gmshtools
-
-    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    try:
-        error = gmsh_mesh.create_mesh()
-    except Exception:
-        error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
-    if error:
-        # try to create from existing rough mesh
-        from .meshes.mesh_electricforce_elmer_nongui6_tetra10 import (
-            create_nodes,
-            create_elements,
-        )
-
-        fem_mesh = Fem.FemMesh()
-        control = create_nodes(fem_mesh)
-        if not control:
-            FreeCAD.Console.PrintError("Error on creating nodes.\n")
-        control = create_elements(fem_mesh)
-        if not control:
-            FreeCAD.Console.PrintError("Error on creating elements.\n")
-        femmesh_obj.FemMesh = fem_mesh
+    generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
 
     doc.recompute()
     return doc
