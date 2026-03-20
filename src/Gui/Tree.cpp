@@ -571,6 +571,15 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const
         return;
     }
 
+    // Clear State_Enabled for hidden objects so QSS ::item:disabled rules can
+    // override the overlay stylesheet's blanket ::item { color } for text fading.
+    if (item->type() == TreeWidget::ObjectType) {
+        if (auto* docItem = static_cast<DocumentObjectItem*>(item);
+            docItem->object() && !docItem->object()->isShow()) {
+            option->state &= ~QStyle::State_Enabled;
+        }
+    }
+
     option->textElideMode = Qt::ElideMiddle;
     auto mousePos = option->widget->mapFromGlobal(QCursor::pos());
     auto isHovered = option->rect.contains(mousePos);
