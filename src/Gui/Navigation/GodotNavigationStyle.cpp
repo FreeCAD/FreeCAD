@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// Copyright (c) 2026 Trevor Blythe <trevorblythe82@gmail.com>
 /***************************************************************************
  *   Godot/Fly navigation style for FreeCAD                                *
  *   Controls:                                                             *
