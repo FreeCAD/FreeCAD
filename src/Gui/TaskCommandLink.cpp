@@ -26,6 +26,7 @@
 
 #include "Application.h"
 #include "Document.h"
+#include "MetaTypes.h"
 #include "ViewProvider.h"
 
 #include <App/Application.h>
