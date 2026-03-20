@@ -1166,7 +1166,7 @@ std::string SelectionSingleton::SelectionDescription::getSubString() const
         }
         return "'" + SubName + "'";
     }
-    return "";
+    return {};
 }
 
 bool SelectionSingleton::addSelection(
@@ -2041,7 +2041,7 @@ int SelectionSingleton::checkSelection(
     }
 
     pDocName = sel.pDoc->getName();
-    sel.DocName = pDocName == nullptr ? "" : pDocName;
+    sel.DocName = pDocName == nullptr ? std::string() : pDocName;
 
     if (pObjectName) {
         sel.pObject = sel.pDoc->getObject(pObjectName);
@@ -2147,7 +2147,7 @@ int SelectionSingleton::checkSelection(
 std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, const char* pSubName) const
 {
     if (!obj) {
-        return nullptr;
+        return {};
     }
     auto context = getSelectionContext(obj->getDocument()->getName());
 
@@ -2155,7 +2155,7 @@ std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, con
         if (selected.pObject == obj) {
             auto len = selected.SubName.length();
             if (!len) {
-                return "";
+                return {};
             }
             if (pSubName
                 && strncmp(pSubName, selected.SubName.c_str(), selected.SubName.length()) == 0) {
@@ -2165,7 +2165,7 @@ std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, con
             }
         }
     }
-    return "";
+    return {};
 }
 
 void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
@@ -2261,7 +2261,7 @@ SelectionSingleton::SelectionContext SelectionSingleton::getSelectionContext(con
     if (App::Document* doc = getDocument(pDocName)) {
         return SelectionContext {.info = &docSelectionContext[doc], .docName = doc->getName()};
     }
-    return SelectionContext {.info = nullptr, .docName = ""};
+    return SelectionContext {.info = nullptr, .docName = std::string()};
 }
 SelectionSingleton::SelectionConstContext SelectionSingleton::getSelectionContext(
     const char* pDocName
@@ -2284,7 +2284,7 @@ SelectionSingleton::SelectionConstContext SelectionSingleton::getSelectionContex
             return SelectionConstContext {.info = &foundContext->second, .docName = doc->getName()};
         }
     }
-    return SelectionConstContext {.info = nullptr, .docName = ""};
+    return SelectionConstContext {.info = nullptr, .docName = std::string()};
 }
 
 //**************************************************************************
