@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -36,6 +38,9 @@ namespace Gui
 {
 class QuantitySpinBox;
 class ColorButton;
+class LinearGizmo;
+class RotationGizmo;
+class GizmoContainer;
 }
 
 namespace Part
@@ -46,18 +51,25 @@ class SectionAnalysis;
 namespace PartGui
 {
 
+class ViewProviderSectionAnalysis;
+
 class SectionAnalysisWidget: public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit SectionAnalysisWidget(Part::SectionAnalysis* feature, QWidget* parent = nullptr);
+    explicit SectionAnalysisWidget(Part::SectionAnalysis* feature,
+                                   ViewProviderSectionAnalysis* vp,
+                                   QWidget* parent = nullptr);
     ~SectionAnalysisWidget() override;
 
     bool accept();
     bool reject();
     Part::SectionAnalysis* getObject() const;
+    ViewProviderSectionAnalysis* getViewProvider() const;
     void updateFromFeature();
+    void setupGizmos();
+    void updateGizmoPositions();
 
 private:
     void setupUi();
@@ -79,14 +91,15 @@ private:
     void recompute();
 
     Part::SectionAnalysis* feature;
+    ViewProviderSectionAnalysis* viewProvider;
     QComboBox* presetCombo = nullptr;
     QDoubleSpinBox* normalX = nullptr;
     QDoubleSpinBox* normalY = nullptr;
     QDoubleSpinBox* normalZ = nullptr;
     Gui::QuantitySpinBox* offsetSpin = nullptr;
     QSlider* offsetSlider = nullptr;
-    QDoubleSpinBox* angleX = nullptr;
-    QDoubleSpinBox* angleZ = nullptr;
+    Gui::QuantitySpinBox* angleXSpin = nullptr;
+    Gui::QuantitySpinBox* angleZSpin = nullptr;
     QCheckBox* flipCheck = nullptr;
     Gui::ColorButton* sectionColorBtn = nullptr;
     QCheckBox* hatchCheck = nullptr;
@@ -94,6 +107,11 @@ private:
     double sliderMin = -100.0;
     double sliderMax = 100.0;
 
+    // Gizmos — the GizmoContainer owns the gizmo lifetimes
+    Gui::LinearGizmo* offsetGizmo = nullptr;
+    Gui::RotationGizmo* angleXGizmo = nullptr;
+    Gui::RotationGizmo* angleZGizmo = nullptr;
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
 };
 
 class TaskSectionAnalysis: public Gui::TaskView::TaskDialog
@@ -101,7 +119,8 @@ class TaskSectionAnalysis: public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    explicit TaskSectionAnalysis(Part::SectionAnalysis* feature);
+    explicit TaskSectionAnalysis(Part::SectionAnalysis* feature,
+                                 ViewProviderSectionAnalysis* vp);
     ~TaskSectionAnalysis() override;
 
     bool accept() override;

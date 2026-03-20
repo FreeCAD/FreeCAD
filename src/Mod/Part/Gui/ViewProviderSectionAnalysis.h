@@ -39,11 +39,6 @@ class SoSwitch;
 class SoTexture2;
 class SoTextureCoordinatePlane;
 
-namespace Gui
-{
-class SoLinearDraggerContainer;
-}
-
 namespace Part
 {
 class SectionAnalysis;
@@ -62,6 +57,8 @@ public:
 
     void attach(App::DocumentObject* pcFeat) override;
     void updateData(const App::Property* prop) override;
+    void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
+    void unsetEditViewer(Gui::View3DInventorViewer*) override;
 
     void show() override;
     void hide() override;
@@ -70,9 +67,6 @@ public:
     bool onDelete(const std::vector<std::string>&) override;
 
     void setHatching(bool on);
-    void setupDragger();
-    void removeDragger();
-    void updateDragger();
 
 protected:
     bool setEdit(int ModNum) override;
@@ -83,8 +77,6 @@ private:
     void removeClipPlane();
     void updateClipPlaneEquation();
     void updatePlaneVisual();
-    static void draggerMotionCB(void* data, SoDragger* dragger);
-    static void draggerFinishCB(void* data, SoDragger* dragger);
 
     SoSwitch* pcPlaneSwitch = nullptr;
     SoSeparator* pcPlaneRoot = nullptr;
@@ -97,10 +89,8 @@ private:
     SoClipPlane* pcClipPlane = nullptr;
     SoTexture2* pcHatchTexture = nullptr;
     SoTextureCoordinatePlane* pcHatchCoordGen = nullptr;
-    Gui::SoLinearDraggerContainer* pcDraggerContainer = nullptr;
     bool clipInstalled = false;
     App::DocumentObject* clipInstalledOn = nullptr;
-    double draggerStartOffset = 0.0;
 };
 
 }  // namespace PartGui
