@@ -333,8 +333,7 @@ std::optional<gp_Pnt> ViewProviderHole::getHoleOrigin(const PartDesign::Hole* pc
     if (!pcHole) {
         return std::nullopt;
     }
-    auto* profile = pcHole->Profile.getValue();
-    if (profile) {
+    if (auto* profile = pcHole->Profile.getValue()) {
         const Base::Vector3d pos = profile->getPlacement().getPosition();
         return Base::convertTo<gp_Pnt>(pos);
     }
