@@ -160,6 +160,22 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(PartDesign PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        Feature.cpp
+        FeatureBoolean.cpp
+        FeatureDressUp.cpp
+        FeatureExtrude.cpp
+        FeatureHole.cpp
+        FeaturePipe.cpp
+        FeatureSketchBased.cpp
+        FeatureThickness.cpp
+        ShapeBinder.cpp
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 SET_BIN_DIR(PartDesign _PartDesign /Mod/PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesign)
 

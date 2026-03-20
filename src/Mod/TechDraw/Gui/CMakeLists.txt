@@ -472,6 +472,57 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(TechDrawGui PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        AppTechDrawGui.cpp
+        Command.cpp
+        CommandAlign.cpp
+        CommandAnnotate.cpp
+        CommandCreateDims.cpp
+        CommandDecorate.cpp
+        CommandExtensionDims.cpp
+        CommandExtensionPack.cpp
+        CommandHelpers.cpp
+        DimensionValidators.cpp
+        DlgPrefsTechDrawAdvancedImp.cpp
+        DlgPrefsTechDrawAnnotationImp.cpp
+        DlgPrefsTechDrawColorsImp.cpp
+        DlgPrefsTechDrawDimensionsImp.cpp
+        DlgPrefsTechDrawGeneralImp.cpp
+        DlgPrefsTechDrawHLRImp.cpp
+        DlgPrefsTechDrawScaleImp.cpp
+        DlgTemplateField.cpp
+        DrawGuiUtil.cpp
+        TaskActiveView.cpp
+        TaskBalloon.cpp
+        TaskCenterLine.cpp
+        TaskComplexSection.cpp
+        TaskCosmeticCircle.cpp
+        TaskCosmeticLine.cpp
+        TaskCosVertex.cpp
+        TaskCustomizeFormat.cpp
+        TaskDetail.cpp
+        TaskDimension.cpp
+        TaskDimRepair.cpp
+        TaskGeomHatch.cpp
+        TaskHatch.cpp
+        TaskLeaderLine.cpp
+        TaskLineDecor.cpp
+        TaskLinkDim.cpp
+        TaskProjection.cpp
+        TaskProjGroup.cpp
+        TaskRichAnno.cpp
+        TaskSectionView.cpp
+        TaskSelectLineAttributes.cpp
+        TaskSurfaceFinishSymbols.cpp
+        TaskWeldingSymbol.cpp
+        ViewProviderRichAnno.cpp
+        ViewProviderViewSection.cpp
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 target_include_directories(
     TechDrawGui
     PRIVATE

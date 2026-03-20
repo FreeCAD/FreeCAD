@@ -192,6 +192,18 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(SketcherGui PROPERTIES UNITY_BUILD ON)
+    set_source_files_properties(
+        CommandConstraints.cpp
+        EditTextDialog.cpp
+        TaskSketcherConstraints.cpp
+        TaskSketcherElements.cpp
+        Workbench.cpp
+            PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON
+    )
+endif()
+
 target_include_directories(
     SketcherGui
     PRIVATE

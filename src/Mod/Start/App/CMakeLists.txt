@@ -49,6 +49,10 @@ if(FREECAD_USE_PCH)
     )
 endif(FREECAD_USE_PCH)
 
+if(FREECAD_USE_UNITY_BUILD)
+    set_target_properties(Start PROPERTIES UNITY_BUILD ON)
+endif()
+
 target_link_libraries(Start ${Start_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Start)
