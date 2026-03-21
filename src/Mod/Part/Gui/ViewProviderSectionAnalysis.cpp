@@ -182,6 +182,22 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     updatePlaneVisual();
 }
 
+void ViewProviderSectionAnalysis::finishRestoring()
+{
+    ViewProviderPart::finishRestoring();
+
+    // After document restore, shapes are computed and the scene graph is
+    // fully built.  Safe to set up clip planes, plane visual, and hatching.
+    if (Visibility.getValue()) {
+        installClipPlane();
+    }
+    updatePlaneVisual();
+    updateHatchProjection();
+    if (hatchEnabled) {
+        setHatching(true);
+    }
+}
+
 void ViewProviderSectionAnalysis::installClipPlane()
 {
     removeClipPlane();
