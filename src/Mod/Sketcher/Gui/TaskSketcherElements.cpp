@@ -2175,7 +2175,7 @@ void TaskSketcherElements::slotElementsChanged()
                     linkname = IdInformation(false);
                 }
             }
-            
+
             bool isConstruction = !Sketcher::ExternalGeometryFacade::getFacade(*it)->testFlag(Sketcher::ExternalGeometryExtension::Defining);
             GeometryState state = isConstruction? GeometryState::ConstructionExternal: GeometryState::External;
 
