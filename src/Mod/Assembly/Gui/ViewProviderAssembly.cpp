@@ -1148,6 +1148,27 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
         }
 
         assemblyPart->preDrag(dragParts, pickPoint, cameraViewDir, movingJoint);
+
+        // Style the drag target sphere: blue + translucent
+        if (auto* dragTarget = assemblyPart->getDragTarget()) {
+            auto* vp = dynamic_cast<Gui::ViewProviderGeometryObject*>(
+                Gui::Application::Instance->getViewProvider(dragTarget)
+            );
+            if (vp) {
+                auto* shapeColor = dynamic_cast<App::PropertyColor*>(
+                    vp->getPropertyByName("ShapeColor")
+                );
+                if (shapeColor) {
+                    shapeColor->setValue(0.0f, 0.0f, 1.0f);  // blue
+                }
+                auto* transparency = dynamic_cast<App::PropertyInteger*>(
+                    vp->getPropertyByName("Transparency")
+                );
+                if (transparency) {
+                    transparency->setValue(50);
+                }
+            }
+        }
     }
     else {
         assemblyPart->redrawJointPlacements(assemblyPart->getJoints());

@@ -292,9 +292,9 @@ void AssemblyObject::preDrag(
 )
 {
     // Clean up previous drag objects if they were left behind
-    if (dragTargetBox) {
-        getDocument()->removeObject(dragTargetBox->getNameInDocument());
-        dragTargetBox = nullptr;
+    if (dragTarget) {
+        getDocument()->removeObject(dragTarget->getNameInDocument());
+        dragTarget = nullptr;
     }
 
     bundleFixed = true;
@@ -335,26 +335,18 @@ void AssemblyObject::preDrag(
     // Compute camera-aligned rotation from cameraViewDir
     dragCameraRotation = cameraAlignedRotation(cameraViewDir);
 
-    // Create visualization box at pick point
-    dragTargetBox = getDocument()->addObject("Part::Box", "DragTarget");
-    auto* len = dynamic_cast<App::PropertyFloat*>(dragTargetBox->getPropertyByName("Length"));
-    auto* wid = dynamic_cast<App::PropertyFloat*>(dragTargetBox->getPropertyByName("Width"));
-    auto* hgt = dynamic_cast<App::PropertyFloat*>(dragTargetBox->getPropertyByName("Height"));
-    if (len) {
-        len->setValue(10.0);
-    }
-    if (wid) {
-        wid->setValue(10.0);
-    }
-    if (hgt) {
-        hgt->setValue(10.0);
+    // Create visualization sphere at pick point
+    dragTarget = getDocument()->addObject("Part::Sphere", "DragTarget");
+    auto* rad = dynamic_cast<App::PropertyFloat*>(dragTarget->getPropertyByName("Radius"));
+    if (rad) {
+        rad->setValue(5.0);
     }
 
-    // Position centered on pick point, oriented to camera plane
-    Base::Vector3d boxCenter = pickPoint - dragCameraRotation.multVec(Base::Vector3d(5, 5, 0));
-    dragTargetBox->getPlacementProperty()->setValue(Base::Placement(boxCenter, dragCameraRotation));
-    addObject(dragTargetBox);
-    dragTargetBox->purgeTouched();
+    // Position centered on pick point
+    dragTarget->getPlacementProperty()->setValue(Base::Placement(pickPoint, Base::Rotation()));
+    addObject(dragTarget);
+    dragTarget->recomputeFeature();
+    dragTarget->purgeTouched();
 
     // Pass drag context to solver (creates mouse body + constraint)
     Solver::Assembly::DragContext ctx;
@@ -369,11 +361,10 @@ void AssemblyObject::preDrag(
 
 void AssemblyObject::doDragStep(Base::Vector3d mousePos3D)
 {
-    // Update visualization box to follow mouse
-    if (dragTargetBox) {
-        Base::Vector3d boxCenter = mousePos3D - dragCameraRotation.multVec(Base::Vector3d(5, 5, 0));
-        dragTargetBox->getPlacementProperty()->setValue(Base::Placement(boxCenter, dragCameraRotation));
-        dragTargetBox->purgeTouched();
+    // Update visualization sphere to follow mouse
+    if (dragTarget) {
+        dragTarget->getPlacementProperty()->setValue(Base::Placement(mousePos3D, Base::Rotation()));
+        dragTarget->purgeTouched();
     }
 
     try {
@@ -442,9 +433,9 @@ void AssemblyObject::postDrag()
 {
     assembly->postDrag();
 
-    if (dragTargetBox) {
-        getDocument()->removeObject(dragTargetBox->getNameInDocument());
-        dragTargetBox = nullptr;
+    if (dragTarget) {
+        getDocument()->removeObject(dragTarget->getNameInDocument());
+        dragTarget = nullptr;
     }
 
     purgeTouched();

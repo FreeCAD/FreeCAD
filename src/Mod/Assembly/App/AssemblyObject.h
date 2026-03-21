@@ -93,6 +93,10 @@ public:
         App::DocumentObject* movingJoint = nullptr
     );
     void doDragStep(Base::Vector3d mousePos3D);
+    App::DocumentObject* getDragTarget() const
+    {
+        return dragTarget;
+    }
     void postDrag();
     void savePlacementsForUndo();
     void undoSolve();
@@ -264,7 +268,7 @@ private:
     std::unordered_map<App::DocumentObject*, PartData> objectPartMap;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
     std::vector<App::DocumentObject*> draggedParts;
-    App::DocumentObject* dragTargetBox = nullptr;
+    App::DocumentObject* dragTarget = nullptr;
     Base::Rotation dragCameraRotation;
     std::vector<App::DocumentObject*> motions;
 
