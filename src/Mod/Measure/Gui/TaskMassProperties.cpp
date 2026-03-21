@@ -115,9 +115,17 @@ public:
 }  // namespace MassPropertiesGui
 
 MassPropertiesData currentInfo;
-std::string currentMode = "Center of gravity";
+MassPropertiesMode currentMode = MassPropertiesMode::CenterOfGravity;
 App::DocumentObject* currentDatum = nullptr;
 std::vector<std::tuple<std::string, std::string, std::string>> savedSelection;
+
+enum UnitsComboIndex
+{
+    UnitsInternal = 0,
+    UnitsMks = 1,
+    UnitsImperial = 2,
+    UnitsImperialCivil = 3
+};
 
 static int getPreferredUnitsSchemaIndex()
 {
@@ -151,15 +159,15 @@ static int getUnitsComboIndex(int schemaIndex)
     }
 
     if (lengthUnit == "m") {
-        return 1;
+        return UnitsMks;
     }
     if (lengthUnit == "in") {
-        return 2;
+        return UnitsImperial;
     }
     if (lengthUnit == "ft") {
-        return 3;
+        return UnitsImperialCivil;
     }
-    return 0;
+    return UnitsInternal;
 }
 
 static int findUnitsSchemaIndex(const char* schemaName, int fallbackSchemaIndex)
@@ -177,11 +185,11 @@ static int findUnitsSchemaIndex(const char* schemaName, int fallbackSchemaIndex)
 static int getUnitsSchemaIndex(int comboIndex, int preferredSchemaIndex)
 {
     switch (comboIndex) {
-        case 1:
+        case UnitsMks:
             return findUnitsSchemaIndex("MKS", preferredSchemaIndex);
-        case 2:
+        case UnitsImperial:
             return findUnitsSchemaIndex("Imperial", preferredSchemaIndex);
-        case 3:
+        case UnitsImperialCivil:
             return findUnitsSchemaIndex("ImperialCivil", preferredSchemaIndex);
         default:
             return findUnitsSchemaIndex("Internal", preferredSchemaIndex);
@@ -194,7 +202,7 @@ TaskMassProperties::TaskMassProperties()
     , selectingCustomCoordSystem(false)
 {
     currentInfo = MassPropertiesData {};
-    currentMode = "Center of gravity";
+    currentMode = MassPropertiesMode::CenterOfGravity;
     currentDatum = nullptr;
     hasCurrentDatumPlacement = false;
 
@@ -212,12 +220,12 @@ TaskMassProperties::TaskMassProperties()
     connect(panel->shortcutQuit, &QShortcut::activated, this, &TaskMassProperties::escape);
     connect(panel->ui.centerOfGravityRadioButton, &QRadioButton::toggled, this, [this](bool checked) {
         if (checked) {
-            onCoordinateSystemChanged("Center of gravity");
+            onCoordinateSystemChanged(MassPropertiesMode::CenterOfGravity);
         }
     });
     connect(panel->ui.customRadioButton, &QRadioButton::toggled, this, [this](bool checked) {
         if (checked) {
-            onCoordinateSystemChanged("Custom");
+            onCoordinateSystemChanged(MassPropertiesMode::Custom);
         }
     });
     connect(
@@ -456,7 +464,7 @@ void TaskMassProperties::onSelectionChanged(const Gui::SelectionChanges& msg)
 void TaskMassProperties::update(const Gui::SelectionChanges& msg)
 {
     try {
-        tryupdate();
+        tryUpdate();
     }
     catch (const Base::Exception& e) {
         Base::Console().error("Mass Properties update failed: %s\n", e.what());
@@ -467,7 +475,7 @@ void TaskMassProperties::update(const Gui::SelectionChanges& msg)
 }
 
 
-void TaskMassProperties::tryupdate()
+void TaskMassProperties::tryUpdate()
 {
     if (isUpdating) {
         return;
@@ -586,7 +594,7 @@ void TaskMassProperties::tryupdate()
             }
 
             isUpdating = false;
-            tryupdate();
+            tryUpdate();
 
             return;
         }
@@ -821,7 +829,7 @@ void TaskMassProperties::tryupdate()
                 }
                 savedSelection.clear();
                 isUpdating = false;
-                tryupdate();
+                tryUpdate();
                 return;
             }
         }
@@ -880,7 +888,7 @@ void TaskMassProperties::tryupdate()
         }
 
         if (isReferenceObject(coordSystem)) {
-            if (currentMode == "Custom" && !selectingCustomCoordSystem) {
+            if (currentMode == MassPropertiesMode::Custom && !selectingCustomCoordSystem) {
                 currentDatum = coordSystem;
                 currentDatumPlacement
                     = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
@@ -929,14 +937,14 @@ void TaskMassProperties::tryupdate()
         }
     }
 
-    if (currentMode == "Custom") {
+    if (currentMode == MassPropertiesMode::Custom) {
         referenceDatum = currentDatum;
     }
     else {
         panel->ui.customEdit->clear();
     }
 
-    if (currentMode == "Custom" && !referenceDatum) {
+    if (currentMode == MassPropertiesMode::Custom && !referenceDatum) {
         this->clearUiFields();
         this->removeTemporaryObjects();
         return;
@@ -968,7 +976,7 @@ void TaskMassProperties::tryupdate()
 
     currentInfo = info;
 
-    if (currentMode == "Custom" && referenceDatum) {
+    if (currentMode == MassPropertiesMode::Custom && referenceDatum) {
         auto applyOriginOffset = [&](const Base::Vector3d& originPos) {
             info.cog -= originPos;
             info.cov -= originPos;
@@ -999,8 +1007,7 @@ void TaskMassProperties::tryupdate()
     auto setText =
         [&](QLineEdit* edit, const Base::Quantity& quantity, const QString& suffix = QString()) {
             Base::Quantity q(quantity);
-            if (q.getValue() < Base::Precision::Confusion()
-                && q.getValue() > -Base::Precision::Confusion()) {
+            if (std::fabs(q.getValue()) < Base::Precision::Confusion()) {
                 q.setValue(0.0);
             }
             Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals);
@@ -1056,7 +1063,7 @@ void TaskMassProperties::tryupdate()
 
 void TaskMassProperties::updateInertiaVisibility()
 {
-    const bool hasAxisSelection = currentMode == "Custom" && currentDatum
+    const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && currentDatum
         && currentDatum->isDerivedFrom<App::Line>();
 
     panel->ui.inertiaMatrixWidget->setVisible(!hasAxisSelection);
@@ -1203,10 +1210,10 @@ void TaskMassProperties::onSelectCustomCoordinateSystem()
     }
 }
 
-void TaskMassProperties::onCoordinateSystemChanged(std::string coordSystem)
+void TaskMassProperties::onCoordinateSystemChanged(MassPropertiesMode coordSystemMode)
 {
-    currentMode = coordSystem;
-    if (currentMode != "Custom") {
+    currentMode = coordSystemMode;
+    if (currentMode != MassPropertiesMode::Custom) {
         selectingCustomCoordSystem = false;
         currentDatum = nullptr;
         hasCurrentDatumPlacement = false;
@@ -1220,14 +1227,15 @@ void TaskMassProperties::onCoordinateSystemChanged(std::string coordSystem)
     }
 
     updateInertiaVisibility();
-    tryupdate();
+    tryUpdate();
 }
 
 void TaskMassProperties::saveResult()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
 
-    if (!doc || panel->ui.objectList->count() == 0 || (currentMode == "Custom" && !currentDatum)) {
+    if (!doc || panel->ui.objectList->count() == 0
+        || (currentMode == MassPropertiesMode::Custom && !currentDatum)) {
         return;
     }
 
@@ -1251,8 +1259,7 @@ void TaskMassProperties::saveResult()
 
     auto setQuantity = [&](const char* name, const Base::Quantity& quantity) {
         Base::Quantity q(quantity);
-        if (q.getValue() < Base::Precision::Confusion()
-            && q.getValue() > -Base::Precision::Confusion()) {
+        if (std::fabs(q.getValue()) < Base::Precision::Confusion()) {
             q.setValue(0.0);
         }
         auto* prop = freecad_cast<App::PropertyString*>(
@@ -1298,7 +1305,7 @@ void TaskMassProperties::saveResult()
         }
     };
 
-    setString("Mode", currentMode);
+    setString("Mode", currentMode == MassPropertiesMode::Custom ? "Custom" : "Center of gravity");
 
     setQuantity("Volume", currentInfo.volume);
     setQuantity("Mass", currentInfo.mass);

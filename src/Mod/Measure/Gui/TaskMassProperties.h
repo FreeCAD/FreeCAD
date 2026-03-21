@@ -60,7 +60,7 @@ public:
 
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void update(const Gui::SelectionChanges& msg);
-    void tryupdate();
+    void tryUpdate();
 
     void createDatum(const Base::Vector3d& position, const std::string& name, bool removeExisting = true);
     void createLCS(std::string name, bool removeExisting = true);
@@ -68,7 +68,7 @@ public:
     void onCogDatumButtonPressed();
     void onCovDatumButtonPressed();
     void onLcsButtonPressed();
-    void onCoordinateSystemChanged(std::string coordSystem);
+    void onCoordinateSystemChanged(MassPropertiesMode coordSystemMode);
     void onSelectCustomCoordinateSystem();
     void updateInertiaVisibility();
 

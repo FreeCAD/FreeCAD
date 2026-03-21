@@ -53,7 +53,7 @@
 
 MassPropertiesData CalculateMassProperties(
     const std::vector<MassPropertiesInput>& objects,
-    std::string& mode,
+    MassPropertiesMode mode,
     const App::DocumentObject* referenceDatum,
     const Base::Placement* referencePlacement
 )
@@ -78,10 +78,11 @@ MassPropertiesData CalculateMassProperties(
 
         TopoDS_Shape shape = object.shape;
         if (shape.IsNull()) {
-            if (!obj || !obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            auto* part = freecad_cast<Part::Feature*>(obj);
+            if (!part) {
                 continue;
             }
-            Part::Feature* part = static_cast<Part::Feature*>(obj);
+
             shape = part->Shape.getShape().getShape();
         }
 
@@ -101,8 +102,8 @@ MassPropertiesData CalculateMassProperties(
             std::unordered_set<App::DocumentObject*> visited;
 
             while (candidate && visited.insert(candidate).second) {
-                if (candidate->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                    return static_cast<Part::Feature*>(candidate);
+                if (auto* feature = freecad_cast<Part::Feature*>(candidate)) {
+                    return feature;
                 }
 
                 App::DocumentObject* linked = candidate->getLinkedObject(true);
@@ -119,18 +120,18 @@ MassPropertiesData CalculateMassProperties(
 
         Materials::Material mat;
 
-        const QString densityStr = QStringLiteral("Density");
+        const QString densityMaterialProperty = QStringLiteral("Density");
 
         if (part) {
             mat = part->ShapeMaterial.getValue();
         }
-        if (mat.hasPhysicalProperty(densityStr)) {
+        if (mat.hasPhysicalProperty(densityMaterialProperty)) {
             try {
                 if (mat.getName() == QStringLiteral("Default")) {
                     density = 1.0e-6;
                 }
                 else {
-                    density = mat.getPhysicalQuantity(densityStr).getValue();
+                    density = mat.getPhysicalQuantity(densityMaterialProperty).getValue();
                 }
             }
             catch (...) {
@@ -171,18 +172,15 @@ MassPropertiesData CalculateMassProperties(
             = Base::Quantity(data.mass.getValue() / data.volume.getValue(), Base::Unit::Density);
     }
 
-    gp_Pnt cog = globalMassProps.CentreOfMass();
-    data.cog = Base::convertTo<Base::Vector3d>(cog);
-
-    gp_Pnt cov = globalVolumeProps.CentreOfMass();
-    data.cov = Base::convertTo<Base::Vector3d>(cov);
+    data.cog = Base::convertTo<Base::Vector3d>(globalMassProps.CentreOfMass());
+    data.cov = Base::convertTo<Base::Vector3d>(globalVolumeProps.CentreOfMass());
 
 
     gp_Mat inertia = globalMassProps.MatrixOfInertia();
 
     GProp_PrincipalProps principal;
 
-    if (mode == "Center of gravity") {
+    if (mode == MassPropertiesMode::CenterOfGravity) {
         data.inertiaJo = Base::Vector3d(inertia(1, 1), inertia(2, 2), inertia(3, 3));
         data.inertiaJCross = Base::Vector3d(inertia(1, 2), inertia(1, 3), inertia(2, 3));
 
@@ -238,7 +236,7 @@ MassPropertiesData CalculateMassProperties(
             axisMoment(data.principalAxisZ)
         );
     }
-    else if (mode == "Custom") {
+    else if (mode == MassPropertiesMode::Custom) {
         if (!referenceDatum) {
             return data;
         }
@@ -287,7 +285,7 @@ MassPropertiesData CalculateMassProperties(
         }
 
         if (!lcs) {
-            lcs = dynamic_cast<const App::LocalCoordinateSystem*>(referenceDatum);
+            lcs = freecad_cast<const App::LocalCoordinateSystem*>(referenceDatum);
             if (!lcs) {
                 return data;
             }

@@ -71,9 +71,15 @@ struct MeasureExport MassPropertiesInput
     Base::Placement placement;
 };
 
+enum class MassPropertiesMode
+{
+    CenterOfGravity,
+    Custom
+};
+
 MeasureExport MassPropertiesData CalculateMassProperties(
     const std::vector<MassPropertiesInput>& objects,
-    std::string& mode,
+    MassPropertiesMode mode,
     App::DocumentObject const* referenceDatum,
     const Base::Placement* referencePlacement = nullptr
 );
