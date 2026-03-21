@@ -363,10 +363,14 @@ void AssemblyObject::preDrag(
     dragCameraRotation = cameraAlignedRotation(cameraViewDir);
 
     // Create visualization sphere at pick point
+    ParameterGrp::handle hGrp2 = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly"
+    );
+    double sphereRadius = hGrp2->GetFloat("DragTargetSphereRadius", 5.0);
     dragTarget = getDocument()->addObject("Part::Sphere", "DragTarget");
     auto* rad = dynamic_cast<App::PropertyFloat*>(dragTarget->getPropertyByName("Radius"));
     if (rad) {
-        rad->setValue(5.0);
+        rad->setValue(sphereRadius);
     }
 
     // Position centered on pick point

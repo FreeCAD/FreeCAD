@@ -913,7 +913,10 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts, B
         sys->AddLink(mouseLink);
 
         // Tight compliance so the constraint has real influence on the solve
-        double cfm = 1e-4;
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Assembly/ChronoSolver"
+        );
+        double cfm = hGrp->GetFloat("MouseConstraintCompliance", 1e-4);
         auto& mask = mouseLink->GetMask();
         for (unsigned int i = 0; i < mask.GetNumConstraints(); i++) {
             mask.GetConstraint(i).SetComplianceTerm(cfm);
@@ -991,7 +994,10 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts, B
                 auto angle = tangentDisp / rLen;
 
                 // Cap per-step rotation to prevent solver divergence
-                constexpr double maxAnglePerStep = 0.05;  // ~3 degrees
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                    "User parameter:BaseApp/Preferences/Mod/Assembly/ChronoSolver"
+                );
+                double maxAnglePerStep = hGrp->GetFloat("MaxRotationPerStep", 0.05);  // ~3 degrees
                 angle = std::clamp(angle, -maxAnglePerStep, maxAnglePerStep);
 
                 // Clamp to joint limits if available
@@ -1026,7 +1032,10 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts, B
             auto axialDisp = displacement.Dot(jAxis);
 
             // Cap per-step translation to prevent solver divergence
-            constexpr double maxTransPerStep = 20.0;  // 20mm
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Assembly/ChronoSolver"
+            );
+            double maxTransPerStep = hGrp->GetFloat("MaxTranslationPerStep", 20.0);  // 20mm
             axialDisp = std::clamp(axialDisp, -maxTransPerStep, maxTransPerStep);
 
             // Clamp to joint limits if available
@@ -1054,8 +1063,13 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts, B
 
     // Check if assembly joints started failing — if so, we've hit a kinematic limit
     {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Assembly/ChronoSolver"
+        );
+
         bool jointsBroken = false;
         double maxJointViolation = 0;
+        double violationTolerance = hGrp->GetFloat("JointViolationTolerance", 1.0);
 
         for (const auto& link : sys->GetLinks()) {
             // Skip the mouse constraint itself
@@ -1065,7 +1079,7 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts, B
             auto violation = link->GetConstraintViolation();
             double vNorm = violation.norm();
             maxJointViolation = std::max(maxJointViolation, vNorm);
-            if (vNorm > 1.0) {  // 1mm tolerance for joint violations
+            if (vNorm > violationTolerance) {  // tolerance for joint violations (mm)
                 jointsBroken = true;
             }
         }
@@ -1085,11 +1099,11 @@ void ChronoAssembly::dragStep(std::vector<std::shared_ptr<Part>> draggedParts, B
 
             if (nli.limitClass == LimitClass::ROTATION_LIMIT) {
                 currentVal = lnk->GetRelAngle();
-                tolerance = 0.5;  // ~29 deg; solver overshoots up to 0.37 rad/step
+                tolerance = hGrp->GetFloat("RotationLimitTolerance", 0.5);
             }
             else {
                 currentVal = lnk->GetRelCoordsys().pos.z();
-                tolerance = 50.0;  // 50 mm; solver overshoots up to 16 mm/step
+                tolerance = hGrp->GetFloat("TranslationLimitTolerance", 50.0);
             }
 
             if (nli.hasMin && currentVal < nli.chronoMin - tolerance) {
