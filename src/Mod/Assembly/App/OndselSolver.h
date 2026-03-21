@@ -100,8 +100,8 @@ public:
     int runKinematic() override;
 
     // Interactive drag
-    void preDrag() override;
-    void dragStep(std::vector<std::shared_ptr<Part>> parts) override;
+    void preDrag(const DragContext& ctx) override;
+    void dragStep(std::vector<std::shared_ptr<Part>> parts, Base::Vector3d mousePos3D) override;
     void postDrag() override;
 
     // Simulation parameters
