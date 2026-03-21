@@ -56,6 +56,10 @@ SET(Assembly_SRCS
     BomObject.h
     Groups.cpp
     Groups.h
+    Solver.cpp
+    Solver.h
+    OndselSolver.cpp
+    OndselSolver.h
     ${Module_SRCS}
     ${Python_SRCS}
 )
@@ -69,6 +73,11 @@ target_include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+if(WIN32)
+    target_compile_definitions(Assembly PRIVATE _USE_MATH_DEFINES)
+endif(WIN32)
+
 target_link_libraries(Assembly ${Assembly_LIBS})
 target_compile_warn_error(Assembly)
 

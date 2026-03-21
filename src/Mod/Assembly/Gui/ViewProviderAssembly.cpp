@@ -352,6 +352,9 @@ void ViewProviderAssembly::unsetEdit(int mode)
         // Check if the view is still active before trying to deactivate the assembly.
         auto activeView = getDocument()->getActiveView();
         if (!activeView) {
+            QObject::disconnect(workbenchConnection);
+            connectSolverUpdate.disconnect();
+            connectActivatedVP.disconnect();
             return;
         }
 
@@ -368,6 +371,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
 
         updateTaskPanel(false);
 
+        QObject::disconnect(workbenchConnection);
         connectSolverUpdate.disconnect();
         connectActivatedVP.disconnect();
 
