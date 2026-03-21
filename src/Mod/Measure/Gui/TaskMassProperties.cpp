@@ -999,7 +999,8 @@ void TaskMassProperties::tryupdate()
     auto setText =
         [&](QLineEdit* edit, const Base::Quantity& quantity, const QString& suffix = QString()) {
             Base::Quantity q(quantity);
-            if (q.getValue() < Base::Precision::Confusion() && q.getValue() > -Base::Precision::Confusion()) {
+            if (q.getValue() < Base::Precision::Confusion()
+                && q.getValue() > -Base::Precision::Confusion()) {
                 q.setValue(0.0);
             }
             Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals);
@@ -1070,9 +1071,11 @@ void TaskMassProperties::updateInertiaVisibility()
     panel->ui.inertiaPrincipalLabel->setVisible(!hasAxisSelection);
 }
 
-void TaskMassProperties::createDatum(const Base::Vector3d& position,
-                                     const std::string& name,
-                                     bool removeExisting)
+void TaskMassProperties::createDatum(
+    const Base::Vector3d& position,
+    const std::string& name,
+    bool removeExisting
+)
 {
     if (isUpdating && removeExisting) {
         return;
@@ -1248,7 +1251,8 @@ void TaskMassProperties::saveResult()
 
     auto setQuantity = [&](const char* name, const Base::Quantity& quantity) {
         Base::Quantity q(quantity);
-        if (q.getValue() < Base::Precision::Confusion() && q.getValue() > -Base::Precision::Confusion()) {
+        if (q.getValue() < Base::Precision::Confusion()
+            && q.getValue() > -Base::Precision::Confusion()) {
             q.setValue(0.0);
         }
         auto* prop = freecad_cast<App::PropertyString*>(

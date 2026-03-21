@@ -134,7 +134,9 @@ MassPropertiesData CalculateMassProperties(
                 }
             }
             catch (...) {
-                Base::Console().message("Error retrieving density from material. Using default value.\n");
+                Base::Console().message(
+                    "Error retrieving density from material. Using default value.\n"
+                );
                 density = 1.0e-6;
             }
         }
@@ -165,10 +167,8 @@ MassPropertiesData CalculateMassProperties(
     data.surfaceArea = Base::Quantity(globalSurfaceProps.Mass(), Base::Unit::Area);
 
     if (data.volume.getValue() > 0.0) {
-        data.density = Base::Quantity(
-            data.mass.getValue() / data.volume.getValue(),
-            Base::Unit::Density
-        );
+        data.density
+            = Base::Quantity(data.mass.getValue() / data.volume.getValue(), Base::Unit::Density);
     }
 
     gp_Pnt cog = globalMassProps.CentreOfMass();
@@ -263,7 +263,11 @@ MassPropertiesData CalculateMassProperties(
                 axisDir.Normalize();
             }
 
-            Base::Vector3d r(data.cog.x - axisOrigin.x, data.cog.y - axisOrigin.y, data.cog.z - axisOrigin.z);
+            Base::Vector3d r(
+                data.cog.x - axisOrigin.x,
+                data.cog.y - axisOrigin.y,
+                data.cog.z - axisOrigin.z
+            );
 
             double projection = r.Dot(axisDir);
             Base::Vector3d parallel = axisDir * projection;
