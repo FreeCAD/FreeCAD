@@ -47,8 +47,7 @@
 #include "AssemblyObjectPy.h"
 #include "AssemblyUtils.h"
 #include "JointGroup.h"
-#include "ChronoSolver.h"
-#include "OndselSolver.h"
+#include "SolverRegistry.h"
 #include "ViewGroup.h"
 
 FC_LOG_LEVEL_INIT("Assembly", true, true, true)
@@ -72,16 +71,39 @@ AssemblyObject::AssemblyObject()
     , lastHasMalformedConstraints(false)
     , lastSolverStatus(0)
 {
-    // TODO: replace with user/addon configuration to support alternative solvers
-    // solver = std::make_shared<Solver::ChronoSolver>(this);
-    solver = std::make_shared<Solver::OndselSolver>(this);
-    assembly = solver->makeAssembly();
+    resetSolver();
 
     lastDoF = numberOfComponents() * 6;
     signalSolverUpdate();
 }
 
 AssemblyObject::~AssemblyObject() = default;
+
+void AssemblyObject::resetSolver()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly"
+    );
+    std::string solverName = hGrp->GetASCII("SolverBackend", "Ondsel");
+
+    auto& reg = Solver::SolverRegistry::instance();
+    solver = reg.createSolver(solverName, this);
+    if (!solver) {
+        Base::Console().warning(
+            "Assembly: Solver '%s' not available — falling back to '%s'\n",
+            solverName.c_str(),
+            reg.getDefaultSolverName().c_str()
+        );
+        solver = reg.createSolver(reg.getDefaultSolverName(), this);
+    }
+    if (!solver) {
+        FC_ERR("Assembly: No solver backend available (requested '" << solverName << "')");
+        return;
+    }
+    assembly = solver->makeAssembly();
+
+    Base::Console().log("Assembly: Using solver '%s'\n", solverName.c_str());
+}
 
 PyObject* AssemblyObject::getPyObject()
 {
@@ -236,8 +258,13 @@ int AssemblyObject::generateSimulation(App::DocumentObject* sim)
     try {
         assembly->runKinematic();
     }
+    catch (const std::exception& e) {
+        FC_WARN("Generation of simulation failed: " << e.what());
+        motions.clear();
+        return -1;
+    }
     catch (...) {
-        Base::Console().error("Generation of simulation failed\n");
+        FC_WARN("Generation of simulation failed: unhandled exception");
         motions.clear();
         return -1;
     }
@@ -423,7 +450,7 @@ bool AssemblyObject::validateNewPlacements()
                 }
 
                 if (!oldPlc.isSame(newPlacement, Precision::Confusion())) {
-                    Base::Console().log(
+                    Base::Console().warning(
                         "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
                         obj->getFullLabel()
                     );

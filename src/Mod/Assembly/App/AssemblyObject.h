@@ -83,6 +83,9 @@ public:
     and redraw the joints. Args: enableRedo stores initial positions to enable undo while being in
     an active transaction (joint creation). */
     int solve(bool enableRedo = false);
+    /// Re-read the SolverBackend preference and recreate the solver + assembly.
+    /// Call after the preference changes to switch solvers on open assemblies.
+    void resetSolver();
     int generateSimulation(App::DocumentObject* sim);
     int updateForFrame(size_t index);
     size_t numberOfFrames();
