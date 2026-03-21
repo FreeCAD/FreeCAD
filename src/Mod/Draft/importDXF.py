@@ -94,10 +94,6 @@ try:
     mesh_available = True
 except ImportError:
     mesh_available = False
-    FCC.PrintWarning(
-        "Draft: The Mesh module is not available. "
-        "DXF features that require Mesh will be disabled.\n"
-    )
 
 gui = FreeCAD.GuiUp
 draftui = None
