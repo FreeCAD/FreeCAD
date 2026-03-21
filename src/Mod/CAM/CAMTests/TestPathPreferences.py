@@ -89,7 +89,9 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
         Then: the posts dir appears in searchPathsPost() and the machines dir
               is registered in MachineFactory._addon_machine_dirs
         """
-        import tempfile, os, pathlib
+        import tempfile
+        import os
+        import pathlib
         from Machine.models.machine import MachineFactory
 
         with tempfile.TemporaryDirectory() as addon_root:
