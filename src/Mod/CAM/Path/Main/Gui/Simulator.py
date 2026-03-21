@@ -336,7 +336,7 @@ class PathSimulation:
                 else:
                     da = -((-da) % (2 * math.pi))
                 r = math.sqrt((cmd.i or 0) ** 2 + (cmd.j or 0) ** 2)
-                n = math.ceil(math.sqrt(r / self.resolution * da * da))
+                n = math.ceil(round(math.sqrt(r / self.resolution * da * da), 6))
                 da = da / n
                 dz = (cmd.z - self.curpos.Base.z) / n
                 cmd.Name = "G1"
