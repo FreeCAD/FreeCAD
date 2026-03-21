@@ -711,7 +711,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
             # Split depth by step down
             work_distance = obj.StartDepth.Value - obj.FinalDepth.Value
-            iters = math.ceil(round(work_distance / obj.StepDown.Value, 6))
+            iters = Path.Geom.ceil(work_distance / obj.StepDown.Value)
             centerTop = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             centerBottom = FreeCAD.Vector(centerTop.x, centerTop.y, centerTop.z)
             retractDistance = safeHeight - obj.StartDepth.Value
