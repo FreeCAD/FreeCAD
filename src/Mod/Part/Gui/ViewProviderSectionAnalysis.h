@@ -79,6 +79,7 @@ private:
     void removeClipPlane();
     void updateClipPlaneEquation();
     void updatePlaneVisual();
+    void updateHatchProjection();
 
     SoSwitch* pcPlaneSwitch = nullptr;
     SoSeparator* pcPlaneRoot = nullptr;
@@ -92,7 +93,7 @@ private:
     SoTexture2* pcHatchTexture = nullptr;
     SoTextureCoordinatePlane* pcHatchCoordGen = nullptr;
     bool clipInstalled = false;
-    bool hatchEnabled = false;
+    bool hatchEnabled = true;
     std::vector<App::DocumentObject*> clippedObjects;
 };
 

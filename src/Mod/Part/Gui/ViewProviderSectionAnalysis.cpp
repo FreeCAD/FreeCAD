@@ -139,12 +139,13 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     pcPlaneSwitch->whichChild = SO_SWITCH_ALL;
     pcRoot->addChild(pcPlaneSwitch);
 
-    // Create hatching texture — single-direction diagonal lines
+    // Create hatching texture — 45° diagonal lines per ISO 128-50.
+    // Large texture + binary alpha for crisp lines.
     pcHatchTexture = new SoTexture2();
     pcHatchTexture->ref();
     {
-        const int sz = 64;
-        const int spacing = 6;
+        const int sz = 256;
+        const int spacing = 64;
         const int lineWidth = 1;
         unsigned char* img = new unsigned char[sz * sz * 4];
         std::memset(img, 0, sz * sz * 4);
@@ -153,10 +154,10 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
                 int idx = (y * sz + x) * 4;
                 int diag = (x + y) % spacing;
                 if (diag < lineWidth) {
-                    img[idx] = 20;
-                    img[idx + 1] = 20;
-                    img[idx + 2] = 20;
-                    img[idx + 3] = 160;
+                    img[idx] = 0;
+                    img[idx + 1] = 0;
+                    img[idx + 2] = 0;
+                    img[idx + 3] = 180;
                 }
             }
         }
@@ -167,14 +168,12 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
         delete[] img;
     }
 
-    // Auto-generate texture coordinates by projecting onto a plane
-    // This maps the hatch pattern in world space at a fixed scale
+    // Auto-generate texture coordinates by projecting onto the cutting plane.
+    // directionS/T are updated in updateHatchProjection() to match the
+    // current normal so the 45° pattern is always correct.
     pcHatchCoordGen = new SoTextureCoordinatePlane();
     pcHatchCoordGen->ref();
-    // 1 texture repeat per 5mm — wider spacing for cleaner look
-    float scale = 1.0f / 5.0f;
-    pcHatchCoordGen->directionS.setValue(SbVec3f(scale, 0, 0));
-    pcHatchCoordGen->directionT.setValue(SbVec3f(0, scale, 0));
+    updateHatchProjection();
 
     // Create the clip plane node (not yet inserted into source VP)
     pcClipPlane = new SoClipPlane();
@@ -379,6 +378,40 @@ void ViewProviderSectionAnalysis::updatePlaneVisual()
     pcPlaneBorderLines->coordIndex.setValues(0, 6, borderIndices);
 }
 
+void ViewProviderSectionAnalysis::updateHatchProjection()
+{
+    if (!pcHatchCoordGen) {
+        return;
+    }
+
+    auto* feat = getObject<Part::SectionAnalysis>();
+    Base::Vector3d n(0, 0, 1);
+    if (feat) {
+        n = feat->PlaneNormal.getValue();
+        double len = n.Length();
+        if (len > 1e-10) {
+            n = n / len;
+        }
+    }
+
+    // Build orthonormal frame on the cutting plane
+    Base::Vector3d u, v;
+    if (std::abs(n.x) < 0.9) {
+        u = Base::Vector3d(1, 0, 0).Cross(n);
+    }
+    else {
+        u = Base::Vector3d(0, 1, 0).Cross(n);
+    }
+    u.Normalize();
+    v = n.Cross(u);
+    v.Normalize();
+
+    // 1 texture repeat per 8mm — gives ~1 line every 2mm
+    float scale = 1.0f / 8.0f;
+    pcHatchCoordGen->directionS.setValue(SbVec3f(u.x * scale, u.y * scale, u.z * scale));
+    pcHatchCoordGen->directionT.setValue(SbVec3f(v.x * scale, v.y * scale, v.z * scale));
+}
+
 void ViewProviderSectionAnalysis::setHatching(bool on)
 {
     hatchEnabled = on;
@@ -453,6 +486,11 @@ void ViewProviderSectionAnalysis::unsetEditViewer(Gui::View3DInventorViewer* vie
 void ViewProviderSectionAnalysis::show()
 {
     installClipPlane();
+    updatePlaneVisual();
+    updateHatchProjection();
+    if (hatchEnabled) {
+        setHatching(true);
+    }
     if (pcPlaneSwitch) {
         pcPlaneSwitch->whichChild = SO_SWITCH_ALL;
     }
@@ -480,6 +518,9 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
     if (prop == &feat->PlaneNormal || prop == &feat->PlaneOffset || prop == &feat->FlipCut) {
         updateClipPlaneEquation();
         updatePlaneVisual();
+        if (prop == &feat->PlaneNormal) {
+            updateHatchProjection();
+        }
     }
 
     if (prop == &feat->Source) {
@@ -490,10 +531,17 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
         updatePlaneVisual();
     }
 
-    // After a shape recompute, the face set geometry is rebuilt.
-    // Re-insert hatching texture nodes so they stay in front of the face set.
-    if (prop == &feat->Shape && hatchEnabled) {
-        setHatching(true);
+    // After a shape recompute, the face set geometry is rebuilt and all
+    // source shapes are now available (important on document load where
+    // show() runs before the recompute).
+    if (prop == &feat->Shape) {
+        if (!clipInstalled && Visibility.getValue()) {
+            installClipPlane();
+        }
+        updatePlaneVisual();
+        if (hatchEnabled) {
+            setHatching(true);
+        }
     }
 }
 
