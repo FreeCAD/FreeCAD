@@ -31,7 +31,6 @@
 #include <QtWidgets>
 #include <unordered_set>
 #include <sstream>
-#include <iomanip>
 #include <tuple>
 #include <vector>
 
@@ -599,15 +598,15 @@ void TaskMassProperties::tryupdate()
     panel->ui.objectList->clear();
 
     auto coordLabel = [](App::DocumentObject* obj) {
-        if (auto* datum = dynamic_cast<App::DatumElement*>(obj)) {
+        if (auto* datum = freecad_cast<App::DatumElement*>(obj)) {
             if (auto* lcs = datum->getLCS()) {
                 return lcs->getFullLabel();
             }
         }
-        if (auto* lcs = dynamic_cast<App::LocalCoordinateSystem*>(obj)) {
+        if (auto* lcs = freecad_cast<App::LocalCoordinateSystem*>(obj)) {
             return lcs->getFullLabel();
         }
-        if (auto* origin = dynamic_cast<App::Origin*>(obj)) {
+        if (auto* origin = freecad_cast<App::Origin*>(obj)) {
             return origin->getFullLabel();
         }
 
@@ -619,14 +618,14 @@ void TaskMassProperties::tryupdate()
         if (!obj) {
             return false;
         }
-        auto datum = dynamic_cast<App::DatumElement*>(obj);
+        auto datum = freecad_cast<App::DatumElement*>(obj);
         if (datum && datum->getLCS()) {
             return true;
         }
-        if (dynamic_cast<App::LocalCoordinateSystem*>(obj)) {
+        if (freecad_cast<App::LocalCoordinateSystem*>(obj)) {
             return true;
         }
-        if (dynamic_cast<App::Origin*>(obj)) {
+        if (freecad_cast<App::Origin*>(obj)) {
             return true;
         }
         if (obj->getTypeId().getName() == std::string("PartDesign::CoordinateSystem")) {
@@ -640,7 +639,7 @@ void TaskMassProperties::tryupdate()
         if (!obj) {
             return Base::Placement();
         }
-        if (auto* prop = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"))) {
+        if (auto* prop = freecad_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"))) {
             return prop->getValue();
         }
         return Base::Placement();
@@ -715,16 +714,9 @@ void TaskMassProperties::tryupdate()
         App::DocumentObject* materialObj = object ? object : obj;
 
         std::ostringstream key;
-        key << std::fixed << std::setprecision(9) << materialObj->getDocument()->getName() << '|'
-            << materialObj->getNameInDocument() << '|';
+        key << materialObj->getDocument()->getName() << '|' << materialObj->getNameInDocument()
+            << '|' << placement.toMatrix().toString();
 
-        Base::Matrix4D matrix = placement.toMatrix();
-
-        for (int r = 0; r < 4; ++r) {
-            for (int c = 0; c < 4; ++c) {
-                key << matrix[r][c] << ';';
-            }
-        }
         std::string objectKey = key.str();
         if (!objectKeys.insert(objectKey).second) {
             return true;
@@ -965,7 +957,8 @@ void TaskMassProperties::tryupdate()
         hasCurrentDatumPlacement ? &currentDatumPlacement : nullptr
     );
 
-    if (info.volume == 0.0 && info.mass == 0.0 && info.surfaceArea == 0.0) {
+    if (info.volume.getValue() == 0.0 && info.mass.getValue() == 0.0
+        && info.surfaceArea.getValue() == 0.0) {
         this->clearUiFields();
         this->removeTemporaryObjects();
         objectsToMeasure.clear();
@@ -977,13 +970,8 @@ void TaskMassProperties::tryupdate()
 
     if (currentMode == "Custom" && referenceDatum) {
         auto applyOriginOffset = [&](const Base::Vector3d& originPos) {
-            info.cogX -= originPos.x;
-            info.cogY -= originPos.y;
-            info.cogZ -= originPos.z;
-
-            info.covX -= originPos.x;
-            info.covY -= originPos.y;
-            info.covZ -= originPos.z;
+            info.cog -= originPos;
+            info.cov -= originPos;
         };
 
 
@@ -991,15 +979,15 @@ void TaskMassProperties::tryupdate()
             if (hasCurrentDatumPlacement) {
                 applyOriginOffset(currentDatumPlacement.getPosition());
             }
-            else if (auto datum = dynamic_cast<const App::DatumElement*>(referenceDatum)) {
+            else if (auto datum = freecad_cast<const App::DatumElement*>(referenceDatum)) {
                 if (datum->getLCS()) {
                     applyOriginOffset(datum->getBasePoint());
                 }
             }
-            else if (auto lcs = dynamic_cast<const App::LocalCoordinateSystem*>(referenceDatum)) {
+            else if (auto lcs = freecad_cast<const App::LocalCoordinateSystem*>(referenceDatum)) {
                 applyOriginOffset(lcs->Placement.getValue().getPosition());
             }
-            else if (auto origin = dynamic_cast<const App::Origin*>(referenceDatum)) {
+            else if (auto origin = freecad_cast<const App::Origin*>(referenceDatum)) {
                 applyOriginOffset(origin->Placement.getValue().getPosition());
             }
         }
@@ -1009,11 +997,11 @@ void TaskMassProperties::tryupdate()
     const int denominator = Base::UnitsApi::getDenominator();
 
     auto setText =
-        [&](QLineEdit* edit, double value, const Base::Unit& unit, const QString& suffix = QString()) {
-            if (value < Base::Precision::Confusion() && value > -Base::Precision::Confusion()) {
-                value = 0.0;
+        [&](QLineEdit* edit, const Base::Quantity& quantity, const QString& suffix = QString()) {
+            Base::Quantity q(quantity);
+            if (q.getValue() < Base::Precision::Confusion() && q.getValue() > -Base::Precision::Confusion()) {
+                q.setValue(0.0);
             }
-            Base::Quantity q {value, unit};
             Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals);
             format.setDenominator(denominator);
             q.setFormat(format);
@@ -1032,35 +1020,35 @@ void TaskMassProperties::tryupdate()
 
     const QString densitySuffix = objectsToMeasure.size() > 1 ? tr(" (Average)") : QString();
 
-    setText(panel->ui.volumeEdit, info.volume, Base::Unit::Volume);
-    setText(panel->ui.massEdit, info.mass, Base::Unit::Mass);
-    setText(panel->ui.surfaceAreaEdit, info.surfaceArea, Base::Unit::Area);
-    setText(panel->ui.densityEdit, info.density, Base::Unit::Density, densitySuffix);
+    setText(panel->ui.volumeEdit, info.volume);
+    setText(panel->ui.massEdit, info.mass);
+    setText(panel->ui.surfaceAreaEdit, info.surfaceArea);
+    setText(panel->ui.densityEdit, info.density, densitySuffix);
 
-    setText(panel->ui.cogXText, info.cogX, Base::Unit::Length);
-    setText(panel->ui.cogYText, info.cogY, Base::Unit::Length);
-    setText(panel->ui.cogZText, info.cogZ, Base::Unit::Length);
-    setText(panel->ui.covXText, info.covX, Base::Unit::Length);
-    setText(panel->ui.covYText, info.covY, Base::Unit::Length);
-    setText(panel->ui.covZText, info.covZ, Base::Unit::Length);
+    setText(panel->ui.cogXText, Base::Quantity(info.cog.x, Base::Unit::Length));
+    setText(panel->ui.cogYText, Base::Quantity(info.cog.y, Base::Unit::Length));
+    setText(panel->ui.cogZText, Base::Quantity(info.cog.z, Base::Unit::Length));
+    setText(panel->ui.covXText, Base::Quantity(info.cov.x, Base::Unit::Length));
+    setText(panel->ui.covYText, Base::Quantity(info.cov.y, Base::Unit::Length));
+    setText(panel->ui.covZText, Base::Quantity(info.cov.z, Base::Unit::Length));
 
-    setText(panel->ui.inertiaJoxText, info.inertiaJox, Base::Unit::Inertia);
-    setText(panel->ui.inertiaJoyText, info.inertiaJoy, Base::Unit::Inertia);
-    setText(panel->ui.inertiaJozText, info.inertiaJoz, Base::Unit::Inertia);
-    setText(panel->ui.inertiaJxyText, info.inertiaJxy, Base::Unit::Inertia);
-    setText(panel->ui.inertiaJzxText, info.inertiaJzx, Base::Unit::Inertia);
-    setText(panel->ui.inertiaJzyText, info.inertiaJzy, Base::Unit::Inertia);
+    setText(panel->ui.inertiaJoxText, Base::Quantity(info.inertiaJo.x, Base::Unit::Inertia));
+    setText(panel->ui.inertiaJoyText, Base::Quantity(info.inertiaJo.y, Base::Unit::Inertia));
+    setText(panel->ui.inertiaJozText, Base::Quantity(info.inertiaJo.z, Base::Unit::Inertia));
+    setText(panel->ui.inertiaJxyText, Base::Quantity(info.inertiaJCross.x, Base::Unit::Inertia));
+    setText(panel->ui.inertiaJzxText, Base::Quantity(info.inertiaJCross.y, Base::Unit::Inertia));
+    setText(panel->ui.inertiaJzyText, Base::Quantity(info.inertiaJCross.z, Base::Unit::Inertia));
 
-    setText(panel->ui.inertiaJxText, info.inertiaJx, Base::Unit::Inertia);
-    setText(panel->ui.inertiaJyText, info.inertiaJy, Base::Unit::Inertia);
-    setText(panel->ui.inertiaJzText, info.inertiaJz, Base::Unit::Inertia);
-    setText(panel->ui.axisInertiaText, info.axisInertia, Base::Unit::Inertia);
+    setText(panel->ui.inertiaJxText, Base::Quantity(info.inertiaJ.x, Base::Unit::Inertia));
+    setText(panel->ui.inertiaJyText, Base::Quantity(info.inertiaJ.y, Base::Unit::Inertia));
+    setText(panel->ui.inertiaJzText, Base::Quantity(info.inertiaJ.z, Base::Unit::Inertia));
+    setText(panel->ui.axisInertiaText, Base::Quantity(info.axisInertia, Base::Unit::Inertia));
 
     const auto infoSnapshot = currentInfo;
     QTimer::singleShot(0, this, [this, infoSnapshot]() {
         currentInfo = infoSnapshot;
-        createDatum(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ, "Center_of_Gravity");
-        createDatum(currentInfo.covX, currentInfo.covY, currentInfo.covZ, "Center_of_Volume");
+        createDatum(currentInfo.cog, "Center_of_Gravity");
+        createDatum(currentInfo.cov, "Center_of_Volume");
         createLCS("Principal_Axes_LCS");
     });
 }
@@ -1082,7 +1070,9 @@ void TaskMassProperties::updateInertiaVisibility()
     panel->ui.inertiaPrincipalLabel->setVisible(!hasAxisSelection);
 }
 
-void TaskMassProperties::createDatum(double x, double y, double z, const std::string& name, bool removeExisting)
+void TaskMassProperties::createDatum(const Base::Vector3d& position,
+                                     const std::string& name,
+                                     bool removeExisting)
 {
     if (isUpdating && removeExisting) {
         return;
@@ -1101,9 +1091,9 @@ void TaskMassProperties::createDatum(double x, double y, double z, const std::st
         datum = doc->addObject("Part::DatumPoint", name.c_str());
 
         App::Property* baseProp = datum->getPropertyByName("Placement");
-        App::PropertyPlacement* prop = dynamic_cast<App::PropertyPlacement*>(baseProp);
+        App::PropertyPlacement* prop = freecad_cast<App::PropertyPlacement*>(baseProp);
         Base::Placement plm;
-        plm.setPosition(Base::Vector3d(x, y, z));
+        plm.setPosition(position);
         prop->setValue(plm);
 
         doc->commitTransaction();
@@ -1135,9 +1125,9 @@ void TaskMassProperties::createLCS(std::string name, bool removeExisting)
         LCS = doc->addObject("Part::LocalCoordinateSystem", name.c_str());
 
         App::Property* baseProp = LCS->getPropertyByName("Placement");
-        App::PropertyPlacement* prop = dynamic_cast<App::PropertyPlacement*>(baseProp);
+        App::PropertyPlacement* prop = freecad_cast<App::PropertyPlacement*>(baseProp);
         Base::Placement plm;
-        plm.setPosition(Base::Vector3d(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ));
+        plm.setPosition(currentInfo.cog);
 
         Base::Matrix4D mat;
         mat.setToUnity();
@@ -1159,7 +1149,7 @@ void TaskMassProperties::createLCS(std::string name, bool removeExisting)
         prop->setValue(plm);
 
         LCS->Visibility.setValue(true);
-        if (auto* lcsObj = dynamic_cast<App::LocalCoordinateSystem*>(LCS)) {
+        if (auto* lcsObj = freecad_cast<App::LocalCoordinateSystem*>(LCS)) {
             for (auto* plane : lcsObj->planes()) {
                 if (plane) {
                     plane->Visibility.setValue(false);
@@ -1180,12 +1170,12 @@ void TaskMassProperties::createLCS(std::string name, bool removeExisting)
 
 void TaskMassProperties::onCogDatumButtonPressed()
 {
-    createDatum(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ, "Center_of_Gravity", false);
+    createDatum(currentInfo.cog, "Center_of_Gravity", false);
 }
 
 void TaskMassProperties::onCovDatumButtonPressed()
 {
-    createDatum(currentInfo.covX, currentInfo.covY, currentInfo.covZ, "Center_of_Volume", false);
+    createDatum(currentInfo.cov, "Center_of_Volume", false);
 }
 
 void TaskMassProperties::onLcsButtonPressed()
@@ -1242,7 +1232,7 @@ void TaskMassProperties::saveResult()
 
     Measure::Result::init();
 
-    auto group = dynamic_cast<App::DocumentObjectGroup*>(doc->getObject("Measurements"));
+    auto group = freecad_cast<App::DocumentObjectGroup*>(doc->getObject("Measurements"));
 
     if (!group || !group->isValid()) {
         group = doc->addObject<App::DocumentObjectGroup>("Measurements");
@@ -1256,16 +1246,15 @@ void TaskMassProperties::saveResult()
 
     obj->Visibility.setValue(true);
 
-    auto setQuantity = [&](const char* name, double value, const Base::Unit& unit) {
-        if (value < Base::Precision::Confusion() && value > -Base::Precision::Confusion()) {
-            value = 0.0;
+    auto setQuantity = [&](const char* name, const Base::Quantity& quantity) {
+        Base::Quantity q(quantity);
+        if (q.getValue() < Base::Precision::Confusion() && q.getValue() > -Base::Precision::Confusion()) {
+            q.setValue(0.0);
         }
-        auto* prop = dynamic_cast<App::PropertyString*>(
+        auto* prop = freecad_cast<App::PropertyString*>(
             obj->addDynamicProperty("App::PropertyString", name, "MassProperties")
         );
         if (prop) {
-            Base::Quantity q(value, unit);
-
             std::string text;
             auto schema = Base::UnitsApi::createSchema(static_cast<std::size_t>(unitsSchemaIndex));
             if (schema) {
@@ -1286,7 +1275,7 @@ void TaskMassProperties::saveResult()
                 value[i] = 0.0;
             }
         }
-        auto* prop = dynamic_cast<App::PropertyVector*>(
+        auto* prop = freecad_cast<App::PropertyVector*>(
             obj->addDynamicProperty("App::PropertyVector", name, "MassProperties")
         );
         if (prop) {
@@ -1296,7 +1285,7 @@ void TaskMassProperties::saveResult()
     };
 
     auto setString = [&](const char* name, const std::string& value) {
-        auto* prop = dynamic_cast<App::PropertyString*>(
+        auto* prop = freecad_cast<App::PropertyString*>(
             obj->addDynamicProperty("App::PropertyString", name, "MassProperties")
         );
         if (prop) {
@@ -1307,31 +1296,31 @@ void TaskMassProperties::saveResult()
 
     setString("Mode", currentMode);
 
-    setQuantity("Volume", currentInfo.volume, Base::Unit::Volume);
-    setQuantity("Mass", currentInfo.mass, Base::Unit::Mass);
-    setQuantity("Density", currentInfo.density, Base::Unit::Density);
-    setQuantity("SurfaceArea", currentInfo.surfaceArea, Base::Unit::Area);
+    setQuantity("Volume", currentInfo.volume);
+    setQuantity("Mass", currentInfo.mass);
+    setQuantity("Density", currentInfo.density);
+    setQuantity("SurfaceArea", currentInfo.surfaceArea);
 
-    setQuantity("CenterOfGravityX", currentInfo.cogX, Base::Unit::Length);
-    setQuantity("CenterOfGravityY", currentInfo.cogY, Base::Unit::Length);
-    setQuantity("CenterOfGravityZ", currentInfo.cogZ, Base::Unit::Length);
-    setQuantity("CenterOfVolumeX", currentInfo.covX, Base::Unit::Length);
-    setQuantity("CenterOfVolumeY", currentInfo.covY, Base::Unit::Length);
-    setQuantity("CenterOfVolumeZ", currentInfo.covZ, Base::Unit::Length);
+    setQuantity("CenterOfGravityX", Base::Quantity(currentInfo.cog.x, Base::Unit::Length));
+    setQuantity("CenterOfGravityY", Base::Quantity(currentInfo.cog.y, Base::Unit::Length));
+    setQuantity("CenterOfGravityZ", Base::Quantity(currentInfo.cog.z, Base::Unit::Length));
+    setQuantity("CenterOfVolumeX", Base::Quantity(currentInfo.cov.x, Base::Unit::Length));
+    setQuantity("CenterOfVolumeY", Base::Quantity(currentInfo.cov.y, Base::Unit::Length));
+    setQuantity("CenterOfVolumeZ", Base::Quantity(currentInfo.cov.z, Base::Unit::Length));
 
     if (currentInfo.axisInertia != 0.0) {
-        setQuantity("AxisInertia", currentInfo.axisInertia, Base::Unit::Inertia);
+        setQuantity("AxisInertia", Base::Quantity(currentInfo.axisInertia, Base::Unit::Inertia));
     }
     else {
-        setQuantity("InertiaJox", currentInfo.inertiaJox, Base::Unit::Inertia);
-        setQuantity("InertiaJoy", currentInfo.inertiaJoy, Base::Unit::Inertia);
-        setQuantity("InertiaJoz", currentInfo.inertiaJoz, Base::Unit::Inertia);
-        setQuantity("InertiaJxy", currentInfo.inertiaJxy, Base::Unit::Inertia);
-        setQuantity("InertiaJzx", currentInfo.inertiaJzx, Base::Unit::Inertia);
-        setQuantity("InertiaJzy", currentInfo.inertiaJzy, Base::Unit::Inertia);
-        setQuantity("InertiaJx", currentInfo.inertiaJx, Base::Unit::Inertia);
-        setQuantity("InertiaJy", currentInfo.inertiaJy, Base::Unit::Inertia);
-        setQuantity("InertiaJz", currentInfo.inertiaJz, Base::Unit::Inertia);
+        setQuantity("InertiaJox", Base::Quantity(currentInfo.inertiaJo.x, Base::Unit::Inertia));
+        setQuantity("InertiaJoy", Base::Quantity(currentInfo.inertiaJo.y, Base::Unit::Inertia));
+        setQuantity("InertiaJoz", Base::Quantity(currentInfo.inertiaJo.z, Base::Unit::Inertia));
+        setQuantity("InertiaJxy", Base::Quantity(currentInfo.inertiaJCross.x, Base::Unit::Inertia));
+        setQuantity("InertiaJzx", Base::Quantity(currentInfo.inertiaJCross.y, Base::Unit::Inertia));
+        setQuantity("InertiaJzy", Base::Quantity(currentInfo.inertiaJCross.z, Base::Unit::Inertia));
+        setQuantity("InertiaJx", Base::Quantity(currentInfo.inertiaJ.x, Base::Unit::Inertia));
+        setQuantity("InertiaJy", Base::Quantity(currentInfo.inertiaJ.y, Base::Unit::Inertia));
+        setQuantity("InertiaJz", Base::Quantity(currentInfo.inertiaJ.z, Base::Unit::Inertia));
     }
 
 

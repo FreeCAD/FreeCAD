@@ -62,7 +62,7 @@ public:
     void update(const Gui::SelectionChanges& msg);
     void tryupdate();
 
-    void createDatum(double x, double y, double z, const std::string& name, bool removeExisting = true);
+    void createDatum(const Base::Vector3d& position, const std::string& name, bool removeExisting = true);
     void createLCS(std::string name, bool removeExisting = true);
 
     void onCogDatumButtonPressed();

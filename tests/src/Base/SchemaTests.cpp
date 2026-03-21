@@ -634,6 +634,7 @@ TEST_F(SchemaTest, round_trip_test)
         Unit::Work,
         Unit::Power,
         Unit::Moment,
+        Unit::Inertia,
         Unit::SpecificEnergy,
         Unit::ThermalConductivity,
         Unit::ThermalExpansionCoefficient,

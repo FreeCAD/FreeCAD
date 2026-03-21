@@ -29,6 +29,7 @@
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <Base/Placement.h>
+#include <Base/Quantity.h>
 #include <Base/Vector3D.h>
 
 #include <TopoDS_Shape.hxx>
@@ -42,29 +43,19 @@ class DocumentObject;
 
 struct MeasureExport MassPropertiesData
 {
-    double volume;
-    double mass;
-    double density;
-    double surfaceArea;
+    Base::Quantity volume = Base::Quantity(0.0, Base::Unit::Volume);
+    Base::Quantity mass = Base::Quantity(0.0, Base::Unit::Mass);
+    Base::Quantity density = Base::Quantity(0.0, Base::Unit::Density);
+    Base::Quantity surfaceArea = Base::Quantity(0.0, Base::Unit::Area);
 
-    double cogX;
-    double cogY;
-    double cogZ;
+    Base::Vector3d cog = Base::Vector3d(0.0, 0.0, 0.0);
 
-    double covX;
-    double covY;
-    double covZ;
+    Base::Vector3d cov = Base::Vector3d(0.0, 0.0, 0.0);
 
-    double inertiaJox;
-    double inertiaJoy;
-    double inertiaJoz;
+    Base::Vector3d inertiaJo = Base::Vector3d(0.0, 0.0, 0.0);
 
-    double inertiaJxy;
-    double inertiaJzx;
-    double inertiaJzy;
-    double inertiaJx;
-    double inertiaJy;
-    double inertiaJz;
+    Base::Vector3d inertiaJCross = Base::Vector3d(0.0, 0.0, 0.0);
+    Base::Vector3d inertiaJ = Base::Vector3d(0.0, 0.0, 0.0);
 
     Base::Vector3d principalAxisX = Base::Vector3d(0.0, 0.0, 0.0);
     Base::Vector3d principalAxisY = Base::Vector3d(0.0, 0.0, 0.0);
