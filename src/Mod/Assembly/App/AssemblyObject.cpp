@@ -232,8 +232,8 @@ AssemblyObject::AssemblyObject()
     , lastSolverStatus(0)
 {
     // TODO: replace with user/addon configuration to support alternative solvers
-    solver = std::make_shared<Solver::ChronoSolver>(this);
-    // solver = std::make_shared<Solver::OndselSolver>(this);
+    // solver = std::make_shared<Solver::ChronoSolver>(this);
+    solver = std::make_shared<Solver::OndselSolver>(this);
     assembly = solver->makeAssembly();
 
     lastDoF = numberOfComponents() * 6;
@@ -645,7 +645,10 @@ void AssemblyObject::doDragStep(Base::Vector3d mousePos3D)
                 continue;
             }
 
-            // Push the current dragged placement into the solver part
+            // Sync the current FreeCAD placement into the solver part. This is needed
+            // by OndselSolver, which reads the MbD internal state, and is harmless for
+            // ChronoSolver. Bundled parts share a solver part, so convert the document
+            // placement to the bundle origin first.
             Base::Placement plc = getPlacementFromProp(part, "Placement");
             if (auto it = objectPartMap.find(part);
                 it != objectPartMap.end() && !it->second.offsetPlc.isIdentity()) {
@@ -694,7 +697,7 @@ bool AssemblyObject::validateNewPlacements()
                 }
 
                 if (!oldPlc.isSame(newPlacement, Precision::Confusion())) {
-                    Base::Console().warning(
+                    Base::Console().log(
                         "Assembly : Ignoring bad solve, a grounded object ({}) moved.\n",
                         obj->getFullLabel()
                     );
@@ -1735,9 +1738,9 @@ void AssemblyObject::jointParts(std::vector<App::DocumentObject*> joints)
         if (solverJoint) {
             assembly->addJoint(solverJoint);
             createdJoints.push_back({joint, solverJoint});
-            Base::Console().warning(
-                "jointParts P1: added joint '%s' type=%d\n",
-                joint->getFullName().c_str(),
+            Base::Console().log(
+                "jointParts P1: added joint '{}' type={}\n",
+                joint->getFullName(),
                 static_cast<int>(getJointType(joint))
             );
         }
