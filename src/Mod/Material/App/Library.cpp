@@ -111,7 +111,7 @@ void Library::setCaseSensitivity()
         if ((_directory != upper) && QDir(upper).exists()) {
             _caseSensitive = false;
         }
-        else if ((_directory != lower) && QDir(_directory.toLower()).exists()) {
+        else if ((_directory != lower) && QDir(lower).exists()) {
             _caseSensitive = false;
         }
     }
