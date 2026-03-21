@@ -805,6 +805,8 @@ TEST_F(SchemaTest, sweep_internal)
          "1000 m^2",
          "1 km^2",
          /* default */ "1e+06 km^2"},
+        // Inertia
+        {"1 kg*mm^2", "10 kg*mm^2", "100 kg*mm^2"},
         // Volume
         {"1 mm^3",
          "10 mm^3",
@@ -1231,6 +1233,8 @@ TEST_F(SchemaTest, sweep_mks)
          "100 mF",
          "1 F",
          /* default */ "1e+06 F"},
+        // Inertia
+        {"1 kg*m^2", "10 kg*m^2", "100 kg*m^2"},
     });
 }
 
@@ -1257,6 +1261,8 @@ TEST_F(SchemaTest, sweep_imperial)
          "100 psi",
          "1 ksi",
          /* default */ "1e+06 psi"},
+        // Inertia
+        {"1 lb*in^2", "10 lb*in^2", "100 lb*in^2"},
     });
 }
 
@@ -1269,6 +1275,7 @@ TEST_F(SchemaTest, sweep_imperial_decimal)
         {"1 in^2", "10 in^2", "100 in^2"},
         {"1 in^3", "10 in^3"},
         {"1 lb", "10 lb", "100 lb"},
+        {"1 lb*in^2", "10 lb*in^2", "100 lb*in^2"},
         {"1 psi", "10 psi", "100 psi"},
     });
 }
@@ -1295,6 +1302,7 @@ TEST_F(SchemaTest, sweep_imperial_civil)
         {"1 ft^2", "10 ft^2", "100 ft^2"},
         {"1 ft^3", "10 ft^3"},
         {"1 lb", "10 lb", "100 lb"},
+        {"1 lb*ft^2", "10 lb*ft^2", "100 lb*ft^2"},
         {"1 psi", "10 psi", "100 psi"},
         {"1 mph", "10 mph", "100 mph"},
         // Angle (toDMS)
@@ -1310,6 +1318,7 @@ TEST_F(SchemaTest, sweep_centimeter)
         {"1 cm", "10 cm", "100 cm", "1000 cm"},
         {"1 m^2", "10 m^2", "100 m^2"},
         {"1 m^3", "10 m^3"},
+        {"1 kg*cm^2", "10 kg*cm^2", "100 kg*cm^2"},
         {"1 W", "10 W", "100 W"},
         {"1 V", "10 V", "100 V"},
     });
@@ -1343,6 +1352,7 @@ TEST_F(SchemaTest, sweep_meter_decimal)
         {"1 m", "10 m", "100 m", "1000 m"},
         {"1 m^2", "10 m^2", "100 m^2"},
         {"1 m^3", "10 m^3"},
+        {"1 kg*m^2", "10 kg*m^2", "100 kg*m^2"},
         {"1 W", "10 W", "100 W"},
         {"1 V", "10 V", "100 V"},
         {"1 m/s", "10 m/s", "100 m/s"},
