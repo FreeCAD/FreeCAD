@@ -56,7 +56,7 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
         When: addAddonPostPath() is called with that directory
         Then: the directory is included in the list returned by searchPathsPost()
         """
-        import tempfile, os
+        import tempfile
 
         with tempfile.TemporaryDirectory() as tmpdir:
             Path.Preferences.addAddonPostPath(tmpdir)
