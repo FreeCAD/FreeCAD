@@ -336,7 +336,7 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                             break;
                     }
                 }
-                for (int i = 0; i < wires.size(); i++) {
+                for (std::size_t i = 1; i < wires.size(); i++) {
                     mkFace.Add(TopoDS::Wire(wires[i].getShape()));
                 }
                 getTopoShapePtr()->setShape(mkFace.Face());
