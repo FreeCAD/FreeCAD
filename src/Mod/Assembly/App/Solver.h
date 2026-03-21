@@ -394,6 +394,18 @@ public:
 
     LimitClass getLimitClass() const;
 
+    // The current FreeCAD joint value (angle in radians, distance in mm) at the
+    // time the limit is created.  Used by the solver to calibrate the offset
+    // between FreeCAD's coordinate convention and the solver's internal coordinates.
+    virtual void setCurrentValue(double v)
+    {
+        currentVal = v;
+    }
+    virtual double getCurrentValue() const
+    {
+        return currentVal;
+    }
+
 protected:
     void setLimitClass(LimitClass limitClass);
 
@@ -402,6 +414,7 @@ private:
     LimitType type = LimitType::NO_LIMIT;
     std::string limitExpr = "0.0";
     std::string toleranceExpr = "1.0e-9";
+    double currentVal = 0.0;
 };
 
 class RotationLimit: public Limit
@@ -598,9 +611,18 @@ public:
     // Returns 0 on success, non-zero on failure.
     virtual int runKinematic() = 0;
 
+    // Context passed to preDrag describing the camera frame and pick point.
+    struct DragContext
+    {
+        Base::Vector3d pickPoint;       // world-space click point (initial)
+        Base::Vector3d cameraViewDir;   // camera Z axis (into screen)
+        Base::Rotation cameraRotation;  // full camera-plane rotation (X=right, Y=up, Z=into)
+        std::string nearestJointName;   // fullName of the joint nearest to the pick (empty if none)
+    };
+
     // Interactive drag support
-    virtual void preDrag() = 0;
-    virtual void dragStep(std::vector<std::shared_ptr<Part>> parts) = 0;
+    virtual void preDrag(const DragContext& ctx) = 0;
+    virtual void dragStep(std::vector<std::shared_ptr<Part>> parts, Base::Vector3d mousePos3D) = 0;
     virtual void postDrag() = 0;
 
     // Simulation parameter management

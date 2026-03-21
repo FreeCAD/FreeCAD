@@ -86,8 +86,13 @@ public:
     int generateSimulation(App::DocumentObject* sim);
     int updateForFrame(size_t index);
     size_t numberOfFrames();
-    void preDrag(std::vector<App::DocumentObject*> dragParts);
-    void doDragStep();
+    void preDrag(
+        std::vector<App::DocumentObject*> dragParts,
+        Base::Vector3d pickPoint,
+        Base::Vector3d cameraViewDir,
+        App::DocumentObject* movingJoint = nullptr
+    );
+    void doDragStep(Base::Vector3d mousePos3D);
     void postDrag();
     void savePlacementsForUndo();
     void undoSolve();
@@ -142,7 +147,8 @@ public:
     );
     int slidingPartIndex(App::DocumentObject* joint);
 
-    std::shared_ptr<Solver::Joint> makeJoint(App::DocumentObject* joint);
+    std::shared_ptr<Solver::Joint> makeJointOnly(App::DocumentObject* joint);
+    void addJointLimitsAndMotions(App::DocumentObject* joint, std::shared_ptr<Solver::Joint> solverJoint);
     std::shared_ptr<Solver::Joint> makeJointOfType(App::DocumentObject* joint, JointType jointType);
     std::shared_ptr<Solver::Joint> makeJointDistance(App::DocumentObject* joint);
 
@@ -258,6 +264,8 @@ private:
     std::unordered_map<App::DocumentObject*, PartData> objectPartMap;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
     std::vector<App::DocumentObject*> draggedParts;
+    App::DocumentObject* dragTargetBox = nullptr;
+    Base::Rotation dragCameraRotation;
     std::vector<App::DocumentObject*> motions;
 
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;

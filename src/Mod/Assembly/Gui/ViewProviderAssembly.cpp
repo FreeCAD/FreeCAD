@@ -44,7 +44,9 @@
 #include <algorithm>
 #include <iterator>
 #include <Inventor/SoPath.h>
+#include <Inventor/SoPickedPoint.h>
 #include <Inventor/details/SoDetail.h>
+#include <Inventor/nodes/SoCamera.h>
 
 #include <App/Link.h>
 #include <App/Document.h>
@@ -615,7 +617,10 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
         );
         bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
         if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
-            assemblyPart->doDragStep();
+            // Project mouse onto camera-parallel drag plane
+            SbVec3f projected = viewer->getPointOnXYPlaneOfPlacement(cursorPos, dragPlanePlc);
+            Base::Vector3d mousePos3D(projected[0], projected[1], projected[2]);
+            assemblyPart->doDragStep(mousePos3D);
         }
         else {
             assemblyPart->redrawJointPlacements(assemblyPart->getJoints());
@@ -1113,7 +1118,36 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
         for (auto& movingObj : docsToMove) {
             dragParts.push_back(movingObj.obj);
         }
-        assemblyPart->preDrag(dragParts);
+
+        // Extract camera view direction and pick point
+        SoCamera* cam = viewer->getSoRenderManager()->getCamera();
+        SbVec3f camDir;
+        cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), camDir);
+        Base::Vector3d cameraViewDir(camDir[0], camDir[1], camDir[2]);
+
+        // Get the 3D pick point from the cursor position
+        SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
+        rp.setPoint(cursorPos);
+        rp.apply(viewer->getSoRenderManager()->getSceneGraph());
+        SoPickedPoint* pp = rp.getPickedPoint();
+        Base::Vector3d pickPoint;
+        if (pp) {
+            SbVec3f pt = pp->getPoint();
+            pickPoint = Base::Vector3d(pt[0], pt[1], pt[2]);
+        }
+        else {
+            // Fallback: use focal plane
+            SbVec3f fp = viewer->getPointOnFocalPlane(cursorPos);
+            pickPoint = Base::Vector3d(fp[0], fp[1], fp[2]);
+        }
+
+        // Build camera-parallel plane placement centered on pick point.
+        // This is used by tryMouseMove to project mouse cursor onto the drag plane.
+        {
+            dragPlanePlc = Base::Placement(pickPoint, cameraAlignedRotation(cameraViewDir));
+        }
+
+        assemblyPart->preDrag(dragParts, pickPoint, cameraViewDir, movingJoint);
     }
     else {
         assemblyPart->redrawJointPlacements(assemblyPart->getJoints());

@@ -469,12 +469,12 @@ int OndselAssembly::runKinematic()
     return 0;
 }
 
-void OndselAssembly::preDrag()
+void OndselAssembly::preDrag(const DragContext& /*ctx*/)
 {
     asmtAssembly->runPreDrag();
 }
 
-void OndselAssembly::dragStep(std::vector<std::shared_ptr<Part>> parts)
+void OndselAssembly::dragStep(std::vector<std::shared_ptr<Part>> parts, Base::Vector3d /*mousePos3D*/)
 {
     auto dragMbdParts = std::make_shared<std::vector<std::shared_ptr<MbD::ASMTPart>>>();
     for (const auto& part : parts) {

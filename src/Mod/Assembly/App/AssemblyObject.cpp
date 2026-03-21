@@ -47,6 +47,7 @@
 #include "AssemblyObjectPy.h"
 #include "AssemblyUtils.h"
 #include "JointGroup.h"
+#include "ChronoSolver.h"
 #include "OndselSolver.h"
 #include "ViewGroup.h"
 
@@ -72,7 +73,8 @@ AssemblyObject::AssemblyObject()
     , lastSolverStatus(0)
 {
     // TODO: replace with user/addon configuration to support alternative solvers
-    solver = std::make_shared<Solver::OndselSolver>(this);
+    solver = std::make_shared<Solver::ChronoSolver>(this);
+    // solver = std::make_shared<Solver::OndselSolver>(this);
     assembly = solver->makeAssembly();
 
     lastDoF = numberOfComponents() * 6;
@@ -282,8 +284,19 @@ size_t Assembly::AssemblyObject::numberOfFrames()
     return assembly->numberOfFrames();
 }
 
-void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
+void AssemblyObject::preDrag(
+    std::vector<App::DocumentObject*> dragParts,
+    Base::Vector3d pickPoint,
+    Base::Vector3d cameraViewDir,
+    App::DocumentObject* movingJoint
+)
 {
+    // Clean up previous drag objects if they were left behind
+    if (dragTargetBox) {
+        getDocument()->removeObject(dragTargetBox->getNameInDocument());
+        dragTargetBox = nullptr;
+    }
+
     bundleFixed = true;
     solve();
     bundleFixed = false;
@@ -318,42 +331,76 @@ void AssemblyObject::preDrag(std::vector<App::DocumentObject*> dragParts)
 
         draggedParts.push_back(part);
     }
+
+    // Compute camera-aligned rotation from cameraViewDir
+    dragCameraRotation = cameraAlignedRotation(cameraViewDir);
+
+    // Create visualization box at pick point
+    dragTargetBox = getDocument()->addObject("Part::Box", "DragTarget");
+    auto* len = dynamic_cast<App::PropertyFloat*>(dragTargetBox->getPropertyByName("Length"));
+    auto* wid = dynamic_cast<App::PropertyFloat*>(dragTargetBox->getPropertyByName("Width"));
+    auto* hgt = dynamic_cast<App::PropertyFloat*>(dragTargetBox->getPropertyByName("Height"));
+    if (len) {
+        len->setValue(10.0);
+    }
+    if (wid) {
+        wid->setValue(10.0);
+    }
+    if (hgt) {
+        hgt->setValue(10.0);
+    }
+
+    // Position centered on pick point, oriented to camera plane
+    Base::Vector3d boxCenter = pickPoint - dragCameraRotation.multVec(Base::Vector3d(5, 5, 0));
+    dragTargetBox->getPlacementProperty()->setValue(Base::Placement(boxCenter, dragCameraRotation));
+    addObject(dragTargetBox);
+    dragTargetBox->purgeTouched();
+
+    // Pass drag context to solver (creates mouse body + constraint)
+    Solver::Assembly::DragContext ctx;
+    ctx.pickPoint = pickPoint;
+    ctx.cameraViewDir = cameraViewDir;
+    ctx.cameraRotation = dragCameraRotation;
+    if (movingJoint) {
+        ctx.nearestJointName = movingJoint->getFullName();
+    }
+    assembly->preDrag(ctx);
 }
 
-void AssemblyObject::doDragStep()
+void AssemblyObject::doDragStep(Base::Vector3d mousePos3D)
 {
-    try {
-        std::vector<std::shared_ptr<Solver::Part>> dragSolverParts;
+    // Update visualization box to follow mouse
+    if (dragTargetBox) {
+        Base::Vector3d boxCenter = mousePos3D - dragCameraRotation.multVec(Base::Vector3d(5, 5, 0));
+        dragTargetBox->getPlacementProperty()->setValue(Base::Placement(boxCenter, dragCameraRotation));
+        dragTargetBox->purgeTouched();
+    }
 
+    try {
+        // Build solver parts list from dragged document objects
+        std::vector<std::shared_ptr<Solver::Part>> dragSolverParts;
         for (auto& part : draggedParts) {
             if (!part) {
                 continue;
             }
-
-            auto solverPart = getPart(part);
-            dragSolverParts.push_back(solverPart);
-
-            // Push the current dragged placement into the solver part
-            Base::Placement plc = getPlacementFromProp(part, "Placement");
-            solverPart->pushPlacement(plc);
+            dragSolverParts.push_back(getPart(part));
         }
 
-        assembly->dragStep(dragSolverParts);
+        // Run solver — mouse body drives the dragged part via compliant constraint
+        assembly->dragStep(dragSolverParts, mousePos3D);
 
         if (validateNewPlacements()) {
             setNewPlacements();
-
-            auto joints = getJoints();
-            for (auto* joint : joints) {
-                if (joint->Visibility.getValue()) {
-                    // redraw only the moving joint as its quite slow as its python code.
-                    redrawJointPlacement(joint);
-                }
-            }
+            redrawJointPlacements(getJoints(false));
         }
     }
+    catch (const std::exception& e) {
+        FC_TRACE("doDragStep solve failed: " << e.what());
+        redrawJointPlacements(getJoints(false));
+    }
     catch (...) {
-        // We do nothing if a solve step fails.
+        FC_TRACE("doDragStep solve failed: unhandled exception");
+        redrawJointPlacements(getJoints(false));
     }
 }
 
@@ -394,6 +441,12 @@ bool AssemblyObject::validateNewPlacements()
 void AssemblyObject::postDrag()
 {
     assembly->postDrag();
+
+    if (dragTargetBox) {
+        getDocument()->removeObject(dragTargetBox->getNameInDocument());
+        dragTargetBox = nullptr;
+    }
+
     purgeTouched();
 }
 
@@ -1022,16 +1075,35 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
 
 void AssemblyObject::jointParts(std::vector<App::DocumentObject*> joints)
 {
+    // Two-pass approach: first create and add all joints (so limitableJoints is populated),
+    // then add limits and motions (which need to look up their joint by marker pair).
+    struct JointInfo
+    {
+        App::DocumentObject* docObj;
+        std::shared_ptr<Solver::Joint> solverJoint;
+    };
+    std::vector<JointInfo> createdJoints;
+
+    // Pass 1: create joints and add to assembly
     for (auto* joint : joints) {
         if (!joint) {
             continue;
         }
-
-        // makeJoint() also adds any associated limits and motions to the assembly
-        auto solverJoint = makeJoint(joint);
+        auto solverJoint = makeJointOnly(joint);
         if (solverJoint) {
             assembly->addJoint(solverJoint);
+            createdJoints.push_back({joint, solverJoint});
+            Base::Console().warning(
+                "jointParts P1: added joint '%s' type=%d\n",
+                joint->getFullName().c_str(),
+                static_cast<int>(getJointType(joint))
+            );
         }
+    }
+
+    // Pass 2: add limits and motions (joints are now registered in limitableJoints)
+    for (auto& info : createdJoints) {
+        addJointLimitsAndMotions(info.docObj, info.solverJoint);
     }
 }
 
@@ -1304,7 +1376,7 @@ std::shared_ptr<Solver::Joint> AssemblyObject::makeJointDistance(App::DocumentOb
     }
 }
 
-std::shared_ptr<Solver::Joint> AssemblyObject::makeJoint(App::DocumentObject* joint)
+std::shared_ptr<Solver::Joint> AssemblyObject::makeJointOnly(App::DocumentObject* joint)
 {
     if (!joint) {
         return nullptr;
@@ -1332,6 +1404,21 @@ std::shared_ptr<Solver::Joint> AssemblyObject::makeJoint(App::DocumentObject* jo
     solverJoint->setName(joint->getFullName());
     solverJoint->setMarkerI(fullMarkerNameI);
     solverJoint->setMarkerJ(fullMarkerNameJ);
+    return solverJoint;
+}
+
+void AssemblyObject::addJointLimitsAndMotions(
+    App::DocumentObject* joint,
+    std::shared_ptr<Solver::Joint> solverJoint
+)
+{
+    if (!joint || !solverJoint) {
+        return;
+    }
+
+    JointType jointType = getJointType(joint);
+    const auto& fullMarkerNameI = solverJoint->getMarkerI();
+    const auto& fullMarkerNameJ = solverJoint->getMarkerJ();
 
     // Add limits if needed. We do not add if this is a simulation or they might clash.
     if (motions.empty()) {
@@ -1364,6 +1451,9 @@ std::shared_ptr<Solver::Joint> AssemblyObject::makeJoint(App::DocumentObject* jo
                     maxEnabled = pMaxEnabled->getValue();
                 }
 
+                // Current joint distance in mm for coordinate offset calibration
+                double currentDistance = getJointDistance(joint);
+
                 if (minEnabled) {
                     auto limit = solver->makeTranslationLimit();
                     limit->setName(joint->getFullName() + "-LimitLenMin");
@@ -1371,6 +1461,7 @@ std::shared_ptr<Solver::Joint> AssemblyObject::makeJoint(App::DocumentObject* jo
                     limit->setMarkerJ(fullMarkerNameJ);
                     limit->setType(Solver::LimitType::GREATER_THAN_OR_EQUAL);
                     limit->setLimitValue(minLength);
+                    limit->setCurrentValue(currentDistance);
                     limit->setToleranceExpression("1.0e-9");
                     assembly->addLimit(limit);
                 }
@@ -1382,6 +1473,7 @@ std::shared_ptr<Solver::Joint> AssemblyObject::makeJoint(App::DocumentObject* jo
                     limit->setMarkerJ(fullMarkerNameJ);
                     limit->setType(Solver::LimitType::LESS_THAN_OR_EQUAL);
                     limit->setLimitValue(maxLength);
+                    limit->setCurrentValue(currentDistance);
                     limit->setToleranceExpression("1.0e-9");
                     assembly->addLimit(limit);
                 }
@@ -1415,6 +1507,9 @@ std::shared_ptr<Solver::Joint> AssemblyObject::makeJoint(App::DocumentObject* jo
                     maxEnabled = pMaxEnabled->getValue();
                 }
 
+                // Current joint angle in radians for coordinate offset calibration
+                double currentAngleRad = Base::toRadians(getJointAngle(joint));
+
                 if (minEnabled) {
                     auto limit = solver->makeRotationLimit();
                     limit->setName(joint->getFullName() + "-LimitRotMin");
@@ -1422,6 +1517,7 @@ std::shared_ptr<Solver::Joint> AssemblyObject::makeJoint(App::DocumentObject* jo
                     limit->setMarkerJ(fullMarkerNameJ);
                     limit->setType(Solver::LimitType::GREATER_THAN_OR_EQUAL);
                     limit->setLimitExpression(std::to_string(minAngle) + "*pi/180.0");
+                    limit->setCurrentValue(currentAngleRad);
                     limit->setToleranceExpression("1.0e-9");
                     assembly->addLimit(limit);
                 }
@@ -1433,6 +1529,7 @@ std::shared_ptr<Solver::Joint> AssemblyObject::makeJoint(App::DocumentObject* jo
                     limit->setMarkerJ(fullMarkerNameJ);
                     limit->setType(Solver::LimitType::LESS_THAN_OR_EQUAL);
                     limit->setLimitExpression(std::to_string(maxAngle) + "*pi/180.0");
+                    limit->setCurrentValue(currentAngleRad);
                     limit->setToleranceExpression("1.0e-9");
                     assembly->addLimit(limit);
                 }
@@ -1550,8 +1647,6 @@ std::shared_ptr<Solver::Joint> AssemblyObject::makeJoint(App::DocumentObject* jo
             assembly->addMotion(transMotion);
         }
     }
-
-    return solverJoint;
 }
 
 std::string AssemblyObject::handleOneSideOfJoint(
