@@ -59,6 +59,10 @@ SET(Assembly_SRCS
     ViewGroup.h
     SimulationGroup.cpp
     SimulationGroup.h
+    Solver.cpp
+    Solver.h
+    OndselSolver.cpp
+    OndselSolver.h
     ${Module_SRCS}
     ${Python_SRCS}
 )
@@ -72,6 +76,11 @@ target_include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+if(WIN32)
+    target_compile_definitions(Assembly PRIVATE _USE_MATH_DEFINES)
+endif(WIN32)
+
 target_link_libraries(Assembly ${Assembly_LIBS})
 if (FREECAD_WARN_ERROR)
     target_compile_warn_error(Assembly)
