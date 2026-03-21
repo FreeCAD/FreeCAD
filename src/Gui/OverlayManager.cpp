@@ -999,8 +999,10 @@ public:
 
     void setupTitleBar(QDockWidget* dock)
     {
-        if (!dock->titleBarWidget()) {
-            dock->setTitleBarWidget(createTitleBar(dock));
+        auto* oldWidget = dock->titleBarWidget();
+        dock->setTitleBarWidget(createTitleBar(dock));
+        if (oldWidget) {
+            oldWidget->deleteLater();
         }
     }
 
@@ -1674,11 +1676,6 @@ void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures featur
     }
 
     // Rebuild the title widget as it may have a different set of buttons shown.
-    if (auto* titleBarWidget = qobject_cast<OverlayTitleBar*>(dw->titleBarWidget())) {
-        dw->setTitleBarWidget(nullptr);
-        delete titleBarWidget;
-    }
-
     setupTitleBar(dw);
 }
 
