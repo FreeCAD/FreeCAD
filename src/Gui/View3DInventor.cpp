@@ -597,7 +597,7 @@ bool View3DInventor::setCamera(const char* pCamera)
     }
 
     // this is to make sure to reliably delete the node
-    CoinPtr<SoNode> camPtr(Cam, true);
+    CoinPtr<SoNode> camPtr {Cam};
 
     // toggle between perspective and orthographic camera
     if (Cam->getTypeId() != CamViewer->getTypeId()) {

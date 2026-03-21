@@ -1281,6 +1281,11 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
         editDialog->exec();
         delete editDialog;
     }
+    // For all other constraints (geometric: e.g., Parallel, Perpendicular, Coincident),
+    // double-click triggers the rename functionality.
+    else {
+        ui->listWidgetConstraints->editItem(item);
+    }
 }
 
 void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem* item)
@@ -1598,6 +1603,10 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
 
     // it seems that addSelections gives back the focus to the view, and not immediately.
     QTimer::singleShot(200, [this]() {
+        QWidget* fw = QApplication::focusWidget();
+        if (fw && ui->listWidgetConstraints->viewport()->isAncestorOf(fw)) {
+            return; // Do NOT steal focus if the editor is active
+        }
         ui->listWidgetConstraints->setFocus();
     });
 }

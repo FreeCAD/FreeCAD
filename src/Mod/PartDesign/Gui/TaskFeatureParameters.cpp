@@ -217,7 +217,6 @@ bool TaskDlgFeatureParameters::accept()
         feature->getDocument()->commitTransaction();
     }
     catch (const Base::Exception& e) {
-        feature->getDocument()->abortTransaction();
         QString errorText = QString::fromUtf8(e.what());
         QString statusText = QString::fromUtf8(getObject()->getStatusString());
 

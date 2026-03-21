@@ -1772,6 +1772,12 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                 Selection().rmvPreselect();
             }
             break;
+        case QEvent::Leave:
+            // Clear mirrored cursor when leaving overlay.
+            if (auto tabWidget = qobject_cast<OverlayTabWidget*>(o)) {
+                tabWidget->unsetCursor();
+            }
+            break;
         case QEvent::ZOrderChange: {
             if (!d->raising && getMainWindow() && o == mdi) {
                 // On Windows, for some reason, it will raise mdi window on tab
@@ -2010,6 +2016,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
 
             ev->accept();
             d->interceptEvent(hitWidget, ev);
+            // Mirror underlying widget cursor onto transparent overlay.
+            if (ev->type() == QEvent::MouseMove) {
+                activeTabWidget->setCursor(hitWidget->cursor());
+            }
             if (ev->isAccepted() && ev->type() == QEvent::MouseButtonPress) {
                 hitWidget->setFocus();
                 d->_trackingWidget = hitWidget;

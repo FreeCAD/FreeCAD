@@ -403,7 +403,7 @@ void PropertyEditor::openEditor(const QModelIndex& index)
         str << "...";
     }
     transactionID = obj->getDocument()->openTransaction(str.str().c_str());
-    FC_LOG("editor transaction " << App::GetApplication().getActiveTransaction(&transactionID));
+    FC_LOG("editor transaction " << App::GetApplication().getTransactionName(transactionID));
 }
 
 void PropertyEditor::onItemActivated(const QModelIndex& index)

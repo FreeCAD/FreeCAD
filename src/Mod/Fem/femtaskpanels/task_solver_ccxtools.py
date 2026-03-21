@@ -267,24 +267,6 @@ class _TaskPanel:
         self.fea.reset_mesh_purge_results_checked()
         self.fea.inp_file_name = self.fea.inp_file_name
 
-        # check if ccx is greater than 2.10, if not do not read results
-        # https://forum.freecad.org/viewtopic.php?f=18&t=23548#p183829 Point 3
-        # https://forum.freecad.org/viewtopic.php?f=18&t=23548&start=20#p183909
-        # https://forum.freecad.org/viewtopic.php?f=18&t=23548&start=30#p185027
-        # https://github.com/FreeCAD/FreeCAD/commit/3dd1c9f
-        majorVersion, minorVersion = self.fea.get_ccx_version()
-        if majorVersion == 2 and minorVersion <= 10:
-            message = (
-                "The used CalculiX version {}.{} creates broken output files. "
-                "The result file will not be read by FreeCAD FEM. "
-                "You still can try to read it stand alone with FreeCAD, but it is "
-                "strongly recommended to upgrade CalculiX to a newer version.\n".format(
-                    majorVersion, minorVersion
-                )
-            )
-            QtGui.QMessageBox.warning(None, "Upgrade CalculiX", message)
-            raise
-
         QApplication.setOverrideCursor(Qt.WaitCursor)
         try:
             self.fea.load_results()

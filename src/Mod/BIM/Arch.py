@@ -2136,16 +2136,17 @@ def makeWindow(
                         part_offset,
                     ]
             else:
-                # Bind properties from base obj if they exist
+                # Bind properties from base obj if they exist and have a value
                 for prop in ["Height", "Width", "Subvolume", "Tag", "Description", "Material"]:
                     for baseobj_prop in baseobj.PropertiesList:
-                        if (baseobj_prop == prop) or baseobj_prop.endswith(f"_{prop}"):
+                        if (baseobj_prop == prop or baseobj_prop.endswith(f"_{prop}")) and getattr(
+                            baseobj, baseobj_prop
+                        ):
                             window.setExpression(prop, f"{baseobj.Name}.{baseobj_prop}")
 
     if window.Base and FreeCAD.GuiUp:
         from ArchWindow import recolorize
 
-        window.Base.ViewObject.DisplayMode = "Wireframe"
         window.Base.ViewObject.hide()
         todo.ToDo.delay(recolorize, [window.Document.Name, window.Name])
 

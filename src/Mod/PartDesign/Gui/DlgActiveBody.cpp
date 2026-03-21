@@ -36,7 +36,6 @@
 #include "ReferenceSelection.h"
 #include "Utils.h"
 
-Q_DECLARE_METATYPE(App::DocumentObject*)
 
 using namespace PartDesignGui;
 
