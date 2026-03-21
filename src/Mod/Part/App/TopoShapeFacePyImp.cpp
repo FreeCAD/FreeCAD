@@ -310,83 +310,80 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
                         Standard_Failure::Raise("shape is not a wire");
                     }
                 }
-            }
-            else
-            {
-                Standard_Failure::Raise("shape is not a wire");
-            }
-        }
-
-        if (!wires.empty()) {
-            BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(wires.front().getShape()));
-            if (!mkFace.IsDone()) {
-                switch (mkFace.Error()) {
-                    case BRepBuilderAPI_NoFace:
-                        Standard_Failure::Raise("No face");
-                        break;
-                    case BRepBuilderAPI_NotPlanar:
-                        Standard_Failure::Raise("Not planar");
-                        break;
-                    case BRepBuilderAPI_CurveProjectionFailed:
-                        Standard_Failure::Raise("Curve projection failed");
-                        break;
-                    case BRepBuilderAPI_ParametersOutOfRange:
-                        Standard_Failure::Raise("Parameters out of range");
-                        break;
-                    default:
-                        Standard_Failure::Raise("Unknown failure");
-                        break;
+                else {
+                    Standard_Failure::Raise("shape is not a wire");
                 }
             }
-            for (int i = 0; i < wires.size(); i++) {
-                mkFace.Add(TopoDS::Wire(wires[i].getShape()));
+
+            if (!wires.empty()) {
+                BRepBuilderAPI_MakeFace mkFace(TopoDS::Wire(wires.front().getShape()));
+                if (!mkFace.IsDone()) {
+                    switch (mkFace.Error()) {
+                        case BRepBuilderAPI_NoFace:
+                            Standard_Failure::Raise("No face");
+                            break;
+                        case BRepBuilderAPI_NotPlanar:
+                            Standard_Failure::Raise("Not planar");
+                            break;
+                        case BRepBuilderAPI_CurveProjectionFailed:
+                            Standard_Failure::Raise("Curve projection failed");
+                            break;
+                        case BRepBuilderAPI_ParametersOutOfRange:
+                            Standard_Failure::Raise("Parameters out of range");
+                            break;
+                        default:
+                            Standard_Failure::Raise("Unknown failure");
+                            break;
+                    }
+                }
+                for (int i = 0; i < wires.size(); i++) {
+                    mkFace.Add(TopoDS::Wire(wires[i].getShape()));
+                }
+                getTopoShapePtr()->setShape(mkFace.Face());
+                getTopoShapePtr()->mapSubElement(wires);
+                return 0;
             }
-            getTopoShapePtr()->setShape(mkFace.Face());
-            getTopoShapePtr()->mapSubElement(wires);
+            else {
+                Standard_Failure::Raise("no wires in list");
+            }
+        }
+        catch (Standard_Failure& e) {
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+            return -1;
+        }
+    }
+
+    char* className = nullptr;
+    PyObject* pcPyShapeOrList = nullptr;
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "Os", &pcPyShapeOrList, &className)) {
+        try {
+            getTopoShapePtr()->makeElementFace(getPyShapes(pcPyShapeOrList), 0, className);
             return 0;
         }
-        else {
-            Standard_Failure::Raise("no wires in list");
+        catch (Base::Exception& e) {
+            e.setPyException();
+            return -1;
+        }
+        catch (Standard_Failure& e) {
+            PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+            return -1;
         }
     }
-    catch (Standard_Failure& e)
-    {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return -1;
-    }
-}
 
-char* className = nullptr;
-PyObject* pcPyShapeOrList = nullptr;
-PyErr_Clear();
-if (PyArg_ParseTuple(args, "Os", &pcPyShapeOrList, &className)) {
-    try {
-        getTopoShapePtr()->makeElementFace(getPyShapes(pcPyShapeOrList), 0, className);
-        return 0;
-    }
-    catch (Base::Exception& e) {
-        e.setPyException();
-        return -1;
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return -1;
-    }
-}
-
-PyErr_SetString(
-    PartExceptionOCCError,
-    "Argument list signature is incorrect.\n\nSupported signatures:\n"
-    "(face)\n"
-    "(wire)\n"
-    "(face, wire)\n"
-    "(surface, wire)\n"
-    "(list_of_wires)\n"
-    "(wire, facemaker_class_name)\n"
-    "(list_of_wires, facemaker_class_name)\n"
-    "(surface, list_of_wires)\n"
-);
-return -1;
+    PyErr_SetString(
+        PartExceptionOCCError,
+        "Argument list signature is incorrect.\n\nSupported signatures:\n"
+        "(face)\n"
+        "(wire)\n"
+        "(face, wire)\n"
+        "(surface, wire)\n"
+        "(list_of_wires)\n"
+        "(wire, facemaker_class_name)\n"
+        "(list_of_wires, facemaker_class_name)\n"
+        "(surface, list_of_wires)\n"
+    );
+    return -1;
 }
 
 /*!
