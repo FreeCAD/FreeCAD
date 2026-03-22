@@ -327,7 +327,7 @@ void PropertiesDialog::aliasChanged(const QString& text)
             statusText = tr("Invalid: conflicts with existing property name");
         }
         else if (!hasValidAliasSyntax(aliasText)) {
-            tooltip = tr("Alias must start with a letter and contain only letters, digits, and '_'.");
+            tooltip = tr("Alias must start with a letter and contain only letters, digits, and '_'");
             statusText = tr("Invalid: bad alias syntax");
         }
         else {
