@@ -65,10 +65,6 @@ void CommandItemDelegate::paint(
     initStyleOption(&opt, index);
     option.widget->style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, option.widget);
 
-    // use custom roles
-    const int CommandMenuTextRole = Qt::UserRole + 1;
-    const int CommandGroupRole = Qt::UserRole + 2;
-
     QString title = index.data(CommandMenuTextRole).toString();
     QString tooltip = index.data(Qt::ToolTipRole).toString();
     QString groupName = index.data(CommandGroupRole).toString();
@@ -431,8 +427,6 @@ void CommandPalette::onListItemActivated(const QModelIndex& index)
         return;
     }
 
-    // get the command name from the model
-    const int CommandNameRole = Qt::UserRole;
     QByteArray commandName = commandListView->model()->data(index, CommandNameRole).toByteArray();
 
     if (!commandName.isEmpty()) {
