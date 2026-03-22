@@ -307,7 +307,7 @@ void PropertiesDialog::aliasChanged(const QString& text)
             statusText = tr("Invalid: reserved unit token");
         }
         else if (ExpressionParser::isTokenAConstant(aliasText)) {
-            tooltip = tr("Alias conflicts with a reserved constant token used by expressions.");
+            tooltip = tr("Alias conflicts with a reserved constant token used by expressions");
             statusText = tr("Invalid: reserved constant token");
         }
         else if (sheet->isReservedAliasName(aliasText)) {
