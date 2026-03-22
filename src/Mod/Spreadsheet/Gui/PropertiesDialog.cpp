@@ -323,7 +323,7 @@ void PropertiesDialog::aliasChanged(const QString& text)
             statusText = tr("Invalid: alias matches cell address pattern");
         }
         else if (sheet->getPropertyByName(aliasText.c_str())) {
-            tooltip = tr("Alias conflicts with an existing spreadsheet property name.");
+            tooltip = tr("Alias conflicts with an existing spreadsheet property name");
             statusText = tr("Invalid: conflicts with existing property name");
         }
         else if (!hasValidAliasSyntax(aliasText)) {
