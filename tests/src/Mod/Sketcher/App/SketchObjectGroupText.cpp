@@ -239,3 +239,115 @@ TEST_F(SketchObjectTest, testSetTextAndFontDuplicateTextEditSecond)
     EXPECT_EQ(after2.helperCount, 7);
     EXPECT_EQ(after2.helperGeoIds, text2.helperGeoIds);
 }
+
+TEST_F(SketchObjectTest, testFrameLineOnlyDoF)
+{
+    auto* sketch = getObject();
+
+    // Just a frame line, no text, no helpers
+    Part::GeomLineSegment frameLine;
+    frameLine.setPoints(Base::Vector3d(0, 0, 0), Base::Vector3d(50, 0, 0));
+    int frameGeoId = sketch->addGeometry(&frameLine, /*construction=*/true);
+
+    // Fully constrain it: start on x-axis, end on y-axis, length, angle
+    auto* c1 = new Sketcher::Constraint();
+    c1->Type = Sketcher::PointOnObject;
+    c1->First = frameGeoId;
+    c1->FirstPos = Sketcher::PointPos::start;
+    c1->Second = Sketcher::GeoEnum::HAxis;
+    sketch->addConstraint(c1);
+
+    auto* c2 = new Sketcher::Constraint();
+    c2->Type = Sketcher::PointOnObject;
+    c2->First = frameGeoId;
+    c2->FirstPos = Sketcher::PointPos::end;
+    c2->Second = Sketcher::GeoEnum::VAxis;
+    sketch->addConstraint(c2);
+
+    auto* c3 = new Sketcher::Constraint();
+    c3->Type = Sketcher::Distance;
+    c3->First = frameGeoId;
+    c3->setValue(40.0);
+    sketch->addConstraint(c3);
+
+    auto* c4 = new Sketcher::Constraint();
+    c4->Type = Sketcher::Angle;
+    c4->First = frameGeoId;
+    c4->setValue(25.0 * M_PI / 180.0);
+    sketch->addConstraint(c4);
+
+    sketch->solve();
+    EXPECT_EQ(sketch->getLastDoF(), 0);  // sanity check: bare line is fully constrained
+}
+
+TEST_F(SketchObjectTest, testTextConstrainedBaselineDoF)
+{
+    auto* sketch = getObject();
+
+    // Create text
+    auto setup = createTextConstraint(sketch, "Text");
+    int constrIdx = setup.constrIdx;
+    const auto* constr = sketch->Constraints[constrIdx];
+    int frameGeoId = constr->getGeoId(0);
+
+    // Constrain baseline start to x-axis, end to y-axis
+    auto* pooStart = new Sketcher::Constraint();
+    pooStart->Type = Sketcher::PointOnObject;
+    pooStart->First = frameGeoId;
+    pooStart->FirstPos = Sketcher::PointPos::start;
+    pooStart->Second = Sketcher::GeoEnum::HAxis;
+    sketch->addConstraint(pooStart);
+
+    auto* pooEnd = new Sketcher::Constraint();
+    pooEnd->Type = Sketcher::PointOnObject;
+    pooEnd->First = frameGeoId;
+    pooEnd->FirstPos = Sketcher::PointPos::end;
+    pooEnd->Second = Sketcher::GeoEnum::VAxis;
+    sketch->addConstraint(pooEnd);
+
+    // Find the baseline helper geoId (first helper with MetricBaseline flag)
+    int baselineGeoId = -1;
+    for (int i = 1; constr->hasElement(i); ++i) {
+        int geoId = constr->getGeoId(i);
+        if (geoId != Sketcher::GeoEnum::GeoUndef) {
+            const auto* geo = sketch->getGeometry(geoId);
+            if (geo && Sketcher::GeometryFacade::getHelper(geo)) {
+                // Baseline is the 5th helper (index 4: BBoxBottom,Top,Left,Right,Baseline)
+                if (i == 5) {
+                    baselineGeoId = geoId;
+                    break;
+                }
+            }
+        }
+    }
+    ASSERT_GE(baselineGeoId, 0);
+
+    // Set length and angle on the BASELINE HELPER (not the frame line)
+    // — this is how the user constrains in the GUI
+    auto* lengthConstr = new Sketcher::Constraint();
+    lengthConstr->Type = Sketcher::Distance;
+    lengthConstr->First = baselineGeoId;
+    lengthConstr->FirstPos = Sketcher::PointPos::start;
+    lengthConstr->Second = baselineGeoId;
+    lengthConstr->SecondPos = Sketcher::PointPos::end;
+    lengthConstr->setValue(40.0);
+    sketch->addConstraint(lengthConstr);
+
+    auto* angleConstr = new Sketcher::Constraint();
+    angleConstr->Type = Sketcher::Angle;
+    angleConstr->First = Sketcher::GeoEnum::HAxis;
+    angleConstr->FirstPos = Sketcher::PointPos::start;
+    angleConstr->Second = baselineGeoId;
+    angleConstr->SecondPos = Sketcher::PointPos::start;
+    angleConstr->setValue(25.0 * M_PI / 180.0);
+    sketch->addConstraint(angleConstr);
+
+    sketch->solve();
+
+    // The sketch should be fully constrained (0 DoF).
+    // The baseline has 4 DoF (2 endpoints × 2 coords), and we applied
+    // 4 constraints (2 coincident + 1 length + 1 angle).
+    // Helper lines and text geos should not add DoF since they're
+    // derived from the frame line via the group constraint.
+    EXPECT_EQ(sketch->getLastDoF(), 0);
+}

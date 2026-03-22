@@ -456,13 +456,10 @@ int Sketch::setUpSketch(
             continue;
         }
 
-        // Use tag -2 (InternalHardConstraint) so that:
-        // - Diagnosis ignores them (tag < 0 → not in DoF/redundancy report)
-        // - clearTemporaryConstraints() doesn't remove them (only clears tag -1)
-        // - initSolution() partitions them into the hard subsystem alongside
-        //   user constraints, so the rigid group relationship is exactly
-        //   satisfied (not compromised as a soft objective)
-        int derivedTag = GCS::InternalHardConstraint;
+        // Use tag 0 so DerivedPoint constraints are counted in DoF report.
+        // This ensures that constraining a helper line (which is linked to
+        // the frame via DerivedPoint) correctly reduces the reported DoF.
+        int derivedTag = 0;
 
         auto canonical = c->getCanonicalGeometry();
         for (size_t i = 0; i < canonical.size(); ++i) {
