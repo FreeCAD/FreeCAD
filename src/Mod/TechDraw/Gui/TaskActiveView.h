@@ -73,13 +73,14 @@ protected:
 
 private Q_SLOTS:
     void onCropChanged();
-    void on3DPDFExportChanged();
+    void updatePreview();
 
 private:
     std::unique_ptr<Ui_TaskActiveView> ui;
 
     TechDraw::DrawPage*       m_pageFeat;
     TechDraw::DrawViewImage*  m_imageFeat;
+    TechDraw::DrawViewImage*  m_previewImageFeat;
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
