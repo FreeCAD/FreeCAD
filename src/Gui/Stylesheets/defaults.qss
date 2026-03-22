@@ -18,3 +18,27 @@ Gui--SplitButton QToolButton::menu-indicator {
     image: none;
     border-image: none;
 }
+
+/* Gui::CommandPalette ------------------------------------------------------ */
+
+Gui--CommandPalette {
+    background-color: palette(window);
+    border: 1px solid palette(dark);
+    border-radius: 5px;
+}
+
+Gui--CommandPalette QLineEdit {
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid palette(mid);
+    border-radius: 3px;
+}
+
+Gui--CommandPalette QLineEdit:focus {
+    border: 2px solid palette(highlight);
+}
+
+Gui--CommandPalette QListView {
+    border: 1px solid palette(mid);
+    border-radius: 3px;
+}

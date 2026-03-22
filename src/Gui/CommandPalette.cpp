@@ -240,27 +240,6 @@ void CommandPalette::setupUi()
     setMinimumWidth(520);
     setMaximumWidth(800);
     setMinimumHeight(450);
-
-    setStyleSheet(QStringLiteral(
-        "QDialog {"
-        "    background-color: palette(window);"
-        "    border: 1px solid palette(dark);"
-        "    border-radius: 5px;"
-        "}"
-        "QLineEdit {"
-        "    padding: 5px;"
-        "    font-size: 14px;"
-        "    border: 1px solid palette(mid);"
-        "    border-radius: 3px;"
-        "}"
-        "QLineEdit:focus {"
-        "    border: 2px solid palette(highlight);"
-        "}"
-        "QListView {"
-        "    border: 1px solid palette(mid);"
-        "    border-radius: 3px;"
-        "}"
-    ));
 }
 
 void CommandPalette::showPalette()
