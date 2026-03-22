@@ -315,7 +315,7 @@ void PropertiesDialog::aliasChanged(const QString& text)
             statusText = tr("Invalid: reserved unit or constant name");
         }
         else if (!sheet->getAddressFromAlias(aliasText).empty()) {
-            tooltip = tr("Alias already defined.");
+            tooltip = tr("Alias already defined");
             statusText = tr("Invalid: alias already exists");
         }
         else if (sheet->getCells()->isValidCellAddressName(aliasText)) {
