@@ -83,9 +83,11 @@ PropertyInteger::~PropertyInteger() = default;
 
 void PropertyInteger::setValue(long lValue)
 {
-    aboutToSetValue();
-    _lValue = lValue;
-    hasSetValue();
+    if (lValue != _lValue) {
+        aboutToSetValue();
+        _lValue = lValue;
+        hasSetValue();
+    }
 }
 
 long PropertyInteger::getValue() const
@@ -101,9 +103,7 @@ PyObject* PropertyInteger::getPyObject()
 void PropertyInteger::setPyObject(PyObject* value)
 {
     if (PyLong_Check(value)) {
-        aboutToSetValue();
-        _lValue = PyLong_AsLong(value);
-        hasSetValue();
+        setValue(PyLong_AsLong(value));
     }
     else {
         std::string error = std::string("type must be int, not ");
@@ -2165,9 +2165,11 @@ PropertyBool::~PropertyBool() = default;
 
 void PropertyBool::setValue(bool lValue)
 {
-    aboutToSetValue();
-    _lValue = lValue;
-    hasSetValue();
+    if (lValue != _lValue) {
+        aboutToSetValue();
+        _lValue = lValue;
+        hasSetValue();
+    }
 }
 
 bool PropertyBool::getValue() const
