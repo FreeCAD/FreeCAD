@@ -175,7 +175,7 @@ App::ElementNamePair Feature::getElementName(const char* name, ElementNameType t
 }
 
 // This is the name matching algorithms used for the V2 algorithm.
-bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName &name2, bool log)
+bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName &name2)
 {
     if (!name1 || !name2)
         return false;
@@ -223,7 +223,7 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
                         if ((largeListName == smallListName)
                             || (largeListName != "_" 
                                 && smallListName != "_" 
-                                && doNamesMatch(Data::MappedName(largeListName), Data::MappedName(smallListName), false)))
+                                && doNamesMatch(Data::MappedName(largeListName), Data::MappedName(smallListName))))
                         {
                             linkedNameInterference++;
                         }
@@ -259,9 +259,6 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
 
                     if (modifiedFirstSection != modifiedSecondSection) {
                         return false;
-                    } else {
-                        if (log)
-                            Base::Console().log("Name match resolved name %s as equivelent to %s", name1.toString(), name2.toString());
                     }
                 } else {
                     return false;
@@ -278,19 +275,25 @@ bool Feature::doNamesMatch(const Data::MappedName &name1, const Data::MappedName
 }
 
 // This is the name matching algorithms used for the V2 algorithm.
-std::vector<Data::MappedName> Feature::findSimilarNames(const Data::MappedName &searchName, const TopoShape &searchShape)
+std::vector<Data::MappedElement> Feature::findSimilarNames(const Data::MappedName &searchName, const TopoShape &searchShape)
 {
-    std::vector<Data::MappedName> ret { };
+    std::vector<Data::MappedElement> ret { };
 
     if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2 && searchName.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         for (const Data::MappedElement &loopNamePair : searchShape.getElementMap()) {
-            if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
-                ret.push_back(loopNamePair.name);
+            if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name)) {
+                ret.push_back(loopNamePair);
+                Base::Console().log("Name match resolved name %s as equivelent to %s\n", searchName.toString(), loopNamePair.name.toString());
             }
         }
     }
 
     return ret;
+}
+
+std::vector<Data::MappedElement> Feature::findSimilarNames(const Data::MappedName &searchName) const
+{
+    return findSimilarNames(searchName, Shape.getShape());
 }
 
 App::ElementNamePair Feature::getExportElementName(TopoShape shape, const char* name) const
@@ -470,16 +473,16 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape, const char* 
                         searchShape = shapes.front();  // After the break, so we stopped at
                                                        // innermost container
                     }
-                    auto newMapped = TopoShape::chooseMatchingSubShapeByPlaneOrLine(shape, searchShape);
-                    if (!newMapped.name.empty()) {
-                        mapped = newMapped;
-                    } else {
-                        std::vector<Data::MappedName> foundNames = findSimilarNames(mapped.name, shape);
-
-                        if (foundNames.size()) {
-                            mapped.name = foundNames[0];
-                            mapped.index = shape.getIndexedName(mapped.name);
+                    if (ancestors.size() > 1 && boost::starts_with(postfix, Data::POSTFIX_INDEX)) {
+                        std::istringstream iss(postfix.c_str() + strlen(Data::POSTFIX_INDEX));
+                        int idx;
+                        if (iss >> idx && idx >= 0 && idx < (int)ancestors.size()) {
+                            ancestors.resize(1, ancestors[idx]);
                         }
+                    }
+                    if (ancestors.size() == 1) {
+                        idxName.setIndex(ancestors.front());
+                        mapped.index = idxName;
                     }
                 }
                 for (auto& name : names) {

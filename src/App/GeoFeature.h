@@ -30,6 +30,7 @@
 #include "MappedElement.h"
 #include "Material.h"
 #include "ComplexGeoData.h"
+#include "MappedName.h"
 
 namespace App
 {
@@ -118,6 +119,19 @@ public:
                                           const DocumentObject* filter = nullptr,
                                           const char** element = nullptr,
                                           GeoFeature** geoFeature = nullptr);
+
+    /**
+     * @brief Find a similar set of names to the input.
+     *
+     * @param[in] searchName The name to find matches for.
+     *
+     * @return Return a vector of `Data::MappedName` which contains matching names to `searchName`.
+     */
+    virtual std::vector<Data::MappedElement> findSimilarNames(const Data::MappedName &searchName) const
+    {
+        (void)searchName;
+        return { };
+    };
 
     /**
      * @brief Deprecated. Calculates the placement in the global reference coordinate system

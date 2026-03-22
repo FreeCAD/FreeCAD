@@ -1874,12 +1874,11 @@ App::ElementNamePair SketchObject::getElementName(
             // let's attempt to find the right mapped name before marking this as missing by running findSimilarNames.
             // We could use getExportElementName to do the same thing, but this is more direct and should be more performant
             if (!mappedElement.index && type == ElementNameType::Export && isInternalFace) {
-                std::vector<Data::MappedName> foundNames = findSimilarNames(mappedElement.name, internalShape);
+                std::vector<Data::MappedElement> foundNames = findSimilarNames(mappedElement.name, internalShape);
 
                 if (foundNames.size()) {
                     // just grab the first name.
-                    mappedElement.name = foundNames[0];
-                    mappedElement.index = internalShape.getIndexedName(mappedElement.name);
+                    mappedElement = foundNames[0];
                 }
             }
         }

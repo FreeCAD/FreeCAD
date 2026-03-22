@@ -32,6 +32,7 @@
 #include <unordered_set>
 #include <unordered_map>
 
+#include "MappedElement.h"
 #include "Property.h"
 
 namespace Base
@@ -423,7 +424,8 @@ public:
                                  std::string& sub,
                                  ShadowSub& shadow,
                                  bool reverse,
-                                 bool notify = false);
+                                 bool notify = false,
+                                 std::vector<Data::MappedElement> *matchedNames = nullptr);
 
     /** Helper function to register geometry element reference
      *
@@ -633,6 +635,14 @@ public:
 
     fastsignals::signal<void(const std::string&, const std::string&)>
         signalUpdateElementReference;
+    
+    virtual void useMultipleMatchedNames(bool allow) {
+        allowMultipleMatchedNames = allow;
+    };
+
+    virtual bool canUseMultipleMatchedNames() {
+        return allowMultipleMatchedNames;
+    };
 
 protected:
     void hasSetValue() override;
@@ -651,6 +661,7 @@ protected:
                      const std::vector<PropertyLinkBase::ShadowSub>& shadows) const;
 
 private:
+    bool allowMultipleMatchedNames = false;
     std::set<std::string> _LabelRefs;
     std::set<App::DocumentObject*> _ElementRefs;
 };
