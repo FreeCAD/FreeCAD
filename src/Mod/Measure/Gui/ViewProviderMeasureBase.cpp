@@ -169,6 +169,9 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
 
     pRootSeparator = new SoAnnotation();
     pRootSeparator->ref();
+    // Make measurements immune to clipping planes so they are not cut by the
+    // clipping plane widget. This ensures measurements are always visible.
+    pRootSeparator->clipping = false;
     pRootSeparator->addChild(pLineSeparator);
     pRootSeparator->addChild(pLineSeparatorSecondary);
     pRootSeparator->addChild(pTextSeparator);

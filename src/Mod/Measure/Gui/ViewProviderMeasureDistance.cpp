@@ -116,6 +116,13 @@ void MeasureGui::DimensionLinear::setupDimension()
         ps->style = SoPickStyle::UNPICKABLE;
     }
 
+    // Make the annotation node immune to clipping planes so measurements are not
+    // cut by the clipping plane widget
+    SoAnnotation* annotate = static_cast<SoAnnotation*>(getPart("annotate", true));
+    if (annotate) {
+        annotate->clipping = false;
+    }
+
     // transformation
     SoTransform* trans = static_cast<SoTransform*>(getPart("transformation", true));
     trans->translation.connectFrom(&point1);
