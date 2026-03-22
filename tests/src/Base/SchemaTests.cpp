@@ -1247,8 +1247,8 @@ TEST_F(SchemaTest, mks_negative_values_use_magnitude_for_threshold_selection)
         return UnitsApi::schemaTranslate(quantity, factor, unitString);
     };
 
-    EXPECT_EQ(translate("-34.479400 MPa"), "-34.479400 MPa");
-    EXPECT_EQ(translate("-0.001000 mm"), "-1.000000 \xC2\xB5m");
+    EXPECT_EQ(translate("-1000000 Pa"), "-1 MPa");
+    EXPECT_EQ(translate("-0.001 mm"), "-1 \xC2\xB5m");
 }
 
 TEST_F(SchemaTest, sweep_imperial)
