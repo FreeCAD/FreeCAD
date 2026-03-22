@@ -292,17 +292,20 @@ void PropertiesDialog::displayUnitChanged(const QString& text)
         }
         else {
             displayUnit = DisplayUnit();
-            palette.setColor(QPalette::Text,
-                             text.size() == 0 ? defaultTextColor(ui->displayUnit)
-                                              : invalidTextColor(ui->displayUnit));
+            palette.setColor(
+                QPalette::Text,
+                text.size() == 0 ? defaultTextColor(ui->displayUnit)
+                                 : invalidTextColor(ui->displayUnit)
+            );
             displayUnitOk = false;
         }
     }
     catch (...) {
         displayUnit = DisplayUnit();
-        palette.setColor(QPalette::Text,
-                         text.size() == 0 ? defaultTextColor(ui->displayUnit)
-                                          : invalidTextColor(ui->displayUnit));
+        palette.setColor(
+            QPalette::Text,
+            text.size() == 0 ? defaultTextColor(ui->displayUnit) : invalidTextColor(ui->displayUnit)
+        );
         displayUnitOk = false;
     }
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
@@ -362,8 +365,10 @@ void PropertiesDialog::aliasChanged(const QString& text)
     }
 
     alias = aliasOk ? aliasText : "";
-    palette.setColor(QPalette::Text,
-                     aliasOk ? defaultTextColor(ui->alias) : invalidTextColor(ui->alias));
+    palette.setColor(
+        QPalette::Text,
+        aliasOk ? defaultTextColor(ui->alias) : invalidTextColor(ui->alias)
+    );
     ui->alias->setPalette(palette);
     ui->alias->setToolTip(tooltip);
     ui->aliasStatus->setText(statusText);
