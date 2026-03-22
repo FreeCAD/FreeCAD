@@ -319,7 +319,7 @@ void PropertiesDialog::aliasChanged(const QString& text)
             statusText = tr("Invalid: alias already exists");
         }
         else if (sheet->getCells()->isValidCellAddressName(aliasText)) {
-            tooltip = tr("Alias cannot look like a cell address such as A1 or C12.");
+            tooltip = tr("Alias cannot look like a cell address such as A1 or C12");
             statusText = tr("Invalid: alias matches cell address pattern");
         }
         else if (sheet->getPropertyByName(aliasText.c_str())) {
