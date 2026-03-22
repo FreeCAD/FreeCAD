@@ -30,6 +30,7 @@
 #include <App/Range.h>
 #include <Base/Tools.h>
 #include <Gui/CommandT.h>
+#include <QApplication>
 #include <QCoreApplication>
 
 #include "PropertiesDialog.h"
@@ -80,6 +81,17 @@ QString reservedAliasTooltip()
         "s = seconds, e = Euler's number, A = amperes, T = tesla, G = gauss/giga, "
         "H = henry, L = liter. Alternatives include 'myM', 'LenM', or 'Sec'."
     );
+}
+
+QColor defaultTextColor(const QWidget* widget)
+{
+    return QApplication::palette(widget).color(QPalette::Text);
+}
+
+QColor invalidTextColor(const QWidget* widget)
+{
+    const QColor normal = defaultTextColor(widget);
+    return normal.lightness() < 128 ? QColor(255, 90, 90) : QColor(200, 0, 0);
 }
 }  // namespace
 
@@ -275,18 +287,22 @@ void PropertiesDialog::displayUnitChanged(const QString& text)
 
         if (expr) {
             displayUnit = DisplayUnit(text.toStdString(), expr->getUnit(), expr->getScaler());
-            palette.setColor(QPalette::Text, Qt::black);
+            palette.setColor(QPalette::Text, defaultTextColor(ui->displayUnit));
             displayUnitOk = true;
         }
         else {
             displayUnit = DisplayUnit();
-            palette.setColor(QPalette::Text, text.size() == 0 ? Qt::black : Qt::red);
+            palette.setColor(QPalette::Text,
+                             text.size() == 0 ? defaultTextColor(ui->displayUnit)
+                                              : invalidTextColor(ui->displayUnit));
             displayUnitOk = false;
         }
     }
     catch (...) {
         displayUnit = DisplayUnit();
-        palette.setColor(QPalette::Text, text.size() == 0 ? Qt::black : Qt::red);
+        palette.setColor(QPalette::Text,
+                         text.size() == 0 ? defaultTextColor(ui->displayUnit)
+                                          : invalidTextColor(ui->displayUnit));
         displayUnitOk = false;
     }
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
@@ -302,17 +318,26 @@ void PropertiesDialog::aliasChanged(const QString& text)
 
     aliasOk = text.isEmpty() || sheet->isValidAlias(aliasText);
     if (!text.isEmpty() && !aliasOk) {
-        if (ExpressionParser::isTokenAUnit(aliasText)) {
-            tooltip = tr("Alias conflicts with a reserved unit token used by expressions");
-            statusText = tr("Invalid: reserved unit token");
-        }
-        else if (ExpressionParser::isTokenAConstant(aliasText)) {
-            tooltip = tr("Alias conflicts with a reserved constant token used by expressions");
-            statusText = tr("Invalid: reserved constant token");
-        }
-        else if (sheet->isReservedAliasName(aliasText)) {
-            tooltip = reservedAliasTooltip();
-            statusText = tr("Invalid: reserved unit or constant name");
+        if (sheet->isReservedAliasName(aliasText)) {
+            const bool isUnitToken = ExpressionParser::isTokenAUnit(aliasText);
+            const bool isConstantToken = ExpressionParser::isTokenAConstant(aliasText);
+
+            if (isUnitToken && isConstantToken) {
+                tooltip = reservedAliasTooltip();
+                statusText = tr("Invalid: reserved unit and constant token");
+            }
+            else if (isUnitToken) {
+                tooltip = tr("Alias conflicts with a reserved unit token used by expressions");
+                statusText = tr("Invalid: reserved unit token");
+            }
+            else if (isConstantToken) {
+                tooltip = tr("Alias conflicts with a reserved constant token used by expressions");
+                statusText = tr("Invalid: reserved constant token");
+            }
+            else {
+                tooltip = reservedAliasTooltip();
+                statusText = tr("Invalid: reserved unit or constant name");
+            }
         }
         else if (!sheet->getAddressFromAlias(aliasText).empty()) {
             tooltip = tr("Alias already defined");
@@ -337,7 +362,8 @@ void PropertiesDialog::aliasChanged(const QString& text)
     }
 
     alias = aliasOk ? aliasText : "";
-    palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);
+    palette.setColor(QPalette::Text,
+                     aliasOk ? defaultTextColor(ui->alias) : invalidTextColor(ui->alias));
     ui->alias->setPalette(palette);
     ui->alias->setToolTip(tooltip);
     ui->aliasStatus->setText(statusText);
