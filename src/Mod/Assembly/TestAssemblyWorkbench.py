@@ -24,9 +24,11 @@
 import TestApp
 
 from AssemblyTests.TestCore import TestCore
+from AssemblyTests.TestCommandCreateJoint import TestCommandCreateJoint
 from AssemblyTests.TestCommandInsertLink import TestCommandInsertLink
 
 
 # Use the modules so that code checkers don't complain (flake8)
 True if TestCore else False
+True if TestCommandCreateJoint else False
 True if TestCommandInsertLink else False
