@@ -189,11 +189,6 @@ CommandPalette::CommandPalette(QWidget* parent)
     setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint);
     setAttribute(Qt::WA_TranslucentBackground, false);
 
-    // WA_DeleteOnClose because for the love of god i couldn't make it
-    // clear the state of completer upon closing and it remembered full
-    // previous state
-    setAttribute(Qt::WA_DeleteOnClose, true);
-
     searchLineEdit->installEventFilter(this);
 }
 
