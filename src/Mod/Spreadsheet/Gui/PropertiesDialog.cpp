@@ -331,7 +331,7 @@ void PropertiesDialog::aliasChanged(const QString& text)
             statusText = tr("Invalid: bad alias syntax");
         }
         else {
-            tooltip = tr("Alias is not valid in this spreadsheet context.");
+            tooltip = tr("Alias is not valid in this spreadsheet context");
             statusText = tr("Invalid alias");
         }
     }
