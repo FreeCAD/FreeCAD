@@ -234,36 +234,26 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                     }
                     std::string timestamp = buffer.data();
 
+                    auto isInvalidChar = [](char ch) {
 #if defined(_WIN32)
-                    // Windows doesn't allow: < > : " / \ | ? *
-                    const boost::regex re("[<>:\"/\\\\|?*]");
-                    if (boost::regex_search(timestamp, re)) {
-                        timestamp = boost::regex_replace(timestamp, re, "-");
-
-                        static bool warnedWindows = false;
-                        if (!warnedWindows) {
-                            Base::Console().warning(
-                                "Backup filename contained invalid characters for Windows. "
-                                "Automatically replaced with '-'. "
-                                "Consider using a different date format in Preferences/Document.\n");
-                            warnedWindows = true;
-                        }
-                    }
+                        return std::string_view("<>:\"/\\|?*").find(ch) != std::string_view::npos;
 #else
-                    // On POSIX systems, only / is invalid in filenames
-                    const boost::regex re("/");
-                    if (boost::regex_search(timestamp, re)) {
-                        timestamp = boost::regex_replace(timestamp, re, "-");
+                        return ch == '/';
+#endif
+                    };
 
-                        static bool warnedPosix = false;
-                        if (!warnedPosix) {
+                    if (std::ranges::any_of(timestamp, isInvalidChar)) {
+                        std::ranges::replace_if(timestamp, isInvalidChar, '-');
+
+                        static bool warned = false;
+                        if (!warned) {
                             Base::Console().warning(
-                                "Backup filename contained '/' character. "
-                                "Automatically replaced with '-'.\n");
-                            warnedPosix = true;
+                                "Backup filename contained invalid characters. "
+                                "Automatically replaced with '-'. "
+                                "Consider changing the date format in Preferences/Document.\n");
+                            warned = true;
                         }
                     }
-#endif
 
                     str << bn << timestamp;
 
