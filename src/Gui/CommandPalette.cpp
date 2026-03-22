@@ -199,35 +199,39 @@ CommandPalette::CommandPalette(QWidget* parent)
 
 void CommandPalette::setupUi()
 {
+    constexpr int layoutMargin = 10;
+    constexpr int layoutSpacing = 5;
+    constexpr int searchMinWidth = 500;
+    constexpr int searchMinHeight = 30;
+    constexpr int listMinHeight = 400;
+    constexpr int listMaxHeight = 600;
+    constexpr int paletteMinWidth = 520;
+    constexpr int paletteMaxWidth = 800;
+    constexpr int paletteMinHeight = 450;
+
     mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(10, 10, 10, 10);
-    mainLayout->setSpacing(5);
+    mainLayout->setContentsMargins(layoutMargin, layoutMargin, layoutMargin, layoutMargin);
+    mainLayout->setSpacing(layoutSpacing);
+
     searchLineEdit = new QLineEdit(this);
     searchLineEdit->setPlaceholderText(tr("Type a command name..."));
     searchLineEdit->setClearButtonEnabled(true);
-    searchLineEdit->setMinimumWidth(500);
-    searchLineEdit->setMinimumHeight(30);
+    searchLineEdit->setMinimumWidth(searchMinWidth);
+    searchLineEdit->setMinimumHeight(searchMinHeight);
 
     completer = new CommandCompleter(searchLineEdit, this);
 
-    // remove widget association to prevent completer's popup as we just embed the logic inside
-    // our own qlistwidget
+    // Remove widget association to prevent completer's popup; we embed the
+    // completion model inside our own QListView instead.
     completer->setWidget(nullptr);
-
-    // disconnect completer's signals as we don't use them, we need the base model only
     disconnect(searchLineEdit, nullptr, completer, nullptr);
 
-    // Create a list view to show commands directly in the dialog
     commandListView = new QListView(this);
-
-    // use completion model from CommandCompleter
     commandListView->setModel(completer->completionModel());
-    commandListView->setMinimumHeight(400);
-    commandListView->setMaximumHeight(600);
+    commandListView->setMinimumHeight(listMinHeight);
+    commandListView->setMaximumHeight(listMaxHeight);
     commandListView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     commandListView->setSelectionMode(QAbstractItemView::SingleSelection);
-
-    // set custom delegate to show command name and description
     commandListView->setItemDelegate(new CommandItemDelegate(this));
 
     mainLayout->addWidget(searchLineEdit);
@@ -237,9 +241,9 @@ void CommandPalette::setupUi()
     connect(commandListView, &QListView::activated, this, &CommandPalette::onListItemActivated);
     connect(completer, &CommandCompleter::commandActivated, this, &CommandPalette::onCommandActivated);
 
-    setMinimumWidth(520);
-    setMaximumWidth(800);
-    setMinimumHeight(450);
+    setMinimumWidth(paletteMinWidth);
+    setMaximumWidth(paletteMaxWidth);
+    setMinimumHeight(paletteMinHeight);
 }
 
 void CommandPalette::showPalette()
