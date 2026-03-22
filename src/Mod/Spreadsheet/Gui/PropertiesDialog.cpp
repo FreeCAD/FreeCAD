@@ -67,7 +67,7 @@ QString aliasHelpTooltip()
 {
     return QCoreApplication::translate(
         "PropertiesDialog",
-        "Refer to cell by alias, for example\n"
+        "Allows referring to a cell by an alias name, for example\n"
         "Spreadsheet.my_alias_name instead of Spreadsheet.B1"
     );
 }
