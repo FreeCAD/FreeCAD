@@ -59,6 +59,7 @@
 #include "Clipping.h"
 #include "DemoMode.h"
 #include "Dialogs/DlgSettingsImageImp.h"
+#include "DockWindowManager.h"
 #include "Document.h"
 #include "FileDialog.h"
 #include "ImageView.h"
@@ -656,13 +657,18 @@ Action* StdCmdToggleClipPlane::createAction()
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
-    if (!clipping) {
-        auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-        if (view) {
-            clipping = Gui::Dialog::Clipping::makeDockWidget(view);
-        }
+    Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
+    QDockWidget* dw = pDockMgr->getDockContainer("Clipping");
+    Gui::Dialog::Clipping::setDockVisible(true);
+
+    if (dw) {
+        dw->show();
+        dw->raise();
+        return;
     }
+
+    Gui::Dialog::Clipping::makeDockWidget(
+        qobject_cast<Gui::View3DInventor*>(getMainWindow()->activeWindow()));
 }
 
 bool StdCmdToggleClipPlane::isActive()

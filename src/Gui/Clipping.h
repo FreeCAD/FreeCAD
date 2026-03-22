@@ -26,6 +26,8 @@
 #include <QDialog>
 #include <FCGlobal.h>
 
+class QDockWidget;
+
 namespace Gui
 {
 class View3DInventor;
@@ -42,6 +44,7 @@ class GuiExport Clipping: public QDialog
 public:
     static Clipping* makeDockWidget(Gui::View3DInventor*);
     Clipping(Gui::View3DInventor* view, QWidget* parent = nullptr);
+    static void setDockVisible(bool visible);
     ~Clipping() override;
 
 protected:
@@ -67,6 +70,8 @@ public:
     void reject() override;
 
 private:
+    void attachToView(Gui::View3DInventor* view);
+    void saveDockSettings(QDockWidget* dw, bool visible);
     class Private;
     Private* d;
 };

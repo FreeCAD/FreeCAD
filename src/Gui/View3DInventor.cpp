@@ -62,6 +62,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Camera.h"
+#include "Clipping.h"
 #include "Document.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
@@ -75,6 +76,7 @@
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 #include "WaitCursor.h"
+
 
 #include "Utilities.h"
 
@@ -652,6 +654,14 @@ bool View3DInventor::setCamera(const char* pCamera)
     }
 
     return true;
+}
+
+void View3DInventor::setupClipping()
+{   
+    //wait for the document to be fully loaded before creating the clipping dialog
+    QTimer::singleShot(0, this, [this]() {
+        Gui::Dialog::Clipping::makeDockWidget(this);
+    });
 }
 
 void View3DInventor::toggleClippingPlane()

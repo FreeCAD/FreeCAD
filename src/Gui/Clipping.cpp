@@ -28,7 +28,11 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <QDockWidget>
 #include <QPointer>
+#include <QScreen>
 
+#include <App/Application.h>
+
+#include "Application.h"
 #include "Clipping.h"
 #include "ui_Clipping.h"
 #include "DockWindowManager.h"
@@ -36,6 +40,43 @@
 #include "View3DInventorViewer.h"
 
 using namespace Gui::Dialog;
+
+namespace {
+
+auto getClippingDockParameterGroup()
+{
+    return App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/DockWindows/Clipping"
+    );
+}
+
+QRect getDockSavedGeometry(const ParameterGrp::handle& hGrp)
+{
+    return QRect(
+        static_cast<int>(hGrp->GetInt("GeometryX", 0)),
+        static_cast<int>(hGrp->GetInt("GeometryY", 0)),
+        static_cast<int>(hGrp->GetInt("GeometryW", 0)),
+        static_cast<int>(hGrp->GetInt("GeometryH", 0))
+    );
+}
+
+void restoreDockWidgetGeometry(QDockWidget* dw, const QRect& savedGeom, bool floating)
+{
+    QScreen* targetScreen = nullptr;
+    for (QScreen* screen : QApplication::screens()) {
+        if (screen->availableGeometry().contains(savedGeom)) {
+            targetScreen = screen;
+            break;
+        }
+    }
+
+    if (targetScreen) {
+        dw->setFloating(floating);
+        dw->setGeometry(savedGeom);
+    }
+}
+
+}
 
 class Clipping::Private
 {
@@ -125,7 +166,7 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     d->ui.dirZ->setSingleStep(0.1f);
     d->ui.dirZ->setValue(1.0f);
 
-    d->view = view;
+     d->view = view;
     View3DInventorViewer* viewer = view->getViewer();
     d->node = static_cast<SoGroup*>(viewer->getSceneGraph());
     d->node->ref();
@@ -192,12 +233,27 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
 
 Clipping* Clipping::makeDockWidget(Gui::View3DInventor* view)
 {
-    // embed this dialog into a QDockWidget
-    auto clipping = new Clipping(view);
+    if (!view)
+        return nullptr;
+
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
+    if (pDockMgr->getDockContainer("Clipping"))
+        return nullptr;
+
+    auto hGrp = getClippingDockParameterGroup();
+    if (hGrp->GetBoolMap("Visible").empty()) {
+        //if no settings exist, don't create the clipping dialog, it will be created when the user clicks on the menu entry for clipping
+        return nullptr;
+    }
+
+    auto clipping = new Clipping(view);
     QDockWidget* dw = pDockMgr->addDockWindow("Clipping", clipping, Qt::LeftDockWidgetArea);
     dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    dw->show();
+
+    QRect savedGeom = getDockSavedGeometry(hGrp);
+    restoreDockWidgetGeometry(dw, savedGeom, hGrp->GetBool("Floating", false));
+
+    dw->setVisible(hGrp->GetBool("Visible", true));
 
     return clipping;
 }
@@ -251,13 +307,63 @@ void Clipping::setupConnections()
     // clang-format on
 }
 
+void Clipping::saveDockSettings(QDockWidget* dw, bool visible)
+{
+    auto hGrp = getClippingDockParameterGroup();
+    const QRect geom = dw->geometry();
+
+    hGrp->SetInt("GeometryX", geom.x());
+    hGrp->SetInt("GeometryY", geom.y());
+    hGrp->SetInt("GeometryW", geom.width());
+    hGrp->SetInt("GeometryH", geom.height());
+    hGrp->SetBool("Floating", dw->isFloating());
+    hGrp->SetBool("Visible", visible);
+}
+
+QRect getDockSavedGeometry(const ParameterGrp::handle& hGrp)
+{
+    return QRect(
+        static_cast<int>(hGrp->GetInt("GeometryX", 0)),
+        static_cast<int>(hGrp->GetInt("GeometryY", 0)),
+        static_cast<int>(hGrp->GetInt("GeometryW", 0)),
+        static_cast<int>(hGrp->GetInt("GeometryH", 0))
+    );
+}
+
+void restoreDockWidgetGeometry(QDockWidget* dw, const QRect& savedGeom, bool floating)
+{
+    QScreen* targetScreen = nullptr;
+    //check if the last saved geometry is still valid on the current screen setup
+    for (QScreen* screen : QApplication::screens()) {
+        if (screen->availableGeometry().contains(savedGeom)) {
+            targetScreen = screen;
+            break;
+        }
+    }
+
+    if (targetScreen) {
+        dw->setFloating(floating);
+        dw->setGeometry(savedGeom);
+    }
+}
+
+void Clipping::setDockVisible(bool visible)
+{
+    getClippingDockParameterGroup()->SetBool("Visible", visible);
+}
+
 void Clipping::reject()
 {
-    QDialog::reject();
     auto dw = qobject_cast<QDockWidget*>(parent());
+    bool closing = Gui::Application::Instance && Gui::Application::Instance->isClosing();
+
     if (dw) {
+        // if clipping exists on closing, save settings as visible
+        saveDockSettings(dw, closing);
         dw->deleteLater();
     }
+
+    QDialog::reject();
 }
 
 void Clipping::onGroupBoxXToggled(bool on)

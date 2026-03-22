@@ -2275,6 +2275,7 @@ MDIView* Document::createView(const Base::Type& typeId, CreateViewMode mode)
         if (mode != CreateViewMode::Clone) {
             getMainWindow()->addWindow(view3D);
         }
+        view3D->setupClipping();
 
         view3D->getViewer()->redraw();
         return view3D;
