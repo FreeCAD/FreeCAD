@@ -303,7 +303,7 @@ void PropertiesDialog::aliasChanged(const QString& text)
     aliasOk = text.isEmpty() || sheet->isValidAlias(aliasText);
     if (!text.isEmpty() && !aliasOk) {
         if (ExpressionParser::isTokenAUnit(aliasText)) {
-            tooltip = tr("Alias conflicts with a reserved unit token used by expressions.");
+            tooltip = tr("Alias conflicts with a reserved unit token used by expressions");
             statusText = tr("Invalid: reserved unit token");
         }
         else if (ExpressionParser::isTokenAConstant(aliasText)) {
