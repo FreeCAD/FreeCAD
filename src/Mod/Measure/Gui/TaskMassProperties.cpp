@@ -473,8 +473,8 @@ void TaskMassProperties::onSelectionChanged(const Gui::SelectionChanges& msg)
         return;
     }
 
-    if (!selectingCustomCoordSystem && msg.Type == Gui::SelectionChanges::AddSelection && msg.pDocName
-        && msg.pObjectName && msg.pSubName && msg.pSubName[0]) {
+    if (!selectingCustomCoordSystem && msg.Type == Gui::SelectionChanges::AddSelection
+        && msg.pDocName && msg.pObjectName && msg.pSubName && msg.pSubName[0]) {
         auto* doc = App::GetApplication().getDocument(msg.pDocName);
         if (!doc) {
             update(msg);
@@ -1353,33 +1353,89 @@ void TaskMassProperties::saveResult()
         }
     };
 
-    setString("Mode", "Parameters", currentMode == MassPropertiesMode::Custom ? "Custom" : "Center of gravity");
+    setString(
+        "Mode",
+        "Parameters",
+        currentMode == MassPropertiesMode::Custom ? "Custom" : "Center of gravity"
+    );
 
     setQuantity("Volume", "Physical Properties", currentInfo.volume);
     setQuantity("Mass", "Physical Properties", currentInfo.mass);
     setQuantity("Density", "Physical Properties", currentInfo.density);
     setQuantity("SurfaceArea", "Physical Properties", currentInfo.surfaceArea);
 
-    setQuantity("CenterOfGravityX", "Center of Gravity", Base::Quantity(currentInfo.cog.x, Base::Unit::Length));
-    setQuantity("CenterOfGravityY", "Center of Gravity", Base::Quantity(currentInfo.cog.y, Base::Unit::Length));
-    setQuantity("CenterOfGravityZ", "Center of Gravity", Base::Quantity(currentInfo.cog.z, Base::Unit::Length));
-    setQuantity("CenterOfVolumeX", "Center of Volume", Base::Quantity(currentInfo.cov.x, Base::Unit::Length));
-    setQuantity("CenterOfVolumeY", "Center of Volume", Base::Quantity(currentInfo.cov.y, Base::Unit::Length));
-    setQuantity("CenterOfVolumeZ", "Center of Volume", Base::Quantity(currentInfo.cov.z, Base::Unit::Length));
+    setQuantity(
+        "CenterOfGravityX",
+        "Center of Gravity",
+        Base::Quantity(currentInfo.cog.x, Base::Unit::Length)
+    );
+    setQuantity(
+        "CenterOfGravityY",
+        "Center of Gravity",
+        Base::Quantity(currentInfo.cog.y, Base::Unit::Length)
+    );
+    setQuantity(
+        "CenterOfGravityZ",
+        "Center of Gravity",
+        Base::Quantity(currentInfo.cog.z, Base::Unit::Length)
+    );
+    setQuantity(
+        "CenterOfVolumeX",
+        "Center of Volume",
+        Base::Quantity(currentInfo.cov.x, Base::Unit::Length)
+    );
+    setQuantity(
+        "CenterOfVolumeY",
+        "Center of Volume",
+        Base::Quantity(currentInfo.cov.y, Base::Unit::Length)
+    );
+    setQuantity(
+        "CenterOfVolumeZ",
+        "Center of Volume",
+        Base::Quantity(currentInfo.cov.z, Base::Unit::Length)
+    );
 
     const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom && currentDatum
         && currentDatum->isDerivedFrom<App::Line>();
 
     if (hasAxisSelection) {
-        setQuantity("AxisInertia", "Inertia", Base::Quantity(currentInfo.axisInertia, Base::Unit::Inertia));
+        setQuantity(
+            "AxisInertia",
+            "Inertia",
+            Base::Quantity(currentInfo.axisInertia, Base::Unit::Inertia)
+        );
     }
     else {
-        setQuantity("InertiaJox", "Inertia", Base::Quantity(currentInfo.inertiaJo.x, Base::Unit::Inertia));
-        setQuantity("InertiaJoy", "Inertia", Base::Quantity(currentInfo.inertiaJo.y, Base::Unit::Inertia));
-        setQuantity("InertiaJoz", "Inertia", Base::Quantity(currentInfo.inertiaJo.z, Base::Unit::Inertia));
-        setQuantity("InertiaJxy", "Inertia", Base::Quantity(currentInfo.inertiaJCross.x, Base::Unit::Inertia));
-        setQuantity("InertiaJzx", "Inertia", Base::Quantity(currentInfo.inertiaJCross.y, Base::Unit::Inertia));
-        setQuantity("InertiaJzy", "Inertia", Base::Quantity(currentInfo.inertiaJCross.z, Base::Unit::Inertia));
+        setQuantity(
+            "InertiaJox",
+            "Inertia",
+            Base::Quantity(currentInfo.inertiaJo.x, Base::Unit::Inertia)
+        );
+        setQuantity(
+            "InertiaJoy",
+            "Inertia",
+            Base::Quantity(currentInfo.inertiaJo.y, Base::Unit::Inertia)
+        );
+        setQuantity(
+            "InertiaJoz",
+            "Inertia",
+            Base::Quantity(currentInfo.inertiaJo.z, Base::Unit::Inertia)
+        );
+        setQuantity(
+            "InertiaJxy",
+            "Inertia",
+            Base::Quantity(currentInfo.inertiaJCross.x, Base::Unit::Inertia)
+        );
+        setQuantity(
+            "InertiaJzx",
+            "Inertia",
+            Base::Quantity(currentInfo.inertiaJCross.y, Base::Unit::Inertia)
+        );
+        setQuantity(
+            "InertiaJzy",
+            "Inertia",
+            Base::Quantity(currentInfo.inertiaJCross.z, Base::Unit::Inertia)
+        );
         setQuantity("InertiaJx", "Inertia", Base::Quantity(currentInfo.inertiaJ.x, Base::Unit::Inertia));
         setQuantity("InertiaJy", "Inertia", Base::Quantity(currentInfo.inertiaJ.y, Base::Unit::Inertia));
         setQuantity("InertiaJz", "Inertia", Base::Quantity(currentInfo.inertiaJ.z, Base::Unit::Inertia));
