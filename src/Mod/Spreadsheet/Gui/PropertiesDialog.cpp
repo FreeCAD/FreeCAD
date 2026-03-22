@@ -76,9 +76,9 @@ QString reservedAliasTooltip()
 {
     return QCoreApplication::translate(
         "PropertiesDialog",
-        "Cannot use a unit/constant name as alias. Reserved examples: m = meters, "
+        "Cannot use a unit or constant name as alias. Reserved examples: m = meters, "
         "s = seconds, e = Euler's number, A = amperes, T = tesla, G = gauss/giga, "
-        "H = henry, L = liter. Try 'myM', 'LenM', 'Sec' etc. instead."
+        "H = henry, L = liter. Alternatives include 'myM', 'LenM', or 'Sec'."
     );
 }
 }  // namespace
