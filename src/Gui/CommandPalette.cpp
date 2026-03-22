@@ -186,7 +186,7 @@ CommandPalette::CommandPalette(QWidget* parent)
     setupUi();
 
     setModal(false);
-    setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint);
+    setWindowFlags(Qt::Dialog | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint);
     setAttribute(Qt::WA_TranslucentBackground, false);
 
     // WA_DeleteOnClose because for the love of god i couldn't make it
