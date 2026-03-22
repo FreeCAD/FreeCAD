@@ -30,6 +30,13 @@ class QLineEdit;
 namespace Gui
 {
 
+enum CommandModelRole
+{
+    CommandNameRole = Qt::UserRole,
+    CommandMenuTextRole = Qt::UserRole + 1,
+    CommandGroupRole = Qt::UserRole + 2,
+};
+
 /**
  * Command name auto completer.
  *

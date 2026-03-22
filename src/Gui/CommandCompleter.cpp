@@ -48,9 +48,6 @@ struct CmdInfo
 };
 std::vector<CmdInfo> _Commands;
 int _CommandRevision;
-const int CommandNameRole = Qt::UserRole;
-const int CommandMenuTextRole = Qt::UserRole + 1;  // menu text only (for palette)
-const int CommandGroupRole = Qt::UserRole + 2;     // group/workbench name
 bool _ShortcutSignalConnected = false;
 
 class CommandModel: public QAbstractItemModel
@@ -165,7 +162,6 @@ public:
             case CommandNameRole:
                 return QByteArray(info.cmd->getName());
 
-            // custom role for menu text only (without internal name)
             case CommandMenuTextRole: {
                 QString title = Action::commandMenuText(info.cmd);
                 QString shortcut = info.cmd->getShortcut();
@@ -175,7 +171,6 @@ public:
                 return title;
             }
 
-            // custom role for workbench/group name
             case CommandGroupRole:
                 return QString::fromUtf8(info.cmd->getGroupName());
 
