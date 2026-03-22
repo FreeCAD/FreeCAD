@@ -69,7 +69,7 @@ class IFC_UpdateIOS:
 
         from PySide import QtGui
 
-        title = translate("BIM", "IfcOpenShell update")
+        title = translate("BIM", "IfcOpenShell Update")
         note = translate(
             "BIM",
             "The update is installed in your FreeCAD's user directory and will not affect the rest of your system.",

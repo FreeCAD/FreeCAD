@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLGEXPRESSIONINPUT_H
-#define GUI_DIALOG_DLGEXPRESSIONINPUT_H
+#pragma once
 
 #include <QDialog>
 #include <QTreeWidget>
@@ -159,6 +158,3 @@ private:
 };
 
 }  // namespace Gui::Dialog
-
-
-#endif  // GUI_DIALOG_EXPRESSIONINPUT_H

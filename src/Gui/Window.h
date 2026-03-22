@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WINDOW_H
-#define GUI_WINDOW_H
+#pragma once
 
 #include <Base/Parameter.h>
 #include <functional>
@@ -71,5 +70,3 @@ inline void WindowParameter::setSlotParamChanged(S slot, T* obsPtr)
 }
 
 }  // namespace Gui
-
-#endif  // GUI_WINDOW_H

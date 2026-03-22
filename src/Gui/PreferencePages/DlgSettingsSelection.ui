@@ -22,6 +22,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="4" column="1">
        <widget class="Gui::PrefColorButton" name="SelectionColor">
+        <property name="toolTip">
+         <string>The color used for highlighting selected objects in the 3D view</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -124,6 +127,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
       </item>
       <item row="3" column="1">
        <widget class="Gui::PrefColorButton" name="HighlightColor">
+        <property name="toolTip">
+         <string>The color used for highlighting preselected objects in the 3D view</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -194,6 +200,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
         <property name="text">
          <string>Auto switch to the 3D view containing the selected item</string>
         </property>
+        <property name="toolTip">
+         <string>Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</string>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>SyncView</cstring>
         </property>
@@ -206,6 +215,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
        <widget class="Gui::PrefCheckBox" name="checkBoxAutoExpand">
         <property name="text">
          <string>Auto expand tree item when the corresponding object is selected in the 3D view</string>
+        </property>
+        <property name="toolTip">
+         <string>Locates and reveals the selected object within the tree hierarchy. Prevents manual scrolling in deep, complex document structures.</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>SyncSelection</cstring>
@@ -220,6 +232,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
         <property name="text">
          <string>Record selection in tree view in order to go back/forward using navigation button</string>
         </property>
+        <property name="toolTip">
+         <string>Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</string>
+        </property>
         <property name="prefEntry" stdset="0">
          <cstring>RecordSelection</cstring>
         </property>
@@ -232,6 +247,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
        <widget class="Gui::PrefCheckBox" name="checkBoxSelectionCheckBoxes">
         <property name="text">
          <string>Add checkboxes for selection in document tree</string>
+        </property>
+        <property name="toolTip">
+         <string>Provides persistent selection toggles for each item. Simplifies batch operations and complex multi-selection without holding modifier keys (Ctrl/Shift).</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>CheckBoxesSelection</cstring>

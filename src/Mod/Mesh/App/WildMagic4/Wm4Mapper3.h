@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4MAPPER3_H
-#define WM4MAPPER3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector3.h"
@@ -106,5 +105,3 @@ namespace Wm4
 typedef Mapper3<float> Mapper3f;
 typedef Mapper3<double> Mapper3d;
 }
-
-#endif

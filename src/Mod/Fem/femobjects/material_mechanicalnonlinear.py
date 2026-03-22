@@ -1,5 +1,6 @@
 # ***************************************************************************
 # *   Copyright (c) 2016 Bernd Hahnebach <bernd@bimstatik.org>              *
+# *   Copyright (c) 2026 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
@@ -29,7 +30,11 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief nonlinear mechanical material object
 
+from FreeCAD import Base
+
 from . import base_fempythonobject
+
+_PropHelper = base_fempythonobject._PropHelper
 
 
 class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
@@ -41,80 +46,83 @@ class MaterialMechanicalNonlinear(base_fempythonobject.BaseFemPythonObject):
 
     def __init__(self, obj):
         super().__init__(obj)
-        self.add_properties(obj)
+
+        for prop in self._get_properties():
+            prop.add_to_object(obj)
 
         obj.addExtension("App::SuppressibleExtensionPython")
 
+    def _get_properties(self):
+        prop = []
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyEnumeration",
+                name="MaterialModelNonlinearity",
+                group="Material",
+                doc="Set the type on nonlinear material model",
+                value=["isotropic hardening", "kinematic hardening"],
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyStringList",
+                name="YieldPoints",
+                group="Material",
+                doc="Set stress and strain for yield points as a list of strings,\n"
+                + "each point 'stress, plastic strain'",
+                value=[],
+            )
+        )
+
+        return prop
+
     def onDocumentRestored(self, obj):
+        # update old project with new properties
+        for prop in self._get_properties():
+            try:
+                value = obj.getPropertyByName(prop.name)
+            except Base.PropertyError:
+                prop.add_to_object(obj)
 
-        # YieldPoints was (until 0.19) stored as 3 separate variables. Consolidate them if present.
-        yield_points = []
-        if hasattr(obj, "YieldPoint1"):
-            if obj.YieldPoint1:
-                yield_points.append(obj.YieldPoint1)
+            # update material model enum
+            if prop.name == "MaterialModelNonlinearity" and value == "simple hardening":
+                obj.MaterialModelNonlinearity = prop.value
+
+        # YieldPoints was (until 0.19) stored as 3 separate variables.
+        try:
+            yp1 = obj.getPropertyByName("YieldPoint1")
+            yp2 = obj.getPropertyByName("YieldPoint2")
+            yp3 = obj.getPropertyByName("YieldPoint3")
+            obj.setPropertyStatus("YieldPoint1", "-LockDynamic")
+            obj.setPropertyStatus("YieldPoint2", "-LockDynamic")
+            obj.setPropertyStatus("YieldPoint3", "-LockDynamic")
             obj.removeProperty("YieldPoint1")
-            if hasattr(obj, "YieldPoint2"):
-                if obj.YieldPoint2:
-                    yield_points.append(obj.YieldPoint2)
-                obj.removeProperty("YieldPoint2")
-            if hasattr(obj, "YieldPoint3"):
-                if obj.YieldPoint3:
-                    yield_points.append(obj.YieldPoint3)
-                obj.removeProperty("YieldPoint3")
+            obj.removeProperty("YieldPoint2")
+            obj.removeProperty("YieldPoint3")
 
-        self.add_properties(obj)
-        if yield_points:
-            obj.YieldPoints = yield_points
+            obj.YieldPoints = [yp1, yp2, yp3]
+        except Base.PropertyError:
+            # do nothing
+            pass
+
+        # set reference on base linear material
+        try:
+            # invert dependency with base material
+            base = obj.getPropertyByName("LinearBaseMaterial")
+            obj.LinearBaseMaterial = None
+            obj.setPropertyStatus("LinearBaseMaterial", "-LockDynamic")
+            obj.removeProperty("LinearBaseMaterial")
+            # remove from analysis group
+            analysis = obj.getParent()
+            if analysis is not None:
+                analysis.removeObject(obj)
+            if base is not None:
+                base.Nonlinear = obj
+                base.purgeTouched()
+        except Base.PropertyError:
+            # do nothing
+            pass
 
         if not obj.hasExtension("App::SuppressibleExtensionPython"):
             obj.addExtension("App::SuppressibleExtensionPython")
-        # TODO: If in the future more nonlinear options are added, update choices here.
-
-    def add_properties(self, obj):
-
-        # this method is called from onDocumentRestored
-        # thus only add and or set a attribute
-        # if the attribute does not exist
-
-        if not hasattr(obj, "LinearBaseMaterial"):
-            obj.addProperty(
-                "App::PropertyLink",
-                "LinearBaseMaterial",
-                "Base",
-                "Set the linear material the nonlinear builds upon.",
-            )
-            obj.setPropertyStatus("LinearBaseMaterial", "LockDynamic")
-
-        if not hasattr(obj, "MaterialModelNonlinearity"):
-            choices_nonlinear_material_models = ["isotropic hardening", "kinematic hardening"]
-            obj.addProperty(
-                "App::PropertyEnumeration",
-                "MaterialModelNonlinearity",
-                "Fem",
-                "Set the type on nonlinear material model",
-            )
-            obj.setPropertyStatus("MaterialModelNonlinearity", "LockDynamic")
-            obj.MaterialModelNonlinearity = choices_nonlinear_material_models
-            obj.MaterialModelNonlinearity = choices_nonlinear_material_models[0]
-
-        if (
-            hasattr(obj, "MaterialModelNonlinearity")
-            and obj.MaterialModelNonlinearity == "simple hardening"
-        ):
-            updated_choices_nonlinear_material_models = [
-                "isotropic hardening",
-                "kinematic hardening",
-            ]
-            obj.MaterialModelNonlinearity = updated_choices_nonlinear_material_models
-            obj.MaterialModelNonlinearity = updated_choices_nonlinear_material_models[0]
-
-        if not hasattr(obj, "YieldPoints"):
-            obj.addProperty(
-                "App::PropertyStringList",
-                "YieldPoints",
-                "Fem",
-                "Set stress and strain for yield points as a list of strings, "
-                'each point "stress, plastic strain"',
-            )
-            obj.setPropertyStatus("YieldPoints", "LockDynamic")
-            obj.YieldPoints = []

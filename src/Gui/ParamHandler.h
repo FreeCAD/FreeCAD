@@ -19,8 +19,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_PARAM_HANDLER_H
-#define GUI_PARAM_HANDLER_H
+#pragma once
 
 #include <map>
 #include <memory>
@@ -266,5 +265,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PARAM_HANDLER_H

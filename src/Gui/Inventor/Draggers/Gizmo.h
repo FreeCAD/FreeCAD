@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_GIZMO_H
-#define GUI_GIZMO_H
+#pragma once
 
 #include <initializer_list>
 #include <memory>
@@ -257,5 +256,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif /* GUI_GIZMO_H */

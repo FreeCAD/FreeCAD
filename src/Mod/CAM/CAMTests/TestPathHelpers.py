@@ -124,6 +124,15 @@ class TestPathHelpers(PathTestBase):
         self.assertTrue(state["Y"] == 50)
         self.assertTrue(state["Z"] == 5)
 
+        # Test process list of commands
+        machine = PathMachineState.MachineState()
+        machine.addCommands(self.commandlist[0])
+        machine.addCommands(self.commandlist[1:])
+        state = machine.getState()
+        self.assertEqual(state["X"], 20)
+        self.assertEqual(state["Y"], 20)
+        self.assertEqual(state["Z"], 5)
+
     def test02(self):
         """Test PathUtils filterarcs"""
 

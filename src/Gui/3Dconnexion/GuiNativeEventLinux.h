@@ -20,16 +20,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+#pragma once
 
 #include "GuiAbstractNativeEvent.h"
+#include <memory>
 
 class QMainWindow;
 
 namespace Gui
 {
 class GUIApplicationNativeEventAware;
+class DeadzoneCache;
 
 class GuiNativeEvent: public GuiAbstractNativeEvent
 {
@@ -43,9 +44,10 @@ private:
     GuiNativeEvent();
     GuiNativeEvent(const GuiNativeEvent&);
     GuiNativeEvent& operator=(const GuiNativeEvent&);
+
+    std::unique_ptr<DeadzoneCache> dzCache;
+
 private Q_SLOTS:
     void pollSpacenav();
 };
 }  // namespace Gui
-
-#endif  // GUINATIVEEVENT_H

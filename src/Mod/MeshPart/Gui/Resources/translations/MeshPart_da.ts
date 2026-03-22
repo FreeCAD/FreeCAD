@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <source>Section</source>
-      <translation type="unfinished">Section</translation>
+      <translation>Tværsnit</translation>
     </message>
   </context>
   <context>
@@ -139,12 +139,12 @@
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Afstand</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation>Sektioner</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
@@ -154,7 +154,7 @@
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation>Tælle</translation>
+      <translation>Tæl</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
@@ -224,7 +224,7 @@ This command only works with a Mesh object, not a regular face or surface. To co
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
       <source>Wire</source>
-      <translation type="unfinished">Wire</translation>
+      <translation>Tråd</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="44"/>
@@ -395,17 +395,17 @@ The smallest value is 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation>Grov</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="244"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation>Middel</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="249"/>
       <source>Fine</source>
-      <translation type="unfinished">Fine</translation>
+      <translation>Fin</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="254"/>
@@ -491,7 +491,7 @@ A value in the range of 0.2-10.</translation>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
       <source>No active document</source>
-      <translation>Ingen aktive dokument</translation>
+      <translation>Ingen aktiv dokument</translation>
     </message>
     <message>
       <location filename="../../Tessellation.cpp" line="280"/>

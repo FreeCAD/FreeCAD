@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_LandmarkDimension_h_
-#define TechDraw_LandmarkDimension_h_
+#pragma once
 
 # include <App/DocumentObject.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -71,4 +70,3 @@ private:
 };
 
 } //namespace TechDraw
-#endif

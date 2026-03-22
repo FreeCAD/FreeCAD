@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TRANSFORM_H
-#define GUI_TRANSFORM_H
+#pragma once
 
 #include <QDialog>
 #include <set>
@@ -124,5 +123,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_TRANSFORM_H

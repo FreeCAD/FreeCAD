@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGIMPORTSTEP_H
-#define PARTGUI_DLGIMPORTSTEP_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 #include <Gui/PropertyPage.h>
@@ -90,5 +89,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGIMPORTSTEP_H

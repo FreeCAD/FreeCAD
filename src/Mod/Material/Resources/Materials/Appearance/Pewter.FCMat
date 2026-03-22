@@ -3,7 +3,7 @@
 General:
   UUID: "a61853b9-ec9f-403e-9726-0a938731aecd"
   Author: "David Carter"
-  License: "GPL-2.0-or-later"
+  License: "CC-BY-4.0"
   Name: "Pewter"
   Description: "Defines the Pewter appearance properties"
 AppearanceModels:

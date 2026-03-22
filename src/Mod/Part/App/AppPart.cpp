@@ -584,6 +584,8 @@ PyMOD_INIT_FUNC(Part)
 
     Base::registerServiceImplementation<App::SubObjectPlacementProvider>(new AttacherSubObjectPlacement);
     Base::registerServiceImplementation<App::CenterOfMassProvider>(new PartCenterOfMass);
+    Base::registerServiceImplementation<App::CustomAttributeProvider>(new ShapeAttributeProvider);
+    Base::registerServiceImplementation<App::PseudoShapeProvider>(new PartPseudoShapeProvider);
 
     PyMOD_Return(partModule);
 }

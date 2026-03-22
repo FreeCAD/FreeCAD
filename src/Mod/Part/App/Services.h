@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef PART_SERVICES_H
-#define PART_SERVICES_H
+#pragma once
 
 #include <Attacher.h>
 #include <App/Services.h>
@@ -45,4 +44,18 @@ public:
     bool supports(App::DocumentObject* object) const override;
 };
 
-#endif  // PART_SERVICES_H
+class ShapeAttributeProvider final: public App::CustomAttributeProvider
+{
+public:
+    std::optional<PyObject*> getAttribute(App::DocumentObject* object, const char* attr) const override;
+};
+
+class PartPseudoShapeProvider final: public App::PseudoShapeProvider
+{
+public:
+    Py::Object getElement(
+        const Py::Object& module,
+        const Py::Object& object,
+        const std::string& subname
+    ) const override;
+};

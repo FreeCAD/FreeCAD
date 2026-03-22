@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKSURFACEFINISHSYMBOLS_H
-#define TECHDRAWGUI_TASKSURFACEFINISHSYMBOLS_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -150,5 +149,3 @@ private:
 }; // class TaskDlgSurfaceFinishSymbols
 
 } // namespace TechDrawGui
-
-#endif // #ifndef TECHDRAWGUI_TASKSURFACEFINISHSYMBOLS_H

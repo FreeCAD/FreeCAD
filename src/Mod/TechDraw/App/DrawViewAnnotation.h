@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewAnnotation_h_
-#define DrawViewAnnotation_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -83,6 +82,3 @@ using DrawViewAnnotationPython = App::FeaturePythonT<DrawViewAnnotation>;
 
 
 } //namespace TechDraw
-
-
-#endif

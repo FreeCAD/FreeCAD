@@ -33,6 +33,8 @@
 # include <config.h>
 #endif  // HAVE_CONFIG_H
 
+#include <Build/Version.h>  // For FCCopyrightYear
+
 #include <cstdio>
 #include <map>
 #include <stdexcept>
@@ -43,18 +45,22 @@
 
 // FreeCAD header
 #include <App/Application.h>
+#include <App/ProgramInformation.h>
 #include <Base/ConsoleObserver.h>
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
+#include <Gui/ProgramInformation.h>
 
 
 void PrintInitHelp();
 
-const char sBanner[]
-    = "(C) 2001-2025 FreeCAD contributors\n"
-      "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
+const auto sBanner = fmt::format(
+    "(C) 2001-{} FreeCAD contributors\n"
+    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n",
+    FCCopyrightYear
+);
 
 #if defined(_MSC_VER)
 void InitMiniDumpWriter(const std::string&);
@@ -97,26 +103,27 @@ static bool inGuiMode()
         || App::Application::Config()["RunMode"] == "Internal";
 }
 
-static void displayInfo(const QString& msg, bool preformatted = true)
+static void displayInfo(const std::string& msg, bool preformatted = true)
 {
     if (inGuiMode()) {
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString qMsg = QString::fromStdString(msg);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Information);
         msgBox.setWindowTitle(appName);
-        msgBox.setDetailedText(msg);
-        msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg);
+        msgBox.setDetailedText(qMsg);
+        msgBox.setText(preformatted ? QStringLiteral("<pre>%1</pre>").arg(qMsg) : qMsg);
         msgBox.exec();
     }
     else {
-        std::cout << msg.toStdString();
+        std::cout << msg;
     }
 }
 
 static void displayCritical(const QString& msg, bool preformatted = true)
 {
     if (inGuiMode()) {
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString title = QObject::tr("Initialization of %1 failed").arg(appName);
         QString text = preformatted ? QStringLiteral("<pre>%1</pre>").arg(msg) : msg;
         QMessageBox::critical(nullptr, title, text);
@@ -256,25 +263,27 @@ int main(int argc, char** argv)
     }
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc, argv);
-        QString msg = QString::fromUtf8(e.what());
-        if (msg == QLatin1String(App::Application::verboseVersionEmitMessage)) {
-            QString data;
-            QTextStream str(&data);
+        if (std::strcmp(e.what(), App::ProgramInformation::verboseVersionEmitMessage) == 0) {
+            std::stringstream str;
             const std::map<std::string, std::string> config = App::Application::Config();
 
-            App::Application::getVerboseCommonInfo(str, config);
-            Gui::Application::getVerboseDPIStyleInfo(str);
-            App::Application::getVerboseAddOnsInfo(str, config);
+            App::ProgramInformation::getVerboseCommonInfo(str, config);
+            Gui::ProgramInformation::getStyleInformation(str);
+            Gui::ProgramInformation::getNavigationStyleInformation(str);
+            Gui::ProgramInformation::getDpiInformation(str);
+            App::ProgramInformation::getVerboseAddOnsInfo(str, config);
 
-            msg = data;
+            displayInfo(str.str());
         }
-        displayInfo(msg);
+        else {
+            displayInfo(e.what());
+        }
         exit(0);
     }
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString msg;
         msg = QObject::tr(
                   "While initializing %1 the following exception occurred: '%2'\n\n"
@@ -308,7 +317,7 @@ int main(int argc, char** argv)
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc, argv);
-        QString appName = QString::fromStdString(App::Application::Config()["ExeName"]);
+        QString appName = QString::fromStdString(App::Application::getExecutableName());
         QString msg = QObject::tr(
                           "Unknown runtime error occurred while initializing %1.\n\n"
                           "Please contact the application's support team for more information.\n\n"
@@ -355,12 +364,12 @@ int main(int argc, char** argv)
     std::cerr.rdbuf(oldcerr);
 
     // Destruction phase ===========================================================
-    Base::Console().log("%s terminating...\n", App::Application::Config()["ExeName"].c_str());
+    Base::Console().log("%s terminating...\n", App::Application::getExecutableName().c_str());
 
     // cleans up
     App::Application::destruct();
 
-    Base::Console().log("%s completely terminated\n", App::Application::Config()["ExeName"].c_str());
+    Base::Console().log("%s completely terminated\n", App::Application::getExecutableName().c_str());
 
     return 0;
 }

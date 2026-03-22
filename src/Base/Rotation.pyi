@@ -142,6 +142,7 @@ class Rotation(PyObjectBase):
         """
         ...
 
+    @constmethod
     def isSame(self, rotation: "Rotation", tol: float = 0, /) -> bool:
         """
         Checks if `rotation` perform the same transformation as this rotation.

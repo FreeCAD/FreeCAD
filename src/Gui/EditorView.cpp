@@ -233,7 +233,7 @@ void EditorView::checkTimestamp()
 /**
  * Runs the action specified by \a pMsg.
  */
-bool EditorView::onMsg(const char* pMsg, const char** /*ppReturn*/)
+bool EditorView::onMsg(const char* pMsg)
 {
     // don't allow any actions if the editor is being closed
     if (d->aboutToClose) {
@@ -663,7 +663,7 @@ PythonEditorView::~PythonEditorView()
 /**
  * Runs the action specified by \a pMsg.
  */
-bool PythonEditorView::onMsg(const char* pMsg, const char** ppReturn)
+bool PythonEditorView::onMsg(const char* pMsg)
 {
     if (strcmp(pMsg, "Run") == 0) {
         executeScript();
@@ -677,7 +677,7 @@ bool PythonEditorView::onMsg(const char* pMsg, const char** ppReturn)
         toggleBreakpoint();
         return true;
     }
-    return EditorView::onMsg(pMsg, ppReturn);
+    return EditorView::onMsg(pMsg);
 }
 
 /**
@@ -705,7 +705,7 @@ void PythonEditorView::executeScript()
 {
     // always save the macro when it is modified
     if (EditorView::onHasMsg("Save")) {
-        EditorView::onMsg("Save", nullptr);
+        EditorView::onMsg("Save");
     }
     try {
         getMainWindow()->setCursor(Qt::WaitCursor);
@@ -820,11 +820,21 @@ void SearchBar::retranslateUi()
     matchWord->setText(tr("Whole words"));
 }
 
-void SearchBar::activate()
+/**
+ * Show the search bar with optional prefilled text from selection.
+ */
+void SearchBar::activate(const QString& prefill)
 {
     show();
+
+    if (!prefill.isEmpty()) {
+        QSignalBlocker blocker(searchText);  // block auto-search jump to next match after prefill
+        searchText->setText(prefill);
+    }
+
     searchText->selectAll();
     searchText->setFocus(Qt::ShortcutFocusReason);
+    updateButtons();
 }
 
 void SearchBar::deactivate()

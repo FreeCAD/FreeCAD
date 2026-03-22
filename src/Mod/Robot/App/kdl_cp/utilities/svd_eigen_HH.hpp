@@ -23,8 +23,7 @@
 
 
 //Based on the svd of the KDL-0.2 library by Erwin Aertbelien
-#ifndef SVD_EIGEN_HH_HPP
-#define SVD_EIGEN_HH_HPP
+#pragma once
 
 
 #include <Eigen/Core>
@@ -70,4 +69,3 @@ namespace KDL
      */
     int svd_eigen_HH(const MatrixXd& A,MatrixXd& U,VectorXd& S,MatrixXd& V,VectorXd& tmp,int maxiter=150,double epsilon=1e-300);
 }
-#endif

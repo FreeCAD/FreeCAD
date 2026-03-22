@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_NAVIGATIONSTYLE_H
-#define GUI_NAVIGATIONSTYLE_H
+#pragma once
 
 #include <Inventor/C/basic.h>
 #include <Inventor/SbBox2s.h>
@@ -167,7 +166,6 @@ public:
     void setRotationCenterMode(RotationCenterModes);
     RotationCenterModes getRotationCenterMode() const;
     void setRotationCenter(const SbVec3f& cnt);
-    SbVec3f getFocalPoint() const;
 
     SoCamera* getCamera() const;
     std::shared_ptr<NavigationAnimation> setCameraOrientation(
@@ -272,9 +270,6 @@ protected:
 private:
     void spinInternal(const SbVec2f& pointerpos, const SbVec2f& lastpos);
     void spinSimplifiedInternal(const SbVec2f curpos, const SbVec2f prevpos);
-    bool isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const;
-    QWidget* findView3DInventorWidget() const;
-    void applyNavigationStyleChange(QAction* selectedAction);
 
 protected:
     void clearLog();
@@ -563,5 +558,3 @@ protected:
 // NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
-
-#endif  // GUI_NAVIGATIONSTYLE_H

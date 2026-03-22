@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchDefaultHandler_H
-#define SKETCHERGUI_DrawSketchDefaultHandler_H
+#pragma once
 
 #include <Inventor/events/SoKeyboardEvent.h>
 
@@ -916,18 +915,18 @@ protected:
         try {
             // add auto-constraints
             if (owncommand) {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
             }
 
             tryAddAutoConstraints();
 
             if (owncommand) {
-                Gui::Command::commitCommand();
+                commitCommand();
             }
         }
         catch (const Base::PyException&) {
             if (owncommand) {
-                Gui::Command::abortCommand();
+                abortCommand();
             }
         }
     }
@@ -977,6 +976,7 @@ protected:
 
         if (sketchobject->getLastHasRedundancies()) {
             Base::Console().warning(
+                sketchobject->getFullLabel(),
                 QT_TRANSLATE_NOOP("Notifications", "Autoconstraints cause redundancy. Removing them") "\n"
             );
 
@@ -1297,6 +1297,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchDefaultHandler_H

@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_CONSOLEOBSERVER_H
-#define BASE_CONSOLEOBSERVER_H
+#pragma once
 
 #include <Base/Console.h>
 #include <Base/Stream.h>
@@ -192,5 +191,3 @@ private:
 
 
 }  // namespace Base
-
-#endif  // BASE_CONSOLEOBSERVER_H

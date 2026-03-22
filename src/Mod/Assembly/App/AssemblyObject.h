@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_AssemblyObject_H
-#define ASSEMBLY_AssemblyObject_H
+#pragma once
 
 #include <boost/signals2.hpp>
 
@@ -108,7 +107,6 @@ public:
     Base::Placement getMbdPlacement(std::shared_ptr<MbD::ASMTPart> mbdPart);
     bool validateNewPlacements();
     void setNewPlacements();
-    static void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
     static void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
     static void redrawJointPlacement(App::DocumentObject* joint);
 
@@ -285,6 +283,3 @@ private:
 };
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_AssemblyObject_H

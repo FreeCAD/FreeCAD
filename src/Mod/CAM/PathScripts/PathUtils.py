@@ -383,8 +383,13 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     newPlace = FreeCAD.Placement(Vector(0, 0, zShift), sec.Placement.Rotation)
     sec.Placement = newPlace
 
-    # Extrude the section to top of Boundbox or desired height
-    envelopeshape = sec.extrude(Vector(0, 0, eLength))
+    if Path.Geom.isRoughly(eLength, 0):
+        # For 2D operations (e.g. laser cutting) use the section directly without extrusion
+        envelopeshape = sec
+    else:
+        # Extrude the section to top of Boundbox or desired height
+        envelopeshape = sec.extrude(Vector(0, 0, eLength))
+
     if Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG:
         removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
         removalshape.Shape = envelopeshape
@@ -907,6 +912,9 @@ class depth_params(object):
         all steps are of size 'size' except the one at the bottom which can be
         smaller."""
 
+        if Path.Geom.isRoughly(start, stop):
+            return [stop]
+
         fullsteps = int((start - stop) / size)
         last_step = start - (fullsteps * size)
         depths = list(linspace(last_step, start, fullsteps, endpoint=False))
@@ -1016,14 +1024,6 @@ def applyPlacementToPath(placement, path):
     Applies the rotation, and then position of the placement to path
     """
 
-    CmdMoveRapid = ["G0", "G00"]
-    CmdMoveStraight = ["G1", "G01"]
-    CmdMoveCW = ["G2", "G02"]
-    CmdMoveCCW = ["G3", "G03"]
-    CmdDrill = ["G73", "G81", "G82", "G83"]
-    CmdMoveArc = CmdMoveCW + CmdMoveCCW
-    CmdMove = CmdMoveStraight + CmdMoveArc
-
     commands = []
     currX = 0
     currY = 0
@@ -1038,7 +1038,7 @@ def applyPlacementToPath(placement, path):
     transC0 = tparams.get("C", 0)
 
     for cmd in path.Commands:
-        if (cmd.Name in CmdMoveRapid) or (cmd.Name in CmdMove) or (cmd.Name in CmdDrill):
+        if cmd.Name in Path.Geom.CmdMoveAll:
             params = cmd.Parameters
             currX = x = params.get("X", currX)
             currY = y = params.get("Y", currY)
@@ -1054,7 +1054,7 @@ def applyPlacementToPath(placement, path):
                 params.update({"Z": z})
 
             # Arcs need to have the I and J params rotated as well
-            if cmd.Name in CmdMoveArc:
+            if cmd.Name in Path.Geom.CmdMoveArc:
                 currI = i = params.get("I", 0)
                 currJ = j = params.get("J", 0)
 

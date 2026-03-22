@@ -36,12 +36,12 @@ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/"
 message( STATUS "Using CMake ${CMAKE_VERSION}" )
 
 project( E57Format
-	DESCRIPTION
-	    "E57Format is a library to read and write E57 files"
-	LANGUAGES
-	    CXX
-	VERSION
-	    3.2.0
+    DESCRIPTION
+        "E57Format is a library to read and write E57 files"
+    LANGUAGES
+        CXX
+    VERSION
+        3.3.0
 )
 
 string( TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPERCASE )

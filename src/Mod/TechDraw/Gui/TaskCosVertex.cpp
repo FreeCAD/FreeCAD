@@ -131,14 +131,14 @@ void TaskCosVertex::updateUi()
 //! create the cv as entered, addCosmeticVertex will invert it
 void TaskCosVertex::addCosVertex(QPointF qPos)
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
 
 //    Base::Vector3d pos = DU::invertY(DU::toVector3d(qPos));
 //    int idx =
     (void) m_baseFeat->addCosmeticVertex(DU::toVector3d(qPos));
     m_baseFeat->requestPaint();
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 }
 
 
@@ -153,7 +153,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
 
     if (m_pbTrackerState == TrackerAction::CANCEL) {
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Pick points"));
+        ui->pbTracker->setText(tr("Pick Points"));
         enableTaskButtons(true);
 
         setEditCursor(Qt::ArrowCursor);
@@ -170,7 +170,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
     QString msg = tr("Pick a point for cosmetic vertex");
     getMainWindow()->statusBar()->show();
     Gui::getMainWindow()->showMessage(msg, 3000);
-    ui->pbTracker->setText(tr("Escape picking"));
+    ui->pbTracker->setText(tr("Escape Picking"));
     ui->pbTracker->setEnabled(true);
     m_pbTrackerState = TrackerAction::CANCEL;
     enableTaskButtons(false);
@@ -245,7 +245,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     m_tracker->sleep(true);
     m_inProgressLock = false;
     m_pbTrackerState = TrackerAction::PICK;
-    ui->pbTracker->setText(tr("Pick points"));
+    ui->pbTracker->setText(tr("Pick Points"));
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);

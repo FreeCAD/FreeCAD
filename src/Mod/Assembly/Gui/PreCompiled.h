@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLYGUI_PRECOMPILED_H
-#define ASSEMBLYGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -46,6 +45,3 @@
 
 // all of Inventor
 #include <Gui/InventorAll.h>
-
-
-#endif  // ASSEMBLYGUI_PRECOMPILED_H

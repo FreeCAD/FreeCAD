@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="46"/>
       <source>&amp;Start Page</source>
-      <translation>Pág&amp;ina de inicio</translation>
+      <translation>Página de inicio</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="226"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>Crea un documento borrador en 2D</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="229"/>

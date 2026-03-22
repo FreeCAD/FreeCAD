@@ -21,8 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDLCHAINDYNPARAM_HPP
-#define KDLCHAINDYNPARAM_HPP
+#pragma once
 
 #include "chainidsolver_recursive_newton_euler.hpp"
 #include "articulatedbodyinertia.hpp"
@@ -76,5 +75,3 @@ namespace KDL {
     };
 
 }
-
-#endif

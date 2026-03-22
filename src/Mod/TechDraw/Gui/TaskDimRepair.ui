@@ -83,7 +83,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Replace references with current selection</string>
+           <string>Replace References With Current Selection</string>
           </property>
          </widget>
         </item>

@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYEDITORITEM_H
-#define PROPERTYEDITORITEM_H
+#pragma once
 
 #include <QItemEditorFactory>
 #include <QObject>
@@ -274,6 +273,7 @@ class GuiExport PropertyStringItem: public PropertyItem
     ) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
+    QVariant toolTip(const App::Property*) const override;
 
 protected:
     QVariant value(const App::Property*) const override;
@@ -1425,5 +1425,3 @@ public:
 
 }  // namespace PropertyEditor
 }  // namespace Gui
-
-#endif  // PROPERTYEDITORITEM_H

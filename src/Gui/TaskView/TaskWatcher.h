@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKWATCHER_H
-#define GUI_TASKVIEW_TASKWATCHER_H
+#pragma once
 
 #include <vector>
 #include <QObject>
@@ -116,5 +115,3 @@ public:
 
 }  // namespace TaskView
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TASKWATCHER_H

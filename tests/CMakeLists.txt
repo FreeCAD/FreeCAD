@@ -77,6 +77,15 @@ function(setup_qt_test)
             FreeCADGui
             ${QtTest_LIBRARIES}
             ${${_testname}_LIBS})
+
+        if(NOT WIN32)
+            set_target_properties(${_testname}_Tests_run PROPERTIES
+                RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
+        endif()
+
+        set_tests_properties(${_testname}_Tests_run PROPERTIES
+            LABELS "Qt"
+            ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
     endforeach()
 endfunction()
 

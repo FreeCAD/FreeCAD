@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_FEATURE_MESH_DEFECTS_H
-#define MESH_FEATURE_MESH_DEFECTS_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 
@@ -261,6 +260,3 @@ public:
 };
 
 }  // namespace Mesh
-
-
-#endif  // MESH_FEATURE_MESH_DEFECTS_H

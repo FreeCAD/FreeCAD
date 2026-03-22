@@ -504,7 +504,7 @@ void NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 void NavigationStyle::lookAtPoint(const SbVec3f& position)
 {
     this->rotationCenterFound = false;
-    translateCamera(position - getFocalPoint());
+    translateCamera(position - viewer->getFocalPoint());
 }
 
 SoCamera* NavigationStyle::getCamera() const
@@ -524,7 +524,7 @@ std::shared_ptr<NavigationAnimation> NavigationStyle::setCameraOrientation(
 
     animator->stop();
 
-    const SbVec3f focalPoint = getFocalPoint();
+    const SbVec3f focalPoint = viewer->getFocalPoint();
     SbVec3f translation(0, 0, 0);
 
     if (moveToCenter) {
@@ -618,6 +618,7 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
 
     doScale(cam, scaleFactor);
 }
+
 void NavigationStyle::scale(float factor)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
@@ -626,9 +627,7 @@ void NavigationStyle::scale(float factor)
     }
 
     // Find the current center of the screen
-    SbVec3f direction;
-    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-    SbVec3f initCenter = cam->position.getValue() + cam->focalDistance.getValue() * direction;
+    SbVec3f initCenter = viewer->getFocalPoint();
 
     // Move the camera to the origin for scaling
     cam->position = cam->position.getValue() - initCenter;
@@ -702,7 +701,7 @@ void NavigationStyle::findBoundingSphere()
  */
 void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotation)
 {
-    reorientCamera(camera, rotation, getFocalPoint());
+    reorientCamera(camera, rotation, viewer->getFocalPoint());
 }
 
 /** Rotate the camera by the given amount, then reposition it so the rotation center stays in the
@@ -751,7 +750,7 @@ void NavigationStyle::reorientCamera(
 #else
         constexpr float orthographicFocalDistance = 1;
 #endif
-        camera->position = getFocalPoint() - orthographicFocalDistance * direction;
+        camera->position = viewer->getFocalPoint() - orthographicFocalDistance * direction;
         camera->focalDistance = orthographicFocalDistance;
     }
 
@@ -1004,7 +1003,7 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
         // Change the position of the rotation center indicator after zooming at cursor
         // Rotation mode is WindowCenter
         if (!rotationCenterMode) {
-            viewer->changeRotationCenterPosition(getFocalPoint());
+            viewer->changeRotationCenterPosition(viewer->getFocalPoint());
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
             findBoundingSphere();
@@ -1081,20 +1080,6 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
         // center with a perspective camera
         camera->focalDistance.setValue(rotationCenterDepth);
     }
-}
-
-SbVec3f NavigationStyle::getFocalPoint() const
-{
-    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (!cam) {
-        return {0, 0, 0};
-    }
-
-    // Find global coordinates of focal point.
-    SbVec3f direction;
-    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-    SbVec3f focal = cam->position.getValue() + cam->focalDistance.getValue() * direction;
-    return focal;
 }
 
 /** Uses the sphere sheet projector to map the mouse position onto
@@ -1296,7 +1281,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent* const ev)
 
     // mode is WindowCenter
     if (!this->rotationCenterMode) {
-        setRotationCenter(getFocalPoint());
+        setRotationCenter(viewer->getFocalPoint());
     }
 
     // Option to get point on model (slow) or always on focal plane (fast)
@@ -1934,9 +1919,14 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
     newRotation.multVec(SbVec3f(0.0, 0.0, -1.0), newDirection);
     newPosition = center - (newDirection * camera->focalDistance.getValue());
 
+    newRotation.multVec(dir, dir);
+    SbVec3f finalPosition = newPosition + (dir * translationFactor);
+
+    camera->enableNotify(false);
     camera->orientation.setValue(newRotation);
-    camera->orientation.getValue().multVec(dir, dir);
-    camera->position = newPosition + (dir * translationFactor);
+    camera->position = finalPosition;
+    camera->enableNotify(true);
+    camera->touch();
 
     return true;
 }
@@ -2040,34 +2030,6 @@ SbBool NavigationStyle::isPopupMenuEnabled() const
     return this->menuenabled;
 }
 
-bool NavigationStyle::isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const
-{
-    return action && navMenuGroup->actions().indexOf(action) >= 0 && action->isChecked();
-}
-
-QWidget* NavigationStyle::findView3DInventorWidget() const
-{
-    QWidget* widget = viewer->getWidget();
-    while (widget && !widget->inherits("Gui::View3DInventor")) {
-        widget = widget->parentWidget();
-    }
-    return widget;
-}
-
-void NavigationStyle::applyNavigationStyleChange(QAction* selectedAction)
-{
-    QByteArray navigationStyleTypeName = selectedAction->data().toByteArray();
-    QWidget* view3DWidget = findView3DInventorWidget();
-
-    if (view3DWidget) {
-        Base::Type newNavigationStyle = Base::Type::fromName(navigationStyleTypeName.constData());
-        if (newNavigationStyle != this->getTypeId()) {
-            QEvent* navigationChangeEvent = new NavigationStyleEvent(newNavigationStyle);
-            QApplication::postEvent(view3DWidget, navigationChangeEvent);
-        }
-    }
-}
-
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
     // store the right-click position for potential use by Clarify Selection
@@ -2080,37 +2042,6 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     auto contextMenu = new QMenu(viewer->getGLWidget());
     MenuManager::getInstance()->setupContextMenu(&view, *contextMenu);
     contextMenu->setAttribute(Qt::WA_DeleteOnClose);
-
-    auto navMenu = contextMenu->addMenu(QObject::tr("Navigation styles"));
-    auto navMenuGroup = new QActionGroup(navMenu);
-
-    // add submenu at the end to select navigation style
-    const std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
-    for (const auto& style : styles) {
-        const QString name = QApplication::translate(style.first.getName(), style.second.c_str());
-        QAction* item = navMenuGroup->addAction(name);
-        navMenu->addAction(item);
-        item->setCheckable(true);
-        item->setData(QByteArray(style.first.getName()));
-
-        if (const Base::Type item_style = style.first; item_style != this->getTypeId()) {
-            auto triggeredFun = [this, item_style]() {
-                QWidget* widget = viewer->getWidget();
-                while (widget && !widget->inherits("Gui::View3DInventor")) {
-                    widget = widget->parentWidget();
-                }
-                if (widget) {
-                    // this is the widget where the viewer is embedded
-                    QEvent* ns_event = new NavigationStyleEvent(item_style);
-                    QApplication::postEvent(widget, ns_event);
-                }
-            };
-            item->connect(item, &QAction::triggered, triggeredFun);
-        }
-        else {
-            item->setChecked(true);
-        }
-    }
 
     // Add Clarify Selection option if there are objects under cursor
     bool separator = false;
@@ -2149,14 +2080,6 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         contextMenu->insertSeparator(posAction);
     }
 
-    auto navigationFunction = [this, navMenuGroup](QAction* selectedAction) {
-        // handle navigation style change if user selected a navigation style option
-        if (isNavigationStyleAction(selectedAction, navMenuGroup)) {
-            applyNavigationStyleChange(selectedAction);
-            rightClickPosition.reset();
-        }
-    };
-
     auto clarifyFunction = [pickAction](QAction* selectedAction) {
         if (selectedAction == pickAction) {
             // Execute the Clarify Selection command at this position
@@ -2167,7 +2090,6 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         }
     };
 
-    QObject::connect(contextMenu, &QMenu::triggered, navigationFunction);
     QObject::connect(contextMenu, &QMenu::triggered, clarifyFunction);
 
     contextMenu->popup(QCursor::pos());

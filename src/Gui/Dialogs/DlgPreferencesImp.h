@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGPREFERENCESIMP_H
-#define GUI_DIALOG_DLGPREFERENCESIMP_H
+#pragma once
 
 #include <QDialog>
 #include <QStandardItemModel>
@@ -374,5 +373,3 @@ private:
 };
 
 }  // namespace Gui::Dialog
-
-#endif  // GUI_DIALOG_DLGPREFERENCESIMP_H

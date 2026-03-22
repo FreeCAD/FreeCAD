@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_DEGENERATION_H
-#define MESH_DEGENERATION_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -790,5 +789,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESH_DEGENERATION_H

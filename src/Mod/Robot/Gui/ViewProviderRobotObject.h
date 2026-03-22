@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_VIEWPROVIDERROBOTOBJECT_H
-#define ROBOT_VIEWPROVIDERROBOTOBJECT_H
+#pragma once
 
 #include <Base/Placement.h>
 #include <Gui/Selection/SoFCSelection.h>
@@ -92,6 +91,3 @@ protected:
 };
 
 }  // namespace RobotGui
-
-
-#endif  // ROBOT_VIEWPROVIDERROBOTOBJECT_H

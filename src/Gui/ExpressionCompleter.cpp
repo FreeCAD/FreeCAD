@@ -286,6 +286,19 @@ public:
         return result;
     }
 
+    // Store named object property list in cache for performance purposes,
+    // to avoid building it again for each requested index
+    std::vector<std::pair<const char*, App::Property*>>& getCachedPropertyNamedList(
+        DocumentObject* obj
+    ) const
+    {
+        if (!this->namedPropsCache.contains(obj)) {
+            this->namedPropsCache[obj];
+            obj->getPropertyNamedList(this->namedPropsCache[obj]);
+        }
+        return this->namedPropsCache[obj];
+    }
+
     // The completion tree structure created takes into account the current document and object
     //
     // It is done as such:
@@ -311,7 +324,6 @@ public:
         int docSize = (int)docs.size() * 2;
         int objSize = 0;
         int propSize = 0;
-        std::vector<std::pair<const char*, App::Property*>> props;
         App::Document* doc = nullptr;
         App::DocumentObject* obj = nullptr;
         const char* propName = nullptr;
@@ -361,7 +373,7 @@ public:
                         row = idx;
                     }
                     // get the properties
-                    cobj->getPropertyNamedList(props);
+                    auto& props = this->getCachedPropertyNamedList(cobj);
                     propSize = (int)props.size();
 
                     // if this is an invalid index, bail out
@@ -469,7 +481,7 @@ public:
         }
         if (!propName) {
             idx = info.prop < 0 ? row : info.prop;
-            obj->getPropertyNamedList(props);
+            auto& props = this->getCachedPropertyNamedList(obj);
             propSize = (int)props.size();
             // return if the property is invalid
             if (idx < 0 || idx >= propSize) {
@@ -522,7 +534,6 @@ public:
                 }
             }
         }
-        return;
     }
 
     QModelIndex parent(const QModelIndex& index) const override
@@ -682,6 +693,7 @@ public:
     }
 
 private:
+    mutable std::map<DocumentObject*, std::vector<std::pair<const char*, App::Property*>>> namedPropsCache;
     std::set<App::DocumentObject*> inList;
     std::string currentDoc;
     std::string currentObj;

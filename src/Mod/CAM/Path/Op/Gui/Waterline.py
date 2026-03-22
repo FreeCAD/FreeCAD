@@ -146,6 +146,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.optimizeEnabled.hide()  # Has no independent QLabel object
 
         if Algorithm == "OCL Dropcutter":
+            self.form.boundBoxSelect.show()
+            self.form.boundBoxSelect_label.show()
             self.form.cutPattern.hide()
             self.form.cutPattern_label.hide()
             self.form.boundaryAdjustment.hide()
@@ -156,7 +158,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.minSampleInterval_label.hide()
             self.form.sampleInterval.show()
             self.form.sampleInterval_label.show()
+            self.form.optimizeEnabled.hide()
         elif Algorithm == "OCL Adaptive":
+            self.form.boundBoxSelect.hide()
+            self.form.boundBoxSelect_label.hide()
             self.form.cutPattern.hide()
             self.form.cutPattern_label.hide()
             self.form.boundaryAdjustment.hide()
@@ -167,7 +172,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.minSampleInterval_label.show()
             self.form.sampleInterval.show()
             self.form.sampleInterval_label.show()
+            self.form.optimizeEnabled.show()
         elif Algorithm == "Experimental":
+            self.form.boundBoxSelect.show()
+            self.form.boundBoxSelect_label.show()
             self.form.cutPattern.show()
             self.form.boundaryAdjustment.show()
             self.form.cutPattern_label.show()
@@ -182,6 +190,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.minSampleInterval_label.hide()
             self.form.sampleInterval.hide()
             self.form.sampleInterval_label.hide()
+            self.form.optimizeEnabled.hide()
 
     def registerSignalHandlers(self, obj):
         self.form.algorithmSelect.currentIndexChanged.connect(self.updateVisibility)

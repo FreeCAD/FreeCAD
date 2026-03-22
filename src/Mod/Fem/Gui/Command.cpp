@@ -1192,7 +1192,7 @@ static void DefineNodesCallback(void* ud, SoEventCallback* n)
 
     std::string str = getSelectedNodes(view);
     if (!str.empty()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
+        int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')"
@@ -1208,7 +1208,7 @@ static void DefineNodesCallback(void* ud, SoEventCallback* n)
             Analysis->getNameInDocument()
         );
 
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
 }
 
@@ -1352,7 +1352,7 @@ static void DefineElementsCallback(void* ud, SoEventCallback* n)
 
     std::string str = getSelectedNodes(view);
     if (!str.empty()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
+        int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.addObject('Fem::FemSetElementNodesObject','ElementSet')"
@@ -1368,7 +1368,7 @@ static void DefineElementsCallback(void* ud, SoEventCallback* n)
             Analysis->getNameInDocument()
         );
 
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
 }
 
@@ -2089,6 +2089,18 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     auto objFilter = App::GetApplication().getActiveDocument()->getActiveObject();
     auto femFilter = static_cast<Fem::FemPostFilter*>(objFilter);
 
+    auto selObjectView = static_cast<FemGui::ViewProviderFemPostObject*>(
+        Gui::Application::Instance->getViewProvider(selObject)
+    );
+    // use none field color from base filter
+    Base::color_traits<Base::Color> ct {selObjectView->NoneFieldColor.getValue()};
+    cmd->doCommand(
+        Gui::Command::Doc,
+        "App.activeDocument().ActiveObject.ViewObject.NoneFieldColor = (%d, %d, %d)",
+        ct.red(),
+        ct.green(),
+        ct.blue()
+    );
     // TODO: FIX
     /*
     auto selObjectView = static_cast<FemGui::ViewProviderFemPostObject*>(

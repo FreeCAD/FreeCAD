@@ -46,6 +46,7 @@ exclude: |
         src/App/ExpressionParser.tab.h|
         src/App/ExpressionParser.y|
         src/App/lex.ExpressionParser.c|
+        src/Doc/ThirdPartyLibraries.html.cmake|
         src/Gui/3Dconnexion/navlib|
         src/Gui/QSint|
         src/Gui/Quarter|

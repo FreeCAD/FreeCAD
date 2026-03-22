@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERIMAGE_H
-#define DRAWINGGUI_VIEWPROVIDERIMAGE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <App/PropertyStandard.h>
@@ -61,6 +60,3 @@ public:
 
 
 } // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERIMAGE_H

@@ -123,7 +123,11 @@ done
 
 # Two additional files that must be signed that aren't caught by the above searches:
 run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/packages.txt"
-run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd"
+
+# Sign legacy QuickLook generator if present (not built for macOS 15.0+)
+if [ -f "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd" ]; then
+    run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd"
+fi
 
 # Sign new Swift QuickLook extensions (macOS 15.0+) with their specific entitlements
 # These must be signed before the app itself to avoid overriding the extension signatures
@@ -243,7 +247,16 @@ print "Notarization submission ID: $id"
 
 if wait_for_notarization_result "$id"; then
   print "✅ Notarization succeeded. Stapling..."
-  xcrun stapler staple "${DMG_NAME}"
+  local staple_attempt=0
+  while ! xcrun stapler staple "${DMG_NAME}"; do
+    (( staple_attempt++ ))
+    if [[ $staple_attempt -ge 5 ]]; then
+      print "❌ Failed to staple after 5 attempts" >&2
+      exit 1
+    fi
+    print "Staple attempt $staple_attempt failed, retrying in $((staple_attempt * 10))s..."
+    sleep $((staple_attempt * 10))
+  done
   print "Stapled: ${DMG_NAME}"
   rm -f "${ID_FILE}"
 else

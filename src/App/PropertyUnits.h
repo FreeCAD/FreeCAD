@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PROPERTYUNITS_H
-#define APP_PROPERTYUNITS_H
+#pragma once
 
 #include <Base/Quantity.h>
 #include <Base/Unit.h>
@@ -925,6 +924,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_PROPERTYUNITS_H
-

@@ -327,15 +327,13 @@ void Shape::ExtrudeProfileLinear(
     SetModelData(vbuffer, ibuffer);
 }
 
-void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int nIndices)
+void Shape::GenerateModel(const float* vbuffer, const GLushort* ibuffer, int numVerts, int nIndices)
 {
     // GLuint vbo, ibo, vao;
 
     // vertex buffer
     glGenBuffers(1, &vbo);
-    GLClearError();
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    GLLogError();
     glBufferData(GL_ARRAY_BUFFER, numVerts * sizeof(Vertex), vbuffer, GL_STATIC_DRAW);
 
     // index buffer
@@ -343,30 +341,32 @@ void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int n
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, nIndices * sizeof(GLushort), ibuffer, GL_STATIC_DRAW);
 
-    // vertex array
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    numIndices = nIndices;
+}
+
+void Shape::SetupVertexAttribs()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, x));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, nx));
-
-    numIndices = nIndices;
 }
 
-void MillSim::Shape::SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer)
+void Shape::SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer)
 {
-    GenerateModel((float*)vbuffer.data(), ibuffer.data(), (int)vbuffer.size(), (int)ibuffer.size());
+    GenerateModel((const float*)vbuffer.data(), ibuffer.data(), (int)vbuffer.size(), (int)ibuffer.size());
 }
 
 void Shape::Render()
 {
-    glBindVertexArray(vao);
+    SetupVertexAttribs();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, nullptr);
 }
 
-void Shape::Render(mat4x4 modelMat, mat4x4 normallMat)  // normals are rotated only
+void Shape::Render(const mat4x4& modelMat, const mat4x4& normallMat)  // normals are rotated only
 {
     CurrentShader->UpdateModelMat(modelMat, normallMat);
     Render();
@@ -374,10 +374,8 @@ void Shape::Render(mat4x4 modelMat, mat4x4 normallMat)  // normals are rotated o
 
 void Shape::FreeResources()
 {
-    glBindVertexArray(0);
     GLDELETE_BUFFER(vbo);
     GLDELETE_BUFFER(ibo);
-    GLDELETE_VERTEXARRAY(vao);
 }
 
 Shape::~Shape()

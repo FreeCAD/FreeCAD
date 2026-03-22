@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewImage_h_
-#define DrawViewImage_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -82,6 +81,3 @@ using DrawViewImagePython = App::FeaturePythonT<DrawViewImage>;
 
 
 } //namespace TechDraw
-
-
-#endif

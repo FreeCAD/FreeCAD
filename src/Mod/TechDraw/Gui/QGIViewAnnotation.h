@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -67,5 +66,3 @@ protected:
 };
 
 } // end namespace TechDrawGui
-
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWANNOTATION_H

@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef IMPORT_IMPORTOCAF2_H
-#define IMPORT_IMPORTOCAF2_H
+#pragma once
 
 #include <map>
 #include <set>
@@ -297,5 +296,3 @@ private:
 };
 
 }  // namespace Import
-
-#endif  // IMPORT_IMPORTOCAF2_H

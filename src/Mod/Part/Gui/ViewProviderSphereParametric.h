@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
-#define PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -61,6 +60,3 @@ public:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERSPHEREPARAMETRIC_H

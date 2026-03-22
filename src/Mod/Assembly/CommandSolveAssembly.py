@@ -64,10 +64,9 @@ class CommandSolveAssembly:
         if not assembly:
             return
 
-        Gui.addModule("UtilsAssembly")
         App.setActiveTransaction("Solve assembly")
-        Gui.doCommand("UtilsAssembly.activeAssembly().solve()")
-        App.closeActiveTransaction()
+        assembly.recompute(True)
+        Gui.ActiveDocument.commitCommand()
 
 
 if App.GuiUp:
