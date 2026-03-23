@@ -19,8 +19,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef MASSPROPERTIES_VIEWPROVIDER_RESULT_H
-#define MASSPROPERTIES_VIEWPROVIDER_RESULT_H
+#pragma once
 
 #include <Gui/ViewProviderDocumentObject.h>
 
@@ -43,4 +42,3 @@ public:
 
 }  // namespace MassPropertiesGui
 
-#endif  // MASSPROPERTIES_VIEWPROVIDER_RESULT_H

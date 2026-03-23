@@ -96,7 +96,6 @@ MassPropertiesData CalculateMassProperties(
             shape = transformer.Shape();
         }
 
-        double density = 1.0e-6;
 
         auto materialFeature = [](App::DocumentObject* candidate) -> Part::Feature* {
             std::unordered_set<App::DocumentObject*> visited;
@@ -119,6 +118,8 @@ MassPropertiesData CalculateMassProperties(
         Part::Feature* part = materialFeature(obj);
 
         Materials::Material mat;
+        // Fallback density the units 1e-6 kg/mm^3 (1000 kg/m^3)
+        double density = 1.0e-6;
 
         const QString densityMaterialProperty = QStringLiteral("Density");
 
@@ -127,10 +128,7 @@ MassPropertiesData CalculateMassProperties(
         }
         if (mat.hasPhysicalProperty(densityMaterialProperty)) {
             try {
-                if (mat.getName() == QStringLiteral("Default")) {
-                    density = 1.0e-6;
-                }
-                else {
+                if (mat.getName() != QStringLiteral("Default")) {
                     density = mat.getPhysicalQuantity(densityMaterialProperty).getValue();
                 }
             }
@@ -138,7 +136,6 @@ MassPropertiesData CalculateMassProperties(
                 Base::Console().message(
                     "Error retrieving density from material. Using default value.\n"
                 );
-                density = 1.0e-6;
             }
         }
         else {

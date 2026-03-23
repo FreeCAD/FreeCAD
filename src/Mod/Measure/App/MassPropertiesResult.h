@@ -20,8 +20,7 @@
  ******************************************************************************/
 
 
-#ifndef SHAPE_PROPERTIES_H
-#define SHAPE_PROPERTIES_H
+#pragma once
 
 #include <vector>
 #include <string>
@@ -43,23 +42,23 @@ class DocumentObject;
 
 struct MeasureExport MassPropertiesData
 {
-    Base::Quantity volume = Base::Quantity(0.0, Base::Unit::Volume);
-    Base::Quantity mass = Base::Quantity(0.0, Base::Unit::Mass);
-    Base::Quantity density = Base::Quantity(0.0, Base::Unit::Density);
-    Base::Quantity surfaceArea = Base::Quantity(0.0, Base::Unit::Area);
+    Base::Quantity volume {0.0, Base::Unit::Volume};
+    Base::Quantity mass {0.0, Base::Unit::Mass};
+    Base::Quantity density {0.0, Base::Unit::Density};
+    Base::Quantity surfaceArea {0.0, Base::Unit::Area};
 
-    Base::Vector3d cog = Base::Vector3d(0.0, 0.0, 0.0);
+    Base::Vector3d cog {0.0, 0.0, 0.0};
 
-    Base::Vector3d cov = Base::Vector3d(0.0, 0.0, 0.0);
+    Base::Vector3d cov {0.0, 0.0, 0.0};
 
-    Base::Vector3d inertiaJo = Base::Vector3d(0.0, 0.0, 0.0);
+    Base::Vector3d inertiaJo {0.0, 0.0, 0.0};
 
-    Base::Vector3d inertiaJCross = Base::Vector3d(0.0, 0.0, 0.0);
-    Base::Vector3d inertiaJ = Base::Vector3d(0.0, 0.0, 0.0);
+    Base::Vector3d inertiaJCross {0.0, 0.0, 0.0};
+    Base::Vector3d inertiaJ {0.0, 0.0, 0.0};
 
-    Base::Vector3d principalAxisX = Base::Vector3d(0.0, 0.0, 0.0);
-    Base::Vector3d principalAxisY = Base::Vector3d(0.0, 0.0, 0.0);
-    Base::Vector3d principalAxisZ = Base::Vector3d(0.0, 0.0, 0.0);
+    Base::Vector3d principalAxisX {0.0, 0.0, 0.0};
+    Base::Vector3d principalAxisY {0.0, 0.0, 0.0};
+    Base::Vector3d principalAxisZ {0.0, 0.0, 0.0};
 
     double axisInertia;
 };
@@ -84,4 +83,3 @@ MeasureExport MassPropertiesData CalculateMassProperties(
     const Base::Placement* referencePlacement = nullptr
 );
 
-#endif  // SHAPE_PROPERTIES_H

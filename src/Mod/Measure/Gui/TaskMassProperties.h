@@ -19,8 +19,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef MASSPROPERTIES_TASKMASSPROPERTIES_H
-#define MASSPROPERTIES_TASKMASSPROPERTIES_H
+#pragma once
 
 #include <QDialogButtonBox>
 #include <QEvent>
@@ -98,4 +97,3 @@ private:
 
 }  // namespace MassPropertiesGui
 
-#endif  // MASSPROPERTIES_TASKMASSPROPERTIES_H

@@ -325,13 +325,13 @@ bool TaskMassProperties::eventFilter(QObject* watched, QEvent* event)
                 for (const auto& userData : toRemove) {
                     QStringList parts = userData.split(QStringLiteral("|"));
                     if (parts.size() == 3) {
-                        QByteArray docName = parts[0].toUtf8();
-                        QByteArray objName = parts[1].toUtf8();
-                        QByteArray subName = parts[2].toUtf8();
+                        std::string docName = parts[0].toStdString();
+                        std::string objName = parts[1].toStdString();
+                        std::string subName = parts[2].toStdString();
                         Gui::Selection().rmvSelection(
-                            docName.isEmpty() ? nullptr : docName.constData(),
-                            objName.isEmpty() ? nullptr : objName.constData(),
-                            subName.isEmpty() ? nullptr : subName.constData()
+                            docName.empty() ? nullptr : docName.c_str(),
+                            objName.empty() ? nullptr : objName.c_str(),
+                            subName.empty() ? nullptr : subName.c_str()
                         );
                     }
                 }
@@ -542,6 +542,43 @@ void TaskMassProperties::tryUpdate()
         panel->ui.objectList->clear();
         removeTemporaryObjects();
         return;
+    }
+
+    if (!selectingCustomCoordSystem) {
+        bool promotedSelection = false;
+        for (const auto& sel : guiSelection) {
+            if (!sel.pObject || !sel.pObject->getDocument() || !sel.SubName || !sel.SubName[0]) {
+                continue;
+            }
+
+            App::SubObjectT sub(sel.pObject, sel.SubName);
+            if (!sub.hasSubElement()) {
+                continue;
+            }
+
+            std::string promotedSubName = sub.getSubNameNoElement();
+            if (promotedSubName.empty() || promotedSubName == sel.SubName) {
+                continue;
+            }
+
+            Gui::Selection().rmvSelection(
+                sel.pObject->getDocument()->getName(),
+                sel.pObject->getNameInDocument(),
+                sel.SubName
+            );
+            Gui::Selection().addSelection(
+                sel.pObject->getDocument()->getName(),
+                sel.pObject->getNameInDocument(),
+                promotedSubName.c_str()
+            );
+            promotedSelection = true;
+        }
+
+        if (promotedSelection) {
+            isUpdating = false;
+            tryUpdate();
+            return;
+        }
     }
 
     if (!selectingCustomCoordSystem) {

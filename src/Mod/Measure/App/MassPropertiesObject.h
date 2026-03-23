@@ -20,8 +20,7 @@
  ******************************************************************************/
 
 
-#ifndef MASSPROPERTIES_OBJECT_H
-#define MASSPROPERTIES_OBJECT_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -46,4 +45,3 @@ public:
 
 }  // namespace Measure
 
-#endif  // MASSPROPERTIES_OBJECT_H
