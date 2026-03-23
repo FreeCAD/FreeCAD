@@ -1071,7 +1071,7 @@ public:
      * @brief Register in a transaction that a property move has been arranged.
      *
      * @param[in] obj The object whose property is moved.
-     * @param[in] obj The property that is moved.
+     * @param[in] toBeMovedProp The property that is moved.
      * @param[in] target The object to which the property is moved.
      * @param[in] newProp The new property in the target object.
      */

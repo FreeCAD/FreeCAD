@@ -845,7 +845,7 @@ static void moveProperties(std::unordered_set<App::Property*>& props, QList<App:
             continue;
         }
         if (App::Document* doc = propertyDocument(prop->getContainer())) {
-            tid = doc->openTransaction("Move property");
+            tid = doc->openTransaction("Move Property");
         }
         obj->moveDynamicProperty(prop, subObjects[0].getObject());
     }
@@ -1212,7 +1212,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     };
 
     if (props.size() > 0 && std::ranges::all_of(props, canBeMoved)) {
-        menu.addAction(tr("Move property"))->setData(QVariant(MA_MoveProp));
+        menu.addAction(tr("Move Property"))->setData(QVariant(MA_MoveProp));
     }
 
     // add a separator between adding/removing properties and the rest
