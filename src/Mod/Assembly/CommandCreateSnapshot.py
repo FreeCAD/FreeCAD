@@ -68,7 +68,7 @@ class CommandCreateSnapshot:
 
         noTransaction = App.getActiveTransaction() is None
         if noTransaction:
-            App.setActiveTransaction("Create Snapshot")
+            Gui.ActiveDocument.openCommand(translate("Assembly_Snapshot", "Create Snapshot"))
 
         snapshot_group = UtilsAssembly.getSnapshotGroup(assembly)
 
@@ -78,7 +78,7 @@ class CommandCreateSnapshot:
         snapshot_group.purgeTouched()
 
         if noTransaction:
-            App.closeActiveTransaction()
+            Gui.ActiveDocument.commitCommand()
 
 
 class Snapshot:
@@ -222,16 +222,16 @@ class ViewProviderSnapshot:
             App.Console.PrintError("Cannot restore snapshot while a task is active.\n")
             return
 
-        App.setActiveTransaction("Restore Snapshot '" + snapshot_obj.Label + "'")
+        Gui.ActiveDocument.openCommand(translate("Assembly_Snapshot", "Restore Snapshot") + " '" + snapshot_obj.Label + "'")
         try:
             snapshot_obj.Proxy.restoreState(snapshot_obj)
         except Exception as e:
             App.Console.PrintError(f"Failed to restore snapshot: {e}\n")
             if noTransaction:
-                App.closeActiveTransaction(True)
+                Gui.ActiveDocument.abortCommand()
             return False
 
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
 
         return True
 
