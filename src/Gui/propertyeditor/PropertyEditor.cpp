@@ -35,6 +35,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 
 #include "Document.h"
@@ -402,7 +403,7 @@ void PropertyEditor::openEditor(const QModelIndex& index)
     if (items.size() > 1) {
         str << "...";
     }
-    transactionID = obj->getDocument()->openTransaction(str.str().c_str());
+    transactionID = Command::openActiveDocumentCommand(str.str());
     FC_LOG("editor transaction " << App::GetApplication().getTransactionName(transactionID));
 }
 
@@ -466,6 +467,7 @@ void PropertyEditor::closeTransaction()
             recomputeDocument(doc);
         }
         doc->commitTransaction();
+        transactionID = 0;
     }
 }
 
