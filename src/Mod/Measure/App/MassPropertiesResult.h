@@ -82,4 +82,3 @@ MeasureExport MassPropertiesData CalculateMassProperties(
     App::DocumentObject const* referenceDatum,
     const Base::Placement* referencePlacement = nullptr
 );
-
