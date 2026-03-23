@@ -659,14 +659,15 @@ def Execute(op, obj):
             # need to convert results to python object to be JSON serializable
             adaptiveResults = []
             for result in results:
-                adaptiveResults.append(
-                    {
-                        "HelixCenterPoint": result.HelixCenterPoint,
-                        "StartPoint": result.StartPoint,
-                        "AdaptivePaths": result.AdaptivePaths,
-                        "ReturnMotionType": result.ReturnMotionType,
-                    }
-                )
+                if not result.StartPointNotFound:
+                    adaptiveResults.append(
+                        {
+                            "HelixCenterPoint": result.HelixCenterPoint,
+                            "StartPoint": result.StartPoint,
+                            "AdaptivePaths": result.AdaptivePaths,
+                            "ReturnMotionType": result.ReturnMotionType,
+                        }
+                    )
 
         # GENERATE
         GenerateGCode(op, obj, adaptiveResults)
