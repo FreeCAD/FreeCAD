@@ -428,19 +428,19 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
 
     Sketcher::Constraint constr1;
     constr1.Type = Sketcher::ConstraintType::Coincident;
-    constr1.First = geoId1;
-    constr1.FirstPos = Sketcher::PointPos::start;
-    constr1.Second = geoId2;
-    constr1.SecondPos = Sketcher::PointPos::end;
+    constr1.First_Deprecated = geoId1;
+    constr1.FirstPos_Deprecated = Sketcher::PointPos::start;
+    constr1.Second_Deprecated = geoId2;
+    constr1.SecondPos_Deprecated = Sketcher::PointPos::end;
 
     Sketcher::Constraint constr2;
     constr2.Type = Sketcher::ConstraintType::Tangent;
-    constr2.First = geoId4;
-    constr2.FirstPos = Sketcher::PointPos::none;
-    constr2.Second = geoId3;
-    constr2.SecondPos = Sketcher::PointPos::none;
-    constr2.Third = geoId1;
-    constr2.ThirdPos = Sketcher::PointPos::start;
+    constr2.First_Deprecated = geoId4;
+    constr2.FirstPos_Deprecated = Sketcher::PointPos::none;
+    constr2.Second_Deprecated = geoId3;
+    constr2.SecondPos_Deprecated = Sketcher::PointPos::none;
+    constr2.Third_Deprecated = geoId1;
+    constr2.ThirdPos_Deprecated = Sketcher::PointPos::start;
 
     // Act
     auto nullConstrAfter = getObject()->getConstraintAfterDeletingGeo(nullConstr, 5);
@@ -464,11 +464,11 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
 
     // Assert
     EXPECT_EQ(constr1.Type, Sketcher::ConstraintType::Coincident);
-    EXPECT_EQ(constr1.First, geoId1);
-    EXPECT_EQ(constr1.Second, geoId2);
-    EXPECT_EQ(constr1PtrAfter1->First, geoId1 - 1);
-    EXPECT_EQ(constr1PtrAfter1->Second, geoId2 - 1);
-    EXPECT_EQ(constr1PtrAfter2->Third, Sketcher::GeoEnum::GeoUndef);
+    EXPECT_EQ(constr1.First_Deprecated, geoId1);
+    EXPECT_EQ(constr1.Second_Deprecated, geoId2);
+    EXPECT_EQ(constr1PtrAfter1->First_Deprecated, geoId1 - 1);
+    EXPECT_EQ(constr1PtrAfter1->Second_Deprecated, geoId2 - 1);
+    EXPECT_EQ(constr1PtrAfter2->Third_Deprecated, Sketcher::GeoEnum::GeoUndef);
     EXPECT_EQ(constr1PtrAfter3.get(), nullptr);
 
     // Act
@@ -476,9 +476,9 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
 
     // Assert
     EXPECT_EQ(constr2.Type, Sketcher::ConstraintType::Tangent);
-    EXPECT_EQ(constr2.First, geoId4 + 1);
-    EXPECT_EQ(constr2.Second, geoId3);
-    EXPECT_EQ(constr2.Third, geoId1);
+    EXPECT_EQ(constr2.First_Deprecated, geoId4 + 1);
+    EXPECT_EQ(constr2.Second_Deprecated, geoId3);
+    EXPECT_EQ(constr2.Third_Deprecated, geoId1);
 
     // Act
     // Delete a geo involved in the constraint
@@ -521,7 +521,7 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfEllipse)
             constraints.end(),
             [&geoId, &alignmentType](const auto* constr) {
                 return constr->Type == Sketcher::ConstraintType::InternalAlignment
-                    && constr->AlignmentType == alignmentType && constr->Second == geoId;
+                    && constr->AlignmentType == alignmentType && constr->Second_Deprecated == geoId;
             }
         );
         EXPECT_EQ(numConstraintsOfThisType, 1);
@@ -568,7 +568,7 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfHyperbola)
             constraints.end(),
             [&geoId, &alignmentType](const auto* constr) {
                 return constr->Type == Sketcher::ConstraintType::InternalAlignment
-                    && constr->AlignmentType == alignmentType && constr->Second == geoId;
+                    && constr->AlignmentType == alignmentType && constr->Second_Deprecated == geoId;
             }
         );
         EXPECT_EQ(numConstraintsOfThisType, 1);
@@ -614,7 +614,7 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfParabola)
             constraints.end(),
             [&geoId, &alignmentType](const auto* constr) {
                 return constr->Type == Sketcher::ConstraintType::InternalAlignment
-                    && constr->AlignmentType == alignmentType && constr->Second == geoId;
+                    && constr->AlignmentType == alignmentType && constr->Second_Deprecated == geoId;
             }
         );
         EXPECT_EQ(numConstraintsOfThisType, 1);
@@ -663,7 +663,7 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfBSpline)
             constraints.end(),
             [&geoId, &alignmentType](const auto* constr) {
                 return constr->Type == Sketcher::ConstraintType::InternalAlignment
-                    && constr->AlignmentType == alignmentType && constr->Second == geoId;
+                    && constr->AlignmentType == alignmentType && constr->Second_Deprecated == geoId;
             }
         );
     }
@@ -703,16 +703,16 @@ TEST_F(SketchObjectTest, testDeleteOnlyUnusedInternalGeometryOfBSpline)
     auto it = std::find_if(constraints.begin(), constraints.end(), [&geoIdBsp](const auto* constr) {
         return constr->Type == Sketcher::ConstraintType::InternalAlignment
             && constr->AlignmentType == Sketcher::InternalAlignmentType::BSplineControlPoint
-            && constr->Second == geoIdBsp && constr->InternalAlignmentIndex == 1;
+            && constr->Second_Deprecated == geoIdBsp && constr->InternalAlignmentIndex == 1;
     });
     // One Assert to avoid
     EXPECT_NE(it, constraints.end());
     auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constraint->Type = Sketcher::ConstraintType::Coincident;
-    constraint->First = geoIdPnt;
-    constraint->FirstPos = Sketcher::PointPos::start;
-    constraint->Second = (*it)->First;
-    constraint->SecondPos = Sketcher::PointPos::mid;
+    constraint->First_Deprecated = geoIdPnt;
+    constraint->FirstPos_Deprecated = Sketcher::PointPos::start;
+    constraint->Second_Deprecated = (*it)->First_Deprecated;
+    constraint->SecondPos_Deprecated = Sketcher::PointPos::mid;
     getObject()->addConstraint(constraint);
 
     // Act

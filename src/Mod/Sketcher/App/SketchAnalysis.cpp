@@ -291,10 +291,10 @@ struct PointConstraints
                 for (auto& coincidence : allcoincid) {
                     VertexIds v1;
                     VertexIds v2;
-                    v1.GeoId = coincidence->First;
-                    v1.PosId = coincidence->FirstPos;
-                    v2.GeoId = coincidence->Second;
-                    v2.PosId = coincidence->SecondPos;
+                    v1.GeoId = coincidence->First_Deprecated;
+                    v1.PosId = coincidence->FirstPos_Deprecated;
+                    v2.GeoId = coincidence->Second_Deprecated;
+                    v2.PosId = coincidence->SecondPos_Deprecated;
 
                     // Look if coincident vertices are in the group of adjacent ones we are
                     // processing
@@ -609,10 +609,10 @@ Sketcher::Constraint* SketchAnalysis::create(const ConstraintIds& id)
 {
     auto c = new Sketcher::Constraint();
     c->Type = id.Type;
-    c->First = id.First;
-    c->Second = id.Second;
-    c->FirstPos = id.FirstPos;
-    c->SecondPos = id.SecondPos;
+    c->First_Deprecated = id.First;
+    c->Second_Deprecated = id.Second;
+    c->FirstPos_Deprecated = id.FirstPos;
+    c->SecondPos_Deprecated = id.SecondPos;
     return c;
 }
 
@@ -763,8 +763,14 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
     for (auto it : constraint) {
         if (it->Type == Sketcher::Equal) {
-            ConstraintIds
-                id {Base::Vector3d {}, it->First, it->Second, it->FirstPos, it->SecondPos, it->Type};
+            ConstraintIds id {
+                Base::Vector3d {},
+                it->First_Deprecated,
+                it->Second_Deprecated,
+                it->FirstPos_Deprecated,
+                it->SecondPos_Deprecated,
+                it->Type
+            };
 
             auto pos = std::find_if(equallines.begin(), equallines.end(), Constraint_Equal(id));
 

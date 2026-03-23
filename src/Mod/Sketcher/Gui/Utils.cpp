@@ -408,7 +408,8 @@ bool SketcherGui::IsPointAlreadyOnCurve(
             const std::vector<Constraint*>& constraints = Obj->Constraints.getValues();
             for (const auto& constraint : constraints) {
                 if (constraint->Type == Sketcher::ConstraintType::InternalAlignment
-                    && constraint->First == GeoIdPoint && constraint->Second == GeoIdCurve) {
+                    && constraint->First_Deprecated == GeoIdPoint
+                    && constraint->Second_Deprecated == GeoIdCurve) {
                     return true;
                 }
             }
@@ -447,7 +448,8 @@ bool SketcherGui::checkConstraint(
 {
     for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin(); itc != vals.end();
          ++itc) {
-        if ((*itc)->Type == type && (*itc)->First == geoid && (*itc)->FirstPos == pos) {
+        if ((*itc)->Type == type && (*itc)->First_Deprecated == geoid
+            && (*itc)->FirstPos_Deprecated == pos) {
             return true;
         }
     }

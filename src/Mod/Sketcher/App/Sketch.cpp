@@ -159,12 +159,13 @@ bool Sketch::analyseBlockedGeometry(
 
             for (auto c : constraintList) {
                 // is block driving
-                if (c->Type == Sketcher::Block && c->isActive && c->First == geoindex) {
+                if (c->Type == Sketcher::Block && c->isActive && c->First_Deprecated == geoindex) {
                     blockisDriving = true;
                 }
                 // We have another driving constraint (which may be InternalAlignment)
                 if (c->Type != Sketcher::Block && c->isDriving
-                    && (c->First == geoindex || c->Second == geoindex || c->Third == geoindex)) {
+                    && (c->First_Deprecated == geoindex || c->Second_Deprecated == geoindex
+                        || c->Third_Deprecated == geoindex)) {
                     blockOnly = false;
                 }
             }
@@ -373,7 +374,7 @@ void Sketch::buildInternalAlignmentGeometryMap(const std::vector<Constraint*>& c
 {
     for (auto* c : constraintList) {
         if (c->Type == InternalAlignment) {
-            internalAlignmentGeometryMap[c->First] = c->Second;
+            internalAlignmentGeometryMap[c->First_Deprecated] = c->Second_Deprecated;
         }
     }
 }
@@ -1971,7 +1972,7 @@ int Sketch::addConstraint(const Constraint* constraint)
 
     switch (constraint->Type) {
         case DistanceX:
-            if (constraint->FirstPos == PointPos::none) {  // horizontal length of a line
+            if (constraint->FirstPos_Deprecated == PointPos::none) {  // horizontal length of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -1981,9 +1982,10 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addDistanceXConstraint(constraint->First, c.value, c.driving);
+                rtn = addDistanceXConstraint(constraint->First_Deprecated, c.value, c.driving);
             }
-            else if (constraint->Second == GeoEnum::GeoUndef) {  // point on fixed x-coordinate
+            else if (constraint->Second_Deprecated == GeoEnum::GeoUndef) {  // point on fixed
+                                                                            // x-coordinate
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -1993,9 +1995,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addCoordinateXConstraint(constraint->First, constraint->FirstPos, c.value, c.driving);
+                rtn = addCoordinateXConstraint(
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    c.value,
+                    c.driving
+                );
             }
-            else if (constraint->SecondPos != PointPos::none) {  // point to point horizontal distance
+            else if (constraint->SecondPos_Deprecated != PointPos::none) {  // point to point
+                                                                            // horizontal distance
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2006,17 +2014,17 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addDistanceXConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
                     c.value,
                     c.driving
                 );
             }
             break;
         case DistanceY:
-            if (constraint->FirstPos == PointPos::none) {  // vertical length of a line
+            if (constraint->FirstPos_Deprecated == PointPos::none) {  // vertical length of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2026,9 +2034,10 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addDistanceYConstraint(constraint->First, c.value, c.driving);
+                rtn = addDistanceYConstraint(constraint->First_Deprecated, c.value, c.driving);
             }
-            else if (constraint->Second == GeoEnum::GeoUndef) {  // point on fixed y-coordinate
+            else if (constraint->Second_Deprecated == GeoEnum::GeoUndef) {  // point on fixed
+                                                                            // y-coordinate
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2038,9 +2047,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addCoordinateYConstraint(constraint->First, constraint->FirstPos, c.value, c.driving);
+                rtn = addCoordinateYConstraint(
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    c.value,
+                    c.driving
+                );
             }
-            else if (constraint->SecondPos != PointPos::none) {  // point to point vertical distance
+            else if (constraint->SecondPos_Deprecated != PointPos::none) {  // point to point
+                                                                            // vertical distance
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2051,89 +2066,94 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addDistanceYConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
                     c.value,
                     c.driving
                 );
             }
             break;
         case Horizontal:
-            if (constraint->Second == GeoEnum::GeoUndef) {  // horizontal line
-                rtn = addHorizontalConstraint(constraint->First);
+            if (constraint->Second_Deprecated == GeoEnum::GeoUndef) {  // horizontal line
+                rtn = addHorizontalConstraint(constraint->First_Deprecated);
             }
             else {  // two points on the same horizontal line
                 rtn = addHorizontalConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated
                 );
             }
             break;
         case Vertical:
-            if (constraint->Second == GeoEnum::GeoUndef) {  // vertical line
-                rtn = addVerticalConstraint(constraint->First);
+            if (constraint->Second_Deprecated == GeoEnum::GeoUndef) {  // vertical line
+                rtn = addVerticalConstraint(constraint->First_Deprecated);
             }
             else {  // two points on the same vertical line
                 rtn = addVerticalConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated
                 );
             }
             break;
         case Coincident:
             rtn = addPointCoincidentConstraint(
-                constraint->First,
-                constraint->FirstPos,
-                constraint->Second,
-                constraint->SecondPos
+                constraint->First_Deprecated,
+                constraint->FirstPos_Deprecated,
+                constraint->Second_Deprecated,
+                constraint->SecondPos_Deprecated
             );
             break;
         case PointOnObject:
-            if (Geoms[checkGeoId(constraint->Second)].type == BSpline) {
+            if (Geoms[checkGeoId(constraint->Second_Deprecated)].type == BSpline) {
                 c.value = new double(constraint->getValue());
                 // Driving doesn't make sense here
                 Parameters.push_back(c.value);
 
                 rtn = addPointOnObjectConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
                     c.value
                 );
             }
             else {
                 rtn = addPointOnObjectConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated
                 );
             }
             break;
         case Parallel:
-            rtn = addParallelConstraint(constraint->First, constraint->Second);
+            rtn = addParallelConstraint(constraint->First_Deprecated, constraint->Second_Deprecated);
             break;
         case Perpendicular:
-            if (constraint->FirstPos != PointPos::none && constraint->SecondPos != PointPos::none
-                && constraint->Third != GeoEnum::GeoUndef) {
+            if (constraint->FirstPos_Deprecated != PointPos::none
+                && constraint->SecondPos_Deprecated != PointPos::none
+                && constraint->Third_Deprecated != GeoEnum::GeoUndef) {
                 // point point line perpendicularity
                 rtn = addPerpendicularConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
+                    constraint->Third_Deprecated
                 );
             }
-            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                     && constraint->Third == GeoEnum::GeoUndef) {
+            else if (constraint->FirstPos_Deprecated == PointPos::none
+                     && constraint->SecondPos_Deprecated == PointPos::none
+                     && constraint->Third_Deprecated == GeoEnum::GeoUndef) {
                 // simple perpendicularity
-                rtn = addPerpendicularConstraint(constraint->First, constraint->Second);
+                rtn = addPerpendicularConstraint(
+                    constraint->First_Deprecated,
+                    constraint->Second_Deprecated
+                );
             }
             else {
                 // any other point-wise perpendicularity
@@ -2147,12 +2167,12 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addAngleAtPointConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third,
-                    constraint->ThirdPos,
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
+                    constraint->Third_Deprecated,
+                    constraint->ThirdPos_Deprecated,
                     c.value,
                     constraint->Type,
                     c.driving
@@ -2162,29 +2182,32 @@ int Sketch::addConstraint(const Constraint* constraint)
         case Tangent: {
             bool isSpecialCase = false;
 
-            if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                && constraint->Third == GeoEnum::GeoUndef) {
+            if (constraint->FirstPos_Deprecated == PointPos::none
+                && constraint->SecondPos_Deprecated == PointPos::none
+                && constraint->Third_Deprecated == GeoEnum::GeoUndef) {
                 // simple tangency
-                rtn = addTangentConstraint(constraint->First, constraint->Second);
+                rtn = addTangentConstraint(constraint->First_Deprecated, constraint->Second_Deprecated);
 
                 isSpecialCase = true;
             }
-            else if (constraint->FirstPos == PointPos::start
-                     && constraint->Third == GeoEnum::GeoUndef) {
+            else if (constraint->FirstPos_Deprecated == PointPos::start
+                     && constraint->Third_Deprecated == GeoEnum::GeoUndef) {
                 // check for B-Spline Knot to curve tangency
-                auto knotgeoId = checkGeoId(constraint->First);
+                auto knotgeoId = checkGeoId(constraint->First_Deprecated);
                 if (Geoms[knotgeoId].type == Point) {
                     auto* point = static_cast<const GeomPoint*>(Geoms[knotgeoId].geo);
 
                     if (GeometryFacade::isInternalType(point, InternalType::BSplineKnotPoint)) {
-                        auto bsplinegeoid = internalAlignmentGeometryMap.at(constraint->First);
+                        auto bsplinegeoid = internalAlignmentGeometryMap.at(
+                            constraint->First_Deprecated
+                        );
 
                         bsplinegeoid = checkGeoId(bsplinegeoid);
 
-                        auto linegeoid = checkGeoId(constraint->Second);
+                        auto linegeoid = checkGeoId(constraint->Second_Deprecated);
 
                         if (Geoms[linegeoid].type == Line) {
-                            if (constraint->SecondPos == PointPos::none) {
+                            if (constraint->SecondPos_Deprecated == PointPos::none) {
                                 rtn = addTangentLineAtBSplineKnotConstraint(
                                     linegeoid,
                                     bsplinegeoid,
@@ -2193,11 +2216,11 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                                 isSpecialCase = true;
                             }
-                            else if (constraint->SecondPos == PointPos::start
-                                     || constraint->SecondPos == PointPos::end) {
+                            else if (constraint->SecondPos_Deprecated == PointPos::start
+                                     || constraint->SecondPos_Deprecated == PointPos::end) {
                                 rtn = addTangentLineEndpointAtBSplineKnotConstraint(
                                     linegeoid,
-                                    constraint->SecondPos,
+                                    constraint->SecondPos_Deprecated,
                                     bsplinegeoid,
                                     knotgeoId
                                 );
@@ -2221,12 +2244,12 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addAngleAtPointConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third,
-                    constraint->ThirdPos,
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
+                    constraint->Third_Deprecated,
+                    constraint->ThirdPos_Deprecated,
                     c.value,
                     constraint->Type,
                     c.driving
@@ -2235,7 +2258,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             break;
         }
         case Distance:
-            if (constraint->SecondPos != PointPos::none) {  // point to point distance
+            if (constraint->SecondPos_Deprecated != PointPos::none) {  // point to point distance
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2245,18 +2268,20 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
                 rtn = addDistanceConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
                     c.value,
                     c.driving
                 );
             }
-            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                     && constraint->Second != GeoEnum::GeoUndef
-                     && constraint->Third == GeoEnum::GeoUndef) {  // circle to circle, circle to
-                                                                   // arc, etc.
+            else if (constraint->FirstPos_Deprecated == PointPos::none
+                     && constraint->SecondPos_Deprecated == PointPos::none
+                     && constraint->Second_Deprecated != GeoEnum::GeoUndef
+                     && constraint->Third_Deprecated == GeoEnum::GeoUndef) {  // circle to circle,
+                                                                              // circle to
+                                                                              // arc, etc.
 
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2266,10 +2291,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                     Parameters.push_back(c.value);
                     DrivenParameters.push_back(c.value);
                 }
-                rtn = addDistanceConstraint(constraint->First, constraint->Second, c.value, c.driving);
+                rtn = addDistanceConstraint(
+                    constraint->First_Deprecated,
+                    constraint->Second_Deprecated,
+                    c.value,
+                    c.driving
+                );
             }
-            else if (constraint->Second != GeoEnum::GeoUndef) {
-                if (constraint->FirstPos != PointPos::none) {  // point to line distance
+            else if (constraint->Second_Deprecated != GeoEnum::GeoUndef) {
+                if (constraint->FirstPos_Deprecated != PointPos::none) {  // point to line distance
                     c.value = new double(constraint->getValue());
                     if (c.driving) {
                         FixParameters.push_back(c.value);
@@ -2279,9 +2309,9 @@ int Sketch::addConstraint(const Constraint* constraint)
                         DrivenParameters.push_back(c.value);
                     }
                     rtn = addDistanceConstraint(
-                        constraint->First,
-                        constraint->FirstPos,
-                        constraint->Second,
+                        constraint->First_Deprecated,
+                        constraint->FirstPos_Deprecated,
+                        constraint->Second_Deprecated,
                         c.value,
                         c.driving
                     );
@@ -2297,11 +2327,11 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addDistanceConstraint(constraint->First, c.value, c.driving);
+                rtn = addDistanceConstraint(constraint->First_Deprecated, c.value, c.driving);
             }
             break;
         case Angle:
-            if (constraint->Third != GeoEnum::GeoUndef) {
+            if (constraint->Third_Deprecated != GeoEnum::GeoUndef) {
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2312,19 +2342,19 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addAngleAtPointConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third,
-                    constraint->ThirdPos,
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
+                    constraint->Third_Deprecated,
+                    constraint->ThirdPos_Deprecated,
                     c.value,
                     constraint->Type,
                     c.driving
                 );
             }
             // angle between two lines (with explicit start points)
-            else if (constraint->SecondPos != PointPos::none) {
+            else if (constraint->SecondPos_Deprecated != PointPos::none) {
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2335,15 +2365,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addAngleConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
                     c.value,
                     c.driving
                 );
             }
-            else if (constraint->Second != GeoEnum::GeoUndef) {  // angle between two lines
+            else if (constraint->Second_Deprecated != GeoEnum::GeoUndef) {  // angle between two lines
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2353,9 +2383,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addAngleConstraint(constraint->First, constraint->Second, c.value, c.driving);
+                rtn = addAngleConstraint(
+                    constraint->First_Deprecated,
+                    constraint->Second_Deprecated,
+                    c.value,
+                    c.driving
+                );
             }
-            else if (constraint->First != GeoEnum::GeoUndef) {  // orientation angle of a line
+            else if (constraint->First_Deprecated
+                     != GeoEnum::GeoUndef) {  // orientation angle of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2365,7 +2401,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addAngleConstraint(constraint->First, c.value, c.driving);
+                rtn = addAngleConstraint(constraint->First_Deprecated, c.value, c.driving);
             }
             break;
         case Radius: {
@@ -2378,7 +2414,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                 DrivenParameters.push_back(c.value);
             }
 
-            rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
+            rtn = addRadiusConstraint(constraint->First_Deprecated, c.value, c.driving);
             break;
         }
         case Diameter: {
@@ -2391,7 +2427,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                 DrivenParameters.push_back(c.value);
             }
 
-            rtn = addDiameterConstraint(constraint->First, c.value, c.driving);
+            rtn = addDiameterConstraint(constraint->First_Deprecated, c.value, c.driving);
             break;
         }
         case Weight: {
@@ -2404,83 +2440,101 @@ int Sketch::addConstraint(const Constraint* constraint)
                 DrivenParameters.push_back(c.value);
             }
 
-            rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
+            rtn = addRadiusConstraint(constraint->First_Deprecated, c.value, c.driving);
             break;
         }
         case Equal:
-            rtn = addEqualConstraint(constraint->First, constraint->Second);
+            rtn = addEqualConstraint(constraint->First_Deprecated, constraint->Second_Deprecated);
             break;
         case Symmetric:
-            if (constraint->ThirdPos != PointPos::none) {
+            if (constraint->ThirdPos_Deprecated != PointPos::none) {
                 rtn = addSymmetricConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third,
-                    constraint->ThirdPos
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
+                    constraint->Third_Deprecated,
+                    constraint->ThirdPos_Deprecated
                 );
             }
             else {
                 rtn = addSymmetricConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third
+                    constraint->First_Deprecated,
+                    constraint->FirstPos_Deprecated,
+                    constraint->Second_Deprecated,
+                    constraint->SecondPos_Deprecated,
+                    constraint->Third_Deprecated
                 );
             }
             break;
         case InternalAlignment:
             switch (constraint->AlignmentType) {
                 case EllipseMajorDiameter:
-                    rtn = addInternalAlignmentEllipseMajorDiameter(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentEllipseMajorDiameter(
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated
+                    );
                     break;
                 case EllipseMinorDiameter:
-                    rtn = addInternalAlignmentEllipseMinorDiameter(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentEllipseMinorDiameter(
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated
+                    );
                     break;
                 case EllipseFocus1:
-                    rtn = addInternalAlignmentEllipseFocus1(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentEllipseFocus1(
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated
+                    );
                     break;
                 case EllipseFocus2:
-                    rtn = addInternalAlignmentEllipseFocus2(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentEllipseFocus2(
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated
+                    );
                     break;
                 case HyperbolaMajor:
                     rtn = addInternalAlignmentHyperbolaMajorDiameter(
-                        constraint->First,
-                        constraint->Second
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated
                     );
                     break;
                 case HyperbolaMinor:
                     rtn = addInternalAlignmentHyperbolaMinorDiameter(
-                        constraint->First,
-                        constraint->Second
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated
                     );
                     break;
                 case HyperbolaFocus:
-                    rtn = addInternalAlignmentHyperbolaFocus(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentHyperbolaFocus(
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated
+                    );
                     break;
                 case ParabolaFocus:
-                    rtn = addInternalAlignmentParabolaFocus(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentParabolaFocus(
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated
+                    );
                     break;
                 case BSplineControlPoint:
                     rtn = addInternalAlignmentBSplineControlPoint(
-                        constraint->First,
-                        constraint->Second,
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated,
                         constraint->InternalAlignmentIndex
                     );
                     break;
                 case BSplineKnotPoint:
                     rtn = addInternalAlignmentKnotPoint(
-                        constraint->First,
-                        constraint->Second,
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated,
                         constraint->InternalAlignmentIndex
                     );
                     break;
                 case ParabolaFocalAxis:
                     rtn = addInternalAlignmentParabolaFocalDistance(
-                        constraint->First,
-                        constraint->Second
+                        constraint->First_Deprecated,
+                        constraint->Second_Deprecated
                     );
                     break;
                 default:
@@ -2504,11 +2558,11 @@ int Sketch::addConstraint(const Constraint* constraint)
 
             // assert(constraint->ThirdPos==none); //will work anyway...
             rtn = addSnellsLawConstraint(
-                constraint->First,
-                constraint->FirstPos,
-                constraint->Second,
-                constraint->SecondPos,
-                constraint->Third,
+                constraint->First_Deprecated,
+                constraint->FirstPos_Deprecated,
+                constraint->Second_Deprecated,
+                constraint->SecondPos_Deprecated,
+                constraint->Third_Deprecated,
                 c.value,
                 c.secondvalue,
                 c.driving
@@ -2623,7 +2677,7 @@ void Sketch::getBlockedGeometry(
     for (auto it = ConstraintList.cbegin(); it != ConstraintList.cend(); ++it, ++i) {
         switch ((*it)->Type) {
             case Block: {
-                int geoid = (*it)->First;
+                int geoid = (*it)->First_Deprecated;
 
                 if (geoid >= 0 && geoid < int(blockedGeometry.size())) {
                     blockedGeometry[geoid] = true;
@@ -2641,12 +2695,12 @@ void Sketch::getBlockedGeometry(
     // if a GeoId is blocked and it is linked to Internal Alignment, then GeoIds linked via Internal
     // Alignment are also to be blocked
     for (auto idx : internalAlignmentConstraintIndex) {
-        if (blockedGeometry[ConstraintList[idx]->Second]) {
-            blockedGeometry[ConstraintList[idx]->First] = true;
+        if (blockedGeometry[ConstraintList[idx]->Second_Deprecated]) {
+            blockedGeometry[ConstraintList[idx]->First_Deprecated] = true;
             // associated geometry gets the same blocking constraint index as the blocked element
-            geo2blockingconstraintindex[ConstraintList[idx]->First]
-                = geo2blockingconstraintindex[ConstraintList[idx]->Second];
-            internalAlignmentgeo.push_back(ConstraintList[idx]->First);
+            geo2blockingconstraintindex[ConstraintList[idx]->First_Deprecated]
+                = geo2blockingconstraintindex[ConstraintList[idx]->Second_Deprecated];
+            internalAlignmentgeo.push_back(ConstraintList[idx]->First_Deprecated);
             unenforceableConstraints[idx] = true;
         }
     }
@@ -2657,7 +2711,8 @@ void Sketch::getBlockedGeometry(
             // additionally any further constraint on auxiliary elements linked via Internal
             // Alignment are also unenforceable.
             for (auto& iag : internalAlignmentgeo) {
-                if ((*it)->First == iag || (*it)->Second == iag || (*it)->Third == iag) {
+                if ((*it)->First_Deprecated == iag || (*it)->Second_Deprecated == iag
+                    || (*it)->Third_Deprecated == iag) {
                     unenforceableConstraints[i] = true;
                 }
             }
@@ -2669,24 +2724,28 @@ void Sketch::getBlockedGeometry(
 
             // further, any constraint taking only one element, which is blocked is also
             // unenforceable
-            if ((*it)->Second == GeoEnum::GeoUndef && (*it)->Third == GeoEnum::GeoUndef
-                && (*it)->First >= 0) {
-                if (blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) {
+            if ((*it)->Second_Deprecated == GeoEnum::GeoUndef
+                && (*it)->Third_Deprecated == GeoEnum::GeoUndef && (*it)->First_Deprecated >= 0) {
+                if (blockedGeometry[(*it)->First_Deprecated]
+                    && i < geo2blockingconstraintindex[(*it)->First_Deprecated]) {
                     unenforceableConstraints[i] = true;
                 }
             }
             // further any constraint on only two elements where both elements are blocked or one is
             // blocked and the other is an axis or external provided that the constraints precede
             // the last block constraint.
-            else if ((*it)->Third == GeoEnum::GeoUndef) {
-                if (((*it)->First >= 0 && (*it)->Second >= 0 && blockedGeometry[(*it)->First]
-                     && blockedGeometry[(*it)->Second]
-                     && (i < geo2blockingconstraintindex[(*it)->First]
-                         || i < geo2blockingconstraintindex[(*it)->Second]))
-                    || ((*it)->First < 0 && (*it)->Second >= 0 && blockedGeometry[(*it)->Second]
-                        && i < geo2blockingconstraintindex[(*it)->Second])
-                    || ((*it)->First >= 0 && (*it)->Second < 0 && blockedGeometry[(*it)->First]
-                        && i < geo2blockingconstraintindex[(*it)->First])) {
+            else if ((*it)->Third_Deprecated == GeoEnum::GeoUndef) {
+                if (((*it)->First_Deprecated >= 0 && (*it)->Second_Deprecated >= 0
+                     && blockedGeometry[(*it)->First_Deprecated]
+                     && blockedGeometry[(*it)->Second_Deprecated]
+                     && (i < geo2blockingconstraintindex[(*it)->First_Deprecated]
+                         || i < geo2blockingconstraintindex[(*it)->Second_Deprecated]))
+                    || ((*it)->First_Deprecated < 0 && (*it)->Second_Deprecated >= 0
+                        && blockedGeometry[(*it)->Second_Deprecated]
+                        && i < geo2blockingconstraintindex[(*it)->Second_Deprecated])
+                    || ((*it)->First_Deprecated >= 0 && (*it)->Second_Deprecated < 0
+                        && blockedGeometry[(*it)->First_Deprecated]
+                        && i < geo2blockingconstraintindex[(*it)->First_Deprecated])) {
                     unenforceableConstraints[i] = true;
                 }
             }
@@ -2695,33 +2754,37 @@ void Sketch::getBlockedGeometry(
             // elements where one is blocked and the other two are axis or external geo, provided
             // that the constraints precede the last block constraint.
             else {
-                if (((*it)->First >= 0 && (*it)->Second >= 0 && (*it)->Third >= 0
-                     && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second]
-                     && blockedGeometry[(*it)->Third]
-                     && (i < geo2blockingconstraintindex[(*it)->First]
-                         || i < geo2blockingconstraintindex[(*it)->Second]
-                         || i < geo2blockingconstraintindex[(*it)->Third]))
-                    || ((*it)->First < 0 && (*it)->Second >= 0 && (*it)->Third >= 0
-                        && blockedGeometry[(*it)->Second] && blockedGeometry[(*it)->Third]
-                        && (i < geo2blockingconstraintindex[(*it)->Second]
-                            || i < geo2blockingconstraintindex[(*it)->Third]))
-                    || ((*it)->First >= 0 && (*it)->Second < 0 && (*it)->Third >= 0
-                        && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Third]
-                        && (i < geo2blockingconstraintindex[(*it)->First]
-                            || i < geo2blockingconstraintindex[(*it)->Third]))
-                    || ((*it)->First >= 0 && (*it)->Second >= 0 && (*it)->Third < 0
-                        && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second]
-                        && (i < geo2blockingconstraintindex[(*it)->First]
-                            || i < geo2blockingconstraintindex[(*it)->Second]))
-                    || ((*it)->First >= 0 && (*it)->Second < 0 && (*it)->Third < 0
-                        && blockedGeometry[(*it)->First]
-                        && i < geo2blockingconstraintindex[(*it)->First])
-                    || ((*it)->First < 0 && (*it)->Second >= 0 && (*it)->Third < 0
-                        && blockedGeometry[(*it)->Second]
-                        && i < geo2blockingconstraintindex[(*it)->Second])
-                    || ((*it)->First < 0 && (*it)->Second < 0 && (*it)->Third >= 0
-                        && blockedGeometry[(*it)->Third]
-                        && i < geo2blockingconstraintindex[(*it)->Third])) {
+                if (((*it)->First_Deprecated >= 0 && (*it)->Second_Deprecated >= 0
+                     && (*it)->Third_Deprecated >= 0 && blockedGeometry[(*it)->First_Deprecated]
+                     && blockedGeometry[(*it)->Second_Deprecated]
+                     && blockedGeometry[(*it)->Third_Deprecated]
+                     && (i < geo2blockingconstraintindex[(*it)->First_Deprecated]
+                         || i < geo2blockingconstraintindex[(*it)->Second_Deprecated]
+                         || i < geo2blockingconstraintindex[(*it)->Third_Deprecated]))
+                    || ((*it)->First_Deprecated < 0 && (*it)->Second_Deprecated >= 0
+                        && (*it)->Third_Deprecated >= 0 && blockedGeometry[(*it)->Second_Deprecated]
+                        && blockedGeometry[(*it)->Third_Deprecated]
+                        && (i < geo2blockingconstraintindex[(*it)->Second_Deprecated]
+                            || i < geo2blockingconstraintindex[(*it)->Third_Deprecated]))
+                    || ((*it)->First_Deprecated >= 0 && (*it)->Second_Deprecated < 0
+                        && (*it)->Third_Deprecated >= 0 && blockedGeometry[(*it)->First_Deprecated]
+                        && blockedGeometry[(*it)->Third_Deprecated]
+                        && (i < geo2blockingconstraintindex[(*it)->First_Deprecated]
+                            || i < geo2blockingconstraintindex[(*it)->Third_Deprecated]))
+                    || ((*it)->First_Deprecated >= 0 && (*it)->Second_Deprecated >= 0
+                        && (*it)->Third_Deprecated < 0 && blockedGeometry[(*it)->First_Deprecated]
+                        && blockedGeometry[(*it)->Second_Deprecated]
+                        && (i < geo2blockingconstraintindex[(*it)->First_Deprecated]
+                            || i < geo2blockingconstraintindex[(*it)->Second_Deprecated]))
+                    || ((*it)->First_Deprecated >= 0 && (*it)->Second_Deprecated < 0
+                        && (*it)->Third_Deprecated < 0 && blockedGeometry[(*it)->First_Deprecated]
+                        && i < geo2blockingconstraintindex[(*it)->First_Deprecated])
+                    || ((*it)->First_Deprecated < 0 && (*it)->Second_Deprecated >= 0
+                        && (*it)->Third_Deprecated < 0 && blockedGeometry[(*it)->Second_Deprecated]
+                        && i < geo2blockingconstraintindex[(*it)->Second_Deprecated])
+                    || ((*it)->First_Deprecated < 0 && (*it)->Second_Deprecated < 0
+                        && (*it)->Third_Deprecated >= 0 && blockedGeometry[(*it)->Third_Deprecated]
+                        && i < geo2blockingconstraintindex[(*it)->Third_Deprecated])) {
 
                     unenforceableConstraints[i] = true;
                 }

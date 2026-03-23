@@ -208,7 +208,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         else {
             return false;
         }
-        constraint->First = FirstIndex;
+        constraint->First_Deprecated = FirstIndex;
         return true;
     };
 
@@ -279,8 +279,8 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             if (valid) {
-                constraint->First = FirstIndex;
-                constraint->Second = SecondIndex;
+                constraint->First_Deprecated = FirstIndex;
+                constraint->Second_Deprecated = SecondIndex;
                 return true;
             }
         }
@@ -329,7 +329,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return false;
             }
 
-            constraint->First = FirstIndex;
+            constraint->First_Deprecated = FirstIndex;
             constraint->setValue(Value);
             return true;
         }
@@ -409,9 +409,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             if (valid) {
-                constraint->First = FirstIndex;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                constraint->Second = SecondIndex;
+                constraint->First_Deprecated = FirstIndex;
+                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(FirstPos);
+                constraint->Second_Deprecated = SecondIndex;
                 return true;
             }
         }
@@ -430,29 +430,29 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     }
                 }
                 constraint->Type = Angle;
-                constraint->Second = SecondIndex;
+                constraint->Second_Deprecated = SecondIndex;
             }
             else if (strcmp("Distance", ConstraintType) == 0) {
                 constraint->Type = Distance;
-                constraint->Second = SecondIndex;
+                constraint->Second_Deprecated = SecondIndex;
             }
             else if (strcmp("DistanceX", ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
                 constraint->Type = DistanceX;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
+                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(FirstPos);
             }
             else if (strcmp("DistanceY", ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
                 constraint->Type = DistanceY;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
+                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(FirstPos);
             }
             else {
                 return false;
             }
 
-            constraint->First = FirstIndex;
+            constraint->First_Deprecated = FirstIndex;
             constraint->setValue(Value);
             return true;
         }
@@ -528,23 +528,23 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             else if (strcmp("TangentViaPoint", ConstraintType) == 0) {
                 constraint->Type = Tangent;
                 // valid = true;//non-standard assignment
-                constraint->First = intArg1;
-                constraint->FirstPos = Sketcher::PointPos::none;
-                constraint->Second = intArg2;
-                constraint->SecondPos = Sketcher::PointPos::none;
-                constraint->Third = intArg3;
-                constraint->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->First_Deprecated = intArg1;
+                constraint->FirstPos_Deprecated = Sketcher::PointPos::none;
+                constraint->Second_Deprecated = intArg2;
+                constraint->SecondPos_Deprecated = Sketcher::PointPos::none;
+                constraint->Third_Deprecated = intArg3;
+                constraint->ThirdPos_Deprecated = static_cast<Sketcher::PointPos>(intArg4);
                 return true;
             }
             else if (strcmp("PerpendicularViaPoint", ConstraintType) == 0) {
                 constraint->Type = Perpendicular;
                 // valid = true;//non-standard assignment
-                constraint->First = intArg1;
-                constraint->FirstPos = Sketcher::PointPos::none;
-                constraint->Second = intArg2;
-                constraint->SecondPos = Sketcher::PointPos::none;
-                constraint->Third = intArg3;
-                constraint->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->First_Deprecated = intArg1;
+                constraint->FirstPos_Deprecated = Sketcher::PointPos::none;
+                constraint->Second_Deprecated = intArg2;
+                constraint->SecondPos_Deprecated = Sketcher::PointPos::none;
+                constraint->Third_Deprecated = intArg3;
+                constraint->ThirdPos_Deprecated = static_cast<Sketcher::PointPos>(intArg4);
                 return true;
             }
             else if (strstr(
@@ -568,18 +568,18 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 }
 
                 if (valid) {
-                    constraint->First = intArg1;
-                    constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                    constraint->Second = intArg3;
+                    constraint->First_Deprecated = intArg1;
+                    constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(intArg2);
+                    constraint->Second_Deprecated = intArg3;
                     constraint->InternalAlignmentIndex = intArg4;
                     return true;
                 }
             }
             if (valid) {
-                constraint->First = intArg1;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                constraint->Second = intArg3;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->First_Deprecated = intArg1;
+                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(intArg2);
+                constraint->Second_Deprecated = intArg3;
+                constraint->SecondPos_Deprecated = static_cast<Sketcher::PointPos>(intArg4);
                 return true;
             }
         }
@@ -588,9 +588,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Value = PyFloat_AsDouble(oNumArg4);
             if (strcmp("Distance", ConstraintType) == 0) {
                 constraint->Type = Distance;
-                constraint->First = intArg1;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                constraint->Second = intArg3;
+                constraint->First_Deprecated = intArg1;
+                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(intArg2);
+                constraint->Second_Deprecated = intArg3;
                 constraint->setValue(Value);
                 return true;
             }
@@ -645,20 +645,20 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             intArg5 = PyLong_AsLong(oNumArg5);
             if (strcmp("Symmetric", ConstraintType) == 0) {
                 constraint->Type = Symmetric;
-                constraint->First = intArg1;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                constraint->Second = intArg3;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
-                constraint->Third = intArg5;
+                constraint->First_Deprecated = intArg1;
+                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(intArg2);
+                constraint->Second_Deprecated = intArg3;
+                constraint->SecondPos_Deprecated = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->Third_Deprecated = intArg5;
                 return true;
             }
             if (strcmp("Perpendicular", ConstraintType) == 0) {
                 constraint->Type = Perpendicular;
-                constraint->First = intArg1;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                constraint->Second = intArg3;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
-                constraint->Third = intArg5;
+                constraint->First_Deprecated = intArg1;
+                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(intArg2);
+                constraint->Second_Deprecated = intArg3;
+                constraint->SecondPos_Deprecated = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->Third_Deprecated = intArg5;
                 return true;
             }
         }
@@ -692,12 +692,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 }
                 constraint->Type = Angle;
                 // valid = true;//non-standard assignment
-                constraint->First = intArg1;
-                constraint->FirstPos = Sketcher::PointPos::none;
-                constraint->Second = intArg2;  // let's goof up all the terminology =)
-                constraint->SecondPos = Sketcher::PointPos::none;
-                constraint->Third = intArg3;
-                constraint->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->First_Deprecated = intArg1;
+                constraint->FirstPos_Deprecated = Sketcher::PointPos::none;
+                constraint->Second_Deprecated = intArg2;  // let's goof up all the terminology =)
+                constraint->SecondPos_Deprecated = Sketcher::PointPos::none;
+                constraint->Third_Deprecated = intArg3;
+                constraint->ThirdPos_Deprecated = static_cast<Sketcher::PointPos>(intArg4);
                 constraint->setValue(Value);
                 return true;
             }
@@ -705,10 +705,10 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return false;
             }
 
-            constraint->First = intArg1;
-            constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-            constraint->Second = intArg3;
-            constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+            constraint->First_Deprecated = intArg1;
+            constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(intArg2);
+            constraint->Second_Deprecated = intArg3;
+            constraint->SecondPos_Deprecated = static_cast<Sketcher::PointPos>(intArg4);
             constraint->setValue(Value);
             return true;
         }
@@ -772,12 +772,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3, PosIndex3
             if (strcmp("Symmetric", ConstraintType) == 0) {
                 constraint->Type = Symmetric;
-                constraint->First = FirstIndex;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                constraint->Second = SecondIndex;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
-                constraint->Third = ThirdIndex;
-                constraint->ThirdPos = static_cast<Sketcher::PointPos>(ThirdPos);
+                constraint->First_Deprecated = FirstIndex;
+                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(FirstPos);
+                constraint->Second_Deprecated = SecondIndex;
+                constraint->SecondPos_Deprecated = static_cast<Sketcher::PointPos>(SecondPos);
+                constraint->Third_Deprecated = ThirdIndex;
+                constraint->ThirdPos_Deprecated = static_cast<Sketcher::PointPos>(ThirdPos);
                 return true;
             }
         }
@@ -785,12 +785,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Value = PyFloat_AsDouble(index_or_value);
             if (strcmp("SnellsLaw", ConstraintType) == 0) {
                 constraint->Type = SnellsLaw;
-                constraint->First = FirstIndex;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                constraint->Second = SecondIndex;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
-                constraint->Third = ThirdIndex;
-                constraint->ThirdPos = Sketcher::PointPos::none;
+                constraint->First_Deprecated = FirstIndex;
+                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(FirstPos);
+                constraint->Second_Deprecated = SecondIndex;
+                constraint->SecondPos_Deprecated = static_cast<Sketcher::PointPos>(SecondPos);
+                constraint->Third_Deprecated = ThirdIndex;
+                constraint->ThirdPos_Deprecated = Sketcher::PointPos::none;
                 constraint->setValue(Value);
                 return true;
             }
@@ -891,13 +891,13 @@ std::string ConstraintPy::representation() const
             result << "'Coincident'>";
             break;
         case Horizontal:
-            result << "'Horizontal' (" << getConstraintPtr()->First << ")>";
+            result << "'Horizontal' (" << getConstraintPtr()->First_Deprecated << ")>";
             break;
         case Vertical:
-            result << "'Vertical' (" << getConstraintPtr()->First << ")>";
+            result << "'Vertical' (" << getConstraintPtr()->First_Deprecated << ")>";
             break;
         case Block:
-            result << "'Block' (" << getConstraintPtr()->First << ")>";
+            result << "'Block' (" << getConstraintPtr()->First_Deprecated << ")>";
             break;
         case Radius:
             result << "'Radius'>";
@@ -912,7 +912,7 @@ std::string ConstraintPy::representation() const
             result << "'Parallel'>";
             break;
         case Tangent:
-            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef) {
+            if (this->getConstraintPtr()->Third_Deprecated == GeoEnum::GeoUndef) {
                 result << "'Tangent'>";
             }
             else {
@@ -920,7 +920,7 @@ std::string ConstraintPy::representation() const
             }
             break;
         case Perpendicular:
-            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef) {
+            if (this->getConstraintPtr()->Third_Deprecated == GeoEnum::GeoUndef) {
                 result << "'Perpendicular'>";
             }
             else {
@@ -931,7 +931,7 @@ std::string ConstraintPy::representation() const
             result << "'Distance'>";
             break;
         case Angle:
-            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef) {
+            if (this->getConstraintPtr()->Third_Deprecated == GeoEnum::GeoUndef) {
                 result << "'Angle'>";
             }
             else {
@@ -988,12 +988,12 @@ std::string ConstraintPy::representation() const
             }
             break;
         case Equal:
-            result << "'Equal' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second
-                   << ")>";
+            result << "'Equal' (" << getConstraintPtr()->First_Deprecated << ","
+                   << getConstraintPtr()->Second_Deprecated << ")>";
             break;
         case PointOnObject:
-            result << "'PointOnObject' (" << getConstraintPtr()->First << ","
-                   << getConstraintPtr()->Second << ")>";
+            result << "'PointOnObject' (" << getConstraintPtr()->First_Deprecated << ","
+                   << getConstraintPtr()->Second_Deprecated << ")>";
             break;
         case Group:
             result << "'Group'>";
@@ -1085,17 +1085,17 @@ Py::String ConstraintPy::getType() const
 
 Py::Long ConstraintPy::getFirst() const
 {
-    return Py::Long(this->getConstraintPtr()->First);
+    return Py::Long(this->getConstraintPtr()->First_Deprecated);
 }
 
 void ConstraintPy::setFirst(Py::Long arg)
 {
-    this->getConstraintPtr()->First = arg;
+    this->getConstraintPtr()->First_Deprecated = arg;
 }
 
 Py::Long ConstraintPy::getFirstPos() const
 {
-    return Py::Long(static_cast<int>(this->getConstraintPtr()->FirstPos));
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->FirstPos_Deprecated));
 }
 
 void ConstraintPy::setFirstPos(Py::Long arg)
@@ -1104,7 +1104,7 @@ void ConstraintPy::setFirstPos(Py::Long arg)
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none)
         && pos <= static_cast<int>(Sketcher::PointPos::mid)) {
-        this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(pos);
+        this->getConstraintPtr()->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(pos);
     }
     else {
         std::stringstream str;
@@ -1116,17 +1116,17 @@ void ConstraintPy::setFirstPos(Py::Long arg)
 
 Py::Long ConstraintPy::getSecond() const
 {
-    return Py::Long(this->getConstraintPtr()->Second);
+    return Py::Long(this->getConstraintPtr()->Second_Deprecated);
 }
 
 void ConstraintPy::setSecond(Py::Long arg)
 {
-    this->getConstraintPtr()->Second = arg;
+    this->getConstraintPtr()->Second_Deprecated = arg;
 }
 
 Py::Long ConstraintPy::getSecondPos() const
 {
-    return Py::Long(static_cast<int>(this->getConstraintPtr()->SecondPos));
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->SecondPos_Deprecated));
 }
 
 void ConstraintPy::setSecondPos(Py::Long arg)
@@ -1135,7 +1135,7 @@ void ConstraintPy::setSecondPos(Py::Long arg)
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none)
         && pos <= static_cast<int>(Sketcher::PointPos::mid)) {
-        this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(pos);
+        this->getConstraintPtr()->SecondPos_Deprecated = static_cast<Sketcher::PointPos>(pos);
     }
     else {
         std::stringstream str;
@@ -1147,17 +1147,17 @@ void ConstraintPy::setSecondPos(Py::Long arg)
 
 Py::Long ConstraintPy::getThird() const
 {
-    return Py::Long(this->getConstraintPtr()->Third);
+    return Py::Long(this->getConstraintPtr()->Third_Deprecated);
 }
 
 void ConstraintPy::setThird(Py::Long arg)
 {
-    this->getConstraintPtr()->Third = arg;
+    this->getConstraintPtr()->Third_Deprecated = arg;
 }
 
 Py::Long ConstraintPy::getThirdPos() const
 {
-    return Py::Long(static_cast<int>(this->getConstraintPtr()->ThirdPos));
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->ThirdPos_Deprecated));
 }
 
 void ConstraintPy::setThirdPos(Py::Long arg)
@@ -1166,7 +1166,7 @@ void ConstraintPy::setThirdPos(Py::Long arg)
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none)
         && pos <= static_cast<int>(Sketcher::PointPos::mid)) {
-        this->getConstraintPtr()->ThirdPos = static_cast<Sketcher::PointPos>(pos);
+        this->getConstraintPtr()->ThirdPos_Deprecated = static_cast<Sketcher::PointPos>(pos);
     }
     else {
         std::stringstream str;

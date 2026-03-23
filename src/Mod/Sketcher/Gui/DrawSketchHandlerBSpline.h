@@ -151,15 +151,15 @@ private:
                 // those poles/knots center and mangle it to the endpoint.
                 if (!periodic) {
                     for (auto& constr : sketchgui->getSketchObject()->Constraints.getValues()) {
-                        if (constr->First == geoIds[0]
-                            && constr->FirstPos == Sketcher::PointPos::mid) {
-                            constr->First = currentgeoid;
-                            constr->FirstPos = Sketcher::PointPos::start;
+                        if (constr->First_Deprecated == geoIds[0]
+                            && constr->FirstPos_Deprecated == Sketcher::PointPos::mid) {
+                            constr->First_Deprecated = currentgeoid;
+                            constr->FirstPos_Deprecated = Sketcher::PointPos::start;
                         }
-                        else if (constr->First == geoIds.back()
-                                 && constr->FirstPos == Sketcher::PointPos::mid) {
-                            constr->First = currentgeoid;
-                            constr->FirstPos = Sketcher::PointPos::end;
+                        else if (constr->First_Deprecated == geoIds.back()
+                                 && constr->FirstPos_Deprecated == Sketcher::PointPos::mid) {
+                            constr->First_Deprecated = currentgeoid;
+                            constr->FirstPos_Deprecated = Sketcher::PointPos::end;
                         }
                     }
                 }
@@ -321,15 +321,15 @@ private:
                 // endpoint.
                 if (!periodic) {
                     for (auto& constr : sketchgui->getSketchObject()->Constraints.getValues()) {
-                        if (constr->First == geoIds[0]
-                            && constr->FirstPos == Sketcher::PointPos::start) {
-                            constr->First = currentgeoid;
-                            constr->FirstPos = Sketcher::PointPos::start;
+                        if (constr->First_Deprecated == geoIds[0]
+                            && constr->FirstPos_Deprecated == Sketcher::PointPos::start) {
+                            constr->First_Deprecated = currentgeoid;
+                            constr->FirstPos_Deprecated = Sketcher::PointPos::start;
                         }
-                        else if (constr->First == geoIds.back()
-                                 && constr->FirstPos == Sketcher::PointPos::start) {
-                            constr->First = currentgeoid;
-                            constr->FirstPos = Sketcher::PointPos::end;
+                        else if (constr->First_Deprecated == geoIds.back()
+                                 && constr->FirstPos_Deprecated == Sketcher::PointPos::start) {
+                            constr->First_Deprecated = currentgeoid;
+                            constr->FirstPos_Deprecated = Sketcher::PointPos::end;
                         }
                     }
                 }
@@ -650,8 +650,9 @@ private:
             const int delGeoId = geoIds.back();
             const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
             for (int i = constraints.size() - 1; i >= 0; --i) {
-                if (delGeoId == constraints[i]->First || delGeoId == constraints[i]->Second
-                    || delGeoId == constraints[i]->Third) {
+                if (delGeoId == constraints[i]->First_Deprecated
+                    || delGeoId == constraints[i]->Second_Deprecated
+                    || delGeoId == constraints[i]->Third_Deprecated) {
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "delConstraint(%d)", i);
                 }
             }

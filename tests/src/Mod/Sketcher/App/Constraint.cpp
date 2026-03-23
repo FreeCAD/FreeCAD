@@ -54,14 +54,14 @@ TEST_F(ConstraintPointsAccess, testDefaultGeoElementIdsAreSane)  // NOLINT
     // Assert
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
     // Old way of accessing elements
-    EXPECT_EQ(constraint.First, Sketcher::GeoEnum::GeoUndef);
-    EXPECT_EQ(constraint.FirstPos, Sketcher::PointPos::none);
+    EXPECT_EQ(constraint.First_Deprecated, Sketcher::GeoEnum::GeoUndef);
+    EXPECT_EQ(constraint.FirstPos_Deprecated, Sketcher::PointPos::none);
 
-    EXPECT_EQ(constraint.Second, Sketcher::GeoEnum::GeoUndef);
-    EXPECT_EQ(constraint.SecondPos, Sketcher::PointPos::none);
+    EXPECT_EQ(constraint.Second_Deprecated, Sketcher::GeoEnum::GeoUndef);
+    EXPECT_EQ(constraint.SecondPos_Deprecated, Sketcher::PointPos::none);
 
-    EXPECT_EQ(constraint.Third, Sketcher::GeoEnum::GeoUndef);
-    EXPECT_EQ(constraint.ThirdPos, Sketcher::PointPos::none);
+    EXPECT_EQ(constraint.Third_Deprecated, Sketcher::GeoEnum::GeoUndef);
+    EXPECT_EQ(constraint.ThirdPos_Deprecated, Sketcher::PointPos::none);
 
     // New way of accessing elements
 #endif
@@ -86,12 +86,12 @@ TEST_F(ConstraintPointsAccess, testOldWriteIsReadByNew)  // NOLINT
     auto constraint = Sketcher::Constraint();
 
     // Act
-    constraint.First = 23;
-    constraint.FirstPos = Sketcher::PointPos::start;
-    constraint.Second = 34;
-    constraint.SecondPos = Sketcher::PointPos::end;
-    constraint.Third = 45;
-    constraint.ThirdPos = Sketcher::PointPos::mid;
+    constraint.First_Deprecated = 23;
+    constraint.FirstPos_Deprecated = Sketcher::PointPos::start;
+    constraint.Second_Deprecated = 34;
+    constraint.SecondPos_Deprecated = Sketcher::PointPos::end;
+    constraint.Third_Deprecated = 45;
+    constraint.ThirdPos_Deprecated = Sketcher::PointPos::mid;
 
     // Assert
     EXPECT_EQ(
@@ -119,12 +119,12 @@ TEST_F(ConstraintPointsAccess, testNewWriteIsReadByOld)  // NOLINT
     constraint.setElement(2, Sketcher::GeoElementId(45, Sketcher::PointPos::mid));
 
     // Assert
-    EXPECT_EQ(constraint.First, 23);
-    EXPECT_EQ(constraint.FirstPos, Sketcher::PointPos::start);
-    EXPECT_EQ(constraint.Second, 34);
-    EXPECT_EQ(constraint.SecondPos, Sketcher::PointPos::end);
-    EXPECT_EQ(constraint.Third, 45);
-    EXPECT_EQ(constraint.ThirdPos, Sketcher::PointPos::mid);
+    EXPECT_EQ(constraint.First_Deprecated, 23);
+    EXPECT_EQ(constraint.FirstPos_Deprecated, Sketcher::PointPos::start);
+    EXPECT_EQ(constraint.Second_Deprecated, 34);
+    EXPECT_EQ(constraint.SecondPos_Deprecated, Sketcher::PointPos::end);
+    EXPECT_EQ(constraint.Third_Deprecated, 45);
+    EXPECT_EQ(constraint.ThirdPos_Deprecated, Sketcher::PointPos::mid);
 }
 #endif
 
@@ -158,12 +158,12 @@ TEST_F(ConstraintPointsAccess, testElementSerializationWhenAccessingOldWay)  // 
     auto constraint = Sketcher::Constraint();
 
     // Act
-    constraint.First = 23;
-    constraint.FirstPos = Sketcher::PointPos::start;
-    constraint.Second = 34;
-    constraint.SecondPos = Sketcher::PointPos::end;
-    constraint.Third = 45;
-    constraint.ThirdPos = Sketcher::PointPos::mid;
+    constraint.First_Deprecated = 23;
+    constraint.FirstPos_Deprecated = Sketcher::PointPos::start;
+    constraint.Second_Deprecated = 34;
+    constraint.SecondPos_Deprecated = Sketcher::PointPos::end;
+    constraint.Third_Deprecated = 45;
+    constraint.ThirdPos_Deprecated = Sketcher::PointPos::mid;
 
     Base::StringWriter writer = {};
     constraint.Save(writer);
@@ -215,8 +215,8 @@ TEST_F(ConstraintPointsAccess, testElementSerializationWhenMixingOldAndNew)  // 
     // Act
     constraint.setElement(0, Sketcher::GeoElementId(23, Sketcher::PointPos::start));
     constraint.setElement(1, Sketcher::GeoElementId(34, Sketcher::PointPos::end));
-    constraint.Second = 45;  // Old way
-    constraint.SecondPos = Sketcher::PointPos::mid;
+    constraint.Second_Deprecated = 45;  // Old way
+    constraint.SecondPos_Deprecated = Sketcher::PointPos::mid;
 
     Base::StringWriter writer = {};
     constraint.Save(writer);
@@ -553,10 +553,10 @@ TEST_F(ConstraintPointsAccess, testLegacyWriteReflectedInInvolvesAndSubstitute) 
 {
     // Arrange
     Sketcher::Constraint constraint;
-    constraint.First = 10;
-    constraint.FirstPos = Sketcher::PointPos::start;
-    constraint.Second = 20;
-    constraint.SecondPos = Sketcher::PointPos::end;
+    constraint.First_Deprecated = 10;
+    constraint.FirstPos_Deprecated = Sketcher::PointPos::start;
+    constraint.Second_Deprecated = 20;
+    constraint.SecondPos_Deprecated = Sketcher::PointPos::end;
 
     // Act & Assert
     EXPECT_TRUE(constraint.involvesGeoId(10));
@@ -581,7 +581,7 @@ TEST_F(ConstraintPointsAccess, testSubstituteUpdatesLegacyFieldsToo)  // NOLINT
 
     // Assert
     EXPECT_EQ(constraint.getElement(0), Sketcher::GeoElementId(42, Sketcher::PointPos::start));
-    EXPECT_EQ(constraint.First, 42);
-    EXPECT_EQ(constraint.FirstPos, Sketcher::PointPos::start);
+    EXPECT_EQ(constraint.First_Deprecated, 42);
+    EXPECT_EQ(constraint.FirstPos_Deprecated, Sketcher::PointPos::start);
 }
 #endif

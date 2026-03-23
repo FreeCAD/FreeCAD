@@ -962,21 +962,21 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
              itc != mirrorconstr.end();
              ++itc) {
 
-            if ((*itc)->First != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->First == Sketcher::GeoEnum::HAxis
-                || (*itc)->First == Sketcher::GeoEnum::VAxis)
+            if ((*itc)->First_Deprecated != Sketcher::GeoEnum::GeoUndef
+                || (*itc)->First_Deprecated == Sketcher::GeoEnum::HAxis
+                || (*itc)->First_Deprecated == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                (*itc)->First -= (addedGeometries + 1);
-            if ((*itc)->Second != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->Second == Sketcher::GeoEnum::HAxis
-                || (*itc)->Second == Sketcher::GeoEnum::VAxis)
+                (*itc)->First_Deprecated -= (addedGeometries + 1);
+            if ((*itc)->Second_Deprecated != Sketcher::GeoEnum::GeoUndef
+                || (*itc)->Second_Deprecated == Sketcher::GeoEnum::HAxis
+                || (*itc)->Second_Deprecated == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                (*itc)->Second -= (addedGeometries + 1);
-            if ((*itc)->Third != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->Third == Sketcher::GeoEnum::HAxis
-                || (*itc)->Third == Sketcher::GeoEnum::VAxis)
+                (*itc)->Second_Deprecated -= (addedGeometries + 1);
+            if ((*itc)->Third_Deprecated != Sketcher::GeoEnum::GeoUndef
+                || (*itc)->Third_Deprecated == Sketcher::GeoEnum::HAxis
+                || (*itc)->Third_Deprecated == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                (*itc)->Third -= (addedGeometries + 1);
+                (*itc)->Third_Deprecated -= (addedGeometries + 1);
         }
 
         mirrorsketch->addGeometry(mirrorgeo);
@@ -1057,21 +1057,21 @@ void CmdSketcherMergeSketches::activated(int iMsg)
             Sketcher::Constraint* constraint =
                 mergesketch->Constraints.getValues()[i + baseConstraints];
 
-            if (constraint->First != Sketcher::GeoEnum::GeoUndef
-                && constraint->First != Sketcher::GeoEnum::HAxis
-                && constraint->First != Sketcher::GeoEnum::VAxis)
+            if (constraint->First_Deprecated != Sketcher::GeoEnum::GeoUndef
+                && constraint->First_Deprecated != Sketcher::GeoEnum::HAxis
+                && constraint->First_Deprecated != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                constraint->First += baseGeometry;
-            if (constraint->Second != Sketcher::GeoEnum::GeoUndef
-                && constraint->Second != Sketcher::GeoEnum::HAxis
-                && constraint->Second != Sketcher::GeoEnum::VAxis)
+                constraint->First_Deprecated += baseGeometry;
+            if (constraint->Second_Deprecated != Sketcher::GeoEnum::GeoUndef
+                && constraint->Second_Deprecated != Sketcher::GeoEnum::HAxis
+                && constraint->Second_Deprecated != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                constraint->Second += baseGeometry;
-            if (constraint->Third != Sketcher::GeoEnum::GeoUndef
-                && constraint->Third != Sketcher::GeoEnum::HAxis
-                && constraint->Third != Sketcher::GeoEnum::VAxis)
+                constraint->Second_Deprecated += baseGeometry;
+            if (constraint->Third_Deprecated != Sketcher::GeoEnum::GeoUndef
+                && constraint->Third_Deprecated != Sketcher::GeoEnum::HAxis
+                && constraint->Third_Deprecated != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                constraint->Third += baseGeometry;
+                constraint->Third_Deprecated += baseGeometry;
         }
 
         baseGeometry = addedGeometries + 1;

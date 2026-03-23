@@ -1079,21 +1079,31 @@ private:
         bool firstCoincidenceFound = false;
         for (auto* cstr : vals) {
             if (((tangentOnly || cstr->Type != Coincident) && cstr->Type != Tangent)
-                || cstr->FirstPos == PointPos::mid || cstr->FirstPos == PointPos::none
-                || cstr->SecondPos == PointPos::mid || cstr->SecondPos == PointPos::none) {
+                || cstr->FirstPos_Deprecated == PointPos::mid
+                || cstr->FirstPos_Deprecated == PointPos::none
+                || cstr->SecondPos_Deprecated == PointPos::mid
+                || cstr->SecondPos_Deprecated == PointPos::none) {
                 continue;
             }
 
-            if ((cstr->First == geoId1 && cstr->Second == geoId2)
-                || (cstr->First == geoId2 && cstr->Second == geoId1)) {
+            if ((cstr->First_Deprecated == geoId1 && cstr->Second_Deprecated == geoId2)
+                || (cstr->First_Deprecated == geoId2 && cstr->Second_Deprecated == geoId1)) {
                 if (!firstCoincidenceFound) {
-                    positions.firstPos1 = cstr->First == geoId1 ? cstr->FirstPos : cstr->SecondPos;
-                    positions.secondPos1 = cstr->First == geoId2 ? cstr->FirstPos : cstr->SecondPos;
+                    positions.firstPos1 = cstr->First_Deprecated == geoId1
+                        ? cstr->FirstPos_Deprecated
+                        : cstr->SecondPos_Deprecated;
+                    positions.secondPos1 = cstr->First_Deprecated == geoId2
+                        ? cstr->FirstPos_Deprecated
+                        : cstr->SecondPos_Deprecated;
                     firstCoincidenceFound = true;
                 }
                 else {
-                    positions.firstPos2 = cstr->First == geoId1 ? cstr->FirstPos : cstr->SecondPos;
-                    positions.secondPos2 = cstr->First == geoId2 ? cstr->FirstPos : cstr->SecondPos;
+                    positions.firstPos2 = cstr->First_Deprecated == geoId1
+                        ? cstr->FirstPos_Deprecated
+                        : cstr->SecondPos_Deprecated;
+                    positions.secondPos2 = cstr->First_Deprecated == geoId2
+                        ? cstr->FirstPos_Deprecated
+                        : cstr->SecondPos_Deprecated;
                     break;
                 }
             }

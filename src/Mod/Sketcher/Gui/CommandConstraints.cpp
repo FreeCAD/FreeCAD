@@ -140,7 +140,7 @@ void finishDatumConstraint(Gui::Command* cmd,
 
         for (int i = lastConstraintIndex; i >= firstConstraintIndex; i--) {
             if (lastConstraintType == Radius || lastConstraintType == Diameter) {
-                const Part::Geometry* geo = sketch->getGeometry(ConStr[i]->First);
+                const Part::Geometry* geo = sketch->getGeometry(ConStr[i]->First_Deprecated);
 
                 if (geo && isCircle(*geo)) {
                     ConStr[i]->LabelPosition = labelPosition;
@@ -204,12 +204,12 @@ bool removeRedundantPointOnObject(SketchObject* Obj, int GeoId1, int GeoId2, int
     int cid = 0;
     for (auto it = cvals.begin(); it != cvals.end(); ++it, ++cid) {
         if ((*it)->Type == Sketcher::PointOnObject &&
-            (((*it)->First == GeoId3 && (*it)->Second == GeoId1) ||
-             ((*it)->First == GeoId3 && (*it)->Second == GeoId2))) {
+            (((*it)->First_Deprecated == GeoId3 && (*it)->Second_Deprecated == GeoId1) ||
+             ((*it)->First_Deprecated == GeoId3 && (*it)->Second_Deprecated == GeoId2))) {
 
             // ONLY do this if it is a B-spline (or any other where point
             // on object is implied).
-            const Part::Geometry* geom = Obj->getGeometry((*it)->Second);
+            const Part::Geometry* geom = Obj->getGeometry((*it)->Second_Deprecated);
             if (isBSplineCurve(*geom))
                 cidsToBeRemoved.push_back(cid);
         }
@@ -2956,7 +2956,7 @@ protected:
         // check if the edge already has a Horizontal/Vertical/Block constraint
         for (const auto& constraint : vals) {
             if ((constraint->Type == Sketcher::Horizontal || constraint->Type == Sketcher::Vertical || constraint->Type == Sketcher::Block)
-                && constraint->First == GeoId) {
+                && constraint->First_Deprecated == GeoId) {
                 return true;
             }
         }
@@ -3265,16 +3265,16 @@ bool canHorVerBlock(Sketcher::SketchObject* Obj, int geoId)
 
     // check if the edge already has a Horizontal/Vertical/Block constraint
     for (auto& constr : vals) {
-        if (constr->Type == Sketcher::Horizontal && constr->First == geoId
-            && constr->FirstPos == Sketcher::PointPos::none) {
+        if (constr->Type == Sketcher::Horizontal && constr->First_Deprecated == geoId
+            && constr->FirstPos_Deprecated == Sketcher::PointPos::none) {
             Gui::TranslatedUserWarning(
                 Obj,
                 QObject::tr("Double constraint"),
                 QObject::tr("The selected edge already has a horizontal constraint!"));
             return false;
         }
-        if (constr->Type == Sketcher::Vertical && constr->First == geoId
-            && constr->FirstPos == Sketcher::PointPos::none) {
+        if (constr->Type == Sketcher::Vertical && constr->First_Deprecated == geoId
+            && constr->FirstPos_Deprecated == Sketcher::PointPos::none) {
             Gui::TranslatedUserWarning(
                 Obj,
                 QObject::tr("Impossible constraint"),
@@ -3282,8 +3282,8 @@ bool canHorVerBlock(Sketcher::SketchObject* Obj, int geoId)
             return false;
         }
         // check if the edge already has a Block constraint
-        if (constr->Type == Sketcher::Block && constr->First == geoId
-            && constr->FirstPos == Sketcher::PointPos::none) {
+        if (constr->Type == Sketcher::Block && constr->First_Deprecated == geoId
+            && constr->FirstPos_Deprecated == Sketcher::PointPos::none) {
             Gui::TranslatedUserWarning(
                 Obj,
                 QObject::tr("Impossible constraint"),
@@ -4207,10 +4207,10 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsPoin
     int cid = 0;
     for (std::vector<Constraint*>::const_iterator it = cvals.begin(); it != cvals.end();
         ++it, ++cid) {
-        if ((*it)->Type == Sketcher::Tangent && (*it)->FirstPos == Sketcher::PointPos::none
-            && (*it)->SecondPos == Sketcher::PointPos::none && (*it)->Third == GeoEnum::GeoUndef
-            && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
+        if ((*it)->Type == Sketcher::Tangent && (*it)->FirstPos_Deprecated == Sketcher::PointPos::none
+            && (*it)->SecondPos_Deprecated == Sketcher::PointPos::none && (*it)->Third_Deprecated == GeoEnum::GeoUndef
+            && (((*it)->First_Deprecated == GeoId1 && (*it)->Second_Deprecated == GeoId2)
+                || ((*it)->Second_Deprecated == GeoId1 && (*it)->First_Deprecated == GeoId2))
             && (PosId1 == Sketcher::PointPos::start
                 || PosId1 == Sketcher::PointPos::end)) {
 
@@ -4245,17 +4245,17 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsCoin
     int j = 0;
     for (std::vector<Constraint*>::const_iterator it = cvals.begin(); it != cvals.end();
         ++it, ++j) {
-        if ((*it)->Type == Sketcher::Tangent && (*it)->Third == GeoEnum::GeoUndef
-            && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))) {
+        if ((*it)->Type == Sketcher::Tangent && (*it)->Third_Deprecated == GeoEnum::GeoUndef
+            && (((*it)->First_Deprecated == GeoId1 && (*it)->Second_Deprecated == GeoId2)
+                || ((*it)->Second_Deprecated == GeoId1 && (*it)->First_Deprecated == GeoId2))) {
             if (!(PosId1 == Sketcher::PointPos::start
                   || PosId1 == Sketcher::PointPos::end)
                 || !(PosId2 == Sketcher::PointPos::start
                      || PosId2 == Sketcher::PointPos::end)) {
                 continue;
             }
-            if ((*it)->FirstPos == Sketcher::PointPos::none
-                && (*it)->SecondPos == Sketcher::PointPos::none) {
+            if ((*it)->FirstPos_Deprecated == Sketcher::PointPos::none
+                && (*it)->SecondPos_Deprecated == Sketcher::PointPos::none) {
 
                 if (constraintExists) {
                     // try to remove any pre-existing direct coincident constraints
@@ -4284,7 +4284,7 @@ bool CmdSketcherConstrainCoincidentUnified::substituteConstraintCombinationsCoin
                 }
 
                 // if a similar tangency already exists this must result in bad constraints
-                if ((*it)->SecondPos == Sketcher::PointPos::none) {
+                if ((*it)->SecondPos_Deprecated == Sketcher::PointPos::none) {
                     Gui::cmdAppObjectArgs(Obj, "delConstraint(%d)", j);
 
                     doEndpointTangency(Obj, GeoId1, GeoId2, PosId1, PosId2);
@@ -7023,21 +7023,21 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
     for (std::vector<Constraint*>::const_iterator it = cvals.begin(); it != cvals.end();
          ++it, ++cid) {
         if ((*it)->Type == Sketcher::Coincident
-            && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
-            && ((*it)->FirstPos == Sketcher::PointPos::start
-                || (*it)->FirstPos == Sketcher::PointPos::end)
-            && ((*it)->SecondPos == Sketcher::PointPos::start
-                || (*it)->SecondPos == Sketcher::PointPos::end)) {
+            && (((*it)->First_Deprecated == GeoId1 && (*it)->Second_Deprecated == GeoId2)
+                || ((*it)->Second_Deprecated == GeoId1 && (*it)->First_Deprecated == GeoId2))
+            && ((*it)->FirstPos_Deprecated == Sketcher::PointPos::start
+                || (*it)->FirstPos_Deprecated == Sketcher::PointPos::end)
+            && ((*it)->SecondPos_Deprecated == Sketcher::PointPos::start
+                || (*it)->SecondPos_Deprecated == Sketcher::PointPos::end)) {
             // save values because 'doEndpointTangency' changes the
             // constraint property and thus invalidates this iterator
-            int first = (*it)->First;
-            int firstpos = static_cast<int>((*it)->FirstPos);
+            int first = (*it)->First_Deprecated;
+            int firstpos = static_cast<int>((*it)->FirstPos_Deprecated);
 
             openCommand(
                 QT_TRANSLATE_NOOP("Command", "Swap coincident+tangency with ptp tangency"));
 
-            doEndpointTangency(Obj, (*it)->First, (*it)->Second, (*it)->FirstPos, (*it)->SecondPos);
+            doEndpointTangency(Obj, (*it)->First_Deprecated, (*it)->Second_Deprecated, (*it)->FirstPos_Deprecated, (*it)->SecondPos_Deprecated);
 
             Gui::cmdAppObjectArgs(Obj, "delConstraintOnPoint(%d,%d)", first, firstpos);
 
@@ -7053,15 +7053,15 @@ bool CmdSketcherConstrainTangent::substituteConstraintCombinations(SketchObject*
             return true;
         }
         else if ((*it)->Type == Sketcher::PointOnObject
-                 && (((*it)->First == GeoId1 && (*it)->Second == GeoId2)
-                     || ((*it)->Second == GeoId1 && (*it)->First == GeoId2))
-                 && ((*it)->FirstPos == Sketcher::PointPos::start
-                     || (*it)->FirstPos == Sketcher::PointPos::end)) {
+                 && (((*it)->First_Deprecated == GeoId1 && (*it)->Second_Deprecated == GeoId2)
+                     || ((*it)->Second_Deprecated == GeoId1 && (*it)->First_Deprecated == GeoId2))
+                 && ((*it)->FirstPos_Deprecated == Sketcher::PointPos::start
+                     || (*it)->FirstPos_Deprecated == Sketcher::PointPos::end)) {
             openCommand(
                 QT_TRANSLATE_NOOP("Command",
                                   "Swap point on object and tangency with point to curve tangency"));
 
-            doEndpointToEdgeTangency(Obj, (*it)->First, (*it)->FirstPos, (*it)->Second);
+            doEndpointToEdgeTangency(Obj, (*it)->First_Deprecated, (*it)->FirstPos_Deprecated, (*it)->Second_Deprecated);
 
             Gui::cmdAppObjectArgs(Obj,
                                   "delConstraint(%d)",

@@ -161,11 +161,12 @@ void EditModeGeometryCoinManager::updateGeometryColor(
             = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
         for (auto& constr : constraints) {
             if (constr->Type == Coincident
-                || (constr->Type == Tangent && constr->FirstPos != Sketcher::PointPos::none)
-                || (constr->Type == Perpendicular && constr->FirstPos != Sketcher::PointPos::none
-                    && constr->SecondPos != Sketcher::PointPos::none)) {
-                if ((constr->First == GeoId && constr->FirstPos == PosId)
-                    || (constr->Second == GeoId && constr->SecondPos == PosId)) {
+                || (constr->Type == Tangent && constr->FirstPos_Deprecated != Sketcher::PointPos::none)
+                || (constr->Type == Perpendicular
+                    && constr->FirstPos_Deprecated != Sketcher::PointPos::none
+                    && constr->SecondPos_Deprecated != Sketcher::PointPos::none)) {
+                if ((constr->First_Deprecated == GeoId && constr->FirstPos_Deprecated == PosId)
+                    || (constr->Second_Deprecated == GeoId && constr->SecondPos_Deprecated == PosId)) {
                     return true;
                 }
             }

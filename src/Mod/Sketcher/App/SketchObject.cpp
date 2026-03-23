@@ -1301,7 +1301,7 @@ void SketchObject::synchroniseGeometryState()
         bool constraintBlockedState = false;
 
         for (auto cstr : Constraints.getValues()) {
-            if (cstr->First == int(i)) {
+            if (cstr->First_Deprecated == int(i)) {
                 getInternalTypeState(cstr, constraintInternalAlignment);
                 getBlockedState(cstr, constraintBlockedState);
             }
@@ -1407,8 +1407,8 @@ void SketchObject::migrateSketch()
                 continue;
             }
 
-            int circleGeoId = c->First;
-            int bSplineGeoId = c->Second;
+            int circleGeoId = c->First_Deprecated;
+            int bSplineGeoId = c->Second_Deprecated;
 
             auto bsp = static_cast<const Part::GeomBSplineCurve*>(getGeometry(bSplineGeoId));
 
@@ -1419,7 +1419,8 @@ void SketchObject::migrateSketch()
             }
 
             for (auto& ccp : Constraints.getValues()) {
-                if ((ccp->Type == Radius || ccp->Type == Diameter) && ccp->First == circleGeoId) {
+                if ((ccp->Type == Radius || ccp->Type == Diameter)
+                    && ccp->First_Deprecated == circleGeoId) {
                     ccp->Type = Weight;
                     ccp->setValue(weights[c->InternalAlignmentIndex]);
                 }
@@ -1478,7 +1479,7 @@ void SketchObject::migrateSketch()
     // populate parabola and focus geoids
     for (const auto& c : constraints) {
         if (c->Type == InternalAlignment && c->AlignmentType == ParabolaFocus) {
-            parabolaGeoId2FocusGeoId[c->Second] = {c->First};
+            parabolaGeoId2FocusGeoId[c->Second_Deprecated] = {c->First_Deprecated};
         }
     }
 
@@ -1527,10 +1528,10 @@ void SketchObject::migrateSketch()
             = std::ranges::any_of(axisGeoId2ParabolaGeoId, [&](const auto& pair) {
                   auto parabolaGeoId = pair.second;
                   auto axisgeoid = pair.first;
-                  return (c->First == axisgeoid && c->Second == parabolaGeoId
-                          && c->SecondPos == PointPos::mid)
-                      || (c->Second == axisgeoid && c->First == parabolaGeoId
-                          && c->FirstPos == PointPos::mid);
+                  return (c->First_Deprecated == axisgeoid && c->Second_Deprecated == parabolaGeoId
+                          && c->SecondPos_Deprecated == PointPos::mid)
+                      || (c->Second_Deprecated == axisgeoid && c->First_Deprecated == parabolaGeoId
+                          && c->FirstPos_Deprecated == PointPos::mid);
               });
 
         if (axisMajorCoincidentFound) {
@@ -1543,20 +1544,20 @@ void SketchObject::migrateSketch()
             auto parabolaGeoId = pair.second;
             auto axisgeoid = pair.first;
             auto focusGeoId = parabolaGeoId2FocusGeoId[parabolaGeoId];
-            return (c->First == axisgeoid && c->Second == focusGeoId
-                    && c->SecondPos == PointPos::start)
-                || (c->Second == axisgeoid && c->First == focusGeoId
-                    && c->FirstPos == PointPos::start);
+            return (c->First_Deprecated == axisgeoid && c->Second_Deprecated == focusGeoId
+                    && c->SecondPos_Deprecated == PointPos::start)
+                || (c->Second_Deprecated == axisgeoid && c->First_Deprecated == focusGeoId
+                    && c->FirstPos_Deprecated == PointPos::start);
         });
 
         if (focusCoincidentFound != axisGeoId2ParabolaGeoId.end()) {
             auto* newConstr = new Sketcher::Constraint();
             newConstr->Type = Sketcher::InternalAlignment;
             newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
-            newConstr->First = focusCoincidentFound->first;  // axis geoid
-            newConstr->FirstPos = Sketcher::PointPos::none;
-            newConstr->Second = focusCoincidentFound->second;  // parabola geoid
-            newConstr->SecondPos = Sketcher::PointPos::none;
+            newConstr->First_Deprecated = focusCoincidentFound->first;  // axis geoid
+            newConstr->FirstPos_Deprecated = Sketcher::PointPos::none;
+            newConstr->Second_Deprecated = focusCoincidentFound->second;  // parabola geoid
+            newConstr->SecondPos_Deprecated = Sketcher::PointPos::none;
             newConstraints.push_back(newConstr);
 
             addGeometryState(newConstr);
@@ -1738,8 +1739,8 @@ SketchObject::getHigherElements(const char *element, bool silent) const
                     continue;
                 }
                 for (int i=0; i<2; ++i) {
-                    int geoid = i ? cstr->Second : cstr->First;
-                    const Sketcher::PointPos &pos = i ? cstr->SecondPos : cstr->FirstPos;
+                    int geoid = i ? cstr->Second_Deprecated : cstr->First_Deprecated;
+                    const Sketcher::PointPos &pos = i ? cstr->SecondPos_Deprecated : cstr->FirstPos_Deprecated;
                     if(geoid >= 0 && index == getSolvedSketch().getPointId(geoid, pos) + 1)
                         res.push_back(Data::IndexedName::fromConst("Constraint", n));
                 };

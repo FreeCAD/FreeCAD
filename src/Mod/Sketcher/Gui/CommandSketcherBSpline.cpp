@@ -75,9 +75,9 @@ bool findBSplineAndKnotIndex(
 )
 {
     for (auto const constraint : Obj->Constraints.getValues()) {
-        if (constraint->Type == Sketcher::InternalAlignment && constraint->First == knotGeoId
+        if (constraint->Type == Sketcher::InternalAlignment && constraint->First_Deprecated == knotGeoId
             && constraint->AlignmentType == Sketcher::BSplineKnotPoint) {
-            splineGeoId = constraint->Second;
+            splineGeoId = constraint->Second_Deprecated;
             knotIndexOCC = constraint->InternalAlignmentIndex + 1;
             return true;  // we have already found our knot.
         }
@@ -1154,10 +1154,12 @@ void CmdSketcherJoinCurves::activated(int iMsg)
     bool tangentConstraintExists = false;
     for (const auto& constr : Obj->Constraints.getValues()) {
         if (constr->Type == Sketcher::ConstraintType::Tangent
-            && ((constr->First == GeoIds[0] && constr->FirstPos == PosIds[0]
-                 && constr->Second == GeoIds[1] && constr->SecondPos == PosIds[1])
-                || (constr->First == GeoIds[1] && constr->FirstPos == PosIds[1]
-                    && constr->Second == GeoIds[0] && constr->SecondPos == PosIds[0]))) {
+            && ((constr->First_Deprecated == GeoIds[0] && constr->FirstPos_Deprecated == PosIds[0]
+                 && constr->Second_Deprecated == GeoIds[1]
+                 && constr->SecondPos_Deprecated == PosIds[1])
+                || (constr->First_Deprecated == GeoIds[1] && constr->FirstPos_Deprecated == PosIds[1]
+                    && constr->Second_Deprecated == GeoIds[0]
+                    && constr->SecondPos_Deprecated == PosIds[0]))) {
             tangentConstraintExists = true;
         }
     }

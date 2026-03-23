@@ -281,7 +281,7 @@ int SketchObject::testDrivingChange(int ConstrId, bool isdriving)
     if (!vals[ConstrId]->isDimensional())
         return -2;
 
-    if (!(vals[ConstrId]->First >= 0 || vals[ConstrId]->Second >= 0 || vals[ConstrId]->Third >= 0)
+    if (!(vals[ConstrId]->First_Deprecated >= 0 || vals[ConstrId]->Second_Deprecated >= 0 || vals[ConstrId]->Third_Deprecated >= 0)
         && isdriving) {
         // a constraint that does not have at least one element as not-external-geometry can never
         // be driving.
@@ -516,9 +516,9 @@ int SketchObject::moveDatumsToEnd()
 
 void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int constNum)
 {
-    std::swap(constr->First, constr->Second);
-    std::swap(constr->FirstPos, constr->SecondPos);
-    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    std::swap(constr->First_Deprecated, constr->Second_Deprecated);
+    std::swap(constr->FirstPos_Deprecated, constr->SecondPos_Deprecated);
+    constr->FirstPos_Deprecated = (constr->FirstPos_Deprecated == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
 
     // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
@@ -533,8 +533,8 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
 
 void SketchObject::inverseAngleConstraint(Constraint* constr)
 {
-    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-    constr->SecondPos = (constr->SecondPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    constr->FirstPos_Deprecated = (constr->FirstPos_Deprecated == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    constr->SecondPos_Deprecated = (constr->SecondPos_Deprecated == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
 }
 
 bool SketchObject::constraintHasExpression(int constNum) const
@@ -824,11 +824,11 @@ void SketchObject::addGeometryState(const Constraint* cstr) const
     bool constraintBlockedState = false;
 
     if (getInternalTypeState(cstr, constraintInternalAlignment)) {
-        auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+        auto gf = GeometryFacade::getFacade(vals[cstr->First_Deprecated]);
         gf->setInternalType(constraintInternalAlignment);
     }
     else if (getBlockedState(cstr, constraintBlockedState)) {
-        auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+        auto gf = GeometryFacade::getFacade(vals[cstr->First_Deprecated]);
         gf->setBlocked(constraintBlockedState);
     }
 }
@@ -839,13 +839,13 @@ void SketchObject::removeGeometryState(const Constraint* cstr) const
 
     // Assign correct Internal Geometry Type (see SketchGeometryExtension)
     if (cstr->Type == InternalAlignment) {
-        auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+        auto gf = GeometryFacade::getFacade(vals[cstr->First_Deprecated]);
         gf->setInternalType(InternalType::None);
     }
 
     // Assign Blocked geometry mode (see SketchGeometryExtension)
     if (cstr->Type == Block) {
-        auto gf = GeometryFacade::getFacade(vals[cstr->First]);
+        auto gf = GeometryFacade::getFacade(vals[cstr->First_Deprecated]);
         gf->setBlocked(false);
     }
 }
@@ -1047,13 +1047,13 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
             return;
         }
 
-        if ((*it)->First == geoId && (*it)->FirstPos == posId) {
-            replaceGeoId = (*it)->Second;
-            replacePosId = (*it)->SecondPos;
+        if ((*it)->First_Deprecated == geoId && (*it)->FirstPos_Deprecated == posId) {
+            replaceGeoId = (*it)->Second_Deprecated;
+            replacePosId = (*it)->SecondPos_Deprecated;
         }
         else {
-            replaceGeoId = (*it)->First;
-            replacePosId = (*it)->FirstPos;
+            replaceGeoId = (*it)->First_Deprecated;
+            replacePosId = (*it)->FirstPos_Deprecated;
         }
     };
 
@@ -1095,12 +1095,12 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
             case Sketcher::DistanceX:
             case Sketcher::DistanceY: {
                 return (
-                    transferToReplacement(constr->First, constr->FirstPos)
-                    || transferToReplacement(constr->Second, constr->SecondPos)
+                    transferToReplacement(constr->First_Deprecated, constr->FirstPos_Deprecated)
+                    || transferToReplacement(constr->Second_Deprecated, constr->SecondPos_Deprecated)
                 );
             }
             case Sketcher::PointOnObject: {
-                return transferToReplacement(constr->First, constr->FirstPos);
+                return transferToReplacement(constr->First_Deprecated, constr->FirstPos_Deprecated);
             }
             case Sketcher::Tangent:
             case Sketcher::Perpendicular: {
@@ -1127,8 +1127,8 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
             // with the given point
             const bool isOneOfDistanceTypes = constr->Type == Sketcher::Distance
                 || constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY;
-            const bool involvesEntireCurve = constr->First == geoId
-                && constr->FirstPos == PointPos::none;
+            const bool involvesEntireCurve = constr->First_Deprecated == geoId
+                && constr->FirstPos_Deprecated == PointPos::none;
             const bool isPosAnEndpoint = posId == PointPos::start || posId == PointPos::end;
             if (isOneOfDistanceTypes && involvesEntireCurve && isPosAnEndpoint) {
                 continue;
@@ -1171,8 +1171,8 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
             if (c->Type != Sketcher::Distance && c->Type != Sketcher::Equal) {
                 continue;
             }
-            bool line1 = c->First == geoId1 && c->FirstPos == PointPos::none;
-            bool line2 = c->First == geoId2 && c->FirstPos == PointPos::none;
+            bool line1 = c->First_Deprecated == geoId1 && c->FirstPos_Deprecated == PointPos::none;
+            bool line2 = c->First_Deprecated == geoId2 && c->FirstPos_Deprecated == PointPos::none;
             if (line1 || line2) {
                 deleteme.push_back(i);
             }
@@ -1199,18 +1199,18 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
     // Constrain the vertex to the two lines
     auto* cornerToLine1 = new Sketcher::Constraint();
     cornerToLine1->Type = Sketcher::PointOnObject;
-    cornerToLine1->First = originalCornerId;
-    cornerToLine1->FirstPos = PointPos::start;
-    cornerToLine1->Second = geoId1;
-    cornerToLine1->SecondPos = PointPos::none;
+    cornerToLine1->First_Deprecated = originalCornerId;
+    cornerToLine1->FirstPos_Deprecated = PointPos::start;
+    cornerToLine1->Second_Deprecated = geoId1;
+    cornerToLine1->SecondPos_Deprecated = PointPos::none;
     addConstraint(cornerToLine1);
     delete cornerToLine1;
     auto* cornerToLine2 = new Sketcher::Constraint();
     cornerToLine2->Type = Sketcher::PointOnObject;
-    cornerToLine2->First = originalCornerId;
-    cornerToLine2->FirstPos = PointPos::start;
-    cornerToLine2->Second = geoId2;
-    cornerToLine2->SecondPos = PointPos::none;
+    cornerToLine2->First_Deprecated = originalCornerId;
+    cornerToLine2->FirstPos_Deprecated = PointPos::start;
+    cornerToLine2->Second_Deprecated = geoId2;
+    cornerToLine2->SecondPos_Deprecated = PointPos::none;
     addConstraint(cornerToLine2);
     delete cornerToLine2;
 
@@ -1220,16 +1220,16 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
     std::vector<Constraint*> newConstraints;
     for (auto c : this->Constraints.getValues()) {
         // Keep track of whether the affected lines and endpoints appear in this constraint
-        bool point1First = c->First == geoId1 && c->FirstPos == posId1;
-        bool point2First = c->First == geoId2 && c->FirstPos == posId2;
-        bool point1Second = c->Second == geoId1 && c->SecondPos == posId1;
-        bool point2Second = c->Second == geoId2 && c->SecondPos == posId2;
-        bool point1Third = c->Third == geoId1 && c->ThirdPos == posId1;
-        bool point2Third = c->Third == geoId2 && c->ThirdPos == posId2;
-        bool line1First = c->First == geoId1 && c->FirstPos == PointPos::none;
-        bool line2First = c->First == geoId2 && c->FirstPos == PointPos::none;
-        bool line1Second = c->Second == geoId1 && c->SecondPos == PointPos::none;
-        bool line2Second = c->Second == geoId2 && c->SecondPos == PointPos::none;
+        bool point1First = c->First_Deprecated == geoId1 && c->FirstPos_Deprecated == posId1;
+        bool point2First = c->First_Deprecated == geoId2 && c->FirstPos_Deprecated == posId2;
+        bool point1Second = c->Second_Deprecated == geoId1 && c->SecondPos_Deprecated == posId1;
+        bool point2Second = c->Second_Deprecated == geoId2 && c->SecondPos_Deprecated == posId2;
+        bool point1Third = c->Third_Deprecated == geoId1 && c->ThirdPos_Deprecated == posId1;
+        bool point2Third = c->Third_Deprecated == geoId2 && c->ThirdPos_Deprecated == posId2;
+        bool line1First = c->First_Deprecated == geoId1 && c->FirstPos_Deprecated == PointPos::none;
+        bool line2First = c->First_Deprecated == geoId2 && c->FirstPos_Deprecated == PointPos::none;
+        bool line1Second = c->Second_Deprecated == geoId1 && c->SecondPos_Deprecated == PointPos::none;
+        bool line2Second = c->Second_Deprecated == geoId2 && c->SecondPos_Deprecated == PointPos::none;
 
         if (c->Type == Sketcher::Coincident) {
             if ((point1First && point2Second) || (point2First && point1Second)) {
@@ -1249,14 +1249,14 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
             // Distance constraint on the line itself. Change it to point-point between the far end
             // of the line and the new corner
             if (line1First) {
-                c->FirstPos = (posId1 == PointPos::start) ? PointPos::end : PointPos::start;
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
+                c->FirstPos_Deprecated = (posId1 == PointPos::start) ? PointPos::end : PointPos::start;
+                c->Second_Deprecated = originalCornerId;
+                c->SecondPos_Deprecated = PointPos::start;
             }
             if (line2First) {
-                c->FirstPos = (posId2 == PointPos::start) ? PointPos::end : PointPos::start;
-                c->Second = originalCornerId;
-                c->SecondPos = PointPos::start;
+                c->FirstPos_Deprecated = (posId2 == PointPos::start) ? PointPos::end : PointPos::start;
+                c->Second_Deprecated = originalCornerId;
+                c->SecondPos_Deprecated = PointPos::start;
             }
         }
         else if (c->Type == Sketcher::PointOnObject) {
@@ -1285,16 +1285,16 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
 
         // For any constraint not passing previous conditions, transfer to the new point if relevant
         if (point1First || point2First) {
-            c->First = originalCornerId;
-            c->FirstPos = PointPos::start;
+            c->First_Deprecated = originalCornerId;
+            c->FirstPos_Deprecated = PointPos::start;
         }
         else if (point1Second || point2Second) {
-            c->Second = originalCornerId;
-            c->SecondPos = PointPos::start;
+            c->Second_Deprecated = originalCornerId;
+            c->SecondPos_Deprecated = PointPos::start;
         }
         else if (point1Third || point2Third) {
-            c->Third = originalCornerId;
-            c->ThirdPos = PointPos::start;
+            c->Third_Deprecated = originalCornerId;
+            c->ThirdPos_Deprecated = PointPos::start;
         }
 
         // Default: keep all other constraints
@@ -1328,7 +1328,7 @@ int SketchObject::transferConstraints(
                  && !vals[i]->involvesGeoIdAndPosId(toGeoId, toPosId)) {
             std::unique_ptr<Constraint> constNew(newVals[i]->clone());
             constNew->substituteIndexAndPos(fromGeoId, fromPosId, toGeoId, toPosId);
-            if (vals[i]->First < 0 && vals[i]->Second < 0) {
+            if (vals[i]->First_Deprecated < 0 && vals[i]->Second_Deprecated < 0) {
                 // TODO: Can `vals[i]->Third` be involved as well?
                 // If it is, we need to be sure at most ONE of these is external
                 continue;
@@ -1381,12 +1381,12 @@ std::unique_ptr<Constraint> SketchObject::createConstraint(
     auto newConstr = std::make_unique<Sketcher::Constraint>();
 
     newConstr->Type = constrType;
-    newConstr->First = firstGeoId;
-    newConstr->FirstPos = firstPos;
-    newConstr->Second = secondGeoId;
-    newConstr->SecondPos = secondPos;
-    newConstr->Third = thirdGeoId;
-    newConstr->ThirdPos = thirdPos;
+    newConstr->First_Deprecated = firstGeoId;
+    newConstr->FirstPos_Deprecated = firstPos;
+    newConstr->Second_Deprecated = secondGeoId;
+    newConstr->SecondPos_Deprecated = secondPos;
+    newConstr->Third_Deprecated = thirdGeoId;
+    newConstr->ThirdPos_Deprecated = thirdPos;
     return newConstr;
 }
 
@@ -1512,11 +1512,11 @@ bool SketchObject::deriveConstraintsForPieces(
 ) const
 {
     const Part::Geometry* geo = getGeometry(oldId);
-    int conId = con->First;
-    PointPos conPos = con->FirstPos;
+    int conId = con->First_Deprecated;
+    PointPos conPos = con->FirstPos_Deprecated;
     if (conId == oldId) {
-        conId = con->Second;
-        conPos = con->SecondPos;
+        conId = con->Second_Deprecated;
+        conPos = con->SecondPos_Deprecated;
     }
 
     bool newGeosLikelyNotCreated = std::ranges::find(newGeos, nullptr) != newGeos.end();
@@ -1622,13 +1622,13 @@ bool SketchObject::deriveConstraintsForPieces(
         case DistanceX:
         case DistanceY:
         case PointOnObject: {
-            if (con->FirstPos == PointPos::none && con->SecondPos == PointPos::none
-                && newIds.size() > 1) {
+            if (con->FirstPos_Deprecated == PointPos::none
+                && con->SecondPos_Deprecated == PointPos::none && newIds.size() > 1) {
                 Constraint* dist = con->copy();
-                dist->First = newIds.front();
-                dist->FirstPos = PointPos::start;
-                dist->Second = newIds.back();
-                dist->SecondPos = PointPos::end;
+                dist->First_Deprecated = newIds.front();
+                dist->FirstPos_Deprecated = PointPos::start;
+                dist->Second_Deprecated = newIds.back();
+                dist->SecondPos_Deprecated = PointPos::end;
                 newConstraints.push_back(dist);
                 return true;
             }
@@ -1657,10 +1657,10 @@ bool SketchObject::deriveConstraintsForPieces(
                 if ((newGeoFirstParam - conParam) <= Precision::PApproximation()
                     && (conParam - newGeoLastParam) <= Precision::PApproximation()) {
                     Constraint* trans = con->copy();
-                    trans->First = conId;
-                    trans->FirstPos = conPos;
-                    trans->Second = newIds[i];
-                    trans->SecondPos = PointPos::none;
+                    trans->First_Deprecated = conId;
+                    trans->FirstPos_Deprecated = conPos;
+                    trans->Second_Deprecated = newIds[i];
+                    trans->SecondPos_Deprecated = PointPos::none;
                     newConstraints.push_back(trans);
                     return true;
                 }
@@ -1740,23 +1740,23 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
         case Sketcher::Horizontal:
         case Sketcher::Vertical: {
             // Only remove alignment for Lines (PointPos::none), not individual points
-            if (constr->FirstPos == Sketcher::PointPos::none &&
-                constr->SecondPos == Sketcher::PointPos::none) {
+            if (constr->FirstPos_Deprecated == Sketcher::PointPos::none &&
+                constr->SecondPos_Deprecated == Sketcher::PointPos::none) {
 
                 changed = true;
 
                 // The first H/V constraint found acts as the "reference" and is effectively removed.
                 // Subsequent H/V constraints are converted to be 'Parallel' to that first reference.
                 if (referenceGeoIds[constr->Type] == GeoEnum::GeoUndef) {
-                    referenceGeoIds[constr->Type] = constr->First;
+                    referenceGeoIds[constr->Type] = constr->First_Deprecated;
                     // We do NOT add the constraint to newConstraints, effectively deleting it.
                 }
                 else {
                     // Convert to Parallel
                     Constraint* newConstr = new Constraint();
                     newConstr->Type = Sketcher::Parallel;
-                    newConstr->First = referenceGeoIds[constr->Type];
-                    newConstr->Second = constr->First;
+                    newConstr->First_Deprecated = referenceGeoIds[constr->Type];
+                    newConstr->Second_Deprecated = constr->First_Deprecated;
                     newConstraints.push_back(newConstr);
                 }
             }
@@ -1768,8 +1768,8 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
         }
         case Sketcher::Symmetric: {
             // Remove symmetry only if it is constrained relative to an Axis (H or V)
-            bool isAxisSymmetry = (constr->Third == GeoEnum::HAxis || constr->Third == GeoEnum::VAxis);
-            if (isAxisSymmetry && constr->ThirdPos == Sketcher::PointPos::none) {
+            bool isAxisSymmetry = (constr->Third_Deprecated == GeoEnum::HAxis || constr->Third_Deprecated == GeoEnum::VAxis);
+            if (isAxisSymmetry && constr->ThirdPos_Deprecated == Sketcher::PointPos::none) {
                 changed = true;
                 // Delete constraint by not adding it to newConstraints
             }
@@ -1780,8 +1780,8 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
         }
         case Sketcher::PointOnObject: {
             // Remove Point-on-Object only if constrained onto an Axis
-            bool isOnAxis = (constr->Second == GeoEnum::HAxis || constr->Second == GeoEnum::VAxis);
-            if (isOnAxis && constr->SecondPos == Sketcher::PointPos::none) {
+            bool isOnAxis = (constr->Second_Deprecated == GeoEnum::HAxis || constr->Second_Deprecated == GeoEnum::VAxis);
+            if (isOnAxis && constr->SecondPos_Deprecated == Sketcher::PointPos::none) {
                 changed = true;
                 // Delete constraint
             }
@@ -1859,13 +1859,13 @@ const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenc
         for (auto iti = coincidenttree.begin(); iti != coincidenttree.end(); ++iti, ++i) {
             // First
             std::map<int, Sketcher::PointPos>::const_iterator filiterator;
-            filiterator = (*iti).find(constr->First);
-            if (filiterator != (*iti).end() && constr->FirstPos == (*filiterator).second) {
+            filiterator = (*iti).find(constr->First_Deprecated);
+            if (filiterator != (*iti).end() && constr->FirstPos_Deprecated == (*filiterator).second) {
                 firstpresentin = i;
             }
             // Second
-            filiterator = (*iti).find(constr->Second);
-            if (filiterator != (*iti).end() && constr->SecondPos == (*filiterator).second) {
+            filiterator = (*iti).find(constr->Second_Deprecated);
+            if (filiterator != (*iti).end() && constr->SecondPos_Deprecated == (*filiterator).second) {
                 secondpresentin = i;
             }
         }
@@ -1879,19 +1879,19 @@ const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenc
         else if (firstpresentin == -1 && secondpresentin == -1) {
             // we do not have any of the values, so create a setCursor
             std::map<int, Sketcher::PointPos> tmp;
-            tmp.insert(std::pair<int, Sketcher::PointPos>(constr->First, constr->FirstPos));
-            tmp.insert(std::pair<int, Sketcher::PointPos>(constr->Second, constr->SecondPos));
+            tmp.insert(std::pair<int, Sketcher::PointPos>(constr->First_Deprecated, constr->FirstPos_Deprecated));
+            tmp.insert(std::pair<int, Sketcher::PointPos>(constr->Second_Deprecated, constr->SecondPos_Deprecated));
             coincidenttree.push_back(std::move(tmp));
         }
         else if (firstpresentin != -1) {
             // add to existing group
             coincidenttree[firstpresentin].insert(
-                std::pair<int, Sketcher::PointPos>(constr->Second, constr->SecondPos));
+                std::pair<int, Sketcher::PointPos>(constr->Second_Deprecated, constr->SecondPos_Deprecated));
         }
         else {// secondpresentin != -1
             // add to existing group
             coincidenttree[secondpresentin].insert(
-                std::pair<int, Sketcher::PointPos>(constr->First, constr->FirstPos));
+                std::pair<int, Sketcher::PointPos>(constr->First_Deprecated, constr->FirstPos_Deprecated));
         }
     }
 
@@ -1963,27 +1963,27 @@ void SketchObject::getDirectlyCoincidentPoints(int GeoId, PointPos PosId,
     PosIdList.push_back(PosId);
     for (const auto& constr : constraints) {
         if (constr->Type == Sketcher::Coincident) {
-            if (constr->First == GeoId && constr->FirstPos == PosId) {
-                GeoIdList.push_back(constr->Second);
-                PosIdList.push_back(constr->SecondPos);
+            if (constr->First_Deprecated == GeoId && constr->FirstPos_Deprecated == PosId) {
+                GeoIdList.push_back(constr->Second_Deprecated);
+                PosIdList.push_back(constr->SecondPos_Deprecated);
             }
-            else if (constr->Second == GeoId && constr->SecondPos == PosId) {
-                GeoIdList.push_back(constr->First);
-                PosIdList.push_back(constr->FirstPos);
+            else if (constr->Second_Deprecated == GeoId && constr->SecondPos_Deprecated == PosId) {
+                GeoIdList.push_back(constr->First_Deprecated);
+                PosIdList.push_back(constr->FirstPos_Deprecated);
             }
         }
         if (constr->Type == Sketcher::Tangent) {
-            if (constr->First == GeoId && constr->FirstPos == PosId &&
-                (constr->SecondPos == Sketcher::PointPos::start ||
-                 constr->SecondPos == Sketcher::PointPos::end)) {
-                GeoIdList.push_back(constr->Second);
-                PosIdList.push_back(constr->SecondPos);
+            if (constr->First_Deprecated == GeoId && constr->FirstPos_Deprecated == PosId &&
+                (constr->SecondPos_Deprecated == Sketcher::PointPos::start ||
+                 constr->SecondPos_Deprecated == Sketcher::PointPos::end)) {
+                GeoIdList.push_back(constr->Second_Deprecated);
+                PosIdList.push_back(constr->SecondPos_Deprecated);
             }
-            if (constr->Second == GeoId && constr->SecondPos == PosId &&
-                (constr->FirstPos == Sketcher::PointPos::start ||
-                 constr->FirstPos == Sketcher::PointPos::end)) {
-                GeoIdList.push_back(constr->First);
-                PosIdList.push_back(constr->FirstPos);
+            if (constr->Second_Deprecated == GeoId && constr->SecondPos_Deprecated == PosId &&
+                (constr->FirstPos_Deprecated == Sketcher::PointPos::start ||
+                 constr->FirstPos_Deprecated == Sketcher::PointPos::end)) {
+                GeoIdList.push_back(constr->First_Deprecated);
+                PosIdList.push_back(constr->FirstPos_Deprecated);
             }
         }
     }
@@ -2138,15 +2138,15 @@ bool SketchObject::evaluateConstraint(const Constraint* constraint) const
     int geoId;
 
     // First is always required and GeoId must be within range
-    geoId = constraint->First;
+    geoId = constraint->First_Deprecated;
     ret = ret && (geoId >= -extGeoCount && geoId < intGeoCount);
 
-    geoId = constraint->Second;
+    geoId = constraint->Second_Deprecated;
     ret = ret
         && ((geoId == GeoEnum::GeoUndef && !requireSecond)
             || (geoId >= -extGeoCount && geoId < intGeoCount));
 
-    geoId = constraint->Third;
+    geoId = constraint->Third_Deprecated;
     ret = ret
         && ((geoId == GeoEnum::GeoUndef && !requireThird)
             || (geoId >= -extGeoCount && geoId < intGeoCount));
@@ -2348,9 +2348,9 @@ double SketchObject::calculateConstraintError(int ConstrId)
     try {
         std::vector<int> GeoIdList;
         int g;
-        GeoIdList.push_back(cstr->First);
-        GeoIdList.push_back(cstr->Second);
-        GeoIdList.push_back(cstr->Third);
+        GeoIdList.push_back(cstr->First_Deprecated);
+        GeoIdList.push_back(cstr->Second_Deprecated);
+        GeoIdList.push_back(cstr->Third_Deprecated);
 
         // add only necessary geometry to the sketch
         for (std::size_t i = 0; i < GeoIdList.size(); i++) {
@@ -2360,9 +2360,9 @@ double SketchObject::calculateConstraintError(int ConstrId)
             }
         }
 
-        cstr->First = GeoIdList[0];
-        cstr->Second = GeoIdList[1];
-        cstr->Third = GeoIdList[2];
+        cstr->First_Deprecated = GeoIdList[0];
+        cstr->Second_Deprecated = GeoIdList[1];
+        cstr->Third_Deprecated = GeoIdList[2];
         int icstr = sk.addConstraint(cstr);
         result = sk.calculateConstraintError(icstr);
     }
@@ -2505,16 +2505,16 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
             Sketcher::PointPos posId = PointPos::none;
             switch (ig) {
                 case 1:
-                    geoId = newVals[ic]->First;
-                    posId = newVals[ic]->FirstPos;
+                    geoId = newVals[ic]->First_Deprecated;
+                    posId = newVals[ic]->FirstPos_Deprecated;
                     break;
                 case 2:
-                    geoId = newVals[ic]->Second;
-                    posId = newVals[ic]->SecondPos;
+                    geoId = newVals[ic]->Second_Deprecated;
+                    posId = newVals[ic]->SecondPos_Deprecated;
                     break;
                 case 3:
-                    geoId = newVals[ic]->Third;
-                    posId = newVals[ic]->ThirdPos;
+                    geoId = newVals[ic]->Third_Deprecated;
+                    posId = newVals[ic]->ThirdPos_Deprecated;
                     break;
             }
 
@@ -2543,16 +2543,16 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
             // Propagate the fix made on temp vars to the constraint
             switch (ig) {
                 case 1:
-                    constNew->First = geoId;
-                    constNew->FirstPos = posId;
+                    constNew->First_Deprecated = geoId;
+                    constNew->FirstPos_Deprecated = posId;
                     break;
                 case 2:
-                    constNew->Second = geoId;
-                    constNew->SecondPos = posId;
+                    constNew->Second_Deprecated = geoId;
+                    constNew->SecondPos_Deprecated = posId;
                     break;
                 case 3:
-                    constNew->Third = geoId;
-                    constNew->ThirdPos = posId;
+                    constNew->Third_Deprecated = geoId;
+                    constNew->ThirdPos_Deprecated = posId;
                     break;
             }
         }
@@ -2607,25 +2607,25 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce, bool
             // constraint.
             int geoId1, geoId2, geoIdPt;
             PointPos posPt;
-            geoId1 = cstr->First;
-            geoId2 = cstr->Second;
-            geoIdPt = cstr->Third;
-            posPt = cstr->ThirdPos;
+            geoId1 = cstr->First_Deprecated;
+            geoId2 = cstr->Second_Deprecated;
+            geoIdPt = cstr->Third_Deprecated;
+            posPt = cstr->ThirdPos_Deprecated;
             if (geoIdPt == GeoEnum::GeoUndef) {// not tangent-via-point, try endpoint-to-endpoint...
 
                 // First check if it is a tangency at knot constraint, if not continue with checking
                 // for endpoints. Endpoint constraints make use of the AngleViaPoint framework at
                 // solver level, so they need locking angle calculation, tangency at knot constraint
                 // does not.
-                auto geof = getGeometryFacade(cstr->First);
+                auto geof = getGeometryFacade(cstr->First_Deprecated);
                 if (geof->isInternalType(InternalType::BSplineKnotPoint)) {
                     // there is point that is a B-Spline knot in a two element constraint
                     // this is not implement using AngleViaPoint (TangencyViaPoint)
                     return false;
                 }
 
-                geoIdPt = cstr->First;
-                posPt = cstr->FirstPos;
+                geoIdPt = cstr->First_Deprecated;
+                posPt = cstr->FirstPos_Deprecated;
             }
             if (posPt == PointPos::none) {
                 // not endpoint-to-curve and not endpoint-to-endpoint tangent (is simple tangency)

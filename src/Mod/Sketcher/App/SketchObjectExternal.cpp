@@ -542,8 +542,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         // DistanceX, DistanceY
         if ((xinv && newConstr->Type == Sketcher::DistanceX)
             || (yinv && newConstr->Type == Sketcher::DistanceY)) {
-            if (newConstr->First == newConstr->Second) {
-                std::swap(newConstr->FirstPos, newConstr->SecondPos);
+            if (newConstr->First_Deprecated == newConstr->Second_Deprecated) {
+                std::swap(newConstr->FirstPos_Deprecated, newConstr->SecondPos_Deprecated);
             }
             else {
                 newConstr->setValue(-newConstr->getValue());
@@ -563,8 +563,9 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
             };
 
             if (xinv && yinv) {  // rotation 180 degrees around normal axis
-                if (newConstr->First == -1 || newConstr->Second == -1 || newConstr->First == -2
-                    || newConstr->Second == -2 || newConstr->Second == GeoEnum::GeoUndef) {
+                if (newConstr->First_Deprecated == -1 || newConstr->Second_Deprecated == -1
+                    || newConstr->First_Deprecated == -2 || newConstr->Second_Deprecated == -2
+                    || newConstr->Second_Deprecated == GeoEnum::GeoUndef) {
                     // angle to horizontal or vertical axis
                     newConstr->setValue(normalizeAngle(newConstr->getValue() + pi));
                 }
@@ -574,8 +575,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                 }
             }
             else if (xinv) {  // rotation 180 degrees around vertical axis
-                if (newConstr->First == -1 || newConstr->Second == -1
-                    || newConstr->Second == GeoEnum::GeoUndef) {
+                if (newConstr->First_Deprecated == -1 || newConstr->Second_Deprecated == -1
+                    || newConstr->Second_Deprecated == GeoEnum::GeoUndef) {
                     // angle to horizontal axis
                     newConstr->setValue(normalizeAngle(pi - newConstr->getValue()));
                 }
@@ -585,7 +586,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                 }
             }
             else if (yinv) {  // rotation 180 degrees around horizontal axis
-                if (newConstr->First == -2 || newConstr->Second == -2) {
+                if (newConstr->First_Deprecated == -2 || newConstr->Second_Deprecated == -2) {
                     // angle to vertical axis
                     newConstr->setValue(normalizeAngle(pi - newConstr->getValue()));
                 }
@@ -599,24 +600,24 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     for (const auto& constr : scvals) {
         Sketcher::Constraint* newConstr = constr->copy();
-        if (constr->First >= 0) {
-            newConstr->First += nextgeoid;
+        if (constr->First_Deprecated >= 0) {
+            newConstr->First_Deprecated += nextgeoid;
         }
-        if (constr->Second >= 0) {
-            newConstr->Second += nextgeoid;
+        if (constr->Second_Deprecated >= 0) {
+            newConstr->Second_Deprecated += nextgeoid;
         }
-        if (constr->Third >= 0) {
-            newConstr->Third += nextgeoid;
+        if (constr->Third_Deprecated >= 0) {
+            newConstr->Third_Deprecated += nextgeoid;
         }
 
-        if (constr->First < -2 && constr->First != GeoEnum::GeoUndef) {
-            newConstr->First -= (nextextgeoid - 2);
+        if (constr->First_Deprecated < -2 && constr->First_Deprecated != GeoEnum::GeoUndef) {
+            newConstr->First_Deprecated -= (nextextgeoid - 2);
         }
-        if (constr->Second < -2 && constr->Second != GeoEnum::GeoUndef) {
-            newConstr->Second -= (nextextgeoid - 2);
+        if (constr->Second_Deprecated < -2 && constr->Second_Deprecated != GeoEnum::GeoUndef) {
+            newConstr->Second_Deprecated -= (nextextgeoid - 2);
         }
-        if (constr->Third < -2 && constr->Third != GeoEnum::GeoUndef) {
-            newConstr->Third -= (nextextgeoid - 2);
+        if (constr->Third_Deprecated < -2 && constr->Third_Deprecated != GeoEnum::GeoUndef) {
+            newConstr->Third_Deprecated -= (nextextgeoid - 2);
         }
 
         if (xinv || yinv) {
@@ -647,7 +648,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         // DistanceX, DistanceY
         if ((xinv && constr->Type == Sketcher::DistanceX)
             || (yinv && constr->Type == Sketcher::DistanceY)) {
-            if (constr->First == constr->Second) {
+            if (constr->First_Deprecated == constr->Second_Deprecated) {
                 return expr;
             }
             else {
@@ -658,8 +659,9 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         // Angle
         if (constr->Type == Sketcher::Angle) {
             if (xinv && yinv) {  // rotation 180 degrees around normal axis
-                if (constr->First == -1 || constr->Second == -1 || constr->First == -2
-                    || constr->Second == -2 || constr->Second == GeoEnum::GeoUndef) {
+                if (constr->First_Deprecated == -1 || constr->Second_Deprecated == -1
+                    || constr->First_Deprecated == -2 || constr->Second_Deprecated == -2
+                    || constr->Second_Deprecated == GeoEnum::GeoUndef) {
                     // angle to horizontal or vertical axis
                     return "(" + expr + ") + 180 deg";
                 }
@@ -670,8 +672,8 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                 }
             }
             else if (xinv) {  // rotation 180 degrees around vertical axis
-                if (constr->First == -1 || constr->Second == -1
-                    || constr->Second == GeoEnum::GeoUndef) {
+                if (constr->First_Deprecated == -1 || constr->Second_Deprecated == -1
+                    || constr->Second_Deprecated == GeoEnum::GeoUndef) {
                     // angle to horizontal axis
                     return "180 deg - (" + expr + ")";
                 }
@@ -681,7 +683,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
                 }
             }
             else if (yinv) {  // rotation 180 degrees around horizontal axis
-                if (constr->First == -2 || constr->Second == -2) {
+                if (constr->First_Deprecated == -2 || constr->Second_Deprecated == -2) {
                     // angle to vertical axis
                     return "180 deg - (" + expr + ")";
                 }
@@ -933,16 +935,17 @@ void SketchObject::delExternalPrivate(const std::set<long>& ids, bool removeRef)
 
     std::vector<Constraint*> newConstraints;
     for (const auto& cstr : Constraints.getValues()) {
-        if (geoIds.count(cstr->First)
-            || (cstr->Second != GeoEnum::GeoUndef && geoIds.count(cstr->Second))
-            || (cstr->Third != GeoEnum::GeoUndef && geoIds.count(cstr->Third))) {
+        if (geoIds.count(cstr->First_Deprecated)
+            || (cstr->Second_Deprecated != GeoEnum::GeoUndef && geoIds.count(cstr->Second_Deprecated))
+            || (cstr->Third_Deprecated != GeoEnum::GeoUndef && geoIds.count(cstr->Third_Deprecated))) {
             continue;
         }
         int offset = 0;
         std::unique_ptr<Constraint> newCstr(cstr->clone());
         for (auto GeoId : geoIds) {
             GeoId += offset++;
-            if (newCstr->First >= GeoId && newCstr->Second >= GeoId && newCstr->Third >= GeoId) {
+            if (newCstr->First_Deprecated >= GeoId && newCstr->Second_Deprecated >= GeoId
+                && newCstr->Third_Deprecated >= GeoId) {
                 break;
             }
             changeConstraintAfterDeletingGeo(newCstr.get(), GeoId);
@@ -1020,9 +1023,11 @@ int SketchObject::delAllExternal()
     std::vector<Constraint*> newConstraints(0);
 
     for (const auto& constr : constraints) {
-        if (constr->First > GeoEnum::RefExt
-            && (constr->Second > GeoEnum::RefExt || constr->Second == GeoEnum::GeoUndef)
-            && (constr->Third > GeoEnum::RefExt || constr->Third == GeoEnum::GeoUndef)) {
+        if (constr->First_Deprecated > GeoEnum::RefExt
+            && (constr->Second_Deprecated > GeoEnum::RefExt
+                || constr->Second_Deprecated == GeoEnum::GeoUndef)
+            && (constr->Third_Deprecated > GeoEnum::RefExt
+                || constr->Third_Deprecated == GeoEnum::GeoUndef)) {
             Constraint* copiedConstr = constr->clone();
 
             newConstraints.push_back(copiedConstr);
@@ -1061,8 +1066,8 @@ int SketchObject::delConstraintsToExternal(DeleteOptions options)
     std::vector<Constraint*> newConstraints(0);
     int GeoId = GeoEnum::RefExt, NullId = GeoEnum::GeoUndef;
     for (const auto& constr : constraints) {
-        if (constr->First > GeoId && (constr->Second > GeoId || constr->Second == NullId)
-            && (constr->Third > GeoId || constr->Third == NullId)) {
+        if (constr->First_Deprecated > GeoId && (constr->Second_Deprecated > GeoId || constr->Second_Deprecated == NullId)
+            && (constr->Third_Deprecated > GeoId || constr->Third_Deprecated == NullId)) {
             newConstraints.push_back(constr);
         }
     }

@@ -126,10 +126,10 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
             if (isEllipse(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo) || isArcOfParabola(*geo) || isBSplineCurve(*geo)) {
                 const std::vector<Sketcher::Constraint*>& constraints = Obj->Constraints.getValues();
                 for (const auto constr : constraints) {
-                    if (constr->Type == InternalAlignment && constr->Second == listOfGeoIds[i]) {
-                        if (std::ranges::find(listOfGeoIds, constr->First) == listOfGeoIds.end()) {
+                    if (constr->Type == InternalAlignment && constr->Second_Deprecated == listOfGeoIds[i]) {
+                        if (std::ranges::find(listOfGeoIds, constr->First_Deprecated) == listOfGeoIds.end()) {
                             // If the value is not found, add it to the vector
-                            listOfGeoIds.push_back(constr->First);
+                            listOfGeoIds.push_back(constr->First_Deprecated);
                         }
                     }
                 }
@@ -184,22 +184,22 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
                 || value == GeoEnum::VAxis || value == GeoEnum::HAxis;
         };
 
-        if (!isSelectedGeoOrAxis(listOfGeoId, constr->First)
-            || !isSelectedGeoOrAxis(listOfGeoId, constr->Second)
-            || !isSelectedGeoOrAxis(listOfGeoId, constr->Third)) {
+        if (!isSelectedGeoOrAxis(listOfGeoId, constr->First_Deprecated)
+            || !isSelectedGeoOrAxis(listOfGeoId, constr->Second_Deprecated)
+            || !isSelectedGeoOrAxis(listOfGeoId, constr->Third_Deprecated)) {
             continue;
         }
 
         Constraint* temp = constr->copy();
         for (size_t j = 0; j < listOfGeoId.size(); j++) {
-            if (temp->First == listOfGeoId[j]) {
-                temp->First = j;
+            if (temp->First_Deprecated == listOfGeoId[j]) {
+                temp->First_Deprecated = j;
             }
-            if (temp->Second == listOfGeoId[j]) {
-                temp->Second = j;
+            if (temp->Second_Deprecated == listOfGeoId[j]) {
+                temp->Second_Deprecated = j;
             }
-            if (temp->Third == listOfGeoId[j]) {
-                temp->Third = j;
+            if (temp->Third_Deprecated == listOfGeoId[j]) {
+                temp->Third_Deprecated = j;
             }
         }
         shapeConstraints.push_back(temp);
@@ -813,18 +813,18 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
             int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
 
             if (ConstrId < static_cast<int>(vals.size())) {
-                if (vals[ConstrId]->First != GeoEnum::GeoUndef) {
+                if (vals[ConstrId]->First_Deprecated != GeoEnum::GeoUndef) {
                     ss.str(std::string());
 
-                    switch (vals[ConstrId]->FirstPos) {
+                    switch (vals[ConstrId]->FirstPos_Deprecated) {
                         case Sketcher::PointPos::none:
-                            ss << "Edge" << vals[ConstrId]->First + 1;
+                            ss << "Edge" << vals[ConstrId]->First_Deprecated + 1;
                             break;
                         case Sketcher::PointPos::start:
                         case Sketcher::PointPos::end:
                         case Sketcher::PointPos::mid:
-                            int vertex = Obj->getVertexIndexGeoPos(vals[ConstrId]->First,
-                                                                   vals[ConstrId]->FirstPos);
+                            int vertex = Obj->getVertexIndexGeoPos(vals[ConstrId]->First_Deprecated,
+                                                                   vals[ConstrId]->FirstPos_Deprecated);
                             if (vertex > -1)
                                 ss << "Vertex" << vertex + 1;
                             break;
@@ -832,18 +832,18 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     elementSubNames.push_back(ss.str());
                 }
 
-                if (vals[ConstrId]->Second != GeoEnum::GeoUndef) {
+                if (vals[ConstrId]->Second_Deprecated != GeoEnum::GeoUndef) {
                     ss.str(std::string());
 
-                    switch (vals[ConstrId]->SecondPos) {
+                    switch (vals[ConstrId]->SecondPos_Deprecated) {
                         case Sketcher::PointPos::none:
-                            ss << "Edge" << vals[ConstrId]->Second + 1;
+                            ss << "Edge" << vals[ConstrId]->Second_Deprecated + 1;
                             break;
                         case Sketcher::PointPos::start:
                         case Sketcher::PointPos::end:
                         case Sketcher::PointPos::mid:
-                            int vertex = Obj->getVertexIndexGeoPos(vals[ConstrId]->Second,
-                                                                   vals[ConstrId]->SecondPos);
+                            int vertex = Obj->getVertexIndexGeoPos(vals[ConstrId]->Second_Deprecated,
+                                                                   vals[ConstrId]->SecondPos_Deprecated);
                             if (vertex > -1)
                                 ss << "Vertex" << vertex + 1;
                             break;
@@ -852,18 +852,18 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     elementSubNames.push_back(ss.str());
                 }
 
-                if (vals[ConstrId]->Third != GeoEnum::GeoUndef) {
+                if (vals[ConstrId]->Third_Deprecated != GeoEnum::GeoUndef) {
                     ss.str(std::string());
 
-                    switch (vals[ConstrId]->ThirdPos) {
+                    switch (vals[ConstrId]->ThirdPos_Deprecated) {
                         case Sketcher::PointPos::none:
-                            ss << "Edge" << vals[ConstrId]->Third + 1;
+                            ss << "Edge" << vals[ConstrId]->Third_Deprecated + 1;
                             break;
                         case Sketcher::PointPos::start:
                         case Sketcher::PointPos::end:
                         case Sketcher::PointPos::mid:
-                            int vertex = Obj->getVertexIndexGeoPos(vals[ConstrId]->Third,
-                                                                   vals[ConstrId]->ThirdPos);
+                            int vertex = Obj->getVertexIndexGeoPos(vals[ConstrId]->Third_Deprecated,
+                                                                   vals[ConstrId]->ThirdPos_Deprecated);
                             if (vertex > -1)
                                 ss << "Vertex" << vertex + 1;
                             break;

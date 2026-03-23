@@ -46,8 +46,8 @@ void SketcherTransformationExpressionHelper::storeOriginalExpressions(
         for (size_t i = 0; i < vals.size(); i++) {
             const auto& cstr = vals[i];
             if (cstr->isDriving && cstr->isDimensional()
-                && (cstr->First == geoId
-                    || (cstr->Second == geoId && cstr->Type != Sketcher::Radius
+                && (cstr->First_Deprecated == geoId
+                    || (cstr->Second_Deprecated == geoId && cstr->Type != Sketcher::Radius
                         && cstr->Type != Sketcher::Diameter && cstr->Type != Sketcher::Weight))) {
 
                 App::ObjectIdentifier spath = sketchObject->Constraints.createPath(static_cast<int>(i));
@@ -177,7 +177,7 @@ bool SketcherTransformationExpressionHelper::constraintReferencesGeometry(
     int geoId
 ) const
 {
-    return cstr->First == geoId
-        || (cstr->Second == geoId && cstr->Type != Sketcher::Radius
+    return cstr->First_Deprecated == geoId
+        || (cstr->Second_Deprecated == geoId && cstr->Type != Sketcher::Radius
             && cstr->Type != Sketcher::Diameter && cstr->Type != Sketcher::Weight);
 }

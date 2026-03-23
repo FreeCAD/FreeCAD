@@ -253,12 +253,12 @@ public:
 
 #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
     // Deprecated, use getElement/setElement instead
-    int First {GeoEnum::GeoUndef};
-    int Second {GeoEnum::GeoUndef};
-    int Third {GeoEnum::GeoUndef};
-    PointPos FirstPos {PointPos::none};
-    PointPos SecondPos {PointPos::none};
-    PointPos ThirdPos {PointPos::none};
+    int First_Deprecated {GeoEnum::GeoUndef};
+    int Second_Deprecated {GeoEnum::GeoUndef};
+    int Third_Deprecated {GeoEnum::GeoUndef};
+    PointPos FirstPos_Deprecated {PointPos::none};
+    PointPos SecondPos_Deprecated {PointPos::none};
+    PointPos ThirdPos_Deprecated {PointPos::none};
 #endif
 
 private:

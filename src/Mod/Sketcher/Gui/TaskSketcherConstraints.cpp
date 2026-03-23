@@ -269,29 +269,29 @@ public:
             bool extended = hGrp->GetBool("ExtendedConstraintInformation", false);
 
             if (extended) {
-                if (constraint->Second == Sketcher::GeoEnum::GeoUndef) {
+                if (constraint->Second_Deprecated == Sketcher::GeoEnum::GeoUndef) {
                     name = QStringLiteral("%1 [(%2,%3)]")
                                .arg(name)
-                               .arg(constraint->First)
-                               .arg(static_cast<int>(constraint->FirstPos));
+                               .arg(constraint->First_Deprecated)
+                               .arg(static_cast<int>(constraint->FirstPos_Deprecated));
                 }
-                else if (constraint->Third == Sketcher::GeoEnum::GeoUndef) {
+                else if (constraint->Third_Deprecated == Sketcher::GeoEnum::GeoUndef) {
                     name = QStringLiteral("%1 [(%2,%3),(%4,%5)]")
                                .arg(name)
-                               .arg(constraint->First)
-                               .arg(static_cast<int>(constraint->FirstPos))
-                               .arg(constraint->Second)
-                               .arg(static_cast<int>(constraint->SecondPos));
+                               .arg(constraint->First_Deprecated)
+                               .arg(static_cast<int>(constraint->FirstPos_Deprecated))
+                               .arg(constraint->Second_Deprecated)
+                               .arg(static_cast<int>(constraint->SecondPos_Deprecated));
                 }
                 else {
                     name = QStringLiteral("%1 [(%2,%3),(%4,%5),(%6,%7)]")
                                .arg(name)
-                               .arg(constraint->First)
-                               .arg(static_cast<int>(constraint->FirstPos))
-                               .arg(constraint->Second)
-                               .arg(static_cast<int>(constraint->SecondPos))
-                               .arg(constraint->Third)
-                               .arg(static_cast<int>(constraint->ThirdPos));
+                               .arg(constraint->First_Deprecated)
+                               .arg(static_cast<int>(constraint->FirstPos_Deprecated))
+                               .arg(constraint->Second_Deprecated)
+                               .arg(static_cast<int>(constraint->SecondPos_Deprecated))
+                               .arg(constraint->Third_Deprecated)
+                               .arg(static_cast<int>(constraint->ThirdPos_Deprecated));
                 }
             }
 
@@ -479,8 +479,8 @@ public:
             case Sketcher::Weight:
             case Sketcher::Angle:
             case Sketcher::SnellsLaw:
-                return (constraint->First >= 0 || constraint->Second >= 0
-                        || constraint->Third >= 0);
+                return (constraint->First_Deprecated >= 0 || constraint->Second_Deprecated >= 0
+                        || constraint->Third_Deprecated >= 0);
             case Sketcher::InternalAlignment:
                 return true;
         }
@@ -1381,7 +1381,7 @@ void TaskSketcherConstraints::updateAssociatedConstraintsFilter()
             for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin();
                  it != vals.end();
                  ++it, ++i) {
-                if ((*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId) {
+                if ((*it)->First_Deprecated == GeoId || (*it)->Second_Deprecated == GeoId || (*it)->Third_Deprecated == GeoId) {
                     associatedConstraintsFilter.push_back(i);
                 }
             }

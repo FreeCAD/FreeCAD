@@ -707,23 +707,23 @@ protected:
                         AutoConstraints,
                         std::tuple {Sketcher::Tangent, geoId1, geoId2},
                         [](const auto& ace) {
-                            return std::tuple {ace->Type, ace->First, ace->Second};
+                            return std::tuple {ace->Type, ace->First_Deprecated, ace->Second_Deprecated};
                         }
                     );
                 }
 
                 if (itOfTangentConstraint != AutoConstraints.end()) {
                     // modify tangency to endpoint-to-endpoint
-                    (*itOfTangentConstraint)->FirstPos = posId1;
-                    (*itOfTangentConstraint)->SecondPos = posId2;
+                    (*itOfTangentConstraint)->FirstPos_Deprecated = posId1;
+                    (*itOfTangentConstraint)->SecondPos_Deprecated = posId2;
                 }
                 else {
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Coincident;
-                    c->First = geoId1;
-                    c->FirstPos = posId1;
-                    c->Second = geoId2;
-                    c->SecondPos = posId2;
+                    c->First_Deprecated = geoId1;
+                    c->FirstPos_Deprecated = posId1;
+                    c->Second_Deprecated = geoId2;
+                    c->SecondPos_Deprecated = posId2;
                     AutoConstraints.push_back(std::move(c));
                 }
             } break;
@@ -744,30 +744,33 @@ protected:
 
                 // if tangency, convert to point-to-edge tangency
                 if (itOfTangentConstraint != AutoConstraints.end()) {
-                    if ((*itOfTangentConstraint)->First != geoId1) {
-                        std::swap((*itOfTangentConstraint)->Second, (*itOfTangentConstraint)->First);
+                    if ((*itOfTangentConstraint)->First_Deprecated != geoId1) {
+                        std::swap(
+                            (*itOfTangentConstraint)->Second_Deprecated,
+                            (*itOfTangentConstraint)->First_Deprecated
+                        );
                     }
 
-                    (*itOfTangentConstraint)->FirstPos = posId1;
+                    (*itOfTangentConstraint)->FirstPos_Deprecated = posId1;
                 }
                 else {
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::PointOnObject;
-                    c->First = geoId1;
-                    c->FirstPos = posId1;
-                    c->Second = geoId2;
+                    c->First_Deprecated = geoId1;
+                    c->FirstPos_Deprecated = posId1;
+                    c->Second_Deprecated = geoId2;
                     AutoConstraints.push_back(std::move(c));
                 }
             } break;
             case Sketcher::Symmetric: {
                 auto c = std::make_unique<Sketcher::Constraint>();
                 c->Type = Sketcher::Symmetric;
-                c->First = geoId2;
-                c->FirstPos = Sketcher::PointPos::start;
-                c->Second = geoId2;
-                c->SecondPos = Sketcher::PointPos::end;
-                c->Third = geoId1;
-                c->ThirdPos = posId1;
+                c->First_Deprecated = geoId2;
+                c->FirstPos_Deprecated = Sketcher::PointPos::start;
+                c->Second_Deprecated = geoId2;
+                c->SecondPos_Deprecated = Sketcher::PointPos::end;
+                c->Third_Deprecated = geoId1;
+                c->ThirdPos_Deprecated = posId1;
                 AutoConstraints.push_back(std::move(c));
             } break;
             // In special case of Horizontal/Vertical constraint, geoId2 is normally
@@ -779,7 +782,7 @@ protected:
             case Sketcher::Vertical: {
                 auto c = std::make_unique<Sketcher::Constraint>();
                 c->Type = ac.Type;
-                c->First = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
+                c->First_Deprecated = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
                 AutoConstraints.push_back(std::move(c));
             } break;
             case Sketcher::Tangent: {
@@ -839,8 +842,8 @@ protected:
                 }
 
                 auto resultCoincident = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
-                    return ace->Type == Sketcher::Coincident && ace->First == geoId1
-                        && ace->Second == geoId2;
+                    return ace->Type == Sketcher::Coincident && ace->First_Deprecated == geoId1
+                        && ace->Second_Deprecated == geoId2;
                 });
 
                 auto resultPointOnObject = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
@@ -849,33 +852,34 @@ protected:
                 });
 
                 if (resultCoincident != AutoConstraints.end()
-                    && isStartOrEnd((*resultCoincident)->FirstPos)
-                    && isStartOrEnd((*resultCoincident)->SecondPos)) {
+                    && isStartOrEnd((*resultCoincident)->FirstPos_Deprecated)
+                    && isStartOrEnd((*resultCoincident)->SecondPos_Deprecated)) {
                     // endpoint-to-endpoint tangency
                     (*resultCoincident)->Type = Sketcher::Tangent;
                 }
                 else if (resultPointOnObject != AutoConstraints.end()
-                         && isStartOrEnd((*resultPointOnObject)->FirstPos)) {
+                         && isStartOrEnd((*resultPointOnObject)->FirstPos_Deprecated)) {
                     // endpoint-to-edge tangency
                     (*resultPointOnObject)->Type = Sketcher::Tangent;
                 }
                 else if (resultCoincident != AutoConstraints.end()
-                         && (*resultCoincident)->FirstPos == Sketcher::PointPos::mid
-                         && (*resultCoincident)->SecondPos == Sketcher::PointPos::mid && geom1 && geom2
+                         && (*resultCoincident)->FirstPos_Deprecated == Sketcher::PointPos::mid
+                         && (*resultCoincident)->SecondPos_Deprecated == Sketcher::PointPos::mid
+                         && geom1 && geom2
                          && (geom1->is<Part::GeomCircle>() || geom1->is<Part::GeomArcOfCircle>())
                          && (geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>())) {
                     // equality
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Equal;
-                    c->First = geoId1;
-                    c->Second = geoId2;
+                    c->First_Deprecated = geoId1;
+                    c->Second_Deprecated = geoId2;
                     AutoConstraints.push_back(std::move(c));
                 }
                 else {  // regular edge to edge tangency
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Tangent;
-                    c->First = geoId1;
-                    c->Second = geoId2;
+                    c->First_Deprecated = geoId1;
+                    c->Second_Deprecated = geoId2;
                     AutoConstraints.push_back(std::move(c));
                 }
             } break;
@@ -1142,12 +1146,12 @@ protected:
     {
         auto constr = std::make_unique<Sketcher::Constraint>();
         constr->Type = type;
-        constr->First = first;
-        constr->FirstPos = firstPos;
-        constr->Second = second;
-        constr->SecondPos = secondPos;
-        constr->Third = third;
-        constr->ThirdPos = thirdPos;
+        constr->First_Deprecated = first;
+        constr->FirstPos_Deprecated = firstPos;
+        constr->Second_Deprecated = second;
+        constr->SecondPos_Deprecated = secondPos;
+        constr->Third_Deprecated = third;
+        constr->ThirdPos_Deprecated = thirdPos;
         return ShapeConstraints.emplace_back(std::move(constr)).get();
     }
 

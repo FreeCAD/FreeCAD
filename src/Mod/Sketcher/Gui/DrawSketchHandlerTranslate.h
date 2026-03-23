@@ -367,9 +367,9 @@ private:
             std::vector<int> geoIdsWhoAlreadyHasEqual = {};
 
             for (auto& cstr : vals) {
-                int firstIndex = indexOfGeoId(listOfGeoIds, cstr->First);
-                int secondIndex = indexOfGeoId(listOfGeoIds, cstr->Second);
-                int thirdIndex = indexOfGeoId(listOfGeoIds, cstr->Third);
+                int firstIndex = indexOfGeoId(listOfGeoIds, cstr->First_Deprecated);
+                int secondIndex = indexOfGeoId(listOfGeoIds, cstr->Second_Deprecated);
+                int thirdIndex = indexOfGeoId(listOfGeoIds, cstr->Third_Deprecated);
 
                 for (int k = 0; k < secondNumberOfCopies; k++) {
                     for (int i = 0; i <= numberOfCopiesToMake; i++) {
@@ -385,13 +385,13 @@ private:
                             + size * (numberOfCopiesToMake + 1) * k;
 
                         auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
-                        newConstr->First = firstIndexi;
+                        newConstr->First_Deprecated = firstIndexi;
 
                         if ((cstr->Type == Symmetric || cstr->Type == Tangent
                              || cstr->Type == Perpendicular || cstr->Type == Angle)
                             && firstIndex >= 0 && secondIndex >= 0 && thirdIndex >= 0) {
-                            newConstr->Second = secondIndexi;
-                            newConstr->Third = thirdIndexi;
+                            newConstr->Second_Deprecated = secondIndexi;
+                            newConstr->Third_Deprecated = thirdIndexi;
                         }
                         else if ((cstr->Type == Coincident || cstr->Type == Tangent
                                   || cstr->Type == Symmetric || cstr->Type == Perpendicular
@@ -400,7 +400,7 @@ private:
                                   || cstr->Type == Vertical || cstr->Type == InternalAlignment)
                                  && firstIndex >= 0 && secondIndex >= 0
                                  && thirdIndex == GeoEnum::GeoUndef) {
-                            newConstr->Second = secondIndexi;
+                            newConstr->Second_Deprecated = secondIndexi;
                         }
                         else if ((cstr->Type == Radius || cstr->Type == Diameter
                                   || cstr->Type == Weight)
@@ -410,31 +410,32 @@ private:
                             }
                             else {
                                 newConstr->Type = Equal;
-                                newConstr->First = cstr->First;
-                                newConstr->Second = firstIndexi;
+                                newConstr->First_Deprecated = cstr->First_Deprecated;
+                                newConstr->Second_Deprecated = firstIndexi;
                             }
                         }
                         else if ((cstr->Type == Distance || cstr->Type == DistanceX
                                   || cstr->Type == DistanceY)
                                  && firstIndex >= 0 && secondIndex >= 0) {
                             if (!deleteOriginal && cloneConstraints
-                                && cstr->First == cstr->Second) {  // only line distances
+                                && cstr->First_Deprecated
+                                    == cstr->Second_Deprecated) {  // only line distances
                                 if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, secondIndexi) != -1) {
                                     continue;
                                 }
                                 newConstr->Type = Equal;
-                                newConstr->First = cstr->First;
-                                newConstr->Second = secondIndexi;
+                                newConstr->First_Deprecated = cstr->First_Deprecated;
+                                newConstr->Second_Deprecated = secondIndexi;
                                 geoIdsWhoAlreadyHasEqual.push_back(secondIndexi);
                             }
                             else {
-                                newConstr->Second = secondIndexi;
+                                newConstr->Second_Deprecated = secondIndexi;
                             }
                         }
                         else if ((cstr->Type == Block || cstr->Type == Horizontal
                                   || cstr->Type == Vertical)
                                  && firstIndex >= 0) {
-                            newConstr->First = firstIndexi;
+                            newConstr->First_Deprecated = firstIndexi;
                         }
                         else {
                             continue;
