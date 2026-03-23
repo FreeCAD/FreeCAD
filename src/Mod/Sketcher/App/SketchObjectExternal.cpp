@@ -600,24 +600,24 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     for (const auto& constr : scvals) {
         Sketcher::Constraint* newConstr = constr->copy();
-        if (constr->First_Deprecated >= 0) {
-            newConstr->First_Deprecated += nextgeoid;
+        if (constr->getGeoId(0) >= 0) {
+            newConstr->setGeoId(0, newConstr->getGeoId(0) + nextgeoid);
         }
-        if (constr->Second_Deprecated >= 0) {
-            newConstr->Second_Deprecated += nextgeoid;
+        if (constr->getGeoId(1) >= 0) {
+            newConstr->setGeoId(1, newConstr->getGeoId(1) + nextgeoid);
         }
-        if (constr->Third_Deprecated >= 0) {
-            newConstr->Third_Deprecated += nextgeoid;
+        if (constr->getGeoId(2) >= 0) {
+            newConstr->setGeoId(2, newConstr->getGeoId(2) + nextgeoid);
         }
 
-        if (constr->First_Deprecated < -2 && constr->First_Deprecated != GeoEnum::GeoUndef) {
-            newConstr->First_Deprecated -= (nextextgeoid - 2);
+        if (constr->getGeoId(0) < -2 && constr->getGeoId(0) != GeoEnum::GeoUndef) {
+            newConstr->setGeoId(0, newConstr->getGeoId(0) - (nextextgeoid - 2));
         }
-        if (constr->Second_Deprecated < -2 && constr->Second_Deprecated != GeoEnum::GeoUndef) {
-            newConstr->Second_Deprecated -= (nextextgeoid - 2);
+        if (constr->getGeoId(1) < -2 && constr->getGeoId(1) != GeoEnum::GeoUndef) {
+            newConstr->setGeoId(1, newConstr->getGeoId(1) - (nextextgeoid - 2));
         }
-        if (constr->Third_Deprecated < -2 && constr->Third_Deprecated != GeoEnum::GeoUndef) {
-            newConstr->Third_Deprecated -= (nextextgeoid - 2);
+        if (constr->getGeoId(2) < -2 && constr->getGeoId(2) != GeoEnum::GeoUndef) {
+            newConstr->setGeoId(2, newConstr->getGeoId(2) - (nextextgeoid - 2));
         }
 
         if (xinv || yinv) {

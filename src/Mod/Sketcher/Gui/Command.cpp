@@ -962,21 +962,24 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
              itc != mirrorconstr.end();
              ++itc) {
 
-            if ((*itc)->First_Deprecated != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->First_Deprecated == Sketcher::GeoEnum::HAxis
-                || (*itc)->First_Deprecated == Sketcher::GeoEnum::VAxis)
+            if ((*itc)->getGeoId(0) != Sketcher::GeoEnum::GeoUndef
+                || (*itc)->getGeoId(0) == Sketcher::GeoEnum::HAxis
+                || (*itc)->getGeoId(0) == Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                (*itc)->First_Deprecated -= (addedGeometries + 1);
-            if ((*itc)->Second_Deprecated != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->Second_Deprecated == Sketcher::GeoEnum::HAxis
-                || (*itc)->Second_Deprecated == Sketcher::GeoEnum::VAxis)
+                (*itc)->setGeoId(0, (*itc)->getGeoId(0) - (addedGeometries + 1));
+            }
+            if ((*itc)->getGeoId(1) != Sketcher::GeoEnum::GeoUndef
+                || (*itc)->getGeoId(1) == Sketcher::GeoEnum::HAxis
+                || (*itc)->getGeoId(1) == Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                (*itc)->Second_Deprecated -= (addedGeometries + 1);
-            if ((*itc)->Third_Deprecated != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->Third_Deprecated == Sketcher::GeoEnum::HAxis
-                || (*itc)->Third_Deprecated == Sketcher::GeoEnum::VAxis)
+                (*itc)->setGeoId(1, (*itc)->getGeoId(1) - (addedGeometries + 1));
+            }
+            if ((*itc)->getGeoId(2) != Sketcher::GeoEnum::GeoUndef
+                || (*itc)->getGeoId(2) == Sketcher::GeoEnum::HAxis
+                || (*itc)->getGeoId(2) == Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                (*itc)->Third_Deprecated -= (addedGeometries + 1);
+                (*itc)->setGeoId(2, (*itc)->getGeoId(2) - (addedGeometries + 1));
+            }
         }
 
         mirrorsketch->addGeometry(mirrorgeo);
@@ -1057,21 +1060,24 @@ void CmdSketcherMergeSketches::activated(int iMsg)
             Sketcher::Constraint* constraint =
                 mergesketch->Constraints.getValues()[i + baseConstraints];
 
-            if (constraint->First_Deprecated != Sketcher::GeoEnum::GeoUndef
-                && constraint->First_Deprecated != Sketcher::GeoEnum::HAxis
-                && constraint->First_Deprecated != Sketcher::GeoEnum::VAxis)
+            if (constraint->getGeoId(0) != Sketcher::GeoEnum::GeoUndef
+                && constraint->getGeoId(0) != Sketcher::GeoEnum::HAxis
+                && constraint->getGeoId(0) != Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                constraint->First_Deprecated += baseGeometry;
-            if (constraint->Second_Deprecated != Sketcher::GeoEnum::GeoUndef
-                && constraint->Second_Deprecated != Sketcher::GeoEnum::HAxis
-                && constraint->Second_Deprecated != Sketcher::GeoEnum::VAxis)
+                constraint->setGeoId(0, constraint->getGeoId(0) + baseGeometry);
+            }
+            if (constraint->getGeoId(1) != Sketcher::GeoEnum::GeoUndef
+                && constraint->getGeoId(1) != Sketcher::GeoEnum::HAxis
+                && constraint->getGeoId(1) != Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                constraint->Second_Deprecated += baseGeometry;
-            if (constraint->Third_Deprecated != Sketcher::GeoEnum::GeoUndef
-                && constraint->Third_Deprecated != Sketcher::GeoEnum::HAxis
-                && constraint->Third_Deprecated != Sketcher::GeoEnum::VAxis)
+                constraint->setGeoId(1, constraint->getGeoId(1) + baseGeometry);
+            }
+            if (constraint->getGeoId(2) != Sketcher::GeoEnum::GeoUndef
+                && constraint->getGeoId(2) != Sketcher::GeoEnum::HAxis
+                && constraint->getGeoId(2) != Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                constraint->Third_Deprecated += baseGeometry;
+                constraint->setGeoId(2, constraint->getGeoId(2) + baseGeometry);
+            }
         }
 
         baseGeometry = addedGeometries + 1;
