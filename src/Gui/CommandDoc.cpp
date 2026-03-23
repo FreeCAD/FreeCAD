@@ -1749,7 +1749,8 @@ bool StdCmdPlacement::isActive()
         ResolveMode::FollowLink
     );
     return !(sel.empty() || std::ranges::any_of(sel, [](auto obj) {
-                 return obj->isFreezed() || obj->getPlacementProperty()->isReadOnly();
+                 auto* prop = obj->getPlacementProperty();
+                 return obj->isFreezed() || !prop || prop->isReadOnly();
              }));
 }
 
@@ -1797,6 +1798,7 @@ bool StdCmdTransformManip::isActive()
     );
     return (
         sel.size() == 1 && !sel.front()->isFreezed()
+        && sel.front()->getPlacementProperty()
         && !sel.front()->getPlacementProperty()->isReadOnly()
     );
 }
