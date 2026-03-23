@@ -1555,9 +1555,9 @@ void SketchObject::migrateSketch()
             newConstr->Type = Sketcher::InternalAlignment;
             newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
             newConstr->setGeoId(0, focusCoincidentFound->first);  // axis geoid
-            newConstr->FirstPos_Deprecated = Sketcher::PointPos::none;
+            newConstr->setPosId(0, Sketcher::PointPos::none);
             newConstr->setGeoId(1, focusCoincidentFound->second);  // parabola geoid
-            newConstr->SecondPos_Deprecated = Sketcher::PointPos::none;
+            newConstr->setPosId(1, Sketcher::PointPos::none);
             newConstraints.push_back(newConstr);
 
             addGeometryState(newConstr);

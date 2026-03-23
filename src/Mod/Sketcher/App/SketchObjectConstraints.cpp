@@ -518,7 +518,7 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
 {
     std::swap(constr->First_Deprecated, constr->Second_Deprecated);
     std::swap(constr->FirstPos_Deprecated, constr->SecondPos_Deprecated);
-    constr->FirstPos_Deprecated = (constr->FirstPos_Deprecated == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    constr->setPosId(0, (constr->FirstPos_Deprecated == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start);
 
     // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
@@ -533,8 +533,8 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
 
 void SketchObject::inverseAngleConstraint(Constraint* constr)
 {
-    constr->FirstPos_Deprecated = (constr->FirstPos_Deprecated == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-    constr->SecondPos_Deprecated = (constr->SecondPos_Deprecated == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    constr->setPosId(0, (constr->FirstPos_Deprecated == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start);
+    constr->setPosId(1, (constr->SecondPos_Deprecated == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start);
 }
 
 bool SketchObject::constraintHasExpression(int constNum) const
@@ -1245,11 +1245,11 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
             // Distance constraint on the line itself. Change it to point-point between the far end
             // of the line and the new corner
             if (line1First) {
-                c->FirstPos_Deprecated = (posId1 == PointPos::start) ? PointPos::end : PointPos::start;
+                c->setPosId(0, (posId1 == PointPos::start) ? PointPos::end : PointPos::start);
                 c->setElement(1, GeoElementId(originalCornerId, PointPos::start));
             }
             if (line2First) {
-                c->FirstPos_Deprecated = (posId2 == PointPos::start) ? PointPos::end : PointPos::start;
+                c->setPosId(0, (posId2 == PointPos::start) ? PointPos::end : PointPos::start);
                 c->setElement(1, GeoElementId(originalCornerId, PointPos::start));
             }
         }

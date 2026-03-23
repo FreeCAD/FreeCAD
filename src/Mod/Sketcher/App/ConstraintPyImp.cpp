@@ -442,13 +442,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
                 constraint->Type = DistanceX;
-                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(FirstPos);
+                constraint->setPosId(0, static_cast<Sketcher::PointPos>(FirstPos));
             }
             else if (strcmp("DistanceY", ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
                 constraint->Type = DistanceY;
-                constraint->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(FirstPos);
+                constraint->setPosId(0, static_cast<Sketcher::PointPos>(FirstPos));
             }
             else {
                 return false;
@@ -712,7 +712,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 // valid = true;//non-standard assignment
                 constraint->setElement(0, GeoElementId(intArg1, Sketcher::PointPos::none));
                 constraint->setGeoId(1, intArg2);  // let's goof up all the terminology =)
-                constraint->SecondPos_Deprecated = Sketcher::PointPos::none;
+                constraint->setPosId(1, Sketcher::PointPos::none);
                 constraint->setElement(
                     2,
                     GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4))
@@ -1130,7 +1130,7 @@ void ConstraintPy::setFirstPos(Py::Long arg)
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none)
         && pos <= static_cast<int>(Sketcher::PointPos::mid)) {
-        this->getConstraintPtr()->FirstPos_Deprecated = static_cast<Sketcher::PointPos>(pos);
+        this->getConstraintPtr()->setPosId(0, static_cast<Sketcher::PointPos>(pos));
     }
     else {
         std::stringstream str;
@@ -1161,7 +1161,7 @@ void ConstraintPy::setSecondPos(Py::Long arg)
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none)
         && pos <= static_cast<int>(Sketcher::PointPos::mid)) {
-        this->getConstraintPtr()->SecondPos_Deprecated = static_cast<Sketcher::PointPos>(pos);
+        this->getConstraintPtr()->setPosId(1, static_cast<Sketcher::PointPos>(pos));
     }
     else {
         std::stringstream str;
@@ -1192,7 +1192,7 @@ void ConstraintPy::setThirdPos(Py::Long arg)
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none)
         && pos <= static_cast<int>(Sketcher::PointPos::mid)) {
-        this->getConstraintPtr()->ThirdPos_Deprecated = static_cast<Sketcher::PointPos>(pos);
+        this->getConstraintPtr()->setPosId(2, static_cast<Sketcher::PointPos>(pos));
     }
     else {
         std::stringstream str;

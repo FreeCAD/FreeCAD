@@ -714,8 +714,8 @@ protected:
 
                 if (itOfTangentConstraint != AutoConstraints.end()) {
                     // modify tangency to endpoint-to-endpoint
-                    (*itOfTangentConstraint)->FirstPos_Deprecated = posId1;
-                    (*itOfTangentConstraint)->SecondPos_Deprecated = posId2;
+                    (*itOfTangentConstraint)->setPosId(0, posId1);
+                    (*itOfTangentConstraint)->setPosId(1, posId2);
                 }
                 else {
                     auto c = std::make_unique<Sketcher::Constraint>();
@@ -749,7 +749,7 @@ protected:
                         );
                     }
 
-                    (*itOfTangentConstraint)->FirstPos_Deprecated = posId1;
+                    (*itOfTangentConstraint)->setPosId(0, posId1);
                 }
                 else {
                     auto c = std::make_unique<Sketcher::Constraint>();

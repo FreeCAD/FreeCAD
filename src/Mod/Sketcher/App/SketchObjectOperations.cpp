@@ -542,16 +542,16 @@ std::unique_ptr<Constraint> getNewConstraintAtTrimCut(
     newConstr->setGeoId(1, cuttingGeoId);
     if (isPointAtPosition(obj, cuttingGeoId, PointPos::start, cutPointVec)) {
         newConstr->Type = Sketcher::Coincident;
-        newConstr->SecondPos_Deprecated = PointPos::start;
+        newConstr->setPosId(1, PointPos::start);
     }
     else if (isPointAtPosition(obj, cuttingGeoId, PointPos::end, cutPointVec)) {
         newConstr->Type = Sketcher::Coincident;
-        newConstr->SecondPos_Deprecated = PointPos::end;
+        newConstr->setPosId(1, PointPos::end);
     }
     else {
         // Points are sufficiently far apart: use point-on-object
         newConstr->Type = Sketcher::PointOnObject;
-        newConstr->SecondPos_Deprecated = PointPos::none;
+        newConstr->setPosId(1, PointPos::none);
     }
     return newConstr;
 }
@@ -2254,7 +2254,7 @@ int SketchObject::addCopy(
                     Constraint* constNew = constr->copy();
                     constNew->Type = Sketcher::Equal;
                     constNew->isDriving = true;
-                    constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
+                    constNew->setPosId(0, Sketcher::PointPos::none);
                     // first is already (constr->First)
                     constNew->setElement(1, GeoElementId(fit->second, Sketcher::PointPos::none));
                     newconstrVals.push_back(constNew);
