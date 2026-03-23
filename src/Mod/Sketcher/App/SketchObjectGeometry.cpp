@@ -477,7 +477,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (const auto& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second_Deprecated != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
@@ -615,7 +615,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (const auto& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second_Deprecated != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
@@ -737,7 +737,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second_Deprecated != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
@@ -842,7 +842,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second_Deprecated != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
@@ -923,16 +923,16 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
 
     // search for existing poles
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second_Deprecated != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
         switch (constr->AlignmentType) {
         case Sketcher::BSplineControlPoint:
-            controlpointgeoids[constr->InternalAlignmentIndex] = constr->First_Deprecated;
+            controlpointgeoids[constr->InternalAlignmentIndex] = constr->getGeoId(0);
             break;
         case Sketcher::BSplineKnotPoint:
-            knotgeoids[constr->InternalAlignmentIndex] = constr->First_Deprecated;
+            knotgeoids[constr->InternalAlignmentIndex] = constr->getGeoId(0);
             break;
         default:
             return -1;
@@ -942,7 +942,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
     if (controlpointgeoids[0] != GeoEnum::GeoUndef) {
         isfirstweightconstrained =
             std::ranges::any_of(vals, [&controlpointgeoids](const auto& constr) {
-                return (constr->Type == Sketcher::Weight && constr->First_Deprecated == controlpointgeoids[0]);
+                return (constr->Type == Sketcher::Weight && constr->getGeoId(0) == controlpointgeoids[0]);
             });
     }
 
@@ -1101,25 +1101,25 @@ int SketchObject::deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeo
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second_Deprecated != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
         switch (constr->AlignmentType) {
         case Sketcher::EllipseMajorDiameter:
         case Sketcher::HyperbolaMajor:
-            majorelementindex = constr->First_Deprecated;
+            majorelementindex = constr->getGeoId(0);
             break;
         case Sketcher::EllipseMinorDiameter:
         case Sketcher::HyperbolaMinor:
-            minorelementindex = constr->First_Deprecated;
+            minorelementindex = constr->getGeoId(0);
             break;
         case Sketcher::EllipseFocus1:
         case Sketcher::HyperbolaFocus:
-            focus1elementindex = constr->First_Deprecated;
+            focus1elementindex = constr->getGeoId(0);
             break;
         case Sketcher::EllipseFocus2:
-            focus2elementindex = constr->First_Deprecated;
+            focus2elementindex = constr->getGeoId(0);
             break;
         default:
             return -1;
@@ -1184,16 +1184,16 @@ int SketchObject::deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delge
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second_Deprecated != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
         switch (constr->AlignmentType) {
         case Sketcher::ParabolaFocus:
-            focus1elementindex = constr->First_Deprecated;
+            focus1elementindex = constr->getGeoId(0);
             break;
         case Sketcher::ParabolaFocalAxis:
-            majorelementindex = constr->First_Deprecated;
+            majorelementindex = constr->getGeoId(0);
             break;
         default:
             return -1;
@@ -1252,16 +1252,16 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
 
     // search for existing poles
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second_Deprecated != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
         switch (constr->AlignmentType) {
         case Sketcher::BSplineControlPoint:
-            poleGeoIdsAndConstraints[constr->First_Deprecated] = 0;
+            poleGeoIdsAndConstraints[constr->getGeoId(0)] = 0;
             break;
         case Sketcher::BSplineKnotPoint:
-            knotGeoIdsAndConstraints[constr->First_Deprecated] = 0;
+            knotGeoIdsAndConstraints[constr->getGeoId(0)] = 0;
             break;
         default:
             return -1;
@@ -1279,17 +1279,17 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
             || constr->Type == Sketcher::Weight) {
             continue;
         }
-        bool firstIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->First_Deprecated) == 1;
-        bool secondIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->Second_Deprecated) == 1;
+        bool firstIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->getGeoId(0)) == 1;
+        bool secondIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->getGeoId(1)) == 1;
         if (constr->Type == Sketcher::Equal && firstIsInCPGeoIds == secondIsInCPGeoIds) {
             continue;
         }
         // any equality constraint constraining a pole is not interpole
         if (firstIsInCPGeoIds) {
-            ++poleGeoIdsAndConstraints[constr->First_Deprecated];
+            ++poleGeoIdsAndConstraints[constr->getGeoId(0)];
         }
         if (secondIsInCPGeoIds) {
-            ++poleGeoIdsAndConstraints[constr->Second_Deprecated];
+            ++poleGeoIdsAndConstraints[constr->getGeoId(1)];
         }
     }
 

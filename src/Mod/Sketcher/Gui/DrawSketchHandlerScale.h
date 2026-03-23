@@ -505,9 +505,9 @@ private:
                     continue;
                 }
 
-                int firstIndex = offsetGeoID(cstr->First_Deprecated, firstCurveCreated);
-                int secondIndex = offsetGeoID(cstr->Second_Deprecated, firstCurveCreated);
-                int thirdIndex = offsetGeoID(cstr->Third_Deprecated, firstCurveCreated);
+                int firstIndex = offsetGeoID(cstr->getGeoId(0), firstCurveCreated);
+                int secondIndex = offsetGeoID(cstr->getGeoId(1), firstCurveCreated);
+                int thirdIndex = offsetGeoID(cstr->getGeoId(2), firstCurveCreated);
 
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
 
@@ -555,7 +555,7 @@ private:
                 }
                 else if ((cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
                          && firstIndex != GeoEnum::GeoUndef
-                         && cstr->Second_Deprecated == GeoEnum::GeoUndef) {
+                         && cstr->getGeoId(1) == GeoEnum::GeoUndef) {
                     newConstr->setGeoId(0, firstIndex);
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
@@ -565,8 +565,7 @@ private:
                 }
                 else if ((cstr->Type == Vertical || cstr->Type == Horizontal)
                          && (firstIndex != GeoEnum::GeoUndef
-                             && (cstr->Second_Deprecated == GeoEnum::GeoUndef
-                                 || secondIndex != GeoUndef))) {
+                             && (cstr->getGeoId(1) == GeoEnum::GeoUndef || secondIndex != GeoUndef))) {
                     newConstr->setGeoId(0, firstIndex);
                     newConstr->setGeoId(1, secondIndex);
                 }
@@ -584,25 +583,19 @@ private:
         // We might want to skip (remove) a constraint if
         return
             // 1. it's first geometry is undefined => not a valid constraint, should not happen
-            (constr->First_Deprecated == GeoEnum::GeoUndef)
+            (constr->getGeoId(0) == GeoEnum::GeoUndef)
 
             // 2. we do not want to have constraints that relate to the origin => it would break if
             // the scale center is not the origin
             || (!allowOriginConstraint
-                && (constr->First_Deprecated == GeoEnum::VAxis
-                    || constr->First_Deprecated == GeoEnum::HAxis
-                    || constr->Second_Deprecated == GeoEnum::VAxis
-                    || constr->Second_Deprecated == GeoEnum::HAxis
-                    || constr->Third_Deprecated == GeoEnum::VAxis
-                    || constr->Third_Deprecated == GeoEnum::HAxis))
+                && (constr->getGeoId(0) == GeoEnum::VAxis || constr->getGeoId(0) == GeoEnum::HAxis
+                    || constr->getGeoId(1) == GeoEnum::VAxis || constr->getGeoId(1) == GeoEnum::HAxis
+                    || constr->getGeoId(2) == GeoEnum::VAxis || constr->getGeoId(2) == GeoEnum::HAxis))
 
             // 3. it is linked to an external projected geometry => would be unstable
-            || (constr->First_Deprecated != GeoEnum::GeoUndef
-                && constr->First_Deprecated <= GeoEnum::RefExt)
-            || (constr->Second_Deprecated != GeoEnum::GeoUndef
-                && constr->Second_Deprecated <= GeoEnum::RefExt)
-            || (constr->Third_Deprecated != GeoEnum::GeoUndef
-                && constr->Third_Deprecated <= GeoEnum::RefExt);
+            || (constr->getGeoId(0) != GeoEnum::GeoUndef && constr->getGeoId(0) <= GeoEnum::RefExt)
+            || (constr->getGeoId(1) != GeoEnum::GeoUndef && constr->getGeoId(1) <= GeoEnum::RefExt)
+            || (constr->getGeoId(2) != GeoEnum::GeoUndef && constr->getGeoId(2) <= GeoEnum::RefExt);
     }
 
     // Offset the geom index to match the newly created one

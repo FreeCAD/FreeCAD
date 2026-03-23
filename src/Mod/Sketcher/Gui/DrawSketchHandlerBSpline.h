@@ -151,15 +151,15 @@ private:
                 // those poles/knots center and mangle it to the endpoint.
                 if (!periodic) {
                     for (auto& constr : sketchgui->getSketchObject()->Constraints.getValues()) {
-                        if (constr->First_Deprecated == geoIds[0]
-                            && constr->FirstPos_Deprecated == Sketcher::PointPos::mid) {
+                        if (constr->getGeoId(0) == geoIds[0]
+                            && constr->getPosId(0) == Sketcher::PointPos::mid) {
                             constr->setElement(
                                 0,
                                 Sketcher::GeoElementId(currentgeoid, Sketcher::PointPos::start)
                             );
                         }
-                        else if (constr->First_Deprecated == geoIds.back()
-                                 && constr->FirstPos_Deprecated == Sketcher::PointPos::mid) {
+                        else if (constr->getGeoId(0) == geoIds.back()
+                                 && constr->getPosId(0) == Sketcher::PointPos::mid) {
                             constr->setElement(
                                 0,
                                 Sketcher::GeoElementId(currentgeoid, Sketcher::PointPos::end)
@@ -325,15 +325,15 @@ private:
                 // endpoint.
                 if (!periodic) {
                     for (auto& constr : sketchgui->getSketchObject()->Constraints.getValues()) {
-                        if (constr->First_Deprecated == geoIds[0]
-                            && constr->FirstPos_Deprecated == Sketcher::PointPos::start) {
+                        if (constr->getGeoId(0) == geoIds[0]
+                            && constr->getPosId(0) == Sketcher::PointPos::start) {
                             constr->setElement(
                                 0,
                                 Sketcher::GeoElementId(currentgeoid, Sketcher::PointPos::start)
                             );
                         }
-                        else if (constr->First_Deprecated == geoIds.back()
-                                 && constr->FirstPos_Deprecated == Sketcher::PointPos::start) {
+                        else if (constr->getGeoId(0) == geoIds.back()
+                                 && constr->getPosId(0) == Sketcher::PointPos::start) {
                             constr->setElement(
                                 0,
                                 Sketcher::GeoElementId(currentgeoid, Sketcher::PointPos::end)
@@ -658,9 +658,8 @@ private:
             const int delGeoId = geoIds.back();
             const auto& constraints = sketchgui->getSketchObject()->Constraints.getValues();
             for (int i = constraints.size() - 1; i >= 0; --i) {
-                if (delGeoId == constraints[i]->First_Deprecated
-                    || delGeoId == constraints[i]->Second_Deprecated
-                    || delGeoId == constraints[i]->Third_Deprecated) {
+                if (delGeoId == constraints[i]->getGeoId(0) || delGeoId == constraints[i]->getGeoId(1)
+                    || delGeoId == constraints[i]->getGeoId(2)) {
                     Gui::cmdAppObjectArgs(sketchgui->getObject(), "delConstraint(%d)", i);
                 }
             }

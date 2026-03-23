@@ -439,13 +439,13 @@ bool PropertyConstraintList::checkConstraintIndices(int geomax, int geomin)
 
     for (const auto& v : _lValueList) {
 
-        mininternalgeoid = cmin(mininternalgeoid, v->First_Deprecated);
-        mininternalgeoid = cmin(mininternalgeoid, v->Second_Deprecated);
-        mininternalgeoid = cmin(mininternalgeoid, v->Third_Deprecated);
+        mininternalgeoid = cmin(mininternalgeoid, v->getGeoId(0));
+        mininternalgeoid = cmin(mininternalgeoid, v->getGeoId(1));
+        mininternalgeoid = cmin(mininternalgeoid, v->getGeoId(2));
 
-        maxinternalgeoid = cmax(maxinternalgeoid, v->First_Deprecated);
-        maxinternalgeoid = cmax(maxinternalgeoid, v->Second_Deprecated);
-        maxinternalgeoid = cmax(maxinternalgeoid, v->Third_Deprecated);
+        maxinternalgeoid = cmax(maxinternalgeoid, v->getGeoId(0));
+        maxinternalgeoid = cmax(maxinternalgeoid, v->getGeoId(1));
+        maxinternalgeoid = cmax(maxinternalgeoid, v->getGeoId(2));
     }
 
     if (maxinternalgeoid > geomax || mininternalgeoid < geomin) {

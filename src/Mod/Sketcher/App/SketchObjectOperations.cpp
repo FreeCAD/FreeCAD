@@ -137,10 +137,10 @@ int SketchObject::delGeometries(InputIt first, InputIt last, DeleteOptions optio
     // if a GeoId has internal geometry, it must delete internal geometries too
     for (auto c : Constraints.getValues()) {
         if (c->Type == InternalAlignment) {
-            auto pos = std::ranges::find(sGeoIds, c->Second_Deprecated);
+            auto pos = std::ranges::find(sGeoIds, c->getGeoId(1));
 
             if (pos != sGeoIds.end()) {
-                sGeoIds.push_back(c->First_Deprecated);
+                sGeoIds.push_back(c->getGeoId(0));
             }
         }
     }
@@ -499,7 +499,7 @@ std::unique_ptr<Constraint> transformPreexistingConstraintForTrim(
             // we might want to transform this (and the new point-on-object constraints) into a
             // coincidence At this stage of the check the point has to be an end of `cuttingGeoId`
             // on the edge of `GeoId`.
-            if (isPointAtPosition(obj, constr->First_Deprecated, constr->FirstPos_Deprecated, cutPointVec)) {
+            if (isPointAtPosition(obj, constr->getGeoId(0), constr->getPosId(0), cutPointVec)) {
                 // We already know the point-on-object is on the whole of GeoId
                 newConstr.reset(constr->copy());
                 newConstr->Type = Sketcher::Coincident;
@@ -515,9 +515,9 @@ std::unique_ptr<Constraint> transformPreexistingConstraintForTrim(
             newConstr.reset(constr->copy());
             newConstr->substituteIndexAndPos(GeoId, PointPos::none, newGeoId, newPosId);
             // make sure the first position is a point
-            if (newConstr->FirstPos_Deprecated == PointPos::none) {
-                std::swap(newConstr->First_Deprecated, newConstr->Second_Deprecated);
-                std::swap(newConstr->FirstPos_Deprecated, newConstr->SecondPos_Deprecated);
+            if (newConstr->getPosId(0) == PointPos::none) {
+                std::swap(newConstr->getGeoId(0), newConstr->getGeoId(1));
+                std::swap(newConstr->getPosId(0), newConstr->getPosId(1));
             }
             // there is no need for the third point if it exists
             newConstr->setElement(2, GeoElementId(GeoEnum::GeoUndef, PointPos::none));
@@ -654,7 +654,7 @@ void createNewConstraintsForTrim(
         // trim-specific changes first
         const Constraint* con = allConstraints[oldConstrId];
         if (con->Type == InternalAlignment) {
-            geoIdsToBeDeleted.insert(con->First_Deprecated);
+            geoIdsToBeDeleted.insert(con->getGeoId(0));
             continue;
         }
         if (auto newConstr = transformPreexistingConstraintForTrim(
@@ -1979,11 +1979,11 @@ int SketchObject::addCopy(
                 auto constrIt = std::ranges::find_if(constrvals, [&newgeoIdList](auto c) {
                     return (
                         c->Type == Sketcher::InternalAlignment
-                        && c->First_Deprecated == *(newgeoIdList.begin())
+                        && c->getGeoId(0) == *(newgeoIdList.begin())
                     );
                 });
 
-                int definedGeo = (constrIt != constrvals.end()) ? (*constrIt)->Second_Deprecated
+                int definedGeo = (constrIt != constrvals.end()) ? (*constrIt)->getGeoId(1)
                                                                 : GeoEnum::GeoUndef;
 
                 if (std::ranges::find(newgeoIdList, definedGeo) == newgeoIdList.end()) {
@@ -2034,10 +2034,10 @@ int SketchObject::addCopy(
                 int definedGeo = GeoEnum::GeoUndef;
 
                 auto constrIt = std::ranges::find_if(constrvals, [&it](auto c) {
-                    return (c->Type == Sketcher::InternalAlignment && c->First_Deprecated == *it);
+                    return (c->Type == Sketcher::InternalAlignment && c->getGeoId(0) == *it);
                 });
                 if (constrIt != constrvals.end()) {
-                    definedGeo = (*constrIt)->Second_Deprecated;
+                    definedGeo = (*constrIt)->getGeoId(1);
                 }
 
                 if (std::ranges::find(newgeoIdList, definedGeo) == newgeoIdList.end()) {
@@ -2189,17 +2189,16 @@ int SketchObject::addCopy(
 
         // handle geometry constraints
         for (const auto& constr : constrvals) {
-            auto fit = geoIdMap.find(constr->First_Deprecated);
+            auto fit = geoIdMap.find(constr->getGeoId(0));
 
             if (fit == geoIdMap.end()) {
                 continue;
             }
 
             // First of constraint is in geoIdList
-            if (constr->Second_Deprecated
-                == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
+            if (constr->getGeoId(1) == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
                 if ((constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY)
-                    && constr->FirstPos_Deprecated != Sketcher::PointPos::none) {
+                    && constr->getPosId(0) != Sketcher::PointPos::none) {
                     continue;
                 }
                 // if it is not a point locking DistanceX/Y
@@ -2223,7 +2222,7 @@ int SketchObject::addCopy(
                     newconstrVals.push_back(constNew);
                     continue;
                 }
-                if (getGeometry(constr->First_Deprecated)->is<Part::GeomLineSegment>()) {
+                if (getGeometry(constr->getGeoId(0))->is<Part::GeomLineSegment>()) {
                     // Angles on a single Element are mapped to parallel
                     // constraints in clone mode
                     Constraint* constNew = constr->copy();
@@ -2237,17 +2236,17 @@ int SketchObject::addCopy(
             }
 
             // other geoids intervene in this constraint
-            auto sit = geoIdMap.find(constr->Second_Deprecated);
+            auto sit = geoIdMap.find(constr->getGeoId(1));
 
             if (sit == geoIdMap.end()) {
                 continue;
             }
 
             // Second is also in the list
-            if (constr->Third_Deprecated == GeoEnum::GeoUndef) {
+            if (constr->getGeoId(2) == GeoEnum::GeoUndef) {
                 if ((constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
                      || constr->Type == Sketcher::Distance)
-                    && (constr->First_Deprecated == constr->Second_Deprecated) && clone) {
+                    && (constr->getGeoId(0) == constr->getGeoId(1)) && clone) {
                     // Distances on a two Elements, which must be points of the
                     // same line are mapped to equality constraints in clone
                     // mode
@@ -2268,7 +2267,7 @@ int SketchObject::addCopy(
                 continue;
             }
 
-            auto tit = geoIdMap.find(constr->Third_Deprecated);
+            auto tit = geoIdMap.find(constr->getGeoId(2));
 
             if (tit != geoIdMap.end()) {
                 continue;
@@ -2766,7 +2765,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
 
     // modify pole and knot constraints
     for (const auto& constr : cvals) {
-        if (!(constr->Type == Sketcher::InternalAlignment && constr->Second_Deprecated == GeoId)) {
+        if (!(constr->Type == Sketcher::InternalAlignment && constr->getGeoId(1) == GeoId)) {
             newcVals.push_back(constr);
             continue;
         }
@@ -2776,7 +2775,7 @@ bool SketchObject::modifyBSplineKnotMultiplicity(int GeoId, int knotIndex, int m
         if (index == -1) {
             // it is an internal alignment geometry that is no longer valid
             // => delete it and the geometry
-            delGeoId.push_back(constr->First_Deprecated);
+            delGeoId.push_back(constr->getGeoId(0));
             continue;
         }
 
@@ -2907,7 +2906,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
 
     // modify pole and knot constraints
     for (const auto& constr : cvals) {
-        if (!(constr->Type == Sketcher::InternalAlignment && constr->Second_Deprecated == GeoId)) {
+        if (!(constr->Type == Sketcher::InternalAlignment && constr->getGeoId(1) == GeoId)) {
             newcVals.push_back(constr);
             continue;
         }
@@ -2929,7 +2928,7 @@ bool SketchObject::insertBSplineKnot(int GeoId, double param, int multiplicity)
         if (indexInNew && indexInNew->at(constr->InternalAlignmentIndex) == -1) {
             // it is an internal alignment geometry that is no longer valid
             // => delete it and the pole circle
-            delGeoId.push_back(constr->First_Deprecated);
+            delGeoId.push_back(constr->getGeoId(0));
             continue;
         }
 

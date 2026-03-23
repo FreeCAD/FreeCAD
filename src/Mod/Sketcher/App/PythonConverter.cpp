@@ -397,16 +397,16 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
 std::string PythonConverter::process(const Sketcher::Constraint* constraint, GeoIdMode geoIdMode)
 {
     bool addLastIdVar = geoIdMode == GeoIdMode::AddLastGeoIdToGeoIds;
-    bool addLastIdVar1 = constraint->First_Deprecated >= 0 && addLastIdVar;
-    bool addLastIdVar2 = constraint->Second_Deprecated >= 0 && addLastIdVar;
-    bool addLastIdVar3 = constraint->Third_Deprecated >= 0 && addLastIdVar;
+    bool addLastIdVar1 = constraint->getGeoId(0) >= 0 && addLastIdVar;
+    bool addLastIdVar2 = constraint->getGeoId(1) >= 0 && addLastIdVar;
+    bool addLastIdVar3 = constraint->getGeoId(2) >= 0 && addLastIdVar;
 
     std::string geoId1 = (addLastIdVar1 ? "lastGeoId + " : "")
-        + std::to_string(constraint->First_Deprecated);
+        + std::to_string(constraint->getGeoId(0));
     std::string geoId2 = (addLastIdVar2 ? "lastGeoId + " : "")
-        + std::to_string(constraint->Second_Deprecated);
+        + std::to_string(constraint->getGeoId(1));
     std::string geoId3 = (addLastIdVar3 ? "lastGeoId + " : "")
-        + std::to_string(constraint->Third_Deprecated);
+        + std::to_string(constraint->getGeoId(2));
 
 
     static std::map<
@@ -420,8 +420,8 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 [[maybe_unused]] std::string& geoId3) {
                  return boost::str(
                      boost::format("Sketcher.Constraint('Coincident', %s, %i, %s, %i") % geoId1
-                     % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                     % static_cast<int>(constr->SecondPos_Deprecated)
+                     % static_cast<int>(constr->getPosId(0)) % geoId2
+                     % static_cast<int>(constr->getPosId(1))
                  );
              }},
             {Sketcher::Horizontal,
@@ -429,14 +429,14 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second_Deprecated == GeoEnum::GeoUndef) {
+                 if (constr->getGeoId(1) == GeoEnum::GeoUndef) {
                      return boost::str(boost::format("Sketcher.Constraint('Horizontal', %s") % geoId1);
                  }
                  else {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Horizontal', %s, %i, %s, %i") % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                         % static_cast<int>(constr->SecondPos_Deprecated)
+                         % static_cast<int>(constr->getPosId(0)) % geoId2
+                         % static_cast<int>(constr->getPosId(1))
                      );
                  }
              }},
@@ -445,14 +445,14 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second_Deprecated == GeoEnum::GeoUndef) {
+                 if (constr->getGeoId(1) == GeoEnum::GeoUndef) {
                      return boost::str(boost::format("Sketcher.Constraint('Vertical', %s") % geoId1);
                  }
                  else {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Vertical', %s, %i, %s, %i") % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                         % static_cast<int>(constr->SecondPos_Deprecated)
+                         % static_cast<int>(constr->getPosId(0)) % geoId2
+                         % static_cast<int>(constr->getPosId(1))
                      );
                  }
              }},
@@ -468,22 +468,22 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 if (constr->FirstPos_Deprecated == Sketcher::PointPos::none) {
+                 if (constr->getPosId(0) == Sketcher::PointPos::none) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Tangent', %s, %s") % geoId1 % geoId2
                      );
                  }
-                 else if (constr->SecondPos_Deprecated == Sketcher::PointPos::none) {
+                 else if (constr->getPosId(1) == Sketcher::PointPos::none) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Tangent', %s, %i, %s") % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
+                         % static_cast<int>(constr->getPosId(0)) % geoId2
                      );
                  }
                  else {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Tangent', %s, %i, %s, %i") % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                         % static_cast<int>(constr->SecondPos_Deprecated)
+                         % static_cast<int>(constr->getPosId(0)) % geoId2
+                         % static_cast<int>(constr->getPosId(1))
                      );
                  }
              }},
@@ -501,22 +501,22 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 if (constr->FirstPos_Deprecated == Sketcher::PointPos::none) {
+                 if (constr->getPosId(0) == Sketcher::PointPos::none) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Perpendicular', %s, %s") % geoId1 % geoId2
                      );
                  }
-                 else if (constr->SecondPos_Deprecated == Sketcher::PointPos::none) {
+                 else if (constr->getPosId(1) == Sketcher::PointPos::none) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Perpendicular', %s, %i, %s") % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
+                         % static_cast<int>(constr->getPosId(0)) % geoId2
                      );
                  }
                  else {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Perpendicular', %s, %i, %s, %i")
-                         % geoId1 % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                         % static_cast<int>(constr->SecondPos_Deprecated)
+                         % geoId1 % static_cast<int>(constr->getPosId(0)) % geoId2
+                         % static_cast<int>(constr->getPosId(1))
                      );
                  }
              }},
@@ -551,14 +551,14 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                      return boost::str(
                          boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %i, %s")
                          % constr->internalAlignmentTypeToString() % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
+                         % static_cast<int>(constr->getPosId(0)) % geoId2
                      );
                  }
                  else if (constr->AlignmentType == BSplineControlPoint) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('InternalAlignment:%s', %s, %i, %s, %i")
                          % constr->internalAlignmentTypeToString() % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
+                         % static_cast<int>(constr->getPosId(0)) % geoId2
                          % constr->InternalAlignmentIndex
                      );
                  }
@@ -577,29 +577,29 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 if (constr->Second_Deprecated == GeoEnum::GeoUndef) {
+                 if (constr->getGeoId(1) == GeoEnum::GeoUndef) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Distance', %s, %f") % geoId1
                          % constr->getValue()
                      );
                  }
-                 else if (constr->FirstPos_Deprecated == Sketcher::PointPos::none) {
+                 else if (constr->getPosId(0) == Sketcher::PointPos::none) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Distance', %s, %s, %f") % geoId1
                          % geoId2 % constr->getValue()
                      );
                  }
-                 else if (constr->SecondPos_Deprecated == Sketcher::PointPos::none) {
+                 else if (constr->getPosId(1) == Sketcher::PointPos::none) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Distance', %s, %i, %s, %f") % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % geoId2 % constr->getValue()
+                         % static_cast<int>(constr->getPosId(0)) % geoId2 % constr->getValue()
                      );
                  }
                  else {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Distance', %s, %i, %s, %i, %f")
-                         % geoId1 % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                         % static_cast<int>(constr->SecondPos_Deprecated) % constr->getValue()
+                         % geoId1 % static_cast<int>(constr->getPosId(0)) % geoId2
+                         % static_cast<int>(constr->getPosId(1)) % constr->getValue()
                      );
                  }
              }},
@@ -608,14 +608,14 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 std::string& geoId3) {
-                 if (constr->Second_Deprecated == GeoEnum::GeoUndef) {
+                 if (constr->getGeoId(1) == GeoEnum::GeoUndef) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Angle', %s, %f") % geoId1
                          % constr->getValue()
                      );
                  }
-                 else if (constr->Third_Deprecated == GeoEnum::GeoUndef) {
-                     if (constr->SecondPos_Deprecated == Sketcher::PointPos::none) {
+                 else if (constr->getGeoId(2) == GeoEnum::GeoUndef) {
+                     if (constr->getPosId(1) == Sketcher::PointPos::none) {
                          return boost::str(
                              boost::format("Sketcher.Constraint('Angle', %s, %s, %f") % geoId1
                              % geoId2 % constr->getValue()
@@ -624,15 +624,15 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                      else {
                          return boost::str(
                              boost::format("Sketcher.Constraint('Angle', %s, %i, %s, %i, %f")
-                             % geoId1 % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                             % static_cast<int>(constr->SecondPos_Deprecated) % constr->getValue()
+                             % geoId1 % static_cast<int>(constr->getPosId(0)) % geoId2
+                             % static_cast<int>(constr->getPosId(1)) % constr->getValue()
                          );
                      }
                  }
                  else {
                      return boost::str(
                          boost::format("Sketcher.Constraint('AngleViaPoint', %s, %s, %s, %i, %f")
-                         % geoId1 % geoId2 % geoId3 % static_cast<int>(constr->ThirdPos_Deprecated)
+                         % geoId1 % geoId2 % geoId3 % static_cast<int>(constr->getPosId(2))
                          % constr->getValue()
                      );
                  }
@@ -642,24 +642,24 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 if (constr->FirstPos_Deprecated == Sketcher::PointPos::none
-                     && constr->Second_Deprecated == GeoEnum::GeoUndef) {
+                 if (constr->getPosId(0) == Sketcher::PointPos::none
+                     && constr->getGeoId(1) == GeoEnum::GeoUndef) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('DistanceX', %s, %f") % geoId1
                          % constr->getValue()
                      );
                  }
-                 else if (constr->SecondPos_Deprecated == Sketcher::PointPos::none) {
+                 else if (constr->getPosId(1) == Sketcher::PointPos::none) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('DistanceX', %s, %i, %f") % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % constr->getValue()
+                         % static_cast<int>(constr->getPosId(0)) % constr->getValue()
                      );
                  }
                  else {
                      return boost::str(
                          boost::format("Sketcher.Constraint('DistanceX', %s, %i, %s, %i, %f")
-                         % geoId1 % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                         % static_cast<int>(constr->SecondPos_Deprecated) % constr->getValue()
+                         % geoId1 % static_cast<int>(constr->getPosId(0)) % geoId2
+                         % static_cast<int>(constr->getPosId(1)) % constr->getValue()
                      );
                  }
              }},
@@ -668,24 +668,24 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 [[maybe_unused]] std::string& geoId3) {
-                 if (constr->FirstPos_Deprecated == Sketcher::PointPos::none
-                     && constr->Second_Deprecated == GeoEnum::GeoUndef) {
+                 if (constr->getPosId(0) == Sketcher::PointPos::none
+                     && constr->getGeoId(1) == GeoEnum::GeoUndef) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('DistanceY', %s, %f") % geoId1
                          % constr->getValue()
                      );
                  }
-                 else if (constr->SecondPos_Deprecated == Sketcher::PointPos::none) {
+                 else if (constr->getPosId(1) == Sketcher::PointPos::none) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('DistanceY', %s, %i, %f") % geoId1
-                         % static_cast<int>(constr->FirstPos_Deprecated) % constr->getValue()
+                         % static_cast<int>(constr->getPosId(0)) % constr->getValue()
                      );
                  }
                  else {
                      return boost::str(
                          boost::format("Sketcher.Constraint('DistanceY', %s, %i, %s, %i, %f")
-                         % geoId1 % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                         % static_cast<int>(constr->SecondPos_Deprecated) % constr->getValue()
+                         % geoId1 % static_cast<int>(constr->getPosId(0)) % geoId2
+                         % static_cast<int>(constr->getPosId(1)) % constr->getValue()
                      );
                  }
              }},
@@ -726,7 +726,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 [[maybe_unused]] std::string& geoId3) {
                  return boost::str(
                      boost::format("Sketcher.Constraint('PointOnObject', %s, %i, %s") % geoId1
-                     % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
+                     % static_cast<int>(constr->getPosId(0)) % geoId2
                  );
              }},
             {Sketcher::Symmetric,
@@ -734,19 +734,19 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId1,
                 std::string& geoId2,
                 std::string& geoId3) {
-                 if (constr->ThirdPos_Deprecated == Sketcher::PointPos::none) {
+                 if (constr->getPosId(2) == Sketcher::PointPos::none) {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Symmetric', %s, %i, %s, %i, %s")
-                         % geoId1 % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                         % static_cast<int>(constr->SecondPos_Deprecated) % geoId3
+                         % geoId1 % static_cast<int>(constr->getPosId(0)) % geoId2
+                         % static_cast<int>(constr->getPosId(1)) % geoId3
                      );
                  }
                  else {
                      return boost::str(
                          boost::format("Sketcher.Constraint('Symmetric', %s, %i, %s, %i, %s, %i")
-                         % geoId1 % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                         % static_cast<int>(constr->SecondPos_Deprecated) % geoId3
-                         % static_cast<int>(constr->ThirdPos_Deprecated)
+                         % geoId1 % static_cast<int>(constr->getPosId(0)) % geoId2
+                         % static_cast<int>(constr->getPosId(1)) % geoId3
+                         % static_cast<int>(constr->getPosId(2))
                      );
                  }
              }},
@@ -757,8 +757,8 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 std::string& geoId3) {
                  return boost::str(
                      boost::format("Sketcher.Constraint('SnellsLaw', %s, %i, %s, %i, %s, %f")
-                     % geoId1 % static_cast<int>(constr->FirstPos_Deprecated) % geoId2
-                     % static_cast<int>(constr->SecondPos_Deprecated) % geoId3 % constr->getValue()
+                     % geoId1 % static_cast<int>(constr->getPosId(0)) % geoId2
+                     % static_cast<int>(constr->getPosId(1)) % geoId3 % constr->getValue()
                  );
              }},
         };

@@ -291,10 +291,10 @@ struct PointConstraints
                 for (auto& coincidence : allcoincid) {
                     VertexIds v1;
                     VertexIds v2;
-                    v1.GeoId = coincidence->First_Deprecated;
-                    v1.PosId = coincidence->FirstPos_Deprecated;
-                    v2.GeoId = coincidence->Second_Deprecated;
-                    v2.PosId = coincidence->SecondPos_Deprecated;
+                    v1.GeoId = coincidence->getGeoId(0);
+                    v1.PosId = coincidence->getPosId(0);
+                    v2.GeoId = coincidence->getGeoId(1);
+                    v2.PosId = coincidence->getPosId(1);
 
                     // Look if coincident vertices are in the group of adjacent ones we are
                     // processing
@@ -765,10 +765,10 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
         if (it->Type == Sketcher::Equal) {
             ConstraintIds id {
                 Base::Vector3d {},
-                it->First_Deprecated,
-                it->Second_Deprecated,
-                it->FirstPos_Deprecated,
-                it->SecondPos_Deprecated,
+                it->getGeoId(0),
+                it->getGeoId(1),
+                it->getPosId(0),
+                it->getPosId(1),
                 it->Type
             };
 

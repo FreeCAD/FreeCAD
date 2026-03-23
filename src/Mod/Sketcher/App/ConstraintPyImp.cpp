@@ -917,13 +917,13 @@ std::string ConstraintPy::representation() const
             result << "'Coincident'>";
             break;
         case Horizontal:
-            result << "'Horizontal' (" << getConstraintPtr()->First_Deprecated << ")>";
+            result << "'Horizontal' (" << getConstraintPtr()->getGeoId(0) << ")>";
             break;
         case Vertical:
-            result << "'Vertical' (" << getConstraintPtr()->First_Deprecated << ")>";
+            result << "'Vertical' (" << getConstraintPtr()->getGeoId(0) << ")>";
             break;
         case Block:
-            result << "'Block' (" << getConstraintPtr()->First_Deprecated << ")>";
+            result << "'Block' (" << getConstraintPtr()->getGeoId(0) << ")>";
             break;
         case Radius:
             result << "'Radius'>";
@@ -938,7 +938,7 @@ std::string ConstraintPy::representation() const
             result << "'Parallel'>";
             break;
         case Tangent:
-            if (this->getConstraintPtr()->Third_Deprecated == GeoEnum::GeoUndef) {
+            if (this->getConstraintPtr()->getGeoId(2) == GeoEnum::GeoUndef) {
                 result << "'Tangent'>";
             }
             else {
@@ -946,7 +946,7 @@ std::string ConstraintPy::representation() const
             }
             break;
         case Perpendicular:
-            if (this->getConstraintPtr()->Third_Deprecated == GeoEnum::GeoUndef) {
+            if (this->getConstraintPtr()->getGeoId(2) == GeoEnum::GeoUndef) {
                 result << "'Perpendicular'>";
             }
             else {
@@ -957,7 +957,7 @@ std::string ConstraintPy::representation() const
             result << "'Distance'>";
             break;
         case Angle:
-            if (this->getConstraintPtr()->Third_Deprecated == GeoEnum::GeoUndef) {
+            if (this->getConstraintPtr()->getGeoId(2) == GeoEnum::GeoUndef) {
                 result << "'Angle'>";
             }
             else {
@@ -1014,12 +1014,12 @@ std::string ConstraintPy::representation() const
             }
             break;
         case Equal:
-            result << "'Equal' (" << getConstraintPtr()->First_Deprecated << ","
-                   << getConstraintPtr()->Second_Deprecated << ")>";
+            result << "'Equal' (" << getConstraintPtr()->getGeoId(0) << ","
+                   << getConstraintPtr()->getGeoId(1) << ")>";
             break;
         case PointOnObject:
-            result << "'PointOnObject' (" << getConstraintPtr()->First_Deprecated << ","
-                   << getConstraintPtr()->Second_Deprecated << ")>";
+            result << "'PointOnObject' (" << getConstraintPtr()->getGeoId(0) << ","
+                   << getConstraintPtr()->getGeoId(1) << ")>";
             break;
         case Group:
             result << "'Group'>";
@@ -1111,7 +1111,7 @@ Py::String ConstraintPy::getType() const
 
 Py::Long ConstraintPy::getFirst() const
 {
-    return Py::Long(this->getConstraintPtr()->First_Deprecated);
+    return Py::Long(this->getConstraintPtr()->getGeoId(0));
 }
 
 void ConstraintPy::setFirst(Py::Long arg)
@@ -1121,7 +1121,7 @@ void ConstraintPy::setFirst(Py::Long arg)
 
 Py::Long ConstraintPy::getFirstPos() const
 {
-    return Py::Long(static_cast<int>(this->getConstraintPtr()->FirstPos_Deprecated));
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->getPosId(0)));
 }
 
 void ConstraintPy::setFirstPos(Py::Long arg)
@@ -1142,7 +1142,7 @@ void ConstraintPy::setFirstPos(Py::Long arg)
 
 Py::Long ConstraintPy::getSecond() const
 {
-    return Py::Long(this->getConstraintPtr()->Second_Deprecated);
+    return Py::Long(this->getConstraintPtr()->getGeoId(1));
 }
 
 void ConstraintPy::setSecond(Py::Long arg)
@@ -1152,7 +1152,7 @@ void ConstraintPy::setSecond(Py::Long arg)
 
 Py::Long ConstraintPy::getSecondPos() const
 {
-    return Py::Long(static_cast<int>(this->getConstraintPtr()->SecondPos_Deprecated));
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->getPosId(1)));
 }
 
 void ConstraintPy::setSecondPos(Py::Long arg)
@@ -1173,7 +1173,7 @@ void ConstraintPy::setSecondPos(Py::Long arg)
 
 Py::Long ConstraintPy::getThird() const
 {
-    return Py::Long(this->getConstraintPtr()->Third_Deprecated);
+    return Py::Long(this->getConstraintPtr()->getGeoId(2));
 }
 
 void ConstraintPy::setThird(Py::Long arg)
@@ -1183,7 +1183,7 @@ void ConstraintPy::setThird(Py::Long arg)
 
 Py::Long ConstraintPy::getThirdPos() const
 {
-    return Py::Long(static_cast<int>(this->getConstraintPtr()->ThirdPos_Deprecated));
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->getPosId(2)));
 }
 
 void ConstraintPy::setThirdPos(Py::Long arg)

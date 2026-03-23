@@ -338,9 +338,9 @@ private:
             std::vector<int> geoIdsWhoAlreadyHasEqual = {};
 
             for (auto& cstr : vals) {
-                int firstIndex = indexOfGeoId(listOfGeoIds, cstr->First_Deprecated);
-                int secondIndex = indexOfGeoId(listOfGeoIds, cstr->Second_Deprecated);
-                int thirdIndex = indexOfGeoId(listOfGeoIds, cstr->Third_Deprecated);
+                int firstIndex = indexOfGeoId(listOfGeoIds, cstr->getGeoId(0));
+                int secondIndex = indexOfGeoId(listOfGeoIds, cstr->getGeoId(1));
+                int thirdIndex = indexOfGeoId(listOfGeoIds, cstr->getGeoId(2));
 
                 for (int i = 0; i < numberOfCopiesToMake; i++) {
                     int firstIndexi = firstCurveCreated + firstIndex + static_cast<int>(size) * i;
@@ -371,7 +371,7 @@ private:
                         }
                         else {
                             newConstr->Type = Equal;
-                            newConstr->setGeoId(0, cstr->First_Deprecated);
+                            newConstr->setGeoId(0, cstr->getGeoId(0));
                             newConstr->setGeoId(1, firstIndexi);
                         }
                     }
@@ -379,14 +379,14 @@ private:
                               || cstr->Type == DistanceY)
                              && firstIndex >= 0) {
                         if (!deleteOriginal && cloneConstraints
-                            && (cstr->First_Deprecated == cstr->Second_Deprecated
+                            && (cstr->getGeoId(0) == cstr->getGeoId(1)
                                 || secondIndex < 0)) {  // only line
                                                         // distances
                             if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, firstIndexi) != -1) {
                                 continue;
                             }
                             newConstr->Type = Equal;
-                            newConstr->setGeoId(0, cstr->First_Deprecated);
+                            newConstr->setGeoId(0, cstr->getGeoId(0));
                             newConstr->setGeoId(1, firstIndexi);
                             geoIdsWhoAlreadyHasEqual.push_back(firstIndexi);
                         }

@@ -707,7 +707,7 @@ protected:
                         AutoConstraints,
                         std::tuple {Sketcher::Tangent, geoId1, geoId2},
                         [](const auto& ace) {
-                            return std::tuple {ace->Type, ace->First_Deprecated, ace->Second_Deprecated};
+                            return std::tuple {ace->Type, ace->getGeoId(0), ace->getGeoId(1)};
                         }
                     );
                 }
@@ -742,10 +742,10 @@ protected:
 
                 // if tangency, convert to point-to-edge tangency
                 if (itOfTangentConstraint != AutoConstraints.end()) {
-                    if ((*itOfTangentConstraint)->First_Deprecated != geoId1) {
+                    if ((*itOfTangentConstraint)->getGeoId(0) != geoId1) {
                         std::swap(
-                            (*itOfTangentConstraint)->Second_Deprecated,
-                            (*itOfTangentConstraint)->First_Deprecated
+                            (*itOfTangentConstraint)->getGeoId(1),
+                            (*itOfTangentConstraint)->getGeoId(0)
                         );
                     }
 
@@ -836,8 +836,8 @@ protected:
                 }
 
                 auto resultCoincident = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
-                    return ace->Type == Sketcher::Coincident && ace->First_Deprecated == geoId1
-                        && ace->Second_Deprecated == geoId2;
+                    return ace->Type == Sketcher::Coincident && ace->getGeoId(0) == geoId1
+                        && ace->getGeoId(1) == geoId2;
                 });
 
                 auto resultPointOnObject = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
@@ -846,20 +846,20 @@ protected:
                 });
 
                 if (resultCoincident != AutoConstraints.end()
-                    && isStartOrEnd((*resultCoincident)->FirstPos_Deprecated)
-                    && isStartOrEnd((*resultCoincident)->SecondPos_Deprecated)) {
+                    && isStartOrEnd((*resultCoincident)->getPosId(0))
+                    && isStartOrEnd((*resultCoincident)->getPosId(1))) {
                     // endpoint-to-endpoint tangency
                     (*resultCoincident)->Type = Sketcher::Tangent;
                 }
                 else if (resultPointOnObject != AutoConstraints.end()
-                         && isStartOrEnd((*resultPointOnObject)->FirstPos_Deprecated)) {
+                         && isStartOrEnd((*resultPointOnObject)->getPosId(0))) {
                     // endpoint-to-edge tangency
                     (*resultPointOnObject)->Type = Sketcher::Tangent;
                 }
                 else if (resultCoincident != AutoConstraints.end()
-                         && (*resultCoincident)->FirstPos_Deprecated == Sketcher::PointPos::mid
-                         && (*resultCoincident)->SecondPos_Deprecated == Sketcher::PointPos::mid
-                         && geom1 && geom2
+                         && (*resultCoincident)->getPosId(0) == Sketcher::PointPos::mid
+                         && (*resultCoincident)->getPosId(1) == Sketcher::PointPos::mid && geom1
+                         && geom2
                          && (geom1->is<Part::GeomCircle>() || geom1->is<Part::GeomArcOfCircle>())
                          && (geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>())) {
                     // equality

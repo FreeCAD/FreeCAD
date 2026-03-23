@@ -877,8 +877,8 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
         &Sketcher::Constraint::Type
     );
     EXPECT_NE(tangIt, constraints.end());
-    EXPECT_EQ((*tangIt)->FirstPos_Deprecated, Sketcher::PointPos::none);
-    EXPECT_EQ((*tangIt)->SecondPos_Deprecated, Sketcher::PointPos::none);
+    EXPECT_EQ((*tangIt)->getPosId(0), Sketcher::PointPos::none);
+    EXPECT_EQ((*tangIt)->getPosId(1), Sketcher::PointPos::none);
 }
 
 // TODO: Ensure endpoint constraints go to the appropriate new geometry
