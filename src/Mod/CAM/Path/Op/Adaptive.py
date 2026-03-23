@@ -1162,7 +1162,9 @@ def _getSolidProjection(shp, z):
         FreeCAD.Vector(bb.XMin, bb.YMin, z),
     )
     aboveSolids = shp.common(bbCutTop).Solids
-    faces = [s.Faces for s in aboveSolids]
+    faces = []
+    for s in aboveSolids:
+        faces += s.Faces
 
     return projectFacesToXY(faces)
 
@@ -1340,7 +1342,9 @@ def _workingEdgeHelperManual(op, obj, depths):
     edgefaces = list()
     if selectedEdges:
         pp = [projface.makeParallelProjection(e, projdir).Wires[0] for e in selectedEdges]
-        ppe = [w.Edges for w in pp]
+        ppe = []
+        for w in pp:
+            ppe += w.Edges
         edgeWires = DraftGeomUtils.findWires(ppe)
         edgefaces = Part.makeFace(edgeWires).Faces
 
