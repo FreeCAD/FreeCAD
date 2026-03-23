@@ -3606,7 +3606,7 @@ void Adaptive2d::ProcessPolyNode(
         cumulativeCutArea = 0;
         for (Path& a : newlyClearedAreas) {
             int nesting = getPathNestingLevel(a, newlyClearedAreas);
-            cumulativeCutArea += (nesting <= 1 ? 1 : -1) * fabs(Area(a));
+            cumulativeCutArea += (nesting % 2 == 1 ? 1 : -1) * fabs(Area(a));
         }
 
         if (cumulativeCutArea >= 1) {
@@ -3855,7 +3855,7 @@ void Adaptive2d::ProcessPolyNode(
     double initialClearedArea = 0.0;
     for (const Path& path : initialClearedPaths) {
         int nesting = getPathNestingLevel(path, initialClearedPaths);
-        initialClearedArea += (nesting <= 1 ? 1 : -1) * fabs(Area(path));
+        initialClearedArea += (nesting % 2 == 1 ? 1 : -1) * fabs(Area(path));
     }
 
     // Then calculate final cleared area
@@ -3863,7 +3863,7 @@ void Adaptive2d::ProcessPolyNode(
     double finalClearedArea = 0.0;
     for (const Path& path : clearedPaths) {
         int nesting = getPathNestingLevel(path, clearedPaths);
-        finalClearedArea += (nesting <= 1 ? 1 : -1) * fabs(Area(path));
+        finalClearedArea += (nesting % 2 == 1 ? 1 : -1) * fabs(Area(path));
     }
 
     // Convert from scaled units to real units (scaleFactor is applied twice for area)

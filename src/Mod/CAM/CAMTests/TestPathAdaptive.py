@@ -28,6 +28,8 @@ import Part
 import Path.Op.Adaptive as PathAdaptive
 import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestBase
+import area
+import math
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
@@ -130,7 +132,85 @@ class TestPathAdaptive(PathTestBase):
             "Adaptive failed to generate lead-in for finishing pass",
         )
 
-    # Unit tests
+    def testClearInside(self):
+        """testClearInside() Test C++ Adaptive2d clearing inside a simple rectangle."""
+
+        # Define geometry dimensions
+        stock_width = 50.0
+        stock_height = 50.0
+        path_width = 40.0
+        path_height = 40.0
+
+        # Create stock boundary centered at origin
+        stock_x0 = 0.0
+        stock_y0 = 0.0
+        stock_x1 = stock_x0 + stock_width
+        stock_y1 = stock_y0 + stock_height
+        stockPath2d = [
+            [
+                [stock_x0, stock_y0],
+                [stock_x1, stock_y0],
+                [stock_x1, stock_y1],
+                [stock_x0, stock_y1],
+            ]
+        ]
+
+        # Create region to clear, centered within stock
+        margin_x = (stock_width - path_width) / 2.0
+        margin_y = (stock_height - path_height) / 2.0
+        path_x0 = stock_x0 + margin_x
+        path_y0 = stock_y0 + margin_y
+        path_x1 = path_x0 + path_width
+        path_y1 = path_y0 + path_height
+        path2d = [
+            [
+                [path_x0, path_y0],
+                [path_x1, path_y0],
+                [path_x1, path_y1],
+                [path_x0, path_y1],
+            ]
+        ]
+
+        # No previously cleared area
+        clearedArea = []
+
+        # Create and configure Adaptive2d instance
+        a2d = area.Adaptive2d()
+        a2d.stepOverFactor = 0.20
+        a2d.toolDiameter = 5.0
+        a2d.tolerance = 0.1
+        a2d.forceInsideOut = False
+        a2d.finishingProfile = True
+        a2d.keepToolDownDistRatio = 3.0
+        a2d.opType = area.AdaptiveOperationType.ClearingInside
+
+        # Execute the adaptive algorithm
+        results = a2d.Execute(stockPath2d, path2d, clearedArea, lambda paths: False)
+
+        # Verify we got results
+        self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
+
+        # Check all results for errors
+        for result in results:
+            self.checkAdaptiveErrors(result)
+
+        # Verify cleared area matches the path2d rectangle area
+        total_cleared = sum(r.ClearedArea for r in results)
+
+        # Account for unclearable area in corners due to circular tool
+        tool_radius = a2d.toolDiameter / 2.0
+        corner_unclearable_area = tool_radius**2 * (1 - math.pi / 4)
+        total_unclearable_area = 4 * corner_unclearable_area
+
+        expected_area = path_width * path_height - total_unclearable_area
+        delta = corner_unclearable_area / 2.0  # Use half a corner area as tolerance
+        self.assertAlmostEqual(
+            total_cleared,
+            expected_area,
+            delta=delta,
+            msg=f"Total cleared area {total_cleared} should be within {delta} of {expected_area}",
+        )
+
     def testFaceSingleSimple(self):
         """testFaceSingleSimple() Verify path generated on Face3."""
 
