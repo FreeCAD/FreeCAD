@@ -281,6 +281,112 @@ class TestPathAdaptive(PathTestBase):
             msg=f"Total cleared area {total_cleared} should be within {delta} of {expected_area}",
         )
 
+    def testProfilingInside(self):
+        """testProfilingInside() Test C++ Adaptive2d profiling inside a rectangle."""
+
+        # Define geometry dimensions (same as other tests)
+        stock_width = 50.0
+        stock_height = 50.0
+        path_width = 40.0
+        path_height = 40.0
+
+        # Create stock boundary centered at origin
+        stock_x0 = 0.0
+        stock_y0 = 0.0
+        stock_x1 = stock_x0 + stock_width
+        stock_y1 = stock_y0 + stock_height
+        stockPath2d = [
+            [
+                [stock_x0, stock_y0],
+                [stock_x1, stock_y0],
+                [stock_x1, stock_y1],
+                [stock_x0, stock_y1],
+            ]
+        ]
+
+        # Create region to profile, centered within stock
+        margin_x = (stock_width - path_width) / 2.0
+        margin_y = (stock_height - path_height) / 2.0
+        path_x0 = stock_x0 + margin_x
+        path_y0 = stock_y0 + margin_y
+        path_x1 = path_x0 + path_width
+        path_y1 = path_y0 + path_height
+        path2d = [
+            [
+                [path_x0, path_y0],
+                [path_x1, path_y0],
+                [path_x1, path_y1],
+                [path_x0, path_y1],
+            ]
+        ]
+
+        # No previously cleared area
+        clearedArea = []
+
+        # Create and configure Adaptive2d instance
+        a2d = area.Adaptive2d()
+        a2d.stepOverFactor = 0.20
+        a2d.toolDiameter = 5.0
+        a2d.tolerance = 0.1
+        a2d.forceInsideOut = False
+        a2d.finishingProfile = True
+        a2d.keepToolDownDistRatio = 3.0
+        a2d.opType = area.AdaptiveOperationType.ProfilingInside
+
+        # Execute the adaptive algorithm
+        results = a2d.Execute(stockPath2d, path2d, clearedArea, lambda paths: False)
+
+        # Verify we got results
+        self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
+
+        # Check all results for errors
+        for result in results:
+            self.checkAdaptiveErrors(result)
+
+        # Verify cleared area is appropriate for profiling between 2-3 tool diameters
+        total_cleared = sum(r.ClearedArea for r in results)
+
+        # Calculate expected area range for a profile 2-3 tool diameters wide
+        tool_diameter = a2d.toolDiameter
+
+        # Outer boundary is the path2d
+        outer_area = path_width * path_height
+
+        # Inner boundary at 2 tool diameters inset
+        inset_2_diameters = 2 * tool_diameter
+        inner_width_min = path_width - 2 * inset_2_diameters
+        inner_height_min = path_height - 2 * inset_2_diameters
+        inner_area_max = (
+            inner_width_min * inner_height_min
+            if inner_width_min > 0 and inner_height_min > 0
+            else 0
+        )
+
+        # Inner boundary at 3 tool diameters inset
+        inset_3_diameters = 3 * tool_diameter
+        inner_width_max = path_width - 2 * inset_3_diameters
+        inner_height_max = path_height - 2 * inset_3_diameters
+        inner_area_min = (
+            inner_width_max * inner_height_max
+            if inner_width_max > 0 and inner_height_max > 0
+            else 0
+        )
+
+        # Expected area range
+        min_area = outer_area - inner_area_max  # 2 diameters deep
+        max_area = outer_area - inner_area_min  # 3 diameters deep
+
+        self.assertGreaterEqual(
+            total_cleared,
+            min_area,
+            msg=f"Profiling cleared area {total_cleared} should be at least {min_area} (2 tool diameters deep)",
+        )
+        self.assertLessEqual(
+            total_cleared,
+            max_area,
+            msg=f"Profiling cleared area {total_cleared} should be at most {max_area} (3 tool diameters deep)",
+        )
+
     def testFaceSingleSimple(self):
         """testFaceSingleSimple() Verify path generated on Face3."""
 
