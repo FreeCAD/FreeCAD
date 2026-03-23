@@ -624,13 +624,13 @@ class ArchGridTaskPanel:
 
     def editHorizontalHeader(self, index):
 
-        val, ok = QtGui.QInputDialog.getText(None, "Edit size", "New size")
+        val, ok = QtGui.QInputDialog.getText(None, "Edit Size", "New size")
         if ok:
             self.table.setHorizontalHeaderItem(index, QtGui.QTableWidgetItem(val))
 
     def editVerticalHeader(self, index):
 
-        val, ok = QtGui.QInputDialog.getText(None, "Edit size", "New size")
+        val, ok = QtGui.QInputDialog.getText(None, "Edit Size", "New size")
         if ok:
             self.table.setVerticalHeaderItem(index, QtGui.QTableWidgetItem(val))
 

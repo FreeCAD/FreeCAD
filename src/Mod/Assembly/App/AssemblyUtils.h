@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_AssemblyUtils_H
-#define ASSEMBLY_AssemblyUtils_H
+#pragma once
 
 #include <GeomAbs_CurveType.hxx>
 #include <GeomAbs_SurfaceType.hxx>
@@ -150,6 +149,8 @@ AssemblyExport double getEdgeRadius(const App::DocumentObject* obj, const std::s
 AssemblyExport DistanceType getDistanceType(App::DocumentObject* joint);
 AssemblyExport JointGroup* getJointGroup(const App::Part* part);
 
+AssemblyExport std::vector<App::DocumentObject*> getAssemblyComponents(const AssemblyObject* assembly);
+
 // getters to get from properties
 AssemblyExport void setJointActivated(const App::DocumentObject* joint, bool val);
 AssemblyExport bool getJointActivated(const App::DocumentObject* joint);
@@ -163,27 +164,24 @@ AssemblyExport App::DocumentObject* getObjFromProp(
     const App::DocumentObject* joint,
     const char* propName
 );
-AssemblyExport App::DocumentObject* getObjFromRef(const App::DocumentObject* obj, const std::string& sub);
+AssemblyExport App::DocumentObject* getObjFromRef(App::DocumentObject* obj, const std::string& sub);
 AssemblyExport App::DocumentObject* getObjFromRef(const App::PropertyXLinkSub* prop);
-AssemblyExport App::DocumentObject* getObjFromRef(const App::DocumentObject* joint, const char* propName);
+AssemblyExport App::DocumentObject* getObjFromJointRef(
+    const App::DocumentObject* joint,
+    const char* propName
+);
 AssemblyExport App::DocumentObject* getLinkedObjFromRef(
     const App::DocumentObject* joint,
     const char* propName
 );
-AssemblyExport App::DocumentObject* getMovingPartFromRef(
+// Get the moving part from a selection, which has the full path.
+AssemblyExport App::DocumentObject* getMovingPartFromSel(
     const AssemblyObject* assemblyObject,
     App::DocumentObject* obj,
     const std::string& sub
 );
-AssemblyExport App::DocumentObject* getMovingPartFromRef(
-    const AssemblyObject* assemblyObject,
-    const App::PropertyXLinkSub* prop
-);
-AssemblyExport App::DocumentObject* getMovingPartFromRef(
-    const AssemblyObject* assemblyObject,
-    App::DocumentObject* joint,
-    const char* pName
-);
+AssemblyExport App::DocumentObject* getMovingPartFromRef(const App::PropertyXLinkSub* prop);
+AssemblyExport App::DocumentObject* getMovingPartFromRef(App::DocumentObject* joint, const char* pName);
 AssemblyExport std::vector<std::string> getSubAsList(const App::PropertyXLinkSub* prop);
 AssemblyExport std::vector<std::string> getSubAsList(
     const App::DocumentObject* joint,
@@ -192,6 +190,3 @@ AssemblyExport std::vector<std::string> getSubAsList(
 AssemblyExport void syncPlacements(App::DocumentObject* src, App::DocumentObject* to);
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_AssemblyUtils_H

@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include <sstream>
+#include <vector>
+#include <tuple>
+
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -393,8 +396,15 @@ void StdCmdFreezeViews::activated(int iMsg)
     }
     else if (iMsg == 3) {
         // Create a new view
-        const char* ppReturn = nullptr;
-        getGuiApplication()->sendMsgToActiveView("GetCamera", &ppReturn);
+        auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+        if (!view3d) {
+            Base::Console().developerError(
+                "StdCmdFreezeViews",
+                "Expected the active view to be View3DInventor\n"
+            );
+            return;
+        }
+        const std::string& camera = view3d->getCamera();
 
         QList<QAction*> acts = pcAction->actions();
         int index = 1;
@@ -403,7 +413,7 @@ void StdCmdFreezeViews::activated(int iMsg)
                 savedViews++;
                 QString viewnr = QString(QObject::tr("Restore View &%1")).arg(index);
                 (*it)->setText(viewnr);
-                (*it)->setToolTip(QString::fromLatin1(ppReturn));
+                (*it)->setToolTip(QString::fromStdString(camera));
                 (*it)->setVisible(true);
                 if (index < 10) {
                     (*it)->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(index)));
@@ -423,9 +433,26 @@ void StdCmdFreezeViews::activated(int iMsg)
         // Activate a view
         QList<QAction*> acts = pcAction->actions();
         QString data = acts[iMsg]->toolTip();
-        QString send = QStringLiteral("SetCamera %1").arg(data);
-        getGuiApplication()->sendMsgToActiveView(send.toLatin1());
+        MDIView* view = getGuiApplication()->activeView();
+        if (auto* view3D = freecad_cast<View3DInventor*>(view)) {
+            view3D->setCamera(data.toStdString().c_str());
+        }
     }
+}
+
+bool StdCmdFreezeViews::isActive()
+{
+    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+
+    separator->setVisible(savedViews > 0);
+    if (view) {
+        saveView->setEnabled(savedViews > 0);
+        freezeView->setEnabled(savedViews < maxViews);
+        clearView->setEnabled(savedViews > 0);
+        return true;
+    }
+
+    return false;
 }
 
 void StdCmdFreezeViews::onSaveViews()
@@ -589,23 +616,6 @@ void StdCmdFreezeViews::onRestoreViews()
     }
 }
 
-bool StdCmdFreezeViews::isActive()
-{
-    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (view) {
-        saveView->setEnabled(savedViews > 0);
-        freezeView->setEnabled(savedViews < maxViews);
-        clearView->setEnabled(savedViews > 0);
-        separator->setVisible(savedViews > 0);
-        return true;
-    }
-    else {
-        separator->setVisible(savedViews > 0);
-    }
-
-    return false;
-}
-
 void StdCmdFreezeViews::languageChange()
 {
     Command::languageChange();
@@ -633,7 +643,34 @@ void StdCmdFreezeViews::languageChange()
 // Std_ToggleClipPlane
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdToggleClipPlane)
+class StdCmdToggleClipPlane: public Gui::Command
+{
+public:
+    StdCmdToggleClipPlane();
+    virtual ~StdCmdToggleClipPlane()
+    {}
+    virtual const char* className() const
+    {
+        return "StdCmdToggleClipPlane";
+    }
+
+protected:
+    virtual void activated(int iMsg);
+    virtual bool isActive(void);
+    virtual Gui::Action* createAction(void);
+
+private:
+    StdCmdToggleClipPlane(const StdCmdToggleClipPlane&) = delete;
+    StdCmdToggleClipPlane(StdCmdToggleClipPlane&&) = delete;
+    StdCmdToggleClipPlane& operator=(const StdCmdToggleClipPlane&) = delete;
+    StdCmdToggleClipPlane& operator=(StdCmdToggleClipPlane&&) = delete;
+
+    void garbageCollect();
+    bool hasClipping(App::Document* doc) const;
+
+private:
+    std::vector<std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>> clippings;
+};
 
 StdCmdToggleClipPlane::StdCmdToggleClipPlane()
     : Command("Std_ToggleClipPlane")
@@ -656,11 +693,15 @@ Action* StdCmdToggleClipPlane::createAction()
 void StdCmdToggleClipPlane::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    static QPointer<Gui::Dialog::Clipping> clipping = nullptr;
-    if (!clipping) {
+    App::Document* doc = getActiveDocument();
+    if (!doc) {
+        return;
+    }
+    garbageCollect();  // remove dead pointers
+    if (!hasClipping(doc)) {
         auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
         if (view) {
-            clipping = Gui::Dialog::Clipping::makeDockWidget(view);
+            clippings.push_back(std::make_pair(doc, Gui::Dialog::Clipping::makeDockWidget(view, doc)));
         }
     }
 }
@@ -669,6 +710,31 @@ bool StdCmdToggleClipPlane::isActive()
 {
     auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     return view ? true : false;
+}
+
+void StdCmdToggleClipPlane::garbageCollect()
+{
+    // We assume the vector to be small
+    std::vector<std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>> newClippings;
+    newClippings.reserve(clippings.size());
+    std::copy_if(
+        clippings.begin(),
+        clippings.end(),
+        std::back_inserter(newClippings),
+        [](const std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>& clipPair) -> bool {
+            return clipPair.second != nullptr;
+        }
+    );
+    clippings = newClippings;
+}
+bool StdCmdToggleClipPlane::hasClipping(App::Document* doc) const
+{
+    return std::ranges::find(
+               clippings,
+               doc,
+               &std::pair<App::Document*, QPointer<Gui::Dialog::Clipping>>::first
+           )
+        != clippings.end();
 }
 
 //===========================================================================
@@ -776,25 +842,25 @@ void StdCmdDrawStyle::languageChange()
     auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
-    a[0]->setText(QCoreApplication::translate("Std_DrawStyle", "&1 As Is"));
+    a[0]->setText(QCoreApplication::translate("Std_DrawStyle", "As Is"));
     a[0]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Normal mode"));
 
-    a[1]->setText(QCoreApplication::translate("Std_DrawStyle", "&2 Points"));
+    a[1]->setText(QCoreApplication::translate("Std_DrawStyle", "Points"));
     a[1]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Points mode"));
 
-    a[2]->setText(QCoreApplication::translate("Std_DrawStyle", "&3 Wireframe"));
+    a[2]->setText(QCoreApplication::translate("Std_DrawStyle", "Wireframe"));
     a[2]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Wireframe mode"));
 
-    a[3]->setText(QCoreApplication::translate("Std_DrawStyle", "&4 Hidden Line"));
+    a[3]->setText(QCoreApplication::translate("Std_DrawStyle", "Hidden Line"));
     a[3]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Hidden line mode"));
 
-    a[4]->setText(QCoreApplication::translate("Std_DrawStyle", "&5 No Shading"));
+    a[4]->setText(QCoreApplication::translate("Std_DrawStyle", "No Shading"));
     a[4]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "No shading mode"));
 
-    a[5]->setText(QCoreApplication::translate("Std_DrawStyle", "&6 Shaded"));
+    a[5]->setText(QCoreApplication::translate("Std_DrawStyle", "Shaded"));
     a[5]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Shaded mode"));
 
-    a[6]->setText(QCoreApplication::translate("Std_DrawStyle", "&7 Flat Lines"));
+    a[6]->setText(QCoreApplication::translate("Std_DrawStyle", "Flat Lines"));
     a[6]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Flat lines mode"));
 }
 
@@ -1382,7 +1448,7 @@ StdCmdViewBottom::StdCmdViewBottom()
     : Command("Std_ViewBottom")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&5 Bottom");
+    sMenuText = QT_TR_NOOP("Bottom");
     sToolTipText = QT_TR_NOOP("Sets the camera to the bottom view");
     sWhatsThis = "Std_ViewBottom";
     sStatusTip = sToolTipText;
@@ -1406,7 +1472,7 @@ StdCmdViewFront::StdCmdViewFront()
     : Command("Std_ViewFront")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&1 Front");
+    sMenuText = QT_TR_NOOP("Front");
     sToolTipText = QT_TR_NOOP("Sets the camera to the front view");
     sWhatsThis = "Std_ViewFront";
     sStatusTip = sToolTipText;
@@ -1430,7 +1496,7 @@ StdCmdViewLeft::StdCmdViewLeft()
     : Command("Std_ViewLeft")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&6 Left");
+    sMenuText = QT_TR_NOOP("Left");
     sToolTipText = QT_TR_NOOP("Sets the camera to the left view");
     sWhatsThis = "Std_ViewLeft";
     sStatusTip = sToolTipText;
@@ -1454,7 +1520,7 @@ StdCmdViewRear::StdCmdViewRear()
     : Command("Std_ViewRear")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&4 Rear");
+    sMenuText = QT_TR_NOOP("Rear");
     sToolTipText = QT_TR_NOOP("Sets the camera to the rear view");
     sWhatsThis = "Std_ViewRear";
     sStatusTip = sToolTipText;
@@ -1478,7 +1544,7 @@ StdCmdViewRight::StdCmdViewRight()
     : Command("Std_ViewRight")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&3 Right");
+    sMenuText = QT_TR_NOOP("Right");
     sToolTipText = QT_TR_NOOP("Sets the camera to the right view");
     sWhatsThis = "Std_ViewRight";
     sStatusTip = sToolTipText;
@@ -1502,7 +1568,7 @@ StdCmdViewTop::StdCmdViewTop()
     : Command("Std_ViewTop")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&2 Top");
+    sMenuText = QT_TR_NOOP("Top");
     sToolTipText = QT_TR_NOOP("Sets the camera to the top view");
     sWhatsThis = "Std_ViewTop";
     sStatusTip = sToolTipText;
@@ -2238,6 +2304,7 @@ void StdViewLoadImage::activated(int iMsg)
     // Reading an image
     QFileDialog dialog(Gui::getMainWindow());
     dialog.setWindowTitle(QObject::tr("Choose an Image File to Open"));
+    dialog.setDirectory(FileDialog::getWorkingDirectory());
     dialog.setMimeTypeFilters(mimeTypeFilters);
     dialog.selectMimeTypeFilter(QStringLiteral("image/png"));
     dialog.setDefaultSuffix(QStringLiteral("png"));
@@ -2629,34 +2696,38 @@ StdCmdViewIvIssueCamPos::StdCmdViewIvIssueCamPos()
 void StdCmdViewIvIssueCamPos::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::string Temp, Temp2;
-    std::string::size_type pos;
 
-    const char* ppReturn = nullptr;
-    getGuiApplication()->sendMsgToActiveView("GetCamera", &ppReturn);
+    auto* view3d = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (!view3d) {
+        Base::Console().developerError(
+            "StdCmdViewIvIssueCameraPos",
+            "Expected the active view to be View3DInventor\n"
+        );
+        return;
+    }
+    std::string camera = view3d->getCamera();
 
     // remove the #inventor line...
-    Temp2 = ppReturn;
-    pos = Temp2.find_first_of("\n");
-    Temp2.erase(0, pos);
+    std::string::size_type pos = camera.find_first_of('\n');
+    camera.erase(0, pos);
 
     // remove all returns
-    while ((pos = Temp2.find('\n')) != std::string::npos) {
-        Temp2.replace(pos, 1, " ");
+    while ((pos = camera.find('\n')) != std::string::npos) {
+        camera.replace(pos, 1, " ");
     }
 
     // build up the command string
-    Temp += "Gui.SendMsgToActiveView(\"SetCamera ";
-    Temp += Temp2;
-    Temp += "\")";
+    std::string command = "Gui.activeView().setCamera(\"";
+    command += camera;
+    command += "\")";
 
-    Base::Console().message("%s\n", Temp2.c_str());
-    getGuiApplication()->macroManager()->addLine(MacroManager::Gui, Temp.c_str());
+    Base::Console().message("%s\n", camera.c_str());
+    getGuiApplication()->macroManager()->addLine(MacroManager::Gui, command.c_str());
 }
 
 bool StdCmdViewIvIssueCamPos::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("GetCamera");
+    return freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
 }
 
 
@@ -3419,7 +3490,7 @@ StdCmdTextureMapping::StdCmdTextureMapping()
 void StdCmdTextureMapping::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Control().showDialog(new Gui::Dialog::TaskTextureMapping);
+    Gui::Control().showDialog(new Gui::Dialog::TaskTextureMapping, getDocument());
 }
 
 bool StdCmdTextureMapping::isActive()
@@ -3633,7 +3704,7 @@ StdTreeSyncView::StdTreeSyncView()
     : Command("Std_TreeSyncView")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&1 Sync View");
+    sMenuText = QT_TR_NOOP("Sync View");
     sToolTipText = QT_TR_NOOP(
         "Switches to the 3D view containing the selected item from the tree view"
     );
@@ -3653,7 +3724,7 @@ StdTreeSyncSelection::StdTreeSyncSelection()
     : Command("Std_TreeSyncSelection")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&2 Sync Selection");
+    sMenuText = QT_TR_NOOP("Sync Selection");
     sToolTipText = QT_TR_NOOP(
         "Expands the tree item when the corresponding object is selected in the 3D view"
     );
@@ -3673,7 +3744,7 @@ StdTreeSyncPlacement::StdTreeSyncPlacement()
     : Command("Std_TreeSyncPlacement")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&3 Sync Placement");
+    sMenuText = QT_TR_NOOP("Sync Placement");
     sToolTipText
         = QT_TR_NOOP("Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)");
     sStatusTip = sToolTipText;
@@ -3692,7 +3763,7 @@ StdTreePreSelection::StdTreePreSelection()
     : Command("Std_TreePreSelection")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&4 Preselection");
+    sMenuText = QT_TR_NOOP("Preselection");
     sToolTipText = QT_TR_NOOP(
         "Preselects the object in 3D view when hovering the cursor over the tree item"
     );
@@ -3712,7 +3783,7 @@ StdTreeRecordSelection::StdTreeRecordSelection()
     : Command("Std_TreeRecordSelection")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&5 Record Selection");
+    sMenuText = QT_TR_NOOP("Record Selection");
     sToolTipText
         = QT_TR_NOOP("Records the selection in the tree view in order to go back/forward using the navigation buttons");
     sStatusTip = sToolTipText;

@@ -979,6 +979,27 @@ def ExecuteModelAware(op, obj):
             sceneClean()
 
 
+# As part of projecting faces to the XY plane, handling BSplines requires
+# removing projections that double-back on themselves. This function is used
+# in that check.
+def vectorsOnStraightLine(v):
+    if len(v) <= 1:
+        return False
+    if len(v) == 2:
+        return True
+
+    v0 = v[0] - v[1]
+    for k in v[2:]:
+        dxc = k.x - v[0].x
+        dyc = k.y - v[0].y
+
+        cross = dxc * v0.y - dyc * v0.x
+        if abs(cross) > 1e-5:
+            return False
+
+    return True
+
+
 def projectFacesToXY(faces, minEdgeLength=1e-10):
     """projectFacesToXY(faces, minEdgeLength)
     Calculates the projection of the provided list of faces onto the XY plane.
@@ -1001,18 +1022,40 @@ def projectFacesToXY(faces, minEdgeLength=1e-10):
         # NOTE: Wires/edges get clipped if we have an "exact fit" bounding box
         projface = Path.Geom.makeBoundBoxFace(f.BoundBox, offset=1, zHeight=0)
 
-        # NOTE: Cylinders, cones, and spheres are messy:
+        # NOTE: Cylinders, cones, B-splines, and spheres are messy:
         # - Internal representation of non-truncted cones and spheres includes
         # the "tip" with a ~0-area closed edge. This is different than the
         # "isNull() note" at the top in magnitude
         # - Projecting edges doesn't naively work due to the way seams are handled
         # - There may be holes at either end that may or may not line up- any
         # overlap is a hole in the projection
-        if type(f.Surface) in [Part.Cone, Part.Cylinder, Part.Sphere]:
+        # - BSplines may not project nicely- they may double-back on themselves
+        # if they're (eg) an arc in the XZ plane
+        if type(f.Surface) in [Part.Cone, Part.Cylinder, Part.Sphere] or (
+            type(f.Surface) is Part.SurfaceOfExtrusion
+            and sum([e.isSeam(f) for e in f.OuterWire.Edges])
+        ):
             # This gets most of the face outline, but since cylinder/cone faces
             # are hollow, if the ends overlap in the projection there may be a
             # hole we need to remove from the solid projection
-            oface = Part.makeFace(TechDraw.findShapeOutline(f, 1, projdir))
+            if type(f.Surface) is Part.SurfaceOfExtrusion:
+                el = []
+                for e in TechDraw.findShapeOutline(f, 1, projdir).Edges:
+                    # Problematic splines are only those that are lines that
+                    # double back on themselves
+                    if type(e.Curve) is Part.BSplineCurve and vectorsOnStraightLine(
+                        e.Curve.getPoles()
+                    ):
+                        el.append(Part.makeLine(e.Vertexes[0].Point, e.Vertexes[-1].Point))
+                    else:
+                        el.append(e)
+
+                # findShapeOutline doesn't always put edges in order -> open wire
+                ew = TechDraw.edgeWalker(el, True)
+
+                oface = Part.makeFace(ew)
+            else:
+                oface = Part.makeFace(TechDraw.findShapeOutline(f, 1, projdir))
 
             # "endfacewires" is JUST the end faces of a cylinder/cone, used to
             # determine if there's a hole we can see through the shape that
@@ -1025,12 +1068,16 @@ def projectFacesToXY(faces, minEdgeLength=1e-10):
             # a wire from the list, else this could nicely be one line.
             projwires = []
             for w in endfacewires:
-                pp = projface.makeParallelProjection(w, projdir).Wires
-                if pp:
+                if pp := projface.makeParallelProjection(w, projdir).Wires:
                     projwires.append(pp[0])
 
             if len(projwires) > 1:
-                faces = [Part.makeFace(x) for x in projwires]
+                # FIXME: Occasionally an open projected wire is present that
+                # doesn't appear to be related to the model geometry. This check
+                # prevents "wire not closed" errors in those cases, but the root
+                # cause has not been identified.
+                faces = [Part.makeFace(x) for x in projwires if x.isClosed()]
+
                 overlap = faces[0].common(faces[1:])
                 outfaces.append(oface.cut(overlap))
             else:
@@ -1047,8 +1094,21 @@ def projectFacesToXY(faces, minEdgeLength=1e-10):
                 outfaces.append(Part.makeFace(facewires))
     if outfaces:
         fusion = outfaces[0].fuse(outfaces[1:])
-        # removeSplitter fixes occasional concatenate issues for some face orders
-        return DraftGeomUtils.concatenate(fusion.removeSplitter())
+        # Best effort to merge faces into one nice clean one without internal
+        # edges or similar. Failure to do so can result in incorrect regions
+        # being machined for unknown reasons- presumably something to do with
+        # the resulting face having many subfaces.
+        #
+        # removeSplitter is sometimes required to make concatenate succeed.
+        try:
+            fusion = fusion.removeSplitter()
+        except:
+            Path.Log.warning("projectFacesToXY: removeSplitter failure")
+        try:
+            fusion = DraftGeomUtils.concatenate(fusion)
+        except:
+            Path.Log.warning("projectFacesToXY: concatenate failure")
+        return fusion
     else:
         return Part.Shape()
 
@@ -1547,7 +1607,8 @@ def _getWorkingEdgesModelAware(op, obj):
                 continue
 
             # If the region cut with the stock at a new depth is different than
-            # the original cut, we need to split this region
+            # the original cut, we need to split this region. Only applies if
+            # the region cut with the stock is non-empty
             # The new region gets all of the children, and becomes a child of
             # the existing region.
             parentdepths = depths[0:1]

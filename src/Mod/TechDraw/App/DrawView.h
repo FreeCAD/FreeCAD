@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawView_h_
-#define DrawView_h_
+#pragma once
 
 #include <fastsignals/signal.h>
 #include <QCoreApplication>
@@ -152,5 +151,3 @@ private:
 using DrawViewPython = App::FeaturePythonT<DrawView>;
 
 } //namespace TechDraw
-
-#endif

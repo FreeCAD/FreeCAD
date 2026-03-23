@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_IMPORTER_H
-#define MESH_IMPORTER_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -61,5 +60,3 @@ private:
 };
 
 }  // namespace Mesh
-
-#endif  // MESH_IMPORTER_H

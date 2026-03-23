@@ -21,8 +21,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#ifndef KDL_CHAIN_IKSOLVERVEL_PINV_NSO_HPP
-#define KDL_CHAIN_IKSOLVERVEL_PINV_NSO_HPP
+#pragma once
 
 #include "chainiksolver.hpp"
 #include "chainjnttojacsolver.hpp"
@@ -122,5 +121,3 @@ namespace KDL
         JntArray opt_pos;
     };
 }
-#endif
-

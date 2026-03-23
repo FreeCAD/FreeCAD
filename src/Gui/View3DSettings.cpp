@@ -593,7 +593,7 @@ void NaviCubeSettings::applySettings()
 
 void NaviCubeSettings::parameterChanged(const char* Name)
 {
-    if (Name == nullptr) {
+    if (!Name) {
         return;
     }
     NaviCube* nc = _viewer->getNaviCube();

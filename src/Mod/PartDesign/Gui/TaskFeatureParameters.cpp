@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
@@ -212,10 +214,9 @@ bool TaskDlgFeatureParameters::accept()
         }
 
         Gui::cmdGuiDocument(feature, "resetEdit()");
-        Gui::Command::commitCommand();
+        feature->getDocument()->commitTransaction();
     }
     catch (const Base::Exception& e) {
-
         QString errorText = QString::fromUtf8(e.what());
         QString statusText = QString::fromUtf8(getObject()->getStatusString());
 
@@ -261,7 +262,7 @@ bool TaskDlgFeatureParameters::reject()
     }
 
     // roll back the done things which may delete the feature
-    Gui::Command::abortCommand();
+    document->abortTransaction();
 
     // if abort command deleted the object make the previous feature visible again
     if (weakptr.expired()) {

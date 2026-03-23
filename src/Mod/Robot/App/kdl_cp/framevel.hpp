@@ -23,8 +23,7 @@
  ****************************************************************************/
 // clazy:excludeall=rule-of-two-soft
 
-#ifndef KDL_FRAMEVEL_H
-#define KDL_FRAMEVEL_H
+#pragma once
 
 #include "utilities/utility.h"
 #include "utilities/rall1d.h"
@@ -391,9 +390,3 @@ IMETHOD void posrandom(FrameVel& F) {
 #ifdef KDL_INLINE
 #include "framevel.inl"
 #endif
-
-#endif
-
-
-
-

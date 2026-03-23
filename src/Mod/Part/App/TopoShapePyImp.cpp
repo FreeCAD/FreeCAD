@@ -1041,15 +1041,24 @@ PyObject* TopoShapePy::transformShape(PyObject* args)
     }
 
     Base::Matrix4D mat = static_cast<Base::MatrixPy*>(obj)->value();
+    bool doCopy = Base::asBoolean(copy);
+    bool doCheckScale = Base::asBoolean(checkScale);
     PY_TRY
     {
-        this->getTopoShapePtr()->transformShape(mat, Base::asBoolean(copy), Base::asBoolean(checkScale));
+        if (doCopy) {
+            TopoShape s(*getTopoShapePtr());
+            s.transformShape(mat, false, doCheckScale);
+            return Py::new_reference_to(shape2pyshape(s));
+        }
+
+        this->getTopoShapePtr()->transformShape(mat, false, doCheckScale);
         return IncRef();
     }
     PY_CATCH_OCC
 }
 
 PyObject* TopoShapePy::transformed(PyObject* args, PyObject* keywds) const
+
 {
     static const std::array<const char*, 5> kwlist {"matrix", "copy", "checkScale", "op", nullptr};
     PyObject* pymat;

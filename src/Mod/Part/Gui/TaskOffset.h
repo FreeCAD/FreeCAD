@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKOFFSET_H
-#define PARTGUI_TASKOFFSET_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -91,5 +90,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_TASKOFFSET_H

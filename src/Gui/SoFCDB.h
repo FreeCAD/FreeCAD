@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCDB_H
-#define GUI_SOFCDB_H
+#pragma once
 
 #include <iosfwd>
 #include <map>
@@ -81,5 +80,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SOFCDB_H

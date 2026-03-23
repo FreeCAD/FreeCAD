@@ -24,9 +24,11 @@
 #include <Inventor/details/SoDetail.h>
 #include <Inventor/SoFullPath.h>
 
+#include <Base/Interpreter.h>
+
+// generated out of AxisOrigin.pyi
 #include "AxisOriginPy.h"
 #include "AxisOriginPy.cpp"
-#include <Base/Interpreter.h>
 
 using namespace Gui;
 

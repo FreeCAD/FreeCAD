@@ -20,9 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
-#define GUI_VIEWPROVIDER_ViewProviderPart_H
+#pragma once
 
+#include "ActiveObjectList.h"
 #include "ViewProviderGeometryObject.h"
 #include "ViewProviderOriginGroup.h"
 #include "ViewProviderFeaturePython.h"
@@ -44,7 +44,7 @@ public:
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    bool isActivePart();
+    bool isActivePart(const char* key = PARTKEY);
     void toggleActivePart();
 
     /// deliver the icon shown in the tree view
@@ -67,5 +67,3 @@ protected:
 using ViewProviderPartPython = ViewProviderFeaturePythonT<ViewProviderPart>;
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_ViewProviderPart_H

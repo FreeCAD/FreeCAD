@@ -102,12 +102,12 @@
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Structured Point Cloud</source>
-      <translation>Nuvem de Pontos Estruturados</translation>
+      <translation>Nuvem de Pontos Estruturada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Converts points to a structured point cloud</source>
-      <translation>Converte pontoas para uma nuvem de pontos estruturados</translation>
+      <translation>Converte pontos para uma nuvem de pontos estruturada</translation>
     </message>
   </context>
   <context>
@@ -199,7 +199,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator</source>
-      <translation>Separador de numeros</translation>
+      <translation>Separador de números</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
@@ -276,12 +276,12 @@
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Points not at Origin</source>
-      <translation>Pontos que estão fora da origem</translation>
+      <translation>Pontos fora da origem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation>A caixa delimitadora dos pontos importados não contém a origem. Você quer traduzi-la para a origem?</translation>
+      <translation>A caixa delimitadora dos pontos importados não contém a origem. Transladar para a origem?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="224"/>

@@ -243,6 +243,9 @@ bool ProjectFile::loadDocument()
         try {
             Base::StdInputSource inputSource(*str, stdFile.c_str());
             parser->parse(inputSource);
+            if (parser->getErrorCount() > 0) {
+                return false;
+            }
             xmlDocument = parser->adoptDocument();
             return true;
         }

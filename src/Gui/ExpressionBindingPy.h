@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONBINDINGPY_H
-#define EXPRESSIONBINDINGPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // EXPRESSIONBINDING_H

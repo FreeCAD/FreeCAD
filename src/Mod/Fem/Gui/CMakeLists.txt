@@ -362,7 +362,7 @@ SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintContact.iv
     Resources/symbols/ConstraintDisplacement.iv
     Resources/symbols/ConstraintElectricChargeDensity.iv
-    Resources/symbols/ConstraintElectrostaticPotential.iv
+    Resources/symbols/ConstraintElectromagnetic.iv
     Resources/symbols/ConstraintCurrentDensity.iv
     Resources/symbols/ConstraintFixed.iv
     Resources/symbols/ConstraintForce.iv
@@ -428,7 +428,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/CurrentDensity.ui
     Resources/ui/DlgSettingsNetgen.ui
     Resources/ui/ElectricChargeDensity.ui
-    Resources/ui/ElectrostaticPotential.ui
+    Resources/ui/Electromagnetic.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
     Resources/ui/ElementGeometry2D.ui

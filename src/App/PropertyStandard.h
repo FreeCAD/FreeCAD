@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYSTANDARD_H
-#define APP_PROPERTYSTANDARD_H
+#pragma once
 
 #include <list>
 #include <memory>
@@ -339,6 +338,9 @@ public:
     }
     void setPyObject(PyObject* py) override;
 
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+
 protected:
     const Constraints* _ConstStruct {nullptr};
 };
@@ -490,7 +492,9 @@ public:
     void setValue()
     {}
     void setValue(const std::string& key, const std::string& value);
+    void setValue(const char* key, const char* value);
     void setValues(const std::map<std::string, std::string>&);
+    void setValues(std::map<std::string, std::string>&&);
 
     /// index operator
     const std::string& operator[](const std::string& key) const;
@@ -504,6 +508,7 @@ public:
     {
         return _lValueList;
     }
+    const char* getValue(const char* key) const;
 
     // virtual const char* getEditorName(void) const { return
     // "Gui::PropertyEditor::PropertyStringListItem"; }
@@ -672,6 +677,9 @@ public:
     }
 
     void setPyObject(PyObject* py) override;
+
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
 protected:
     const Constraints* _ConstStruct {nullptr};
@@ -1337,5 +1345,3 @@ protected:
 };
 
 }  // namespace App
-
-#endif  // APP_PROPERTYSTANDARD_H

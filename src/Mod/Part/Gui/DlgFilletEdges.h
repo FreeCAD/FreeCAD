@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGFILLETEDGES_H
-#define PARTGUI_DLGFILLETEDGES_H
+#pragma once
 
 #include <QDialog>
 #include <QItemDelegate>
@@ -107,6 +106,7 @@ public:
     );
     ~DlgFilletEdges() override;
     bool accept();
+    void setSelectionGate();
 
 protected:
     void findShapes();
@@ -229,5 +229,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGFILLETEDGES_H

@@ -389,9 +389,9 @@ class _CommandStructure:
         self.dents = ArchPrecast._DentsTaskPanel()
         self.precast.Dents = self.dents
         if self.beammode:
-            title = translate("Arch", "First point of the beam")
+            title = translate("Arch", "First Point of Beam")
         else:
-            title = translate("Arch", "Base point of column")
+            title = translate("Arch", "Base Point of Column")
         FreeCADGui.Snapper.getPoint(
             callback=self.getPoint,
             movecallback=self.update,
@@ -416,7 +416,7 @@ class _CommandStructure:
                 callback=self.getPoint,
                 movecallback=self.update,
                 extradlg=[self.taskbox(), self.precast.form, self.dents.form],
-                title=translate("Arch", "Next point") + ":",
+                title=translate("Arch", "Next Point") + ":",
                 mode="line",
             )
             return
@@ -463,9 +463,7 @@ class _CommandStructure:
             else:
                 # metal profile
                 FreeCADGui.doCommand("p = Arch.makeProfile(" + str(self.Profile) + ")")
-                if (
-                    abs(self.Length - self.Profile[4]) >= 0.1
-                ) or self.bmode:  # forgive rounding errors
+                if self.bmode:
                     # horizontal
                     FreeCADGui.doCommand(
                         "s = Arch.makeStructure(p,length=" + str(self.Length) + ")"
@@ -535,7 +533,7 @@ class _CommandStructure:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch", "Structure options"))
+        w.setWindowTitle(translate("Arch", "Structure Options"))
         grid = QtGui.QGridLayout(w)
 
         # mode box
@@ -1685,17 +1683,33 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
             return None
 
         taskd = StructureTaskPanel(vobj.Object)
-        taskd.obj = self.Object
-        taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
 
 
-class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
+class StructureTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
+    """A task panel for Arch Structures that combines generic dimensions with node tools"""
 
     def __init__(self, obj):
+        # Define properties based on the IfcType
+        if getattr(obj, "IfcType", "Beam") == "Slab":
+            property_definitions = [
+                {"prop": "Height", "label": translate("Arch", "Thickness")},
+            ]
+        else:
+            # For Beams and Columns
+            property_definitions = [
+                {"prop": "Length", "label": translate("Arch", "Length")},
+                {"prop": "Width", "label": translate("Arch", "Width")},
+                {"prop": "Height", "label": translate("Arch", "Height")},
+            ]
 
-        ArchComponent.ComponentTaskPanel.__init__(self)
+        #  Initialize generic parent (creates self.options_widget and self.baseform)
+        super().__init__(obj, property_definitions)
+
+        # Alias for compatibility with node/tool methods
+        self.Object = self.obj
+
         self.nodes_widget = QtGui.QWidget()
         self.nodes_widget.setWindowTitle(QtGui.QApplication.translate("Arch", "Node Tools", None))
         lay = QtGui.QVBoxLayout(self.nodes_widget)
@@ -1703,15 +1717,14 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         self.resetButton = QtGui.QPushButton(self.nodes_widget)
         self.resetButton.setIcon(QtGui.QIcon(":/icons/edit-undo.svg"))
         self.resetButton.setText(QtGui.QApplication.translate("Arch", "Reset Nodes", None))
-
         lay.addWidget(self.resetButton)
-        QtCore.QObject.connect(self.resetButton, QtCore.SIGNAL("clicked()"), self.resetNodes)
+        self.resetButton.clicked.connect(self.resetNodes)
 
         self.editButton = QtGui.QPushButton(self.nodes_widget)
         self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
         self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit Nodes", None))
         lay.addWidget(self.editButton)
-        QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.editNodes)
+        self.editButton.clicked.connect(self.editNodes)
 
         self.extendButton = QtGui.QPushButton(self.nodes_widget)
         self.extendButton.setIcon(QtGui.QIcon(":/icons/Snap_Perpendicular.svg"))
@@ -1724,7 +1737,7 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
             )
         )
         lay.addWidget(self.extendButton)
-        QtCore.QObject.connect(self.extendButton, QtCore.SIGNAL("clicked()"), self.extendNodes)
+        self.extendButton.clicked.connect(self.extendNodes)
 
         self.connectButton = QtGui.QPushButton(self.nodes_widget)
         self.connectButton.setIcon(QtGui.QIcon(":/icons/Snap_Intersection.svg"))
@@ -1735,7 +1748,7 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
             )
         )
         lay.addWidget(self.connectButton)
-        QtCore.QObject.connect(self.connectButton, QtCore.SIGNAL("clicked()"), self.connectNodes)
+        self.connectButton.clicked.connect(self.connectNodes)
 
         self.toggleButton = QtGui.QPushButton(self.nodes_widget)
         self.toggleButton.setIcon(QtGui.QIcon(":/icons/dagViewVisible.svg"))
@@ -1746,7 +1759,7 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
             )
         )
         lay.addWidget(self.toggleButton)
-        QtCore.QObject.connect(self.toggleButton, QtCore.SIGNAL("clicked()"), self.toggleNodes)
+        self.toggleButton.clicked.connect(self.toggleNodes)
 
         self.extrusion_widget = QtGui.QWidget()
         self.extrusion_widget.setWindowTitle(
@@ -1763,12 +1776,11 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
             )
         )
         lay.addWidget(self.selectToolButton)
-        QtCore.QObject.connect(
-            self.selectToolButton, QtCore.SIGNAL("clicked()"), self.setSelectionFromTool
-        )
+        self.selectToolButton.clicked.connect(self.setSelectionFromTool)
 
-        self.form = [self.form, self.nodes_widget, self.extrusion_widget]
-        self.Object = obj
+        # Build the final form list: Options box, Node Tools box, Extrusion box, Components box
+        self.form = [self.options_widget, self.nodes_widget, self.extrusion_widget, self.baseform]
+
         self.observer = None
         self.nodevis = None
 
@@ -1961,14 +1973,13 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         self.selectToolButton.setText(QtGui.QApplication.translate("Arch", "Select Tool", None))
 
     def accept(self):
-
         if self.observer:
             FreeCADGui.Selection.removeObserver(self.observer)
         if self.nodevis:
             self.toggleNodes()
-        FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
+
+        # Trigger the generic property-saving logic in ComponentOptionsTaskPanel
+        return super().accept()
 
 
 class StructSelectionObserver:

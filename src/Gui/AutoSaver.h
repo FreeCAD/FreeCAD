@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_AUTOSAVER_H
-#define GUI_AUTOSAVER_H
+#pragma once
 
 #include <QObject>
 
@@ -119,6 +118,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_AUTOSAVER_H

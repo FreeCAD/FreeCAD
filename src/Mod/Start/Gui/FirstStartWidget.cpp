@@ -57,7 +57,6 @@ void FirstStartWidget::setupUi()
 {
     auto outerLayout = gsl::owner<QVBoxLayout*>(new QVBoxLayout(this));
     outerLayout->setAlignment(Qt::AlignCenter);
-    QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _welcomeLabel = gsl::owner<QLabel*>(new QLabel);
     outerLayout->addWidget(_welcomeLabel);
     _descriptionLabel = gsl::owner<QLabel*>(new QLabel);
@@ -90,7 +89,7 @@ bool FirstStartWidget::eventFilter(QObject* object, QEvent* event)
 void FirstStartWidget::retranslateUi()
 {
     _doneButton->setText(tr("Done"));
-    QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
+    QString application = QString::fromStdString(App::Application::getExecutableName());
     _welcomeLabel->setText(
         QLatin1String("<h1>") + tr("Welcome to %1").arg(application) + QLatin1String("</h1>")
     );

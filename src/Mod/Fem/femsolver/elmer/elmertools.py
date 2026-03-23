@@ -27,7 +27,6 @@ __url__ = "https://www.freecad.org"
 
 
 from PySide.QtCore import QProcess, QProcessEnvironment
-import tempfile
 import os
 import re
 import shutil
@@ -38,40 +37,17 @@ from . import writer
 from .. import settings
 
 from femtools import membertools
+from femtools.objecttools import ObjectTools
 
 
-class ElmerTools:
+class ElmerTools(ObjectTools):
 
     name = "Elmer"
 
     def __init__(self, obj):
-        self.obj = obj
-        self.process = QProcess()
+        super().__init__(obj)
         self.model_file = ""
-        self.analysis = obj.getParentGroup()
-        self.fem_param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        self._create_working_directory(obj)
         self._result_format = ""
-
-    def _create_working_directory(self, obj):
-        """
-        Create working directory according to preferences
-        """
-        if not os.path.isdir(obj.WorkingDirectory):
-            gen_param = self.fem_param.GetGroup("General")
-            if gen_param.GetBool("UseTempDirectory"):
-                self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseBesideDirectory"):
-                root, ext = os.path.splitext(obj.Document.FileName)
-                if root:
-                    self.obj.WorkingDirectory = os.path.join(root, obj.Label)
-                    os.makedirs(self.obj.WorkingDirectory, exist_ok=True)
-                else:
-                    # file not saved, use temporary
-                    self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseCustomDirectory"):
-                self.obj.WorkingDirectory = gen_param.GetString("CustomDirectoryPath")
-                os.makedirs(self.obj.WorkingDirectory, exist_ok=True)
 
     def prepare(self):
         w = writer.Writer(self.obj, self.obj.WorkingDirectory)
@@ -91,13 +67,13 @@ class ElmerTools:
         p.setWorkingDirectory(self.obj.WorkingDirectory)
         grid_args = ["8", "2", mesh_file, "-out", self.obj.WorkingDirectory]
         p.start(grid_bin, grid_args)
-        p.waitForFinished()
+        p.waitForFinished(-1)
         num_proc = self.fem_param.GetGroup("Elmer").GetInt("NumberOfTasks", 1)
         if num_proc > 1:
             # MPI parallel computing version
             grid_args.extend(["-partdual", "-metiskway", str(num_proc)])
             p.start(grid_bin, grid_args)
-            p.waitForFinished()
+            p.waitForFinished(-1)
 
         self.model_file = os.path.join(self.obj.WorkingDirectory, writer._SIF_NAME)
         handled = w.getHandledConstraints()
@@ -132,36 +108,93 @@ class ElmerTools:
         return self.process
 
     def update_properties(self):
-        keep_result = self.fem_param.GetGroup("General").GetBool("KeepResultsOnReRun", False)
-        if not self.obj.Results or keep_result:
-            pipeline = self.obj.Document.addObject("Fem::FemPostPipeline", self.obj.Name + "Result")
-            self.analysis.addObject(pipeline)
-            temp_res = self.obj.Results
-            temp_res.append(pipeline)
-            self.obj.Results = temp_res
-            self._load_results()
-            # default display mode
-            pipeline.ViewObject.DisplayMode = "Surface"
-            pipeline.ViewObject.SelectionStyle = "BoundBox"
-        else:
-            self._load_results()
+        self._load_vtk_results()
+        self._load_dat_results()
 
     def _clear_results(self):
         dir_content = os.listdir(self.obj.WorkingDirectory)
         for f in dir_content:
             path = os.path.join(self.obj.WorkingDirectory, f)
             base, ext = os.path.splitext(path)
-            if ext in [".vtu", ".vtp", ".pvtu", ".pvd"]:
+            if ext in [".vtu", ".vtp", ".pvtu", ".pvd", ".dat"]:
                 os.remove(path)
 
-    def _load_results(self):
+    def _load_vtk_results(self):
+        # search current pipeline
+        keep_result = self.fem_param.GetGroup("General").GetBool("KeepResultsOnReRun", False)
+        pipeline = None
+        create = False
+        for res in self.obj.Results:
+            if res.isDerivedFrom("Fem::FemPostPipeline"):
+                pipeline = res
+
+        if not pipeline or keep_result:
+            # create pipeline
+            pipeline = self.obj.Document.addObject("Fem::FemPostPipeline", self.obj.Name + "Result")
+            self.analysis.addObject(pipeline)
+            tmp = self.obj.Results
+            tmp.append(pipeline)
+            self.obj.Results = tmp
+            create = True
+
         files = os.listdir(self.obj.WorkingDirectory)
         for f in files:
             base, ext = os.path.splitext(f)
             if ext == self._result_format:
                 res = os.path.join(self.obj.WorkingDirectory, f)
-                self.obj.Results[-1].read(res)
+                pipeline.read(res)
                 break
+
+        if create:
+            # default display mode
+            pipeline.ViewObject.DisplayMode = "Surface"
+            pipeline.ViewObject.SelectionStyle = "BoundBox"
+            fields = pipeline.ViewObject.getEnumerationsOfProperty("Field")
+            for f in fields:
+                # beware of possible suffix Im or Re
+                if f.lower().startswith(self._get_default_field()):
+                    pipeline.ViewObject.Field = f
+                    break
+
+    def _load_dat_results(self):
+        # search dat output
+        keep_result = self.fem_param.GetGroup("General").GetBool("KeepResultsOnReRun", False)
+        dat = None
+        for res in self.obj.Results:
+            if res.isDerivedFrom("App::TextDocument"):
+                dat = res
+
+        if not dat or keep_result:
+            # create dat output
+            dat = self.obj.Document.addObject("App::TextDocument", self.obj.Name + "Output")
+            self.analysis.addObject(dat)
+            tmp = self.obj.Results
+            tmp.append(dat)
+            self.obj.Results = tmp
+
+        files = os.listdir(self.obj.WorkingDirectory)
+        for f in files:
+            if f.endswith(".dat"):
+                dat_file = os.path.join(self.obj.WorkingDirectory, f)
+                with open(dat_file, "r") as file:
+                    dat.Text = file.read()
+                break
+
+    def _get_default_field(self):
+        default = "None"
+        for eq in self.obj.Group:
+            match eq.Proxy.Type:
+                case "Fem::EquationElmerHeat":
+                    default = "temperature"
+                case "Fem::EquationElmerElasticity" | "Fem::EquationElmerDeformation":
+                    default = "displacement"
+                case "Fem::EquationElmerElectrostatic" | "Fem::EquationElmerStaticCurrent":
+                    default = "potential"
+                case "Fem::EquationElmerFlow":
+                    default = "pressure"
+                case "Fem::EquationElmerMagnetodynamic" | "Fem::EquationElmerMagnetodynamic2D":
+                    default = "magnetic flux"
+        return default
 
     def version(self):
         p = QProcess()

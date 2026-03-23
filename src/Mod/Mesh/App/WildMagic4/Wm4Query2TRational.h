@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY2TRATIONAL_H
-#define WM4QUERY2TRATIONAL_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Query2.h"
@@ -90,5 +89,3 @@ typedef Query2TRational<float> Query2TRationalf;
 typedef Query2TRational<double> Query2TRationald;
 
 }
-
-#endif

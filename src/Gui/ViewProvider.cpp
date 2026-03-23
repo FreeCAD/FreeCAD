@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <boost_graph_adjacency_list.hpp>
+#include <boost/graph/topological_sort.hpp>
 
 #include <QApplication>
 #include <QKeyEvent>
@@ -189,7 +191,10 @@ void ViewProvider::setEditViewer(View3DInventorViewer*, int ModNum)
 
 void ViewProvider::unsetEditViewer(View3DInventorViewer*)
 {}
-
+void ViewProvider::setActive(bool active)
+{
+    Q_UNUSED(active);
+}
 bool ViewProvider::isUpdatesEnabled() const
 {
     return testStatus(UpdateData);
@@ -607,7 +612,6 @@ PyObject* ViewProvider::getPyObject()
     return pyViewObject;
 }
 
-#include <boost/graph/topological_sort.hpp>
 
 namespace Gui
 {

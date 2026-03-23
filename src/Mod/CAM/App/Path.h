@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_Path_H
-#define PATH_Path_H
+#pragma once
 
 #include <Base/BoundBox.h>
 #include <Base/Persistence.h>
@@ -113,6 +112,3 @@ protected:
 };
 
 }  // namespace Path
-
-
-#endif  // PATH_Path_H

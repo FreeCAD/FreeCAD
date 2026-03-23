@@ -594,6 +594,8 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         SubAndObjName pair = {msg.pObjectName, msg.pSubName};
         addToReference(pair);
+
+        Q_EMIT placementUpdated();
     }
 }
 
@@ -736,6 +738,8 @@ void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
 
     pcAttach->AttachmentOffset.setValue(pl);
     updatePreview();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onAttachmentOffsetXChanged(double val)
@@ -778,6 +782,8 @@ void TaskAttacher::onCheckFlip(bool on)
         = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     pcAttach->MapReversed.setValue(on);
     ViewProvider->getObject()->recomputeFeature();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
@@ -794,6 +800,8 @@ void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
     updateRefButton(1);
     updateRefButton(2);
     updateRefButton(3);
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onButtonRef1(const bool checked)
@@ -873,6 +881,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         ui->lineRef4->setText(refstrings[3]);
         ui->lineRef4->setProperty("RefName", QByteArray(newrefnames[3].c_str()));
         updateReferencesUI();
+        Q_EMIT placementUpdated();
         return;
     }
 
@@ -963,6 +972,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     selectMapMode(getActiveMapMode());
 
     updateReferencesUI();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::updateRefButton(int idx)
@@ -1365,7 +1376,9 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         }
 
-        auto editDoc = Gui::Application::Instance->editDocument();
+        Gui::Document* editDoc = Gui::Application::Instance->isInEdit(ViewProvider->getDocument())
+            ? ViewProvider->getDocument()
+            : nullptr;
         App::DocumentObject* editObj = ViewProvider->getObject();
         std::string editSubName;
         auto sels = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve, true);
@@ -1424,6 +1437,7 @@ TaskDlgAttacher::TaskDlgAttacher(
     , onAccept(onAccept)
     , onReject(onReject)
     , accepted(false)
+    , tid(0)
 {
     assert(ViewProvider);
     setDocumentName(ViewProvider->getDocument()->getDocument()->getName());
@@ -1447,7 +1461,7 @@ TaskDlgAttacher::~TaskDlgAttacher()
 void TaskDlgAttacher::open()
 {
     if (!Gui::Command::hasPendingCommand()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
+        tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit attachment"));
     }
 }
 
@@ -1506,7 +1520,7 @@ bool TaskDlgAttacher::accept()
         );
         Gui::cmdAppObject(obj, "recompute()");
 
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(
@@ -1532,7 +1546,7 @@ bool TaskDlgAttacher::reject()
     Gui::Document* document = doc.getDocument();
     if (document) {
         // roll back the done things
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(tid);
         Gui::Command::doCommand(Gui::Command::Doc, "%s.recompute()", doc.getAppDocumentPython().c_str());
     }
 

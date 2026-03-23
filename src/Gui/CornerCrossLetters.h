@@ -1,5 +1,4 @@
-#ifndef GUI_CORNERCROSSLETTERS_H
-#define GUI_CORNERCROSSLETTERS_H
+#pragma once
 
 namespace Gui
 {
@@ -435,5 +434,3 @@ static const unsigned char ZPM_pixel_mask[21 * 27 * 4 + 1]
        "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000");
 
 }  // namespace Gui
-
-#endif  // GUI_CORNERCROSSLETTERS_H

@@ -55,6 +55,7 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         """Verify Helix does not throw an exception."""
 
         op = PathHelix.Create("Helix")
+        op.Proxy.findAllHoles(op)
         op.Proxy.execute(op)
 
     def testCreateWithPrototype(self):
@@ -67,17 +68,19 @@ class TestPathHelix(PathTestUtils.PathTestBase):
         """Verify Helix generates proper holes from model"""
 
         op = PathHelix.Create("Helix")
+        op.Proxy.findAllHoles(op)
         proxy = op.Proxy
         for base in op.Base:
             model = base[0]
             for sub in base[1]:
-                pos = proxy.holePosition(op, model, sub)
-                self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub))
+                pos = proxy.holePosition(model, sub)
+                self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(model, sub))
 
     def test02(self):
         """Verify Helix generates proper holes for rotated model"""
 
         op = PathHelix.Create("Helix")
+        op.Proxy.findAllHoles(op)
         proxy = op.Proxy
         model = self.job.Model.Group[0]
 
@@ -86,11 +89,9 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             for base in op.Base:
                 model = base[0]
                 for sub in base[1]:
-                    pos = proxy.holePosition(op, model, sub)
+                    pos = proxy.holePosition(model, sub)
                     # Path.Log.track(deg, pos, pos.Length)
-                    self.assertRoughly(
-                        round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
-                    )
+                    self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(model, sub))
 
     def test03(self):
         """Verify Helix generates proper holes for rotated base model"""
@@ -104,17 +105,16 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             self.job.Tools.Group[0].Tool.Diameter = 0.5
 
             op = PathHelix.Create("Helix")
+            op.Proxy.findAllHoles(op)
             proxy = op.Proxy
             model = self.job.Model.Group[0]
 
             for base in op.Base:
                 model = base[0]
                 for sub in base[1]:
-                    pos = proxy.holePosition(op, model, sub)
+                    pos = proxy.holePosition(model, sub)
                     # Path.Log.track(deg, pos, pos.Length)
-                    self.assertRoughly(
-                        round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
-                    )
+                    self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(model, sub))
 
     def test04(self):
         """Verify Helix generates proper holes for rotated clone base model"""
@@ -128,25 +128,25 @@ class TestPathHelix(PathTestUtils.PathTestBase):
             self.job.Tools.Group[0].Tool.Diameter = 0.5
 
             op = PathHelix.Create("Helix")
+            op.Proxy.findAllHoles(op)
             proxy = op.Proxy
             model = self.job.Model.Group[0]
 
             for base in op.Base:
                 model = base[0]
                 for sub in base[1]:
-                    pos = proxy.holePosition(op, model, sub)
+                    pos = proxy.holePosition(model, sub)
                     # Path.Log.track(deg, pos, pos.Length)
-                    self.assertRoughly(
-                        round(pos.Length / 10, 0), proxy.holeDiameter(op, model, sub)
-                    )
+                    self.assertRoughly(round(pos.Length / 10, 0), proxy.holeDiameter(model, sub))
 
     def testPathDirection(self):
         """Verify that the generated paths obeys the given parameters"""
         helix = PathHelix.Create("Helix")
+        helix.Proxy.findAllHoles(helix)
 
         def check(start_side, cut_mode, expected_direction):
             with self.subTest(f"({start_side}, {cut_mode}) => {expected_direction}"):
-                helix.StartSide = start_side
+                helix.StartAt = start_side
                 helix.CutMode = cut_mode
 
                 self.assertSuccessfulRecompute(self.doc, helix)
@@ -154,12 +154,12 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 self.assertEqual(
                     helix.Direction,
                     expected_direction,
-                    msg=f"Direction was not correctly determined",
+                    msg="Direction was not correctly determined",
                 )
                 self.assertPathDirection(
                     helix.Path,
                     expected_direction,
-                    msg=f"Path with wrong direction generated",
+                    msg="Path with wrong direction generated",
                 )
 
         check("Inside", "Conventional", "CW")
@@ -187,9 +187,9 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                     msg=f"Direction does not match fixture for {helix.Name} {created_with}",
                 )
                 self.assertEqual(
-                    helix.StartSide,
+                    helix.StartAt,
                     start_side,
-                    msg=f"StartSide does not match fixture for {helix.Name} {created_with}",
+                    msg=f"StartAt does not match fixture for {helix.Name} {created_with}",
                 )
 
                 # now see whether we can recompute the object from the old document
@@ -203,9 +203,9 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                     msg=f"Direction changed after recomputing {helix.Name} {created_with}",
                 )
                 self.assertEqual(
-                    helix.StartSide,
+                    helix.StartAt,
                     start_side,
-                    msg=f"StartSide changed after recomputing {helix.Name} {created_with}",
+                    msg=f"StartAt changed after recomputing {helix.Name} {created_with}",
                 )
                 self.assertEqual(
                     helix.CutMode,

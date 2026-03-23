@@ -630,6 +630,8 @@ StdWorkbench::~StdWorkbench() = default;
 
 void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 {
+    auto sels = Gui::Selection().getSelection();
+
     if (strcmp(recipient, "View") == 0) {
         createLinkMenu(item);
         *item << "Separator";
@@ -646,22 +648,29 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
               << "Std_DrawStyle" << StdViews << "Separator"
               << "Std_ViewDockUndockFullscreen";
 
-        if (Gui::Selection().countObjectsOfType<App::DocumentObject>() > 0) {
+        if (!sels.empty()) {
             *item << "Separator" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator" << "Std_Delete"
-                  << "Std_SendToPythonConsole" << "Std_TransformManip" << "Std_Placement";
+                  << "Std_SendToPythonConsole";
         }
     }
     else if (strcmp(recipient, "Tree") == 0) {
-        if (Gui::Selection().countObjectsOfType<App::DocumentObject>() > 0) {
+        if (!sels.empty()) {
             *item << "Std_ToggleFreeze" << "Separator"
-                  << "Std_Placement" << "Std_ToggleVisibility" << "Std_ShowSelection"
+                  << "Std_ToggleVisibility" << "Std_ShowSelection"
                   << "Std_HideSelection"
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator"
                   << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator"
                   << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete"
-                  << "Std_SendToPythonConsole" << "Separator";
+                  << "Std_SendToPythonConsole";
+        }
+    }
+
+    if (sels.size() == 1) {
+        App::DocumentObject* obj = sels[0].pObject;
+        if (obj->getPlacementProperty() && !obj->getPlacementProperty()->isReadOnly()) {
+            *item << "Std_TransformManip" << "Std_Placement";
         }
     }
 }

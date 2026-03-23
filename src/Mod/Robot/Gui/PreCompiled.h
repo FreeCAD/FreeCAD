@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOTGUI_PRECOMPILED_H
-#define ROBOTGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -57,5 +56,3 @@
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoSeparator.h>
-
-#endif  // ROBOTGUI_PRECOMPILED_H

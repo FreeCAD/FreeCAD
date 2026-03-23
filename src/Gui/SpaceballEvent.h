@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPACEBALLEVENT_H
-#define SPACEBALLEVENT_H
+#pragma once
 
 #include <QInputEvent>
 
@@ -116,4 +115,3 @@ private:
     int button;
 };
 }  // namespace Spaceball
-#endif  // SPACEBALLEVENT_H

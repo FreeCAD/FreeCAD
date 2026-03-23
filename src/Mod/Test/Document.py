@@ -75,6 +75,23 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument(doc.Name)
         self.Doc = FreeCAD.newDocument("CreateTest")
 
+    def testIssue24571(self):
+        obj = self.Doc.addObject("App::FeatureTest", "Object")
+        obj.ConstraintInt = (50, 0, 100, 1)
+        obj.ConstraintFloat = (50.0, 0.0, 100.0, 1.0)
+        self.Doc = self.saveAndRestore()
+        obj = self.Doc.getObject("Object")
+        # int
+        obj.ConstraintInt = -1
+        self.assertEqual(obj.ConstraintInt, 0)
+        obj.ConstraintInt = 101
+        self.assertEqual(obj.ConstraintInt, 100)
+        # float
+        obj.ConstraintFloat = -1.0
+        self.assertEqual(obj.ConstraintFloat, 0.0)
+        obj.ConstraintFloat = 101.0
+        self.assertEqual(obj.ConstraintFloat, 100.0)
+
     def testAccessByNameOrID(self):
         obj = self.Doc.addObject("App::DocumentObject", "MyName")
 
@@ -2674,3 +2691,49 @@ class DocumentAutoCreatedCases(unittest.TestCase):
             FreeCAD.closeDocument("TestDoc")
         self.assertIn("TestDoc", FreeCAD.listDocuments())
         self.assertIn("SavedDoc", FreeCAD.listDocuments())
+
+
+# Test if actions done on two documents are undone together
+# (working toward making this test pass)
+class MultiDocumentUndo(unittest.TestCase):
+    def setUp(self):
+        self.Doc1 = FreeCAD.newDocument("Doc1")
+        self.Doc2 = FreeCAD.newDocument("Doc2")
+        self.Doc1.UndoMode = 1
+        self.Doc2.UndoMode = 1
+
+    def testAddObjects(self):
+        self.Doc1.openTransaction("transact1")
+        self.Doc2.openTransaction("transact2")
+
+        obj1 = self.Doc1.addObject("App::DocumentObject", "Obj1Name")
+        obj2 = self.Doc2.addObject("App::DocumentObject", "Obj2Name")
+
+        self.assertNotEqual(self.Doc1.getBookedTransactionID(), self.Doc2.getBookedTransactionID())
+
+        self.Doc1.commitTransaction()
+        self.Doc2.commitTransaction()
+
+        with self.assertRaises(TypeError):
+            self.Doc1.getObject([1])
+            self.Doc2.getObject([1])
+
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), obj1)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), obj2)
+
+        self.Doc1.undo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), None)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), obj2)
+
+        self.Doc2.undo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), None)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), None)
+
+        self.Doc1.redo()
+        self.assertEqual(self.Doc1.getObject("Obj1Name"), obj1)
+        self.assertEqual(self.Doc2.getObject("Obj2Name"), None)
+
+    def tearDown(self):
+        # closing doc
+        FreeCAD.closeDocument("Doc1")
+        FreeCAD.closeDocument("Doc2")

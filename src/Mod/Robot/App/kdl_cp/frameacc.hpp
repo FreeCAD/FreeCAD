@@ -29,8 +29,7 @@
  ****************************************************************************/
 // clazy:excludeall=rule-of-two-soft
 
-#ifndef RRFRAMES_H
-#define RRFRAMES_H
+#pragma once
 
 
 #include "utilities/rall2d.h"
@@ -268,12 +267,4 @@ public:
 
 #ifdef KDL_INLINE
 #include "frameacc.inl"
-#endif
-
-
-
-
-
-
-
 #endif
