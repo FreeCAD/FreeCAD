@@ -211,6 +211,137 @@ class TestPathAdaptive(PathTestBase):
             msg=f"Total cleared area {total_cleared} should be within {delta} of {expected_area}",
         )
 
+    def testClearInsideWithRestMachining(self):
+        """testClearInsideWithRestMachining() Test C++ Adaptive2d rest machining with pre-cleared area."""
+
+        # Define geometry dimensions (same as testClearInside)
+        stock_width = 50.0
+        stock_height = 50.0
+        path_width = 40.0
+        path_height = 40.0
+
+        # Create stock boundary centered at origin
+        stock_x0 = 0.0
+        stock_y0 = 0.0
+        stock_x1 = stock_x0 + stock_width
+        stock_y1 = stock_y0 + stock_height
+        stockPath2d = [
+            [
+                [stock_x0, stock_y0],
+                [stock_x1, stock_y0],
+                [stock_x1, stock_y1],
+                [stock_x0, stock_y1],
+            ]
+        ]
+
+        # Create region to clear, centered within stock
+        margin_x = (stock_width - path_width) / 2.0
+        margin_y = (stock_height - path_height) / 2.0
+        path_x0 = stock_x0 + margin_x
+        path_y0 = stock_y0 + margin_y
+        path_x1 = path_x0 + path_width
+        path_y1 = path_y0 + path_height
+        path2d = [
+            [
+                [path_x0, path_y0],
+                [path_x1, path_y0],
+                [path_x1, path_y1],
+                [path_x0, path_y1],
+            ]
+        ]
+
+        # Pre-cleared area: bottom-left and top-right quadrants of stock
+        quad_width = stock_width / 2.0
+        quad_height = stock_height / 2.0
+
+        # Bottom-left quadrant
+        bl_x0 = stock_x0
+        bl_y0 = stock_y0
+        bl_x1 = bl_x0 + quad_width
+        bl_y1 = bl_y0 + quad_height
+
+        # Top-right quadrant
+        tr_x0 = stock_x0 + quad_width
+        tr_y0 = stock_y0 + quad_height
+        tr_x1 = tr_x0 + quad_width
+        tr_y1 = tr_y0 + quad_height
+
+        clearedArea = [
+            [
+                [bl_x0, bl_y0],
+                [bl_x1, bl_y0],
+                [bl_x1, bl_y1],
+                [bl_x0, bl_y1],
+            ],
+            [
+                [tr_x0, tr_y0],
+                [tr_x1, tr_y0],
+                [tr_x1, tr_y1],
+                [tr_x0, tr_y1],
+            ],
+        ]
+
+        # Create and configure Adaptive2d instance
+        a2d = area.Adaptive2d()
+        a2d.stepOverFactor = 0.20
+        a2d.toolDiameter = 5.0
+        a2d.tolerance = 0.1
+        a2d.forceInsideOut = False
+        a2d.finishingProfile = True
+        a2d.keepToolDownDistRatio = 3.0
+        a2d.opType = area.AdaptiveOperationType.ClearingInside
+
+        # Execute the adaptive algorithm
+        results = a2d.Execute(stockPath2d, path2d, clearedArea, lambda paths: False)
+
+        # Verify we got results
+        self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
+
+        # Check all results for errors
+        for result in results:
+            self.checkAdaptiveErrors(result)
+
+        # Verify cleared area matches the path2d rectangle area minus pre-cleared overlap
+        total_cleared = sum(r.ClearedArea for r in results)
+
+        # Account for unclearable area in corners due to circular tool
+        tool_radius = a2d.toolDiameter / 2.0
+        corner_unclearable_area = tool_radius**2 * (1 - math.pi / 4)
+        # only 2 corners are in the pre-cleared area
+        total_unclearable_area = 2 * corner_unclearable_area
+
+        # Calculate overlap between path and pre-cleared areas (both quadrants)
+        # Bottom-left quadrant overlap
+        bl_overlap_x0 = max(path_x0, bl_x0)
+        bl_overlap_y0 = max(path_y0, bl_y0)
+        bl_overlap_x1 = min(path_x1, bl_x1)
+        bl_overlap_y1 = min(path_y1, bl_y1)
+        bl_overlap_width = max(0, bl_overlap_x1 - bl_overlap_x0)
+        bl_overlap_height = max(0, bl_overlap_y1 - bl_overlap_y0)
+        bl_overlap_area = bl_overlap_width * bl_overlap_height
+
+        # Top-right quadrant overlap
+        tr_overlap_x0 = max(path_x0, tr_x0)
+        tr_overlap_y0 = max(path_y0, tr_y0)
+        tr_overlap_x1 = min(path_x1, tr_x1)
+        tr_overlap_y1 = min(path_y1, tr_y1)
+        tr_overlap_width = max(0, tr_overlap_x1 - tr_overlap_x0)
+        tr_overlap_height = max(0, tr_overlap_y1 - tr_overlap_y0)
+        tr_overlap_area = tr_overlap_width * tr_overlap_height
+
+        overlap_area = bl_overlap_area + tr_overlap_area
+
+        # Expected area: path area - corners - pre-cleared overlap
+        expected_area = path_width * path_height - total_unclearable_area - overlap_area
+        # Use half the corner area as tolerance
+        delta = corner_unclearable_area / 2.0
+        self.assertAlmostEqual(
+            total_cleared,
+            expected_area,
+            delta=delta,
+            msg=f"Total cleared area {total_cleared} should be within {delta} of {expected_area}",
+        )
+
     def testClearOutside(self):
         """testClearOutside() Test C++ Adaptive2d clearing outside a simple rectangle."""
 
