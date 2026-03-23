@@ -50,7 +50,7 @@ class CommandCreateSnapshot:
             "MenuText": QT_TRANSLATE_NOOP("Assembly_Snapshot", "Snapshot"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_Snapshot",
-                "Captures the current assembly state (placements and visibility). Double clicking the Snapshot object restores assembly to that state.",
+                "Captures the current assembly state (placements and visibility). Double-clicking the Snapshot object restores the assembly to that state.",
             ),
             "CmdType": "ForEdit",
         }
