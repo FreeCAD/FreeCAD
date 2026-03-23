@@ -7,7 +7,7 @@ from typing import Any, List, Optional, Tuple
 import Path
 import Path.Base.Util as PathUtil
 
-debug = True
+debug = False
 if debug:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())

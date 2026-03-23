@@ -383,7 +383,7 @@ class CAMSanity:
                 )
                 continue  # skip old-style tools
             tooldata = data.setdefault(str(TC.ToolNumber), {})
-            bitshape = tooldata.setdefault("ShapeType", "")
+            bitshape = tooldata.get("ShapeType", "")
             if bitshape not in ["", TC.Tool.ShapeType]:
                 data["squawkData"].append(
                     self.squawk(
@@ -394,6 +394,7 @@ class CAMSanity:
                         squawkType="CAUTION",
                     )
                 )
+            tooldata["ShapeType"] = TC.Tool.ShapeType
             tooldata["bitShape"] = TC.Tool.ShapeType
             tooldata["description"] = TC.Tool.Label
             tooldata["manufacturer"] = ""
@@ -505,7 +506,61 @@ class CAMSanity:
         Path.Log.debug("get_output_url")
 
         generator = ReportGenerator.ReportGenerator(self.data, embed_images=True)
-        return generator.get_output_report()
+        return generator.generate_html()
+
+    def get_all_squawks(self):
+        """Collect squawks from all validation sections without generating images or HTML.
+
+        Calls each _xxxData() method directly using the current image_builder (a
+        DummyImageBuilder when invoked via validate_job(), so no GUI or file I/O occurs).
+        Also runs _validate_job_structure() for structural checks.
+
+        Returns:
+            tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
+        """
+        all_squawks = []
+        for method in [
+            self._toolData,
+            self._outputData,
+            self._runData,
+            self._stockData,
+            self._fixtureData,
+            self._baseObjectData,
+            self._designData,
+        ]:
+            try:
+                all_squawks.extend(method().get("squawkData", []))
+            except Exception as e:
+                Path.Log.warning(f"get_all_squawks: {method.__name__} failed: {e}")
+        all_squawks.extend(self._validate_job_structure())
+        critical = [s for s in all_squawks if s["squawkType"] in ("WARNING", "CAUTION")]
+        return all_squawks, critical
+
+    @staticmethod
+    def validate_job(job):
+        """Lightweight job validation without generating images or HTML.
+
+        Bypasses __init__ entirely to avoid calling summarize() or any image-generation
+        code. Sets up only the attributes needed by the _xxxData() methods, uses
+        DummyImageBuilder unconditionally, and calls get_all_squawks().
+
+        Args:
+            job: FreeCAD CAM job object
+
+        Returns:
+            tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
+        """
+        import tempfile
+        import os as _os
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            sanity = object.__new__(CAMSanity)
+            sanity.job = job
+            sanity.output_file = _os.path.join(tmpdir, "dummy.html")
+            sanity.filelocation = tmpdir
+            sanity.image_builder = ImageBuilder.DummyImageBuilder(tmpdir)
+            sanity.data = {}
+            return sanity.get_all_squawks()
 
     def validate_for_postprocessing(self):
         """
@@ -575,32 +630,3 @@ class CAMSanity:
             )
 
         return job_squawks
-
-    @staticmethod
-    def validate_job_for_postprocessing(job):
-        """
-        Static convenience method to validate a job for post-processing.
-
-        Args:
-            job: FreeCAD CAM job object
-
-        Returns:
-            tuple: (has_critical_issues, all_squawks, critical_squawks)
-        """
-        # Create a minimal CAMSanity instance for validation
-        # Use a dummy output file since we won't generate reports
-        import tempfile
-        import os
-
-        with tempfile.NamedTemporaryFile(suffix=".html", delete=False) as tmp_file:
-            dummy_output = tmp_file.name
-
-        try:
-            sanity = CAMSanity(job, dummy_output)
-            return sanity.validate_for_postprocessing()
-        finally:
-            # Clean up the temporary file
-            try:
-                os.unlink(dummy_output)
-            except:
-                pass

@@ -313,6 +313,11 @@ SET(PathPythonPost_SRCS
     Path/Post/UtilsParse.py
 )
 
+SET(PathPythonPostGui_SRCS
+    Path/Post/Gui/__init__.py
+    Path/Post/Gui/DlgPostProcess.py
+)
+
 SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_legacy_post.py
@@ -630,6 +635,7 @@ SET(all_files
     ${PathPythonOp_SRCS}
     ${PathPythonOpGui_SRCS}
     ${PathPythonPost_SRCS}
+    ${PathPythonPostGui_SRCS}
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
     ${PathPythonToolsAssets_SRCS}
@@ -772,6 +778,13 @@ INSTALL(
         ${PathPythonPost_SRCS}
     DESTINATION
         Mod/CAM/Path/Post
+)
+
+INSTALL(
+    FILES
+        ${PathPythonPostGui_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Post/Gui
 )
 
 INSTALL(
