@@ -348,13 +348,13 @@ private:
                     int thirdIndexi = firstCurveCreated + thirdIndex + static_cast<int>(size) * i;
 
                     auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
-                    newConstr->First_Deprecated = firstIndexi;
+                    newConstr->setGeoId(0, firstIndexi);
 
                     if ((cstr->Type == Symmetric || cstr->Type == Tangent
                          || cstr->Type == Perpendicular || cstr->Type == Angle)
                         && firstIndex >= 0 && secondIndex >= 0 && thirdIndex >= 0) {
-                        newConstr->Second_Deprecated = secondIndexi;
-                        newConstr->Third_Deprecated = thirdIndexi;
+                        newConstr->setGeoId(1, secondIndexi);
+                        newConstr->setGeoId(2, thirdIndexi);
                     }
                     else if ((cstr->Type == Coincident || cstr->Type == Tangent
                               || cstr->Type == Symmetric || cstr->Type == Perpendicular
@@ -362,7 +362,7 @@ private:
                               || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
                              && firstIndex >= 0 && secondIndex >= 0
                              && thirdIndex == GeoEnum::GeoUndef) {
-                        newConstr->Second_Deprecated = secondIndexi;
+                        newConstr->setGeoId(1, secondIndexi);
                     }
                     else if ((cstr->Type == Radius || cstr->Type == Diameter || cstr->Type == Weight)
                              && firstIndex >= 0) {
@@ -371,8 +371,8 @@ private:
                         }
                         else {
                             newConstr->Type = Equal;
-                            newConstr->First_Deprecated = cstr->First_Deprecated;
-                            newConstr->Second_Deprecated = firstIndexi;
+                            newConstr->setGeoId(0, cstr->First_Deprecated);
+                            newConstr->setGeoId(1, firstIndexi);
                         }
                     }
                     else if ((cstr->Type == Distance || cstr->Type == DistanceX
@@ -386,13 +386,13 @@ private:
                                 continue;
                             }
                             newConstr->Type = Equal;
-                            newConstr->First_Deprecated = cstr->First_Deprecated;
-                            newConstr->Second_Deprecated = firstIndexi;
+                            newConstr->setGeoId(0, cstr->First_Deprecated);
+                            newConstr->setGeoId(1, firstIndexi);
                             geoIdsWhoAlreadyHasEqual.push_back(firstIndexi);
                         }
                         else if (cstr->Type == Distance) {
                             if (secondIndex >= 0) {
-                                newConstr->Second_Deprecated = secondIndexi;
+                                newConstr->setGeoId(1, secondIndexi);
                             }
                         }
                         else {
@@ -421,7 +421,7 @@ private:
                         }
                     }
                     else if ((cstr->Type == Block) && firstIndex >= 0) {
-                        newConstr->First_Deprecated = firstIndexi;
+                        newConstr->setGeoId(0, firstIndexi);
                     }
                     else {
                         continue;

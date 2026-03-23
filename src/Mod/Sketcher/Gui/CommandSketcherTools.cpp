@@ -193,13 +193,13 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
         Constraint* temp = constr->copy();
         for (size_t j = 0; j < listOfGeoId.size(); j++) {
             if (temp->First_Deprecated == listOfGeoId[j]) {
-                temp->First_Deprecated = j;
+                temp->setGeoId(0, j);
             }
             if (temp->Second_Deprecated == listOfGeoId[j]) {
-                temp->Second_Deprecated = j;
+                temp->setGeoId(1, j);
             }
             if (temp->Third_Deprecated == listOfGeoId[j]) {
-                temp->Third_Deprecated = j;
+                temp->setGeoId(2, j);
             }
         }
         shapeConstraints.push_back(temp);

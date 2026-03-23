@@ -755,7 +755,7 @@ protected:
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::PointOnObject;
                     c->setElement(0, Sketcher::GeoElementId(geoId1, posId1));
-                    c->Second_Deprecated = geoId2;
+                    c->setGeoId(1, geoId2);
                     AutoConstraints.push_back(std::move(c));
                 }
             } break;
@@ -776,7 +776,7 @@ protected:
             case Sketcher::Vertical: {
                 auto c = std::make_unique<Sketcher::Constraint>();
                 c->Type = ac.Type;
-                c->First_Deprecated = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
+                c->setGeoId(0, (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1));
                 AutoConstraints.push_back(std::move(c));
             } break;
             case Sketcher::Tangent: {
@@ -865,15 +865,15 @@ protected:
                     // equality
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Equal;
-                    c->First_Deprecated = geoId1;
-                    c->Second_Deprecated = geoId2;
+                    c->setGeoId(0, geoId1);
+                    c->setGeoId(1, geoId2);
                     AutoConstraints.push_back(std::move(c));
                 }
                 else {  // regular edge to edge tangency
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Tangent;
-                    c->First_Deprecated = geoId1;
-                    c->Second_Deprecated = geoId2;
+                    c->setGeoId(0, geoId1);
+                    c->setGeoId(1, geoId2);
                     AutoConstraints.push_back(std::move(c));
                 }
             } break;

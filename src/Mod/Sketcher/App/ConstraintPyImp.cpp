@@ -208,7 +208,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         else {
             return false;
         }
-        constraint->First_Deprecated = FirstIndex;
+        constraint->setGeoId(0, FirstIndex);
         return true;
     };
 
@@ -279,8 +279,8 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             if (valid) {
-                constraint->First_Deprecated = FirstIndex;
-                constraint->Second_Deprecated = SecondIndex;
+                constraint->setGeoId(0, FirstIndex);
+                constraint->setGeoId(1, SecondIndex);
                 return true;
             }
         }
@@ -329,7 +329,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return false;
             }
 
-            constraint->First_Deprecated = FirstIndex;
+            constraint->setGeoId(0, FirstIndex);
             constraint->setValue(Value);
             return true;
         }
@@ -413,7 +413,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     0,
                     GeoElementId(FirstIndex, static_cast<Sketcher::PointPos>(FirstPos))
                 );
-                constraint->Second_Deprecated = SecondIndex;
+                constraint->setGeoId(1, SecondIndex);
                 return true;
             }
         }
@@ -432,11 +432,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     }
                 }
                 constraint->Type = Angle;
-                constraint->Second_Deprecated = SecondIndex;
+                constraint->setGeoId(1, SecondIndex);
             }
             else if (strcmp("Distance", ConstraintType) == 0) {
                 constraint->Type = Distance;
-                constraint->Second_Deprecated = SecondIndex;
+                constraint->setGeoId(1, SecondIndex);
             }
             else if (strcmp("DistanceX", ConstraintType) == 0) {
                 FirstPos = SecondIndex;
@@ -454,7 +454,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return false;
             }
 
-            constraint->First_Deprecated = FirstIndex;
+            constraint->setGeoId(0, FirstIndex);
             constraint->setValue(Value);
             return true;
         }
@@ -574,7 +574,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                         0,
                         GeoElementId(intArg1, static_cast<Sketcher::PointPos>(intArg2))
                     );
-                    constraint->Second_Deprecated = intArg3;
+                    constraint->setGeoId(1, intArg3);
                     constraint->InternalAlignmentIndex = intArg4;
                     return true;
                 }
@@ -600,7 +600,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     0,
                     GeoElementId(intArg1, static_cast<Sketcher::PointPos>(intArg2))
                 );
-                constraint->Second_Deprecated = intArg3;
+                constraint->setGeoId(1, intArg3);
                 constraint->setValue(Value);
                 return true;
             }
@@ -663,7 +663,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     1,
                     GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4))
                 );
-                constraint->Third_Deprecated = intArg5;
+                constraint->setGeoId(2, intArg5);
                 return true;
             }
             if (strcmp("Perpendicular", ConstraintType) == 0) {
@@ -676,7 +676,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     1,
                     GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4))
                 );
-                constraint->Third_Deprecated = intArg5;
+                constraint->setGeoId(2, intArg5);
                 return true;
             }
         }
@@ -711,7 +711,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 constraint->Type = Angle;
                 // valid = true;//non-standard assignment
                 constraint->setElement(0, GeoElementId(intArg1, Sketcher::PointPos::none));
-                constraint->Second_Deprecated = intArg2;  // let's goof up all the terminology =)
+                constraint->setGeoId(1, intArg2);  // let's goof up all the terminology =)
                 constraint->SecondPos_Deprecated = Sketcher::PointPos::none;
                 constraint->setElement(
                     2,
@@ -1116,7 +1116,7 @@ Py::Long ConstraintPy::getFirst() const
 
 void ConstraintPy::setFirst(Py::Long arg)
 {
-    this->getConstraintPtr()->First_Deprecated = arg;
+    this->getConstraintPtr()->setGeoId(0, arg);
 }
 
 Py::Long ConstraintPy::getFirstPos() const
@@ -1147,7 +1147,7 @@ Py::Long ConstraintPy::getSecond() const
 
 void ConstraintPy::setSecond(Py::Long arg)
 {
-    this->getConstraintPtr()->Second_Deprecated = arg;
+    this->getConstraintPtr()->setGeoId(1, arg);
 }
 
 Py::Long ConstraintPy::getSecondPos() const
@@ -1178,7 +1178,7 @@ Py::Long ConstraintPy::getThird() const
 
 void ConstraintPy::setThird(Py::Long arg)
 {
-    this->getConstraintPtr()->Third_Deprecated = arg;
+    this->getConstraintPtr()->setGeoId(2, arg);
 }
 
 Py::Long ConstraintPy::getThirdPos() const

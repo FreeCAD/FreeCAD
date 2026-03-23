@@ -525,9 +525,9 @@ private:
                      || cstr->Type == Angle)
                     && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef
                     && thirdIndex != GeoEnum::GeoUndef) {
-                    newConstr->First_Deprecated = firstIndex;
-                    newConstr->Second_Deprecated = secondIndex;
-                    newConstr->Third_Deprecated = thirdIndex;
+                    newConstr->setGeoId(0, firstIndex);
+                    newConstr->setGeoId(1, secondIndex);
+                    newConstr->setGeoId(2, thirdIndex);
                 }
                 else if ((cstr->Type == Coincident || cstr->Type == Tangent
                           || cstr->Type == Symmetric || cstr->Type == Perpendicular
@@ -535,40 +535,40 @@ private:
                           || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
                          && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef
                          && thirdIndex == GeoEnum::GeoUndef) {
-                    newConstr->First_Deprecated = firstIndex;
-                    newConstr->Second_Deprecated = secondIndex;
+                    newConstr->setGeoId(0, firstIndex);
+                    newConstr->setGeoId(1, secondIndex);
                 }
                 else if (cstr->Type == Angle && firstIndex != GeoEnum::GeoUndef
                          && secondIndex == GeoEnum::GeoUndef && thirdIndex == GeoEnum::GeoUndef) {
-                    newConstr->First_Deprecated = firstIndex;
+                    newConstr->setGeoId(0, firstIndex);
                 }
                 else if ((cstr->Type == Radius || cstr->Type == Diameter)
                          && firstIndex != GeoEnum::GeoUndef) {
-                    newConstr->First_Deprecated = firstIndex;
+                    newConstr->setGeoId(0, firstIndex);
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 else if ((cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
                          && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef) {
-                    newConstr->First_Deprecated = firstIndex;
-                    newConstr->Second_Deprecated = secondIndex;
+                    newConstr->setGeoId(0, firstIndex);
+                    newConstr->setGeoId(1, secondIndex);
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 else if ((cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
                          && firstIndex != GeoEnum::GeoUndef
                          && cstr->Second_Deprecated == GeoEnum::GeoUndef) {
-                    newConstr->First_Deprecated = firstIndex;
+                    newConstr->setGeoId(0, firstIndex);
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 else if ((cstr->Type == Block || cstr->Type == Weight)
                          && firstIndex != GeoEnum::GeoUndef) {
-                    newConstr->First_Deprecated = firstIndex;
+                    newConstr->setGeoId(0, firstIndex);
                 }
                 else if ((cstr->Type == Vertical || cstr->Type == Horizontal)
                          && (firstIndex != GeoEnum::GeoUndef
                              && (cstr->Second_Deprecated == GeoEnum::GeoUndef
                                  || secondIndex != GeoUndef))) {
-                    newConstr->First_Deprecated = firstIndex;
-                    newConstr->Second_Deprecated = secondIndex;
+                    newConstr->setGeoId(0, firstIndex);
+                    newConstr->setGeoId(1, secondIndex);
                 }
                 else {
                     continue;

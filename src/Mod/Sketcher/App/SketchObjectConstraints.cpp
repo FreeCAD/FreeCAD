@@ -1739,8 +1739,8 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
                     // Convert to Parallel
                     Constraint* newConstr = new Constraint();
                     newConstr->Type = Sketcher::Parallel;
-                    newConstr->First_Deprecated = referenceGeoIds[constr->Type];
-                    newConstr->Second_Deprecated = constr->First_Deprecated;
+                    newConstr->setGeoId(0, referenceGeoIds[constr->Type]);
+                    newConstr->setGeoId(1, constr->First_Deprecated);
                     newConstraints.push_back(newConstr);
                 }
             }
@@ -2344,9 +2344,9 @@ double SketchObject::calculateConstraintError(int ConstrId)
             }
         }
 
-        cstr->First_Deprecated = GeoIdList[0];
-        cstr->Second_Deprecated = GeoIdList[1];
-        cstr->Third_Deprecated = GeoIdList[2];
+        cstr->setGeoId(0, GeoIdList[0]);
+        cstr->setGeoId(1, GeoIdList[1]);
+        cstr->setGeoId(2, GeoIdList[2]);
         int icstr = sk.addConstraint(cstr);
         result = sk.calculateConstraintError(icstr);
     }

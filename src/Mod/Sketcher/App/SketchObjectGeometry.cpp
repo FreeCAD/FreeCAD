@@ -533,8 +533,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseMajorDiameter;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -548,8 +548,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseMinorDiameter;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -564,7 +564,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus1;
         newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -578,7 +578,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus2;
         newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
     }
@@ -671,8 +671,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseMajorDiameter;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -686,8 +686,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseMinorDiameter;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -702,7 +702,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus1;
         newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -716,7 +716,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus2;
         newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
     }
@@ -789,8 +789,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::HyperbolaMajor;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -804,8 +804,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::HyperbolaMinor;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
 
@@ -821,7 +821,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::HyperbolaFocus;
         newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -879,7 +879,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::ParabolaFocus;
         newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -895,7 +895,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
         newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::none));
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
 
@@ -976,7 +976,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::BSplineControlPoint;
         newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo, Sketcher::PointPos::mid));
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(1, GeoId);
         newConstr->InternalAlignmentIndex = index;
 
         icon.push_back(newConstr);
@@ -987,7 +987,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
                 // if the first weight is 1.0 it's probably going to be non-rational
                 auto* newConstr3 = new Sketcher::Constraint();
                 newConstr3->Type = Sketcher::Weight;
-                newConstr3->First_Deprecated = controlpointgeoids[0];
+                newConstr3->setGeoId(0, controlpointgeoids[0]);
                 newConstr3->setValue(weights[0]);
 
                 icon.push_back(newConstr3);
@@ -1028,7 +1028,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
         newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo, Sketcher::PointPos::start));
-        newConstr->Second_Deprecated = GeoId;
+        newConstr->setGeoId(1, GeoId);
         newConstr->InternalAlignmentIndex = index;
 
         icon.push_back(newConstr);

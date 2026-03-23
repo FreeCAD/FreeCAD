@@ -539,7 +539,7 @@ std::unique_ptr<Constraint> getNewConstraintAtTrimCut(
 {
     auto newConstr = std::make_unique<Sketcher::Constraint>();
     newConstr->setElement(0, GeoElementId(cutGeoId, cutPosId));
-    newConstr->Second_Deprecated = cuttingGeoId;
+    newConstr->setGeoId(1, cuttingGeoId);
     if (isPointAtPosition(obj, cuttingGeoId, PointPos::start, cutPointVec)) {
         newConstr->Type = Sketcher::Coincident;
         newConstr->SecondPos_Deprecated = PointPos::start;
@@ -2213,13 +2213,13 @@ int SketchObject::addCopy(
                     constNew->Type = Sketcher::Equal;
                     constNew->isDriving = true;
                     // first is already (constr->First)
-                    constNew->Second_Deprecated = fit->second;
+                    constNew->setGeoId(1, fit->second);
                     newconstrVals.push_back(constNew);
                     continue;
                 }
                 if (!(constr->Type == Sketcher::Angle && clone)) {
                     Constraint* constNew = constr->copy();
-                    constNew->First_Deprecated = fit->second;
+                    constNew->setGeoId(0, fit->second);
                     newconstrVals.push_back(constNew);
                     continue;
                 }
@@ -2230,7 +2230,7 @@ int SketchObject::addCopy(
                     constNew->Type = Sketcher::Parallel;
                     constNew->isDriving = true;
                     // first is already (constr->First)
-                    constNew->Second_Deprecated = fit->second;
+                    constNew->setGeoId(1, fit->second);
                     newconstrVals.push_back(constNew);
                 }
                 continue;
@@ -2262,8 +2262,8 @@ int SketchObject::addCopy(
                 }
                 // remaining, this includes InternalAlignment constraints
                 Constraint* constNew = constr->copy();
-                constNew->First_Deprecated = fit->second;
-                constNew->Second_Deprecated = sit->second;
+                constNew->setGeoId(0, fit->second);
+                constNew->setGeoId(1, sit->second);
                 newconstrVals.push_back(constNew);
                 continue;
             }
@@ -2276,9 +2276,9 @@ int SketchObject::addCopy(
 
             // Third is also in the list
             Constraint* constNew = constr->copy();
-            constNew->First_Deprecated = fit->second;
-            constNew->Second_Deprecated = sit->second;
-            constNew->Third_Deprecated = tit->second;
+            constNew->setGeoId(0, fit->second);
+            constNew->setGeoId(1, sit->second);
+            constNew->setGeoId(2, tit->second);
 
             newconstrVals.push_back(constNew);
         }

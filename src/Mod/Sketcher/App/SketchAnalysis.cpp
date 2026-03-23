@@ -609,8 +609,8 @@ Sketcher::Constraint* SketchAnalysis::create(const ConstraintIds& id)
 {
     auto c = new Sketcher::Constraint();
     c->Type = id.Type;
-    c->First_Deprecated = id.First;
-    c->Second_Deprecated = id.Second;
+    c->setGeoId(0, id.First);
+    c->setGeoId(1, id.Second);
     c->FirstPos_Deprecated = id.FirstPos;
     c->SecondPos_Deprecated = id.SecondPos;
     return c;
