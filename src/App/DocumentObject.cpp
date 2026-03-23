@@ -934,7 +934,7 @@ void DocumentObject::arrangeMoveProperty(Property* toBeMovedProp,
     // Phase 2: Move an expression that targets the current property
     moveExpressionTargetingProp(toBeMovedProp, newProp, targetObj);
 
-    // do not record the the following changes since we are defining a transaction
+    // do not record the following changes since we are defining a transaction
     targetObj->_pDoc->setDefiningTransaction(true);
 
     // Phase 3: Paste the property
