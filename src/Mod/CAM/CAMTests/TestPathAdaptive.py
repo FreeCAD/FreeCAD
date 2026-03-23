@@ -387,6 +387,117 @@ class TestPathAdaptive(PathTestBase):
             msg=f"Profiling cleared area {total_cleared} should be at most {max_area} (3 tool diameters deep)",
         )
 
+    def testProfilingOutside(self):
+        """testProfilingOutside() Test C++ Adaptive2d profiling outside a rectangle."""
+
+        # Define geometry dimensions - use small inner path to allow full 2-3 diameter range
+        stock_width = 50.0
+        stock_height = 50.0
+        path_width = 15.0
+        path_height = 15.0
+
+        # Create stock boundary centered at origin
+        stock_x0 = 0.0
+        stock_y0 = 0.0
+        stock_x1 = stock_x0 + stock_width
+        stock_y1 = stock_y0 + stock_height
+        stockPath2d = [
+            [
+                [stock_x0, stock_y0],
+                [stock_x1, stock_y0],
+                [stock_x1, stock_y1],
+                [stock_x0, stock_y1],
+            ]
+        ]
+
+        # Create region to profile (keep), centered within stock
+        margin_x = (stock_width - path_width) / 2.0
+        margin_y = (stock_height - path_height) / 2.0
+        path_x0 = stock_x0 + margin_x
+        path_y0 = stock_y0 + margin_y
+        path_x1 = path_x0 + path_width
+        path_y1 = path_y0 + path_height
+        path2d = [
+            [
+                [path_x0, path_y0],
+                [path_x1, path_y0],
+                [path_x1, path_y1],
+                [path_x0, path_y1],
+            ]
+        ]
+
+        # No previously cleared area
+        clearedArea = []
+
+        # Create and configure Adaptive2d instance
+        a2d = area.Adaptive2d()
+        a2d.stepOverFactor = 0.20
+        a2d.toolDiameter = 5.0
+        a2d.tolerance = 0.1
+        a2d.forceInsideOut = False
+        a2d.finishingProfile = True
+        a2d.keepToolDownDistRatio = 3.0
+        a2d.opType = area.AdaptiveOperationType.ProfilingOutside
+
+        # Execute the adaptive algorithm
+        results = a2d.Execute(stockPath2d, path2d, clearedArea, lambda paths: False)
+
+        # Verify we got results
+        self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
+
+        # Check all results for errors
+        for result in results:
+            self.checkAdaptiveErrors(result)
+
+        # Verify cleared area is appropriate for profiling between 2-3 tool diameters
+        total_cleared = sum(r.ClearedArea for r in results)
+
+        # Calculate expected area range for a profile 2-3 tool diameters wide
+        tool_diameter = a2d.toolDiameter
+
+        # Inner boundary is the path2d
+        inner_area = path_width * path_height
+
+        # Outer boundary at 2 tool diameters outset (clamped to stock)
+        outset_2_diameters = 2 * tool_diameter
+        outer_width_min = min(path_width + 2 * outset_2_diameters, stock_width)
+        outer_height_min = min(path_height + 2 * outset_2_diameters, stock_height)
+        outer_area_min = outer_width_min * outer_height_min
+
+        # Account for rounded outer corners (tool follows circular arc, not sharp corner)
+        # Each outer corner: sharp corner = d², rounded = π*d²/4, difference = d²(4-π)/4
+        outer_corner_rounding_2d = outset_2_diameters**2 * (1 - math.pi / 4)
+        total_outer_rounding_2d = 4 * outer_corner_rounding_2d
+
+        # Outer boundary at 3 tool diameters outset (clamped to stock)
+        outset_3_diameters = 3 * tool_diameter
+        outer_width_max = min(path_width + 2 * outset_3_diameters, stock_width)
+        outer_height_max = min(path_height + 2 * outset_3_diameters, stock_height)
+        outer_area_max = outer_width_max * outer_height_max
+
+        outer_corner_rounding_3d = outset_3_diameters**2 * (1 - math.pi / 4)
+        total_outer_rounding_3d = 4 * outer_corner_rounding_3d
+
+        # Account for inner corners that can't be cleared from outside
+        tool_radius = tool_diameter / 2.0
+        inner_corner_unclearable = tool_radius**2 * (1 - math.pi / 4)
+        total_inner_unclearable = 4 * inner_corner_unclearable
+
+        # Expected area range
+        min_area = outer_area_min - inner_area - total_outer_rounding_2d - total_inner_unclearable
+        max_area = outer_area_max - inner_area - total_outer_rounding_3d
+
+        self.assertGreaterEqual(
+            total_cleared,
+            min_area,
+            msg=f"Profiling cleared area {total_cleared} should be at least {min_area} (2 tool diameters wide)",
+        )
+        self.assertLessEqual(
+            total_cleared,
+            max_area,
+            msg=f"Profiling cleared area {total_cleared} should be at most {max_area} (3 tool diameters wide)",
+        )
+
     def testFaceSingleSimple(self):
         """testFaceSingleSimple() Verify path generated on Face3."""
 
