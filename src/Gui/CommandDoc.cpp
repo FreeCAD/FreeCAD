@@ -1797,8 +1797,7 @@ bool StdCmdTransformManip::isActive()
         ResolveMode::FollowLink
     );
     return (
-        sel.size() == 1 && !sel.front()->isFreezed()
-        && sel.front()->getPlacementProperty()
+        sel.size() == 1 && !sel.front()->isFreezed() && sel.front()->getPlacementProperty()
         && !sel.front()->getPlacementProperty()->isReadOnly()
     );
 }
