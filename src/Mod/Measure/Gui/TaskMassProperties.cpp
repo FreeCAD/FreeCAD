@@ -323,11 +323,11 @@ bool TaskMassProperties::eventFilter(QObject* watched, QEvent* event)
                 }
 
                 for (const auto& userData : toRemove) {
-                    QStringList parts = userData.split(QLatin1Char('|'));
+                    QStringList parts = userData.split(QStringLiteral("|"));
                     if (parts.size() == 3) {
-                        QByteArray docName = parts[0].toLatin1();
-                        QByteArray objName = parts[1].toLatin1();
-                        QByteArray subName = parts[2].toLatin1();
+                        QByteArray docName = parts[0].toUtf8();
+                        QByteArray objName = parts[1].toUtf8();
+                        QByteArray subName = parts[2].toUtf8();
                         Gui::Selection().rmvSelection(
                             docName.isEmpty() ? nullptr : docName.constData(),
                             objName.isEmpty() ? nullptr : objName.constData(),
@@ -964,13 +964,13 @@ void TaskMassProperties::tryUpdate()
             auto* item = new QListWidgetItem(QString::fromStdString(displayObject->getFullLabel()));
             QString docName;
             if (auto* doc = selObj.pObject->getDocument()) {
-                docName = QString::fromLatin1(doc->getName());
+                docName = QString::fromUtf8(doc->getName());
             }
-            QString objName = QString::fromLatin1(selObj.pObject->getNameInDocument());
-            QString subName = selObj.SubName ? QString::fromLatin1(selObj.SubName) : QString();
+            QString objName = QString::fromUtf8(selObj.pObject->getNameInDocument());
+            QString subName = selObj.SubName ? QString::fromUtf8(selObj.SubName) : QString();
             item->setData(
                 Qt::UserRole,
-                docName + QLatin1String("|") + objName + QLatin1String("|") + subName
+                docName + QStringLiteral("|") + objName + QStringLiteral("|") + subName
             );
             panel->ui.objectList->addItem(item);
         }
