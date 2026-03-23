@@ -64,6 +64,7 @@ class FemMigrateApp:
             "femobjects._FemMeshResult",
             "femobjects._FemResultMechanical",
             "femobjects._FemSolverCalculix",
+            "femobjects.constraint_electrostaticpotential",
             "PyObjects",
             "PyObjects._FemConstraintBodyHeatSource",
             "PyObjects._FemConstraintElectrostaticPotential",
@@ -150,11 +151,9 @@ class FemMigrateApp:
 
             module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
         if module.__name__ == "femobjects._FemConstraintElectrostaticPotential":
-            import femobjects.constraint_electrostaticpotential
+            import femobjects.constraint_electromagnetic
 
-            module.Proxy = (
-                femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
-            )
+            module.Proxy = femobjects.constraint_electromagnetic.ConstraintElectromagnetic
         if module.__name__ == "femobjects._FemConstraintFlowVelocity":
             import femobjects.constraint_flowvelocity
 
@@ -229,6 +228,12 @@ class FemMigrateApp:
             import femobjects.solver_ccxtools
 
             module._FemSolverCalculix = femobjects.solver_ccxtools.SolverCcxTools
+        if module.__name__ == "femobjects.constraint_electrostaticpotential":
+            import femobjects.constraint_electromagnetic
+
+            module.ConstraintElectrostaticPotential = (
+                femobjects.constraint_electromagnetic.ConstraintElectromagnetic
+            )
 
         if module.__name__ == "PyObjects":
             module.__path__ = "PyObjects"
@@ -237,11 +242,9 @@ class FemMigrateApp:
 
             module.Proxy = femobjects.constraint_bodyheatsource.ConstraintBodyHeatSource
         if module.__name__ == "PyObjects._FemConstraintElectrostaticPotential":
-            import femobjects.constraint_electrostaticpotential
+            import femobjects.constraint_electromagnetic
 
-            module.Proxy = (
-                femobjects.constraint_electrostaticpotential.ConstraintElectrostaticPotential
-            )
+            module.Proxy = femobjects.constraint_electromagnetic.ConstraintElectromagnetic
         if module.__name__ == "PyObjects._FemConstraintFlowVelocity":
             import femobjects.constraint_flowvelocity
 

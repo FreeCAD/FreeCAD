@@ -3660,22 +3660,22 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
     <message>
       <location filename="../../draftutils/gui_utils.py" line="797"/>
       <source>image is Null</source>
-      <translation>l'image est vide</translation>
+      <translation>L'image est vide.</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="805"/>
       <source>filename does not exist on the system or in the resource file</source>
-      <translation>le nom du fichier n'existe ni dans le système ni dans le fichier source</translation>
+      <translation>Le nom du fichier n'existe ni dans le système ni dans le fichier source.</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="864"/>
       <source>unable to load texture</source>
-      <translation>impossible de charger la texture</translation>
+      <translation>Impossible de charger la texture</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="931"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation>N'a pas de "ViewObject.RootNode".</translation>
+      <translation>Ne dispose pas de « ViewObject.RootNode ».</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="569"/>
@@ -5858,13 +5858,13 @@ Please either allow FreeCAD to download these libraries:
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer
 To enabled FreeCAD to download these libraries, answer Yes.</source>
-      <translation>Les bibliothèques d'importation/exportation DXF nécessaires à FreeCAD pour gérer le format DXF
-n'ont pas été trouvées sur ce système.
+      <translation>Les bibliothèques d'importation/exportation DXF nécessaires à FreeCAD pour gérer le format DXF n'ont pas été trouvées sur ce système.
 Autoriser FreeCAD à télécharger ces bibliothèques :
-  1 - Charger l'atelier Draft
-  2 - Menu Édition → Préférences → Importer/exporter → DXF → Activer les téléchargements
-Ou télécharger ces bibliothèques manuellement, comme expliqué sur https://github.com/yorikvanhavre/Draft-dxf-importer
-pour permettre à FreeCAD de télécharger ces bibliothèques. Répondre Oui.</translation>
+- Charger l'atelier Draft
+- Menu Édition → Préférences → Importer/exporter → DXF → Permettre à FreeCAD de télécharger...
+
+Ou télécharger ces bibliothèques manuellement, comme expliqué sur https://github.com/yorikvanhavre/Draft-dxf-importer pour permettre à
+FreeCAD de télécharger ces bibliothèques. Répondre Oui.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/hatch.py" line="140"/>

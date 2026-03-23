@@ -1578,6 +1578,12 @@ class MachineFactory:
     # Callback registry for configuration changes
     _callbacks = []
 
+    # Addon machine directories registered via register_addon_machine_dir()
+    _addon_machine_dirs: list = []
+
+    # Flag: has the filesystem scan for addon machine dirs been run yet?
+    _addon_dirs_scanned: bool = False
+
     @classmethod
     def set_config_directory(cls, directory):
         """Set the directory for storing machine configuration files"""
@@ -1594,6 +1600,22 @@ class MachineFactory:
         """Unregister a callback"""
         if callback in cls._callbacks:
             cls._callbacks.remove(callback)
+
+    @classmethod
+    def register_addon_machine_dir(cls, path) -> None:
+        """Register a directory containing addon machine definition files.
+
+        Called by addon Init.py at FreeCAD startup. The directory should
+        contain .fcm files. Machines are available for direct use and as
+        templates — without copying to the user asset directory.
+        Duplicate registrations are silently ignored.
+
+        Args:
+            path: Directory path (str or pathlib.Path) containing .fcm files.
+        """
+        p = pathlib.Path(path)
+        if p not in cls._addon_machine_dirs:
+            cls._addon_machine_dirs.append(p)
 
     @classmethod
     def _notify_callbacks(cls, event_type, machine_name=None):
@@ -1723,6 +1745,109 @@ class MachineFactory:
         return templates
 
     @classmethod
+    def list_addon_templates(cls) -> list:
+        """Get list of machine templates from all registered addon directories.
+
+        Returns:
+            list: List of (namespace, display_name, full_path_str) tuples.
+                  namespace is the addon root directory name (e.g. "Machines").
+                  display_name is read from the JSON machine.name field.
+        """
+        templates = []
+        for addon_dir in cls._addon_machine_dirs:
+            if not addon_dir.exists():
+                continue
+            # Namespace = parent dir name (addon root), e.g. ".../Mod/Machines/machines" → "Machines"
+            namespace = addon_dir.parent.name
+            for machine_file in sorted(addon_dir.glob("*.fcm")):
+                display_name = cls._read_machine_name_from_path(machine_file)
+                templates.append((namespace, display_name, str(machine_file)))
+        return templates
+
+    @classmethod
+    def _scan_installed_addon_dirs(cls) -> None:
+        """Scan FreeCAD Mod directories for machine addons via package.xml tags.
+
+        Finds every installed addon whose package.xml contains <tag>Machine</tag>
+        and registers its 'machines/' subdirectory.  Name-agnostic — does not rely
+        on the addon folder name or on Init.py execution order.
+        Supplements the Init.py push mechanism; duplicate registrations are ignored.
+        """
+        for get_dir in (FreeCAD.getUserAppDataDir, FreeCAD.getHomePath):
+            try:
+                mod_root = pathlib.Path(get_dir()) / "Mod"
+                if not mod_root.is_dir():
+                    continue
+                for entry in sorted(mod_root.iterdir(), key=lambda e: e.name.lower()):
+                    if not entry.is_dir():
+                        continue
+                    pkg_xml = entry / "package.xml"
+                    if not pkg_xml.exists():
+                        continue
+                    try:
+                        meta = FreeCAD.Metadata(str(pkg_xml))
+                        if "Machine" not in meta.Tag:
+                            continue
+                    except Exception:
+                        continue
+                    machines_dir = entry / "machines"
+                    if machines_dir.is_dir():
+                        cls.register_addon_machine_dir(machines_dir)
+            except Exception:
+                # fail silently if this doesn't work
+                pass
+
+    @classmethod
+    def get_addon_machine_tree(cls) -> list:
+        """Get a recursive tree of machines from all registered addon directories.
+
+        Returns a list of (namespace, subtree) tuples, one per registered addon dir.
+        Each subtree is a list whose elements are either:
+          ('file', display_name, full_path_str)  — a .fcm machine file
+          ('dir',  dir_name,     [sub_items])    — a subdirectory (n-depth)
+
+        Returns:
+            list of (namespace, subtree) tuples
+        """
+        if not cls._addon_dirs_scanned:
+            cls._scan_installed_addon_dirs()
+            cls._addon_dirs_scanned = True
+
+        result = []
+        for addon_dir in cls._addon_machine_dirs:
+            if not addon_dir.exists():
+                continue
+            namespace = addon_dir.parent.name
+            subtree = cls._scan_machine_dir(addon_dir)
+            if subtree:
+                result.append((namespace, subtree))
+        return result
+
+    @classmethod
+    def _scan_machine_dir(cls, directory) -> list:
+        """Recursively scan a directory for .fcm files and subdirectories.
+
+        Files are listed before subdirectories; both groups are sorted alphabetically.
+        Empty subdirectories are omitted.
+        """
+        items = []
+        try:
+            entries = sorted(directory.iterdir(), key=lambda e: e.name.lower())
+            for entry in entries:
+                if entry.is_file() and entry.suffix == ".fcm":
+                    name = cls._read_machine_name_from_path(entry)
+                    items.append(("file", name, str(entry)))
+            for entry in entries:
+                if entry.is_dir():
+                    children = cls._scan_machine_dir(entry)
+                    if children:
+                        items.append(("dir", entry.name, children))
+        except Exception:
+            # fail silently if this doesn't work
+            pass
+        return items
+
+    @classmethod
     def list_configuration_files(cls) -> list[tuple[str, pathlib.Path]]:
         """Get list of available machine files from the asset directory.
 
@@ -1755,7 +1880,14 @@ class MachineFactory:
             list: List of machine names starting with "<any>"
         """
         machines = cls.list_configuration_files()
-        return [name for name, path in machines]
+        names = [name for name, path in machines]
+        # Add addon machine names that aren't already in the user store
+        existing_lower = {n.lower() for n in names}
+        for _namespace, display_name, _path in cls.list_addon_templates():
+            if display_name.lower() not in existing_lower:
+                names.append(display_name)
+                existing_lower.add(display_name.lower())
+        return names
 
     @classmethod
     def delete_configuration(cls, filename):
@@ -1863,7 +1995,16 @@ class MachineFactory:
                 break
 
         if target_path is None:
+            # Fall back to addon templates
+            machine_name_lower = machine_name.lower()
+            for _namespace, display_name, full_path in cls.list_addon_templates():
+                if display_name.lower() == machine_name_lower:
+                    target_path = full_path
+                    break
+
+        if target_path is None:
             available = [name for name, path in machine_files if path is not None]
+            available += [dn for _ns, dn, _p in cls.list_addon_templates()]
             raise FileNotFoundError(
                 f"Machine '{machine_name}' not found. Available machines: {available}"
             )
@@ -1896,3 +2037,16 @@ class MachineFactory:
                 return data.get("machine", {}).get("name", filepath.stem)
         except Exception:
             return filepath.stem
+
+    @classmethod
+    def _read_machine_name_from_path(cls, filepath) -> str:
+        """Read the machine display name from a full .fcm file path.
+
+        Falls back to the filename stem if the file cannot be read.
+        """
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                return data.get("machine", {}).get("name", pathlib.Path(filepath).stem)
+        except Exception:
+            return pathlib.Path(filepath).stem

@@ -501,3 +501,76 @@ class TestMachineFactory(PathTestUtils.PathTestBase):
         self.assertFalse(loaded.output.comments.enabled)
         self.assertEqual(loaded.output.precision.axis, 4)
         self.assertEqual(loaded.output.formatting.line_increment, 5)
+
+    def test_register_addon_machine_dir(self):
+        """register_addon_machine_dir() adds path to _addon_machine_dirs without duplicates.
+
+        Given: a temporary directory not yet registered
+        When: register_addon_machine_dir() is called twice with the same path
+        Then: _addon_machine_dirs contains it exactly once
+        """
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = pathlib.Path(tmpdir)
+            before = len(MachineFactory._addon_machine_dirs)
+            MachineFactory.register_addon_machine_dir(p)
+            self.assertEqual(len(MachineFactory._addon_machine_dirs), before + 1)
+            MachineFactory.register_addon_machine_dir(p)  # second call — no duplicate
+            self.assertEqual(len(MachineFactory._addon_machine_dirs), before + 1)
+            MachineFactory._addon_machine_dirs.remove(p)
+
+    def test_list_addon_templates(self):
+        """list_addon_templates() returns machines from registered addon dirs.
+
+        Given: a registered addon directory containing one .fcm file with name "Addon Machine"
+        When: list_addon_templates() is called
+        Then: "Addon Machine" appears in the returned display names
+        """
+        import json
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = pathlib.Path(tmpdir)
+            fcm = {"machine": {"name": "Addon Machine", "axes": {}, "spindles": []}}
+            (p / "addon_machine.fcm").write_text(json.dumps(fcm))
+            MachineFactory.register_addon_machine_dir(p)
+            templates = MachineFactory.list_addon_templates()
+            names = [dn for _ns, dn, _path in templates]
+            self.assertIn("Addon Machine", names)
+            MachineFactory._addon_machine_dirs.remove(p)
+
+    def test_get_machine_from_addon(self):
+        """get_machine() can load a machine from a registered addon directory.
+
+        Given: a registered addon directory containing a valid .fcm file
+              for "Addon Test Machine"
+        When: get_machine("Addon Test Machine") is called
+        Then: a Machine object with name "Addon Test Machine" is returned
+        """
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = pathlib.Path(tmpdir)
+            machine = Machine(name="Addon Test Machine")
+            import json
+
+            (p / "addon_test.fcm").write_text(json.dumps(machine.to_dict()))
+            MachineFactory.register_addon_machine_dir(p)
+            loaded = MachineFactory.get_machine("Addon Test Machine")
+            self.assertIsInstance(loaded, Machine)
+            self.assertEqual(loaded.name, "Addon Test Machine")
+            MachineFactory._addon_machine_dirs.remove(p)
+
+    def test_list_configurations_includes_addon(self):
+        """list_configurations() includes addon machine names.
+
+        Given: a registered addon directory with a machine named "Community Mill"
+        When: list_configurations() is called
+        Then: "Community Mill" appears in the returned list
+        """
+        import json
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            p = pathlib.Path(tmpdir)
+            fcm = {"machine": {"name": "Community Mill", "axes": {}, "spindles": []}}
+            (p / "community_mill.fcm").write_text(json.dumps(fcm))
+            MachineFactory.register_addon_machine_dir(p)
+            configs = MachineFactory.list_configurations()
+            self.assertIn("Community Mill", configs)
+            MachineFactory._addon_machine_dirs.remove(p)

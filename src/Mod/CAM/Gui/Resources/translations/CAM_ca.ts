@@ -7917,6 +7917,11 @@ Això no suprimirà les broques que conté.</translation>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>L'operació adaptativa no ha pogut determinar el fil delimitant. Heu seleccionat la geometria base?</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation type="unfinished">see property below</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

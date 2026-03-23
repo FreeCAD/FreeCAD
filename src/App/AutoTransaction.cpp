@@ -71,13 +71,6 @@ int Application::setActiveTransaction(TransactionName name)
     return openGlobalTransaction(name);
 }
 
-std::string Application::getActiveTransaction(int* id) const
-{
-    if (id != nullptr) {
-        *id = _globalTransactionID;
-    }
-    return _globalTransactionID != 0 ? getTransactionName(_globalTransactionID) : "";
-}
 int Application::openGlobalTransaction(TransactionName name)
 {
     if (name.name.empty()) {

@@ -1347,17 +1347,10 @@ class _ViewProviderSectionPlane:
 
     def updateData(self, obj, prop):
         vobj = obj.ViewObject
-        if prop in ["Placement"]:
+        if prop in ["Placement", "Shape"]:
             self.onChanged(vobj, "DisplayLength")
-
-            # Defer the clipping plane update until after the current event
-            # loop finishes. This ensures the scene graph has been updated with the
-            # new placement before we try to recalculate the clip plane.
             if vobj and hasattr(vobj, "CutView") and vobj.CutView:
-                from PySide import QtCore
-
-                # We use a lambda to pass the vobj argument to the delayed function.
-                QtCore.QTimer.singleShot(0, lambda: self.refreshCutView(vobj))
+                self.refreshCutView(vobj)
         elif prop == "Label":
             if hasattr(obj.ViewObject, "ShowLabel") and obj.ViewObject.ShowLabel:
                 self.txt.string = obj.Label
@@ -1477,6 +1470,11 @@ class _ViewProviderSectionPlane:
             if hasattr(self, "txtfont") and hasattr(vobj, "FontSize"):
                 self.txtfont.size = vobj.FontSize.Value
         return
+
+    def onDelete(self, vobj, subelements):
+
+        vobj.CutView = False
+        return True
 
     def dumps(self):
 

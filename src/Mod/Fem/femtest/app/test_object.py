@@ -172,8 +172,8 @@ class TestObjectType(unittest.TestCase):
             "Fem::ConstraintDisplacement", type_of_obj(ObjectsFem.makeConstraintDisplacement(doc))
         )
         self.assertEqual(
-            "Fem::ConstraintElectrostaticPotential",
-            type_of_obj(ObjectsFem.makeConstraintElectrostaticPotential(doc)),
+            "Fem::ConstraintElectromagnetic",
+            type_of_obj(ObjectsFem.makeConstraintElectromagnetic(doc)),
         )
         self.assertEqual(
             "Fem::ConstraintElectricChargeDensity",
@@ -350,8 +350,8 @@ class TestObjectType(unittest.TestCase):
         )
         self.assertTrue(
             is_of_type(
-                ObjectsFem.makeConstraintElectrostaticPotential(doc),
-                "Fem::ConstraintElectrostaticPotential",
+                ObjectsFem.makeConstraintElectromagnetic(doc),
+                "Fem::ConstraintElectromagnetic",
             )
         )
         self.assertTrue(
@@ -566,16 +566,14 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(constraint_displacement, "Fem::Constraint"))
         self.assertTrue(is_derived_from(constraint_displacement, "Fem::ConstraintDisplacement"))
 
-        # ConstraintElectrostaticPotential
-        constraint_electorstatic_potential = ObjectsFem.makeConstraintElectrostaticPotential(doc)
+        # ConstraintElectromagnetic
+        constraint_electorstatic_potential = ObjectsFem.makeConstraintElectromagnetic(doc)
         self.assertTrue(is_derived_from(constraint_electorstatic_potential, "App::DocumentObject"))
         self.assertTrue(
             is_derived_from(constraint_electorstatic_potential, "Fem::ConstraintPython")
         )
         self.assertTrue(
-            is_derived_from(
-                constraint_electorstatic_potential, "Fem::ConstraintElectrostaticPotential"
-            )
+            is_derived_from(constraint_electorstatic_potential, "Fem::ConstraintElectromagnetic")
         )
 
         # ConstraintElectricChargeDensity
@@ -947,9 +945,7 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeConstraintDisplacement(doc).isDerivedFrom("Fem::ConstraintDisplacement")
         )
         self.assertTrue(
-            ObjectsFem.makeConstraintElectrostaticPotential(doc).isDerivedFrom(
-                "Fem::ConstraintPython"
-            )
+            ObjectsFem.makeConstraintElectromagnetic(doc).isDerivedFrom("Fem::ConstraintPython")
         )
         self.assertTrue(
             ObjectsFem.makeConstraintElectricChargeDensity(doc).isDerivedFrom(
@@ -1119,7 +1115,7 @@ def create_all_fem_objects_doc(doc):
     analysis.addObject(ObjectsFem.makeConstraintContact(doc))
     analysis.addObject(ObjectsFem.makeConstraintCurrentDensity(doc))
     analysis.addObject(ObjectsFem.makeConstraintDisplacement(doc))
-    analysis.addObject(ObjectsFem.makeConstraintElectrostaticPotential(doc))
+    analysis.addObject(ObjectsFem.makeConstraintElectromagnetic(doc))
     analysis.addObject(ObjectsFem.makeConstraintElectricChargeDensity(doc))
     analysis.addObject(ObjectsFem.makeConstraintFixed(doc))
     analysis.addObject(ObjectsFem.makeConstraintRigidBody(doc))

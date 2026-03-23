@@ -2834,17 +2834,17 @@ commande dispose de son propre bouton.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="292"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation>Mode de l'outil Dimension pour les diamètres/rayons</translation>
+      <translation>Mode de l'outil de dimension pour les diamètres/rayons</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="299"/>
       <source>Dimensioning constraints</source>
-      <translation>Contraintes de dimensionnement</translation>
+      <translation>Barre d'outils des contraintes des dimensions</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="306"/>
       <source>Scale upon first constraint</source>
-      <translation>Mettre à l'échelle lors de la première contrainte</translation>
+      <translation>Mise à l'échelle dès la première contrainte</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="313"/>
@@ -2866,7 +2866,7 @@ que s'il n'y a aucun objet visible dans la vue 3D.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="338"/>
       <source>On-view-parameters (OVP)</source>
-      <translation>Paramètres d'affichage</translation>
+      <translation>Mode d'affichage des paramètres dans la vue</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="145"/>
@@ -2876,7 +2876,7 @@ que s'il n'y a aucun objet visible dans la vue 3D.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="26"/>
       <source>Displays the additional section 'Advanced Solver Controls' to adjust solver settings in the task view</source>
-      <translation>Affiche la section supplémentaire « Contrôles avancés du solveur » pour ajuster les paramètres du solveur dans la vue tâche.</translation>
+      <translation>Affiche la section supplémentaire « Contrôles avancés du solveur » pour ajuster les paramètres du solveur dans la vue des tâches.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="205"/>
@@ -3130,7 +3130,7 @@ Cela ne fonctionne que lorsque l'option « Restaurer la position de la caméra a
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="466"/>
       <source>Open sketch in section view mode</source>
-      <translation>Ouvrir l'esquisse en mode vue en coupe</translation>
+      <translation>Ouvrir l'esquisse en mode « Vue en coupe »</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="507"/>
@@ -4516,7 +4516,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="60"/>
       <source>Grid auto-spacing</source>
-      <translation>Espacer automatiquement la grille</translation>
+      <translation>Espacement automatique de la grille</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="83"/>

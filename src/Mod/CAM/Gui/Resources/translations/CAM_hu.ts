@@ -7916,6 +7916,11 @@ This will not delete the toolbits contained within it.</source>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>Az adaptív művelet nem tudta meghatározni a határvonalat. Kiválasztotta az alapgeometriát?</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation>tulajdonságot lásd alább</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

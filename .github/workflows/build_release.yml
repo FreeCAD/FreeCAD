@@ -194,7 +194,7 @@ jobs:
 
       - name: Setup .NET 10 SDK
         if: runner.os == 'Windows'
-        uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
+        uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5.2.0
         with:
           dotnet-version: '10.0.103'
 
@@ -202,7 +202,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           # NOTE: The sign tool is ONLY available as a prerelease package, they never issue real releases.
-          dotnet tool install --global --prerelease sign --version 0.9.1-beta.26127.1
+          dotnet tool install --global --prerelease sign
           echo "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           dotnet --info
           sign --version

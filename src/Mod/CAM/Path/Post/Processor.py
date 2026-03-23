@@ -285,6 +285,30 @@ def needsTcOp(oldTc, newTc):
 class PostProcessor:
     """Base Class.  All non-legacy postprocessors should inherit from this class."""
 
+    def __init_subclass__(cls, **kwargs):
+        """Automatically wrap pre_processing_dialog methods to check show_dialog setting."""
+        super().__init_subclass__(**kwargs)
+
+        # Auto-wrap pre_processing_dialog in subclasses
+        if hasattr(cls, "pre_processing_dialog"):
+            original = cls.pre_processing_dialog
+
+            def wrapped(self, *args, **kwargs):
+                # Base class logic - runs BEFORE subclass method
+                if hasattr(self, "_machine") and hasattr(self._machine, "postprocessor_properties"):
+                    show_dialog = self._machine.postprocessor_properties.get("show_dialog", True)
+                    if not show_dialog:
+                        Path.Log.debug(
+                            "Pre-processing dialog skipped (show_dialog=False in machine config)"
+                        )
+                        return True
+
+                # Call the original subclass method
+                return original(self, *args, **kwargs)
+
+            # Replace the subclass method with our wrapped version
+            cls.pre_processing_dialog = wrapped
+
     @classmethod
     def get_common_property_schema(cls) -> List[Dict[str, Any]]:
         """
@@ -401,6 +425,17 @@ class PostProcessor:
                 "label": translate("CAM", "Post-Tool Change"),
                 "default": "",
                 "help": translate("CAM", "G-code commands inserted after tool changes."),
+            },
+            {
+                "name": "show_dialog",
+                "type": "bool",
+                "label": translate("CAM", "Show Pre-processing Dialogs"),
+                "default": True,
+                "help": translate(
+                    "CAM",
+                    "Show interactive dialogs during post-processing. "
+                    "Disable for automated operation or testing.",
+                ),
             },
         ]
 
@@ -1886,13 +1921,6 @@ class PostProcessor:
 
         postables = self._buildPostList(early_tool_prep)
         Path.Log.debug(f"postables {postables}")
-
-        # Process canned cycles for drilling operations
-        for _, section in enumerate(postables):
-            _, sublist = section
-            for obj in sublist:
-                if hasattr(obj, "Path"):
-                    obj.Path = PostUtils.cannedCycleTerminator(obj.Path)
 
         Path.Log.debug(f"postables count: {len(postables)}")
 

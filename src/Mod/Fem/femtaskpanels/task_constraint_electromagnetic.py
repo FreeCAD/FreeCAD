@@ -24,13 +24,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM constraint electrostatic potential task panel for the document object"
+__title__ = "FreeCAD FEM constraint electromagnetic task panel for the document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr, André Kapelrud, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
-## @package task_constraint_electrostaticpotential
+## @package task_constraint_electromagnetic
 #  \ingroup FEM
-#  \brief task panel for constraint electrostatic potential object
+#  \brief task panel for constraint electromagnetic object
 
 from PySide import QtCore
 
@@ -48,7 +48,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         super().__init__(obj)
 
         self.parameter_widget = FreeCADGui.PySideUic.loadUi(
-            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ElectrostaticPotential.ui"
+            FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/Electromagnetic.ui"
         )
 
         # geometry selection widget

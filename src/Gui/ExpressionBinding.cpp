@@ -126,7 +126,12 @@ void ExpressionBinding::bind(const Property& prop)
 
 bool ExpressionBinding::hasExpression() const
 {
-    return isBound() && getExpression() != nullptr;
+    try {
+        return isBound() && getExpression() != nullptr;
+    }
+    catch (const Base::Exception&) {
+        return false;
+    }
 }
 
 std::shared_ptr<App::Expression> ExpressionBinding::getExpression() const

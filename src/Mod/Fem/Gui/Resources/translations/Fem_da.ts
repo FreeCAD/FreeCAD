@@ -605,7 +605,7 @@
     <message>
       <location filename="../../Command.cpp" line="309"/>
       <source>Make contact constraint on a face</source>
-      <translation type="unfinished">Make contact constraint on a face</translation>
+      <translation>Opret kontakt til en flade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="387"/>
@@ -630,7 +630,7 @@
     <message>
       <location filename="../../Command.cpp" line="672"/>
       <source>Make gear constraint</source>
-      <translation type="unfinished">Make gear constraint</translation>
+      <translation>Opret tandhjulsforbindelse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="721"/>
@@ -655,7 +655,7 @@
     <message>
       <location filename="../../Command.cpp" line="972"/>
       <source>Make Spring Constraint</source>
-      <translation type="unfinished">Make Spring Constraint</translation>
+      <translation>Opret fjederpåvirkning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1031"/>
@@ -670,7 +670,7 @@
     <message>
       <location filename="../../Command.cpp" line="1141"/>
       <source>Make local coordinate system on face</source>
-      <translation type="unfinished">Make local coordinate system on face</translation>
+      <translation>Opret lokalt koordinatsystem på flade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1195"/>
@@ -1717,7 +1717,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Indtastningsfejl</translation>
     </message>
   </context>
   <context>
@@ -1789,7 +1789,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Indtastningsfejl</translation>
     </message>
   </context>
   <context>
@@ -1982,7 +1982,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
@@ -2039,7 +2039,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="256"/>
@@ -2084,7 +2084,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="131"/>
@@ -4781,7 +4781,7 @@ en kant eller normalvektoren for en flade</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="122"/>
       <source>Stiffness used for the Elmer solver</source>
-      <translation type="unfinished">Stiffness used for the Elmer solver</translation>
+      <translation>Stivhed, til brug for Elmer ligningsløseren</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="82"/>
@@ -4802,7 +4802,7 @@ en kant eller normalvektoren for en flade</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="115"/>
       <source>Stiffness for Elmer</source>
-      <translation type="unfinished">Stiffness for Elmer</translation>
+      <translation>Stivhed for Elmer</translation>
     </message>
   </context>
   <context>
@@ -6679,7 +6679,7 @@ No matching module was found in the current Python path.</translation>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
       <source>Selected object is not a part!</source>
-      <translation type="unfinished">Selected object is not a part!</translation>
+      <translation>Det valgte objekt er ikke en komponent!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="320"/>

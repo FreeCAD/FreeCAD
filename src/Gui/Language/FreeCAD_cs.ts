@@ -12967,12 +12967,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="928"/>
       <source>Do&amp;cument Utility</source>
-      <translation type="unfinished">Do&amp;cument Utility</translation>
+      <translation>Nástroj do&amp;kumentu</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="930"/>
       <source>Extracts or creates document files</source>
-      <translation type="unfinished">Extracts or creates document files</translation>
+      <translation>Extrahuje nebo vytvoří soubory dokumentů</translation>
     </message>
   </context>
   <context>
@@ -12980,12 +12980,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="956"/>
       <source>&amp;Print</source>
-      <translation type="unfinished">&amp;Print</translation>
+      <translation>&amp;Tisk</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="958"/>
       <source>Prints the active document</source>
-      <translation type="unfinished">Prints the active document</translation>
+      <translation>Vytiskne aktivní dokument</translation>
     </message>
   </context>
   <context>
@@ -12993,12 +12993,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="989"/>
       <source>Print Previe&amp;w</source>
-      <translation type="unfinished">Print Previe&amp;w</translation>
+      <translation>Ná&amp;hled tisku</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="991"/>
       <source>Previews the active document before printing</source>
-      <translation type="unfinished">Previews the active document before printing</translation>
+      <translation>Vytvoří náhled aktivního dokumentu před tiskem</translation>
     </message>
   </context>
   <context>
@@ -13006,12 +13006,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1020"/>
       <source>Export P&amp;DF</source>
-      <translation type="unfinished">Export P&amp;DF</translation>
+      <translation>Exportovat P&amp;DF</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1022"/>
       <source>Exports the active document as a PDF file</source>
-      <translation type="unfinished">Exports the active document as a PDF file</translation>
+      <translation>Exportuje aktivní dokument jako soubor PDF</translation>
     </message>
   </context>
   <context>
@@ -13019,12 +13019,12 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1282"/>
       <source>Duplicate Selecti&amp;on</source>
-      <translation type="unfinished">Duplicate Selecti&amp;on</translation>
+      <translation>D&amp;uplikovat výběr</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1283"/>
       <source>Duplicates the selected objects to the active document</source>
-      <translation type="unfinished">Duplicates the selected objects to the active document</translation>
+      <translation>Duplikuje vybrané objekty do aktivního dokumentu</translation>
     </message>
   </context>
   <context>
@@ -13037,7 +13037,7 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1609"/>
       <source>Recomputes the active document</source>
-      <translation type="unfinished">Recomputes the active document</translation>
+      <translation>Přepočítá aktivní dokument</translation>
     </message>
   </context>
   <context>
@@ -13048,10 +13048,10 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
 Check the report view for more details.
 
 Proceed?</source>
-      <translation type="unfinished">The document contains dependency cycles.
-Check the report view for more details.
+      <translation>Dokument obsahuje cykly závislostí.
+Zkontrolujte zobrazení reportu pro více podrobností.
 
-Proceed?</translation>
+Pokračovat?</translation>
     </message>
   </context>
   <context>
@@ -13064,7 +13064,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1675"/>
       <source>Transforms the selected object</source>
-      <translation type="unfinished">Transforms the selected object</translation>
+      <translation>Transformuje vybraný objekt</translation>
     </message>
   </context>
   <context>
@@ -13072,12 +13072,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1700"/>
       <source>P&amp;lacement</source>
-      <translation type="unfinished">P&amp;lacement</translation>
+      <translation>U&amp;místění</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1702"/>
       <source>Opens the placement editor to adjust the placement of the selected object</source>
-      <translation type="unfinished">Opens the placement editor to adjust the placement of the selected object</translation>
+      <translation>Otevře editor umístění pro úpravu umístění vybraného objektu</translation>
     </message>
   </context>
   <context>
@@ -13085,12 +13085,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1799"/>
       <source>Ali&amp;gn To…</source>
-      <translation type="unfinished">Ali&amp;gn To…</translation>
+      <translation>Z&amp;arovnat k…</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1801"/>
       <source>Aligns the selected objects</source>
-      <translation type="unfinished">Aligns the selected objects</translation>
+      <translation>Zarovná vybrané objekty</translation>
     </message>
   </context>
   <context>
@@ -13098,12 +13098,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="77"/>
       <source>Random &amp;Color</source>
-      <translation type="unfinished">Random &amp;Color</translation>
+      <translation>Náhodná &amp;barva</translation>
     </message>
     <message>
       <location filename="../CommandFeat.cpp" line="78"/>
       <source>Assigns random diffuse colors for the selected objects</source>
-      <translation type="unfinished">Assigns random diffuse colors for the selected objects</translation>
+      <translation>Přiřadí náhodně rozptýlené barvy pro vybrané objekty</translation>
     </message>
   </context>
   <context>
@@ -13116,7 +13116,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandFeat.cpp" line="312"/>
       <source>Enables or disables the recomputations of the document</source>
-      <translation type="unfinished">Enables or disables the recomputations of the document</translation>
+      <translation>Povolí nebo zakáže přepočítání dokumentu</translation>
     </message>
   </context>
   <context>
@@ -13124,12 +13124,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="84"/>
       <source>Link Group</source>
-      <translation type="unfinished">Link Group</translation>
+      <translation>Propojit skupinu</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="85"/>
       <source>Creates a group of links</source>
-      <translation type="unfinished">Creates a group of links</translation>
+      <translation>Vytvoří skupinu odkazů</translation>
     </message>
   </context>
   <context>
@@ -13137,12 +13137,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="258"/>
       <source>Make Link</source>
-      <translation type="unfinished">Make Link</translation>
+      <translation>Vytvořit odkaz</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="259"/>
       <source>A link is an object that references another object, either within the same or in another document. Unlike clones, links reference the original shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
-      <translation type="unfinished">A link is an object that references another object, either within the same or in another document. Unlike clones, links reference the original shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
+      <translation>Odkaz je objekt, který odkazuje na jiný objekt buď ve stejném nebo v jiném dokumentu. Na rozdíl od klonů odkazují odkazy přímo na původní tvar, takže jsou paměťově efektivnější, což pomáhá při vytváření komplexních sestav.</translation>
     </message>
   </context>
   <context>
@@ -13150,12 +13150,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="343"/>
       <source>Make Sub-Link</source>
-      <translation type="unfinished">Make Sub-Link</translation>
+      <translation>Vytvořit pododkaz</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="344"/>
       <source>Creates a sub-object or sub-element link</source>
-      <translation type="unfinished">Creates a sub-object or sub-element link</translation>
+      <translation>Vytvoří odkaz na dílčí objekt nebo dílčí prvek</translation>
     </message>
   </context>
   <context>
@@ -13163,12 +13163,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="594"/>
       <source>Replace With Link</source>
-      <translation type="unfinished">Replace With Link</translation>
+      <translation>Nahradit odkazem</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="595"/>
       <source>Replaces the selected objects with links</source>
-      <translation type="unfinished">Replaces the selected objects with links</translation>
+      <translation>Nahradí vybrané objekty odkazy</translation>
     </message>
   </context>
   <context>
@@ -13176,12 +13176,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="646"/>
       <source>Import Links</source>
-      <translation type="unfinished">Import Links</translation>
+      <translation>Importovat odkazy</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="647"/>
       <source>Imports selected external links</source>
-      <translation type="unfinished">Imports selected external links</translation>
+      <translation>Importuje vybrané externí odkazy</translation>
     </message>
   </context>
   <context>
@@ -13189,12 +13189,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="720"/>
       <source>Import All Links</source>
-      <translation type="unfinished">Import All Links</translation>
+      <translation>Importovat všechny odkazy</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="721"/>
       <source>Imports all links of the active document</source>
-      <translation type="unfinished">Imports all links of the active document</translation>
+      <translation>Importuje všechny odkazy aktivního dokumentu</translation>
     </message>
   </context>
   <context>
@@ -13202,12 +13202,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="768"/>
       <source>&amp;Go to Linked Object</source>
-      <translation type="unfinished">&amp;Go to Linked Object</translation>
+      <translation>Př&amp;ejít na propojený objekt</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="769"/>
       <source>Selects the linked object and switches to its original document</source>
-      <translation type="unfinished">Selects the linked object and switches to its original document</translation>
+      <translation>Vybere propojený objekt a přepne na jeho původní dokument</translation>
     </message>
   </context>
   <context>
@@ -13215,12 +13215,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="916"/>
       <source>Go to &amp;Deepest Linked Object</source>
-      <translation type="unfinished">Go to &amp;Deepest Linked Object</translation>
+      <translation>Přejít na &amp;nejhlubší propojený objekt</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="917"/>
       <source>Selects the deepest linked object and switches to its original document</source>
-      <translation type="unfinished">Selects the deepest linked object and switches to its original document</translation>
+      <translation>Vybere nejhlubší propojený objekt a přepne na jeho původní dokument</translation>
     </message>
   </context>
   <context>
@@ -13228,12 +13228,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="956"/>
       <source>Select &amp;All Links</source>
-      <translation type="unfinished">Select &amp;All Links</translation>
+      <translation>Vybrat &amp;všechny odkazy</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="957"/>
       <source>Selects all links to the current selected object</source>
-      <translation type="unfinished">Selects all links to the current selected object</translation>
+      <translation>Vybere všechny odkazy na aktuálně vybraný objekt</translation>
     </message>
   </context>
   <context>
@@ -13246,7 +13246,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="1030"/>
       <source>Commands that operate on link objects</source>
-      <translation type="unfinished">Commands that operate on link objects</translation>
+      <translation>Příkazy, které pracují s propojenými objekty</translation>
     </message>
   </context>
   <context>
@@ -13254,12 +13254,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="98"/>
       <source>Ma&amp;cros</source>
-      <translation type="unfinished">Ma&amp;cros</translation>
+      <translation>Ma&amp;kra</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="100"/>
       <source>Opens a dialog to execute a recorded macro</source>
-      <translation type="unfinished">Opens a dialog to execute a recorded macro</translation>
+      <translation>Otevře dialogové okno pro spuštění nahraného makra</translation>
     </message>
   </context>
   <context>
@@ -13267,12 +13267,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="128"/>
       <source>&amp;Execute Macro</source>
-      <translation type="unfinished">&amp;Execute Macro</translation>
+      <translation>S&amp;pustit makro</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="129"/>
       <source>Executes the macro in the editor</source>
-      <translation type="unfinished">Executes the macro in the editor</translation>
+      <translation>Spustí makro v editoru</translation>
     </message>
   </context>
   <context>
@@ -13280,12 +13280,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="154"/>
       <source>&amp;Attach to Remote Debugger</source>
-      <translation type="unfinished">&amp;Attach to Remote Debugger</translation>
+      <translation>&amp;Připojit ke vzdálenému Debuggeru</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="156"/>
       <source>Attaches to a remotely running debugger</source>
-      <translation type="unfinished">Attaches to a remotely running debugger</translation>
+      <translation>Připojí se ke vzdáleně běžícímu debuggeru</translation>
     </message>
   </context>
   <context>
@@ -13293,12 +13293,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="183"/>
       <source>&amp;Debug Macro</source>
-      <translation type="unfinished">&amp;Debug Macro</translation>
+      <translation>&amp;Debugovat Macro</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="184"/>
       <source>Starts the debugging of macros</source>
-      <translation type="unfinished">Starts the debugging of macros</translation>
+      <translation>Začne ladění maker</translation>
     </message>
   </context>
   <context>
@@ -13306,12 +13306,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="215"/>
       <source>&amp;Stop Debugging</source>
-      <translation type="unfinished">&amp;Stop Debugging</translation>
+      <translation>&amp;Zastavit debugování</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="216"/>
       <source>Stops the debugging of macros</source>
-      <translation type="unfinished">Stops the debugging of macros</translation>
+      <translation>Zastaví ladění maker</translation>
     </message>
   </context>
   <context>
@@ -13319,7 +13319,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandMacro.cpp" line="242"/>
       <source>Step &amp;Over</source>
-      <translation type="unfinished">Step &amp;Over</translation>
+      <translation>Přek&amp;ročit</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="243"/>
@@ -13813,12 +13813,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2342"/>
       <source>Toggle A&amp;xis Cross</source>
-      <translation type="unfinished">Toggle A&amp;xis Cross</translation>
+      <translation>Přepnout &amp;osový kříž</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2343"/>
       <source>Toggles the axis cross at the origin</source>
-      <translation type="unfinished">Toggles the axis cross at the origin</translation>
+      <translation>Přepne osvý kříž v počátku</translation>
     </message>
   </context>
   <context>
@@ -13826,12 +13826,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2448"/>
       <source>Inventor Example #3</source>
-      <translation type="unfinished">Inventor Example #3</translation>
+      <translation>Příklad inventáře #3</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2449"/>
       <source>Shows an animated texture</source>
-      <translation type="unfinished">Shows an animated texture</translation>
+      <translation>Zobrazí animovanou texturu</translation>
     </message>
   </context>
   <context>
@@ -13839,12 +13839,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2506"/>
       <source>Stereo Re&amp;d/Cyan</source>
-      <translation type="unfinished">Stereo Re&amp;d/Cyan</translation>
+      <translation>Stereo červená/&amp;azurová</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2507"/>
       <source>Switches stereo viewing to red/cyan</source>
-      <translation type="unfinished">Switches stereo viewing to red/cyan</translation>
+      <translation>Přepne stereo zobrazení na červená/azurová</translation>
     </message>
   </context>
   <context>
@@ -13852,12 +13852,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2534"/>
       <source>Stereo &amp;Quad Buffer</source>
-      <translation type="unfinished">Stereo &amp;Quad Buffer</translation>
+      <translation>Stereo čtyřnásobný &amp;buffer</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2535"/>
       <source>Switches stereo viewing to quad buffer</source>
-      <translation type="unfinished">Switches stereo viewing to quad buffer</translation>
+      <translation>Přepne stereo zobrazení na čtyřnásobný buffer</translation>
     </message>
   </context>
   <context>
@@ -13865,12 +13865,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2619"/>
       <source>Issue Camera &amp;Position</source>
-      <translation type="unfinished">Issue Camera &amp;Position</translation>
+      <translation>&amp;Poznamenat pozici kamery</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2620"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
-      <translation type="unfinished">Issues the camera position to the console and to a macro, to easily recall this position</translation>
+      <translation>Poznamená pozici kamery do konzole a do makra pro snadné obnovení pozice</translation>
     </message>
   </context>
   <context>
@@ -13878,12 +13878,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2867"/>
       <source>&amp;Box Zoom</source>
-      <translation type="unfinished">&amp;Box Zoom</translation>
+      <translation>Přiblížení &amp;výběrem</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2868"/>
       <source>Activates the box zoom tool</source>
-      <translation type="unfinished">Activates the box zoom tool</translation>
+      <translation>Aktivuje nástroj pro přiblížení obdélníkovým výběrem</translation>
     </message>
   </context>
   <context>
@@ -13891,12 +13891,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2901"/>
       <source>&amp;Box Selection</source>
-      <translation type="unfinished">&amp;Box Selection</translation>
+      <translation>Výběr o&amp;bdélníkem</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2902"/>
       <source>Activates the box selection tool</source>
-      <translation type="unfinished">Activates the box selection tool</translation>
+      <translation>Aktivuje nástroj pro výběr obdélníkem</translation>
     </message>
   </context>
   <context>
@@ -13904,12 +13904,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3176"/>
       <source>Bo&amp;x Element Selection</source>
-      <translation type="unfinished">Bo&amp;x Element Selection</translation>
+      <translation>Výběr prv&amp;ku obdélníkem</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3177"/>
       <source>Activates box element selection</source>
-      <translation type="unfinished">Activates box element selection</translation>
+      <translation>Aktivuje výběr prvku obdélníkem</translation>
     </message>
   </context>
   <context>
@@ -13917,12 +13917,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3232"/>
       <source>&amp;Go to Selection</source>
-      <translation type="unfinished">&amp;Go to Selection</translation>
+      <translation>Pře&amp;jít na výběr</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3233"/>
       <source>Scrolls to the first selected item</source>
-      <translation type="unfinished">Scrolls to the first selected item</translation>
+      <translation>Přejde na první vybranou položku</translation>
     </message>
   </context>
   <context>
@@ -13930,12 +13930,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3257"/>
       <source>Collapse Selected Items</source>
-      <translation type="unfinished">Collapse Selected Items</translation>
+      <translation>Sbalit vybrané položky</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3258"/>
       <source>Collapses the currently selected tree items</source>
-      <translation type="unfinished">Collapses the currently selected tree items</translation>
+      <translation>Sbalí aktuálně vybrané položky stromu</translation>
     </message>
   </context>
   <context>
@@ -13943,12 +13943,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3283"/>
       <source>Expand Selected Items</source>
-      <translation type="unfinished">Expand Selected Items</translation>
+      <translation>Rozbalit vybrané položky</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3284"/>
       <source>Expands the currently selected tree items</source>
-      <translation type="unfinished">Expands the currently selected tree items</translation>
+      <translation>Rozbalí aktuálně vybrané položky stromu</translation>
     </message>
   </context>
   <context>
@@ -13956,12 +13956,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3309"/>
       <source>Select All Instances</source>
-      <translation type="unfinished">Select All Instances</translation>
+      <translation>Vybrat všechny instance</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3310"/>
       <source>Selects all instances of the currently selected object</source>
-      <translation type="unfinished">Selects all instances of the currently selected object</translation>
+      <translation>Vybere všechny instance aktuálně vybraného objektu</translation>
     </message>
   </context>
   <context>
@@ -13969,12 +13969,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3377"/>
       <source>Scene I&amp;nspector</source>
-      <translation type="unfinished">Scene I&amp;nspector</translation>
+      <translation>I&amp;nspektor scény</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3378"/>
       <source>Opens the scene inspector</source>
-      <translation type="unfinished">Opens the scene inspector</translation>
+      <translation>Otevře Inspektor scény</translation>
     </message>
   </context>
   <context>
@@ -13982,12 +13982,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3411"/>
       <source>Text&amp;ure Mapping</source>
-      <translation type="unfinished">Text&amp;ure Mapping</translation>
+      <translation>&amp;Mapování textur</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3412"/>
       <source>Maps textures to shapes</source>
-      <translation type="unfinished">Maps textures to shapes</translation>
+      <translation>Mapuje textury na tvary</translation>
     </message>
   </context>
   <context>
@@ -13995,12 +13995,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3437"/>
       <source>View &amp;Turntable</source>
-      <translation type="unfinished">View &amp;Turntable</translation>
+      <translation>Zobrazit otočný stůl</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3438"/>
       <source>Opens a turntable view</source>
-      <translation type="unfinished">Opens a turntable view</translation>
+      <translation>Otevře otočný pohled</translation>
     </message>
   </context>
   <context>
@@ -14008,12 +14008,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3467"/>
       <source>Selection &amp;Back</source>
-      <translation type="unfinished">Selection &amp;Back</translation>
+      <translation>Výběr &amp;zpět</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3469"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
-      <translation type="unfinished">Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</translation>
+      <translation>Obnoví předchozí výběr ze stromového zobrazení. Funguje pouze v případě, že je zapnutý režim Nahrát výběr ve stromovém zobrazení.</translation>
     </message>
   </context>
   <context>
@@ -14021,12 +14021,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3501"/>
       <source>Selection &amp;Forward</source>
-      <translation type="unfinished">Selection &amp;Forward</translation>
+      <translation>Výběr &amp;dopředu</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3503"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
-      <translation type="unfinished">Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</translation>
+      <translation>Obnoví následující výběr ze stromového zobrazení. Funguje pouze v případě, že je zapnutý režim Nahrát výběr ve stromovém zobrazení.</translation>
     </message>
   </context>
   <context>
@@ -14034,12 +14034,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3559"/>
       <source>&amp;Single Document</source>
-      <translation type="unfinished">&amp;Single Document</translation>
+      <translation>&amp;Jediný dokument</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3560"/>
       <source>Displays only the active document in the tree view</source>
-      <translation type="unfinished">Displays only the active document in the tree view</translation>
+      <translation>Ve stromovém zobrazení zobrazí pouze aktivní dokument</translation>
     </message>
   </context>
   <context>
@@ -14047,12 +14047,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3576"/>
       <source>&amp;Multi Document</source>
-      <translation type="unfinished">&amp;Multi Document</translation>
+      <translation>&amp;Vícenásobný dokument</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3577"/>
       <source>Displays all documents in the tree view</source>
-      <translation type="unfinished">Displays all documents in the tree view</translation>
+      <translation>Ve stromovém zobrazení zobrazí všechny dokumenty</translation>
     </message>
   </context>
   <context>
@@ -14060,12 +14060,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3636"/>
       <source>&amp;1 Sync View</source>
-      <translation type="unfinished">&amp;1 Sync View</translation>
+      <translation>&amp;1 Synchronizovat zobrazení</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3637"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
-      <translation type="unfinished">Switches to the 3D view containing the selected item from the tree view</translation>
+      <translation>Přepne na 3D zobrazení obsahující vybranou položku ze stromového zobrazení</translation>
     </message>
   </context>
   <context>
@@ -14073,12 +14073,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3656"/>
       <source>&amp;2 Sync Selection</source>
-      <translation type="unfinished">&amp;2 Sync Selection</translation>
+      <translation>&amp;2 Synchronizovat výběr</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3657"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
-      <translation type="unfinished">Expands the tree item when the corresponding object is selected in the 3D view</translation>
+      <translation>Rozbalí položku stromu, když je vybrán odpovídající objekt ve 3D zobrazení</translation>
     </message>
   </context>
   <context>
@@ -14086,12 +14086,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3676"/>
       <source>&amp;3 Sync Placement</source>
-      <translation type="unfinished">&amp;3 Sync Placement</translation>
+      <translation>&amp;3 Synchronizovat umístění</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3678"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
-      <translation type="unfinished">Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</translation>
+      <translation>Přizpůsobí umístění objektů při přetažení mezi souřadnicovými systémy (např. v kontejnerech dílů)</translation>
     </message>
   </context>
   <context>
@@ -14099,12 +14099,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3715"/>
       <source>&amp;5 Record Selection</source>
-      <translation type="unfinished">&amp;5 Record Selection</translation>
+      <translation>&amp;5 Záznam výběru</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3717"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
-      <translation type="unfinished">Records the selection in the tree view in order to go back/forward using the navigation buttons</translation>
+      <translation>Nahraje výběr ve stromovém zobrazení pro návrat zpět/vpřed pomocí navigačních tlačítek</translation>
     </message>
   </context>
   <context>
@@ -14112,12 +14112,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3734"/>
       <source>Initiate &amp;Dragging</source>
-      <translation type="unfinished">Initiate &amp;Dragging</translation>
+      <translation>Zahájit &amp;přetažení</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3735"/>
       <source>Initiates dragging of the currently selected tree items</source>
-      <translation type="unfinished">Initiates dragging of the currently selected tree items</translation>
+      <translation>Zahájí přetažení aktuálně vybraných položek stromu</translation>
     </message>
   </context>
   <context>
@@ -14125,12 +14125,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3767"/>
       <source>Tree View Actions</source>
-      <translation type="unfinished">Tree View Actions</translation>
+      <translation>Akce stromového zobrazení</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3768"/>
       <source>Tree view behavior options and actions</source>
-      <translation type="unfinished">Tree view behavior options and actions</translation>
+      <translation>Možnosti a akce chování stromového zobrazení</translation>
     </message>
   </context>
   <context>
@@ -14138,12 +14138,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3812"/>
       <source>&amp;Bounding Box</source>
-      <translation type="unfinished">&amp;Bounding Box</translation>
+      <translation>Ohraničující &amp;kvádr</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3813"/>
       <source>Shows selection bounding box</source>
-      <translation type="unfinished">Shows selection bounding box</translation>
+      <translation>Zobrazí ohraničující kvádr výběru</translation>
     </message>
   </context>
   <context>
@@ -14151,12 +14151,12 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3859"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
-      <translation type="unfinished">Toggle Overl&amp;ay for All Panels</translation>
+      <translation>Přepnout překryv pro &amp;všechny panely</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3860"/>
       <source>Toggled overlay mode for all docked panels</source>
-      <translation type="unfinished">Toggled overlay mode for all docked panels</translation>
+      <translation>Přepne režim překrytí pro všechny ukotvené panely</translation>
     </message>
   </context>
   <context>
@@ -14164,14 +14164,14 @@ Proceed?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3882"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
-      <translation type="unfinished">Toggle Tra&amp;nsparent Panels</translation>
+      <translation>Přepnout &amp;průhlednost panelů</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3883"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
-      <translation type="unfinished">Toggles transparent mode for all docked overlay panels.
-This makes the docked panels stay transparent at all times.</translation>
+      <translation>Přepne režim průhlednosti pro všechny ukotvené překryvné panely.
+Díky tomu zůstanou ukotvené panely vždy průhledné.</translation>
     </message>
   </context>
   <context>
@@ -14179,12 +14179,12 @@ This makes the docked panels stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3908"/>
       <source>Toggle &amp;Overlay</source>
-      <translation type="unfinished">Toggle &amp;Overlay</translation>
+      <translation>Přepnout pře&amp;krytí</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3909"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
-      <translation type="unfinished">Toggles overlay mode for the docked window under the cursor</translation>
+      <translation>Přepne režim překrytí pro ukotvené okno pod kurzorem</translation>
     </message>
   </context>
   <context>
@@ -14192,14 +14192,14 @@ This makes the docked panels stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3931"/>
       <source>Toggle Tran&amp;sparent Mode</source>
-      <translation type="unfinished">Toggle Tran&amp;sparent Mode</translation>
+      <translation>Přepnout režim prů&amp;hlednosti</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3932"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
-      <translation type="unfinished">Toggles transparent mode for the docked panel under cursor.
-This makes the docked panel stay transparent at all times.</translation>
+      <translation>Přepne režim průhlednosti pro ukotvený panel pod kurzorem.
+Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
     </message>
   </context>
   <context>

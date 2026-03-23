@@ -1402,6 +1402,9 @@ void OverlayTabWidget::setTransparent(bool enable)
         hGrp->SetBool("Transparent", enable);
     }
     actTransparent.setChecked(enable);
+    if (!enable) {
+        unsetCursor();
+    }
     OverlayManager::instance()->refresh(this);
 }
 

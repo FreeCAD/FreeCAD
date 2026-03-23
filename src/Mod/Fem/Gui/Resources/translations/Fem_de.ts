@@ -7683,12 +7683,12 @@ Leer lassen, um die Standard-Python-Ausführungsdatei zu verwenden</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="579"/>
       <source>Fluid Material</source>
-      <translation>Flüssiges Material</translation>
+      <translation>Fluid</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="580"/>
       <source>Creates a fluid material</source>
-      <translation>Erzeugt ein Fluides Material</translation>
+      <translation>Erzeugt ein Material vom Typ Fluid</translation>
     </message>
   </context>
   <context>

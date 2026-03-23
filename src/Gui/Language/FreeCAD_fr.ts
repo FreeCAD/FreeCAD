@@ -1139,7 +1139,7 @@ entraîner une perte de données !</translation>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="95"/>
       <source>Accelerator</source>
-      <translation>Accélérateur</translation>
+      <translation>Raccourci</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="118"/>
@@ -2515,12 +2515,12 @@ Specify another directory.</source>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="101"/>
       <source>Failed to extract document</source>
-      <translation>Impossible d''extraire le document</translation>
+      <translation>L'extraction du document a échouée.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="118"/>
       <source>Failed to create document</source>
-      <translation>La création du document a échouée</translation>
+      <translation>La création du document a échouée.</translation>
     </message>
   </context>
   <context>
@@ -10834,7 +10834,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../CommandView.cpp" line="2219"/>
       <source>&amp;Load Image…</source>
-      <translation>&amp;Charger un image…</translation>
+      <translation>&amp;Charger une image…</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2220"/>
@@ -12932,7 +12932,7 @@ activée ou désactivée.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="928"/>
       <source>Do&amp;cument Utility</source>
-      <translation>Utilitaire de doc&amp;ument</translation>
+      <translation>Utilitaire de doc&amp;uments</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="930"/>
@@ -13439,7 +13439,7 @@ d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="818"/>
       <source>&amp;Units Converter</source>
-      <translation>&amp;Convertisseur d'unités</translation>
+      <translation>&amp;Lancer le convertisseur d'unités</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="820"/>

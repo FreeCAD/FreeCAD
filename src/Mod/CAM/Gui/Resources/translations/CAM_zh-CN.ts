@@ -7915,6 +7915,11 @@ This will not delete the toolbits contained within it.</source>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>自适应操作无法确定边界线。您是否选择了基础几何体？</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation>参见下方属性</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

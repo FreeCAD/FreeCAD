@@ -22,19 +22,19 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM constraint electrostatic potential ViewProvider for the document object"
+__title__ = "FreeCAD FEM constraint electromagnetic ViewProvider for the document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach"
 __url__ = "https://www.freecad.org"
 
-## @package view_constraint_electrostaticpotential
+## @package view_constraint_electromagnetic
 #  \ingroup FEM
-#  \brief view provider for constraint electrostatic potential object
+#  \brief view provider for constraint electromagnetic object
 
-from femtaskpanels import task_constraint_electrostaticpotential
+from femtaskpanels import task_constraint_electromagnetic
 from . import view_base_femconstraint
 
 
-class VPConstraintElectroStaticPotential(view_base_femconstraint.VPBaseFemConstraint):
+class VPConstraintElectromagnetic(view_base_femconstraint.VPBaseFemConstraint):
 
     def __init__(self, vobj):
         super().__init__(vobj)
@@ -44,9 +44,9 @@ class VPConstraintElectroStaticPotential(view_base_femconstraint.VPBaseFemConstr
 
     def setEdit(self, vobj, mode=0):
         return view_base_femconstraint.VPBaseFemConstraint.setEdit(
-            self, vobj, mode, task_constraint_electrostaticpotential._TaskPanel
+            self, vobj, mode, task_constraint_electromagnetic._TaskPanel
         )
 
     def attach(self, vobj):
         super().attach(vobj)
-        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintElectrostaticPotential.iv")
+        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintElectromagnetic.iv")
