@@ -387,9 +387,7 @@ class DraftCreation(test_base.DraftTestCaseDoc):
         self.doc.recompute()
 
         pattern_name = "TrailingEOF"
-        pattern_body = "*{}, test pattern\r\n0, 0,0, 0,10\r\n".format(pattern_name).encode(
-            "ascii"
-        )
+        pattern_body = "*{}, test pattern\r\n0, 0,0, 0,10\r\n".format(pattern_name).encode("ascii")
         with tempfile.TemporaryDirectory() as temp_dir:
             clean_pat = os.path.join(temp_dir, "clean.pat")
             eof_pat = os.path.join(temp_dir, "with_eof_marker.pat")
