@@ -425,7 +425,7 @@ void init_pyarea(py::module& m)
         .def_readwrite("UnexpectedRotateIterations", &AdaptiveOutput::UnexpectedRotateIterations)
         .def_readwrite("TooManyFailedEngagements", &AdaptiveOutput::TooManyFailedEngagements)
         .def_readwrite("UnclearedAreaRemains", &AdaptiveOutput::UnclearedAreaRemains)
-        .def_readwrite("StepOverWarning", &AdaptiveOutput::StepOverWarning)
+        .def_readwrite("FailedToSetUpFinishingPass", &AdaptiveOutput::FailedToSetUpFinishingPass)
         .def_readwrite("FinishingLeadInFailed", &AdaptiveOutput::FinishingLeadInFailed);
 
     py::class_<Adaptive2d>(m, "Adaptive2d")

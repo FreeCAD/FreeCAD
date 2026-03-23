@@ -122,8 +122,8 @@ class TestPathAdaptive(PathTestBase):
             adaptiveOutput.UnclearedAreaRemains, "Adaptive terminated with uncleared area remaining"
         )
         self.assertFalse(
-            adaptiveOutput.StepOverWarning,
-            "Adaptive warning: some cuts may be above optimal step-over",
+            adaptiveOutput.FailedToSetUpFinishingPass,
+            "Adaptive failed to set up finishing pass - uncut area would make finishing pass too heavy",
         )
         self.assertFalse(
             adaptiveOutput.FinishingLeadInFailed,

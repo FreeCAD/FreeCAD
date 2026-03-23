@@ -86,7 +86,7 @@ struct AdaptiveOutput
     bool UnexpectedRotateIterations = false;
     bool TooManyFailedEngagements = false;
     bool UnclearedAreaRemains = false;
-    bool StepOverWarning = false;
+    bool FailedToSetUpFinishingPass = false;
     bool FinishingLeadInFailed = false;
 };
 

@@ -3673,7 +3673,7 @@ void Adaptive2d::ProcessPolyNode(
     clip.Execute(ClipType::ctDifference, uncut);
 
     if (uncut.size() > 0) {
-        output.StepOverWarning = true;
+        output.FailedToSetUpFinishingPass = true;
         cerr << "Warning: some cuts may be above optimal step-over. Please double check the "
                 "results."
              << endl
