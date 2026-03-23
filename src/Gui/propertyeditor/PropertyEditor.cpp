@@ -1115,7 +1115,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
     // show property uses
     if (props.size() == 1 && App::DocumentObject::canPropBeReferenced(*props.begin())) {
-        menu.addAction(tr("Show Property Uses"))->setData(QVariant(MA_ShowPropUses));
+        menu.addAction(tr("Property Uses"))->setData(QVariant(MA_ShowPropUses));
     }
 
     // add a separator between adding/removing properties and the rest
