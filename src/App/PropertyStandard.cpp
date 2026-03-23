@@ -1546,11 +1546,11 @@ void PropertyString::setValue(const char* newValue)
             // OnProposedLabelChange has changed the new value to what the current value is
             return;
         }
-        if (!propChanges.empty() && !GetApplication().getActiveTransaction()) {
+        if (!propChanges.empty() && obj->getDocument()->getBookedTransactionID() == 0) {
             commit = true;
             std::ostringstream str;
             str << "Change " << obj->getNameInDocument() << ".Label";
-            GetApplication().setActiveTransaction(str.str().c_str());
+            obj->getDocument()->openTransaction(str.str().c_str());
         }
     }
 
@@ -1563,7 +1563,7 @@ void PropertyString::setValue(const char* newValue)
     }
 
     if (commit) {
-        GetApplication().closeActiveTransaction();
+        obj->getDocument()->commitTransaction();
     }
 }
 

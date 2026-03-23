@@ -60,20 +60,20 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyEnumeration",
+                type="App::PropertyBool",
                 name="GeometricalNonlinearity",
                 group="Solver",
-                doc="Set geometrical nonlinearity",
-                value=["linear", "nonlinear"],
+                doc="Use geometrical nonlinearity",
+                value=False,
             )
         )
         prop.append(
             _PropHelper(
-                type="App::PropertyEnumeration",
+                type="App::PropertyBool",
                 name="MaterialNonlinearity",
                 group="Solver",
-                doc="Set material nonlinearity",
-                value=["linear", "nonlinear"],
+                doc="If available, use nonlinear material properties",
+                value=True,
             )
         )
         prop.append(
@@ -253,7 +253,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="BeamShellResultOutput3D",
+                name="Output3d",
                 group="Solver",
                 doc="Output 3D results for 1D and 2D analysis ",
                 value=True,
@@ -331,6 +331,16 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 value=False,
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="DisplaceMesh",
+                group="Solver",
+                doc="Deform the mesh by the displacement field",
+                value=False,
+            )
+        )
+
         return prop
 
     def onDocumentRestored(self, obj):
@@ -340,6 +350,20 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 obj.getPropertyByName(prop.name)
             except Base.PropertyError:
                 prop.add_to_object(obj)
+
+            # change GeometricalNonlinearity and MaterialNonlinearity types
+            if prop.name == "MaterialNonlinearity":
+                prop.handle_change_type(
+                    obj, "App::PropertyEnumeration", lambda x: False if x == "linear" else True
+                )
+            elif prop.name == "GeometricalNonlinearity":
+                prop.handle_change_type(
+                    obj, "App::PropertyEnumeration", lambda x: False if x == "linear" else True
+                )
+
+            # Migrate group of properties for old projects
+            if obj.getGroupOfProperty(prop.name) != prop.group:
+                obj.setGroupOfProperty(prop.name, prop.group)
 
         # remove old properties
         try:
@@ -373,4 +397,13 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
 
         except Base.PropertyError:
             # do nothing
+            pass
+
+        # rename BeamShellResultOutput3D
+        try:
+            obj.Output3d = obj.getPropertyByName("BeamShellResultOutput3D")
+            obj.setPropertyStatus("BeamShellResultOutput3D", "-LockDynamic")
+            obj.removeProperty("BeamShellResultOutput3D")
+
+        except Base.PropertyError:
             pass

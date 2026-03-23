@@ -76,9 +76,9 @@ if [ -d "${conda_env}/PlugIns" ]; then
     mv ${conda_env}/PlugIns ${conda_env}/..
 fi
 
-if [[ "${SIGN_RELEASE}" == "true" ]]; then
+if [[ "${MACOS_SIGN_RELEASE}" == "true" ]]; then
     # create the signed dmg
-    ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
+    ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${MACOS_SIGNING_KEY_ID} -o "${version_name}.dmg"
 else
     # Ad-hoc sign for local builds (required for QuickLook extensions to register)
     if [ -d "FreeCAD.app/Contents/PlugIns" ]; then
@@ -105,5 +105,15 @@ fi
 sha256sum ${version_name}.dmg > ${version_name}.dmg-SHA256.txt
 
 if [[ "${UPLOAD_RELEASE}" == "true" ]]; then
-    gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg" "${version_name}.dmg-SHA256.txt"
+    for attempt in 1 2 3 4 5; do
+        if gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg" "${version_name}.dmg-SHA256.txt"; then
+            break
+        fi
+        if [[ $attempt -eq 5 ]]; then
+            echo "Failed to upload release after 5 attempts" >&2
+            exit 1
+        fi
+        echo "Upload attempt $attempt failed, retrying in $((attempt * 10))s..."
+        sleep $((attempt * 10))
+    done
 fi

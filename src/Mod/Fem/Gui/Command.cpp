@@ -724,7 +724,7 @@ void CmdFemConstraintHeatflux::activated(int)
         "App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",
         FeatName.c_str()
     );
-    doCommand(Doc, "App.activeDocument().%s.ConstraintType = \"DFlux\"", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.ConstraintType = \"Flux\"", FeatName.c_str());
     doCommand(
         Doc,
         "App.activeDocument().%s.AmbientTemp = 300.0",
@@ -1192,7 +1192,7 @@ static void DefineNodesCallback(void* ud, SoEventCallback* n)
 
     std::string str = getSelectedNodes(view);
     if (!str.empty()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
+        int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.addObject('Fem::FemSetNodesObject','NodeSet')"
@@ -1208,7 +1208,7 @@ static void DefineNodesCallback(void* ud, SoEventCallback* n)
             Analysis->getNameInDocument()
         );
 
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
 }
 
@@ -1352,7 +1352,7 @@ static void DefineElementsCallback(void* ud, SoEventCallback* n)
 
     std::string str = getSelectedNodes(view);
     if (!str.empty()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
+        int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Place robot"));
         Gui::Command::doCommand(
             Gui::Command::Doc,
             "App.ActiveDocument.addObject('Fem::FemSetElementNodesObject','ElementSet')"
@@ -1368,7 +1368,7 @@ static void DefineElementsCallback(void* ud, SoEventCallback* n)
             Analysis->getNameInDocument()
         );
 
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
     }
 }
 
@@ -1511,7 +1511,7 @@ void CmdFemCompEmConstraints::activated(int iMsg)
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
     if (iMsg == 0) {
-        rcCmdMgr.runCommandByName("FEM_ConstraintElectrostaticPotential");
+        rcCmdMgr.runCommandByName("FEM_ConstraintElectromagnetic");
     }
     else if (iMsg == 1) {
         rcCmdMgr.runCommandByName("FEM_ConstraintCurrentDensity");
@@ -1542,7 +1542,7 @@ Gui::Action* CmdFemCompEmConstraints::createAction()
     applyCommandData(this->className(), pcAction);
 
     QAction* cmd0 = pcAction->addAction(QString());
-    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintElectrostaticPotential"));
+    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintElectromagnetic"));
     QAction* cmd1 = pcAction->addAction(QString());
     cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("FEM_ConstraintCurrentDensity"));
     QAction* cmd2 = pcAction->addAction(QString());
@@ -1573,27 +1573,27 @@ void CmdFemCompEmConstraints::languageChange()
     Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
-    Gui::Command* ConstraintElectrostaticPotential = rcCmdMgr.getCommandByName(
-        "FEM_ConstraintElectrostaticPotential"
+    Gui::Command* ConstraintElectromagnetic = rcCmdMgr.getCommandByName(
+        "FEM_ConstraintElectromagnetic"
     );
-    if (ConstraintElectrostaticPotential) {
+    if (ConstraintElectromagnetic) {
         QAction* cmd0 = a[0];
         cmd0->setText(
             QApplication::translate(
-                "FEM_ConstraintElectrostaticPotential",
-                ConstraintElectrostaticPotential->getMenuText()
+                "FEM_ConstraintElectromagnetic",
+                ConstraintElectromagnetic->getMenuText()
             )
         );
         cmd0->setToolTip(
             QApplication::translate(
-                "FEM_ConstraintElectrostaticPotential",
-                ConstraintElectrostaticPotential->getToolTipText()
+                "FEM_ConstraintElectromagnetic",
+                ConstraintElectromagnetic->getToolTipText()
             )
         );
         cmd0->setStatusTip(
             QApplication::translate(
-                "FEM_ConstraintElectrostaticPotential",
-                ConstraintElectrostaticPotential->getStatusTip()
+                "FEM_ConstraintElectromagnetic",
+                ConstraintElectromagnetic->getStatusTip()
             )
         );
     }
@@ -2089,6 +2089,18 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     auto objFilter = App::GetApplication().getActiveDocument()->getActiveObject();
     auto femFilter = static_cast<Fem::FemPostFilter*>(objFilter);
 
+    auto selObjectView = static_cast<FemGui::ViewProviderFemPostObject*>(
+        Gui::Application::Instance->getViewProvider(selObject)
+    );
+    // use none field color from base filter
+    Base::color_traits<Base::Color> ct {selObjectView->NoneFieldColor.getValue()};
+    cmd->doCommand(
+        Gui::Command::Doc,
+        "App.activeDocument().ActiveObject.ViewObject.NoneFieldColor = (%d, %d, %d)",
+        ct.red(),
+        ct.green(),
+        ct.blue()
+    );
     // TODO: FIX
     /*
     auto selObjectView = static_cast<FemGui::ViewProviderFemPostObject*>(

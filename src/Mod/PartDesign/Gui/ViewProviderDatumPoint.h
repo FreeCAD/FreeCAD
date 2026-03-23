@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatumPoint_H
-#define PARTGUI_ViewProviderDatumPoint_H
+#pragma once
 
 #include "ViewProviderDatum.h"
 
@@ -50,6 +49,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderDatumPoint_H

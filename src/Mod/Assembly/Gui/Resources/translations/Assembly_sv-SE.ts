@@ -70,7 +70,7 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation>Ditt underaggregat är för närvarande flexibelt. Detta kommer att göra den stel istället.</translation>
+      <translation>Din underenhet är för närvarande flexibel. Detta kommer att göra den stel istället.</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="287"/>
@@ -267,7 +267,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="383"/>
       <source>Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.</source>
-      <translation>Only parts: lägger endast till detaljbehållare och underenheter i materialförteckningen. Solider som partdesignkroppar, fästelement eller primitiver för partarbetsbänken ignoreras.</translation>
+      <translation>Enbart delar: lägger endast till delbehållare och underenheter i materialförteckningen. Solider som partdesignkroppar, fästelement eller primitiver för partarbetsbänken ignoreras.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="385"/>
@@ -884,7 +884,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../preferences/Assembly.ui" line="43"/>
       <source>Log dragging steps</source>
-      <translation>Steg för timmerdragning</translation>
+      <translation>Logga dragningssteg</translation>
     </message>
   </context>
   <context>
@@ -905,48 +905,48 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       <translation>Flytta del</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1669"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1679"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1686"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1696"/>
       <source>Empty Assembly</source>
-      <translation>Tomt montage</translation>
+      <translation>Tom montering</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1691"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1701"/>
       <source>Over-constrained:</source>
-      <translation>Överbelastad:</translation>
+      <translation>Överbegränsad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1709"/>
       <source>Malformed joints:</source>
       <translation>Felformade fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1707"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1717"/>
       <source>Redundant joints:</source>
       <translation>Redundanta fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1715"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1725"/>
       <source>Partially redundant:</source>
       <translation>Delvis överflödig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1723"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>Solver failed to converge</source>
       <translation>Lösaren lyckades inte konvergera</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1731"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1741"/>
       <source>Under-constrained:</source>
       <translation>Underbegränsad:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grader av frihet</numerusform>
@@ -954,7 +954,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1737"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1747"/>
       <source>Fully constrained</source>
       <translation>Fullständigt begränsad</translation>
     </message>
@@ -1112,7 +1112,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="59"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation>Infoga en ny del i den aktiva enheten. Den nya delens ursprung kan positioneras i enheten.</translation>
+      <translation>Infoga en ny del i den aktiva montering. Den nya delens ursprung kan positioneras i monteringen.</translation>
     </message>
   </context>
   <context>
@@ -1242,7 +1242,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="49"/>
       <source>New Assembly</source>
-      <translation>Ny församling</translation>
+      <translation>Ny montering</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="54"/>
@@ -1261,7 +1261,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="106"/>
       <source>Select an assembly to activate:</source>
-      <translation>Välj en enhet som ska aktiveras:</translation>
+      <translation>Välj en montering som ska aktiveras:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="138"/>
@@ -1502,7 +1502,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="63"/>
       <source>The assembly has unconstrained components giving rise to those Degrees Of Freedom. Click to select these unconstrained components.</source>
-      <translation>Enheten har obegränsade komponenter som ger upphov till dessa frihetsgrader. Klicka för att välja dessa obegränsade komponenter.</translation>
+      <translation>Monteringen har obegränsade komponenter som ger upphov till dessa frihetsgrader. Klicka för att välja dessa obegränsade komponenter.</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="68"/>

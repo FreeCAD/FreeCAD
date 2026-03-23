@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATHSIMULATOR_VIEWCAMSIMULATOR_H
-#define PATHSIMULATOR_VIEWCAMSIMULATOR_H
+#pragma once
 
 #include <Gui/MDIView.h>
 
@@ -49,5 +48,3 @@ protected:
 };
 
 }  // namespace CAMSimulator
-
-#endif /* PATHSIMULATOR_VIEWCAMSIMULATOR_H */

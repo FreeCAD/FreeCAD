@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation>&lt;p&gt;Etkin montaja bir bileşen ekler. Bu işlem parçalara, gövdelere, primitiflere ve montajlara dinamik bağlantılar oluşturur. Harici bileşen eklemek için dosyanın &lt;b&gt;geçerli oturumda açık&lt;/b&gt; olduğundan emin olun.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Listeden bir öğeye sol tıklayarak ekleyin.&lt;/li&gt;&lt;li&gt;Listeden bir öğeye sağ tıklayarak kaldırın.&lt;/li&gt;&lt;li&gt;Görünümde tıklarken Shift tuşunu basılı tutarak bileşenin birden fazla örneğini ekleyin.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Etkin montaja bir bileşen ekler. Bu işlem parçalara, gövdelere, temel şekillere ve montajlara dinamik bağlantılar oluşturur. Harici bileşen eklemek için dosyanın &lt;b&gt;geçerli oturumda açık&lt;/b&gt; olduğundan emin olun.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Listeden bir öğeye sol tıklayarak ekleyin.&lt;/li&gt;&lt;li&gt;Listeden bir öğeye sağ tıklayarak kaldırın.&lt;/li&gt;&lt;li&gt;Görünümde tıklarken Shift tuşunu basılı tutarak bileşenin birden fazla örneğini ekleyin.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
@@ -60,22 +60,22 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
-      <translation>Alt montajınız şu anda rijit. Bu işlem onu esnek yapacak.</translation>
+      <translation>Alt montajınız şu an katı. Bu işlem onu esnek hale getirecektir.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
       <source>Turn rigid</source>
-      <translation>Rijit yap</translation>
+      <translation>Katı yap</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation>Alt montajınız şu anda esnek. Bu işlem onu rijit yapacak.</translation>
+      <translation>Alt montajınız şu an esnek. Bu işlem onu katı hale getirecektir.</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="287"/>
       <source>N/A</source>
-      <translation>Uygun Değil</translation>
+      <translation>Yok</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="311"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../../JointObject.py" line="51"/>
       <source>Revolute</source>
-      <translation>Döner</translation>
+      <translation>Dönel</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
@@ -904,48 +904,48 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
       <translation>Parçayı taşı</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1669"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1679"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1686"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1696"/>
       <source>Empty Assembly</source>
       <translation>Boş Montaj</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1691"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1701"/>
       <source>Over-constrained:</source>
       <translation>Aşırı kısıtlı:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1709"/>
       <source>Malformed joints:</source>
       <translation>Bozuk bağlantılar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1707"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1717"/>
       <source>Redundant joints:</source>
       <translation>Gereksiz bağlantılar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1715"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1725"/>
       <source>Partially redundant:</source>
       <translation>Kısmen gereksiz:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1723"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>Solver failed to converge</source>
       <translation>Çözücü yakınsamadı</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1731"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1741"/>
       <source>Under-constrained:</source>
       <translation>Yetersiz kısıtlı:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Serbestlik Derecesi</numerusform>
@@ -953,7 +953,7 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1737"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1747"/>
       <source>Fully constrained</source>
       <translation>Tam kısıtlı</translation>
     </message>

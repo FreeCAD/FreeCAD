@@ -251,7 +251,7 @@ public:
     void setUserSchema(int userSchema)
     {
         App::Document* doc = App::GetApplication().getActiveDocument();
-        if (doc != nullptr) {
+        if (doc) {
             if (doc->UnitSystem.getValue() != userSchema) {
                 doc->UnitSystem.setValue(userSchema);
             }
@@ -275,7 +275,7 @@ private:
         bool ignore = hGrpu->GetBool("IgnoreProjectSchema", false);
         App::Document* doc = App::GetApplication().getActiveDocument();
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
-        if (doc != nullptr && !ignore) {
+        if (doc && !ignore) {
             userSchema = doc->UnitSystem.getValue();
         }
         auto actions = menu()->actions();
@@ -937,7 +937,7 @@ int MainWindow::confirmSave(App::Document* doc, QWidget* parent, bool addCheckbo
         const QList<QWidget*> listOfMDIs = this->windows();
         for (QWidget* widget : listOfMDIs) {
             auto mdiView = qobject_cast<MDIView*>(widget);
-            if (mdiView != nullptr && mdiView->getAppDocument() == doc) {
+            if (mdiView && mdiView->getAppDocument() == doc) {
                 this->setActiveWindow(mdiView);
             }
         }
@@ -974,7 +974,7 @@ bool MainWindow::closeAllDocuments(bool close)
     // moves the active document to the front
     MDIView* activeView = this->activeWindow();
     App::Document* activeDoc = (activeView ? activeView->getAppDocument() : nullptr);
-    if (activeDoc != nullptr) {
+    if (activeDoc) {
         for (auto it = ++docs.begin(); it != docs.end(); it++) {
             if (*it == activeDoc) {
                 docs.erase(it);
@@ -1710,6 +1710,8 @@ void MainWindow::processMessages(const QList<QString>& msg)
         for (const auto& file : files) {
             QString filename = QString::fromUtf8(file.c_str(), file.size());
             FileDialog::setWorkingDirectory(filename);
+            QFileInfo fi(filename);
+            appendRecentFile(fi.absoluteFilePath());
         }
     }
     catch (const Base::SystemExitException&) {
@@ -1736,6 +1738,8 @@ void MainWindow::delayedStartup()
                 Base::Interpreter().runString(command.c_str());
             }
             catch (const Base::SystemExitException&) {
+                // Properly quit the Qt event loop before propagating the exception
+                QApplication::quit();
                 throw;
             }
             catch (const Base::Exception& e) {
@@ -1752,6 +1756,8 @@ void MainWindow::delayedStartup()
         for (const auto& file : files) {
             QString filename = QString::fromUtf8(file.c_str(), file.size());
             FileDialog::setWorkingDirectory(filename);
+            QFileInfo fi(filename);
+            appendRecentFile(fi.absoluteFilePath());
         }
     }
     catch (const Base::SystemExitException&) {
@@ -1860,6 +1866,7 @@ void MainWindow::appendRecentFile(const QString& filename)
     auto recent = this->findChild<RecentFilesAction*>(QStringLiteral("recentFiles"));
     if (recent) {
         recent->appendFile(filename);
+        Q_EMIT recentFileAdded(filename);
     }
 }
 
@@ -2512,6 +2519,9 @@ void MainWindow::changeEvent(QEvent* e)
         if (wb) {
             wb->retranslate();
         }
+
+        // reload all translatable export type strings:
+        App::GetApplication().retranslateExportTypes();
     }
     else if (e->type() == QEvent::ActivationChange) {
         if (isActiveWindow()) {

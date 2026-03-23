@@ -6,12 +6,12 @@
     <message>
       <location filename="../../Command.cpp" line="276"/>
       <source>MeshPart</source>
-      <translation type="unfinished">MeshPart</translation>
+      <translation>MogallPart</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="277"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Trasghearrthacha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="278"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="312"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="313"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="192"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="84"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mogalra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
@@ -119,22 +119,22 @@
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
       <source>XY</source>
-      <translation type="unfinished">XY</translation>
+      <translation>XY</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="36"/>
       <source>XZ</source>
-      <translation type="unfinished">XZ</translation>
+      <translation>XZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="43"/>
       <source>YZ</source>
-      <translation type="unfinished">YZ</translation>
+      <translation>YZ</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="52"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Seasamh</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
@@ -144,17 +144,17 @@
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
       <source>Sections</source>
-      <translation type="unfinished">Sections</translation>
+      <translation>Rannóga</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="83"/>
       <source>On both sides</source>
-      <translation type="unfinished">On both sides</translation>
+      <translation>Ar an dá thaobh</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="92"/>
       <source>Count</source>
-      <translation type="unfinished">Count</translation>
+      <translation>Líon</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
@@ -568,7 +568,7 @@ Roghnaigh cruth difriúil.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>MeshPart</source>
-      <translation type="unfinished">MeshPart</translation>
+      <translation>MogallPart</translation>
     </message>
   </context>
   <context>

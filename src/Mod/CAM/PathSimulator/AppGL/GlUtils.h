@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __glutils_h__
-#define __glutils_h__
+#pragma once
 
 #include "OpenGlWrapper.h"
 #include "linmath.h"
@@ -68,5 +67,3 @@ void GLClearError();
 bool GLLogError();
 
 }  // namespace MillSim
-
-#endif  // !__glutils_h__

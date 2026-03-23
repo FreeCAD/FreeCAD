@@ -28,6 +28,7 @@ from . import manager
 from .ccx_cantilever_faceload import setup as setup_with_faceload
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -52,8 +53,7 @@ from femexamples.ccx_cantilever_ele_tetra4 import setup
 setup()
 
 
-Tetra4 elements. There are really a lot needed thus mesh is cleared.
-Mesh before run the example.
+Cantilever modeled with tetra4 volume elements
 ...
 
 """
@@ -88,6 +88,9 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj.ElementOrder = "1st"
     femmesh_obj.CharacteristicLengthMax = "150.0 mm"
     femmesh_obj.CharacteristicLengthMin = "150.0 mm"
+
+    # generate the mesh
+    generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
 
     doc.recompute()
     return doc

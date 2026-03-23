@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef App_ImagePlane_H
-#define App_ImagePlane_H
+#pragma once
 
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
@@ -61,6 +60,3 @@ public:
 };
 
 }  // namespace Image
-
-
-#endif  // App_ImagePlane_H

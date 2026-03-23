@@ -6,22 +6,22 @@
     <message>
       <location filename="../../UnitTest.ui" line="32"/>
       <source>Test</source>
-      <translation type="unfinished">Test</translation>
+      <translation>தேர்வு</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation type="unfinished">FreeCAD Unit Test</translation>
+      <translation>FreeCAD அலகு சோதனை</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation type="unfinished">Select test name</translation>
+      <translation>சோதனையின் பெயரைத் தேர்ந்தெடுக்கவும்</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
       <source>&amp;Start</source>
-      <translation type="unfinished">&amp;Start</translation>
+      <translation>&amp;தொடங்கு</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="99"/>
@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;About</source>
-      <translation type="unfinished">&amp;About</translation>
+      <translation>&amp;பற்றி</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="144"/>
@@ -61,17 +61,17 @@
     <message>
       <location filename="../../UnitTest.ui" line="169"/>
       <source>Progress</source>
-      <translation type="unfinished">Progress</translation>
+      <translation>முன்னேற்றம்</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="188"/>
       <source>Run</source>
-      <translation type="unfinished">Run</translation>
+      <translation>ஓடு</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
       <source>Failures</source>
-      <translation type="unfinished">Failures</translation>
+      <translation>தோல்விகள்</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
@@ -81,22 +81,22 @@
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
       <source>Remaining</source>
-      <translation type="unfinished">Remaining</translation>
+      <translation>மீதமுள்ளவை</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
       <source>Failures and Errors</source>
-      <translation type="unfinished">Failures and Errors</translation>
+      <translation>தோல்விகள் மற்றும் பிழைகள்</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>
       <source>Description</source>
-      <translation type="unfinished">Description</translation>
+      <translation>விவரம்</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="292"/>
       <source>Idle</source>
-      <translation type="unfinished">Idle</translation>
+      <translation>நிலையிக்கம்</translation>
     </message>
   </context>
   <context>
@@ -112,24 +112,24 @@
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation type="unfinished">Enter the name of a callable object which, when called, will return a TestCase.
-Click 'start', and the test thus produced will be run.
+      <translation>அழைக்கக்கூடிய பொருளின் பெயரை உள்ளிடவும், அது அழைக்கப்படும் போது, ​​டெச்ட்கேசை வழங்கும். 
+'தொடங்கு' என்பதைக் சொடுக்கு செய்யவும், இவ்வாறு தயாரிக்கப்பட்ட சோதனை இயக்கப்படும். 
 
-Double click on an error in the tree view to see more information about it, including the stack trace.</translation>
+ச்டேக் டிரேச் உட்பட, அதைப் பற்றிய கூடுதல் தகவல்களைப் பார்க்க, மரக் காட்சியில் உள்ள பிழையின் மீது இருமுறை சொடுக்கு செய்யவும்.</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="182"/>
       <source>About FreeCAD UnitTest</source>
-      <translation type="unfinished">About FreeCAD UnitTest</translation>
+      <translation>FreeCAD UnitTest பற்றி</translation>
     </message>
     <message>
       <location filename="../../UnitTestImp.cpp" line="183"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
-      <translation type="unfinished">Copyright (c) Werner Mayer
+      <translation>பதிப்புரிமை (இ) வெர்னர் மேயர் 
 
-FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</translation>
+FreeCAD UnitTest என்பது FreeCAD இன் ஒரு பகுதியாகும், மேலும் யூனிட் டெச்ட்களை சொந்த தொகுதிகளுக்கு எழுதுவதை ஆதரிக்கிறது.</translation>
     </message>
   </context>
 </TS>

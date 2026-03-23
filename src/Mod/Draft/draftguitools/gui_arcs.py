@@ -36,7 +36,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import Draft
 import DraftVecUtils
 from FreeCAD import Units as U
 from draftguitools import gui_base

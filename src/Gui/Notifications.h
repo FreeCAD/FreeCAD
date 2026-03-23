@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_NOTIFICATIONS_H
-#define GUI_NOTIFICATIONS_H
+#pragma once
 
 #include <QMessageBox>
 #include <QCoreApplication>
@@ -425,5 +424,3 @@ inline void Gui::Notification(TNotifier&& notifier, TCaption&& caption, TMessage
         std::forward<TMessage>(message)
     );
 }
-
-#endif  // GUI_NOTIFICATIONS_H

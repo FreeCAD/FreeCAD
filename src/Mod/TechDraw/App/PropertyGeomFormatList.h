@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_PropertyGeomFormatList_H
-#define TECHDRAW_PropertyGeomFormatList_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -86,6 +85,3 @@ private:
 };
 
 } // namespace TechDraw
-
-
-#endif // TECHDRAW_PropertyGeomFormatList_H

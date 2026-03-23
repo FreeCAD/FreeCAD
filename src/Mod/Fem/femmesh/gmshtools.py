@@ -41,55 +41,43 @@ import Fem
 from . import meshtools
 from femtools import femutils
 from femtools import geomtools
+from femtools.objecttools import ObjectTools
 
 
 class GmshError(Exception):
     pass
 
 
-class GmshTools:
+class GmshTools(ObjectTools):
 
     name = "Gmsh"
 
-    def __init__(self, gmsh_mesh_obj, analysis=None):
-
-        # mesh obj
-        self.mesh_obj = gmsh_mesh_obj
-
-        self.process = QProcess()
-        # analysis
-        self.analysis = None
-        if analysis:
-            self.analysis = analysis
-        else:
-            for i in self.mesh_obj.InList:
-                if i.isDerivedFrom("Fem::FemAnalysis"):
-                    self.analysis = i
-                    break
-
+    def __init__(self, obj):
+        super().__init__(obj)
+        self.analysis = obj.getParentGroup()
         self.load_properties()
         self.error = False
 
     def load_properties(self):
         # part to mesh
-        self.part_obj = self.mesh_obj.Shape
+        self.part_obj = self.obj.Shape
 
         # clmax, CharacteristicLengthMax: float, 0.0 = 1e+22
-        self.clmax = Units.Quantity(self.mesh_obj.CharacteristicLengthMax).Value
+        self.clmax = self.obj.CharacteristicLengthMax.Value
         if self.clmax == 0.0:
             self.clmax = 1e22
 
         # clmin, CharacteristicLengthMin: float
-        self.clmin = Units.Quantity(self.mesh_obj.CharacteristicLengthMin).Value
+        self.clmin = self.obj.CharacteristicLengthMin.Value
 
         # geotol, GeometryTolerance: float, 0.0 = 1e-08
-        self.geotol = self.mesh_obj.GeometryTolerance
+        self.geotol = self.obj.GeometryTolerance
         if self.geotol == 0.0:
             self.geotol = 1e-08
 
         # order
         # known_element_orders = ["1st", "2nd"]
-        self.order = self.mesh_obj.ElementOrder
+        self.order = self.obj.ElementOrder
         if self.order == "1st":
             self.order = "1"
         elif self.order == "2nd":
@@ -98,10 +86,10 @@ class GmshTools:
             Console.PrintError("Error in order\n")
 
         # dimension
-        self.dimension = self.mesh_obj.ElementDimension
+        self.dimension = self.obj.ElementDimension
 
         # Algorithm2D
-        algo2D = self.mesh_obj.Algorithm2D
+        algo2D = self.obj.Algorithm2D
         if algo2D == "Automatic":
             self.algorithm2D = "2"
         elif algo2D == "MeshAdapt":
@@ -122,7 +110,7 @@ class GmshTools:
             self.algorithm2D = "2"
 
         # Algorithm3D
-        algo3D = self.mesh_obj.Algorithm3D
+        algo3D = self.obj.Algorithm3D
         if algo3D == "Automatic":
             self.algorithm3D = "1"
         elif algo3D == "Delaunay":
@@ -141,7 +129,7 @@ class GmshTools:
             self.algorithm3D = "1"
 
         # RecombinationAlgorithm
-        algoRecombo = self.mesh_obj.RecombinationAlgorithm
+        algoRecombo = self.obj.RecombinationAlgorithm
         if algoRecombo == "Simple":
             self.RecombinationAlgorithm = "0"
         elif algoRecombo == "Blossom":
@@ -154,7 +142,7 @@ class GmshTools:
             self.algoRecombo = "0"
 
         # HighOrderOptimize
-        optimizers = self.mesh_obj.HighOrderOptimize
+        optimizers = self.obj.HighOrderOptimize
         if optimizers == "None":
             self.HighOrderOptimize = "0"
         elif optimizers == "Optimization":
@@ -169,7 +157,7 @@ class GmshTools:
             self.HighOrderOptimize = "0"
 
         # SubdivisionAlgorithm
-        algoSubdiv = self.mesh_obj.SubdivisionAlgorithm
+        algoSubdiv = self.obj.SubdivisionAlgorithm
         if algoSubdiv == "All Quadrangles":
             self.SubdivisionAlgorithm = "1"
         elif algoSubdiv == "All Hexahedra":
@@ -180,7 +168,7 @@ class GmshTools:
             self.SubdivisionAlgorithm = "0"
 
         # mesh groups
-        if self.mesh_obj.GroupsOfNodes is True:
+        if self.obj.GroupsOfNodes:
             self.group_nodes_export = True
         else:
             self.group_nodes_export = False
@@ -223,19 +211,17 @@ class GmshTools:
         log_level = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetString(
             "LogVerbosity", "3"
         )
-        command_list = ["-v", log_level, "-", self.temp_file_geo]
+        command_list = ["-v", log_level, "-", self.model_file]
         self.process.start(self.gmsh_bin, command_list)
         return self.process
 
     def update_properties(self):
-        self.mesh_obj.FemMesh = Fem.read(self.temp_file_mesh)
+        self.obj.FemMesh = Fem.read(self.temp_file_mesh)
         self.rename_groups()
 
     def create_mesh(self):
-        self.prepare()
-        p = self.compute()
-        p.waitForFinished()
-        self.update_properties()
+        # for backward compatibility only
+        self.run(True)
 
     def start_logs(self):
         Console.PrintLog("\nGmsh FEM mesh run is being started.\n")
@@ -290,47 +276,19 @@ class GmshTools:
             Console.PrintError("Error in dimension\n")
         Console.PrintMessage("  ElementDimension: " + self.dimension + "\n")
 
-    def get_tmp_file_paths(self, param_working_dir=None, create=False):
-        self.working_dir = ""
-        # try to use given working dir
-        if param_working_dir is not None:
-            self.working_dir = param_working_dir
-            if femutils.check_working_dir(self.working_dir) is not True:
-                if create is True:
-                    Console.PrintMessage(
-                        "Dir given as parameter '{}' doesn't exist, "
-                        "but parameter to create it is set to True. "
-                        "Dir will be created.\n".format(self.working_dir)
-                    )
-                    os.mkdir(param_working_dir)
-                else:
-                    Console.PrintError(
-                        "Dir given as parameter '{}' doesn't exist "
-                        "and create parameter is set to False.\n".format(self.working_dir)
-                    )
-                    self.working_dir = femutils.get_pref_working_dir(self.mesh_obj)
-                    Console.PrintMessage(f"Dir '{self.working_dir}' will be used instead.\n")
-        else:
-            self.working_dir = femutils.get_pref_working_dir(self.mesh_obj)
-
-        # check working_dir exist, if not use a tmp dir and inform the user
-        if femutils.check_working_dir(self.working_dir) is not True:
-            Console.PrintError(f"Dir '{self.working_dir}' doesn't exist or cannot be created.\n")
-            self.working_dir = femutils.get_temp_dir(self.mesh_obj)
-            Console.PrintMessage(f"Dir '{self.working_dir}' will be used instead.\n")
-
+    def get_tmp_file_paths(self):
         # file paths
         _geometry_name = self.part_obj.Name + "_Geometry"
         self.mesh_name = self.part_obj.Name + "_Mesh"
         # geometry file
-        self.temp_file_geometry = os.path.join(self.working_dir, _geometry_name + ".brep")
+        self.temp_file_geometry = os.path.join(self.obj.WorkingDirectory, _geometry_name + ".brep")
         # mesh file
-        self.temp_file_mesh = os.path.join(self.working_dir, self.mesh_name + ".unv")
+        self.temp_file_mesh = os.path.join(self.obj.WorkingDirectory, self.mesh_name + ".unv")
         # Gmsh input file
-        self.temp_file_geo = os.path.join(self.working_dir, "shape2mesh.geo")
+        self.model_file = os.path.join(self.obj.WorkingDirectory, "shape2mesh.geo")
         Console.PrintMessage("  " + self.temp_file_geometry + "\n")
         Console.PrintMessage("  " + self.temp_file_mesh + "\n")
-        Console.PrintMessage("  " + self.temp_file_geo + "\n")
+        Console.PrintMessage("  " + self.model_file + "\n")
 
     def get_gmsh_command(self):
         self.gmsh_bin = FreeCAD.ParamGet(
@@ -364,7 +322,7 @@ class GmshTools:
 
     def get_group_data(self):
         # mesh group objects. Only one shape type is expected
-        geom = self.mesh_obj.Shape.getPropertyOfGeometry()
+        geom = self.obj.Shape.getPropertyOfGeometry()
         r_solids = range(1, len(geom.Solids) + 1)
         r_faces = range(1, len(geom.Faces) + 1)
         r_edges = range(1, len(geom.Edges) + 1)
@@ -377,12 +335,12 @@ class GmshTools:
         shapes.extend(edges)
 
         self.group_elements = dict(shapes)
-        if not self.mesh_obj.MeshGroupList:
+        if not self.obj.MeshGroupList:
             # print("  No mesh group objects.")
             pass
         else:
             Console.PrintMessage("  Mesh group objects, we need to get the elements.\n")
-            for mg in self.mesh_obj.MeshGroupList:
+            for mg in self.obj.MeshGroupList:
                 if mg.Suppressed:
                     continue
                 new_group_elements = meshtools.get_mesh_group_elements(mg, self.part_obj)
@@ -418,7 +376,7 @@ class GmshTools:
         # salomemesh adds a suffix to the names of element groups if there are also nodes
         #  in the groups in the .unv file. This method removes the suffix
         reg_exp = re.compile(r"(?P<item>(Edge|Face|Solid)\d+)_(?!Nodes)\w+$")
-        fem_mesh = self.mesh_obj.FemMesh
+        fem_mesh = self.obj.FemMesh
         for i in fem_mesh.Groups:
             grp = fem_mesh.getGroupName(i)
             m = reg_exp.match(grp)
@@ -454,7 +412,7 @@ class GmshTools:
 
     def get_region_data(self):
         # mesh regions
-        if not self.mesh_obj.MeshRegionList:
+        if not self.obj.MeshRegionList:
             # print("  No mesh refinements.")
             pass
         else:
@@ -465,7 +423,7 @@ class GmshTools:
             # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
             part = self.part_obj
             if (
-                self.mesh_obj.MeshRegionList
+                self.obj.MeshRegionList
                 and part.Shape.ShapeType == "Compound"
                 and (
                     femutils.is_of_type(part, "FeatureBooleanFragments")
@@ -474,7 +432,7 @@ class GmshTools:
                 )
             ):
                 self.outputCompoundWarning
-            for mr_obj in self.mesh_obj.MeshRegionList:
+            for mr_obj in self.obj.MeshRegionList:
                 if mr_obj.Suppressed:
                     continue
                 # print(mr_obj.Name)
@@ -552,7 +510,7 @@ class GmshTools:
         # but multiple boundary can be selected
         # Mesh.CharacteristicLengthMin, must be zero
         # or a value less than first inflation layer height
-        if not self.mesh_obj.MeshBoundaryLayerList:
+        if not self.obj.MeshBoundaryLayerList:
             # print("  No mesh boundary layer setting document object.")
             pass
         else:
@@ -561,7 +519,7 @@ class GmshTools:
                 # see https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
                 # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 self.outputCompoundWarning
-            for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
+            for mr_obj in self.obj.MeshBoundaryLayerList:
                 if mr_obj.Suppressed:
                     continue
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
@@ -732,8 +690,8 @@ class GmshTools:
         geom_trans.exportBrep(self.temp_file_geometry)
 
     def write_geo(self):
-        temp_dir = os.path.dirname(self.temp_file_geo)
-        geo = open(self.temp_file_geo, "w")
+        temp_dir = os.path.dirname(self.model_file)
+        geo = open(self.model_file, "w")
         geo.write("// geo file for meshing with Gmsh meshing software created by FreeCAD\n")
         geo.write("\n")
 
@@ -785,35 +743,32 @@ class GmshTools:
             geo.write("Mesh.CharacteristicLengthMin = " + str(0) + ";\n")
         else:
             geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
-        if hasattr(self.mesh_obj, "MeshSizeFromCurvature"):
             geo.write(
                 "Mesh.MeshSizeFromCurvature = {}"
                 "; // number of elements per 2*pi radians, 0 to deactivate\n".format(
-                    self.mesh_obj.MeshSizeFromCurvature
+                    self.obj.MeshSizeFromCurvature
                 )
             )
         geo.write("\n")
-        if hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True:
+        if self.obj.RecombineAll:
             geo.write("// recombination for surfaces\n")
             geo.write("Mesh.RecombineAll = 1;\n")
-        if hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True:
+        if self.obj.Recombine3DAll:
             geo.write("// recombination for volumes\n")
             geo.write("Mesh.Recombine3DAll = 1;\n")
-        if (hasattr(self.mesh_obj, "RecombineAll") and self.mesh_obj.RecombineAll is True) or (
-            hasattr(self.mesh_obj, "Recombine3DAll") and self.mesh_obj.Recombine3DAll is True
-        ):
+        if (self.obj.RecombineAll) or (self.obj.Recombine3DAll):
             geo.write("// recombination algorithm\n")
             geo.write("Mesh.RecombinationAlgorithm = " + self.RecombinationAlgorithm + ";\n")
             geo.write("\n")
 
         geo.write("// optimize the mesh\n")
         # Gmsh tetra optimizer
-        if hasattr(self.mesh_obj, "OptimizeStd") and self.mesh_obj.OptimizeStd is True:
+        if self.obj.OptimizeStd:
             geo.write("Mesh.Optimize = 1;\n")
         else:
             geo.write("Mesh.Optimize = 0;\n")
         # Netgen optimizer in Gmsh
-        if hasattr(self.mesh_obj, "OptimizeNetgen") and self.mesh_obj.OptimizeNetgen is True:
+        if self.obj.OptimizeNetgen:
             geo.write("Mesh.OptimizeNetgen = 1;\n")
         else:
             geo.write("Mesh.OptimizeNetgen = 0;\n")
@@ -828,10 +783,7 @@ class GmshTools:
         geo.write("// mesh order\n")
         geo.write("Mesh.ElementOrder = " + self.order + ";\n")
         if self.order == "2":
-            if (
-                hasattr(self.mesh_obj, "SecondOrderLinear")
-                and self.mesh_obj.SecondOrderLinear is True
-            ):
+            if self.obj.SecondOrderLinear:
                 geo.write(
                     "Mesh.SecondOrderLinear = 1; // Second order nodes are created "
                     "by linear interpolation instead by curvilinear\n"
@@ -870,7 +822,7 @@ class GmshTools:
         if (
             self.SubdivisionAlgorithm == "1"
             or self.SubdivisionAlgorithm == "2"
-            or self.mesh_obj.RecombineAll
+            or self.obj.RecombineAll
         ):
             sec_order_inc = "1"
         else:
@@ -881,7 +833,7 @@ class GmshTools:
         geo.write("// meshing\n")
         # remove duplicate vertices
         # see https://forum.freecad.org/viewtopic.php?f=18&t=21571&start=20#p179443
-        if hasattr(self.mesh_obj, "CoherenceMesh") and self.mesh_obj.CoherenceMesh is True:
+        if self.obj.CoherenceMesh:
             geo.write(
                 "Geometry.Tolerance = {}; // set geometrical "
                 "tolerance (also used for merging nodes)\n".format(self.geotol)
@@ -919,14 +871,14 @@ class GmshTools:
         )
         geo.write("//\n")
         geo.write("// to see full Gmsh log, run in bash:\n")
-        geo.write("// " + self.gmsh_bin + " - " + self.temp_file_geo + "\n")
+        geo.write("// " + self.gmsh_bin + " - " + self.model_file + "\n")
         geo.write("//\n")
         geo.write("// to run Gmsh and keep file in Gmsh GUI (with log), run in bash:\n")
-        geo.write("// " + self.gmsh_bin + " " + self.temp_file_geo + "\n")
+        geo.write("// " + self.gmsh_bin + " " + self.model_file + "\n")
         geo.close()
 
     def run_gmsh_with_geo(self):
-        command_list = [self.gmsh_bin, "-", self.temp_file_geo]
+        command_list = [self.gmsh_bin, "-", self.model_file]
         # print(command_list)
         try:
             p = subprocess.Popen(
@@ -966,7 +918,7 @@ class GmshTools:
     def read_and_set_new_mesh(self):
         if not self.error:
             fem_mesh = Fem.read(self.temp_file_mesh)
-            self.mesh_obj.FemMesh = fem_mesh
+            self.obj.FemMesh = fem_mesh
             Console.PrintMessage("  New mesh was added to the mesh object.\n")
         else:
             Console.PrintError("No mesh was created.\n")

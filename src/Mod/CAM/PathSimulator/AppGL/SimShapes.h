@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __sim_shapes_h__
-#define __sim_shapes_h__
+#pragma once
 #include "OpenGlWrapper.h"
 #include "linmath.h"
 
@@ -76,7 +75,6 @@ public:
     ~Shape();
 
 public:
-    uint vao = 0;
     uint vbo = 0;
     uint ibo = 0;
     int numIndices = 0;
@@ -121,6 +119,7 @@ public:
 
 protected:
     void GenerateModel(const float* vbuffer, const GLushort* ibuffer, int numVerts, int numIndices);
+    void SetupVertexAttribs();
     void CalculateExtrudeBufferSizes(
         int nProfilePoints,
         bool capStart,
@@ -135,4 +134,3 @@ protected:
 };
 
 }  // namespace MillSim
-#endif

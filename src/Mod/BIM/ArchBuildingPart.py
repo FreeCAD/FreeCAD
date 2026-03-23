@@ -322,6 +322,25 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         self.setProperties(obj)
 
+        vobj = getattr(obj, "ViewObject", None)
+        if vobj is None:
+            return
+        if hasattr(vobj, "ChildrenShapeColor"):
+            # add the ChildrenShapeAppearance property:
+            vobj.Proxy.setProperties(vobj)
+            if vobj.getTypeIdOfProperty("ChildrenShapeColor") == "App::PropertyColor":
+                # <= v0.21
+                material = FreeCAD.Material()
+                material.DiffuseColor = vobj.ChildrenShapeColor
+            else:
+                # v1.0 and v1.1dev
+                material = vobj.ChildrenShapeColor
+                # correct the alpha value of the diffuse color which is wrongly zero:
+                material.DiffuseColor = material.DiffuseColor[:-1] + (1.0,)
+            vobj.ChildrenShapeAppearance = (material,)
+            vobj.setPropertyStatus("ChildrenShapeColor", "-LockDynamic")
+            vobj.removeProperty("ChildrenShapeColor")
+
     def dumps(self):
 
         return None
@@ -433,20 +452,17 @@ class BuildingPart(ArchIFC.IfcProduct):
         solidindex = 0
         materialstable = {}
         for child in Draft.get_group_contents(obj, walls=True):
-            if not Draft.get_type(child) in ["Space"]:
-                if hasattr(child, "Shape") and child.Shape:
-                    shapes.append(child.Shape)
-                    for solid in child.Shape.Solids:
-                        matname = "Undefined"
-                        if hasattr(child, "Material") and child.Material:
-                            matname = child.Material.Name
-                        if matname in materialstable:
-                            materialstable[matname] = (
-                                materialstable[matname] + "," + str(solidindex)
-                            )
-                        else:
-                            materialstable[matname] = str(solidindex)
-                        solidindex += 1
+            if hasattr(child, "Shape") and child.Shape:
+                shapes.append(child.Shape)
+                for solid in child.Shape.Solids:
+                    matname = "Undefined"
+                    if hasattr(child, "Material") and child.Material:
+                        matname = child.Material.Name
+                    if matname in materialstable:
+                        materialstable[matname] = materialstable[matname] + "," + str(solidindex)
+                    else:
+                        materialstable[matname] = str(solidindex)
+                    solidindex += 1
         return shapes, materialstable
 
     def getSpaces(self, obj):
@@ -515,7 +531,9 @@ class ViewProviderBuildingPart:
             vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
             vobj.Proxy = self
             self.setProperties(vobj)
-            vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
+            material = vobj.ShapeAppearance[0]  # App.Material() based on current preferences.
+            material.DiffuseColor = ArchCommands.getDefaultColor("Helpers")
+            vobj.ShapeAppearance = (material,)
             self.Object = vobj.Object
 
     def setProperties(self, vobj):
@@ -725,16 +743,17 @@ class ViewProviderBuildingPart:
                 QT_TRANSLATE_NOOP("App::Property", "The line color of child objects"),
                 locked=True,
             )
-            vobj.ChildrenLineColor = params.get_param_view("DefaultShapeLineColor") & 0xFFFFFF00
-        if not "ChildrenShapeColor" in pl:
+            vobj.ChildrenLineColor = params.get_param_view("DefaultShapeLineColor") | 0x000000FF
+        if not "ChildrenShapeAppearance" in pl:
             vobj.addProperty(
-                "App::PropertyMaterial",
-                "ChildrenShapeColor",
+                "App::PropertyMaterialList",
+                "ChildrenShapeAppearance",
                 "Children",
                 QT_TRANSLATE_NOOP("App::Property", "The shape appearance of child objects"),
                 locked=True,
             )
-            vobj.ChildrenShapeColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
+            # The default App::PropertyMaterialList does not match the preferences, we have to do:
+            vobj.ChildrenShapeAppearance = (utils.get_view_material(),)
         if not "ChildrenTransparency" in pl:
             vobj.addProperty(
                 "App::PropertyPercent",
@@ -811,10 +830,6 @@ class ViewProviderBuildingPart:
                 locked=True,
             )
 
-    def onDocumentRestored(self, vobj):
-
-        self.setProperties(vobj)
-
     def getIcon(self):
 
         import Arch_rc
@@ -878,7 +893,7 @@ class ViewProviderBuildingPart:
         self.txt.string.setValue("level")
         self.sep.addChild(self.txt)
         vobj.addDisplayMode(self.sep, "Default")
-        self.onChanged(vobj, "ShapeColor")
+        self.onChanged(vobj, "ShapeAppearance")
         self.onChanged(vobj, "FontName")
         self.onChanged(vobj, "ShowLevel")
         self.onChanged(vobj, "FontSize")
@@ -903,50 +918,28 @@ class ViewProviderBuildingPart:
         if prop in ["Placement", "LevelOffset"]:
             self.onChanged(obj.ViewObject, "OverrideUnit")
         elif prop == "Shape":
-            # gather all the child shapes
             colors = self.getColors(obj)
-            if colors and hasattr(obj.ViewObject, "DiffuseColor"):
-                if len(colors) == len(obj.Shape.Faces):
-                    if colors != obj.ViewObject.DiffuseColor:
-                        obj.ViewObject.DiffuseColor = colors
-                        self.writeInventor(obj)
-                # else:
-                # print("color mismatch:",len(colors),"colors,",len(obj.Shape.Faces),"faces")
+            if hasattr(obj.ViewObject, "DiffuseColor") and colors != obj.ViewObject.DiffuseColor:
+                obj.ViewObject.DiffuseColor = colors
+                self.writeInventor(obj)
         elif prop == "Group":
             self.onChanged(obj.ViewObject, "ChildrenOverride")
         elif prop == "Label":
             self.onChanged(obj.ViewObject, "ShowLabel")
 
     def getColors(self, obj):
-        "recursively get the colors of objects inside this BuildingPart"
+        "get the colors of objects inside this BuildingPart"
 
-        colors = []
-        for child in Draft.get_group_contents(obj, walls=True):
-            if not Draft.get_type(child) in ["Space"]:
-                if hasattr(child, "Shape") and (
-                    hasattr(child.ViewObject, "DiffuseColor")
-                    or hasattr(child.ViewObject, "ShapeColor")
-                ):
-                    if hasattr(child.ViewObject, "DiffuseColor") and len(
-                        child.ViewObject.DiffuseColor
-                    ) == len(child.Shape.Faces):
-                        colors.extend(child.ViewObject.DiffuseColor)
-                    else:
-                        c = child.ViewObject.ShapeColor[:3] + (
-                            1.0 - child.ViewObject.Transparency / 100.0,
-                        )
-                        for i in range(len(child.Shape.Faces)):
-                            colors.append(c)
-        return colors
+        return Draft.get_diffuse_color(Draft.get_group_contents(obj, walls=True))
 
     def onChanged(self, vobj, prop):
 
         # print(vobj.Object.Label," - ",prop)
 
-        if prop == "ShapeColor":
-            if hasattr(vobj, "ShapeColor"):
-                l = vobj.ShapeColor
-                self.mat.diffuseColor.setValue([l[0], l[1], l[2]])
+        if prop == "ShapeAppearance":
+            if hasattr(vobj, "ShapeAppearance"):
+                color = vobj.ShapeAppearance[0].DiffuseColor[:-1]  # remove alpha value
+                self.mat.diffuseColor.setValue(*color)
         elif prop == "LineWidth":
             if hasattr(vobj, "LineWidth"):
                 self.dst.lineWidth = vobj.LineWidth
@@ -1031,16 +1024,16 @@ class ViewProviderBuildingPart:
                 self.txt.string.setValue(txt)
         elif prop in [
             "ChildrenOverride",
-            "ChildenLineWidth",
+            "ChildrenLineWidth",
             "ChildrenLineColor",
-            "ChildrenShapeColor",
+            "ChildrenShapeAppearance",
             "ChildrenTransparency",
         ]:
             if hasattr(vobj, "ChildrenOverride") and vobj.ChildrenOverride:
                 props = [
-                    "ChildenLineWidth",
+                    "ChildrenLineWidth",
                     "ChildrenLineColor",
-                    "ChildrenShapeColor",
+                    "ChildrenShapeAppearance",
                     "ChildrenTransparency",
                 ]
                 for child in vobj.Object.Group:

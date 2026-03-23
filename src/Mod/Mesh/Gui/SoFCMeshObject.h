@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOFCMESHOBJECT_H
-#define MESHGUI_SOFCMESHOBJECT_H
+#pragma once
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/fields/SoSFUInt32.h>
@@ -315,6 +314,3 @@ private:
 // NOLINTEND(cppcoreguidelines-special-member-functions,cppcoreguidelines-virtual-class-destructor)
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_SOFCMESHOBJECT_H

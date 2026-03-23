@@ -1,5 +1,4 @@
-#ifndef QUARTER_SENSORMANAGER_H
-#define QUARTER_SENSORMANAGER_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -66,5 +65,3 @@ private:
 };
 
 }}} // namespace
-
-#endif // QUARTER_SENSORMANAGER_H

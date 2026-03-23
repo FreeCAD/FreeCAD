@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERGRIDEXTENSION_H
-#define PARTGUI_VIEWPROVIDERGRIDEXTENSION_H
+#pragma once
 
 #include <Base/Vector3D.h>
 #include <Base/Rotation.h>
@@ -53,7 +52,7 @@ public:
     ViewProviderGridExtension();
     ~ViewProviderGridExtension() override;
 
-    void setGridEnabled(bool enable);
+    void setGridEnabled(Gui::View3DInventor* view);
 
     void drawGrid(bool cameraUpdate);
 
@@ -101,6 +100,3 @@ using ViewProviderGridExtensionPython
 
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERGRIDEXTENSION_H

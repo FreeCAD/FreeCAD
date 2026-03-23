@@ -29,9 +29,6 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM command definitions
 
-from PySide import QtCore
-from PySide import QtGui
-
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Qt
@@ -259,18 +256,18 @@ class _ConstraintElectricChargeDensity(CommandManager):
         self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _ConstraintElectrostaticPotential(CommandManager):
-    "The FEM_ConstraintElectrostaticPotential command definition"
+class _ConstraintElectromagnetic(CommandManager):
+    "The FEM_ConstraintElectromagnetic command definition"
 
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintElectrostaticPotential",
-            "Electrostatic Potential Boundary Condition",
+            "FEM_ConstraintElectromagnetic",
+            "Electromagnetic Boundary Condition",
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintElectrostaticPotential",
-            "Creates an electrostatic potential boundary condition",
+            "FEM_ConstraintElectromagnetic",
+            "Creates an electromagnetic boundary condition",
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -603,59 +600,23 @@ class _MaterialMechanicalNonlinear(CommandManager):
             "FEM_MaterialMechanicalNonlinear", "Non-Linear Mechanical Material"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MaterialMechanicalNonlinear", "Creates a non-linear mechanical material"
+            "FEM_MaterialMechanicalNonlinear", "Add non-linear mechanical properties to material"
         )
-        self.is_active = "with_material_solid"
+
+    def IsActive(self):
+        return self.material_solid_selected() and (self.selobj.Nonlinear is None)
 
     def Activated(self):
-        # test if there is a nonlinear material which has the selected material as base material
-        for o in self.selobj.Document.Objects:
-            if (
-                is_of_type(o, "Fem::MaterialMechanicalNonlinear")
-                and o.LinearBaseMaterial == self.selobj
-            ):
-                FreeCAD.Console.PrintError(
-                    "Nonlinear material {} is based on the selected material {}. "
-                    "Only one nonlinear object allowed for each material.\n".format(
-                        o.Name, self.selobj.Name
-                    )
-                )
-                return
-
         # add a nonlinear material
-        string_lin_mat_obj = "FreeCAD.ActiveDocument.getObject('" + self.selobj.Name + "')"
-        command_to_run = (
-            "FemGui.getActiveAnalysis().addObject(ObjectsFem."
-            "makeMaterialMechanicalNonlinear(FreeCAD.ActiveDocument, {}))".format(
-                string_lin_mat_obj
-            )
-        )
         FreeCAD.ActiveDocument.openTransaction("Create FemMaterialMechanicalNonlinear")
         FreeCADGui.addModule("ObjectsFem")
+        lin_mat_obj = f"FreeCAD.ActiveDocument.getObject('{self.selobj.Name}')"
+        command_to_run = (
+            f"ObjectsFem.makeMaterialMechanicalNonlinear(FreeCAD.ActiveDocument, {lin_mat_obj})"
+        )
         FreeCADGui.doCommand(command_to_run)
-        # set some property of the solver to nonlinear
-        # (only if one solver is available and if this solver is a CalculiX solver):
-        # nonlinear material
-        solver_object = None
-        for m in self.active_analysis.Group:
-            if m.isDerivedFrom("Fem::FemSolverObjectPython"):
-                if not solver_object:
-                    solver_object = m
-                else:
-                    # we do not change attributes if we have more than one solver
-                    # since we do not know which one to take
-                    solver_object = None
-                    break
-        # set solver attribute for nonlinearity for ccxtools
-        # CalculiX solver or new frame work CalculiX solver
-        if solver_object and (
-            is_of_type(solver_object, "Fem::SolverCcxTools")
-            or is_of_type(solver_object, "Fem::SolverCalculiX")
-        ):
-            FreeCAD.Console.PrintMessage(
-                f"Set MaterialNonlinearity to nonlinear for {solver_object.Label}\n"
-            )
-            solver_object.MaterialNonlinearity = "nonlinear"
+
+        expandParentObject()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
@@ -758,6 +719,29 @@ class _MeshClear(CommandManager):
         FreeCADGui.addModule("Fem")
         FreeCADGui.doCommand(
             "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh = Fem.FemMesh()"
+        )
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
+
+
+class _MeshClearGroups(CommandManager):
+    "The FEM_MeshClearGroups command definition"
+
+    def __init__(self):
+        super().__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshClearGroups", "Clear Mesh Groups")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshClearGroups", "Remove groups from FEM mesh")
+        self.is_active = "with_femmesh"
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("ClearGroups FEM mesh")
+        FreeCADGui.addModule("Fem")
+        grps = "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh.Groups"
+        remove_func = "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh.removeGroup"
+        FreeCADGui.doCommand(f"tuple(map({remove_func}, {grps}))")
+        FreeCAD.Console.PrintMessage(
+            f"Groups cleared: Now {self.selobj.Name} has {self.selobj.FemMesh.GroupCount} groups\n"
         )
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
@@ -1022,14 +1006,12 @@ class _SolverCalculixContextManager:
             "{}.MatrixSolverType = {}".format(self.cli_name, ccx_prefs.GetInt("Solver", 0))
         )
         FreeCADGui.doCommand(
-            "{}.BeamShellResultOutput3D = {}".format(
-                self.cli_name, ccx_prefs.GetBool("BeamShellOutput", True)
-            )
+            "{}.Output3d = {}".format(self.cli_name, ccx_prefs.GetBool("BeamShellOutput", True))
         )
         FreeCADGui.doCommand(
-            '{}.GeometricalNonlinearity = "{}"'.format(
+            "{}.GeometricalNonlinearity = {}".format(
                 self.cli_name,
-                ("nonlinear" if ccx_prefs.GetBool("NonlinearGeometry", False) else "linear"),
+                ccx_prefs.GetBool("NonlinearGeometry", False),
             )
         )
 
@@ -1061,14 +1043,7 @@ class _SolverCcxTools(CommandManager):
 
     def Activated(self):
         with _SolverCalculixContextManager("makeSolverCalculiXCcxTools", "solver") as cm:
-            has_nonlinear_material_obj = False
-            for m in self.active_analysis.Group:
-                if is_of_type(m, "Fem::MaterialMechanicalNonlinear"):
-                    has_nonlinear_material_obj = True
-
-            if has_nonlinear_material_obj:
-                FreeCADGui.doCommand(f"{cm.cli_name}.GeometricalNonlinearity = 'nonlinear'")
-                FreeCADGui.doCommand(f"{cm.cli_name}.MaterialNonlinearity = 'nonlinear'")
+            FreeCADGui.doCommand(f"{cm.cli_name}.MaterialNonlinearity = True")
 
 
 class _SolverCalculiX(CommandManager):
@@ -1093,13 +1068,7 @@ class _SolverCalculiX(CommandManager):
             make_solver = "makeSolverCalculiXCcxTools"
 
         with _SolverCalculixContextManager(make_solver, "solver") as cm:
-            has_nonlinear_material_obj = False
-            for m in self.active_analysis.Group:
-                if is_of_type(m, "Fem::MaterialMechanicalNonlinear"):
-                    has_nonlinear_material_obj = True
-
-            if has_nonlinear_material_obj:
-                FreeCADGui.doCommand(f"{cm.cli_name}.MaterialNonlinearity = 'nonlinear'")
+            FreeCADGui.doCommand(f"{cm.cli_name}.MaterialNonlinearity = True")
 
 
 class _SolverControl(CommandManager):
@@ -1184,51 +1153,11 @@ class _SolverRun(CommandManager):
         self.tool = None
 
     def Activated(self):
-        if self.selobj.Proxy.Type in ["Fem::SolverCalculiX", "Fem::SolverElmer"]:
-            try:
-                QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-                self._set_tool()
-                self._conn(self.tool)
-                self.tool.prepare()
-                self.tool.compute()
-            except Exception as e:
-                QtGui.QApplication.restoreOverrideCursor()
-                FreeCAD.Console.PrintError(e)
-                return
+        from femsolver.run import run_fem_solver
 
-        else:
-            from femsolver.run import run_fem_solver
-
-            run_fem_solver(self.selobj)
-            FreeCADGui.Selection.clearSelection()
-            FreeCAD.ActiveDocument.recompute()
-
-    def _set_tool(self):
-        match self.selobj.Proxy.Type:
-            case "Fem::SolverCalculiX":
-                from femsolver.calculix.calculixtools import CalculiXTools
-
-                self.tool = CalculiXTools(self.selobj)
-            case "Fem::SolverElmer":
-                from femsolver.elmer.elmertools import ElmerTools
-
-                self.tool = ElmerTools(self.selobj)
-
-    def _conn(self, tool):
-        QtCore.QObject.connect(
-            tool.process,
-            QtCore.SIGNAL("finished(int, QProcess::ExitStatus)"),
-            self._process_finished,
-        )
-
-    def _process_finished(self, code, status):
-        if status == QtCore.QProcess.ExitStatus.NormalExit and code == 0:
-            self.tool.update_properties()
-            FreeCAD.ActiveDocument.recompute()
-            QtGui.QApplication.restoreOverrideCursor()
-        else:
-            QtGui.QApplication.restoreOverrideCursor()
-            FreeCAD.Console.PrintError("Process finished with errors. Result not updated\n")
+        run_fem_solver(self.selobj)
+        FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
 
 
 class _SolverZ88(CommandManager):
@@ -1258,6 +1187,33 @@ class _PostFilterGlyph(CommandManager):
         self.do_activated = "add_filter_set_edit"
 
 
+class _CompSolvers(CommandManager):
+    def __init__(self):
+        super().__init__()
+        self.pixmap = ""
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_CompSolvers", "Solvers")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_CompSolvers", "Creates a FEM solver")
+        self.is_active = "with_analysis"
+        self.commands = [
+            "FEM_SolverCalculiX",
+            "FEM_SolverElmer",
+            "FEM_SolverMystran",
+            "FEM_SolverZ88",
+        ]
+
+    def Activated(self, i):
+        FreeCADGui.runCommand(self.commands[i])
+
+    def GetCommands(self):
+        return self.commands
+
+    def GetDefaultCommand(self):
+        gen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        # DefaultSolver == 0 is "None"
+        index = gen_prefs.GetInt("DefaultSolver", 0)
+        return (index - 1) if index > 0 else 0
+
+
 # the string in add command will be the page name on FreeCAD wiki
 FreeCADGui.addCommand("FEM_Analysis", _Analysis())
 FreeCADGui.addCommand("FEM_ClippingPlaneAdd", _ClippingPlaneAdd())
@@ -1267,7 +1223,7 @@ FreeCADGui.addCommand("FEM_ConstraintBodyHeatSource", _ConstraintBodyHeatSource(
 FreeCADGui.addCommand("FEM_ConstraintCentrif", _ConstraintCentrif())
 FreeCADGui.addCommand("FEM_ConstraintCurrentDensity", _ConstraintCurrentDensity())
 FreeCADGui.addCommand("FEM_ConstraintElectricChargeDensity", _ConstraintElectricChargeDensity())
-FreeCADGui.addCommand("FEM_ConstraintElectrostaticPotential", _ConstraintElectrostaticPotential())
+FreeCADGui.addCommand("FEM_ConstraintElectromagnetic", _ConstraintElectromagnetic())
 FreeCADGui.addCommand("FEM_ConstraintFlowVelocity", _ConstraintFlowVelocity())
 FreeCADGui.addCommand("FEM_ConstraintInitialFlowVelocity", _ConstraintInitialFlowVelocity())
 FreeCADGui.addCommand("FEM_ConstraintInitialPressure", _ConstraintInitialPressure())
@@ -1298,6 +1254,7 @@ FreeCADGui.addCommand("FEM_MaterialSolid", _MaterialSolid())
 FreeCADGui.addCommand("FEM_FEMMesh2Mesh", _FEMMesh2Mesh())
 FreeCADGui.addCommand("FEM_MeshBoundaryLayer", _MeshBoundaryLayer())
 FreeCADGui.addCommand("FEM_MeshClear", _MeshClear())
+FreeCADGui.addCommand("FEM_MeshClearGroups", _MeshClearGroups())
 FreeCADGui.addCommand("FEM_MeshDisplayInfo", _MeshDisplayInfo())
 FreeCADGui.addCommand("FEM_MeshGmshFromShape", _MeshGmshFromShape())
 FreeCADGui.addCommand("FEM_MeshGroup", _MeshGroup())
@@ -1312,6 +1269,7 @@ FreeCADGui.addCommand("FEM_SolverElmer", _SolverElmer())
 FreeCADGui.addCommand("FEM_SolverMystran", _SolverMystran())
 FreeCADGui.addCommand("FEM_SolverRun", _SolverRun())
 FreeCADGui.addCommand("FEM_SolverZ88", _SolverZ88())
+FreeCADGui.addCommand("FEM_CompSolvers", _CompSolvers())
 
 if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
     FreeCADGui.addCommand("FEM_PostFilterGlyph", _PostFilterGlyph())

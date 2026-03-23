@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_TASKSHAPEBUILDER_H
-#define PARTGUI_TASKSHAPEBUILDER_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -43,6 +42,7 @@ public:
 
     bool accept();
     bool reject();
+    void setSelectionGate();
 
 private:
     void onCreateButtonClicked();
@@ -90,5 +90,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_TASKSHAPEBUILDER_H

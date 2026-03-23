@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PYCXX_H
-#define PART_PYCXX_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
@@ -45,5 +44,3 @@ PartExport Py::Object shape2pyshape(const TopoDS_Shape& shape);
 PartExport void getPyShapes(PyObject* obj, std::vector<TopoShape>& shapes);
 PartExport std::vector<TopoShape> getPyShapes(PyObject* obj);
 }  // namespace Part
-
-#endif  // PART_PYCXX_H

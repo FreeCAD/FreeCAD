@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureAdditive_H
-#define PARTDESIGN_FeatureAdditive_H
+#pragma once
 
 #include "FeatureRefine.h"
 
@@ -85,6 +84,3 @@ public:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureAdditive_H

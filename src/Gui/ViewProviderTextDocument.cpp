@@ -97,6 +97,8 @@ ViewProviderTextDocument::ViewProviderTextDocument()
     OnTopWhenSelected.setStatus(App::Property::Hidden, true);
     SelectionStyle.setStatus(App::Property::Hidden, true);
     Visibility.setStatus(App::Property::Hidden, true);
+
+    setToggleVisibility(ToggleVisibilityMode::NoToggleVisibility);
 }
 
 void ViewProviderTextDocument::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

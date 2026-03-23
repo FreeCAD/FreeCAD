@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MAINWINDOW_H
-#define GUI_MAINWINDOW_H
+#pragma once
 
 #include <QEvent>
 #include <QMainWindow>
@@ -390,6 +389,7 @@ Q_SIGNALS:
     void windowStateChanged(QWidget*);
     void workbenchActivated(const QString&);
     void mainWindowClosed();
+    void recentFileAdded(const QString& filename);
 
 private:
     /// some kind of singleton
@@ -464,5 +464,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MAINWINDOW_H

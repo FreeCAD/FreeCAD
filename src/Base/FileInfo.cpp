@@ -40,6 +40,7 @@
 #include "FileInfo.h"
 #include "Exception.h"
 #include "TimeInfo.h"
+#include "Tools.h"
 
 using namespace Base;
 namespace fs = std::filesystem;
@@ -50,13 +51,7 @@ namespace fs = std::filesystem;
 #ifdef FC_OS_WIN32
 std::string ConvertFromWideString(const std::wstring& string)
 {
-    int neededSize = WideCharToMultiByte(CP_UTF8, 0, string.c_str(), -1, 0, 0, 0, 0);
-    char* CharString = new char[static_cast<size_t>(neededSize)];
-    WideCharToMultiByte(CP_UTF8, 0, string.c_str(), -1, CharString, neededSize, 0, 0);
-    std::string String(CharString);
-    delete[] CharString;
-    CharString = NULL;
-    return String;
+    return Tools::wstringToString(string);
 }
 
 std::wstring ConvertToWideString(const std::string& string)

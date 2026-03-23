@@ -47,8 +47,7 @@
 ****************************************************************************/
 
 // clang-format off
-#ifndef QTCOLORPICKER_H
-#define QTCOLORPICKER_H
+#pragma once
 #include <QPushButton>
 #include <QtCore/QString>
 #include <QtGui/QColor>
@@ -122,5 +121,4 @@ private:
     bool firstInserted;
 };
 
-#endif
 // clang-format on

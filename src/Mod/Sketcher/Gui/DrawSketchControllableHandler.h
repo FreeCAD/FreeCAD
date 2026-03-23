@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchControllableHandler_H
-#define SKETCHERGUI_DrawSketchControllableHandler_H
+#pragma once
 
 #include <type_traits>
 
@@ -215,6 +214,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchControllableHandler_H

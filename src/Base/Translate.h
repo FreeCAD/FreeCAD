@@ -23,16 +23,13 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TRANSLATE_H
-#define BASE_TRANSLATE_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 #include <QTranslator>
 #include <memory>
 #include <list>
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 
 namespace Py
 {
@@ -62,5 +59,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_TRANSLATE_H

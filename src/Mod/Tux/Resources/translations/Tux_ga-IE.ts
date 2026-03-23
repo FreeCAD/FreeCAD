@@ -11,57 +11,57 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="90"/>
       <source>Zoom</source>
-      <translation type="unfinished">Zoom</translation>
+      <translation>Zúmáil</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="91"/>
       <source>Rotate</source>
-      <translation type="unfinished">Rotate</translation>
+      <translation>Rothlaigh</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="92"/>
       <source>Pan</source>
-      <translation type="unfinished">Pan</translation>
+      <translation>Peanáil</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="93"/>
       <source>Tilt</source>
-      <translation type="unfinished">Tilt</translation>
+      <translation>Claonadh</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="94"/>
       <source>Navigation style</source>
-      <translation type="unfinished">Navigation style</translation>
+      <translation>Stíl nascleanúna</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="95"/>
       <source>Page Up or Page Down key.</source>
-      <translation type="unfinished">Page Up or Page Down key.</translation>
+      <translation>Eochair Leathanach Suas nó Leathanach Síos.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="96"/>
       <source>Rotation focus</source>
-      <translation type="unfinished">Rotation focus</translation>
+      <translation>Fócas rothlaithe</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="97"/>
       <source>Middle mouse button or H key.</source>
-      <translation type="unfinished">Middle mouse button or H key.</translation>
+      <translation>Cnaipe lár na luiche nó eochair H.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="99"/>
       <source>Middle mouse button.</source>
-      <translation type="unfinished">Middle mouse button.</translation>
+      <translation>Cnaipe lár na luiche.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="102"/>
       <source>Navigation style not recognized.</source>
-      <translation type="unfinished">Navigation style not recognized.</translation>
+      <translation>Níor aithníodh an stíl nascleanúna.</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="653"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Socruithe</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="654"/>
@@ -71,12 +71,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="655"/>
       <source>Compact</source>
-      <translation type="unfinished">Compact</translation>
+      <translation>Dlúth</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="656"/>
       <source>Tooltip</source>
-      <translation type="unfinished">Tooltip</translation>
+      <translation>Leid Uirlis</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="657"/>
@@ -96,23 +96,23 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>
       <source>Trackball Classic</source>
-      <translation type="unfinished">Trackball Classic</translation>
+      <translation>Liathróid Rianaithe Clasaiceach</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="661"/>
       <source>Rounded Arcball</source>
-      <translation type="unfinished">Rounded Arcball</translation>
+      <translation>Liathróid Arc Babhta</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="662"/>
       <source>Undefined</source>
-      <translation type="unfinished">Undefined</translation>
+      <translation>Gan Sainmhíniú</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="674"/>
       <source>Navigation indicator</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation indicator</translation>
+      <translation>Táscaire loingseoireachta</translation>
     </message>
   </context>
 </TS>

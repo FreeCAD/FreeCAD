@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PART_CUSTOMFEATURE_H
-#define PART_CUSTOMFEATURE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -62,6 +61,3 @@ public:
 using CustomFeaturePython = App::FeaturePythonT<CustomFeature>;
 
 }  // namespace Part
-
-
-#endif  // PART_CUSTOMFEATURE_H

@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PROPERTYEDITORITEM_H
-#define PROPERTYEDITORITEM_H
+#pragma once
 
 #include <QItemEditorFactory>
 #include <QObject>
@@ -1426,5 +1425,3 @@ public:
 
 }  // namespace PropertyEditor
 }  // namespace Gui
-
-#endif  // PROPERTYEDITORITEM_H

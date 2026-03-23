@@ -149,7 +149,7 @@ class JobPreferencesPage:
         self.form.leDefaultJobTemplate.setText(Path.Preferences.defaultJobTemplate())
 
         blacklist = Path.Preferences.postProcessorBlacklist()
-        for processor in Path.Preferences.allAvailablePostProcessors():
+        for processor in Path.Preferences.allAvailableLegacyPostProcessors():
             item = QtGui.QListWidgetItem(processor)
             if processor in blacklist:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)

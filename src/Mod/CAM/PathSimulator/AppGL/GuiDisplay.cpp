@@ -35,24 +35,24 @@ using namespace MillSim;
 // clang-format off
 // NOLINTBEGIN(*-magic-numbers)
 static const std::vector<DefaultGuiItem> defaultGuiItems = {
-    {.name=eGuiItemSlider, .vbo=0, .vao=0, .sx=28, .sy=-80, .actionKey=0, .hidden=false, .flags=0},
-    {.name=eGuiItemThumb, .vbo=0, .vao=0, .sx=328, .sy=-94, .actionKey=1, .hidden=false, .flags=0},
-    {.name=eGuiItemPause, .vbo=0, .vao=0, .sx=28, .sy=-50, .actionKey='P', .hidden=true, .flags=0},
-    {.name=eGuiItemPlay, .vbo=0, .vao=0, .sx=28, .sy=-50, .actionKey='S', .hidden=false, .flags=0},
-    {.name=eGuiItemSingleStep, .vbo=0, .vao=0, .sx=68, .sy=-50, .actionKey='T', .hidden=false, .flags=0},
-    {.name=eGuiItemSlower, .vbo=0, .vao=0, .sx=113, .sy=-50, .actionKey=' ', .hidden=false, .flags=0},
-    {.name=eGuiItemFaster, .vbo=0, .vao=0, .sx=158, .sy=-50, .actionKey='F', .hidden=false, .flags=0},
-    {.name=eGuiItemX, .vbo=0, .vao=0, .sx=208, .sy=-45, .actionKey=0, .hidden=false, .flags=0},
-    {.name=eGuiItem1, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=false, .flags=0},
-    {.name=eGuiItem5, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
-    {.name=eGuiItem10, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
-    {.name=eGuiItem25, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
-    {.name=eGuiItem50, .vbo=0, .vao=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
-    {.name=eGuiItemRotate, .vbo=0, .vao=0, .sx=-140, .sy=-50, .actionKey=' ', .hidden=false, .flags=GUIITEM_CHECKABLE},
-    {.name=eGuiItemPath, .vbo=0, .vao=0, .sx=-100, .sy=-50, .actionKey='L', .hidden=false, .flags=GUIITEM_CHECKABLE},
-    {.name=eGuiItemAmbientOclusion, .vbo=0, .vao=0, .sx=-60, .sy=-50, .actionKey='A', .hidden=false, .flags=GUIITEM_CHECKABLE},
-    {.name=eGuiItemView, .vbo=0, .vao=0, .sx=-180, .sy=-50, .actionKey='V', .hidden=false, .flags=0},
-    {.name=eGuiItemHome, .vbo=0, .vao=0, .sx=-220, .sy=-50, .actionKey='H', .hidden=false, .flags=0},
+    {.name=eGuiItemSlider, .vbo=0, .sx=28, .sy=-80, .actionKey=0, .hidden=false, .flags=0},
+    {.name=eGuiItemThumb, .vbo=0, .sx=328, .sy=-94, .actionKey=1, .hidden=false, .flags=0},
+    {.name=eGuiItemPause, .vbo=0, .sx=28, .sy=-50, .actionKey='P', .hidden=true, .flags=0},
+    {.name=eGuiItemPlay, .vbo=0, .sx=28, .sy=-50, .actionKey='S', .hidden=false, .flags=0},
+    {.name=eGuiItemSingleStep, .vbo=0, .sx=68, .sy=-50, .actionKey='T', .hidden=false, .flags=0},
+    {.name=eGuiItemSlower, .vbo=0, .sx=113, .sy=-50, .actionKey=' ', .hidden=false, .flags=0},
+    {.name=eGuiItemFaster, .vbo=0, .sx=158, .sy=-50, .actionKey='F', .hidden=false, .flags=0},
+    {.name=eGuiItemX, .vbo=0, .sx=208, .sy=-45, .actionKey=0, .hidden=false, .flags=0},
+    {.name=eGuiItem1, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=false, .flags=0},
+    {.name=eGuiItem5, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItem10, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItem25, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItem50, .vbo=0, .sx=230, .sy=-50, .actionKey=0, .hidden=true, .flags=0},
+    {.name=eGuiItemRotate, .vbo=0, .sx=-140, .sy=-50, .actionKey=' ', .hidden=false, .flags=GUIITEM_CHECKABLE},
+    {.name=eGuiItemPath, .vbo=0, .sx=-100, .sy=-50, .actionKey='L', .hidden=false, .flags=GUIITEM_CHECKABLE},
+    {.name=eGuiItemAmbientOclusion, .vbo=0, .sx=-60, .sy=-50, .actionKey='A', .hidden=false, .flags=GUIITEM_CHECKABLE},
+    {.name=eGuiItemView, .vbo=0, .sx=-180, .sy=-50, .actionKey='V', .hidden=false, .flags=0},
+    {.name=eGuiItemHome, .vbo=0, .sx=-220, .sy=-50, .actionKey='H', .hidden=false, .flags=0},
 };
 // NOLINTEND(*-magic-numbers)
 // clang-format on
@@ -143,17 +143,6 @@ bool GuiDisplay::GenerateGlItem(GuiItem* guiItem)
     glBindBuffer(GL_ARRAY_BUFFER, guiItem->vbo);
     glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(Vertex2D), verts, GL_STATIC_DRAW);
 
-    // glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, nullptr);
-    //  vertex array
-    glGenVertexArrays(1, &(guiItem->vao));
-    glBindVertexArray(guiItem->vao);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, tx));
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
-    glBindVertexArray(0);
-
     return true;
 }
 
@@ -197,22 +186,22 @@ bool GuiDisplay::HStretchGlItem(GuiItem* guiItem, float newWidth, float edgeWidt
     glBindBuffer(GL_ARRAY_BUFFER, guiItem->vbo);
     glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(Vertex2D), verts, GL_STATIC_DRAW);
 
-    glGenVertexArrays(1, &(guiItem->vao));
-    glBindVertexArray(guiItem->vao);
+    return true;
+}
+
+void GuiDisplay::SetupVertexAttribs(GuiItem* guiItem)
+{
+    glBindBuffer(GL_ARRAY_BUFFER, guiItem->vbo);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, x));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex2D), (void*)offsetof(Vertex2D, tx));
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
-    glBindVertexArray(0);
-
-    return true;
 }
 
 void GuiDisplay::DestroyGlItem(GuiItem* guiItem)
 {
     GLDELETE_BUFFER((guiItem->vbo));
-    GLDELETE_VERTEXARRAY((guiItem->vao));
 }
 
 bool GuiDisplay::InitGui()
@@ -271,6 +260,7 @@ void GuiDisplay::RenderItem(int itemId)
     if (item->hidden) {
         return;
     }
+
     mat4x4 model;
     mat4x4_translate(model, (float)item->posx(), (float)item->posy(), 0);
     mShader.UpdateModelMat(model, {});
@@ -290,7 +280,7 @@ void GuiDisplay::RenderItem(int itemId)
         mShader.UpdateObjColor(mStdColor);
     }
 
-    glBindVertexArray(item->vao);
+    SetupVertexAttribs(item);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIbo);
     int nTriangles = (item->flags & GUIITEM_STRETCHED) == 0 ? 6 : 18;
     glDrawElements(GL_TRIANGLES, nTriangles, GL_UNSIGNED_SHORT, nullptr);
@@ -466,6 +456,10 @@ int GuiDisplay::height() const
 
 void GuiDisplay::Render(float progress)
 {
+    if (!guiInitiated) {
+        return;
+    }
+
     if (mPressedItem == nullptr || mPressedItem->name != eGuiItemThumb) {
         mItems[eGuiItemThumb].setPosx((int)(mThumbMaxMotion * progress) + mThumbStartX);
     }

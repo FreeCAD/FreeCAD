@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_Origin_H
-#define APP_Origin_H
+#pragma once
 
 #include "Datums.h"
 
@@ -44,6 +43,8 @@ public:
     Origin();
     ~Origin() override;
 
+    void onDocumentRestored() override;
+
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
     {
@@ -57,5 +58,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_Origin_H

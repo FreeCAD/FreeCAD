@@ -43,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_TRAJECTORY_SEGMENT_H
-#define KDL_MOTION_TRAJECTORY_SEGMENT_H
+#pragma once
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -109,6 +108,3 @@ namespace KDL {
 
 
 }
-
-
-#endif

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
-#define SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
@@ -324,7 +323,7 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of ellipse"));
 
                 Gui::cmdAppObjectArgs(
                     sketchgui->getObject(),
@@ -352,14 +351,14 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
                     QT_TRANSLATE_NOOP("Notifications", "Failed to add arc of ellipse")
                 );
-                Gui::Command::abortCommand();
+                abortCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                 return false;
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             // add auto constraints for the center point
             if (!sugConstr1.empty()) {
@@ -487,6 +486,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H

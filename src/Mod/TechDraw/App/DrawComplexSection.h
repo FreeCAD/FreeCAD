@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawComplexSection_h_
-#define DrawComplexSection_h_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -200,5 +199,3 @@ private:
 using DrawComplexSectionPython = App::FeaturePythonT<DrawComplexSection>;
 
 }//namespace TechDraw
-
-#endif

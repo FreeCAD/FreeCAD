@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskHoleParameters_H
-#define GUI_TASKVIEW_TaskHoleParameters_H
+#pragma once
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
@@ -84,6 +83,7 @@ public:
     bool getUseCustomThreadClearance() const;
     double getCustomThreadClearance() const;
     bool getModelThread() const;
+    bool getCosmeticThreaded() const;
     long getThreadDepthType() const;
     double getThreadDepth() const;
     int getBaseProfileType() const;
@@ -110,6 +110,7 @@ private Q_SLOTS:
     void taperedChanged();
     void taperedAngleChanged(double value);
     void reversedChanged();
+    void modelThreadChanged();
     void useCustomThreadClearanceChanged();
     void customThreadClearanceChanged(double value);
     void updateViewChanged(bool isChecked);
@@ -133,7 +134,7 @@ private:
     {
         Clearance = 0,
         TapDrill = 1,
-        ModeledThread = 2
+        Threaded = 2
     };
 
 protected:
@@ -173,5 +174,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

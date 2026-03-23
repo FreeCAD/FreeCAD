@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef IMPORT_READER_IGES_H
-#define IMPORT_READER_IGES_H
+#pragma once
 
 #include <Mod/Import/ImportGlobal.h>
 #include <Base/FileInfo.h>
@@ -43,5 +42,3 @@ private:
 };
 
 }  // namespace Import
-
-#endif  // IMPORT_READER_IGES_H

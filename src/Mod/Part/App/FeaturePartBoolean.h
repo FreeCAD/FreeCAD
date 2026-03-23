@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PART_FEATUREPARTBOOLEAN_H
-#define PART_FEATUREPARTBOOLEAN_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 
@@ -69,5 +68,3 @@ protected:
 };
 
 }  // namespace Part
-
-#endif  // PART_FEATUREPARTBOOLEAN_H

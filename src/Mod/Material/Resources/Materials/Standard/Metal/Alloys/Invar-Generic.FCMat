@@ -3,6 +3,7 @@
 General:
   UUID: "27745e16-2a10-4c8e-bd22-59971806909c"
   Author: "Uwe Stöhr"
+  License: "LGPL-2.1-or-later"
   Name: "Invar Generic"
 Models:
   Father:

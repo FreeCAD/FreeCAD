@@ -27,9 +27,13 @@ __url__ = "https://www.freecad.org"
 
 
 from PySide.QtCore import QProcess, QThread, QProcessEnvironment
-import tempfile
 import os
 import shutil
+
+from vtkmodules.util import numpy_support as vtk_np
+from vtkmodules.vtkIOXML import vtkXMLMultiBlockDataReader
+from vtkmodules.vtkCommonDataModel import vtkMultiBlockDataSet
+import numpy as np
 
 import FreeCAD
 import Fem
@@ -37,42 +41,18 @@ import Fem
 from . import writer
 from .. import settings
 
-# from feminout import importCcxDatResults
 from femmesh import meshsetsgetter
 from femtools import membertools
+from femtools.objecttools import ObjectTools
 
 
-class CalculiXTools:
+class CalculiXTools(ObjectTools):
 
     name = "CalculiX"
 
     def __init__(self, obj):
-        self.obj = obj
-        self.process = QProcess()
+        super().__init__(obj)
         self.model_file = ""
-        self.analysis = obj.getParentGroup()
-        self.fem_param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        self._create_working_directory(obj)
-
-    def _create_working_directory(self, obj):
-        """
-        Create working directory according to preferences
-        """
-        if not os.path.isdir(obj.WorkingDirectory):
-            gen_param = self.fem_param.GetGroup("General")
-            if gen_param.GetBool("UseTempDirectory"):
-                self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseBesideDirectory"):
-                root, ext = os.path.splitext(obj.Document.FileName)
-                if root:
-                    self.obj.WorkingDirectory = os.path.join(root, obj.Label)
-                    os.makedirs(self.obj.WorkingDirectory, exist_ok=True)
-                else:
-                    # file not saved, use temporary
-                    self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseCustomDirectory"):
-                self.obj.WorkingDirectory = gen_param.GetString("CustomDirectoryPath")
-                os.makedirs(self.obj.WorkingDirectory, exist_ok=True)
 
     def prepare(self):
         from femtools.checksanalysis import check_member_for_solver_calculix
@@ -128,8 +108,8 @@ class CalculiXTools:
 
     def update_properties(self):
         # TODO at the moment, only one .vtm file is assumed
-        self._load_ccxfrd_results()
-        self._load_ccxdat_results()
+        self._load_vtk_results()
+        self._load_dat_results()
 
     def _clear_results(self):
         # result is a 'Result.vtm' file and a 'Result' directory
@@ -147,14 +127,15 @@ class CalculiXTools:
                 # remove .dat file
                 os.remove(path)
 
-    def _load_ccxdat_results(self):
+    def _load_dat_results(self):
         # search dat output
+        keep_result = self.fem_param.GetGroup("General").GetBool("KeepResultsOnReRun", False)
         dat = None
         for res in self.obj.Results:
             if res.isDerivedFrom("App::TextDocument"):
                 dat = res
 
-        if not dat:
+        if not dat or keep_result:
             # create dat output
             dat = self.obj.Document.addObject("App::TextDocument", self.obj.Name + "Output")
             self.analysis.addObject(dat)
@@ -170,15 +151,16 @@ class CalculiXTools:
                     dat.Text = file.read()
                 break
 
-    def _load_ccxfrd_results(self):
+    def _load_vtk_results(self):
         # search current pipeline
+        keep_result = self.fem_param.GetGroup("General").GetBool("KeepResultsOnReRun", False)
         pipeline = None
         create = False
         for res in self.obj.Results:
             if res.isDerivedFrom("Fem::FemPostPipeline"):
                 pipeline = res
 
-        if not pipeline:
+        if not pipeline or keep_result:
             # create pipeline
             pipeline = self.obj.Document.addObject("Fem::FemPostPipeline", self.obj.Name + "Result")
             self.analysis.addObject(pipeline)
@@ -194,15 +176,28 @@ class CalculiXTools:
         for f in files:
             if f.endswith(".vtm"):
                 vtm_file = os.path.join(self.obj.WorkingDirectory, f)
-                pipeline.read(vtm_file)
-                pipeline.renameArrays(self.frd_var_conversion(self.obj.AnalysisType))
+                reader = vtkXMLMultiBlockDataReader()
+                reader.SetFileName(vtm_file)
+                reader.Update()
+                multi_block = reader.GetOutput()
+                multi_block = self._generate_derived_result(multi_block)
+                if self.obj.DisplaceMesh:
+                    multi_block = self._generate_disp_mesh(multi_block)
+                pipeline.Data = multi_block
                 break
 
-        if create:
+        pipeline.renameArrays(self.frd_var_conversion(self.obj.AnalysisType))
+        self._set_time_info(pipeline)
+
+        if create and FreeCAD.GuiUp:
             # default display mode
-            pipeline.ViewObject.DisplayMode = "Surface"
-            pipeline.ViewObject.SelectionStyle = "BoundBox"
-            pipeline.ViewObject.Field = self.get_default_field(self.obj.AnalysisType)
+            view_obj = pipeline.ViewObject
+            view_obj.DisplayMode = "Surface"
+            view_obj.SelectionStyle = "BoundBox"
+            enum_field = view_obj.getEnumerationsOfProperty("Field")
+            default_field = self._get_default_field()
+            if default_field in enum_field:
+                view_obj.Field = default_field
 
     def frd_var_conversion(self, analysis_type):
         common = {
@@ -229,14 +224,130 @@ class CalculiXTools:
 
         return common
 
-    def get_default_field(self, analysis_type):
-        match analysis_type:
+    def _get_default_field(self):
+        match self.obj.AnalysisType:
             case "static" | "frequency" | "buckling":
                 return "Displacement"
             case "thermomech":
                 return "Temperature"
             case "electromagnetic":
                 return "Potential"
+            case _:
+                return "None"
+
+    def _generate_disp_mesh(self, mb):
+        try:
+            for i in range(mb.GetNumberOfBlocks()):
+                grid = mb.GetBlock(i)
+                if grid is None:
+                    continue
+                pd = grid.GetPointData()
+                if (pd is None) or not pd.HasArray("DISP"):
+                    continue
+                points = grid.GetPoints()
+                pos = points.GetData()
+                disp = pd.GetAbstractArray("DISP")
+                disp_points = vtk_np.vtk_to_numpy(pos) + vtk_np.vtk_to_numpy(disp)
+                disp_points = vtk_np.numpy_to_vtk(disp_points)
+                points.SetData(disp_points)
+
+            mb_out = vtkMultiBlockDataSet()
+            mb_out.DeepCopy(mb)
+
+            return mb_out
+
+        except Exception as e:
+            # return original data
+            FreeCAD.Console.PrintWarning("Displaced mesh not generated\n")
+            return mb
+
+    def _generate_derived_result(self, mb):
+        try:
+            for i in range(mb.GetNumberOfBlocks()):
+                grid = mb.GetBlock(i)
+                if grid is None:
+                    continue
+                pd = grid.GetPointData()
+                if (pd is None) or not pd.HasArray("STRESS"):
+                    continue
+
+                stress = pd.GetAbstractArray("STRESS")
+                s_xx, s_yy, s_zz, s_xy, s_yz, s_xz = vtk_np.vtk_to_numpy(stress).transpose()
+                # create symmetric matrix from [Sxx, Syy, Szz, Sxy, Syz, Sxz]
+                sym_stress = (
+                    np.array([s_xx, s_xy, s_xz, s_xy, s_yy, s_yz, s_xz, s_yz, s_zz])
+                    .transpose()
+                    .reshape(-1, 3, 3)
+                )
+                prin_val, prin_axes = np.linalg.eigh(sym_stress)
+
+                sigma_1 = prin_val[:, 2]
+                sigma_3 = prin_val[:, 0]
+                sigma_2 = prin_val[:, 1]
+                sigma_1_axis = prin_axes[:, :, 2]
+                sigma_3_axis = prin_axes[:, :, 0]
+                sigma_2_axis = prin_axes[:, :, 1]
+
+                sigma_1_vtk = vtk_np.numpy_to_vtk(sigma_1)
+                sigma_1_vtk.SetName("Major Principal Stress")
+                sigma_3_vtk = vtk_np.numpy_to_vtk(sigma_3)
+                sigma_3_vtk.SetName("Minor Principal Stress")
+                sigma_2_vtk = vtk_np.numpy_to_vtk(sigma_2)
+                sigma_2_vtk.SetName("Intermediate Principal Stress")
+                sigma_1_axis_vtk = vtk_np.numpy_to_vtk(sigma_1_axis)
+                sigma_1_axis_vtk.SetName("Major Principal Stress Direction")
+                sigma_3_axis_vtk = vtk_np.numpy_to_vtk(sigma_3_axis)
+                sigma_3_axis_vtk.SetName("Minor Principal Stress Direction")
+                sigma_2_axis_vtk = vtk_np.numpy_to_vtk(sigma_2_axis)
+                sigma_2_axis_vtk.SetName("Intermediate Principal Stress Direction")
+
+                # add principal stress
+                pd.AddArray(sigma_1_vtk)
+                pd.AddArray(sigma_3_vtk)
+                pd.AddArray(sigma_2_vtk)
+                # add principal directions
+                pd.AddArray(sigma_1_axis_vtk)
+                pd.AddArray(sigma_3_axis_vtk)
+                pd.AddArray(sigma_2_axis_vtk)
+
+                sigma_diff = np.array([sigma_1 - sigma_2, sigma_2 - sigma_3, sigma_3 - sigma_1])
+
+                # von Mises stress
+                von_mises = np.linalg.norm(sigma_diff, axis=0) / np.sqrt(2)
+                von_mises_vtk = vtk_np.numpy_to_vtk(von_mises)
+                von_mises_vtk.SetName("von Mises Stress")
+                pd.AddArray(von_mises_vtk)
+
+                # max shear stress
+                max_shear = 1 / 2 * np.max(np.abs(sigma_diff), axis=0)
+                max_shear_vtk = vtk_np.numpy_to_vtk(max_shear)
+                max_shear_vtk.SetName("Tresca Stress")
+                pd.AddArray(max_shear_vtk)
+
+                # max abs principal stress
+                max_abs_sigma = np.max(np.abs(np.array([sigma_1, sigma_2, sigma_3])), axis=0)
+                max_abs_sigma_vtk = vtk_np.numpy_to_vtk(max_abs_sigma)
+                max_abs_sigma_vtk.SetName("Maximum Absolute Principal Stress")
+                pd.AddArray(max_abs_sigma_vtk)
+
+            mb_out = vtkMultiBlockDataSet()
+            mb_out.DeepCopy(mb)
+
+            return mb_out
+
+        except Exception as e:
+            # return original data
+            FreeCAD.Console.PrintWarning("Derived result not generated\n")
+            return mb
+
+    def _set_time_info(self, pipeline):
+        match self.obj.AnalysisType:
+            case "frequency":
+                pipeline.setTimeInfo("Frequency", FreeCAD.Units.Frequency)
+            case "buckling":
+                pipeline.setTimeInfo("Buckling factor", FreeCAD.Units.Unit())
+            case _:
+                pipeline.setTimeInfo("TimeStep", FreeCAD.Units.TimeSpan)
 
     def version(self):
         p = QProcess()

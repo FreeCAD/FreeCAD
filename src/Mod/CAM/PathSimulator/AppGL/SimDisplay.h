@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __simdisplay_h__
-#define __simdisplay_h__
+#pragma once
 
 #include "GlUtils.h"
 #include "Shader.h"
@@ -81,6 +80,7 @@ protected:
     void CreateDisplayFbos();
     void CreateSsaoFbos();
     void CreateFboQuad();
+    void SetupVertexAttribs();
     void CreateGBufTex(GLenum texUnit, GLint intFormat, GLenum format, GLenum type, GLuint& texid);
     void UniformHemisphere(vec3& randVec);
     void UniformCircle(vec3& randVec);
@@ -128,7 +128,7 @@ protected:
     unsigned int mFboPosTexture = 0;
     unsigned int mFboNormTexture = 0;
     unsigned int mRboDepthStencil = 0;
-    unsigned int mFboQuadVAO = 0, mFboQuadVBO = 0;
+    unsigned int mFboQuadVBO = 0;
 
     // ssao frame buffers
     bool mSsaoValid = false;
@@ -141,5 +141,3 @@ protected:
 };
 
 }  // namespace MillSim
-
-#endif  // !__simdisplay_h__

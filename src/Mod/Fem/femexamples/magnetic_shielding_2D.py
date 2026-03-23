@@ -36,6 +36,7 @@ import Materials
 import Part
 
 from . import manager
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -43,7 +44,7 @@ def get_information():
         "name": "Magnetic shielding 2D",
         "meshtype": "face",
         "meshelement": "Tria6",
-        "constraints": ["electrostatic potential"],
+        "constraints": ["electromagnetic"],
         "solvers": ["elmer"],
         "material": "solid",
         "equations": ["electromagnetic"],
@@ -130,7 +131,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(iron_obj)
 
     # boundary condition
-    mg_den = ObjectsFem.makeConstraintElectrostaticPotential(doc, "MagneticDensity")
+    mg_den = ObjectsFem.makeConstraintElectromagnetic(doc, "MagneticDensity")
     mg_den.References = [(shell, "Edge3")]
     mg_den.BoundaryCondition = "Neumann"
     mg_den.EnableMagnetic_1 = True
@@ -150,14 +151,7 @@ def setup(doc=None, solvertype="elmer"):
     mesh_region.ViewObject.Visibility = False
 
     # generate the mesh
-    from femmesh import gmshtools
-
-    gmsh_mesh = gmshtools.GmshTools(femmesh_obj, analysis)
-    try:
-        gmsh_mesh.create_mesh()
-    except Exception:
-        error = sys.exc_info()[1]
-        FreeCAD.Console.PrintError(f"Unexpected error when creating mesh: {error}\n")
+    generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
 
     doc.recompute()
     return doc

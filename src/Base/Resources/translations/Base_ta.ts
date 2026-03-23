@@ -6,52 +6,52 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="90"/>
       <source>Standard (mm, kg, s, °)</source>
-      <translation type="unfinished">Standard (mm, kg, s, °)</translation>
+      <translation>நிலையான (மிமீ, கிலோ, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="326"/>
       <source>MKS (m, kg, s, °)</source>
-      <translation type="unfinished">MKS (m, kg, s, °)</translation>
+      <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="593"/>
       <source>US customary (in, lb)</source>
-      <translation type="unfinished">US customary (in, lb)</translation>
+      <translation>அமெரிக்க வழக்கம் (இன், எல்பி)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, lb, mph)</translation>
+      <translation>குடிமை இன்சினுக்கான இம்பீரியல் (அடி, எல்பி, மைல்)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="75"/>
       <source>Imperial decimal (in, lb)</source>
-      <translation type="unfinished">Imperial decimal (in, lb)</translation>
+      <translation>இம்பீரியல் தசம (இன், எல்பி)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="554"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation type="unfinished">Building Euro (cm, m², m³)</translation>
+      <translation>கட்டிடம் யூரோ (செ.மீ., மீ², மீ³)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation type="unfinished">Building US (ft-in, sqft, cft)</translation>
+      <translation>அமெரிக்காவை உருவாக்குதல் (அடி-இன், சதுர அடி, சி.எஃப்.டி)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="53"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation type="unfinished">Metric small parts &amp; CNC (mm, mm/min)</translation>
+      <translation>மெட்ரிக் சிறிய பாகங்கள் &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="581"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>FEM (மிமீ, என், கள்)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="62"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>மீட்டர் தசம (m, m², m³)</translation>
     </message>
   </context>
 </TS>

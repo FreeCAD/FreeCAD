@@ -22,10 +22,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __openglwrapper_h__
-#define __openglwrapper_h__
+#pragma once
 
 #include "DlgCAMSimulator.h"
+
 #define gSimWindow CAMSimulator::DlgCAMSimulator::instance()
 #define glClearColor gSimWindow->glClearColor
 #define glBlendFunc gSimWindow->glBlendFunc
@@ -37,6 +37,8 @@
 #define glBindVertexArray gSimWindow->glBindVertexArray
 #define glEnableVertexAttribArray gSimWindow->glEnableVertexAttribArray
 #define glVertexAttribPointer gSimWindow->glVertexAttribPointer
+#define glBindAttribLocation gSimWindow->glBindAttribLocation
+#define glGetAttribLocation gSimWindow->glGetAttribLocation
 #define glShaderSource gSimWindow->glShaderSource
 #define glCompileShader gSimWindow->glCompileShader
 #define glDeleteShader gSimWindow->glDeleteShader
@@ -45,7 +47,7 @@
 #define glLinkProgram gSimWindow->glLinkProgram
 #define glGetProgramiv gSimWindow->glGetProgramiv
 #define glGetUniformLocation gSimWindow->glGetUniformLocation
-#define glGetError gSimWindow->glGetError
+#define glGetError(...) /* GL( */ gSimWindow->glGetError(__VA_ARGS__) /* ) */
 #define glEnable gSimWindow->glEnable
 #define glColorMask gSimWindow->glColorMask
 #define glCullFace gSimWindow->glCullFace
@@ -89,5 +91,3 @@
 #define glLineWidth gSimWindow->glLineWidth
 #define glGetShaderiv gSimWindow->glGetShaderiv
 #define glGetShaderInfoLog gSimWindow->glGetShaderInfoLog
-
-#endif  // !__openglwrapper_h__

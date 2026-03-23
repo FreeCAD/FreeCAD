@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECTFILEINCLUDED_H
-#define APP_DOCUMENTOBJECTFILEINCLUDED_H
+#pragma once
 
 #include "DocumentObject.h"
 #include "PropertyFile.h"
@@ -54,6 +53,3 @@ public:
 };
 
 }  // namespace App
-
-
-#endif  // APP_DOCUMENTOBJECTFILEINCLUDED_H

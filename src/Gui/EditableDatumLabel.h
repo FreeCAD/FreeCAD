@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_EDITABLEDATUMLABEL_H
-#define GUI_EDITABLEDATUMLABEL_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
@@ -93,6 +92,7 @@ public:
     void setLockedAppearance(bool locked);  ///< Sets visual appearance to indicate locked state
                                             ///< (finished editing)
     void resetLockedState();  ///< Resets both hasFinishedEditing flag and locked appearance
+    void updateGeometry();
 
     Function getFunction();
 
@@ -133,6 +133,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_EDITABLEDATUMLABEL_H

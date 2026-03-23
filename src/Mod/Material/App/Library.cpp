@@ -36,6 +36,7 @@ TYPESYSTEM_SOURCE(Materials::Library, Base::BaseClass)
 Library::Library(const QString& libraryName, const QString& iconPath, bool readOnly)
     : _name(libraryName)
     , _readOnly(readOnly)
+    , _caseSensitive(true)
     , _local(false)
 {
     setIcon(iconPath);
@@ -45,6 +46,7 @@ Library::Library(const QString& libraryName, const QByteArray& icon, bool readOn
     : _name(libraryName)
     , _icon(icon)
     , _readOnly(readOnly)
+    , _caseSensitive(true)
     , _local(false)
 {}
 
@@ -53,11 +55,12 @@ Library::Library(const QString& libraryName,
                  const QString& iconPath,
                  bool readOnly)
     : _name(libraryName)
-    , _directory(QDir::cleanPath(dir))
+    , _directory(canonical(dir))
     , _readOnly(readOnly)
     , _local(false)
 {
     setIcon(iconPath);
+    setCaseSensitivity();
 }
 
 QByteArray Library::getIcon(const QString& iconPath)
@@ -86,6 +89,42 @@ bool Library::isLocal() const
 void Library::setLocal(bool local)
 {
     _local = local;
+}
+
+QString Library::getDirectory() const
+{
+    return _directory;
+}
+
+void Library::setDirectory(const QString& directory)
+{
+    _directory = canonical(directory);
+    setCaseSensitivity();
+}
+
+void Library::setCaseSensitivity()
+{
+    _caseSensitive = true;
+    if (QDir(_directory).exists()) {
+        auto upper = _directory.toUpper();
+        auto lower = _directory.toLower();
+        if ((_directory != upper) && QDir(upper).exists()) {
+            _caseSensitive = false;
+        }
+        else if ((_directory != lower) && QDir(lower).exists()) {
+            _caseSensitive = false;
+        }
+    }
+}
+
+Qt::CaseSensitivity Library::caseSensitivity() const
+{
+    return (_caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive);
+}
+
+QString Library::getDirectoryPath() const
+{
+    return QDir(_directory).canonicalPath();
 }
 
 bool Library::operator==(const Library& library) const
@@ -119,14 +158,14 @@ QString Library::getLocalPath(const QString& path) const
         filePath += QStringLiteral("/");
     }
 
-    QString cleanPath = QDir::cleanPath(path);
+    QString clean = QDir::cleanPath(path);
     QString prefix = QStringLiteral("/") + getName();
-    if (cleanPath.startsWith(prefix)) {
+    if (clean.startsWith(prefix)) {
         // Remove the library name from the path
-        filePath += cleanPath.right(cleanPath.length() - prefix.length());
+        filePath += clean.right(clean.length() - prefix.length());
     }
     else {
-        filePath += cleanPath;
+        filePath += clean;
     }
 
     return filePath;
@@ -142,18 +181,18 @@ bool Library::isRoot(const QString& path) const
 QString Library::getRelativePath(const QString& path) const
 {
     QString filePath;
-    QString cleanPath = QDir::cleanPath(path);
+    QString clean = QDir::cleanPath(path);
     QString prefix = QStringLiteral("/") + getName();
-    if (cleanPath.startsWith(prefix)) {
+    if (clean.startsWith(prefix)) {
         // Remove the library name from the path
-        filePath = cleanPath.right(cleanPath.length() - prefix.length());
+        filePath = clean.right(clean.length() - prefix.length());
     }
     else {
-        filePath = cleanPath;
+        filePath = clean;
     }
 
     prefix = getDirectoryPath();
-    if (filePath.startsWith(prefix)) {
+    if (filePath.startsWith(prefix, caseSensitivity())) {
         // Remove the library root from the path
         filePath = filePath.right(filePath.length() - prefix.length());
     }
@@ -177,4 +216,10 @@ QString Library::getLibraryPath(const QString& path, const QString& filename) co
     }
 
     return filePath;
+}
+
+QString Library::canonical(const QString& path)
+{
+    QDir dir(path);
+    return dir.canonicalPath();
 }

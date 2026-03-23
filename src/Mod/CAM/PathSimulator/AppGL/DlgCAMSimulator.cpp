@@ -56,14 +56,11 @@ DlgCAMSimulator::DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent)
 
     viewCAMSimulator = &view;
 
-    QSurfaceFormat format;
-    format.setVersion(4, 1);                         // Request OpenGL 4.1 - for MacOS
-    format.setProfile(QSurfaceFormat::CoreProfile);  // Use the core profile = for MacOS
+    QSurfaceFormat format = QSurfaceFormat::defaultFormat();
     int samples = Gui::View3DInventorViewer::getNumSamples();
     if (samples > 1) {
         format.setSamples(samples);
     }
-    format.setSwapInterval(2);
     format.setDepthBufferSize(24);
     format.setStencilBufferSize(8);
     setFormat(format);

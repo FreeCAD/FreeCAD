@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __mill_operation_h__
-#define __mill_operation_h__
+#pragma once
 
 #include "EndMill.h"
 #include "linmath.h"
@@ -66,4 +65,3 @@ static inline void MotionPosToVec(vec3 vec, const MillMotion* motion)
     vec[2] = motion->z;
 }
 }  // namespace MillSim
-#endif

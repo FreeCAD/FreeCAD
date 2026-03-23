@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_Edge2TracObject_H
-#define ROBOT_Edge2TracObject_H
+#pragma once
 
 #include <App/PropertyGeo.h>
 
@@ -65,6 +64,3 @@ protected:
 };
 
 }  // namespace Robot
-
-
-#endif  // ROBOT_ROBOTOBJECT_H

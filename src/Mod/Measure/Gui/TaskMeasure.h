@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MEASURE_TASKMEASURE_H
-#define MEASURE_TASKMEASURE_H
+#pragma once
 
 #include <qcolumnview.h>
 #include <QString>
@@ -68,6 +67,9 @@ public:
     bool apply(bool reset);
     bool reject() override;
     void reset();
+    void closed() override;
+    void activate() override;
+    void deactivate() override;
 
     bool hasSelection();
     void clearSelection();
@@ -101,6 +103,7 @@ private:
     void showDeltaChanged(int checkState);
     void autoSaveChanged(bool checked);
     void newMeasurementBehaviourChanged(bool checked);
+    void updateSelectionType();
     void setModeSilent(App::MeasureType* mode);
     App::MeasureType* getMeasureType();
     void enableAnnotateButton(bool state);
@@ -117,8 +120,8 @@ private:
     bool delta = true;
     bool mAutoSave = false;
     QString mLastUnitSelection = QLatin1String("-");
+    bool mGreedySelection = false;
+    Gui::Document* mTargetDoc;
 };
 
 }  // namespace MeasureGui
-
-#endif  // MEASURE_TASKMEASURE_H

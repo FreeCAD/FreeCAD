@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef STARTGUI_PRECOMPILED_H
-#define STARTGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -69,5 +68,3 @@
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWidget>
-
-#endif  // STARTGUI_PRECOMPILED_H

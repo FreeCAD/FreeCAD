@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKDIALOGPYTHON_H
-#define GUI_TASKVIEW_TASKDIALOGPYTHON_H
+#pragma once
 
 #include "TaskDialog.h"
 #include "TaskWatcher.h"
@@ -196,5 +195,3 @@ private:
 
 }  // namespace TaskView
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TASKDIALOGPYTHON_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDEREXTRUSION_H
-#define PARTGUI_VIEWPROVIDEREXTRUSION_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -49,6 +48,3 @@ public:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDEREXTRUSION_H

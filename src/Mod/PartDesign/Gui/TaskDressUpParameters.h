@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskDressUpParameters_H
-#define GUI_TASKVIEW_TaskDressUpParameters_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskView.h>
@@ -68,6 +67,8 @@ public:
     {
         return transactionID;
     }
+
+    void setSelectionGate();
 
     bool event(QEvent* event) override;
 
@@ -144,5 +145,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskDressUpParameters_H

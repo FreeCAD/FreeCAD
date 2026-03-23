@@ -36,6 +36,8 @@
 #include <Base/Exception.h>
 #include <Base/UnitsApi.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
 #include "EditModeCoinManagerParameters.h"
 #include "EditModeInformationOverlayCoinConverter.h"
 #include "ViewProviderSketchCoinAttorney.h"
@@ -59,6 +61,17 @@ EditModeInformationOverlayCoinConverter::EditModeInformationOverlayCoinConverter
 
 void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geometry, int geoid)
 {
+    if (geoid >= 0) {
+        // Get the SketchObject from the ViewProvider.
+        auto* obj = viewProvider.getSketchObject();
+        const bool isGroupMember = obj->isInGroup(geoid, false);
+
+        if (obj) {
+            if (obj->isInGroup(geoid, false)) {
+                return;
+            }
+        }
+    }
 
     if (geometry->is<Part::GeomBSplineCurve>()) {
         if (geoid < 0) {
@@ -479,7 +492,6 @@ void EditModeInformationOverlayCoinConverter::addNode(const Result& result)
 
         SoSwitch* sw = new SoSwitch();
 
-        // hGrpsk->GetBool("BSplineControlPolygonVisible", true)
         sw->whichChild = isVisible<Result::calculationType>() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
 
         SoSeparator* sep = new SoSeparator();

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerScale_H
-#define SKETCHERGUI_DrawSketchHandlerScale_H
+#pragma once
 
 #include <QApplication>
 
@@ -61,7 +60,8 @@ using DSHScaleController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<3>,
     /*WidgetParametersT =*/WidgetParameters<0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHScaleControllerBase = DSHScaleController::ControllerBase;
 
@@ -128,7 +128,7 @@ public:
         }
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
 
             createShape(false);
 
@@ -144,7 +144,7 @@ public:
             }
 
             scaleLabels(initialConstraintCount);
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -155,7 +155,7 @@ public:
             );
 
             if (abortOnFail) {
-                Gui::Command::abortCommand();
+                abortCommand();
             }
             THROWM(
                 Base::RuntimeError,
@@ -772,6 +772,3 @@ void DSHScaleController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerScale_H

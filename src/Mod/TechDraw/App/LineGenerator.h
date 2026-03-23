@@ -35,8 +35,7 @@
 //! chosen values generally equal to those for ISO128
 
 
-#ifndef DASHEDLINEGENERATOR_H
-#define DASHEDLINEGENERATOR_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <map>
@@ -86,5 +85,3 @@ private:
 };
 
 }
-
-#endif

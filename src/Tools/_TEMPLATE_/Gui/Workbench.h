@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef _TEMPLATE__WORKBENCH_H
-#define _TEMPLATE__WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -45,6 +44,3 @@ protected:
 };
 
 }  // namespace _TEMPLATE_Gui
-
-
-#endif  // _TEMPLATE__WORKBENCH_H

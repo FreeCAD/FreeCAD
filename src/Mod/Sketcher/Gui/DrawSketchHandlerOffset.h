@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
-#define SKETCHERGUI_DrawSketchHandlerOffset_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -106,6 +105,7 @@ using DSHOffsetController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::OffsetConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -398,11 +398,16 @@ private:
 
     void drawOffsetPreview()
     {
-        std::vector<Part::Geometry*> geometriesToAdd;
-        std::vector<int> listOfOffsetGeoIds;
-        getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
+        try {
+            std::vector<Part::Geometry*> geometriesToAdd;
+            std::vector<int> listOfOffsetGeoIds;
+            getOffsetGeos(geometriesToAdd, listOfOffsetGeoIds);
 
-        drawEdit(geometriesToAdd);
+            drawEdit(geometriesToAdd);
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+        }
     }
 
     void createOffset()
@@ -422,7 +427,7 @@ private:
             return;
         }
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Offset"));
 
         // Create geos
         Obj->addGeometry(std::move(geometriesToAdd));
@@ -437,7 +442,7 @@ private:
             makeOffsetConstraint(listOfOffsetGeoIds);
         }
 
-        Gui::Command::commitCommand();
+        commitCommand();
     }
 
     void jointOffsetCurves(std::vector<int>& listOfOffsetGeoIds)
@@ -1332,6 +1337,3 @@ void DSHOffsetController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerOffset_H

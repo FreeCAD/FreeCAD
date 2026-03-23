@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="53"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation>Metric - piese mici &amp; CNC (mm, mm/min)</translation>
+      <translation>Metric piese mici &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="581"/>
