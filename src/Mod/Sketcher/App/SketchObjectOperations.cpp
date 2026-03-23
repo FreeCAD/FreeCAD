@@ -296,16 +296,12 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         auto tangent2 = std::make_unique<Sketcher::Constraint>();
 
         tangent1->Type = Sketcher::Tangent;
-        tangent1->First_Deprecated = GeoId1;
-        tangent1->FirstPos_Deprecated = PosId1;
-        tangent1->Second_Deprecated = filletId;
-        tangent1->SecondPos_Deprecated = filletPosId1;
+        tangent1->setElement(0, GeoElementId(GeoId1, PosId1));
+        tangent1->setElement(1, GeoElementId(filletId, filletPosId1));
 
         tangent2->Type = Sketcher::Tangent;
-        tangent2->First_Deprecated = GeoId2;
-        tangent2->FirstPos_Deprecated = PosId2;
-        tangent2->Second_Deprecated = filletId;
-        tangent2->SecondPos_Deprecated = filletPosId2;
+        tangent2->setElement(0, GeoElementId(GeoId2, PosId2));
+        tangent2->setElement(1, GeoElementId(filletId, filletPosId2));
 
         addConstraint(std::move(tangent1));
         addConstraint(std::move(tangent2));
@@ -321,24 +317,18 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         auto coinc2 = std::make_unique<Sketcher::Constraint>();
 
         coinc1->Type = Sketcher::Coincident;
-        coinc1->First_Deprecated = lineGeoId;
-        coinc1->FirstPos_Deprecated = filletPosId1;
+        coinc1->setElement(0, GeoElementId(lineGeoId, filletPosId1));
 
         coinc2->Type = Sketcher::Coincident;
-        coinc2->First_Deprecated = lineGeoId;
-        coinc2->FirstPos_Deprecated = filletPosId2;
+        coinc2->setElement(0, GeoElementId(lineGeoId, filletPosId2));
 
         if (trim) {
-            coinc1->Second_Deprecated = GeoId1;
-            coinc1->SecondPos_Deprecated = PosId1;
-            coinc2->Second_Deprecated = GeoId2;
-            coinc2->SecondPos_Deprecated = PosId2;
+            coinc1->setElement(1, GeoElementId(GeoId1, PosId1));
+            coinc2->setElement(1, GeoElementId(GeoId2, PosId2));
         }
         else {
-            coinc1->Second_Deprecated = filletId;
-            coinc1->SecondPos_Deprecated = PointPos::start;
-            coinc2->Second_Deprecated = filletId;
-            coinc2->SecondPos_Deprecated = PointPos::end;
+            coinc1->setElement(1, GeoElementId(filletId, PointPos::start));
+            coinc2->setElement(1, GeoElementId(filletId, PointPos::end));
         }
 
         addConstraint(std::move(coinc1));
@@ -513,8 +503,7 @@ std::unique_ptr<Constraint> transformPreexistingConstraintForTrim(
                 // We already know the point-on-object is on the whole of GeoId
                 newConstr.reset(constr->copy());
                 newConstr->Type = Sketcher::Coincident;
-                newConstr->Second_Deprecated = newGeoId;
-                newConstr->SecondPos_Deprecated = newPosId;
+                newConstr->setElement(1, GeoElementId(newGeoId, newPosId));
             }
             break;
         }
@@ -531,8 +520,7 @@ std::unique_ptr<Constraint> transformPreexistingConstraintForTrim(
                 std::swap(newConstr->FirstPos_Deprecated, newConstr->SecondPos_Deprecated);
             }
             // there is no need for the third point if it exists
-            newConstr->Third_Deprecated = GeoEnum::GeoUndef;
-            newConstr->ThirdPos_Deprecated = PointPos::none;
+            newConstr->setElement(2, GeoElementId(GeoEnum::GeoUndef, PointPos::none));
             break;
         }
         default:
@@ -550,8 +538,7 @@ std::unique_ptr<Constraint> getNewConstraintAtTrimCut(
 )
 {
     auto newConstr = std::make_unique<Sketcher::Constraint>();
-    newConstr->First_Deprecated = cutGeoId;
-    newConstr->FirstPos_Deprecated = cutPosId;
+    newConstr->setElement(0, GeoElementId(cutGeoId, cutPosId));
     newConstr->Second_Deprecated = cuttingGeoId;
     if (isPointAtPosition(obj, cuttingGeoId, PointPos::start, cutPointVec)) {
         newConstr->Type = Sketcher::Coincident;
@@ -867,10 +854,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
         // Build Constraints associated with new pair of arcs
         newConstr->Type = Sketcher::Equal;
-        newConstr->First_Deprecated = GeoId1;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::none;
-        newConstr->Second_Deprecated = GeoId2;
-        newConstr->SecondPos_Deprecated = Sketcher::PointPos::none;
+        newConstr->setElement(0, GeoElementId(GeoId1, Sketcher::PointPos::none));
+        newConstr->setElement(1, GeoElementId(GeoId2, Sketcher::PointPos::none));
         addConstraint(std::move(newConstr));
     };
 
@@ -898,10 +883,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         if (newIds.size() > 1) {
             auto* joint = new Constraint();
             joint->Type = Coincident;
-            joint->First_Deprecated = newIds.front();
-            joint->FirstPos_Deprecated = PointPos::mid;
-            joint->Second_Deprecated = newIds.back();
-            joint->SecondPos_Deprecated = PointPos::mid;
+            joint->setElement(0, GeoElementId(newIds.front(), PointPos::mid));
+            joint->setElement(1, GeoElementId(newIds.back(), PointPos::mid));
             newConstraints.push_back(joint);
 
             // Any radius etc. equality constraints here
@@ -1038,10 +1021,8 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     if (!isOriginalCurvePeriodic) {
         auto* joint = new Constraint();
         joint->Type = Coincident;
-        joint->First_Deprecated = newIds.front();
-        joint->FirstPos_Deprecated = PointPos::end;
-        joint->Second_Deprecated = newIds.back();
-        joint->SecondPos_Deprecated = PointPos::start;
+        joint->setElement(0, GeoElementId(newIds.front(), PointPos::end));
+        joint->setElement(1, GeoElementId(newIds.back(), PointPos::start));
         newConstraints.push_back(joint);
 
         transferConstraints(GeoId, PointPos::start, newIds.front(), PointPos::start);
@@ -1053,10 +1034,8 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     if (geoAsCurve->is<Part::GeomArcOfCircle>()) {
         auto* joint = new Constraint();
         joint->Type = Coincident;
-        joint->First_Deprecated = newIds.front();
-        joint->FirstPos_Deprecated = PointPos::mid;
-        joint->Second_Deprecated = newIds.back();
-        joint->SecondPos_Deprecated = PointPos::mid;
+        joint->setElement(0, GeoElementId(newIds.front(), PointPos::mid));
+        joint->setElement(1, GeoElementId(newIds.back(), PointPos::mid));
         newConstraints.push_back(joint);
     }
 
@@ -2277,8 +2256,7 @@ int SketchObject::addCopy(
                     constNew->isDriving = true;
                     constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
                     // first is already (constr->First)
-                    constNew->Second_Deprecated = fit->second;
-                    constNew->SecondPos_Deprecated = Sketcher::PointPos::none;
+                    constNew->setElement(1, GeoElementId(fit->second, Sketcher::PointPos::none));
                     newconstrVals.push_back(constNew);
                     continue;
                 }
@@ -2336,18 +2314,14 @@ int SketchObject::addCopy(
             // add coincidents for construction line
             constNew = new Constraint();
             constNew->Type = Sketcher::Coincident;
-            constNew->First_Deprecated = prevrowstartfirstgeoid;
-            constNew->FirstPos_Deprecated = refposId;
-            constNew->Second_Deprecated = cgeoid;
-            constNew->SecondPos_Deprecated = Sketcher::PointPos::start;
+            constNew->setElement(0, GeoElementId(prevrowstartfirstgeoid, refposId));
+            constNew->setElement(1, GeoElementId(cgeoid, Sketcher::PointPos::start));
             newconstrVals.push_back(constNew);
 
             constNew = new Constraint();
             constNew->Type = Sketcher::Coincident;
-            constNew->First_Deprecated = iterfirstgeoid;
-            constNew->FirstPos_Deprecated = refposId;
-            constNew->Second_Deprecated = cgeoid;
-            constNew->SecondPos_Deprecated = Sketcher::PointPos::end;
+            constNew->setElement(0, GeoElementId(iterfirstgeoid, refposId));
+            constNew->setElement(1, GeoElementId(cgeoid, Sketcher::PointPos::end));
             newconstrVals.push_back(constNew);
 
             // it is the first added element of this row in the perpendicular to
@@ -2360,27 +2334,22 @@ int SketchObject::addCopy(
                 if (perpscale == 1.0) {
                     constNew = new Constraint();
                     constNew->Type = Sketcher::Equal;
-                    constNew->First_Deprecated = rowrefgeoid;
-                    constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
-                    constNew->Second_Deprecated = colrefgeoid;
-                    constNew->SecondPos_Deprecated = Sketcher::PointPos::none;
+                    constNew->setElement(0, GeoElementId(rowrefgeoid, Sketcher::PointPos::none));
+                    constNew->setElement(1, GeoElementId(colrefgeoid, Sketcher::PointPos::none));
                     newconstrVals.push_back(constNew);
                 }
                 else {
                     constNew = new Constraint();
                     constNew->Type = Sketcher::Distance;
-                    constNew->First_Deprecated = rowrefgeoid;
-                    constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
+                    constNew->setElement(0, GeoElementId(rowrefgeoid, Sketcher::PointPos::none));
                     constNew->setValue(perpendicularDisplacement.Length());
                     newconstrVals.push_back(constNew);
                 }
 
                 constNew = new Constraint();
                 constNew->Type = Sketcher::Perpendicular;
-                constNew->First_Deprecated = rowrefgeoid;
-                constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
-                constNew->Second_Deprecated = colrefgeoid;
-                constNew->SecondPos_Deprecated = Sketcher::PointPos::none;
+                constNew->setElement(0, GeoElementId(rowrefgeoid, Sketcher::PointPos::none));
+                constNew->setElement(1, GeoElementId(colrefgeoid, Sketcher::PointPos::none));
                 newconstrVals.push_back(constNew);
             }
             else {
@@ -2390,18 +2359,14 @@ int SketchObject::addCopy(
                 // all other first rowers get an equality and perpendicular constraint
                 constNew = new Constraint();
                 constNew->Type = Sketcher::Equal;
-                constNew->First_Deprecated = rowrefgeoid;
-                constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
-                constNew->Second_Deprecated = cgeoid - 1;
-                constNew->SecondPos_Deprecated = Sketcher::PointPos::none;
+                constNew->setElement(0, GeoElementId(rowrefgeoid, Sketcher::PointPos::none));
+                constNew->setElement(1, GeoElementId(cgeoid - 1, Sketcher::PointPos::none));
                 newconstrVals.push_back(constNew);
 
                 constNew = new Constraint();
                 constNew->Type = Sketcher::Perpendicular;
-                constNew->First_Deprecated = cgeoid - 1;
-                constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
-                constNew->Second_Deprecated = colrefgeoid;
-                constNew->SecondPos_Deprecated = Sketcher::PointPos::none;
+                constNew->setElement(0, GeoElementId(cgeoid - 1, Sketcher::PointPos::none));
+                constNew->setElement(1, GeoElementId(colrefgeoid, Sketcher::PointPos::none));
                 newconstrVals.push_back(constNew);
             }
         }
@@ -2411,18 +2376,14 @@ int SketchObject::addCopy(
             // add coincidents for construction line
             constNew = new Constraint();
             constNew->Type = Sketcher::Coincident;
-            constNew->First_Deprecated = prevfirstgeoid;
-            constNew->FirstPos_Deprecated = refposId;
-            constNew->Second_Deprecated = cgeoid;
-            constNew->SecondPos_Deprecated = Sketcher::PointPos::start;
+            constNew->setElement(0, GeoElementId(prevfirstgeoid, refposId));
+            constNew->setElement(1, GeoElementId(cgeoid, Sketcher::PointPos::start));
             newconstrVals.push_back(constNew);
 
             constNew = new Constraint();
             constNew->Type = Sketcher::Coincident;
-            constNew->First_Deprecated = iterfirstgeoid;
-            constNew->FirstPos_Deprecated = refposId;
-            constNew->Second_Deprecated = cgeoid;
-            constNew->SecondPos_Deprecated = Sketcher::PointPos::end;
+            constNew->setElement(0, GeoElementId(iterfirstgeoid, refposId));
+            constNew->setElement(1, GeoElementId(cgeoid, Sketcher::PointPos::end));
             newconstrVals.push_back(constNew);
 
             if (y == 0 && x == 1) {
@@ -2433,15 +2394,13 @@ int SketchObject::addCopy(
                 // add length and Angle
                 constNew = new Constraint();
                 constNew->Type = Sketcher::Distance;
-                constNew->First_Deprecated = colrefgeoid;
-                constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
+                constNew->setElement(0, GeoElementId(colrefgeoid, Sketcher::PointPos::none));
                 constNew->setValue(displacement.Length());
                 newconstrVals.push_back(constNew);
 
                 constNew = new Constraint();
                 constNew->Type = Sketcher::Angle;
-                constNew->First_Deprecated = colrefgeoid;
-                constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
+                constNew->setElement(0, GeoElementId(colrefgeoid, Sketcher::PointPos::none));
                 constNew->setValue(atan2(displacement.y, displacement.x));
                 newconstrVals.push_back(constNew);
             }
@@ -2452,18 +2411,14 @@ int SketchObject::addCopy(
                 // all other elements get an equality and parallel constraint
                 constNew = new Constraint();
                 constNew->Type = Sketcher::Equal;
-                constNew->First_Deprecated = colrefgeoid;
-                constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
-                constNew->Second_Deprecated = cgeoid - 1;
-                constNew->SecondPos_Deprecated = Sketcher::PointPos::none;
+                constNew->setElement(0, GeoElementId(colrefgeoid, Sketcher::PointPos::none));
+                constNew->setElement(1, GeoElementId(cgeoid - 1, Sketcher::PointPos::none));
                 newconstrVals.push_back(constNew);
 
                 constNew = new Constraint();
                 constNew->Type = Sketcher::Parallel;
-                constNew->First_Deprecated = cgeoid - 1;
-                constNew->FirstPos_Deprecated = Sketcher::PointPos::none;
-                constNew->Second_Deprecated = colrefgeoid;
-                constNew->SecondPos_Deprecated = Sketcher::PointPos::none;
+                constNew->setElement(0, GeoElementId(cgeoid - 1, Sketcher::PointPos::none));
+                constNew->setElement(1, GeoElementId(colrefgeoid, Sketcher::PointPos::none));
                 newconstrVals.push_back(constNew);
             }
         }

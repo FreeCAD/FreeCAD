@@ -1199,18 +1199,14 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
     // Constrain the vertex to the two lines
     auto* cornerToLine1 = new Sketcher::Constraint();
     cornerToLine1->Type = Sketcher::PointOnObject;
-    cornerToLine1->First_Deprecated = originalCornerId;
-    cornerToLine1->FirstPos_Deprecated = PointPos::start;
-    cornerToLine1->Second_Deprecated = geoId1;
-    cornerToLine1->SecondPos_Deprecated = PointPos::none;
+    cornerToLine1->setElement(0, GeoElementId(originalCornerId, PointPos::start));
+    cornerToLine1->setElement(1, GeoElementId(geoId1, PointPos::none));
     addConstraint(cornerToLine1);
     delete cornerToLine1;
     auto* cornerToLine2 = new Sketcher::Constraint();
     cornerToLine2->Type = Sketcher::PointOnObject;
-    cornerToLine2->First_Deprecated = originalCornerId;
-    cornerToLine2->FirstPos_Deprecated = PointPos::start;
-    cornerToLine2->Second_Deprecated = geoId2;
-    cornerToLine2->SecondPos_Deprecated = PointPos::none;
+    cornerToLine2->setElement(0, GeoElementId(originalCornerId, PointPos::start));
+    cornerToLine2->setElement(1, GeoElementId(geoId2, PointPos::none));
     addConstraint(cornerToLine2);
     delete cornerToLine2;
 
@@ -1250,13 +1246,11 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
             // of the line and the new corner
             if (line1First) {
                 c->FirstPos_Deprecated = (posId1 == PointPos::start) ? PointPos::end : PointPos::start;
-                c->Second_Deprecated = originalCornerId;
-                c->SecondPos_Deprecated = PointPos::start;
+                c->setElement(1, GeoElementId(originalCornerId, PointPos::start));
             }
             if (line2First) {
                 c->FirstPos_Deprecated = (posId2 == PointPos::start) ? PointPos::end : PointPos::start;
-                c->Second_Deprecated = originalCornerId;
-                c->SecondPos_Deprecated = PointPos::start;
+                c->setElement(1, GeoElementId(originalCornerId, PointPos::start));
             }
         }
         else if (c->Type == Sketcher::PointOnObject) {
@@ -1285,16 +1279,13 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
 
         // For any constraint not passing previous conditions, transfer to the new point if relevant
         if (point1First || point2First) {
-            c->First_Deprecated = originalCornerId;
-            c->FirstPos_Deprecated = PointPos::start;
+            c->setElement(0, GeoElementId(originalCornerId, PointPos::start));
         }
         else if (point1Second || point2Second) {
-            c->Second_Deprecated = originalCornerId;
-            c->SecondPos_Deprecated = PointPos::start;
+            c->setElement(1, GeoElementId(originalCornerId, PointPos::start));
         }
         else if (point1Third || point2Third) {
-            c->Third_Deprecated = originalCornerId;
-            c->ThirdPos_Deprecated = PointPos::start;
+            c->setElement(2, GeoElementId(originalCornerId, PointPos::start));
         }
 
         // Default: keep all other constraints
@@ -1381,12 +1372,9 @@ std::unique_ptr<Constraint> SketchObject::createConstraint(
     auto newConstr = std::make_unique<Sketcher::Constraint>();
 
     newConstr->Type = constrType;
-    newConstr->First_Deprecated = firstGeoId;
-    newConstr->FirstPos_Deprecated = firstPos;
-    newConstr->Second_Deprecated = secondGeoId;
-    newConstr->SecondPos_Deprecated = secondPos;
-    newConstr->Third_Deprecated = thirdGeoId;
-    newConstr->ThirdPos_Deprecated = thirdPos;
+    newConstr->setElement(0, GeoElementId(firstGeoId, firstPos));
+    newConstr->setElement(1, GeoElementId(secondGeoId, secondPos));
+    newConstr->setElement(2, GeoElementId(thirdGeoId, thirdPos));
     return newConstr;
 }
 
@@ -1625,10 +1613,8 @@ bool SketchObject::deriveConstraintsForPieces(
             if (con->FirstPos_Deprecated == PointPos::none
                 && con->SecondPos_Deprecated == PointPos::none && newIds.size() > 1) {
                 Constraint* dist = con->copy();
-                dist->First_Deprecated = newIds.front();
-                dist->FirstPos_Deprecated = PointPos::start;
-                dist->Second_Deprecated = newIds.back();
-                dist->SecondPos_Deprecated = PointPos::end;
+                dist->setElement(0, GeoElementId(newIds.front(), PointPos::start));
+                dist->setElement(1, GeoElementId(newIds.back(), PointPos::end));
                 newConstraints.push_back(dist);
                 return true;
             }
@@ -1657,10 +1643,8 @@ bool SketchObject::deriveConstraintsForPieces(
                 if ((newGeoFirstParam - conParam) <= Precision::PApproximation()
                     && (conParam - newGeoLastParam) <= Precision::PApproximation()) {
                     Constraint* trans = con->copy();
-                    trans->First_Deprecated = conId;
-                    trans->FirstPos_Deprecated = conPos;
-                    trans->Second_Deprecated = newIds[i];
-                    trans->SecondPos_Deprecated = PointPos::none;
+                    trans->setElement(0, GeoElementId(conId, conPos));
+                    trans->setElement(1, GeoElementId(newIds[i], PointPos::none));
                     newConstraints.push_back(trans);
                     return true;
                 }
@@ -2543,16 +2527,13 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
             // Propagate the fix made on temp vars to the constraint
             switch (ig) {
                 case 1:
-                    constNew->First_Deprecated = geoId;
-                    constNew->FirstPos_Deprecated = posId;
+                    constNew->setElement(0, GeoElementId(geoId, posId));
                     break;
                 case 2:
-                    constNew->Second_Deprecated = geoId;
-                    constNew->SecondPos_Deprecated = posId;
+                    constNew->setElement(1, GeoElementId(geoId, posId));
                     break;
                 case 3:
-                    constNew->Third_Deprecated = geoId;
-                    constNew->ThirdPos_Deprecated = posId;
+                    constNew->setElement(2, GeoElementId(geoId, posId));
                     break;
             }
         }

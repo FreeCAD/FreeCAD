@@ -153,13 +153,17 @@ private:
                     for (auto& constr : sketchgui->getSketchObject()->Constraints.getValues()) {
                         if (constr->First_Deprecated == geoIds[0]
                             && constr->FirstPos_Deprecated == Sketcher::PointPos::mid) {
-                            constr->First_Deprecated = currentgeoid;
-                            constr->FirstPos_Deprecated = Sketcher::PointPos::start;
+                            constr->setElement(
+                                0,
+                                Sketcher::GeoElementId(currentgeoid, Sketcher::PointPos::start)
+                            );
                         }
                         else if (constr->First_Deprecated == geoIds.back()
                                  && constr->FirstPos_Deprecated == Sketcher::PointPos::mid) {
-                            constr->First_Deprecated = currentgeoid;
-                            constr->FirstPos_Deprecated = Sketcher::PointPos::end;
+                            constr->setElement(
+                                0,
+                                Sketcher::GeoElementId(currentgeoid, Sketcher::PointPos::end)
+                            );
                         }
                     }
                 }
@@ -323,13 +327,17 @@ private:
                     for (auto& constr : sketchgui->getSketchObject()->Constraints.getValues()) {
                         if (constr->First_Deprecated == geoIds[0]
                             && constr->FirstPos_Deprecated == Sketcher::PointPos::start) {
-                            constr->First_Deprecated = currentgeoid;
-                            constr->FirstPos_Deprecated = Sketcher::PointPos::start;
+                            constr->setElement(
+                                0,
+                                Sketcher::GeoElementId(currentgeoid, Sketcher::PointPos::start)
+                            );
                         }
                         else if (constr->First_Deprecated == geoIds.back()
                                  && constr->FirstPos_Deprecated == Sketcher::PointPos::start) {
-                            constr->First_Deprecated = currentgeoid;
-                            constr->FirstPos_Deprecated = Sketcher::PointPos::end;
+                            constr->setElement(
+                                0,
+                                Sketcher::GeoElementId(currentgeoid, Sketcher::PointPos::end)
+                            );
                         }
                     }
                 }
@@ -1237,15 +1245,15 @@ void DSHBSplineController::addConstraints()
     using namespace Sketcher;
 
     auto constraintToOrigin = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, pPos), GeoElementId::RtPnt, x0, obj);
+        ConstraintToAttachment(GeoElementId(firstCurve, pPos), Sketcher::GeoElementId::RtPnt, x0, obj);
     };
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, pPos), GeoElementId::VAxis, x0, obj);
+        ConstraintToAttachment(GeoElementId(firstCurve, pPos), Sketcher::GeoElementId::VAxis, x0, obj);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, pPos), GeoElementId::HAxis, y0, obj);
+        ConstraintToAttachment(GeoElementId(firstCurve, pPos), Sketcher::GeoElementId::HAxis, y0, obj);
     };
 
     auto constraintlengths = [&](bool checkDof) {

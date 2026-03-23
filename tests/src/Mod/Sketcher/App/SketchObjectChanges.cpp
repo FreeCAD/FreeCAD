@@ -789,8 +789,7 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnFullLengthConstraints)
     int geoId = getObject()->addGeometry(&lineSeg);
     auto constr = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constr->Type = Sketcher::ConstraintType::Distance;
-    constr->First_Deprecated = geoId;
-    constr->FirstPos_Deprecated = Sketcher::PointPos::none;
+    constr->setElement(0, GeoElementId(geoId, Sketcher::PointPos::none));
     constr->setValue((getObject()->getPoint(geoId, Sketcher::PointPos::end)
                       - getObject()->getPoint(geoId, Sketcher::PointPos::start))
                          .Length());
@@ -824,12 +823,9 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnSymmetricConstraints)
     int geoId = getObject()->addGeometry(&lineSeg);
     auto constr = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constr->Type = Sketcher::ConstraintType::Symmetric;
-    constr->First_Deprecated = geoId;
-    constr->FirstPos_Deprecated = Sketcher::PointPos::start;
-    constr->Second_Deprecated = geoId;
-    constr->SecondPos_Deprecated = Sketcher::PointPos::end;
-    constr->Third_Deprecated = geoIdOfCutting;
-    constr->ThirdPos_Deprecated = Sketcher::PointPos::start;
+    constr->setElement(0, GeoElementId(geoId, Sketcher::PointPos::start));
+    constr->setElement(1, GeoElementId(geoId, Sketcher::PointPos::end));
+    constr->setElement(2, GeoElementId(geoIdOfCutting, Sketcher::PointPos::start));
     getObject()->addConstraint(constr);
 
     // Assert
@@ -863,10 +859,8 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
     // TODO: add tangent and confirm
     auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constraint->Type = Sketcher::ConstraintType::Tangent;
-    constraint->First_Deprecated = geoId;
-    constraint->FirstPos_Deprecated = Sketcher::PointPos::none;
-    constraint->Second_Deprecated = geoIdInnerCircle;
-    constraint->SecondPos_Deprecated = Sketcher::PointPos::none;
+    constraint->setElement(0, GeoElementId(geoId, Sketcher::PointPos::none));
+    constraint->setElement(1, GeoElementId(geoIdInnerCircle, Sketcher::PointPos::none));
     getObject()->addConstraint(constraint);
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Tangent), 1);
 
@@ -1187,10 +1181,8 @@ TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
     // Add end-to-end tangent between these
     auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constraint->Type = Sketcher::ConstraintType::Tangent;
-    constraint->First_Deprecated = geoId1;
-    constraint->FirstPos_Deprecated = Sketcher::PointPos::start;
-    constraint->Second_Deprecated = geoId2;
-    constraint->SecondPos_Deprecated = Sketcher::PointPos::start;
+    constraint->setElement(0, GeoElementId(geoId1, Sketcher::PointPos::start));
+    constraint->setElement(1, GeoElementId(geoId2, Sketcher::PointPos::start));
     getObject()->addConstraint(constraint);
 
     // Act

@@ -563,8 +563,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus1;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::start;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
         newConstr->Second_Deprecated = GeoId;
 
         icon.push_back(newConstr);
@@ -578,8 +577,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus2;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::start;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
         newConstr->Second_Deprecated = GeoId;
 
         icon.push_back(newConstr);
@@ -703,8 +701,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus1;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::start;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
         newConstr->Second_Deprecated = GeoId;
 
         icon.push_back(newConstr);
@@ -718,8 +715,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus2;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::start;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
         newConstr->Second_Deprecated = GeoId;
 
         icon.push_back(newConstr);
@@ -824,8 +820,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::HyperbolaFocus;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::start;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
         newConstr->Second_Deprecated = GeoId;
 
         icon.push_back(newConstr);
@@ -883,8 +878,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::ParabolaFocus;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::start;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
         newConstr->Second_Deprecated = GeoId;
 
         icon.push_back(newConstr);
@@ -900,8 +894,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
-        newConstr->First_Deprecated = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::none;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::none));
         newConstr->Second_Deprecated = GeoId;
 
         icon.push_back(newConstr);
@@ -982,8 +975,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::BSplineControlPoint;
-        newConstr->First_Deprecated = currentgeoid + incrgeo;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::mid;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo, Sketcher::PointPos::mid));
         newConstr->Second_Deprecated = GeoId;
         newConstr->InternalAlignmentIndex = index;
 
@@ -1011,10 +1003,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
             // AND these weights are equal, constrain them to be equal
             auto* newConstr2 = new Sketcher::Constraint();
             newConstr2->Type = Sketcher::Equal;
-            newConstr2->First_Deprecated = currentgeoid + incrgeo;
-            newConstr2->FirstPos_Deprecated = Sketcher::PointPos::none;
-            newConstr2->Second_Deprecated = controlpointgeoids[0];
-            newConstr2->SecondPos_Deprecated = Sketcher::PointPos::none;
+            newConstr2->setElement(0, GeoElementId(currentgeoid + incrgeo, Sketcher::PointPos::none));
+            newConstr2->setElement(1, GeoElementId(controlpointgeoids[0], Sketcher::PointPos::none));
 
             icon.push_back(newConstr2);
         }
@@ -1037,8 +1027,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
-        newConstr->First_Deprecated = currentgeoid + incrgeo;
-        newConstr->FirstPos_Deprecated = Sketcher::PointPos::start;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo, Sketcher::PointPos::start));
         newConstr->Second_Deprecated = GeoId;
         newConstr->InternalAlignmentIndex = index;
 

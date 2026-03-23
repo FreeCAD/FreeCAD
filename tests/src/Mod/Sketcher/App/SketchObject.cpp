@@ -428,19 +428,14 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
 
     Sketcher::Constraint constr1;
     constr1.Type = Sketcher::ConstraintType::Coincident;
-    constr1.First_Deprecated = geoId1;
-    constr1.FirstPos_Deprecated = Sketcher::PointPos::start;
-    constr1.Second_Deprecated = geoId2;
-    constr1.SecondPos_Deprecated = Sketcher::PointPos::end;
+    constr1.setElement(0, GeoElementId(geoId1, Sketcher::PointPos::start));
+    constr1.setElement(1, GeoElementId(geoId2, Sketcher::PointPos::end));
 
     Sketcher::Constraint constr2;
     constr2.Type = Sketcher::ConstraintType::Tangent;
-    constr2.First_Deprecated = geoId4;
-    constr2.FirstPos_Deprecated = Sketcher::PointPos::none;
-    constr2.Second_Deprecated = geoId3;
-    constr2.SecondPos_Deprecated = Sketcher::PointPos::none;
-    constr2.Third_Deprecated = geoId1;
-    constr2.ThirdPos_Deprecated = Sketcher::PointPos::start;
+    constr2.setElement(0, GeoElementId(geoId4, Sketcher::PointPos::none));
+    constr2.setElement(1, GeoElementId(geoId3, Sketcher::PointPos::none));
+    constr2.setElement(2, GeoElementId(geoId1, Sketcher::PointPos::start));
 
     // Act
     auto nullConstrAfter = getObject()->getConstraintAfterDeletingGeo(nullConstr, 5);
@@ -709,10 +704,8 @@ TEST_F(SketchObjectTest, testDeleteOnlyUnusedInternalGeometryOfBSpline)
     EXPECT_NE(it, constraints.end());
     auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constraint->Type = Sketcher::ConstraintType::Coincident;
-    constraint->First_Deprecated = geoIdPnt;
-    constraint->FirstPos_Deprecated = Sketcher::PointPos::start;
-    constraint->Second_Deprecated = (*it)->First_Deprecated;
-    constraint->SecondPos_Deprecated = Sketcher::PointPos::mid;
+    constraint->setElement(0, GeoElementId(geoIdPnt, Sketcher::PointPos::start));
+    constraint->setElement(1, GeoElementId((*it)->First_Deprecated, Sketcher::PointPos::mid));
     getObject()->addConstraint(constraint);
 
     // Act

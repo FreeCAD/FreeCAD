@@ -720,10 +720,8 @@ protected:
                 else {
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Coincident;
-                    c->First_Deprecated = geoId1;
-                    c->FirstPos_Deprecated = posId1;
-                    c->Second_Deprecated = geoId2;
-                    c->SecondPos_Deprecated = posId2;
+                    c->setElement(0, Sketcher::GeoElementId(geoId1, posId1));
+                    c->setElement(1, Sketcher::GeoElementId(geoId2, posId2));
                     AutoConstraints.push_back(std::move(c));
                 }
             } break;
@@ -756,8 +754,7 @@ protected:
                 else {
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::PointOnObject;
-                    c->First_Deprecated = geoId1;
-                    c->FirstPos_Deprecated = posId1;
+                    c->setElement(0, Sketcher::GeoElementId(geoId1, posId1));
                     c->Second_Deprecated = geoId2;
                     AutoConstraints.push_back(std::move(c));
                 }
@@ -765,12 +762,9 @@ protected:
             case Sketcher::Symmetric: {
                 auto c = std::make_unique<Sketcher::Constraint>();
                 c->Type = Sketcher::Symmetric;
-                c->First_Deprecated = geoId2;
-                c->FirstPos_Deprecated = Sketcher::PointPos::start;
-                c->Second_Deprecated = geoId2;
-                c->SecondPos_Deprecated = Sketcher::PointPos::end;
-                c->Third_Deprecated = geoId1;
-                c->ThirdPos_Deprecated = posId1;
+                c->setElement(0, Sketcher::GeoElementId(geoId2, Sketcher::PointPos::start));
+                c->setElement(1, Sketcher::GeoElementId(geoId2, Sketcher::PointPos::end));
+                c->setElement(2, Sketcher::GeoElementId(geoId1, posId1));
                 AutoConstraints.push_back(std::move(c));
             } break;
             // In special case of Horizontal/Vertical constraint, geoId2 is normally
@@ -1146,12 +1140,9 @@ protected:
     {
         auto constr = std::make_unique<Sketcher::Constraint>();
         constr->Type = type;
-        constr->First_Deprecated = first;
-        constr->FirstPos_Deprecated = firstPos;
-        constr->Second_Deprecated = second;
-        constr->SecondPos_Deprecated = secondPos;
-        constr->Third_Deprecated = third;
-        constr->ThirdPos_Deprecated = thirdPos;
+        constr->setElement(0, Sketcher::GeoElementId(first, firstPos));
+        constr->setElement(1, Sketcher::GeoElementId(second, secondPos));
+        constr->setElement(2, Sketcher::GeoElementId(third, thirdPos));
         return ShapeConstraints.emplace_back(std::move(constr)).get();
     }
 
