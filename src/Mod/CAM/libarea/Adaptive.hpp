@@ -79,6 +79,15 @@ struct AdaptiveOutput
     TPaths AdaptivePaths;
     int ReturnMotionType;  // MotionType enum, problem with serialization if enum is used
     double ClearedArea;    // Total area cleared in this operation
+
+    // Warning/error flags
+    bool StartPointNotFound = false;
+    bool LeadPathFailed = false;
+    bool UnexpectedRotateIterations = false;
+    bool TooManyFailedEngagements = false;
+    bool UnclearedAreaRemains = false;
+    bool StepOverWarning = false;
+    bool FinishingLeadInFailed = false;
 };
 
 // used to isolate state -> enable potential adding of multi-threaded processing of separate regions
@@ -145,7 +154,8 @@ private:
         IntPoint& entryPoint /*output*/,
         IntPoint& toolPos,
         DoublePoint& toolDir,
-        long& helixRadiusScaled
+        long& helixRadiusScaled,
+        AdaptiveOutput& adaptiveOutput
     );
     std::pair<double, double> CalcCutArea(IntPoint toolPos, IntPoint newToolPos, ClearedArea& clearedArea);
     std::optional<TPaths> FindLinkPath(
@@ -178,7 +188,8 @@ private:
         IntPoint beaconPoint,
         ClearedArea& clearedArea,
         const Paths& toolBoundPaths,
-        Path& output
+        Path& output,
+        AdaptiveOutput& adaptiveOutput
     );
 
     bool ResolveLinkPath(

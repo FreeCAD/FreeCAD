@@ -419,7 +419,14 @@ void init_pyarea(py::module& m)
         .def_readwrite("StartPoint", &AdaptiveOutput::StartPoint)
         .def_readwrite("AdaptivePaths", &AdaptiveOutput::AdaptivePaths)
         .def_readwrite("ReturnMotionType", &AdaptiveOutput::ReturnMotionType)
-        .def_readwrite("ClearedArea", &AdaptiveOutput::ClearedArea);
+        .def_readwrite("ClearedArea", &AdaptiveOutput::ClearedArea)
+        .def_readwrite("StartPointNotFound", &AdaptiveOutput::StartPointNotFound)
+        .def_readwrite("LeadPathFailed", &AdaptiveOutput::LeadPathFailed)
+        .def_readwrite("UnexpectedRotateIterations", &AdaptiveOutput::UnexpectedRotateIterations)
+        .def_readwrite("TooManyFailedEngagements", &AdaptiveOutput::TooManyFailedEngagements)
+        .def_readwrite("UnclearedAreaRemains", &AdaptiveOutput::UnclearedAreaRemains)
+        .def_readwrite("StepOverWarning", &AdaptiveOutput::StepOverWarning)
+        .def_readwrite("FinishingLeadInFailed", &AdaptiveOutput::FinishingLeadInFailed);
 
     py::class_<Adaptive2d>(m, "Adaptive2d")
         .def(py::init<>())

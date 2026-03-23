@@ -1887,7 +1887,8 @@ bool Adaptive2d::FindEntryPoint(
     IntPoint& entryPoint /*output*/,
     IntPoint& toolPos,
     DoublePoint& toolDir,
-    long& helixRadiusScaled
+    long& helixRadiusScaled,
+    AdaptiveOutput& adaptiveOutput
 )
 {
     Paths incOffset;
@@ -1997,6 +1998,7 @@ bool Adaptive2d::FindEntryPoint(
     }
 
     if (!found) {
+        adaptiveOutput.StartPointNotFound = true;
         cerr << "Start point not found!" << endl;
     }
     if (found) {
@@ -2291,7 +2293,8 @@ bool Adaptive2d::MakeLeadPath(
     IntPoint beaconPoint,
     ClearedArea& clearedAreaOriginal,
     const Paths& toolBoundPaths,
-    Path& output
+    Path& output,
+    AdaptiveOutput& adaptiveOutput
 )
 {
     output.push_back(startPoint);
@@ -2382,6 +2385,7 @@ bool Adaptive2d::MakeLeadPath(
                     return true;
                 }
                 else {
+                    adaptiveOutput.LeadPathFailed = true;
                     cerr << "MakeLeadPath failed: overtravel without getting to cleared area" << endl;
                     return false;
                 }
@@ -2446,7 +2450,7 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
 
         Path leadInPath;
         bool leadInOk
-            = MakeLeadPath(true, endPoint, revEndDir, endBeacon, cleared, toolBoundPaths, leadInPath);
+            = MakeLeadPath(true, endPoint, revEndDir, endBeacon, cleared, toolBoundPaths, leadInPath, output);
         ReversePath(leadInPath);
 
         if (!leadInOk) {
@@ -2620,8 +2624,16 @@ std::optional<std::pair<IntPoint, DoublePoint>> Adaptive2d::AppendToolPath(
             );
 
             Path leadOutPath;
-            bool ok
-                = MakeLeadPath(false, prevPoint, prevDir, beacon, cleared, toolBoundPaths, leadOutPath);
+            bool ok = MakeLeadPath(
+                false,
+                prevPoint,
+                prevDir,
+                beacon,
+                cleared,
+                toolBoundPaths,
+                leadOutPath,
+                output
+            );
 
             if (ok && leadOutPath.size() >= 1) {
                 // smooth path
@@ -3135,6 +3147,7 @@ void Adaptive2d::ProcessPolyNode(
             if (rotateStep >= 180) {
 #ifdef DEV_MODE
                 if (warnRotate) {
+                    output.UnexpectedRotateIterations = true;
                     cerr << "Warning: unexpected number of rotate iterations." << endl;
                 }
 #else
@@ -3439,9 +3452,11 @@ void Adaptive2d::ProcessPolyNode(
                 entryPoint,
                 toolPos,
                 toolDir,
-                helixRadiusScaled
+                helixRadiusScaled,
+                output
             )) {
             Perf_ProcessPolyNode.Stop();
+            results.push_back(output);
             return;
         }
         output.StartPoint = DPoint(double(toolPos.X) / scaleFactor, double(toolPos.Y) / scaleFactor);
@@ -3600,6 +3615,7 @@ void Adaptive2d::ProcessPolyNode(
         }
 
         if (bad_engage_count > 10000) {
+            output.TooManyFailedEngagements = true;
             cerr << "Break (next valid engage point not found)." << endl;
             break;
         }
@@ -3633,6 +3649,7 @@ void Adaptive2d::ProcessPolyNode(
                 break;
             }
 
+            output.UnclearedAreaRemains = true;
             cerr << "NO ENGAGEMENTS LEFT BUT NOT ALL CELARED!!! " << endl;
             break;
         }
@@ -3656,6 +3673,7 @@ void Adaptive2d::ProcessPolyNode(
     clip.Execute(ClipType::ctDifference, uncut);
 
     if (uncut.size() > 0) {
+        output.StepOverWarning = true;
         cerr << "Warning: some cuts may be above optimal step-over. Please double check the "
                 "results."
              << endl
@@ -3752,6 +3770,7 @@ void Adaptive2d::ProcessPolyNode(
                 toolBoundPaths
             );
             if (!linkPath) {
+                output.FinishingLeadInFailed = true;
                 cerr << "Failed to generate lead-in for finishing pass; skipping pass" << endl;
             }
             else {
