@@ -813,7 +813,7 @@ static void moveProperties(std::unordered_set<App::Property*>& props, QList<App:
         }
     }
 
-    App::AutoTransaction committer(props.size() == 1 ? "Move property" : "Move properties");
+    App::AutoTransaction committer(props.size() == 1 ? "Move Property" : "Move Properties");
 
     for (auto& prop : props) {
         auto* obj = freecad_cast<App::DocumentObject*>(prop->getContainer());
@@ -1067,7 +1067,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     };
 
     if (props.size() > 0 && std::ranges::all_of(props, canBeMoved)) {
-        menu.addAction(tr("Move property"))->setData(QVariant(MA_MoveProp));
+        menu.addAction(tr("Move Property"))->setData(QVariant(MA_MoveProp));
     }
 
     // add a separator between adding/removing properties and the rest
