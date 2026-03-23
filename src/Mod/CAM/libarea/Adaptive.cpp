@@ -2817,7 +2817,7 @@ void Adaptive2d::ProcessPolyNode(
     Paths boundPaths,
     Paths toolBoundPaths,
     Paths finishingPaths,
-    Paths initialClearedPaths
+    const Paths& initialClearedPaths
 )
 {
     Perf_ProcessPolyNode.Start();
@@ -3580,7 +3580,7 @@ void Adaptive2d::ProcessPolyNode(
         cumulativeCutArea = 0;
         for (Path& a : newlyClearedAreas) {
             int nesting = getPathNestingLevel(a, newlyClearedAreas);
-            cumulativeCutArea += (nesting <= 1 ? 1 : -1) * Area(a);
+            cumulativeCutArea += (nesting <= 1 ? 1 : -1) * fabs(Area(a));
         }
 
         if (cumulativeCutArea >= 1) {
@@ -3818,6 +3818,27 @@ void Adaptive2d::ProcessPolyNode(
     (void)total_iterations;
     (void)perf_total_len;
 #endif
+
+    // Calculate newly cleared area (final - initial)
+    // First calculate initial cleared area
+    double initialClearedArea = 0.0;
+    for (const Path& path : initialClearedPaths) {
+        int nesting = getPathNestingLevel(path, initialClearedPaths);
+        initialClearedArea += (nesting <= 1 ? 1 : -1) * fabs(Area(path));
+    }
+
+    // Then calculate final cleared area
+    const Paths& clearedPaths = cleared.GetCleared();
+    double finalClearedArea = 0.0;
+    for (const Path& path : clearedPaths) {
+        int nesting = getPathNestingLevel(path, clearedPaths);
+        finalClearedArea += (nesting <= 1 ? 1 : -1) * fabs(Area(path));
+    }
+
+    // Convert from scaled units to real units (scaleFactor is applied twice for area)
+    // and subtract initial from final to get only newly cleared area
+    output.ClearedArea = (finalClearedArea - initialClearedArea) / (scaleFactor * scaleFactor);
+
     results.push_back(output);
 }
 

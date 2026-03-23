@@ -78,6 +78,7 @@ struct AdaptiveOutput
     DPoint StartPoint;
     TPaths AdaptivePaths;
     int ReturnMotionType;  // MotionType enum, problem with serialization if enum is used
+    double ClearedArea;    // Total area cleared in this operation
 };
 
 // used to isolate state -> enable potential adding of multi-threaded processing of separate regions
@@ -134,7 +135,7 @@ private:
         Paths boundPaths,
         Paths toolBoundPaths,
         Paths finishingPaths,
-        Paths initialClearedPaths
+        const Paths& initialClearedPaths
     );
     bool FindEntryPoint(
         TPaths& progressPaths,

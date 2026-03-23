@@ -418,7 +418,8 @@ void init_pyarea(py::module& m)
         .def_readwrite("HelixCenterPoint", &AdaptiveOutput::HelixCenterPoint)
         .def_readwrite("StartPoint", &AdaptiveOutput::StartPoint)
         .def_readwrite("AdaptivePaths", &AdaptiveOutput::AdaptivePaths)
-        .def_readwrite("ReturnMotionType", &AdaptiveOutput::ReturnMotionType);
+        .def_readwrite("ReturnMotionType", &AdaptiveOutput::ReturnMotionType)
+        .def_readwrite("ClearedArea", &AdaptiveOutput::ClearedArea);
 
     py::class_<Adaptive2d>(m, "Adaptive2d")
         .def(py::init<>())
