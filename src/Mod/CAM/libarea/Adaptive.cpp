@@ -2406,7 +2406,8 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
     const IntPoint& pathStart,
     const DoublePoint& pathDir,
     ClearedArea& cleared,
-    const Paths& toolBoundPaths
+    const Paths& toolBoundPaths,
+    AdaptiveOutput& adaptiveOutput
 )
 {
     Perf_AppendToolPath.Start();
@@ -2449,8 +2450,16 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
         );
 
         Path leadInPath;
-        bool leadInOk
-            = MakeLeadPath(true, endPoint, revEndDir, endBeacon, cleared, toolBoundPaths, leadInPath, output);
+        bool leadInOk = MakeLeadPath(
+            true,
+            endPoint,
+            revEndDir,
+            endBeacon,
+            cleared,
+            toolBoundPaths,
+            leadInPath,
+            adaptiveOutput
+        );
         ReversePath(leadInPath);
 
         if (!leadInOk) {
@@ -2884,6 +2893,8 @@ void Adaptive2d::ProcessPolyNode(
     long bad_engage_count = 0;
 
     double perf_total_len = 0;
+
+    AdaptiveOutput output;
 #ifdef DEV_MODE
     clock_t start_clock = clock();
 #endif
@@ -3345,7 +3356,8 @@ void Adaptive2d::ProcessPolyNode(
                     std::get<IntPoint>(ep),
                     std::get<DoublePoint>(ep),
                     cleared,
-                    toolBoundPaths
+                    toolBoundPaths,
+                    output
                 );
                 if (!link) {
                     continue;
@@ -3429,7 +3441,6 @@ void Adaptive2d::ProcessPolyNode(
         return result;
     };
 
-    AdaptiveOutput output;
     std::optional<std::tuple<IntPoint, DoublePoint, TPaths>> engagePoint = getEngagePoint({});
     TPaths linkPath;
     if (engagePoint) {
@@ -3767,7 +3778,8 @@ void Adaptive2d::ProcessPolyNode(
                 finCleaned[0],
                 GetPathDirectionV(finCleaned, 1),
                 cleared,
-                toolBoundPaths
+                toolBoundPaths,
+                output
             );
             if (!linkPath) {
                 output.FinishingLeadInFailed = true;

@@ -163,7 +163,8 @@ private:
         const IntPoint& pathStart,
         const DoublePoint& pathDir,
         ClearedArea& cleared,
-        const Paths& toolBoundPaths
+        const Paths& toolBoundPaths,
+        AdaptiveOutput& adaptiveOutput
     );
     std::optional<std::pair<IntPoint, DoublePoint>> AppendToolPath(
         AdaptiveOutput& output,
