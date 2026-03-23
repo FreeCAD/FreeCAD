@@ -55,7 +55,7 @@
 
 #include "TaskSketcherElements.h"
 #include "EditTextDialog.h"
-#include "Mod/Sketcher/App/ExternalGeometryFacade.h"
+#include <Mod/Sketcher/App/ExternalGeometryFacade.h>
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "ui_TaskSketcherElements.h"
