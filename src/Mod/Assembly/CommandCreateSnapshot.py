@@ -222,7 +222,9 @@ class ViewProviderSnapshot:
             App.Console.PrintError("Cannot restore snapshot while a task is active.\n")
             return
 
-        Gui.ActiveDocument.openCommand(translate("Assembly_Snapshot", "Restore Snapshot") + " '" + snapshot_obj.Label + "'")
+        Gui.ActiveDocument.openCommand(
+            translate("Assembly_Snapshot", "Restore Snapshot") + " '" + snapshot_obj.Label + "'"
+        )
         try:
             snapshot_obj.Proxy.restoreState(snapshot_obj)
         except Exception as e:
