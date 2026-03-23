@@ -101,6 +101,35 @@ class TestPathAdaptive(PathTestBase):
         """
         pass
 
+    def checkAdaptiveErrors(self, adaptiveOutput):
+        """Check error flags in C++ AdaptiveOutput object."""
+        self.assertFalse(
+            adaptiveOutput.StartPointNotFound, "Adaptive failed to find entry/start point"
+        )
+        self.assertFalse(
+            adaptiveOutput.LeadPathFailed,
+            "Adaptive failed to generate lead path - overtravel without reaching cleared area",
+        )
+        self.assertFalse(
+            adaptiveOutput.UnexpectedRotateIterations,
+            "Adaptive encountered unexpected number of rotation iterations",
+        )
+        self.assertFalse(
+            adaptiveOutput.TooManyFailedEngagements,
+            "Adaptive exceeded 10000 failed engagement attempts",
+        )
+        self.assertFalse(
+            adaptiveOutput.UnclearedAreaRemains, "Adaptive terminated with uncleared area remaining"
+        )
+        self.assertFalse(
+            adaptiveOutput.StepOverWarning,
+            "Adaptive warning: some cuts may be above optimal step-over",
+        )
+        self.assertFalse(
+            adaptiveOutput.FinishingLeadInFailed,
+            "Adaptive failed to generate lead-in for finishing pass",
+        )
+
     # Unit tests
     def testFaceSingleSimple(self):
         """testFaceSingleSimple() Verify path generated on Face3."""
