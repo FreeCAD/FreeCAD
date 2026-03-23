@@ -1,0 +1,65 @@
+From: "Lars J. Aas" <larsa@sim.no>
+Subject: Coin 2.4.5 Released
+
+Coin 2.4.5 Released
+===================
+
+Systems in Motion is proud to release v2.4.5 of the Coin 3D graphics
+library.  The Better-Than-Doing-Tax-Returns Release.  Coin 2.4.5 is a
+patchlevel release.  Patchlevel releases contain mostly bugfixes,
+optimizations, documentation improvements, and configure and build
+setup fixes.  This release does not extend the library API beyond the
+previous release.
+
+
+NEWS File Excerpt for 2.4.5:
+----------------------------
+
+* bugfixes:
+  - fixed 2D font "_" character
+  - minor axis MIDDLE (i.e. center) justification for VRML97's
+    FontStyle and Text nodes did previously not work as expected
+  - policy change on normalizing null-vector warning
+  - improved Inventor V1.0 import
+  - improved cleanup code (plugged many static one-off leaks)
+  - fixes for nurbs, VRML97 protos, routes...
+  - and a multitude of other bugfixes (see docs/ChangeLog.v2.4.5)
+* optimizations:
+  - internal changes wrt use of vertex arrays and vertex buffer objects
+* build fixes:
+  - upgraded to new version of libtool
+  - universal binaries support for Mac OS X
+  - misc TGS compatibility fixes
+  - added project files for Visual Studio 8 (2005)
+
+See the ChangeLog file if you want the really gory details.  See
+the file RELNOTES on changes that might affect Coin usage.
+
+
+Download Information:
+---------------------
+
+This message may be posted before some of the listed files are available.
+In that case, try again at a later time.
+
+ChangeLog:
+  http://source.coin3d.org/Coin-2/docs/ChangeLog.v2.4.5
+
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/all/Coin-2.4.5.tar.gz
+  ftp://ftp.coin3d.org/pub/coin/src/all/Coin-2.4.5.zip
+
+Precompiled for MS Windows:
+  Not available as of this posting.  Visit the following directory to
+  check for any change of status:
+    ftp://ftp.coin3d.org/pub/coin/bin/win32/
+
+Precompiled for Mac OS X:
+  Not available as of this posting.  Visit the following directory to
+  check for any change of status:
+    ftp://ftp.coin3d.org/pub/coin/bin/macosx/
+
+
+Enjoy,
+
+  Lars J

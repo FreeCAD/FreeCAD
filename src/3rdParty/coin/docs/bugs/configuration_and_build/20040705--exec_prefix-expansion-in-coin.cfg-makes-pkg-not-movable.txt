@@ -1,0 +1,25 @@
+120 @exec_prefix@ expansion in Coin/coin.cfg.in makes installed
+    package not movable.
+
+    Note that simply replacing with
+
+      exec_prefix="${prefix}"
+
+    is not the correct fix either, as an "exec_prefix" different from
+    "prefix" can be set by a configure option.
+
+    The correct solution may be to replace @exec_prefix@ with a new
+    variable name (e.g. "@cfg_exec_prefix@"), then expand this to
+    either "$prefix" or an absolute path, depending on how configure
+    was invoked. If the latter (absolute path), warn the user at the
+    end of the configure run that the installation is not movable (and
+    explain why this is so)
+
+    That's the best I can think of.
+
+    This is a low priority issue.
+
+    20040705 mortene.
+
+    UPDATE 20051220 mortene: the same also seems to be the case for
+    the So*-libraries' so*.cfg files.

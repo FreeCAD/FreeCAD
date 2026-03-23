@@ -1,0 +1,65 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+DEF SCALE2_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF SCALE2_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF SCALE2_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+
+
+DEF SCALE2_MARKER Group {
+   PickStyle { style SHAPE }
+   Translation { translation -0.025 0 0 }
+   Cube { width 0.05  height 0.10  depth 0.05 }
+   Translation { translation 0.05 -0.025 0 }
+   Cube { width 0.05  height 0.05  depth 0.05 }
+}
+
+
+DEF SCALE2_SCALING_MARKERS Separator {
+   Separator {
+      # Left low
+      Translation { translation -1.1 -1.1 0 }
+      USE SCALE2_MARKER
+   }
+   Separator {
+      # Right low
+      Translation { translation 1.1 -1.1 0 }
+      Rotation { rotation 0 0 1  1.57 }
+      USE SCALE2_MARKER
+   }
+   Separator {
+      # Left high
+      Translation { translation -1.1 1.1 0 }
+      Rotation { rotation 0 0 1  -1.57 }
+      USE SCALE2_MARKER
+   }
+   # Right high
+   Translation { translation 1.1 1.1 0 }
+   Rotation { rotation 0 0 1  3.14 }
+   USE SCALE2_MARKER
+}
+
+DEF scale2Scaler Separator {
+   USE SCALE2_INACTIVE_MATERIAL
+   USE SCALE2_SCALING_MARKERS
+}
+
+DEF scale2ScalerActive Separator {
+   USE SCALE2_ACTIVE_MATERIAL
+   USE SCALE2_SCALING_MARKERS
+
+   DrawStyle { style LINES  lineWidth 1 }
+   PickStyle { style UNPICKABLE }
+   Cube { width 2.2  height 2.2  depth 2.2 }
+}
+
+DEF SCALE2_FEEDBACK Group {
+   USE SCALE2_FEEDBACK_MATERIAL
+   PickStyle { style UNPICKABLE }
+   DrawStyle { lineWidth 2 }
+   Coordinate3 { point [ 1.2 0 0, -1.2 0 0, 0 1.2 0, 0 -1.2 0, 0 0 1.2, 0 0 -1.2 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ] }
+}
+
+DEF scale2Feedback Separator { USE SCALE2_FEEDBACK }
+DEF scale2FeedbackActive Separator { USE SCALE2_FEEDBACK }

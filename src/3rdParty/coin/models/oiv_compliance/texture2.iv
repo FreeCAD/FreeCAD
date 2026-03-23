@@ -1,0 +1,464 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoTexture2.
+#
+# 19990503 mortene
+
+Separator {
+   # (ROW 0) Check texture coordinate stuff.
+   Separator {
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      # Test texture coords > 1.
+
+      Translation { translation +4 0 0 }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 2 0, 2 2, 0 2 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      # Test texture coords < 0.
+
+      Translation { translation +4 0 0 }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ -1 -1, 1 -1, 1 1, -1 1 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      # Test huge texture coords.
+
+      Translation { translation +4 0 0 }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ -2000 -2000, 2000 -2000, 2000 2000, -2000 2000 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      # Test flipped texture coords.
+
+      Translation { translation +4 0 0 }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 1 1, 0 1, 0 0, 1 0 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+   }
+
+
+   # (ROW 1) Check clamping
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+
+	 wrapS CLAMP
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 2 0, 2 2, 0 2 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+
+	 wrapT CLAMP
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 2 0, 2 2, 0 2 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+
+      Translation { translation +4 0 0 }
+
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+
+	 wrapS CLAMP
+	 wrapT CLAMP
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 2 0, 2 2, 0 2 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+   }
+
+   # (ROW 2) Check texture/material combination models
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+
+	 model MODULATE
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+
+	 model DECAL
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+
+	 model BLEND
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+
+      Translation { translation +4 0 0 }
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+
+	 model BLEND
+	 blendColor 0.8 0.8 0.1
+      }
+
+      BaseColor { rgb 0.2 0.1 0.2}
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+   }
+
+
+   # (ROW 3) Check how texture quality setting influences rendering
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Complexity { textureQuality 1 }
+
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Complexity { textureQuality 0.8 }
+
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Complexity { textureQuality 0.6 }
+
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Complexity { textureQuality 0.4 }
+
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Complexity { textureQuality 0.2 }
+
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Complexity { textureQuality 0.1 }
+
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Complexity { textureQuality 0 }
+
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+   }
+}

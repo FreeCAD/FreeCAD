@@ -1,0 +1,56 @@
+From: "Lars J. Aas" <larsa@sim.no>
+Subject: Coin 2.0.1 Released
+
+Coin 2.0.1 Released
+===================
+
+Systems in Motion is proud to release v2.0.1 of the Coin 3D graphics
+library.  Coin 2.0.1 is a patchlevel release.  Patchlevel releases
+contain mostly bugfixes, optimizations, documentation improvements,
+and configure and build setup fixes.  This release does not extend the
+library API beyond the previous release.
+
+
+NEWS File Excerpt:
+------------------
+
+* bugfixes in
+  - SoClipPlaneManip
+  - SoPathSensor
+  - the notification mechanism
+  - ROUTE-connections in PROTOS
+  - import code
+* run-time binding of shared library symbols on Mac OS X, and HP-UX 10
+* a few minor optimizations
+* coin2.dsp file generation improvements
+* improved support for building with gcc/g++ on Cygwin
+
+See the ChangeLog file if you want the really gory details.
+
+
+Download Information:
+---------------------
+
+This message may be posted before some of the listed files are available.
+In that case, try again at a later time.
+
+ChangeLog:
+  http://www.coin3d.org/Coin-2/docs/ChangeLog.v2.0.1
+
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/Coin-2.0.1.tar.gz
+
+Precompiled for Linux (i386):
+  Debian (testing) apt-get:
+    $ apt-get install libcoin40-dev
+
+Precompiled for MS Windows:
+  ftp://ftp.coin3d.org/pub/coin/bin/win32/coin-v2.0.1-install.exe
+
+Precompiled for Mac OS X:
+  ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-2.0.1.dmg.gz
+
+
+Enjoy,
+
+  Lars J

@@ -1,0 +1,9 @@
+003 There are seams in texturemaps on SGI Octane with "IMPACTSR"
+    graphics hardware.
+
+    Can at least be seen on the SoGuiExamples/nodes/texture
+    example. Reported by Dan Stewart on coin-discuss. Cause not yet
+    known. Hard to debug and fix without access to the platform in
+    question.
+
+    <mortene@sim.no> 20020205.

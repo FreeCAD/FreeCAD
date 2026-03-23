@@ -1,0 +1,12 @@
+This directory is for optional extensions to the Coin core library.
+The only optional extension we have support for at the moment is
+a custom version of GLU 1.3 which we have called superglu.  If you
+have problems with GLU, it might be worth checking out.  Otherwise,
+just ignore it.
+
+To embed superglu in Coin, checkout the superglu Subversion repository
+into this directory like this:
+
+  hg clone http://hg.sim.no/superglu/default superglu
+
+Then rerun configure and rebuild Coin.

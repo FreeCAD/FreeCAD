@@ -1,0 +1,103 @@
+#Inventor V2.1 ascii
+
+# Check rendering under an SoArray.
+#
+# 19990423 mortene
+
+Separator {
+   Switch {
+      whichChild -1
+
+      DEF quadstrip Group {
+	 Coordinate3 {
+	    point [
+	     0.5 -0.5 0, -0.5 -0.5 0,
+	     0.5 0.5 0, -0.5 0.5 0,
+	    ]
+	 }
+	 QuadMesh {
+	    verticesPerColumn 2
+	    verticesPerRow 2
+	 }
+      }
+   }
+
+
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Array {
+	 numElements1 2
+	 numElements2 2
+	 separation1 1.5 0 0
+	 separation2 0 1.5 0
+	 USE quadstrip
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +4 0 0 }
+      Array {
+	 numElements1 2
+	 numElements2 2
+	 numElements3 2
+	 separation1 1.5 0 0
+	 separation2 0 1.5 0
+	 separation3 0 0 1.5
+	 USE quadstrip
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +4 0 0 }
+      Array {
+	 numElements1 2
+	 numElements2 2
+	 numElements3 2
+	 separation1 1.5 0 0
+	 separation2 0 1.5 0
+	 separation3 0 0 1.5
+	 origin FIRST
+	 USE quadstrip
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +4 0 0 }
+      Array {
+	 numElements1 2
+	 numElements2 2
+	 numElements3 2
+	 separation1 1.5 0 0
+	 separation2 0 1.5 0
+	 separation3 0 0 1.5
+	 origin CENTER
+	 USE quadstrip
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +4 0 0 }
+      Array {
+	 numElements1 2
+	 numElements2 2
+	 numElements3 2
+	 separation1 1.5 0 0
+	 separation2 0 1.5 0
+	 separation3 0 0 1.5
+	 origin LAST
+	 USE quadstrip
+      }
+   }
+
+   # (ROW 1) "wild" values
+   Translation { translation 0 +8 0 }
+   Separator {
+      BaseColor { rgb 1 1 1 }
+      Array {
+	 numElements1 3
+	 numElements2 5
+	 numElements3 7
+	 separation1 0.1 0.8 2.3
+	 separation2 -1 2 0
+	 separation3 0.4 -0.4 0.1
+	 origin LAST
+	 USE quadstrip
+      }
+   }
+}

@@ -1,0 +1,88 @@
+#VRML V1.0 ascii
+
+# Check various aspects of rendering with an AsciiText node.
+#
+# 20000328 mortene
+# 20030509 kintel
+
+Separator {
+   # (ROW 0) justification settings
+   Separator {
+      Material { diffuseColor 1 0 0 }
+      AsciiText { string [ "with", "default", "settings" ] }
+
+      Material { diffuseColor 0 0 1 }
+      Translation { translation +60 0 0 }
+      AsciiText {
+	 justification RIGHT
+	 string [ "justified", "to the", "right" ]
+      }
+
+      Material { diffuseColor 1 0 1 }
+      Translation { translation +60 0 0 }
+      AsciiText {
+	 justification CENTER
+	 string [ "i am", "center", "justified" ]
+      }
+   }
+
+   Translation { translation 0 -60 0}
+
+   # (ROW -1) spacing
+   Separator {
+      Material { diffuseColor 1 1 0 }
+      AsciiText {
+	 spacing 2.0
+	 string [ "double", "line", "spacing" ]
+      }
+
+      Material { diffuseColor 0 1 1 }
+      Translation { translation +60 0 0 }
+      AsciiText {
+	 spacing 0.5
+	 string [ "half", "line", "spacing" ]
+      }
+   }
+
+   Translation { translation 0 -60 0}
+
+   # (ROW -2) texturing
+   Separator {
+      Texture2 {
+         image 6 8 3
+         0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+         0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+         0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+         0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+         0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+         0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+         0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+         0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+      AsciiText {
+	 string [ "textured", "MgyjlM" ]
+      }
+   }
+
+   Translation { translation 0 -60 0}
+
+   # (ROW -2) width settings
+   Separator {
+      Material { diffuseColor 1 1 0 }
+      AsciiText {
+	 string [ "text width setting", "width = 0" ]
+      }
+      Translation { translation +60 0 0 }
+      Material { diffuseColor 1 0 1 }
+      AsciiText {
+         width [ 30, 30 ]
+	 string [ "text width setting", "width = 30" ]
+      }
+      Translation { translation +60 0 0 }
+      Material { diffuseColor 0 1 1 }
+      AsciiText {
+         width [ 100, 50 ]
+	 string [ "text width setting", "width = [100 , 50]" ]
+      }
+   }
+}

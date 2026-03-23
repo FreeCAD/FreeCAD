@@ -1,0 +1,88 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# This file is public domain software, originally written by Joey Hess.
+#
+# This version is for a multibinary package. It also allows you to build any
+# of the binary packages independently, via binary-<package> targets.
+
+# Uncomment this to turn on verbose mode. 
+#export DH_VERBOSE=1
+
+# This is the debhelper compatibility version to use.
+export DH_COMPAT=3
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	./configure --prefix=/usr \
+	  --disable-dependency-tracking \
+	  --enable-man --mandir=/usr/share/man \
+	  --enable-html htmldir=share/doc/libcoin@COIN_SO_VERSION@-doc/html \
+	  --enable-static --without-mesa
+	$(MAKE)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	-$(MAKE) distclean
+	-dh_clean
+
+# didn't see any debhelper script for this one...  larsa 20010829
+source: clean
+	dpkg-buildpackage -S -us
+
+install: DH_OPTIONS=
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) DESTDIR=`pwd`/debian/tmp install
+	-mkdir debian/tmp/usr/share/doc/libcoin@COIN_SO_VERSION@-dev
+	-ln -sf ../libcoin@COIN_SO_VERSION@-doc/html debian/tmp/usr/share/doc/libcoin@COIN_SO_VERSION@-dev/html
+	dh_movefiles
+
+# This single target is used to build all the packages, all at once, or
+# one at a time. So keep in mind: any options passed to commands here will
+# affect _all_ packages. Anything you want to only affect one package
+# should be put in another target, such as the install target.
+binary-common:
+	dh_testdir
+	dh_testroot
+#	dh_installdebconf
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installman
+#	dh_installinfo
+	dh_installchangelogs
+	dh_link
+	dh_compress
+	dh_strip
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+# Build architecture independent packages using the common target.
+binary-indep: build install
+	$(MAKE) -f debian/rules binary-common DH_OPTIONS=-i
+
+# Build architecture dependent packages using the common target.
+binary-arch: build install
+	$(MAKE) -f debian/rules binary-common DH_OPTIONS=-a
+
+# Any other binary targets build just one binary package at a time.
+binary-%: build install
+	$(MAKE) -f debian/rules binary-common DH_OPTIONS=-p$*
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install source

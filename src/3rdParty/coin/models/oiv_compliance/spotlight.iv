@@ -1,0 +1,357 @@
+#Inventor V2.1 ascii
+
+# Check rendering with an SoSpotLight.
+# NB: turn off the headlight in the viewer when viewing this file.
+#
+# 19990423 mortene
+
+Separator {
+   Switch {
+      whichChild -1
+      DEF mesh Array {
+	 numElements1 10
+	 numElements2 10
+	 separation1 1 0 0
+	 separation2 0 1 0
+	 origin CENTER
+
+	 Group {
+	    Coordinate3 {
+	       point [
+		0.5 -0.5 0, -0.5 -0.5 0,  # lr, ll
+		0.5 0.5 0, -0.5 0.5 0,    # ur, ul
+	       ]
+	    }
+	    IndexedFaceSet {
+	       coordIndex [ 1, 0, 2, -1, 1, 2, 3, -1 ]
+	    }
+	 }
+      }
+   }
+
+   # ROW 0 -- different locations
+   Translation { translation 0 +10 0 }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Separator {
+	 SpotLight { }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { location -4 -4 1 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { location 4 -4 1}
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { location 4 4 1 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { location -4 4 1 }
+	 USE mesh
+      }
+  }
+
+   # ROW 1 -- misc field settings
+   Translation { translation 0 +12 0 }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Separator {
+	 SpotLight { on FALSE }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { intensity 0.8 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { intensity 0.5 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { intensity 0.2 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { color 1 0 0 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 0 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { color 1 0 0 }
+	 USE mesh
+      }
+   }
+
+   # ROW 2 -- set ignore flags
+   Translation { translation 0 +12 0 }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Separator {
+	 SpotLight { location 4 4 -1 ~ }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { intensity 0.2 ~ }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { on FALSE ~ }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { color 1 0 0 ~ }
+	 USE mesh
+      }
+   }
+
+   # ROW 3 -- try different direction vectors
+   Translation { translation 0 +12 0 }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Separator {
+	 SpotLight { direction 0 -1 -1 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { direction 0 1 -1 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { direction -1 0 -1 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { direction 1 0 -1 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { direction -1 -1 -1 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight { direction 1 1 -1 }
+	 USE mesh
+      }
+   }
+
+   # ROW 4 -- try different dropoff rates
+   Translation { translation 0 +12 0 }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    dropOffRate 0.0
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    dropOffRate 0.015
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    dropOffRate 0.025
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    dropOffRate 0.050
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    dropOffRate 0.2
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    dropOffRate 1.0
+	 }
+	 USE mesh
+      }
+   }
+
+   # ROW 5 -- try different cutOffAngle values
+   Translation { translation 0 +12 0 }
+   Separator {
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 3.141592653589793  # pi
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 0 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 1.5707963267948966  # pi/2
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 1.0471975511965976  # pi/3
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 0.7853981633974483  # pi/4
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 0.6283185307179586  # pi/5
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 0.5235987755982988  # pi/6
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 0 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 0.39269908169872414  # pi/8
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 0.19634954084936207  # pi/16
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 0.04908738521234052  # pi/64
+	 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 SpotLight {
+	    direction 0 -1 -1
+	    cutOffAngle 0.0
+	 }
+	 USE mesh
+      }
+   }
+}

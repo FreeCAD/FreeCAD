@@ -1,0 +1,60 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoTextureCoordinateBinding.
+#
+# 19990503 mortene
+
+Separator {
+   Texture2 {
+      image 8 6 3
+      0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+      0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+      0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+      0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+      0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+      0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+   }
+
+   # (ROW 0)
+   Separator {
+      IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 3, 2, 1, 0, -1 ]
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 TextureCoordinateBinding { value PER_VERTEX }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 3, 2, 1, 0, -1 ]
+	 }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 TextureCoordinateBinding { value PER_VERTEX ~ }
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 3, 2, 1, 0, -1 ]
+	 }
+      }
+   }
+}

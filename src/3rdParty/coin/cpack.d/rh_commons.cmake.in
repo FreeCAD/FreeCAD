@@ -1,0 +1,81 @@
+# CentOS Linux release x.y.zzzz (Core)
+# Fedora release xx (Thirty)
+# Red Hat Enterprise Linux Server release x.y (Maipo)
+
+macro(rh_release RH_NAME)
+  set(REL_FILE /etc/redhat-release)
+  if (EXISTS "${REL_FILE}")
+    file(STRINGS ${REL_FILE} RH_RELEASE)
+    if (RH_RELEASE MATCHES "^${RH_NAME} release ([0-9]+)( |\\.).*")
+      set(RH_RELEASE "${CMAKE_MATCH_1}")
+    else()
+      message(WARNING "No release match found for '${RH_NAME}'")
+    endif()
+  else()
+    message(WARNING "This distro doesn't seem RedHat derived")
+  endif()
+  message("${RH_NAME} release '${RH_RELEASE}'")
+endmacro(rh_release)
+
+macro(rh_config RH_TAG RH_RELEASE)
+  set(CPACK_GENERATOR "RPM")
+  # see https://fedoraproject.org/wiki/Packaging:DistTag?rd=Packaging/DistTag
+  set(CPACK_RPM_PACKAGE_RELEASE "@PACKAGE_BUILD_NUMBER@.${RH_TAG}${RH_RELEASE}") 
+  set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}.@CMAKE_SYSTEM_PROCESSOR@")
+#  set(CPACK_RPM_CHANGELOG_FILE "@CMAKE_CURRENT_BINARY_DIR@/ChangeLog")
+  set(CPACK_RPM_COMPONENT_INSTALL "ON")
+  set(CPACK_RPM_PACKAGE_LICENSE "BSD")
+  set(CPACK_RPM_PACKAGE_VENDOR "${CPACK_PACKAGE_VENDOR}")
+  set(CPACK_RPM_PACKAGE_URL "${PROJECT_URL}")
+  set(CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION
+  "/usr/lib64/cmake"
+  "/usr/lib64/qt5"
+  "/usr/lib64/qt5/plugins"
+  "/usr/lib64/qt5/plugins/designer"
+  "/usr/share/man"
+  )
+
+  execute_process(
+    COMMAND echo ${CPACK_COMPONENTS_ALL}
+    WORKING_DIRECTORY "@CMAKE_CURRENT_BINARY_DIR@"
+    OUTPUT_FILE "components.list"
+  )
+
+  list(FILTER CPACK_COMPONENTS_ALL INCLUDE REGEX "runtime|development|documentation")
+  set(ARTIFACTS "${CPACK_COMPONENTS_ALL}")
+  ##############################################################################
+  # runtime
+  set(CPACK_RPM_RUNTIME_PACKAGE_NAME "${CPACK_PACKAGE_NAME}")
+  set(CPACK_RPM_RUNTIME_PACKAGE_ARCHITECTURE "@CMAKE_SYSTEM_PROCESSOR@")
+  set(CPACK_RPM_RUNTIME_FILE_NAME "${CPACK_RPM_RUNTIME_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}.${CPACK_RPM_RUNTIME_PACKAGE_ARCHITECTURE}.rpm")
+  set(CPACK_RPM_RUNTIME_PACKAGE_GROUP "System Environment/Libraries")
+  set(CPACK_RPM_RUNTIME_POST_INSTALL_SCRIPT_FILE "@CMAKE_CURRENT_SOURCE_DIR@/ldconfig.sh")
+  set(CPACK_RPM_RUNTIME_POST_UNINSTALL_SCRIPT_FILE "@CMAKE_CURRENT_SOURCE_DIR@/ldconfig.sh")
+  string(REPLACE "runtime" "${CPACK_RPM_RUNTIME_FILE_NAME}" ARTIFACTS "${ARTIFACTS}")
+  if (@OPTION_PKG_DEBUGINFO@)
+    set(CPACK_RPM_RUNTIME_DEBUGINFO_PACKAGE ON)
+    set(ARTIFACTS "${ARTIFACTS} ${CPACK_RPM_RUNTIME_PACKAGE_NAME}-debuginfo-${CPACK_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}.${CPACK_RPM_RUNTIME_PACKAGE_ARCHITECTURE}.rpm")
+  endif()
+  ##############################################################################
+  # development
+  set(CPACK_RPM_DEVELOPMENT_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-devel")
+  set(CPACK_RPM_DEVELOPMENT_PACKAGE_ARCHITECTURE "@CMAKE_SYSTEM_PROCESSOR@")
+  set(CPACK_RPM_DEVELOPMENT_FILE_NAME "${CPACK_RPM_DEVELOPMENT_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}.${CPACK_RPM_DEVELOPMENT_PACKAGE_ARCHITECTURE}.rpm")
+  set(CPACK_RPM_DEVELOPMENT_PACKAGE_GROUP "Development/Libraries")
+  set(CPACK_RPM_DEVELOPMENT_POST_INSTALL_SCRIPT_FILE   "@CMAKE_CURRENT_SOURCE_DIR@/ldconfig.sh")
+  set(CPACK_RPM_DEVELOPMENT_POST_UNINSTALL_SCRIPT_FILE "@CMAKE_CURRENT_SOURCE_DIR@/ldconfig.sh")
+  string(REPLACE "development" "${CPACK_RPM_DEVELOPMENT_FILE_NAME}" ARTIFACTS "${ARTIFACTS}")
+  ##############################################################################
+  # documentation
+  set(CPACK_RPM_DOCUMENTATION_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-doc")
+  set(CPACK_RPM_DOCUMENTATION_PACKAGE_ARCHITECTURE "noarch")
+  set(CPACK_RPM_DOCUMENTATION_FILE_NAME "${CPACK_RPM_DOCUMENTATION_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_RPM_PACKAGE_RELEASE}.${CPACK_RPM_DOCUMENTATION_PACKAGE_ARCHITECTURE}.rpm")
+  set(CPACK_RPM_DOCUMENTATION_PACKAGE_GROUP "Documentation")
+  string(REPLACE "documentation" "${CPACK_RPM_DOCUMENTATION_FILE_NAME}" ARTIFACTS "${ARTIFACTS}")
+
+  execute_process(
+    COMMAND echo ${ARTIFACTS}
+    WORKING_DIRECTORY "@CMAKE_CURRENT_BINARY_DIR@"
+    OUTPUT_FILE "artifacts.list"
+  )
+endmacro(rh_config)

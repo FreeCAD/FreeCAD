@@ -1,0 +1,58 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+DEF DIRECTIONALLIGHT_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF DIRECTIONALLIGHT_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+
+# Duplicates the inactive material. Don't "optimize" away this by
+# referencing the DIRECTIONALLIGHT_INACTIVE_MATERIAL instance, as that
+# would be unsecure in case of userdefined geometries.
+DEF directionalLightOverallMaterial Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+
+DEF DIRECTIONALLIGHT_ARROW Separator {
+   # Orient along negative Z axis.
+   Rotation { rotation 1 0 0  -1.57 }
+
+   Coordinate3 { point [ 0 0 0, 0 9 0 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+   Translation { translation 0 10 0 }
+   Cone { }
+   Translation { translation 0 -11 0 }
+   Cone { bottomRadius 0.1 }
+}
+
+DEF directionalLightRotatorRotator Separator {
+   USE DIRECTIONALLIGHT_INACTIVE_MATERIAL
+   USE DIRECTIONALLIGHT_ARROW
+}
+DEF directionalLightRotatorRotatorActive Separator {
+   USE DIRECTIONALLIGHT_ACTIVE_MATERIAL
+   USE DIRECTIONALLIGHT_ARROW
+}
+
+DEF directionalLightRotatorFeedback Separator { }
+DEF directionalLightRotatorFeedbackActive Separator { }
+
+
+DEF directionalLightTranslatorPlaneTranslator Separator {
+   USE DIRECTIONALLIGHT_INACTIVE_MATERIAL
+   Sphere { }
+}
+DEF directionalLightTranslatorPlaneTranslatorActive Separator {
+   USE DIRECTIONALLIGHT_ACTIVE_MATERIAL
+   Sphere { }
+}
+
+DEF DIRECTIONALLIGHT_TRANSLATE_AXIS Group {
+   Rotation { rotation 0 0 1  1.57 }
+   Cylinder { height 3  radius 0.2 }
+}
+
+DEF directionalLightTranslatorLineTranslator Separator {
+   USE DIRECTIONALLIGHT_INACTIVE_MATERIAL
+   USE DIRECTIONALLIGHT_TRANSLATE_AXIS
+}
+DEF directionalLightTranslatorLineTranslatorActive Separator {
+   USE DIRECTIONALLIGHT_ACTIVE_MATERIAL
+   USE DIRECTIONALLIGHT_TRANSLATE_AXIS
+}

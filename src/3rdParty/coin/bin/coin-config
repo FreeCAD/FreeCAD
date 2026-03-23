@@ -1,0 +1,283 @@
+#! /bin/sh
+# **************************************************************************
+# coin-config -- a utility for retrieving configuration information about
+# the installed Coin library.
+#
+# Authors:
+#   Lars J. Aas <larsa@coin3d.org>
+#   Morten Eriksen <mortene@coin3d.org>
+#
+# Ideas for Improvements:
+# - obsolete src/data/draggerDefaults/iv2h.sh by integration
+# - make builds with subdir-based source files work properly
+# - enable builds with source<->object file timestamp comparisons
+#   (--make instead of --build?)
+#
+
+program="$0"
+me=`echo "$0" | sed 's,^.*[/\\],,g'`
+wd=`echo "$0" | sed 's,/[^/]*$,,'`
+prefix=`cd "$wd/.."; pwd`
+
+hello=`echo hello | fmt -t -w70 2>&1`
+if test x"$hello" = x"hello"; then
+  # 'fmt -t' works
+  preformat="fmt -t -w76"
+  sedformat='$ q; s/$/ \\/'
+else
+  # sed script replacing "fmt -w76 | sed '2,$ s/^/  /g; $ q; 1,$ s/$/
+  # \\/'"
+  preformat="cat"
+  sedformat='/^.................................................................+............/
+{
+  G
+  s/^\([^\
+]\{1,76\}\) \(.*\)\(\
+\)/\1 \\\3  \2/
+  P
+  D
+}'
+  if test xhello != x"`echo hello | sed -e $sedformat 2>&1`"; then
+    sedformat="s/a/a/"
+  fi
+fi
+
+usage="\
+Usage: $me [OPTIONS]
+Options:
+  --alternate=<string>
+  --cflags
+  --cppflags
+  --cxxflags
+  --ldflags
+  --libs
+  --msvcrt
+  --prefix
+  --includedir
+  --frameworkdir
+  --datadir
+  --htmldir
+  --have-feature <featurename>
+  --compile <sourcefile> [<sourcefile>]...
+  --link <program> <object> [<object>]...
+  --build <program> <sourcefile> [<sourcefile>]...
+  --build-app <program> <sourcefile> [<sourcefile>]...
+  --setup | --setup-front
+  --header <class>
+  --version
+  --usage | --help"
+
+alternate=default
+for arg
+do
+  case $arg in
+  --alternate=*) alternate=`echo $arg | cut -d= -f2-` ;;
+  --debug) alternate=debug ;;
+  esac
+done
+
+if test -f $prefix/share/Coin/conf/coin-$alternate.cfg; then
+  configfile="$prefix/share/Coin/conf/coin-$alternate.cfg"
+  . $configfile
+elif test -f $prefix/share/Coin/conf/coin-default.cfg; then
+  configfile="$prefix/share/Coin/conf/coin-default.cfg"
+  . $configfile
+else
+  echo >&2 "$me: no default Coin config available in $prefix/share/Coin/conf/"
+  exit 1
+fi
+
+# Remove gcc system directories includes from the include path
+if test x"$compiler_is_gcc" = x"yes"; then 
+  sim_ac_save_cpp=$CPP
+  CPP="cpp"
+  case `uname -s` in
+    Darwin) CPP="cpp3"
+    ;;
+  esac
+  cpp_sys_dirs=`$CPP -v <<EOF 2>&1 | sed -n -e \
+  '/#include <...> search starts here:/,/End of search list./{
+    /#include <...> search starts here:/b
+    /End of search list./b
+    s/ /-I/
+    p
+  }'
+EOF`
+  result=
+  for inc_path in $cppflags; do
+    additem=true
+    for sys_dir in $cpp_sys_dirs; do
+      if test x$inc_path = x$sys_dir; then
+        additem=false
+        break
+      fi
+    done
+    $additem && result="$result $inc_path"
+  done
+  cppflags=$result
+  CPP=$sim_ac_save_cpp
+fi
+
+
+while test $# -gt 0
+do
+  case $1 in
+  --usage | --help)  echo "$usage"         ;;
+  --version)         echo "$version"       ;;
+  --prefix)          echo "$prefix"        ;;
+  --cppflags)        echo "$cppflags"      ;;
+  --cflags)          echo "$cflags"        ;;
+  --cxxflags)        echo "$cxxflags"      ;;
+  --ldflags)         echo "$ldflags"       ;;
+  --libs)            echo "$libs"          ;;
+  --datadir)         echo "$datadir"       ;;
+  --htmldir)         echo "$htmldir"       ;;
+  --includedir)      echo "$includedir"    ;;
+  --frameworkdir)    echo "$frameworkdir"  ;;
+  --msvcrt)          echo "$msvcrt"        ;;
+  --have-feature)
+    exitcode=1
+    feature="`echo $2 | tr '-' '_'`"
+    eval "test x\${have_$feature} = x1 && exitcode=0"
+    exit $exitcode
+    ;;
+  --compile)
+    shift
+    if test $# -eq 1; then
+      basename=`echo "$1" | sed -e 's/\.[^\.]*$//'`  # strip off extension
+      # FIXME: SGI IRIX "fmt" doesn't support neither of the two options we use. 20021021 mortene.
+      echo $compiler $CPPFLAGS $cppflags $CXXFLAGS $cxxflags -c $1 -o $basename.$objext \
+        | $preformat | sed "$sedformat"
+      $compiler \
+        $CPPFLAGS $cppflags \
+        $CXXFLAGS $cxxflags \
+        -c $1 -o $basename.$objext || exit $?
+    else
+      for arg in $@; do
+        $program --alternate="$alternate" --compile $arg || exit $?
+      done
+    fi
+    exit 0
+    ;;
+  --link)
+    shift
+    progname=$1
+    shift
+    # FIXME: SGI IRIX "fmt" doesn't support neither of the two options we use. 20021021 mortene.
+    echo $compiler $LDFLAGS $ldflags -o $progname $@ $libs $LIBS \
+      | $preformat | sed "$sedformat"
+    $compiler \
+      $LDFLAGS $ldflags \
+      -o $progname $@ \
+      $libs $LIBS || exit $?
+    exit 0
+    ;;
+  --build)
+    shift
+    progname=$1
+    objs=
+    extraldflags=
+    extralibs=
+    shift
+    for arg in $@; do
+      case $arg in
+      *.c | *.cpp | *.cxx | *.cc | *.c++)
+        basename=`echo "$arg" | sed -e 's/\.[^\.]*$//'`  # strip off extension
+        $program --alternate="$alternate" --compile $arg || exit $?
+        objs="$objs $basename.$objext"
+        ;;
+      -L*)
+        extraldflags="$extraldflags $arg"
+        ;;
+      -l*)
+        extralibs="$extralibs $arg"
+        ;;
+      esac
+    done
+    echo $compiler $LDFLAGS $ldflags $extraldflags \
+      -o $progname $objs $extralibs $libs $LIBS \
+      | $preformat | sed "$sedformat"
+    $compiler \
+      $CPPFLAGS $cppflags \
+      $CXXFLAGS $cxxflags \
+      $LDFLAGS $ldflags $extraldflags \
+      -o $progname $objs \
+      $extralibs $libs $LIBS || exit $?
+    exit 0
+    ;;
+  --build-app)
+    case $host in
+    *-darwin*)
+      shift
+      progname=$1
+      shift
+      if test $@; then
+        $program --alternate="$alternate" --build $progname $@ || exit $?
+      fi
+      echo "$me: making Mac OS X application \"$progname.app\""
+      mkdir $progname.app 2>/dev/null
+      mkdir $progname.app/Contents 2>/dev/null
+      mkdir $progname.app/Contents/MacOS 2>/dev/null
+      if test -d $progname.app/Contents/MacOS &&
+        mv -f $progname $progname.app/Contents/MacOS/ &&
+        echo "APPL????" >$progname.app/Contents/PkgInfo &&
+        cat > $progname.app/Contents/Info.plist <<EOF ; then
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1
+.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>CFBundleExecutable</key>
+        <string>$progname</string>
+        <key>CFBundlePackageType</key>
+        <string>APPL</string>
+</dict>
+</plist>
+EOF
+        :
+      else
+        echo >&2 "$me: failed to make Mac OS X application"
+        echo >&2 " - problem is probably user permission or disk space related"
+        exit 1
+      fi
+      ;;
+    esac
+    exit 0
+    ;;
+  --setup)
+    # FIXME: scan variables and only modify variables that need modification
+    echo "PATH=\$PATH:$prefix/bin"
+    echo "LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:$prefix/lib"
+    echo "export PATH LD_LIBRARY_PATH"
+    exit 0
+    ;;
+  --setup-front)
+    # FIXME: scan variables and only modify variables that need modification
+    echo "PATH=$prefix/bin:\$PATH"
+    echo "LD_LIBRARY_PATH=$prefix/lib:\$LD_LIBRARY_PATH"
+    echo "export PATH LD_LIBRARY_PATH"
+    exit 0
+    ;;
+  --header)
+    shift
+    classname=$1
+    for header in `find ${prefix}/include/Inventor -type f | xargs grep -n "^class COIN_DLL_API ${classname}\>" | cut -d: -f1`; do
+      echo "FILE: ${header}"
+      cat "${header}"
+    done
+    exit 0
+    ;;
+  # ignore some options
+  --alternate=*) ;;
+  --debug) ;;
+  *)
+    echo >&2 "$me: Invalid option: \"$1\""
+    echo >&2 "$usage"
+    exit 1
+    ;;
+  esac
+  shift
+done
+
+exit 0
+

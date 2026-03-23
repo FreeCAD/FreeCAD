@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# This installation script just echoes the values of the available 
+# arguments and environmental variables.
+#
+echo "Checking for PyObjC installation"
+if (python -c "import objc")
+then
+  echo "OK, continuing installation"
+  let retval=0
+else 
+  echo "ERROR: You have to install PyObjC before installing Pivy!"
+  let retval=119
+fi
+
+echo "\$retval = $retval"
+echo "END INSTALLATIONCHECK SCRIPT"
+exit $retval
+

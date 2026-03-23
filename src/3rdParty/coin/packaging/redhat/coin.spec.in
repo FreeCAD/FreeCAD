@@ -1,0 +1,118 @@
+# **************************************************************************
+# Spec file for constructing installation package in RPM format.
+#
+# * run configure with the "--prefix" option set to the final
+#   installation directory (or leave out to default to /usr/local/)
+#
+# * run "make redhat-packages".  Note that this make rule assumes the rpm
+#   files resides in /usr/src/rpm/
+#
+# * look in /usr/src/rpm/SRPMS and /usr/src/rpm/RPMS for rpm packages.
+
+# **************************************************************************
+# [PREAMBLE]
+
+Name: Coin
+Version: @PACKAGE_VERSION@
+Release: 1
+
+Copyright: BSD
+Group: Development/Libraries
+URL: http://doc.coin3d.org/Coin/
+Vendor: http://www.sim.no/
+Packager: Lars J. Aas <larsa@coin3d.org>
+# Distribution: <nothing - omitted>
+Source: ftp://ftp.coin3d.org/pub/coin/src/Coin-%{version}.tar.gz
+
+Summary: A high-level 3D visualization library with Open Inventor 2.1 API.
+
+%description
+Coin is a 3D graphics library with an Application Programming Interface
+based on the Open Inventor 2.1 API.  For those who are not familiar with
+Open Inventor, it is a scene-graph based retain-mode rendering and model
+interaction library, written in C++, which has become the de facto
+standard graphics library for 3D visualization and visual simulation
+software in the scientific and engineering community.
+
+# **************************************************************************
+
+# BuildPreReq: simage - not needed before run-time
+BuildPreReq: libGL.so.1 xdevel
+BuildPreReq: binutils gcc gawk make doxygen
+BuildRoot: /var/tmp/%{name}-%{version}-root
+
+%define _prefix @prefix@
+
+%if "%_prefix" != "/usr"
+%define _mandir %{_prefix}/man
+%endif
+
+# **************************************************************************
+# [PREPARATION]
+%prep
+
+%setup -q -n Coin-%{version}
+
+# **************************************************************************
+# [BUILD]
+%build
+
+%ifarch i386 i486 i586 i686
+RPM_OPT_FLAGS=`echo $RPM_OPT_FLAGS | sed -e 's/-m\(.86\)/-mcpu=i\1/g'`
+%endif
+
+./configure \
+  CFLAGS="$RPM_OPT_FLAGS" \
+  CXXFLAGS="$RPM_OPT_FLAGS" \
+  --prefix="%{_prefix}" \
+  --enable-man --mandir="%{_mandir}" \
+  --enable-html htmldir="%{_prefix}/html" \
+  --without-mesa \
+  --disable-dependency-tracking
+
+make
+
+# **************************************************************************
+# [INSTALLATION]
+%install
+
+make DESTDIR=$RPM_BUILD_ROOT install-strip
+if test x"%{_prefix}" != x"/usr"; then
+ gzip -9qf $RPM_BUILD_ROOT%{_mandir}/man1/*.1 2>/dev/null
+ gzip -9qf $RPM_BUILD_ROOT%{_mandir}/man3/*.3 2>/dev/null
+fi
+
+# **************************************************************************
+# [VERIFICATION]
+
+# **************************************************************************
+# [CLEAN]
+%clean
+
+if test x"$RPM_BUILD_ROOT" = x"/var/tmp/%{name}-%{version}"; then
+  rm -rf $RPM_BUILD_ROOT;
+fi
+
+# **************************************************************************
+# [FILES]
+%files
+
+%defattr(-, root, root)
+%doc AUTHORS COPYING ChangeLog* FAQ INSTALL* LICENSE* NEWS README* THANKS
+
+# config stuff
+%defattr(-, root, root)
+%{_exec_prefix}/bin/*
+%{_prefix}/share/aclocal/coin.m4
+%dir %{_datadir}/Coin/conf
+%{_datadir}/Coin/conf/*
+%{_datadir}/Coin/draggerDefaults
+
+# libCoin
+%defattr(-, root, root)
+%{_prefix}/include/Inventor
+%{_exec_prefix}/lib/libCoin.*
+%{_mandir}/man1/*.1.gz
+%{_mandir}/man3/*.3.gz
+%{_prefix}/html/*
+

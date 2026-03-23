@@ -1,0 +1,16 @@
+198 MS Windows DLL versioning.
+
+    For several good reasons[*], we should add the version number to
+    the DLL "resources" (or however it's done).
+
+    See following URL for information on the VERSIONINFO resource:
+
+        http://msdn.microsoft.com/library/default.asp?url=/library/en-us/tools/tools/versioninfo_resource.asp
+
+
+    [*] Helpful when working with more than 1 Coin DLL on a system,
+    during debugging sessions, for instance, as a DLL version number
+    is visible when simply checking its properties in the Windows
+    Explorer.
+
+    20050624 mortene.

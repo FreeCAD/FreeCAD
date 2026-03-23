@@ -1,0 +1,237 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of SoPointSet rendering.
+#
+# 19990515 mortene
+
+Separator {
+   # Global settings.
+   Coordinate3 {
+      point [ -1 1 0, -1 -1 0, 1 -1 0, 1 1 0 ]
+   }
+   Material {
+      diffuseColor [ 1 0 0, 0 1 0, 0 0 1, 1 1 0 ]
+   }
+   TextureCoordinate2 {
+      point [ 0 0, 0 1, 1 0, 1 1 ]
+   }
+
+   Switch {
+      whichChild -2
+
+      DEF ps Separator {
+	 PointSet {
+	    numPoints 4
+	 }
+	 Translation { translation 0.2 0 0 }
+	 PointSet {
+	    startIndex 2
+	    numPoints 2
+	 }
+      }
+   }
+
+
+   # (ROW 0) MaterialBinding
+   Separator {
+      MaterialBinding { value OVERALL }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_PART }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_FACE }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      USE ps
+   }
+
+   # (ROW 1) NormalBinding
+   Translation { translation 0 +6 0 }
+   Separator {
+      NormalBinding { value OVERALL }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_PART }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_PART_INDEXED }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_FACE }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_FACE_INDEXED }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_VERTEX }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_VERTEX_INDEXED }
+      USE ps
+
+      # The next two use obsoleted values for Normalbinding::value.
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value DEFAULT }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value NONE }
+      USE ps
+   }
+
+   # (ROW 2) Test how IndexedFaceSet is affected by Complexity.
+   Translation { translation 0 +6 0 }
+   Separator {
+      Complexity { type BOUNDING_BOX }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      Complexity { type OBJECT_SPACE  value 1.0 }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.2 }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.0 }
+      USE ps
+   }
+
+
+   # (ROW 3) With different LightModel settings.
+   Translation { translation 0 +6 0 }
+   Separator {
+      LightModel { model BASE_COLOR }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      LightModel { model PHONG }
+      USE ps
+   }
+
+   # (ROW 4) With different DrawStyle settings.
+   Translation { translation 0 +6 0 }
+   Separator {
+      DrawStyle { style INVISIBLE }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES lineWidth 1 }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES lineWidth 2 }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES lineWidth 4 }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES lineWidth 2 linePattern 0x0180 }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style POINTS }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style POINTS pointSize 3 }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style FILLED }
+      USE ps
+   }
+
+   # (ROW 5) With different ShapeStyle settings.
+   Translation { translation 0 +6 0 }
+   Separator {
+      Translation { translation +5 0 0 }
+      ShapeHints { vertexOrdering CLOCKWISE }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      ShapeHints { vertexOrdering COUNTERCLOCKWISE }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      ShapeHints { shapeType UNKNOWN_SHAPE_TYPE }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      ShapeHints { shapeType SOLID }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      ShapeHints { faceType UNKNOWN_FACE_TYPE }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      ShapeHints { faceType CONVEX }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      ShapeHints { creaseAngle 0.5 }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      ShapeHints { creaseAngle 1.57 }
+      USE ps
+   }
+
+   # (ROW 6) Test how IndexedFaceSet is affected by texturemapping.
+   Translation { translation 0 +6 0 }
+   Separator {
+      Texture2 {
+	 image 8 6 3
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      }
+
+      USE ps
+
+      Translation { translation +5 0 0 }
+      TextureCoordinateBinding { value PER_VERTEX }
+      USE ps
+
+      Translation { translation +5 0 0 }
+      TextureCoordinateBinding { value PER_VERTEX_INDEXED }
+      USE ps
+   }
+}

@@ -1,0 +1,145 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+
+DEF CENTERBALL_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF CENTERBALL_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF CENTERBALL_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+DEF CENTERBALL_TRANSLATION_MATERIAL Material { diffuseColor 0 0.8 0.5  emissiveColor 0 0.2 0.0 }
+
+### Geometry definitions for the ball ########################################
+
+DEF CENTERBALL_BALL Separator {
+   DrawStyle { style INVISIBLE }
+   Sphere { }
+}
+DEF centerballRotator Separator { USE CENTERBALL_BALL }
+DEF centerballRotatorActive Separator { USE CENTERBALL_BALL }
+
+
+### Geometry definitions for the stripes #####################################
+
+DEF CENTERBALL_SCALE Scale { scaleFactor 1.02 1.02 1.02 }
+
+DEF CENTERBALL_STRIPE Separator {
+   USE CENTERBALL_SCALE
+
+   # This is needed because SoDragger::GLRender() sets up default
+   # rendering for dragger geometry to be backface culled.
+   ShapeHints {
+      # Note: removing this node doesn't seem to have any influence on
+      # the geometry on most systems, but "backfacing lines" are not
+      # rendered on my NVidia RIVA TNT2 card, Linux system, tested
+      # with many different driver versions up to and including at
+      # least 53.36.
+      shapeType UNKNOWN_SHAPE_TYPE
+      vertexOrdering UNKNOWN_ORDERING
+   }
+
+   DrawStyle { style LINES  lineWidth 2 }
+   Cylinder { parts SIDES  height 0.0 }
+}
+
+DEF centerballStripe Separator {
+   # For picking.
+   DrawStyle { style INVISIBLE }
+   Cylinder { parts SIDES  height 0.1 }
+
+   USE CENTERBALL_INACTIVE_MATERIAL
+   USE CENTERBALL_STRIPE
+}
+DEF centerballStripeActive Separator {
+   USE CENTERBALL_ACTIVE_MATERIAL
+   USE CENTERBALL_STRIPE
+}
+
+
+### Geometry definitions for the arrows ######################################
+
+DEF CENTERBALL_DOUBLEHEAD_ARROW Separator {
+   Coordinate3 { point [ 0 0.1 1, 0 -0.1  1, 0 0.1 -1, 0 -0.1 -1 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1 ] }
+   
+   Complexity { value 0.1 }
+
+   Separator {
+     Translation { translation 0 0.12 1 }
+     DEF CENTERBALL_TRANSLATOR_HEAD Cone { height 0.05  bottomRadius 0.025 }
+     Translation { translation 0 -0.24 0 }
+     Rotation { rotation 1 0 0  3.14 }
+     USE CENTERBALL_TRANSLATOR_HEAD
+   }
+   Separator {
+     Translation { translation 0 0.12 -1 }
+     USE CENTERBALL_TRANSLATOR_HEAD
+     Translation { translation 0 -0.24 0 }
+     Rotation { rotation 1 0 0  3.14 }
+     USE CENTERBALL_TRANSLATOR_HEAD
+   }
+}
+
+DEF CENTERBALL_AXIS_CROSS Separator {
+   DrawStyle { lineWidth 3 }
+   USE CENTERBALL_DOUBLEHEAD_ARROW
+   Rotation { rotation 0 0 1  1.57 }
+   USE CENTERBALL_DOUBLEHEAD_ARROW
+}
+
+DEF centerballCenterChanger Separator {
+   # For picking.
+   Separator {
+      DrawStyle { style INVISIBLE }
+      Translation { translation 0 0 1 }
+      DEF CENTERBALL_TRANSLATOR_MARKER Sphere { radius 0.1 }
+      Translation { translation 0 0 -2 }
+      USE CENTERBALL_TRANSLATOR_MARKER
+   }
+
+   USE CENTERBALL_TRANSLATION_MATERIAL
+   USE CENTERBALL_SCALE
+   USE CENTERBALL_AXIS_CROSS
+   Rotation { rotation 0 1 0  3.14 }
+   USE CENTERBALL_AXIS_CROSS
+}
+DEF centerballCenterChangerActive Separator { }
+
+
+### Geometry definitions for the translation feedback ########################
+
+DEF CENTERBALL_FEEDBACK_AXIS Group {
+   USE CENTERBALL_FEEDBACK_MATERIAL
+   DrawStyle { lineWidth 3 }
+   Scale { scaleFactor 3 5 1.05 }
+   USE CENTERBALL_DOUBLEHEAD_ARROW
+}
+
+DEF centerballCenterXAxisFeedback Separator {
+   Rotation { rotation 0 0 1  1.57 }
+   USE CENTERBALL_FEEDBACK_AXIS
+}
+
+DEF centerballCenterYAxisFeedback Separator {
+   USE CENTERBALL_FEEDBACK_AXIS
+}
+
+
+### Geometry definitions for the axes inside the ball ########################
+
+DEF CENTERBALL_BALLAXES_COMMON Group {
+   USE CENTERBALL_ACTIVE_MATERIAL
+   USE CENTERBALL_SCALE
+   Coordinate3 { point [ 1 0 0, -1 0 0, 0 1 0, 0 -1 0, 0 0 1, 0 0 -1 ] }
+}
+
+DEF centerballXAxis Separator {
+   USE CENTERBALL_BALLAXES_COMMON
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+}
+DEF centerballYAxis Separator {
+   USE CENTERBALL_BALLAXES_COMMON
+   IndexedLineSet { coordIndex [ 2, 3, -1 ] }
+}
+DEF centerballZAxis Separator {
+   USE CENTERBALL_BALLAXES_COMMON
+   IndexedLineSet { coordIndex [ 4, 5, -1 ] }
+}

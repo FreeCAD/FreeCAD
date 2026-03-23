@@ -1,0 +1,33 @@
+146 Compatibility issue: SoShapeHints::windingType missing in Coin.
+
+    This was added for TGS OIV 4.0, so we should implement this for
+    compatibility reasons. We've also had an external request for
+    supporting polygons with holes, which this field is the public API
+    for doing.
+
+    pederb suggests using GLU for tessellating such polygons, as
+    adding that capability to SbTesselator is a non-trivial task.
+
+    Note that this breaks ABI-compatibility, so it is only relevant
+    for Coin 3.
+
+    20041010 mortene.
+
+    UPDATE 20041210 mortene: GLU tessellation can do polygons with
+    holes, and we should probably use that for the implementation of
+    this feature.
+
+    UPDATE 20041213 kintel: The MS Windows implementation of GLU
+    is known to be buggy (it crashes AFAIR) wrt. tesselating polygons
+    with holes.
+
+    UPDATE 20050809 mortene: adding the capability of tessellating
+    polygons with holes to SbTessellator would perhaps be a good task
+    for a student. Suggested by pederb.
+
+    UPDATE 20060216 mortene: I've now added an abstraction layer on
+    top of the GLU tessellation functionality, which resembles our own
+    SbTesselator -- for convenience. See src/base/SbGLUTessellator.h.
+
+    Implementing support for the windingType field should be quite
+    straightforward now.

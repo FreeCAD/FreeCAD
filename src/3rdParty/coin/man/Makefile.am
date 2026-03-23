@@ -1,0 +1,15 @@
+
+if BUILD_LIBRARY
+MAN1DIR = man1
+else
+MAN1DIR =
+endif
+
+if BUILD_MANPAGES
+MAN3DIR = man3
+else
+MAN3DIR = 
+endif
+
+SUBDIRS = $(MAN1DIR) $(MAN3DIR)
+

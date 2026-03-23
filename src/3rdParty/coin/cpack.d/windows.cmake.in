@@ -1,0 +1,39 @@
+##############################################################################
+# Unofficial CPACK configuration for Windows systems
+# tested on Windows 10 (64 bits)
+#
+##############################################################################
+include("@CMAKE_CURRENT_BINARY_DIR@/commons.cmake")
+
+config_package(LOWCASE)
+
+set(CPACK_GENERATOR "NSIS")
+
+if("@CMAKE_SIZEOF_VOID_P@" EQUAL 8)
+  set(CPACK_SYSTEM_NAME "win64")
+  set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
+else()
+  set(CPACK_SYSTEM_NAME win32)
+endif()
+
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}")
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME}")
+set(CPACK_NSIS_PACKAGE_NAME "${CPACK_PACKAGE_NAME} ${CPACK_PACKAGE_VERSION}")
+set(CPACK_NSIS_URL_INFO_ABOUT ${PROJECT_URL})
+
+
+execute_process(
+  COMMAND cmd /c echo "${CPACK_COMPONENTS_ALL}"
+  WORKING_DIRECTORY "@CMAKE_CURRENT_BINARY_DIR@"
+  OUTPUT_FILE "components.list"
+)
+
+list(FILTER CPACK_COMPONENTS_ALL INCLUDE REGEX "runtime|development|documentation|debug")
+set(ARTIFACTS "${CPACK_PACKAGE_FILE_NAME}.exe")
+
+execute_process(
+  COMMAND cmd /c echo "${ARTIFACTS}"
+  WORKING_DIRECTORY "@CMAKE_CURRENT_BINARY_DIR@"
+  OUTPUT_FILE "artifacts.list"
+)
+

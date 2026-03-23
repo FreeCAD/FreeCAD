@@ -1,0 +1,285 @@
+        
+        T H E   C O I N   L I C E N S I N G   F A Q 
+
+        -1 .   S w i t c h    t o     B S D
+
+        Coin is now licensed under the 3-clause BSD license (see
+        COPYING). The remaining contents of this file is mostly
+        interesting for historical reasons.
+
+        0 .   G e n e r a l    q u e s t i o n s
+
+
+Q 0.0:  Coin is under the GNU General Public License ("GPL").
+        Can I use it in my proprietary, commercially sold application?
+
+A:      No, the GNU GPL restricts the applications that can use Coin to
+        have to be Free Software, and otherwise compatible with the GNU
+        GPL.
+
+        The distribution and availability of the Coin library under the
+        GNU GPL is primarily meant to be a service for those who write
+        other Free Software libraries or applications. If you write
+        proprietary software and would like to use the Coin library, see
+        the next question.
+
+
+Q 0.1:  Is it possible to use the Coin library without the restrictions
+        of the GNU GPL?
+
+A:      Yes, as a service for those who would like to use the Coin library
+        in proprietary software, we at Kongsberg Oil & Gas Technologies offer
+        the "Coin Professional Edition License" which buys developers that are
+        license holders the option to use the library with no strings
+        attached.  The "Coin Professional Edition License" covers all the
+        Coin libraries, unless otherwise specified.
+
+        By "no strings attached", we of course mean that you as a
+        software developer would not have to obey the restrictions of
+        the GNU GPL, as you would use the Coin library under our
+        "Professional Edition" license instead.
+
+        The Coin Professional Edition License additionally covers
+        other libraries in the "Coin family" for no extra cost,
+        including all the GUI toolkits (SoQt, SoWin, SoGtk, SoXt,
+        Sc21) and Kongsberg Oil & Gas Technologies's 3D file format libraries
+        Dime and Profit.
+
+        See <URL:http://www.coin3d.org> for more information about the
+        details of these libraries.
+
+        Prioritized support services is also part of the package -- your
+        support requests will be sent straight to the top of the
+        todo-stack of our developers. The developers used as first-tier
+        support for our Coin Professional Edition License holders are
+        the same people who have written all the sourcecode of the
+        library in the first place, so you will be in very good hands.
+
+        We take pride in giving our customers excellent support, and
+        since the Coin libraries are what our developers love to work with,
+        it's given with a smile.  :-)
+
+        Oh, and one additional benefit from being a Coin Professional
+        Edition License holder: you are allowed to cut'n'paste from our
+        sourcecode and use it in your own applications without having to
+        worry about licensing issues. This is for instance very
+        convenient when writing extension components for Coin, like new
+        nodes or action types.
+
+        You may also cut'n'paste code from all our example programs in
+        the same manner (these are also originally under the GNU GPL, by
+        the way).
+
+
+Q 0.2:  How can you sell a "Professional Edition License" when the
+        library is released under the GNU GPL? Wouldn't that be
+        disallowed by the GNU GPL?
+
+A:      Kongsberg Oil & Gas Technologies can do this dual licensing "trick"
+        with Coin because we are full copyright holders -- ie we own every
+        single line of code written for the Coin library. Therefore we are
+        able to license the Coin library both as Free Software as well as
+        under a special purpose license for proprietary software
+        vendors. (If you are familiar with TrollTech's "Qt" library,
+        they use the same strategy.)
+
+
+Q 0.3:  What happens if I don't renew my Coin PEL? Can I still continue
+        using Coin?
+
+A:      Yes. You can continue development using the last version of
+        Coin (or any earlier version, if you want) that was released 
+        while you were a registered PEL holder. Version in this context
+        means "release with a unique version number", so for instance 
+        1.0.0 and 1.0.1 count as different versions. 
+
+        Of course you are not allowed to use any version of Coin that
+        was released after the expiry date, and you will not get any 
+        more developer support.
+
+
+Q 0.4:  Can't I just use the Coin Free Edition to develop my software
+        in-house, and then get a PEL and switch to a non-Free license
+        just before I release it?
+
+A:      From a strictly legal point of view, this is possible. As 
+        long as you do not release binaries, you do not need to
+        release the source code either, so you can work on a piece of
+        software under the terms of the GPL, and then re-license it
+        before releasing it.
+
+        We strongly discourage this approach, though, for several
+        reasons. First, the Free Edition of Coin is intended for Free
+        Software developers, and using it for proprietary development
+        obviously is against this intention.
+
+        Second, the PEL is meant to be a per-developer license, taking
+        into account that you are likely to need professional support
+        when doing your development. By getting a PEL when you start
+        developing your software, you can benefit from our priority
+        support when you actually need it - during development.
+
+        Third, note that even if you never release the in-house GPL
+        version to the public, the terms of the GPL are valid for all
+        the people involved in the project. That means that everybody
+        with access to the software has the irrevokable right to get
+        the source code and distribute it to whomever they want,
+        including posting it on public websites etc. - and this would
+        be perfectly legal. This is the freedom granted by the GPL,
+        and it intentionally clashes with proprietary development.
+
+
+        I .  C o n c e r n i n g   t h e   n e w   P E L  ( v 2 )
+
+
+Q 1.0:  I am a Coin PEL holder. What does the new Coin PEL (v2) change for 
+        me?  
+
+A:      Nothing. The new Coin PEL is merely a more detailed specification
+        of the currently valid rights and conditions.
+
+
+Q 1.1:  So then why did you bother making a new one?
+
+A:      In the previous license, many points were either not covered at
+        all, or not in enough detail. The many questions that we
+        received concerning the actual rights and restrictions showed
+        us the importance of clearly stating these things, and the
+        Coin-2 release was a good opportunity to put the new license
+        in place.
+
+
+Q 1.2:  So, how about a summary in English instead of Legalese? 
+
+
+A:      My pleasure - here you go. Paragraph by paragraph (note: everything
+        that is said about Coin below also applies to the So*
+        libraries and Dime/Profit):
+
+        After the definition of what the license is about, and whom it
+        concerns, it is stated that SIM is and remains the copyright
+        holder and owner of Coin - the license gives you the right to
+        use the software, we do not sell it to you.
+
+        You are getting a license for one individual - you, or
+        somebody in your company. We are deliberately not restrictive
+        about this "in your company", so it's perfectly okay to
+        acquire a company license and have an external consultant be
+        the actual Coin developer. The important part is the idea that
+        it is a personal developer license, not a "site license" or a
+        company-wide license. So one license is needed for each
+        developer working on Coin-related development.
+
+        The license is valid for one year, after which you will get a
+        renewal offer from us.
+
+        You are allowed to use Coin to develop your product, whatever
+        that is - except if you are developing a directly competing product.
+
+        You can ship binary version of Coin - modified or unmodified -
+        with your product. You are also allowed to distribute the
+        source code, but only in unmodified form. If you have changed
+        anything, you must distribute the original source code plus
+        patches. (See also next question.)
+
+        You will get one year of free upgrades, and you are entitled
+        to developer support for that period.
+
+        Now if you don't extend your license after one year, you can
+        of course still ship your product. You are also allowed to
+        continue doing development using the last version of Coin that
+        was released while you had a valid license. You will not get
+        any more updates, and you will not get any more support.
+
+        The rest is off-the-shelf legal provisions - standard clauses
+        in the (unexpected) case of a lawsuit, statement that we don't
+        take any warranty (you are responsible for e.g. loss of data)
+        etc.
+
+
+Q 1.3:  I am allowed to modify the Coin library itself?!
+
+A:      Yup. You are allowed to do that, for instance in order to fix bugs
+        or adapt it to your special needs. You are of course not
+        allowed to make a modified version of Coin and sell it as your
+        own product.  Note that if you have made modifications to the
+        Coin library, you are not allowed to distribute the modified
+        source code - you have to use source code diffs (patches). You
+        are free to distribute a binary of the changed version without
+        the need to disclose your source code, but then you can't name
+        that binary "Coin". This is necessary to avoid conflicts and
+        confusion.
+
+
+Q 1.4:  If I distribute the Coin source code, under what license is it for
+        my customers? 
+
+A:      Under the GPL and PEL. The license is connected to
+        copyrightable material (in our case, the Coin source code),
+        not the modus of distribution. So regardless of how you get
+        the source - from SIM, from somebody else's website, from a
+        Debian CD, from Santa Claus - it will always be under both the
+        GPL and the PEL.  That means that your customers can use the
+        Coin source for Free Software development as covered by the
+        GPL. For any proprietary development, they must acquire a PEL.
+
+
+
+      I I .  C o n c e r n i n g   t h e   F r e e   E d i t i o n  -
+          t h e   s w i t c h   f r o m   L G P L   t o   G P L  
+
+
+Q 2.0:  I am a Coin PEL holder. What does the change from LGPL to GPL
+        mean for me?
+ 
+A:      Nothing at all. Your rights as PEL user are not in any way 
+        affected by the LGPL or GPL version of Coin.
+
+
+Q 2.1:  I was using Coin under the LGPL. What does the change from
+        LGPL to GPL mean for me?
+
+A:      Both the GPL and the LGPL are Free Software licenses. The 
+        main difference is that, given that one fulfills a set of
+        restrictions on how the executable is distributed, the LGPL
+        permits the use of the library in proprietary programs, while
+        the GPL does not allow that under any circumstances.
+
+        In the concrete case of Coin, this comes down to:
+
+        If you write a Free Software application, licensed under the
+        GPL or another compatible Free Software license, you are
+        allowed to link against Coin. If you write a proprietary
+        application, you are not allowed to use Coin under the GPL -
+        you have to acquire a PEL.
+
+
+Q 2.2:  Why are you switching from LGPL to GPL?
+  
+A:      There two main reasons why we are switching from LGPL to GPL.
+
+        First of all, we strongly believe in Free Software. The idea
+        behind the Free Edition is not to give away Coin - we want to
+        share our work with the Free Software community, to the
+        benefit of those who want to share /their/ software with the
+        community. So if you want to develop Free Software, that's
+        great, and for that purpose, you are welcome and encouraged to
+        use Coin. If you do not develop Free Software, the Free
+        Edition simply does not apply to you; that's what the Coin
+        Professional Edition is for.
+
+        Secondly, using the GPL instead of the LGPL fits better with
+        our business model. Development costs money :) so of course we
+        don't want people to develop products (non-Free Software, that
+        is) based on Coin without contributing anything to the Coin
+        development and maintenance costs.
+
+
+
+References:
+ 
+  PEL |  http://www.coin3d.org/licensing/coin3d/Coin-PEL.txt
+  GPL |  http://www.fsf.org/licenses/gpl.txt
+ LGPL |  http://www.fsf.org/licenses/lgpl.txt
+
+

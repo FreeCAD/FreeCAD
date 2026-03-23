@@ -1,0 +1,206 @@
+Implementation of GL_HP_occlusion_test testing in SoSeparator's
+culling test during GL render traversals.
+
+Changes:
+ - Caching of occlusion_test availability in cc_glglue since it's
+   queried for each SoSeparator in the scene for each frame.
+ - Made space for, and set up, occlusion_query availability flag.
+
+Remaining issues:
+ - testing
+ - usefulness-consideration
+ - figure out a heuristic for when *not* to use this technique
+   (since the GL-pipe stalls may cause more delay than they gain)
+
+20031124 larsa
+
+Index: include/Inventor/C/glue/gl.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/C/glue/gl.h,v
+retrieving revision 1.21
+diff -u -b -r1.21 gl.h
+--- include/Inventor/C/glue/gl.h	18 Nov 2003 17:21:16 -0000	1.21
++++ include/Inventor/C/glue/gl.h	24 Nov 2003 17:56:37 -0000
+@@ -414,6 +414,8 @@
+ /* GL feature queries */
+ COIN_DLL_API SbBool cc_glglue_can_do_bumpmapping(const cc_glglue * glue);
+ 
++COIN_DLL_API SbBool cc_glglue_has_occlusion_test(const cc_glglue * glue);
++
+ /* ********************************************************************** */
+ 
+ /* GLX extensions ***/
+Index: include/Inventor/C/glue/glp.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/C/glue/glp.h,v
+retrieving revision 1.26
+diff -u -b -r1.26 glp.h
+--- include/Inventor/C/glue/glp.h	18 Nov 2003 17:21:16 -0000	1.26
++++ include/Inventor/C/glue/glp.h	24 Nov 2003 17:56:37 -0000
+@@ -380,6 +380,8 @@
+   GLuint normalizationcubemap;
+ 
+   SbBool can_do_bumpmapping;
++  SbBool can_do_occlusion_test;
++  SbBool can_do_occlusion_query;
+ };
+ 
+ /* Exported internally to gl_glx.c and gl_wgl.c. */
+Index: include/Inventor/system/gl.h.in
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/system/gl.h.in,v
+retrieving revision 1.21
+diff -u -b -r1.21 gl.h.in
+--- include/Inventor/system/gl.h.in	24 Nov 2003 16:08:09 -0000	1.21
++++ include/Inventor/system/gl.h.in	24 Nov 2003 17:56:37 -0000
+@@ -510,6 +510,15 @@
+ #define GL_DOT3_RGBA                      0x86AF
+ #endif /* !GL_DOT3_RGBA */
+ 
++/* HP occlusion test extension */
++#ifndef GL_OCCLUSION_TEST_HP
++#define GL_OCCLUSION_TEST_HP              0x8165
++#endif /* !GL_OCCLUSION_TEST_HP */
++
++#ifndef GL_OCCLUSION_TEST_RESULT_HP
++#define GL_OCCLUSION_TEST_RESULT_HP       0x8166
++#endif /* !GL_OCCLUSION_TEST_RESULT_HP */
++
+ /* SGIS_generate_mipmap */
+ #ifndef GL_GENERATE_MIPMAP_SGIS
+ #define GL_GENERATE_MIPMAP_SGIS           0x8191
+Index: src/glue/gl.c
+===================================================================
+RCS file: /export/cvsroot/Coin/src/glue/gl.c,v
+retrieving revision 1.73
+diff -u -b -r1.73 gl.c
+--- src/glue/gl.c	18 Nov 2003 17:24:10 -0000	1.73
++++ src/glue/gl.c	24 Nov 2003 17:56:38 -0000
+@@ -1081,6 +1081,9 @@
+         cc_glglue_glext_supported(w, "ARB_texture_env_dot3")))) {
+     w->can_do_bumpmapping = TRUE;
+   }
++
++  w->can_do_occlusion_test = cc_glglue_glext_supported(w, "GL_HP_occlusion_test");
++  w->can_do_occlusion_query = cc_glglue_glext_supported(w, "GL_ARB_occlusion_query");
+ }
+ 
+ #undef PROC
+@@ -2390,6 +2393,12 @@
+   return glue->can_do_bumpmapping;
+ }
+ 
++
++SbBool
++cc_glglue_has_occlusion_test(const cc_glglue * w)
++{
++  return w->can_do_occlusion_test;
++}
+ 
+ /*!
+   Returns current X11 display the OpenGL context is in. If none, or if
+Index: src/nodes/SoSeparator.cpp
+===================================================================
+RCS file: /export/cvsroot/Coin/src/nodes/SoSeparator.cpp,v
+retrieving revision 1.93
+diff -u -b -r1.93 SoSeparator.cpp
+--- src/nodes/SoSeparator.cpp	4 Apr 2003 13:38:37 -0000	1.93
++++ src/nodes/SoSeparator.cpp	24 Nov 2003 17:56:38 -0000
+@@ -52,11 +52,14 @@
+ #include <Inventor/elements/SoCullElement.h>
+ #include <Inventor/elements/SoLocalBBoxMatrixElement.h>
+ #include <Inventor/elements/SoSoundElement.h>
++#include <Inventor/elements/SoGLCacheContextElement.h>
+ #include <Inventor/misc/SoChildList.h>
+ #include <Inventor/misc/SoGL.h>
+ #include <Inventor/misc/SoState.h>
+ #include <Inventor/nodes/SoSubNodeP.h>
+ #include <Inventor/errors/SoDebugError.h>
++#include <Inventor/system/gl.h>
++#include <Inventor/C/glue/gl.h>
+ 
+ #include <Inventor/C/tidbits.h> // coin_getenv()
+ #include <stdlib.h> // strtol(), rand()
+@@ -299,6 +302,8 @@
+   SoGLCacheList * glcachelist;
+ #endif // !COIN_THREADSAFE
+ 
++  SbBool occlusion_test(SoState * state, const SbBox3f & bbox);
++
+   enum { YES, NO, MAYBE } hassoundchild;
+ 
+ public:
+@@ -923,6 +928,9 @@
+     if (!bbox.isEmpty()) {
+       outside = SoCullElement::cullBox(state, bbox);
+     }
++    if ( !outside ) {
++      outside = PRIVATE(this)->occlusion_test(state, bbox);
++    }
+   }
+   return outside;
+ }
+@@ -945,8 +953,63 @@
+     if (!bbox.isEmpty()) {
+       outside = SoCullElement::cullTest(state, bbox);
+     }
++    if ( !outside ) {
++      outside = PRIVATE(this)->occlusion_test(state, bbox);
++    }
+   }
+   return outside;
++}
++
++SbBool
++SoSeparatorP::occlusion_test(SoState * state, const SbBox3f & bbox)
++{
++  if ( !(state->getAction()->isOfType(SoGLRenderAction::getClassTypeId())) ) {
++    return FALSE;
++  }
++  const cc_glglue * gl = cc_glglue_instance(SoGLCacheContextElement::get(state));
++  if ( !cc_glglue_has_occlusion_test(gl) ) { return FALSE; }
++
++  const SbVec3f & bmin = bbox.getMin();
++  const SbVec3f & bmax = bbox.getMax();
++  // push state
++  glPushAttrib(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_ENABLE_BIT);
++  // disable backface culling
++  glDisable(GL_CULL_FACE);
++  // disable updates to color and depth buffer
++  glDepthMask(GL_FALSE);
++  glColorMask(GL_FALSE,GL_FALSE,GL_FALSE,GL_FALSE);
++  // enable occlusion test
++  glEnable(GL_OCCLUSION_TEST_HP);
++  // render bounding box geometry
++  glBegin(GL_TRIANGLE_FAN);
++  glVertex3f(bmin[0], bmin[1], bmin[2]); // center
++  glVertex3f(bmax[0], bmin[1], bmin[2]); // start
++  glVertex3f(bmax[0], bmax[1], bmin[2]);
++  glVertex3f(bmin[0], bmax[1], bmin[2]);
++  glVertex3f(bmin[0], bmax[1], bmax[2]);
++  glVertex3f(bmin[0], bmin[1], bmax[2]);
++  glVertex3f(bmax[0], bmin[1], bmax[2]);
++  glVertex3f(bmax[0], bmin[1], bmin[2]); // finish = start
++  glEnd();
++  // and the other side
++  glBegin(GL_TRIANGLE_FAN);
++  glVertex3f(bmax[0], bmax[1], bmax[2]); // center
++  glVertex3f(bmin[0], bmax[1], bmax[2]); // start
++  glVertex3f(bmin[0], bmin[1], bmax[2]);
++  glVertex3f(bmax[0], bmin[1], bmax[2]);
++  glVertex3f(bmax[0], bmin[1], bmin[2]);
++  glVertex3f(bmax[0], bmax[1], bmin[2]);
++  glVertex3f(bmin[0], bmax[1], bmin[2]);
++  glVertex3f(bmin[0], bmax[1], bmax[2]); // finish = start
++  glEnd();
++  // disable occlusion test
++  glDisable(GL_OCCLUSION_TEST_HP);
++  // restore state
++  glPopAttrib();
++  // read occlusion test result
++  GLboolean result;
++  glGetBooleanv(GL_OCCLUSION_TEST_RESULT_HP, &result);
++  return result ? FALSE : TRUE;
+ }
+ 
+ #undef PRIVATE

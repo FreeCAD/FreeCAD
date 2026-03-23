@@ -1,0 +1,604 @@
+New in Coin v4.0.7 (2026-01-18):
+* bugfixes:
+  - Fixed check for platform GL binding
+  - Fixed build issue with Boost 1.90
+  - Ensure cc_glglue_context_can_render_to_texture() always returns a value
+
+New in Coin v4.0.6 (2025-10-09):
+* bugfixes:
+  - Fixed SoShape::getScreenSize to handle empty bounding box case
+  - Fixed EGL and GLX handling on Wayland
+  - Applied Debian patch for fixing compatibility with 64-bit time_t
+
+New in Coin v4.0.5 (2025-08-04):
+* new:
+  - Added SDL3 example.
+* bugfixes:
+  - More robust EGL display initilization.
+  - Added a clipping offset dependent on bounding box size.
+  - Only use GLX on platforms with X11.
+
+New in Coin v4.0.4 (2025-06-24):
+* new:
+  - Added EGL support
+  - added support for building Coin as subdirectory
+  - introduced shaded hidden lines visual style
+* bugfixes:
+  - fixed calling deleteAll on invalid pointers in SoCallbackAction
+  - updated cmake_minimum_required command to support CMake >= 3.30
+  - fixed crash in SoVRMLBackground::GLRender due to unchecked pointer
+  - fixed regression due to removed cc_glglue initialization
+  - transfer ANSI encoded files to UTF-8
+  - fixed invalid access when removing callback
+  - fixed macro handling to avoid conflicts with Microsoft Win32 API headers
+  - fixed typos and weird string outputs
+  - fixed format string vulnerabilities
+  - minor optimization to avoid repeated calculation of identity rotation
+  - minor optimization to avoid needless matrix multiplications
+
+New in Coin v4.0.3 (2024-09-02):
+* new:
+  - set minimum standard needed to compile Coin to C++11
+  - added support for building modern styled documentation
+* bugfixes:
+  - fixed LTOcompilation ODR error
+  - fixed suspicious increment in SbProfilingData.cpp
+  - fixed SbTri3f intersect calculation
+  - improved auto clipping
+  - fixed orthographic autoclipping by allowing negative farDistance
+  - fixed rotating a VRMLBackground node with its ancestors' rotations
+
+New in Coin v4.0.2 (2023-12-03):
+* bugfixes:
+  - ABI compatibility to version 4.0.0 was inadvertently changed and restored
+  - fixed typos found by Codespell
+
+New in Coin v4.0.1 (2023-11-18):
+* new:
+  - Version control system has been changed from Mercurial to Git
+  - Home of Coin3d organization has been changed from https://bitbucket.org/Coin3D
+    to https://github.com/coin3d due to Bitbucket ending Mercurial support
+  - Updated included expat to 2.2.10
+  - Added CI for macOS, Windows, and Ubuntu per GitHub actions to repository
+  - Added checksum generation to AppVeyor CI
+  - Added macOS images to AppVeyor CI
+  - Optimized mutex debugging
+  - Introduced new COIN_DEBUG_CHECK_THREAD option
+  - Introduced COIN_GLX_PIXMAP_DIRECT_RENDERING environment variable to force direct rendering of offscreen contexts
+* bugfixes:
+  - fixed crash when reading font glyphs fails
+  - use font base line as bearing point for default font
+  - cpack.d was made optional and disabled by default (add -DCOIN_USE_CPACK=ON
+    to the cmake commandline to enable it)
+  - added some class documentation and fixed numerous documentation issues
+  - partially incorporated coin4.0.0a-patch from Gentoo developers
+  - incorporated patches 0005, 0009, and 0010 from Fedora developers
+  - incorporated coin-3.1.3-freetype251.patch from Rosa developers
+  - private function signature fixed to support return of error string
+  - incorrect closest point calculation for bounding boxes
+  - silence GL deprecation warnings for macOS build
+  - incorrect line ending handling for Windows CR/LF in SoInput
+  - SoText2 regression: alpha test for glyph rendering was disabled
+  - incorrect rendering of SoFaceSet - conditions when to render as
+    vertex buffer object were not properly checked
+  - file format documentation to SoAlphaTest and SoDepthBuffer added
+  - memory leak in SoShadowLightCache fixed
+  - missing coin-default.cfg added
+  - operator arguments on some base types fixed to use const references rather than copies
+  - fix improper comparison of parameter type in SoGLSLShaderParameter
+  - fix GLX glue trying to use NULL display
+  - do not disable VBO rendering for Intel graphics drivers anymore
+  - enable non power of two textures for ATi and Intel by default
+  - set GLSL shader version to 120 to avoid rendering issues with fog
+  - fix underlinking against X11
+  - removed obsolete ATI driver issue check
+  - fix shadow issues for Intel Graphics HD 630
+  - fix testing for maximum texture size
+  - fix for CMake 3.19.1 regression
+  - fix doc for SbUniqueId
+  - fix issues found by CodeQL static code analysis
+  - fix man page generation (prefix man pages with coin_)
+  - fix linking with system installation of expat
+  - fix private function signatures to avoid copying non POD
+  - reorder variables in private structs to improve memory foot print
+  - fix 'new[]' array freed with 'delete'
+  - fix issues found by LGTM static code analysis
+  - update SoSeparator documentation
+  - move constant data to read only data segment
+  - fix double free on cache destruction
+  - fix transparency issue on indexed lineset
+  - fix resource lookup when MULTIPLE_VERSION is enabled (issue #472)
+  - fix material and normal handling for indexed line set (issue #481)
+
+New in Coin v4.0.0 (2019-12-23):
+* new:
+  - Kongsberg Oil & Gas Technologies AS ended Coin as a commercial product
+    and re-licensed it under the BSD 3-clause license as a service to the
+    user community.
+  - The build system has been migrated from GNU Autotools to CMake
+  - Support for UNICODE text (starting with Coin 4.0 strings are
+    UTF-8 encoded).
+  - Notification system enhancements to provide information on the
+    operational type of the Group node and multi-field changes
+  - new methods: getTriggerOperationType(), getTriggerIndex(),
+    getTriggerFieldNumIndices(), getTriggerGroupChild(),
+    getTriggerReplacedGroupChild in SoDataSensor to access the
+    aforementioned notification system enhancements
+  - View volume and projectors now support reverse perspective camera
+    settings
+  - New SoReversePerspectiveCamera node added
+  - New getRadius method added to SoRayPickAction
+  - New virtual method getPickedPointForStart added to SoDragger to allow
+    dragging of (partially) covered objects by derived draggers
+  - New greater than and less than operators added to SbString
+  - Implemented SoTextureCoordinateObject for linear texture functions
+  - New SoAlphaTest node added
+  - Support for GLSL/ARB shaders has been added to SoShaderStateMatrixParameter
+  - Support for linePatternScaleFactor in SoDrawStyle
+  - Support for newer compilers
+  - Support for DISABLE policy in SoSelection node
+  - API changes in SbMatrix, SoPickAction, SoEvent, SoSFTime, SbPList to
+    improve conformance to Open Inventor 2.1 API
+  - Created public API for converting geo coordinates
+  - Auto-linking to the Coin library when using Microsoft Visual C++ compilers
+  - Updated expat sources to version 2.2.6
+  - Removed local Boost includes.  Added configure option --with-boost
+  - Support for BitBucket and AppVeyor as continuous integration service providers
+* bugfixes:
+  - Engine output referencing
+  - SoTextureCoordinatePlane rendering bug
+  - Memory leak during SoDB cleanup
+  - Memory leak in SoVertexAttribute
+  - Wrong vertical offset used in SoOffscreenRenderer
+  - Driver bug when allocating render-to-texture capable pbuffers from
+    SoOffscreenRenderer
+  - Incorrect normal binding for 3DS import
+  - SoInteractionKit
+  - SoRayPickAction incorrect matrix info in getViewVolume
+  - SbTesselator triangulation errors
+  - SoToVRML2Action handling of NurbsCurve and IndexedNurbsCurve
+  - SoToVRML2Action handling TransformSeparator as Separator not Group
+  - SoVRMLTransform transformation bug in getTranslationSpaceMatrix
+  - SoVRMLExtrusion rendering
+  - Numerous minor and major issues detected with static code analysis
+  - Numerous documentation issues
+  - Camera location is updated during interaction in SoDragger
+  - Camera update handling in seek and spin modes
+  - Bounding box center calculation of SoIndexedShape derived components
+  - Intersection bounding box calculation between bounding box and view
+    volume
+  - Allow deletion of SoDraggers in callbacks
+  - Crash in SoText2 when using non-integer font sizes
+  - Out of bounds access to array in SoSceneTextureCubeMap
+  - Numerical issues in computation of intersection between sphere and line
+  - Numerical issue in SbDPMatrix::multLineMatrix()
+  - Markers are disappearing when clipping planes are present
+  - Set of invalid VRML identifier characters extended with '(', ')', and '|'
+  - Replacement for OpenGL extensions string method, obsoleted since OpenGL
+    version 3.0
+  - Output of scenes containing SoGroup or derived nodes in SoWriteAction
+  - Force setting color for all indices on TriangleStrips in SoMaterialBundle
+
+New in Coin v3.1.2 (2009-10-14):
+* bugfixes:
+  - removePoint() bugfix for SbBSPTree
+  - divide-by-zero fix for SoNurbs
+  - Fix SoLazyElement handling in SoPrimitiveVertexCache.
+  - Refix NURBS picking according to the GLU specification.
+  - ShadowGroup fixes
+  - Bugfix for closed extrusions.
+  - Bugfix for using SoPrimitiveVertexCache for other actions than SoGL RenderAction.
+  - Increase upper limits for creating VBOs/caches.
+
+New in Coin v3.1.1 (2009-09-08):
+* bugfixes:
+  - Fixed NURBS bugs
+  - Fixed some issues in SoIndexedPointSet.
+  - Fixed a configure problem which made it impossible to create release builds on Windows.
+
+New in Coin v3.1.0 (2009-05-27):
+* new:
+  - shape node classes SoIndexedPointSet, SoIndexedMarkerSet
+  - made build configurations available for building without
+    manipulators, draggers, and nodekits, for slimmed down Coin
+    binaries
+  - support in SoRenderManager for superimpositions and multipass
+    antialiasing
+  - offscreen OpenGL contexts for Mac OS X now uses CGL, instead of
+    the deprecated QuickDraw API
+  - direct support for non-power-of-two textures if the OpenGL driver
+    has it
+  - SoOffscreenRenderer::getDC() available under MSWindows for fast
+    transfer from internal buffer to Win32 bitmaps / DCs
+* bugfixes:
+  - font rendering through FreeType library functional again
+  - SoQuadMesh rendering for PER_FACE bindings
+  - SoCalculator engine's atan2() and dot() were not working properly
+  - more robust and more capable SoToVRML2Action
+  - node leaks when copying nodekits
+  - name-dictionary memory fill (leaks) when copying scene graphs
+  - more robust copying of VRML 2 scene graphs
+  - ambiguous typing under 64-bit MS Windows
+  - some array out-of-bounds and other memory access errors in obscure
+    corners of the API
+  - SoProfilerElement API exported as part of the public DLL API for
+    Windows builds
+  - SoVRMLText, SoText3 and SoAsciiText's get primitive count operation
+  - SoVertexAttribute::copy()
+  - SoLineHighlightRenderAction polygon offset set-up
+  - SoShadowGroup heeds SoClipPlane
+  - handle transparency in all texture units when multi-texturing
+  - SoNurbsCurve, picking on rational curves, and corrected for weighted
+    coordinates
+* optimizations:
+  - use a lot less mutex resources for common case scene graphs, by
+    using class-wide mutexes instead of per-instance mutexes for shape
+    nodes
+* build system:
+  - C++ exceptions enabled by default
+* other:
+  - SoVRMLBackground, better depth buffer handling
+  - SbString new methods lower() and upper(), for better Open Inventor
+    compatibility
+  - increased adherence to modern C++ conventions and programming
+    practices
+  - more robust offscreen GL buffer / context creation
+  - various API documentation improvements
+  - all environment variables heeded by Coin shown in API documentation
+
+New in Coin v3.0.0 (2008-09-11):
+* new:
+  - Scene graph performance profiling subsystem
+  - SoDepthBuffer node for controlling Z-buffer settings
+  - Shaders: SoVertexAttribute and SoVertexAttributeBinding nodes
+  - Shadows: SoShadowSpotLight node
+  - SoHeightMapToNormalMap texture conversion engine
+  - SoPickStyle: new styles SHAPE_ON_TOP, BOUNDING_BOX_ON_TOP, SHAPE_FRONTFACES
+  - New XML-based GL driver feature database for tagging buggy/slow features
+    in specific drivers
+  - Statechart XML engine (2007-draft based), used to implement examiner viewer
+    mode at the Coin level
+  - Foreign file format support through SoForeignFileKit w. example SoSTLFileKit
+  - Draggers: minTranslation/maxTranslation fields in SoTranslate1Dragger and
+    SoTranslate2Dragger
+  - OS X: Coin has become more bundle-aware and will loads external libs bundled
+    with Inventor.framework or the application bundle (better encapsulation)
+  - SoLineHighlightRenderAction and SoBoxHighlightRenderAction now only
+    supports one SoSelection node (performance and OIV-compatibility)
+  - SoBumpMap will now detect height maps stored as rgb(a)
+  - SoRayPickAction picking precision improvements
+  - Include SoFieldContainer userdata when doing a deep node copy
+  - Anti-aliasing is now done around the center of each pixel
+  - Boost.Test-based testsuite
+* bugfixes:
+  - ATi driver workarounds (VBO rendering related)
+  - Fixed SoToVRML2Action Transform handling bug
+  - SoTimeCounter now handles frequency == 0.0
+  - SoSceneTexture2 now properly restores the previous context
+  - Fix for remote rendering in SoGLDisplayList
+  - Workaround for nVidia texture format bug
+  - SoPathList::uniquify() now properly removes all paths that goes through
+    another path, not just one
+  - SoVRMLAppearance now checks material on the state
+  - SoComposeRotation. Default axis is now (0,0,1)
+  - Various SoShadowGroup fixes
+  - 3ds loader will no longer normalize the model (still not enabled by default)
+  - Workaround for nVidia line pattern bug
+  - Fixes for SoVRMLBillboard
+  - SoFile-SoSearchAction bugfix
+  - Correctly load bold/italic version of fonts with a single ttf file
+  - Bugfix for anti aliasing with numpasses > 16
+  - New Visual Studio 9 build files and other VS-related fixes
+    ... and more
+
+New in Coin v2.5.0 (2007-10-01):
+* new:
+  - geo nodes: SoGeoOrigin, SoGeoCoordinate, SoGeoLocation, SoGeoSeparator
+  - shader nodes: SoVertexShader, SoFragmentShader, SoGeometryShader,
+    SoShaderProgram, SoShaderParameter
+  - shadow generation: SoShadowGroup, SoShadowCulling, SoShadowStyle
+  - new camera node SoFrustumCamera
+  - new node SoTextureCubeMap
+  - a lot of new SbVec and SbBox classes
+  - a lot of new field classes (mostly Vec and Box fields)
+  - implemented stubbed SoSimplifyAction,
+    added SoGlobalSimplifyAction and SoShapeSimplifyAction as stub classes
+  - SoReorganizeAction improvements
+  - SoFile:: setSearchOK(), getSearchOK()
+  - SoGLRenderAction::setSortedObjectOrderStrategy()
+  - SbTypeInfo.h template type information library
+* bugfixes:
+  - GlobalField cleanup bugfix
+  - SoFaceDetail faceIndex bugfix
+* optimizations:
+  - more rendering optimized with VBOs
+  - display list caching tweaks
+* build system
+  - initial pkg-config support
+  - Visual Studio: build .pdb for release builds, tweaked optimization options
+  - Visual Studio: doc-generation project
+
+New in Coin v2.4.6 (2007-04-03):
+* new:
+  - implemented SbViewVolume::getAlignRotation()
+  - added support in SoToVRML2Action for SoUnits and SoVRMLTransform
+* optimizations:
+  - fixed pathlist traversals, affecting most notably rendering w/transparency
+    DELAYED_BLEND/ADD mode
+  - added lazy shapehints evaluation to VRML97 rendering
+  - avoid probing glGetError() much (unless specified) since it kills
+    performance in certain remote rendering situations
+  - some optimizations in the reading of ascii vrml/iv files
+* bugfixes:
+  - SoVRMLBillboard axis-of-rotation bugfix
+  - global field and SoUnknownNode I/O fixes
+  - SbDPMatrix::multVecMatrix(SbVec4f) bugfix
+  - implemented missing notification-filtering in SoSwitch/SoVRMLSwitch
+  - plugged more memory leaks
+  - set same default depth function as SGI Inventor
+  - VRML97 TimeSensor bugfix
+  - VRML97 Billboard bugfixes
+  - SoGroup offpath traversal bugfix
+  - fixed AMD64 warning issues
+* other
+  - many Visual Studio build files improvements
+  - remove the Inventor/system/gl.h configure-run dependency
+
+New in Coin v2.4.5 (2006-04-30): The Better-Than-Doing-Tax-Returns Release
+* bugfixes:
+  - fixed 2D font "_" character
+  - minor axis MIDDLE (i.e. center) justification for VRML97's
+    FontStyle and Text nodes did previously not work as expected
+  - policy change on normalizing null-vector warning
+  - improved Inventor V1.0 import
+  - improved cleanup code (plugged many static one-off leaks)
+  - fixes for nurbs, VRML97 protos, routes...
+  - and a multitude of other bugfixes (see docs/ChangeLog.v2.4.5)
+* optimizations:
+  - internal changes wrt use of vertex arrays and vertex buffer objects
+* build fixes:
+  - upgraded to new version of libtool
+  - universal binaries support for Mac OS X
+  - misc TGS compatibility fixes
+  - added project files for Visual Studio 8 (2005)
+
+New in Coin v2.4.4 (2005-09-19):
+* improvements and optimizations:
+  - further improvements to SoOffscreenRenderer performance
+  - SoRayPickAction precision improvements
+  - Visual Studio project now installs only selected build (including
+    static configurations now)
+  - misc minor details, build fixes, documentation updates
+* bugfixes:
+  - SoSurroundScale bugfix
+  - hidden field enableTextureCompression access crashbug fix
+  - misc minor robustness fixes
+
+New in Coin v2.4.3 (2005-07-06):
+* bugfixes:
+  - SoText2 regression in 2.4.2; text would be too large on MS Windows
+  - SoText2 regression in 2.4.2; if Coin was built multithread-safe,
+    font rendering would hang the application
+  - file import regression in 2.4.2; could no longer read binary
+    Inventor 2.0 files
+
+New in Coin v2.4.2 (2005-07-05):
+* new features:
+  - Support for compressed textures
+  - Windows: build settings are easier tunable from the Visual Studio
+    projects (edit include/setup.h), and also includes static library
+    build options now
+* optimizations:
+  - major improvements to SoOffscreenRenderer performance,
+    approximately 3x faster for simple scene graphs
+  - OpenAL library now loaded only on demand, i.e. when sound is
+    actually used
+* bugfixes:
+  - Postscript output for the SoOffscreenRenderer was erroneously
+    disabled
+  - SoFaceSet with SoShapeHints::faceType set to UNKNOWN_FACE_TYPE
+    could come out wrong
+  - 64-bit windows port issues believed to be resolved
+  - Reinstanded missing default-2d-font characters
+  - Inventor V1.0 .iv file import fixes
+  - SoToVRML2Action fixes
+  - Font/glyph handling fixes
+  - and more...
+* other:
+  - reference doc improvements with file format examples and defaults
+    sections for all scene objects.
+
+New in Coin v2.4.1 (2005-05-12):
+* new features:
+  - minor: SoExtSelection RECTANGLE and LASSO selections can now be
+    aborted by the end-user by hitting the 'END' key
+* bugfixes:
+  - SbString::sprintf() trusted some undocumented behaviour of the
+    C-library function vsnprintf(), which at least failed with recent
+    GNU libc versions on 64-bit platforms
+  - SoOffscreenRenderer now properly handles multiple renderings
+    interleaved with changes to viewport size
+  - removed some possibilities for false positives with the mechanism
+    for detecting multiple Coin DLLs in a process image on MS Windows
+    platforms
+  - fixed obscure SoOffscreenRenderer problem on scene graphs where
+    renderCaching was explicitly set to ON for camera sibling
+    SoSeparator
+  - the SoIntersectionDetectionAction could cause asserts due to
+    floating point inaccuracies
+
+New in Coin v2.4.0 (2005-04-13):
+* new features:
+  - completely Cygwin-less build setup for MS Windows / Visual Studio:
+    - Visual Studio 6 project file in build/msvc6/
+    - Visual Studio .NET 2003 solution in build/msvc7/
+  - some minor API additions for internal optimization purposes
+* optimizations:
+  - render traversal code improvements
+  - file i/o
+* bugfixes:
+  - too many to mention; see ChangeLog
+
+New in Coin v2.3.0 (2004-06-22):
+* new features:
+  - new node SoTextureCombine (for multi-texturing)
+  - new texture coordinate mapping nodes SoTextureCoordinateCube,
+    SoTextureCoordinateCylinder, and SoTextureCoordinateSphere
+  - vertex buffer objects support
+  - correct "sorted layers blend" transparency mode
+  - improved thread safety 
+* bugfixes:
+  - loading of engine networks from file with default field values
+  - misc bumpmapping bugfixes
+  - plugged various memory leaks
+  - offscreen renderer fixes: alpha channel support, robustify
+  - improved library cleanup
+  - sensor fixes: delayqueue timeouts handled in Coin instead of in SoGui
+  - corrected scene redraw logic not to depend on realtime field updates
+  - and lots more...
+* optimizations:
+  - file reading should be noticeable faster
+  - more/improved use of vertex array rendering and vertex buffer objects
+* other:
+  - build setup updates, doc updates, Mac OS X packaging fixes
+
+New in Coin v2.2.1 (2004-01-15):
+* bugfixes:
+  - debug build SoBumpMapTransform::initClass() assert fix
+  - fixes for VRML97 PROTO setup and file export
+
+New in Coin v2.2.0 (2004-01-14):
+* new features:
+  - multi-texturing (new node SoTextureUnit)
+  - bump-mapping (new nodes SoBumpMap, SoBumpMapCoordinate, SoBumpMapTransform)
+  - render-to-texture (new node SoSceneTexture2)
+  - much improved font support, can now load and use TrueType fonts
+    for all 3D text primitive types
+  - SoTexture2 now supports REPLACE texture model
+  - SoOffscreenRenderer now uses GLX pbuffers for accelerated
+    offscreen rendering on X11, WGL pbuffers on MS Windows, and AGL
+    pbuffers on Mac OS
+  - MS Windows HTML help reference documentation support
+* bugfixes
+  - engine SoWriteAction bugfix (assert failure in debug version)
+  - SoFile::getBoundingBox() and SoVRMLInline::getBoundingBox()
+  - fixed problem reading gzipped files on Mac OS X
+  - misc FreeType fixes on Linux and Mac OS X
+  - SoNode/SoEngine copy() bugfixes
+  - SoVRMLBackground now reacts to camera movement
+* misc minor optimizations, various documentation updates
+
+New in Coin v2.1.0 (2003-07-09):
+* new features:
+  - new SoIntersectionDetectionAction class for collision testing
+  - import and export of files with gzip and bzip2 compression
+    (new methods SoOutput::setCompression() and
+    SoOutput::getAvailableCompressionMethods())
+  - hard-copy support: vector output to Postscript
+  - FreeType support for importing TrueType fonts to SoText2
+  - native Win32 support for importing TrueType fonts to SoText2
+  - new SoInput::setStringArray() convenience method
+  - new SoAction::apply() convenience method
+  - So[Box|Line]HighlightRenderAction highlights selections under
+    all SoSelection nodes, not just the first one
+  - SoSFImage::setValue with CopyPolicy::NO_COPY implemented
+  - autodetection of some common Win32 Coin-linking problems
+  - ensure [u]intptr_t C type is present
+* bugfixes:
+  - SoCube PER_FACE material binding bugfix
+  - I/O: string quoting bugfix, binary file padding bugfix, ++
+  - field-conversion setup for new field types from 2.0
+  - misc SoOffscreenRenderer fixes
+  - SoOffscreenRenderer large image support
+  - environment mapping when lighting is enabled
+  - import and export operations on iv- and wrl-files for some locales
+  - SoResetTransform SoGetBoundingBoxAction handling
+  - SoNodeSenor (re)attach
+  - So[Box|Line]HighlightRenderAction antialiasing rendering
+  - and more...
+* build fixes:
+  - upgraded to new versions of autoconf, automake, and libtool
+  - fixes for building with the MKS environment
+
+New in Coin v2.0.2 (2003-04-03):
+* bugfixes in
+  - using OpenAL on Windows (used wrong calling convention)
+  - SoGetPrimitiveCountAction on the SoVertexProperty node
+  - Extension elements. State is recreated in actions when a new
+    element has been enabled
+  - VRML export. The VRML node prefix will now not be skipped
+    when the file header is != #VRML V2.0 utf8
+  - SoQuadMesh PER_FACE material binding rendering
+  - GL texture coordinate projection enable/disable
+
+New in Coin v2.0.1 (2003-03-12):
+* bugfixes in
+  - SoClipPlaneManip
+  - SoPathSensor
+  - the notification mechanism
+  - ROUTE-connections in PROTOS
+  - import code
+* run-time binding of shared library symbols on Mac OS X, and HP-UX 10
+* a few minor optimizations
+* coin2.dsp file generation improvements
+* improved support for building with gcc/g++ on Cygwin
+* implemented SoGLLazyElement::sendAllMaterial()/sendNoMaterial().
+
+New in Coin v2.0.0 (2003-02-27):
+* legal issues
+  - Coin beyond Coin 1.* switched to being licensed under the GPL
+* new features
+  - platform-independent thread-handling abstraction classes
+  - thread-safe action traversals possible with --enable-threadsafe
+  - VRML97 support
+  - 3d-textures
+  - audio support
+  - dynamic loading of extension nodes possible on selected platforms
+  - SoExtSelection: can also select only the visible polygons in a model
+  - SoOffscreenRenderer: now handles generating arbitrarily huge images
+  - new SoTransparencyType node, with support for setting SoTransparencyType
+    in the scene graph.
+  - exports base class SbClip for general polygon clipping routines
+  - application data sharing through SoMField::setValuesPointer()
+* optimizations
+  - display list render caching
+  - optimized LazyElement traversal
+* compile/build/install
+  - Inventor/C/ include hierarchy for C ADTs in Coin
+  - man-page for coin-config.1
+  - more standard build setup for generated documentation
+  - MS Developer Studio project files generation
+  - Linux/Debian package setup
+  - Mac OS X/Darwin support, with custom framework installation
+* and the usual batch of bugfixes, optimizations, documentation updates,
+  and build setup improvements
+
+New in Coin v1.0 (2001-08-13):
+* speedy Cygwin builds with new, simpler wrapmsvc.exe compiler wrapper
+* SoOffscreenRenderer::writeToPostscript(fp, pagesize)
+* minor bugfixes
+* minor documentation updates
+
+New in Coin v1.0 final beta (2001-07-22):
+- beta release made for the Web3D SDK CD, for SIGGRAPH 2001 distribution
+* full Open Inventor 2.1 source code compatibility
+* miscellaneous extensions:
+  - SoPolygonOffset node
+  - SoImage node
+  - SoExtSelection node
+  - SoMarkerSet node
+  - SoClipPlaneManip manipulator
+  - SoMouseButtonEvent::BUTTON4, BUTTON5 for wheelmouse events
+  - SoKeyboardEvent::DELETE is portable even for MS Windows
+  - SoAction::IN_PATH is portable even for HPUX
+  - SoCamera::setStereoMode()
+  - SoCamera::pointAt(target, upvector);
+  - SbImage class
+  - SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_* transparency modes
+  - SoGLRenderAction::addPreRenderCallback()/removePreRenderCallback()
+  - SoCallbackAction::setViewportRegion()/getViewportRegion().
+  - SoInput::searchForFile()
+  - SoInput::isFileVRML1() / isFileVRML2() (soon)
+  - SoOffscreenRenderer::writeToFile() and friends
+  - SoFile::getFullName()
+  - and more [to be mapped down later]

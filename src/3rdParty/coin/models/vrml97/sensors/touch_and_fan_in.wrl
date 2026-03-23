@@ -1,0 +1,28 @@
+#VRML V2.0 utf8
+
+# a simple touch sensor test which also tests fan-in. Move
+# the mouse over any of the cubes and the sphere should
+# move according to the (local) hitPoint on the cube.
+
+Transform {
+  children [ Box { }, DEF A TouchSensor {} ]
+}
+
+Transform {
+  translation 0 8 0
+  children [ Box { }, DEF B TouchSensor {} ]
+}
+
+Transform { 
+  translation 0 4 0
+  children [
+  DEF C Transform {
+    translation 0 0 0
+     children [Sphere {} ]
+  }
+  ]
+}
+
+ROUTE A.hitPoint_changed TO C.translation
+ROUTE B.hitPoint_changed TO C.translation
+

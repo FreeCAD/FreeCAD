@@ -1,0 +1,266 @@
+This is a mail sent to NVidia about what seems like a bug in their GLX
+implementation. We're storing this mail here for reference. As of now
+(2002-10-10), no reponse has been received from NVidia.
+
+        -mortene
+
+UPDATE 2004-08-02 mortene: no response was ever received. As far as I
+know, nobody has checked whether or not the bug is still present with
+later driver versions.
+
+------------------------------------------------------------------------
+
+From: Morten Eriksen <mortene@sim.no>
+Subject: Bugs in GLX protocol?
+To: linux-bugs@nvidia.com
+Date: 25 Sep 2002 11:10:35 +0200
+Organization: Systems in Motion
+
+Hi,
+
+I've stumbled upon what seems like a bug in your GLX driver code.
+
+The problem is as follows: when running an OpenGL application *from* a
+machine with NVidia OpenGL and XFree4 *to* an SGI O2 with SGI OpenGL
+1.2 drivers, the application exits with the following X protocol error
+-- but only when using OpenGL 1.1+ or extension functions:
+
+    X Error of failed request:  BadRequest (invalid request code or no such operation)
+    Major opcode of failed request:  146 (GLX)
+    Minor opcode of failed request:  145 ()
+    Serial number of failed request:  37
+    Current serial number in output stream:  37
+
+I've tested this with two different configurations for the
+"application-executing" machine:
+
+        * NVidia driver version 1.0-2802, GeForce2 MX, Linux v2.4.18.
+        * NVidia driver version 1.0-3123, GeForce2 Pro, Linux v2.4.18.
+
+For both test cases, the remote display was the SGI O2 with OpenGL
+1.2, as mentioned above.
+
+The problem does not occur when using remote/indirect rendering
+between the NVidia drivers.
+
+I also have reports on problems when rendering from NVidia OpenGL over
+GLX to a remote display on an Exceed X Server on Win2k, and ditto when
+rendering over GLX to Sun Solaris displays. I have not been able to
+confirm that those were caused by the same problem, although from the
+information I have it seems likely.
+
+
+I have attached a stand-alone (only dependencies are OpenGL / GLX /
+X11 libraries), minimal (~200 lines of code) example which reproduces
+the problem.
+
+If possible, it would be nice if you could please confirm that this is
+indeed a bug with your drivers -- or not.
+
+
+Best regards,
+Morten Eriksen,
+developer @ Systems in Motion
+
+--
+
+#include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <X11/Xlib.h>
+#include <X11/keysym.h>
+#include <GL/gl.h>
+#include <GL/glx.h>
+
+
+typedef struct {
+  Display * display;
+  GLXContext context;
+  Window window;
+
+} WindowData;
+
+
+static void
+DrawScene(WindowData * pwdata)
+{
+  glClearColor(0.0, 0.0, 0.0, 0.0);
+  glClear(GL_COLOR_BUFFER_BIT);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  glBegin(GL_POLYGON);
+  glColor3f(1.0, 0.0, 0.0);
+  glVertex3f(0.0, 0.0, 0.0);
+
+  glColor3f(0.0, 1.0, 0.0);
+  glVertex3f(0.5, 0.0, 0.0);
+
+  glColor3f(0.0, 0.0, 1.0);
+  glVertex3f(0.5, 0.5, 0.0);
+  glEnd();
+
+  { /* The glGenTextures() call will cause the following X error when
+       doing remote display _from_ NVidia GLX (at least driver
+       versions 28.02 or 31.23) _to_ an SGI O2 with OpenGL 1.2:
+
+    X Error of failed request:  BadRequest (invalid request code or no such operation)
+    Major opcode of failed request:  146 (GLX)
+    Minor opcode of failed request:  145 ()
+    Serial number of failed request:  37
+    Current serial number in output stream:  37
+    */
+    GLuint t;
+    printf("glGenTextures\n");
+    glGenTextures(1, &t);
+    printf("glDeleteTextures\n");
+    glDeleteTextures(1, &t);
+    printf("glDeleteTextures done\n");
+  }
+
+  glXSwapBuffers(pwdata->display, pwdata->window);
+}
+
+
+/*
+ * Create an RGB OpenGL window.
+ * Return the window and context handles.
+ */
+static void
+MakeWindow(Display *dpy, const char *name,
+           int x, int y, int width, int height,
+           WindowData *winData)
+{
+  int attrib[] = { GLX_RGBA,
+                   GLX_RED_SIZE, 1,
+                   GLX_GREEN_SIZE, 1,
+                   GLX_BLUE_SIZE, 1,
+                   GLX_DOUBLEBUFFER,
+                   None };
+  int scrnum;
+  XSetWindowAttributes attr;
+  unsigned long mask;
+  Window root;
+  Window win;
+  GLXContext ctx;
+  XVisualInfo *visinfo;
+
+  scrnum = DefaultScreen(dpy);
+  root = RootWindow(dpy, scrnum);
+
+  visinfo = glXChooseVisual(dpy, scrnum, attrib);
+  if (!visinfo) {
+    printf("Error: couldn't get an RGB, Double-buffered visual\n");
+    exit(1);
+  }
+
+  /* window attributes */
+  attr.background_pixel = 0;
+  attr.border_pixel = 0;
+  attr.colormap = XCreateColormap(dpy, root, visinfo->visual, AllocNone);
+  attr.event_mask = StructureNotifyMask | ExposureMask | KeyPressMask;
+  mask = CWBackPixel | CWBorderPixel | CWColormap | CWEventMask;
+
+  win = XCreateWindow(dpy, root, 0, 0, width, height,
+                      0, visinfo->depth, InputOutput,
+                      visinfo->visual, mask, &attr);
+
+  /* set hints and properties */
+  {
+    XSizeHints sizehints;
+    sizehints.x = x;
+    sizehints.y = y;
+    sizehints.width = width;
+    sizehints.height = height;
+    sizehints.flags = USSize | USPosition;
+    XSetNormalHints(dpy, win, &sizehints);
+    XSetStandardProperties(dpy, win, name, name,
+                           None, (char **)NULL, 0, &sizehints);
+  }
+
+  ctx = glXCreateContext(dpy, visinfo, NULL, True);
+  if (!ctx) {
+    printf("Error: glXCreateContext failed\n");
+    exit(1);
+  }
+
+  XFree(visinfo);
+
+  winData->display = dpy;
+  winData->window = win;
+  winData->context = ctx;
+}
+
+
+static void
+EventLoop(WindowData *winData)
+{
+  while (1) {
+    static long mask = StructureNotifyMask | ExposureMask | KeyPressMask;
+    XEvent event;
+    while (XCheckWindowEvent(winData->display, winData->window,
+                             mask, &event)) {
+      if (event.xany.window == winData->window) {
+        switch (event.type) {
+        case Expose:
+          DrawScene(winData);
+          break;
+        case ConfigureNotify:
+          glViewport(0, 0,
+                     event.xconfigure.width, event.xconfigure.height);
+          break;
+        case KeyPress:
+          {
+            char buffer[10];
+            int r = XLookupString(&event.xkey, buffer, sizeof(buffer),
+                                  NULL, NULL);
+            if (buffer[0] == 27) {
+              /* escape */
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+XErrorHandler systemerrhndler;
+
+int
+X11Errorhandler(Display * d, XErrorEvent * ee)
+{
+  /* Enable assert() to get a backtrace on the X protocal error. */
+  /* assert(0); */
+  return systemerrhndler(d, ee);
+}
+
+int
+main(int argc, char *argv[])
+{
+  Display *dpy;
+  WindowData winData;
+
+  dpy = XOpenDisplay(NULL);
+  if (!dpy) {
+    printf("Error: couldn't open default display.\n");
+    return -1;
+  }
+
+  XSynchronize(dpy, True);
+  systemerrhndler = XSetErrorHandler(X11Errorhandler);
+
+  MakeWindow(dpy, "simple glx", 0, 0, 300, 300, &winData);
+  XMapWindow(dpy, winData.window);
+  glXMakeCurrent(dpy, winData.window, winData.context);
+
+  EventLoop(&winData);
+
+  glXDestroyContext(dpy, winData.context);
+  XDestroyWindow(dpy, winData.window);
+  XCloseDisplay(dpy);
+
+  return 0;
+}

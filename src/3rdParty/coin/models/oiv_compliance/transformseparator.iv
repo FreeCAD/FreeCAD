@@ -1,0 +1,23 @@
+#Inventor V2.1 ascii
+
+# Check rendering with SoTransformSeparator.
+#
+# 19990504 mortene
+
+Separator {
+   # (ROW 0)
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Cube { }
+
+      Translation { translation 2 0 0 }
+      TransformSeparator {
+	 BaseColor { rgb 1 1 0 }
+	 Translation { translation 0 0.5 0 }
+	 Cube { }
+      }
+
+      Translation { translation 2 0 0 }
+      Cube { }
+   }
+}

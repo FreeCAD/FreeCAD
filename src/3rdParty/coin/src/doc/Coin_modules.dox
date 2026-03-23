@@ -1,0 +1,567 @@
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_actions Action Classes
+
+  \brief
+  Actions are objects that traverse a scene graph to drive some
+  scene-related process.
+
+  \details
+  One example is OpenGL rendering, and another one ray picking.
+  At the most basic level, most action management will be done for the
+  user behind the scenes in an SoSceneManager object, and the only
+  actions one might need to get acquainted with are SoSearchAction and
+  SoWriteAction.
+
+  For more advanced usage of Coin, one might want (or need) to take full
+  control over driving all the actions oneself, in which case one will
+  also need to know about the SoGLRenderAction, SoHandleEventAction,
+  SoGetBoundingBoxAction, and SoRayPickAction.
+
+  The remaining actions are mostly more special-purpose actions of
+  various kinds, except for the SoCallbackAction.
+
+  Before going to the step of implementing an extension action, one
+  should really take a good look at the SoCallbackAction class, which
+  is a general-purpose action that can be used as the framework for
+  implementing almost any traversal-based process, with callback-hooks
+  for all kinds of events that happen during traversal.  In most cases,
+  one can avoid the hassle of writing a new action, and just use
+  SoCallbackAction instead.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_base Base Classes
+
+  \brief
+  This group is just a lot of basic types for linear algebra, string
+  manipulation and misc. other utilities.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_bundles Bundle Classes
+
+  \brief
+  The bundle classes are internal to Coin.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_caches Cache Classes
+
+  \brief
+  The cache classes are internal to Coin.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_details Detail Classes
+
+  \brief
+  Detail classes are objects that deliver additional information
+  wherever the SoPrimitiveVertex class is used.
+  
+  \details
+  This goes for ray picking results, and it also goes for primitive
+  generation by SoShape classes for the SoCallbackAction class and
+  fallback shape rendering through primitive generation (a useful
+  debugging trick when debugging for instance raypicking).
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_draggers Dragger Classes
+
+  \brief
+  Draggers are interactive components in the scene graph that respond
+  to, and are controlled by mouse and keyboard events.
+  
+  \details
+  They are used in manipulators as the user interface for the
+  manipulation action, often many draggers combined at the same time.
+
+  \see coin_manips
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_elements Element Classes
+
+  \brief
+  The element classes in Coin are the containers of state information
+  during action traversals of scene graphs.
+  
+  \details
+  One element usually corresponds to one item of information, or
+  sometimes a group of related information values.  The elements work
+  like a stack that is pushed and popped as the action traverses in
+  and out of SoSeparator nodes, and the action will always just
+  inspect the top of the stack when it needs to know a value.
+
+  Elements are internal implementation details of the workings of
+  nodes and actions, and is not something one needs to worry about
+  before writing ones own extension nodes.  Writing extension elements
+  is even more removed from plain Open Inventor usage, but is fully
+  possible for the experienced Open Inventor developer.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_engines Engine Classes
+
+  \brief
+  Engines are scene based objects that convert between field values of
+  various types or performs computations on them.
+  
+  \details
+  The most versatile engine is the SoCalculator engine, which you can
+  write your own mathematical expressions to get it to do almost
+  anything.  The other engines are more custom-tailored for specific
+  purposes.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_errors Error Handling Classes
+
+  \brief
+  The error classes are static classes that contain a callback pointer
+  for handling errors of the given type.
+  
+  \details
+  Coin has default handlers for displaying all the types, but these
+  can be overridden by applications by setting other callbacks.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_events Event Classes
+
+  \brief
+  These classes are the event types you can send to a scene graph
+  through the SoHandleEventAction.
+  
+  \details
+  They are a pretty direct mapping from the various system event types
+  you will have on all the host architectures.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_fields Field Classes
+
+  \brief
+  The fields are the data containers in the scene graph.  Nodes and
+  engines all use fields to store their public data.
+
+  \details
+  Fields can be inter-connected, causing changes at one location in a
+  scene graph to cause other parts of the scene graph to automatically
+  also get updated.  Direct field-to-field connections will cause
+  values to get duplicated, while field connections together with
+  engines can create complex networks for such updating that include
+  mathematical computations and logical operations.  Field connections
+  are uni-directional, but setting up a connection in both directions
+  will cause a bi-directional connection.
+
+  Fields are first divided into two groups; "single fields" and "multi
+  fields".  Single-fields contain just one value, while multi-fields
+  can contain many values or even none at all.
+
+  Besides fields that are part of nodes, you also have "global fields".
+  The "realtime" field is one such field.
+
+  The fields in VRML97 nodes have additional semantics.  Some are
+  "event_in" and some are "event_out", listening for events or
+  triggering events.  "event_in" events should not be read from, and
+  "event_out" fields should not be written to.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_general Miscellaneous Classes
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_manips Manipulator Classes
+
+  \brief
+  Manipulators are objects you can swap back and forth into a scene
+  graph at locations where you have an SoTransform node.
+
+  \details
+  They take the place of the SoTransform, continue to act like the SoTransform,
+  but in addition give the user a 3D user interface, using draggers,
+  for controlling the transform.  When the user is done manipulating,
+  the manipulator can swap itself back out, replacing itself with an
+  SoTransform that represent the new transform value.
+
+  Manipulators is one of the concepts that really made Open Inventor
+  stand out against the alternatives when it came out.
+
+  \see coin_draggers
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_navigation Navigation Classes
+
+  \brief
+  These contains the actual implementation of the ScXML based navigation system.
+
+  \sa coin_scxml
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_nodekits NodeKit Classes
+
+  \brief
+  Nodekits modularize sub-structures of a scene graph.
+
+  \details
+  Wrapping ones head around when, how, and why to create nodekits can
+  be difficult in the beginning.  When do you write a nodekit, and
+  when do you write a custom node?  It is easy to think in those terms
+  in the beginning, but it is often not an either/or situation.
+
+  The concept of nodekits is to modularize useful, potentially
+  repeated sub-structures you have in your scene graph as it
+  approaches some level of complexity.  They are especially useful if
+  you might need to rearrange the structure of the sub-structure in
+  the future, which you probably will.
+
+  On file, a nodekit is like a macro for the scene graph.  The nodekit
+  will not expose its internal structure, but when read in it will
+  create the node structure internally.  The node structure can even
+  have optional parts that are only expanded if necessary.
+
+  A nodekit will give you access to its "slots" in the internal
+  structure through its fields.  Only those fields should be the user
+  interface for the nodekit, the rest of the substructure should be
+  completely automatic, derived from those slot fields.
+
+  To return to the question on whether to implement a custom node or a
+  nodekit, the answer is to think of what exactly is really custom
+  about what you need to implement, and trim that down to the atomic
+  level (but please stop trimming before you trim away all meaning).
+  If there is nothing really custom in what you want to implement,
+  then it is likely that implementing it as a nodekit is what you
+  ought to do.  However, if you do have to do something custom that
+  Coin doesn't support, then implement that part as a custom node, and
+  then, if it seems worthwhile, implement the nodekit you need to
+  bundle up this custom part with an auxiliary support structure to
+  achieve what you set out to achieve.
+
+  For VRML97, you have something called PROTOs, which is something
+  similar to nodekits, except they are not very accessible from C++, as
+  opposed to nodekits.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_nodes Node Classes
+
+  \brief
+  Nodes are scene based objects performs various actions such as rendering.
+
+  \details
+  This is the set of nodes Coin implements using the original Open
+  Inventor pattern, meaning they read and write to and from files
+  using the Inventor/VRML1 format, and produce side-effects for
+  subsequent siblings under the same SoSeparator node during action
+  traversal.
+
+  A subset of these nodes constitute the VRML1 format, and a bigger
+  subset constitutes the Inventor format.  The rest of the nodes are
+  extensions that are not part of any standardized format.
+
+  For VRML97 nodes, see the \ref VRMLnodes page.
+
+  The VRML1.0 specification is at
+  http://www.web3d.org/x3d/specifications/vrml/VRML1.0/index.html
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_projectors Projector Classes
+
+  \brief
+  The projector classes are used to convert between screenspace (2D)
+  locations and locations in worldspace (3D).  
+  
+  \details
+  They are mostly used in relation to user interaction with the mouse
+  in the viewport.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_sensors Sensor Classes
+
+  \brief
+  Sensors are objects that monitor other objects for changes and invoke
+  callbacks when changes occur.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_shaders Shader Classes
+
+  \brief
+  Shaders are programs that run on the graphics processor and replace
+  the formerly fixed OpenGL pipeline.
+
+  \details
+  Coin-2.5 added support for Shaders. Shaders replace the fixed
+  function vertex and fragment processing in OpenGL by letting the
+  user define the processing that takes place at key points in the
+  OpenGL pipeline. Vertex shaders handle the operations that occur on
+  each vertex, while fragment shaders handle the operations that occur
+  on each pixel. The SoShaderProgram node in Coin provides a
+  convenient way of specifying the code for vertex and fragment
+  shaders.
+
+  Coin-3.0 expanded upon the shader support by adding support for
+  OpenGL Vertex Attributes. When using shaders, programmers are no
+  longer limited to the set of attributes that OpenGL defines
+  (glColor, glNormal, glTexCoord etc.) You can now define your own
+  per-vertex data and pass them to the shaders using the
+  SoVertexAttribute node.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_soscxml Coin specific State Chart XML Classes
+
+  \brief
+  This set of classes implement a coin-specific mode of scxml.
+
+  \sa coin_navigation
+  \sa coin_scxml
+
+  \since Coin 4.0
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_sound 3D Sound Support Classes
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_scxml State Chart XML Classes
+
+  \brief
+  This set of classes is a basic implementation of State Chart XML.
+
+  \details
+  It is not complete, nor is it necessary conformant to those parts it
+  implements.
+
+  Currently Coin uses SCXML for managing 3D viewer user interaction
+  (the non-model-interaction part) - the examiner navigation mode in
+  layman terms.
+
+  The Draft Specification for SCXML is at http://www.w3.org/TR/scxml/.
+
+  \sa coin_navigation
+
+  \since Coin 3.0
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_threads Portable Threads Abstraction Classes
+
+  \details
+  Coin implements a set of abstractions over the native threads data
+  types that can be portably used across all the platforms Coin has
+  been ported to.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_VRMLnodes VRML97 Classes
+
+  \brief
+  Nodes implementing the VRML97 standard.
+
+  \details
+  This is the set of items specified by VRML97, also known as VRML2.0.
+  These nodes are different from VRML1/Inventor nodes in the way you
+  structure them into scene-graphs, and in the requirements they set
+  for traversing them correctly (VRML1/Inventor require that you
+  traverse siblings on the left side before the node of interest,
+  while for VRML2.0 this is not true).
+
+  You can find out more about VRML97 in \ref vrml2refbook.
+
+  The VRML97 specification is online at
+  http://www.web3d.org/documents/specifications/14772/V2.0/
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_hardcopy Vectorized Printing Classes
+
+  \brief
+  The vectorized printing classes are for rendering to vector devices
+  instead of raster devices.  
+  
+  \details
+  You can use this to e.g. generate scalable PostScript images for
+  printing instead of raster images that will become pixelated when
+  you scale them up.
+
+  See below for \ref coin_hardcopy_overview.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_XML XML related functions and objects
+
+  \brief
+  Coin now has its own XML parser that also can be used from client code.
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_profiler Scene Graph Profiling
+
+  \brief
+  Coin includes some scene graph profiling functionality.
+  
+  \details
+  This functionality is intended for use during application development
+  for identifying performance bottlenecks in Coin-based applications with
+  regards to how Coin is being used and with regards to problems with
+  how Coin is implemented.
+
+  The profiling code can be enabled in existing Coin applications
+  without the need of adding any code by enabling it through the use
+  of some environment variables.  For particular profiling needs, the
+  default behaviour you can trigger through environment variables
+  might not work that well (you might have a specialized render
+  pipeline that causes the output to be garbled) or focus on the
+  information you need (the full application might perhaps add noise
+  to the system that Coin won't separate out).  In such cases,
+  programmatic access to the profiling subsystem will be necessary to
+  get the better results.
+
+  \since Coin 3.0
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_macros Miscellaneous Macros
+
+  \brief
+  When extending Coin, there are a number of macros one needs to know
+  about and use.
+
+*/
+
+// *************************************************************************
+
+/*!
+  \defgroup coin_envvars Miscellaneous Environment Variables
+
+  \brief
+  Various aspects of the Coin runtime behaviour can be controlled through
+  setting different environment variables to some value.
+  
+  \details
+  Most of these variables are there for debugging and problem-workaround
+  purposes, but a few are for telling Coin where to locate external
+  resource files.
+
+  Here we will set up a list of some of the environment variables Coin will
+  check for and can alter behavior because of.
+
+*/
+
+// *************************************************************************

@@ -1,0 +1,11 @@
+#VRML V2.0 utf8
+
+#
+# NULL is not allowed in MFNode.
+# Should correctly abort read in
+# SbBool SoMFNode::read1Value(SoInput * in, int index)
+#
+
+Group {
+  children [ Cube{} NULL ]
+}

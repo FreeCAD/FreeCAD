@@ -1,0 +1,74 @@
+========================================================================
+C# / .NET
+=========
+
+  * A paper on how to use SWIG to generate a C++-binding for .NET:
+
+    <URL:http://people.cs.uchicago.edu/~songyanf/code/papers/mspaper.htm>
+
+  * There's something called swigsharp as well. Don't know how swigsharp
+    compares to swigcsharp (mentioned in the article above) though.
+
+    <URL:https://savannah.nongnu.org/projects/swigsharp/>
+
+========================================================================
+Java
+====
+
+  * Here's the tutorial starting point at Sun's Java pages for
+    interfacing to alien code through the Java Native Interface:
+
+    <URL:http://java.sun.com/docs/books/tutorial/native1.1/index.html>
+
+  * Kahlua: <URL:http://www.igd.fhg.de/CP/kahlua/>
+
+    A Java wrapper for the Open Inventor library. Sadly not open
+    source, so we can't port it to Coin unless the author changes the
+    licensing terms. larsa@sim.no has been investigating.
+
+    Maintainer is no longer Arno Schaefer <schaefer@jobpilot.com>, but
+    Volker Luckas <luckas@igd.fhg.de>.
+
+  Update 2002-06-17: Kristian Eide and Morten Vold have more or less
+  completed this task during a spring 2002 student project.
+
+========================================================================
+
+Python
+======
+
+  * Unfinished attempt at wrapping SGI Open Inventor with SWIG:
+    <URL:http://www.cs.uit.no/~olemb/software/pyinventor/>.
+
+  * SIP is a SWIG-like thing specially tuned for Python bindings, more
+    information here: <URL:http://www.thekompany.com/projects/pykde/>.
+
+  Update 2002-06-17: check Tamer Fahmy's "pivy". Mission accomplished?
+
+========================================================================
+
+Scheme
+======
+
+  * Ivy is a fully working port of a Scheme engine with an Inventor
+    API (with SoXt) binding, see <URL:http://www.coin3d.org> for more
+    information.
+
+========================================================================
+
+Common Lisp
+===========
+
+  * Common Lisp OpenGL-bindings (Allegro, GCL, CMUCL, ...):
+    <URL:http://ww.telent.net/cliki/OpenGL%20Bindings>.
+
+========================================================================
+
+Ruby
+====
+
+  * Ruby can interface to Python, and johng has used this to use Coin
+    from Ruby with success. That is only a quick hack, though, and not
+    a "proper" binding.
+
+========================================================================

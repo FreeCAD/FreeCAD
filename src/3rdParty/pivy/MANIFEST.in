@@ -1,0 +1,10 @@
+include AUTHORS ChangeLog HACKING LICENSE NEWS THANKS README
+recursive-include Inventor *.i *.win32 *.fix
+recursive-include fake_headers *.h
+recursive-include interfaces *.i *.h
+graft docs
+graft examples
+graft interfaces
+graft pivy
+graft SoPyScript
+graft tests

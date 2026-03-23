@@ -1,0 +1,32 @@
+misc/
+
+	Common files for the Visual Studio build files.
+
+msvc6/
+
+	Directory for building Coin with Visual Studio 6.
+
+msvc7/
+
+	Directory for building Coin with Visual Studio 7.1 (2003 .Net).
+
+msvc8/
+
+	Directory for building Coin with Visual Studio 8 (2005).
+
+msvc9/
+
+	Directory for building Coin with Visual Studio 9 (2008 Express).
+
+msvc10/
+
+	Directory for building Coin with Visual Studio 10 (2010).
+
+Xcode/
+        Directory for building Coin with Xcode (very experimental).
+
+coin.spec.in
+
+        Template processed by configure script to generate an RPM
+        specification file coin.spec.
+

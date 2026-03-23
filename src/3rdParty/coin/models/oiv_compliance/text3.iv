@@ -1,0 +1,72 @@
+#Inventor V2.1 ascii
+
+# Check various aspects of rendering with an SoText3 node.
+#
+# 20000328 mortene
+
+Separator {
+
+   # (ROW 0) justification settings
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Text3 { string [ "with", "default", "settings" ] }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +60 0 0 }
+      Text3 {
+	 justification RIGHT
+	 string [ "justified", "to the", "right" ]
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +60 0 0 }
+      Text3 {
+	 justification CENTER
+	 string [ "i ham", "center", "justified" ]
+      }
+   }
+
+   Translation { translation 0 -60 0}
+
+   # (ROW -1) spacing
+   Separator {
+      BaseColor { rgb 1 1 0 }
+      Text3 {
+	 spacing 2.0
+	 string [ "double", "line", "spacing" ]
+      }
+
+      BaseColor { rgb 0 1 1 }
+      Translation { translation +60 0 0 }
+      Text3 {
+	 spacing 0.5
+	 string [ "half", "line", "spacing" ]
+      }
+   }
+
+   Translation { translation 0 +60 0}
+   Translation { translation 0 +60 0}
+
+   # (ROW 1) parts
+   Separator {
+      BaseColor { rgb 1 0 0.5 }
+      Text3 {
+	 parts ALL
+	 string [ "all", "parts" ]
+      }
+
+      BaseColor { rgb 1 0.5 0 }
+      Translation { translation +60 0 0 }
+      Text3 {
+	 parts BACK
+	 string [ "only", "back" ]
+      }
+
+      BaseColor { rgb 0 1 0.5 }
+      Translation { translation +60 0 0 }
+      Text3 {
+	 parts SIDES
+	 string [ "only", "sides" ]
+      }
+   }
+}

@@ -1,0 +1,5 @@
+Gentoo ebuild to build the most recent Pivy version from the
+subversion trunk.
+
+Suggested location:
+  PORTDIR_OVERLAY/dev-python/pivy-svn/

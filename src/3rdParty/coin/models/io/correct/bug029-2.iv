@@ -1,0 +1,18 @@
+#Inventor V2.1 ascii
+
+
+Separator {
+
+  MyNode {
+    fields [ SFEnum hepp ]
+    hepp VALUE_A
+
+  }
+  MyNode2 {
+    fields [ MFEnum hepp ]
+    hepp [ VALUE_A,
+        VALUE_B,
+        VALUE_C ]
+
+  }
+}

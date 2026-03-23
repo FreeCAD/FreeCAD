@@ -1,0 +1,28 @@
+This is Coin-@VERSION@ by Kongsberg Oil & Gas Technologies. 
+Double-click on Coin.pkg to start the installation. If you intend to
+develop without using Xcode, you should also install the CoinTools
+package, which contains the coin-config commandline utility, its
+associated man page, and its default configuration.
+
+If you do not want to use an installer, you can find a package
+containing only the framework itself on our ftp server[0] (look for
+Coin-@VERSION@-gcc4-no_inst.dmg).
+
+Note that this binary SDK has been built with gcc 4.0, meaning that no
+earlier version of gcc should be used in combination with this
+framework. Due to the ABI changes in gcc 4.0, applications built
+against this framework can only be used on Mac OS 10.4 "Tiger" or Mac
+OS 10.3.9. If you need to deploy on earlier versions of Mac OS X, use
+gcc 3.3 and the binary SDK of Coin built with gcc 3.3. For more
+information, please read the relevant FAQ entry at [1].
+
+The Coin3D/Mac homepage[2] contains more information on how to get
+started using Coin. You might also want to consider joining our public
+mailing list for discussions related to Coin3D development[3].
+
+Enjoy!
+
+[0] http://ftp.coin3d.org/coin/bin/macosx/
+[1] http://www.coin3d.org/mac/faq/#dist_tiger
+[2] http://www.coin3d.org/mac/
+[3] https://www.coin3d.org/mailman/listinfo/coin-discuss/

@@ -1,0 +1,102 @@
+#VRML V1.0 ascii
+
+# Check all aspects of Cube rendering.
+#
+# State change nodes which does not influence Cone rendering:
+#   Normal, NormalBinding, ShapeHints
+#
+# 19990414 mortene
+# 20030509 kintel
+
+Separator {
+   # (ROW 0) Check cube on its own.
+   Separator {
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      Cube { width 1 }
+
+      Translation { translation +3 0 0 }
+      Cube { height 1 }
+
+      Translation { translation +3 0 0 }
+      Cube { depth 1 }
+   }
+
+   # (ROW 3) With different MaterialBinding settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material {
+	 diffuseColor [
+	  1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1, 0 0 0
+	 ]
+      }
+
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value OVERALL }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_PART }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_FACE }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      Cube { }
+   }
+
+   # (ROW 5) Test how Cube is affected by texturemapping.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      Cube { }
+   }
+
+   # (ROW 6) Test boundary conditions
+   Translation { translation 0 +4 0 }
+   Separator {
+      Cube { width 0 }
+
+      Translation { translation +3 0 0 }
+      Cube { height 0 }
+
+      Translation { translation +3 0 0 }
+      Cube { depth 0 }
+
+      Translation { translation +3 0 0 }
+      Cube { width -1 height -1 depth -1 }
+
+      Translation { translation +3 0 0 }
+      Cube { width 0 height 0 depth 0 }
+   }
+
+}

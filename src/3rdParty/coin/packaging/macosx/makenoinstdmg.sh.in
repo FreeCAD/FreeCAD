@@ -1,0 +1,73 @@
+#!/bin/sh
+#
+# Copyright (C) Kongsberg Oil & Gas Technologies, All rights reserved.
+#
+# This script creates the Coin-x.x.x-no_inst.dmg file.
+# The dmg file will be put in the current directory.
+# 
+# Usage: makenoinstdmg.sh [-v] -f /path/including/Inventor.framework -c <Coin-verion>
+#  -v   Verbose
+#  -f   Location of framework, e.g. "-f /Library/Frameworks/Inventor.framework"
+#  -c   Coin version string including name, e.g. "-c Coin-2.1.0"
+#
+# Authors:
+#   Marius Kintel <kintel@sim.no>
+
+printUsage()
+{
+  echo "Usage: $0 [-v] -f </path/including/Inventor.framework> -c <Coin-version>"
+  echo
+  echo "  Example: $0 -f /Library/Frameworks/Inventor.framework -c Coin-2.1.0"
+}
+
+while getopts 'vf:c:' c
+do
+  case $c in
+    v) VERBOSE=-v ;;
+    f) FRAMEWORK=$OPTARG;;
+    c) VOLNAME=$OPTARG;;
+  esac
+done
+
+if test -z "$FRAMEWORK" -o -z "$VOLNAME"; then
+  printUsage
+  exit 1
+fi
+
+if test ! -d $FRAMEWORK; then
+  echo "$FRAMEWORK not found or not a directory"
+  exit 1
+fi
+
+if test -e /Volumes/$VOLNAME; then
+  echo "/Volumes/$VOLNAME already exists. Please unmount before running this script."
+  exit 1
+fi
+
+if test $VERBOSE; then
+  set -x
+fi
+
+# Determine which README file to use (*gcc4* or *gcc3*)
+gccversion="gcc4"
+versionstring=`cpp -dM /dev/null | grep __VERSION__ |grep '__VERSION__ "3'`
+if test x"$versionstring" = x""; then :; else gccversion="gcc3"; fi
+
+# Remove old generated files
+rm -rf noinst-dmg-root
+rm -rf $VOLNAME-no_inst.dmg
+
+# Create dmgroot from template dir
+ditto -rsrcFork @top_srcdir@/packaging/macosx/noinst-dmg-files noinst-dmg-root
+mv noinst-dmg-root/Desktop_DB noinst-dmg-root/Desktop\ DB 
+mv noinst-dmg-root/Desktop_DF noinst-dmg-root/Desktop\ DF
+
+# Copy dist files
+cp noinst-README-$gccversion.txt noinst-dmg-root/README.txt
+ditto -rsrcFork $FRAMEWORK noinst-dmg-root/Inventor.framework
+
+# Build dmg file from dmgroot
+sh makedmg.sh -v $VOLNAME -o $VOLNAME-no_inst.dmg -r noinst-dmg-root
+
+# Remove temporary files
+rm -rf noinst-dmg-root

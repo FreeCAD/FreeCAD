@@ -1,0 +1,252 @@
+This document describes the process of making a new release of the Coin
+library.
+
+
+IMPORTANT CHANGES
+=================
+
+20041214 larsa:
+
+  Punting now includes generating and committing the Windows build files
+  after the version information has been updated, but before the source
+  repository is tagged for release.  This dramatically increases the
+  punting time.
+
+
+CODE AUDITING
+=============
+
+* Look through the patches in Coin-?/patchqueue/ and apply those who
+  are decided to be ripe for plucking. Just use common sense and your
+  knowledge about what can and can't be done versus API and ABI
+  incompabilities and upgrades for the version to be released. Be
+  conservative, better safe than sorry and all that.
+
+* Grep for "\since" in the sourcecode files, and replace all the
+  YYYY-MM-DD date tags with a version number.
+
+* Grep for FIXMEs: at least do so for header files (to catch FIXMEs
+  concerning stuff in the public API), and preferably also for FIXMEs
+  in the implementation source code -- if you have some spare time to
+  look through them. Take care of as many FIXMEs as seems necessary
+  and possible within the time frame you have available for making the
+  release.
+
+* For new classes and methods, inspect the interface for correctness with
+  regards to constness, access rights and similar things.
+
+* If there's been a New Year's Eve since last release, update copyright
+  information in all the source files, etc.
+
+
+SPIFFING
+========
+
+This phase consists of getting everything straightened out and verifying
+that things work as expected.  This phase should be repeated randomly
+several times as new problems show up.
+
+* Build-system updating:
+
+  - Check installed versions of Autoconf, Automake and Libtool, and
+    bootstrap the repository.  Libtoolize if necessary.  Note local
+    changes to the libtool files, if any.  Verify the autotools
+    information given in HACKING.  Update NEWS if there has been changes
+    (new requirements?) since last release.
+
+  - Enter simacros/cfg/ and update config.guess and config.sub from these
+    locations:
+
+  http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.guess
+  http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.sub
+
+
+* Source and build-system validation:
+
+  All of this ought really be done from sources from a "make dist" tarball.
+
+  - Linux (GNU make and gcc):
+
+    $ <srcdir>/Coin/configure && make distcheck
+
+    Verify the enable-compact build:
+
+    $ <srcdir>/Coin/configure --enable-compact && make
+
+    Verify build with CC set as a C++ compiler (for systems with a C++
+    compiler but without a C compiler (yes, they exist)):
+
+    $ <srcdir>/Coin/configure CC=<C++-compiler> && make
+
+    Run the testsuite, and make sure no system installation of boost
+    is available. The makefile-update is important, since no changes
+    should be caused by this that differ between systems.
+
+    $ cd testsuite && make makefile-update && make
+
+ - Cygwin (GNU make and MS Visual C++)
+
+    NOTE: For windows-packages to work, you need to have perl and
+    makensis installed, this functionality is removed in Coin-3 and
+    onwards, so only run make
+
+    $ <srcdir>/Coin/configure && make (windows-packages)
+
+    * Build SoQt and then build SoQt/test-code/assertdbg/crash.cpp with
+      the debug libraries of Coin and SoQt, and ensure that the debugger
+      has symbols and can trace through the source code when it comes up.
+
+    This step will verify both release and debug builds.
+
+    Run the testsuite, and make sure no system installation of boost
+    is available. The makefile-update is important, since no changes
+    should be caused by this that differ between systems.
+
+    $ cd testsuite && make makefile-update && make
+
+  - Mac OS X (GNU make and gcc)
+
+    Create binary distribution, see Coin/packaging/macosx/checklist.txt.
+
+    Run the testsuite, and make sure no system installation of boost
+    is available. The makefile-update is important, since no changes
+    should be caused by this that differ between systems.
+
+    $ cd testsuite && make makefile-update && make
+
+  - Make Source Dist
+
+    - Remember to remove src/extensions/superglu before running
+
+        $ <srcdir>/Coin/configure && make dist
+
+      or superglu will be included in the dist tarball.
+
+
+  * build a GUI toolkit + SoGuiExamples on top of Coin and run a few programs
+
+* Update Documents
+
+  - Create stub ChangeLog.vN.N.N in docs and add it to $(EXTRA_DIST) in
+    toplevel Makefile.am. 
+
+  - Scan through "hg log" and update NEWS on user-visible changes.
+
+  - Scan through "hg log" and update RELNOTES on semantic changes.
+
+  - Scan through "hg log" and update THANKS.
+
+  - Check for missing and stale information in INSTALL.
+
+  - Update README and README.*
+
+  - Write mailinglist announcement and commit it to docs/ and add the
+    file to $(EXTRA_DIST) in toplevel Makefile.am.
+    - Include NEWS section.
+    - Include download information.
+
+* Bootstrap and commit everything.
+
+
+PUNTING
+=======
+
+It is very important that all spiffing has been finished before embarking
+on this phase.  It can only be done once for each release, and should be
+done on a tight timeframe so chances of other people committing anything to
+the library at the same time is minimal.  One should of course announce
+to all Subversion writers that punting will be done and nobody should commit
+anything.
+
+* Release Version Number Update:
+
+  configure.ac (top section)
+  NEWS (header)
+  README (multiple instances)
+  RELNOTES
+  INSTALL
+
+  Rerun bootstrap.  Commit.
+
+* Generate Windows Build Files:
+
+  Use an MSVC6.0 Windows box and run build/misc/generate.sh from build/msvc6
+  on it to get the build files generated for MSVC6.0.  Commit changes.
+  Use an MSVC7.1 Windows box and run build/misc/generate.sh from build/msvc7
+  on it to get the build files generated for MSVC7.1.  Commit changes.
+  Use an MSVC8.0 Windows box and run build/misc/generate.sh from build/msvc8
+  on it to get the build files generated for MSVC8.0.  Commit changes.
+  Use an MSVC9.0 Windows box and run build/misc/generate.sh from build/msvc9
+  on it to get the build files generated for MSVC9.0.  Commit changes.
+
+* Generate up-to-date ChangeLog file for this release.
+
+  Ensure the version number update / msvc build file regeneration is on the
+  top in the ChangeLog.
+
+  Move updated ChangeLog file to docs/ChangeLog.vN.N.N.
+  Put "See docs/ChangeLog.vN.N.N" as the only content of root ChangeLog file.
+  Strip the information header from the moved ChangeLog file.
+  Commit changes.
+  Make sure you remembered the $(EXTRA_DIST)-step in the above section.
+  ("hg log -r tip:<startrev>: --style changelog" to generate)
+* Tag Source Repository
+
+  $ hg tag Coin-#.#.#
+
+  | Listing existing tags can be done with:
+  | $ hg tags
+
+  If the next release is a major version clone the repository.
+
+* Version Number Update
+
+  If this release is on the main development repository, do the following.
+
+  configure.ac (update COIN_MICRO and set COIN_BETA to a)
+  NEWS (start new section for Coin beta)
+
+  Rerun bootstrap.  Commit changes.
+
+  Regenerate Visual Studio build files.  Commit changes.
+
+  We're now home free if everything went well with the spiffing.
+
+
+PUBLISHING / ANNOUNCING
+=======================
+
+This stage should be self-explanatory.
+
+
+* Checkout of the release source code and make archive
+
+  $ svn export https://svn.coin3d.org/repos/Coin/tags/coin-#.#.# Coin
+  $ cd Coin
+  $ ./configure && make dist
+
+* Build Mac OS X binary distribution
+
+  See Coin/packaging/macosx/checklist.txt.
+
+* Put source distribution at ftp://ftp.coin3d.org/pub/coin/src/
+
+* Put binary distributions at ftp://ftp.coin3d.org/pub/coin/bin/<arch>/
+
+* Contact Debian and inform them about the update
+
+  Steve M. Robbins <smr at debian.org> is our contact on this item.
+
+* Update Coin Web site
+
+* Send announcements to coin-announce@coin3d.org and coin-discuss@coin3d.org
+
+* Update Coin Freshmeat project
+
+* Send announcement to maintainers of OpenGL.org, Linux3D.org (dead?),
+  VIS-SIM.org, vrsource.org
+
+* Update our Coin entry on www.versiontracker.com (Mac OS equivalent
+  of freshmeat.net).
+
+* Lean back and wait for bug reports

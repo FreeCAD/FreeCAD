@@ -1,0 +1,26 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoScale in the scene.
+#
+# 19990414 mortene
+
+Separator {
+   # (ROW 0) 
+   Separator {
+      Sphere { }
+
+      BaseColor { rgb 1 0 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Scale { scaleFactor 2 3 4 }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Scale { scaleFactor 2 3 4 ~ }
+	 Sphere { }
+      }
+   }
+}

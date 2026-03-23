@@ -1,0 +1,65 @@
+From: "Lars J. Aas" <larsa@sim.no>
+Subject: Coin 2.4.1 Released
+
+Coin 2.4.1 Released
+===================
+
+Systems in Motion is proud to release v2.4.1 of the Coin 3D graphics
+library.  Coin 2.4.1 is a patchlevel release.  Patchlevel releases
+contain mostly bugfixes, optimizations, documentation improvements,
+and configure and build setup fixes.  This release does not extend the
+library API beyond the previous release.
+
+
+NEWS File Excerpt:
+------------------
+
+* new features:
+  - minor: SoExtSelection RECTANGLE and LASSO selections can now be
+    aborted by the end-user by hitting the 'END' key
+* bugfixes:
+  - SbString::sprintf() trusted some undocumented behaviour of the
+    C-library function vsnprintf(), which at least failed with recent
+    GNU libc versions on 64-bit platforms
+  - SoOffscreenRenderer now properly handles multiple renderings
+    interleaved with changes to viewport size
+  - removed some possibilities for false positives with the mechanism
+    for detecting multiple Coin DLLs in a process image on MS Windows
+    platforms
+  - fixed obscure SoOffscreenRenderer problem on scene graphs where
+    renderCaching was explicitly set to ON for camera sibling
+    SoSeparator
+  - the SoIntersectionDetectionAction could cause asserts due to
+    floating point inaccuracies
+
+See the ChangeLog file if you want the really gory details.  See
+the file RELNOTES on changes that might affect Coin usage.
+
+
+Download Information:
+---------------------
+
+This message may be posted before some of the listed files are available.
+In that case, try again at a later time.
+
+ChangeLog:
+  http://source.coin3d.org/Coin-2/docs/ChangeLog.v2.4.1
+
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/Coin-2.4.1.tar.gz
+  ftp://ftp.coin3d.org/pub/coin/src/Coin-2.4.1.zip
+
+Precompiled for MS Windows:
+  Not available yet.  Visit the following directory to check for any
+  change of status:
+    ftp://ftp.coin3d.org/pub/coin/bin/win32/
+
+Precompiled for Mac OS X:
+  Not available yet.  Visit the following directory to check for any
+  change of status:
+    ftp://ftp.coin3d.org/pub/coin/bin/macosx/
+
+
+Enjoy,
+
+  Lars J

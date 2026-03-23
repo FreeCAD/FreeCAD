@@ -1,0 +1,10 @@
+026 Bounding box calculation: the bbox for the Barcelona.iv model is
+    _very_ sub-optimal. (SGI Inventor seems to make a perfect fit.)
+
+    Update, some further investigations made: the bug disappears if we
+    remove the invalid face (there are two "-1" in a row in the
+    coordIndex field). Bbox-calculation code should match the
+    rendering code in what action to take when detecting this case, so
+    bboxes matches the geometry that actually gets rendered.
+
+    20020915 mortene.

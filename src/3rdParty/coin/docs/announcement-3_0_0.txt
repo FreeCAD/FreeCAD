@@ -1,0 +1,107 @@
+From: "Lars J. Aas" <larsa@sim.no>
+Subject: Coin 3.0.0 "Buffalo" Released
+
+Coin 3.0.0 "Buffalo"
+====================
+
+Kongsberg SIM is proud to release version 3.0.0 of the Coin 3D graphics
+library.  Coin 3.0.0 is a major release.  It breaks binary compatibility
+with previous versions of Coin, but is for the most part upward source
+code compatible with Coin 2.*.  A new major release means it was time for
+doing cleanup-duties.  Some dead-end developments were removed, certain
+ABI-preservation-related hacks were discarded and rewritten properly.
+Certain bad design choices were improved upon.
+
+Coin 3.0.0 is not a release with a massive roll-out of new features.
+Resources have at times been stretched, but we have managed to accumulate a
+decent set of features for a release anyway, and internal to Coin we have
+many new subsystems to build future features on.
+
+It should also be mentioned that the Coin 3.0 series will be the last set
+of releases of Coin to support the archaic Microsoft Visual C++ 6.0 compiler,
+which has become a big pain to keep supporting at this point, C++
+languagewise.  Just a word of warning to VC++6.0 users out there.  This is
+the beginning of the end of the line.
+
+
+NEWS File Excerpt:
+------------------
+
+* new:
+  - Scene graph performance profiling subsystem
+  - SoDepthBuffer node for controlling Z-buffer settings
+  - Shaders: SoVertexAttribute and SoVertexAttributeBinding nodes
+  - Shadows: SoShadowSpotLight node
+  - SoHeightMapToNormalMap texture conversion engine
+  - SoPickStyle: new styles SHAPE_ON_TOP, BOUNDING_BOX_ON_TOP, SHAPE_FRONTFACES
+  - New XML-based GL driver feature database for tagging buggy/slow features
+    in specific drivers
+  - Statechart XML engine (2007-draft based), used to implement examiner viewer
+    mode at the Coin level
+  - Foreign file format support through SoForeignFileKit w. example SoSTLFileKit
+  - Draggers: minTranslation/maxTranslation fields in SoTranslate1Dragger and
+    SoTranslate2Dragger
+  - OS X: Coin has become more bundle-aware and will loads external libs bundled
+    with Inventor.framework or the application bundle (better encapsulation)
+  - SoLineHighlightRenderAction and SoBoxHighlightRenderAction now only
+    supports one SoSelection node (performance and OIV-compatibility)
+  - SoBumpMap will now detect height maps stored as rgb(a)
+  - SoRayPickAction picking precision improvements
+  - Include SoFieldContainer userdata when doing a deep node copy
+  - Anti-aliasing is now done around the center of each pixel
+  - Boost.Test-based testsuite
+* bugfixes:
+  - ATi driver workarounds (VBO rendering related)
+  - Fixed SoToVRML2Action Transform handling bug
+  - SoTimeCounter now handles frequency == 0.0
+  - SoSceneTexture2 now properly restores the previous context
+  - Fix for remote rendering in SoGLDisplayList
+  - Workaround for nVidia texture format bug
+  - SoPathList::uniquify() now properly removes all paths that goes through
+    another path, not just one
+  - SoVRMLAppearance now checks material on the state
+  - SoComposeRotation. Default axis is now (0,0,1)
+  - Various SoShadowGroup fixes
+  - 3ds loader will no longer normalize the model (still not enabled by default)
+  - Workaround for nVidia line pattern bug
+  - Fixes for SoVRMLBillboard
+  - SoFile-SoSearchAction bugfix
+  - Correctly load bold/italic version of fonts with a single ttf file
+  - Bugfix for anti aliasing with numpasses > 16
+  - New Visual Studio 9 build files and other VS-related fixes
+    ... and more
+
+See the ChangeLog file if you want the really gory details.  See
+the file RELNOTES on changes that might affect Coin usage.
+
+
+Download Information:
+---------------------
+
+This message is posted before some of the listed binary downloads are
+available.  If you don't find what you are after, try again at a later
+time.  We will attempt this time to make them available within a day.
+
+
+ChangeLog:
+  http://svn.coin3d.org/repos/Coin/trunk/docs/ChangeLog.v3.0.0
+
+Source Code:
+  http://ftp.coin3d.org/coin/src/all/Coin-3.0.0.tar.gz
+  http://ftp.coin3d.org/coin/src/all/Coin-3.0.0.zip
+
+Precompiled for MS Windows:
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.0.0-bin-msvc6.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.0.0-bin-msvc7.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.0.0-bin-msvc8.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.0.0-bin-msvc9.zip
+    or look in
+  http://ftp.coin3d.org/coin/bin/win32/ ...
+
+Precompiled for Mac OS X:
+  http://ftp.coin3d.org/coin/bin/macosx/
+
+
+Enjoy,
+
+  Lars J

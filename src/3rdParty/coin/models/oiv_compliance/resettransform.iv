@@ -1,0 +1,38 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoResetTransform in the scene.
+#
+# 19990414 mortene
+
+Separator {
+   # (ROW 0) set field values in a number of possible ways.
+   Separator {
+      Separator {
+	 Rotation { rotation 0 1 0 0.78 }
+	 Cube { }
+
+	 ResetTransform { }
+	 Translation { translation +4 0 0 }
+	 Cube { }
+      }
+
+      Separator {
+	 Translation { translation -4 0 0 }
+	 Cube { }
+	 ResetTransform { whatToReset BBOX }
+      }
+   }
+
+   # (ROW 1) set ignored flag.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Separator {
+	 Rotation { rotation 0 1 0 0.78 }
+	 Cube { }
+
+	 ResetTransform { whatToReset ~ }
+	 Translation { translation +4 0 0 }
+	 Cube { }
+      }
+   }
+}

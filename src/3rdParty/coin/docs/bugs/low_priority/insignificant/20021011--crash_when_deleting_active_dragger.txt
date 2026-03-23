@@ -1,0 +1,65 @@
+036 This program will hit an assert if we interact with the
+    SoTrackballDragger at the same time as it is removed from the
+    scenegraph:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #include <Inventor/Qt/SoQt.h>
+    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+    #include <Inventor/nodes/SoNodes.h>
+    #include <Inventor/sensors/SoTimerSensor.h>
+    #include <Inventor/draggers/SoTrackballDragger.h>
+
+    static void deleteObjectCB(void *d, SoSensor *sensor)
+    {
+      SoSeparator * root = (SoSeparator *)d;
+      if (root->getNumChildren() > 0) { root->removeChild(0); }
+
+      SoNode * n = new SoTrackballDragger;
+      root->addChild(n);
+    }
+
+    int
+    main(int argc, char **argv)
+    {
+      QWidget * mainWindow = SoQt::init(argv[0]);
+
+      SoSeparator * root = new SoSeparator;
+      root->ref();
+
+      SoTimerSensor * sensor = new SoTimerSensor(deleteObjectCB, root);
+      sensor->setInterval(1);
+      sensor->schedule();
+
+      SoQtExaminerViewer *viewer = new SoQtExaminerViewer(mainWindow);
+      viewer->setSceneGraph(root);
+      viewer->viewAll();
+      viewer->show();
+      SoQt::show(mainWindow);
+      SoQt::mainLoop();
+
+      delete sensor;
+      delete viewer;
+      root->unref();
+
+      return 0;
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    Should of course be robust and handle this properly without
+    crashing, even though this is a rather obscure problem.
+
+    (Consider this bug a low-priority item.)
+
+    I did some quick checking on a few other draggers, and they seem
+    to handle getting destructed while they are interacted
+    with. Should check all of them after fixing this
+    SoTrackballDragger bug, though.
+
+    20021011 mortene.
+
+    UPDATE 20060203 mortene: when I tried to reproduce the bug now, i
+    consistently get the following error and segfault, so it is still
+    present:
+
+        Coin error in SoPath::copy(): startfromnodeindex was out of bounds with 0.
+        Segmentation fault

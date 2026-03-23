@@ -1,0 +1,18 @@
+176 SbTime::formatDate() will crash on bad (?) input.
+
+    On Windows XP, with MSVC 7, this code snippet will cause a crash:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+    SbTime t = SbTime::getTimeOfDay();
+    SbString s = t.formatDate("%T");
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    Many other control sequences will also cause a crash, like
+    e.g. "%t", or any obviously bogus sequence.
+
+    20041207 mortene, reported by christt.
+
+    UPDATE 20041207 mortene: looking at a call-stack backtrace, the
+    crash happens within strftime().
+
+    With GNU C (on e.g. Linux), the code will not crash.

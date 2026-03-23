@@ -1,0 +1,175 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of SoCone rendering.
+#
+# State change nodes which does not influence Cone rendering:
+#   SoNormal, SoNormalBinding, SoShapeHints
+#
+# 19990414 mortene
+
+Separator {
+   # (ROW 0) Check cone on its own.
+   Separator {
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      Cone { parts SIDES }
+
+      Translation { translation +2 0 0 }
+      Cone { parts BOTTOM }
+
+      Translation { translation +2 0 0 }
+      Cone { bottomRadius 1.5 }
+
+      Translation { translation +2 0 0 }
+      Cone { height 4 }
+   }
+
+   # (ROW 1) With different LightModel settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      LightModel { model BASE_COLOR }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      LightModel { model PHONG }
+      Cone { }
+   }
+
+   # (ROW 2) With different DrawStyle settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Translation { translation +2 0 0 }
+      DrawStyle { style INVISIBLE }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES lineWidth 1 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES lineWidth 2 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES lineWidth 4 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES lineWidth 2 linePattern 0x0180 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style POINTS }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style POINTS pointSize 3 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style FILLED }
+      Cone { }
+   }
+
+   # (ROW 3) With different MaterialBinding settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material { diffuseColor [ 0.8 0.8 0, 0.8 0.0 0.8 ] }
+
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value OVERALL }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_PART }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_FACE }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      Cone { }
+   }
+
+   # (ROW 4) Test how Cone is affected by Complexity.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Complexity { type BOUNDING_BOX }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 1.0 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.8 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.6 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.4 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.2 }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.0 }
+      Cone { }
+   }
+
+   # (ROW 5) Test how Cone is affected by texturemapping.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 8 6 3
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      }
+
+      Cone { }
+   }
+
+   # (ROW 6) Ignore flags on the fields.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Cone { parts BOTTOM ~ }
+
+      Translation { translation +2 0 0 }
+      Cone { bottomRadius 0.5 ~ }
+
+      Translation { translation +2 0 0 }
+      Cone { height 0.5 ~ }
+   }
+}

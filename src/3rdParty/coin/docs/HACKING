@@ -1,0 +1,1252 @@
+If you want to work _with_ the Coin sourcecode (not just writing
+applications _using_ the Coin library) -- for helping us fixing bugs,
+improve performance, or whatever reasons -- this file contains some
+hints and tips for you.
+
+==============================================================================
+
+1 The Bleeding Edge
+===================
+
+First of all, you should make sure you are building from the latest
+sources from the Mercurial repository you want to work with. This is
+done by using the Mercurial for staying in sync with the sourcecode
+repository we at Kongsberg Oil & Gas Technologies are using. Follow
+the instructions on the webpages at
+<URL:http://www.coin3d.org/doc/mercurial_access>.
+
+Be aware that Coin has three source repositories. "Coin" is the head
+development repository which is unstable and may contain unportable
+code and break binary compatibility from time to time. "Coin-1" is the
+repository that contains the code for the latest Coin-1.* release.
+"Coin-2" is the repository we release the Coin 2.* releases from and
+will always contain stable code that does not break upwards binary
+compatibility. You can hack on either, but for your application
+development efforts' sake you might want to follow Coin-2.
+
+If you are not familiar with Mercurial, check out the Mercurial
+homepages at <URL:http://mercurial.selenic.com/> and specifically the
+Mercurial documentation in the available online book at
+<URL:http://hgbook.red-bean.com/>.
+
+
+2 Surviving a Large C++ Project
+===============================
+
+The main problem all large C or C++ projects bump into sooner or later
+is that the turn-around time for doing compile, link and run gets too
+long for development to be efficient. When we're talking re-linking of
+library files of >30MB (with debug information), its gonna get painful
+to do rapid incremental bugfixing / testing cycles.
+
+So I'm going to explain now how we at SIM have (more or less
+fundamentally) solved this problem for our core Coin library. First of
+all: use a "UNIX-like" system. MSWindows systems are no good for
+working with the kind of setup we have, we do all new development on
+UNIX systems (mostly Linux and SGI IRIX) and so the build process have
+been tuned for these platforms.
+
+A typical set-up session for me for doing Coin development on a virgin
+machine looks like this (I'm using SoXt as the GUI library for
+demonstration purposes):
+
+  $ cd $HOME
+  $ mkdir code
+  $ cd code
+  $ hg clone http://hg.sim.no/simage/default simage
+  [Mercurial doing its thing]
+  $ hg clone http://hg.sim.no/Coin/default Coin
+  [Mercurial doing its thing]
+  $ hg clone http://hg.sim.no/SoXt/default SoXt
+  [Mercurial doing its thing]
+
+        Note: you might want to work with a particular branch from
+        Mercurial, if so use the "branches" instead of "default"
+        repository above.
+
+        Note2: if you have already checked out the sources at an
+        earlier point in time, you just ``cd'' to the sourcecode
+        directories and do
+
+        $ hg pull -u
+
+        instead of the full checkout.
+
+
+  $ export WORKDIR=<somewhere on a local disc>
+  $ mkdir compile install
+  $ cd $WORKDIR/compile
+  $ mkdir simage Coin SoXt
+
+  $ cd $WORKDIR/compile/simage
+  $ $HOME/code/simage/configure --prefix=$WORKDIR/install
+  [configure running]
+  $ make install
+  [build should complete quickly]
+
+  $ cd $WORKDIR/compile/Coin
+  $ $HOME/code/Coin/configure --prefix=$WORKDIR/install --enable-hacking
+  [configure running]
+
+        Note the "--enable-hacking" option to configure. This is the
+        brilliant part. What happens with this option is that instead
+        of making one monolithic libCoin.so file, the Coin library
+        will be linked into many shared libraries, one for each
+        subdirectory under $WORKDIR/compile/Coin/src/. The brilliance of
+        this little trick will be explained later in the walk-through.
+
+        Note for Mac OS X users: --enable-hacking requires Mac OS
+        version 10.3 or higher. It also works with the Mac OS X
+        framework build, however note that you'll need to set your
+        DYLD_LIBRARY_PATH to include Inventor.framework/Libraries.
+        Universal Binaries are not supported.
+
+  $ make install
+
+        Building will take quite some time, go for a coffee.
+
+        The build process should complete without any compiler
+        warnings or errors -- if you see any, please notify us.
+
+        Shared library files for all sub-dirs in the Coin sourcecode
+        tree should now have been installed in $WORKDIR/install, along
+        with a top-level libCoin.so file.
+
+        Now, Libtool's .la-scheme for storing information about
+        installed libraries doesn't work too well when trying to build
+        further Libtool-based libraries or executables with the
+        "hacking enabled" Coin sub-library files. But we don't really
+        lose anything important without the .la-files, so we just
+        remove them:
+
+  $ cd $WORKDIR/install/lib
+  $ rm lib*LINKHACK*.la
+
+        Next step is to configure and build an interface library which
+        "connects" Coin with an underlying native 2D GUI toolkit. We
+        use SoXt in the example walk-through, but you can also use
+        SoQt (for TrollTech's Qt), SoGtk (for gtk+) or SoWin (for
+        interfacing against "pure" Win32 API under MSWindows).
+
+  $ cd $WORKDIR/compile/SoXt
+  $ $HOME/code/SoXt/configure --prefix=$WORKDIR/install
+  [configure running]
+  $ make install
+  [build shouldn't take long]
+
+Ok, that's it. You should now have libsimage, libCoin and libSoXt
+built and installed under $WORKDIR/install/lib/.
+
+If you go look in the $WORKDIR/install/lib/ directory, you will see a
+bunch of files named lib**something**LINKHACK.so. For each of the
+"submodules" in Coin where you will be working, you should now remove
+the relevant .so-files and instead symlink them directly from the
+build directory. I.e., if you are going to work with the node classes,
+execute the following:
+
+  $ cd $WORKDIR/install/lib
+  $ ls -c1 *nodesLINKHACK*
+  libnodesLINKHACK.la*
+  libnodesLINKHACK.so@
+  libnodesLINKHACK.so.0@
+  libnodesLINKHACK.so.0.0.0*
+  $ rm libnodesLINKHACK.so.0.0.0
+  $ ln -s $WORKDIR/compile/Coin/src/nodes/.libs/libnodesLINKHACK.so.0.0.0 libnodesLINKHACK.so.0.0.0
+
+(The other two .so-files are just symlinks to the .so.0.0.0 file, so
+we don't need to do anything about those.)
+
+You should now be able to do development with very short compile &
+link turn-around cycles on the classes in the $HOME/code/Coin/nodes/
+directory. Each time you have made a change to the sourcecode, just
+
+  $ cd $WORKDIR/compile/Coin/src/nodes
+  $ make
+
+Only the relevant .cpp will now be re-compiled and only the
+libnodesLINKHACK.so sub-library will be re-linked. And the
+libnodesLINKHACK.so in the install directory which client applications
+are using is a symlink pointing to the one in your build directory, so
+no re-installation need to happen.
+
+
+One caveat emptor: if any of the class-definitions change in a non-ABI
+compatible way in any of the corresponding .h files, you need to
+recompile and relink _all_ sourcecode depending on this class, not
+just the class itself. Or core dumps will happen. (See footnote 1 at
+the end of this document for an explanation of the term "ABI".)
+
+There are many, many ways to break ABI compatibility in C++:
+
+  - variables being added or removed from / to a class, making it's
+    sizeof() change
+  - functions added or removed
+  - functions made virtual or "un-made" from virtual
+  - function signatures changed in general
+
+  ...etc. See footnote 1 at the end of this document for more
+  discussion on the issue. Anyway, as long as you're only changing the
+  .cpp files, you should be home free.
+
+
+Right after we implemented this scheme, there was an article called
+"Pseudo-Incremental Linking For C/C++" in the Dr Dobb's Journal. The
+article is available at
+
+    <URL:http://www.ddj.com/articles/1999/9910/9910d/9910d.htm>
+
+and explains the principles applied fairly well.
+
+
+3 Debugging Tricks
+==================
+
+* COIN_DEBUG_BREAK
+
+  All calls to SoDebugError::post*() have the first argument (the
+  function name) compared to the $COIN_DEBUG_BREAK environment variable.
+  If they match, an assert will fail, and you can then inspect the stack
+  backtrace (if symbol/debugging information was built into the library).
+  This can be very useful and is not limited to Coin usage - all client
+  programs can take advantage of this functionality too.
+
+  Example:
+
+    $ env COIN_DEBUG_BREAK="SoAction::apply" ./mytestprogram
+
+  [using 'env var=val prog ...' is the most portable syntax for this kind
+  of thing, which is why the example uses it instead of the Bourne syntax]
+
+
+* Make yourself familiar with the Valgrind tool, which is *extremely*
+  useful for tracking down memory corruption problems. A link to
+  Valgrind can be found on <URL:http://freshmeat.net>.
+
+  Note that Valgrind, can also be used for profiling code _without_
+  having to re-compile everything (like what is necessary for gprof,
+  for instance).
+
+  Another interesting feature of Valgrind is that it has a skin called
+  "helgrind" which supposedly can do analysis of code to see if it's
+  re-entrant / thread-safe. I (mortene) haven't tested it yet, but if
+  it works, it would be extremely useful for debugging hard to find
+  bugs suspected to be due to synchronization problems over multiple
+  threads.
+
+
+* OpenGL debugging:
+
+   - Useful environment variables for the Mesa OpenGL implementation:
+
+        * LIBGL_ALWAYS_INDIRECT=yes
+
+          (Avoids any use of hardware acceleration -- useful for
+          running Coin-on-Mesa under Valgrind.)
+
+        * LIBGL_DEBUG=yes
+        * MESA_DEBUG=yes
+
+
+   - To turn off SSE/MMX use in the NVidia Linux drivers, which avoids
+     problems with at least pre-2.0 Valgrind version:
+
+        * __GL_FORCE_GENERIC_CPU=1
+
+
+
+4 Misc Configurations
+=====================
+
+* Mercurial
+
+  In order to allow the storage of your Mercurial password with the
+  standard Mercurial command line client in a convenient but secure
+  fashion have a look at the Keyring Extension:
+
+  http://mercurial.selenic.com/wiki/KeyringExtension
+
+  As the default on Mercurial is to prompt you for a password it is
+  somewhat safe apart from the regular caveats to check in outside of
+  your trusted workstation.
+
+* emacs
+
+  To enable C++ mode for the template *.in source files, add this to
+  your ~/.emacs file:
+
+    (setq auto-mode-alist (cons '("\\.h\\.in\\'" . c++-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons '("\\.cpp\\.in\\'" . c++-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons '("\\.icc\\'" . c++-mode) auto-mode-alist))
+
+  Also, to make emacs insert spaces instead of tabulator characters when
+  indenting (we don't want any tabulators):
+
+    (let ((loadhook (lambda () (setq indent-tabs-mode nil))))
+      (add-hook 'find-file-hooks loadhook)
+      (add-hook 'find-file-not-found-hooks loadhook))
+
+* vim
+
+  To insert spaces instead of tab characters (using 2 space characters
+  every time you press 'tab', and also using 2 spaces for
+  auto-indentation), add the following to your ~/.vimrc file:
+
+    set expandtab
+    set tabstop=2
+    set shiftwidth=2
+
+* MS Visual Studio
+
+  Under tools -> options, choose the Tabs group and check the radio button
+  that says "insert spaces" and choose tab size 2.
+
+
+5 The Build Environment
+=======================
+
+* Defines
+
+  HAVE_CONFIG_H
+
+    This define should always be defined, but if it isn't, then the
+    config.h header will not be included.  Lots of features will then be
+    disabled.  Lots of files will probably not even compile since we do
+    not test this case.  Anyways, this case is usually the case when
+    someone tries building the library without using the Autoconf setup.
+
+  COIN_INTERNAL
+
+    This is a define that is set when the Coin library is being compiled.
+    Setting it when compiling things outside the Coin library is a
+    mistake.
+
+  COIN_DEBUG
+
+    This define should be set to either 0 or 1.  It is therefore used
+    with the #if directive, not the #ifdef directive.  Actually, this define
+    is now preferably used as an if-condition to avoid littering the source
+    code with too many preprocessing directives.
+
+  COIN_EXTRA_DEBUG
+
+    This define is ordinarily not used, but can be defined to enable some
+    extra sanity checks that may detect obvious, but otherwise hard to
+    detect bugs like specifying indexes out of an arrays range, etc.
+    Enabling this define may slow things down considerably, depending on
+    how heavily the parts of Coin you use most are instrumented.
+
+
+6 The Run-Time Environment
+==========================
+
+  * See So@Gui@/src/Inventor/@Gui@/common/HACKING for debugging hints.
+
+
+7 How To Add / Modify A Class In Coin
+=====================================
+
+  * Implement the class.
+
+  * Write Doxygen documentation for the class. Remember to tag the doc
+    with \since YYYY-MM-DD, either for the class itself or for any
+    functions with a new or changed API.
+
+  * Update cross-references from other documentation if necessary.
+
+  * If new source files were introduced:
+
+        * Add them to the Mercurial repository.
+
+        * Add the header and any generated doc files for the class to
+          build/coin.spec.in (for RPM generation).
+
+        * Add the source files to docs/coin.doxygen.in (for
+          documentation generation).
+
+        * If we are a subtype of SoBase, update the correct files for
+          initializing the class (i.e. src/nodes/SoNode.cpp).
+
+        * Add the source files to the corresponding all.cpp file.
+
+        * Add the header file to the corresponding common include file
+          (i.e. include/Inventor/nodes/SoNodes.h)
+
+        * Add the source files to the Makefile.am file in the source
+          file directory (for building).
+
+        * If the class is public, add the header file to
+          src/Makefile.am or any of src/*/Makefile.am (for
+          installation).
+
+        * Remember to rerun bootstrap when changing any
+          Makefile.am. See below.
+
+
+
+8 Bootstrapping
+===============
+
+"Bootstrapping" is the process of making or updating the
+program-generated files of the Coin library (and other SIM modules),
+typically those used for configuration and building.
+
+Bootstrapping needs to at least be done when changes or additions are
+done on configure.ac, or any of its dependencies (like the *.m4 files
+mentioned below), or to any of the Makefile.am files. Bootstrapping
+will run the GNU Autotools; Autoconf, Automake and Libtool, which will
+use the aforementioned configure.ac, *.m4 files and Makefile.am files
+to make shell scripts and "true" Makefile-files for configuration and
+build.
+
+To be able to bootstrap the Coin repository (or any other SIM code
+repository), you need to check out the "simacros" modules from Coin's
+Mercurial main repository. Then, in a UNIX shell, ''cd'' to the base
+directory of the Coin module (where the source code for Coin is
+located) and run ''<simacrosdir>/bin/bootstrap''.
+
+Note that bootstrapping before committing changes to
+Autotools-generated files should _always_ happen on the internal
+valhalla.trh.sim.no server. There are several reasons for this:
+
+  - When trying to trace down bugs related to the configure and / or
+    the build process, it helps a _lot_ to only have to do this for
+    one particular version of Autoconf / Automake / Libtool.
+
+  - Sometimes we have to patch up one or more of the Autotools. Doing
+    this in a centralized manner on valhalla.trh.sim.no is of course
+    time-saving, and not prone to sync'ing errors.
+
+  - We don't want to have _heaps_ of differences in bootstrapped,
+    generated files for each commit -- which we would get if we all
+    used slightly different versions of the Autotools.
+
+Note that it can be a bit of a hassle to *always* bootstrap on
+valhalla.trh.sim.no, and that is not necessary either. What we advice
+when valhalla.trh.sim.no is somewhat out of reach is: install
+Autoconf, Automake and Libtool on your local development
+box. Bootstrap locally when developing. When done, commit all changes
+_except_ files generated by Autoconf, Automake and Libtool. Then ssh
+into valhalla.trh.sim.no, bootstrap, then commit the freshly
+bootstrapped, generated files.
+
+
+9 How To Backport Development-Branch Extensions to Coin-2
+=========================================================
+
+You are not allowed to break forward ABI compatibility with versions
+of Coin-2 (or Coin-1, for that matter) when you backport extensions
+which have been added to the Coin development branch.  Virtual methods
+is one of the biggest problems with regards to this.
+
+* Backporting Virtualism
+
+  If you need to packport virtualism from Coin to Coin-2, one suggestion
+  is to add a non-virtual callback handler system on the lowest level in
+  the class hierarchy that needs this virtual function, and then the
+  deriving classes can register their overriding functions in the
+  constructor.  If they need to emulate invoking the inherited::*
+  function, they must of course store the callback/closure pair locally in
+  the class (private part) that was already set by the parent class when
+  they register the overriding function.
+
+
+10 Include Files
+================
+
+A few points about include files.
+
+* Include as few files as possible in header files, but not so few
+  that the header file depends on other headers having been included
+  before it.  Including a header on it's own should not produce
+  syntax errors.
+
+  The techniques used to do that is mainly to pre-declare class types,
+  and to hide class internals with the Cheshire Cat / Bridge pattern.
+
+* When setting up which include files to include in source files,
+  keep the order structured.  Follow this pattern:
+
+  <config.h>, if included, should be the first header.
+
+  Start with the most basic / standard libraries, and work your way
+  down through non-standard external libraries and optional libraries
+  (and do it library by library), before finally including headers
+  internal in the current project.
+
+  * libc/CRT includes first
+  * other ANSI / POSIX libraries (pthreads++)
+  * X libraries (or other GUI stuff)
+  * optional libraries (for instance audio)
+  * Open Inventor *core* headers
+  * Open Inventor toolkit headers
+  * Open Inventor extensions headers
+  * internal headers
+  * "inline" source files
+
+  If for some reason you can't follow this ordering, it's most likely
+  a design problem on your behalf, which you should fix sooner, rather
+  than later...
+
+=======================================================================
+XXX FIXME: complete doc. XXX
+
+* Building Coin for development (UNIX)
+        - solutions applied in Coin
+                o make install-data
+                o make *-am
+
+* Differences, MSWin
+
+* Build hacking, bootstrap/Autoconf/Automake/Libtool
+
+* Submitting patches
+        - technical walk-through
+        - legal aspects
+
+==============================================================================
+
+Library versioning
+==================
+
+When making releases, we follow these rules:
+
+* If there has been made any incompatible changes to the ABI (see
+  footnote 1 at end of document for an explanation of the term "ABI"):
+
+    COIN_MAJOR_VERSION += 1,
+    COIN_MINOR_VERSION = 0,
+    COIN_MICRO_VERSION = 0.
+
+   (If you don't know if the changes that have been made since last
+   release is binary incompatible with the last ABI, you shouldn't
+   be making releases.)
+
+  Typical cases: public interfaces have been changed in a manner that
+  is not compatible with old code. Classes have add private data
+  members added or removed.
+
+  We might also have just simply added many new significant major
+  features to the library, which in itself justifies increasing the
+  major version number.
+
+
+* If there has been made additions to the API (see footnote 2 at the
+  end of the document for an explanation of the term "API"), but the
+  ABI is still backwards compatible:
+
+    COIN_MAJOR_VERSION unchanged,
+    COIN_MINOR_VERSION += 1,
+    COIN_MICRO_VERSION = 0.
+
+  Typical cases: new functionality has been added through new C
+  functions, new C++ class member functions have been added (but not
+  virtual functions, as that changes the sizeof() value of a class),
+  or completely new classes have been added.
+
+
+* For bugfix releases and other changes which do not change the interface
+  at all:
+
+    COIN_MAJOR_VERSION unchanged,
+    COIN_MINOR_VERSION unchanged,
+    COIN_MICRO_VERSION += 1.
+
+==
+
+The following text pertains to the versioning that is set up in
+configure.ac, with regard to Libtool library versioning:
+
+Note that our MAJOR.MINOR.MICRO versioning scheme differs somewhat from
+the idea of library versioning applied by Libtool. According to Libtool,
+libraries should be versioned according to a CURRENT.AGE.REVISION scheme.
+Here CURRENT is supposed to be increased by 1 each time the API changes,
+and AGE increased by 1 along with CURRENT each time the API changes in a
+way which keeps the ABI backwards compatible. If compatibility is broken,
+AGE is set to 0 (while CURRENT is still increased by 1). The REVISION
+number has the same semantics as our MICRO number.
+
+To cooperate in a painless way with Libtool, we choose to "convert" our
+MAJOR.MINOR.MICRO scheme to Libtool's idea of versioning like this:
+
+* Libtool's CURRENT number is increased when the MAJOR or MINOR number is
+  changed.  If development and releases were done in a linear fashion, we
+  would just have to increase CURRENT by one when the above happens, but
+  since we intend to continue to support Coin 1.* after the release of
+  Coin 2.* we have had to make up a different scheme.  What we have done is
+  to reserve room for 20 minor releases between each major release.  This
+  should hopefully be more than enough.  With this premise, we can calculate
+  CURRENT with the formula MAJOR * 20 + MINOR.  This will ensure that
+  CURRENT for 2.0 will be greater than CURRENT for 1.3 (and 1.17 for that
+  matter).
+
+  Note that this scheme has the "strange" (it's actually completely natural)
+  effect that Coin 1.0 will be found as /usr/local/lib/libCoin.so.20.*
+  (for Linux) and Coin 2.0 will be libCoin.so.40.*.
+
+* Libtool's AGE number is the number of previous CURRENT version numbers
+  that the library is binary compatible with.  This should always be the same
+  number as MINOR is - when we make a new release with a new MAJOR number
+  and 0 as MINOR number, ABI compatibility *will* be broken.
+
+* Libtool's REVISION number is the number of the release with the exact same
+  API/ABI as the previous release.  This is typical for patch-releases
+  where some implementation bugs are fixed without touching anything in the
+  library API.  In other words, when we up the MICRO number.  This means
+  REVISION = MICRO.
+
+==============================================================================
+
+Mercurial maintenance
+======================
+
+New "Coin-MAJOR" repositories will be branched off the head "Coin"
+repository. "Branching" in this context means to clone the "default/"
+subdirectory to the "Coin/" directory through the standard
+Mercurial "clone" command.
+
+When this happens, the Coin repository should be tagged with the
+symbolic name "coin-MAJOR.MINOR".
+
+All releases will be made from the Coin-MAJOR.MINOR repositories.
+When a new release is made from one of those, the sources will be
+tagged with the symbolic name "Coin-MAJOR.MINOR.MICRO". This was
+forgotten for the Coin-1.0.0 release, but for MAJOR.0.0 releases this
+is not very important as it will coincide with the initial import of
+the repository.
+
+Releases made from Coin-MAJOR repositories will be in sequence. When
+the MINOR version number is increased, no more releases of the MINOR -
+1 branch will be made.
+
+
+Making Releases
+===============
+
+Make sure to consult Coin/docs/RELEASE.txt for detailed and up2date
+release procedures.
+
+When a new release is to be made, configure.ac must be updated with
+new version information. Make sure COIN_BETA is set to [] (empty), and
+the release version number is set up. Run bootstrap and check that
+"make distcheck" works. Commit the changes with a message about
+setting the version number to MAJOR.MINOR.MICRO.
+
+Add a Mercurial tag on the new version number.
+
+  $ hg tag Coin-MAJOR.MINOR.MICRO \
+      -m "Tagging the MAJOR.MINOR.MICRO release of the 'Coin' project."
+
+Edit configure.ac again and increase micro (unless a new minor will be
+the next release) and set COIN_BETA to [a]. Rerun bootstrap, and
+commit the new setup with a message about setting the version number
+again.
+
+These two version-increment commits should happen without getting any
+unrelated commits in between them so there won't be multiple states of
+the Mercurial repository with a release version number.
+
+Then go back to the tag (hg update -rCoin-MAJOR.MINOR.MICRO) and
+prepare the release.
+
+Source release tarballs are created with:
+
+  $ hg archive -tzip Coin-MAJOR.MINOR.MICRO.zip
+  $ hg archive -ttgz Coin-MAJOR.MINOR.MICRO.tar.gz
+
+Binary releases are created from the source release tarball combining
+the respective the buildbot output from the binary snapshot directory.
+
+
+Correcting Erroneous Log Messages
+=================================
+
+Sometimes commits ends up with incorrect log messages due to the
+committer being a bit too trigger-happy. The following Mercurial book
+chapter describes how to achieve that:
+
+  http://hgbook.red-bean.com/read/finding-and-fixing-mistakes.html
+
+Do this instead of reversing and reapplying, or other round-about and
+confusing techniques...
+
+
+==============================================================================
+
+Coin Code Standards
+===================
+
+The main goal is of course to write good, bugfree, portable C++ code,
+in a way that clearly expresses the intent of what is attempted
+accomplished.
+
+First, the larger issues:
+
+   I. PORTABILITY.
+
+      Some specific remarks about portability: this is very far from
+      being a trivial matter with C++, as not only is system
+      portability difficult (due to differences in core libraries for
+      various platforms), but _compiler_ portability is also a big
+      issue with C++. The main reason behind this is that the ISO C++
+      standard evolved gradually and slowly, and many C++ compilers
+      that are still around on much used platforms were written before
+      the standard was complete. And even today, it is actually
+      doubtful if any C++ compiler around implements the full
+      standard, as it is so huge and complex.
+
+      To keep everything as portable as possible, we basically use the
+      C++ language as more or less a "C with classes".
+
+      For the full monty on C++ portability, please read the C++
+      portability guide written for the Mozilla browser project:
+
+        <URL:http://www.mozilla.org/hacking/portable-cpp.html>
+
+      We consider this a must read for any internal resources writing
+      production C++ code. One issue it's particularly easy to "sin"
+      against is the following:
+
+      Use the ``SbBool'' type instead of bool, and ``TRUE'' and
+      ``FALSE'' keywords instead of ``true'' and ``false''. Compilers
+      that do not support the ``bool'' type is still in widespread use
+      (SGI MIPSPro v7.30 is but one example), so we are using the more
+      portable ``SbBool'' instead to make sure our code build on those
+      systems.
+
+
+  II. THE CHESHIRE CAT / THE BRIDGE PATTERN
+
+      There is one important "trick" to apply to C++ classes when they
+      are part of a library with a public API where binary
+      compatibility (i.e. a stable ABI (see footnote 1 at end of
+      document)) between releases are important -- as it is for the
+      Coin library. The trick is to hide all the private
+      implementation data within an internal class, only visible to
+      the .cpp-file of the "real" class.
+
+      This is a common design pattern that goes under many different
+      names; the Bridge pattern (from «Design Patterns», Gamma et al),
+      the Cheshire Cat (from the character in Lewis Carroll's «Alice's
+      Adventures in Wonderland»), pimpl (short for "private
+      implementation") or the d-pointer (for "data-pointer"). For
+      consistency, it will be called "Cheshire Cat" from now on in
+      this explanation.
+
+      The main advantage of applying the Cheshire Cat is that one can
+      add new data members to the implementation of a class without
+      breaking it's ABI -- which avoids the need to hold back new
+      features, new functionality or even bugfixes to the next major
+      release of the library.
+
+      The general idea of the Cheshire Cat is as follows:
+
+      <APublicClass.h>:
+
+      ---8<------8<------8<------8<------8<------8<------8<------8<---
+
+      class APublicClass {
+        public:
+          // [public API here]
+
+        protected:
+          // [protected API here]
+
+        private:
+          class APublicClassP * pimpl; // contains internal implementation data
+      };
+
+      ---8<------8<------8<------8<------8<------8<------8<------8<---
+
+      ..where the "APublicClassP" (notice the trailing "P" for
+      "Private") declaration could be embedded in the APublicClass.cpp
+      file, for simplicity:
+
+      <APublicClass.cpp>:
+
+      ---8<------8<------8<------8<------8<------8<------8<------8<---
+
+      #include "APublicClass.h"
+
+      class APublicClassP {
+        public: // all data publicly available for "owner" APublicClass
+          int number1;
+          float number2;
+          // [etc]
+      };
+
+      // [then follows the implementation of APublicClass]
+
+      APublicClass::APublicClass()
+      {
+         // set up internal data class
+         this->pimpl = new APublicClassP;
+         // ...
+      }
+
+      APublicClass::~APublicClass()
+      {
+         // ...
+         delete this->pimpl;
+      }
+
+      // [for other code, all data are accessed through the "pimpl" pointer]
+        this->pimpl->number2 = obj->doSomeThing(this->pimpl->number1);
+      // ...
+
+      ---8<------8<------8<------8<------8<------8<------8<------8<---
+
+      If we then noticed that we need more data members for new
+      features or to fix bugs in APublicClass, we can just add those
+      to the internal class without breaking the ABI compatibility.
+
+      For a real example of how to use this pattern, see for instance
+      the declaration and implementation of the SoExtSelection node
+      class or the SoRayPickAction class (among many others), or any
+      class in the So* libraries (where the pattern has been used most
+      extensively).
+
+      There are basically just a few cases where the Cheshire Cat
+      should /not/ be applied: for very light-weight small classes, we
+      don't want the extra overhead it introduces in memory usage and
+      time to redirect all data request to the internal class. So the
+      Sb* base classes are for instance not using the pattern, and
+      neither are SoBase and SoField -- which both permeates library
+      usage at run-time, so we want to keep them as slim as possible.
+
+      The preferred way to access the pimpl pointer, and to access the
+      "real" class (in the public interface) back from the private
+      class, is to set up a couple of macros:
+
+        #define PRIVATE(p) ((p)->pimpl)
+        #define PUBLIC(p) ((p)->master)
+
+
+      ..and then use it in statements like this:
+
+        PRIVATE(this)->number2 = obj->doSomeThing(PRIVATE(this)->number1);
+
+      Specifically, don't use the "THIS" define which we used to do in
+      earlier times:
+
+        #define THIS this->pimpl
+
+      ..as it clashes with a define for "THIS" made somewhere in the
+      header files of Microsoft Visual Studio.
+
+
+ III. GLOBAL NAMESPACE POLLUTION
+
+      Don't you ever dare pollute the global namespace unnecessary!
+
+      That goes for: defines, macros, enums, typedefs, function names,
+      etc etc. If you *have* to make something global, you should at
+      least prefix it with "COIN_" (or some such) that minimizes the
+      chances of clashes with client code, system / compiler symbols,
+      or symbols from Coin's dependencies.
+
+      One common mistake you should in particular be careful to avoid
+      is to specify stand-alone functions in source code
+      implementations like this:
+
+        void
+        myhelperfunc(int a, int b)
+        {
+           // ...
+        }
+
+      Use the "static" keyword to make sure the function symbol is
+      *truly* local, to exclude such functions from the global
+      namespace!:
+
+        static void
+        myhelperfunc(int a, int b)
+        {
+           // ...
+        }
+
+
+ IV.  C++ FEATURES UNAVAILABLE TO COIN PROGRAMMERS
+
+      Because we want to support fairly old C++ compilers, there are a
+      number of C++ features that are forbidden to use for Coin source
+      code. What follows may not be a comprehensive list, more items
+      will likely be added. Anyway, one must at least avoid these:
+
+      - Don't use functionality out of the Standard Template Library
+        ("STL") -- the implementation and compatibility of this seems
+        to be sub-par on a lot of C++ compiler systems.
+
+      - Don't use functionality out of the C++ library, like e.g. file
+        streams -- we don't want to force a link dependency on
+        libstdc++, since it has been (and still is?) very unstable
+        with regard to binary compatibility, making it harder to make
+        binary distributions for e.g. Linux systems.
+
+      - Don't use namespaces. They are not supported on some older
+        compilers we want the code to be compatible with.
+
+      - Don't use exceptions.
+
+
+Enough about the larger issues, now for the mucky details that has
+been written down to guide the Coin programmers in being consistent
+versus the code "layout" (to make it more easily readable):
+
+ 0) If the code you write is not 100% complete;
+
+    - Leave a "FIXME" message if you believe the code is fairly
+      correct, but you are unsure and have not checked the correctness
+      yet, or if there are known deficiencies. This includes cases
+      like ambiguities in the OIV docs that will require some
+      investigation to resolve, error-cases or places where one should
+      be more robust that haven't been fixed yet due to time
+      constraints, etc.
+
+    - Insert "COIN_STUB();" statements if the code lacks certain
+      important functionality, so situations where unimplemented
+      features are used will be detected at run-time.
+
+    - Leave FIXMEs if you see obvious cases for performance
+      improvements which should be explored.
+
+    A FIXME-message must include a description of the problem, who
+    wrote the message, and when.  Please include whatever you have
+    already found out about the problem in the FIXME text, so your
+    next of kin don't have to painstakingly re-do all the thought-work
+    you already have laid down.  Example:
+
+      // FIXME: should be possible to simplify cylinder test, since this
+      // cylinder is aligned with the y-axis. 19991110 pederb.
+
+    or
+
+      // FIXME: this action seems completely bogus, as if something fails,
+      // all bets are off and we should simply terminate the import
+      // operation. (flushInput() continues to read and scans for a
+      // closing brace). Run with this code disabled for a while and axe
+      // it if nothing bad seems to come from it. 20020531 mortene.
+      //
+      // if (!ret && flush) SoBase::flushInput(in);
+
+    This goes also for other keywords in comments (see below).  It
+    makes it much easier when others try to fix code that doesn't
+    work.  You will know who to ask if you don't understand the
+    problem, and the date could indicate among other things the
+    urgency of the problem.
+
+    If you have postponed implementing something, which has to
+    be implemented before Coin is officially released again, put a
+    section like this in the code to assert that it won't be
+    forgotten:
+
+      #ifndef COIN_BETA_VERSION
+      #error implementation missing: something or other
+      #endif // !COIN_BETA_VERSION
+
+    Don't use this trick more than absolutely necessary.  The release
+    master will be pretty pissed off each time a planned release has
+    to be aborted.
+
+ 1) If blocks of code are commented out (obsoleted) to make place for
+    new code, or because it has become superfluous, one should mark it
+    like the example below if it is a large block of code, if the new
+    code is very experimental, or if the new code is obfuscated
+    (e.g. because of optimizations).
+
+    #if 0// OBSOLETE: <textual description>. <yyyymmdd userid>.
+    ...old code...
+    #else // short description of new code
+    ...new code...
+    #endif // newcode
+
+    See also the next rule.
+
+ 2) Under *no* circumstances should developers leave any code which
+    has been commented out with the language constructs "// ..." or
+    "/* ... */" in anything you check into the repository, at least
+    not without commenting _why_ the code is still present.
+
+    It's often very time-consuming and just a bloody pain in the ass
+    and a waste of resources trying to figure out why commented-out
+    code is still present in a source file (is it new code which
+    *might* fix a bug, but which haven't been tested yet?  is it old
+    code found to be buggy which have been removed? is it commented
+    out because it is a new feature which is yet to be completed? etc
+    etc etc).
+
+    Programmers who continues to sin against this rule after having
+    this pointed out to them should be taken out behind the barn to be
+    shot.
+
+ 3) During debugging, write debug code like this:
+
+    #if COIN_DEBUG && 1 // debug
+      SoDebugError::postInfo(...
+    #endif // debug
+
+    Then, flip the "#if COIN_DEBUG && 1" to "#if COIN_DEBUG && 0" if
+    there is a chance that the debug information might be useful
+    later.  If not, remove it before making a patch or checking in.
+
+    If there are many debug statements in the same category, use a
+    define for that category (#if DEBUG_<category>) and define it to 0
+    at the top of the file before checking in the code.  See
+    src/sensors/SoSensorManager.cpp for examples of how this should be
+    done.
+
+    UPDATE 2001-11-21 larsa: Actually, we now prefer that you use this
+    define as an if-condition instead, because of the cleaner look the
+    source code gets when it is not littered with preprocessing
+    directives.  For permanent debugging code, write therefore source
+    code like this instead:
+
+    if ( COIN_DEBUG ) {
+      SoDebugError::postInfo("SoDB::funnyRabbit", "follow the white rabbit");
+    }
+
+    UPDATE 2002-06-17 mortene: this decision has been reversed, at
+    least temporarily, as we can't seem to get a definitive answer to
+    whether or not code and data within an "if (0) { ... }" construct
+    is still taking up space in the generated object and library
+    files.
+
+ 4) Do not under any circumstances use printf() / fprintf() / puts()
+    or related functions for output.  It should not be necessary --
+    the Coin class SoDebugError (and SoReadError) was implemented for
+    a reason.  Debug messages with printf() / fprintf() is extremely
+    uncool when you use Coin as a DLL under Windows (it's likely to
+    cause mysterious crashes), and besides it's bloody irritating to
+    walk through the code later to remove them.
+
+ 5) Don't use any variablename, classname, define, functionname or any
+    other identifier that starts with an underscore. That namespace is
+    per the C and C++ specs fully reserved for the compiler
+    implementation.
+
+    Identifier names with double underscores anywhere in the name is
+    also reserved.
+
+    For more information about this than you really want to know, see
+    Section 17.4.3.1 "Reserved names" and its subsections in the C++
+    language spec.
+
+ 6) Prefix with the "this" keyword for dynamic functions and member
+    variables, prefix with the classname for static functions and
+    variables.
+
+    The rationale for doing this extra typing is that it makes the
+    code immensely more easily readable when skimming it. If the
+    prefixes are missing, one has often to scroll back and forth to
+    find out if variables are input arguments to methods or stack
+    variables -- with "this->" or "ClassName::" prefixes there is
+    immediately no doubt where the variable comes from.
+
+ 7) Code formatting rules. The default is to use Kernighan and Ritchie style.
+
+   a) Braces: keep opening braces on the end of the line, and closing
+      braces at the start. Like this:
+
+      if (...) {
+        ...
+      }
+
+      And not like this:
+
+      if (...)
+      {
+        ...
+      }
+
+      The exception from this rule is functions, which should have the
+      opening brace on the next line.
+
+   b) Indentation: use 2 spaces extra for each level of nesting.
+
+      *Never* use tabulator characters (ie ASCII code 0x09), as
+      editors expands them differently. The code indentation will
+      therefore more often than not look like crap with the default
+      settings of any other editor than the one you happen to be using
+      yourself.
+
+   c) Spacing: use 1 space after commas and around operators (like +,
+      -, *, /, ==, &&, etc), but not after or before parentheses.
+
+      Like this:
+
+      if (val) { i = sqrt(a) * func(b, c); }
+
+      Not like this:
+
+      if ( val ) { i=sqrt(a)*func(b,c); }
+
+   d) Naming: class names should be uppercased for each word, function
+      names for each word except the first one, variable names should
+      be all lowercase, and defines, enums and constants should be all
+      uppercase. Example:
+
+      float
+      MathClass::calculateValue(float in)
+      {
+        const float FACTOR = 2.78;
+        ...
+        ...
+      }
+
+      For C functions and C++ functions that doesn't belong to any
+      particular class, name them with underscores between words, in
+      all lowercase.
+
+      NOTE: do *not* use Hungarian-style naming, ie prefixing names
+      with indicators about type. So don't for instance name classes
+      with a leading "c", or member variables with an "m", or integers
+      with an "i" and so on and so on. You're better off in the
+      readability-department by using the "this" prefix, as explained
+      above, and then the Hungarian naming style just obfuscates the
+      code.
+
+   e) Pointer types and references: use a space on each side of the
+      '*' and '&' operators, like this
+
+        SoNode * mynode = NULL;
+
+      not like this
+
+        SoNode *mynode = NULL;
+
+      because it makes it look like the '*' "belongs" to the variable
+      name (which of course is wrong -- it's part of the type), and
+      not like this either
+
+        SoNode* mynode = NULL;
+
+      because it's ugly and unusual. So for consistency, _please_
+      stick with the space-on-both-sides convention in Coin code.
+
+   f) Use
+                   return x;
+      and not
+                   return (x);
+
+      (Since "return" is not a function with arguments, the latter
+      just looks plain wrong.)
+
+==============================================================================
+
+API Documentation Guidelines
+============================
+
+Documentation of the Coin API is done with a setup and syntax
+compatible with the Doxygen tool. For general information and detailed
+documentation about the Doxygen syntax, see
+<URL:http://www.doxygen.org>.
+
+We allow documentation to be done in a rather free-form manner, as
+long as it conforms to the valid syntax of Doxygen. There is basically
+just one rule which is an absolute must:
+
+        * New functions and classes in the API have to be tagged with
+          "\since", to make it possible for application programmers to
+          know when the API was extended -- in case they want to
+          support a range of older versions of the library, for
+          instance. Valid parameters to "\since" are:
+          * Coin x.y              - What Coin version it first occurred in.
+          * TGS Inventor x.y[.z]  - What TGS OIV version it first occurred in.
+          * Inventor x.y[.z]      - What SGI OIV version it first occurred in.
+          * YYYY-MM-DD            - What date it was added to Coin. Will be
+                                    converted to the correct COIN-x.y for each
+                                    Coin release.
+          Use ',' as a separator if more than one implementation supports
+          the extension. If an extension is introduced in two branches of
+          Coin, tag both in cases as (COIN-1.1, COIN-2.1) but only once if
+          you mean COIN-1.1 and later (e.g. all 2.x releases support the
+          extension). The z release numbers should normally never be used
+          as adding features between patchlevel releases would break binary
+          compatibility, but at least TGS is known to break this "rule".
+
+Other than this, use your common sense and look at the already
+existing documentation that is available.
+
+A few hints:
+
+        * We never started using the common "JavaDoc"-style way of
+          forcing tags and documentation on all arguments and return
+          types with "\param" and "\return" -- so there's no point in
+          doing that for the functions you write.
+
+        * Cross-reference to other functions and / or classes with the
+          "\sa" ("see also") tag where it seems helpful for the
+          application programmer. Remember that Doxygen automatically
+          finds and cross-references class or function names found in
+          the doc anyway, so don't overuse the "\sa" tag.
+
+        * We do not force a third-person vs an imperative style, or
+          vice versa. Use the same style as "nearby" documentation.
+
+        * Make sure *all* important aspects of a class or a function
+          is documented properly -- _don't_ expect the application
+          programmer to ever having to resort to the header files or
+          implementation sourcecode.
+
+        * Use "\e" in front of words you want to emphasize, "\c" in
+          front of words that should be shown in a font appropriate
+          for code keywords (like "TRUE" or "FALSE") and "\a" in front
+          of function argument names.
+
+==============================================================================
+
+Footnotes
+=========
+
+[1] "ABI" is short for "Application Binary Interface". The ABI of a
+    software component of object code (usually a dynamic or static
+    library) covers any publicly exposed functions, function
+    signatures, structures (and classes for C++ code). If any
+    functions has been removed or changed, or if any
+    structures/classes has been modified in any way, the ABI has most
+    likely been made incompatible with earlier releases.
+
+    What this means for practical purposes is that application
+    programs (or other client code, like other libraries using the
+    library in question) must be relinked when ABI compatibility is
+    broken.
+
+    A quick example of why re-building is necessary when the ABI is
+    made incompatible with the previous version: let's say that a
+    class has gotten a few new member variables added. This breaks the
+    ABI in a manner which is neither upwards nor downwards compatible,
+    as the statement
+
+        AClass * anobject = new AClass;
+
+    ...in client code will allocate a chunk of memory with the size
+    sizeof(AClass). Adding member variables will increase
+    sizeof(AClass) in the /library/ object code, but the compiled
+    /client code/ will still use the old sizeof(AClass), with the
+    boundary overwrites and other "interesting" effects that may come
+    out of it if the client code is not re-compiled.
+
+    Documentation on ABI- and API-compatiblity
+    ------------------------------------------
+
+    Matthias Ettrich and Lubos Lunak have published a document called
+    Binary Compatibility Issues With C++. It deals with the details a
+    developer should know about when working on APIs and
+    RPC-Interfaces.
+
+    Certain compiler flags may change the ABI of the resulting code
+    and should be used with care. Such flags are marked with text
+    indicating compatibility problems in the compiler manuals.
+
+    <URL:http://developer.kde.org/documentation/other/binarycompatibility.html>
+
+    (It's the "You frequently say that you cannot add this or that
+    feature because it would break binary compatibility. What does
+    this mean, really?" question.)
+
+
+
+[2] Application Programmer's Interface. This is the functions and data
+    structures/classes exposed to the application programmer for
+    interaction with the library.
+
+==============================================================================

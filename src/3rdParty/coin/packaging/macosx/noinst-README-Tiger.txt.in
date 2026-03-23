@@ -1,0 +1,18 @@
+This is Coin-@VERSION@ by Kongsberg Oil & Gas Technologies. What you have
+downloaded is only the framework itself, provided as a convenience for those
+who do not want to use binary installers. To install, simply drag the
+Inventor.framework to /Library/Frameworks.
+
+You can find a complete package including an installer and the Coin
+commandline tools at our ftp://ftp.sim.no/pub/coin/bin/macosx.
+
+Note that this binary SDK has been built with gcc 4.0, meaning that 
+no earlier version of gcc should be used in combination with this
+framework. Due to the ABI changes in gcc 4.0, the framework can only 
+be used on Mac OS 10.4 "Tiger". For more information, please read 
+the relevant FAQ entry at http://www.coin3d.org/mac/faq/#tiger
+
+Check out http://www.coin3d.org/mac for information on how to get
+started using Coin.
+
+Enjoy!

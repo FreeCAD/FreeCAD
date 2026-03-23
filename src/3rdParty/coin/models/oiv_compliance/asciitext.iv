@@ -1,0 +1,46 @@
+#Inventor V2.1 ascii
+
+# Check various aspects of rendering with an SoAsciiText node.
+#
+# 20000328 mortene
+
+Separator {
+
+   # (ROW 0) justification settings
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      AsciiText { string [ "with", "default", "settings" ] }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +60 0 0 }
+      AsciiText {
+	 justification RIGHT
+	 string [ "justified", "to the", "right" ]
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +60 0 0 }
+      AsciiText {
+	 justification CENTER
+	 string [ "i ham", "center", "justified" ]
+      }
+   }
+
+   Translation { translation 0 -60 0}
+
+   # (ROW -1) spacing
+   Separator {
+      BaseColor { rgb 1 1 0 }
+      AsciiText {
+	 spacing 2.0
+	 string [ "double", "line", "spacing" ]
+      }
+
+      BaseColor { rgb 0 1 1 }
+      Translation { translation +60 0 0 }
+      AsciiText {
+	 spacing 0.5
+	 string [ "half", "line", "spacing" ]
+      }
+   }
+}

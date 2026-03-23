@@ -1,0 +1,176 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of SoCube rendering.
+#
+# State change nodes which does not influence Cone rendering:
+#   SoNormal, SoNormalBinding, SoShapeHints
+#
+# 19990414 mortene
+
+Separator {
+   # (ROW 0) Check cube on its own.
+   Separator {
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      Cube { width 1 }
+
+      Translation { translation +3 0 0 }
+      Cube { height 1 }
+
+      Translation { translation +3 0 0 }
+      Cube { depth 1 }
+   }
+
+   # (ROW 1) With different LightModel settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      LightModel { model BASE_COLOR }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      LightModel { model PHONG }
+      Cube { }
+   }
+
+   # (ROW 2) With different DrawStyle settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Translation { translation +3 0 0 }
+      DrawStyle { style INVISIBLE }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      DrawStyle { style LINES }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      DrawStyle { style LINES lineWidth 1 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      DrawStyle { style LINES lineWidth 2 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      DrawStyle { style LINES lineWidth 4 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      DrawStyle { style LINES lineWidth 2 linePattern 0x0180 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      DrawStyle { style POINTS }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      DrawStyle { style POINTS pointSize 3 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      DrawStyle { style FILLED }
+      Cube { }
+   }
+
+   # (ROW 3) With different MaterialBinding settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material {
+	 diffuseColor [
+	  1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1, 0 0 0
+	 ]
+      }
+
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value OVERALL }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_PART }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_FACE }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      Cube { }
+   }
+
+   # (ROW 4) Test how Cube is affected by Complexity.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Complexity { type BOUNDING_BOX }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      Complexity { type OBJECT_SPACE  value 1.0 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.8 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.6 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.4 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.2 }
+      Cube { }
+
+      Translation { translation +3 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.0 }
+      Cube { }
+   }
+
+   # (ROW 5) Test how Cube is affected by texturemapping.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 8 6 3
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      }
+
+      Cube { }
+   }
+
+   # (ROW 6) Ignore flags on the fields.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Cube { width 12 ~ }
+
+      Translation { translation +3 0 0 }
+      Cube { height 12 ~ }
+
+      Translation { translation +3 0 0 }
+      Cube { depth 12 ~ }
+   }
+}

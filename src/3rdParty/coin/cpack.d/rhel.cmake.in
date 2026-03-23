@@ -1,0 +1,10 @@
+##############################################################################
+# Unofficial CPACK configuration for Red Hat Enterprise Linux Server (UNTESTED)
+#
+##############################################################################
+include("@CMAKE_CURRENT_BINARY_DIR@/commons.cmake")
+include("@CMAKE_CURRENT_BINARY_DIR@/rh_commons.cmake")
+
+config_package()
+rh_release("Red Hat Enterprise Linux Server")
+rh_config(el ${RH_RELEASE})

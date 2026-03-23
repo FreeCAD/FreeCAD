@@ -1,0 +1,11 @@
+*   libCgGL loading triggered at SoDB::init().
+
+    The Cg library, used by the fragment and vertex shader
+    functionality only, is attempted (dynamically) loaded at start-up
+    of any Coin application.
+
+    This causes a completely unnecessary delay at start-up, which may
+    be noticeable on systems with a long list of directories with
+    shared object files (.so or .dll files)
+
+    20060208 mortene.

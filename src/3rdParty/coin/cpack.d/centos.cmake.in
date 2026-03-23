@@ -1,0 +1,13 @@
+##############################################################################
+# Unofficial CPACK configuration for Linux Centos (tested on Centos 7)
+#
+# See also 
+# http://fedoraproject.org/wiki/Packaging:Naming
+# Tested with rpmlint (https://github.com/rpm-software-management/rpmlint)
+##############################################################################
+include("@CMAKE_CURRENT_BINARY_DIR@/commons.cmake")
+include("@CMAKE_CURRENT_BINARY_DIR@/rh_commons.cmake")
+
+config_package()
+rh_release("CentOS Linux")
+rh_config(el ${RH_RELEASE})

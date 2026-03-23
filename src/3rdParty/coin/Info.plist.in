@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Inventor</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Coin framework, copyright (C) Kongsberg Oil &amp; Gas Technologies</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.coin3d.Coin.framework</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Coin</string>
+	<key>CFBundlePackageType</key>
+	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@COIN_VERSION@</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>@COIN_VERSION@</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright (C) Kongsberg Oil &amp; Gas Technologies</string>
+</dict>
+</plist>

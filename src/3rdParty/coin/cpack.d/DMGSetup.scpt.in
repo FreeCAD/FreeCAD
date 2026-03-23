@@ -1,0 +1,51 @@
+on run argv
+  -- Constants
+  set X_POS to 200
+  set Y_POS to 100
+  set BG_W to 320
+  set BG_H to 200
+  set TITLE_BAR_H to 30
+
+  set image_name to item 1 of argv
+
+  tell application "Finder"
+  tell disk image_name
+
+    -- open the image the first time and save a DS_Store with just
+    -- background and icon setup
+    open
+      set current view of container window to icon view
+      set theViewOptions to the icon view options of container window
+      set background picture of theViewOptions to file ".background:background.tiff"
+      -- Create alias for install location
+      make new alias file at container window to POSIX file "/Library/Frameworks" with properties {name:"Frameworks"}
+      set arrangement of theViewOptions to not arranged
+      set icon size of theViewOptions to 64
+      delay 5
+    close
+
+    -- next setup the position of the framework and Frameworks symlink
+    -- plus hide all the window decoration
+    open
+      update without registering applications
+      tell container window
+        set sidebar width to 0
+        set statusbar visible to false
+        set toolbar visible to false
+        set the bounds to { X_POS, Y_POS, X_POS + BG_W, Y_POS + BG_H + TITLE_BAR_H }
+        set position of item "@PACKAGING_FRAMEWORK_NAME@.framework" to { 0, 75 }
+        set position of item "Frameworks" to { 150, 75 }
+      end tell
+      update without registering applications
+      delay 5
+    close
+
+    -- one last open and close so you can see everything looks correct
+    open
+      delay 5
+    close
+
+  end tell
+  delay 1
+  end tell
+end run

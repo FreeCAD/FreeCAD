@@ -1,0 +1,44 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+DEF SCALE1_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF SCALE1_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF SCALE1_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+
+
+DEF SCALE1_AXIS Separator {
+   PickStyle { style UNPICKABLE }
+   Coordinate3 { point [ 1 0 0, -1 0 0 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+   Translation { translation -1.05 0 0 }
+   PickStyle { style SHAPE }
+   DEF SCALE1_MARKER Cube { width 0.10  height 0.10  depth 0.10 }
+   Translation { translation 2.10 0 0 }
+   USE SCALE1_MARKER
+}
+
+DEF scale1Scaler Separator {
+   DrawStyle { lineWidth 2 }
+   USE SCALE1_INACTIVE_MATERIAL
+   USE SCALE1_AXIS
+}
+
+DEF scale1ScalerActive Separator {
+   USE SCALE1_ACTIVE_MATERIAL
+   DrawStyle { lineWidth 3 }
+   USE SCALE1_AXIS
+   DrawStyle { style LINES  lineWidth 1 }
+   PickStyle { style SHAPE }
+   Cube { }
+}
+
+DEF SCALE1_FEEDBACK Separator {
+   PickStyle { style UNPICKABLE }
+   USE SCALE1_FEEDBACK_MATERIAL
+   DrawStyle { lineWidth 2 }
+   Coordinate3 { point [ 0 1.1 0, 0 -1.1 0, 0 0 1.1, 0 0 -1.1 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1 ] }
+}
+
+DEF scale1Feedback Separator { USE SCALE1_FEEDBACK }
+DEF scale1FeedbackActive Separator { USE SCALE1_FEEDBACK }

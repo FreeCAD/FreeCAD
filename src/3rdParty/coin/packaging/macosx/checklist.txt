@@ -1,0 +1,105 @@
+#
+# Coin binary packaging for Mac OS X checklist
+#
+
+Note: We can only build binaries on Intel Macs, and we only build universal binaries.
+
+1. Preparation
+   -----------
+
+* Remove old Coin installation(s) on your system, if any.
+
+* Create working directory. (You can call this whatever you want.)
+
+    mkdir Coin-$VERSION_release
+    cd Coin-$VERSION_release
+
+* Download official Coin-$VERSION.tar.gz source:
+
+    wget ftp://ftp.coin3d.org/pub/coin/src/all/Coin-$VERSION.tar.gz
+
+* Configure and build simage:
+
+    mkdir simage-config
+    cd simage-config
+    $SRCDIR/simage/configure --prefix=$PWD/../macosx/supportlibs/install --enable-universal --enable-quicktime --enable-optimization --disable-debug --disable-symbols --without-oggvorbis --without-libsndfile --libdir=$PWD/../macosx/supportlibs/lib
+    make install
+    cd ..
+
+* Get freetype:
+
+  If you have Apple's X11 SDK installed, you can just use the library
+  that comes with that. 
+
+    cp /usr/X11R6/lib/libfreetype.* macosx/supportlibs/lib/
+
+  Or you can build freetype yourself. Remember that you need to create
+  a Universal Binary which includes all the correct architectures.
+
+
+2. Build and package Coin
+   ----------------------
+
+* Unpack the source archive:
+
+    tar xzf Coin-$VERSION.tar.gz
+
+* Building 
+
+  Run
+
+    ./Coin-$VERSION/configure
+    make macosx-packages
+
+  You will be asked for your root password after the build itself is
+  complete, this is because we need to change the permissions of the
+  package.
+
+  // FIXME: It should be possible to automate this now (COIN-198):
+  The script will then mount the newly created disk image and ask you
+  to set the background image. After setting the background image, do
+  *NOT* manually unmount the disk image, it will be unmounted
+  automatically.
+
+  The above step must be done twice, once for the installer package
+  and once for the framework-only package. (No need for you to do
+  anything, but the script will ask you to do the same operation
+  twice. This is intentional, no need to be alarmed.)
+
+
+3. Verification
+   ------------
+
+  You should now have the following in macosx/
+
+    Coin-$VERSION-no_inst.dmg
+    Coin-$VERSION.dmg
+
+o Check that you can mount the images.
+
+o Check that you actually got Universal Binaries
+
+    file /Volumes/Coin-$VERSION/Inventor.framework/Libraries/libCoin*.dylib
+    [output should be "Mach-O universal binary with 2 architectures"]
+
+o Check that you can run the installer
+
+o Run through some of your pre-release tests both on PowerPC and Intel
+
+    (e.g. check that you can build the basic glutiv binding example,
+    that the UB version works both on Intel and PowerPC Macs, etc.)
+
+
+4. Publishing
+   ----------
+
+o Upload 
+
+  The disk images should go into ftp://ftp.coin3d.org/pub/coin/bin/macosx/all/
+
+o Symbolic links
+
+  Remove the symlinks for the previous version and create symlinks for
+  the new version in ftp://ftp.coin3d.org/pub/coin/bin/macosx/
+
+o Update the coin3d.org release page with the links to the files.

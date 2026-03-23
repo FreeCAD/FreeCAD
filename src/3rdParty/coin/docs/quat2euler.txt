@@ -1,0 +1,178 @@
+
+For an excellent starting point:
+
+  http://en.wikipedia.org/wiki/Conversion_between_Quaternions_and_Euler_angles
+
+Write the code directly from this?
+
+==============================================================================
+
+From: ron@dorianresearch.com (Ron Levine)
+Subject: Re: Quat + Eulers + Ang/Axis
+Newsgroups: comp.graphics.algorithms
+Date: Wed, 12 Aug 1998 22:57:57 GMT
+Organization: Dorian Research, Inc.
+Reply-To: ron@dorianresearch.com
+Path: Norway.EU.net!uninett.no!howland.erols.net!news-peer.sprintlink.net!news-peer-east.sprintlink.net!news.sprintlink.net!newspeer.monmouth.com!newsfeed.slip.net!news.slip.net!not-for-mail
+Lines: 152
+Message-ID: <35d21da0.1319571@news.slip.net>
+References: <6qsd1k$4tk$1@nclient5-gui.server.virgin.net>
+NNTP-Posting-Host: oak-usr1-5-5.dialup.slip.net
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Newsreader: Forte Agent 1.5/32.451
+Xref: Norway.EU.net comp.graphics.algorithms:74960
+
+"Mark Everett" <mark.everett@virgin.net> wrote:
+>
+>I need to do one of the following and cannot find any information on any of
+>them :
+>
+>1 ) Convert a matrix to eulers
+>2 ) Convert a quat to eulers
+>3 ) Convert angle-axis to eulers
+>
+
+>Ok some-one out there must have a function to do ONE of these :)
+>
+
+Doing one of them is effectively equivalent to doing all of them.
+Just to be specific, let us restate your question with mathematical
+precision:  To find the euler rotations that will generate a given
+rotation.
+
+This is a very frequently asked question, and almost never answered,
+not completely and correctly anyway, because the answer is a bit of a
+mess.  If at all possible, you should arrange your life so that you
+never NEED to ask this.   And it is possible.
+
+But if you feel you can't arrange your life that way, then you must
+first be aware that, for any given coordinate system,  there are at
+least 12 different ways of defining the Euler rotation sequence.
+Following the lead of a couple of famous authors, (Wigner, Goldstein),
+physicists have mostly settled on one particular convention, which
+happens to be used by NO ONE in computer graphics.  Computer
+graphicists stick to a subset of about two  possibilities (both
+different from the most common physics convention), but again there is
+no uniformity, and there are further conventional choices of
+row-vector convention versus column-vector convention, right-hand
+coordinates versus left-hand coordinates, and clockwise rotation
+convention versus counterclockwise rotation convention, which all
+would affect any code that you might write to solve it.  So you can't
+just get someone's code from somewhere and expect it to work with your
+conventions.  You really have to understand the mathematics of the
+problem and do it yourself.
+
+Next you must understand that the problem does not have a well-defined
+solution, even after we have fixed all of our relevant conventions.
+Mathematically speaking, you cannot parametrize the space of rotations
+of 3-space by an Euler rotation scheme without severe singularities.
+(This is the phenomenon that is sometimes called "gimbal lock").
+Specifically, there exist  infinitely many rotations (precisely,  two
+disjoint one-parameter families of rotations) for which there are
+infinitely many Euler decompositions.  For these singular rotations
+you can find particular Euler decompositions that produce them, but
+there is no way you can do this for all rotations in a continuous way.
+This singularity problem shoots down the Euler representation for many
+of the purposes for which you might want to find the Euler angles,
+most notably,  for interpolation between rotations.
+
+Last month on comp.graphics.algorithms there was a thread "Euler
+angles...".  Mark Penacho posted a semi-correct message indicating the
+approach you can take to solve for Euler angles from a given rotation
+matrix, but he got some of the conditions regarding the singularities
+pretty wrong, so if you get his message from Deja News, be sure also
+to look at my response to it.
+
+Hexapod's code, quoted below, tries to follow a similar path.
+
+>I did read Hexapod's Matrix and Quat FAQ, the resulting Matrix->Euler
+>function follows. It doesn't work btw :)
+>
+
+The first problem with Hexapod's code would be, as I stated above,
+determining whether his choices for all the various conventions match
+yours.  I note that they do not seem to match the convention used,
+say, in the book on advanced animation techniques by Watt and Watt, a
+common source on these issues.
+
+The second problem is one of accuracy.  Note that he decides that it
+is a singular case if cos(-asin[X][Z]) < .005, an arbitrary cutoff
+that will introduce  inaccuracies that may be too great for your
+particular problem. (Note also that the fabs call is unnecessary,
+since any cos you compute in this way is necessarily positive because
+asin is between -pi/2 and pi/2).
+
+The third problem is that his "clamping" provisions are just plain
+wrong, given that asin returns a value between -pi/2 and pi/2 and
+atan2 returns a value between -pi and pi. It's clear that if he tested
+this at all, he must have tested it only for rotations generated by
+small positive values of the euler angles.
+
+Don't trust everything you find on the Web.  And for tutorials on
+math topics and code presented by computer graphics students, trust
+almost nothing you find on the Web.
+
+
+>/****************************************
+> eulerFromMatrix
+>_____________________________________
+> Inputs:
+>  MAT4X4 m
+>  XYZ  a
+>
+>Outputs:
+>  BOOL
+>****************************************/
+>void eulerFromMatrix( MAT4X4 m, XYZ a )
+>{
+>FLOAT c, trX, trY;
+> a[Y] = (FLOAT) -asin( m[X][Z] );
+>c = (FLOAT) cos( a[Y] );
+>a[Y] = mRadToDeg( a[Y] );
+> if( fabs( c ) > 0.005 )
+>{
+>  trX = m[Z][Z] / c;
+>  trY = -m[Y][Z] / c;
+>  a[X] = (FLOAT) atan2( trY, trX );
+>  a[X] = mRadToDeg( a[X] );
+>  trX = m[X][X] / c;
+>  trY = -m[X][Y] / c;
+>  a[Z] = (FLOAT) atan2( trY, trX );
+>  a[Z] = mRadToDeg( a[Z] );
+> }
+>else
+>{
+>  a[X] = 0.0f;
+>  trX = m[Y][Y];
+>  trY = m[Y][X];
+>  a[Z] = (FLOAT) atan2( trY, trX );
+>  a[Z] = mRadToDeg( a[Z] );
+>}
+> //X Clamping
+>if( a[X] < 0.0f )
+>  a[X] = 0.0f;
+> if( a[X] > 360.0f )
+>  a[X] = 360.0f;
+> //Y Clamping
+>if( a[Y] < 0.0f )
+>  a[Y] = 0.0f;
+> if( a[Y] > 360.0f )
+>  a[Y] = 360.0f;
+>//Z Clamping
+>if( a[Z] < 0.0f )
+>  a[Z] = 0.0f;
+> if( a[Z] > 360.0f )
+>  a[Z] = 360.0f;
+>}
+>
+>
+
+******************************************************
+Dorian Research, Inc.
+http://www.dorianresearch.com
+
+ Everyone must reinvent the wheel to build his own custom bicycle.
+
+*****************************************************

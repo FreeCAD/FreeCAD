@@ -1,0 +1,17 @@
+139 SoText2 nodes never culled?
+
+    Coin-user Nikolai Brezin reports on coin-discuss that his
+    investigations seem to indicate that SoText2 nodes are never
+    view frustum culled.
+
+    According to pederb, this is caused by the bounding box caching
+    for SoText2 to be invalidated with changes to the SoCamera node
+    (as e.g. when updating the near and far planes from the viewer
+    auto-clipping). So when rendering comes to the SoSeparator above
+    the SoText2, no valid bbox is available, and culling will not be
+    done. See also bug item #099.
+
+    Medium priority issue: has unfortunate consequences for
+    performance, especially for scenes with a lot of SoText2 nodes.
+
+    20040903 mortene.

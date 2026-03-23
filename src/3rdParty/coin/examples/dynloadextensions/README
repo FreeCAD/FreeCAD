@@ -1,0 +1,41 @@
+This example is set up for Coin.  It won't work for the other
+Open Inventor implementations without serious Makefile changes.
+
+If the build fails, open the Makefile to see if there are any
+suggestions wrt build problems in there...
+
+UNIX:
+
+  Build the shared objects (with GNU make)
+
+    $ make
+
+  Make sure the shared objects are in the dynamic load path
+
+    $ export LD_LIBRARY_PATH=".:$LD_LIBRARY_PATH"
+
+  Load "scene.iv" into an examinerviewer
+
+    $ ../SoGuiExamples/components/examinerviewer scene.iv
+
+  Switch viewer to interaction mode, and press keys on the keyboard
+  to see them react in the 3D model.
+
+CYGWIN:
+
+  Build the shared objects (with GNU make)
+
+    $ make
+
+  Make sure the shared objects are in the dynamic load path
+
+    [don't think this step is necessary for "." though]
+    $ export PATH=".:$PATH"
+
+  Load "scene.iv" into an examinerviewer
+
+    $ ../SoGuiExamples/components/examinerviewer scene.iv
+
+  Switch viewer to interaction mode, and press keys on the keyboard
+  to see them react in the 3D model.
+

@@ -1,0 +1,109 @@
+pivy (0.6.2-yakkety3) yakkety; urgency=medium
+
+  * development moved to github and git
+  * python3 support
+  * pyside instead of pyqt
+
+ -- looooo <sppedflyer@gmail.com>  Tue, 13 Jun 2017 06:17:07 +0200
+
+pivy (0.5.0~v609hg-3.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Remove long useless debian/pycompat file.
+  * Build-Depend on dh-python instead of python-support.  Closes:
+    #786149
+  * use X-Python-Version control field instead of the debian/pyversions
+    file.
+  * debian/control: bump Standards-Version to 3.9.6, no changes needed.
+
+ -- Mattia Rizzolo <mattia@debian.org>  Mon, 14 Dec 2015 01:10:04 +0000
+
+pivy (0.5.0~v609hg-3) unstable; urgency=low
+
+  * [ffc321b] Update/fix VCS-fields.
+  * [6a8ffda] Use dh 9. Clean debian/rules.
+  * [06471e5] Remove README.source.
+  * [a9eec4e] Add --parallel option.
+  * [e1c6b3f] Add myself as uploader.
+
+ -- Anton Gladky <gladk@debian.org>  Sat, 06 Jul 2013 23:33:11 +0200
+
+pivy (0.5.0~v609hg-2) unstable; urgency=low
+
+  * Build-dep on libcoin80-dev and latest libsoqt4-dev.
+  * Change maintainer to Debian Science Maintainers,
+    add Teemu Ikonen to Uploaders.
+  * Upgrade to standards-version 3.9.4.
+
+ -- Teemu Ikonen <tpikonen@gmail.com>  Thu, 30 May 2013 12:59:43 +0200
+
+pivy (0.5.0~v609hg-1) unstable; urgency=low
+
+  * New snapshot from upstream mercurial repository
+  * New upstream version fixes pivy.gui.soqt import (closes: #583323)
+  * Change versioning scheme to follow hg revisions
+  * 'Fix' watch file (it finds only ancient pivy versions)
+  * copyright: Update years, change to current DEP5 format
+  * Add debian/source/format file with text "3.0 (quilt)"
+  * Add debian/source/options file
+    - Use bz2 with maximum compression
+    - Generate a single debian-changes patch
+  * control:
+    - Update standards-version to 3.9.2
+    - Add Vcs-* fields
+  * rules:
+    - Add build-arch and build-indep targets to please lintian
+    - Add get-orig-source target to fetch source from upstream hg repo
+  * QuarterWidget.py: Replace string exception with an IOError
+    (closes: #585313)
+  * Building with swig 2.0.4-4 fixes FTBS (closes: #639077)
+
+ -- Teemu Ikonen <tpikonen@gmail.com>  Wed, 21 Sep 2011 14:31:38 +0200
+
+pivy (0.5.0~svn765-2) unstable; urgency=low
+
+  * control:
+      Add dependency to python-qt4-gl to binary package.
+      Mention quarter in the description.
+  * copyright: remove scons files, update copyright holder name
+    from Systems in Motion to Kongsberg SIM
+  * Upload to unstable (closes: #504617)
+
+ -- Teemu Ikonen <tpikonen@gmail.com>  Sat, 19 Sep 2009 23:09:28 +0200
+
+pivy (0.5.0~svn765-1) unstable; urgency=low
+
+  * New upstream SVN snapshot
+  * Use a svn revision in the version number, in stead of date
+  * control: Update to standards-version 3.8.3
+  * rules: Remove call to dh_clean -k, add call to dh_prep
+  * Add a README.source file explaining how to recreate the orig.tar
+    from upstream SVN
+
+ -- Teemu Ikonen <tpikonen@gmail.com>  Fri, 11 Sep 2009 23:54:48 +0200
+
+pivy (0.5.0~svn2009.06.18-1) UNRELEASED; urgency=low
+
+  * New upstream version
+  * control:
+    - Remove build-dep from cdbs
+    - Update libsoqt4-dev versioned build-dep to the version in unstable.
+  * rules:
+    - Let 'dh clean' run the setup.py clean target
+  * copyright: Update
+  * Upload to unstable (closes: #504617)
+
+ -- Teemu Ikonen <tpikonen@gmail.com>  Sat, 01 Aug 2009 15:34:07 +0200
+
+pivy (0.5.0~svn2008.12.11-1) UNRELEASED; urgency=low
+
+  * New upstream version from SVN snapshots
+  * rules: use pure debhelper instead of CDBS
+
+ -- Teemu Ikonen <tpikonen@gmail.com>  Sat, 13 Dec 2008 13:03:45 +0100
+
+pivy (0.3.0-1) UNRELEASED; urgency=low
+
+  * Initial packaging
+
+ -- Teemu Ikonen <tpikonen@gmail.com>  Thu, 13 Nov 2008 15:31:51 +0100

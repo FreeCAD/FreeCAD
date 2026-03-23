@@ -31,3 +31,41 @@ if (BUILD_TRACY_FRAME_PROFILER)
     set(TRACY_STATIC OFF)
     add_subdirectory(tracy)
 endif()
+
+if (NOT FREECAD_USE_EXTERNAL_COIN_PIVY)
+    set(USE_EXTERNAL_EXPAT ON)
+    set(FREETYPE_RUNTIME_LINKING OFF)
+    set(PIVY_USE_QT6 ON)
+    add_subdirectory(coin)
+    add_subdirectory(pivy)
+
+    # TODO: Currently these commands run everytime because the target coin does the
+    # same This is not very ideal for continuous development and should be improved
+
+    # Copy the pivy folder from build to build/Mod so that it can be picked by
+    # python as adding the build directory to pythonpath might not be wise
+    # Can we use some other/new directory for this?
+    add_custom_target(CopyPivyFiles ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${PROJECT_BINARY_DIR}/pivy
+            ${PROJECT_BINARY_DIR}/Mod/pivy
+
+        DEPENDS coin
+    )
+
+    # The cmake target pivy uses to generate the bindings is called "coin"
+    # While the target coin3d itself uses is called "Coin"
+    get_target_property(Pivy_BINARY_DIR coin BINARY_DIR)
+    if (MSVC)
+        set(COIN_LIB _coin.dll)
+    else()
+        set(COIN_LIB _coin.so)
+    endif()
+    add_custom_target(CopyCoinShim ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${Pivy_BINARY_DIR}/${COIN_LIB}
+            ${PROJECT_BINARY_DIR}/Mod/pivy/
+
+        DEPENDS CopyPivyFiles
+    )
+endif()

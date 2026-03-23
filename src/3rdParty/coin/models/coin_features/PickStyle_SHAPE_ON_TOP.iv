@@ -1,0 +1,16 @@
+#Inventor V2.1 ascii
+
+# This file demonstrates how you can pick through the outer cube and actually
+# hit the sphere inside, but hitting the cube if the sphere is missde.
+# Pick by invoking seek.  New feature since 2008-03-11.
+
+Separator {
+  Cube {
+  }
+  PickStyle {
+    style SHAPE_ON_TOP
+  }
+  Sphere {
+    radius 0.4
+  }
+}

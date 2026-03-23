@@ -1,0 +1,124 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with SoPolygonOffset nodes.
+# NB: the Translation offset is dependent on the OpenGL implementation.
+#
+# 19990504 mortene
+
+Separator {
+   Switch {
+      whichChild -1
+      # This'll give artifacts for Mesa 3.0 on Linux x86, which we
+      # need to be able to test SoPolygonOffset.
+      DEF offset Translation { translation 0 0 -0.000001}
+   }
+
+   Switch {
+      whichChild -1
+      DEF faces Group {
+	 Coordinate3 {
+	    point [
+	     -2 -1 0, -1 -1 0, 1 -1 0, 2 -1 0,
+	     -2 1 0, -1 1 0, 1 1 0, 2 1 0,
+	    ]
+	 }
+	 IndexedFaceSet {
+	    coordIndex [ 0, 1, 5, 4, -1, 1, 2, 6, 5, -1, 2, 3, 7, 6, -1]
+	 }
+      }
+   }
+
+   Switch {
+      whichChild -1
+      DEF lines Group {
+	 Coordinate3 {
+	    point [
+	     -2 -1 0, -1 -1 0, 1 -1 0, 2 -1 0,
+	     -2 1 0, -1 1 0, 1 1 0, 2 1 0,
+	    ]
+	 }
+	 IndexedLineSet {
+	    coordIndex [ 0, 3, 7, 0, 4, 7, -1 ]
+	 }
+      }
+   }
+
+   # (ROW 0)
+   Separator {
+      Separator {
+	 BaseColor { rgb 1 0 0 }
+	 USE faces
+
+	 USE offset 
+	 BaseColor { rgb 0 1 0 }
+	 USE faces
+      }
+
+      Translation { translation +6 0 0 }
+      Separator {
+	 BaseColor { rgb 1 0 0 }
+	 USE faces
+
+	 PolygonOffset { }
+
+	 USE offset 
+	 BaseColor { rgb 0 1 0 }
+	 USE faces
+      }
+
+      Translation { translation +6 0 0 }
+      Separator {
+	 BaseColor { rgb 1 0 0 }
+	 USE faces
+
+	 PolygonOffset { factor -1 }
+
+	 USE offset 
+	 BaseColor { rgb 0 1 0 }
+	 USE faces
+      }
+   }
+
+   # (ROW 1)
+   Translation { translation 0 +4 0 }
+   Separator {
+      Separator {
+	 BaseColor { rgb 1 0 0 }
+	 USE faces
+
+	 PolygonOffset { styles LINES }
+
+	 USE offset 
+	 BaseColor { rgb 0 1 0 }
+	 USE faces
+      }
+      
+      Translation { translation +6 0 0 }
+      Separator {
+	 BaseColor { rgb 1 0 0 }
+	 USE faces
+
+	 PolygonOffset {
+	    styles (FILLED|LINES|POINTS)
+	 }
+
+	 USE offset 
+	 BaseColor { rgb 0 1 0 }
+	 USE lines
+      }
+      
+      Translation { translation +6 0 0 }
+      Separator {
+	 BaseColor { rgb 1 0 0 }
+	 USE lines
+
+	 PolygonOffset {
+	    styles (FILLED|LINES|POINTS)
+	 }
+
+	 USE offset 
+	 BaseColor { rgb 0 1 0 }
+	 USE faces
+      }
+   }
+}

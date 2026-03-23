@@ -1,0 +1,267 @@
+version: 4.0.3-{branch}-ci-{build}
+
+branches:
+  only:
+  - master
+  - /v\d*\.\d*\.\d*/
+
+# do not build feature branches with open pull requests
+skip_branch_with_pr: true
+
+#shallow clone does not work when submodules are involved!
+#shallow_clone: true
+
+matrix:
+  fast_finish: true # set this flag to immediately finish build once one of the jobs fails.
+
+environment:
+  SUPERGLU_VERSION: 1.3.2
+  GH_AUTH_TOKEN:
+    secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
+  matrix:
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x86
+#      CMAKE_ARCH_FLAGS: -m32
+#      COMPILER_ID: gcc
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu1804
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x64
+#      CMAKE_ARCH_FLAGS: -m64
+#      COMPILER_ID: gcc
+#
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2004
+      CMAKE_GENERATOR: 'Unix Makefiles'
+      CMAKE_PLATFORM: x64
+      CMAKE_ARCH_FLAGS: -m64
+      COMPILER_ID: gcc
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu2204
+      CMAKE_GENERATOR: 'Unix Makefiles'
+      CMAKE_PLATFORM: x64
+      CMAKE_ARCH_FLAGS: -m64
+      COMPILER_ID: gcc
+
+# older compilers are supported in a separate appveyor project
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      CMAKE_GENERATOR: 'Visual Studio 10 2010'
+#      CMAKE_ARCHITECTURE: Win32
+#      CMAKE_PLATFORM: x86
+#      COMPILER_ID: msvc10
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      CMAKE_GENERATOR: 'Visual Studio 10 2010'
+#      CMAKE_ARCHITECTURE: x64
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: msvc10
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      CMAKE_GENERATOR: 'Visual Studio 14 2015'
+#      CMAKE_ARCHITECTURE: Win32
+#      CMAKE_PLATFORM: x86
+#      COMPILER_ID: msvc14
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      CMAKE_GENERATOR: 'Visual Studio 14 2015'
+#      CMAKE_ARCHITECTURE: x64
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: msvc14
+#
+# newer compilers are supported in a separate appveyor project
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#      CMAKE_GENERATOR: 'Visual Studio 15 2017'
+#      CMAKE_ARCHITECTURE: Win32
+#      CMAKE_PLATFORM: x86
+#      COMPILER_ID: msvc15
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+#      CMAKE_GENERATOR: 'Visual Studio 15 2017'
+#      CMAKE_ARCHITECTURE: x64
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: msvc15
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      CMAKE_GENERATOR: 'Visual Studio 16 2019'
+#      CMAKE_ARCHITECTURE: Win32
+#      CMAKE_PLATFORM: x86
+#      COMPILER_ID: msvc16
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      CMAKE_GENERATOR: 'Visual Studio 16 2019'
+#      CMAKE_ARCHITECTURE: x64
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: msvc16
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      CMAKE_GENERATOR: 'MSYS Makefiles'
+      CMAKE_PLATFORM: i686
+      COMPILER_ID: mingw32
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      CMAKE_GENERATOR: 'MSYS Makefiles'
+      CMAKE_PLATFORM: x86_64
+      COMPILER_ID: mingw64
+
+install:
+  - sh: |
+      sudo apt-get -y update
+      sudo apt-get -y install freeglut3-dev
+      sudo apt-get -y install doxygen jq
+      cd $APPVEYOR_BUILD_FOLDER
+  - cmd: |
+      choco install jq
+      rem Work around for outdated curl version giving problems with GitHub Authentication when redirected.
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" set PATH=C:\msys64\%COMPILER_ID%\bin;C:\msys64\usr\bin\;%PATH%
+      curl --version
+      cd %APPVEYOR_BUILD_FOLDER%
+  - git submodule update --init --recursive
+
+# Assumes that we use the vx.y.z tagging scheme (e.g. v1.3.0)
+before_build:
+  - cmd: |
+      rem the first line is for msys2 core update, the second for other packages
+      rem we need this update, as we need to ensure every dependent package uses the same compiler and environment
+      C:\msys64\usr\bin\bash -lc "pacman --needed --noconfirm -Syu"
+      C:\msys64\usr\bin\bash -lc "pacman --needed --noconfirm -Syu"
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" for /f %%i in ('gcc -dumpversion') do set GCC_VERSION=%%i
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" set COMPILER_ID=mingw-gcc%GCC_VERSION:.=%
+      if defined APPVEYOR_REPO_TAG_NAME (set CI_REPO_VERSION=%APPVEYOR_REPO_TAG_NAME:~1%) else (set CI_REPO_VERSION=latest)
+      set BUILD_SOURCE_ARCHIVE=%APPVEYOR_PROJECT_NAME%-%CI_REPO_VERSION%-src.zip
+      7z a -xr!*\.git/ -tzip %BUILD_SOURCE_ARCHIVE% %APPVEYOR_BUILD_FOLDER%
+      C:\msys64\usr\bin\md5sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.md5
+      C:\msys64\usr\bin\sha256sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.sha256
+      mkdir %APPVEYOR_BUILD_FOLDER%\downloads
+      rem ##############
+      if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_VERSION=%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_VERSION=latest)
+      if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_TAG_NAME=v%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_TAG_NAME=CI-builds)
+      set DOWNLOAD_FILE_SUPERGLU=superglu-%SUPERGLU_REPO_VERSION%-%COMPILER_ID%-%CMAKE_PLATFORM%.zip
+      for /f %%i in ('curl -s -H "Authorization: token %GH_AUTH_TOKEN%" https://api.github.com/repos/coin3d/superglu/releases ^| jq -r --arg SUPERGLU_REPO_TAG_NAME "%SUPERGLU_REPO_TAG_NAME%" ".[] | select(.tag_name==$SUPERGLU_REPO_TAG_NAME) | .id"') do set RELEASE_ID=%%i
+      for /f %%i in ('curl -s -H "Authorization: token %GH_AUTH_TOKEN%" https://api.github.com/repos/coin3d/superglu/releases/%RELEASE_ID% ^| jq -r --arg DOWNLOAD_FILE_SUPERGLU "%DOWNLOAD_FILE_SUPERGLU%" ".assets[] | select(.name==$DOWNLOAD_FILE_SUPERGLU) | .id"') do set ASSET_ID=%%i
+      set DOWNLOAD_ADDRESS_SUPERGLU=https://api.github.com/repos/coin3d/superglu/releases/assets/%ASSET_ID%
+      echo download file %DOWNLOAD_FILE_SUPERGLU% from address %DOWNLOAD_ADDRESS_SUPERGLU%
+      curl -s -S -L -H "Authorization: token %GH_AUTH_TOKEN%" -H "Accept: application/octet-stream" -o %DOWNLOAD_FILE_SUPERGLU% %DOWNLOAD_ADDRESS_SUPERGLU%
+      7z x %DOWNLOAD_FILE_SUPERGLU% -o%APPVEYOR_BUILD_FOLDER%\downloads
+      rem ##############
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake -H. -Bbuild_debug   -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Debug   -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%/Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%/downloads/Coin3D -DUSE_SUPERGLU=ON
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake -H. -Bbuild_release -G "%CMAKE_GENERATOR%" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%/Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%/downloads/Coin3D -DUSE_SUPERGLU=ON
+      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -A %CMAKE_ARCHITECTURE% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DUSE_SUPERGLU=ON
+  - sh: |
+      if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export CI_REPO_VERSION=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_VERSION=latest; fi
+      BUILD_SOURCE_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-src.tar.gz
+      if [ ! -d "$APPVEYOR_BUILD_FOLDER/../$APPVEYOR_PROJECT_NAME" ]; then cp -r $APPVEYOR_BUILD_FOLDER $APPVEYOR_BUILD_FOLDER/../$APPVEYOR_PROJECT_NAME; fi
+      cd $APPVEYOR_BUILD_FOLDER/..
+      tar czf $BUILD_SOURCE_ARCHIVE --exclude .git $APPVEYOR_PROJECT_NAME
+      mv $BUILD_SOURCE_ARCHIVE $APPVEYOR_BUILD_FOLDER
+      cd $APPVEYOR_BUILD_FOLDER
+      md5sum -b $BUILD_SOURCE_ARCHIVE > $BUILD_SOURCE_ARCHIVE.md5
+      sha256sum -b $BUILD_SOURCE_ARCHIVE > $BUILD_SOURCE_ARCHIVE.sha256
+      mkdir $APPVEYOR_BUILD_FOLDER/downloads
+      export COMPILER_ID=$APPVEYOR_BUILD_WORKER_IMAGE-$COMPILER_ID`$COMPILER_ID -dumpversion | tr '.' '\n'`
+      ###############
+      # if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export SUPERGLU_REPO_VERSION=$SUPERGLU_VERSION; else export SUPERGLU_REPO_VERSION=latest; fi
+      # if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export SUPERGLU_REPO_TAG_NAME=v$SUPERGLU_VERSION; else export SUPERGLU_REPO_TAG_NAME=CI-builds; fi
+      # DOWNLOAD_FILE_SUPERGLU=superglu-$SUPERGLU_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
+      # RELEASE_ID=`curl -s -H "Authorization: token $GH_AUTH_TOKEN" https://api.github.com/repos/coin3d/superglu/releases | jq -r --arg SUPERGLU_REPO_TAG_NAME "$SUPERGLU_REPO_TAG_NAME" '.[] | select(.tag_name==$SUPERGLU_REPO_TAG_NAME) | .id'`
+      # ASSET_ID=`curl -s -H "Authorization: token $GH_AUTH_TOKEN" https://api.github.com/repos/coin3d/superglu/releases/$RELEASE_ID | jq -r --arg DOWNLOAD_FILE_SUPERGLU "$DOWNLOAD_FILE_SUPERGLU" '.assets[] | select(.name==$DOWNLOAD_FILE_SUPERGLU) | .id'`
+      # export DOWNLOAD_ADDRESS_SUPERGLU=https://api.github.com/repos/coin3d/superglu/releases/assets/$ASSET_ID
+      # echo download file $DOWNLOAD_FILE_SUPERGLU from address $DOWNLOAD_ADDRESS_SUPERGLU
+      # curl -s -S -L -H "Authorization: token $GH_AUTH_TOKEN" -H "Accept: application/octet-stream" -o $DOWNLOAD_FILE_SUPERGLU $DOWNLOAD_ADDRESS_SUPERGLU
+      # tar xzf $DOWNLOAD_FILE_SUPERGLU -C $APPVEYOR_BUILD_FOLDER/downloads
+      ###############
+      export CFLAGS=$CMAKE_ARCH_FLAGS
+      export CXXFLAGS=$CMAKE_ARCH_FLAGS
+      cmake -H. -Bbuild_debug   -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Debug   -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D
+      cmake -H. -Bbuild_release -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D
+
+build_script:
+  - cmd: |
+      set BUILD_TOOL_OPTIONS=/nologo /verbosity:minimal /maxcpucount
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build_debug   --target install --config Debug   -- -j4
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build_release --target install --config Release -- -j4
+      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build --target INSTALL --config Debug   -- %BUILD_TOOL_OPTIONS%
+      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cmake --build build --target INSTALL --config Release -- %BUILD_TOOL_OPTIONS%
+  - sh: |
+      BUILD_TOOL_OPTIONS=-j4
+      cmake --build build_debug   --target install --config Debug   -- $BUILD_TOOL_OPTIONS
+      cmake --build build_release --target install --config Release -- $BUILD_TOOL_OPTIONS
+
+after_build:
+  - cmd: |
+      cd %APPVEYOR_BUILD_FOLDER%
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" for /f %%i in ('gcc -dumpversion') do set GCC_VERSION=%%i
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" set COMPILER_ID=mingw-gcc%GCC_VERSION:.=%
+      if defined APPVEYOR_REPO_TAG_NAME (set CI_REPO_VERSION=%APPVEYOR_REPO_TAG_NAME:~1%) else (set CI_REPO_VERSION=latest)
+      set BUILD_ARCHIVE=%APPVEYOR_PROJECT_NAME%-%CI_REPO_VERSION%-%COMPILER_ID%-%CMAKE_PLATFORM%.zip
+      7z a -tzip %BUILD_ARCHIVE% Coin3D
+      C:\msys64\usr\bin\md5sum.exe -b %BUILD_ARCHIVE% > %BUILD_ARCHIVE%.md5
+      C:\msys64\usr\bin\sha256sum.exe -b %BUILD_ARCHIVE% > %BUILD_ARCHIVE%.sha256
+      appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/%APPVEYOR_JOB_ID%/log -FileName %APPVEYOR_PROJECT_NAME%-%CI_REPO_VERSION%-%COMPILER_ID%-%CMAKE_PLATFORM%.log
+  - sh: |
+      cd $APPVEYOR_BUILD_FOLDER
+      if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export CI_REPO_VERSION=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_VERSION=latest; fi
+      BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
+      tar czf $BUILD_ARCHIVE Coin3D/*
+      md5sum -b $BUILD_ARCHIVE > $BUILD_ARCHIVE.md5
+      sha256sum -b $BUILD_ARCHIVE > $BUILD_ARCHIVE.sha256
+      appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/$APPVEYOR_JOB_ID/log -FileName $APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.log
+
+artifacts:
+  - path: $(APPVEYOR_PROJECT_NAME)*.zip
+    name: CIArchives
+  - path: $(APPVEYOR_PROJECT_NAME)*.tar.gz
+    name: CIArchivesTGZ
+  - path: $(APPVEYOR_PROJECT_NAME)*.log
+    name: logs
+  - path: $(APPVEYOR_PROJECT_NAME)*.md5
+    name: CImd5
+  - path: $(APPVEYOR_PROJECT_NAME)*.sha256
+    name: CIsha256
+
+test_script:
+  - cmd: |
+      if "%CMAKE_GENERATOR%" == "MSYS Makefiles" cd build_release
+      if not "%CMAKE_GENERATOR%" == "MSYS Makefiles" cd build
+      rem ctest -C Release -VV
+  - sh: |
+      cd build_release
+      ctest -C Release -VV
+
+notifications:
+  - provider: Email
+    to:
+      - '{{commitAuthorEmail}}'
+      - coin-support@coin3d.org
+    on_build_success: false
+    on_build_failure: true
+    on_build_status_changed: true
+
+deploy:
+  # Deploy to GitHub Releases
+  - provider: GitHub
+    auth_token:
+      secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256, logs
+    tag: 'CI builds'
+    description: 'Results of CI builds for various platforms'
+    draft: false
+    prerelease: true
+    force_update: true
+    on:
+      APPVEYOR_REPO_TAG: false      # deploy on untagged builds only
+#      branch: master                # release from master branch only
+
+  # Deploy to GitHub Releases
+  - provider: GitHub
+    auth_token:
+      secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    description: 'Release build'
+    draft: true
+    prerelease: true
+    force_update: true
+    on:
+      APPVEYOR_REPO_TAG: true       # deploy on tag push only

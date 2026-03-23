@@ -1,0 +1,19 @@
+124 Manipulators and Spacemouse support
+
+    When a manipulator receives a SoSpaceballButtonEvent::PICK event,
+    it should check if it has been picked and activate itself,
+    starting to listen for and react to spaceball events
+    (SoMotion3Event and SoSpaceballButtonEvent).
+
+    20040722 larsa
+
+    UPDATE 20040909 mortene: the relevant draggers should react to
+    SoMotion3Event events after any type of pick that started the
+    dragger interaction, not just of the spaceball-variety, methinks.
+
+    For convenience, should perhaps SoDragger::handleEvent() react to
+    SoMotion3Event and invoke the motion callbacks in the same manner
+    as it does for SoLocation2Event? (The alternative option is
+    probably to have the relevant draggers set up a callback with
+    SoDragger::addOtherEventCallback() and each do their particular
+    processing.)

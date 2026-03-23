@@ -1,0 +1,19 @@
+
+The Coin library is organized into the following Debian packages:
+
+  coin_@PACKAGE_VERSION@.orig.tar.gz
+  coin_@PACKAGE_VERSION@-1.diff.gz
+    - source code and pregenerated debian setup
+
+  libcoin@COIN_SO_VERSION@_@PACKAGE_VERSION@-1
+    - run-time library
+
+  libcoin@COIN_SO_VERSION@-runtime_@PACKAGE_VERSION@-1
+    - run-time data files
+
+  libcoin@COIN_SO_VERSION@-dev_@PACKAGE_VERSION@-1
+    - header files and static library
+
+  libcoin@COIN_SO_VERSION@-doc_@PACKAGE_VERSION@-1
+    - man pages and HTML reference documentation
+

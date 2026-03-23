@@ -1,0 +1,90 @@
+GLRender profiling, pr nodetype
+===============================
+
+* shrink the inventormaps.cpp file to a more sensible size
+
+* GLRender profile into SoVRMLShape og SoVRMLParent
+
+* Test GLRender profiling into SoBaseKit kit nodes
+
+  => works, but the SoBaseKit-derived node will get accumulated time
+     from its children.
+
+* bug: SoSeparator nodes (and more rare; SoGroup nodes) sometimes
+  comes out with large negative timing values. i believe i know why it
+  happens; we don't catch the GLRenderBelow/In/OffPath() stuff in
+  SoSeparator.
+
+* User-settable flag (envvar?) for triggering continuous redrawing
+
+Scenegraph visualizer
+=====================
+
+* (optional) annotation of nodes with their type and name.
+
+
+Clean-up
+========
+
+* collect common profiling code from SoNode, SoGroup and SoSeparator's
+  GLRender*() methods, as the start and stop timing code is almost
+  identical -- plus, it'd make it easier to straighten out the bugs.
+
+
+Ideas for profiling targets
+===========================
+
+* track and show information about view frustum culling. should be
+  easy to track, as i believe this info can be had from a single spot,
+  or at least just a few spots, in the Coin source code
+  (SoSeparator::GLRender(), perhaps also SoSeparator::rayPick()?)
+
+  idea from rolvs for visualization: show culled parts with
+  semi-transparent material settings in the NodeVisualizer
+
+* time full action traversals. display as a "scrolling bar-chart",
+  color-coded according to action-type.
+
+* SoGroup children traversal timings (all actions), visualize as a
+  color-coded, annotated scene graph, with nodes that can be expanded
+  and contracted.
+
+  (mortene working on the data gathering, rolvs is working on the
+  visualization part)
+
+  => data gathering done
+
+* memory usage in sub-graphs, same visualization as previous item.
+
+  one idea how to do this: check child nodes' list of fields,
+  calculate size based on getNum() and what we know about the types
+  (SoMFFloat is eg getNum() * 4 bytes, SoMFVec3f is getNum() * 3 *
+  4).
+
+* memory usage for internal caches:
+        - VBOs
+        - textures
+        - GL displaylists
+        - ...more? snoop around, plus ask pederb
+
+* Notifications and field connections
+
+  It should be possible to expand the 3D scene graph viewer to also
+  display field connections as extra lines between nodes that
+  contains connected fields. In addition it would be really cool if
+  we could visualize notifications in some way, both up through the
+  hierarchy and through field connections. That would make it
+  possible to identify parts of the scene graph that generates lots
+  of notifications.
+
+* a wish from some Simian, i don't remember who: include an option to
+  show a profile of which SoSeparator nodes caches its children /
+  subtrees. (i believe this would primarily be useful to quickly
+  recognize spots in the scene graph where there is _unwanted_ caching,
+  which fairly often caused problems.)
+
+  => FIXED on the profiling side, i.e. supported by SoProfilerElement
+     and the instrumentation in SoSeparator is done.
+
+  => UPDATE: now shown in the NodeVisualizer, probably still needs
+     some debugging & other work.

@@ -1,0 +1,498 @@
+RELEASE NOTES
+=============
+
+This file describes notable changes in the Coin library in a more
+elaborate way than can be fit into to the compact NEWS summary file.
+
+The changes described here are issues that might have an effect on the
+compatibility of your source code when upgrading the library.
+
+
+
+Coin 4.0.7
+==========
+
+Fixed check for platform GL binding.
+
+Fixed build issue with Boost 1.90.
+
+Ensure cc_glglue_context_can_render_to_texture() always returns a value.
+
+Coin 4.0.6
+==========
+
+Fixed SoShape::getScreenSize to handle empty bounding box case.
+
+Fixed EGL and GLX handling on Wayland.
+
+Applied Debian patch for fixing compatibility with 64-bit time_t.
+
+Coin 4.0.5
+==========
+
+Added SDL3 example.
+
+More robust EGL display initilization.
+
+Added a clipping offset dependent on bounding box size.
+
+Only use GLX on platforms with X11.
+
+Coin 4.0.4
+==========
+
+Added EGL support.
+
+Added support for building Coin as subdirectory.
+
+Added shaded hidden lines visual style.
+
+Fixed calling deleteAll on invalid pointers in SoCallbackAction.
+
+Updated cmake_minimum_required command to support CMake >= 3.30.
+
+Fixed crash in SoVRMLBackground::GLRender due to unchecked pointer.
+
+Fixed regression due to removed cc_glglue initialization.
+
+Transferred ANSI encoded files to UTF-8.
+
+Fixed invalid access when removing callback.
+
+Fixed macro handling to avoid conflicts with Microsoft Win32 API headers.
+
+Fixed typos and weird string outputs.
+
+Fixed format string vulnerabilities.
+
+Minor optimization to avoid repeated calculation of identity rotation.
+
+Minor optimization to avoid needless matrix multiplications.
+
+Coin 4.0.3
+==========
+
+This is a bugfix release.
+
+Added support for building modern styled documentation.
+
+Set minimum C++ standard needed to compile Coin to C++11.
+
+Fixed LTOcompilation ODR error.
+
+Fixed suspicious increment in SbProfilingData.cpp.
+
+Fixed SbTri3f intersect calculation.
+
+Improved auto clipping.
+
+Fixed orthographic autoclipping by allowing negative farDistance.
+
+Fixed rotating a VRMLBackground node with its ancestors' rotations.
+
+Coin 4.0.2
+==========
+
+This is a bugfix release.
+
+ABI compatibility to version 4.0.0 was inadvertently changed and restored.
+
+Fixed numerous typos found by Codespell.
+
+Coin 4.0.1
+==========
+
+This is a bugfix release.
+
+Introduced COIN_GLX_PIXMAP_DIRECT_RENDERING environment variable to force direct rendering of offscreen contexts.
+
+Introduced new COIN_DEBUG_CHECK_THREAD option.
+
+Optimized mutex debugging.
+
+Fix integer division issue.
+
+Fix material and normal handling for indexed line set.
+
+Fix resource lookup when HAVE_MULTIPLE_VERSION is enabled in CMake build script.
+
+Fixed an transparency issue for indexed lineset.
+
+Move constant data to read only data segment to reduce size of shared object
+library (see https://randomascii.wordpress.com/2017/01/08/add-a-const-here-delete-a-const-there)
+
+Fixed numerous issues detected by static code analysis.
+
+The expat sources under coin/src/xml/expat were updated to version 2.2.10.
+
+Fix linking with system installation of expat.
+
+Fix broken ABI version on .so link.
+
+Do not run programs for determining hash quoting to support cross compiling.
+
+Fix testing for maximum texture size.
+
+Removed obsolete ATI driver issue check. Do not check for ATI driver issues
+fixed long time ago (see issue #412). We added environment variable
+COIN_GLGLUE_DISABLE_VBO_IN_DISPLAYLIST for compatibility with the old behaviour.
+
+Fix underlinking against X11 in CMake build scripts.
+
+Set GLSL shader version to 120 to avoid rendering issues with fog.
+
+Enable non power of two textures for ATi and Intel by default. For those who
+are in need of the old behavior, an environment variable
+COIN_GLGLUE_DISABLE_NON_POWER_OF_TWO_TEXTURES has been added.
+
+Do not disable VBO rendering for Intel graphics drivers anymore. Recent Intel
+graphics hardware is known to properly support VBO rendering. So we remove the
+code for disabling it by default.
+
+Fix GLX glue trying to use NULL display, i.e. when a unix platform has a
+non-GLX context: usually Wayland, but also might be offscreen or maybe EGL-X11.
+
+Fix operator arguments on some base types to use const references rather than copies.
+
+Fixed incorrect rendering of SoFaceSet. Conditions when to render as
+VertexArrayObject were not properly checked.
+
+Fixed incorrect line ending handling for Windows CR/LF.
+
+Fixed incorrect closest point calculation for bounding boxes.
+
+Applied some distribution patches from Fedora, Rosa, and Gentoo.
+
+Added some class documentation and fixed numerous documentation issues.
+
+cpack.d was made optional and disabled by default (add -DCOIN_USE_CPACK=ON
+to the cmake commandline to enable it).
+
+Reference line for text rendered with the built-in default font was changed
+(before: descender line, now: base line). Thus text rendered with default
+font will appear a few pixels lower than before, but now consistent
+with text using non-default fonts.
+(see https://github.com/coin3d/coin/pull/368)
+
+Fixed crash when call to cc_flww32_get_bitmap() failed.
+
+Home of Coin3d organization has been changed from https://bitbucket.org/Coin3D
+to https://github.com/coin3d due to Bitbucket ending Mercurial support.
+
+Version control system has been changed from Mercurial to Git.
+
+Coin 4.0.0
+==========
+
+Kongsberg Oil & Gas Technologies AS ended Coin as a commercial product
+and re-licensed it under the BSD 3-clause license as a service to the
+user community.
+
+Build system was migrated from GNU Autotools to CMake.
+
+Support for UNICODE text added.  Starting with Coin 4.0 strings are UTF-8
+encoded.
+
+New greater than and less than operators added to SbString.
+
+New SoReversePerspectiveCamera node added.
+View volume and projectors now support reverse perspective camera settings.
+
+New getRadius method in SoRayPickAction.
+
+New virtual method getPickedPointForStart in SoDragger to allow dragging
+of (partially) covered objects by derived draggers.
+
+New SoAlphaTest node to control alpha test settings.
+
+New public API for converting geo coordinates created.
+
+SoTextureCoordinateObject implemented for linear texture functions that
+can be used for projective texture mapping.
+
+In addition to Cg shaders support for GLSL/ARB shaders was added to
+SoShaderStateMatrixParameter.
+
+Support for linePatternScaleFactor was added to SoDrawStyle.
+
+The DISABLE policy is now supported in SoSelection node.
+
+API in SbMatrix, SoPickAction, SoEvent, SoSFTime, SbPList has changed to
+improve conformance to Open Inventor 2.1 API.
+
+Auto-linking to the Coin library when using Microsoft Visual C++ compilers.
+
+The expat sources under coin/src/xml/expat were updated to version 2.2.6.
+
+The local Boost includes under coin/include/Boost were removed and a new
+configure option --with-boost was added to Autotools.
+
+Support for BitBucket and AppVeyor as continuous integration service providers
+has been added.
+
+Coin 3.1.3
+==========
+
+This is a bugfix release.
+
+Due to an underlying buildsystem upgrade, the default location of the
+generated HTML docs changed from $datarootdir/share/Coin/html to
+$datarootdir/share/doc/coin/html.
+
+Coin 3.1.2
+==========
+
+This is a bugfix release.
+
+Coin 3.1.1
+==========
+
+This is a bugfix release.
+
+Bugs are fixed in all the NURBS related classes, and SoIndexedPointSet.
+
+Coin 3.1.0
+==========
+
+Default transparency type for SoGLRenderAction changed from
+SCREEN_DOOR to BLEND.
+
+SoBase will not keep a list of unnamed / empty named nodes any
+more. This is both an optimization and improves conformance to SGI /
+TGS Inventor.
+
+SbTesselator does better when handed certain polygons, due to improved
+precision in internal calculations.
+
+Resource usage pressure significantly lower for common case scene
+graphs with regard to mutex allocations. A not entirely uncommon
+problem on MS Windows systems for huge scene graphs was that the
+run-time system ran out of available mutexes -- this is now very
+unlikely to happen.
+
+Builds with G++ and MSVC will have C++ exception support enabled by
+default.
+
+SoSceneManager render callback can be set to NULL to disable it.
+
+Non-power-of-two textures are automatically supported if the OpenGL
+driver has that feature.
+
+No other intentional differences in semantics, other than for any bugs
+fixed.
+
+Coin 3.0.0
+==========
+
+New scene graph traversal profiling subsystem.
+
+New node SoVertexAttribute which provides vertex attribute support for
+shaders.
+
+New SoDepthBuffer node to control depth buffer settings.
+
+New SoShadowSpotLight node in the shadow generation subsystem.
+
+New SoHeightMapToNormalMap engine to convert depthmap images to three-
+component normal maps.
+
+SoPickStyle has three new style settings, SHAPE_ON_TOP,
+BOUNDING_BOX_ON_TOP, and SHAPE_FRONTFACES.
+
+Integrated XML parser used for various purposes.
+
+GL feature control through a new GLDriverDatabase subsystem which is
+configurable through XML files.
+
+Statechart XML engine, which has been used to implement examiner-mode
+viewer navigation at the Coin level (earlier this functionality was
+implemented over and over again in the various GUI libraries).
+
+Foreign file format support through SoForeignFileKit, with an example
+SoSTLFileKit implementation for STL import.
+
+There is a testsuite framework based on Boost.Test
+
+Translation draggers (1D/2D) are now fitted with new fields minTranslation
+and maxTranslation to add the ability of restricting the range the draggers
+can operate in.  When this feature is used, and draggers are stored to
+file, it has consequences for the file format, and you lose the ability
+to load those files with older versions of Coin.
+
+Slight change in antialiased rendering with SoGLRenderAction::setNumPasses().
+Antialiased rendering is no longer shifted 1/2 pixel to the left compared to
+single-pass non-antialiased rendering.
+
+Dynamic loading of support libraries for Mac OS X has been changed, which
+has consequences for which possibilities are available for bundling such
+libraries when creating your application bundles.
+
+Coin 2.5.0
+==========
+
+SoFaceDetail's FaceIndex property behaves slightly different, now the
+same way SGI Inventor does it.
+
+Coin 2.4.6
+==========
+
+No intentional differences in semantics, other than for any bugs fixed.
+
+Coin 2.4.5
+==========
+
+Minor axis MIDDLE (i.e. center) justification for VRML97's FontStyle
+and Text nodes did previously not work as expected, but should now, so
+text layout depending on the old, wrong behavior might not look good
+any more.
+
+Coin 2.4.4
+==========
+
+Ray-picking precision has been vastly improved, which may result in slight
+application behaviour changes, hopefully in a positive way.
+
+Coin 2.4.3
+==========
+
+No intentional change in semantics for anything in this version.
+
+Coin 2.4.2
+==========
+
+No intentional change in semantics for anything in this version.
+
+Coin 2.4.1
+==========
+
+Rectangle and lasso selection (SoExtSelection) can now be aborted through
+keyboard events.
+
+Coin 2.4.0
+==========
+
+Fixed sensor processing in SoSensorManager to be conformant to SGI
+Inventor. Sensors with equal priority or trigger time are now processed
+FIFO (this used to be LIFO).
+
+File compression support (reading) was removed for anything but regular
+files and memory buffers (to fix a bug).
+
+Coin 2.3.0
+==========
+
+No intentional change in semantics for anything in this version.
+
+Coin 2.2.1
+==========
+
+VRML97 PROTOs are now handled more properly.  Fields are connected both
+ways between the scene graph and the PROTO instance.  You can now change
+fields in the scene graph, and the PROTO instance (the container for the
+PROTO based fields) will be updated.  When exporting scene graph to file
+again, PROTO field values should contain updated values.
+
+See also description for Coin 2.2.0; "the release that never was"[1].
+
+Coin 2.2.0
+==========
+
+New nodes SoBumpMap, SoBumpMapCoordinate, and SoBumpMapTransform for
+bumpmapping support.
+
+New node SoTextureUnit for multitexturing support.
+
+New node SoSceneTexture2 for rendering scene graphs to textures, with
+offscreen pbuffer support on selected platforms.
+
+Slight change of semantics for the SoFile node: the scene graph from
+the file will now always be reproduced as-is from the SoFile
+node. Previously, there would always be an SoSeparator root node added
+(if one was not present). Note that this change can in theory cause
+visible changes for application code using SoFile nodes, as
+e.g. appearance type nodes (like for instance SoMaterial) can now
+influence subsequent parts of the scene graph. The new behavior is
+consistent with the behavior of SoFile from the original Open Inventor
+implementation of SGI.  Also note that there was a bug in getting
+bounding box information for SoFile nodes (and SoVRMLInline nodes)
+that has now been fixed.
+
+Slight change of semantics for the SoMarkerSet node: a marker in the
+marker set will now be culled if its 3D position is positioned on the
+"clipping side" of an SoClipPlane node. (SoMarkerSet markers was
+previously only culled against the near and far view frustum clipping
+planes.)
+
+
+Coin 2.1.0
+==========
+
+New class SoIntersectionDetectionAction in Inventor/collision/ for
+detecting intersecting primitives in a scene graph.
+
+New class SoVectorizePSAction in Inventor/annex/HardCopy/ for
+generating PostScript images of scene graphs.
+
+Inventor and VRML files compressed on disk with gzip or bzip2 will
+be decompressed automatically upon loading.  API functions for
+controlling compression during export has been added to the class
+SoOutput.
+
+SoBoxHighlightRenderAction and SoLineHighlightRenderAction will
+now do highlight rendering for all SoSelection nodes in the scene
+graph, not just the first one.
+
+
+Coin 2.0.2
+==========
+
+We found and fixed a bug for SoQuadMesh usage with PER_FACE materials.
+Models depending on this bug will likely change appearance. This was
+a bug that was introduced in Coin-2. Coin-1 does not have this bug.
+
+Nodekits will now write out all relevant parts when the scene graph
+is exported (not only the public parts as we did earlier). This is 
+done to be compatible with SGI/TGS Inventor.
+
+Because of this new feature, it will now also be possible to import 
+data into private nodekit parts. In Coin 2.0.1 this would trigger a
+read error.
+
+Coin 2.0.1
+==========
+
+No intentional change in semantics for anything in this version.
+
+
+Coin 2.0.0
+==========
+
+Removed obsoleted methods in SoField:
+
+  SbBool connectFrom(SoVRMLInterpOutput * master,
+                     SbBool notnotify = FALSE, SbBool append = FALSE);
+  SbBool appendConnection(SoVRMLInterpOutput * master,
+                          SbBool notnotify = FALSE);
+  void disconnect(SoVRMLInterpOutput * interpoutput);
+  SbBool isConnectedFromVRMLInterp(void) const;
+  SbBool getConnectedVRMLInterp(SoVRMLInterpOutput *& master) const;
+
+These methods were obsoleted in Coin-1, and we chose to remove them
+in Coin-2.
+
+Changed behaviour of CLAMP texture wrap mode
+
+  When CLAMP is specified as the texture wrap mode (for SoTexture2 or 
+  SoTexture3), the OpenGL feature GL_CLAMP_TO_EDGE will be used instead 
+  of GL_CLAMP. This is done since GL_CLAMP_TO_EDGE is usually what you 
+  want. Especially for Coin/Open Inventor where it's impossible to specify
+  the texture border color used by GL_CLAMP. The environment variable 
+  COIN_ENABLE_CONFORMANT_GL_CLAMP can be set to "1" to force Coin to use 
+  GL_CLAMP instead of GL_CLAMP_TO_EDGE.
+
+
+
+[1] Coin 2.2.0 was pulled before it was announced because of a critical
+    bug that was introduced just before the release.  We want to blame a
+serious disk crash we experienced two days earlier, but we should maybe
+blame our backup and final testing routines instead.

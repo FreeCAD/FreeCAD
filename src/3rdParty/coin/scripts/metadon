@@ -1,0 +1,523 @@
+#!/usr/bin/perl
+############################################################################
+#
+#  metadon - meta documentation system
+#
+#  The file Metadon.conf is the starting point.  Source files can include
+#  comments for the meta documentation by inserting /*¡ ... */ comments.
+#  Flags and weights in all the *.metadon files decides how the module
+#  progress is calculated.
+#
+#  I might document this a bit better later...
+#
+#  Hacked in perl by Lars J. Aas <larsa@sim.no>, 1998-2000.
+#
+
+if (@ARGV != 2) { die "Usage: metadon <topsrcdir> <outputdir>\n" };
+
+$coindir = @ARGV[0];
+$docdir = @ARGV[1];
+$docdir =~ s/\/$//; # strip trailing slash, if any
+
+$indentsize = 4;
+
+$defaultweight = 1;
+$defaultmoduleweight = 1;
+$progressfactor = 0.5;
+
+$bgcolor = "#000000";
+$textcol = "#cccccc";
+
+############################################################################
+
+%parent    = ();
+%comments  = ();
+@flags     = ();
+%flagvals  = ();
+$date = `date "+%d. %B, %Y - %X (%Z)"`;
+
+&GenGifs();
+
+&LoadConfig();
+
+open( IDX, "$docdir/index.html" );
+chop( @index = <IDX> );
+close( IDX );
+@index = grep( /<!--OPEN-->/, @index );
+foreach ( @index ) { s/^.*<!--OPEN-->//; s/<!--CLOSE-->.*//; }
+
+open( INDEX, "> $docdir/index.html" );
+print INDEX "<html><head><title>", $globalname, " Development</title></head>\n",
+    "<body bgcolor=$bgcolor text=$textcol link=$textcol vlink=$textcol>\n",
+    "<h1 align=center>", $globalname, " Development</h1>\n",
+    "<hr><p align=center><img src=http://www.sim.no/images/dilbert1.gif></p>\n",
+    "<hr>\n<p>\n",
+    "<table columns=3 width=100%>";
+
+$total = 0;
+$allweights = 0;
+$filenum = 0;
+
+for ( $mod = 0; $mod < @configfiles; $mod++ ) {
+    $configfile = $configfiles[$mod];
+    $modweight = $moduleweights[$mod];
+
+    if ( $configfile eq "separator" ) {
+        print INDEX "<tr><td width=33%>&nbsp;</td>\n",
+                    "<td width=33%></td><td width=33%></td></tr>\n";
+        next;
+    }
+
+    @commenttext = ();
+    next if ! &ReadConfig( "$coindir/$configfile" );
+
+    $path = $configfile;
+    $path =~ s#/[^/]+$##;
+    $dir = $path;
+    $dir =~ s/^.*\///;
+
+    $filenum++;
+
+    &FindInheritance( scalar( @flags ), @hierarchy );
+    &LoadComments( $path );
+
+    $comments = join( "\n", @comments );
+    $comments =~ s/\n\n/<p>/g;
+
+    print "$docdir/file$filenum.html ($module)\n";
+    open( HTML, "> $docdir/file$filenum.html" );
+    print HTML "<html><head><title>$module</title></head>\n";
+    print HTML "<body bgcolor=$bgcolor text=$textcol link=$textcol vlink=$textcol>\n";
+    print HTML "<font face=arial>\n";
+    &PrintHeader( $module );
+    if ( length( $comments ) > 4 ) {
+        print HTML "<hr>\n<blockquote>$comments</blockquote>\n";
+    }
+    print HTML "<hr>\n";
+    $totalweight = 0;
+    foreach $flagline ( @flags ) {
+        $line = $flagline;
+        $weight = $defaultweight;
+        if ( $line =~ m/\[[0-9,.]+\]$/ ) {
+            $weight = $line;
+            $weight =~ s/.*\[([0-9\.]+)\]$/\1/;
+            print HTML "$line<br>\n";
+        } else {
+            print HTML "$line [$weight]<br>\n";
+        }
+        $totalweight += $weight;
+    }
+
+    print HTML "<hr>\n";
+    $columns = @flags + 1;
+    print HTML "<table width=100% columns=$columns cellspacing=0 border=0>\n";
+    print HTML "<tr><td colspan=$columns width=100% align=center><font face=arial>LEGEND: (incomplete) <strong>";
+    for ( $i = 0.0; $i <= 1.0; $i += 0.05 ) {
+        ($rval, $gval, $bval) = &FactorToColor( $i );
+        $color = sprintf( "#%02x%02x%02x", $rval*255, $gval*255, $bval*255 );
+        print HTML "<font color=$color>X</font>";
+    }
+    print HTML "</strong> (finished)</font></td></tr>\n";
+
+    print HTML "<tr>";
+    foreach $flagline ( @flags ) {
+        print HTML "<td align=center><font face=arial>",
+                   substr( $flagline, 0, 1 ), "</font></td>";
+    }
+    print HTML "<td width=100%></td></tr>\n";
+    $totalprogress = 0;
+    foreach $class ( @classes ) {
+        if ( $class =~ / / ) {
+            print STDERR "Class hierarchy parse error ($class):\n",
+                         " - Could be a flag block problem.\n",
+                         " - Could be the classname got trailing text.\n";
+            next;
+        }
+        print HTML "<tr>";
+        $classdepth = 0;
+        $temp = $class;
+        while ( defined $parent{$temp} && $temp ne "" ) {
+            $classdepth++;
+            $temp = $parent{$temp};
+        }
+        ( $to, $tc ) = ( "<font face=helvetica>", "</font>" );
+        $color = "black";
+        $value = 1.0;
+        for ( $i = 0; $i < @flags; $i++ ) {
+            $weight = $defaultweight;
+            if ( $flags[$i] =~ /\[[0-9\.]+\]$/ ) {
+                $weight = $flags[$i];
+                $weight =~ s/.*\[([0-9\.]+)\]$/\1/;
+            }
+            $weight = $weight / $totalweight;
+            $char = substr( $flagvals{$class}, $i, 1 );
+            if ( $char =~ m#[A-Z!-]# ) {
+                print HTML "<td><img src=g.gif></td>";
+            } elsif ( $char =~ m#[a-z]# ) {
+                $value -= $weight * $progressfactor;
+                print HTML "<td><img src=y.gif></td>";
+            } else {
+                $value -= $weight;
+                print HTML "<td><img src=r.gif></td>";
+            }
+        }
+        $totalprogress += $value;
+        if ( $value == 1.0 ) {
+            $to .= "<em><strong>";
+            $tc = "</strong></em>" . $tc;
+        }
+        ( $rval, $gval, $bval ) = &FactorToColor( $value );
+        $color = sprintf( "#%02x%02x%02x", $rval*255, $gval*255, $bval*255 );
+        $indent = "&nbsp;" x ($classdepth*$indentsize);
+        $flagvals{$class} =~ s/ /&nbsp;/g;
+        print HTML "<td><font color=$color face=arial>$indent$to$class$tc";
+        my $valuestr = sprintf("%.2f", ($value < 0.01) ? 0 : $value);
+        print HTML " <font color=$textcol>(\"$flagvals{$class}\" = $valuestr)</font>";
+        if ( defined $comments{$class} ) {
+            print HTML "[<a href=#", $class, ".comments>comments</a>]\n";
+            push( @commenttext, "<a name=$class.comments><strong>$class</strong></a>" );
+            push( @commenttext, "<ul>" );
+            foreach $comment ( split( "\n", $comments{$class} ) ) {
+                push( @commenttext,  "<li><em>$comment</em>" );
+            }
+            push( @commenttext, "</ul>" );
+        }
+        print HTML "</font></td></tr>\n";
+        print HTML "</td>";
+        $last = $class;
+        print HTML "</tr>\n";
+    }
+    print HTML "</table>\n",
+               "<p align=center>\n";
+    $value = $totalprogress / @classes;
+    $moduleweight += $value;
+    ( $rval, $gval, $bval ) = &FactorToColor( $value );
+    $color = sprintf( "#%02x%02x%02x", $rval*255, $gval*255, $bval*255 );
+
+    $color = "#555555" if ( $modweight == 0.0 );
+   
+    ( $po, $pc ) = ( '', '' );
+    if ( $value == 1.0 ) {
+        ( $po, $pc ) = ( '<strong><em>', '</em></strong>' );
+    }
+    print HTML "$po<font color=$color>total progress: ",
+               sprintf( "%5.3f", $value ), "</font>$pc<p>\n";
+    print HTML "<hr>", join( "\n", @commenttext );
+    print HTML "<p>\n";
+    print HTML "<div align=right><hr>",
+               "<font size=-2><em>Generated with Metadon</em></font>\n";
+    print HTML "</font></body></html>\n";
+    close( HTML );
+    print INDEX "<tr><td width=33%>",
+                "<!--OPEN--><a href=file$filenum.html>",
+                "<font color=$color>$po$module$pc</font></a><!--CLOSE--></td>",
+                "<td width=33%><font face=arial>";
+    for ( $c = 0.0; $c <= 1.0; $c += 0.05 ) {
+        ( $r, $g, $b ) = &FactorToColor( $c );
+        $col = sprintf( "#%02x%02x%02x", $r*255, $g*255, $b*255 );
+        print INDEX "<font color=$col>X</font>" if $c < $value;
+    }
+    print INDEX "</font></td>";
+    print INDEX "<td><font color=$color>$po(", sprintf( "%2d%%", $value * 100 ),
+                " finished)";
+    print INDEX " [", scalar( @flags ), " flags]</font></td></font></tr>\n";
+    print INDEX "$pc</font></td></font></tr>\n";
+    if ( $modweight != 0.0 ) {
+        $allweights += $modweight;
+        $total += $modweight * $value;
+    }
+}
+
+print INDEX "<tr><td width=33%>&nbsp;</td><td width=33%></td><td width=33%></td></tr>\n";
+
+$value = $total / $allweights;
+( $r, $g, $b ) = &FactorToColor( $value );
+$color = sprintf( "#%02x%02x%02x", $r*255, $g*255, $b*255 );
+
+print INDEX "<tr><td width=33%><font color=$color>",
+            "<strong>Totally Bogus $name Total</strong></font></td>";
+print INDEX "<td width=33%><font face=arial>";
+for ( $c = 0.0; $c <= 1.0; $c += 0.05 ) {
+    ( $r, $g, $b ) = &FactorToColor( $c );
+    $col = sprintf( "#%02x%02x%02x", $r*255, $g*255, $b*255 );
+    print INDEX "<font color=$col>X</font>" if $c < $value;
+}
+print INDEX "</font></td>",
+            "<td><font color=$color>$po(", sprintf( "%2d%%", $value * 100 ),
+            " finished)$pc</font></td></font>\n",
+            "</table>\n<p>\n<hr>\n";
+
+$globalcomments = join( "\n", @globalcomments );
+$globalcomments =~ s/\n\n/<p>/g;
+
+print INDEX "<blockquote>\n$globalcomments\n</blockquote>\n<hr>\n";
+
+print INDEX "<div align=right>\n",
+            "<font size=-2><em>Generated with Metadon, $date</em></font>\n";
+print INDEX "</body></html>\n";
+close( INDEX );
+
+############################################################################
+# subroutine that returns all the _files_ from $basedir and inwards (only
+# following real directories) that has a filename (excluding the leading path)
+# that matches the regular expression in $filenameexp.
+
+sub FindFiles {
+    local( $basedir, $filenameexp ) = ( @_ );
+    local( @files, @entries, $entry, $pathname ) = ();
+    opendir( DIRECTORY, $basedir );
+    @entries = readdir( DIRECTORY );
+    closedir( DIRECTORY );
+    foreach $entry ( @entries ) {
+        next if ( $entry eq "." || $entry eq ".." );
+        $pathname = join( '/', $basedir, $entry );
+        if ( -f $pathname ) {
+            push( @files, $pathname ) if ( $entry =~ /$filenameexp/ );
+        } elsif ( -d $pathname ) {
+            push( @files, &FindFiles( $pathname, $filenameexp ) );
+        }
+    }
+    return sort( @files );
+} # sub FindFiles
+
+############################################################################
+
+sub LoadConfig {
+    local( %tags ) = ( 'NAME', 1, 'MODULES', 1, 'COMMENTS', 1 );
+    local( @config, $i, $weight, $tag ) = ();
+
+    @globalcomments = ();
+    @configfiles = ();
+    @moduleweights = ();
+    $globalname = "";
+
+    open( CONFIG, "$coindir/Metadon.conf" ) ||
+        die "Metadon.conf: could not open file.\n";
+    chop( @config = <CONFIG> );
+    close( CONFIG );
+
+    @config = grep( /^#/, @config );
+    foreach $line ( @config ) {
+        $line =~ s/^#\s*//;
+        $line =~ s/\s*$//;
+    }
+
+    for ( $i = 0; $i < @config; $i++ ) {
+        if ( defined $tags{$config[$i]} ) {
+            $tag = $config[$i];
+            next;
+        }
+        if ( $config[$i] eq "" && $tag ne 'COMMENTS' ) {
+            $tag = '';
+            next;
+        }
+        if ( $tag eq 'NAME' ) {
+            $globalname = $config[$i];
+            next;
+        }
+        if ( $tag eq 'MODULES' ) {
+            $weight = $defaultmoduleweight;
+            if ( $config[$i] =~ / \[[0-9\.]+\]$/ ) {
+                ( $config[$i], $weight ) =
+                    ( $config[$i] =~ m/^([^\s]+)\s+\[([0-9\.]+)\]$/ );
+            }
+            push( @configfiles, $config[$i] );
+            push( @moduleweights, $weight );
+            next;
+        }
+        if ( $tag eq 'COMMENTS' ) {
+            if ( $config[$i] eq 'END COMMENTS' ) {
+                $tag = '';
+                next;
+            }
+            push( @globalcomments, $config[$i] );
+            next;
+        }
+    }
+    @config = ();
+}
+
+############################################################################
+# subroutine that sill open a file and extract information from it.
+# designed for files of the *.metadon type.
+
+sub ReadConfig {
+    local( $filename ) = ( @_ );
+    local( $i, @body ) = ( );
+
+    open( FILE, $filename );
+    chop( @body = <FILE> );
+    close( FILE );
+    @body = grep( /^#/, @body );    # grep for comment text
+    foreach ( @body ) { s/^# ?//; } # remove comment prefix
+    foreach ( @body ) { s/\s*$//; } # remove trailing whitespace
+
+    while ( $body[0] !~ /^CONFIG/ && @body > 0 ) {
+        shift( @body );
+    }
+
+    @tags = ( '^FLAGS', '^HIERARCHY$', '^COMMENTS$', '^END$' );
+
+    @flags = ();
+    @hierarchy = ();
+    @comments = ();
+
+    $i = 1;
+    while ( $i < @body ) {
+        for ( $c = 0; $c < @tags; $c++ ) {
+            if ( $body[$i] =~ /$tags[$c]/ ) {
+                if ( $body[$i] =~ /^FLAGS/ ) {
+                    if ( $body[$i] =~ /^FLAGS *\[[0-9\.]+]/ ) {
+                        $defaultweight = $body[$i];
+                        $defaultweight =~ s/.*\[([0-9\.]+)\]$/\1/;
+                    }
+                    for ( $i++; $body[$i] ne "" && $i < @body; $i++ )
+                      { push( @flags, $body[$i] ); }
+                } elsif ( $body[$i] eq 'HIERARCHY' ) {
+                    for ( $i++; $body[$i] ne "" && $i < @body; $i++ )
+                      { push( @hierarchy, $body[$i] ); }
+                } elsif ( $body[$i] eq 'COMMENTS' ) {
+                   for ( $i++; $body[$i] ne "END COMMENTS" && $i < @body; $i++ )
+                      { push( @comments, $body[$i] ); }
+                }
+                $c = @tags;
+            }
+        }
+        $i++;
+    }
+
+    $module = $body[0];
+    $module =~ s/^CONFIG\s*\"(.*)\"\s*$/\1/;
+
+    return 0 if @hierarchy < 1;
+    return 1;
+} # sub ReadConfig
+
+############################################################################
+# subroutine that will from space indentation deduce the inheritance
+# hierarchy of the items in the list.  The hierarchy information is inserted
+# into the associative array named %parent.
+
+sub FindInheritance {
+    local( $flags, @list ) = ( @_ );
+    local( @namestack, @indentstack ) = ();
+    local( $name, $indent, $linenum ) = ();
+
+    @classes = ();
+    $linenum = 1;
+    push( @namestack, "" );
+    push( @indentstack, 0 );
+    foreach $item ( @list ) {
+        $linenum++;
+        $flagstring = substr( $item, 0, $flags );
+        $name = substr( $item, $flags );
+        $indent = $name;
+        $indent =~ s/[^ ]*$//;
+        $indent = length( $indent ); # numeric length instead of string
+        $name =~ s/^ *//;
+#        $name =~ s/\s.*//; # only first word
+        push( @classes, $name );
+        $flagvals{$name} = $flagstring;
+        if ( $indent > $indentstack[$#indentstack] ) { # indented further
+            $parent{$name} = $namestack[$#namestack];
+            push( @indentstack, $indent );
+            push( @namestack, $name );
+        } elsif ( $indent == $indentstack[$#indentstack] ) { # same indentation
+            $parent{$name} = $namestack[$#namestack-1];
+            $namestack[$#namestack] = $name;
+        } else { # less indentation
+            while ( $indent < $indentstack[$#indentstack] ) {
+                pop( @indentstack );
+                pop( @namestack );
+            }
+            if ( $indent == $indentstack[$#indentstack] ) { # same indent
+                $parent{$name} = $namestack[$#namestack-1];
+                $namestack[$#namestack] = $name;
+            } else {
+                print STDERR "Error: hierarchy entry #", $linenum,
+                    " has illegal indentation ($name).\n";
+            }
+        }
+    }
+} # sub FindInheritance
+
+############################################################################
+
+sub LoadComments {
+    local( $path ) = ( @_ );
+    local( $file, $class, $data, @comments ) = ();
+
+#   print "&LoadComments( \"$path\" );\n";
+    foreach $file ( &FindFiles( $path, '\.cpp$' ) ) {
+        $class = $file;
+        $class =~ s/\.cpp$//;
+        $class =~ s/.*\///;
+        $data = ();
+        open( FILE, $file ) || print STDERR "error: \!: $file\n";
+        read( FILE, $data, (stat( $file ))[7] );
+        close( FILE );
+        $data =~ tr/\n/ /;
+        @comments = ();
+        @comments = split( '/*¡', $data );
+        shift( @comments );
+        
+        if ( @comments > 0 ) {
+            foreach ( @comments ) {
+                s#^\s+##;
+                s#\s*\*/.*##;
+                s/\s+/ /g;
+            }
+            $comments{$class} = join( "\n", @comments );
+        }
+    }
+} # sub LoadComments
+
+############################################################################
+
+sub FactorToColor {
+    local( $factor ) = ( @_ );
+    local( $rval, $gval, $bval ) = ( 0.0, 0.0, 0.0 );
+
+    $rval = 1.0 - $factor;
+    $gval = $factor;
+    $rval = sin( 3.141593/2 * $rval );
+    $gval = sin( 3.141593/2 * $gval );
+    ( $rval, $gval, $bval );
+} # sub FactorToColor
+
+############################################################################
+
+sub PrintHeader {
+    local( $label ) = ( @_ );
+    print HTML "<div align=center>\n";
+    for ( $c = 0; $c < @index; $c++ ) {
+        if ( $index[$c] =~ /$label/ ) {
+            print HTML "<h1 align=center>$label</h1>\n",
+        } else {
+            print HTML $index[$c], "<br>\n";
+        }
+    }
+    print HTML "<div align=left>";
+} # sub PrintHeader
+
+############################################################################
+
+sub GenGifs {
+    open( GIF, "> $docdir/r.gif" );
+    print GIF pack( "A6C36", "GIF87a", 0x9,0,0xc,0,0xf0,0,0,0xff,0,0,
+                    0,0,0,0x2c,0,0,0,0,0x9,0,0xc,0,0,0x2,0x8,0x84,
+                    0x8f,0xa9,0xcb,0xed,0xf,0xa3,0x3c,0x5,0,0x3b );
+    close( GIF );
+    open( GIF, "> $docdir/g.gif" );
+    print GIF pack( "A6C36", "GIF87a", 0x9,0,0xc,0,0xf0,0,0,0,0xff,0,
+                    0,0,0,0x2c,0,0,0,0,0x9,0,0xc,0,0,0x2,0x8,0x84,
+                    0x8f,0xa9,0xcb,0xed,0xf,0xa3,0x3c,0x5,0,0x3b );
+    close( GIF );
+    open( GIF, "> $docdir/y.gif" );
+    print GIF pack( "A6C36", "GIF87a", 0x9,0,0xc,0,0xf0,0,0,0xf0,0xb4,0,
+                    0,0,0,0x2c,0,0,0,0,0x9,0,0xc,0,0,0x2,0x8,0x84,
+                    0x8f,0xa9,0xcb,0xed,0xf,0xa3,0x3c,0x5,0,0x3b );
+    close( GIF );
+}
+
+############################################################################

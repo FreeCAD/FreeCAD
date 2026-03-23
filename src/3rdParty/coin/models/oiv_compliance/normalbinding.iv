@@ -1,0 +1,78 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with SoNormalBinding nodes.
+# FIXME: include more SoShape primitives in the check?
+#
+# 19990504 mortene
+
+Separator {
+   Switch {
+      whichChild -1
+      DEF primitives Separator {
+	 Cube { }
+	 Translation { translation +3 0 0 }
+	 Cone { }
+	 Translation { translation +3 0 0 }
+	 Cylinder { }
+	 Translation { translation +3 0 0 }
+	 Sphere { }
+	 Translation { translation +6 0 0 }
+	 Coordinate3 {
+	    point [
+	     -2 -1 0, -1 -1 0, 1 -1 0, 2 -1 0,
+	     -2 1 0, -1 1 0, 1 1 0, 2 1 0,
+	    ]
+	 }
+	 IndexedFaceSet {
+	    coordIndex [ 0, 1, 5, 4, -1, 1, 2, 6, 5, -1, 2, 3, 7, 6, -1]
+	 }
+      }
+   }
+
+   Normal {
+      vector [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1, 1 0 0 ]
+   }
+
+   # (ROW 0) Test different normalbinding values
+   Separator {
+      USE primitives
+
+      NormalBinding { value PER_VERTEX_INDEXED }
+      Translation { translation 0 +3 0 }
+      USE primitives
+
+      NormalBinding { value PER_VERTEX }
+      Translation { translation 0 +3 0 }
+      USE primitives
+
+      NormalBinding { value PER_FACE_INDEXED }
+      Translation { translation 0 +3 0 }
+      USE primitives
+
+      NormalBinding { value PER_FACE }
+      Translation { translation 0 +3 0 }
+      USE primitives
+
+      NormalBinding { value PER_PART_INDEXED }
+      Translation { translation 0 +3 0 }
+      USE primitives
+
+      NormalBinding { value PER_PART }
+      Translation { translation 0 +3 0 }
+      USE primitives
+
+      NormalBinding { value OVERALL }
+      Translation { translation 0 +3 0 }
+      USE primitives
+   }
+
+   # (ROW 1) Check ignored flag
+   Translation { translation 0 -6 0 }
+   Separator {
+      USE primitives
+
+      NormalBinding { value PER_VERTEX_INDEXED ~ }
+      Translation { translation 0 -3 0 }
+      USE primitives
+   }
+}

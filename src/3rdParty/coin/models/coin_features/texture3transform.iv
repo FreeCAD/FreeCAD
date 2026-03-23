@@ -1,0 +1,182 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoTexture3Transform.
+#
+# 20011206 kintel
+
+Separator {
+      DEF stdtex Texture3 {
+	 images 6 8 4 3
+	 0x00000000 0x00330000 0x00660000 0x00990000 0x00cc0000 0x00ff0000
+	 0x00002400 0x00332400 0x00662400 0x00992400 0x00cc2400 0x00ff2400
+	 0x00004900 0x00334900 0x00664900 0x00994900 0x00cc4900 0x00ff4900
+	 0x00006d00 0x00336d00 0x00666d00 0x00996d00 0x00cc6d00 0x00ff6d00
+	 0x00009200 0x00339200 0x00669200 0x00999200 0x00cc9200 0x00ff9200
+	 0x0000b600 0x0033b600 0x0066b600 0x0099b600 0x00ccb600 0x00ffb600
+	 0x0000db00 0x0033db00 0x0066db00 0x0099db00 0x00ccdb00 0x00ffdb00
+	 0x0000ff00 0x0033ff00 0x0066ff00 0x0099ff00 0x00ccff00 0x00ffff00
+
+	 0x00000055 0x00330055 0x00660055 0x00990055 0x00cc0055 0x00ff0055
+	 0x00002455 0x00332455 0x00662455 0x00992455 0x00cc2455 0x00ff2455
+	 0x00004955 0x00334955 0x00664955 0x00994955 0x00cc4955 0x00ff4955
+	 0x00006d55 0x00336d55 0x00666d55 0x00996d55 0x00cc6d55 0x00ff6d55
+	 0x00009255 0x00339255 0x00669255 0x00999255 0x00cc9255 0x00ff9255
+	 0x0000b655 0x0033b655 0x0066b655 0x0099b655 0x00ccb655 0x00ffb655
+	 0x0000db55 0x0033db55 0x0066db55 0x0099db55 0x00ccdb55 0x00ffdb55
+	 0x0000ff55 0x0033ff55 0x0066ff55 0x0099ff55 0x00ccff55 0x00ffff55
+
+	 0x000000aa 0x003300aa 0x006600aa 0x009900aa 0x00cc00aa 0x00ff00aa
+	 0x000024aa 0x003324aa 0x006624aa 0x009924aa 0x00cc24aa 0x00ff24aa
+	 0x000049aa 0x003349aa 0x006649aa 0x009949aa 0x00cc49aa 0x00ff49aa
+	 0x00006daa 0x00336daa 0x00666daa 0x00996daa 0x00cc6daa 0x00ff6daa
+	 0x000092aa 0x003392aa 0x006692aa 0x009992aa 0x00cc92aa 0x00ff92aa
+	 0x0000b6aa 0x0033b6aa 0x0066b6aa 0x0099b6aa 0x00ccb6aa 0x00ffb6aa
+	 0x0000dbaa 0x0033dbaa 0x0066dbaa 0x0099dbaa 0x00ccdbaa 0x00ffdbaa
+	 0x0000ffaa 0x0033ffaa 0x0066ffaa 0x0099ffaa 0x00ccffaa 0x00ffffaa
+
+	 0x000000ff 0x003300ff 0x006600ff 0x009900ff 0x00cc00ff 0x00ff00ff
+	 0x000024ff 0x003324ff 0x006624ff 0x009924ff 0x00cc24ff 0x00ff24ff
+	 0x000049ff 0x003349ff 0x006649ff 0x009949ff 0x00cc49ff 0x00ff49ff
+	 0x00006dff 0x00336dff 0x00666dff 0x00996dff 0x00cc6dff 0x00ff6dff
+	 0x000092ff 0x003392ff 0x006692ff 0x009992ff 0x00cc92ff 0x00ff92ff
+	 0x0000b6ff 0x0033b6ff 0x0066b6ff 0x0099b6ff 0x00ccb6ff 0x00ffb6ff
+	 0x0000dbff 0x0033dbff 0x0066dbff 0x0099dbff 0x00ccdbff 0x00ffdbff
+	 0x0000ffff 0x0033ffff 0x0066ffff 0x0099ffff 0x00ccffff 0x00ffffff
+      }
+
+   Complexity { textureQuality 0.1 } # Turn off linear filtering
+
+   # (ROW 0) Test translation, rotation and scaling by themselves
+   Separator {
+      Texture3Transform { }
+      DEF stdfaceset IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ 
+        -1 -1 -1.000, 1 -1 -1.000, 1 1 -1.000, -1 1 -1.000, 
+        -1 -1 -0.750, 1 -1 -0.750, 1 1 -0.750, -1 1 -0.750, 
+        -1 -1 -0.500, 1 -1 -0.500, 1 1 -0.500, -1 1 -0.500, 
+        -1 -1 -0.250, 1 -1 -0.250, 1 1 -0.250, -1 1 -0.250, 
+        -1 -1  0.000, 1 -1  0.000, 1 1  0.000, -1 1  0.000, 
+        -1 -1  0.250, 1 -1  0.250, 1 1  0.250, -1 1  0.250, 
+        -1 -1  0.500, 1 -1  0.500, 1 1  0.500, -1 1  0.500, 
+        -1 -1  0.750, 1 -1  0.750, 1 1  0.750, -1 1  0.750, 
+        -1 -1  1.000, 1 -1  1.000, 1 1  1.000, -1 1  1.000
+            ]
+            texCoord3 [
+         0  0 0.000, 1  0 0.000, 1 1 0.000,  0 1 0.000, 
+         0  0 0.125, 1  0 0.125, 1 1 0.125,  0 1 0.125, 
+         0  0 0.250, 1  0 0.250, 1 1 0.250,  0 1 0.250, 
+         0  0 0.375, 1  0 0.375, 1 1 0.375,  0 1 0.375, 
+         0  0 0.500, 1  0 0.500, 1 1 0.500,  0 1 0.500, 
+         0  0 0.625, 1  0 0.625, 1 1 0.625,  0 1 0.625, 
+         0  0 0.750, 1  0 0.750, 1 1 0.750,  0 1 0.750, 
+         0  0 0.875, 1  0 0.875, 1 1 0.875,  0 1 0.875, 
+         0  0 0.990, 1  0 0.990, 1 1 0.990,  0 1 0.990
+            ]
+	 }
+
+	 coordIndex [ 
+         0, 1, 2, 3, -1,
+         4, 5, 6, 7, -1,
+         8, 9,10,11, -1,
+        12,13,14,15, -1,
+        16,17,18,19, -1,
+        20,21,22,23, -1,
+        24,25,26,27, -1,
+        28,29,30,31, -1,
+        32,33,34,35, -1
+           ]
+      }
+
+      DEF left Translation { translation +4 0 0 }
+      Separator {
+	 Texture3Transform { translation 0.5 0.25 0.75 }
+         USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	 Texture3Transform { rotation 0 0 1 0.39269908169872414 } # 45°
+         USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	 Texture3Transform { scaleFactor 0.3 0.3 0.3 }
+         USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	 Texture3Transform { scaleFactor 1 0.1 1}
+         USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	 Texture3Transform { scaleFactor 1 10 1}
+         USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	 Texture3Transform { scaleFactor -2 -2 -2}
+         USE stdfaceset
+      }
+   }
+
+
+   # (ROW 1) Test translation, rotation and scaling with centerpoint set
+   DEF row Translation { translation 0 +4 0 }
+   Separator {
+      Separator {
+	 Texture3Transform {
+	    center 0.25 0.75 0
+	    translation 0.5 0.5 0.5
+	 }
+         USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	 Texture3Transform {
+	    center 0.25 0.75 0
+	    rotation 0 0 1 0.39269908169872414      # 45°
+	 }
+         USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	 Texture3Transform {
+	    center 0.25 0.75 0
+	    scaleFactor 0.25 0.75 0.25
+	 }
+         USE stdfaceset
+      }
+   }
+
+   # (ROW 2) Test translation, rotation and scaling in combination
+   USE row
+   Separator {
+      Texture3Transform {
+	 center 0.25 0.75 0
+	 translation 0.5 0.5 0.5
+	 rotation 0 0 1 0.39269908169872414      # 45°
+	 scaleFactor 1.25 1.75 1
+      }
+      USE stdfaceset
+   }
+
+   # (ROW 3) Test ignored flags
+   USE row
+   Separator {
+      Texture3Transform {
+	 center 0.25 0.75 0 ~
+	 translation 0.5 0.5 0.5 ~
+	 rotation 0 0 1 0.39269908169872414 ~      # 45°
+	 scaleFactor 1.25 1.75 1 ~
+      }
+      USE stdfaceset
+   }
+}

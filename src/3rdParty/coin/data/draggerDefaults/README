@@ -1,0 +1,15 @@
+These are the scene graph geometries used as default geometries for
+the various draggers in Coin.
+
+They have all been statically compiled into the library, but can be
+overloaded by setting the SO_DRAGGER_DIR environment variable to a
+directory with replacement geometries for the draggers you will be
+using (like this directory, for instance).
+
+Be sure to use the same filenames for the .iv-files as in this
+directory, and you will also need to use the same node names as in the
+geometry specifications within these files for the draggers to
+recognize and extract the parts they consist of.
+
+See also "Customizing a Dragger" in Chapter 15 of "The Inventor
+Mentor" (ISBN 0-201-62495-8).

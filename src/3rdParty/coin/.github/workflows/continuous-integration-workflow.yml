@@ -1,0 +1,82 @@
+name: Continuous Integration Build
+
+on:
+  workflow_dispatch:  # Allow manual triggers
+  pull_request:
+    branches: [ master ]
+  #push:
+  #  branches: [ master ]
+
+jobs:
+  ubuntu-build:
+    name: Ubuntu Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Create build directory and run CMake
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install freeglut3-dev
+          cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir
+      - name: Build project
+        run: cmake --build cmake_build_dir --target install --config Release -- -j4
+      - name: Run tests
+        run:  ctest -C Release -VV
+        working-directory: cmake_build_dir
+      - name: Create Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Ubuntu-Artifacts
+          path: cmake_install_dir/
+        if: always()
+
+  windows-build:
+    name: Windows Build
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Create build directory and run CMake
+        shell: cmd
+        run: |
+          cmake -S . -B cmake_build_dir -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir
+      - name: Build project
+        run: cmake --build cmake_build_dir --target INSTALL --config Release -- /nologo /verbosity:minimal /maxcpucount:2 /property:MultiProcessorCompilation=true
+      - name: Run tests
+        run:  ctest -C Release -VV
+        working-directory: cmake_build_dir
+      - name: Create Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-Artifacts
+          path: cmake_install_dir/
+        if: always()
+
+  macos-build:
+    name: MacOS Build
+    runs-on: macos-14
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Create build directory and run CMake
+        run: |
+          cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DCMAKE_CXX_STANDARD=11
+      - name: Build project
+        run: cmake --build cmake_build_dir --target install --config Release -- -j4
+      - name: Run tests
+        run:  ctest -C Release -VV
+        working-directory: cmake_build_dir
+      - name: Create Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: MacOS-Artifacts
+          path: cmake_install_dir/
+        if: always()
+        

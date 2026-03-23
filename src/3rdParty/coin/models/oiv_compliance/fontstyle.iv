@@ -1,0 +1,50 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoFontStyle.
+#
+# TODO: check against other text nodes (SoText3, SoAsciiText,
+# SoAnnoText3, others?)
+#
+# 19990423 mortene
+
+Separator {
+
+   # (ROW 0)
+   Separator {
+      Cube { }
+
+      BaseColor { rgb 1 0 0.5 }
+      Translation { translation +4 0 0 }
+      FontStyle {  family SERIF }
+      Text2 { string [ "family", "is", "SERIF" ] }
+
+      BaseColor { rgb 1 0 0.5 }
+      Translation { translation +4 0 0 }
+      FontStyle {  family SANS }
+      Text2 { string [ "family", "is", "SANS" ] }
+
+      BaseColor { rgb 1 0 0.5 }
+      Translation { translation +4 0 0 }
+      FontStyle {  family TYPEWRITER }
+      Text2 { string [ "family", "is", "TYPEWRITER" ] }
+
+      BaseColor { rgb 0.5 0 1 }
+      Translation { translation +4 0 0 }
+      FontStyle {  style BOLD }
+      Text2 { string [ "style", "is", "BOLD" ] }
+
+      BaseColor { rgb 0.5 0 1 }
+      Translation { translation +4 0 0 }
+      FontStyle {  style ITALIC }
+      Text2 { string [ "style", "is", "ITALIC" ] }
+
+      BaseColor { rgb 0.5 0 1 }
+      Translation { translation +4 0 0 }
+      FontStyle {  style (BOLD|ITALIC) }
+      Text2 { string [ "style is", "BOLD and ITALIC" ] }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +4 0 0 }
+      Cube { }
+   }
+}

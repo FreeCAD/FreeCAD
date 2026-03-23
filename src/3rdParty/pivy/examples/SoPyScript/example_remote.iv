@@ -1,0 +1,35 @@
+#Inventor V2.0 ascii
+
+# example that shows the usage of URLs
+
+DEF root Separator {
+   DEF shuttle SoShuttle {
+      translation0 0 0 0
+      translation1 -1 0.5 -1
+   }
+   Material { diffuseColor 1.0 0.0 0.0 }
+   DEF Glow SoPyScript {
+      fields [ SoSFColor color, SoSFFloat brightness, SoSFFloat transparency ]
+      color 1 0 0 = USE shuttle.translation
+      brightness 0.5
+      transparency 0.3
+      script "http://pivy.coin3d.org/examples/glow_web.py"
+   }
+   Cone {}
+   Material { diffuseColor 0 0 1 }
+   Sphere{}
+   SoTranslation { translation 0 1.2 0 }
+   SoFont {
+      name "Times New Roman"
+      size 24.0
+   }
+   DEF TextScroller SoPyScript {
+      fields [ SoSFString string, SoSFColor color ]
+      script "https://pivy.coin3d.org/examples/textscroll_web.py"
+   }
+   Material { diffuseColor = USE TextScroller.color }
+   SoText2 {
+      string = USE TextScroller.string
+      justification CENTER
+   }
+}

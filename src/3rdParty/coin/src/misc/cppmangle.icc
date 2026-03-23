@@ -1,0 +1,204 @@
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
+typedef SbString mangleFunc(const char *);
+
+/*
+  This function returns a string that corresponds to how gcc 2.95.4
+  mangles "static void <classname>::initClass(void)".
+*/
+
+static
+SbString
+gcc2_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  const size_t len = strlen(classname);
+  SbString mangling;
+  mangling.sprintf("initClass__%d%s", len, classname);
+  return mangling;
+}
+
+/*
+  This function returns a string that corresponds to how gcc3
+  mangles "static void <classname>::initClass(void)".
+*/
+   
+static
+SbString
+gcc3_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  const size_t len = strlen(classname);
+  SbString mangling;
+  mangling.sprintf("_ZN%d%s9initClassEv", len, classname);
+  return mangling;
+}
+
+/*
+  This function returns a string that corresponds to how Microsoft
+  Visual C++ v6 mangles "static void <classname>::initClass(void)" in
+  a __declspec(dllexport) context.
+*/
+
+static
+SbString
+msvc6_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  SbString mangling;
+  mangling.sprintf("?initClass@%s@@SAXXZ", classname);
+  return mangling;
+}
+
+/*
+  This function returns a string that corresponds to how IRIX MIPSpro
+  CC 7.30 mangles "static void <classname>::initClass(void)".
+*/
+
+static
+SbString
+MIPSpro_CC_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  const size_t len = strlen(classname);
+  SbString mangling;
+  mangling.sprintf("initClass__%d%sSGv", len, classname);
+  return mangling;
+}
+
+/*
+  This function returns a string that corresponds to how HP-UX 11's
+  aCC mangles "static void <classname>::initClass(void)".
+
+  The version information reported by the aCC used to check the name
+  mangling: "HP ANSI C++ B3910B A.03.35".
+*/
+static
+SbString
+HPUX_aCC_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  const size_t len = strlen(classname);
+  SbString mangling;
+  mangling.sprintf("initClass__%d%sSFv", len, classname);
+  return mangling;
+}
+
+#include <iostream>
+#include <ostream>
+
+/*
+  This function returns a string that corresponds to how Sun Ceres C++
+  5.10 mangles "static void <classname>::initClass(void)".
+*/
+static
+SbString
+sunCC_initClassMangling(const char * classname)
+{
+  assert(classname != NULL);
+  size_t len = strlen(classname);
+  SbString mangling;
+  SbString mangled_len;
+
+  while (len > 25) {
+    size_t digit = len % 26;
+    len /= 26;
+    mangled_len += static_cast<char>('a' + digit);
+  }
+  mangled_len += static_cast<char>('a' + len);
+
+  char * mangled_str = strdup(mangled_len.getString());
+  mangled_str[0] = toupper(mangled_str[0]);
+
+  /* reverse */
+  for (size_t i=0, j=strlen(mangled_str)-1; i<j; i++, j--) {
+    char temp = mangled_str[i];
+    mangled_str[i] = mangled_str[j];
+    mangled_str[j] = temp;
+  }
+
+  mangling.sprintf("__1c%s%sJinitClass6F_v_", mangled_str, classname);
+  free(mangled_str);
+
+  return mangling;
+}
+
+/* ********************************************************************** */
+
+static mangleFunc * manglefunctions[] = {
+  HPUX_aCC_initClassMangling,
+  gcc2_initClassMangling,
+  gcc3_initClassMangling,
+  msvc6_initClassMangling,
+  MIPSpro_CC_initClassMangling,
+  sunCC_initClassMangling,
+  (mangleFunc *)NULL
+};
+
+/*
+  return the correct name mangling function, or NULL in case none seem
+  appropriate
+*/
+
+static
+mangleFunc *
+getManglingFunction(void)
+{
+  static SbBool initialized = FALSE;
+  static mangleFunc * manglefunc = NULL;
+  if (!initialized) {
+    initialized = TRUE;
+    int i;
+    cc_libhandle handle = cc_dl_open(NULL);
+    if (handle == NULL) goto failure;
+    for (i = 0; (manglefunctions[i] != NULL) && (manglefunc == NULL); i++) {
+      mangleFunc * attempt = manglefunctions[i];
+      SbString symbol(attempt("SoBase"));
+      if (cc_dl_sym(handle, symbol.getString())) {
+        manglefunc = manglefunctions[i];
+      }
+    }
+    cc_dl_close(handle);
+    if (manglefunc == NULL) { goto failure; }
+  }
+  return manglefunc;
+failure:
+#ifdef _MSC_VER
+  // LoadLibrary(NULL) doesn't work, so we fall-back on the MSVC++ mangling
+  // scheme on Microsoft Windows.
+  manglefunc = msvc6_initClassMangling;
+#endif
+  return manglefunc;
+}
+
+/* ********************************************************************** */

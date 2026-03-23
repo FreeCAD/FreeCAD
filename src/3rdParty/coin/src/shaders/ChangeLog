@@ -1,0 +1,194 @@
+ChangeLog
+=========
+	
+This is the ChangeLog file for the Coin/src/shader module. This is not
+supposed to stay permanently. I just want to keep track of what others
+and I do, to make developer life easier. This file can probably
+be removed soon (in one month or so), when the shaders run smoothly.
+	
+                                             -- Martin Spindler (2005-01-28)
+
+============================================================================
+
+2005-06-20: martin
+	* include/Inventor/C/glue/glp.h,
+	  src/glue/gl.c,
+	  src/shaders/SoGLSLShaderParameter.cpp:
+	added uniform matrix support for GLSL
+
+	* src/shaders/SoGLCgShaderParameter.cpp:
+	fixed int-sampler type compare
+
+2005-06-08: martin
+	* include/Inventor/nodes/SoShaderObject.h,
+	  include/Inventor/nodes/SoShaderProgram.h,
+	  src/shader/SoShaderObject.cpp,
+	  src/shader/SoShaderProgram.cpp:
+	changed superclass to SoNode (was SoGroup before) to be compatible
+	to TGS
+
+2005-04-13: martin
+	* src/shader/SoShaderObject.cpp:
+	avoid unnecessary reloading of shaders if uniforms are changed
+	
+2005-03-24: martin
+	* include/Inventor/nodes/SoNodes.h:
+	added following #includes: (to be compatible with TGS)
+	  SoShaderObject.h, 
+	  ShaderParameter.h, 
+	  SoShaderProgram.h,
+	  SoFragmentShader.h, 
+	  SoVertexShader.h 
+
+2005-02-22 martin
+Short Summary:
+	* added support of SoShaderParameter1i
+
+In Detail:
+	* src/shader/SoGLShaderParameter.[h,cpp],
+	  src/shader/SoGLARBShaderParameter.[h,cpp],
+	  src/shader/SoGLCgShaderParameter.[h,cpp],
+	  src/shader/SoGLSLShaderParameter.[h,cpp]:
+	added API for following functions:
+	  set1i(..);
+	  set2i(..);
+	  set3i(..);
+	  set4i(..);
+	  set1iv(..);
+	  set2iv(..);
+	  set3iv(..);
+	  set4iv(..);
+	  but implemented only set1i(..) (due to lack of SoSFVec?i32 classes)
+	
+	* src/shader/SoShaderParameter.cpp:
+	support of SoShaderParameter1i
+
+	* include/Inventor/system/gl.h.in:
+	added following defines:
+	  GL_SAMPLER_1D_ARB
+	  GL_SAMPLER_2D_ARB
+	  GL_SAMPLER_3D_ARB
+	  GL_SAMPLER_CUBE_ARB
+	  GL_SAMPLER_1D_SHADOW_ARB
+	  GL_SAMPLER_2D_SHADOW_ARB
+	  GL_SAMPLER_2D_RECT_ARB
+	  GL_SAMPLER_2D_RECT_SHADOW_ARB
+
+	* include/Inventor/C/glue/glp.h, src/glue/gl.c:
+	support of:
+	  void glUniform1iARB(..);
+	  void glUniform2iARB(..);
+	  void glUniform3iARB(..);  
+	  void glUniform4iARB(..);
+	  void glUniform1ivARB(..);
+	  void glUniform2ivARB(..);
+	  void glUniform3ivARB(..);  
+	  void glUniform4ivARB(..);
+	
+2005-01-29 martin
+	* include/Inventor/nodes/SoShaderObject.h,
+	  include/Inventor/nodes/SoShaderProgram.h,
+	  src/shaders/SoShaderObject.cpp,
+	  src/shaders/SoShaderProgram.cpp:
+	SoSearchAction support,
+	-> void search(SoSearchAction *action) (NOT part of TGS (yet ;-))
+
+2005-01-29 martin
+Short Summary: (large changes)
+	* support of array and matrix parameters, i.e. following classes:
+	    SoShaderParameterArray1f,
+	    SoShaderParameterArray2f,
+	    SoShaderParameterArray3f,
+	    SoShaderParameterArray4f,
+	    SoShaderParameterMatrix,
+	    SoShaderParameterMatrixArray
+	  have been implemented (so far only GLSL and Cg versions are supported)
+        * removed class 'SoShaderParameterSampler2D' (not part of TGS)
+	* API clean up of SoGLShaderParameter and SoShaderParameter
+	* got rid of SoShader::ValueType
+	
+In Detail:
+	* include/Inventor/nodes/SoShader.h
+	API clean up
+	  - got rid of 'SoShader::ValueType'
+	  - changed 'SoShader::ShaderType' into 'SoShader:Type'
+	
+	* src/shaders/SoGLShaderParameter.[h|cpp]
+	API clean up
+	  - got rid of 'SoShader::ValueType type' instance variable
+	  - got rid of 'SbBool isFloat..()' and 'SbBool isReferenced()' methods
+	  - changed 'void set..()' to take 'const SoGLShaderObject*' instead
+	    of 'const cc_glglue*'
+	Support of array and matrix parameters
+	  - added 'virtual void set..v(..) = 0' methods to API
+	  - added 'virtual void setMatrix..() = 0' methods to API
+	
+	* src/shaders/SoGLARBShaderParameter.[h|cpp]
+	  - changed API according to new SoGLShaderParameter API
+	  - constructor does not take arguments anymore
+	  - added 'SbBool isValid(..)' private method
+	
+	* src/shaders/SoGLCgShaderParameter.[h|cpp]
+	  - changed API according to new SoGLShaderParameter API
+	  - constructor does not take arguments anymore
+	  - removed 'cgProgram' instance variable
+	  - introduced 'cacheType', 'cacheName', 'cacheSize' instance variables
+	  - added 'SbBool isEqual(..)' and 'SbBool isValid(..)' private methods
+	  - got rid of some private methods
+
+	* src/shaders/SoGLSLShaderParameter.[h|cpp]
+	  - changed API according to new SoGLShaderParameter API
+	  - constructor does not take arguments anymore
+	  - added 'SbBool isValid(..)' private method
+	  - renamed 'name' instance variable to 'chacheName'
+	  - added 'cacheSize' and 'cacheType' instance variables
+	  - got rid of 'getParameterTypeFor(..)'
+
+	* src/shaders/SoGL???ShaderObject.[h|cpp]
+	API clean up
+	  - replaced '..* getParameter(..)' with '..* getNewParameter(void)'
+
+	* include/Inventor/nodes/SoShaderParameter.h,
+	  src/shaders/SoShaderParameter.cpp:
+	API clean up
+	  - removed 'void reset()'
+	  - moved 'SbBool ensureParameter(..)' to 'void ensureParameter(..)' to
+	    get rid of enoying SoShader::ValueType
+	  - removed class SoShaderParameterSampler2D, since this is not part 
+	    of TGS and wasn't implemented anyway (was copied accidentally)
+      	Support of array and matrix parameters
+	  - implemented following classes: 
+	       SoShaderParameterArray1f,
+	       SoShaderParameterArray2f,
+	       SoShaderParameterArray3f,
+	       SoShaderParameterArray4f,
+	       SoShaderParameterMatrix,
+	       SoShaderParameterMatrixArray
+
+	* src/shaders/SoShader.cpp:
+	  - initialization of new SoShaderParameter classes
+
+	* include/Inventor/C/glue/cg.h, src/glue/cg.c:
+	added following functions:
+	  void glue_cgGLSetParameterArray1f(..),
+	  void glue_cgGLSetParameterArray2f(..),
+	  void glue_cgGLSetParameterArray3f(..),
+	  void glue_cgGLSetParameterArray4f(..),
+	  void glue_cgGLSetMatrixParameterfc(..),
+	  void glue_cgGLSetMatrixParameterArrayfc(..),
+	  int glue_cgGetArrayDimension(..),
+	  int glue_cgGetArraySize(..)
+
+	* include/Inventor/C/glue/glp.h, src/glue/gl.c:
+	support of:
+	  void glUniform1fvARB(..);
+	  void glUniform2fvARB(..);
+	  void glUniform3fvARB(..);  
+	  void glUniform4fvARB(..);
+	
+2005-01-28 13:45  martin
+	* src/shaders/SoShaderProgram.cpp
+
+	fixed bug in SoShaderProgamP::updateProgramAndPreviousChildren(void)
+	(crashed before if non SoShaderObjects had been assigned)
+        

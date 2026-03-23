@@ -1,0 +1,122 @@
+#Inventor V2.1 ascii
+
+# Check rendering with SoMultipleCopy.
+#
+# 19990515 mortene
+
+Separator {
+   # (ROW 0) With a single child.
+   Separator {
+      MultipleCopy {
+	 matrix [
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  0 0 0 1,
+
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  5 0 0 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  0 5 0 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  5 5 0 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  0 0 5 1,
+
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  5 0 5 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  0 5 5 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  5 5 5 1,
+	 ]
+	 Cube { }
+      }
+   }
+
+   # (ROW 1) With multiple children.
+   Translation { translation 0 10 0 }
+   BaseColor { rgb 1 1 0 }
+   Separator {
+      MultipleCopy {
+	 matrix [
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  0 0 0 1,
+
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  5 0 0 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  0 5 0 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  5 5 0 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  0 0 5 1,
+
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  5 0 5 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  0 5 5 1,
+	  
+	  1 0 0 0
+	  0 1 0 0
+	  0 0 1 0
+	  5 5 5 1,
+	 ]
+	 Cube { }
+	 Translation { translation 2 0 0 }
+	 Cone { }
+
+	 # Check switch inheritance.
+	 Translation { translation 20 0 0 }
+	 BaseColor { rgb 1 0 0 }
+	 Switch {
+	    whichChild -2          # SO_SWITCH_IHERIT
+	    Cylinder { }
+	    Cone { }
+	    Cube { }
+	    Sphere { }
+	    Sphere { }
+	    Cube { }
+	    Cone { }
+	    Cylinder { }
+	 }
+      }
+   }
+}

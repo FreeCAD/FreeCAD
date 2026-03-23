@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Plane Navigation Mode
+Camera navigation SCXML state machine for Coin 3.1.
+-->
+
+<scxml
+  xmlns="http://www.w3.org/2008/07/scxml"
+  version="1.0"
+  profile="minimum"
+  name="plane-mode"
+  initial="idle"
+  exmode="lax">
+
+  <state id="base">
+    <!-- A few "global" event transitions that work regardless of active substate. -->
+
+    <transition event="error.*"><log/></transition>
+
+    <state id="idle">
+    </state>
+
+  </state>
+
+</scxml>

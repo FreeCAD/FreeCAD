@@ -1,0 +1,42 @@
+#Inventor V2.1 ascii
+
+# Check rendering with an SoAnnotation group node.
+#
+# 19990423 mortene
+
+Separator {
+  ShapeHints {
+    vertexOrdering COUNTERCLOCKWISE
+    shapeType SOLID
+  }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Cube { }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +4 0 0 }
+      Annotation {
+	 Cube { }
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +4 0 0 }
+      Cube { }
+   }
+
+   Translation { translation 0 +4 0 }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Sphere { }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +4 0 0 }
+      Annotation {
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +4 0 0 }
+      Sphere { }
+   }
+}

@@ -1,0 +1,116 @@
+/**
+
+Doxygen Awesome
+https://github.com/jothepro/doxygen-awesome-css
+
+MIT License
+
+Copyright (c) 2021 - 2023 jothepro
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+ */
+
+html {
+    /* side nav width. MUST be = `TREEVIEW_WIDTH`.
+     * Make sure it is wide enough to contain the page title (logo + title + version)
+     */
+    --side-nav-fixed-width: 335px;
+    --menu-display: none;
+
+    --top-height: 120px;
+    --toc-sticky-top: -25px;
+    --toc-max-height: calc(100vh - 2 * var(--spacing-medium) - 25px);
+}
+
+#projectname {
+    white-space: nowrap;
+}
+
+
+@media screen and (min-width: 768px) {
+    html {
+        --searchbar-background: var(--page-background-color);
+    }
+
+    #side-nav {
+        min-width: var(--side-nav-fixed-width);
+        max-width: var(--side-nav-fixed-width);
+        top: var(--top-height);
+        overflow: visible;
+    }
+
+    #nav-tree, #side-nav {
+        height: calc(100vh - var(--top-height)) !important;
+    }
+
+    #nav-tree {
+        padding: 0;
+    }
+
+    #top {
+        display: block;
+        border-bottom: none;
+        height: var(--top-height);
+        margin-bottom: calc(0px - var(--top-height));
+        max-width: var(--side-nav-fixed-width);
+        overflow: hidden;
+        background: var(--side-nav-background);
+    }
+    #main-nav {
+        float: left;
+        padding-right: 0;
+    }
+
+    .ui-resizable-handle {
+        cursor: default;
+        width: 1px !important;
+        background: var(--separator-color);
+        box-shadow: 0 calc(-2 * var(--top-height)) 0 0 var(--separator-color);
+    }
+
+    #nav-path {
+        position: fixed;
+        right: 0;
+        left: var(--side-nav-fixed-width);
+        bottom: 0;
+        width: auto;
+    }
+
+    #doc-content {
+        height: calc(100vh - 31px) !important;
+        padding-bottom: calc(3 * var(--spacing-large));
+        padding-top: calc(var(--top-height) - 80px);
+        box-sizing: border-box;
+        margin-left: var(--side-nav-fixed-width) !important;
+    }
+
+    #MSearchBox {
+        width: calc(var(--side-nav-fixed-width) - calc(2 * var(--spacing-medium)));
+    }
+
+    #MSearchField {
+        width: calc(var(--side-nav-fixed-width) - calc(2 * var(--spacing-medium)) - 65px);
+    }
+
+    #MSearchResultsWindow {
+        left: var(--spacing-medium) !important;
+        right: auto;
+    }
+}

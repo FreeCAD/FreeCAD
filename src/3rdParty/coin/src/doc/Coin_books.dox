@@ -1,0 +1,106 @@
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
+
+/*!
+  \page coin_books Books Related to Open Inventor / Coin
+
+  Here is a list of some of the better books for people that invested
+  in software development with Open Inventor.  If you have suggestions
+  for additional books that ought to go on this list, please feel
+  free to tell us about it.
+
+
+  \section mentorbook The Inventor Mentor
+  (subtitle "Programming Object-Oriented 3D Graphics with Open Inventor")
+
+  This is an excellently written, detailed, tutorial-style
+  introductory book for Open Inventor that takes you through all the
+  fundamental design principles applied in the Open Inventor API,
+  richly illustrated and with numerous, well documented code examples.
+
+  The Inventor Mentor is getting a bit old, but do not let that put
+  you off.  It is as valid today as it was the day it was written, and
+  we heartily recommend this book for anyone learning to use
+  Open Inventor.
+
+  ISBN 0-201-62495-8.  You might also be able to find this book as a
+  pdf file online, but we recommend having it in print.
+
+  
+  \section toolmakerbook The Inventor Toolmaker
+
+  This book explains how Open Inventor was designed for being extended
+  by the users, and walks you through how to develop your own
+  components that work with all aspects of Coin.
+
+  ISBN 0-201-62493-1.  You might also be able to find this book as a
+  pdf file online, but we recommend having it in print.
+
+
+  \section vrml2refbook The Annotated VRML2.0 Reference Manual
+
+  This book covers the VRML97 (aka VRML 2.0) standard, which Coin has
+  implemented with its Inventor/VRMLnodes/ classes, which is an
+  extension made beyond the Open Inventor V2.1 API.
+
+  The VRML97 format has some significant differences from the Inventor
+  and VRML1 formats, so it is a useful book if you want to use that
+  part of Coin.
+
+  ISBN 0-201-41974-2.  You will find the specification documents for
+  VRML97 online at <http://www.web3d.org/>.
+
+
+  \section openglbook The Open GL Programming Manual
+
+  This is the bible when it comes to OpenGL programming and is
+  relevant for Open Inventor extenders that develop new nodes that
+  implement or affect Open Inventor OpenGL rendering.  There are many
+  editions of this book since it is updated whenever new versions of
+  OpenGL are standardized and comes out, so check that you have
+  identified the latest edition if you order one.
+
+
+  \section oirefbook The Open Inventor C++ Reference Manual
+
+  Although this book is directly relevant for Open Inventor, it does
+  only cover the Open Inventor 2.1 API.  This information is more or
+  less also covered in the online doxygen doc for Coin, where you have
+  it hyperlinked, and can also be generated offline from the Coin
+  sources to have locally, so we do not think this book is very useful
+  to have in print.  We mention it anyway since it is an official
+  documentation book for Open Inventor.
+
+  ISBN 0-201-62491-5.
+
+*/

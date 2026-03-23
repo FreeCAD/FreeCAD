@@ -1,0 +1,12 @@
+123 coin-config --setup uses hardcoded LD_LIBRARY_PATH variable name
+    and is incompatible with e.g. tcsh
+
+    Not all platforms uses LD_LIBRARY_PATH for specifying the path
+    to dynamically loaded libraries.
+    It also uses bash-style assignment of variables.
+
+    This bug also exists for other projects using --setup.
+
+    20040707 kintel
+
+    UPDATE 20040718 mortene: consider this a low priority item.

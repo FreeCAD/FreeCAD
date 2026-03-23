@@ -1,0 +1,13 @@
+103 Need more 'ivinfo' information
+
+    We should be able to see which version of simage and freetype
+    and similar libraries has been detected by Coin.  The simage
+    information should also list supported file types / plugin APIs
+    in use.  The full path to the actual libraries would also be
+    nice to see.  Too often people wonder why textures don't load -
+    this would give that answer right away.
+
+    Note: Duplicate bug entry (025) in SoQt/BUGS.txt because this
+    must be implemented in cooperation between both libraries.
+
+    20040218 larsa

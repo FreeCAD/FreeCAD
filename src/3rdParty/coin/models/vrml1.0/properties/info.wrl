@@ -1,0 +1,19 @@
+#VRML V1.0 ascii
+
+# Check all aspects of Info usage
+#
+# 20030514 kintel
+
+Separator {
+  Info {}
+  Info { string "" }
+  Info { string "\"" }
+  Info { string "Test information" }
+  Info { string "\"quotes\"" }
+  # Test special case of backslash followed by quote at end of line, which terminates string.
+  Info { string "\\backslashes\\"
+  }
+  # Note that 'Info { string "\\backslashes\\" }' is invalid VRML 1.0 / Inventor
+  # because any '\"' is treated as literal quote in string (except if at end of line).
+  Info { string "Test information\nsplit over\multiple\lines." }
+}

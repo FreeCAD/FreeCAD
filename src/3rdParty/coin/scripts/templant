@@ -1,0 +1,901 @@
+#!/usr/bin/perl
+# Linux:  #!/usr/bin/perl
+# IRIX:   #!/store/bin/perl
+# BeOS:   #!/boot/home/config/bin/perl
+############################################################################
+#
+#  templant - William Gibson's "temple implant"
+#
+#  This perl script parses source code files and updates all the templant
+#  templates, header-inlines inline functions and more.
+#
+#  Hacked in perl by Lars J. Aas <larsa@sim.no>, 1998-2002
+#
+#  TEMPLANT ENV VARIABLES:
+#
+#    TEMPLANT_INCLUDE       - ":"-separated path list
+#
+#  TEMPLANT OPTIONS:
+#
+#    -d, --debug
+#    -h, -?, --help, --usage
+#    -u, --uncompact
+#    -V, --version
+#    --fold-templates
+#    --inline
+#    --fix-spacing
+#    -I<dir>
+#
+#  TEMPLANT DIRECTIVES:
+#
+#  //$ INSERT TEMPLATE TemplateName( arguments )
+#      //$ BEGIN TEMPLATE TemplateName( arguments )
+#      //$ END TEMPLATE TemplateName
+#
+#  //$ IMPORT INLINE filename
+#      //$ BEGIN IMPORT INLINE filename
+#      //$ END IMPORT INLINE filename
+#
+#  //$ EXPORT INLINE
+#      //$ BEGIN EXPORT INLINE
+#      //$ END EXPORT INLINE
+#
+#  //$ DEFINE varname substitution
+#  //$ UNDEFINE varname
+#
+#  /*$ EVAL( perl-expr ) */
+#
+#  //$ IF perl-expr
+#  //$ ELSIF perl-expr
+#  //$ ELSE
+#  //$ ENDIF
+#
+#  ... //$ IF perl-expr
+#
+#  //$ APPEND string                    [append line to previous line]
+#  //$ APPEND:string                    [append line to previous line]
+#                                       [- no space stripping]
+#
+#  //$ WARNING message
+#  //$ ERROR message
+#
+#  Alternately, //$ ... can be replaced with
+#
+#  ##$ ...
+#  /*$ ... $/
+#
+############################################################################
+#
+#  TODO:
+#  - avoid substitution on first argument of DEFINE and UNDEFINE
+#  - IFDEF/IFNDEF
+#  - CASE varname
+#    match: 
+#    match: 
+#    match: 
+#    match: 
+#    ESAC
+#
+############################################################################
+#
+#  $Id$
+#
+#  $Log$
+#  Revision 1.10  2002/06/10 15:29:54  larsa
+#  new CASE/ESAC directive, DEFINE/UNDEF fix, and some cosmetics
+#
+#  Revision 1.9  2002/03/20 18:03:38  larsa
+#  a new shorthand notation for single-line conditionals, new macros ERROR and WARNING
+#
+#  Revision 1.8  2002/03/20 12:03:50  larsa
+#  bugfix
+#
+#  Revision 1.7  2002/03/20 08:50:07  larsa
+#  additional macros DEFINE and UNDEFINE
+#
+#  Revision 1.6  2002/03/19 14:00:19  larsa
+#  support conditionals in templates, much like a C preprocessor
+#
+#  Revision 1.5  2002/03/08 15:32:43  larsa
+#  Support C comments around commands.
+#  New command "/*$ EVAL(expr) */".
+#
+#  Revision 1.4  2000/01/13 17:22:32  mortene
+#  Updated headers by changing copyright time span from 1998-1999
+#  to 1998-2000.
+#
+#  Revision 1.3  1999/12/05 09:41:48  mortene
+#  Made it possible to recognize "##$" as a token prefix in addition to
+#  "//$". Will be put in use later when "templanting" the Makefile.am
+#  files with common rules.
+#
+#  Revision 1.2  1999/09/23 06:31:49  mortene
+#  Cleaned up the sources a bit to be more in conformance with the wanted
+#  coding style.
+#
+#  Revision 1.1.1.1  1999/06/30 23:51:05  mortene
+#  Created
+#
+#  Revision 1.3  1999/06/30 23:03:53  mortene
+#  *** empty log message ***
+#
+#  Revision 1.2  1999/06/29 21:31:48  mortene
+#  *** empty log message ***
+#
+############################################################################
+#
+#  TODO:
+#  o  clean up and minimize code (sigh; 22KB and still growing)
+#  o  accept more whitespace (TABs)
+#  o  consider renaming script to "simplant" ;)
+#
+############################################################################
+
+if ( @ARGV == 0 ) {
+    &PrintUsage();
+    exit 0;
+}
+
+%OPTIONS = ( # option perl code
+    '--help',            '&PrintUsage(); exit 0;',
+    '--usage',           '&PrintUsage(); exit 0;',
+    '-h',                '&PrintUsage(); exit 0;',
+    '-?',                '&BrintUsage(); exit 0;',
+    '--version',         '&PrintVersion(); exit 0;',
+    '-v',                '&PrintVersion(); exit 0;',
+    '--uncompact',       '$compact = 0;',
+    '-u',                '$compact = 0;',
+    '--debug',           '$debug = 1;',
+    '-d',                '$debug = 1;',
+    '--fold-templates',  '$fold = 1;',
+    '--inline',          '$inline = 1;',
+    '--fix-spacing',     '$spacing = 1;',
+);
+
+############################################################################
+# separate files from options
+
+@options = ();
+@files = ();
+
+foreach $arg ( @ARGV ) {
+    if ( -f $arg ) {
+        push( @files, $arg );
+    } else {
+        push( @options, $arg ); # hopefully
+    }
+}
+
+############################################################################
+# set defaults
+
+$fold = 0;               # fold templates
+$inline = 0;             # inline functions
+$debug = 0;              # dump debug output
+$compact = 1;            # only wrap level-0 templates with comments
+$spacing = 0;            # replace TABs with spaces, and remove WS at EOL
+$evaluations = 1;        # replace /*$ EVAL(expr) */ parts
+
+$prefix = '(\#\#\$|//\$|/\*\$)';
+$postfix = '( *| +\*/)';
+
+@incpath = ();
+push(@incpath, "");    # $incpath[0] is set to the current file's directory
+push(@incpath, ".");   # $incpath[1] is current directory
+
+############################################################################
+# parse environment variables
+
+if ( defined $ENV{'TEMPLANT_INCLUDE'} ) {
+    foreach $dir ( split( $ENV{'TEMPLANT_INCLUDE'}, /:/ ) ) {
+        if ( ! -d $dir ) {
+            print STDERR "WARNING:  No directory '", $dir,
+                         "' (from \$TEMPLANT_INCLUDE).\n";
+        } else {
+            push( @incpath, $dir );
+        }
+    }
+}
+
+############################################################################
+# parse options
+
+foreach $opt ( @options ) {
+    if ( defined $OPTIONS{$opt} ) {
+        eval $OPTIONS{$opt};
+    } elsif ( $opt =~ /^-I/o ) {
+        $dir = substr($opt, 2);
+        if ( ! -d $dir ) {
+            print STDERR "WARNING:  No directory '", $dir,
+                         "' (from command line option).\n";
+        } else {
+            push(@incpath, $dir);
+        }
+    } else {
+        print STDERR "ERROR: No option or file named '", $opt, "'\n";
+        exit( -1 );
+    }
+}
+
+############################################################################
+# parse files
+
+file:
+foreach $file ( @files ) {
+    %defines = ();
+    print $file, ":";
+
+    if ( $file =~ /\.tpl$/ ) {
+        print STDERR "ERROR: Won't modify template files ($file).\n";
+        next file;
+    } elsif ( ! open( FILE, $file ) ) {
+        print STDERR "ERROR: Unable to open '", $file, "': ", $!, "\n";
+        next file;
+    } else {
+        @origlines = <FILE>;
+        close(FILE);
+        @lines = @origlines;
+    }
+
+    if ( $file =~ m#/#o ) { # file probably not in current dir...
+        $incpath[0] = $file;
+        $incpath[0] =~ s#/[^/]*$##o;
+        if ( ! -d $incpath[0] ) {
+            print STDERR "WARNING: No directory named '$incpath[0]'.\n";
+            $incpath[0] = ".";
+        }
+    } else {
+        $incpath[0] = ".";
+    }
+
+    $define = $file;
+    $define =~ s/^.*\///og; # only filename
+    $define =~ s/\..*//og;
+    # $define =~ s/([a-z])([A-Z])/$1_$2/og;
+    # $define =~ s/([^0-9]*)([0-9]+)([^0-9]*)/$1_$2_$3/og;
+    $define =~ tr/a-z/A-Z/;
+    $define = "COIN_" . $define . "_H_INLINED";
+
+    # update templates
+    &FoldTemplates();
+    &UnfoldTemplates() if ( ! $fold );
+
+    # function inlining
+    &FoldInlining();
+    if ( $inline ) {
+        &UnfoldInlining();
+    } else {
+        &FoldInliningSource();
+    }
+
+    # strip trailing whitespace
+    &FixSpacing() if ( $spacing == 1 );
+
+    # save if changed
+    if ( &FileChanged() ) {
+        printf "\r%-60s%-18s\n", $file . ":", "updating...";
+        system("mv $file $file.bak");
+        open(FILE, "> $file") || die $file, ": ", $!, "\n";
+        foreach $line ( @lines ) {
+            print FILE $line;
+        }
+        close(FILE);
+    } else {
+        printf "\r%-60s%-18s\n", $file . ":", "no change...";
+    }
+}
+
+############################################################################
+# subroutines (heavy use of globals, though)
+
+# folds all templates
+sub FoldTemplates { ########################################################
+    local($line, $i, $proto, $name, $temp);
+
+template:
+    for ( $line = scalar(@lines) - 1; $line >= 0; $line-- ) {
+        if ( $lines[$line] =~ m|^$prefix +BEGIN +TEMPLATE +|o ) {
+            chop($proto = $lines[$line]);
+            $proto =~ s|^$prefix +BEGIN +TEMPLATE +||o;
+            $proto =~ s|$postfix$||o;
+            $name = $proto;
+            $name =~ s/^([a-zA-Z0-9_-]+)\(.*/$1/og;
+            $i = $line + 1;
+            while ( $i < scalar(@lines) ) {
+                if ( $lines[$i] =~ m|^$prefix +END +TEMPLATE +|o ) {
+                    chop( $temp = $lines[$i] );
+                    $temp =~ s|^$prefix +END +TEMPLATE +||o;
+                    $localprefixstr = $1;
+                    $temp =~ s|$postfix$||o;
+                    $localpostfixstr = $1;
+                    if ( $temp eq $name ) {
+                        splice(@lines, $line, ($i - $line + 1), 
+                             ("$localprefixstr INSERT TEMPLATE " . $proto . "$localpostfixstr\n"));
+                        next template;
+                    } else {
+                        print STDERR "ERROR: TEMPLATE BEGIN ($name) / END mismatch.\n";
+                        exit(-1);
+                    }
+                }
+                $i++;
+            }
+            print STDERR "ERROR: TEMPLATE BEGIN ($name) but no END.\n";
+            exit( -1 );
+        }
+    }
+}
+
+%defines = ();
+
+# unfolds all templates
+sub UnfoldTemplates { ######################################################
+    local($level) = (0);
+    local($line, $proto, $name, $filename, $arguments, $templatevariables);
+    local($i, $prototype, $prototypename);
+    local(@template, @arguments, @templatevariables);
+    local($templates); # for template, not file
+    local($arg);
+    local(@conditionals) = ();
+
+    $level = $_[0] if ( @_ > 0 );
+
+    $templates = 0;
+    for ( $line = 0; $line < @lines; $line++ ) {
+        $directive = 0;
+        if ( defined $casestring ) {
+            $length = length($casestring);
+            if ( $casestring eq substr($lines[$line], 0, $length) ) {
+                $lines[$line] = substr($lines[$line], $length);
+            } else {
+                $directive = 1;
+            }
+        }
+        # need to pick up define-name before it is substituted...
+        $definename = "";
+        if ( $lines[$line] =~ m|^$prefix +DEFINE +([^ ]+) +(.*)$|o ) {
+            $definename = $2;
+            # ensure define name isn't split up on redefinition...
+            $lines[$line] =~ s| (DEFINE +)([^ ]+) | \1# |o;
+        } elsif ( $lines[$line] =~ m|^$prefix +UNDEFINE +([^ ]+)$|o ) {
+            $definename = $2;
+            chomp($definename);
+            delete $defines{$definename};
+            # print STDERR "undefining \"$definename\"\n";
+        }
+        foreach $key (keys %defines) {
+          # print STDERR "substing \"$key\" with \"$defines{$key}\"\n";
+          $lines[$line] =~ s|$key|$defines{$key}|g;
+        }
+        $lines[$line] =~ s|/\*\$ *EVAL\((.*)\) *\*/|eval "$1"|eg;
+
+        ## we try to handle IF, ELSIF, ELSE, and ENDIF here
+        if ( $lines[$line] =~ m|^$prefix +IF +|o ) {
+            $condstring = $lines[$line];
+            $condstring =~ s|^$prefix +IF +||o;
+            $conditional = eval("if ( $condstring ) { 1; } else { 0; }");
+            push(@conditionals, $conditional);
+            # print STDERR "opening conditional ".scalar(@conditionals)."\n";
+            # print STDERR "  => $conditional ($condstring)\n";
+            $directive = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +ELSIF +|o ) {
+            $condstring = $lines[$line];
+            $condstring =~ s|^$prefix +ELSIF +||o;
+            $oldconditional = pop(@conditionals);
+            # print STDERR "modifying conditional ".scalar(@conditionals)."\n";
+            if ( $oldconditional == 0 ) {
+                $conditional = eval("if ( $condstring ) { 1; } else { 0; }");
+                # print STDERR "  => $conditional ($condstring)\n";
+            } else {
+                $conditional = -1;
+                # print STDERR "  => $conditional\n";
+            }
+            push(@conditionals, $conditional);
+            $directive = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +ELSE *$|o ) {
+            # print STDERR "toggling conditional ".scalar(@conditionals)."\n";
+            $oldconditional = pop(@conditionals);
+            if ( $oldconditional == 0 ) {
+                $conditional = 1;
+            } else {
+                $conditional = -1;
+            }
+            push(@conditionals, $conditional);
+            # print STDERR "  => $conditional\n";
+            $directive = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +ENDIF *$|o ) {
+            # print STDERR "closing conditional ".scalar(@conditionals)."\n";
+            $oldconditional = pop(@conditionals);
+            $directive = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +CASE +(.+)$|o ) {
+            if ( defined $casestring ) {
+                print STDERR "error: multiple CASE/ESAC conditions simultaneously\n";
+                exit(-1);
+            } else {
+                $casestring = $2;
+                $directive = 1;
+            }
+        } elsif ( $lines[$line] =~ m|^$prefix +ESAC *$|o ) {
+            $directive = 1;
+            undef $casestring;
+        }
+
+        if ( $directive == 1 ) {
+            splice(@lines, $line, 1);
+            $line--;
+            next;
+        }
+
+        if ( scalar(@conditionals) > 0 ) {
+            $skip = 0;
+            for ( $c = 0; $c < scalar(@conditionals) && !$skip; $c++ ) {
+                $skip = 1 if $conditionals[$c] != 1;
+            }
+            if ( $skip == 1 ) {
+                splice(@lines, $line, 1);
+                $line--;
+                next;
+            }
+        }
+
+        # one-line shorthand conditional line
+        if ( $lines[$line] =~ m|$prefix +IF +|o ) {
+            $condstring = $lines[$line];
+            $condstring =~ s|.*$prefix +IF +||o;
+            $conditional = eval("if ( $condstring ) { 1; } else { 0; }");
+            if ( $conditional == 0 ) {
+                splice(@lines, $line, 1);
+                $line--;
+                next;
+            } else {
+                $lines[$line] =~ s| *$prefix +IF +.*$||o;
+            }
+        }
+
+        if ( $lines[$line] =~ m|^$prefix +APPEND +|o ) {
+            $appendstring = $lines[$line];
+            $appendstring =~ s|^$prefix +APPEND +||o;
+            chomp($lines[$line-1]);
+            $lines[$line-1] .= $appendstring;
+            $directive = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +APPEND:|o ) {
+            $appendstring = $lines[$line];
+            $appendstring =~ s|^$prefix +APPEND:||o;
+            chomp($lines[$line-1]);
+            $lines[$line-1] .= $appendstring;
+            $directive = 1;
+        }
+
+
+        if ( $lines[$line] =~ m|^$prefix +ERROR +|o ) {
+            $errorstring = $lines[$line];
+            $errorstring =~ s|^$prefix +ERROR +||o;
+            print STDERR "ERROR: $errorstring\n";
+            exit(-1);
+        } elsif ( $lines[$line] =~ m|^$prefix +WARNING +|o ) {
+            $errorstring = $lines[$line];
+            $errorstring =~ s|^$prefix +WARNING +||o;
+            print STDERR "WARNING: $errorstring\n";
+            $directive = 1;
+        }
+
+        if ( $lines[$line] =~ m|^$prefix +DEFINE +|o ) {
+          $lines[$line] =~ m|^$prefix +DEFINE +([^ ]+) +(.*)$|o;
+          # picked up above
+          # $definename = $2;
+          $value = $3;
+          # print STDERR "defining \"$definename\" to \"$value\"\n";
+          $defines{$definename} = $value;
+          $directive = 1;
+        } elsif ( $lines[$line] =~ m|^$prefix +UNDEFINE +|o ) {
+          # everything is handled before the keyword substitution phase
+          # $lines[$line] =~ m|^$prefix +UNDEFINE +([^ ]+)$|o;
+          # picked up above
+          # $definename = $2;
+          # print STDERR "undefining \"$definename\"\n";
+          # delete $defines{$definename};
+          $directive = 1;
+        }
+
+        if ( $directive == 1 ) {
+            splice(@lines, $line, 1);
+            $line--;
+            next;
+        }
+
+        if ( $lines[$line] =~ m|^$prefix +INSERT +TEMPLATE +|o ) {
+            chop( $proto = $lines[$line] );
+            $proto =~ s|^$prefix +INSERT +TEMPLATE +||o;
+            $prefixstr = $1;
+            $proto =~ s|$postfix$||o;
+            $postfixstr = $1;
+            $name = $proto;
+            $name =~ s/\(.*//o;
+
+            $filename = &FindFile( $name . ".tpl" );
+            print "READING TEMPLATE '$filename'\n" if $debug;
+            if ( ! -f $filename || ! open( TEMPLATE, $filename ) ) {
+                print STDERR "ERROR: Unable to open '$filename' ($name).\n";
+                exit( -1 );
+            } else {
+                @template = <TEMPLATE>;
+                close( TEMPLATE );
+            }
+
+            $arguments = $proto;
+            $arguments =~ s/^[^\(]+\([ \t]*(.*)[ \t]*\)[^()]*$/$1/;
+            @arguments = &SplitArgs( $arguments );
+
+            if ($debug) {
+                foreach (@arguments) {
+                    print "argument: ``$_''\n";
+                }
+            }
+
+            if ( $template[0] !~ m|^$prefix +TEMPLATE +|o ) {
+                print STDERR $filename, " is not a valid template file.\n";
+                exit( -1 );
+            }
+
+            chop( $prototype = shift( @template ) );
+            $prototype =~ s|^$prefix +TEMPLATE +||o;
+            # $prefixstr = $1;
+            $prototype =~ s|$postfix$||o;
+            # $postfixstr = $1;
+            $prototypename = $prototype;
+            $prototypename =~ s/\(.*//;
+            if ( $prototypename ne $name ) {
+                print STDERR $filename, " does not contain template '",
+                             $name, "'.\n";
+                exit( -1 );
+            }
+            $templatevariables = $prototype;
+            $templatevariables =~ s/^[^\(]*\((.*)\)[^()]*$/$1/;
+            @templatevariables = &SplitArgs( $templatevariables );
+            foreach ( @templatevariables )  {
+                s/^[ \t]+//;
+                s/[ \t]+$//;
+            }
+            if ($debug) {
+                foreach (@templatevariables) {
+                    print "templatevar: ``$_''\n";
+                }
+            }
+            if ( scalar( @templatevariables ) != scalar( @arguments ) ) {
+                print STDERR $filename, ": template call in '", $file,
+                             "' does not match prototype.\n";
+                print STDERR "tv = ", scalar( @templatevariables ),
+                             ", args = ", scalar( @arguments ), "\n";
+                exit( -1 );
+            }
+
+            # substitute macro arguments
+            for ( $index = 0; $index < scalar( @arguments ); $index++ ) {
+                for ( $linenum = 0; $linenum < scalar( @template ); $linenum++ ) {
+                    $template[$linenum] =~
+   s/([^#])#[ \t]*$templatevariables[$index]/$1"$arguments[$index]"/g;
+                    $template[$linenum] =~
+   s/([ \t]*##[ \t]*)?$templatevariables[$index]([ \t]*##[ \t]*)?/$arguments[$index]/g;
+                }
+            }
+
+            # insert template
+            if ( $level == 0 || ! $compact ) { # add header and footer
+                unshift( @template, "$prefixstr BEGIN TEMPLATE " .
+                         $name . "(" . join( ", ", @arguments ) . ")" . $postfixstr . "\n" );
+                push( @template, "$prefixstr END TEMPLATE " . $name . $postfixstr . "\n" );
+            }
+            splice( @lines, $line, 1, @template );
+            $line += @template - 1;
+            $templates += 1;
+        }
+    }
+    &UnfoldTemplates( $level + 1 ) if ( $templates > 0 ); # tail recursion
+}
+
+# remove function inlining
+sub FoldInlining { #########################################################
+    local( $line, $i, $from, $temp );
+
+session:
+    for ( $line = @lines - 1; $line >= 0; $line-- ) {
+        if ( $lines[$line] =~ m|^$prefix +BEGIN +IMPORT +INLINE +|o ) {
+            chop( $from = $lines[$line] );
+            $from =~ s|^$prefix +BEGIN +IMPORT +INLINE +||o;
+            for ( $i = $line + 1; $i < scalar( @lines ); $i++ ) {
+                if ( $lines[$i] =~ m|^$prefix +END +IMPORT +INLINE +|o ) {
+                    chop( $temp = $lines[$i] );
+                    $temp =~ s|^$prefix +END +IMPORT +INLINE +||o;
+                    if ( $from eq $temp ) {
+                        $lines[$line] =~
+                            s|^$prefix +BEGIN +IMPORT +INLINE +|$prefix IMPORT INLINE |o;
+                        splice( @lines, $line + 1, $i - $line, () );
+                        next session;
+                    } else {
+                        print STDERR "ERROR: BEGIN/END IMPORT mismatch.\n";
+                        exit( -1 );
+                    }
+                }
+            }
+            print STDERR "ERROR: BEGIN IMPORT INLINE with no END.\n";
+            exit( -1 );
+        }
+    }
+}
+
+# remove wrappers in source
+sub FoldInliningSource { ###################################################
+    local( $line, $from, $fromfile, $i, $modified, $string );
+    local( @source );
+
+    @source = ();
+    for ( $line = 0; $line < @lines; $line++ ) {
+        if ( $lines[$line] =~ m|^$prefix +IMPORT +INLINE +|o ) {
+            $modified = 0;
+            chop( $from = $lines[$line] );
+            $from =~ s|^$prefix +IMPORT +INLINE +||o;
+            $fromfile = &FindFile( $from );
+            if ( ! -f $fromfile || ! open( SOURCE, $fromfile ) ) {
+                print "ERROR: Could not open file '$from'.\n";
+                exit( -1 );
+            }
+            @source = <SOURCE>;
+            close( SOURCE );
+            for ( $i = 0; $i < scalar( @source ); $i++ ) {
+                if ( $source[$i] =~ m|^$prefix +BEGIN +EXPORT +INLINE *$|o ) {
+                    splice( @source, $i, 2, "$1 EXPORT INLINE\n" );
+                    $modified = 1;
+                    $i -= 1;
+                } elsif ( $source[$i] =~ m|^$prefix +END +EXPORT +INLINE *$|o ) {
+                    splice( @source, $i - 1, 2 );
+                    $modified = 1;
+                    $i -= 2;
+                }
+            }
+            if ( $modified == 1 ) {
+                system( "mv $fromfile $fromfile.bak" );
+                if ( ! open( SOURCE, "> $fromfile" ) ) {
+                    print STDERR "ERROR: Could not write to '$from'.\n";
+                } else {
+                    foreach $string ( @source ) {
+                        print SOURCE $string;
+                    }
+                    close( SOURCE );
+                }
+            }
+        }
+    }
+}
+
+# use function inlining
+sub UnfoldInlining { #######################################################
+    local( $line, $from, $fromfile, $i, $j, $c, $modified, $string );
+    local( @source, @inline );
+
+    $modified = 0;
+    @source = ();
+    @inline = ();
+line:
+    for ( $line = 0; $line < @lines; $line++ ) {
+        if ( $lines[$line] =~ m|^$prefix +IMPORT +INLINE +|o ) {
+            chop( $from = $lines[$line] );
+            $from =~ s|^$prefix +IMPORT +INLINE +||o;
+            $prefixstr = $1;
+            $fromfile = &FindFile( $from );
+            if ( ! -f $fromfile || ! open( SOURCE, $fromfile ) ) {
+                print STDERR "ERROR:  Unable to open '$from'.\n";
+                next line;
+            }
+            @source = <SOURCE>;
+            close( SOURCE );
+            @inline = ();
+            for ( $i = 0; $i < scalar( @source ); $i++ ) {
+                if ( $source[$i] =~ m|^$prefix +EXPORT +INLINE$|o ) {
+                    push( @inline, "\n" ) if ( $modified == 1 );
+                    $modified = 0;
+                    $c = 0;
+                    for ( $j = $i + 1; $j < scalar( @source ); $j++ ) {
+                        $c += ( $source[$j] =~ s/\{/\{/g );
+                        $modified = 1 if ( $c != 0 );
+                        $c -= ( $source[$j] =~ s/\}/\}/g );
+                        if ( $c == 0 && $modified == 1 ) {
+                            if ( $source[$i + 1] =~ /^[ \t]*inline/ ) {
+                                push( @inline, $source[$i+1] );
+                            } else {
+                                push( @inline, "inline " . $source[$i + 1] );
+                            }
+                            for ( $c = $i + 2; $c <= $j; $c++ ) {
+                                push( @inline, $source[$c] );
+                            }
+                            goto contin;
+                        }
+                    }
+                    print "ERROR: Didn't find end of function.\n";
+                    exit( -1 );
+contin:
+                    $source[$i] = "$prefixstr BEGIN EXPORT INLINE\n";
+                    splice( @source, $i + 1, 0, ( "#ifndef $define\n" ) );
+                    $j++;
+                    splice( @source, $j + 1, 0, "#endif // ! $define\n" );
+                    splice( @source, $j + 2, 0, "$prefixstr END EXPORT INLINE\n" );
+                } elsif ( $source[$i] =~ m|^$prefix +BEGIN +EXPORT +INLINE *$|o ) {
+                    for ( $j = $i + 3; $j < scalar( @source ); $j++ ) {
+                        if ( $source[$j] =~ m|^$prefix +END +EXPORT +INLINE *$|o ) {
+                            if ( scalar( @inline ) > 0 ) {
+                                push( @inline, "\n" );
+                            }
+                            if ( $source[$i+1] =~ /^[ \t]*inli/ ) {
+                                push( @inline, $source[$i + 2] );
+                            } else {
+                                push( @inline, "inline " . $source[$i + 2] );
+                            }
+                            for ( $c = $i + 3; $c < ($j - 1); $c++ ) {
+                                push( @inline, $source[$c] );
+                            }
+                            goto contin2;
+                        }
+                    }
+                    print "ERROR: Didn't find end of export area.\n";
+                    exit( -1 );
+contin2:
+                }
+            }
+            if ( $modified ) {
+                system( "mv $fromfile $fromfile.bak" );
+                if ( ! open( SOURCE, "> $fromfile" ) ) {
+                    print "ERROR: Could not write to '$from'.\n";
+                    exit( -1 );
+                }
+                foreach $string ( @source ) {
+                    print SOURCE $string;
+                }
+                close( SOURCE );
+            }
+            unshift( @inline, "\n" );
+            unshift( @inline, "#define $define\n" );
+            unshift( @inline, "$prefixstr BEGIN IMPORT INLINE $from\n" );
+            push( @inline, "$prefixstr END IMPORT INLINE $from\n" );
+            splice( @lines, $line, 1, @inline );
+        }
+    }
+}
+
+# search for file by name
+sub FindFile { #############################################################
+    local( $filename ) = ( @_[0] );
+    local( $i, $file, $return );
+
+    $return = "";
+    for ( $i = 0; $i < scalar( @incpath ); $i++ ) {
+        $temp = $incpath[$i] . "/" . $filename;
+        $temp =~ s/^\.\///g;
+        $return = $temp if ( -f $temp && $return eq "" );
+    }
+    $return;
+}
+
+# returns true if file has changed
+sub FileChanged { ##########################################################
+     local( $line, $ret );
+
+     $ret = 1;
+     if ( scalar( @lines ) == scalar( @origlines ) ) {
+         $ret = 0;
+         for ( $line = 0; $line < scalar( @lines ); $line++ ) {
+             $ret = 1 if ( $lines[$line] ne $origlines[$line] );
+         }
+     }
+     $ret;
+}
+
+# splits arguments
+sub SplitArgs { ############################################################
+    local( $string ) = @_[0];
+    local( $stack, $open, $i, $mode, $character, @args ) = ();
+
+    $stack = "";
+    @args = ();
+    $open = 0;
+
+    for ( $i = 0; $i < length( $string ); $i++ ) {
+        $character = substr( $string, $i, 1 );
+        $mode = "-";
+        if ( length( $stack ) ) {
+            $mode = substr( $stack, length($stack)-1, 1 );
+            if ( $mode eq "\"" ) { # inside string literal
+                $i++ if $character eq "\\";
+                chop( $stack ) if $character eq "\"";
+                next;
+            } elsif ( $mode eq "'" ) { # inside integer literal
+                $i++ if $character eq "\\";
+                chop( $stack ) if $character eq "'";
+                next;
+            }
+        }
+        if ( $character eq "," ) {
+            if ( $mode eq "-" ) { # bottom level - , separates arguments
+                push( @args, substr( $string, $open, $i - $open ) );
+                $open = $i + 1;
+            }
+        } elsif ( $character eq "\"" ) { # string literal mode
+            $stack .= "\"";
+        } elsif ( $character eq "'" ) { # character literal mode
+            $stack .= "'";
+        } elsif ( $character eq "(" ) { # parenthesis mode
+            $stack .= "(";
+        } elsif ( $character eq ")" ) {
+            die "at position ", $i, " in \"", $string, "\": invalid mode.\n"
+                if $mode ne "(";
+            chop( $stack );
+        } elsif ( $character eq "{" ) { # curly brace mode
+            $stack .= "{";
+        } elsif ( $character eq "}" ) {
+            die "at position ", $i, " in \"", $string, "\": invalid mode.\n"
+                if $mode ne "{";
+            chop( $stack );
+        } elsif ( $character eq "[" ) { # square bracket mode
+            $stack .= "[";
+        } elsif ( $character eq "]" ) {
+            die "at position ", $i, " in \"", $string, "\": invalid mode.\n"
+                if $mode ne "[";
+            chop( $stack );
+        }
+    }
+    push( @args, substr( $string, $open ) );
+    foreach ( @args ) {
+        s/^[ \t]*//g;
+        s/[ \t]*$//g;
+    }
+    @args;
+}
+
+# evaluates expressions
+sub DoEvaluations { ########################################################
+    foreach $line ( @lines ) {
+        $line =~ s|/\*\$ *EVAL\((.*)\) *\*/|eval "$1"|eg;
+    }
+}
+
+# fixes some spacing
+sub FixSpacing { ###########################################################
+    foreach $line ( @lines ) {
+        $line =~ s/([^\\])[ \t]+$/$1/og; # remove unnecessary EOL whitespace
+        while ( $line =~ /\t/ ) { # transform TABs to spaces
+            ( $pre ) = ( $line =~ /^([^\t]*)\t/ );
+            $spaces = 8 - ( length( $pre ) % 8 );
+            substr( $line, length( $pre ), 1 ) = " " x $spaces;
+        }
+    }
+}
+
+# prints program usage
+sub PrintUsage { ###########################################################
+    print <<"END_OF_USAGE";
+Usage:
+    $0 [options] [files...]
+Options:
+      --fold-templates   : fold template definitions
+      --inline           : inline the inline functions
+      --fix-spacing      : convert TAB to spaces, and remove EOL whitespace
+    -I<dir>              : template include directory
+    -d, --debug          : dump debug output
+    -h, -?, --usage      : display usage information
+    -u, --uncompact      : don't compact template headers where possible
+    -V, --version        : display version information
+Environment:
+    TEMPLANT_INCLUDE     : include directories for templant
+Directives:
+    [PREFIXSTR] INSERT TEMPLATE TemplateName( args )
+    [PREFIXSTR] IMPORT INLINE FilePath
+    [PREFIXSTR] EXPORT INLINE
+
+    ([PREFIXSTR] can be either ``##\$'' or ``//\$'' or you can envelope the
+    command with /*$ and */).
+END_OF_USAGE
+}
+
+# print CVS version
+sub PrintVersion { #########################################################
+    print '$Id$', "\n";
+}
+
+############################################################################

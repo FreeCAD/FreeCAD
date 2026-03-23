@@ -1,0 +1,135 @@
+#! /usr/bin/perl
+############################################################################
+#
+#  replace -- script for replacing standard text blocks if found in large
+#  file sets
+#
+#  sample:
+#  find . -name "*.h" | xargs replace --orig orig.txt --new new.txt
+#
+# **************************************************************************
+
+############################################################################
+
+if ( @ARGV == 0 ) {
+    &PrintUsage();
+    exit 0;
+}
+
+%OPTIONS = ( # option perl code
+    '--help',            '&PrintUsage(); exit 0;',
+    '--usage',           '&PrintUsage(); exit 0;',
+    '-h',                '&PrintUsage(); exit 0;',
+    '-?',                '&BrintUsage(); exit 0;',
+    '--version',         '&PrintVersion(); exit 0;',
+    '-v',                '&PrintVersion(); exit 0;',
+    '--orig',            '$next_is_orig = 1;',
+    '-o',                '$next_is_orig = 1;',
+    '--new',             '$next_is_new = 1;',
+    '-n',                '$next_is_new = 1;',
+    '--debug',           '$debug = 1;',
+    '-d',                '$debug = 1;',
+);
+
+############################################################################
+# separate files from options
+
+$debug = 0;
+$make_backups = 1;
+$note_failures = 0;
+
+@files = ();
+@orig = ();
+@new = ();
+
+$next_is_orig = 0;
+$next_is_new = 0;
+
+foreach $arg ( @ARGV ) {
+    if ( $next_is_orig == 1 ) {
+        open(ORIG, $arg) || die "$0: error opening '$arg'";
+        @orig = <ORIG>;
+        chomp(@orig);
+        close(ORIG);
+        $next_is_orig = 0;
+    } elsif ( $next_is_new == 1 ) {
+        open(NEW, $arg) || die "$0: error opening '$arg'";
+        @new = <NEW>;
+        chomp(@new);
+        close(NEW);
+        $next_is_new = 0;
+    } elsif ( defined $OPTIONS{$arg} ) {
+        eval $OPTIONS{$arg};
+    } else {
+        push( @files, $arg );
+    }
+}
+
+if ( scalar(@orig) == 0 ) {
+    print "scalar(orig) == 0\n";
+    &PrintUsage();
+    exit 1;
+}
+
+if ( scalar(@files) == 0 ) {
+    print "scalar(files) == 0\n";
+    # stdin/stdout is not supported yet
+    &PrintUsage();
+    exit 1;
+}
+
+foreach $file ( @files ) {
+    next if ! -f $file;
+    if ( ! open(CURRENT, $file) ) {
+        print STDERR "$0: unable to open file '$file'\n";
+        next;
+    }
+    $match = 0;
+    @current = <CURRENT>;
+    chomp(@current);
+    for ( $line = 0; $line < scalar(@current) - scalar(@orig) + 1; $line++ ) {
+        if ( $current[$line] eq $orig[0] ) {
+            $local_match = 1;
+            for ( $off = 1; $off < scalar(@orig) && $local_match == 1; $off++ ) {
+                $local_match = 0 if ( $current[$line + $off] ne $orig[$off] );
+            }
+            if ( $local_match == 1 ) {
+                splice(@current, $line, scalar(@orig), @new);
+                $line += scalar(@new);
+                $match = 1;
+            }
+        }
+    }
+    if ( $match == 0 ) {
+        printf "\r%-60s%-18s\n", $file . ":", "no change...";
+    } else {
+        printf "\r%-60s%-18s\n", $file . ":", "updating...";
+        system( "mv $file $file.bak" );
+        open( FILE, "> $file" ) || die $file, ": ", $!, "\n";
+        foreach $line ( @current ) {
+            print FILE $line, "\n";
+        }
+        close( FILE );
+    }
+}
+
+# prints program usage
+sub PrintUsage { ###########################################################
+    print <<"END_OF_USAGE";
+Usage:
+    $0 [options] [files...]
+Options:
+    -o, --orig <file>    : the original text
+    -n, --new <file>     : the new replacement text
+END_OF_USAGE
+}
+
+# print CVS version
+sub PrintVersion { #########################################################
+    print '$Id$', "\n";
+}
+
+############################################################################
+
+
+

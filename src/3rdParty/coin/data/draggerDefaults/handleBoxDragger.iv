@@ -1,0 +1,354 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+
+DEF HANDLEBOX_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF HANDLEBOX_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF HANDLEBOX_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+
+
+##########################################################################
+
+# This is the sides of the handlebox. They are rendered with facesets,
+# so they can be picked and thereby activate the handlebox for
+# dragging. The faces are made invisible (i.e. rendered with lines) so
+# we can see through the box in case the geometry is within it (which
+# is the most common way of using the dragger).
+
+# The 8 corners of the cube. We need to use individual faces so we
+# know which one was picked for interaction.
+DEF HANDLEBOX_TRANSLATOR_COORDS Coordinate3 {
+   point [
+    1 1 1, 1 1 -1, -1 1 -1, -1 1 1,
+    1 -1 1, 1 -1 -1, -1 -1 -1, -1 -1 1,
+   ]
+}
+
+DEF HANDLEBOX_TRANSLATOR_INACTIVE_APPEARANCE Group {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_TRANSLATOR_COORDS
+   DrawStyle { style LINES }
+}
+DEF HANDLEBOX_TRANSLATOR_ACTIVE_APPEARANCE Group {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_TRANSLATOR_COORDS
+   DrawStyle { style LINES }
+}
+
+DEF handleBoxTranslator1 Separator {
+   USE HANDLEBOX_TRANSLATOR_INACTIVE_APPEARANCE
+   DEF HANDLEBOX_TRANSLATOR_TOPFACE IndexedFaceSet { coordIndex [ 0, 1, 2, 3, -1 ] }
+}
+DEF handleBoxTranslator1Active Separator {
+   USE HANDLEBOX_TRANSLATOR_ACTIVE_APPEARANCE
+   USE HANDLEBOX_TRANSLATOR_TOPFACE
+}
+
+DEF handleBoxTranslator2 Separator {
+   USE HANDLEBOX_TRANSLATOR_INACTIVE_APPEARANCE
+   DEF HANDLEBOX_TRANSLATOR_BOTTOMFACE IndexedFaceSet { coordIndex [ 4, 7, 6, 5, -1 ] }
+}
+DEF handleBoxTranslator2Active Separator {
+   USE HANDLEBOX_TRANSLATOR_ACTIVE_APPEARANCE
+   USE HANDLEBOX_TRANSLATOR_BOTTOMFACE
+}
+
+DEF handleBoxTranslator3 Separator {
+   USE HANDLEBOX_TRANSLATOR_INACTIVE_APPEARANCE
+   DEF HANDLEBOX_TRANSLATOR_LEFTFACE IndexedFaceSet { coordIndex [ 3, 2, 6, 7, -1 ] }
+}
+DEF handleBoxTranslator3Active Separator {
+   USE HANDLEBOX_TRANSLATOR_ACTIVE_APPEARANCE
+   USE HANDLEBOX_TRANSLATOR_LEFTFACE
+}
+
+DEF handleBoxTranslator4 Separator {
+   USE HANDLEBOX_TRANSLATOR_INACTIVE_APPEARANCE
+   DEF HANDLEBOX_TRANSLATOR_RIGHTFACE IndexedFaceSet { coordIndex [ 0, 4, 5, 1, -1 ] }
+}
+DEF handleBoxTranslator4Active Separator {
+   USE HANDLEBOX_TRANSLATOR_ACTIVE_APPEARANCE
+   USE HANDLEBOX_TRANSLATOR_RIGHTFACE
+}
+
+DEF handleBoxTranslator5 Separator {
+   USE HANDLEBOX_TRANSLATOR_INACTIVE_APPEARANCE
+   DEF HANDLEBOX_TRANSLATOR_FRONTFACE IndexedFaceSet { coordIndex [ 0, 3, 7, 4, -1 ] }
+}
+DEF handleBoxTranslator5Active Separator {
+   USE HANDLEBOX_TRANSLATOR_ACTIVE_APPEARANCE
+   USE HANDLEBOX_TRANSLATOR_FRONTFACE
+}
+
+DEF handleBoxTranslator6 Separator {
+   USE HANDLEBOX_TRANSLATOR_INACTIVE_APPEARANCE
+   DEF HANDLEBOX_TRANSLATOR_BACKFACE IndexedFaceSet { coordIndex [ 1, 5, 6, 2, -1 ] }
+}
+DEF handleBoxTranslator6Active Separator {
+   USE HANDLEBOX_TRANSLATOR_ACTIVE_APPEARANCE
+   USE HANDLEBOX_TRANSLATOR_BACKFACE
+}
+
+
+##########################################################################
+
+# Markers for translation dragging with the boxside faces.
+
+DEF HANDLEBOX_DIRECTIONMARKER Group {
+   USE HANDLEBOX_FEEDBACK_MATERIAL
+   Coordinate3 { point [ 0 0 0, 0 0.5 0 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+   Translation { translation 0 0.5 0 }
+   Cone { bottomRadius 0.04  height 0.08 }
+}
+
+DEF handleBoxArrow1 Separator {
+   USE HANDLEBOX_DIRECTIONMARKER
+}
+DEF handleBoxArrow2 Separator {
+   RotationXYZ { axis Z angle 3.14 }
+   USE HANDLEBOX_DIRECTIONMARKER
+}
+DEF handleBoxArrow3 Separator {
+   RotationXYZ { axis Z angle 1.57 }
+   USE HANDLEBOX_DIRECTIONMARKER
+}
+DEF handleBoxArrow4 Separator {
+   RotationXYZ { axis Z angle -1.57 }
+   USE HANDLEBOX_DIRECTIONMARKER
+}
+DEF handleBoxArrow5 Separator {
+   RotationXYZ { axis X angle 1.57 }
+   USE HANDLEBOX_DIRECTIONMARKER
+}
+DEF handleBoxArrow6 Separator {
+   RotationXYZ { axis X angle -1.57 }
+   USE HANDLEBOX_DIRECTIONMARKER
+}
+
+##########################################################################
+
+# Geometry for the markers in the corners of the handlebox. Dragging
+# them typically yields a uniform scale operation.
+
+DEF HANDLEBOX_SOLIDMARKER Cube { width 0.1  height 0.1  depth 0.1 }
+
+# Up, right, front
+DEF HANDLEBOX_CORNER_URF Group {
+   Translation { translation 1 1 1 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxUniform1 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_URF
+}
+DEF handleBoxUniform1Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_URF
+}
+
+# Up, right, back
+DEF HANDLEBOX_CORNER_URB Group {
+   Translation { translation 1 1 -1 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxUniform2 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_URB
+}
+DEF handleBoxUniform2Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_URB
+}
+
+# Down, right, front
+DEF HANDLEBOX_CORNER_DRF Group {
+   Translation { translation 1 -1 1 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxUniform3 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_DRF
+}
+DEF handleBoxUniform3Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_DRF
+}
+
+# Down, right, back
+DEF HANDLEBOX_CORNER_DRB Group {
+   Translation { translation 1 -1 -1 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxUniform4 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_DRB
+}
+DEF handleBoxUniform4Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_DRB
+}
+
+# Up, left, front
+DEF HANDLEBOX_CORNER_ULF Group {
+   Translation { translation -1 1 1 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxUniform5 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_ULF
+}
+DEF handleBoxUniform5Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_ULF
+}
+
+# Up, left, back
+DEF HANDLEBOX_CORNER_ULB Group {
+   Translation { translation -1 1 -1 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxUniform6 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_ULB
+}
+DEF handleBoxUniform6Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_ULB
+}
+
+# Down, left, front
+DEF HANDLEBOX_CORNER_DLF Group {
+   Translation { translation -1 -1 1 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxUniform7 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_DLF
+}
+DEF handleBoxUniform7Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_DLF
+}
+
+# Down, left, back
+DEF HANDLEBOX_CORNER_DLB Group {
+   Translation { translation -1 -1 -1 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxUniform8 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_DLB
+}
+DEF handleBoxUniform8Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_CORNER_DLB
+}
+
+
+##########################################################################
+
+# The specifications below is for the 6 lines radiating from the
+# center point of the box. Interaction with them typically applies
+# scaling to the geometry connected to the box.
+
+
+# The 6 endpoints of the extrusion line markers, plus the startpoint.
+DEF HANDLEBOX_EXTRUSION_COORDS Coordinate3 {
+   point [
+    0 0 0,
+    1.3 0 0, -1.3 0 0,
+    0 1.3 0, 0 -1.3 0,
+    0 0 1.3, 0 0 -1.3
+   ]
+}
+
+DEF HANDLEBOX_EXTRUSION_MARKER_UP Group {
+   USE HANDLEBOX_EXTRUSION_COORDS
+   IndexedLineSet { coordIndex [ 0, 3, -1 ] }
+   Translation { translation 0 1.3 0 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxExtruder1 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_UP
+}
+DEF handleBoxExtruder1Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_UP
+}
+
+DEF HANDLEBOX_EXTRUSION_MARKER_DOWN Group {
+   USE HANDLEBOX_EXTRUSION_COORDS
+   IndexedLineSet { coordIndex [ 0, 4, -1 ] }
+   Translation { translation 0 -1.3 0 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxExtruder2 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_DOWN
+}
+DEF handleBoxExtruder2Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_DOWN
+}
+
+DEF HANDLEBOX_EXTRUSION_MARKER_LEFT Group {
+   USE HANDLEBOX_EXTRUSION_COORDS
+   IndexedLineSet { coordIndex [ 0, 2, -1 ] }
+   Translation { translation -1.3 0 0 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxExtruder3 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_LEFT
+}
+DEF handleBoxExtruder3Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_LEFT
+}
+
+DEF HANDLEBOX_EXTRUSION_MARKER_RIGHT Group {
+   USE HANDLEBOX_EXTRUSION_COORDS
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+   Translation { translation 1.3 0 0 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxExtruder4 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_RIGHT
+}
+DEF handleBoxExtruder4Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_RIGHT
+}
+
+DEF HANDLEBOX_EXTRUSION_MARKER_FRONT Group {
+   USE HANDLEBOX_EXTRUSION_COORDS
+   IndexedLineSet { coordIndex [ 0, 5, -1 ] }
+   Translation { translation 0 0 1.3 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxExtruder5 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_FRONT
+}
+DEF handleBoxExtruder5Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_FRONT
+}
+
+DEF HANDLEBOX_EXTRUSION_MARKER_BACK Group {
+   USE HANDLEBOX_EXTRUSION_COORDS
+   IndexedLineSet { coordIndex [ 0, 6, -1 ] }
+   Translation { translation 0 0 -1.3 }
+   USE HANDLEBOX_SOLIDMARKER
+}
+DEF handleBoxExtruder6 Separator {
+   USE HANDLEBOX_INACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_BACK
+}
+DEF handleBoxExtruder6Active Separator {
+   USE HANDLEBOX_ACTIVE_MATERIAL
+   USE HANDLEBOX_EXTRUSION_MARKER_BACK
+}

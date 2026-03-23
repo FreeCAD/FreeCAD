@@ -1,0 +1,69 @@
+#Inventor V2.1 ascii
+
+# Check rendering with SoBlinker.
+#
+# 19990423 mortene
+
+Separator {
+   # (ROW 0) check out with different number of children.
+   Separator {
+      BaseColor { rgb 1 0 1 }
+      Blinker {
+	 Cube { }
+      }
+
+      BaseColor { rgb 1 0 0 }
+      Translation { translation +8 0 0 }
+      Blinker {
+	 Cube { }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +8 0 0 }
+      Blinker {
+	 Cube { }
+	 Sphere { }
+	 Cone { }
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +8 0 0 }
+      Blinker {
+	 Cube { }
+	 Sphere { }
+	 Cone { }
+	 Cylinder { }
+      }
+   }
+
+   # (ROW 1) check out with different speed settings.
+   Translation { translation 0 +8 0 }
+   Separator {
+      BaseColor { rgb 1 1 0 }
+      Blinker {
+	 speed 0.25
+	 Cube { }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +8 0 0 }
+      Blinker {
+	 speed 4
+	 Cube { }
+	 Sphere { }
+      }
+   }
+
+   # (ROW 2) test the on flag.
+   Translation { translation 0 +8 0 }
+   Separator {
+      BaseColor { rgb 1 1 1 }
+      Blinker {
+	 on FALSE
+	 Cube { }
+	 Sphere { }
+      }
+   }
+}

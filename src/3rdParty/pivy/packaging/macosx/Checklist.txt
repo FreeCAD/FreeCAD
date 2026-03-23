@@ -1,0 +1,15 @@
+* Build Pivy 
+  ./setup.py build
+  ./setup.py install --prefix=packaging/macosx/install
+
+* Create installer package
+  - open Pivy.pmproj
+  - update version number
+  - rebuild installer
+
+* Copy the scripts into the installer package
+  - cp resources/InstallationCheck Pivy.pkg/Contents/Resources/
+  - cp resources/InstallationCheck.strings Pivy.pkg/Contents/Resources/English.lproj
+
+* Run a test
+

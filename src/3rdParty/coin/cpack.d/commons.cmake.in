@@ -1,0 +1,66 @@
+##############################################################################
+# CPACK Configuration base
+# This configuration file should be included
+cmake_policy(SET CMP0011 NEW)
+cmake_policy(SET CMP0012 NEW)
+set(CPACK_CMAKE_GENERATOR               "@CMAKE_GENERATOR@")
+set(CPACK_INSTALL_CMAKE_PROJECTS        "@PROJECT_BINARY_DIR@;@PROJECT_NAME@;ALL;/")
+set(CPACK_BUILD_SOURCE_DIRS             "@CMAKE_SOURCE_DIR@;@CMAKE_BINARY_DIR@")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY   "@PROJECT_DESCRIPTION@")
+set(CPACK_COMPONENTS_ALL                "@PACKAGE_COMPONENTS_ALL@")
+set(CPACK_PACKAGE_RELOCATABLE           ON)
+set(CPACK_PACKAGE_VERSION_MAJOR         "@PROJECT_VERSION_MAJOR@")
+set(CPACK_PACKAGE_VERSION_MINOR         "@PROJECT_VERSION_MINOR@")
+set(CPACK_PACKAGE_VERSION_PATCH         "@PROJECT_VERSION_PATCH@")
+set(CPACK_PACKAGE_VERSION               "@PROJECT_VERSION@")
+set(CPACK_RESOURCE_FILE_LICENSE         "@PROJECT_SOURCE_DIR@/COPYING")
+set(CPACK_RESOURCE_FILE_README          "@PROJECT_SOURCE_DIR@/README")
+set(CPACK_PACKAGE_CONTACT               "https://groups.google.com/forum/#!forum/coin3d-discuss")
+set(CPACK_PACKAGE_VENDOR                "Coin3D Team")
+
+##############################################################################
+# CPACK base settings
+#
+# config_package ([DATA packaging-data-directory] [LOWCASE] [NAME package-name])
+#
+# DATA
+#   packaging data directory, default ${PROJECT_SOURCE_DIR}/packaging
+#
+# LOWCASE
+#   when passed CPACK_PACKAGE_NAME will be translated in lower case
+#
+# NAME
+#   value for CPACK_PACKAGE_NAME, default is "%PROJECT_NAME%".
+#   The string "%PROJECT_NAME%" is a placeholder for PROJECT_NAME variable,
+#   eligible to be changed to ${PROJECT_NAME}${PROJECT_VERSION_MAJOR}
+#   when HAVE_MULTIPLE_VERSION is set.
+# 
+# This macro manages all CPACK_* settings not OS specific. The  only exceptions 
+# are CPACK_GENERATOR and CPACK_PACKAGE_FILE_NAME that must be defined 
+# elsewhere.
+macro(config_package)
+  set(options LOWCASE)
+  set(oneValueArgs NAME DATA)
+  cmake_parse_arguments(PKG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+  if (NOT PKG_NAME)
+    set(PKG_NAME "%PROJECT_NAME%")
+  endif()
+  if (@HAVE_MULTIPLE_VERSION@)
+    set(PKG_NAME "${PKG_NAME}@PROJECT_VERSION_MAJOR@")
+  endif()
+  string(REPLACE "%PROJECT_NAME%" "@PROJECT_NAME@" CPACK_PACKAGE_NAME "${PKG_NAME}")
+  if (PKG_LOWCASE)
+    string(TOLOWER "${CPACK_PACKAGE_NAME}" CPACK_PACKAGE_NAME)
+  endif()
+  if (NOT PKG_DATA) 
+    set(PKG_DATA "@PROJECT_SOURCE_DIR@/packaging")
+  endif()
+  set(PROJECT_URL                         "https://github.com/coin3d/@PROJECT_NAME@")
+  set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS "runtime")
+  set(CPACK_PACKAGE_DESCRIPTION_FILE      "${PKG_DATA}/description-summary.txt")
+  if (@OPTION_PKG_DEBUGINFO@)
+    set(CPACK_STRIP_FILES                 OFF)
+  else()
+    set(CPACK_STRIP_FILES                 ON)
+  endif()
+endmacro(config_package)

@@ -1,0 +1,72 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with SoLevelOfDetail nodes.
+#
+# 19990504 mortene
+
+Separator {
+   BaseColor { rgb 1 0 0 }
+   DEF screenlod LevelOfDetail {
+      screenArea [ 2000, 1000, 500, 250 ]
+
+      Text3 { string "4" }
+      Text3 { string "3" }
+      Text3 { string "2" }
+      Text3 { string "1" }
+      Text3 { string "0" }
+   }
+
+   DEF rtrans Translation { translation +4 0 0 }
+
+   Complexity { type BOUNDING_BOX }
+   USE rtrans
+   BaseColor { rgb 0 1 0 }
+   USE screenlod
+
+   Complexity {
+      type OBJECT_SPACE
+      value 1.0
+   }
+   USE rtrans
+   BaseColor { rgb 0 0 1 }
+   USE screenlod
+
+   Complexity {
+      type OBJECT_SPACE
+      value 0.8
+   }
+   USE rtrans
+   BaseColor { rgb 1 1 0 }
+   USE screenlod
+
+   Complexity {
+      type OBJECT_SPACE
+      value 0.6
+   }
+   USE rtrans
+   BaseColor { rgb 1 0 1 }
+   USE screenlod
+
+   Complexity {
+      type OBJECT_SPACE
+      value 0.4
+   }
+   USE rtrans
+   BaseColor { rgb 0 1 1 }
+   USE screenlod
+
+   Complexity {
+      type OBJECT_SPACE
+      value 0.2
+   }
+   USE rtrans
+   BaseColor { rgb 1 1 1 }
+   USE screenlod
+
+   Complexity {
+      type OBJECT_SPACE
+      value 0.0
+   }
+   USE rtrans
+   USE screenlod
+}

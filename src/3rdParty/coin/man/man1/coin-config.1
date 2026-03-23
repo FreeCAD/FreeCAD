@@ -1,0 +1,26 @@
+.\" Process this file with
+.\" groff -man -Tascii coin-config.1
+.\"
+.TH coin-config 1 "AUGUST 2001" "Library Configuration" "User Manuals"
+.SH NAME
+coin-config \- Display Coin Library Configuration
+.SH SYNOPSIS
+.B coin-config 
+.I OPTION 
+.B [
+.I OPTION
+.B ... ]
+.SH DESCRIPTION
+.B coin-config
+is a script that is used to display what compiler flags and libraries were
+used when Coin was built.
+
+.SH OPTIONS
+.IP --version
+Coin version information
+.IP --cppflags
+C pre-processor and compiler flags for use with Coin
+.IP --libs
+Coin library linking information
+.SH AUTHOR
+Steve Robbins <smr@debian.org>

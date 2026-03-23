@@ -1,0 +1,82 @@
+2025-10-09 22:32:56 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (572bd214e9)
+
+	Bump version number to 4.0.6
+
+M	CMakeLists.txt
+M	configure
+M	configure.ac
+
+2025-10-09 22:32:06 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (043a7cde62)
+
+	Update NEWS, RELNOTES, and releases.dox files
+
+M	NEWS
+M	RELNOTES
+M	docs/releases.dox
+
+2025-10-01 12:11:47 +0200  Bastiaan Veelo  <Bastiaan@SARC.nl> (1005564aea)
+
+	Fix SoShape::getScreenSize to handle empty bounding box case.
+
+M	src/shapenodes/SoShape.cpp
+
+2025-09-15 21:22:02 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (2efde9cc64)
+
+	Update Boost paths for CMake in appveyor script [skip ci]
+
+M	appveyor_newcomp.yml
+
+2025-09-14 20:37:46 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (9bc26f04b1)
+
+	Update Boost dependency in appveyor_newcomp.yml [skip ci]
+
+M	appveyor_newcomp.yml
+
+2025-09-13 13:58:04 +0200  Bas Ruigrok  <Rexbas@proton.me> (9d09ac0b14)
+
+	Only accept '0' and '1' COIN_EGL
+
+M	src/glue/gl.cpp
+
+2025-09-13 12:00:56 +0200  Bas Ruigrok  <Rexbas@proton.me> (1460c9327d)
+
+	Use GLX by default if could not detect any current context
+
+M	src/glue/gl.cpp
+
+2025-09-13 11:37:21 +0200  Bas Ruigrok  <Rexbas@proton.me> (e7a99cce2b)
+
+	Comment out EGL hint in GLFW example
+
+M	examples/glfw/glfw.cpp
+
+2025-09-08 19:23:04 +0200  Bas Ruigrok  <Rexbas@proton.me> (5417c1eb85)
+
+	Simplify EGL context detection
+
+M	examples/glfw/glfw.cpp
+M	src/glue/gl.cpp
+
+2025-09-07 12:01:09 +0200  Bas Ruigrok  <Rexbas@proton.me> (c89f0c7976)
+
+	Stop EGL check when GLX is detected
+
+M	src/glue/gl.cpp
+
+2025-09-06 22:34:58 +0200  Bas Ruigrok  <Rexbas@proton.me> (c1b6b0c344)
+
+	Remove HAVE_EGL from GLFW example
+
+M	examples/glfw/glfw.cpp
+
+2025-09-06 14:21:13 +0200  Bas Ruigrok  <Rexbas@proton.me> (394c8fd5d7)
+
+	Automatically detect wayland
+
+M	src/glue/gl.cpp
+
+2025-08-14 19:30:17 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (ef26780292)
+
+	compatibility with 64-bit time_t
+
+M	CMakeLists.txt

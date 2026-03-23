@@ -1,0 +1,28 @@
+#VRML V2.0 utf8
+
+
+Group {
+  children [ 
+    DEF A Transform {
+
+    },
+      
+    DEF B TimeSensor {
+      enabled TRUE
+
+    },
+      
+    DEF C PositionInterpolator {
+
+    },
+      
+    DEF D Script {
+      field SFBool       stopTime TRUE
+
+
+    } ]
+
+}
+ROUTE C.value_changed TO A.translation
+ROUTE D.stopTime TO B.enabled
+ROUTE B.fraction_changed TO C.set_fraction

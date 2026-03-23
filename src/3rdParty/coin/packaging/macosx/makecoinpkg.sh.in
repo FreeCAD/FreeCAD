@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# Copyright (C) Kongsberg Oil & Gas Technologies, All rights reserved.
+#
+# This script creates the main Coin.pkg.
+# The pkg file will be put in the current directory.
+# 
+# Usage: makecoinpkg.sh [-v] -f /path/including/Inventor.framework
+#  -v   verbose
+#  -f   Location of framework, e.g. "-f /Library/Frameworks/Inventor.framework"
+#
+# Authors:
+#   Marius Kintel <kintel@sim.no>
+
+while getopts 'vf:' c
+do
+  case $c in
+    v) VERBOSE=-v ;;
+    f) FRAMEWORK=$OPTARG;;
+  esac
+done
+
+if test -z "$FRAMEWORK"; then
+  echo "Usage: $0 [-v] -f /path/including/Inventor.framework"
+  exit 1
+fi
+
+if test ! -d $FRAMEWORK; then
+  echo "$FRAMEWORK not found or not a directory"
+  exit 1
+fi
+
+if test $VERBOSE; then
+  set -x
+fi
+
+# Remove old generated files
+rm -rf Coin.pkg
+rm -rf pkgroot pkgresources
+
+# Copy package files to pkgroot and pkgresources
+ditto -rsrcFork $FRAMEWORK pkgroot/Library/Frameworks/Inventor.framework
+ditto -rsrcFork @top_srcdir@/packaging/macosx/License.rtf pkgresources/License.rtf
+ditto -rsrcFork @top_srcdir@/packaging/macosx/Coin_Welcome.rtf pkgresources/Welcome.rtf
+ditto -rsrcFork @top_srcdir@/packaging/macosx/background.tiff pkgresources/background.tiff
+
+# Package creation using PackageMaker
+if test x$VERBOSE = x; then
+  REDIRECT='> /dev/null 2>&1'
+fi
+eval "@sim_ac_packagemaker_app@/Contents/MacOS/PackageMaker -build -p $PWD/Coin.pkg -f $PWD/pkgroot -r $PWD/pkgresources -i Coin_Info.plist -d Coin_Description.plist $REDIRECT"

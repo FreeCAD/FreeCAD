@@ -1,0 +1,94 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoAntiSquish.
+#
+# 19990414 mortene
+
+Separator {
+   Transform {
+      rotation 1 1 1 0.78
+      scaleFactor 2 3 4
+   }
+
+   # (ROW 0) 
+   Separator {
+      Sphere { }
+
+      BaseColor { rgb 1 0 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { recalcAlways FALSE }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { sizing X }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { sizing Y }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { sizing Z }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 1 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { sizing AVERAGE_DIMENSION }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { sizing BIGGEST_DIMENSION }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0.2 0.2 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { sizing SMALLEST_DIMENSION }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0.6 0 0.6 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { sizing LONGEST_DIAGONAL }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0.2 0.4 0.8 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { sizing Z ~ }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0.8 0.4 0.2 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 AntiSquish { recalcAlways FALSE ~ }
+	 Sphere { }
+      }
+   }
+}

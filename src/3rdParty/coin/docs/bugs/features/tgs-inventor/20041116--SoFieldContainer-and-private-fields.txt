@@ -1,0 +1,18 @@
+172 SoFieldContainer and private fields
+
+    TGS has support for private fields, Coin doesn't.
+    Something like this:
+
+#define SO_NODE_ADD_PRIVATEFIELD(fieldname, defvalue) \
+{ \
+  classMutex->writelock(); \
+  SO__NODE_CHECK_CONSTRUCT(__FILE__); \
+  if ( firstInstance ) \
+    fieldData->addField(this, SO__QUOTE(fieldName), &this->fieldName); \
+  this->fieldName.setValue(defValue); \
+  this->fieldName.setContainer(this); \
+  this->fieldName.setFieldType(0); \
+  classMutix->writeunlock(); \
+}
+
+    20041116 larsa.

@@ -1,0 +1,55 @@
+WHAT'S THIS?
+============
+
+For many important reasons it would be advantageous to have the base
+classes (lists, arrays, hashes / dictionaries, string abstraction,
+vector classes, other linear algebra classes, etc etc) implemented in
+C "below" a C++ wrapper providing Inventor API compatibility. We've
+slowly started this effort now, gradually moving stuff to "pure" C.
+
+This document contains various links to resources with important
+information and ideas on how to do the stuff we're looking for in C,
+presumably in an OO fashion.
+
+
+C RESOURCES
+===========
+
+* Try-Catch style interface in C (freely available for any use):
+  <URL:http://www.cs.berkeley.edu/~amc/cexcept/>.
+
+* See this paper for more information on how to write reliable, robust
+  system-type C libraries (from one of the Freetype authors):
+  <URL:http://freetype.sourceforge.net/david/reliable-c.html>.
+
+* A C library with misc components (dictionary, hash, linked lists,
+  exception handling) with a fairly liberal license (perhaps not
+  liberal enough, though):
+  <URL:http://users.footprints.net/~kaz/kazlib.html>.
+
+* There are sourcecode examples for many basic ADTs in C in the book
+  "C Interfaces And Implementations", referenced from the table of
+  contents: <URL:http://www.cs.princeton.edu/software/cii/>.
+
+* Programming techniques with ISO C89 to get OO design:
+  <URL:http://ldeniau.home.cern.ch/ldeniau/html/oopc/oopc.html>
+  ("Object Oriented Programming In C" by Laurent Deniau).
+
+* Dr. Dobb's Journal article of november 2000, "Exception Handling in
+  C without C++": see <URL:http://www.ddj.com/ftp/2000/2000_11/>.
+
+
+
+TODOs
+=====
+
+* SbTime is not very well designed, as it really represents two
+  different abstractions: a timer and a date / calendar. The latter
+  supported by the format() / formatDate() / getTimeOfDay() /
+  setTimeOfDay() (the two last ones are badly named) functions.
+
+  So we should split to abstractions cc_time(r?) and cc_date /
+  cc_calendar.
+
+  Study the standard Java API for a more extensive abstraction of the
+  last type before starting the C API design and implementation.

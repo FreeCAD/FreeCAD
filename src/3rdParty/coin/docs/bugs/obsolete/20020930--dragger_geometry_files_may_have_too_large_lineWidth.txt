@@ -1,0 +1,30 @@
+033 Some of the default geometry files for dragger geometries uses an
+    SoDrawStyle::lineWidth > 1.0. This can be outside the legal range
+    of the OpenGL implementation, which only guarantees that 1.0 can
+    be used. (We have indeed received at least one problem report due
+    to this.)
+
+    I'm working on a solution for this, which involves setting up some
+    new global fields which contains the legal ranges of glLineWidth()
+    and glPointSize(). From .iv-files, one can then connect to these
+    global fields.
+
+    20020930 mortene.
+
+    UPDATE 20040804 mortene: my idea mentioned above for a fix had a
+    fatal flaw, so this problem is still unresolved.
+
+    UPDATE 20051103 pederb: SoGLLineWidthElement now checks the
+    supported OpenGL range, and clamps the line width to be inside
+    that range. Bug seems to be fixed.
+
+    UPDATE 20060203 mortene: I consider the fact that we will still
+    get warnings upon those dragger files on such lame OpenGL drivers
+    for a "buglet", at least. Our own iv-files within the library
+    should behave perfectly, and so the value of the lineWidth fields
+    should be dynamically adjusted to be correct _before_ detected
+    during rendering and warned about.
+
+    But, OpenGL drivers with such limitations should now have become
+    exceedingly rare, so I'm pushing this into our "likely obsolete"
+    category.

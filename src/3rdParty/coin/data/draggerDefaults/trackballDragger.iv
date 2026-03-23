@@ -1,0 +1,93 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+DEF TRACKBALL_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF TRACKBALL_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF TRACKBALL_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+# Additional material definitions for this dragger.
+DEF TRACKBALL_USER_INACTIVE_MATERIAL Material { diffuseColor 0 0.7 0.1  emissiveColor 0 0.2 0.1 }
+DEF TRACKBALL_USER_ACTIVE_MATERIAL Material { diffuseColor 0 0.8 0.1  emissiveColor 0 0.3 0.1 }
+
+
+# Common geometry definition for dragger band / ring around the ball.
+DEF TRACKBALL_BAND_MARKER Group {
+   DrawStyle { style LINES }
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
+   Cylinder { parts SIDES  radius 1.05 height 0.1 }
+}
+
+
+# X, Y and Z bands
+
+DEF trackballXRotator Separator {
+   USE TRACKBALL_INACTIVE_MATERIAL
+   DEF TRACKBALL_X_BAND Group {
+      Rotation { rotation 0 0 1 1.57 }
+      USE TRACKBALL_BAND_MARKER
+   }
+}
+DEF trackballXRotatorActive Separator {
+   USE TRACKBALL_ACTIVE_MATERIAL
+   USE TRACKBALL_X_BAND
+}
+
+DEF trackballYRotator Separator {
+   USE TRACKBALL_INACTIVE_MATERIAL
+   USE TRACKBALL_BAND_MARKER
+}
+DEF trackballYRotatorActive Separator {
+   USE TRACKBALL_ACTIVE_MATERIAL
+   USE TRACKBALL_BAND_MARKER
+}
+
+DEF trackballZRotator Separator {
+   USE TRACKBALL_INACTIVE_MATERIAL
+   DEF TRACKBALL_Z_BAND Group {
+      Rotation { rotation 1 0 0 1.57 }
+      USE TRACKBALL_BAND_MARKER
+   }
+}
+DEF trackballZRotatorActive Separator {
+   USE TRACKBALL_ACTIVE_MATERIAL
+   USE TRACKBALL_Z_BAND
+}
+
+
+# Geometry for rotation marker with user-defined rotation axis.
+
+DEF TRACKBALL_USER_AXIS Group {
+   Coordinate3 { point [ 0 1.5 0, 0 -1.5 0 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+}
+
+DEF trackballUserAxis Separator {
+   USE TRACKBALL_FEEDBACK_MATERIAL
+   USE TRACKBALL_USER_AXIS
+}
+DEF trackballUserAxisActive Separator {
+   USE TRACKBALL_FEEDBACK_MATERIAL
+   USE TRACKBALL_USER_AXIS
+}
+
+DEF TRACKBALL_DRAGGER_USER_ROTATOR Group {
+   Scale { scaleFactor 1.05 1.05 1.05 } # outside the x, y and z bands
+   USE TRACKBALL_BAND_MARKER
+}
+
+DEF trackballUserRotator Separator {
+   USE TRACKBALL_USER_INACTIVE_MATERIAL
+   USE TRACKBALL_DRAGGER_USER_ROTATOR
+}
+
+DEF trackballUserRotatorActive Separator {
+   USE TRACKBALL_USER_ACTIVE_MATERIAL
+   USE TRACKBALL_DRAGGER_USER_ROTATOR
+}
+
+DEF TRACKBALL_CENTER Separator {
+   DrawStyle { style INVISIBLE }
+   Sphere { radius 1.02 }
+}
+
+DEF trackballRotator Separator { USE TRACKBALL_CENTER }
+DEF trackballRotatorActive Separator { USE TRACKBALL_CENTER }

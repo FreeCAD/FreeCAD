@@ -1,0 +1,40 @@
+#Inventor V2.1 ascii
+
+Group {
+   Separator {
+      Material {
+         diffuseColor [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1 ]
+      }
+
+      MaterialBinding { value PER_PART }
+
+      MultipleCopy {
+         matrix [
+          1 0 0 0
+          0 1 0 0
+          0 0 1 0
+          0 0 0 1,
+          
+          1 0 0 0
+          0 1 0 0
+          0 0 1 0
+          4 0 0 1,
+
+          1 0 0 0
+          0 1 0 0
+          0 0 1 0
+          -4 0 0 1,
+         ]
+         
+         Cube {
+         }
+      }
+   }
+
+   Rotation {
+      rotation 0 1 0   0.785
+   }
+
+   Cube {
+   }
+}

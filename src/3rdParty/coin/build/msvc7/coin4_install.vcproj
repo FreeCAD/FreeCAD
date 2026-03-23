@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="coin4_install"
+	SccProjectName=""
+	SccLocalPath=""
+	Keyword="MakeFileProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="LIB (Debug)|Win32"
+			OutputDirectory=".\StaticDebug"
+			IntermediateDirectory=".\StaticDebug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\install-sdk.bat lib debug msvc7 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat lib debug msvc7 coin4 "
+				Output="coin4_install.exe"/>
+		</Configuration>
+		<Configuration
+			Name="DLL (Debug)|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\install-sdk.bat dll debug msvc7 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat dll debug msvc7 coin4 "
+				Output="coin4_install.exe"/>
+		</Configuration>
+		<Configuration
+			Name="DLL (Release)|Win32"
+			OutputDirectory=".\Release"
+			IntermediateDirectory=".\Release"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\install-sdk.bat dll release msvc7 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat dll release msvc7 coin4 "
+				Output="coin4_install.exe"/>
+		</Configuration>
+		<Configuration
+			Name="LIB (Release)|Win32"
+			OutputDirectory=".\StaticRelease"
+			IntermediateDirectory=".\StaticRelease"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\install-sdk.bat lib release msvc7 coin4"
+				ReBuildCommandLine="..\misc\install-sdk.bat lib release msvc7 coin4 "
+				Output="coin4_install.exe"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Resource Files"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;bat">
+			<File
+				RelativePath="..\misc\create-directories.bat">
+			</File>
+			<File
+				RelativePath="..\misc\install-headers.bat">
+			</File>
+			<File
+				RelativePath="..\misc\install-sdk.bat">
+			</File>
+		</Filter>
+	</Files>
+</VisualStudioProject>

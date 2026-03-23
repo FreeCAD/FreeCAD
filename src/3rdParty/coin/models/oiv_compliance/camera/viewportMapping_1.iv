@@ -1,0 +1,13 @@
+#Inventor V2.1 ascii
+
+# Render with non-default viewportMapping.
+#
+# 19990416 mortene
+
+Separator {
+   OrthographicCamera { viewportMapping CROP_VIEWPORT_LINE_FRAME } 
+
+   DirectionalLight { direction 1 1 1 }
+   DirectionalLight { direction -1 -1 -1 }
+   Cone { }
+}

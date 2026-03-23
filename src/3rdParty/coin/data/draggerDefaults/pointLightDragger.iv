@@ -1,0 +1,35 @@
+#Inventor V2.1 ascii
+
+
+# Standard material definitions. One of the definitions also defines a
+# part for the dragger.
+
+DEF pointLightOverallMaterial Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF POINTLIGHT_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+
+# Geometry used multiple times.
+
+DEF POINTLIGHT_AXIS_TRANSLATOR Cube { width 4  height 0.5  depth 0.5 }
+DEF POINTLIGHT_PLANE_TRANSLATOR Sphere { radius 1.0 }
+
+
+# SoPointLightDragger part definitions.
+
+DEF pointLightTranslatorLineTranslator Separator {
+   USE pointLightOverallMaterial
+   USE POINTLIGHT_AXIS_TRANSLATOR
+}
+
+DEF pointLightTranslatorLineTranslatorActive Separator {
+   USE POINTLIGHT_ACTIVE_MATERIAL
+   USE POINTLIGHT_AXIS_TRANSLATOR
+}
+
+DEF pointLightTranslatorPlaneTranslator Separator {
+   USE POINTLIGHT_PLANE_TRANSLATOR
+}
+
+DEF pointLightTranslatorPlaneTranslatorActive Separator {
+   USE POINTLIGHT_ACTIVE_MATERIAL
+   USE POINTLIGHT_PLANE_TRANSLATOR
+}

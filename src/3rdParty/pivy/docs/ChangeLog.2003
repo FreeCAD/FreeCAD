@@ -1,0 +1,464 @@
+2003-12-18 16:05  tamer
+
+	* sogtk.i, soqt.i, soxt.i: added interface files for the separate
+	  SoGui modules.
+
+2003-12-18 15:56  tamer
+
+	* Inventor/SbMatrix.h: fix for the getTransform() method which
+	  takes in a bunch of references. reported by Joe Newman.
+
+2003-12-18 15:42  tamer
+
+	* THANKS: added Christian Sandor.
+
+2003-10-08 23:11  tamer
+
+	* Inventor/collision/SoIntersectionDetectionAction.h: code style
+	  fix and fix for cut and paste error in callback handling.
+
+2003-10-07 19:31  tamer
+
+	* Inventor/Qt/SoQtRenderArea.h,
+	  Inventor/actions/SoCallbackAction.h,
+	  Inventor/collision/SoIntersectionDetectionAction.h,
+	  Inventor/draggers/SoDragger.h, Inventor/nodes/SoCallback.h,
+	  Inventor/nodes/SoEventCallback.h, Inventor/nodes/SoSelection.h,
+	  examples/Mentor/python/09.1.Print.py,
+	  examples/Mentor/python/09.4.PickAction.py,
+	  examples/Mentor/python/09.5.GenSph.py,
+	  examples/Mentor/python/10.1.addEventCB.py,
+	  examples/Mentor/python/10.2.setEventCB.py,
+	  examples/Mentor/python/10.5.SelectionCB.py,
+	  examples/Mentor/python/10.6.PickFilterTopLevel.py,
+	  examples/Mentor/python/10.7.PickFilterManip.py,
+	  examples/Mentor/python/10.8.PickFilterNodeKit.py,
+	  examples/Mentor/python/13.4.Gate.py,
+	  examples/Mentor/python/13.5.Boolean.py,
+	  examples/Mentor/python/14.3.Balance.py,
+	  examples/Mentor/python/15.3.AttachManip.py,
+	  examples/Mentor/python/16.2.Callback.py,
+	  examples/Mentor/python/17.2.GLCallback.py: removed the Python
+	  prefix from the callback methods. e.g.
+	  addPythonIntersectionCallback() -> addIntersectionCallback() so
+	  that there is no difference anymore between C++ callback method
+	  names and the one's in Python. (thx to Joe Newman for notifying
+	  me) fixed examples to reflect the changes...
+
+2003-10-07 10:22  tamer
+
+	* fake_headers/OpenGL/: gl.h, glext.h, glu.h: fake headers needed
+	  for MacOSX OpenGL framework.
+
+2003-10-07 10:13  tamer
+
+	* build_pivy.py: fixes for darwin. (compiler output file needs to
+	  be specified with -o<space>foo)
+
+2003-09-02 20:04  tamer
+
+	* Inventor/collision/SoIntersectionDetectionAction.h: consistency
+	  fix.
+
+2003-09-02 19:10  tamer
+
+	* THANKS: added joe.
+
+2003-09-02 19:09  tamer
+
+	* Inventor/collision/SoIntersectionDetectionAction.h: handling for
+	  SoIntersectionDetectionAction.h added (callbacks and apply
+	  overloads).  reported by Joseph Newman.
+
+2003-08-23 15:30  tamer
+
+	* THANKS: added Peder Blekken.
+
+2003-08-23 15:29  tamer
+
+	* pivy.i: removed now obsolete ignores as unimplemented methods got
+	  fixed in Coin-2 cvs by Peder Blekken.  added ignores for
+	  SoGuiColorEditor (reported by Roland Schulz)
+
+	  removed typemaps for unsigned char *. those are arrays and python
+	  string functions obviously only read until a '\0' is encountered
+	  like any other C function, too.  this renders SoSFImage.h useless
+	  until array handling for unsigned char * is properly fixed in
+	  pivy. will very likely map them to lists.
+
+2003-08-23 15:19  tamer
+
+	* THANKS: added Roland Schulz.
+
+2003-08-23 15:18  tamer
+
+	* Inventor/: SbDPMatrix.h, SbMatrix.h: gcc 3.3 doesn't work with
+	  the former workaround for the swig cast. refined it and made it
+	  less ugly. reported by Roland Schulz.
+
+2003-08-22 19:32  tamer
+
+	* build_pivy.py: -w flag added that allows switching off the
+	  suppression of SWIG warnings.
+
+2003-07-28 02:33  tamer
+
+	* pivy.i: added handling for unsigned char* -> PyString and vice
+	  versa.
+
+2003-07-28 02:31  tamer
+
+	* build_pivy.py: moved -Ifake_headers before -I%s. As seen during
+	  my visit at TU Muenchen (many greets to Christian Sandor btw. :))
+	  there are people who really do install Coin into /usr/ instead of
+	  /usr/local.
+
+2003-07-28 02:28  tamer
+
+	* examples/Mentor/python/: 02.1.HelloCone.py, 02.2.EngineSpin.py,
+	  02.3.Trackball.py, 02.4.Examiner.py, 03.1.Molecule.py,
+	  03.2.Robot.py, 03.3.Naming.py, 04.1.Cameras.py, 04.2.Lights.py,
+	  05.1.FaceSet.py, 05.2.IndexedFaceSet.py,
+	  05.3.TriangleStripSet.py, 05.4.QuadMesh.py, 05.5.Binding.py,
+	  05.6.TransformOrdering.py, 06.1.Text.py, 06.2.Simple3DText.py,
+	  06.3.Complex3DText.py, 07.1.BasicTexture.py,
+	  07.2.TextureCoordinates.py, 07.3.TextureFunction.py,
+	  08.1.BSCurve.py, 09.1.Print.py, 09.2.Texture.py, 09.3.Search.py,
+	  09.4.PickAction.py, 09.5.GenSph.py, 10.1.addEventCB.py,
+	  10.3and4.MotifList.py, 10.5.SelectionCB.py,
+	  10.6.PickFilterTopLevel.py, 10.7.PickFilterManip.py,
+	  10.8.PickFilterNodeKit.py, 11.1.ReadFile.py, 11.2.ReadString.py,
+	  12.1.FieldSensor.py, 12.2.NodeSensor.py, 12.3.AlarmSensor.py,
+	  12.4.TimerSensor.py, 13.1.GlobalFlds.py, 13.2.ElapsedTime.py,
+	  13.3.TimeCounter.py, 13.4.Gate.py, 13.5.Boolean.py,
+	  13.6.Calculator.py, 13.7.Rotor.py, 13.8.Blinker.py,
+	  14.1.FrolickingWords.py, 14.2.Editors.py, 14.3.Balance.py,
+	  15.1.ConeRadius.py, 15.2.SliderBox.py, 15.3.AttachManip.py,
+	  15.4.Customize.py, 16.1.Overlay.py, 16.2.Callback.py,
+	  16.3.AttachEditor.py, 16.4.OneWindow.py, 16.5.Examiner.py,
+	  17.1.ColorIndex.py, 17.2.GLCallback.py, 17.3.GLFloor.py:
+	  untabified examples.
+
+2003-07-28 02:27  tamer
+
+	* Inventor/fields/SoSFImage.h: fixed handling for
+	  SoSFImage::getValue(), SoSFImage::startEditing().
+
+2003-07-28 02:24  tamer
+
+	* Inventor/actions/SoAction.h: handling for new overloaded method
+	  added.
+
+2003-07-27 16:37  tamer
+
+	* build_pivy.py: updated build script for Coin-2.1 and swig 1.3.19.
+	  added options to specify SoGui binding it should build Pivy
+	  with.  (call with --help to see what's available.) fixed typos
+	  and general improvements.
+
+2003-07-27 16:34  tamer
+
+	* pivy.i: Coin-2.1 support.
+
+2003-07-27 16:28  tamer
+
+	* Inventor/: SbMatrix.h, SbRotation.h, SbTime.h, SoInput.h,
+	  Qt/SoQt.h, Qt/SoQtCursor.h, Qt/SoQtRenderArea.h,
+	  actions/SoAction.h, fields/SoFieldContainer.h: fixed headers for
+	  Coin-2.1.
+
+2003-07-10 01:44  tamer
+
+	* Inventor/SoOffscreenRenderer.h: fixed writeToRGB() typo.
+
+2003-07-05 03:10  tamer
+
+	* Inventor/Qt/SoQtRenderArea.h: the QEvent bridge is complete.
+	  chose not to depend on and link against libsip and libqtcmodule.
+	  used a switch statement for autocasting.  by this
+	  10.2.setEventCB.py and native event handling with PyQt now
+	  works...
+
+2003-07-05 01:38  tamer
+
+	* examples/Mentor/python/10.2.setEventCB.py: removed now obsolete
+	  FIXME comment.
+
+2003-07-05 01:37  tamer
+
+	* examples/Mentor/python/10.2.setEventCB.py: code cleanup.
+
+2003-07-05 01:31  tamer
+
+	* examples/Mentor/python/10.2.setEventCB.py: final version of the
+	  now fully working 10.2.setEventCB example.  SoQtRenderArea
+	  patches to be checked in...
+
+2003-07-05 01:21  tamer
+
+	* Inventor/SbViewVolume.h: typemaps for projectPointToLine() and
+	  projectToScreen(). only projectPointToLine(const SbVec2f& pt,
+	  SbVec3f& line0, SbVec3f& line1) const; gets applied. to be used
+	  as e.g.: p0, p1 = myViewVolume.projectPointToLine(SbVec2f(x,y))
+
+2003-07-03 06:38  tamer
+
+	* examples/Mentor/python/10.2.setEventCB.py: updated example to
+	  reflect the changes in SoQtRenderArea which allows now to get
+	  QEvent's in the way PyQt expects them.  open question: how does
+	  one cast a QEvent to a QMouseEvent in PyQt?
+
+2003-07-03 06:27  tamer
+
+	* Inventor/Qt/SoQtRenderArea.h: the first brick for the pyqt bridge
+	  is deployed. from the comments:
+
+	  the next stunt here deserves documentation as otherwise i would
+	  not know what is going on here by tomorrow morning!
+
+	  What are we doing here? hacking in extremo! i had to find a way
+	  to pass the QEvent instance we get to PyQt!
+
+	  the approach i chose is to create a QEvent instance in Python
+	  from PyQt (obviously to let this work the user had to import PyQt
+	  beforehand. he has to otherwise he has no reason to create this
+	  callback).  this gives us a fully and properly instantiated
+	  structure as PyQt expects it without digging into sip or
+	  depending on the sip library.
+
+	  then i pass the instantiated structure over here and grab the
+	  sipThis entry from the instance which holds a u.cppPtr which
+	  turns out to be the real Qt Object in memory. *har, we are in
+	  business now*
+
+	  now i delete the current pointer and let u.cppPtr point to our
+	  very own QEvent Object. amazingly enough this really works...
+
+2003-07-03 01:45  tamer
+
+	* Inventor/Qt/SoQt.h: Py_BEGIN_ALLOW_THREADS, Py_END_ALLOW_THREADS
+	  macros around SoQt::mainLoop() were causing segfaults in examples
+	  where e.g. mouse events were processed.  the non
+	  multithreadsafety feature in Qt and Python said hello and took
+	  revenge.  therefore i removed them and am starting to rethink a
+	  proper solution to handle the dilemma where one would like to
+	  start his program in a thread. (i heard sedatives and heavy drugs
+	  might help... :() on to plan b, aka. operation 'mr. workaround
+	  strikes back'!
+
+2003-07-01 01:09  tamer
+
+	* Inventor/Qt/SoQt.h: Py_Exit() instead of exit() to allow python
+	  call PyFinalize() on exit.
+
+2003-06-30 23:39  tamer
+
+	* Inventor/Qt/SoQt.h: Pivy_PythonInteractiveLoop has void * as
+	  return type and not void. so we really are supposed to return
+	  something...
+
+2003-06-28 03:46  tamer
+
+	* Inventor/Qt/SoQt.h: if SoQt::mainLoop() gets called from within
+	  an interactive python session PyRun_InteractiveLoop() is getting
+	  called in a separate thread.	therefore SoQt::mainLoop() isn't a
+	  blocking call anymore allowing further manipulation of the scene
+	  graph directly within the python interpreter without the need to
+	  go through a thread.start_new_thread() workaround.  FIXME note
+	  attached as Qt and Python are not mt-safe and nasty problems
+	  could result out of this.  The non-blocking SoQt::mainLoop()
+	  feature is dedicated to Morten Eriksen! ;)
+
+2003-06-26 02:43  tamer
+
+	* Inventor/Qt/SoQt.h: made SoQt::mainLoop() release the global
+	  interpreter lock so that pivy can be used interactively from
+	  within the python interpreter without the need to use PyQt and
+	  qApp.exec_loop() as a workaround...
+
+2003-03-23 22:24  tamer
+
+	* Inventor/fields/SoFieldContainer.h: consistency: let types be
+	  determined by SWIG descriptor or basename variables.
+
+2003-03-23 22:23  tamer
+
+	* Inventor/SbVec3d.h: added handling for operator* with methods
+	  like SbVec3f_mul().
+
+2003-03-23 22:22  tamer
+
+	* Inventor/SbVec3f.h: added handling for operator* etc. with
+	  methods like SbVec3f_mul().
+
+2003-03-23 22:21  tamer
+
+	* Inventor/SbMatrix.h: added handling for methods like
+	  multMatrixVec() that return their value in the 2nd parameter dst.
+
+2003-03-23 22:20  tamer
+
+	* Inventor/nodes/SoSelection.h: fixed typo with deselect().
+
+2003-03-17 07:50  tamer
+
+	* Inventor/fields/: SoMFString.h, SoSFImage.h: fixed typo in
+	  SoSFImage error message and added glue code for
+	  SoMFString.setValues().  added preliminary currently segfaulting
+	  version of a SoSFImage.getValues() method.
+
+2003-03-12 04:42  tamer
+
+	* Inventor/: SbVec3d.h, fields/SoSFImage.h: added pivy versions for
+	  SbVec3d.h SoSFImage.h.
+
+	  FIXME notes in SoSFImage.h as the way unsigned char * pixels for
+	  setValue() is very breakable and not a very clean solution.
+	  unsigned char * gets mapped to a sequence in Python. e.g.:
+	  texture = (0xff,0x00,0x00,0xff)
+	  mapTex.image.setValue(SbVec2s(2,2),1,texture)
+
+	  FIXME for SoSFImage getValue().
+
+2003-03-12 04:37  tamer
+
+	* Inventor/SbVec3f.h: added __setitem__ method to allow assigning
+	  from SoMFVec3f. keep in mind that double indexing like foo[i][2]
+	  = bar does not work. the way it works is to calculate the offset
+	  and add the coordinate you want to assign.  e.g. foo[i*3+2] =
+	  0.15
+
+2003-03-10 00:31  tamer
+
+	* Inventor/SbRotation.h: added SbRotation_eq(), SbRotation_neq(),
+	  SbRotation_mul() methods to support operator==, operator!=,
+	  operator*.
+
+2003-03-08 03:13  tamer
+
+	* Inventor/SbTime.h: added methods SbTime_add, SbTime_sub,
+	  SbTime_d_mult, SbTime_mult, SbTime_div to make operators
+	  operator+, operator-, operator*, and operator/ accessible through
+	  pivy for efficient usage. otherwise one would have to call
+	  methods like SbTime.getValue() twice for operation and create a
+	  new instance. e.g.  subtraction would have been done like so:
+
+	  s = SbTime(); s.setToTimeOfDay() t = SbTime(); t.setToTimeOfDay()
+	  r = SbTime(s.getValue() - t.getValue())
+
+	  now can be achieved through: SbTime_sub(s,t) which removes 2
+	  namespace lookups and one instatiation and calls the more
+	  efficient code below.
+
+2003-03-05 04:01  tamer
+
+	* MANIFEST.in, THANKS, build_pivy.py: distutils is currently not up
+	  to the task, so i created a build_pivy.py script that should take
+	  care of the build process.
+
+2003-03-05 03:29  tamer
+
+	* Inventor/fields/SoFieldContainer.h: %typemap(ignore) has been
+	  replaced by %typemap(in,numinputs=0)
+
+2003-03-04 23:30  tamer
+
+	* Inventor/fields/: SoMFColor.h, SoMFVec2f.h, SoMFVec3f.h,
+	  SoMFVec4f.h: cosmetics...
+
+2003-03-04 21:12  tamer
+
+	* Inventor/actions/SoCallbackAction.h: beautified return statement.
+
+2003-03-03 05:22  tamer
+
+	* fake_headers/: string.h, GL/gl.h, GL/glext.h, GL/glu.h, GL/glx.h,
+	  X11/Intrinsic.h, X11/Xresource.h, Xm/Xm.h: added missing fake
+	  header files.
+
+2003-03-03 05:21  tamer
+
+	* Makefile: updated to make it easy to build it under MacOS X.
+
+2003-03-03 03:07  tamer
+
+	* Makefile, pivy.i, examples/Mentor/python/10.2.setEventCB.py:
+	  fixed up pivy.i to support the new classes in coin-2 (mostly
+	  untested).  changed the C module name to _pivy.so as newer swig
+	  versions do it and this is the more usual name for such things in
+	  the python community. fixed already all headers in this regard.
+	  made 10.2.setEventCB.py example more reasonable with SoQt and
+	  added notification about it being not fully operational due to a
+	  missing PyQt bridge.
+
+2003-03-03 03:03  tamer
+
+	* Inventor/: SbColor.h, SbColor4f.h, SbDict.h, SbMatrix.h,
+	  SbName.h, SbRotation.h, SbString.h, SbTime.h, SbVec2f.h,
+	  SbVec2s.h, SbVec3f.h, SbVec4f.h, SbViewVolume.h,
+	  SbViewportRegion.h, SoInput.h, SoOffscreenRenderer.h, SoPath.h,
+	  SoType.h, Qt/SoQtCursor.h, Qt/SoQtRenderArea.h,
+	  actions/SoAction.h, actions/SoCallbackAction.h,
+	  actions/SoWriteAction.h, draggers/SoDragger.h, events/SoEvent.h,
+	  fields/SoField.h, fields/SoFieldContainer.h, fields/SoMFColor.h,
+	  fields/SoMFFloat.h, fields/SoMFInt32.h, fields/SoMFString.h,
+	  fields/SoMFVec2f.h, fields/SoMFVec3f.h, fields/SoMFVec4f.h,
+	  fields/SoSFBool.h, fields/SoSFColor.h, fields/SoSFEnum.h,
+	  fields/SoSFFloat.h, fields/SoSFInt32.h, fields/SoSFName.h,
+	  fields/SoSFRotation.h, fields/SoSFShort.h, fields/SoSFString.h,
+	  fields/SoSFVec2f.h, fields/SoSFVec3f.h, fields/SoSFVec4f.h,
+	  nodes/SoCallback.h, nodes/SoCamera.h, nodes/SoEventCallback.h,
+	  nodes/SoGroup.h, nodes/SoNode.h, nodes/SoSelection.h,
+	  sensors/SoAlarmSensor.h, sensors/SoDataSensor.h,
+	  sensors/SoDelayQueueSensor.h, sensors/SoFieldSensor.h,
+	  sensors/SoIdleSensor.h, sensors/SoNodeSensor.h,
+	  sensors/SoOneShotSensor.h, sensors/SoPathSensor.h,
+	  sensors/SoSensor.h, sensors/SoTimerQueueSensor.h,
+	  sensors/SoTimerSensor.h: fixes and updates for coin-2 support.
+	  updated header files to reflect api changes and the new header
+	  string containing the new license at the beginning.  works with
+	  most recent swig-1.3.17 and swig-1.3.18 (currently the bleeding
+	  edge from cvs).  coin-2 has been configured with --enable-vrml97
+	  --enable-sound --enable-threads.  the upcoming pivy distutils
+	  setup will take care of the different compile options and setups.
+
+2003-03-03 02:51  tamer
+
+	* Inventor/: SbOctTree.h, Qt/SoQt.h, lists/SbIntList.h,
+	  lists/SbPList.h, lists/SbStringList.h, lists/SbVec3fList.h,
+	  lists/SoAuditorList.h, lists/SoDetailList.h,
+	  lists/SoEngineOutputList.h, lists/SoFieldList.h,
+	  lists/SoPickedPointList.h, lists/SoTypeList.h: removed obsolete
+	  files for Coin-2.
+
+2003-03-02 02:00  tamer
+
+	* Inventor/lists/SoVRMLInterpOutputList.h: removed now obsolete
+	  SoVRMLInterpOutputList.h.
+
+2003-03-02 00:14  tamer
+
+	* THANKS: added Michael Kalkusch, whom I owe a lot to the THANKS
+	  file.
+
+2003-03-01 03:03  tamer
+
+	* AUTHORS: added AUTHORS file.
+
+2003-03-01 02:41  tamer
+
+	* docs/ruby-inventor.txt: John K. Grytten <johnkeg@pvv.ntnu.no>
+	  reported that it is possible to use Coin3d with Ruby by using
+	  pivy.
+
+	  Pretty cool! :) thx, John!
+
+2003-03-01 02:30  tamer
+
+	* THANKS: never forget to be grateful.
+
+2003-03-01 02:11  tamer
+
+	* docs/ChangeLog.2002: added ChangeLog.2002 for historical
+	  reference.
+

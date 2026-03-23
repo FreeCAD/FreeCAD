@@ -1,0 +1,5 @@
+//
+// Prefix header for all source files of the 'Coin' target in the 'Coin' project.
+//
+
+//#include <Carbon/Carbon.h>

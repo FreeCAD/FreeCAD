@@ -1,0 +1,52 @@
+mortene ("x" means "done" or "fixed"):
+
+        x get rid of C++ stream usage
+        x kill SO_ARB_SHADER_SUPPORT define
+        x kill SO_GLSL_SHADER_SUPPORT define
+        x kill SO_CG_SHADER_SUPPORT define
+        x dynamic pickup of libCg.so / cg.dll(?)
+        x make all nodes conform to identification mechs for internal Coin nodes
+        x make programs context sensitive. Each cache context must have its
+          own copy to handle use of the scene graph in multiple contexts.
+          It might be easiest to do this by managing several several
+          SoGLShaderObjects in SoShaderObject.cpp ??
+        - robustify, upon missing GL support, or missing Cg library 
+        - sphere_arb.iv: bug on sphere #2 from the left on my ATI Radeon laptop
+        - sphere_glsl.iv: bugs upon first *redraw* on my NVidia desktop
+        - sphere_cg.iv: better handling of streams of error messages from Cg
+        - clean up the SOURCE_HINT #define (use an element to pass on error messages?)
+        - Cheshire Cat for classes in public API (may be ok already)
+        - check all public API elements against TGS Inventor
+            x SoShaderProgram is SoGroup, should perhaps be inheriting SoNode
+            x SoShaderParameter has a similar incompatibility
+        x make sure public and private headers are handled correctly
+        - trim header-file inclusion
+        - grep for FIXMEs, and check all of them
+        - write API documentation
+
+        -> copy to Coin-2 (for 2.5.0 release?)
+        -> example program(s) and/or iv-files
+                => handegar has been doing some stuff
+
+
+martin:
+  - array/matrix parameter
+     X GLSL: seems not to work properly
+     - ARB: not supported yet
+
+
+some ideas by martin:
+  - improving support of samplers
+
+  - "stand alone" SoShaderParameter, e.g.
+
+     Separator {
+      SoShaderProgram { ... init shader and params here ... }
+      SoCube {} # some geometry
+      SoShaderParameter1f { ... assign new value to params ... }
+      SoCube {} # more geometry
+     }
+
+  - "stand alone" SoShaderObject, i.e. the same as above
+    -> especially useful in GLSL, where one could dynamically exchange 
+      shader-subfunctions (due to the compile/link paradigm)

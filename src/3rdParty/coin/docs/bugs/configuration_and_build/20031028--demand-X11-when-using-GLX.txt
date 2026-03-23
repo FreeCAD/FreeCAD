@@ -1,0 +1,13 @@
+082 Configure/build problem: we need to demand X11 when using GLX.
+
+    As it is now, it's possible on certain platforms (at least
+    experienced on Sun Solaris) that GLX linking is found to be ok by
+    configure, even though X11 linking failed.
+
+    This will then cause problems at compile or linkage later on, so
+    we should detect this in the configure script and warn properly.
+
+    20031028 mortene.
+
+    UPDATE 20060208 mortene: larsa has been building on and off on
+    Solaris lately, so presumably this error is no longer present?

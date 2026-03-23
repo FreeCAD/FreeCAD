@@ -1,0 +1,58 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin4", "coin4.vcproj", "{4DE22A84-B191-451A-907F-05093520303A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin4_install", "coin4_install.vcproj", "{81094CB1-161E-423A-905A-0C492E4DF20B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4DE22A84-B191-451A-907F-05093520303A} = {4DE22A84-B191-451A-907F-05093520303A}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin4_uninstall", "coin4_uninstall.vcproj", "{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "coin4_docs", "coin4_docs.vcproj", "{79A19DDE-2D99-4E02-9784-062481599286}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		DLL (Debug)|Win32 = DLL (Debug)|Win32
+		DLL (Release)|Win32 = DLL (Release)|Win32
+		LIB (Debug)|Win32 = LIB (Debug)|Win32
+		LIB (Release)|Win32 = LIB (Release)|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DE22A84-B191-451A-907F-05093520303A}.DLL (Debug)|Win32.ActiveCfg = DLL (Debug)|Win32
+		{4DE22A84-B191-451A-907F-05093520303A}.DLL (Debug)|Win32.Build.0 = DLL (Debug)|Win32
+		{4DE22A84-B191-451A-907F-05093520303A}.DLL (Release)|Win32.ActiveCfg = DLL (Release)|Win32
+		{4DE22A84-B191-451A-907F-05093520303A}.DLL (Release)|Win32.Build.0 = DLL (Release)|Win32
+		{4DE22A84-B191-451A-907F-05093520303A}.LIB (Debug)|Win32.ActiveCfg = LIB (Debug)|Win32
+		{4DE22A84-B191-451A-907F-05093520303A}.LIB (Debug)|Win32.Build.0 = LIB (Debug)|Win32
+		{4DE22A84-B191-451A-907F-05093520303A}.LIB (Release)|Win32.ActiveCfg = LIB (Release)|Win32
+		{4DE22A84-B191-451A-907F-05093520303A}.LIB (Release)|Win32.Build.0 = LIB (Release)|Win32
+		{81094CB1-161E-423A-905A-0C492E4DF20B}.DLL (Debug)|Win32.ActiveCfg = DLL (Debug)|Win32
+		{81094CB1-161E-423A-905A-0C492E4DF20B}.DLL (Debug)|Win32.Build.0 = DLL (Debug)|Win32
+		{81094CB1-161E-423A-905A-0C492E4DF20B}.DLL (Release)|Win32.ActiveCfg = DLL (Release)|Win32
+		{81094CB1-161E-423A-905A-0C492E4DF20B}.DLL (Release)|Win32.Build.0 = DLL (Release)|Win32
+		{81094CB1-161E-423A-905A-0C492E4DF20B}.LIB (Debug)|Win32.ActiveCfg = LIB (Debug)|Win32
+		{81094CB1-161E-423A-905A-0C492E4DF20B}.LIB (Debug)|Win32.Build.0 = LIB (Debug)|Win32
+		{81094CB1-161E-423A-905A-0C492E4DF20B}.LIB (Release)|Win32.ActiveCfg = LIB (Release)|Win32
+		{81094CB1-161E-423A-905A-0C492E4DF20B}.LIB (Release)|Win32.Build.0 = LIB (Release)|Win32
+		{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}.DLL (Debug)|Win32.ActiveCfg = DLL (Debug)|Win32
+		{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}.DLL (Debug)|Win32.Build.0 = DLL (Debug)|Win32
+		{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}.DLL (Release)|Win32.ActiveCfg = DLL (Release)|Win32
+		{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}.DLL (Release)|Win32.Build.0 = DLL (Release)|Win32
+		{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}.LIB (Debug)|Win32.ActiveCfg = LIB (Debug)|Win32
+		{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}.LIB (Debug)|Win32.Build.0 = LIB (Debug)|Win32
+		{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}.LIB (Release)|Win32.ActiveCfg = LIB (Release)|Win32
+		{B8FA7A17-FC3B-4AF7-B4AA-739471D0C3BD}.LIB (Release)|Win32.Build.0 = LIB (Release)|Win32
+		{79A19DDE-2D99-4E02-9784-062481599286}.DLL (Debug)|Win32.ActiveCfg = DLL (Debug)|Win32
+		{79A19DDE-2D99-4E02-9784-062481599286}.DLL (Debug)|Win32.Build.0 = DLL (Debug)|Win32
+		{79A19DDE-2D99-4E02-9784-062481599286}.DLL (Release)|Win32.ActiveCfg = DLL (Release)|Win32
+		{79A19DDE-2D99-4E02-9784-062481599286}.DLL (Release)|Win32.Build.0 = DLL (Release)|Win32
+		{79A19DDE-2D99-4E02-9784-062481599286}.LIB (Debug)|Win32.ActiveCfg = LIB (Debug)|Win32
+		{79A19DDE-2D99-4E02-9784-062481599286}.LIB (Debug)|Win32.Build.0 = LIB (Debug)|Win32
+		{79A19DDE-2D99-4E02-9784-062481599286}.LIB (Release)|Win32.ActiveCfg = LIB (Release)|Win32
+		{79A19DDE-2D99-4E02-9784-062481599286}.LIB (Release)|Win32.Build.0 = LIB (Release)|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

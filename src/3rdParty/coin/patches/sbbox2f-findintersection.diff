@@ -1,0 +1,181 @@
+larsa's SbBox2f::findIntersection(). Implementation looks a bit messy.
+
+20020513 mortene.
+
+
+Index: include/Inventor/SbBox2f.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/SbBox2f.h,v
+retrieving revision 1.15
+diff -u -r1.15 SbBox2f.h
+--- include/Inventor/SbBox2f.h	23 Nov 2001 14:25:46 -0000	1.15
++++ include/Inventor/SbBox2f.h	11 Mar 2002 11:13:29 -0000
+@@ -41,6 +41,7 @@
+   void extendBy(const SbBox2f & box);
+   SbBool intersect(const SbVec2f & point) const;
+   SbBool intersect(const SbBox2f & box) const;
++  SbBool findIntersection(const SbVec2f & a, const SbVec2f & b, SbVec2f & ia, SbVec2f & ib) const;
+   SbVec2f getClosestPoint(const SbVec2f & p) const;
+   void setBounds(float xmin, float ymin, float xmax, float ymax);
+   void setBounds(const SbVec2f & min, const SbVec2f & max);
+Index: src/base/SbBox2f.cpp
+===================================================================
+RCS file: /export/cvsroot/Coin/src/base/SbBox2f.cpp,v
+retrieving revision 1.11
+diff -u -r1.11 SbBox2f.cpp
+--- src/base/SbBox2f.cpp	19 Nov 2001 12:26:42 -0000	1.11
++++ src/base/SbBox2f.cpp	11 Mar 2002 11:13:30 -0000
+@@ -202,6 +202,152 @@
+ }
+ 
+ /*!
++  Check if a a line from \a a to \a b intersects the box, and return the
++  coordinates of the union line in \a ia and \a ib.
++
++  This function is a Coin extension.
++
++  \since 2002-03-09 larsa
++*/
++SbBool
++SbBox2f::findIntersection(const SbVec2f & a, const SbVec2f & b, SbVec2f & ia, SbVec2f & ib) const
++{
++  // FIXME: this function should be tested thoroughly...
++
++  // we place point a and b in their respective blocks, and handle cases accordingly
++  //
++  //   block-ids     intersection
++  //   6 | 7 | 8      candidates
++  //  ---+---+---       +-8-+
++  //   3 | 4 | 5        2   4
++  //  ---+---+---       +-1-+
++  //   0 | 1 | 2
++  static int candidates[9] = { 1|2, 1, 1|4, 2, 0, 4, 2|8, 8, 4|8 };
++
++  int blocka = 0, blockb = 0;
++  if ( a[0] < this->minpt[0] ) blocka += 0;
++  else if ( a[0] <= this->maxpt[0] ) blocka += 1;
++  else blocka += 2;
++  if ( a[1] < this->minpt[1] ) blocka = +0;
++  else if ( a[1] <= this->maxpt[1] ) blocka += 3;
++  else blocka = +6;
++  if ( b[0] < this->minpt[0] ) blockb += 0;
++  else if ( b[0] <= this->maxpt[0] ) blockb += 1;
++  else blockb += 2;
++  if ( b[1] < this->minpt[1] ) blockb += 0;
++  else if ( b[1] <= this->maxpt[1] ) blockb += 3;
++  else blockb += 6;
++  int enterwalls = candidates[blocka];
++  int leavewalls = candidates[blockb];
++  // both a and b can be outside box in the same way
++  if ( (enterwalls & leavewalls) != 0 ) return FALSE;
++
++  SbBool foundia = FALSE;
++  if ( blocka == 4 ) {
++    ia = a;
++    foundia = TRUE;
++  }
++  if ( !foundia && (enterwalls & 1) ) {
++    do {
++      if ( blockb == 0 || blockb == 1 || blockb == 2 ) break;
++      SbVec2f vec = b - a;
++      float t = (this->minpt[1] - a[1]) / vec[1];
++      if ( t < 0.0 || t > 1.0 ) break;
++      ia = a + vec * t;
++      if ( ia[0] < this->minpt[0] || ia[0] > this->maxpt[0] ) break;
++      foundia = TRUE;
++    } while ( FALSE );
++  }
++  if ( !foundia && (enterwalls & 2) ) {
++    do {
++      if ( blockb == 0 || blockb == 3 || blockb == 6 ) break;
++      SbVec2f vec = b - a;
++      float t = (this->minpt[0] - a[0]) / vec[0];
++      if ( t < 0.0 || t > 1.0 ) break;
++      ia = a + vec * t;
++      if ( ia[1] < this->minpt[1] || ia[1] > this->maxpt[1] ) break;
++      foundia = TRUE;
++    } while ( FALSE );
++  }
++  if ( !foundia && (enterwalls & 4) ) {
++    do {
++      if ( blockb == 2 || blockb == 5 || blockb == 8 ) break;
++      SbVec2f vec = b - a;
++      float t = (this->maxpt[0] - a[0]) / vec[0];
++      if ( t < 0.0 || t > 1.0 ) break;
++      ia = a + vec * t;
++      if ( ia[1] < this->minpt[1] || ia[1] > this->maxpt[1] ) break;
++      foundia = TRUE;
++    } while ( FALSE );
++  }
++  if ( !foundia && (enterwalls & 8) ) {
++    do {
++      if ( blockb == 6 || blockb == 7 || blockb == 8 ) break;
++      SbVec2f vec = b - a;
++      float t = (this->maxpt[1] - a[1]) / vec[1];
++      if ( t < 0.0 || t > 1.0 ) break;
++      ia = a + vec * t;
++      if ( ia[0] < this->minpt[0] || ia[0] > this->maxpt[0] ) break;
++      foundia = TRUE;
++    } while ( FALSE );
++  }
++  if ( !foundia ) return FALSE;
++
++  SbBool foundib = FALSE;
++  if ( blockb == 4 ) {
++    ib = b;
++    foundib = TRUE;
++  }
++  if ( !foundib && (leavewalls & 1) ) {
++    do {
++      if ( blocka == 0 || blocka == 1 || blocka == 2 ) break;
++      SbVec2f vec = a - b;
++      float t = (this->minpt[1] - b[1]) / vec[1];
++      if ( t < 0.0 || t > 1.0 ) break;
++      ib = b + vec * t;
++      if ( ib[0] < this->minpt[0] || ib[0] > this->maxpt[0] ) break;
++      foundib = TRUE;
++    } while ( FALSE );
++  }
++  if ( !foundib && (leavewalls & 2) ) {
++    do {
++      if ( blocka == 0 || blocka == 3 || blocka == 6 ) break;
++      SbVec2f vec = a - b;
++      float t = (this->minpt[0] - b[0]) / vec[0];
++      if ( t < 0.0 || t > 1.0 ) break;
++      ib = b + vec * t;
++      if ( ib[1] < this->minpt[1] || ib[1] > this->maxpt[1] ) break;
++      foundib = TRUE;
++    } while ( FALSE );
++  }
++  if ( !foundib && (leavewalls & 4) ) {
++    do {
++      if ( blocka == 2 || blocka == 5 || blocka == 8 ) break;
++      SbVec2f vec = a - b;
++      float t = (this->maxpt[0] - b[0]) / vec[0];
++      if ( t < 0.0 || t > 1.0 ) break;
++      ib = b + vec * t;
++      if ( ib[1] < this->minpt[1] || ib[1] > this->maxpt[1] ) break;
++      foundib = TRUE;
++    } while ( FALSE );
++  }
++  if ( !foundib && (leavewalls & 8) ) {
++    do {
++      if ( blocka == 6 || blocka == 7 || blocka == 8 ) break;
++      SbVec2f vec = a - b;
++      float t = (this->maxpt[1] - b[1]) / vec[1];
++      if ( t < 0.0 || t > 1.0 ) break;
++      ib = b + vec * t;
++      if ( ib[0] < this->minpt[0] || ib[0] > this->maxpt[0] ) break;
++      foundib = TRUE;
++    } while ( FALSE );
++  }
++  if ( !foundib ) return FALSE;
++
++  return TRUE;
++} // findIntersection()
++
++/*!
+   Return the point on the box closest to the given point \a p.
+  */
+ SbVec2f
+

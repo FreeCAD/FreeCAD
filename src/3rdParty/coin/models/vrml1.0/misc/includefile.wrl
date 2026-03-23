@@ -1,0 +1,7 @@
+#VRML V1.0 ascii
+
+# This file is just here to be included in other test files.
+#
+# 19990515 mortene
+Material { diffuseColor 1 1 0 }
+Sphere { }

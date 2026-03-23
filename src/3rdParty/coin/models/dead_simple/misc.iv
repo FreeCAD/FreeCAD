@@ -1,0 +1,15 @@
+#Inventor V1.0 ascii
+
+Material {
+	diffuseColor 1 0 0
+}
+MatrixTransform {
+	matrix
+	   0.91839          0.3176        -0.23599               0
+	  -0.23599         0.91839          0.3176               0
+	    0.3176        -0.23599         0.91839               0
+	         0               0               0               1
+}
+Cube {
+	width 5
+}

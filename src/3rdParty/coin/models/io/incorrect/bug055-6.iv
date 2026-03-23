@@ -1,0 +1,13 @@
+#Inventor V2.1 ascii
+
+#
+# A NULL field connection is not allowed.
+# Should correctly abort read in 
+# SbBool SoField::readConnection(SoInput * in)
+#
+
+Separator {
+  Switch {
+    whichChild 0 = NULL
+  }
+}

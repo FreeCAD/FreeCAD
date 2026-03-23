@@ -1,0 +1,60 @@
+name: Build with vcpkg
+
+on:
+  push:
+    branches:
+      - master
+      - build_with_vcpkg
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  buildme:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      matrix:
+        config:
+          # - os: ubuntu-latest
+          #   vcpkg_triplet: x64-linux-release
+          - os: macos-latest
+            vcpkg_triplet: x64-osx-release
+          - os: windows-latest
+            vcpkg_triplet: x64-windows-release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install SWIG (macOS only)
+        if: matrix.config.os == 'macos-latest'
+        run: |
+          brew install swig
+          brew link --overwrite swig
+
+      - name: vcpkg build
+        uses: johnwason/vcpkg-action@v6
+        id: vcpkg
+        with:
+          manifest-dir: ${{ github.workspace }}
+          triplet: ${{ matrix.config.vcpkg_triplet }}
+          cache-key: ${{ matrix.config.os }}
+          revision: master
+          token: ${{ github.token }}
+          github-binarycache: true
+
+      - name: Configure CMake
+        run: |
+          cmake -S . -B build -DCMAKE_INSTALL_PREFIX:PATH=${{ github.workspace }}/out -DCMAKE_BUILD_TYPE:STRING=Release -DX_VCPKG_APPLOCAL_DEPS_INSTALL:BOOLEAN=ON ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
+
+      - name: Build project
+        run: |
+          cmake --build build --config Release
+      
+      - name: Install project
+        run: |
+          cmake --install build --config Release

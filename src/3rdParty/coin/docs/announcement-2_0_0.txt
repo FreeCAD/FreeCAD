@@ -1,0 +1,100 @@
+Systems in Motion releases Coin version 2.0.0
+
+Oslo, Norway, February 27th 2003
+
+Coin is a high-level 3D graphics library with a C++ Application Programming
+Interface. Its target audience is developers of 3D graphics applications
+worldwide.
+
+Coin 2.0.0 is now available from www.coin3d.org. The new version includes
+major additions in functionality such as:
+
+- Handling huge texture-maps, up to hundreds of megapixels, by lifting
+  the conventional limits of the graphics cards.
+- 3D Texture support.
+- 3D Sound support.
+- Support for the ISO standard VRML97 model and scene file format.
+- Full quality support for the Mac OS X operating system.
+- Improved build system on Microsoft Windows.
+- Provides convenient abstractions for cross-platform threads-handling.
+- Efficiently taking advantage of big-iron visualization systems with
+  multiple output pipes (e.g. CAVE systems), by rendering data structures
+  in parallel on multiple processors.
+
+Other improvements include major performance optimizations for faster
+rendering, a better framework for download and deployment on Microsoft
+Windows platforms, miscellaneous feature enhancements requested by the
+Coin user community, and many documentation improvements.
+
+"Coin has been received very well by 3D software developers", says Einar
+Hübert, CEO of Systems in Motion. "Coin started as a spin-off from other
+software development projects, but has now become core of the company. We
+will focus even more on development of Coin and increasing its market
+position in the years to come. Coin is a very stable and reliable tool,
+and version 2.0.0 makes it more accessible to the broad range of 3D
+developers globally."
+
+Licenses and pricing
+
+Coin 2.0 is Free Software released publicly under the GNU General Public
+License ("GPL"), and is also available for any proprietary use under a
+Professional Edition License (Coin PEL). The price for becoming a Coin
+PEL holder is USD 2,000 per developer per year. There are no royalties
+or hidden extra costs. The Coin PEL text has been modified slightly from
+Coin 1.0.X to Coin 2.0.0.
+
+Examples of professional users of Coin are General Electric, Caterpillar,
+Shell, Statoil, HitecO, Midland Valley, Fedem Technology and ConocoPhilips.
+
+Examples of users of Coin under the Free Software license are CERN,
+NASA, the Vienna University of Technology, and the Norwegian University
+of Science and Technology 
+
+About Coin
+
+Coin is based on the SGI Open Inventor API. Open Inventor has long since
+become the de facto standard graphics library for 3D visualization and
+visual simulation software in the scientific and engineering community. It
+has proved its worth over a period of more than 10 years, its maturity
+contributing to its success as a major building block in thousands of
+large-scale engineering applications around the world.
+
+Coin uses scene graph data structures to render real-time graphics
+suitable for mostly all kinds of scientific and engineering visualization
+applications.
+
+Coin is portable over a wide range of platforms: any UNIX / Linux /
+*BSD platform, Microsoft Windows operating systems, and Mac OS X.
+
+Coin is built on the industry-standard OpenGL immediate-mode rendering
+library, and adds abstractions for higher-level primitives, provides 3D
+interactivity, immensely increases programmer convenience and productivity,
+and contains many complex optimization features for fast rendering that
+are transparent for the application programmer.
+
+For more information about Coin and source and binary downloads, please
+visit www.coin3d.org
+
+About Systems in Motion
+
+Systems in Motion is a global supplier of advanced 3D visualization
+software. Our customers range from NASA as a part of Mars-missions, to
+Shell deep down in the North Sea, - from car manufacturer Toyota in Japan,
+to the US Army simulating tomorrow’s battlefields.
+
+SIM's most recognized product besides Coin is Rational Reducer Professional
+3.1. Rational Reducer reduces the number of polygons in 3D models, while
+keeping the visual quality, thus reducing the rendering time and file size.
+
+In addition to the products Coin and Rational Reducer, SIM contribute
+with custom-made software and consulting services, or complete project
+solutions for 3D visualization systems.
+
+For more information on Systems in Motion, please visit www.sim.no
+
+PR Contact for Press:
+
+Oyvind Rideng
+Phone: +47 23 27 25 10
+Email: rideng@sim.no
+Cell phone: +47 90 64 12 81

@@ -1,0 +1,1247 @@
+WHAT'S THIS?
+============
+
+This document contains a list of various deficiencies in Coin that are
+not "large enough" to warrant them being listed as full projects in
+the docs/projects.txt file, and probably not "small enough" to be
+fixed within an hour or two.
+
+See also the api-wish-list.txt file for other "mini" projects.
+
+
+
+STUFF TO FIX IN COIN
+====================
+
+000 Improve error reporting on texture loading
+    2001-11-24  Morten Eriksen  <mortene@sim.no>
+
+    The only message one can get now is "Couldn't load texture
+    blablabla". This is a rather lousy error message for both the
+    end-user and for the application programmer.
+
+    We should have code which could at least recognize and spit out
+    error messages in these categories:
+
+        * no texture loading library available (which is only simage
+          at the moment, but could be others) -- NOTE: NOW FIXED
+
+        * could not find texture file <filename> in any of these
+          directories: <searchlist>
+
+        * found texture file at <fullfilename>, recognized file format
+          as 'X', which is not supported with this build of the simage
+          library
+
+        * found texture file at <fullfilename>, but does not recognize
+          file format
+
+        * found texture file at <fullfilename>, but file seems
+          damaged
+
+    The place to start is SbImage, but SbImage's "clients" might also
+    needs changes. We will probably also have to fix libsimage to make
+    more specific error reports.
+
+    UPDATE 2002-06-17 mortene: I've made a few improvements (for both
+    Coin-1 and Coin-dev), so one will now at least get better
+    reporting if simage is missing.
+
+
+001 A "stopwatch" for built-in profiling support
+    2001-11-27  Morten Eriksen  <mortene@sim.no>
+
+    Support for on-the-fly profiling would be very nice. It could help
+    us with the heuristics for the OpenGL displaylist render caching,
+    for instance.
+
+    We can't use the real-time time of day for this -- we need to
+    measure the process/CPU-time for just the current thread to get
+    proper data for this type of profiling.
+
+    There's an ANSI C function -- clock() -- which gives us the CPU
+    time used by a process.
+
+    If that doesn't do what we want, on MSWin we could use
+    GetProcessTimes() or GetThreadTimes(), and there's a POSIX
+    function for doing it on UNIX-style platforms; times() (plus we
+    need to use the POSIX sysconf(_SC_CLK_TCK) to find the clocktick
+    value to multiply with).
+
+    Interface suggestion:
+
+        cc_time cc_time_get_cpu_time()  (public C++ API: SbTime::getCPUTime())
+
+    ..and then a "stopwatch-like" interface on top of that:
+
+        cc_stopwatch * cc_stopwatch_create(void)
+        void cc_stopwatch_start(cc_stopwatch *)
+        cc_time cc_stopwatch_stop(cc_stopwatch *)
+        void cc_stopwatch_destroy(cc_stopwatch *)
+
+    ..where cc_stopwatch would simply be
+
+        struct cc_stopwatch {
+          cc_time start;
+        };
+
+    ..or perhaps it could be just a
+
+        typedef cc_time cc_stopwatch;
+
+
+    One possible "gotcha": the OS-specific cpu-time functions must
+    have a resolution high enough to time even very short intervals
+    for this to be useful, I would assume. Perhaps a
+
+        cc_time cc_time_get_cpu_time_resolution(void)
+
+    would be a good idea.
+
+
+002 Heed the SoBoundingBoxCache::hasLinesOrPoints() settings
+    2001-11-27  Morten Eriksen  <mortene@sim.no>
+
+    We should add a slack value to bounding boxes with lines and/or
+    points in them, to avoid clipping artifacts when anti-aliasing is
+    used.
+
+    (This concerns both client code in the Coin library and in the So*
+    libraries which calculates and renders bounding boxes.)
+
+    As part of this, we should audit to check that all relevant
+    shape-type nodes uses the
+    SoBoundingBoxCaches::setHasLinesOrPoints() method.
+
+
+003 Clean up the file versioning mess
+    2001-11-28  Morten Eriksen  <mortene@sim.no>
+
+    Scenegraphs exported through the SoWriteAction should have a
+    correct header to reflect the actual contents. As it is now,
+    everything is just written as Inventor v2.1, even if there are
+    nodes from Inventor >2.1, or nodes specific for Coin, or even
+    VRML-specific nodes.
+
+    To make it possible to do this, it seems likely that we need some
+    way of tagging API elements that can be exported to file -- ie
+    primarily nodes and engines -- with some kind of versioning
+    identification. So that's a prerequisite.
+
+    I believe we need both a dynamic flag on an SoNode to know which
+    specific file format version it was read from (if any, it could
+    have been new'ed from the application aswell), plus an OR-flag on
+    each class which specifies which formats it is valid for (to be
+    used during write).
+
+    As part of this setup, we'll also need to handle "upgrading"
+    during reads, as some nodes had their field specification changed
+    from for instance Inventor v2.0 to Inventor v2.1 (e.g. the
+    SoPackedColor node changed the name of it's one field from "rgb"
+    to "orderedRGBA", and also changed the semantics of the uint32_t
+    word in the field).
+
+    This last problem should probably be solved by having e.g. an
+    alternate SoPackedColorV20 node-class, which would be instantiated
+    during read, and then converted to an >= Inventor v2.1 format
+    SoPackedColor node.
+
+    UPDATE 2002-06-17 mortene: pederb has laid out the foundations
+    necessary by setting up bitmasks and API methods on
+    SoNode. Inventor 2.0 import should be ok. Export "compatibility
+    detection" has not been done yet, though.
+
+    UPDATE 2002-10-29 mortene: one additional word of warning from
+    kintel is that '+' is not allowed to be used as the 1st character
+    of a node name identifier under VRML97. Coin's scheme for
+    auto-prefixing node names with a '+' character when there are
+    multiple references to them (i.e. there are DEF/USE pairs) makes
+    us write invalid VRML97 files!
+
+    UPDATE 2002-11-05 mortene: estimate made at our November 2002 SIM
+    Coin summit; "1 man-week should be more than sufficient".
+
+    UPDATE 2003-03-12 mortene: additional tidbit to think about; if
+    the app programmer uses SoOutput::setHeaderString() to explicitly
+    force a particular file format, we should heed that (and spit out
+    warnings in debug mode if the scene graph to be written contains
+    non-compatible nodes).
+
+    UPDATE 2003-03-14 kyrah, based on input from mortene: While we are
+    at it, we should definitely sort out what file formats in what
+    versions we support, and handle the cases where somebody tries to
+    read an unsupported file.
+
+    What we should do is to classify files into no less than 5
+    different categories:
+
+    0) Fully supported file formats. (Examples: Inventor 2.0 and
+       Inventor 2.1 (both of these in both ascii and binary),
+       VRML 1.0.)
+
+    1) File formats that we are likely, but not guaranteed, to read
+       without problems. (Examples: any TGS Inventor format from
+       versions (>= 2.5?) where they have added nodes that we don't
+       support yet.)
+
+       [How should we handle these? Try to load, but spit out a
+       warning that there might be problems?]
+
+    2) File formats we know about, but only support in the correct
+       library configuration. (Example: VRML97, 3DS.)
+
+       [Refuse to load if the current configuration of Coin does not
+       support the format, explain why, and how to build Coin with
+       support for that file format.]
+
+       [UPDATE 20031117 mortene: this is now fixed for 3DS files.]
+
+    3) File formats we know about, but don't support. (Examples:
+       Inventor 1.0 ascii & binary. We could also add in all sorts of
+       3D file formats here, like Maya, OBJ, etc etc.)
+
+       [Refuse to load, with a message that this format is
+       unsupported.]
+
+    4) Unknown file formats.
+
+       [Refuse to load, with a message that this format is
+       unknown.]
+
+    Morten estimates that it will probably be "a few days work to get
+    this into lines of code".
+
+
+    UPDATE 2003-05-19 mortene: there's an additional complication,
+    recently pointed out to me by pederb. The SoVertexPropery *field*
+    "texCoord3" was added to TGS Inventor between version 2.5 and 2.6,
+    and to Coin between 1.0 and 2.0. This means that an
+    SoVertexProperty node can be compatible with different lowest
+    common denominator file format versions depending on whether or
+    not it contains a non-default value for the texCoord3 field (or
+    for import: whether or not the field is explicitly listed within
+    the file).
+
+    (SoExtSelection may also have added a new field in later API
+    versions, see the FIXME in SoExtSelection.cpp on the lassoMode
+    field.)
+
+    Adding or removing fields from nodes will in general do nasty
+    things with file compatibilities, and we try to avoid it. But
+    since TGS has already set a precedence (there are more nodes than
+    just SoVertexProperty where this is done, see for instance their
+    detailed release notes for Inventor 4.0), we need to be able to
+    handle this. Ouch.
+
+
+    UPDATE 2003-06-23 mortene: yet another complication is that enum
+    values for SoSFEnum and SoMFEnum fields are also known to have
+    been added by TGS as their Inventor versions are released. They
+    have for instance added a "REPLACE" enum value to
+    SoTexture2::Model in v4.0.
+
+
+    UPDATE 2003-06-23 mortene: we can use the introspection features
+    of the API to list all nodes, fields and enums. We should do this
+    against SGI Inventor 2.1, and get some TGS license holders to do
+    this for various TGS versions, to find out exactly when stuff has
+    been introduced. I've written a small application which does this,
+    and placed it in this directory as 'dumpnodes.cpp'.
+
+
+004 Re-design the public API for handling textures
+    2001-11-28  Peder Blekken  <pederb@sim.no>, write-down by mortene@sim.no
+
+    The available public API for handling textures from SGI / TGS
+    Inventor (ie SoTexture2 with friends) is seriously
+    under-developed, and contains many flaws.
+
+    Our work on a project where we developed a very advanced
+    terrain-visualization extension has resulted in lots of extra
+    functionality in Coin (SoGLImage, SoGLBigImage, delayed, parallel
+    loading of textures in SbImage, etc etc) which will strengthen the
+    support for texture handling immensely. Because of the limitations
+    of the basic SoTexture2 (et al) design, it seems hard to retrofit
+    this into the current design in a pretty way, though.
+
+    So what should be done is to make a new design where all of this
+    is
+
+        a) fitted into the *basic* Inventor API design principles, but
+           in new classes
+
+        b) still hide as much complexity as possible for the
+           application programmer, while still retaining the necessary
+           level of flexibility
+
+        c) if possible, layer the present public API classes and
+            methods (ie SoTexture2 et al again) on top of the new,
+            good design
+
+        d) make sure we keep the old API functioning as before for the
+           sake of compatibility with external client applications
+
+        e) add support for new image types. Currently only 8 bits per
+           component is supported, but to save texture memory it is
+           often useful to support other image modes, such as textures
+           with palettes (as can be done in OpenGL with
+           GL_EXT_paletted_texture) and/or 16 bits RGB.
+
+    All this should _absolutely_ be done before we close up on the v2
+    release, as after v2 it will likely be a while until we get the
+    chance to do larger API / design changes again.
+
+
+005 Support compressed textures
+    2002-01-03  Thomas Hammer  <thammer@sim.no>, writeup by <mortene@sim.no>
+
+    The S3TC extension is widely supported on many common graphics
+    cards from a wide range of vendors (NVidia, S3 (duh!), ATI, 3dfx,
+    more?), so we should implement support for it to aid more
+    efficient resource handling with regard to texturemaps.
+
+    See <URL:http://www.pseudonymz.demon.co.uk/s3tcoglext.htm> for
+    more information (note: there is probably more elaborate
+    descriptions available elsewhere).
+
+    Also, check out the GL_ARB_texture_compression extension:
+    <URL:http://oss.sgi.com/projects/ogl-sample/registry/ARB/texture_compression.txt>.
+
+    Plus (for at least OpenGL 1.3): the glCompressedTexImage*()
+    functions.
+
+    UPDATE 2005-06-20 mortene: kintel has implemented this now, I
+    believe. (Is it feature complete, or are there still important
+    FIXMEs etc? Should check this before removing the item.)
+
+
+006 Font specification
+    2001-11-28  Morten Eriksen  <mortene@sim.no>
+
+    There's really no good mechanism in the API for setting detailed,
+    OS-portable font information. The API of the SoFont and
+    SoFontStyle nodes is pretty lousy.
+
+    We should re-design and layer the old API / classes on top of our
+    new and improved design.
+
+    2001-11-29 larsa: We should probably actually implement loading of
+    external fonts first :)
+
+
+010 Make Coin Usable from ROM
+    2001-12-19  Lars J. Aas  <larsa@sim.no>
+
+    Investigate if all static writable data can be avoided so Coin can
+    be run from ROM (important for embedded systems).  This is just an
+    idea - didn't find a more appropriate place to put it.
+
+
+011 Rethink handling of camera properties and display configuration.
+    2002-02-01  Morten Eriksen  <mortene@sim.no>
+
+    I have a nagging feeling that the camera model is not as good as
+    it should be, we are for instance mixing up display-dependent
+    configuration settings (like stereo mode stuff) with actual
+    view-matrix pr-camera configuration stuff (like orthographic vs
+    perspective matrix settings, field-of-view, etc).  I can't see why
+    the former should belong within the SoCamera node, as I don't
+    think it gives any meaning to change stereo settings during
+    traversal, for instance.
+
+    Java3D probably has a better design here than the original
+    Inventor API provides, so anyone taking on this task should at
+    least investigate their model.
+
+
+012 The SoSphere should be tessellated better.
+    2002-02-19  Morten Eriksen  <mortene@sim.no>
+
+    It is now tessellated to quads, in a way that makes the visual
+    quality not as good as it should be.  SGI / TGS Inventor's
+    SoSphere is (at least partly) triangulated, and looks better.
+
+
+013 Implement an alternative to using macros for specifying nodekit parts.
+    2002-02-20  Peder Blekken  <pederb@sim.no>
+
+    The SO_KIT_ADD_CATALOG_ENTRY macro(s) is quite large and complex,
+    and when expanded for all draggers and nodekits it probably adds
+    several 100 KBytes to the Coin library. A good solution would
+    probably be to specify the node kit parts using text strings, and
+    implement one function that will interpret the strings and
+    initialize the node kit parts without using macros.
+
+
+014 Make rendering (and other operations) robust for inconsistent scenegraphs.
+    2002-05-13  Morten Eriksen  <mortene@sim.no>
+
+    We should audit our rendering (and related) code and fix all cases
+    were we lack robustness for at least the most common mistakes.
+
+    Being able to import or otherwise construct iv-models that render
+    without crashing upon slight errors is important for the general
+    robustness of applications built on top of Coin. It will also be
+    important for the miscellaneous planned multithreaded
+    functionality.
+
+
+015 100% correct transparency mode.
+    2002-05-15  Morten Eriksen  <mortene@sim.no>
+
+    Even the best transparency mode in Coin will still fail under
+    certain circumstances, such as intersecting polygons. It would
+    probably be very slow (and quite hard to implement), but we should
+    give the user the option to pick a transparency mode where
+    rendering is guaranteed to be correct -- if at all possible.
+
+    See also the comments about this in the technical ``FAQ'' file on
+    the root of the sourcecode archive.
+
+    For Nvidia specific hardware/drivers:
+      <URL:http://developer.nvidia.com/view.asp?IO=Interactive_Order_Transparency>
+      <URL:http://developer.nvidia.com/view.asp?IO=order_independent_transparency>
+
+    UPDATE 2003-09-11 mortene: TGS Inventor's API for this is their
+    new SoGLRenderAction::SORTED_LAYERS_BLEND enum. IMO, we should
+    just duplicate their API.
+
+
+016 Detect multiple instances of the Coin library within the same run-time application space.
+    2002-06-18  Morten Eriksen  <mortene@sim.no>
+
+    This seems to happen time and again with app programmers
+    "double-linking" with So* and Coin at the same time, causing two
+    Coin instances to live in memory -- which quickly causes a
+    mysterious looking crash.
+
+    We should use some kind of "intra-app" communication mechanism
+    under MSWindows to detect this case and throw up a big, fat error
+    message before exiting.
+
+    (Then pass on a patch to TrollTech, so they can do the same thing
+    with Qt -- that would relieve us of the common problems of app
+    programmers double-linking against Qt through SoQt and their
+    app-code.)
+
+    UPDATE 2003-08-15 mortene: I have this implemented now, see the
+    StaticObjectInDLL class in SoDB.cpp. Not very well tested, so not
+    yet sent to TT for suggested inclusion in Qt.
+
+
+017 Move action-style code developed in other projects into proper actions.
+    2002-07-05  Morten Eriksen  <mortene@sim.no>
+
+    Peder has already written much of the code needed for the TGS
+    Inventor SoToVRMLAction class, and Kintel has written code which
+    could fit into the TGS SoReorganizeAction class.
+
+    It's important to get this code into proper classes, so they are
+    used by a larger audience, adding value to the Coin library we
+    offer, so the code will be maintained instead of bit-rotting, etc
+    etc.
+
+    UPDATE 2002-09-03 mortene: SoToVRMLAction (and SoToVRML2Action)
+    has now been implemented (by summer intern Kristian Eide).
+
+    UPDATE 2003-11-18 mortene: more code has been written which should
+    be moved to SoReorganizeAction; handegar has done a faceset ->
+    tristrip converter. See the internal CVS TriStripSetAction.
+
+
+018 Check out and build simage as part of the Coin build process.
+    2002-08-01  Morten Eriksen  <mortene@sim.no>
+
+    This would:
+
+        * kill a bunch of common support problems for us
+
+        * it seems somewhat favorable anyway to make the Coin library
+          guaranteed "usable" with regard to textures, with no
+          external dependencies
+
+        * make it less likely that the simage sourcecode is slowly
+          rotting away
+
+    Note that we should still keep simage as a separate CVS project,
+    as it could be usable in other contexts. We should also set up a
+    configure option that makes it possible to _exclude_ simage from
+    Coin build, as not everyone needs to be able to load textures
+    from disk.
+
+    UPDATE 2005-06-20 mortene: there are many good arguments for _not_
+    doing this, actually. So we should probably rather make it easy
+    and convenient for external developers to download, update,
+    install etc new versions of simage -- so it's unlikely they will
+    ever have to build it themselves.
+
+    UPDATE 2005-06-21 kyrah: Let us not fool ourselves. Some
+    people will always want to be at the bleeding edge, and I just
+    don't see binary snapshots of simage (or even regular
+    patchlevel-releases) happening any time soon. What are the
+    "many good arguments", by the way?
+
+    UPDATE 2005-06-28 mortene: I agree it is unlikely that someone
+    will volunteer to make updated simage binaries on a regular basis,
+    but it should be possible to automate the process, given a little
+    bit of time to put in the effort to implement it.
+
+    As for the many good arguments, I don't remember. :-} (thammer &
+    barbara convinced me it was a good idea to keep them separate,
+    when they were working on the binary installer package for Win32.)
+
+    I can think of one, though: simage has a whole lot of
+    dependencies. Meeting even just a useful number of those when
+    building Coin is quite a lot of hassle -- at least on Windows. I
+    believe it's a real asset that Coin has so few hard dependencies
+    now. So it seems simpler to let people build Coin, but to download
+    a separate, full-featured simage binary -- to upgrade their
+    ability to import and export the various supported media formats.
+
+    UPDATE 2005-06-28 thammer: On the Windows platform, the process of
+    building simage and all libraries it depends on is automated
+    through the simage/build/build_simage_win32.sh script. The script
+    needs cygwin and VC6.
+
+    I believe the right way to proceed with this is to configure a a
+    VirtualPC VMWare virtual machine VC6, cygwin, etc - and fine-tune
+    the script for the virtual machine (if that is needed at
+    all). Whenever new simage binaries needs to be rebuilt, fire up
+    this virtual machine and run the script.
+
+    For using QImage instead of all the misc image libraries, we
+    should make visual studio projects file to make it easy for the
+    user to build it himself.
+
+019 Dynamically configurable viewer interaction (SoQt++)
+    2002-09-30  Lars J. Aas  <larsa@sim.no>
+
+    It would be better if the interaction functionality of the
+    ExaminerViewer, PlaneViewer, etc. were implemented at the FullViewer
+    level (or even Viewer), and the leaf viewer classes mostly differed
+    in how it hooked the different interaction functionality up to the
+    different user interactions in the constructor through some generic
+    interaction configuration API.  A side-effect would be that an
+    ExaminerViewer could at run-tim be reconfigured to act as a FlyViewer,
+    but the main reason for doing this is to separate user interactions
+    from how the viewer responds, and make this more configurable, and
+    shrink the implementations of the leaf viewers to the absolute minimum.
+
+
+020 SoSub*.h improvements.
+    2002-10-08  Morten Eriksen  <mortene@sim.no>
+
+    I'm sure many of the macros in these files could be made into
+    inline functions, simple template functions, or just better laid
+    out macros. They should be audited with this in mind.
+
+    One particular complaint we've had from a Coin user is that the
+    current macros are in general not compatible with template-based
+    extensions classes (at least not for nodes, haven't really
+    investigated the rest).
+
+
+021 Call-stack backtraces on errors.
+    2002-11-26  Morten Eriksen  <mortene@sim.no>
+
+    In the "Under The Hood" column in the May 1997 issue of the
+    Microsoft Systems Journal, Matt Pietrek explains how one can use
+    REBASE.EXE and the IMAGEHLP.DLL for getting a full list of
+    call-stack frames -- even for release builds.
+
+    Integrating something like this in Coin, and then catching crash
+    signals (if this is possible under MSWin..) could be a helpful
+    feature.
+
+
+022 VRML97 VRMLScript scripting node.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    (Merged from the "hotlist" after our November 2002 SIM Coin
+    summit.)
+
+    Can probably be based on the Javascript engine from the Mozilla
+    project. Script node interface should be mostly in place, only a
+    couple or three days of extra work. But we should also add in the
+    time needed to make it fit into the configure/build process, which
+    is some days extra -- hard to make a good estimate on that.
+
+
+023 SoCollisionManager & So@Gui@CollisionViewer.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    (Merged from the "hotlist" after our November 2002 SIM Coin
+    summit.)
+
+    From TGS's Inventor API additions. larsa's estimate: ~ 1 man-week.
+
+
+024 Optimizing the performance of the SoIntersectionDetectionAction.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    (Merged from the "hotlist" after our November 2002 SIM Coin
+    summit.)
+
+    Now uses an algorithm with O(n^2) asymptotic time, where n is the
+    number of triangle primitives. This renders it almost unusable.
+
+    larsa's estimate for optimizing away the horrible algorithm-time:
+    a bit more than 1 man-week.
+
+    kintel has been working on this, but decided to go for a solution
+    where he integrates another library. This library is ok to use for
+    kintel's application, but can not be integrated into Coin due to
+    license and/or copyright issues.
+
+    UPDATE mortene 2003-08-15: the algorithm time has been reduced by
+    using BSP trees in a pre-processing step to sort first shape nodes
+    and then triangles before doing any tri-tri intersection
+    testing. There's one deficiency to fix: shape's intersecting on
+    themselves hasn't been optimized yet (which is just a matter of
+    some refactoring of the internal code to fix -- there was some
+    copy'n'paste in this area).
+
+
+025 Integrate QGL into SoQt.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    (Merged from the "hotlist" after our November 2002 SIM Coin
+    summit.)
+
+    Should be done to make it possible to fix a bunch of bugs that QGL
+    has. Shouldn't take more than ~ 1 man-week to fix properly,
+    including full configure/build integration.
+
+    Here's a summary I wrote for Kyrah about this task, interspersed
+    with a couple of specific bug-reports on QGL:
+
+    ----8<---- [snip] -----------8<---- [snip] -------
+
+    A "first cut" would be fairly quick to do:
+
+        * Scramble together all QGL-related code for all platforms and
+          more or less dump it into SoQt/src/Inventor/Qt/widgets/QGL/.
+
+        * Merge it into the configure/build setup, so Mac vs Win vs
+          X11 sourcecode is picked when applicable.
+
+        * Rename classes in a way that avoids them crashing with the
+          "real" QGL namespace, to avoid linker problems for
+          clients.
+
+          (But we should do this in a non-intrusive way, so it's
+          straightforward to diff against new Qt/QGL releases to
+          incorporate TT's fixes.)
+
+        * Anything else?
+
+    Then later:
+
+        * Fix Mac issues.
+
+        * Fix other known bugs where we have littered work-arounds in
+          our SoQt-code.
+
+        * Fix the context-silliness problem reported by François
+          Painchaud:
+
+            void QGLContext::makeCurrent()
+            {
+                if ( currentCtx )
+                {
+                    if ( currentCtx == this )    // already current
+                        return;
+                    currentCtx->doneCurrent();
+                }
+                // etc.
+
+            "..where currentCtx is a static data member used to cache
+             the current QGLContext. Because Qt is not aware of any
+             OpenGL graphics context done externally, [...]
+             QGLContext::makeCurrent() does not update the graphics
+             context when it should."
+
+          And another problem with this reported by pederb:
+
+            "I have a [showstopper]. QGLContext is not thread safe so
+             it's impossible to use Qt/SoQt when running
+             multithread/multipipe applications.
+
+             This is caused by the static currentCtx sillyness that Qt
+             is using.  currentCtx should probably be removed from
+             QGLContext. It's a silly optimization. If the current
+             QGLContext is needed this should be handled by a (thread
+             local) hash table or something."
+
+
+        * Make it possible to take over the job now handled (poorly)
+          by QGLContext::chooseContext() -- Peder has a showstopper
+          problem with this for Geo2k on Windows (chooseContext()
+          picks a visual with 8-bit Z-buffer).
+
+          UPDATE 20030626 mortene: kintel also reports a problem which
+          seems to be related to this:
+
+                'glinfo' from examiner viewer tells me that I have 0
+                alpha bits, [...]. However, I _should_ get a GL context
+                with more alpha bits, so why isn't Coin/SoQt giving me
+                one?
+
+                My configuration is:
+                o Win2K
+                o NVidia GeForce4
+                o Color mode is 32 bit
+                o The drivers are new (4180)
+                o Coin-2, SoQt-1, qt-3.1.2
+
+        * Improve overall design, throw out the stuff we have no use
+          for.
+
+        * Collect the common parts that would be possible to reuse for
+          the other So*-toolkits.
+
+    ----8<---- [snip] -----------8<---- [snip] -------
+
+
+026 WWW-interface on Coin / SoWin / SoQt builds.
+    2002-12-18  Morten Eriksen  <mortene@sim.no>
+
+    An idea in the "wild, crazy and cool" department; it would have
+    been really nifty if we could provide Coin-users on MSWindows a
+    www-interface where they could
+
+      a) set up the parameters for how they wanted their MSWindows
+         Coin / SoQt / SoWin DLL / LIB to be (static vs dynamic,
+         release vs debug, which C run-time library to use, with or
+         without exception support, with or without RTTI, at what
+         optimization level, eventually which compiler to use, etc
+         etc), and then;
+
+      b) the wanted configuration would be found and a link to
+         downloading it would be presented
+
+      c) if the configuration was not present, a build of that config
+         was triggered, with a message to the user to check back in 15
+         minutes (this config would of course then be stored, so
+         future attempts to download it from other users would be
+         immediately gratified)
+
+    This should of course all run on a Linux www server, so we would
+    need to be able to run all necessary dependencies under Wine
+    (Cygwin?, MSVC's command-line tools, SuperPIMP, ...).
+
+    See also this article: <URL:http://codingstyle.com/articles/using-ms-vcpp-with-gnu-wine.html>.
+
+
+027 Build Coin / SoQt / SoWin on MSWin without relying on MSVC++.
+    2003-01-10  Morten Eriksen  <mortene@sim.no>
+
+    It would be nice if MSWin developers could work with Coin without
+    having to buy the expensive MSVS suite. Doubly nice would be if we
+    ported it to compilers that are free.
+
+    Likely candidates for porting efforts includes at least:
+
+        - OpenWatcom (<URL:http://www.openwatcom.org>)
+        - Cygwin GCC (<URL:http://www.cygwin.com>)
+        - MingW (<URL:http://www.mingw.org>)
+        - Borland's C++ compiler
+        - Digital Mars C/C++ compiler (<URL:http://www.digitalmars.com>)
+          (note: only "free", not "Free" -- not even with source code)
+
+    UPDATE 2004-10-22 mortene: Coin has now been built by at least
+    mingw and Cygwin gcc of the compilers mentioned above. As for
+    other MSWin compilers in general, and Borland C++ in particular,
+    here's some advice given on coin-discuss upon a query about what
+    needs to be done for Borland support:
+
+    ----8<----- [snip] --------------8<----- [snip] ----------
+
+        [...]
+
+        Support for MSVC++ is done by a wrapper executable,
+        Coin/cfg/wrapmsvc.exe, which is used as a compiler and
+        linker. This "pseudo-compiler" will convert the arguments it
+        gets invoked with to arguments compatible with MSVC++'s cl.exe
+        and link.exe, and then invoke those executables to actually
+        build the code.
+
+        So to the configure script, and the Makefiles it generates,
+        the MSVC++ tools looks more or less like any other
+        "UNIX-style" compiler -- e.g. it takes the same kind of
+        arguments ("-g" for building with symbols, "-O2" for basic
+        optimalization measures, "-o" to name output files, "-I" to
+        give include paths, etc etc).
+
+        We would expect Borland C++ support to be done in a similar
+        manner, as the Borland compiler is probably also different
+        enough from the common style used by typical UNIX-system
+        compilers that it won't work with the Autotools
+        (i.e. configure et al) out of the box.
+
+        You can find the code for our wrapmsvc.exe wrapper in the CVS
+        module called "simacros", from the same CVS server as e.g. the
+        Coin repository.
+
+
+        Actual compilation of the source code is likely to require
+        little work and few changes of Coin code, as we believe our
+        source code is extremely portable -- it has been built by
+        literally dozens of C++ compilers, on just about any system
+        possible.
+
+
+        BTW, isn't there some kind of "compatibility mode" between
+        Borland's C++ development system and Microsoft's Visual C++? I
+        seem to remember having heard both that Borland provide a
+        cl.exe wrapper, and that Borland can use libraries built with
+        MSVC++ (such intercompatibilities are uncommon between C++
+        compilers). I may be mistaken, though, as I haven't looked
+        closely at this issue.
+
+        Morten
+
+    ----8<----- [snip] --------------8<----- [snip] ----------
+
+
+028 Support for multiple viewports in render areas
+    2003-01-22 Marius Kintel <kintel@sim.no>
+
+    To make it easy to create multiple viewports, we should have a high-level
+    API for this (in SoGuiRenderArea), smth. like this:
+    void addSceneGraph(SoNode*, SbViewportRegion)
+    void removeSceneGraph(SoNode*)
+
+    Issues:
+    o We should be able to control a larger subset of the API of the
+      SoGuiRenderArea which can be cumbersome with this approach.
+
+    Solution:
+    class SoViewportArea:
+    o set/get scene graph, bgcolor, overlays, transparency, aliasing,
+      clearing, rendering priority (render order), scene manager,
+      renderaction.
+    o Let the above add function return a default SoViewportArea for ease of
+      use.
+    o Let some or all of the existing functions affect all viewport areas
+      (global override).
+
+    in SoGuiRenderAres:
+    o Add SoViewportArea instances
+    o Remap event coordinates for each viewport area (in reverse render
+      priority order) and send the event to each of their scene graphs (like
+      we do now for the overlay/normal scene managers.
+
+    We also have to resolve the camera issue somehow; control cameras per
+    viewport area vs. sharing cameras between viewport areas, sync cameras
+    with the viewer, control view/pick mode per viewport area.
+
+
+029 Better font support.
+    2003-01-30  Morten Eriksen  <mortene@sim.no>
+
+    This is a braindump of my ideas and hints for how to go about this
+    task:
+
+     * We should be able to load TrueType fonts, which I believe would
+       give us, our users, and our users's users good flexibility.
+
+       The obvious choice for getting support for TTF seems to be by
+       using the FreeType library (<URL:http://www.freetype.org>).
+
+       The FreeType library has a license which is liberal enough that
+       we can actually embed the source code into the Coin source
+       code. There are good arguments both for and against this
+       strategy. On the plus side, that would make packaging and
+       distribution easier and more "fail-safe", both for us, other
+       Coin users and for the end-users of Coin-based application
+       software. On the other hand, this would give us more work with
+       regard to keeping in sync with the FreeType project's bug-fixes
+       and other upgrades. (And that could quickly get messy, as we
+       probably need to make some changes to at least the
+       configure/build setup of the FreeType library.)
+
+       If we don't embed the FreeType library, we should let it be
+       dynamically loaded through a run-time binding, like we do for
+       simage, GLU and OpenAL.
+
+     * We have feedback from a Coin-user (Daniel Alvarez) that going
+       up one extra level of abstraction (from using FreeType
+       directly) would give us some important advantages. Check with
+       him what the arguments are.
+
+       SGI Inventor does this through their "libFL" library.
+
+     * Localization / internationalization: should probably be done by
+       handling Unicode charactersets -- just ASCII or iso-8859-[1-15]
+       is not enough.
+
+       (<URL:http://www.wikipedia.org> is a great place to go and read
+       oneself up on Unicode, UTF-8, UTF-16, iso-8859-*, and character
+       encodings in general.)
+
+       Note that even if the rest of Coin is still not fixed up to
+       handle localization issues, it is important to not introduce
+       even more limitations with the font handling -- it should
+       rather "be ready", so rendering all sorts of character sets
+       clicks nicely into place when SbString, SbName, et al is fixed
+       up.
+
+     * One important aspect of the implementation is to get the
+       internal class abstraction for handling glyphs correctly. The
+       current SoGlyph class probably leaves a lot to be wanted.
+
+     * We should try to get hold of one or more full-featured TrueType
+       font(s) to embed as a binary file into Coin -- as a fallback in
+       case no TT fonts can be found on the run-time system.
+
+       See the Coin/docs/misc-resources.txt file for URLs to free font
+       resources.
+
+     * Check the documentation on SoFont / SoText2 / SoText3 / etc for
+       TGS Inventor: there's a list of the default font directories
+       that are searched, and which environment variables are heeded
+       for further directories to search.
+
+       There's also some information about how font names in SoFont
+       are mapped to actual, system-dependent font names.
+
+       We should implement the same functionality in these regards.
+
+     * On Mac OS X and MSWin, we should avoid the dependency on the
+       FreeType library, and use the native APIs directly.
+
+
+030 Offscreen context support functions.
+    2003-01-31  Morten Eriksen  <mortene@sim.no>
+    FIXED.
+
+
+031 Handle POSIX paths under MSWin.
+    2003-02-10  Morten Eriksen  <mortene@sim.no>
+
+    Idea by larsa: we could handle POSIX-style paths under MSWin by
+    run-time binding to the cygwin.dll and it's
+    cygwin32_conv_to_win32_path() function.
+
+    This would presuppose that we implemented the SbFile / SbDirectory
+    abstraction(s) mentioned in the api-wish-list.txt file first.
+
+    UPDATE 2003-08-15 mortene: the path conversion code in Cygwin
+    might be really simple, so perhaps it would be easier (and more
+    robust) to just duplicate the algorithms used.
+
+
+032 Port SGI's ''ivperf'' tool.
+    2003-03-06  Morten Eriksen  <mortene@sim.no>
+
+    This should go into the IvTools CVS repository. Note that
+    ''ivperf'' contains SoXt- and X11/Motif-specific code, and IvTools
+    so far only contains Coin-only dependent source code.
+
+
+033 Port TGS's ''ivtovrml'' tool.
+    2003-03-06  Morten Eriksen  <mortene@sim.no>
+
+    Here's the interface:
+
+        C:\>ivtovrml
+        Usage: ivtovrml [-vfntuhpqr] [-o filename] [-d InlineDir] file ...
+        -v : Generate VRML2 output
+        -o : Write output to [filename]
+        -d : A directory path. When converting SoFile to Inline nodes,
+             write converted filed to [InlineDir]
+        -f : Expand File nodes instead of converting to Inline nodes
+        -n : Force Texture Coordinates to write for all Nurbs Surfaces
+        -p : Do not reuse existing appearance nodes
+        -q : Do not reuse existing geometry property nodes
+        -r : Do not reuse existing geometry nodes
+        -t : Expand Texture2 nodes
+        -u : Write unknown nodes to output instead of removing them
+        -h : This message (help)
+        If given a filename of '-', standard input will be read.
+
+        If the -o option is not used to specify the output filename, the
+        converted file is written to standard output
+
+
+034 Image loading under MSWin through DirectX.
+    2003-05-07  Morten Eriksen  <mortene@sim.no>
+
+    According to someone Kyrah knows, DirectX has import routines for
+    a bunch of image formats (BMP, DDS, DIB, JPG, PNG, PPM, TGA) and
+    export routines for a few (BMP, DDS, DIB).
+
+    So we should add dynamic binding to the relevant DirectX library
+    from within Coin, and thereby avoid the simage dependency. (Either
+    that, or add DirectX import / export support to simage.)
+
+    UPDATE 2004-10-08: kyrah recommends not using DirectX, for two
+    reasons: inter-version incompatibilities, and number of output
+    formats not matching number of input formats.
+
+    kyrah and thammer recommends using GDI+ instead (binding
+    dynamically to it), as it is available on all WinXP systems by
+    default, and is a simple download and install for other Windows
+    versions.
+
+
+035 Clean up SoBase write code.
+    2003-05-28  Morten Eriksen  <mortene@sim.no>
+
+    Applying several SoWriteAction instances to one or more scene
+    graphs in parallel is not even close to being thread-safe, due to
+    the mess with at least how write reference counts are handled, the
+    "in-graph" detection flag, and problems related to the multi-pass
+    nature of SoWriteAction.
+
+    This would best be solved by keeping track of write-process
+    specific data in the SoWriteAction, not in SoBase. This would take
+    API additions, so it can't be done until at least a minor
+    increment of the version number is done.
+
+
+036 Write an "interior-geometry reducer" action.
+    2003-08-15  Morten Eriksen  <mortene@sim.no>
+
+    This is the old idea for RR, about "offline"/pre-processing
+    occlusion culling to remove interior parts of objects, which now
+    should be possible to do with Øystein's SoExtSelection code.
+
+    Refactor the "visible only" SoExtSelection code into an internal
+    Coin interface, then use that from both SoExtSelection and the new
+    action ("SoRemoveInteriorGeometry"?).
+
+    Removal of internal geometry will be done by moving a camera
+    around on the bounding sphere of the object, taking "snapshots" to
+    see what geometry is visible from at least one angle. After a run
+    over all angles, the remaining geometry that were not visible from
+    anywhere will be removed.
+
+    SoRemoveInteriorGeometry should have a setting to decide how
+    accurate the removal should be, to decide e.g. how many different
+    camera position to snapshot from, and what the offscreen buffer
+    resolution should be.
+
+
+037 Take advantage of NVidia's occlusion culling extension.
+    2003-08-15  Morten Eriksen  <mortene@sim.no>
+
+    We should at least simply insert code for this in the SoSeparator
+    node, so that it checks the screen area of its geometry's bounding
+    box before deciding whether to traverse below it or not.
+
+    Should also consider adding new node(s) (like TGS has done) for
+    more efficient front-to-back sorting before rendering, which could
+    give huge gains in rendering performance.
+
+
+038 Duplicate API for TGS's SoBigImageRenderer extension.
+    2003-08-21  Morten Eriksen  <mortene@sim.no>
+
+    Our big-image offscreen rendering is done perfectly through the
+    standard SoOffscreenRenderer, so this would likely be a simple
+    matter of setting up the SoBigImageRenderer API and wrapping
+    SoOffscreenRenderer calls into its methods.
+
+
+039 Move tristripifying code into SoReorganizeAction.
+    2003-08-22  Morten Eriksen  <mortene@sim.no>
+
+    handegar has written a faceset->tristrips converter, this should
+    be made available through an SoReorganizeAction.
+
+
+040 Add built-in version numbers to win32 DLLs.
+    2003-09-11 Barbara Langmüller <barbara@sim.no>
+
+    win32 DLLs should have built-in version tags to be able to extract
+    from which minor version the DLL was built from to avoid possible
+    incompatibility issues.
+
+    Version information is stored in resource files (.res)
+    and is (as the source code) compiled and linked to the DLL.
+
+    How to set it up manually in Visual Studio:
+
+    1. open the workspace file from which you will build the DLL
+    2. File - new - resource script
+    3. In the workspace panel there is now a new tab 'ResourceView',
+       open it
+    4. Right click its entry and choose 'insert'
+    5. Choose 'Version' and click 'New'
+    6. Build the project and you will get a DLL with version information
+
+    A resource file typically looks like this (not MSVC generated):
+    ------------ begin resource file -------------------
+    1 VERSIONINFO
+    FILEVERSION 1,0,0,1
+    PRODUCTVERSION 1,0,0,1
+    FILEOS 0x40004
+    FILETYPE 0x2
+    {
+    BLOCK "StringFileInfo"
+    {
+           BLOCK "041404b0"
+           {
+                  VALUE "Comments", ""
+                  VALUE "CompanyName", "Systems in Motion AS"
+                  VALUE "FileDescription", "coin2d"
+                  VALUE "FileVersion", "1, 0, 0, 1"
+                  VALUE "InternalName", "coin2d"
+                  VALUE "LegalCopyright", "Copyright © 2003"
+                  VALUE "LegalTrademarks", ""
+                  VALUE "OriginalFilename", "coin2d.dll"
+                  VALUE "PrivateBuild", ""
+                  VALUE "ProductName", "Systems in Motion AS coin2d"
+                  VALUE "ProductVersion", "1, 0, 0, 1"
+                  VALUE "SpecialBuild", ""
+           }
+    }
+
+    BLOCK "VarFileInfo"
+    {
+           VALUE "Translation", 0x0414 0x04B0
+    }
+    }
+    ------------ end resource file -------------------
+
+    A free utility to view and edit DLL resources can be found at
+    http://www.users.on.net/johnson/resourcehacker/
+
+    As for the integration with the NSI installer, I would like to
+    point to the NSI documentation (Function GetDllVersion) and the
+    following interesting post on the NSI forum on winamp.com:
+    <a href="http://forums.winamp.com/showthread.php?s=&
+    threadid=113541&highlight=GetDllVersion" />
+
+
+041 Generic ADT in C for dynamic arrays.
+    2003-11-18  Morten Eriksen  <mortene@sim.no>
+
+    The cc_list interface is being misused here and there (like in
+    src/fonts/freetype.c, for instance) in ways which could give us
+    trouble on 64-bit platforms -- like storing int values as void*.
+
+    Should be fixed by making an cc_list_int* ADT, or better: a
+    *generic* C dynamic array ADT -- e.g. by some macro hackery or
+    something.
+
+
+042 Coin internationalization.
+    2001-06-28  Morten Eriksen  <mortene@sim.no>
+
+    Sooner or later, my guess is that we will have to make SbString
+    and SbName capable of handling more than simple ASCII / iso-8859-*
+    character sets. Other areas of Coin probably also need some
+    rewriting for internationalization.
+
+    UPDATE 2001-06-28 larsa: Are there any alternatives better than
+    Unicode UTF-8 for this?
+
+    UPDATE 2003-01-22 mortene: kintel suggests auditing of the following;
+
+      o Node names (SbString/SbName storage + I/O).
+
+        (We cannot do much wrt. file formats since we want to be
+        compatible.  VRML97 is fully unicoded through utf-8, I guess
+        Inventor files and VRML1 are latin1 but I'm not sure. We can
+        always create our own Coin file format w/unicode support.)
+
+      o file I/O (unicode file names)
+
+        (File names are subject to file systems constraints and must
+        be handled separately.)
+
+      o Font handling, including text rendering through SoText2,
+        SoText3, SoAsciiText, and SoVRMLText.
+
+    UPDATE 2003-12-02 mortene: the following URL seems to contain a
+    lot of useful information
+
+        http://www.cl.cam.ac.uk/~mgk25/unicode.html
+
+    And the full Unicode 4.0 standard is available as PDF files at
+
+        http://www.unicode.org/versions/Unicode4.0.0/
+
+
+043 The Coin library should have an option to set up a fatal error handler.
+    2003-12-03  Morten Eriksen  <mortene@sim.no>
+
+    As for the So* libraries, Coin should also provide an interface
+    for setting up a fatal error handler, so the application can exit
+    gracefully if something really nasty happens.
+
+    Currently, I can think of one issue that would justify this: if
+    malloc() (or calloc(), realloc(), etc) returns a NULL
+    pointer.
+
+    There might be more, though. We could for instance consider
+    classifications of asserts, where one class of asserts would lead
+    to the invocation of the handler (with a stack backtrace and all
+    sorts of kinds of debugging information, if possible).
+
+
+044 Use GL_TEXTURE_RECTANGLE_EXT extension.
+    2004-07-14  Karin Kosina  <kyrah@sim.no>
+
+    On cards that support it, we should use the GL_TEXTURE_RECTANGLE_EXT
+    OpenGL extension for non-power-of-two textures. In addition to
+    the obvious places, this includes creating (and binding)
+    pBuffers.
+
+    Note that even though we will still need fallback code for
+    older drivers that don't support this, I believe this would be
+    worthwhile. On modern cards, GL_TEXTURE_RECTANGLE_EXT is
+    often faster than GL_TEXTURE_2D, and if somebody is using a
+    lot of textures (think font rendering), they will appreciate
+    both the speedup and the savings in texture memory.
+
+
+045 Coin / SoQt / Qt port or reimplementation of the SGI ''gview'' program.
+    2004-07-15  Morten Eriksen  <mortene@sim.no>
+
+    This is a program to dynamically toy around with a scene graph,
+    which is useful for many reasons. Build and run
+    inventor/apps/demos/gview/gview from the SGI Inventor source code
+    to check it out.
+
+    A reimplementation under our own copyright would be most useful
+    for us, but a simple port under SGI copyright to Qt / SoQt would
+    also be useful.
+
+    Should first check that it builds and runs without any problems
+    (and without any significant source code modifications) on Coin
+    and SoXt, though.
+
+    Would be a good task for a summer intern.
+
+
+046 FILEFORMAT/DEFAULTS sections for the nodes.
+    2004-11-03  Morten Eriksen  <mortene@sim.no>
+
+    This is a useful feature of the original SGI Inventor man pages,
+    which we should also present in our Doxygen-generated doc. For an
+    online example, see e.g.:
+
+        http://techpubs.sgi.com/library/tpl/cgi-bin/getdoc.cgi?coll=0650&db=man&fname=/usr/share/catman/p_man/cat3/Inventor_c/SoCube.z&srch=socube
+
+    It would probably be fairly straightforward to write some code to
+    auto-generate these documentation blocks, by using the Coin
+    introspection features.
+
+
+// *************************************************************************
+
+
+OTHER COIN-RELATED STUFF TO FIX
+===============================
+
+These are from a "hotlist" of items after our November 2002 SIM Coin
+summit -- i.e. tasks that we should try really hard to get resources
+for in upcoming projects:
+
+   * Profit library made release-ready: ~ 2-3 days.
+
+   * Dime library made release-ready: ~ 2-3 days.

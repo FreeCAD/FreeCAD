@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleGetInfoString</key>
+	<string>Coin @VERSION@</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.coin3d.Coin.pkg</string>
+	<key>CFBundleName</key>
+	<string>Coin</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@VERSION@</string>
+	<key>IFMajorVersion</key>
+	<integer>@COIN_MAJOR_VERSION@</integer>
+	<key>IFMinorVersion</key>
+	<integer>@COIN_MINOR_VERSION@</integer>
+        <key>IFPkgFlagBackgroundAlignment</key>
+        <string>left</string>
+        <key>IFPkgFlagBackgroundScaling</key>
+        <string>proportional</string>
+	<key>IFPkgFlagAuthorizationAction</key>
+	<string>RootAuthorization</string>
+	<key>IFPkgFormatVersion</key>
+	<real>0.10000000149011612</real>
+</dict>
+</plist>

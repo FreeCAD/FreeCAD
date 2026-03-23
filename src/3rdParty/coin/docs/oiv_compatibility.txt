@@ -1,0 +1,27 @@
+The Open Inventor Compatibility of Coin
+=======================================
+
+The Open Inventor API is HUGE, and achieving 100% compatibility with
+it is going to be a feat.  Ultimately, we want Coin to be 100%
+compatible with Open Inventor, but for now we have chosen to be
+incompatible in certain areas.  Some of these incompatibilities will
+be purely internal and not noticeable for people who develops Open
+Inventor-based applications.
+
+There are certain notable "hacks" in the latest version of Open Inventor
+that are set aside for now.
+
+
+Incompatibilities
+=================
+
+* SoByteStream class not implemented (Bugzilla #173)
+
+* SoTranSender and SoTranReceiver classes not implemented (Bugzilla
+  #174)
+
+* no support for the Inventor v1 file format (Bugzilla #152)
+
+* Typed Open Inventor objects can not be created before the type system
+  has been initialized (by calling a combination of SoDB::Init(),
+  SoNodeKit::init(), SoInteraction::init()).

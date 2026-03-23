@@ -1,0 +1,97 @@
+#VRML V1.0 ascii
+
+# Check all aspects of rendering with SoMaterial nodes.
+#
+# 19990504 mortene
+
+Separator {
+   # (ROW 0) Test material components 
+   Separator {
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { ambientColor 0 0 0 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { ambientColor 1 1 1 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { diffuseColor 0 0 0 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { diffuseColor 1 1 1 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { specularColor 0.5 0 0.5 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { specularColor 1 1 1 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { emissiveColor 0.5 0 0 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { emissiveColor 1 1 1 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { shininess 0 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { shininess 1 }
+      Sphere { }
+   }
+
+   # (ROW 1) Test with different transparency settings
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material { transparency 0.1 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.2 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.3 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.4 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.5 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.6 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.7 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.8 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.9 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 1.0 }
+      Sphere { }
+   }
+
+
+}

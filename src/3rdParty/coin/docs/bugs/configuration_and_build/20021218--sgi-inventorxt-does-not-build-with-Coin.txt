@@ -1,0 +1,22 @@
+048 Building SGI InventorXt on top of Coin reveals compile-time
+    incompabilities.
+
+    A Coin user reported two problems on coin-discuss:
+
+        - InventorXt uses an Inventor-internal include file:
+          Inventor/SoDebug.h. This contains a set of static debugging
+          helper methods. They seem easy enough to implement, so
+          perhaps we should do that.
+
+        - Some explicit inclusion of SbTime.h is needed with Coin,
+          that is not necessary with SGI Inventor. This is an
+          incompatibility that we would like to get rid of, to make
+          porting _other_ code from SGI Inventor to Coin a literal
+          no-brainer.
+
+    20021218 mortene.
+
+    UPDATE 20060208 mortene: larsa implemented most of the
+    functionality in the SoDebug class. The include issue may still be
+    present -- someone needs to try to build SGI InventorXt on top of
+    Coin to check.

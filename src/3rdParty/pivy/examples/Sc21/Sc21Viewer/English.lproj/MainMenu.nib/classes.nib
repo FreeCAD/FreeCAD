@@ -1,0 +1,19 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                dumpSceneGraph = id; 
+                open = id; 
+                showDebugInfo = id; 
+                toggleHeadlight = id; 
+                viewAll = id; 
+            }; 
+            CLASS = AppController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {coincontroller = SCController; filenametext = NSTextField; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

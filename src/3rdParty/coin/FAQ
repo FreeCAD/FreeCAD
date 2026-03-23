@@ -1,0 +1,323 @@
+
+Frequently Asked Questions for Coin
+===================================
+
+Last Updated:
+$Date$
+
+For answers to common Open Inventor programming issues not covered in this
+FAQ, take a look at the FAQs directory in the SoGuiExamples archive.
+
+For answers to common questions regarding the SoQt library, see the FAQ
+in the SoQt source archive.
+
+For answers to common questions regarding licensing, see the FAQ.legal
+file in the Coin source archive.
+
+The most up-to-date version of this file can always be found at
+http://source.coin3d.org/Coin/FAQ
+
+
+Index
+=====
+
+1: Extensions and Ports
+  Q1: Are there plans for making Coin multi-thread safe?
+
+  Q2: Can Coin do multi-pipe rendering?
+
+  Q3: Can I do volume rendering with Coin?
+
+  Q4: Does Coin support VRML97?
+
+  Q5: Is there an MS Visual C++ project I can use to build Coin?
+
+  Q6: Is there a Coin port for Mac OS X/Darwin?
+
+  Q7: Is Coin compatible with .NET?
+
+2: Common Problems
+  Q1: <Node>::classTypeId != SoType::badType() && "You forgot init()"?
+
+  Q2: Why doesn't it work properly to render the same scene graph in two
+      different windows?
+
+  Q3: Why does my Visual C++ program using Coin work for debug builds but
+      not for release builds?
+
+  Q4: I try to change the SoText2/SoText3 font, but nothing happens.
+      Why, oh why?
+
+  Q5: Where does the SoGuiExamples module install the programs?
+
+  Q6: Why can't any of the transparency modes be perfect?
+
+3: Other Hows and Whys
+  Q1: Why is the .so-version 20 for Coin 1.0 and 40 for Coin 2.0?
+
+
+
+Section 1. Extensions and Ports
+===============================
+
+Q1.1:   Are there plans for making Coin multi-thread safe?
+
+A:      Coin will probably never be 100% thread safe, but in Coin 2.0
+        we've added support for thread safe rendering. This means that
+        you can render a scene graph using many threads, at the same
+        time. The application programmer is responsible for all thread
+        synchronization though, but we've added many thread classes to
+        make this easier for you (SbMutex, SbRWMutex, SbStorage,
+        SbBarrier, ...).
+
+       
+Q1.2:   Can Coin do multi-pipe rendering?
+
+A:      Yes, but you have to do some work. Coin can do thread-safe
+        rendering traversals, but we haven't implemented a simple
+        viewer that will set up the OpenGL contexts and handle the
+        rendering for each context yet. We've done some internal
+        testing with SGI's OpenGL Multipipe SDK, and we might release
+        a viewer using that SDK.  Please contact us if you're
+        interested in multi-pipe rendering.
+
+
+Q1.3:   Can I do volume rendering with Coin?
+
+A:      Yes, SIM provide an add-on library called "SIM Voleon" for
+        volume rendering. The library provides a set of scene graph
+        nodes which lets developers set up and visualize volume data
+        (in the form of voxels).
+
+        SIM Voleon is available from the same channels as Coin itself,
+        i.e. the same FTP site and directory, and the same CVS
+        repository (the CVS module is named "SIMVoleon").  SIM Voleon
+        requires Coin v2.0 or later, and has a licensing scheme similar
+        to Coin.
+
+        See also http://www.sim.no/products/SIM_Voleon/
+
+
+Q1.4:   Does Coin support VRML97?
+
+A:      Coin 1.* does not support VRML97.  Coin 2.0 and upwards supports it.
+        We are not supporting 100% of the VRML97 standard yet, but most
+        models will load and display correctly. The main missing features
+        are URL loading (there are callbacks that makes it possible for the
+        application programmer to fix this though), proper support for
+        bindable nodes, and scripting (can also be supported through
+        callbacks).
+
+        VRML97 was amended in 2002 with amongst others GeoSpatial and NURBS
+        nodes.  You will not find these nodes in Coin 2 yet.
+
+
+Q1.5:   Is there an MS Visual C++ project I can use to build Coin?
+
+A:      Yes.  We have now developed a system that uses the Autoconf/Automake
+        build system to auto-generate a Microsoft Developer Studio project
+        and workspace file for building the Coin library.  This setup
+        is included with the source code under the directory build/.
+        You therefore do not need Cygwin to build Coin any longer.
+
+        If you want to generate the .dsp file directly from the source
+        repository yourself, see the file INSTALL about the --with-msvcdsp
+        configure option.  For this you need Cygwin installed.
+
+
+Q1.6:   Is there a Coin port for Mac OS X/Darwin?
+
+A:      Yes, there is full support for Coin, SoQt and SoXt on
+        Mac OS X. You can also integrate Coin into Cocoa applications
+        directly by using the Sc21 framework. See
+        http://www.coin3d.org/mac/ for Mac-specific information, build
+        instructions, download links and tutorials.
+
+
+Q1.7:   Is Coin compatible with .NET?
+
+A:      The Coin3D libraries are written in C and C++. The supported
+        compilers in the Visual Studio family are VisualC++ v6, 
+        VisualC++.NET 2003 and Visual C++ .NET 2005. In-house, we mostly
+        use VC++.NET 2005.
+
+        Coin3D is currently not a .NET assembly or component, so if
+        you'd like to use Coin3D from other languages in the
+        VisualStudio family (C#, VB, J#), you will need to do some
+        C++ coding first (basically add support for Managed
+        Extensions directly, or add some new (managed) classes that
+        act as external interfaces to Coin3D). We are probably going
+        to make a .NET assembly of Coin3D some time, but we
+        haven't had sufficient customer demand for it yet.
+
+
+Section 2. Common Problems 
+==========================
+
+Q2.1:   <Node>::classTypeId != SoType::badType() && "You forgot init()"?
+
+A:      If you get this assert, it means the run-time type system in
+        Coin was not initialized at the time a <Node> object is constructed.
+
+        This can happen for several reasons:
+        - you haven't called SoDB::init() yet when you construct a node.
+        - you have a global node that is constructed automatically on startup
+          before main is run.
+        - [VC++] you have linked multiple instances of the Coin library into
+          your application or the Coin library and the application or some
+          other library are using different C library instances.
+
+        In the case of not calling SoDB::init(), it is clearly stated on
+        page 36 of The Inventor Mentor that "SoDB::init() must be the first
+        Inventor call you make.".
+
+        "But this works with SGI Inventor", I hear you say...  Actually,
+        that is just pure luck.  Try e.g. creating a new SoBlinker node,
+        and you will see your application going down in flames.
+
+
+Q2.2:   Why doesn't it work properly to render the same scene graph in two
+        different windows?
+
+A:      The reason is probably that the two windows do not share the same
+        GL context, but the render actions are not set up with different
+        cache contexts.  Use two different values with
+        SoGLRenderAction::setCacheContext() for the two windows' render
+        actions.  Example follows:
+
+          for (int i=0; i < NR_VIEWERS; i++) {
+            SoGLRenderAction * renderaction = window[i]->getGLRenderAction();
+        #ifdef __COIN__
+          /* In Coin, we have added an extension to SoGLCacheContextElement
+             for getting a _guaranteed_ unique number for the cache contexts.
+             That the original Inventor API is missing a function like this
+             should be considered an ugly flaw in the design. */
+            uint32_t uniqcc = SoGLCacheContextElement::getUniqueCacheContext();
+        #else // SGI or TGS Inventor
+          /* Use a "pseudo-random" number and cross your fingers that it's
+             unique, since there's no decent method in the API from which
+             the application programmer can get a unique cache context id. */
+            uint32_t uniqcc = 19720408 + i;
+        #endif // SGI / TGS Inventor
+            renderaction->setCacheContext(uniqcc);
+          }
+
+        This is taken care of automatically by Kongsberg Oil & Gas Technologies's
+        SoQt / SoGtk / SoXt / SoWin / Sc21 libraries, so you shouldn't
+        have to worry about it unless you are making your own GUI
+        binding to Coin from scratch.
+
+
+Q2.3:   Why does my Visual C++ program using Coin work for debug builds but
+        not for release builds?
+
+A:      The MS Visual C++ compiler changes behaviour when you change between
+        DEBUG and RELEASE mode.  Initialization of variables is one thing
+        in particular you should look at - debug compilation will cause
+        all variables to be initialized to zero, while they will have random
+        values for release builds.
+
+        There are of course other possible causes as well.
+
+
+Q2.4:   I try to change the SoText2/SoText3 font, but nothing happens.
+        Why, oh why?
+
+A:      The font support prior to Coin 2.1 was limited to a hardcoded font
+        for both Text2 and Text3. TrueType 2D fonts support were
+        implemented in Coin 2.1 and 3D fonts in Coin 2.2.
+
+        On Windows platforms, TrueType fonts are imported by utilizing
+        the native support for this in the operating system. No such
+        native TrueType support exists on UNIX and UNIX-like systems,
+        so these platforms will use the FreeType library
+        <URL:http://www.freetype.org>.
+
+        If your requested font could not be found, try to set the
+        environment variable COIN_DEBUG_FONTSUPPORT to 1. Extensive
+        debug information will then be forwarded to the console. This
+        includes info on which font library is being used, and whether
+        Coin could locate the requested font or not, and where it
+        looked.
+
+        When using the FreeType library, requested fonts will first be
+        searched for in the working directory. The path specified by
+        the COIN_FONT_PATH environment variable will then be
+        searched. It is not possible to explicitly specify a font file
+        when using the Win32 library as all font handling must be
+        done through the operating system.
+
+        For more information, please read the API documentation on SoFont.
+        <URL:http://doc.coin3d.org/Coin/classSoFont.html>
+
+
+Q2.5:   Where does the SoGuiExamples module install the programs?
+
+A:      They are not installed.  The programs are just examples, and do not
+        belong with the installed executables on a system.  They are built
+        in the build dir, and are intended to be run from there.
+
+
+Q2.6:   Why can't any of the transparency modes be perfect?
+
+A:      See the documentation on SoGLRenderAction::TransparencyType, at
+
+          http://doc.coin3d.org/Coin/classSoGLRenderAction.html
+
+        For Coin 2.3, a new transparency mode called SORTED_LAYERS_BLEND
+        has been implemented for SoGLRenderAction which uses a technique
+        that actually produces correct transparency rendering.  
+
+        For earlier versions of Coin, transparency rendering will often
+        fail and produce visual artifacts because blending is done in an
+        incorrect order.  To avoid visual artifacts, all polygons must be
+        rendered in sorted back-to-front order, and intersecting polygons
+        must be clipped against each other.  This is in general too
+        expensive an operation to use in a real-time system, so it was
+        not implemented.
+
+        Note that there is a transparency mode called "SCREEN_DOOR" that
+        does not rely on blending - it uses dithering - that has been in
+        Coin since v1.0.  This transparency mode always produces correct
+        results, it doesn't even require multipass rendering, but since the
+        visual result looks somewhat dated people seem to prefer the
+        blending techniques.
+
+
+Section 3. Other Hows and Whys
+==============================
+
+Q3.1:   Why is the .so-version 40 for Coin 2.0 and 60 for Coin 3.0?
+
+A:      This was done to keep the artificial mapping we have constructed
+        between the release version number and ABI interface version of Coin
+        as simple as possible.  We have this mapping because we plan to
+        do parallel development of different Coin-versions at the same time
+        because Coin 1.0 has special status as the Open Inventor 2.1
+        compatibility release.
+
+        Keep in mind that .so-version numbers and release version numbers
+        really do not have anything to do with each other in the first place.
+
+        When you release a new major version of a library, you usually
+        break compatibility with earlier versions of the library.  When you
+        change the API/ABI of a library, you increment the interface number
+        to indicate that the library has a new interface.  Since we want to
+        continue development of Coin 1.0 after Coin 2.0 is released, we need
+        to reserve space for future Coin 1.x releases, and set the Coin 2.0
+        interface number after the reserved space.  We decided 20 interface-
+        numbers would suffice for each major version of the Coin library,
+        and the simplest equation for finding the interface number became
+        major*20+minor.
+
+        Incidentally, a lot of platforms (Linux included) calculate the
+        .so-number by taking the interface number and subtracting the age,
+        and the age is the same as the minor release version number for
+        Coin.  This will make the .so-number stay at 20 for the whole 1.x
+        series and similarly stay at 40 for the whole 2.x series, which of
+        course looks silly, but that's the way it is.
+
+        See also the Libtool manual, section about Versioning.  It's the
+        same system, except that we have added reserved space in our scheme.
+
+--

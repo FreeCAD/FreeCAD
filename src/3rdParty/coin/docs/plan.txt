@@ -1,0 +1,362 @@
+This document tentatively describes a plan for how the Coin
+development could proceed.
+
+*** IMPORTANT NOTE: THIS DOCUMENT HAS NOT BEEN UPDATED FOR A LONG,
+LONG TIME -- MANY ITEMS HAVE BEEN COMPLETED, SOME HAVE BEEN
+OBSOLETED. IF YOU HAVE PARTICULAR QUESTIONS OR WISHES, PLEASE GET IN
+TOUCH AT <mailto:coin-support@sim.no>. ***
+
+Changelog:
+        19991031 mortene        Created.
+
+        19991130 mortene        A few minor changes (clarifications and
+                                additions).
+
+        19991221 mortene        Added time estimates.
+
+==========================================================================
+Revision: $Id$
+==========================================================================
+
+
+MILESTONE 1
+===========
+
+Goal: Make Coin a fully usable retained mode rendering library for
+development of 3D applications on UNIX systems, Microsoft Windows and
+BeOS. The library will provide the application programmer with a
+documented API with functionality for scene graph rendering,
+interaction with the 3D shapes in the scenes, and full import and
+export capabilities of Inventor models.
+
+
+State of library when milestone is met:
+
+* an SoQt interface library against Troll Tech's Qt[1] fully
+  implemented according to the functionality provided by the Open
+  Inventor SoXt API, with the possible exception of missing support
+  for the more esoteric input devices (spaceball), and complex
+  rendering modes (overlay planes, stereo mode).
+
+  (Using the Qt library will be the only option when doing UNIX/X11
+  and MS Windows development with Coin on milestone 1.)
+
+  [Estimate for remaining work: ~ 1.5 man-months.]
+
+* an SoBe interface library against the BeOS[2] GUI fully implemented
+  according to the functionality provided by the Open Inventor SoXt
+  API, with the possible exception of missing support for the more
+  esoteric input devices (spaceball), and complex rendering modes
+  (overlay planes, stereo mode).
+
+  [Estimate for remaining work: ~ 1.5 man-months.]
+
+* import code should load all Open Inventor scene graph files, in the
+  open ASCII format as well as the proprietary binary format.
+
+  This might not include the functionality needed to read iv-format
+  files with user extensions in the form of new, non-standard nodes,
+  nodekits, fields etc.  This will then be done at a later milestone.
+
+  [Estimate for remaining work: < 1 man-week.]
+
+* all basic geometry and utility classes implemented: SbBox*, SbColor,
+  SbCylinder, SbDict, SbLine, SbMatrix, SbName and SbString, SbPlane,
+  SbRotation, SbSphere, SbTime, SbVec*, SbViewVolume,
+  SbViewportRegion, SbXfBox3f, the most common list classes.
+
+  [Estimate for remaining work: < 1 man-week.]
+
+* complete implementations of these action classes:
+
+       - the actions for rendering functionality:
+          SoGetBoundingBoxAction, SoBoxHighlightRenderAction,
+          SoGLRenderAction, SoLineHighlightRenderAction.
+
+       - actions for event handling, including interaction through
+          "picking": SoHandleEventAction, SoPickAction,
+          SoRayPickAction.
+
+       - scene graph export: SoWriteAction. The code belonging to
+          this action can export Open Inventor scene graphs in ASCII
+          or binary format.
+
+       - actions for miscellaneous scene graph operations:
+         SoCallbackAction, SoGetMatrixAction, SoSearchAction,
+         SoGetPrimitiveCountAction.
+
+  [Done.]
+
+* complete support for image textures on all 3D objects which are
+  supposed to support them.
+
+  [Almost done.]
+
+* all engine classes fully implemented according to what Open Inventor
+  provides.
+
+  [Estimate for remaining work: ~ 1 man-month.]
+
+* all error classes fully implemented according to what Open Inventor
+  provides.
+
+  [Done.]
+
+* all event classes fully implemented according to what Open Inventor
+  provides.
+
+  [Almost done.]
+
+* all field classes fully implemented according to what SGI Open
+  Inventor[3] 2.1 provides.
+
+  [Estimate for remaining work: ~ 2 man-weeks.]
+
+* all dragger classes fully implemented according to what Open
+  Inventor provides.
+
+  [Almost done.]
+
+* all manipulator classes fully implemented according to what Open
+  Inventor provides.
+
+  [Almost done.]
+
+* all nodekit classes fully implemented according to what Open
+  Inventor provides.
+
+  [Almost done.]
+
+* all projector classes fully implemented according to what Open
+  Inventor provides.
+
+  [Almost done.]
+
+* all sensor classes fully implemented according to what Open Inventor
+  provides.
+
+  [Almost done.]
+
+* node classes implemented according to what SGI Open Inventor 2.1
+  provides, with these exceptions and/or limitations:
+
+       - nodes used for rendering various types of 3D text will
+          support a limited set of import routines for font data (or
+          maybe just a single static "inlined" font), as well as a
+          limited set of rendering capabilities.
+
+       - SoColorIndex node not supported.
+
+       - nodes used for rendering nurbs curves and nurbs surfaces
+          will only provide the rendering functionality which is
+          possible to accomplish with the nurb support in the GLU
+          OpenGL companion library.
+
+       - 2D bitmapped fonts will only be supported through native
+          import routines on the system.
+
+       - no network support for URLs in SoWWWAnchor and SoWWWInline.
+
+  [Estimate for remaining work: ~ 1 man-month.]
+
+* bundles, caches, details and elements will be implemented as they
+  are needed, we will not be concerned about full Open Inventor
+  API-compatibility for these classes for milestone 1.
+
+* no support for rendering in OpenGL colorindex mode.
+
+* all API elements will be documented, albeit some of the
+  documentation will probably be a little on the sparse side.
+
+* a few simple example programs will accompany the library.
+
+* platform availability:
+
+       - fully supported: Linux, MSWindows (both with Troll Tech's
+          Qt), BeOS (native API)
+
+       - additional: most UNIX platforms (with Troll Tech's Qt)
+
+
+
+MILESTONE 2
+===========
+
+Goal: Implement enough of the functionality missing from Coin to have
+it replace QvLib as the fundamental import/export/rendering library
+for Rational Reducer[4]. In addition, we add the ability to read data
+from any URLs, local files as well as over the network. In summary,
+we'll have the necessary functionality at this milestone for a VRML
+viewer with all the basic features, only lacking some minor
+non-critical compatibility points with the ISO VRML 97 standard.
+
+
+Additional features we need to supplant the functionality from
+milestone 1:
+
+* VRML 1 support in the form of VRML 1 node classes. These would
+  likely be more-or-less duplicates of the standard Open Inventor
+  nodes.
+
+  [Estimate for remaining work: ~ 1 man-month.]
+
+* VRML 2 / ISO VRML 97 support. This includes import, export and
+  rendering. Support for playing sound and movies, and for parsing
+  embedded script languages will be postponed.
+
+  [Estimate for remaining work: ~ 2 man-months.]
+
+* port our VRMLView framework into the GUI interface libraries to make
+  an SoQtSIMViewer/SoBeSIMViewer.
+
+  [Estimate for remaining work: ~ 1 man-month.]
+
+* network library for loading URLs in all common protocols (HTTP, FTP,
+  etc).
+
+  [Estimate for remaining work: ~ 1 man-month.]
+
+* add progress callbacks for operations which potentially can take a
+  long time to execute (import, export, others?).
+
+  [Estimate for remaining work: ~ 2 man-weeks.]
+
+
+MILESTONE 3
+===========
+
+Goal: Make the Coin API be fully compatible with the SGI Open Inventor
+2.1 API. Make all Open Inventor functionality available, provide
+"shortcut" implementations on some of the most advanced features which
+will be postponed until milestone 4. All existing applications written
+for SGI Open Inventor 2.1 should be easily portable to Coin with no or
+minimum effort at this stage.
+
+Additional development necessary versus milestone 2:
+
+* implementation of the SoXt library. This library provides an
+  interface between Coin and the X11 windowing system found on UNIX
+  computers, and is the GUI interface library originally shipped with
+  Open Inventor.
+
+  [Estimate for remaining work: ~ 1.5 man-months.]
+
+* implementation of the SoWin library. This library provides an
+  interface between Coin and the Win32 API and the Microsoft
+  Foundation Classes (MFC) found on MS Windows platforms.
+
+  [Estimate for remaining work: ~ 1.5 man-months.]
+
+* proper 2D and 3D font support. Load truetype fonts as well as bitmap
+  fonts.
+
+  [Estimate for remaining work: ~ 1 man-month +.]
+
+* 100% completed NURBS support.
+
+  [Estimate for remaining work: ~ 1 man-month.]
+
+* implement support for automatic dynamic loading of user-extension
+  nodes, nodekits, etc (through dlopen() on UNIX systems and
+  LoadLibrary() on MSWin).
+
+  [Estimate for remaining work: ~ 1 man-week.]
+
+* make sure the APIs for bundles, caches and element classes cover the
+  API calls offered by SGI Open Inventor 2.1 so even advanced
+  applications can be ported to Coin with ease.
+
+  [Estimate for remaining work: ~ 2 man-weeks.]
+
+* support overlay planes in the GUI interface libraries which can
+  support them without doing terrible hacks.
+
+  [Estimate for remaining work: ~ 2 man-weeks.]
+
+* support stereo mode viewing.
+
+  [Estimate for remaining work: ~ 2 man-weeks.]
+
+* implement the tools shipped with Open Inventor: ivcat, ivinfo,
+  ivnorm, ivfix, ivview, ivAddVP, ivperf.
+
+  [Estimate for remaining work: ~ 2 man-weeks.]
+
+* add example programs to show off most of the available features in
+  the library.
+
+  [Estimate for remaining work: ~ 1 man-month.]
+
+* improve the documentation so it properly covers the functionality of
+  all components in the Coin library in a satisfactory manner.
+
+  [Estimate for remaining work: ~ 1 man-month.]
+
+
+MILESTONE 4
+===========
+
+Goal: Make Coin library 100% compatible with the latest version of the
+Open Inventor library from TGS[5], including _all_ functionality. Tune
+the performance of Coin to be at least on par with the latest Open
+Inventor.
+
+Additional development since milestone 3:
+
+* VRML 1 upgraders for automatic conversion VRML1->VRML2 upon file
+  import.
+
+* Inventor-to-VRML conversion actions SoToVRML2Action and
+  SoToVRMLAction.
+
+* support for collision detection, as offered by the latest TGS Open
+  Inventor.
+
+* Large Model Viewing:
+
+       - action classes: SoGlobalSimplifyAction, SoReorganizeAction,
+         SoShapeSimplifyAction and SoSimplifyAction, along with
+         simplifiers SoSimplifier and SoDecimator.
+
+       - SoLevelOfSimplification node.
+
+       - SoRenderList and SoOctTreeOrdering for faster rendering.
+
+* update the documentation to cover these new features.
+
+
+MILESTONE 5
+===========
+
+Goal: Complete support for the ISO VRML 97 standard.
+
+Development:
+
+* implement support for sound according to the ISO VRML 97
+  specification.
+
+* implement import for common movie formats (especially the one(s?)
+  mentioned in the standard) and otherwise integrate movieplaying into
+  the library where necessary.
+
+* add support for embedded script language(s).
+
+
+
+MILESTONES 6-
+=============
+
+Goal: Improve Coin even further beyond what is provided by Open
+Inventor. We've got a bucket full of ideas here.
+
+
+==============================================================================
+
+REFERENCES:
+===========
+
+[1] <URL:http://www.troll.no/products/qt.html>
+[2] <URL:http://www.be.com>
+[3] <URL:http://www.sgi.com/Technology/Inventor/>
+[4] <URL:http://www.sim.no/reducer_frontpage.html>
+[5] <URL:http://www.tgs.com/Products/openinv-index.html>

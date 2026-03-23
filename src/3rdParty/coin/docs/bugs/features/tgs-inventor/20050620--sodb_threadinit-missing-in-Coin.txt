@@ -1,0 +1,11 @@
+197 Compatibility issue: SoDB::threadInit() not implemented in Coin.
+
+    Not really needed in Coin, but should be present for TGS Inventor
+    API compatibility.
+
+    Note: the So* libraries also have threadInit() functions --
+    implement those too.
+
+    This is a minor issue.
+
+    20050620 mortene.

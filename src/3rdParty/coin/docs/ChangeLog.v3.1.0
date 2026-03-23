@@ -1,0 +1,4678 @@
+2009-05-27 13:05  mortene
+
+	* [r13313] build/msvc6/docs/coin3.doxygen,
+	  build/msvc6/include/Inventor/C/basic.h,
+	  build/msvc6/src/config-debug.h, build/msvc6/src/config-release.h,
+	  build/msvc7/docs/coin3.doxygen,
+	  build/msvc7/include/Inventor/C/basic.h,
+	  build/msvc7/src/config-debug.h, build/msvc7/src/config-release.h,
+	  build/msvc8/docs/coin3.doxygen,
+	  build/msvc8/include/Inventor/C/basic.h,
+	  build/msvc8/src/config-debug.h, build/msvc8/src/config-release.h,
+	  build/msvc9/docs/coin3.doxygen,
+	  build/msvc9/include/Inventor/C/basic.h,
+	  build/msvc9/src/config-debug.h, build/msvc9/src/config-release.h:
+	  build: updates for proper 3.1.0 release
+
+2009-05-27 12:55  mortene
+
+	* [r13312] Makefile.in, configure: bootstrap
+
+2009-05-27 12:54  mortene
+
+	* [r13311] configure.ac: preparing release
+
+2009-05-27 11:58  mortene
+
+	* [r13310] INSTALL, Makefile.am, NEWS, README, README.WIN32,
+	  RELNOTES, THANKS, docs/ChangeLog.v3.1.0,
+	  docs/announcement-3_1_0.txt: docs: complete spiffing phase for
+	  3.1.0 release, after reading 5000+ lines of ChangeLog and
+	  updating NEWS / RELNOTES / etc
+
+2009-05-26 13:10  mortene
+
+	* [r13306] src/foreignfiles/Makefile.am,
+	  src/foreignfiles/Makefile.in: build: more dist-build bugfixes
+
+2009-05-26 12:16  mortene
+
+	* [r13305] src/shapenodes/Makefile.am, src/shapenodes/Makefile.in:
+	  build: argh, managed to miss another related make-dist bug
+
+2009-05-26 12:01  pederb
+
+	* [r13304] src/base/SbPlane.cpp: Use double precision internally in
+	  getDistance().
+
+2009-05-26 11:47  mortene
+
+	* [r13303] src/shapenodes/Makefile.in: bootstrap
+
+2009-05-26 11:46  mortene
+
+	* [r13302] src/shapenodes/Makefile.am: build: bugfix, missing
+	  private headers killed build from make-dist'ed package
+
+2009-05-26 11:22  mortene
+
+	* [r13301] cfg/wrapmsvc.exe: build: updates from rebootstrap
+
+2009-05-26 10:41  bfg
+
+	* [r13300] src/io/SoInput_Reader.cpp: Fixes a bufferunderflow
+	  issue.
+
+2009-05-26 10:18  pederb
+
+	* [r13299] src/base/SbBSPTree.cpp, testsuite/Makefile.in: Unit
+	  tests for SbBSPTree.
+
+2009-05-26 09:30  pederb
+
+	* [r13298] src/base/SbBSPTree.cpp: Fix 10 year old bug in
+	  removePoint(). Reported by Sveinung.
+
+2009-05-25 13:12  bfg
+
+	* [r13296] src/vrml97/OrientationInterpolator.cpp: Assert on
+	  invariant.
+
+2009-05-25 09:38  mortene
+
+	* [r13295] COPYING, INSTALL, Info.plist.in, README,
+	  scripts/coin.el: janitorial: hopefully last copyright year /
+	  company name updates for now
+
+2009-05-25 09:04  mortene
+
+	* [r13294] build/Xcode/data/draggerDefaults/centerballDragger.h,
+	  build/Xcode/data/draggerDefaults/directionalLightDragger.h,
+	  build/Xcode/data/draggerDefaults/dragPointDragger.h,
+	  build/Xcode/data/draggerDefaults/handleBoxDragger.h,
+	  build/Xcode/data/draggerDefaults/jackDragger.h,
+	  build/Xcode/data/draggerDefaults/pointLightDragger.h,
+	  build/Xcode/data/draggerDefaults/rotateCylindricalDragger.h,
+	  build/Xcode/data/draggerDefaults/rotateDiscDragger.h,
+	  build/Xcode/data/draggerDefaults/rotateSphericalDragger.h,
+	  build/Xcode/data/draggerDefaults/scale1Dragger.h,
+	  build/Xcode/data/draggerDefaults/scale2Dragger.h,
+	  build/Xcode/data/draggerDefaults/scale2UniformDragger.h,
+	  build/Xcode/data/draggerDefaults/scaleUniformDragger.h,
+	  build/Xcode/data/draggerDefaults/spotLightDragger.h,
+	  build/Xcode/data/draggerDefaults/tabBoxDragger.h,
+	  build/Xcode/data/draggerDefaults/tabPlaneDragger.h,
+	  build/Xcode/data/draggerDefaults/trackballDragger.h,
+	  build/Xcode/data/draggerDefaults/transformBoxDragger.h,
+	  build/Xcode/data/draggerDefaults/transformerDragger.h,
+	  build/Xcode/data/draggerDefaults/translate1Dragger.h,
+	  build/Xcode/data/draggerDefaults/translate2Dragger.h,
+	  build/Xcode/data/shaders/lights/DirSpotLight.h,
+	  build/Xcode/data/shaders/lights/DirectionalLight.h,
+	  build/Xcode/data/shaders/lights/PointLight.h,
+	  build/Xcode/data/shaders/lights/SpotLight.h,
+	  build/Xcode/data/shaders/vsm/VsmLookup.h,
+	  build/Xcode/include/Inventor/C/basic.h, build/coin.spec.in,
+	  build/msvc6/include/Inventor/C/basic.h,
+	  build/msvc7/include/Inventor/C/basic.h,
+	  build/msvc8/include/Inventor/C/basic.h,
+	  build/msvc9/include/Inventor/C/basic.h, docs/HACKING,
+	  examples/dynloadextensions/Switchboard.cpp,
+	  examples/dynloadextensions/Switchboard.h,
+	  examples/dynloadextensions/SwitchboardOperator.cpp,
+	  examples/dynloadextensions/SwitchboardOperator.h,
+	  include/Inventor/C/basic.h.in,
+	  packaging/macosx/CoinTools_Description.plist.in,
+	  packaging/macosx/CoinTools_Welcome.rtf,
+	  packaging/macosx/Coin_Description.plist.in,
+	  packaging/macosx/Coin_Welcome.rtf, packaging/macosx/License.rtf,
+	  packaging/macosx/inst-README-Tiger.txt.in,
+	  packaging/macosx/inst-README-gcc3.txt.in,
+	  packaging/macosx/inst-README-gcc4.txt.in,
+	  packaging/macosx/makecoinpkg.sh.in,
+	  packaging/macosx/makecointoolspkg.sh.in,
+	  packaging/macosx/makedmg.sh.in,
+	  packaging/macosx/makeinstdmg.sh.in,
+	  packaging/macosx/makenoinstdmg.sh.in,
+	  packaging/macosx/noinst-README-Tiger.txt.in,
+	  packaging/macosx/noinst-README-gcc3.txt.in,
+	  packaging/macosx/noinst-README-gcc4.txt.in,
+	  src/actions/SoGLRenderAction.cpp, src/base/SbTime.cpp,
+	  src/base/SbViewportRegion.cpp, src/elements/SoElement.cpp,
+	  src/errors/SoReadError.cpp, src/hardcopy/HardCopy.cpp,
+	  src/misc/SoContextHandler.cpp, src/misc/SoInteraction.cpp,
+	  src/nodekits/SoBaseKit.cpp, src/nodes/SoCamera.cpp,
+	  src/nodes/SoExtSelection.cpp, src/nodes/SoLevelOfDetail.cpp,
+	  src/profiler/SoNodeProfiling.h, src/profiler/SoProfiler.cpp,
+	  src/sensors/SoSensorManager.cpp: janitorial: update misc more
+	  obscure copyright date stuff, plus change remaining 'Systems in
+	  Motion' refs to 'Kongsberg SIM'
+
+2009-05-20 14:47  bfg
+
+	* [r13292] testsuite/StandardTests.cpp,
+	  testsuite/TestSuiteUtils.cpp, testsuite/TestSuiteUtils.h: Expand
+	  the testing of different files, to test for 3 classes of files.
+	  
+	  "models" , files which we support, and should be by the
+	  specification.
+	  "slackers", files which we support, but are known to be breaking
+	  the
+	  specification.
+	  "killers", files which are not according to spec, but should make
+	  the
+	  parser fail gracefully.
+
+2009-05-20 13:04  mortene
+
+	* [r13291] src/nodes/SoSceneTextureCubeMap.cpp: doc: minor fix,
+	  correct \since version number
+
+2009-05-20 12:15  mortene
+
+	* [r13290] src/base/SbString.cpp, src/projectors/SbProjector.cpp:
+	  doc: fix up a few \since tags
+
+2009-05-20 11:59  mortene
+
+	* [r13289] src/misc/SoProto.cpp: bugfix: avoid NULL deref
+
+2009-05-20 11:05  bfg
+
+	* [r13288] src/misc/SoDB.cpp: Kill memory leak.
+
+2009-05-20 11:02  bfg
+
+	* [r13287] src/misc/SoBaseP.cpp: Kill memory leak.
+
+2009-05-20 10:59  pederb
+
+	* [r13286] src/vrml97/Background.cpp: Fix index mismatch when one
+	  of the background textures are changed. Reported by Sylvain
+	  Carette.
+
+2009-05-18 15:20  bfg
+
+	* [r13284] src/io/SoInput.cpp: Bugfix:
+	  Don't try to check for filetype version if the stack is empty.
+
+2009-05-18 15:05  bfg
+
+	* [r13283] src/vrml97/Parent.cpp: No need to copy 0 elements.
+	  
+	  Kills a memory access error.
+
+2009-05-18 11:47  larsa
+
+	* [r13282] testsuite/Makefile.in, testsuite/makemakefile.sh: Mac OS
+	  X fixes, Makefile.in build adjustment hooks
+
+2009-05-18 09:46  bfg
+
+	* [r13281] testsuite/Makefile.in, testsuite/StandardTests.cpp,
+	  testsuite/makemakefile.sh: Test reading of a set of datafiles
+	  provided in a "models" catalog. If none are provided, none are
+	  tested.
+	  
+	  Introduces dependency on Boost.Filesystem. This dependency is not
+	  tested during configure, since it is a tests only dependency.
+	  
+	  Coding is also a bit awkward since the Boost.Filesystem API is a
+	  bit in flux.
+
+2009-05-18 09:38  bfg
+
+	* [r13280] testsuite/makemakefile.sh: Get the quotation right.
+
+2009-05-15 12:52  bfg
+
+	* [r13278] src/fields/SoSFNode.cpp: Kill memory leak.
+
+2009-05-15 12:32  bfg
+
+	* [r13277] src/fields/SoMFNode.cpp, src/fields/SoSFNode.cpp,
+	  src/misc/SoDB.cpp: New attempt at making all tests pass.
+
+2009-05-15 12:20  bfg
+
+	* [r13276] src/misc/SoDBP.cpp: Mark unused variables.
+
+2009-05-15 10:24  mortene
+
+	* [r13275] src/misc/SoBaseP.cpp: tests: clean up, as some tests
+	  have been moved to SoDB.cpp
+
+2009-05-15 10:23  mortene
+
+	* [r13274] src/misc/SoDB.cpp: tests: case for detecting whether or
+	  not connections to global fields is set up correctly when
+	  imported from iv files
+
+2009-05-15 09:50  mortene
+
+	* [r13273] src/misc/SoBaseP.cpp: tests: bugfix, SoDB::init() always
+	  called by test-suite init before tests are run
+
+2009-05-15 09:39  mortene
+
+	* [r13272] src/misc/SoBaseP.cpp: tests: expand with two additional
+	  tests on realTime global field
+
+2009-05-15 09:14  mortene
+
+	* [r13271] src/misc/SoBaseP.cpp, testsuite/Makefile.in,
+	  testsuite/README: tests: add in some sanity checks for the
+	  realTime global field
+
+2009-05-15 09:09  bfg
+
+	* [r13270] src/misc/SoDBP.cpp: Avoid duplicate fetch.
+
+2009-05-15 09:00  mortene
+
+	* [r13269] src/misc/SoDB.cpp: tests: boost test-suite doesn't
+	  handle hangs, so (tmp) work around one such problem
+
+2009-05-15 08:20  bfg
+
+	* [r13268] src/actions/SoWriteAction.cpp, src/misc/SoDB.cpp,
+	  src/misc/SoDBP.cpp: Kill a bunch of memory leaks.
+
+2009-05-14 13:00  mortene
+
+	* [r13266] src/fields/SoSFNode.cpp: bugfix: remove code that caused
+	  us to be incompatible in importing basic VRML97 files
+
+2009-05-14 12:54  mortene
+
+	* [r13265] src/fields/SoSFNode.cpp: test: catch errors with NULL
+	  children
+
+2009-05-14 11:15  bfg
+
+	* [r13264] src/misc/SoDB.cpp: All tests are green.
+	  Fixes COIN-217.
+
+2009-05-14 11:12  bfg
+
+	* [r13263] src/fields/SoSFNode.cpp: Fix 4 IO related unittests.
+
+2009-05-13 16:11  bfg
+
+	* [r13261] src/misc/SoDB.cpp: 2 more tests running. Tests still
+	  touches global state.
+
+2009-05-13 15:41  bfg
+
+	* [r13260] src/misc/SoDB.cpp: Make 2 unittests pass.
+
+2009-05-12 10:51  bfg
+
+	* [r13258] include/Inventor/nodes/SoIndexedNurbsCurve.h,
+	  include/Inventor/nodes/SoNurbsCurve.h,
+	  include/Inventor/nodes/SoNurbsSurface.h,
+	  src/shapenodes/Makefile.am, src/shapenodes/Makefile.in,
+	  src/shapenodes/SoIndexedNurbsCurve.cpp,
+	  src/shapenodes/SoNurbsCurve.cpp, src/shapenodes/SoNurbsP.h,
+	  src/shapenodes/SoNurbsSurface.cpp: Reuse code between different
+	  nurbs classes.
+	  
+	  Fix scaling bug for non-rational B-splines.
+
+2009-05-12 08:48  bfg
+
+	* [r13257] src/tidbits.cpp: Remove implementation which causes some
+	  compiler problems for the
+	  networkorder float functions.
+	  
+	  Mark them for removal before Coin-4.
+
+2009-05-11 15:46  bfg
+
+	* [r13255] cfg/wrapmsvc.exe: Bootstrap.
+
+2009-05-11 15:44  bfg
+
+	* [r13254] src/doc/environment.dox: Some more documentation for
+	  environment variables.
+
+2009-05-11 13:32  bfg
+
+	* [r13253] src/shapenodes/SoNurbsCurve.cpp: Fix picking bug on
+	  rational curves.
+	  
+	  Scaling of coordinates was wrong for weighted points.
+	  
+	  Fixes COINSUPPORT-765.
+
+2009-05-11 09:49  larsa
+
+	* [r13252] src/doc/environment.dox: doc update for COIN_GLBBOX
+
+2009-05-07 12:18  bfg
+
+	* [r13246] src/doc/environment.dox: Peg and sort environment
+	  variables for documentation.
+
+2009-05-05 13:47  pederb
+
+	* [r13243] src/doc/environment.dox: Document some environment
+	  variables.
+
+2009-05-05 13:43  pederb
+
+	* [r13242] src/misc/SoVBO.cpp: Read the min/max limits from
+	  constants. Change minimum value from 40 to 20.
+
+2009-05-05 13:09  bfg
+
+	* [r13241] src/doc/environment.dox: Mark a few more environment
+	  variables for documentation.
+
+2009-05-04 18:52  pederb
+
+	* [r13239] src/actions/SoReorganizeAction.cpp: Bugfix. It's
+	  possible to reorganize a shape textured with a texture coordinate
+	  function. Reported by Tim Braun.
+
+2009-05-04 16:50  mortene
+
+	* [r13238] include/Inventor/C/glue/gl.h,
+	  include/Inventor/SoOffscreenRenderer.h, src/glue/gl.cpp,
+	  src/glue/gl_wgl.cpp, src/glue/gl_wgl.h,
+	  src/misc/CoinOffscreenGLCanvas.cpp,
+	  src/misc/CoinOffscreenGLCanvas.h,
+	  src/misc/SoOffscreenRenderer.cpp: implements
+	  SoOffscreenRenderer::getDC()
+
+2009-04-30 20:04  larsa
+
+	* [r13236] src/shapenodes/SoIndexedPointSet.cpp: VC6 compile fix
+
+2009-04-30 19:41  larsa
+
+	* [r13235] cfg/wrapmsvc.exe: updated wrapmsvc.exe
+
+2009-04-30 19:14  larsa
+
+	* [r13234] build/misc/generate.sh, build/misc/install-headers.bat,
+	  build/misc/uninstall-headers.bat, build/msvc6/coin3.dsp,
+	  build/msvc6/docs/coin3.doxygen, build/msvc7/coin3.sln,
+	  build/msvc7/coin3.vcproj, build/msvc7/docs/coin3.doxygen,
+	  build/msvc8/coin3.sln, build/msvc8/coin3.vcproj,
+	  build/msvc8/coin3_docs.vcproj, build/msvc8/coin3_install.vcproj,
+	  build/msvc8/coin3_uninstall.vcproj,
+	  build/msvc8/docs/coin3.doxygen, build/msvc9/coin3.sln,
+	  build/msvc9/coin3.vcproj, build/msvc9/coin3_docs.vcproj,
+	  build/msvc9/coin3_install.vcproj,
+	  build/msvc9/coin3_uninstall.vcproj,
+	  build/msvc9/docs/coin3.doxygen: Visual Studio file sync
+
+2009-04-30 14:48  bfg
+
+	* [r13231] src/fields/SoFieldContainer.cpp: Use correct macro.
+
+2009-04-30 14:20  bfg
+
+	* [r13230] src/actions/SoToVRML2Action.cpp,
+	  src/caches/SoPrimitiveVertexCache.cpp,
+	  src/elements/SoVertexAttributeElement.cpp,
+	  src/engines/SoConvertAll.cpp, src/events/SoKeyboardEvent.cpp,
+	  src/fields/SoField.cpp, src/fields/SoFieldContainer.cpp,
+	  src/foreignfiles/SoForeignFileKit.cpp, src/io/SoInput.cpp,
+	  src/io/SoInputP.h, src/io/SoOutput.cpp,
+	  src/io/SoWriterefCounter.cpp, src/misc/SbHash.h,
+	  src/misc/SoBase.cpp, src/misc/SoBaseP.cpp, src/misc/SoBaseP.h,
+	  src/misc/SoContextHandler.cpp, src/misc/SoDBP.h,
+	  src/misc/SoDebug.cpp, src/misc/SoGLDriverDatabase.cpp,
+	  src/misc/SoProto.cpp, src/misc/SoProtoInstance.cpp,
+	  src/misc/SoType.cpp, src/misc/SoVBO.cpp, src/misc/SoVBO.h,
+	  src/nodes/SoNode.cpp, src/profiler/SoProfilerStats.cpp,
+	  src/profiler/SoScrollingGraphKit.cpp,
+	  src/sensors/SoSensorManager.cpp,
+	  src/shaders/SoGLSLShaderProgram.cpp,
+	  src/shaders/SoGLSLShaderProgram.h, src/shaders/SoShader.cpp,
+	  src/shaders/SoShaderObject.cpp,
+	  src/shaders/SoShaderParameter.cpp,
+	  src/shapenodes/SoIndexedMarkerSet.cpp,
+	  src/shapenodes/SoIndexedPointSet.cpp,
+	  src/shapenodes/soshape_bumprender.h,
+	  src/upgraders/SoUpgrader.cpp, src/vrml97/Extrusion.cpp,
+	  src/vrml97/JS_VRMLClasses.cpp: Reverting all changes to SbHash.
+	  They will not be part of 3.1.
+
+2009-04-30 10:48  bfg
+
+	* [r13229] src/fields/SoField.cpp, src/fields/SoFieldContainer.cpp,
+	  src/io/SoInput.cpp, src/io/SoOutput.cpp,
+	  src/io/SoWriterefCounter.cpp, src/misc/SbHash.h,
+	  src/misc/SoBase.cpp, src/misc/SoBaseP.cpp,
+	  src/misc/SoContextHandler.cpp, src/misc/SoDebug.cpp,
+	  src/misc/SoProto.cpp, src/misc/SoProtoInstance.cpp,
+	  src/misc/SoType.cpp, src/misc/SoVBO.cpp,
+	  src/sensors/SoSensorManager.cpp,
+	  src/shaders/SoGLSLShaderProgram.cpp,
+	  src/shaders/SoShaderObject.cpp, src/vrml97/JS_VRMLClasses.cpp:
+	  Rename remove to erase for SbHash.
+
+2009-04-30 09:32  bfg
+
+	* [r13228] src/misc/SbHash.h: Don't rely on memory being zero.
+
+2009-04-30 09:30  bfg
+
+	* [r13227] src/misc/SbHash.h: Simplify code by making SbHashEntry
+	  an internal class.
+
+2009-04-30 09:23  bfg
+
+	* [r13226] src/fields/SoFieldContainer.cpp, src/misc/SbHash.h:
+	  Iterate over actually present elements, not the buckets.
+
+2009-04-30 08:25  larsa
+
+	* [r13225] src/misc/CoinResources.cpp, src/misc/SoGLImage.cpp,
+	  src/misc/SoRenderManager.cpp, src/misc/SoVertexArrayIndexer.cpp:
+	  silence symbol length truncation warning from STL classes (VC6).
+	  minor include-style fixes.
+
+2009-04-30 08:23  larsa
+
+	* [r13224] src/collision/SoIntersectionDetectionAction.cpp: silence
+	  symbol length truncation warning from STL classes
+
+2009-04-30 08:22  larsa
+
+	* [r13223] src/base/SbMatrix.cpp, src/base/SbTesselator.cpp: lost
+	  precision warning removal
+
+2009-04-30 06:45  mortene
+
+	* [r13222] include/Inventor/annex/FXViz/nodes/SoShadowGroup.h,
+	  src/shadows/SoShadowGroup.cpp: Feature: implements
+	  SoShadowGroup::isSupported().
+
+2009-04-29 12:57  bfg
+
+	* [r13220] src/misc/SbHash.h: Change internal classes to follow
+	  SbHash<Key,Value>
+
+2009-04-29 11:59  bfg
+
+	* [r13219] src/3ds/3dsLoader.cpp, src/3ds/SoStream.cpp,
+	  src/actions/SoAction.cpp, src/actions/SoGLRenderAction.cpp,
+	  src/actions/SoReorganizeAction.cpp,
+	  src/actions/SoToVRML2Action.cpp, src/actions/SoToVRMLAction.cpp,
+	  src/actions/SoWriteAction.cpp, src/base/SbBSPTree.cpp,
+	  src/base/SbDPMatrix.cpp, src/base/SbMatrix.cpp,
+	  src/base/rbptree.cpp, src/base/time.cpp,
+	  src/bundles/SoTextureCoordinateBundle.cpp, src/coindefs.h,
+	  src/draggers/SoCenterballDragger.cpp, src/draggers/SoDragger.cpp,
+	  src/draggers/SoHandleBoxDragger.cpp,
+	  src/draggers/SoJackDragger.cpp,
+	  src/draggers/SoRotateCylindricalDragger.cpp,
+	  src/draggers/SoRotateDiscDragger.cpp,
+	  src/draggers/SoRotateSphericalDragger.cpp,
+	  src/draggers/SoScale1Dragger.cpp,
+	  src/draggers/SoTabPlaneDragger.cpp,
+	  src/draggers/SoTransformerDragger.cpp,
+	  src/draggers/SoTranslate2Dragger.cpp,
+	  src/elements/SoAmbientColorElement.cpp,
+	  src/elements/SoCacheElement.cpp,
+	  src/elements/SoCacheHintElement.cpp,
+	  src/elements/SoCullElement.cpp,
+	  src/elements/SoDepthBufferElement.cpp,
+	  src/elements/SoElement.cpp,
+	  src/elements/SoEmissiveColorElement.cpp,
+	  src/elements/SoFloatElement.cpp, src/elements/SoLazyElement.cpp,
+	  src/elements/SoLightModelElement.cpp,
+	  src/elements/SoListenerDopplerElement.cpp,
+	  src/elements/SoListenerOrientationElement.cpp,
+	  src/elements/SoListenerPositionElement.cpp,
+	  src/elements/SoModelMatrixElement.cpp,
+	  src/elements/SoMultiTextureCoordinateElement.cpp,
+	  src/elements/SoMultiTextureEnabledElement.cpp,
+	  src/elements/SoMultiTextureImageElement.cpp,
+	  src/elements/SoShapeStyleElement.cpp,
+	  src/elements/SoShininessElement.cpp,
+	  src/elements/SoSoundElement.cpp,
+	  src/elements/SoSpecularColorElement.cpp,
+	  src/elements/SoTexture3EnabledElement.cpp,
+	  src/elements/SoTextureCombineElement.cpp,
+	  src/elements/SoTextureEnabledElement.cpp,
+	  src/elements/SoTextureImageElement.cpp,
+	  src/elements/SoTextureOverrideElement.cpp,
+	  src/engines/SoConvertAll.cpp, src/engines/SoEngine.cpp,
+	  src/engines/SoNodeEngine.cpp, src/engines/SoOutputData.cpp,
+	  src/errors/SoDebugError.cpp, src/errors/SoError.cpp,
+	  src/errors/error.cpp, src/fields/SoField.cpp,
+	  src/fields/SoFieldContainer.cpp, src/fields/SoGlobalField.cpp,
+	  src/fields/SoMFPath.cpp, src/fields/SoSFImage.cpp,
+	  src/fields/SoSFPath.cpp, src/fields/SoSFTrigger.cpp,
+	  src/misc/SbHash.h: Rename COIN_UNUSED to COIN_UNUSED_ARG.
+	  Preparation to go public.
+
+2009-04-29 09:40  bfg
+
+	* [r13218] include/Inventor/SoDB.h,
+	  include/Inventor/elements/SoGLRenderPassElement.h,
+	  include/Inventor/engines/SoOutputData.h,
+	  include/Inventor/errors/SoReadError.h,
+	  include/Inventor/fields/SoField.h,
+	  include/Inventor/fields/SoFieldContainer.h,
+	  include/Inventor/fields/SoFieldData.h,
+	  include/Inventor/misc/SoBase.h, include/Inventor/misc/SoProto.h,
+	  include/Inventor/misc/SoTranReceiver.h: Be kind to SWIG, when
+	  wrapping for python, avoid reserved words.
+
+2009-04-29 06:12  bfg
+
+	* [r13217] src/actions/SoToVRML2Action.cpp,
+	  src/caches/SoPrimitiveVertexCache.cpp,
+	  src/elements/SoVertexAttributeElement.cpp,
+	  src/engines/SoConvertAll.cpp, src/events/SoKeyboardEvent.cpp,
+	  src/fields/SoField.cpp, src/fields/SoFieldContainer.cpp,
+	  src/foreignfiles/SoForeignFileKit.cpp, src/io/SoInputP.h,
+	  src/io/SoOutput.cpp, src/io/SoWriterefCounter.cpp,
+	  src/misc/SbHash.h, src/misc/SoBase.cpp, src/misc/SoBaseP.cpp,
+	  src/misc/SoBaseP.h, src/misc/SoContextHandler.cpp,
+	  src/misc/SoDBP.h, src/misc/SoDebug.cpp,
+	  src/misc/SoGLDriverDatabase.cpp, src/misc/SoProto.cpp,
+	  src/misc/SoProtoInstance.cpp, src/misc/SoType.cpp,
+	  src/misc/SoVBO.cpp, src/misc/SoVBO.h, src/nodes/SoNode.cpp,
+	  src/profiler/SoProfilerStats.cpp,
+	  src/profiler/SoScrollingGraphKit.cpp,
+	  src/shaders/SoGLSLShaderProgram.h, src/shaders/SoShader.cpp,
+	  src/shaders/SoShaderObject.cpp,
+	  src/shaders/SoShaderParameter.cpp,
+	  src/shapenodes/SoIndexedMarkerSet.cpp,
+	  src/shapenodes/SoIndexedPointSet.cpp,
+	  src/shapenodes/soshape_bumprender.h,
+	  src/upgraders/SoUpgrader.cpp, src/vrml97/Extrusion.cpp,
+	  src/vrml97/JS_VRMLClasses.cpp: Change the order of SbHash from
+	  <Type,Key> to <Key,Type> to be more similar to other hashtypes.
+
+2009-04-28 19:32  bfg
+
+	* [r13215] src/elements/SoVertexAttributeElement.cpp,
+	  src/fields/SoFieldContainer.cpp, src/io/SoWriterefCounter.cpp,
+	  src/misc/SbHash.h, src/misc/SoBase.cpp, src/misc/SoBaseP.cpp,
+	  src/misc/SoBaseP.h, src/misc/SoContextHandler.cpp,
+	  src/misc/SoDebug.cpp, src/misc/SoVBO.cpp,
+	  src/sensors/SoSensorManager.cpp, src/shaders/SoShader.cpp:
+	  Iterator based version of SbHash, the apply function is now
+	  dropped.
+
+2009-04-28 12:23  eigils
+
+	* [r13214] src/misc/SoEventManager.cpp: updated documentation
+
+2009-04-28 10:50  wiesener
+
+	* [r13213] docs/coin.doxygen.in: Add SoIndexedMarkerSet
+
+2009-04-28 09:20  josteint
+
+	* [r13212] src/misc/SoEventManager.cpp: Documentation update
+
+2009-04-27 11:31  kintel
+
+	* [r13210] packaging/macosx/inst-dmg-files/dmg_bg.tiff: Systems in
+	  Motion -> Kongsberg SIM
+
+2009-04-26 19:59  pederb
+
+	* [r13208]
+	  include/Inventor/elements/SoGLMultiTextureImageElement.h,
+	  include/Inventor/elements/SoGLTextureImageElement.h,
+	  src/elements/GL/SoGLMultiTextureImageElement.cpp,
+	  src/elements/GL/SoGLTextureImageElement.cpp, src/misc/SoGL.cpp,
+	  src/misc/SoGL.h: Test all texture units for transparency, not
+	  just unit 0. Fixes COIN-71.
+
+2009-04-26 19:49  pederb
+
+	* [r13207] src/glue/openal_wrapper.cpp: Mac OS X fix.
+
+2009-04-25 11:14  pederb
+
+	* [r13205] src/nodes/SoBlinker.cpp: Handle special case when
+	  speed=0.
+
+2009-04-24 15:45  wiesener
+
+	* [r13203] include/Inventor/nodes/Makefile.in,
+	  src/shapenodes/Makefile.in: bootstrap
+
+2009-04-24 15:41  wiesener
+
+	* [r13202] include/Inventor/nodes/Makefile.am,
+	  include/Inventor/nodes/SoIndexedMarkerSet.h,
+	  include/Inventor/nodes/SoIndexedPointSet.h,
+	  include/Inventor/nodes/SoNodes.h, src/nodes/SoNode.cpp,
+	  src/shapenodes/Makefile.am,
+	  src/shapenodes/SoIndexedMarkerSet.cpp,
+	  src/shapenodes/SoIndexedPointSet.cpp,
+	  src/shapenodes/all-shapenodes-cpp.cpp: COIN-177: Add
+	  SoIndexedMarkerSet
+
+2009-04-24 14:48  wiesener
+
+	* [r13201] src/shapenodes/SoMarkerSet.cpp: Disable auto-caching.
+	  Bugfix: apply modelmatrix transform before culling
+
+2009-04-24 13:38  larsa
+
+	* [r13200] build/misc/generate.sh, build/msvc6/docs/coin3.doxygen,
+	  build/msvc7/docs/coin3.doxygen, build/msvc8/docs/coin3.doxygen,
+	  build/msvc9/docs/coin3.doxygen: coin3_docs project related tweaks
+	  (COIN-124)
+
+2009-04-24 10:13  kintel
+
+	* [r13199] packaging/macosx/checklist.txt: Updated and tested with
+	  a new Coin on 10.5 (COIN-181)
+
+2009-04-24 10:12  kintel
+
+	* [r13198] packaging/macosx/Makefile.in: Enable universal build as
+	  default (we no longer do PPC-only builds)
+
+2009-04-22 11:21  bfg
+
+	* [r13196] include/Inventor/C/XML/document.h: Remove declared
+	  functions without implementations. Fixes COIN-195.
+
+2009-04-21 10:33  mortene
+
+	* [r13190] build/Xcode/Coin.xcodeproj/project.pbxproj: rm refs to
+	  deleted files
+
+2009-04-21 10:31  larsa
+
+	* [r13189] build/msvc6/docs/coin3.doxygen,
+	  build/msvc7/docs/coin3.doxygen, build/msvc8/docs/coin3.doxygen,
+	  build/msvc9/docs/coin3.doxygen: remove references to obsoleted
+	  files
+
+2009-04-21 10:22  mortene
+
+	* [r13188] docs/coin.doxygen.in,
+	  include/Inventor/nodes/SoViewerNavigationMode.h,
+	  src/nodes/SoViewerNavigationMode.cpp: rm obsolete code
+
+2009-04-17 14:46  wiesener
+
+	* [r13186] src/geo/SoGeo.cpp: calculate offset in all directions
+
+2009-04-16 15:16  wiesener
+
+	* [r13184] src/geo/SoGeo.cpp, src/geo/SoGeoOrigin.cpp,
+	  src/geo/SoGeoSeparator.cpp: changed behavior of the FLAT flag.
+	  Doc fix.
+
+2009-04-14 07:37  pederb
+
+	* [r13182] src/nodes/SoShapeHints.cpp: Extra documentation for
+	  creaseAngle.
+
+2009-04-03 18:49  pederb
+
+	* [r13180] src/misc/SoDB.cpp: Assert to catch padding on base
+	  classes.
+
+2009-04-03 18:32  pederb
+
+	* [r13179] include/Inventor/fields/SoSubField.h: Remove fixme. It's
+	  just not relevant, and a bit confusing, since we do similar
+	  things all around in Coin. I'll add an assert in SoDB::init() to
+	  catch this unlikely problem instead.
+
+2009-04-03 13:11  wiesener
+
+	* [r13178] src/shapenodes/SoIndexedPointSet.cpp: added tgs version
+
+2009-04-03 12:57  wiesener
+
+	* [r13177] include/Inventor/nodes/SoIndexedPointSet.h,
+	  src/shapenodes/SoIndexedPointSet.cpp: proper eol-style
+
+2009-04-03 12:52  wiesener
+
+	* [r13176] include/Inventor/fields/SoSubField.h: Added fixme
+
+2009-03-30 12:49  mortene
+
+	* [r13168] src/glue/gl.cpp: robustness: don't get caught in the
+	  glerror-checking
+
+2009-03-27 13:38  larsa
+
+	* [r13165] src/misc/SoEventManager.cpp: Fixes COIN-59 - documents
+	  ownership of objects wrt certain accessors.
+
+2009-03-26 16:06  pederb
+
+	* [r13163] src/shadows/SoShadowGroup.cpp: Support for SoClipPlane.
+	  Bug reported by Cristian J. Luciano.
+
+2009-03-26 15:54  pederb
+
+	* [r13162] include/Inventor/misc/SoGLDriverDatabase.h,
+	  src/misc/SoGLDriverDatabase.cpp: Add test for gl_ClipVertex
+	  support in hardware.
+
+2009-03-26 02:23  kintel
+
+	* [r13161] packaging/macosx/Makefile.in: Package simage and
+	  freetype correctly. Fixes COIN-175
+
+2009-03-25 09:48  pederb
+
+	* [r13159] src/glue/gl.cpp, src/glue/glp.h: Disable VBO rendering
+	  for 3DLabs, driver version <= 2.0.
+
+2009-03-24 20:45  tamer
+
+	* [r13157] configure, configure.ac: mingw builds are flagged
+	  static. do not empty LIBS as it would cut away libs such as
+	  opengl32.
+
+2009-03-24 19:07  tamer
+
+	* [r13156] configure: bootstrap.
+
+2009-03-24 19:07  tamer
+
+	* [r13155] configure.ac: proper indentation.
+
+2009-03-24 19:06  tamer
+
+	* [r13154] configure: bootstrap.
+
+2009-03-24 19:05  tamer
+
+	* [r13153] configure.ac: Compiler/Linker __declspec check to
+	  include DLL define in config scripts.
+
+2009-03-24 10:36  larsa
+
+	* [r13152] build/misc/generate.sh, build/misc/install-headers.bat,
+	  build/misc/uninstall-headers.bat, build/msvc6/coin3.dsp,
+	  build/msvc6/src/config-debug.h, build/msvc6/src/config-release.h,
+	  build/msvc7/coin3.sln, build/msvc7/coin3.vcproj,
+	  build/msvc7/src/config-debug.h, build/msvc7/src/config-release.h,
+	  build/msvc8/coin3.sln, build/msvc8/coin3.vcproj,
+	  build/msvc8/coin3_docs.vcproj, build/msvc8/coin3_install.vcproj,
+	  build/msvc8/coin3_uninstall.vcproj,
+	  build/msvc8/src/config-debug.h, build/msvc8/src/config-release.h,
+	  build/msvc9/coin3.sln, build/msvc9/coin3.vcproj,
+	  build/msvc9/coin3_docs.vcproj, build/msvc9/coin3_install.vcproj,
+	  build/msvc9/coin3_uninstall.vcproj,
+	  build/msvc9/src/config-debug.h, build/msvc9/src/config-release.h:
+	  updated Visual Studio files (new noew SoIndexedPointSet)
+
+2009-03-23 11:00  pederb
+
+	* [r13150] src/glue/gl.cpp, src/glue/glp.h, src/misc/SoGLImage.cpp:
+	  Support for non-power-of-two textures. Disabled on ATi so far.
+
+2009-03-23 10:57  pederb
+
+	* [r13149] src/io/SoInput_FileInfo.cpp: Fix gcc warning.
+
+2009-03-23 10:54  pederb
+
+	* [r13148] src/misc/SoGL.cpp: Bugfix for pointset rendering when we
+	  have texture coordinates, normals and color per vertex. Reported
+	  by wiesener.
+
+2009-03-22 21:12  pederb
+
+	* [r13146] include/Inventor/misc/SoGLDriverDatabase.h,
+	  src/glue/gl.cpp, src/glue/glp.h, src/misc/SoGLDriverDatabase.cpp,
+	  src/misc/SoGLImage.cpp: Non power of two texture support. Needs
+	  testing on more drivers before I activate it.
+
+2009-03-20 09:47  bfg
+
+	* [r13144] docs/coin.doxygen.in: Expose problems in documentation.
+	  Fixes COIN-12.
+
+2009-03-19 20:18  pederb
+
+	* [r13142] src/shapenodes/SoText3.cpp: getPrimitiveCount() bugfix.
+
+2009-03-19 19:54  pederb
+
+	* [r13141] src/vrml97/Text.cpp: Fix for recently introduce bug in
+	  getPrimitiveCount().
+
+2009-03-19 19:41  pederb
+
+	* [r13140] src/shapenodes/SoAsciiText.cpp:
+	  SoGetPrimitiveCountAction bugfix.
+
+2009-03-19 15:29  kintel
+
+	* [r13139] src/actions/SoBoxHighlightRenderAction.cpp,
+	  src/actions/SoLineHighlightRenderAction.cpp: bugfix: We cannot
+	  append head as an index. Fixes COINSUPPORT-603
+
+2009-03-19 13:25  pederb
+
+	* [r13138] src/actions/SoRayPickAction.cpp: Fix bug in
+	  dist_to_quad(). Reported by Dietmar Grabowski .
+
+2009-03-19 11:09  kintel
+
+	* [r13132] packaging/macosx/Makefile.in: Disable threadsafe
+	  traversals in the binary build for Mac
+
+2009-03-18 21:38  pederb
+
+	* [r13130] src/vrml97/ImageTexture.cpp: Threadsafe fixes.
+
+2009-03-18 19:24  pederb
+
+	* [r13129] src/vrml97/ImageTexture.cpp: Comment on the
+	  COIN_THREADSAFE wrapping.
+
+2009-03-18 18:15  pederb
+
+	* [r13128] src/vrml97/ImageTexture.cpp: Only set up scheduler for
+	  loading images if Coin is compiled with --enable-threadsafe.
+
+2009-03-18 16:34  wiesener
+
+	* [r13127] src/shapenodes/SoIndexedPointSet.cpp: Bugfix: render
+	  also when using vertexProperty
+
+2009-03-18 15:59  wiesener
+
+	* [r13126] src/tidbits.cpp: fix copy-paste-bug
+
+2009-03-18 15:58  tamer
+
+	* [r13125] configure, configure.ac: small consistency fix.
+
+2009-03-18 15:31  kintel
+
+	* [r13124] configure, configure.ac: Fix for COIN-119
+
+2009-03-18 13:14  larsa
+
+	* [r13123] src/config.h.in: remove setup.h-targeted defines
+
+2009-03-17 18:04  wiesener
+
+	* [r13121] Makefile.in, include/Inventor/nodes/Makefile.in,
+	  src/shapenodes/Makefile.in: bootstrap
+
+2009-03-17 18:00  wiesener
+
+	* [r13120] include/Inventor/nodes/Makefile.am,
+	  include/Inventor/nodes/SoIndexedPointSet.h,
+	  include/Inventor/nodes/SoNode.h,
+	  include/Inventor/nodes/SoNodes.h, src/nodes/SoNode.cpp,
+	  src/nodes/SoSubNodeP.h, src/shapenodes/Makefile.am,
+	  src/shapenodes/SoIndexedPointSet.cpp,
+	  src/shapenodes/all-shapenodes-cpp.cpp: Added class
+	  SoIndexedPointSet
+
+2009-03-17 12:54  mortene
+
+	* [r13119] src/actions/SoLineHighlightRenderAction.cpp: doc: a note
+	  about limitations
+
+2009-03-17 12:21  wiesener
+
+	* [r13118] src/errors/SoDebugError.cpp: msvc6/7 fix
+
+2009-03-17 11:15  kintel
+
+	* [r13117] Makefile.am: Better info output during install
+
+2009-03-16 20:06  kintel
+
+	* [r13115] configure, src/config.h.in, src/discard.h.in: bootstrap
+
+2009-03-16 20:04  kintel
+
+	* [r13114] configure.ac: Disabled AGL support by default, added
+	  support for CGL
+
+2009-03-16 20:03  kintel
+
+	* [r13113] src/glue/Makefile.am, src/glue/Makefile.in,
+	  src/glue/all-glue-cpp.cpp, src/glue/gl.cpp, src/glue/gl_cgl.cpp,
+	  src/glue/gl_cgl.h: Added support for CGL as a replacement for AGL
+
+2009-03-16 19:20  kintel
+
+	* [r13112] src/glue/gl_agl.h: rename confusing define
+
+2009-03-16 18:23  kintel
+
+	* [r13111] include/Inventor/system/gl.h: Updated framebuffer object
+	  defines to the latest version of the ARB extension which is also
+	  standard in OpenGL 3.0
+
+2009-03-16 18:21  kintel
+
+	* [r13110] include/Inventor/C/glue/gl.h: minor comment updates
+
+2009-03-16 16:17  bfg
+
+	* [r13109] src/actions/all-actions-cpp.cpp,
+	  src/draggers/SoScaleUniformDragger.cpp,
+	  src/profiler/SoProfilerStats.cpp, src/vrml97/JS_VRMLClasses.cpp:
+	  Fix compile warnings.
+	  Const correctness etc, correct namespacing etc.
+
+2009-03-16 13:47  bfg
+
+	* [r13108] examples/dynloadextensions/Switchboard.cpp,
+	  examples/dynloadextensions/SwitchboardOperator.cpp,
+	  examples/misc/glut_tex.cpp: Some copyright update.
+	  64-bit fix.
+	  Include fixes.
+
+2009-03-16 13:47  bfg
+
+	* [r13107] src/profiler/tools/inline_texture.cpp: Compile fixes.
+
+2009-03-16 13:40  bfg
+
+	* [r13106] examples/bindings/CoinQtWidget.h: Revert 13101 for this
+	  file.
+	  Needs full porting from Qt3 to Qt4, fixme in place of a fix.
+
+2009-03-16 13:30  mortene
+
+	* [r13105] include/Inventor/actions/SoGlobalSimplifyAction.h,
+	  include/Inventor/actions/SoShapeSimplifyAction.h,
+	  src/actions/SoGlobalSimplifyAction.cpp,
+	  src/actions/SoShapeSimplifyAction.cpp: doc: code comment about
+	  these being stub classes so far.
+
+2009-03-16 12:50  kintel
+
+	* [r13104] configure, configure.ac: On Mac, we must link with
+	  CoreFoundation. Apparently, the AGL check used to hide this fact
+
+2009-03-16 12:46  kintel
+
+	* [r13103] aclocal.m4, configure: bootstrap
+
+2009-03-16 11:12  kintel
+
+	* [r13102] src/glue/gl.cpp: Updated stand-alone Coin example
+
+2009-03-16 08:47  bfg
+
+	* [r13101] examples/bindings/CoinQtWidget.h,
+	  examples/dynloadextensions/SwitchboardOperator.h: Compile fixes
+	  for examples, and compile for Qt 4.x, not Qt 3.x
+
+2009-03-16 08:46  bfg
+
+	* [r13100] src/actions/SoActionP.h, src/base/dictp.h,
+	  src/base/hashp.h, src/base/heapp.h, src/collision/SbTri3f.h,
+	  src/glue/dlp.h, src/hardcopy/VectorizeItems.h,
+	  src/profiler/SoNodeProfiling.h, src/scxml/ScXMLP.h,
+	  src/xml/elementp.h: Make all headers selfsufficient.
+
+2009-03-16 08:34  bfg
+
+	* [r13099] include/Inventor/SbTypeInfo.h,
+	  include/Inventor/SoRenderManager.h: Make headers compile
+	  standalone.
+
+2009-03-16 08:33  bfg
+
+	* [r13098] include/Inventor/SbColorRGBA.h: Avoid unterminated
+	  character literal.
+
+2009-03-13 16:03  tamer
+
+	* [r13096] src/misc/SoOffscreenCGData.cpp,
+	  src/misc/SoOffscreenCGData.h: proper SbVec2f header include.
+
+2009-03-13 15:59  tamer
+
+	* [r13095] configure, configure.ac: add suncc on Solaris 10 as an
+	  internal platform.
+
+2009-03-13 13:42  larsa
+
+	* [r13094] build/misc/install-headers.bat,
+	  build/misc/uninstall-headers.bat, build/msvc6/coin3.dsp,
+	  build/msvc6/data/draggerDefaults/centerballDragger.h,
+	  build/msvc6/data/draggerDefaults/directionalLightDragger.h,
+	  build/msvc6/data/draggerDefaults/dragPointDragger.h,
+	  build/msvc6/data/draggerDefaults/handleBoxDragger.h,
+	  build/msvc6/data/draggerDefaults/jackDragger.h,
+	  build/msvc6/data/draggerDefaults/pointLightDragger.h,
+	  build/msvc6/data/draggerDefaults/rotateCylindricalDragger.h,
+	  build/msvc6/data/draggerDefaults/rotateDiscDragger.h,
+	  build/msvc6/data/draggerDefaults/rotateSphericalDragger.h,
+	  build/msvc6/data/draggerDefaults/scale1Dragger.h,
+	  build/msvc6/data/draggerDefaults/scale2Dragger.h,
+	  build/msvc6/data/draggerDefaults/scale2UniformDragger.h,
+	  build/msvc6/data/draggerDefaults/scaleUniformDragger.h,
+	  build/msvc6/data/draggerDefaults/spotLightDragger.h,
+	  build/msvc6/data/draggerDefaults/tabBoxDragger.h,
+	  build/msvc6/data/draggerDefaults/tabPlaneDragger.h,
+	  build/msvc6/data/draggerDefaults/trackballDragger.h,
+	  build/msvc6/data/draggerDefaults/transformBoxDragger.h,
+	  build/msvc6/data/draggerDefaults/transformerDragger.h,
+	  build/msvc6/data/draggerDefaults/translate1Dragger.h,
+	  build/msvc6/data/draggerDefaults/translate2Dragger.h,
+	  build/msvc6/data/shaders/lights/DirSpotLight.h,
+	  build/msvc6/data/shaders/lights/DirectionalLight.h,
+	  build/msvc6/data/shaders/lights/PointLight.h,
+	  build/msvc6/data/shaders/lights/SpotLight.h,
+	  build/msvc6/data/shaders/vsm/VsmLookup.h,
+	  build/msvc6/docs/coin3.doxygen,
+	  build/msvc6/include/Inventor/C/basic.h,
+	  build/msvc6/src/config-debug.h, build/msvc6/src/config-release.h,
+	  build/msvc6/src/setup.h, build/msvc7/coin3.sln,
+	  build/msvc7/coin3.vcproj,
+	  build/msvc7/data/draggerDefaults/centerballDragger.h,
+	  build/msvc7/data/draggerDefaults/directionalLightDragger.h,
+	  build/msvc7/data/draggerDefaults/dragPointDragger.h,
+	  build/msvc7/data/draggerDefaults/handleBoxDragger.h,
+	  build/msvc7/data/draggerDefaults/jackDragger.h,
+	  build/msvc7/data/draggerDefaults/pointLightDragger.h,
+	  build/msvc7/data/draggerDefaults/rotateCylindricalDragger.h,
+	  build/msvc7/data/draggerDefaults/rotateDiscDragger.h,
+	  build/msvc7/data/draggerDefaults/rotateSphericalDragger.h,
+	  build/msvc7/data/draggerDefaults/scale1Dragger.h,
+	  build/msvc7/data/draggerDefaults/scale2Dragger.h,
+	  build/msvc7/data/draggerDefaults/scale2UniformDragger.h,
+	  build/msvc7/data/draggerDefaults/scaleUniformDragger.h,
+	  build/msvc7/data/draggerDefaults/spotLightDragger.h,
+	  build/msvc7/data/draggerDefaults/tabBoxDragger.h,
+	  build/msvc7/data/draggerDefaults/tabPlaneDragger.h,
+	  build/msvc7/data/draggerDefaults/trackballDragger.h,
+	  build/msvc7/data/draggerDefaults/transformBoxDragger.h,
+	  build/msvc7/data/draggerDefaults/transformerDragger.h,
+	  build/msvc7/data/draggerDefaults/translate1Dragger.h,
+	  build/msvc7/data/draggerDefaults/translate2Dragger.h,
+	  build/msvc7/data/shaders/lights/DirSpotLight.h,
+	  build/msvc7/data/shaders/lights/DirectionalLight.h,
+	  build/msvc7/data/shaders/lights/PointLight.h,
+	  build/msvc7/data/shaders/lights/SpotLight.h,
+	  build/msvc7/data/shaders/vsm/VsmLookup.h,
+	  build/msvc7/docs/coin3.doxygen,
+	  build/msvc7/include/Inventor/C/basic.h,
+	  build/msvc7/src/config-debug.h, build/msvc7/src/config-release.h,
+	  build/msvc7/src/setup.h, build/msvc8/coin3.sln,
+	  build/msvc8/coin3.vcproj, build/msvc8/coin3_docs.vcproj,
+	  build/msvc8/coin3_install.vcproj,
+	  build/msvc8/coin3_uninstall.vcproj,
+	  build/msvc8/data/draggerDefaults/centerballDragger.h,
+	  build/msvc8/data/draggerDefaults/directionalLightDragger.h,
+	  build/msvc8/data/draggerDefaults/dragPointDragger.h,
+	  build/msvc8/data/draggerDefaults/handleBoxDragger.h,
+	  build/msvc8/data/draggerDefaults/jackDragger.h,
+	  build/msvc8/data/draggerDefaults/pointLightDragger.h,
+	  build/msvc8/data/draggerDefaults/rotateCylindricalDragger.h,
+	  build/msvc8/data/draggerDefaults/rotateDiscDragger.h,
+	  build/msvc8/data/draggerDefaults/rotateSphericalDragger.h,
+	  build/msvc8/data/draggerDefaults/scale1Dragger.h,
+	  build/msvc8/data/draggerDefaults/scale2Dragger.h,
+	  build/msvc8/data/draggerDefaults/scale2UniformDragger.h,
+	  build/msvc8/data/draggerDefaults/scaleUniformDragger.h,
+	  build/msvc8/data/draggerDefaults/spotLightDragger.h,
+	  build/msvc8/data/draggerDefaults/tabBoxDragger.h,
+	  build/msvc8/data/draggerDefaults/tabPlaneDragger.h,
+	  build/msvc8/data/draggerDefaults/trackballDragger.h,
+	  build/msvc8/data/draggerDefaults/transformBoxDragger.h,
+	  build/msvc8/data/draggerDefaults/transformerDragger.h,
+	  build/msvc8/data/draggerDefaults/translate1Dragger.h,
+	  build/msvc8/data/draggerDefaults/translate2Dragger.h,
+	  build/msvc8/data/shaders/lights/DirSpotLight.h,
+	  build/msvc8/data/shaders/lights/DirectionalLight.h,
+	  build/msvc8/data/shaders/lights/PointLight.h,
+	  build/msvc8/data/shaders/lights/SpotLight.h,
+	  build/msvc8/data/shaders/vsm/VsmLookup.h,
+	  build/msvc8/docs/coin3.doxygen,
+	  build/msvc8/include/Inventor/C/basic.h,
+	  build/msvc8/src/config-debug.h, build/msvc8/src/config-release.h,
+	  build/msvc8/src/setup.h, build/msvc9/coin3.sln,
+	  build/msvc9/coin3.vcproj, build/msvc9/coin3_docs.vcproj,
+	  build/msvc9/coin3_install.vcproj,
+	  build/msvc9/coin3_uninstall.vcproj,
+	  build/msvc9/data/draggerDefaults/centerballDragger.h,
+	  build/msvc9/data/draggerDefaults/directionalLightDragger.h,
+	  build/msvc9/data/draggerDefaults/dragPointDragger.h,
+	  build/msvc9/data/draggerDefaults/handleBoxDragger.h,
+	  build/msvc9/data/draggerDefaults/jackDragger.h,
+	  build/msvc9/data/draggerDefaults/pointLightDragger.h,
+	  build/msvc9/data/draggerDefaults/rotateCylindricalDragger.h,
+	  build/msvc9/data/draggerDefaults/rotateDiscDragger.h,
+	  build/msvc9/data/draggerDefaults/rotateSphericalDragger.h,
+	  build/msvc9/data/draggerDefaults/scale1Dragger.h,
+	  build/msvc9/data/draggerDefaults/scale2Dragger.h,
+	  build/msvc9/data/draggerDefaults/scale2UniformDragger.h,
+	  build/msvc9/data/draggerDefaults/scaleUniformDragger.h,
+	  build/msvc9/data/draggerDefaults/spotLightDragger.h,
+	  build/msvc9/data/draggerDefaults/tabBoxDragger.h,
+	  build/msvc9/data/draggerDefaults/tabPlaneDragger.h,
+	  build/msvc9/data/draggerDefaults/trackballDragger.h,
+	  build/msvc9/data/draggerDefaults/transformBoxDragger.h,
+	  build/msvc9/data/draggerDefaults/transformerDragger.h,
+	  build/msvc9/data/draggerDefaults/translate1Dragger.h,
+	  build/msvc9/data/draggerDefaults/translate2Dragger.h,
+	  build/msvc9/data/shaders/lights/DirSpotLight.h,
+	  build/msvc9/data/shaders/lights/DirectionalLight.h,
+	  build/msvc9/data/shaders/lights/PointLight.h,
+	  build/msvc9/data/shaders/lights/SpotLight.h,
+	  build/msvc9/data/shaders/vsm/VsmLookup.h,
+	  build/msvc9/docs/coin3.doxygen,
+	  build/msvc9/include/Inventor/C/basic.h,
+	  build/msvc9/src/config-debug.h, build/msvc9/src/config-release.h,
+	  build/msvc9/src/setup.h: new Visual Studio project files
+
+2009-03-13 13:29  kintel
+
+	* [r13093] src/misc/SoOffscreenCGData.cpp: missing include
+
+2009-03-13 11:46  kintel
+
+	* [r13092] src/misc/SoOffscreenRenderer.cpp: Replace direct
+	  platform check with indirect one
+
+2009-03-12 15:25  kintel
+
+	* [r13090] src/misc/Makefile.am, src/misc/Makefile.in,
+	  src/misc/SoOffscreenAGLData.cpp, src/misc/SoOffscreenAGLData.h,
+	  src/misc/SoOffscreenCGData.cpp, src/misc/SoOffscreenCGData.h,
+	  src/misc/SoOffscreenRenderer.cpp, src/misc/all-misc-cpp.cpp:
+	  Removed dependency on deprecated QuickDraw API
+
+2009-03-12 12:20  bfg
+
+	* [r13089] src/actions/SoGLRenderAction.cpp,
+	  src/nodekits/SoBaseKit.cpp: Grammar fix. Thanks to Bastiaan
+	  Veelo.
+
+2009-03-11 12:24  wiesener
+
+	* [r13077] src/errors/SoDebugError.cpp: attempt to support
+	  continuing after a debug break on more platforms
+
+2009-03-10 20:40  pederb
+
+	* [r13075] src/geo/SoGeo.cpp: Experiment a bit with the FLAT
+	  keyword.
+
+2009-03-10 20:12  pederb
+
+	* [r13074] src/geo/SoGeoOrigin.cpp: Improve the example by adding a
+	  Geo grid.
+
+2009-03-10 19:19  wiesener
+
+	* [r13073] src/fonts/win32.cpp: Switch to SoDebugError. More
+	  meaningful errors when font selection in the device context
+	  fails.
+
+2009-03-10 19:17  wiesener
+
+	* [r13072] src/errors/SoDebugError.cpp: make it possible to keep
+	  running after a debug break
+
+2009-03-10 11:14  pederb
+
+	* [r12984] src/misc/SoOffscreenRenderer.cpp: Some doc about
+	  screenshots.
+
+2009-03-10 10:53  kintel
+
+	* [r12982] src/nodes/SoTexture2.cpp: Added FIXME + updated company
+	  name
+
+2009-03-09 19:17  wiesener
+
+	* [r12980] src/fonts/win32.cpp: COINSUPPORT-370: Make sure we
+	  always select back the default font into the device context
+
+2009-03-09 17:45  larsa
+
+	* [r12979] src/scxml/ScXMLStateMachine.cpp: Doc corrections.
+
+2009-03-09 17:43  larsa
+
+	* [r12978] src/navigation/SoScXMLPanUtils.cpp: debug error message
+	  nitpick
+
+2009-03-07 16:30  pederb
+
+	* [r12976] src/actions/SoToVRML2Action.cpp: Support for
+	  SoPointLight and SoSpotLight.
+
+2009-03-07 12:01  pederb
+
+	* [r12975] src/actions/SoLineHighlightRenderAction.cpp: Bugfix for
+	  polygon offset. Problem reported by Volker Enderlein.
+
+2009-03-06 20:21  pederb
+
+	* [r12973] src/vrml97/Background.cpp: Improved depth buffer
+	  handling. Bug reported by Philippe Guigue.
+
+2009-03-06 19:29  pederb
+
+	* [r12972] src/3ds/3dsLoader.cpp: Fix bugs with material length
+	  name. It should be 17, not 16. Reported by Kjartan Stefansson.
+
+2009-03-06 18:43  pederb
+
+	* [r12971] src/misc/SoSceneManagerP.cpp: Support for setting the
+	  render callback to NULL. Patch by Bernard Cupic.
+
+2009-03-06 10:09  pederb
+
+	* [r12970] src/nodes/SoVertexAttribute.cpp: Bugfix in
+	  copyContents(). Reported by Sergey Bikulov.
+
+2009-03-05 23:24  pederb
+
+	* [r12968] src/vrml97/Text.cpp: GetPrimitiveCountAction bugfix.
+
+2009-03-05 21:57  pederb
+
+	* [r12967] src/actions/SoToVRML2Action.cpp: Bugfix for SoLOD,
+	  SoLevelOfDetail and SoSwitch handling.
+
+2009-03-02 10:13  larsa
+
+	* [r12964] docs/doxygen/footer.html: Copyright date update.
+
+2009-03-02 09:36  larsa
+
+	* [r12963] src/nodekits/SoBaseKit.cpp: doc typo fixes
+
+2009-02-27 22:21  pederb
+
+	* [r12960] src/elements/GL/SoGLLazyElement.cpp: Fix bug introduced
+	  when we switched to BLEND as the default transparency type.
+	  Reported by Sergey Bikulov.
+
+2009-02-27 12:32  pederb
+
+	* [r12959] src/misc/SoRenderManager.cpp: Properly handle the case
+	  when redraw priority is set to 0.
+
+2009-02-27 11:11  larsa
+
+	* [r12958] src/caches/SoPrimitiveVertexCache.cpp: bogus assert_cast
+	  fix: SoDetail pointer is allowed to be NULL
+
+2009-02-26 21:07  pederb
+
+	* [r12956] src/misc/SoRenderManager.cpp: Don't delay allocating the
+	  redraw sensor. Fix for COINSUPPORT-449.
+
+2009-02-24 11:24  larsa
+
+	* [r12954] src/navigation/SoScXMLSeekUtils.cpp: Fix incorrect debug
+	  output
+
+2009-02-18 01:27  tamer
+
+	* [r12927] src/glue/gl_glx.cpp: nasty bug fix; exhibited through
+	  COIN_DEBUG_GLGLUE=1 on SunOS: the
+	  short-circuited code in glxglue_get_display() omitted to
+	  initialize
+	  glxglue_screen. This results in an unproperly initialized
+	  cc_glxglue struct. Calls to functions such as
+	  glXQueryServerString()
+	  in glxglue_init() would fail leaving e.g. glx.serverversion at
+	  NULL.
+	  
+	  Some small refactoring; extract the real screennumber from the
+	  display.
+
+2009-02-17 19:12  tamer
+
+	* [r12923] aclocal.m4, cfg/doxy4win.pl, configure: bootstrap.
+	  (config summary echo fix)
+
+2009-02-17 00:29  tamer
+
+	* [r12916] include/Inventor/scxml/ScXMLEvent.h,
+	  include/Inventor/scxml/ScXMLInvoke.h,
+	  include/Inventor/scxml/ScXMLObject.h,
+	  include/Inventor/scxml/ScXMLStateMachine.h,
+	  include/Inventor/scxml/SoScXMLEvent.h,
+	  include/Inventor/scxml/SoScXMLStateMachine.h: silence suncc
+	  warning: remove superfluous semicolon.
+
+2009-02-13 09:59  pederb
+
+	* [r12901] src/shapenodes/SoQuadMesh.cpp: More fixes for PER_FACE
+	  bindings.
+
+2009-02-13 09:31  pederb
+
+	* [r12900] src/shapenodes/SoQuadMesh.cpp: Bugfix for the
+	  NormalBinding = PER_FACE code path. Reported by Jason Wood.
+
+2009-02-11 16:08  kintel
+
+	* [r12898] src/nodes/SoTextureUnit.cpp: doc clarification
+
+2009-02-10 21:57  tamer
+
+	* [r12896] configure: bootstrap.
+
+2009-02-10 21:56  tamer
+
+	* [r12895] configure.ac: on empty --with-framework-prefix= add
+	  ${prefix} to allow for relocatable frameworks. (buildbot tweak)
+
+2009-02-10 20:15  tamer
+
+	* [r12894] configure: bootstrap.
+
+2009-02-10 20:15  tamer
+
+	* [r12893] configure.ac: When negative vibes lead to obvious errors
+	  with negation operators.
+
+2009-02-10 20:06  tamer
+
+	* [r12892] configure: bootstrap.
+
+2009-02-10 20:05  tamer
+
+	* [r12891] configure.ac: CPPFLAGS and LDFLAGS are sneakishly
+	  emptied out further down in the framework section. *sigh*
+
+2009-02-10 18:32  tamer
+
+	* [r12890] aclocal.m4, cfg/doxy4win.pl, configure: bootstrap.
+
+2009-02-10 18:32  tamer
+
+	* [r12889] configure.ac: pass non-default framework directory
+	  through cpp/ldflags.
+
+2009-02-10 17:25  bfg
+
+	* [r12888] src/doc/environment.dox, src/doc/environment.dox.h: Make
+	  sure that every environment variable is shown in the
+	  documentation, even though no documentation is available.
+
+2009-02-10 11:51  tamer
+
+	* [r12887] src/misc/cppmangle.icc: coding style fixes.
+
+2009-02-06 17:23  kintel
+
+	* [r12884] bin/coin-config: Improved build-app
+
+2009-02-06 17:22  kintel
+
+	* [r12883] src/nodes/SoTexture2Transform.cpp: doc clarification
+
+2009-02-06 11:42  mortene
+
+	* [r12881]
+	  include/Inventor/annex/Profiler/elements/SoProfilerElement.h:
+	  bugfix, api: class was meant to be public, but Win32 symbol
+	  export was missing.
+
+2009-02-04 16:29  mortene
+
+	* [r12878] src/base/SbBox2d.cpp, src/base/SbBox2f.cpp,
+	  src/base/SbBox2i32.cpp, src/base/SbBox2s.cpp,
+	  src/base/SbBox3d.cpp, src/base/SbBox3f.cpp,
+	  src/base/SbBox3i32.cpp, src/base/SbBox3s.cpp: minor semantics:
+	  make extendBy() behave the same over release and debug builds,
+	  and over the misc variants of SbBox* classes. suggested by Sergey
+	  Bikulov.
+
+2009-02-04 16:28  larsa
+
+	* [r12877] src/profiler/SbProfilingData.cpp: use regular ints (to
+	  support really huge scene graphs) instead of trying to save on
+	  memory footprint
+
+2009-02-04 12:23  bfg
+
+	* [r12876] examples/misc/ivcp.cpp, include/Inventor/SoInput.h,
+	  src/io/SoInput.cpp: Fixing ivcp bug without the earlier changes
+	  to SoInput API.
+
+2009-02-04 11:12  bfg
+
+	* [r12875] examples/misc/glut_glinfo.cpp, examples/misc/ivcp.cpp:
+	  Fix bug when reading Inventor file with several top level nodes.
+
+2009-02-04 11:09  bfg
+
+	* [r12874] include/Inventor/SoInput.h, src/io/SoInput.cpp:
+	  SoInput::getFileType function with corresponding enum.
+
+2009-02-04 10:03  bfg
+
+	* [r12873] include/Inventor/fields/SoSFImage.h,
+	  src/fields/SoSFImage.cpp: Get an SbImage directly from field
+	  value.
+
+2009-01-31 16:47  larsa
+
+	* [r12869] src/glue/dl.cpp, src/glue/gl_wgl.cpp: msvc8
+	  --enable-compact compile fixes
+
+2009-01-29 17:32  bfg
+
+	* [r12866] scripts/cvs2cl.pl: More property fixing.
+
+2009-01-29 17:28  bfg
+
+	* [r12865] scripts/cvs2cl.pl: Remove incorrect mime-type.
+
+2009-01-29 17:22  bfg
+
+	* [r12864] aclocal.m4, configure: Bootstrap with exceptions enabled
+	  by default.
+
+2009-01-29 17:18  bfg
+
+	* [r12863] src/engines/evaluator_tab.c, src/fields/SoField.cpp,
+	  src/fields/SoFieldContainer.cpp, src/fields/SoSFImage.cpp:
+	  Cleaning my own closet about WS poisoning.
+
+2009-01-29 16:36  bfg
+
+	* [r12862] include/Inventor/SoRenderManager.h,
+	  src/misc/SoRenderManager.cpp: Full documentation for
+	  SoRenderManager.
+	  Partial design-review
+	  Deprecated certain functions, and marked them as no compile for
+	  Coin 4.0,
+	  should get higher protection level.
+	  Documented preconditions, and asserting on them, rather than
+	  ignoring.
+	  
+	  Fixes COIN-86, partial COIN-57.
+
+2009-01-29 16:28  bfg
+
+	* [r12861] src/coindefs.h: Require a REASON for a
+	  COMPILE_ONLY_BEFORE statement.
+
+2009-01-29 16:24  bfg
+
+	* [r12860] include/Inventor/C/basic.h.in: Remember, never do last
+	  minute edits without retesting.
+
+2009-01-29 16:14  bfg
+
+	* [r12859] include/Inventor/C/basic.h.in: Enable use of static
+	  consts for TRUE and FALSE definitions.
+	  Use them only to lie for doxygen for now, needs thorough testing
+	  if we ever
+	  deploy this on a broader basis.
+
+2009-01-29 15:45  tamer
+
+	* [r12858] src/misc/SoType.cpp: add coindefs.h for workaround to
+	  work and c++ header fix for various compilers.
+
+2009-01-29 14:40  tamer
+
+	* [r12857] src/misc/SoType.cpp, src/misc/cppmangle.icc: support for
+	  Sun Ceres C++ 5.10 name mangling
+
+2009-01-29 14:39  tamer
+
+	* [r12856] src/fonts/fontlib_wrapper.cpp: small codestyle fix.
+
+2009-01-29 09:47  tamer
+
+	* [r12855] src/fonts/fontlib_wrapper.cpp, src/glue/freetype.cpp:
+	  fix logical error to allow freetype to actually initialize.
+
+2009-01-28 16:00  larsa
+
+	* [r12853] src/SbBasicP.h: remove uninitialized-warning for msvc6
+
+2009-01-28 15:59  bfg
+
+	* [r12852] src/misc/SoRenderManager.cpp: Documentation update.
+
+2009-01-28 15:56  larsa
+
+	* [r12851] include/Inventor/fields/SoSubField.h,
+	  include/Inventor/nodekits/SoSubKit.h,
+	  include/Inventor/nodes/SoSubNode.h, src/fields/SoGlobalField.cpp,
+	  src/fields/SoMField.cpp: Solaris64 CC build fixes
+
+2009-01-28 15:55  larsa
+
+	* [r12850] src/misc/SoDB.cpp: realTime globalfield existence test
+
+2009-01-28 15:52  larsa
+
+	* [r12849] src/tidbits.cpp: repeated typenames got too confusing
+	  for msvc6
+
+2009-01-28 15:37  bfg
+
+	* [r12848] src/misc/SoRenderManager.cpp,
+	  src/misc/SoRenderManagerP.cpp: Moving SoRenderManagerP functions
+	  to correct source file.
+
+2009-01-28 15:18  bfg
+
+	* [r12847] docs/coin.doxygen.in: Update doxygen configuration.
+
+2009-01-28 13:38  mortene
+
+	* [r12846] configure.ac: compile: make MSVC shut up about something
+	  it doesn't know jack shit
+
+2009-01-28 13:35  mortene
+
+	* [r12845] include/Inventor/SoOffscreenRenderer.h,
+	  src/misc/SoOffscreenRenderer.cpp: api: adds a couple of dummy
+	  functions for compatibility reasons.
+
+2009-01-28 13:28  pederb
+
+	* [r12844] src/misc/SoVBO.cpp: Obsolete the old VBO performance
+	  test. Will fix a bug causing Coin to attempt VBO rendering on gfx
+	  cards not supporting it.
+
+2009-01-28 11:10  pederb
+
+	* [r12843] src/actions/SoHandleEventAction.cpp: Fix potential bug
+	  in SoHandleEventAction::setPickRoot().
+
+2009-01-27 20:48  pederb
+
+	* [r12841] include/Inventor/C/tidbits.h, src/tidbits.cpp: Fix
+	  sloppy consting in latest commit.
+
+2009-01-27 17:10  pederb
+
+	* [r12840] include/Inventor/C/tidbits.h, src/io/SoInput.cpp,
+	  src/io/SoOutput.cpp, src/tidbits.cpp: Fix ugly bugs in floating
+	  point endian conversions.
+
+2009-01-27 13:12  pederb
+
+	* [r12839] src/misc/SoRenderManager.cpp: Support for
+	  superimpositions and multipass antialiasing.
+
+2009-01-26 23:25  pederb
+
+	* [r12837] include/Inventor/actions/SoGLRenderAction.h,
+	  src/actions/SoGLRenderAction.cpp: Change setCurPass() API to also
+	  include the total number of passes.
+
+2009-01-26 21:50  pederb
+
+	* [r12836] include/Inventor/actions/SoGLRenderAction.h,
+	  src/actions/SoGLRenderAction.cpp: Add
+	  SoGLRenderAction::setCurPass() to make it possible to control
+	  multipass rendering from outside SoGLRenderAction.
+
+2009-01-26 19:17  bfg
+
+	* [r12835] include/Inventor/SoRenderManager.h,
+	  src/misc/SoRenderManager.cpp: Some doc for SoRenderManager
+
+2009-01-26 16:50  tamer
+
+	* [r12834] src/engines/evaluator.c, src/engines/evaluator.l,
+	  src/engines/evaluator.y, src/engines/evaluator_tab.c,
+	  src/engines/so_eval.ic: provide engines subdirectory for
+	  evalutor.h includes to allow out of source builds.
+
+2009-01-25 18:40  pederb
+
+	* [r12826] src/base/SbRotation.cpp: Change
+	  SbRotation::getValue(SbMatrix) so that an affine matrix is always
+	  returned. Implement SbRotation::multVec() properly.
+
+2009-01-23 10:19  bfg
+
+	* [r12824] docs/coin.doxygen.in, src/misc/SoRenderManager.cpp:
+	  Document SoRenderManager::RenderMode.
+
+2009-01-23 09:52  bfg
+
+	* [r12823] docs/releases.dox: Invalid naming of section.
+
+2009-01-23 09:38  bfg
+
+	* [r12822] docs/BUGS.txt, docs/RELEASE.txt,
+	  docs/announcement-2_0_1.txt, docs/announcement-2_0_2.txt,
+	  docs/announcement-2_1_0.txt, docs/announcement-2_2_0.txt,
+	  docs/announcement-2_2_1.txt, docs/announcement-2_3_0.txt,
+	  docs/announcement-2_4_0.txt, docs/announcement-2_4_1.txt,
+	  docs/announcement-2_4_2.txt, docs/announcement-2_4_3.txt,
+	  docs/announcement-2_4_4.txt, docs/announcement-2_4_5.txt,
+	  docs/announcement-2_4_6.txt, docs/announcement-2_5_0.txt,
+	  docs/announcement-3_0_0.txt, docs/api-wish-list.txt,
+	  docs/bugs/features/tgs-inventor/20041116--SoDataSensor-extension.txt,
+	  docs/bugs/features/tgs-inventor/20041116--SoIndexedFaceSet-defines.txt,
+	  docs/bugs/obsolete/20020930--dragger_geometry_files_may_have_too_large_lineWidth.txt,
+	  docs/bugs/resource_leaks/BUGS.txt, docs/coin.doxygen.in,
+	  docs/doxygen/stylesheet.css,
+	  docs/driver-bugs/2002-09-25--nvidia-glx.txt,
+	  docs/misc-resources.txt, docs/optimization.txt, docs/plan.txt,
+	  docs/projects.txt, docs/quat2euler.cpp, docs/quat2euler.txt,
+	  docs/todo.txt: Maintenance.
+	  Sorted the coin.doxygen.in
+	  Killed some whitespace.
+
+2009-01-23 09:11  bfg
+
+	* [r12821] docs/releases.dox: Kill more duplicates doc definitions.
+
+2009-01-23 09:05  bfg
+
+	* [r12820] docs/releases.dox: Fix duplicate definition in
+	  documentation.
+	  Caused problems with tags downstream and merging in the Coin
+	  docs.
+
+2009-01-22 15:24  pederb
+
+	* [r12818] src/glue/gl.cpp: Handle cleanup properly when no
+	  cc_glglue instance has been created.
+
+2009-01-21 10:57  bfg
+
+	* [r12816]
+	  include/Inventor/annex/Profiler/nodekits/SoNodeVisualize.h,
+	  include/Inventor/annex/Profiler/nodekits/SoProfilerOverlayKit.h,
+	  include/Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h,
+	  include/Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h,
+	  src/profiler/SoNodeVisualize.cpp, src/profiler/SoProfiler.cpp,
+	  src/profiler/SoProfilerElement.cpp,
+	  src/profiler/SoProfilerOverlayKit.cpp,
+	  src/profiler/SoProfilerStats.cpp,
+	  src/profiler/SoProfilerTopEngine.cpp,
+	  src/profiler/SoProfilerTopKit.cpp,
+	  src/profiler/SoProfilerVisualizeKit.cpp,
+	  src/profiler/SoScrollingGraphKit.cpp, src/profiler/todo.txt: Kill
+	  a static memory deallocation bug.
+
+2009-01-20 23:18  pederb
+
+	* [r12814] src/misc/SoRenderManager.cpp: Bugfix in setCamera(). We
+	  didn't support resetting it to the same node properly.
+
+2009-01-14 16:26  bfg
+
+	* [r12810] build/Xcode/data/draggerDefaults/iv2h.sh,
+	  build/Xcode/data/shaders/lights/glsl2h.sh,
+	  build/Xcode/data/shaders/vsm/glsl2h.sh,
+	  build/Xcode/include/Inventor/C/basic.h,
+	  build/Xcode/include/Inventor/system/gl-headers.h,
+	  build/Xcode/include/Inventor/system/inttypes.h,
+	  build/msvc6/include/Inventor/C/basic.h,
+	  build/msvc6/include/Inventor/system/gl-headers.h,
+	  build/msvc6/include/Inventor/system/inttypes.h,
+	  build/msvc7/include/Inventor/C/basic.h,
+	  build/msvc7/include/Inventor/system/gl-headers.h,
+	  build/msvc7/include/Inventor/system/inttypes.h,
+	  build/msvc8/include/Inventor/C/basic.h,
+	  build/msvc8/include/Inventor/system/gl-headers.h,
+	  build/msvc8/include/Inventor/system/inttypes.h,
+	  build/msvc9/include/Inventor/C/basic.h,
+	  build/msvc9/include/Inventor/system/gl-headers.h,
+	  build/msvc9/include/Inventor/system/inttypes.h,
+	  data/draggerDefaults/iv2h.sh.in, data/shaders/glsl2h.sh.in,
+	  examples/bindings/CoinQtWidget.cpp,
+	  examples/bindings/CoinQtWidget.h, examples/bindings/glutiv.cpp,
+	  examples/bindings/glxiv.cpp, examples/misc/ivcp.cpp,
+	  include/Inventor/C/XML/attribute.h,
+	  include/Inventor/C/XML/document.h,
+	  include/Inventor/C/XML/element.h,
+	  include/Inventor/C/XML/entity.h, include/Inventor/C/XML/parser.h,
+	  include/Inventor/C/XML/path.h, include/Inventor/C/XML/types.h,
+	  include/Inventor/C/XML/world.h, include/Inventor/C/base/hash.h,
+	  include/Inventor/C/base/heap.h, include/Inventor/C/base/list.h,
+	  include/Inventor/C/base/math-undefs.h,
+	  include/Inventor/C/base/memalloc.h,
+	  include/Inventor/C/base/rbptree.h,
+	  include/Inventor/C/base/string.h, include/Inventor/C/base/time.h,
+	  include/Inventor/C/basic.h.in,
+	  include/Inventor/C/errors/debugerror.h,
+	  include/Inventor/C/errors/error.h, include/Inventor/C/glue/dl.h,
+	  include/Inventor/C/glue/gl.h,
+	  include/Inventor/C/glue/spidermonkey.h,
+	  include/Inventor/C/threads/barrier.h,
+	  include/Inventor/C/threads/common.h,
+	  include/Inventor/C/threads/condvar.h,
+	  include/Inventor/C/threads/fifo.h,
+	  include/Inventor/C/threads/mutex.h,
+	  include/Inventor/C/threads/recmutex.h,
+	  include/Inventor/C/threads/rwmutex.h,
+	  include/Inventor/C/threads/sched.h,
+	  include/Inventor/C/threads/storage.h,
+	  include/Inventor/C/threads/sync.h,
+	  include/Inventor/C/threads/thread.h,
+	  include/Inventor/C/threads/worker.h,
+	  include/Inventor/C/threads/wpool.h, include/Inventor/C/tidbits.h,
+	  include/Inventor/Sb.h, include/Inventor/SbBSPTree.h,
+	  include/Inventor/SbBasic.h, include/Inventor/SbBox.h,
+	  include/Inventor/SbBox2d.h, include/Inventor/SbBox2f.h,
+	  include/Inventor/SbBox2i32.h, include/Inventor/SbBox2s.h,
+	  include/Inventor/SbBox3d.h, include/Inventor/SbBox3f.h,
+	  include/Inventor/SbBox3i32.h, include/Inventor/SbBox3s.h,
+	  include/Inventor/SbClip.h, include/Inventor/SbColor.h,
+	  include/Inventor/SbColor4f.h, include/Inventor/SbCylinder.h,
+	  include/Inventor/SbDPLine.h, include/Inventor/SbDPLinear.h,
+	  include/Inventor/SbDPMatrix.h, include/Inventor/SbDPPlane.h,
+	  include/Inventor/SbDPRotation.h,
+	  include/Inventor/SbDPViewVolume.h, include/Inventor/SbDict.h,
+	  include/Inventor/SbHeap.h, include/Inventor/SbImage.h,
+	  include/Inventor/SbLine.h, include/Inventor/SbLinear.h,
+	  include/Inventor/SbMatrix.h, include/Inventor/SbName.h,
+	  include/Inventor/SbOctTree.h, include/Inventor/SbPList.h,
+	  include/Inventor/SbPlane.h, include/Inventor/SbRotation.h,
+	  include/Inventor/SbSphere.h, include/Inventor/SbString.h,
+	  include/Inventor/SbTesselator.h, include/Inventor/SbTime.h,
+	  include/Inventor/SbTypeInfo.h, include/Inventor/SbVec.h,
+	  include/Inventor/SbVec2b.h, include/Inventor/SbVec2d.h,
+	  include/Inventor/SbVec2f.h, include/Inventor/SbVec2i32.h,
+	  include/Inventor/SbVec2s.h, include/Inventor/SbVec2ub.h,
+	  include/Inventor/SbVec2ui32.h, include/Inventor/SbVec2us.h,
+	  include/Inventor/SbVec3b.h, include/Inventor/SbVec3d.h,
+	  include/Inventor/SbVec3f.h, include/Inventor/SbVec3i32.h,
+	  include/Inventor/SbVec3s.h, include/Inventor/SbVec3ub.h,
+	  include/Inventor/SbVec3ui32.h, include/Inventor/SbVec3us.h,
+	  include/Inventor/SbVec4b.h, include/Inventor/SbVec4d.h,
+	  include/Inventor/SbVec4f.h, include/Inventor/SbVec4i32.h,
+	  include/Inventor/SbVec4s.h, include/Inventor/SbVec4ub.h,
+	  include/Inventor/SbVec4ui32.h, include/Inventor/SbVec4us.h,
+	  include/Inventor/SbViewVolume.h,
+	  include/Inventor/SbViewportRegion.h,
+	  include/Inventor/SbXfBox3d.h, include/Inventor/SbXfBox3f.h,
+	  include/Inventor/So.h, include/Inventor/SoDB.h,
+	  include/Inventor/SoEventManager.h, include/Inventor/SoFullPath.h,
+	  include/Inventor/SoInput.h, include/Inventor/SoInteraction.h,
+	  include/Inventor/SoLists.h, include/Inventor/SoNodeKitPath.h,
+	  include/Inventor/SoOffscreenRenderer.h,
+	  include/Inventor/SoOutput.h, include/Inventor/SoPath.h,
+	  include/Inventor/SoPickedPoint.h,
+	  include/Inventor/SoPrimitiveVertex.h,
+	  include/Inventor/SoRenderManager.h,
+	  include/Inventor/SoSceneManager.h, include/Inventor/SoType.h,
+	  include/Inventor/VRMLnodes/SoVRML.h,
+	  include/Inventor/VRMLnodes/SoVRMLAnchor.h,
+	  include/Inventor/VRMLnodes/SoVRMLAppearance.h,
+	  include/Inventor/VRMLnodes/SoVRMLAudioClip.h,
+	  include/Inventor/VRMLnodes/SoVRMLBackground.h,
+	  include/Inventor/VRMLnodes/SoVRMLBillboard.h,
+	  include/Inventor/VRMLnodes/SoVRMLBox.h,
+	  include/Inventor/VRMLnodes/SoVRMLCollision.h,
+	  include/Inventor/VRMLnodes/SoVRMLColor.h,
+	  include/Inventor/VRMLnodes/SoVRMLColorInterpolator.h,
+	  include/Inventor/VRMLnodes/SoVRMLCone.h,
+	  include/Inventor/VRMLnodes/SoVRMLCoordinate.h,
+	  include/Inventor/VRMLnodes/SoVRMLCoordinateInterpolator.h,
+	  include/Inventor/VRMLnodes/SoVRMLCylinder.h,
+	  include/Inventor/VRMLnodes/SoVRMLCylinderSensor.h,
+	  include/Inventor/VRMLnodes/SoVRMLDirectionalLight.h,
+	  include/Inventor/VRMLnodes/SoVRMLDragSensor.h,
+	  include/Inventor/VRMLnodes/SoVRMLElevationGrid.h,
+	  include/Inventor/VRMLnodes/SoVRMLExtrusion.h,
+	  include/Inventor/VRMLnodes/SoVRMLFog.h,
+	  include/Inventor/VRMLnodes/SoVRMLFontStyle.h,
+	  include/Inventor/VRMLnodes/SoVRMLGeometry.h,
+	  include/Inventor/VRMLnodes/SoVRMLGroup.h,
+	  include/Inventor/VRMLnodes/SoVRMLImageTexture.h,
+	  include/Inventor/VRMLnodes/SoVRMLIndexedFaceSet.h,
+	  include/Inventor/VRMLnodes/SoVRMLIndexedLine.h,
+	  include/Inventor/VRMLnodes/SoVRMLIndexedLineSet.h,
+	  include/Inventor/VRMLnodes/SoVRMLIndexedShape.h,
+	  include/Inventor/VRMLnodes/SoVRMLInline.h,
+	  include/Inventor/VRMLnodes/SoVRMLInterpolator.h,
+	  include/Inventor/VRMLnodes/SoVRMLLOD.h,
+	  include/Inventor/VRMLnodes/SoVRMLLight.h,
+	  include/Inventor/VRMLnodes/SoVRMLMacros.h,
+	  include/Inventor/VRMLnodes/SoVRMLMaterial.h,
+	  include/Inventor/VRMLnodes/SoVRMLMovieTexture.h,
+	  include/Inventor/VRMLnodes/SoVRMLNavigationInfo.h,
+	  include/Inventor/VRMLnodes/SoVRMLNodes.h,
+	  include/Inventor/VRMLnodes/SoVRMLNormal.h,
+	  include/Inventor/VRMLnodes/SoVRMLNormalInterpolator.h,
+	  include/Inventor/VRMLnodes/SoVRMLOrientationInterpolator.h,
+	  include/Inventor/VRMLnodes/SoVRMLParent.h,
+	  include/Inventor/VRMLnodes/SoVRMLPixelTexture.h,
+	  include/Inventor/VRMLnodes/SoVRMLPlaneSensor.h,
+	  include/Inventor/VRMLnodes/SoVRMLPointLight.h,
+	  include/Inventor/VRMLnodes/SoVRMLPointSet.h,
+	  include/Inventor/VRMLnodes/SoVRMLPositionInterpolator.h,
+	  include/Inventor/VRMLnodes/SoVRMLProximitySensor.h,
+	  include/Inventor/VRMLnodes/SoVRMLScalarInterpolator.h,
+	  include/Inventor/VRMLnodes/SoVRMLScript.h,
+	  include/Inventor/VRMLnodes/SoVRMLSensor.h,
+	  include/Inventor/VRMLnodes/SoVRMLShape.h,
+	  include/Inventor/VRMLnodes/SoVRMLSound.h,
+	  include/Inventor/VRMLnodes/SoVRMLSphere.h,
+	  include/Inventor/VRMLnodes/SoVRMLSphereSensor.h,
+	  include/Inventor/VRMLnodes/SoVRMLSpotLight.h,
+	  include/Inventor/VRMLnodes/SoVRMLSubInterpolator.h,
+	  include/Inventor/VRMLnodes/SoVRMLSwitch.h,
+	  include/Inventor/VRMLnodes/SoVRMLText.h,
+	  include/Inventor/VRMLnodes/SoVRMLTexture.h,
+	  include/Inventor/VRMLnodes/SoVRMLTextureCoordinate.h,
+	  include/Inventor/VRMLnodes/SoVRMLTextureTransform.h,
+	  include/Inventor/VRMLnodes/SoVRMLTimeSensor.h,
+	  include/Inventor/VRMLnodes/SoVRMLTouchSensor.h,
+	  include/Inventor/VRMLnodes/SoVRMLTransform.h,
+	  include/Inventor/VRMLnodes/SoVRMLVertexLine.h,
+	  include/Inventor/VRMLnodes/SoVRMLVertexPoint.h,
+	  include/Inventor/VRMLnodes/SoVRMLVertexShape.h,
+	  include/Inventor/VRMLnodes/SoVRMLViewpoint.h,
+	  include/Inventor/VRMLnodes/SoVRMLVisibilitySensor.h,
+	  include/Inventor/VRMLnodes/SoVRMLWorldInfo.h,
+	  include/Inventor/actions/SoAction.h,
+	  include/Inventor/actions/SoActions.h,
+	  include/Inventor/actions/SoAudioRenderAction.h,
+	  include/Inventor/actions/SoBoxHighlightRenderAction.h,
+	  include/Inventor/actions/SoCallbackAction.h,
+	  include/Inventor/actions/SoGLRenderAction.h,
+	  include/Inventor/actions/SoGetBoundingBoxAction.h,
+	  include/Inventor/actions/SoGetMatrixAction.h,
+	  include/Inventor/actions/SoGetPrimitiveCountAction.h,
+	  include/Inventor/actions/SoGlobalSimplifyAction.h,
+	  include/Inventor/actions/SoHandleEventAction.h,
+	  include/Inventor/actions/SoLineHighlightRenderAction.h,
+	  include/Inventor/actions/SoPickAction.h,
+	  include/Inventor/actions/SoRayPickAction.h,
+	  include/Inventor/actions/SoReorganizeAction.h,
+	  include/Inventor/actions/SoSearchAction.h,
+	  include/Inventor/actions/SoShapeSimplifyAction.h,
+	  include/Inventor/actions/SoSimplifyAction.h,
+	  include/Inventor/actions/SoSubAction.h,
+	  include/Inventor/actions/SoToVRML2Action.h,
+	  include/Inventor/actions/SoToVRMLAction.h,
+	  include/Inventor/actions/SoWriteAction.h,
+	  include/Inventor/annex/FXViz/elements/SoGLShadowCullingElement.h,
+	  include/Inventor/annex/FXViz/elements/SoShadowStyleElement.h,
+	  include/Inventor/annex/FXViz/nodes/SoShadowCulling.h,
+	  include/Inventor/annex/FXViz/nodes/SoShadowGroup.h,
+	  include/Inventor/annex/FXViz/nodes/SoShadowSpotLight.h,
+	  include/Inventor/annex/FXViz/nodes/SoShadowStyle.h,
+	  include/Inventor/annex/ForeignFiles/SoForeignFileKit.h,
+	  include/Inventor/annex/ForeignFiles/SoSTLFileKit.h,
+	  include/Inventor/annex/HardCopy/SoHardCopy.h,
+	  include/Inventor/annex/HardCopy/SoPSVectorOutput.h,
+	  include/Inventor/annex/HardCopy/SoVectorOutput.h,
+	  include/Inventor/annex/HardCopy/SoVectorizeAction.h,
+	  include/Inventor/annex/HardCopy/SoVectorizePSAction.h,
+	  include/Inventor/annex/Profiler/SbProfilingData.h,
+	  include/Inventor/annex/Profiler/SoProfiler.h,
+	  include/Inventor/annex/Profiler/elements/SoProfilerElement.h,
+	  include/Inventor/annex/Profiler/engines/SoProfilerTopEngine.h,
+	  include/Inventor/annex/Profiler/nodekits/SoNodeVisualize.h,
+	  include/Inventor/annex/Profiler/nodekits/SoProfilerTopKit.h,
+	  include/Inventor/annex/Profiler/nodekits/SoProfilerVisualizeKit.h,
+	  include/Inventor/annex/Profiler/nodekits/SoScrollingGraphKit.h,
+	  include/Inventor/annex/Profiler/nodes/SoProfilerStats.h,
+	  include/Inventor/annex/Profiler/utils/SoProfilingReportGenerator.h,
+	  include/Inventor/bundles/SoBundle.h,
+	  include/Inventor/bundles/SoMaterialBundle.h,
+	  include/Inventor/bundles/SoNormalBundle.h,
+	  include/Inventor/bundles/SoTextureCoordinateBundle.h,
+	  include/Inventor/bundles/SoVertexAttributeBundle.h,
+	  include/Inventor/caches/SoBoundingBoxCache.h,
+	  include/Inventor/caches/SoCache.h,
+	  include/Inventor/caches/SoConvexDataCache.h,
+	  include/Inventor/caches/SoGLCacheList.h,
+	  include/Inventor/caches/SoGLRenderCache.h,
+	  include/Inventor/caches/SoNormalCache.h,
+	  include/Inventor/caches/SoPrimitiveVertexCache.h,
+	  include/Inventor/caches/SoTextureCoordinateCache.h,
+	  include/Inventor/collision/SoIntersectionDetectionAction.h,
+	  include/Inventor/details/SoConeDetail.h,
+	  include/Inventor/details/SoCubeDetail.h,
+	  include/Inventor/details/SoCylinderDetail.h,
+	  include/Inventor/details/SoDetail.h,
+	  include/Inventor/details/SoDetails.h,
+	  include/Inventor/details/SoFaceDetail.h,
+	  include/Inventor/details/SoLineDetail.h,
+	  include/Inventor/details/SoNodeKitDetail.h,
+	  include/Inventor/details/SoPointDetail.h,
+	  include/Inventor/details/SoSubDetail.h,
+	  include/Inventor/details/SoTextDetail.h,
+	  include/Inventor/draggers/SoCenterballDragger.h,
+	  include/Inventor/draggers/SoDirectionalLightDragger.h,
+	  include/Inventor/draggers/SoDragPointDragger.h,
+	  include/Inventor/draggers/SoDragger.h,
+	  include/Inventor/draggers/SoHandleBoxDragger.h,
+	  include/Inventor/draggers/SoJackDragger.h,
+	  include/Inventor/draggers/SoPointLightDragger.h,
+	  include/Inventor/draggers/SoRotateCylindricalDragger.h,
+	  include/Inventor/draggers/SoRotateDiscDragger.h,
+	  include/Inventor/draggers/SoRotateSphericalDragger.h,
+	  include/Inventor/draggers/SoScale1Dragger.h,
+	  include/Inventor/draggers/SoScale2Dragger.h,
+	  include/Inventor/draggers/SoScale2UniformDragger.h,
+	  include/Inventor/draggers/SoScaleUniformDragger.h,
+	  include/Inventor/draggers/SoSpotLightDragger.h,
+	  include/Inventor/draggers/SoTabBoxDragger.h,
+	  include/Inventor/draggers/SoTabPlaneDragger.h,
+	  include/Inventor/draggers/SoTrackballDragger.h,
+	  include/Inventor/draggers/SoTransformBoxDragger.h,
+	  include/Inventor/draggers/SoTransformerDragger.h,
+	  include/Inventor/draggers/SoTranslate1Dragger.h,
+	  include/Inventor/draggers/SoTranslate2Dragger.h,
+	  include/Inventor/elements/SoAccumulatedElement.h,
+	  include/Inventor/elements/SoAmbientColorElement.h,
+	  include/Inventor/elements/SoAnnoText3CharOrientElement.h,
+	  include/Inventor/elements/SoAnnoText3FontSizeHintElement.h,
+	  include/Inventor/elements/SoAnnoText3RenderPrintElement.h,
+	  include/Inventor/elements/SoBBoxModelMatrixElement.h,
+	  include/Inventor/elements/SoBumpMapCoordinateElement.h,
+	  include/Inventor/elements/SoBumpMapElement.h,
+	  include/Inventor/elements/SoBumpMapMatrixElement.h,
+	  include/Inventor/elements/SoCacheElement.h,
+	  include/Inventor/elements/SoCacheHintElement.h,
+	  include/Inventor/elements/SoClipPlaneElement.h,
+	  include/Inventor/elements/SoComplexityElement.h,
+	  include/Inventor/elements/SoComplexityTypeElement.h,
+	  include/Inventor/elements/SoCoordinateElement.h,
+	  include/Inventor/elements/SoCreaseAngleElement.h,
+	  include/Inventor/elements/SoCullElement.h,
+	  include/Inventor/elements/SoDecimationPercentageElement.h,
+	  include/Inventor/elements/SoDecimationTypeElement.h,
+	  include/Inventor/elements/SoDepthBufferElement.h,
+	  include/Inventor/elements/SoDiffuseColorElement.h,
+	  include/Inventor/elements/SoDrawStyleElement.h,
+	  include/Inventor/elements/SoElement.h,
+	  include/Inventor/elements/SoElements.h,
+	  include/Inventor/elements/SoEmissiveColorElement.h,
+	  include/Inventor/elements/SoEnvironmentElement.h,
+	  include/Inventor/elements/SoFloatElement.h,
+	  include/Inventor/elements/SoFocalDistanceElement.h,
+	  include/Inventor/elements/SoFontNameElement.h,
+	  include/Inventor/elements/SoFontSizeElement.h,
+	  include/Inventor/elements/SoGLCacheContextElement.h,
+	  include/Inventor/elements/SoGLClipPlaneElement.h,
+	  include/Inventor/elements/SoGLColorIndexElement.h,
+	  include/Inventor/elements/SoGLCoordinateElement.h,
+	  include/Inventor/elements/SoGLDepthBufferElement.h,
+	  include/Inventor/elements/SoGLDisplayList.h,
+	  include/Inventor/elements/SoGLDrawStyleElement.h,
+	  include/Inventor/elements/SoGLEnvironmentElement.h,
+	  include/Inventor/elements/SoGLLazyElement.h,
+	  include/Inventor/elements/SoGLLightIdElement.h,
+	  include/Inventor/elements/SoGLLinePatternElement.h,
+	  include/Inventor/elements/SoGLLineWidthElement.h,
+	  include/Inventor/elements/SoGLModelMatrixElement.h,
+	  include/Inventor/elements/SoGLMultiTextureCoordinateElement.h,
+	  include/Inventor/elements/SoGLMultiTextureEnabledElement.h,
+	  include/Inventor/elements/SoGLMultiTextureImageElement.h,
+	  include/Inventor/elements/SoGLMultiTextureMatrixElement.h,
+	  include/Inventor/elements/SoGLNormalElement.h,
+	  include/Inventor/elements/SoGLNormalizeElement.h,
+	  include/Inventor/elements/SoGLPointSizeElement.h,
+	  include/Inventor/elements/SoGLPolygonOffsetElement.h,
+	  include/Inventor/elements/SoGLProjectionMatrixElement.h,
+	  include/Inventor/elements/SoGLRenderPassElement.h,
+	  include/Inventor/elements/SoGLShadeModelElement.h,
+	  include/Inventor/elements/SoGLShaderProgramElement.h,
+	  include/Inventor/elements/SoGLShapeHintsElement.h,
+	  include/Inventor/elements/SoGLTexture3EnabledElement.h,
+	  include/Inventor/elements/SoGLTextureCoordinateElement.h,
+	  include/Inventor/elements/SoGLTextureEnabledElement.h,
+	  include/Inventor/elements/SoGLTextureImageElement.h,
+	  include/Inventor/elements/SoGLTextureMatrixElement.h,
+	  include/Inventor/elements/SoGLUpdateAreaElement.h,
+	  include/Inventor/elements/SoGLVBOElement.h,
+	  include/Inventor/elements/SoGLVertexAttributeElement.h,
+	  include/Inventor/elements/SoGLViewingMatrixElement.h,
+	  include/Inventor/elements/SoGLViewportRegionElement.h,
+	  include/Inventor/elements/SoGeoElement.h,
+	  include/Inventor/elements/SoInt32Element.h,
+	  include/Inventor/elements/SoLazyElement.h,
+	  include/Inventor/elements/SoLightAttenuationElement.h,
+	  include/Inventor/elements/SoLightElement.h,
+	  include/Inventor/elements/SoLightModelElement.h,
+	  include/Inventor/elements/SoLinePatternElement.h,
+	  include/Inventor/elements/SoLineWidthElement.h,
+	  include/Inventor/elements/SoListenerDopplerElement.h,
+	  include/Inventor/elements/SoListenerGainElement.h,
+	  include/Inventor/elements/SoListenerOrientationElement.h,
+	  include/Inventor/elements/SoListenerPositionElement.h,
+	  include/Inventor/elements/SoLocalBBoxMatrixElement.h,
+	  include/Inventor/elements/SoLongElement.h,
+	  include/Inventor/elements/SoMaterialBindingElement.h,
+	  include/Inventor/elements/SoModelMatrixElement.h,
+	  include/Inventor/elements/SoMultiTextureCoordinateElement.h,
+	  include/Inventor/elements/SoMultiTextureEnabledElement.h,
+	  include/Inventor/elements/SoMultiTextureImageElement.h,
+	  include/Inventor/elements/SoMultiTextureMatrixElement.h,
+	  include/Inventor/elements/SoNormalBindingElement.h,
+	  include/Inventor/elements/SoNormalElement.h,
+	  include/Inventor/elements/SoOverrideElement.h,
+	  include/Inventor/elements/SoPickRayElement.h,
+	  include/Inventor/elements/SoPickStyleElement.h,
+	  include/Inventor/elements/SoPointSizeElement.h,
+	  include/Inventor/elements/SoPolygonOffsetElement.h,
+	  include/Inventor/elements/SoProfileCoordinateElement.h,
+	  include/Inventor/elements/SoProfileElement.h,
+	  include/Inventor/elements/SoProjectionMatrixElement.h,
+	  include/Inventor/elements/SoReplacedElement.h,
+	  include/Inventor/elements/SoShapeHintsElement.h,
+	  include/Inventor/elements/SoShapeStyleElement.h,
+	  include/Inventor/elements/SoShininessElement.h,
+	  include/Inventor/elements/SoSoundElement.h,
+	  include/Inventor/elements/SoSpecularColorElement.h,
+	  include/Inventor/elements/SoSubElement.h,
+	  include/Inventor/elements/SoSwitchElement.h,
+	  include/Inventor/elements/SoTextOutlineEnabledElement.h,
+	  include/Inventor/elements/SoTexture3EnabledElement.h,
+	  include/Inventor/elements/SoTextureCombineElement.h,
+	  include/Inventor/elements/SoTextureCoordinateBindingElement.h,
+	  include/Inventor/elements/SoTextureCoordinateElement.h,
+	  include/Inventor/elements/SoTextureEnabledElement.h,
+	  include/Inventor/elements/SoTextureImageElement.h,
+	  include/Inventor/elements/SoTextureMatrixElement.h,
+	  include/Inventor/elements/SoTextureOverrideElement.h,
+	  include/Inventor/elements/SoTextureQualityElement.h,
+	  include/Inventor/elements/SoTextureUnitElement.h,
+	  include/Inventor/elements/SoTransparencyElement.h,
+	  include/Inventor/elements/SoUnitsElement.h,
+	  include/Inventor/elements/SoVertexAttributeBindingElement.h,
+	  include/Inventor/elements/SoVertexAttributeElement.h,
+	  include/Inventor/elements/SoViewVolumeElement.h,
+	  include/Inventor/elements/SoViewingMatrixElement.h,
+	  include/Inventor/elements/SoViewportRegionElement.h,
+	  include/Inventor/elements/SoWindowElement.h,
+	  include/Inventor/engines/SoBoolOperation.h,
+	  include/Inventor/engines/SoCalculator.h,
+	  include/Inventor/engines/SoCompose.h,
+	  include/Inventor/engines/SoComposeMatrix.h,
+	  include/Inventor/engines/SoComposeRotation.h,
+	  include/Inventor/engines/SoComposeRotationFromTo.h,
+	  include/Inventor/engines/SoComposeVec2f.h,
+	  include/Inventor/engines/SoComposeVec3f.h,
+	  include/Inventor/engines/SoComposeVec4f.h,
+	  include/Inventor/engines/SoComputeBoundingBox.h,
+	  include/Inventor/engines/SoConcatenate.h,
+	  include/Inventor/engines/SoCounter.h,
+	  include/Inventor/engines/SoDecomposeMatrix.h,
+	  include/Inventor/engines/SoDecomposeRotation.h,
+	  include/Inventor/engines/SoDecomposeVec2f.h,
+	  include/Inventor/engines/SoDecomposeVec3f.h,
+	  include/Inventor/engines/SoDecomposeVec4f.h,
+	  include/Inventor/engines/SoElapsedTime.h,
+	  include/Inventor/engines/SoEngine.h,
+	  include/Inventor/engines/SoEngineOutput.h,
+	  include/Inventor/engines/SoEngines.h,
+	  include/Inventor/engines/SoFieldConverter.h,
+	  include/Inventor/engines/SoGate.h,
+	  include/Inventor/engines/SoHeightMapToNormalMap.h,
+	  include/Inventor/engines/SoInterpolate.h,
+	  include/Inventor/engines/SoInterpolateFloat.h,
+	  include/Inventor/engines/SoInterpolateRotation.h,
+	  include/Inventor/engines/SoInterpolateVec2f.h,
+	  include/Inventor/engines/SoInterpolateVec3f.h,
+	  include/Inventor/engines/SoInterpolateVec4f.h,
+	  include/Inventor/engines/SoNodeEngine.h,
+	  include/Inventor/engines/SoOnOff.h,
+	  include/Inventor/engines/SoOneShot.h,
+	  include/Inventor/engines/SoOutputData.h,
+	  include/Inventor/engines/SoSelectOne.h,
+	  include/Inventor/engines/SoSubEngine.h,
+	  include/Inventor/engines/SoSubNodeEngine.h,
+	  include/Inventor/engines/SoTexture2Convert.h,
+	  include/Inventor/engines/SoTimeCounter.h,
+	  include/Inventor/engines/SoTransformVec3f.h,
+	  include/Inventor/engines/SoTriggerAny.h,
+	  include/Inventor/errors/SoDebugError.h,
+	  include/Inventor/errors/SoError.h,
+	  include/Inventor/errors/SoErrors.h,
+	  include/Inventor/errors/SoMemoryError.h,
+	  include/Inventor/errors/SoReadError.h,
+	  include/Inventor/events/SoButtonEvent.h,
+	  include/Inventor/events/SoEvent.h,
+	  include/Inventor/events/SoEvents.h,
+	  include/Inventor/events/SoKeyboardEvent.h,
+	  include/Inventor/events/SoLocation2Event.h,
+	  include/Inventor/events/SoMotion3Event.h,
+	  include/Inventor/events/SoMouseButtonEvent.h,
+	  include/Inventor/events/SoSpaceballButtonEvent.h,
+	  include/Inventor/events/SoSubEvent.h,
+	  include/Inventor/fields/SFNodeAndEngine.tpl,
+	  include/Inventor/fields/SoField.h,
+	  include/Inventor/fields/SoFieldContainer.h,
+	  include/Inventor/fields/SoFieldData.h,
+	  include/Inventor/fields/SoFields.h,
+	  include/Inventor/fields/SoMFBitMask.h,
+	  include/Inventor/fields/SoMFBool.h,
+	  include/Inventor/fields/SoMFColor.h,
+	  include/Inventor/fields/SoMFColorRGBA.h,
+	  include/Inventor/fields/SoMFDouble.h,
+	  include/Inventor/fields/SoMFEngine.h,
+	  include/Inventor/fields/SoMFEnum.h,
+	  include/Inventor/fields/SoMFFloat.h,
+	  include/Inventor/fields/SoMFInt32.h,
+	  include/Inventor/fields/SoMFLong.h,
+	  include/Inventor/fields/SoMFMatrix.h,
+	  include/Inventor/fields/SoMFName.h,
+	  include/Inventor/fields/SoMFNode.h,
+	  include/Inventor/fields/SoMFPath.h,
+	  include/Inventor/fields/SoMFPlane.h,
+	  include/Inventor/fields/SoMFRotation.h,
+	  include/Inventor/fields/SoMFShort.h,
+	  include/Inventor/fields/SoMFString.h,
+	  include/Inventor/fields/SoMFTime.h,
+	  include/Inventor/fields/SoMFUInt32.h,
+	  include/Inventor/fields/SoMFULong.h,
+	  include/Inventor/fields/SoMFUShort.h,
+	  include/Inventor/fields/SoMFVec2b.h,
+	  include/Inventor/fields/SoMFVec2d.h,
+	  include/Inventor/fields/SoMFVec2f.h,
+	  include/Inventor/fields/SoMFVec2i32.h,
+	  include/Inventor/fields/SoMFVec2s.h,
+	  include/Inventor/fields/SoMFVec3b.h,
+	  include/Inventor/fields/SoMFVec3d.h,
+	  include/Inventor/fields/SoMFVec3f.h,
+	  include/Inventor/fields/SoMFVec3i32.h,
+	  include/Inventor/fields/SoMFVec3s.h,
+	  include/Inventor/fields/SoMFVec4b.h,
+	  include/Inventor/fields/SoMFVec4d.h,
+	  include/Inventor/fields/SoMFVec4f.h,
+	  include/Inventor/fields/SoMFVec4i32.h,
+	  include/Inventor/fields/SoMFVec4s.h,
+	  include/Inventor/fields/SoMFVec4ub.h,
+	  include/Inventor/fields/SoMFVec4ui32.h,
+	  include/Inventor/fields/SoMFVec4us.h,
+	  include/Inventor/fields/SoMField.h,
+	  include/Inventor/fields/SoSFBitMask.h,
+	  include/Inventor/fields/SoSFBool.h,
+	  include/Inventor/fields/SoSFBox2d.h,
+	  include/Inventor/fields/SoSFBox2f.h,
+	  include/Inventor/fields/SoSFBox2i32.h,
+	  include/Inventor/fields/SoSFBox2s.h,
+	  include/Inventor/fields/SoSFBox3d.h,
+	  include/Inventor/fields/SoSFBox3f.h,
+	  include/Inventor/fields/SoSFBox3i32.h,
+	  include/Inventor/fields/SoSFBox3s.h,
+	  include/Inventor/fields/SoSFColor.h,
+	  include/Inventor/fields/SoSFColorRGBA.h,
+	  include/Inventor/fields/SoSFDouble.h,
+	  include/Inventor/fields/SoSFEngine.h,
+	  include/Inventor/fields/SoSFEnum.h,
+	  include/Inventor/fields/SoSFFloat.h,
+	  include/Inventor/fields/SoSFImage.h,
+	  include/Inventor/fields/SoSFImage3.h,
+	  include/Inventor/fields/SoSFInt32.h,
+	  include/Inventor/fields/SoSFLong.h,
+	  include/Inventor/fields/SoSFMatrix.h,
+	  include/Inventor/fields/SoSFName.h,
+	  include/Inventor/fields/SoSFNode.h,
+	  include/Inventor/fields/SoSFPath.h,
+	  include/Inventor/fields/SoSFPlane.h,
+	  include/Inventor/fields/SoSFRotation.h,
+	  include/Inventor/fields/SoSFShort.h,
+	  include/Inventor/fields/SoSFString.h,
+	  include/Inventor/fields/SoSFTime.h,
+	  include/Inventor/fields/SoSFTrigger.h,
+	  include/Inventor/fields/SoSFUInt32.h,
+	  include/Inventor/fields/SoSFULong.h,
+	  include/Inventor/fields/SoSFUShort.h,
+	  include/Inventor/fields/SoSFVec2b.h,
+	  include/Inventor/fields/SoSFVec2d.h,
+	  include/Inventor/fields/SoSFVec2f.h,
+	  include/Inventor/fields/SoSFVec2i32.h,
+	  include/Inventor/fields/SoSFVec2s.h,
+	  include/Inventor/fields/SoSFVec3b.h,
+	  include/Inventor/fields/SoSFVec3d.h,
+	  include/Inventor/fields/SoSFVec3f.h,
+	  include/Inventor/fields/SoSFVec3i32.h,
+	  include/Inventor/fields/SoSFVec3s.h,
+	  include/Inventor/fields/SoSFVec4b.h,
+	  include/Inventor/fields/SoSFVec4d.h,
+	  include/Inventor/fields/SoSFVec4f.h,
+	  include/Inventor/fields/SoSFVec4i32.h,
+	  include/Inventor/fields/SoSFVec4s.h,
+	  include/Inventor/fields/SoSFVec4ub.h,
+	  include/Inventor/fields/SoSFVec4ui32.h,
+	  include/Inventor/fields/SoSFVec4us.h,
+	  include/Inventor/fields/SoSField.h,
+	  include/Inventor/fields/SoSubField.h,
+	  include/Inventor/lists/SbIntList.h,
+	  include/Inventor/lists/SbList.h,
+	  include/Inventor/lists/SbPList.h,
+	  include/Inventor/lists/SbStringList.h,
+	  include/Inventor/lists/SbVec3fList.h,
+	  include/Inventor/lists/SoActionMethodList.h,
+	  include/Inventor/lists/SoAuditorList.h,
+	  include/Inventor/lists/SoBaseList.h,
+	  include/Inventor/lists/SoCallbackList.h,
+	  include/Inventor/lists/SoDetailList.h,
+	  include/Inventor/lists/SoEnabledElementsList.h,
+	  include/Inventor/lists/SoEngineList.h,
+	  include/Inventor/lists/SoEngineOutputList.h,
+	  include/Inventor/lists/SoFieldList.h,
+	  include/Inventor/lists/SoNodeList.h,
+	  include/Inventor/lists/SoPathList.h,
+	  include/Inventor/lists/SoPickedPointList.h,
+	  include/Inventor/lists/SoTypeList.h,
+	  include/Inventor/lock/SoLockMgr.h,
+	  include/Inventor/manips/SoCenterballManip.h,
+	  include/Inventor/manips/SoClipPlaneManip.h,
+	  include/Inventor/manips/SoDirectionalLightManip.h,
+	  include/Inventor/manips/SoHandleBoxManip.h,
+	  include/Inventor/manips/SoJackManip.h,
+	  include/Inventor/manips/SoPointLightManip.h,
+	  include/Inventor/manips/SoSpotLightManip.h,
+	  include/Inventor/manips/SoTabBoxManip.h,
+	  include/Inventor/manips/SoTrackballManip.h,
+	  include/Inventor/manips/SoTransformBoxManip.h,
+	  include/Inventor/manips/SoTransformManip.h,
+	  include/Inventor/manips/SoTransformerManip.h,
+	  include/Inventor/misc/SoAudioDevice.h,
+	  include/Inventor/misc/SoAuditorList.h,
+	  include/Inventor/misc/SoBase.h, include/Inventor/misc/SoBasic.h,
+	  include/Inventor/misc/SoByteStream.h,
+	  include/Inventor/misc/SoCallbackList.h,
+	  include/Inventor/misc/SoChildList.h,
+	  include/Inventor/misc/SoContextHandler.h,
+	  include/Inventor/misc/SoGLBigImage.h,
+	  include/Inventor/misc/SoGLCubeMapImage.h,
+	  include/Inventor/misc/SoGLDriverDatabase.h,
+	  include/Inventor/misc/SoGLImage.h,
+	  include/Inventor/misc/SoGlyph.h,
+	  include/Inventor/misc/SoJavaScriptEngine.h,
+	  include/Inventor/misc/SoLightPath.h,
+	  include/Inventor/misc/SoNormalGenerator.h,
+	  include/Inventor/misc/SoNotRec.h,
+	  include/Inventor/misc/SoNotification.h,
+	  include/Inventor/misc/SoProto.h,
+	  include/Inventor/misc/SoProtoInstance.h,
+	  include/Inventor/misc/SoScriptEngine.h,
+	  include/Inventor/misc/SoState.h,
+	  include/Inventor/misc/SoTempPath.h,
+	  include/Inventor/misc/SoTranReceiver.h,
+	  include/Inventor/misc/SoTranSender.h,
+	  include/Inventor/misc/SoTranscribe.h,
+	  include/Inventor/nodekits/SoAppearanceKit.h,
+	  include/Inventor/nodekits/SoBaseKit.h,
+	  include/Inventor/nodekits/SoCameraKit.h,
+	  include/Inventor/nodekits/SoInteractionKit.h,
+	  include/Inventor/nodekits/SoLightKit.h,
+	  include/Inventor/nodekits/SoNodeKit.h,
+	  include/Inventor/nodekits/SoNodeKitListPart.h,
+	  include/Inventor/nodekits/SoNodekitCatalog.h,
+	  include/Inventor/nodekits/SoSceneKit.h,
+	  include/Inventor/nodekits/SoSeparatorKit.h,
+	  include/Inventor/nodekits/SoShapeKit.h,
+	  include/Inventor/nodekits/SoWrapperKit.h,
+	  include/Inventor/nodes/SoAnnotation.h,
+	  include/Inventor/nodes/SoAntiSquish.h,
+	  include/Inventor/nodes/SoArray.h,
+	  include/Inventor/nodes/SoAsciiText.h,
+	  include/Inventor/nodes/SoBaseColor.h,
+	  include/Inventor/nodes/SoBlinker.h,
+	  include/Inventor/nodes/SoBumpMap.h,
+	  include/Inventor/nodes/SoBumpMapCoordinate.h,
+	  include/Inventor/nodes/SoBumpMapTransform.h,
+	  include/Inventor/nodes/SoCacheHint.h,
+	  include/Inventor/nodes/SoCallback.h,
+	  include/Inventor/nodes/SoCamera.h,
+	  include/Inventor/nodes/SoClipPlane.h,
+	  include/Inventor/nodes/SoColorIndex.h,
+	  include/Inventor/nodes/SoComplexity.h,
+	  include/Inventor/nodes/SoCone.h,
+	  include/Inventor/nodes/SoCoordinate3.h,
+	  include/Inventor/nodes/SoCoordinate4.h,
+	  include/Inventor/nodes/SoCube.h,
+	  include/Inventor/nodes/SoCylinder.h,
+	  include/Inventor/nodes/SoDepthBuffer.h,
+	  include/Inventor/nodes/SoDirectionalLight.h,
+	  include/Inventor/nodes/SoDrawStyle.h,
+	  include/Inventor/nodes/SoEnvironment.h,
+	  include/Inventor/nodes/SoEventCallback.h,
+	  include/Inventor/nodes/SoExtSelection.h,
+	  include/Inventor/nodes/SoFaceSet.h,
+	  include/Inventor/nodes/SoFile.h, include/Inventor/nodes/SoFont.h,
+	  include/Inventor/nodes/SoFontStyle.h,
+	  include/Inventor/nodes/SoFragmentShader.h,
+	  include/Inventor/nodes/SoFrustumCamera.h,
+	  include/Inventor/nodes/SoGeoCoordinate.h,
+	  include/Inventor/nodes/SoGeoLocation.h,
+	  include/Inventor/nodes/SoGeoOrigin.h,
+	  include/Inventor/nodes/SoGeoSeparator.h,
+	  include/Inventor/nodes/SoGeometryShader.h,
+	  include/Inventor/nodes/SoGroup.h,
+	  include/Inventor/nodes/SoImage.h,
+	  include/Inventor/nodes/SoIndexedFaceSet.h,
+	  include/Inventor/nodes/SoIndexedLineSet.h,
+	  include/Inventor/nodes/SoIndexedNurbsCurve.h,
+	  include/Inventor/nodes/SoIndexedNurbsSurface.h,
+	  include/Inventor/nodes/SoIndexedShape.h,
+	  include/Inventor/nodes/SoIndexedTriangleStripSet.h,
+	  include/Inventor/nodes/SoInfo.h, include/Inventor/nodes/SoLOD.h,
+	  include/Inventor/nodes/SoLabel.h,
+	  include/Inventor/nodes/SoLevelOfDetail.h,
+	  include/Inventor/nodes/SoLight.h,
+	  include/Inventor/nodes/SoLightModel.h,
+	  include/Inventor/nodes/SoLineSet.h,
+	  include/Inventor/nodes/SoLinearProfile.h,
+	  include/Inventor/nodes/SoListener.h,
+	  include/Inventor/nodes/SoLocateHighlight.h,
+	  include/Inventor/nodes/SoMarkerSet.h,
+	  include/Inventor/nodes/SoMaterial.h,
+	  include/Inventor/nodes/SoMaterialBinding.h,
+	  include/Inventor/nodes/SoMatrixTransform.h,
+	  include/Inventor/nodes/SoMultipleCopy.h,
+	  include/Inventor/nodes/SoNode.h,
+	  include/Inventor/nodes/SoNodes.h,
+	  include/Inventor/nodes/SoNonIndexedShape.h,
+	  include/Inventor/nodes/SoNormal.h,
+	  include/Inventor/nodes/SoNormalBinding.h,
+	  include/Inventor/nodes/SoNurbsCurve.h,
+	  include/Inventor/nodes/SoNurbsProfile.h,
+	  include/Inventor/nodes/SoNurbsSurface.h,
+	  include/Inventor/nodes/SoOrthographicCamera.h,
+	  include/Inventor/nodes/SoPackedColor.h,
+	  include/Inventor/nodes/SoPathSwitch.h,
+	  include/Inventor/nodes/SoPendulum.h,
+	  include/Inventor/nodes/SoPerspectiveCamera.h,
+	  include/Inventor/nodes/SoPickStyle.h,
+	  include/Inventor/nodes/SoPointLight.h,
+	  include/Inventor/nodes/SoPointSet.h,
+	  include/Inventor/nodes/SoPolygonOffset.h,
+	  include/Inventor/nodes/SoProfile.h,
+	  include/Inventor/nodes/SoProfileCoordinate2.h,
+	  include/Inventor/nodes/SoProfileCoordinate3.h,
+	  include/Inventor/nodes/SoQuadMesh.h,
+	  include/Inventor/nodes/SoResetTransform.h,
+	  include/Inventor/nodes/SoRotation.h,
+	  include/Inventor/nodes/SoRotationXYZ.h,
+	  include/Inventor/nodes/SoRotor.h,
+	  include/Inventor/nodes/SoScale.h,
+	  include/Inventor/nodes/SoSceneTexture2.h,
+	  include/Inventor/nodes/SoSceneTextureCubeMap.h,
+	  include/Inventor/nodes/SoSelection.h,
+	  include/Inventor/nodes/SoSeparator.h,
+	  include/Inventor/nodes/SoShaderObject.h,
+	  include/Inventor/nodes/SoShaderParameter.h,
+	  include/Inventor/nodes/SoShaderProgram.h,
+	  include/Inventor/nodes/SoShape.h,
+	  include/Inventor/nodes/SoShapeHints.h,
+	  include/Inventor/nodes/SoShuttle.h,
+	  include/Inventor/nodes/SoSphere.h,
+	  include/Inventor/nodes/SoSpotLight.h,
+	  include/Inventor/nodes/SoSurroundScale.h,
+	  include/Inventor/nodes/SoSwitch.h,
+	  include/Inventor/nodes/SoText2.h,
+	  include/Inventor/nodes/SoText3.h,
+	  include/Inventor/nodes/SoTexture.h,
+	  include/Inventor/nodes/SoTexture2.h,
+	  include/Inventor/nodes/SoTexture2Transform.h,
+	  include/Inventor/nodes/SoTexture3.h,
+	  include/Inventor/nodes/SoTexture3Transform.h,
+	  include/Inventor/nodes/SoTextureCombine.h,
+	  include/Inventor/nodes/SoTextureCoordinate2.h,
+	  include/Inventor/nodes/SoTextureCoordinate3.h,
+	  include/Inventor/nodes/SoTextureCoordinateBinding.h,
+	  include/Inventor/nodes/SoTextureCoordinateCube.h,
+	  include/Inventor/nodes/SoTextureCoordinateCylinder.h,
+	  include/Inventor/nodes/SoTextureCoordinateDefault.h,
+	  include/Inventor/nodes/SoTextureCoordinateEnvironment.h,
+	  include/Inventor/nodes/SoTextureCoordinateFunction.h,
+	  include/Inventor/nodes/SoTextureCoordinateNormalMap.h,
+	  include/Inventor/nodes/SoTextureCoordinateObject.h,
+	  include/Inventor/nodes/SoTextureCoordinatePlane.h,
+	  include/Inventor/nodes/SoTextureCoordinateReflectionMap.h,
+	  include/Inventor/nodes/SoTextureCoordinateSphere.h,
+	  include/Inventor/nodes/SoTextureCubeMap.h,
+	  include/Inventor/nodes/SoTextureMatrixTransform.h,
+	  include/Inventor/nodes/SoTextureScalePolicy.h,
+	  include/Inventor/nodes/SoTextureUnit.h,
+	  include/Inventor/nodes/SoTransform.h,
+	  include/Inventor/nodes/SoTransformSeparator.h,
+	  include/Inventor/nodes/SoTransformation.h,
+	  include/Inventor/nodes/SoTranslation.h,
+	  include/Inventor/nodes/SoTransparencyType.h,
+	  include/Inventor/nodes/SoTriangleStripSet.h,
+	  include/Inventor/nodes/SoUnits.h,
+	  include/Inventor/nodes/SoVertexAttribute.h,
+	  include/Inventor/nodes/SoVertexAttributeBinding.h,
+	  include/Inventor/nodes/SoVertexProperty.h,
+	  include/Inventor/nodes/SoVertexShader.h,
+	  include/Inventor/nodes/SoVertexShape.h,
+	  include/Inventor/nodes/SoViewerNavigationMode.h,
+	  include/Inventor/nodes/SoWWWAnchor.h,
+	  include/Inventor/nodes/SoWWWInline.h,
+	  include/Inventor/projectors/SbCylinderPlaneProjector.h,
+	  include/Inventor/projectors/SbCylinderProjector.h,
+	  include/Inventor/projectors/SbCylinderSectionProjector.h,
+	  include/Inventor/projectors/SbCylinderSheetProjector.h,
+	  include/Inventor/projectors/SbLineProjector.h,
+	  include/Inventor/projectors/SbPlaneProjector.h,
+	  include/Inventor/projectors/SbProjector.h,
+	  include/Inventor/projectors/SbProjectors.h,
+	  include/Inventor/projectors/SbSpherePlaneProjector.h,
+	  include/Inventor/projectors/SbSphereProjector.h,
+	  include/Inventor/projectors/SbSphereSectionProjector.h,
+	  include/Inventor/projectors/SbSphereSheetProjector.h,
+	  include/Inventor/scxml/ScXML.h,
+	  include/Inventor/scxml/ScXMLEvent.h,
+	  include/Inventor/scxml/ScXMLInvoke.h,
+	  include/Inventor/scxml/ScXMLObject.h,
+	  include/Inventor/scxml/ScXMLStateMachine.h,
+	  include/Inventor/scxml/ScXMLSubObject.h,
+	  include/Inventor/scxml/SoScXMLEvent.h,
+	  include/Inventor/scxml/SoScXMLStateMachine.h,
+	  include/Inventor/sensors/SoAlarmSensor.h,
+	  include/Inventor/sensors/SoDataSensor.h,
+	  include/Inventor/sensors/SoDelayQueueSensor.h,
+	  include/Inventor/sensors/SoFieldSensor.h,
+	  include/Inventor/sensors/SoIdleSensor.h,
+	  include/Inventor/sensors/SoNodeSensor.h,
+	  include/Inventor/sensors/SoOneShotSensor.h,
+	  include/Inventor/sensors/SoPathSensor.h,
+	  include/Inventor/sensors/SoSensor.h,
+	  include/Inventor/sensors/SoSensorManager.h,
+	  include/Inventor/sensors/SoSensors.h,
+	  include/Inventor/sensors/SoTimerQueueSensor.h,
+	  include/Inventor/sensors/SoTimerSensor.h,
+	  include/Inventor/system/gl-headers.h.in,
+	  include/Inventor/system/gl.h,
+	  include/Inventor/system/inttypes.h.in,
+	  include/Inventor/threads/SbBarrier.h,
+	  include/Inventor/threads/SbCondVar.h,
+	  include/Inventor/threads/SbFifo.h,
+	  include/Inventor/threads/SbMutex.h,
+	  include/Inventor/threads/SbRWMutex.h,
+	  include/Inventor/threads/SbStorage.h,
+	  include/Inventor/threads/SbThread.h,
+	  include/Inventor/threads/SbThreadAutoLock.h,
+	  include/Inventor/threads/SbThreadMutex.h,
+	  include/Inventor/threads/SbTypedStorage.h,
+	  include/Inventor/tools/SbLazyPimplPtr.h,
+	  include/Inventor/tools/SbLazyPimplPtr.hpp,
+	  include/Inventor/tools/SbPimplPtr.h,
+	  include/Inventor/tools/SbPimplPtr.hpp, include/SoDebug.h,
+	  include/SoWinEnterScope.h, include/SoWinLeaveScope.h,
+	  src/3ds/3dsLoader.cpp, src/3ds/3dsLoader.h, src/3ds/SoStream.cpp,
+	  src/3ds/SoStream.h, src/3ds/all-3ds-cpp.cpp, src/SbBasicP.h,
+	  src/actions/SoAction.cpp, src/actions/SoActionP.h,
+	  src/actions/SoAudioRenderAction.cpp,
+	  src/actions/SoBoxHighlightRenderAction.cpp,
+	  src/actions/SoCallbackAction.cpp,
+	  src/actions/SoGLRenderAction.cpp,
+	  src/actions/SoGetBoundingBoxAction.cpp,
+	  src/actions/SoGetMatrixAction.cpp,
+	  src/actions/SoGetPrimitiveCountAction.cpp,
+	  src/actions/SoGlobalSimplifyAction.cpp,
+	  src/actions/SoHandleEventAction.cpp,
+	  src/actions/SoLineHighlightRenderAction.cpp,
+	  src/actions/SoPickAction.cpp, src/actions/SoRayPickAction.cpp,
+	  src/actions/SoReorganizeAction.cpp,
+	  src/actions/SoSearchAction.cpp,
+	  src/actions/SoShapeSimplifyAction.cpp,
+	  src/actions/SoSimplifyAction.cpp, src/actions/SoSubActionP.h,
+	  src/actions/SoToVRML2Action.cpp, src/actions/SoToVRMLAction.cpp,
+	  src/actions/SoWriteAction.cpp, src/actions/all-actions-cpp.cpp,
+	  src/base/SbBSPTree.cpp, src/base/SbBox2d.cpp,
+	  src/base/SbBox2f.cpp, src/base/SbBox2i32.cpp,
+	  src/base/SbBox2s.cpp, src/base/SbBox3d.cpp, src/base/SbBox3f.cpp,
+	  src/base/SbBox3i32.cpp, src/base/SbBox3s.cpp,
+	  src/base/SbClip.cpp, src/base/SbColor.cpp,
+	  src/base/SbColor4f.cpp, src/base/SbCylinder.cpp,
+	  src/base/SbDPLine.cpp, src/base/SbDPMatrix.cpp,
+	  src/base/SbDPPlane.cpp, src/base/SbDPRotation.cpp,
+	  src/base/SbDPViewVolume.cpp, src/base/SbDict.cpp,
+	  src/base/SbGLUTessellator.cpp, src/base/SbGLUTessellator.h,
+	  src/base/SbHeap.cpp, src/base/SbImage.cpp, src/base/SbLine.cpp,
+	  src/base/SbMatrix.cpp, src/base/SbName.cpp,
+	  src/base/SbOctTree.cpp, src/base/SbPlane.cpp,
+	  src/base/SbRotation.cpp, src/base/SbSphere.cpp,
+	  src/base/SbString.cpp, src/base/SbTesselator.cpp,
+	  src/base/SbVec2b.cpp, src/base/SbVec2d.cpp, src/base/SbVec2f.cpp,
+	  src/base/SbVec2i32.cpp, src/base/SbVec2s.cpp,
+	  src/base/SbVec2ub.cpp, src/base/SbVec2ui32.cpp,
+	  src/base/SbVec2us.cpp, src/base/SbVec3b.cpp,
+	  src/base/SbVec3d.cpp, src/base/SbVec3f.cpp,
+	  src/base/SbVec3i32.cpp, src/base/SbVec3s.cpp,
+	  src/base/SbVec3ub.cpp, src/base/SbVec3ui32.cpp,
+	  src/base/SbVec3us.cpp, src/base/SbVec4b.cpp,
+	  src/base/SbVec4d.cpp, src/base/SbVec4f.cpp,
+	  src/base/SbVec4i32.cpp, src/base/SbVec4s.cpp,
+	  src/base/SbVec4ub.cpp, src/base/SbVec4ui32.cpp,
+	  src/base/SbVec4us.cpp, src/base/SbViewVolume.cpp,
+	  src/base/SbViewportRegion.cpp, src/base/SbXfBox3d.cpp,
+	  src/base/SbXfBox3f.cpp, src/base/all-base-cpp.cpp,
+	  src/base/dict.cpp, src/base/dict.h, src/base/dictp.h,
+	  src/base/dynarray.cpp, src/base/dynarray.h, src/base/hash.cpp,
+	  src/base/hashp.h, src/base/heap.cpp, src/base/heapp.h,
+	  src/base/list.cpp, src/base/memalloc.cpp, src/base/namemap.cpp,
+	  src/base/namemap.h, src/base/rbptree.cpp, src/base/string.cpp,
+	  src/base/time.cpp, src/bundles/SoBundle.cpp,
+	  src/bundles/SoMaterialBundle.cpp, src/bundles/SoNormalBundle.cpp,
+	  src/bundles/SoTextureCoordinateBundle.cpp,
+	  src/bundles/SoVertexAttributeBundle.cpp,
+	  src/bundles/all-bundles-cpp.cpp,
+	  src/caches/SoBoundingBoxCache.cpp, src/caches/SoCache.cpp,
+	  src/caches/SoConvexDataCache.cpp, src/caches/SoGLCacheList.cpp,
+	  src/caches/SoGLRenderCache.cpp, src/caches/SoGlyphCache.cpp,
+	  src/caches/SoGlyphCache.h, src/caches/SoNormalCache.cpp,
+	  src/caches/SoPrimitiveVertexCache.cpp,
+	  src/caches/SoShaderProgramCache.cpp,
+	  src/caches/SoShaderProgramCache.h,
+	  src/caches/SoTextureCoordinateCache.cpp,
+	  src/caches/SoVBOCache.cpp, src/caches/SoVBOCache.h,
+	  src/caches/all-caches-cpp.cpp, src/coindefs.h,
+	  src/collision/SbTri3f.cpp, src/collision/SbTri3f.h,
+	  src/collision/SoIntersectionDetectionAction.cpp,
+	  src/details/SoConeDetail.cpp, src/details/SoCubeDetail.cpp,
+	  src/details/SoCylinderDetail.cpp, src/details/SoDetail.cpp,
+	  src/details/SoFaceDetail.cpp, src/details/SoLineDetail.cpp,
+	  src/details/SoNodeKitDetail.cpp, src/details/SoPointDetail.cpp,
+	  src/details/SoTextDetail.cpp, src/details/all-details-cpp.cpp,
+	  src/doc/books.dox, src/doc/environment.dox, src/doc/macros.dox,
+	  src/doc/main.dox, src/doc/modules.dox,
+	  src/draggers/SoCenterballDragger.cpp,
+	  src/draggers/SoDirectionalLightDragger.cpp,
+	  src/draggers/SoDragPointDragger.cpp, src/draggers/SoDragger.cpp,
+	  src/draggers/SoHandleBoxDragger.cpp,
+	  src/draggers/SoJackDragger.cpp,
+	  src/draggers/SoPointLightDragger.cpp,
+	  src/draggers/SoRotateCylindricalDragger.cpp,
+	  src/draggers/SoRotateDiscDragger.cpp,
+	  src/draggers/SoRotateSphericalDragger.cpp,
+	  src/draggers/SoScale1Dragger.cpp,
+	  src/draggers/SoScale2Dragger.cpp,
+	  src/draggers/SoScale2UniformDragger.cpp,
+	  src/draggers/SoScaleUniformDragger.cpp,
+	  src/draggers/SoSpotLightDragger.cpp,
+	  src/draggers/SoTabBoxDragger.cpp,
+	  src/draggers/SoTabPlaneDragger.cpp,
+	  src/draggers/SoTrackballDragger.cpp,
+	  src/draggers/SoTransformBoxDragger.cpp,
+	  src/draggers/SoTransformerDragger.cpp,
+	  src/draggers/SoTranslate1Dragger.cpp,
+	  src/draggers/SoTranslate2Dragger.cpp,
+	  src/draggers/all-draggers-cpp.cpp,
+	  src/elements/GL/SoGLCacheContextElement.cpp,
+	  src/elements/GL/SoGLClipPlaneElement.cpp,
+	  src/elements/GL/SoGLColorIndexElement.cpp,
+	  src/elements/GL/SoGLCoordinateElement.cpp,
+	  src/elements/GL/SoGLDepthBufferElement.cpp,
+	  src/elements/GL/SoGLDisplayList.cpp,
+	  src/elements/GL/SoGLDrawStyleElement.cpp,
+	  src/elements/GL/SoGLEnvironmentElement.cpp,
+	  src/elements/GL/SoGLLazyElement.cpp,
+	  src/elements/GL/SoGLLightIdElement.cpp,
+	  src/elements/GL/SoGLLinePatternElement.cpp,
+	  src/elements/GL/SoGLLineWidthElement.cpp,
+	  src/elements/GL/SoGLModelMatrixElement.cpp,
+	  src/elements/GL/SoGLMultiTextureCoordinateElement.cpp,
+	  src/elements/GL/SoGLMultiTextureEnabledElement.cpp,
+	  src/elements/GL/SoGLMultiTextureImageElement.cpp,
+	  src/elements/GL/SoGLMultiTextureMatrixElement.cpp,
+	  src/elements/GL/SoGLNormalElement.cpp,
+	  src/elements/GL/SoGLPointSizeElement.cpp,
+	  src/elements/GL/SoGLPolygonOffsetElement.cpp,
+	  src/elements/GL/SoGLProjectionMatrixElement.cpp,
+	  src/elements/GL/SoGLRenderPassElement.cpp,
+	  src/elements/GL/SoGLShapeHintsElement.cpp,
+	  src/elements/GL/SoGLTexture3EnabledElement.cpp,
+	  src/elements/GL/SoGLTextureCoordinateElement.cpp,
+	  src/elements/GL/SoGLTextureEnabledElement.cpp,
+	  src/elements/GL/SoGLTextureImageElement.cpp,
+	  src/elements/GL/SoGLTextureMatrixElement.cpp,
+	  src/elements/GL/SoGLUpdateAreaElement.cpp,
+	  src/elements/GL/SoGLVBOElement.cpp,
+	  src/elements/GL/SoGLVertexAttributeElement.cpp,
+	  src/elements/GL/SoGLViewingMatrixElement.cpp,
+	  src/elements/GL/SoGLViewportRegionElement.cpp,
+	  src/elements/GL/SoResetMatrixElement.cpp,
+	  src/elements/GL/SoResetMatrixElement.h,
+	  src/elements/GL/all-glelements-cpp.cpp,
+	  src/elements/SoAccumulatedElement.cpp,
+	  src/elements/SoAmbientColorElement.cpp,
+	  src/elements/SoAnnoText3CharOrientElement.cpp,
+	  src/elements/SoAnnoText3FontSizeHintElement.cpp,
+	  src/elements/SoAnnoText3RenderPrintElement.cpp,
+	  src/elements/SoBBoxModelMatrixElement.cpp,
+	  src/elements/SoBumpMapCoordinateElement.cpp,
+	  src/elements/SoBumpMapElement.cpp,
+	  src/elements/SoBumpMapMatrixElement.cpp,
+	  src/elements/SoCacheElement.cpp,
+	  src/elements/SoCacheHintElement.cpp,
+	  src/elements/SoClipPlaneElement.cpp,
+	  src/elements/SoComplexityElement.cpp,
+	  src/elements/SoComplexityTypeElement.cpp,
+	  src/elements/SoCoordinateElement.cpp,
+	  src/elements/SoCreaseAngleElement.cpp,
+	  src/elements/SoCullElement.cpp,
+	  src/elements/SoDecimationPercentageElement.cpp,
+	  src/elements/SoDecimationTypeElement.cpp,
+	  src/elements/SoDepthBufferElement.cpp,
+	  src/elements/SoDiffuseColorElement.cpp,
+	  src/elements/SoDrawStyleElement.cpp, src/elements/SoElement.cpp,
+	  src/elements/SoEmissiveColorElement.cpp,
+	  src/elements/SoEnvironmentElement.cpp,
+	  src/elements/SoFloatElement.cpp,
+	  src/elements/SoFocalDistanceElement.cpp,
+	  src/elements/SoFontNameElement.cpp,
+	  src/elements/SoFontSizeElement.cpp,
+	  src/elements/SoInt32Element.cpp, src/elements/SoLazyElement.cpp,
+	  src/elements/SoLightAttenuationElement.cpp,
+	  src/elements/SoLightElement.cpp,
+	  src/elements/SoLightModelElement.cpp,
+	  src/elements/SoLinePatternElement.cpp,
+	  src/elements/SoLineWidthElement.cpp,
+	  src/elements/SoListenerDopplerElement.cpp,
+	  src/elements/SoListenerGainElement.cpp,
+	  src/elements/SoListenerOrientationElement.cpp,
+	  src/elements/SoListenerPositionElement.cpp,
+	  src/elements/SoLocalBBoxMatrixElement.cpp,
+	  src/elements/SoMaterialBindingElement.cpp,
+	  src/elements/SoModelMatrixElement.cpp,
+	  src/elements/SoMultiTextureCoordinateElement.cpp,
+	  src/elements/SoMultiTextureEnabledElement.cpp,
+	  src/elements/SoMultiTextureImageElement.cpp,
+	  src/elements/SoMultiTextureMatrixElement.cpp,
+	  src/elements/SoNormalBindingElement.cpp,
+	  src/elements/SoNormalElement.cpp,
+	  src/elements/SoOverrideElement.cpp,
+	  src/elements/SoPickRayElement.cpp,
+	  src/elements/SoPickStyleElement.cpp,
+	  src/elements/SoPointSizeElement.cpp,
+	  src/elements/SoPolygonOffsetElement.cpp,
+	  src/elements/SoProfileCoordinateElement.cpp,
+	  src/elements/SoProfileElement.cpp,
+	  src/elements/SoProjectionMatrixElement.cpp,
+	  src/elements/SoReplacedElement.cpp,
+	  src/elements/SoShapeHintsElement.cpp,
+	  src/elements/SoShapeStyleElement.cpp,
+	  src/elements/SoShininessElement.cpp,
+	  src/elements/SoSoundElement.cpp,
+	  src/elements/SoSpecularColorElement.cpp,
+	  src/elements/SoSwitchElement.cpp,
+	  src/elements/SoTextOutlineEnabledElement.cpp,
+	  src/elements/SoTexture3EnabledElement.cpp,
+	  src/elements/SoTextureCombineElement.cpp,
+	  src/elements/SoTextureCoordinateBindingElement.cpp,
+	  src/elements/SoTextureCoordinateElement.cpp,
+	  src/elements/SoTextureEnabledElement.cpp,
+	  src/elements/SoTextureImageElement.cpp,
+	  src/elements/SoTextureMatrixElement.cpp,
+	  src/elements/SoTextureOverrideElement.cpp,
+	  src/elements/SoTextureQualityElement.cpp,
+	  src/elements/SoTextureScalePolicyElement.cpp,
+	  src/elements/SoTextureScalePolicyElement.h,
+	  src/elements/SoTextureScaleQualityElement.cpp,
+	  src/elements/SoTextureScaleQualityElement.h,
+	  src/elements/SoTextureUnitElement.cpp,
+	  src/elements/SoTransparencyElement.cpp,
+	  src/elements/SoUnitsElement.cpp,
+	  src/elements/SoVertexAttributeBindingElement.cpp,
+	  src/elements/SoVertexAttributeData.h,
+	  src/elements/SoVertexAttributeElement.cpp,
+	  src/elements/SoViewVolumeElement.cpp,
+	  src/elements/SoViewingMatrixElement.cpp,
+	  src/elements/SoViewportRegionElement.cpp,
+	  src/elements/SoWindowElement.cpp,
+	  src/elements/all-elements-cpp.cpp,
+	  src/engines/SoBoolOperation.cpp, src/engines/SoCalculator.cpp,
+	  src/engines/SoComposeMatrix.cpp,
+	  src/engines/SoComposeRotation.cpp,
+	  src/engines/SoComposeRotationFromTo.cpp,
+	  src/engines/SoComposeVec2f.cpp, src/engines/SoComposeVec3f.cpp,
+	  src/engines/SoComposeVec4f.cpp,
+	  src/engines/SoComputeBoundingBox.cpp,
+	  src/engines/SoConcatenate.cpp, src/engines/SoConvertAll.cpp,
+	  src/engines/SoConvertAll.h, src/engines/SoCounter.cpp,
+	  src/engines/SoDecomposeMatrix.cpp,
+	  src/engines/SoDecomposeRotation.cpp,
+	  src/engines/SoDecomposeVec2f.cpp,
+	  src/engines/SoDecomposeVec3f.cpp,
+	  src/engines/SoDecomposeVec4f.cpp, src/engines/SoElapsedTime.cpp,
+	  src/engines/SoEngine.cpp, src/engines/SoEngineOutput.cpp,
+	  src/engines/SoFieldConverter.cpp, src/engines/SoGate.cpp,
+	  src/engines/SoHeightMapToNormalMap.cpp,
+	  src/engines/SoInterpolate.cpp,
+	  src/engines/SoInterpolateFloat.cpp,
+	  src/engines/SoInterpolateRotation.cpp,
+	  src/engines/SoInterpolateVec2f.cpp,
+	  src/engines/SoInterpolateVec3f.cpp,
+	  src/engines/SoInterpolateVec4f.cpp, src/engines/SoNodeEngine.cpp,
+	  src/engines/SoOnOff.cpp, src/engines/SoOneShot.cpp,
+	  src/engines/SoOutputData.cpp, src/engines/SoSelectOne.cpp,
+	  src/engines/SoSubEngineP.h, src/engines/SoSubNodeEngineP.h,
+	  src/engines/SoTexture2Convert.cpp, src/engines/SoTimeCounter.cpp,
+	  src/engines/SoTransformVec3f.cpp, src/engines/SoTriggerAny.cpp,
+	  src/engines/all-engines-c.c, src/engines/all-engines-cpp.cpp,
+	  src/engines/evaluator.c, src/engines/evaluator.h,
+	  src/engines/evaluator.l, src/engines/evaluator.y,
+	  src/engines/evaluator_tab.c, src/engines/so_eval.ic,
+	  src/errors/SoDebugError.cpp, src/errors/SoError.cpp,
+	  src/errors/SoMemoryError.cpp, src/errors/SoReadError.cpp,
+	  src/errors/all-errors-cpp.cpp, src/errors/debugerror.cpp,
+	  src/errors/error.cpp, src/events/SoButtonEvent.cpp,
+	  src/events/SoEvent.cpp, src/events/SoKeyboardEvent.cpp,
+	  src/events/SoLocation2Event.cpp, src/events/SoMotion3Event.cpp,
+	  src/events/SoMouseButtonEvent.cpp,
+	  src/events/SoSpaceballButtonEvent.cpp,
+	  src/events/all-events-cpp.cpp, src/fields/SoField.cpp,
+	  src/fields/SoFieldContainer.cpp, src/fields/SoFieldData.cpp,
+	  src/fields/SoGlobalField.cpp, src/fields/SoGlobalField.h,
+	  src/fields/SoMFBitMask.cpp, src/fields/SoMFBool.cpp,
+	  src/fields/SoMFColor.cpp, src/fields/SoMFColorRGBA.cpp,
+	  src/fields/SoMFDouble.cpp, src/fields/SoMFEngine.cpp,
+	  src/fields/SoMFEnum.cpp, src/fields/SoMFFloat.cpp,
+	  src/fields/SoMFInt32.cpp, src/fields/SoMFMatrix.cpp,
+	  src/fields/SoMFName.cpp, src/fields/SoMFNode.cpp,
+	  src/fields/SoMFPath.cpp, src/fields/SoMFPlane.cpp,
+	  src/fields/SoMFRotation.cpp, src/fields/SoMFShort.cpp,
+	  src/fields/SoMFString.cpp, src/fields/SoMFTime.cpp,
+	  src/fields/SoMFUInt32.cpp, src/fields/SoMFUShort.cpp,
+	  src/fields/SoMFVec2b.cpp, src/fields/SoMFVec2d.cpp,
+	  src/fields/SoMFVec2f.cpp, src/fields/SoMFVec2i32.cpp,
+	  src/fields/SoMFVec2s.cpp, src/fields/SoMFVec3b.cpp,
+	  src/fields/SoMFVec3d.cpp, src/fields/SoMFVec3f.cpp,
+	  src/fields/SoMFVec3i32.cpp, src/fields/SoMFVec3s.cpp,
+	  src/fields/SoMFVec4b.cpp, src/fields/SoMFVec4d.cpp,
+	  src/fields/SoMFVec4f.cpp, src/fields/SoMFVec4i32.cpp,
+	  src/fields/SoMFVec4s.cpp, src/fields/SoMFVec4ub.cpp,
+	  src/fields/SoMFVec4ui32.cpp, src/fields/SoMFVec4us.cpp,
+	  src/fields/SoMField.cpp, src/fields/SoSFBitMask.cpp,
+	  src/fields/SoSFBool.cpp, src/fields/SoSFBox2d.cpp,
+	  src/fields/SoSFBox2f.cpp, src/fields/SoSFBox2i32.cpp,
+	  src/fields/SoSFBox2s.cpp, src/fields/SoSFBox3d.cpp,
+	  src/fields/SoSFBox3f.cpp, src/fields/SoSFBox3i32.cpp,
+	  src/fields/SoSFBox3s.cpp, src/fields/SoSFColor.cpp,
+	  src/fields/SoSFColorRGBA.cpp, src/fields/SoSFDouble.cpp,
+	  src/fields/SoSFEngine.cpp, src/fields/SoSFEnum.cpp,
+	  src/fields/SoSFFloat.cpp, src/fields/SoSFImage.cpp,
+	  src/fields/SoSFImage3.cpp, src/fields/SoSFInt32.cpp,
+	  src/fields/SoSFMatrix.cpp, src/fields/SoSFName.cpp,
+	  src/fields/SoSFNode.cpp, src/fields/SoSFPath.cpp,
+	  src/fields/SoSFPlane.cpp, src/fields/SoSFRotation.cpp,
+	  src/fields/SoSFShort.cpp, src/fields/SoSFString.cpp,
+	  src/fields/SoSFTime.cpp, src/fields/SoSFTrigger.cpp,
+	  src/fields/SoSFUInt32.cpp, src/fields/SoSFUShort.cpp,
+	  src/fields/SoSFVec2b.cpp, src/fields/SoSFVec2d.cpp,
+	  src/fields/SoSFVec2f.cpp, src/fields/SoSFVec2i32.cpp,
+	  src/fields/SoSFVec2s.cpp, src/fields/SoSFVec3b.cpp,
+	  src/fields/SoSFVec3d.cpp, src/fields/SoSFVec3f.cpp,
+	  src/fields/SoSFVec3i32.cpp, src/fields/SoSFVec3s.cpp,
+	  src/fields/SoSFVec4b.cpp, src/fields/SoSFVec4d.cpp,
+	  src/fields/SoSFVec4f.cpp, src/fields/SoSFVec4i32.cpp,
+	  src/fields/SoSFVec4s.cpp, src/fields/SoSFVec4ub.cpp,
+	  src/fields/SoSFVec4ui32.cpp, src/fields/SoSFVec4us.cpp,
+	  src/fields/SoSField.cpp, src/fields/SoSubFieldP.h,
+	  src/fields/all-fields-cpp.cpp, src/fields/shared.cpp,
+	  src/fields/shared.h, src/fonts/all-fonts-cpp.cpp,
+	  src/fonts/common.cpp, src/fonts/common.h,
+	  src/fonts/default2dfont.cpp, src/fonts/default3dfont.cpp,
+	  src/fonts/defaultfonts.h, src/fonts/fontlib_wrapper.cpp,
+	  src/fonts/fontlib_wrapper.h, src/fonts/fontspec.cpp,
+	  src/fonts/fontspec.h, src/fonts/freetype.cpp,
+	  src/fonts/freetype.h, src/fonts/glyph.cpp, src/fonts/glyph.h,
+	  src/fonts/glyph2d.cpp, src/fonts/glyph2d.h,
+	  src/fonts/glyph3d.cpp, src/fonts/glyph3d.h, src/fonts/win32.cpp,
+	  src/fonts/win32.h, src/foreignfiles/SoForeignFileKit.cpp,
+	  src/foreignfiles/SoSTLFileKit.cpp,
+	  src/foreignfiles/all-foreignfiles-cpp.cpp,
+	  src/foreignfiles/steel-wrapper.cpp, src/foreignfiles/steel.cpp,
+	  src/foreignfiles/steel.h, src/foreignfiles/steel.l,
+	  src/geo/SbGeoAngle.cpp, src/geo/SbGeoAngle.h,
+	  src/geo/SbGeoEllipsoid.cpp, src/geo/SbGeoEllipsoid.h,
+	  src/geo/SbGeoProjection.cpp, src/geo/SbGeoProjection.h,
+	  src/geo/SbPolarStereographic.cpp, src/geo/SbPolarStereographic.h,
+	  src/geo/SbUTMProjection.cpp, src/geo/SbUTMProjection.h,
+	  src/geo/SoGeo.cpp, src/geo/SoGeo.h, src/geo/SoGeoCoordinate.cpp,
+	  src/geo/SoGeoElement.cpp, src/geo/SoGeoLocation.cpp,
+	  src/geo/SoGeoOrigin.cpp, src/geo/SoGeoSeparator.cpp,
+	  src/glue/GLUWrapper.cpp, src/glue/GLUWrapper.h,
+	  src/glue/all-glue-cpp.cpp, src/glue/bzip2.cpp, src/glue/bzip2.h,
+	  src/glue/cg.cpp, src/glue/cg.h, src/glue/dl.cpp, src/glue/dlp.h,
+	  src/glue/freetype.cpp, src/glue/freetype.h, src/glue/gl.cpp,
+	  src/glue/gl_agl.cpp, src/glue/gl_agl.h, src/glue/gl_glx.cpp,
+	  src/glue/gl_glx.h, src/glue/gl_wgl.cpp, src/glue/gl_wgl.h,
+	  src/glue/glp.h, src/glue/normalization_cubemap.cpp,
+	  src/glue/openal_wrapper.cpp, src/glue/openal_wrapper.h,
+	  src/glue/simage_wrapper.cpp, src/glue/simage_wrapper.h,
+	  src/glue/spidermonkey.cpp, src/glue/win32api.cpp,
+	  src/glue/win32api.h, src/glue/zlib.cpp, src/glue/zlib.h,
+	  src/hardcopy/HardCopy.cpp, src/hardcopy/PSVectorOutput.cpp,
+	  src/hardcopy/VectorOutput.cpp, src/hardcopy/VectorizeAction.cpp,
+	  src/hardcopy/VectorizeActionP.cpp,
+	  src/hardcopy/VectorizeActionP.h, src/hardcopy/VectorizeItems.h,
+	  src/hardcopy/VectorizePSAction.cpp,
+	  src/hardcopy/all-hardcopy-cpp.cpp, src/io/SoByteStream.cpp,
+	  src/io/SoInput.cpp, src/io/SoInputP.h,
+	  src/io/SoInput_FileInfo.cpp, src/io/SoInput_FileInfo.h,
+	  src/io/SoInput_Reader.cpp, src/io/SoInput_Reader.h,
+	  src/io/SoOutput.cpp, src/io/SoOutput_Writer.cpp,
+	  src/io/SoOutput_Writer.h, src/io/SoTranReceiver.cpp,
+	  src/io/SoTranSender.cpp, src/io/SoWriterefCounter.cpp,
+	  src/io/SoWriterefCounter.h, src/io/all-io-cpp.cpp,
+	  src/io/gzmemio.h, src/lists/SbIntList.cpp, src/lists/SbList.cpp,
+	  src/lists/SbPList.cpp, src/lists/SbStringList.cpp,
+	  src/lists/SbVec3fList.cpp, src/lists/SoActionMethodList.cpp,
+	  src/lists/SoAuditorList.cpp, src/lists/SoBaseList.cpp,
+	  src/lists/SoCallbackList.cpp, src/lists/SoDetailList.cpp,
+	  src/lists/SoEnabledElementsList.cpp, src/lists/SoEngineList.cpp,
+	  src/lists/SoEngineOutputList.cpp, src/lists/SoFieldList.cpp,
+	  src/lists/SoNodeList.cpp, src/lists/SoPathList.cpp,
+	  src/lists/SoPickedPointList.cpp, src/lists/SoTypeList.cpp,
+	  src/lists/all-lists-cpp.cpp, src/manips/SoCenterballManip.cpp,
+	  src/manips/SoClipPlaneManip.cpp,
+	  src/manips/SoDirectionalLightManip.cpp,
+	  src/manips/SoHandleBoxManip.cpp, src/manips/SoJackManip.cpp,
+	  src/manips/SoPointLightManip.cpp,
+	  src/manips/SoSpotLightManip.cpp, src/manips/SoTabBoxManip.cpp,
+	  src/manips/SoTrackballManip.cpp,
+	  src/manips/SoTransformBoxManip.cpp,
+	  src/manips/SoTransformManip.cpp,
+	  src/manips/SoTransformerManip.cpp, src/manips/all-manips-cpp.cpp,
+	  src/manips/commoncode.cpp, src/misc/AudioTools.cpp,
+	  src/misc/AudioTools.h, src/misc/CoinOffscreenGLCanvas.cpp,
+	  src/misc/CoinOffscreenGLCanvas.h, src/misc/CoinResources.cpp,
+	  src/misc/CoinResources.h, src/misc/CoinStaticObjectInDLL.cpp,
+	  src/misc/CoinStaticObjectInDLL.h, src/misc/SbHash.h,
+	  src/misc/SoAudioDevice.cpp, src/misc/SoBase.cpp,
+	  src/misc/SoBaseP.cpp, src/misc/SoBaseP.h,
+	  src/misc/SoChildList.cpp, src/misc/SoCompactPathList.cpp,
+	  src/misc/SoCompactPathList.h, src/misc/SoContextHandler.cpp,
+	  src/misc/SoDB.cpp, src/misc/SoDBP.h, src/misc/SoDebug.cpp,
+	  src/misc/SoEventManager.cpp, src/misc/SoFullPath.cpp,
+	  src/misc/SoGL.cpp, src/misc/SoGL.h, src/misc/SoGLBigImage.cpp,
+	  src/misc/SoGLCubeMapImage.cpp, src/misc/SoGLDriverDatabase.cpp,
+	  src/misc/SoGLImage.cpp, src/misc/SoGenerate.cpp,
+	  src/misc/SoGenerate.h, src/misc/SoGlyph.cpp,
+	  src/misc/SoInteraction.cpp, src/misc/SoJavaScriptEngine.cpp,
+	  src/misc/SoLightPath.cpp, src/misc/SoLockManager.cpp,
+	  src/misc/SoNormalGenerator.cpp, src/misc/SoNotRec.cpp,
+	  src/misc/SoNotification.cpp, src/misc/SoOffscreenAGLData.cpp,
+	  src/misc/SoOffscreenAGLData.h, src/misc/SoOffscreenGLXData.cpp,
+	  src/misc/SoOffscreenGLXData.h, src/misc/SoOffscreenRenderer.cpp,
+	  src/misc/SoOffscreenWGLData.cpp, src/misc/SoOffscreenWGLData.h,
+	  src/misc/SoPath.cpp, src/misc/SoPick.cpp, src/misc/SoPick.h,
+	  src/misc/SoPickedPoint.cpp, src/misc/SoPrimitiveVertex.cpp,
+	  src/misc/SoProto.cpp, src/misc/SoProtoInstance.cpp,
+	  src/misc/SoRenderManager.cpp, src/misc/SoRenderManagerP.cpp,
+	  src/misc/SoRenderManagerP.h, src/misc/SoSceneManager.cpp,
+	  src/misc/SoSceneManagerP.cpp, src/misc/SoSceneManagerP.h,
+	  src/misc/SoShaderGenerator.cpp, src/misc/SoShaderGenerator.h,
+	  src/misc/SoState.cpp, src/misc/SoTempPath.cpp,
+	  src/misc/SoType.cpp, src/misc/SoVBO.cpp, src/misc/SoVBO.h,
+	  src/misc/SoVertexArrayIndexer.cpp,
+	  src/misc/SoVertexArrayIndexer.h, src/misc/all-misc-cpp.cpp,
+	  src/misc/cppmangle.icc, src/navigation/SoScXMLNavigation.cpp,
+	  src/navigation/SoScXMLNavigation.h,
+	  src/navigation/SoScXMLNavigationInvoke.cpp,
+	  src/navigation/SoScXMLNavigationInvoke.h,
+	  src/navigation/SoScXMLPanUtils.cpp,
+	  src/navigation/SoScXMLPanUtils.h,
+	  src/navigation/SoScXMLRotateUtils.cpp,
+	  src/navigation/SoScXMLRotateUtils.h,
+	  src/navigation/SoScXMLSeekUtils.cpp,
+	  src/navigation/SoScXMLSeekUtils.h,
+	  src/navigation/SoScXMLSpinUtils.cpp,
+	  src/navigation/SoScXMLSpinUtils.h,
+	  src/navigation/SoScXMLViewUtils.cpp,
+	  src/navigation/SoScXMLViewUtils.h,
+	  src/navigation/SoScXMLZoomUtils.cpp,
+	  src/navigation/SoScXMLZoomUtils.h,
+	  src/navigation/all-navigation-cpp.cpp,
+	  src/nodekits/SoAppearanceKit.cpp, src/nodekits/SoBaseKit.cpp,
+	  src/nodekits/SoCameraKit.cpp, src/nodekits/SoInteractionKit.cpp,
+	  src/nodekits/SoLightKit.cpp, src/nodekits/SoNodeKit.cpp,
+	  src/nodekits/SoNodeKitListPart.cpp,
+	  src/nodekits/SoNodeKitPath.cpp,
+	  src/nodekits/SoNodekitCatalog.cpp, src/nodekits/SoSceneKit.cpp,
+	  src/nodekits/SoSeparatorKit.cpp, src/nodekits/SoShapeKit.cpp,
+	  src/nodekits/SoSubKitP.h, src/nodekits/SoWrapperKit.cpp,
+	  src/nodekits/all-nodekits-cpp.cpp, src/nodes/SoAnnotation.cpp,
+	  src/nodes/SoAntiSquish.cpp, src/nodes/SoArray.cpp,
+	  src/nodes/SoBaseColor.cpp, src/nodes/SoBlinker.cpp,
+	  src/nodes/SoBumpMap.cpp, src/nodes/SoBumpMapCoordinate.cpp,
+	  src/nodes/SoBumpMapTransform.cpp, src/nodes/SoCacheHint.cpp,
+	  src/nodes/SoCallback.cpp, src/nodes/SoCamera.cpp,
+	  src/nodes/SoClipPlane.cpp, src/nodes/SoColorIndex.cpp,
+	  src/nodes/SoComplexity.cpp, src/nodes/SoCoordinate3.cpp,
+	  src/nodes/SoCoordinate4.cpp, src/nodes/SoDepthBuffer.cpp,
+	  src/nodes/SoDirectionalLight.cpp, src/nodes/SoDrawStyle.cpp,
+	  src/nodes/SoEnvironment.cpp, src/nodes/SoEventCallback.cpp,
+	  src/nodes/SoExtSelection.cpp, src/nodes/SoFile.cpp,
+	  src/nodes/SoFont.cpp, src/nodes/SoFontStyle.cpp,
+	  src/nodes/SoFrustumCamera.cpp, src/nodes/SoGroup.cpp,
+	  src/nodes/SoInfo.cpp, src/nodes/SoLOD.cpp, src/nodes/SoLabel.cpp,
+	  src/nodes/SoLevelOfDetail.cpp, src/nodes/SoLight.cpp,
+	  src/nodes/SoLightModel.cpp, src/nodes/SoLinearProfile.cpp,
+	  src/nodes/SoListener.cpp, src/nodes/SoLocateHighlight.cpp,
+	  src/nodes/SoMaterial.cpp, src/nodes/SoMaterialBinding.cpp,
+	  src/nodes/SoMatrixTransform.cpp, src/nodes/SoMultipleCopy.cpp,
+	  src/nodes/SoNode.cpp, src/nodes/SoNormal.cpp,
+	  src/nodes/SoNormalBinding.cpp, src/nodes/SoNurbsProfile.cpp,
+	  src/nodes/SoOrthographicCamera.cpp, src/nodes/SoPackedColor.cpp,
+	  src/nodes/SoPathSwitch.cpp, src/nodes/SoPendulum.cpp,
+	  src/nodes/SoPerspectiveCamera.cpp, src/nodes/SoPickStyle.cpp,
+	  src/nodes/SoPointLight.cpp, src/nodes/SoPolygonOffset.cpp,
+	  src/nodes/SoProfile.cpp, src/nodes/SoProfileCoordinate2.cpp,
+	  src/nodes/SoProfileCoordinate3.cpp,
+	  src/nodes/SoResetTransform.cpp, src/nodes/SoRotation.cpp,
+	  src/nodes/SoRotationXYZ.cpp, src/nodes/SoRotor.cpp,
+	  src/nodes/SoScale.cpp, src/nodes/SoSceneTexture2.cpp,
+	  src/nodes/SoSceneTextureCubeMap.cpp, src/nodes/SoSelection.cpp,
+	  src/nodes/SoSeparator.cpp, src/nodes/SoShapeHints.cpp,
+	  src/nodes/SoShuttle.cpp, src/nodes/SoSoundElementHelper.h,
+	  src/nodes/SoSpotLight.cpp, src/nodes/SoSubNodeP.h,
+	  src/nodes/SoSurroundScale.cpp, src/nodes/SoSwitch.cpp,
+	  src/nodes/SoTexture.cpp, src/nodes/SoTexture2.cpp,
+	  src/nodes/SoTexture2Transform.cpp, src/nodes/SoTexture3.cpp,
+	  src/nodes/SoTexture3Transform.cpp,
+	  src/nodes/SoTextureCombine.cpp,
+	  src/nodes/SoTextureCoordinate2.cpp,
+	  src/nodes/SoTextureCoordinate3.cpp,
+	  src/nodes/SoTextureCoordinateBinding.cpp,
+	  src/nodes/SoTextureCoordinateCube.cpp,
+	  src/nodes/SoTextureCoordinateCylinder.cpp,
+	  src/nodes/SoTextureCoordinateDefault.cpp,
+	  src/nodes/SoTextureCoordinateEnvironment.cpp,
+	  src/nodes/SoTextureCoordinateFunction.cpp,
+	  src/nodes/SoTextureCoordinateNormalMap.cpp,
+	  src/nodes/SoTextureCoordinateObject.cpp,
+	  src/nodes/SoTextureCoordinatePlane.cpp,
+	  src/nodes/SoTextureCoordinateReflectionMap.cpp,
+	  src/nodes/SoTextureCoordinateSphere.cpp,
+	  src/nodes/SoTextureCubeMap.cpp,
+	  src/nodes/SoTextureMatrixTransform.cpp,
+	  src/nodes/SoTextureScalePolicy.cpp, src/nodes/SoTextureUnit.cpp,
+	  src/nodes/SoTransform.cpp, src/nodes/SoTransformSeparator.cpp,
+	  src/nodes/SoTransformation.cpp, src/nodes/SoTranslation.cpp,
+	  src/nodes/SoTransparencyType.cpp, src/nodes/SoUnits.cpp,
+	  src/nodes/SoUnknownNode.cpp, src/nodes/SoUnknownNode.h,
+	  src/nodes/SoVertexAttribute.cpp,
+	  src/nodes/SoVertexAttributeBinding.cpp,
+	  src/nodes/SoVertexProperty.cpp,
+	  src/nodes/SoViewerNavigationMode.cpp, src/nodes/SoWWWAnchor.cpp,
+	  src/nodes/SoWWWInline.cpp, src/nodes/all-nodes-cpp.cpp,
+	  src/profiler/SbProfilingData.cpp,
+	  src/profiler/SoNodeVisualize.cpp,
+	  src/profiler/SoProfilerElement.cpp,
+	  src/profiler/SoProfilerOverlayKit.cpp,
+	  src/profiler/SoProfilerP.h, src/profiler/SoProfilerStats.cpp,
+	  src/profiler/SoProfilerTopEngine.cpp,
+	  src/profiler/SoProfilerTopKit.cpp,
+	  src/profiler/SoProfilerVisualizeKit.cpp,
+	  src/profiler/SoProfilingReportGenerator.cpp,
+	  src/profiler/SoScrollingGraphKit.cpp,
+	  src/profiler/all-profiler-cpp.cpp,
+	  src/projectors/SbCylinderPlaneProjector.cpp,
+	  src/projectors/SbCylinderProjector.cpp,
+	  src/projectors/SbCylinderSectionProjector.cpp,
+	  src/projectors/SbCylinderSheetProjector.cpp,
+	  src/projectors/SbLineProjector.cpp,
+	  src/projectors/SbPlaneProjector.cpp,
+	  src/projectors/SbProjector.cpp,
+	  src/projectors/SbSpherePlaneProjector.cpp,
+	  src/projectors/SbSphereProjector.cpp,
+	  src/projectors/SbSphereSectionProjector.cpp,
+	  src/projectors/SbSphereSheetProjector.cpp,
+	  src/projectors/all-projectors-cpp.cpp, src/scxml/ScXML.cpp,
+	  src/scxml/ScXMLAnchor.cpp, src/scxml/ScXMLAnchor.h,
+	  src/scxml/ScXMLCommonP.h, src/scxml/ScXMLDocument.cpp,
+	  src/scxml/ScXMLDocument.h, src/scxml/ScXMLEvent.cpp,
+	  src/scxml/ScXMLFallbackInvoke.cpp,
+	  src/scxml/ScXMLFallbackInvoke.h, src/scxml/ScXMLFinal.cpp,
+	  src/scxml/ScXMLFinal.h, src/scxml/ScXMLHistory.cpp,
+	  src/scxml/ScXMLHistory.h, src/scxml/ScXMLInitial.cpp,
+	  src/scxml/ScXMLInitial.h, src/scxml/ScXMLInvoke.cpp,
+	  src/scxml/ScXMLObject.cpp, src/scxml/ScXMLOnEntry.cpp,
+	  src/scxml/ScXMLOnEntry.h, src/scxml/ScXMLOnExit.cpp,
+	  src/scxml/ScXMLOnExit.h, src/scxml/ScXMLP.h,
+	  src/scxml/ScXMLState.cpp, src/scxml/ScXMLState.h,
+	  src/scxml/ScXMLStateMachine.cpp, src/scxml/ScXMLTransition.cpp,
+	  src/scxml/ScXMLTransition.h,
+	  src/scxml/SoScXMLDebugInfoInvoke.cpp,
+	  src/scxml/SoScXMLDebugInfoInvoke.h, src/scxml/SoScXMLEvent.cpp,
+	  src/scxml/SoScXMLScheduleRedrawInvoke.cpp,
+	  src/scxml/SoScXMLScheduleRedrawInvoke.h,
+	  src/scxml/SoScXMLScheduleTimerEventInvoke.cpp,
+	  src/scxml/SoScXMLScheduleTimerEventInvoke.h,
+	  src/scxml/SoScXMLStateMachine.cpp, src/scxml/all-scxml-cpp.cpp,
+	  src/sensors/SoAlarmSensor.cpp, src/sensors/SoDataSensor.cpp,
+	  src/sensors/SoDelayQueueSensor.cpp,
+	  src/sensors/SoFieldSensor.cpp, src/sensors/SoIdleSensor.cpp,
+	  src/sensors/SoNodeSensor.cpp, src/sensors/SoOneShotSensor.cpp,
+	  src/sensors/SoPathSensor.cpp, src/sensors/SoSensor.cpp,
+	  src/sensors/SoSensorManager.cpp,
+	  src/sensors/SoTimerQueueSensor.cpp,
+	  src/sensors/SoTimerSensor.cpp, src/sensors/all-sensors-cpp.cpp,
+	  src/shaders/SoFragmentShader.cpp,
+	  src/shaders/SoGLARBShaderObject.cpp,
+	  src/shaders/SoGLARBShaderObject.h,
+	  src/shaders/SoGLARBShaderParameter.cpp,
+	  src/shaders/SoGLARBShaderParameter.h,
+	  src/shaders/SoGLARBShaderProgram.cpp,
+	  src/shaders/SoGLARBShaderProgram.h,
+	  src/shaders/SoGLCgShaderObject.cpp,
+	  src/shaders/SoGLCgShaderObject.h,
+	  src/shaders/SoGLCgShaderParameter.cpp,
+	  src/shaders/SoGLCgShaderParameter.h,
+	  src/shaders/SoGLCgShaderProgram.cpp,
+	  src/shaders/SoGLCgShaderProgram.h,
+	  src/shaders/SoGLSLShaderObject.cpp,
+	  src/shaders/SoGLSLShaderObject.h,
+	  src/shaders/SoGLSLShaderParameter.cpp,
+	  src/shaders/SoGLSLShaderParameter.h,
+	  src/shaders/SoGLSLShaderProgram.cpp,
+	  src/shaders/SoGLSLShaderProgram.h,
+	  src/shaders/SoGLShaderObject.cpp, src/shaders/SoGLShaderObject.h,
+	  src/shaders/SoGLShaderParameter.cpp,
+	  src/shaders/SoGLShaderParameter.h,
+	  src/shaders/SoGLShaderProgram.cpp,
+	  src/shaders/SoGLShaderProgram.h,
+	  src/shaders/SoGLShaderProgramElement.cpp,
+	  src/shaders/SoGeometryShader.cpp, src/shaders/SoShader.cpp,
+	  src/shaders/SoShader.h, src/shaders/SoShaderObject.cpp,
+	  src/shaders/SoShaderParameter.cpp,
+	  src/shaders/SoShaderProgram.cpp, src/shaders/SoVertexShader.cpp,
+	  src/shaders/all-shaders-cpp.cpp,
+	  src/shadows/SoGLShadowCullingElement.cpp,
+	  src/shadows/SoShadowCulling.cpp, src/shadows/SoShadowGroup.cpp,
+	  src/shadows/SoShadowSpotLight.cpp, src/shadows/SoShadowStyle.cpp,
+	  src/shadows/SoShadowStyleElement.cpp,
+	  src/shadows/all-shadows-cpp.cpp, src/shapenodes/SoAsciiText.cpp,
+	  src/shapenodes/SoCone.cpp, src/shapenodes/SoCube.cpp,
+	  src/shapenodes/SoCylinder.cpp, src/shapenodes/SoFaceSet.cpp,
+	  src/shapenodes/SoImage.cpp, src/shapenodes/SoIndexedFaceSet.cpp,
+	  src/shapenodes/SoIndexedLineSet.cpp,
+	  src/shapenodes/SoIndexedNurbsCurve.cpp,
+	  src/shapenodes/SoIndexedNurbsSurface.cpp,
+	  src/shapenodes/SoIndexedShape.cpp,
+	  src/shapenodes/SoIndexedTriangleStripSet.cpp,
+	  src/shapenodes/SoLineSet.cpp, src/shapenodes/SoMarkerSet.cpp,
+	  src/shapenodes/SoNonIndexedShape.cpp,
+	  src/shapenodes/SoNurbsCurve.cpp,
+	  src/shapenodes/SoNurbsSurface.cpp, src/shapenodes/SoPointSet.cpp,
+	  src/shapenodes/SoQuadMesh.cpp, src/shapenodes/SoShape.cpp,
+	  src/shapenodes/SoSphere.cpp, src/shapenodes/SoText2.cpp,
+	  src/shapenodes/SoText3.cpp,
+	  src/shapenodes/SoTriangleStripSet.cpp,
+	  src/shapenodes/SoVertexShape.cpp,
+	  src/shapenodes/all-shapenodes-cpp.cpp,
+	  src/shapenodes/soshape_bigtexture.cpp,
+	  src/shapenodes/soshape_bigtexture.h,
+	  src/shapenodes/soshape_bumprender.cpp,
+	  src/shapenodes/soshape_bumprender.h,
+	  src/shapenodes/soshape_primdata.cpp,
+	  src/shapenodes/soshape_primdata.h,
+	  src/shapenodes/soshape_trianglesort.cpp,
+	  src/shapenodes/soshape_trianglesort.h,
+	  src/share/gl/CoinGLPerformance.cpp,
+	  src/share/gl/CoinGLPerformance.h,
+	  src/threads/all-threads-cpp.cpp, src/threads/barrier.cpp,
+	  src/threads/barrierp.h, src/threads/common.cpp,
+	  src/threads/condvar.cpp, src/threads/condvar_pthread.icc,
+	  src/threads/condvar_win32.icc, src/threads/condvarp.h,
+	  src/threads/fifo.cpp, src/threads/fifop.h, src/threads/mutex.cpp,
+	  src/threads/mutex_pthread.icc, src/threads/mutex_win32cs.icc,
+	  src/threads/mutex_win32mutex.icc, src/threads/mutexp.h,
+	  src/threads/recmutex.cpp, src/threads/recmutexp.h,
+	  src/threads/rwmutex.cpp, src/threads/rwmutexp.h,
+	  src/threads/sched.cpp, src/threads/schedp.h,
+	  src/threads/storage.cpp, src/threads/storagep.h,
+	  src/threads/sync.cpp, src/threads/syncp.h,
+	  src/threads/thread.cpp, src/threads/thread_pthread.icc,
+	  src/threads/thread_win32.icc, src/threads/threadp.h,
+	  src/threads/threadsutilp.h, src/threads/worker.cpp,
+	  src/threads/workerp.h, src/threads/wpool.cpp,
+	  src/threads/wpoolp.h, src/threads/wrappers.cpp, src/tidbits.cpp,
+	  src/tidbitsp.h, src/upgraders/SoPackedColorV20.cpp,
+	  src/upgraders/SoPackedColorV20.h,
+	  src/upgraders/SoShapeHintsV10.cpp,
+	  src/upgraders/SoShapeHintsV10.h, src/upgraders/SoUpgrader.cpp,
+	  src/upgraders/SoUpgrader.h, src/upgraders/all-upgraders-cpp.cpp,
+	  src/vrml97/Anchor.cpp, src/vrml97/Appearance.cpp,
+	  src/vrml97/AudioClip.cpp, src/vrml97/Background.cpp,
+	  src/vrml97/Billboard.cpp, src/vrml97/Box.cpp,
+	  src/vrml97/Collision.cpp, src/vrml97/Color.cpp,
+	  src/vrml97/ColorInterpolator.cpp, src/vrml97/Cone.cpp,
+	  src/vrml97/Coordinate.cpp, src/vrml97/CoordinateInterpolator.cpp,
+	  src/vrml97/Cylinder.cpp, src/vrml97/CylinderSensor.cpp,
+	  src/vrml97/DirectionalLight.cpp, src/vrml97/DragSensor.cpp,
+	  src/vrml97/ElevationGrid.cpp, src/vrml97/Extrusion.cpp,
+	  src/vrml97/Fog.cpp, src/vrml97/FontStyle.cpp,
+	  src/vrml97/Geometry.cpp, src/vrml97/Group.cpp,
+	  src/vrml97/ImageTexture.cpp, src/vrml97/IndexedFaceSet.cpp,
+	  src/vrml97/IndexedLine.cpp, src/vrml97/IndexedLineSet.cpp,
+	  src/vrml97/IndexedShape.cpp, src/vrml97/Init.cpp,
+	  src/vrml97/Inline.cpp, src/vrml97/Interpolator.cpp,
+	  src/vrml97/JS_VRMLClasses.cpp, src/vrml97/JS_VRMLClasses.h,
+	  src/vrml97/LOD.cpp, src/vrml97/Light.cpp,
+	  src/vrml97/Material.cpp, src/vrml97/MovieTexture.cpp,
+	  src/vrml97/NavigationInfo.cpp, src/vrml97/Normal.cpp,
+	  src/vrml97/NormalInterpolator.cpp,
+	  src/vrml97/OrientationInterpolator.cpp, src/vrml97/Parent.cpp,
+	  src/vrml97/PixelTexture.cpp, src/vrml97/PlaneSensor.cpp,
+	  src/vrml97/PointLight.cpp, src/vrml97/PointSet.cpp,
+	  src/vrml97/PositionInterpolator.cpp,
+	  src/vrml97/ProximitySensor.cpp,
+	  src/vrml97/ScalarInterpolator.cpp, src/vrml97/Script.cpp,
+	  src/vrml97/Sensor.cpp, src/vrml97/Shape.cpp,
+	  src/vrml97/SoVRMLSubInterpolatorP.h, src/vrml97/Sound.cpp,
+	  src/vrml97/Sphere.cpp, src/vrml97/SphereSensor.cpp,
+	  src/vrml97/SpotLight.cpp, src/vrml97/Switch.cpp,
+	  src/vrml97/Text.cpp, src/vrml97/Texture.cpp,
+	  src/vrml97/TextureCoordinate.cpp,
+	  src/vrml97/TextureTransform.cpp, src/vrml97/TimeSensor.cpp,
+	  src/vrml97/TouchSensor.cpp, src/vrml97/Transform.cpp,
+	  src/vrml97/VertexLine.cpp, src/vrml97/VertexPoint.cpp,
+	  src/vrml97/VertexShape.cpp, src/vrml97/Viewpoint.cpp,
+	  src/vrml97/VisibilitySensor.cpp, src/vrml97/WorldInfo.cpp,
+	  src/vrml97/all-vrml97-cpp.cpp, src/xml/all-xml-cpp.cpp,
+	  src/xml/attribute.cpp, src/xml/attributep.h,
+	  src/xml/document.cpp, src/xml/documentp.h, src/xml/element.cpp,
+	  src/xml/elementp.h, src/xml/entity.cpp, src/xml/path.cpp,
+	  src/xml/types.cpp, src/xml/utils.cpp, src/xml/utils.h,
+	  testsuite/TestSuiteInit.cpp, testsuite/TestSuiteUtils.cpp,
+	  testsuite/TestSuiteUtils.h: Updated copyright headers.
+
+2009-01-14 14:50  pederb
+
+	* [r12808] src/engines/evaluator.y, src/engines/evaluator_tab.c,
+	  src/engines/so_eval.ic: Fix copy/paste bug for the dot()
+	  function. It's now a binary function as it should be. Fixes
+	  COINSUPPORT-141.
+
+2009-01-13 16:01  pederb
+
+	* [r12806] src/fields/SoFieldContainer.cpp: Avoid assert during
+	  PROTO copy. Patch by Volker Enderlein.
+
+2009-01-12 16:46  bfg
+
+	* [r12801] include/Inventor/nodekits/SoSubKit.h,
+	  include/Inventor/nodes/SoSubNode.h: Kill some warnings.
+
+2009-01-06 21:19  larsa
+
+	* [r12798] src/coindefs.h: extra parenthesis allows for
+	  C++-keyword-like syntax
+
+2009-01-06 17:49  bfg
+
+	* [r12797] src/profiler/SoNodeVisualize.cpp,
+	  src/profiler/tools/run.sh: Using standard API for deciding
+	  node-type.
+
+2009-01-06 17:22  bfg
+
+	* [r12796] src/profiler/tools/inventify_texturenames.sh: Without my
+	  personal hacks.
+
+2009-01-06 17:20  bfg
+
+	* [r12795] src/profiler/tools/inventify_texturenames.sh,
+	  src/profiler/tools/run.sh: Scripts for automatic generation of
+	  inlined textures from svg.
+
+2009-01-06 15:40  bfg
+
+	* [r12794] data/profiler, data/profiler/Material.svg,
+	  data/profiler/MetricTopology.svg, data/profiler/NodeKit.svg,
+	  data/profiler/Path.svg, data/profiler/RealtimeGlobalField.svg,
+	  data/profiler/RenderareaComponent.svg,
+	  data/profiler/SelectedMaterial.svg, data/profiler/Shape.svg,
+	  data/profiler/SubGraph.svg, data/profiler/Switch.svg,
+	  data/profiler/TopStyle.svg, data/profiler/TopTransform.svg,
+	  data/profiler/Transform.svg: Texture templates for profiler
+	  elements.
+
+2008-12-19 13:21  wiesener
+
+	* [r12792] src/errors/error.cpp, src/tidbits.cpp: COIN-33: Fix the
+	  problem with SoDB::finish() closing the stdin/out/err streams
+
+2008-12-18 18:11  wiesener
+
+	* [r12790] src/profiler/SoProfiler.cpp: kill warning
+
+2008-12-18 16:25  wiesener
+
+	* [r12789] src/navigation/SoScXMLPanUtils.h,
+	  src/navigation/SoScXMLRotateUtils.h,
+	  src/navigation/SoScXMLSeekUtils.cpp,
+	  src/navigation/SoScXMLSeekUtils.h,
+	  src/navigation/SoScXMLZoomUtils.cpp,
+	  src/navigation/SoScXMLZoomUtils.h: kill some warnings
+
+2008-12-17 15:26  larsa
+
+	* [r12787] configure: bootstrap
+
+2008-12-17 15:25  larsa
+
+	* [r12786] configure.ac: --with-framework=arg argument was disabled
+	  anyway, so use --disable-framework instead of --without-framework
+	  (with compat fallback)
+
+2008-12-17 14:32  larsa
+
+	* [r12785] configure.ac: Update on a FIXME
+
+2008-12-15 12:24  larsa
+
+	* [r12779] src/SbBasicP.h: enable coin_*_cast() for ScXML classes
+
+2008-12-12 12:49  frodein
+
+	* [r12777] src/misc/CoinStaticObjectInDLL.cpp: Support multiple
+	  invocations of deactivateMutex() since it's needed for multiple
+	  SoDB::init()/cleanup() pairs
+
+2008-12-11 12:41  kintel
+
+	* [r12761] src/base/SbString.cpp: Another VC6 fix, waiting for
+	  buildbot to come online
+
+2008-12-11 12:04  kintel
+
+	* [r12760] src/base/SbString.cpp: Satisfy Solaris64 CC and
+	  hopefully-soon-to-die-VC6
+
+2008-12-10 15:30  kintel
+
+	* [r12758] src/base/SbString.cpp: non-Mac compile fix
+
+2008-12-10 15:12  kintel
+
+	* [r12757] src/foreignfiles/SoForeignFileKit.cpp: Case-insensitive
+	  suffix check
+
+2008-12-10 15:06  kintel
+
+	* [r12756] include/Inventor/SbString.h, src/base/SbString.cpp:
+	  Added upper() and lower() (OIV compatible)
+
+2008-12-09 12:02  pederb
+
+	* [r12754] src/actions/SoToVRML2Action.cpp: Use correct cast when
+	  casting to SoTexture2. The node might be NULL.
+
+2008-12-09 11:39  pederb
+
+	* [r12753] src/actions/SoToVRML2Action.cpp: Bugfix for ShapeHints
+	  state for VRML2-nodes in the input scene graph.
+
+2008-12-03 11:29  larsa
+
+	* [r12749] cfg, html:
+
+2008-12-03 11:27  larsa
+
+	* [r12748] configure, configure.ac: help-text tweaks
+
+2008-12-03 11:25  larsa
+
+	* [r12747] src/misc/SoDB.cpp: init navigation-code after nodes and
+	  actions, etc.
+
+2008-12-03 11:24  larsa
+
+	* [r12746] NEWS: updates
+
+2008-11-28 14:19  mortene
+
+	* [r12744] src/nodes/SoLevelOfDetail.cpp,
+	  src/shapenodes/SoAsciiText.cpp, src/shapenodes/SoFaceSet.cpp,
+	  src/shapenodes/SoIndexedFaceSet.cpp, src/shapenodes/SoText2.cpp,
+	  src/shapenodes/SoText3.cpp: doc: fix typos in fixme-tags (lars,
+	  you nit).
+
+2008-11-28 14:02  mortene
+
+	* [r12743] src/nodes/SoLevelOfDetail.cpp,
+	  src/shapenodes/SoAsciiText.cpp, src/shapenodes/SoFaceSet.cpp,
+	  src/shapenodes/SoIndexedFaceSet.cpp, src/shapenodes/SoText2.cpp,
+	  src/shapenodes/SoText3.cpp: doc: fixme-tags where we create a
+	  mutex per instance, for nodes that potentially could get
+	  instantiated very often in a scene graph.
+
+2008-11-28 13:59  mortene
+
+	* [r12742] src/nodes/SoSeparator.cpp: doc: fixme note about mutex
+	  use.
+
+2008-11-28 13:58  mortene
+
+	* [r12741] src/shapenodes/SoAsciiText.cpp,
+	  src/shapenodes/SoFaceSet.cpp,
+	  src/shapenodes/SoIndexedFaceSet.cpp: cosmetics
+
+2008-11-28 13:58  mortene
+
+	* [r12740] src/shapenodes/SoVertexShape.cpp: resource use: use a
+	  class-wide mutex instead of per-instance. should resolve a
+	  problem seen on MSWindows: when a lot of nodes are allocated, a
+	  process can run over the limit for mutexes per user / process.
+
+2008-11-28 13:56  mortene
+
+	* [r12739] src/shapenodes/SoShape.cpp: minor fix: reset value of
+	  static vars
+
+2008-11-28 12:47  mortene
+
+	* [r12738] src/threads/mutex.cpp, src/threads/recmutex.cpp,
+	  src/threads/rwmutex.cpp: debug: include rwmutex and recmutex in
+	  the mutex counting
+
+2008-11-28 12:00  mortene
+
+	* [r12737] src/shapenodes/SoShape.cpp: multithreading: change mutex
+	  lock from per-instance to per-class, to avoid excessive mutex
+	  instantiation
+
+2008-11-28 11:31  mortene
+
+	* [r12736] src/nodes/SoTexture2.cpp: clean-up: remove some
+	  excessive #ifdef'ing
+
+2008-11-28 11:03  mortene
+
+	* [r12735] src/threads/mutex.cpp: debug: add env option to count
+	  live mutexes
+
+2008-11-26 10:48  bfg
+
+	* [r12733] src/xml/expat/xmlparse.c: Fixed bug which caused
+	  Solaris64 build to fail.
+
+2008-11-25 12:45  frodein
+
+	* [r12731] src/draggers/SoHandleBoxDragger.cpp: don't assert if
+	  "surroundScale" doesn't exist
+
+2008-11-24 12:23  larsa
+
+	* [r12729] src/fields/SoField.cpp: redundancy removal
+
+2008-11-24 12:23  larsa
+
+	* [r12728] src/fields/SoFieldContainer.cpp: Solaris64 SunCC compile
+	  fixes
+
+2008-11-24 12:02  larsa
+
+	* [r12727] src/fields/SoField.cpp: Solaris64 SunCC compile fixes
+
+2008-11-23 15:43  larsa
+
+	* [r12725] src/coindefs.h: Added branch prediction hint macros (for
+	  optimization purposes).
+
+2008-11-21 15:36  frodein
+
+	* [r12723] src/shaders/SoShaderObject.cpp: close file after use
+
+2008-11-21 14:48  mortene
+
+	* [r12722] THANKS: adds Christian Stussak for helping us find and
+	  sort out a bug in SoCalculator. also merged in late entries at
+	  alphabetically sorted correct spot.
+
+2008-11-21 14:46  mortene
+
+	* [r12721] src/engines/evaluator_tab.c, src/engines/so_eval.ic:
+	  regenerated with flex and bison after atan2() bugfix
+
+2008-11-21 14:45  mortene
+
+	* [r12720] src/engines/evaluator.h, src/engines/evaluator.l,
+	  src/engines/evaluator.y: bugfix: handle atan2() properly, as a
+	  function with 2 input arguments -- not 1.
+
+2008-11-21 14:44  mortene
+
+	* [r12719] src/engines/evaluator.c: doc: FIXME notes about what i
+	  believe is bad error handling.
+
+2008-11-21 11:52  pederb
+
+	* [r12718] src/misc/SoPath.cpp: Update getTail() documentation.
+
+2008-11-19 17:20  larsa
+
+	* [r12715] src/sensors/SoFieldSensor.cpp,
+	  src/sensors/SoNodeSensor.cpp: SGI compatibility fixes (support
+	  sensor-redirect-attachment within the delete-callback)
+
+2008-11-19 13:11  pederb
+
+	* [r12714] src/actions/SoGLRenderAction.cpp: Improve the
+	  handleTransparency() doc.
+
+2008-11-19 00:31  autosvn
+
+	* [r12712] examples/bindings/README.txt: Automatic Property
+	  adjustment
+
+2008-11-18 16:49  mortene
+
+	* [r12711] src/shapenodes/SoImage.cpp: doc: tiny fix in code
+	  comment
+
+2008-11-18 16:49  mortene
+
+	* [r12710] src/shapenodes/SoNurbsCurve.cpp: clean-up: make code
+	  consistent with other nurbs nodes. suggested by Volker Enderlein.
+
+2008-11-18 10:58  mortene
+
+	* [r12709] examples/bindings/README.txt: rationale
+
+2008-11-17 11:48  larsa
+
+	* [r12707] testsuite/README: doc update
+
+2008-11-17 09:47  kintel
+
+	* [r12706] src/base/SbGLUTessellator.cpp: Fixed recently introduced
+	  assert failure
+
+2008-11-17 09:32  bfg
+
+	* [r12705] src/misc/all-misc-cpp.cpp: Commented on an investigation
+	  fixme.
+
+2008-11-14 17:43  bfg
+
+	* [r12703] include/Inventor/fields/SoSubField.h,
+	  src/misc/SoVBO.cpp, src/sensors/SoSensorManager.cpp,
+	  src/shaders/SoShader.cpp: Fixing a few forgetfullness errors.
+	  -Remove dead code.
+	  -Fixing some C-style casts.
+
+2008-11-14 13:10  larsa
+
+	* [r12702] src/fields/SoFieldContainer.cpp,
+	  src/io/SoWriterefCounter.cpp, src/misc/SoBase.cpp,
+	  src/misc/SoBaseP.cpp, src/misc/SoDebug.cpp, src/misc/SoVBO.cpp,
+	  src/sensors/SoSensorManager.cpp, src/shaders/SoShader.cpp: VC6.0
+	  compile fixes
+
+2008-11-14 13:03  larsa
+
+	* [r12701] src/fonts/glyph.cpp, src/fonts/glyph2d.cpp,
+	  src/fonts/glyph3d.cpp: VC6.0 compile fixes
+
+2008-11-14 12:14  larsa
+
+	* [r12700] src/base/SbDPMatrix.cpp, src/base/SbImage.cpp,
+	  src/base/SbMatrix.cpp, src/base/SbName.cpp, src/base/dict.cpp,
+	  src/base/hash.cpp, src/base/heap.cpp, src/base/list.cpp,
+	  src/base/memalloc.cpp, src/base/namemap.cpp,
+	  src/base/rbptree.cpp, src/base/string.cpp,
+	  src/caches/SoCache.cpp, src/elements/GL/SoGLDisplayList.cpp,
+	  src/elements/SoTextureCombineElement.cpp,
+	  src/engines/SoSelectOne.cpp, src/errors/SoDebugError.cpp: Visual
+	  C++ 6.0 fixes
+
+2008-11-14 11:45  larsa
+
+	* [r12699] src/base/SbTime.cpp, src/coindefs.h: workaround tagged
+	  by feature, not directly by compiler version
+
+2008-11-13 18:59  larsa
+
+	* [r12697] src/draggers/SoTransformerDragger.cpp: finish testcase -
+	  make sure copied scene graphs are deep-copied (no shared nodes)
+
+2008-11-13 18:37  larsa
+
+	* [r12696] src/draggers/SoTransformerDragger.cpp: re-enable testcase
+	  unrefs to avoid drowning in node-leaks
+
+2008-11-13 18:29  larsa
+
+	* [r12695] src/fields/SoFieldContainer.cpp: COIN-109: make sure
+	  cp-pointer is set to the copy before it is returned.
+
+2008-11-13 16:36  larsa
+
+	* [r12694] src/draggers/SoTransformerDragger.cpp,
+	  testsuite/Makefile.in: test for testing that SoTransformerDragger
+	  draggers are deep-copied (fails in horible ways)
+
+2008-11-13 16:29  larsa
+
+	* [r12693] testsuite/makemakefile.sh: additional rule to start
+	  testsuite through gdb with standard options
+
+2008-11-13 16:28  larsa
+
+	* [r12692] testsuite/makeextract.sh: linenumber off-by-one fix
+
+2008-11-13 15:48  larsa
+
+	* [r12691] testsuite/makeextract.sh: fix for tests in optional
+	  components
+
+2008-11-13 15:18  larsa
+
+	* [r12690] src/base/SbTime.cpp, src/coindefs.h: general compiler
+	  workaround scheme, and VC6.0 compile fix example
+
+2008-11-13 13:54  mortene
+
+	* [r12689] src/misc/CoinOffscreenGLCanvas.cpp,
+	  src/misc/SoOffscreenRenderer.cpp: robustness: handle particularly
+	  difficult systems, where we can't get any offscreen buffer no
+	  matter what canvas size we try. reported by, and tentative patch
+	  from, Kristofer Tingdahl.
+
+2008-11-13 13:04  bfg
+
+	* [r12688] src/fields/SoField.cpp, src/fields/SoFieldContainer.cpp,
+	  src/fields/SoFieldData.cpp, src/fields/SoGlobalField.cpp,
+	  src/fields/SoMFBitMask.cpp, src/fields/SoMFBool.cpp,
+	  src/fields/SoMFColor.cpp, src/fields/SoMFColorRGBA.cpp,
+	  src/fields/SoMFDouble.cpp, src/fields/SoMFEngine.cpp,
+	  src/fields/SoMFEnum.cpp, src/fields/SoMFFloat.cpp,
+	  src/fields/SoMFInt32.cpp, src/fields/SoMFMatrix.cpp,
+	  src/fields/SoMFName.cpp, src/fields/SoMFNode.cpp,
+	  src/fields/SoMFPath.cpp, src/fields/SoMFShort.cpp,
+	  src/fields/SoMFString.cpp, src/fields/SoMFTime.cpp,
+	  src/fields/SoMFUInt32.cpp, src/fields/SoMFUShort.cpp,
+	  src/fields/SoMFVec2b.cpp, src/fields/SoMFVec2d.cpp,
+	  src/fields/SoMFVec2f.cpp, src/fields/SoMFVec2i32.cpp,
+	  src/fields/SoMFVec2s.cpp, src/fields/SoMFVec3b.cpp,
+	  src/fields/SoMFVec3f.cpp, src/fields/SoMFVec3i32.cpp,
+	  src/fields/SoMFVec3s.cpp, src/fields/SoMFVec4b.cpp,
+	  src/fields/SoMFVec4d.cpp, src/fields/SoMFVec4f.cpp,
+	  src/fields/SoMFVec4i32.cpp, src/fields/SoMFVec4s.cpp,
+	  src/fields/SoMFVec4ub.cpp, src/fields/SoMFVec4ui32.cpp,
+	  src/fields/SoMFVec4us.cpp, src/fields/SoMField.cpp,
+	  src/fields/SoSFBitMask.cpp, src/fields/SoSFBox2d.cpp,
+	  src/fields/SoSFBox2f.cpp, src/fields/SoSFBox2i32.cpp,
+	  src/fields/SoSFBox2s.cpp, src/fields/SoSFBox3d.cpp,
+	  src/fields/SoSFBox3f.cpp, src/fields/SoSFBox3i32.cpp,
+	  src/fields/SoSFBox3s.cpp, src/fields/SoSFColor.cpp,
+	  src/fields/SoSFColorRGBA.cpp, src/fields/SoSFEngine.cpp,
+	  src/fields/SoSFEnum.cpp, src/fields/SoSFImage.cpp,
+	  src/fields/SoSFImage3.cpp, src/fields/SoSFInt32.cpp,
+	  src/fields/SoSFNode.cpp, src/fields/SoSFPath.cpp,
+	  src/fields/SoSFTrigger.cpp, src/fields/SoSFVec2b.cpp,
+	  src/fields/SoSFVec2d.cpp, src/fields/SoSFVec2f.cpp,
+	  src/fields/SoSFVec2i32.cpp, src/fields/SoSFVec2s.cpp,
+	  src/fields/SoSFVec3b.cpp, src/fields/SoSFVec3f.cpp,
+	  src/fields/SoSFVec3i32.cpp, src/fields/SoSFVec3s.cpp,
+	  src/fields/SoSFVec4b.cpp, src/fields/SoSFVec4d.cpp,
+	  src/fields/SoSFVec4f.cpp, src/fields/SoSFVec4i32.cpp,
+	  src/fields/SoSFVec4s.cpp, src/fields/SoSFVec4ub.cpp,
+	  src/fields/SoSFVec4ui32.cpp, src/fields/SoSFVec4us.cpp,
+	  src/fields/SoSField.cpp, src/fields/shared.cpp: Compilation
+	  fixes.
+	  -Fixed compiler warnings.
+	  -Using C++ style casts.
+	  -Using new style C++ includes.
+	  -Some const correctness.
+	  -Whitespace cleanup.
+	  -Some code quality improvements.
+	  -fields compiles without warnings on gcc 4.3
+
+2008-11-12 21:29  larsa
+
+	* [r12686] src/misc/SoBaseP.cpp, src/misc/SoBaseP.h: remove unused
+	  SbList
+
+2008-11-12 19:12  larsa
+
+	* [r12685] src/misc/SbHash.h: add virtual destructor to avoid
+	  warnings on virtual functions
+
+2008-11-12 15:38  bfg
+
+	* [r12684] src/misc/SbHash.h: Compile fix for MSVC6.
+	  Codequality improvement.
+
+2008-11-12 14:37  bfg
+
+	* [r12683] src/elements/SoVertexAttributeElement.cpp,
+	  src/fields/SoFieldContainer.cpp, src/io/SoWriterefCounter.cpp,
+	  src/misc/SbHash.h, src/misc/SoBase.cpp, src/misc/SoBaseP.cpp,
+	  src/misc/SoBaseP.h, src/misc/SoContextHandler.cpp,
+	  src/misc/SoDebug.cpp, src/misc/SoVBO.cpp, src/misc/SoVBO.h,
+	  src/sensors/SoSensorManager.cpp, src/shaders/SoShader.cpp:
+	  Introducing callback type safety, concepts and some headache to
+	  SbHash.
+
+2008-11-12 12:46  bfg
+
+	* [r12682] src/SbBasicP.h: Fixed false negative on Pointer type
+	  check.
+
+2008-11-12 12:29  bfg
+
+	* [r12681] build/Xcode/src/setup.h, build/misc/generate.sh,
+	  build/msvc6/src/setup.h, build/msvc7/src/setup.h,
+	  build/msvc8/src/setup.h, build/msvc9/src/setup.h,
+	  cfg/doxy4win.pl, docs/oiv_compatibility.txt,
+	  examples/dynloadextensions/Switchboard.cpp,
+	  examples/dynloadextensions/SwitchboardOperator.cpp,
+	  examples/misc/glut_tex.cpp, examples/misc/ivcp.cpp,
+	  include/Inventor/C/glue/spidermonkey.h,
+	  include/Inventor/C/threads/barrier.h,
+	  include/Inventor/C/threads/worker.h, include/Inventor/SbVec2us.h,
+	  include/Inventor/VRMLnodes/SoVRMLInline.h,
+	  include/Inventor/caches/SoConvexDataCache.h,
+	  include/Inventor/elements/SoGLLineWidthElement.h,
+	  include/Inventor/elements/SoGLMultiTextureCoordinateElement.h,
+	  include/Inventor/elements/SoGLMultiTextureImageElement.h,
+	  include/Inventor/elements/SoSoundElement.h,
+	  include/Inventor/elements/SoTexture3EnabledElement.h,
+	  include/Inventor/elements/SoTextureUnitElement.h,
+	  include/Inventor/lists/SoFieldList.h,
+	  include/Inventor/lists/SoPickedPointList.h,
+	  include/Inventor/misc/SoProtoInstance.h,
+	  include/Inventor/threads/SbStorage.h,
+	  models/dead_simple/all-iv.iv, models/io/incorrect/bug039.iv,
+	  models/io/incorrect/bug199-error-3.iv,
+	  packaging/macosx/checklist.txt, src/3ds/3dsLoader.cpp,
+	  src/3ds/all-3ds-cpp.cpp, src/actions/SoAudioRenderAction.cpp,
+	  src/actions/SoLineHighlightRenderAction.cpp,
+	  src/actions/SoRayPickAction.cpp, src/actions/SoToVRML2Action.cpp,
+	  src/actions/SoToVRMLAction.cpp, src/actions/all-actions-cpp.cpp,
+	  src/base/SbBox2i32.cpp, src/base/SbBox3i32.cpp,
+	  src/base/SbDPMatrix.cpp, src/base/SbImage.cpp,
+	  src/base/SbString.cpp, src/base/SbTime.cpp,
+	  src/base/SbXfBox3d.cpp, src/base/SbXfBox3f.cpp,
+	  src/base/all-base-cpp.cpp, src/base/dict.cpp, src/base/hash.cpp,
+	  src/base/memalloc.cpp, src/base/namemap.cpp,
+	  src/bundles/SoMaterialBundle.cpp, src/bundles/SoNormalBundle.cpp,
+	  src/bundles/SoTextureCoordinateBundle.cpp,
+	  src/bundles/SoVertexAttributeBundle.cpp,
+	  src/bundles/all-bundles-cpp.cpp, src/caches/SoCache.cpp,
+	  src/caches/SoGLRenderCache.cpp, src/caches/SoNormalCache.cpp,
+	  src/caches/SoPrimitiveVertexCache.cpp, src/collision/SbTri3f.cpp,
+	  src/collision/SoIntersectionDetectionAction.cpp,
+	  src/draggers/SoHandleBoxDragger.cpp,
+	  src/draggers/SoTransformerDragger.cpp,
+	  src/elements/GL/SoGLLazyElement.cpp,
+	  src/elements/GL/SoGLLineWidthElement.cpp,
+	  src/elements/GL/SoGLModelMatrixElement.cpp,
+	  src/elements/GL/SoGLMultiTextureImageElement.cpp,
+	  src/elements/GL/SoGLPointSizeElement.cpp,
+	  src/elements/GL/SoGLTextureCoordinateElement.cpp,
+	  src/elements/GL/SoGLTextureImageElement.cpp,
+	  src/elements/GL/SoGLVBOElement.cpp,
+	  src/elements/GL/SoGLVertexAttributeElement.cpp,
+	  src/elements/GL/SoResetMatrixElement.cpp,
+	  src/elements/GL/all-glelements-cpp.cpp,
+	  src/elements/SoBumpMapCoordinateElement.cpp,
+	  src/elements/SoBumpMapMatrixElement.cpp,
+	  src/elements/SoCacheElement.cpp,
+	  src/elements/SoCacheHintElement.cpp,
+	  src/elements/SoComplexityTypeElement.cpp,
+	  src/elements/SoDecimationTypeElement.cpp,
+	  src/elements/SoLazyElement.cpp,
+	  src/elements/SoMaterialBindingElement.cpp,
+	  src/elements/SoNormalBindingElement.cpp,
+	  src/elements/SoOverrideElement.cpp,
+	  src/elements/SoShapeStyleElement.cpp,
+	  src/elements/SoSoundElement.cpp,
+	  src/elements/SoTexture3EnabledElement.cpp,
+	  src/elements/SoTextureEnabledElement.cpp,
+	  src/elements/SoTextureImageElement.cpp,
+	  src/elements/SoTextureUnitElement.cpp,
+	  src/elements/SoUnitsElement.cpp,
+	  src/elements/SoVertexAttributeBindingElement.cpp,
+	  src/elements/all-elements-cpp.cpp, src/engines/SoCalculator.cpp,
+	  src/engines/SoConvertAll.cpp, src/engines/SoEngine.cpp,
+	  src/engines/SoHeightMapToNormalMap.cpp,
+	  src/engines/SoNodeEngine.cpp, src/engines/SoOutputData.cpp,
+	  src/engines/evaluator_tab.c, src/errors/SoDebugError.cpp,
+	  src/errors/debugerror.cpp, src/events/SoEvent.cpp,
+	  src/events/SoLocation2Event.cpp,
+	  src/events/SoSpaceballButtonEvent.cpp, src/fields/SoField.cpp,
+	  src/fonts/builtin2dfonts.sh, src/fonts/fontlib_wrapper.cpp,
+	  src/fonts/glyph3d.cpp, src/foreignfiles/steel.cpp,
+	  src/glue/all-glue-cpp.cpp, src/glue/bzip2.cpp, src/glue/zlib.cpp,
+	  src/glue/zlib.h, src/hardcopy/VectorOutput.cpp,
+	  src/hardcopy/VectorizePSAction.cpp,
+	  src/hardcopy/all-hardcopy-cpp.cpp, src/io/SoInput.cpp,
+	  src/io/SoInput_Reader.cpp, src/io/SoOutput_Writer.cpp,
+	  src/io/all-io-cpp.cpp, src/lists/SbIntList.cpp,
+	  src/lists/SbStringList.cpp, src/lists/SbVec3fList.cpp,
+	  src/lists/SoActionMethodList.cpp, src/lists/SoDetailList.cpp,
+	  src/lists/SoFieldList.cpp, src/lists/SoPickedPointList.cpp,
+	  src/manips/all-manips-cpp.cpp, src/misc/CoinResources.cpp,
+	  src/misc/SbHash.h, src/misc/SoBase.cpp, src/misc/SoBaseP.cpp,
+	  src/misc/SoDebug.cpp, src/misc/SoGLBigImage.cpp,
+	  src/misc/SoGLCubeMapImage.cpp, src/misc/SoInteraction.cpp,
+	  src/misc/SoProtoInstance.cpp, src/misc/SoRenderManager.cpp,
+	  src/misc/SoState.cpp, src/misc/SoTempPath.cpp,
+	  src/misc/all-misc-cpp.cpp, src/navigation/SoScXMLNavigation.cpp,
+	  src/navigation/all-navigation-cpp.cpp,
+	  src/nodekits/SoNodeKit.cpp, src/nodes/SoBaseColor.cpp,
+	  src/nodes/SoBumpMap.cpp, src/nodes/SoBumpMapCoordinate.cpp,
+	  src/nodes/SoExtSelection.cpp, src/nodes/SoLOD.cpp,
+	  src/nodes/SoLevelOfDetail.cpp, src/nodes/SoLight.cpp,
+	  src/nodes/SoLocateHighlight.cpp, src/nodes/SoNode.cpp,
+	  src/nodes/SoPackedColor.cpp, src/nodes/SoSceneTextureCubeMap.cpp,
+	  src/nodes/SoSelection.cpp, src/nodes/SoSeparator.cpp,
+	  src/nodes/SoSwitch.cpp, src/nodes/SoTexture.cpp,
+	  src/nodes/SoTexture2.cpp, src/nodes/SoTextureCoordinateCube.cpp,
+	  src/nodes/SoTextureCoordinateCylinder.cpp,
+	  src/nodes/SoTextureCoordinateFunction.cpp,
+	  src/nodes/SoTextureCoordinateObject.cpp,
+	  src/nodes/SoTextureCoordinatePlane.cpp,
+	  src/nodes/SoTextureCoordinateSphere.cpp,
+	  src/nodes/SoTextureCubeMap.cpp,
+	  src/nodes/SoTextureScalePolicy.cpp, src/nodes/SoUnknownNode.cpp,
+	  src/nodes/SoWWWAnchor.cpp, src/nodes/all-nodes-cpp.cpp,
+	  src/profiler/SbProfilingData.cpp, src/profiler/SoProfiler.cpp,
+	  src/profiler/SoProfilerStats.cpp,
+	  src/profiler/SoProfilerTopEngine.cpp,
+	  src/profiler/SoProfilingReportGenerator.cpp,
+	  src/scxml/ScXMLHistory.cpp, src/scxml/ScXMLInitial.cpp,
+	  src/scxml/ScXMLState.cpp, src/scxml/ScXMLStateMachine.cpp,
+	  src/scxml/SoScXMLStateMachine.cpp, src/scxml/all-scxml-cpp.cpp,
+	  src/shaders/SoGLSLShaderProgram.cpp,
+	  src/shaders/SoShaderObject.cpp, src/shaders/todo.txt,
+	  src/shadows/all-shadows-cpp.cpp, src/shapenodes/SoAsciiText.cpp,
+	  src/shapenodes/SoIndexedFaceSet.cpp,
+	  src/shapenodes/SoIndexedNurbsCurve.cpp,
+	  src/shapenodes/SoIndexedNurbsSurface.cpp,
+	  src/shapenodes/SoIndexedShape.cpp,
+	  src/shapenodes/SoNurbsCurve.cpp,
+	  src/shapenodes/SoNurbsSurface.cpp, src/shapenodes/SoSphere.cpp,
+	  src/shapenodes/SoText2.cpp, src/shapenodes/SoText3.cpp,
+	  src/shapenodes/SoTriangleStripSet.cpp,
+	  src/shapenodes/all-shapenodes-cpp.cpp,
+	  src/shapenodes/soshape_bigtexture.cpp,
+	  src/shapenodes/soshape_trianglesort.h,
+	  src/threads/all-threads-cpp.cpp, src/threads/wrappers.cpp,
+	  src/unconfig.h, src/update-config.sh,
+	  src/upgraders/SoUpgrader.cpp,
+	  src/upgraders/all-upgraders-cpp.cpp,
+	  src/vrml97/all-vrml97-cpp.cpp, src/xml/all-xml-cpp.cpp,
+	  src/xml/expat/all-expat-c.c,
+	  test-code/SbMatrix/getTransform/result.txt,
+	  test-code/SbMatrix/multLeft/result.txt,
+	  test-code/SbMatrix/multRight/result.txt,
+	  testsuite/TestSuiteMisc.cpp, testsuite/TestSuiteMisc.h,
+	  testsuite/makeextract.sh: Making up for all my whitespace crimes.
+	  And some not belonging to me.
+
+2008-11-11 21:55  larsa
+
+	* [r12679] include/Inventor/C/base/rbptree.h: typo fix
+
+2008-11-11 16:37  mortene
+
+	* [r12678] src/misc/all-misc-cpp.cpp: remove very bogus work-around
+	  for --enable-compact build error, replace with slightly less
+	  bogus work-around + FIXME.
+
+2008-11-11 16:30  mortene
+
+	* [r12677] src/misc/SoJavaScriptEngine.cpp,
+	  src/misc/SoOffscreenRenderer.cpp, src/misc/SoProto.cpp,
+	  src/misc/all-misc-cpp.cpp: compiler: fix warnings (for g++ 4.3.2)
+
+2008-11-11 16:18  mortene
+
+	* [r12676] src/misc/SoGLImage.cpp: bugfix: fix a couple of
+	  potential bugs where operator precedence was not used correctly.
+	  (inactive code.)
+
+2008-11-11 16:02  mortene
+
+	* [r12675] src/misc/SoBase.cpp: minor doc fix: correct code comment
+	  about the leak-check for SoBase-instances.
+
+2008-11-11 15:49  mortene
+
+	* [r12674] include/Inventor/details/SoSubDetail.h: compatibility &
+	  header file correctness: include SbName.h, since there's an
+	  implicit conversion 'const char *' -> 'SbName' in
+	  SoType::createType().
+
+2008-11-11 15:40  larsa
+
+	* [r12673] src/base/rbptree.cpp: add some special cases
+
+2008-11-11 15:35  mortene
+
+	* [r12672] include/Inventor/details/SoSubDetail.h: compatibility
+	  bugfix: tune SO_DETAIL_SOURCE so it works both with and without a
+	  trailing semi-colon.
+
+2008-11-11 15:20  larsa
+
+	* [r12671] src/base/rbptree.cpp, testsuite/Makefile.in: rbptree
+	  fill/empty testcase
+
+2008-11-11 11:39  mortene
+
+	* [r12670] src/base/SbTesselator.cpp: increase precision of
+	  internal calculations by going from single-precision to
+	  double-precision real values.
+
+2008-11-11 11:24  mortene
+
+	* [r12669] src/base/SbTesselator.cpp: minor code clean-ups
+
+2008-11-11 11:17  pederb
+
+	* [r12668] src/SbBasicP.h: Compile fix.
+
+2008-11-11 10:19  pederb
+
+	* [r12667]
+	  include/Inventor/elements/SoGLMultiTextureEnabledElement.h,
+	  include/Inventor/elements/SoGLTextureCoordinateElement.h,
+	  include/Inventor/elements/SoMultiTextureEnabledElement.h,
+	  src/elements/GL/SoGLMultiTextureEnabledElement.cpp,
+	  src/elements/GL/SoGLTextureCoordinateElement.cpp,
+	  src/elements/SoMultiTextureEnabledElement.cpp: Fixes for Coin
+	  3.1.
+
+2008-11-11 10:05  bfg
+
+	* [r12666] configure: Reverting bootstrap. Avoid doing bootstrap
+	  until everything is ready.
+
+2008-11-11 08:45  bfg
+
+	* [r12665] configure, configure.ac, src/misc/all-misc-cpp.cpp:
+	  Fixes to the enable-compact configure option.
+	  -Compile fix
+	  -Elaborated on configure help text.
+	  -Bootstrap.
+
+2008-11-11 08:12  bfg
+
+	* [r12664] src/SbBasicP.h: Insert guard to avoid releasing code
+	  which may be dangerous.
+
+2008-11-10 11:41  mortene
+
+	* [r12662] src/misc/SoBase.cpp: change semantics a little for
+	  setName(): don't store a named list for unnamed nodes. this also
+	  fixes a mem leak.
+
+2008-11-07 15:09  larsa
+
+	* [r12660] data/scxml/navigation/examiner.xml,
+	  src/navigation/examiner-xml.cpp: bugfix for Quarter context menu
+	  seek-enabling
+
+2008-11-07 13:06  mortene
+
+	* [r12659] src/shadows/SoShadowGroup.cpp: complete the scene graph
+	  with a header, so it can be copy'n'pasted directly into an
+	  iv-file
+
+2008-11-06 23:36  larsa
+
+	* [r12657] configure.ac: syntax correction
+
+2008-11-06 21:30  larsa
+
+	* [r12656] ., cfg, data/scxml, data/scxml/navigation, data/shaders,
+	  data/shaders/lights, data/shaders/vsm, include/Inventor/C,
+	  include/Inventor/C/XML, include/Inventor/VRMLnodes,
+	  include/Inventor/XML, include/Inventor/actions,
+	  include/Inventor/annex, include/Inventor/annex/FXViz,
+	  include/Inventor/annex/FXViz/elements,
+	  include/Inventor/annex/FXViz/nodes,
+	  include/Inventor/annex/ForeignFiles,
+	  include/Inventor/annex/HardCopy, include/Inventor/annex/Profiler,
+	  include/Inventor/annex/Profiler/elements,
+	  include/Inventor/annex/Profiler/engines,
+	  include/Inventor/annex/Profiler/nodekits,
+	  include/Inventor/annex/Profiler/nodes,
+	  include/Inventor/annex/Profiler/utils, include/Inventor/bundles,
+	  include/Inventor/caches, include/Inventor/collision,
+	  include/Inventor/details, include/Inventor/draggers,
+	  include/Inventor/elements, include/Inventor/engines,
+	  include/Inventor/errors, include/Inventor/events,
+	  include/Inventor/fields, include/Inventor/lists,
+	  include/Inventor/manips, include/Inventor/misc,
+	  include/Inventor/nodekits, include/Inventor/nodes,
+	  include/Inventor/projectors, include/Inventor/scxml,
+	  include/Inventor/sensors, include/Inventor/system,
+	  include/Inventor/threads, include/Inventor/tools, src,
+	  src/collision, src/doc, src/foreignfiles, src/geo, src/hardcopy,
+	  src/io, src/navigation, src/profiler, src/scxml, src/shaders,
+	  src/shadows, src/xml, src/xml/expat, testsuite: indir build
+	  ignore properties
+
+2008-11-06 15:17  kintel
+
+	* [r12655] src/actions/SoGLRenderAction.cpp,
+	  src/elements/SoLazyElement.cpp: No reason to keep defaulting to
+	  SCREEN_DOOR
+
+2008-11-06 14:34  kintel
+
+	* [r12654] src/nodes/SoPathSwitch.cpp: Another compile fix for
+	  non-Mac platforms
+
+2008-11-06 14:19  kintel
+
+	* [r12653] src/base/SbMatrix.cpp: Potential compile fix, don't know
+	  why it doesn't fail on Mac OS X..
+
+2008-11-06 14:02  kintel
+
+	* [r12652] configure.ac: It doesn't look like 3.0.x will happen
+
+2008-11-06 13:44  kintel
+
+	* [r12651] include/Inventor/nodes/SoPathSwitch.h,
+	  src/actions/SoCallbackAction.cpp, src/nodes/SoPathSwitch.cpp,
+	  src/nodes/SoSwitch.cpp, testsuite/Makefile.in: Implemented
+	  SoCallbackAction::*CallbackAll()
+
+2008-11-06 13:43  kintel
+
+	* [r12650] include/Inventor/SbMatrix.h, src/base/SbMatrix.cpp:
+	  Added conversion from SbDPMatrix to SbMatrix
+
+2008-11-05 16:30  kintel
+
+	* [r12648] include/Inventor/actions/SoCallbackAction.h,
+	  src/actions/SoCallbackAction.cpp: API first, implementation
+	  later. Any volunteers? :)
+
+2008-11-05 15:32  tamer
+
+	* [r12647] Makefile.am, Makefile.in: allow parent kills to affect
+	  subprocesses under windows. (exposed via buildbot for hanging
+	  testsuite runs)
+
+2008-11-05 11:43  larsa
+
+	* [r12646] testsuite/makeextract.sh: use 'sed' instead of 'tr' for
+	  portability-reasons
+
+2008-11-03 10:58  frodein
+
+	* [r12644] testsuite/Makefile.in, testsuite/makemakefile.sh:
+	  removed linker flag \-lCoin, it broke build on msvc
+
+2008-10-30 09:34  larsa
+
+	* [r12640] src/base/rbptree.cpp: Solaris64 Sun CC compile fix
+
+2008-10-29 15:36  larsa
+
+	* [r12637] include/Inventor/SbDict.h,
+	  include/Inventor/details/SoSubDetail.h,
+	  include/Inventor/elements/SoSubElement.h,
+	  include/Inventor/engines/SoSubEngine.h,
+	  include/Inventor/events/SoSubEvent.h, src/base/SbDPMatrix.cpp,
+	  src/base/SbDict.cpp, src/base/SbGLUTessellator.cpp,
+	  src/base/SbImage.cpp, src/base/SbMatrix.cpp, src/base/SbName.cpp,
+	  src/base/SbTesselator.cpp, src/base/SbTime.cpp,
+	  src/base/dict.cpp, src/base/hash.cpp, src/base/heap.cpp,
+	  src/base/list.cpp, src/base/memalloc.cpp, src/base/namemap.cpp,
+	  src/base/rbptree.cpp, src/base/string.cpp,
+	  src/caches/SoCache.cpp, src/draggers/SoDragger.cpp,
+	  src/elements/GL/SoGLDisplayList.cpp,
+	  src/elements/SoCoordinateElement.cpp, src/elements/SoElement.cpp,
+	  src/elements/SoFontNameElement.cpp,
+	  src/elements/SoLazyElement.cpp,
+	  src/elements/SoLightAttenuationElement.cpp,
+	  src/elements/SoProfileCoordinateElement.cpp,
+	  src/elements/SoTextureCombineElement.cpp,
+	  src/engines/SoCalculator.cpp, src/engines/SoConvertAll.cpp,
+	  src/engines/SoSelectOne.cpp, src/errors/SoDebugError.cpp,
+	  src/errors/SoError.cpp, src/errors/debugerror.cpp,
+	  src/events/SoEvent.cpp, src/events/SoKeyboardEvent.cpp,
+	  src/fonts/glyph.cpp, src/fonts/glyph2d.cpp,
+	  src/fonts/glyph3d.cpp, src/nodekits/SoSubKitP.h,
+	  src/nodes/SoSubNodeP.h: Solaris64 Sun CC compile fixes
+
+2008-10-29 12:51  larsa
+
+	* [r12636] src/base/dict.cpp: Solaris64 Sun CC compile fix
+
+2008-10-29 12:46  larsa
+
+	* [r12635] src/actions/SoLineHighlightRenderAction.cpp: Solaris64
+	  Sun CC compile fix
+
+2008-10-29 11:54  larsa
+
+	* [r12634] include/Inventor/threads/SbStorage.h: Solaris64 Sun CC
+	  compile fix
+
+2008-10-28 15:14  larsa
+
+	* [r12632] Makefile.in: bootstrap
+
+2008-10-28 14:10  larsa
+
+	* [r12631] build/misc/install-data.bat, build/misc/install-sdk.bat:
+	  tweaks, fix typos/omissions
+
+2008-10-28 13:58  larsa
+
+	* [r12630] Makefile.am, build/misc/install-data.bat,
+	  build/misc/install-sdk.bat: Make install-sdk.bat generic,
+	  inter-project copyable.
+
+2008-10-27 14:07  larsa
+
+	* [r12627] cfg/gendsp.pl.in: sync
+
+2008-10-27 13:43  larsa
+
+	* [r12626] build/misc/install-sdk.bat, build/msvc6/coin3.dsp,
+	  build/msvc8, build/msvc8/coin3.sln, build/msvc8/coin3.vcproj,
+	  build/msvc8/coin3_docs.vcproj, build/msvc8/coin3_install.vcproj,
+	  build/msvc8/coin3_uninstall.vcproj, build/msvc9,
+	  build/msvc9/coin3.sln, build/msvc9/coin3.vcproj,
+	  build/msvc9/coin3_docs.vcproj, build/msvc9/coin3_install.vcproj,
+	  build/msvc9/coin3_uninstall.vcproj: tweaks
+
+2008-10-27 11:42  larsa
+
+	* [r12625] build/msvc7, build/msvc7/coin3.sln,
+	  build/msvc7/coin3.vcproj, build/msvc7/include/config-debug.h,
+	  build/msvc7/include/config-release.h,
+	  build/msvc7/include/config.h, build/msvc7/include/setup.h: build
+	  fixes
+
+2008-10-24 11:31  larsa
+
+	* [r12623] src/actions/SoAction.cpp: Don't shadow pimpl member.
+
+2008-10-23 16:33  larsa
+
+	* [r12621] src/nodekits/SoBaseKit.cpp: COIN-75: fix for nodekit
+	  copy leak
+
+2008-10-23 13:52  kintel
+
+	* [r12620] src/actions/SoBoxHighlightRenderAction.cpp,
+	  src/actions/SoLineHighlightRenderAction.cpp: bugfix: Selection
+	  highlighting was broken for scene graphs with multiple
+	  instantiated nodes
+
+2008-10-23 12:56  larsa
+
+	* [r12619] include/Inventor/actions/SoSubAction.h: Solaris64
+	  compile fix
+
+2008-10-23 12:54  larsa
+
+	* [r12618] include/Inventor/annex/Profiler/SbProfilingData.h: fix
+	  warning
+
+2008-10-23 12:51  larsa
+
+	* [r12617] src/actions/SoAction.cpp: Solaris CC compile fix
+
+2008-10-23 12:48  larsa
+
+	* [r12616] include/Inventor/SbString.h: Solaris CC compile fix
+
+2008-10-23 12:25  larsa
+
+	* [r12615] src/actions/SoAudioRenderAction.cpp,
+	  src/actions/SoGLRenderAction.cpp, src/details/SoDetail.cpp,
+	  src/details/SoNodeKitDetail.cpp, src/details/all-details-cpp.cpp,
+	  src/misc/SoRenderManager.cpp, src/profiler/SoNodeVisualize.cpp,
+	  src/profiler/SoProfilerOverlayKit.cpp,
+	  src/profiler/SoProfilerTopKit.cpp,
+	  src/profiler/SoProfilerVisualizeKit.cpp,
+	  src/profiler/SoScrollingGraphKit.cpp: msvc compile fixes
+
+2008-10-22 23:31  autosvn
+
+	* [r12613] src/foreignfiles/steel-wrapper.cpp: Automatic Property
+	  adjustment
+
+2008-10-22 14:26  larsa
+
+	* [r12612] src/navigation/SoScXMLPanUtils.cpp,
+	  src/navigation/SoScXMLRotateUtils.cpp,
+	  src/navigation/SoScXMLSeekUtils.cpp,
+	  src/navigation/SoScXMLSpinUtils.cpp,
+	  src/navigation/SoScXMLZoomUtils.cpp: Remove invalid event-type
+	  assumptions. Correct debug message identifiser.
+
+2008-10-22 14:00  larsa
+
+	* [r12611] build/misc/generate.sh, build/msvc6/coin3.dsp,
+	  build/msvc6/docs/coin3.doxygen,
+	  build/msvc6/include/Inventor/C/basic.h,
+	  build/msvc6/src/config-debug.h, build/msvc6/src/config-release.h,
+	  build/msvc6/src/setup.h, build/msvc7/coin3.sln,
+	  build/msvc7/coin3.vcproj, build/msvc7/docs/coin3.doxygen,
+	  build/msvc7/include/Inventor/C/basic.h,
+	  build/msvc7/src/config-debug.h, build/msvc7/src/config-release.h,
+	  build/msvc7/src/setup.h, build/msvc8/coin3.sln,
+	  build/msvc8/coin3.vcproj, build/msvc8/coin3_docs.vcproj,
+	  build/msvc8/coin3_install.vcproj,
+	  build/msvc8/coin3_uninstall.vcproj,
+	  build/msvc8/docs/coin3.doxygen,
+	  build/msvc8/include/Inventor/C/basic.h,
+	  build/msvc8/src/config-debug.h, build/msvc8/src/config-release.h,
+	  build/msvc8/src/setup.h, build/msvc9/coin3.sln,
+	  build/msvc9/coin3.vcproj, build/msvc9/coin3_docs.vcproj,
+	  build/msvc9/coin3_install.vcproj,
+	  build/msvc9/coin3_uninstall.vcproj,
+	  build/msvc9/docs/coin3.doxygen,
+	  build/msvc9/include/Inventor/C/basic.h,
+	  build/msvc9/src/config-debug.h, build/msvc9/src/config-release.h,
+	  build/msvc9/src/setup.h: Visual Studio build files update
+
+2008-10-22 12:24  larsa
+
+	* [r12610] src/scxml/ScXML.cpp, src/scxml/ScXMLObject.cpp,
+	  src/scxml/ScXMLStateMachine.cpp,
+	  src/scxml/SoScXMLScheduleTimerEventInvoke.cpp: MSVC: don't push
+	  warning state, just disable.
+
+2008-10-22 12:13  larsa
+
+	* [r12609] src/scxml/ScXML.cpp, src/scxml/ScXMLObject.cpp,
+	  src/scxml/ScXMLStateMachine.cpp,
+	  src/scxml/SoScXMLScheduleTimerEventInvoke.cpp: Disable certain
+	  MSVC warnings
+
+2008-10-22 11:58  larsa
+
+	* [r12608] src/profiler/SoProfiler.cpp: compile fix
+
+2008-10-22 11:47  larsa
+
+	* [r12607] src/actions/SoToVRML2Action.cpp: compile fix
+
+2008-10-22 11:03  larsa
+
+	* [r12606] configure, configure.ac: tweaks
+
+2008-10-22 10:37  larsa
+
+	* [r12605] INSTALL: Documentation update
+
+2008-10-22 10:03  larsa
+
+	* [r12604] NEWS: update
+
+2008-10-22 10:02  larsa
+
+	* [r12603] Makefile.in, bin/Makefile.in, data/Makefile.in,
+	  data/draggerDefaults/Makefile.in, data/scxml/Makefile.in,
+	  data/scxml/navigation/Makefile.in, data/shaders/Makefile.in,
+	  data/shaders/lights/Makefile.in, data/shaders/vsm/Makefile.in,
+	  html/Makefile.in, include/Inventor/C/Makefile.in,
+	  include/Inventor/C/XML/Makefile.in,
+	  include/Inventor/C/base/Makefile.in,
+	  include/Inventor/C/errors/Makefile.in,
+	  include/Inventor/C/glue/Makefile.in,
+	  include/Inventor/C/threads/Makefile.in,
+	  include/Inventor/Makefile.in,
+	  include/Inventor/VRMLnodes/Makefile.in,
+	  include/Inventor/XML/Makefile.in,
+	  include/Inventor/actions/Makefile.in,
+	  include/Inventor/annex/FXViz/Makefile.in,
+	  include/Inventor/annex/FXViz/elements/Makefile.in,
+	  include/Inventor/annex/FXViz/nodes/Makefile.in,
+	  include/Inventor/annex/ForeignFiles/Makefile.in,
+	  include/Inventor/annex/HardCopy/Makefile.in,
+	  include/Inventor/annex/Makefile.in,
+	  include/Inventor/annex/Profiler/Makefile.in,
+	  include/Inventor/annex/Profiler/elements/Makefile.in,
+	  include/Inventor/annex/Profiler/engines/Makefile.in,
+	  include/Inventor/annex/Profiler/nodekits/Makefile.in,
+	  include/Inventor/annex/Profiler/nodes/Makefile.in,
+	  include/Inventor/annex/Profiler/utils/Makefile.in,
+	  include/Inventor/bundles/Makefile.in,
+	  include/Inventor/caches/Makefile.in,
+	  include/Inventor/collision/Makefile.in,
+	  include/Inventor/details/Makefile.in,
+	  include/Inventor/draggers/Makefile.in,
+	  include/Inventor/elements/Makefile.in,
+	  include/Inventor/engines/Makefile.in,
+	  include/Inventor/errors/Makefile.in,
+	  include/Inventor/events/Makefile.in,
+	  include/Inventor/fields/Makefile.in,
+	  include/Inventor/lists/Makefile.in,
+	  include/Inventor/lock/Makefile.in,
+	  include/Inventor/manips/Makefile.in,
+	  include/Inventor/misc/Makefile.in,
+	  include/Inventor/nodekits/Makefile.in,
+	  include/Inventor/nodes/Makefile.in,
+	  include/Inventor/projectors/Makefile.in,
+	  include/Inventor/scxml/Makefile.in,
+	  include/Inventor/sensors/Makefile.in,
+	  include/Inventor/system/Makefile.in,
+	  include/Inventor/threads/Makefile.in,
+	  include/Inventor/tools/Makefile.in, include/Makefile.in,
+	  man/Makefile.in, man/man1/Makefile.in, man/man3/Makefile.in,
+	  src/3ds/Makefile.in, src/Makefile.in, src/actions/Makefile.in,
+	  src/base/Makefile.in, src/bundles/Makefile.in,
+	  src/caches/Makefile.in, src/collision/Makefile.in,
+	  src/details/Makefile.in, src/doc/Makefile.in,
+	  src/draggers/Makefile.in, src/elements/GL/Makefile.in,
+	  src/elements/Makefile.in, src/engines/Makefile.in,
+	  src/errors/Makefile.in, src/events/Makefile.in,
+	  src/extensions/Makefile.in, src/fields/Makefile.in,
+	  src/fonts/Makefile.in, src/foreignfiles/Makefile.in,
+	  src/geo/Makefile.in, src/glue/Makefile.in,
+	  src/hardcopy/Makefile.in, src/io/Makefile.in,
+	  src/lists/Makefile.in, src/manips/Makefile.in,
+	  src/misc/Makefile.in, src/navigation/Makefile.in,
+	  src/nodekits/Makefile.in, src/nodes/Makefile.in,
+	  src/profiler/Makefile.in, src/projectors/Makefile.in,
+	  src/scxml/Makefile.in, src/sensors/Makefile.in,
+	  src/shaders/Makefile.in, src/shadows/Makefile.in,
+	  src/shapenodes/Makefile.in, src/threads/Makefile.in,
+	  src/upgraders/Makefile.in, src/vrml97/Makefile.in,
+	  src/xml/Makefile.in, src/xml/expat/Makefile.in: bootstrap
+
+2008-10-22 10:01  larsa
+
+	* [r12602] src/setup.h.in: Mention additional implications of
+	  --disable-nodekits
+
+2008-10-22 09:59  larsa
+
+	* [r12601] src/actions/SoAction.cpp, src/actions/SoActionP.h,
+	  src/actions/SoGLRenderAction.cpp,
+	  src/actions/SoToVRML2Action.cpp, src/actions/SoToVRMLAction.cpp,
+	  src/collision/SoIntersectionDetectionAction.cpp,
+	  src/draggers/SoCenterballDragger.cpp,
+	  src/draggers/SoDirectionalLightDragger.cpp,
+	  src/draggers/SoDragPointDragger.cpp, src/draggers/SoDragger.cpp,
+	  src/draggers/SoHandleBoxDragger.cpp,
+	  src/draggers/SoJackDragger.cpp,
+	  src/draggers/SoPointLightDragger.cpp,
+	  src/draggers/SoRotateCylindricalDragger.cpp,
+	  src/draggers/SoRotateDiscDragger.cpp,
+	  src/draggers/SoRotateSphericalDragger.cpp,
+	  src/draggers/SoScale1Dragger.cpp,
+	  src/draggers/SoScale2Dragger.cpp,
+	  src/draggers/SoScale2UniformDragger.cpp,
+	  src/draggers/SoScaleUniformDragger.cpp,
+	  src/draggers/SoSpotLightDragger.cpp,
+	  src/draggers/SoTabBoxDragger.cpp,
+	  src/draggers/SoTabPlaneDragger.cpp,
+	  src/draggers/SoTrackballDragger.cpp,
+	  src/draggers/SoTransformBoxDragger.cpp,
+	  src/draggers/SoTransformerDragger.cpp,
+	  src/draggers/SoTranslate1Dragger.cpp,
+	  src/draggers/SoTranslate2Dragger.cpp,
+	  src/draggers/all-draggers-cpp.cpp, src/foreignfiles/Makefile.am,
+	  src/foreignfiles/SoForeignFileKit.cpp,
+	  src/foreignfiles/SoSTLFileKit.cpp,
+	  src/foreignfiles/all-foreignfiles-cpp.cpp,
+	  src/foreignfiles/steel-wrapper.cpp,
+	  src/manips/SoCenterballManip.cpp,
+	  src/manips/SoClipPlaneManip.cpp,
+	  src/manips/SoDirectionalLightManip.cpp,
+	  src/manips/SoHandleBoxManip.cpp, src/manips/SoJackManip.cpp,
+	  src/manips/SoPointLightManip.cpp,
+	  src/manips/SoSpotLightManip.cpp, src/manips/SoTabBoxManip.cpp,
+	  src/manips/SoTrackballManip.cpp,
+	  src/manips/SoTransformBoxManip.cpp,
+	  src/manips/SoTransformManip.cpp,
+	  src/manips/SoTransformerManip.cpp, src/manips/all-manips-cpp.cpp,
+	  src/manips/commoncode.cpp, src/misc/SoDB.cpp,
+	  src/misc/SoInteraction.cpp, src/misc/SoSceneManagerP.cpp,
+	  src/nodekits/SoAppearanceKit.cpp, src/nodekits/SoBaseKit.cpp,
+	  src/nodekits/SoCameraKit.cpp, src/nodekits/SoInteractionKit.cpp,
+	  src/nodekits/SoLightKit.cpp, src/nodekits/SoNodeKit.cpp,
+	  src/nodekits/SoNodeKitListPart.cpp,
+	  src/nodekits/SoNodeKitPath.cpp,
+	  src/nodekits/SoNodekitCatalog.cpp, src/nodekits/SoSceneKit.cpp,
+	  src/nodekits/SoSeparatorKit.cpp, src/nodekits/SoShapeKit.cpp,
+	  src/nodekits/SoWrapperKit.cpp, src/nodekits/all-nodekits-cpp.cpp,
+	  src/profiler/SoProfiler.cpp, src/profiler/all-profiler-cpp.cpp:
+	  Use new config.h defines for controlling features line nodekits,
+	  draggers, and manipulators.
+
+2008-10-22 09:58  larsa
+
+	* [r12600] configure.ac, docs/coin.doxygen.in, src/discard.h.in,
+	  src/setup.h.in: Additional configure-options --disable-nodekits,
+	  --disable-draggers, and --disable-manipulators for shaving off
+	  functionality to get a smaller Coin library.
+
+2008-10-21 17:35  pederb
+
+	* [r12598] src/misc/SoPickedPoint.cpp: Bugfix.
+
+2008-10-20 12:42  larsa
+
+	* [r12596] src/fields/SoFieldContainer.cpp: Remove exessive
+	  newlines in debug-messages.
+
+2008-10-20 12:28  larsa
+
+	* [r12595] src/fields/SoFieldContainer.cpp: Some copy-dictionary
+	  debugging info code.
+
+2008-10-18 17:02  larsa
+
+	* [r12593] src/misc/SoBaseP.cpp: Also dump refcount for leaked
+	  SoBase-objects.
+
+2008-10-13 09:40  mortene
+
+	* [r12591] examples/bindings/glutiv.cpp: compile fix: make the cast
+	  hack to uintptr_t, so it works on platforms where size_t(int) <
+	  size_t(void*)
+
+2008-10-08 01:33  larsa
+
+	* [r12589] src/nodes/SoSelection.cpp: crash-fix for certain
+	  getSelectionPath() situations/usage
+
+2008-10-07 13:41  philipb
+
+	* [r12587] src/nodes/SoCamera.cpp: Type mistake
+
+2008-10-06 14:44  mortene
+
+	* [r12585] configure, configure.ac: build fixes for
+	  --enable-hacking mode install
+
+2008-10-06 14:18  mortene
+
+	* [r12584] src/manips/SoClipPlaneManip.cpp: build fix for
+	  out-of-srcdir builds
+
+2008-10-06 13:11  frodein
+
+	* [r12583] src/draggers/SoDragger.cpp: Removed a recently
+	  introduced assert_cast that changed the semantics of the
+	  statement where it was used.
+
+2008-10-06 11:24  bfg
+
+	* [r12582] include/boost/test/test_tools.hpp: Add proper includes.
+
+2008-10-04 15:02  bfg
+
+	* [r12580] src/fields/SoSFColorRGBA.cpp: Apply out of bound fix to
+	  trunk.
+
+2008-10-01 08:06  tamer
+
+	* [r12577] src/misc/SbHash.h: further workaround for ambiguous data
+	  type build error message on 64-bit Windows.
+
+2008-10-01 07:31  tamer
+
+	* [r12576] src/misc/SbHash.h: workaround for 64-bit Windows.
+
+2008-09-29 16:22  bfg
+
+	* [r12574] src/extensions/Makefile.in: Whitespace cleanup -
+	  extensions.
+
+2008-09-29 16:20  bfg
+
+	* [r12573] include/Inventor/events/SoSubEvent.h, src/SbBasicP.h,
+	  src/events/Makefile.am, src/events/Makefile.in,
+	  src/events/SoButtonEvent.cpp, src/events/SoEvent.cpp,
+	  src/events/SoKeyboardEvent.cpp, src/events/SoLocation2Event.cpp,
+	  src/events/SoMotion3Event.cpp, src/events/SoMouseButtonEvent.cpp,
+	  src/events/SoSpaceballButtonEvent.cpp,
+	  src/share/gl/CoinGLPerformance.cpp: Compilation fixes.
+	  -Fixed compiler warnings.
+	  -Using C++ style casts.
+	  -Using new style C++ includes.
+	  -Some const correctness.
+	  -Whitespace cleanup.
+	  -Some code quality improvements.
+	  -share and events compiles without warnings on gcc 4.3
+
+2008-09-26 10:57  pederb
+
+	* [r12571] src/engines/SoEngineOutput.cpp: use reinterpret_cast
+	  instead of c-style cast.
+
+2008-09-26 09:54  pederb
+
+	* [r12570] include/Inventor/engines/SoEngineOutput.h,
+	  src/engines/SoEngineOutput.cpp: Fix for recently introduced bug
+	  which caused asserts on all VRML engines.
+
+2008-09-24 15:36  bfg
+
+	* [r12568] src/errors/SoDebugError.cpp, src/errors/SoError.cpp,
+	  src/errors/SoMemoryError.cpp, src/errors/SoReadError.cpp,
+	  src/errors/debugerror.cpp, src/errors/error.cpp: Compilation
+	  fixes.
+	  -Fixed compiler warnings.
+	  -Using C++ style casts.
+	  -Using new style C++ includes.
+	  -Whitespace cleanup.
+	  -errors compiles without warnings on gcc 4.3
+
+2008-09-22 16:28  bfg
+
+	* [r12565] include/Inventor/engines/SoSubEngine.h,
+	  include/Inventor/lists/SoEngineOutputList.h,
+	  src/engines/SoCalculator.cpp, src/engines/SoConcatenate.cpp,
+	  src/engines/SoConvertAll.cpp, src/engines/SoElapsedTime.cpp,
+	  src/engines/SoEngine.cpp, src/engines/SoEngineOutput.cpp,
+	  src/engines/SoFieldConverter.cpp, src/engines/SoGate.cpp,
+	  src/engines/SoHeightMapToNormalMap.cpp,
+	  src/engines/SoNodeEngine.cpp, src/engines/SoOneShot.cpp,
+	  src/engines/SoOutputData.cpp, src/engines/SoSelectOne.cpp,
+	  src/engines/SoTimeCounter.cpp: Compilation fixes.
+	  -Fixed compiler warnings.
+	  -Using C++ style casts.
+	  -Using new style C++ includes.
+	  -Some const correctness.
+	  -Whitespace cleanup.
+	  -Some code quality improvements.
+	  -Added missing includes.
+	  -engines compiles without warnings on gcc 4.3
+
+2008-09-22 15:35  larsa
+
+	* [r12564] src/elements/SoCacheElement.cpp: Use safe_cast where
+	  loop depends on ending in NULL-pointer.
+
+2008-09-22 09:54  bfg
+
+	* [r12563] include/Inventor/elements/SoSubElement.h,
+	  src/elements/GL/SoGLCacheContextElement.cpp,
+	  src/elements/GL/SoGLClipPlaneElement.cpp,
+	  src/elements/GL/SoGLColorIndexElement.cpp,
+	  src/elements/GL/SoGLCoordinateElement.cpp,
+	  src/elements/GL/SoGLDepthBufferElement.cpp,
+	  src/elements/GL/SoGLDisplayList.cpp,
+	  src/elements/GL/SoGLDrawStyleElement.cpp,
+	  src/elements/GL/SoGLEnvironmentElement.cpp,
+	  src/elements/GL/SoGLLazyElement.cpp,
+	  src/elements/GL/SoGLLightIdElement.cpp,
+	  src/elements/GL/SoGLLinePatternElement.cpp,
+	  src/elements/GL/SoGLLineWidthElement.cpp,
+	  src/elements/GL/SoGLModelMatrixElement.cpp,
+	  src/elements/GL/SoGLMultiTextureCoordinateElement.cpp,
+	  src/elements/GL/SoGLMultiTextureEnabledElement.cpp,
+	  src/elements/GL/SoGLMultiTextureImageElement.cpp,
+	  src/elements/GL/SoGLMultiTextureMatrixElement.cpp,
+	  src/elements/GL/SoGLNormalElement.cpp,
+	  src/elements/GL/SoGLPointSizeElement.cpp,
+	  src/elements/GL/SoGLPolygonOffsetElement.cpp,
+	  src/elements/GL/SoGLProjectionMatrixElement.cpp,
+	  src/elements/GL/SoGLShapeHintsElement.cpp,
+	  src/elements/GL/SoGLTexture3EnabledElement.cpp,
+	  src/elements/GL/SoGLTextureCoordinateElement.cpp,
+	  src/elements/GL/SoGLTextureEnabledElement.cpp,
+	  src/elements/GL/SoGLTextureImageElement.cpp,
+	  src/elements/GL/SoGLUpdateAreaElement.cpp,
+	  src/elements/GL/SoGLVBOElement.cpp,
+	  src/elements/GL/SoGLVertexAttributeElement.cpp,
+	  src/elements/GL/SoGLViewingMatrixElement.cpp,
+	  src/elements/GL/SoGLViewportRegionElement.cpp,
+	  src/elements/GL/SoResetMatrixElement.cpp,
+	  src/elements/GL/SoResetMatrixElement.h,
+	  src/elements/SoAccumulatedElement.cpp,
+	  src/elements/SoAmbientColorElement.cpp,
+	  src/elements/SoAnnoText3CharOrientElement.cpp,
+	  src/elements/SoAnnoText3FontSizeHintElement.cpp,
+	  src/elements/SoAnnoText3RenderPrintElement.cpp,
+	  src/elements/SoBBoxModelMatrixElement.cpp,
+	  src/elements/SoBumpMapCoordinateElement.cpp,
+	  src/elements/SoBumpMapElement.cpp,
+	  src/elements/SoBumpMapMatrixElement.cpp,
+	  src/elements/SoCacheElement.cpp,
+	  src/elements/SoCacheHintElement.cpp,
+	  src/elements/SoClipPlaneElement.cpp,
+	  src/elements/SoComplexityElement.cpp,
+	  src/elements/SoComplexityTypeElement.cpp,
+	  src/elements/SoCoordinateElement.cpp,
+	  src/elements/SoCreaseAngleElement.cpp,
+	  src/elements/SoCullElement.cpp,
+	  src/elements/SoDecimationPercentageElement.cpp,
+	  src/elements/SoDecimationTypeElement.cpp,
+	  src/elements/SoDepthBufferElement.cpp,
+	  src/elements/SoDiffuseColorElement.cpp,
+	  src/elements/SoDrawStyleElement.cpp, src/elements/SoElement.cpp,
+	  src/elements/SoEmissiveColorElement.cpp,
+	  src/elements/SoEnvironmentElement.cpp,
+	  src/elements/SoFloatElement.cpp,
+	  src/elements/SoFocalDistanceElement.cpp,
+	  src/elements/SoFontNameElement.cpp,
+	  src/elements/SoFontSizeElement.cpp,
+	  src/elements/SoInt32Element.cpp, src/elements/SoLazyElement.cpp,
+	  src/elements/SoLightAttenuationElement.cpp,
+	  src/elements/SoLightElement.cpp,
+	  src/elements/SoLightModelElement.cpp,
+	  src/elements/SoLinePatternElement.cpp,
+	  src/elements/SoLineWidthElement.cpp,
+	  src/elements/SoListenerDopplerElement.cpp,
+	  src/elements/SoListenerGainElement.cpp,
+	  src/elements/SoListenerOrientationElement.cpp,
+	  src/elements/SoListenerPositionElement.cpp,
+	  src/elements/SoLocalBBoxMatrixElement.cpp,
+	  src/elements/SoMaterialBindingElement.cpp,
+	  src/elements/SoModelMatrixElement.cpp,
+	  src/elements/SoMultiTextureCoordinateElement.cpp,
+	  src/elements/SoMultiTextureEnabledElement.cpp,
+	  src/elements/SoMultiTextureImageElement.cpp,
+	  src/elements/SoMultiTextureMatrixElement.cpp,
+	  src/elements/SoNormalBindingElement.cpp,
+	  src/elements/SoNormalElement.cpp,
+	  src/elements/SoOverrideElement.cpp,
+	  src/elements/SoPickRayElement.cpp,
+	  src/elements/SoPickStyleElement.cpp,
+	  src/elements/SoPointSizeElement.cpp,
+	  src/elements/SoPolygonOffsetElement.cpp,
+	  src/elements/SoProfileCoordinateElement.cpp,
+	  src/elements/SoProfileElement.cpp,
+	  src/elements/SoProjectionMatrixElement.cpp,
+	  src/elements/SoReplacedElement.cpp,
+	  src/elements/SoShapeHintsElement.cpp,
+	  src/elements/SoShapeStyleElement.cpp,
+	  src/elements/SoShininessElement.cpp,
+	  src/elements/SoSoundElement.cpp,
+	  src/elements/SoSpecularColorElement.cpp,
+	  src/elements/SoSwitchElement.cpp,
+	  src/elements/SoTextOutlineEnabledElement.cpp,
+	  src/elements/SoTexture3EnabledElement.cpp,
+	  src/elements/SoTextureCombineElement.cpp,
+	  src/elements/SoTextureCoordinateBindingElement.cpp,
+	  src/elements/SoTextureCoordinateElement.cpp,
+	  src/elements/SoTextureEnabledElement.cpp,
+	  src/elements/SoTextureImageElement.cpp,
+	  src/elements/SoTextureMatrixElement.cpp,
+	  src/elements/SoTextureOverrideElement.cpp,
+	  src/elements/SoTextureQualityElement.cpp,
+	  src/elements/SoTextureScalePolicyElement.cpp,
+	  src/elements/SoTextureScaleQualityElement.cpp,
+	  src/elements/SoTextureUnitElement.cpp,
+	  src/elements/SoTransparencyElement.cpp,
+	  src/elements/SoUnitsElement.cpp,
+	  src/elements/SoVertexAttributeBindingElement.cpp,
+	  src/elements/SoVertexAttributeElement.cpp,
+	  src/elements/SoViewVolumeElement.cpp,
+	  src/elements/SoViewingMatrixElement.cpp,
+	  src/elements/SoViewportRegionElement.cpp,
+	  src/elements/SoWindowElement.cpp: Compilation fixes.
+	  -Fixed compiler warnings.
+	  -Using C++ style casts.
+	  -Using new style C++ includes.
+	  -Some const correctness.
+	  -Whitespace cleanup.
+	  -elements compiles without warnings on gcc 4.3
+
+2008-09-22 09:45  bfg
+
+	* [r12562] src/SbBasicP.h: Support more types for coin_assert_cast
+	  and coin_safe_cast.
+
+2008-09-22 09:16  bfg
+
+	* [r12561] src/coindefs.h,
+	  src/elements/GL/SoGLTextureCoordinateElement.cpp,
+	  src/elements/SoMultiTextureEnabledElement.cpp: Prevent not fixing
+	  certain version dependent fixmes in next upgrade
+	  cycle.
+
+2008-09-22 08:53  bfg
+
+	* [r12559] src/tidbits.cpp: Const correctness.
+
+2008-09-13 17:11  larsa
+
+	* [r12556] ChangeLog: Added running ChangeLog from-revision
+	  property
+
+2008-09-13 17:10  larsa
+
+	* [r12555] docs/RELEASE.txt: tweaks
+
+2008-09-12 14:18  frodein
+
+	* [r12553] docs/coin.doxygen.in: Generate doc for SoEventManager,
+	  and don't generate for ScXML* classes that's no longer public.
+
+2008-09-12 11:46  larsa
+
+	* [r12552] configure, configure.ac: Not the development version any
+	  more.
+
+2008-09-12 07:58  pederb
+
+	* [r12549] src/glue/gl.cpp: Potential fix for remote rendering.
+
+2008-09-11 16:44  larsa
+
+	* [r12547] build/misc/create-directories.bat: typo fix
+
+2008-09-11 14:23  larsa
+
+	* [r12545] NEWS, configure, configure.ac: Advance version number.
+
+2008-09-11 14:19  larsa
+
+	* [r12543] ChangeLog, docs/ChangeLog.v3.0.0: ChangeLog sync
+

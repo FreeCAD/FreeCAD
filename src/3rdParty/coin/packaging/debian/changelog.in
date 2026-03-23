@@ -1,0 +1,9 @@
+coin (@VERSION@-1) unstable; urgency=low
+
+  * Initial Debian packaging.
+
+ -- Lars J. Aas <larsa@coin3d.org>  @RFC822_DATE@
+
+Local variables:
+mode: debian-changelog
+End:

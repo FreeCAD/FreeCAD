@@ -1,0 +1,14 @@
+#VRML V1.0 ascii
+
+# Check loading an SoWWWInline node.
+#
+# 20030509 kintel
+
+Separator {
+   # (ROW 0)
+   Separator {
+      WWWInline {
+	 name "includefile.wrl"
+      }
+   }
+}

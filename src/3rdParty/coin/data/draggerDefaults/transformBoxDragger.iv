@@ -1,0 +1,148 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+
+DEF TRANSFORMBOX_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF TRANSFORMBOX_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF TRANSFORMBOX_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+
+
+### Geometry definitions for scale operations ################################
+
+# Geometry for the markers in the corners of the box.
+
+DEF TRANSFORMBOX_SOLIDMARKER Cube { width 0.1  height 0.1  depth 0.1 }
+
+
+# Define the 8 corner markers. Put them at the corner points of the
+# box surrounding the geometry + 10% "air".
+
+DEF TRANSFORMBOX_SCALEDRAGPOINTS Group {
+   Separator {
+      Translation { translation 1.1 1.1 1.1 }
+      USE TRANSFORMBOX_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation 1.1 1.1 -1.1 }
+      USE TRANSFORMBOX_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation 1.1 -1.1 1.1 }
+      USE TRANSFORMBOX_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation 1.1 -1.1 -1.1 }
+      USE TRANSFORMBOX_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation -1.1 1.1 1.1 }
+      USE TRANSFORMBOX_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation -1.1 1.1 -1.1 }
+      USE TRANSFORMBOX_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation -1.1 -1.1 1.1 }
+      USE TRANSFORMBOX_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation -1.1 -1.1 -1.1 }
+      USE TRANSFORMBOX_SOLIDMARKER
+   }
+}
+
+DEF transformBoxScalerScaler Separator {
+   USE TRANSFORMBOX_INACTIVE_MATERIAL
+   USE TRANSFORMBOX_SCALEDRAGPOINTS
+}
+
+DEF transformBoxScalerScalerActive Separator {
+   USE TRANSFORMBOX_ACTIVE_MATERIAL
+   USE TRANSFORMBOX_SCALEDRAGPOINTS
+}
+
+DEF transformBoxScalerFeedback Separator { }
+DEF transformBoxScalerFeedbackActive Separator { }
+
+
+### Geometry definitions for rotation operations #############################
+
+DEF TRANSFORMBOX_ROTATION_MARKER Cube { width 0.04  height 2.2  depth 0.04 }
+
+DEF TRANSFORMBOX_ROTATE_SIDE Group {
+   Separator {
+      Translation { translation 1.1 0 1.1 }
+      USE TRANSFORMBOX_ROTATION_MARKER
+   }
+   Separator {
+      Translation { translation 1.1 0 -1.1 }
+      USE TRANSFORMBOX_ROTATION_MARKER
+   }
+   Separator {
+      Translation { translation -1.1 0 1.1 }
+      USE TRANSFORMBOX_ROTATION_MARKER
+   }
+   Separator {
+      Translation { translation -1.1 0 -1.1 }
+      USE TRANSFORMBOX_ROTATION_MARKER
+   }
+}
+
+DEF transformBoxRotatorRotator Separator {
+   USE TRANSFORMBOX_INACTIVE_MATERIAL
+   USE TRANSFORMBOX_ROTATE_SIDE 
+}
+DEF transformBoxRotatorRotatorActive Separator {
+   USE TRANSFORMBOX_ACTIVE_MATERIAL
+   USE TRANSFORMBOX_ROTATE_SIDE 
+}
+
+DEF transformBoxRotatorFeedback Separator { }
+
+DEF transformBoxRotatorFeedbackActive Separator {
+   USE TRANSFORMBOX_FEEDBACK_MATERIAL
+   Coordinate3 { point [ 0 1.2 0, 0 -1.2 0 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+}
+
+
+### Geometry definitions for translation operations ##########################
+
+DEF TRANSFORMBOX_TRANSLATIONSIDE Separator {
+   DrawStyle { style INVISIBLE }
+   Coordinate3 { point [ 1.1 1.1 1.1, -1.1 1.1 1.1, -1.1 -1.1 1.1, 1.1 -1.1 1.1 ] }
+   IndexedFaceSet { coordIndex [ 0, 1, 2, 3, -1 ] }
+}
+
+DEF transformBoxTranslatorTranslator Separator {
+   USE TRANSFORMBOX_TRANSLATIONSIDE
+}
+
+DEF transformBoxTranslatorTranslatorActive Separator {
+   USE TRANSFORMBOX_TRANSLATIONSIDE
+}
+
+DEF transformBoxTranslatorXAxisFeedback Separator {
+   DEF TRANSFORMBOX_FEEDBACK_AXIS Group {
+      USE TRANSFORMBOX_FEEDBACK_MATERIAL
+      Coordinate3 { point [ 0.5 0 1.1, -0.5 0 1.1 ] }
+      IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+      Separator {
+         Rotation { rotation 0 0 1  1.57 }
+         DEF TRANSFORMBOX_FEEDBACK_MARKER Group {
+            Translation { translation 0 0.5 1.1 }
+            Cone { bottomRadius 0.04  height 0.08 }
+         }
+      }
+      Separator {
+         Rotation { rotation 0 0 1  -1.57 }
+         USE TRANSFORMBOX_FEEDBACK_MARKER
+      }
+   }
+}
+
+DEF transformBoxTranslatorYAxisFeedback Separator {
+   Rotation { rotation 0 0 1  -1.57 }
+   USE TRANSFORMBOX_FEEDBACK_AXIS
+}

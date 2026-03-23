@@ -1,0 +1,185 @@
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
+/* This file should only be included from condvar.c */
+
+#include "glue/win32api.h"
+
+#define EVENT_SIGNAL 0
+#define EVENT_BROADCAST 1
+
+/*
+ * This implementation is based on the SetEvent (3.2) solution described at
+ * http://www.cs.wustl.edu/~schmidt/win32-cv-1.html.
+ */
+
+static int
+internal_condvar_struct_init(cc_condvar * condvar_struct)
+{
+  /* auto-reset, initially is non-signaled */
+  condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] =
+    CreateEvent(NULL, FALSE, FALSE, NULL);
+  if (condvar_struct->w32thread.eventhandle[EVENT_SIGNAL] == NULL) {
+    if (COIN_DEBUG) {
+      cc_win32_print_error("internal_condvar_struct_init",
+                           "CreateEvent(NULL,FALSE,FALSE,NULL)",
+                           GetLastError());
+    }
+    return CC_ERROR;
+  }
+  /* auto-reset, initially is non-signaled */
+  condvar_struct->w32thread.eventhandle[EVENT_BROADCAST] =
+    CreateEvent(NULL, TRUE, FALSE, NULL);
+  if (condvar_struct->w32thread.eventhandle[EVENT_BROADCAST] == NULL) {
+    if (COIN_DEBUG) {
+      cc_win32_print_error("internal_condvar_struct_init",
+                           "CreateEvent(NULL,TRUE,FALSE,NULL)",
+                           GetLastError());
+    }
+    return CC_ERROR;
+  }
+  InitializeCriticalSection(&condvar_struct->w32thread.waiters_count_lock);
+  condvar_struct->w32thread.waiters_count = 0;
+  return CC_OK;
+}
+
+static int
+internal_condvar_struct_clean(cc_condvar * condvar_struct)
+{
+  BOOL status;
+  int ret = CC_OK;
+  status = CloseHandle(condvar_struct->w32thread.eventhandle[EVENT_SIGNAL]);
+  if (status == FALSE) {
+    if (COIN_DEBUG) {
+      cc_win32_print_error("internal_condvar_struct_clean",
+                           "CloseHandle()", GetLastError());
+    }
+    ret = CC_ERROR;
+  }
+  status = CloseHandle(condvar_struct->w32thread.eventhandle[EVENT_BROADCAST]);
+  if (status == FALSE) {
+    if (COIN_DEBUG) {
+      cc_win32_print_error("internal_condvar_struct_clean",
+                           "CloseHandle()", GetLastError());
+    }
+    ret = CC_ERROR;
+  }
+  DeleteCriticalSection(&condvar_struct->w32thread.waiters_count_lock);
+  return ret;
+}
+
+static int
+internal_condvar_wait_common(cc_condvar * condvar, cc_mutex * mutex, DWORD period)
+{
+  DWORD result;
+  int last_waiter;
+
+  EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
+  condvar->w32thread.waiters_count++;
+  LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
+
+  /* It's ok to release <mutex> here since Win32 manual-reset events
+   * maintain state when used with <SetEvent>.  This avoids the "lost
+   * wakeup" bug... */
+  cc_mutex_unlock(mutex);
+
+  result = WaitForMultipleObjects(2, condvar->w32thread.eventhandle, FALSE, period);
+
+  EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
+  condvar->w32thread.waiters_count--;
+  last_waiter =
+    result == WAIT_OBJECT_0 + EVENT_BROADCAST &&
+    condvar->w32thread.waiters_count == 0;
+  LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
+  /* Some thread called wake_all */
+  if (last_waiter) {
+    /* We're the last waiter to be notified or to stop waiting, so
+     * reset the manual event. */
+    ResetEvent(condvar->w32thread.eventhandle[EVENT_BROADCAST]);
+  }
+
+  /* relock the mutex before returning */
+  cc_mutex_lock(mutex);
+
+  if (result == WAIT_FAILED) {
+    if (COIN_DEBUG) {
+      cc_win32_print_error("internal_condvar_wait_common",
+                           "WaitForMultipleObjects()", GetLastError());
+    }
+    return CC_ERROR;
+  }
+
+  return result == WAIT_TIMEOUT ? CC_TIMEOUT : CC_OK;
+}
+
+static int
+internal_condvar_wait(cc_condvar * condvar, cc_mutex * mutex)
+{
+  return internal_condvar_wait_common(condvar, mutex, INFINITE);
+}
+
+static int
+internal_condvar_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
+{
+  return internal_condvar_wait_common(condvar, mutex, (DWORD)floor(period*1000.0f));
+}
+
+static int
+internal_condvar_wake_one(cc_condvar * condvar)
+{
+  int have_waiters;
+  EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
+  have_waiters = condvar->w32thread.waiters_count > 0;
+  LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
+
+  if (have_waiters) {
+    SetEvent(condvar->w32thread.eventhandle[EVENT_SIGNAL]);
+  }
+  return CC_OK;
+}
+
+static int
+internal_condvar_wake_all(cc_condvar * condvar)
+{
+  int have_waiters;
+  EnterCriticalSection(&condvar->w32thread.waiters_count_lock);
+  have_waiters = condvar->w32thread.waiters_count > 0;
+  LeaveCriticalSection(&condvar->w32thread.waiters_count_lock);
+
+  if (have_waiters) {
+    SetEvent(condvar->w32thread.eventhandle[EVENT_BROADCAST]);
+  }
+  return CC_OK;
+}
+
+#undef EVENT_SIGNAL
+#undef EVENT_BROADCAST

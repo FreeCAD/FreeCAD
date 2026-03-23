@@ -1,0 +1,17 @@
+gpp
+    - rudimentary pre-processor for multi-version doc-files.
+
+templant
+    - C++ source modifying tool.  in-file macro expansion through templates.
+      inline function management for outlining during development, inlining
+      afterwards.
+
+metadon
+    - Meta documentation for Coin development (HTML formatted).
+
+coin.el
+    - Emacs Lisp functions to aid misc operations on the Coin code
+
+ChangeLog.sh
+    - automatically generate ChangeLog entries from cvs commit
+      log-messages

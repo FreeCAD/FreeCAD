@@ -1,0 +1,852 @@
+#Inventor V2.1 ascii
+
+Group {
+ Separator {
+  DirectionalLight {
+    direction -1 -1 0.5
+  }
+  DEF camera PerspectiveCamera {
+    position 37.6813 -29.2411 26.4421
+    orientation 0.352193 0.189524 0.126368 0.907784
+  }
+  SwitchboardOperator {
+    enable [ FALSE ]
+    key [ SPACE ]
+    behavior [ HOLD ]
+    RotationXYZ {
+      axis X
+      angle 0.005
+    }
+  }
+  SwitchboardOperator {
+    enable [ FALSE ]
+    key [ RETURN ]
+    behavior [ HOLD ]
+    RotationXYZ {
+      axis Y
+      angle 0.002
+    }
+  }
+  Separator {
+    Material { diffuseColor 0.6 0.6 0.6 }
+    Translation { translation 17.5 -5 -1 }
+    Scale { scaleFactor 20 8 1 }
+    Cube {}
+  }
+  Separator {
+    Group {
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ GRAVE UNDEFINED GRAVE ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # GRAVE
+          DEF NumericLabelTransform Group {
+            Translation { translation -0.7 -0.7 1 }
+            Scale { scaleFactor 0.1 0.1 0.1 }
+            BaseColor { rgb 0 0 0 }
+            PolygonOffset {
+              factor -1
+              on TRUE
+            }
+          }
+          AsciiText { string "`" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_1 UNDEFINED NUMBER_1 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 1
+          USE NumericLabelTransform
+          AsciiText { string "1" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_2 UNDEFINED NUMBER_2 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 2
+          USE NumericLabelTransform
+          AsciiText { string "2" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_3 UNDEFINED NUMBER_3 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 3
+          USE NumericLabelTransform
+          AsciiText { string "3" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_4 UNDEFINED NUMBER_4 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 4
+          USE NumericLabelTransform
+          AsciiText { string "4" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_5 UNDEFINED NUMBER_5 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 5
+          USE NumericLabelTransform
+          AsciiText { string "5" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_6 UNDEFINED NUMBER_6 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 6
+          USE NumericLabelTransform
+          AsciiText { string "6" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_7 UNDEFINED NUMBER_7 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 7
+          USE NumericLabelTransform
+          AsciiText { string "7" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_8 UNDEFINED NUMBER_8 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 8
+          USE NumericLabelTransform
+          AsciiText { string "8" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_9 UNDEFINED NUMBER_9 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 9
+          USE NumericLabelTransform
+          AsciiText { string "9" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ NUMBER_0 UNDEFINED NUMBER_0 ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # 0
+          USE NumericLabelTransform
+          AsciiText { string "0" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ MINUS UNDEFINED MINUS ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # -
+          USE NumericLabelTransform
+          AsciiText { string "-" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ EQUAL UNDEFINED EQUAL ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # =
+          USE NumericLabelTransform
+          AsciiText { string "=" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 3.5 0 0 }
+      Scale { scaleFactor 2 1 1 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ BACKSPACE UNDEFINED BACKSPACE ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # BACKSPACE
+          USE NumericLabelTransform
+          AsciiText { string "<-" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+    }
+  }
+  Translation { translation 0 -2.5 0 }
+  Separator {
+    Group {
+      Translation { translation 0.5 0 0 }
+      Scale { scaleFactor 1.5 1 1 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ TAB UNDEFINED TAB ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # TAB
+          DEF LabelTransform Group {
+            Translation { translation -0.7 -0.1 1 }
+            Scale { scaleFactor 0.1 0.1 0.1 }
+            BaseColor { rgb 0 0 0 }
+            PolygonOffset {
+              factor -1
+              on TRUE
+            }
+          }
+          AsciiText { string "->|" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Scale { scaleFactor 0.66 1 1 }
+      Translation { translation 3.0 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ Q UNDEFINED Q ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # Q
+          USE LabelTransform
+          AsciiText { string "Q" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ W UNDEFINED W ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # W
+          USE LabelTransform
+          AsciiText { string "W" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ E UNDEFINED E ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # E
+          USE LabelTransform
+          AsciiText { string "E" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ R UNDEFINED R ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # R
+          USE LabelTransform
+          AsciiText { string "R" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ T UNDEFINED T ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # T
+          USE LabelTransform
+          AsciiText { string "T" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ Y UNDEFINED Y ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # Y
+          USE LabelTransform
+          AsciiText { string "Y" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ U UNDEFINED U ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # U
+          USE LabelTransform
+          AsciiText { string "U" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ I UNDEFINED I ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # I
+          USE LabelTransform
+          AsciiText { string "I" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ O UNDEFINED O ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # O
+          USE LabelTransform
+          AsciiText { string "O" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ P UNDEFINED P ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # P
+          USE LabelTransform
+          AsciiText { string "P" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ BRACKETLEFT UNDEFINED BRACKETLEFT ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # BRACKETLEFT
+          USE NumericLabelTransform
+          AsciiText { string "[" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ BRACKETRIGHT UNDEFINED BRACKETRIGHT ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # BRACKETRIGHT
+          USE NumericLabelTransform
+          AsciiText { string "]" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 3.12 0 0 }
+      Scale { scaleFactor 1.66 1 1 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ RETURN UNDEFINED RETURN ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Cube {} # RETURN
+        Translation { translation 0 0 0.5 }
+      }
+    }
+  }
+  Translation { translation 0 -2.5 0 }
+  Separator {
+    Group {
+      Translation { translation 1 0 0 }
+      Scale { scaleFactor 2 1 1 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ CAPS_LOCK UNDEFINED CAPS_LOCK ]
+        behavior [ HOLD NONE HOLD ] # TOGGLE?
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # CAPS_LOCK
+          USE LabelTransform
+          AsciiText { string "" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Scale { scaleFactor 0.5 1 1 }
+      Translation { translation 3.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ A UNDEFINED A ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # A
+          USE LabelTransform
+          AsciiText { string "A" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ S UNDEFINED S ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # S
+          USE LabelTransform
+          AsciiText { string "S" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ D UNDEFINED D ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # D
+          USE LabelTransform
+          AsciiText { string "D" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ F UNDEFINED F ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # F
+          USE LabelTransform
+          AsciiText { string "F" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ G UNDEFINED G ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # G
+          USE LabelTransform
+          AsciiText { string "G" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ H UNDEFINED H ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # H
+          USE LabelTransform
+          AsciiText { string "H" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ J UNDEFINED J ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # J
+          USE LabelTransform
+          AsciiText { string "J" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ K UNDEFINED K ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # K
+          USE LabelTransform
+          AsciiText { string "K" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ L UNDEFINED L ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # L
+          USE LabelTransform
+          AsciiText { string "L" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ SEMICOLON UNDEFINED SEMICOLON ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # SEMICOLON
+          USE NumericLabelTransform
+          AsciiText { string ";" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ APOSTROPHE UNDEFINED APOSTROPHE ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # APOSTROPHE
+          USE NumericLabelTransform
+          AsciiText { string "'" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ BACKSLASH UNDEFINED BACKSLASH ]
+        behavior [ TOGGLE NONE TOGGLE ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # BACKSLASH
+          Translation { translation 0.5 0 0 }
+          USE NumericLabelTransform
+          Scale { scaleFactor -1 1 1 }
+          AsciiText { string "/" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0.5 0 }
+      Scale { scaleFactor 0.96 1.5 1 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ RETURN UNDEFINED RETURN ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # RETURN
+          USE LabelTransform
+          AsciiText { string "<-" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+    }
+  }
+  Translation { translation 0 -2.5 0 }
+  Separator {
+    Group {
+      Translation { translation 1.5 0 0 }
+      Scale { scaleFactor 2.5 1 1 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ LEFT_SHIFT UNDEFINED LEFT_SHIFT ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Cube {} # LEFT_SHIFT
+        Translation { translation 0 0 0.5 }
+      }
+      Scale { scaleFactor 0.4 1 1 }
+      Translation { translation 4 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ Z UNDEFINED Z ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # Z
+          USE LabelTransform
+          AsciiText { string "Z" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ X UNDEFINED X ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # X
+          USE LabelTransform
+          AsciiText { string "X" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ C UNDEFINED C ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # C
+          USE LabelTransform
+          AsciiText { string "C" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ V UNDEFINED V ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # V
+          USE LabelTransform
+          AsciiText { string "V" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ B UNDEFINED B ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # B
+          USE LabelTransform
+          AsciiText { string "B" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ N UNDEFINED N ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # N
+          USE LabelTransform
+          AsciiText { string "N" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ M UNDEFINED M ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # M
+          USE LabelTransform
+          AsciiText { string "M" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ COMMA UNDEFINED COMMA ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # COMMA
+          USE NumericLabelTransform
+          AsciiText { string "," }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ PERIOD UNDEFINED PERIOD ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # PERIOD
+          USE NumericLabelTransform
+          AsciiText { string "." }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 2.5 0 0 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ SLASH UNDEFINED SLASH ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Separator {
+          Cube {} # SLASH
+          USE NumericLabelTransform
+          AsciiText { string "/" }
+        }
+        Translation { translation 0 0 0.5 }
+      }
+      Translation { translation 4.5 0 0 }
+      Scale { scaleFactor 3 1 1 }
+      SwitchboardOperator {
+        enable [ FALSE TRUE FALSE ]
+        key [ LEFT_SHIFT UNDEFINED LEFT_SHIFT ]
+        behavior [ HOLD NONE HOLD ]
+        Translation { translation 0 0 -0.5 }
+        Cube {} # RIGHT_SHIFT
+        Translation { translation 0 0 0.5 }
+      }
+    }
+  }
+  Translation { translation 0 -2.5 0 }
+  Separator {
+    Group {
+      Separator {
+        Translation { translation 1 0 0 }
+        Scale { scaleFactor 2 1 1 }
+        SwitchboardOperator {
+          enable [ FALSE ]
+          key [ LEFT_CONTROL ]
+          behavior [ HOLD ]
+          Translation { translation 0 0 -0.5 }
+        }
+        Cube {} # CONTROL
+      }
+      Separator {
+        Translation { translation 6.75 0 0 }
+        Scale { scaleFactor 2 1 1 }
+        SwitchboardOperator {
+          enable [ FALSE ]
+          key [ LEFT_ALT ]
+          behavior [ HOLD ]
+          Translation { translation 0 0 -0.5 }
+        }
+        Cube {} # ALT
+      }
+      Separator {
+        Translation { translation 17.25 0 0 }
+        Scale { scaleFactor 8 1 1 }
+        SwitchboardOperator {
+          enable [ FALSE ]
+          key [ SPACE ]
+          behavior [ HOLD ]
+          Translation { translation 0 0 -0.5 }
+        }
+        Cube {} # SPACE
+      }
+      Separator {
+        Translation { translation 27.75 0 0 }
+        Scale { scaleFactor 2 1 1 }
+        SwitchboardOperator {
+          enable [ FALSE ]
+          key [ LEFT_ALT ]
+          behavior [ HOLD ]
+          Translation { translation 0 0 -0.5 }
+        }
+        Cube {} # alt
+      }
+      Separator {
+        Translation { translation 33.5 0 0 }
+        Scale { scaleFactor 2 1 1 }
+        SwitchboardOperator {
+          enable [ FALSE ]
+          key [ LEFT_CONTROL ]
+          behavior [ HOLD ]
+          Translation { translation 0 0 -0.5 }
+        }
+        Cube {} # ctrl
+      }
+    }
+  }
+ }
+ Separator {
+  DirectionalLight { direction 0.5 0.5 1 }
+  OrthographicCamera {}
+  Separator {
+    BaseColor { rgb 1 1 0 }
+    Translation { translation -1.2 -0.5 0 }
+    Scale { scaleFactor 0.006 0.006 0.006 }
+    AsciiText {
+      string [
+        "granted, it is wobbly"
+        "the keys are worn and sticky"
+        "but for a mere bubbly"
+        "you really can't be picky"
+        ""
+        "[ESC, then 'Q' to quit]"
+      ]
+    }
+  }
+ }
+}

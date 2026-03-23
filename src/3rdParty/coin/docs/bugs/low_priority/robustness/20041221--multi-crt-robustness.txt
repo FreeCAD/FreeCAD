@@ -1,0 +1,25 @@
+184 SbOctTree::findItems() functions not multi-CRT safe on Windows.
+
+    The SbList-use in the function signatures of these strongly
+    indicates that they can cause problems when used in a run-time
+    environment where the client code uses a different CRT than the
+    Coin DLL.
+
+    (By mixing allocation and deallocation of memory from different
+    CRT heaps, which causes hard-to-find memory corruption bugs.)
+
+    Probably best solved in a similar manner as has been done before
+    for a few other classes: duplicate these functions, but with a
+    safe signature, then deprecate the use of the original ones.
+
+    20041221 mortene.
+
+    UPDATE 20060210 mortene: I have an idea for a better
+    solution. Memory resources passed into functions with unsafe
+    signatures for environments with multiple C run-times could have a
+    check to see whether or not the memory actually originated from
+    the same run-time as the code working on it.
+
+    Haven't investigated closely, but from a cursory look, I believe
+    this should be possible with some of the more obscure Win32 API
+    calls.

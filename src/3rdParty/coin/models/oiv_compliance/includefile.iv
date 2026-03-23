@@ -1,0 +1,7 @@
+#Inventor V2.1 ascii
+
+# This file is just here to be included in other test files.
+#
+# 19990515 mortene
+BaseColor { rgb 1 1 0 }
+Sphere { }

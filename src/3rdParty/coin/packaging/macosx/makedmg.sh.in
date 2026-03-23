@@ -1,0 +1,75 @@
+#!/bin/sh
+#
+# Copyright (C) Kongsberg Oil & Gas Technologies, All rights reserved.
+#
+# This script (almost) automatically creates a dmg file for distribution
+# from a directory of source files.
+# 
+# Usage: makedmg.sh -v <volumename> -o <outname> -r <rootdir>
+#  -v   Volume name (e.g. -v Coin-2.1.0)
+#  -o   Output file name (e.g. -o Coin-2.1.0-no_inst.dmg)
+#  -r   Directory with contents of the DMG (e.g. path/to/noinst-dmg-root)
+#
+#
+# FIXME: Automatically set background image of folder (kintel 20040116)
+#
+# Authors:
+#   Marius Kintel <kintel@sim.no>
+#   Tom Fredrik Klaussen <bfg@sim.no>
+
+printUsage()
+{
+  echo "Usage: $0 -v <volumename> -o <outfile> -r <rootdir>"
+  echo
+  echo "  Example: $0 -v Coin-2.1.0 -o Coin-2.1.0-no_inst.dmg -r path/to/dmg-root"
+}
+
+while getopts 'v:o:r:' c
+do
+  case $c in
+    v) VOLNAME=$OPTARG;;
+    o) OUTNAME=$OPTARG;;
+    r) ROOT=$OPTARG;;
+  esac
+done
+
+if test -z "$VOLNAME" -o -z "$OUTNAME" -o -z "$ROOT"; then
+  printUsage
+  exit 1
+fi
+
+#FIXME: Put this into create-dmg
+# Hide files
+/Developer/Tools/SetFile -a V ${ROOT}/.VolumeIcon.icns
+/Developer/Tools/SetFile -a V ${ROOT}/.DS_Store
+/Developer/Tools/SetFile -a V ${ROOT}/Desktop\ DB
+/Developer/Tools/SetFile -a V ${ROOT}/Desktop\ DF
+/Developer/Tools/SetFile -a V ${ROOT}/dmg_bg.tiff
+
+left=80
+top=80
+xspacing=170
+yspacing=100
+iconsize=64
+
+ICONADJUSTMENT=
+
+x=0
+y=0
+for file in Coin.pkg CoinTools.pkg README.txt Inventor.framework
+do
+    if [ -e ${ROOT}/${file} ]
+    then
+        let offx=left+x*xspacing
+        let offy=top+y*yspacing
+        ICONADJUSTMENT="${ICONADJUSTMENT} --icon ${file} ${offx} ${offy}"
+        let y++
+        if [ ${y} -gt 2 ]
+        then
+            y=0
+            let x++
+        fi
+    fi
+done
+
+@top_srcdir@/packaging/macosx/create-dmg --volname ${VOLNAME} --background @top_srcdir@/packaging/macosx/noinst-dmg-files/dmg_bg.tiff  --icon-size ${iconsize} --window-size 340 370 ${ICONADJUSTMENT} --owner root:admin . $OUTNAME ${ROOT}

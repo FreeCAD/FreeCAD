@@ -1,0 +1,6 @@
+174 SoTrackerEvent missing
+
+    We're missing the SoTrackerEvent event class, and the accompanying
+    SbTrackerInfo class.
+
+    20041116 larsa.

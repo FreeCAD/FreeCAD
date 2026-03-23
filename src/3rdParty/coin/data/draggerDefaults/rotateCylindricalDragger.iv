@@ -1,0 +1,42 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+
+DEF ROTATECYLINDRICAL_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF ROTATECYLINDRICAL_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF ROTATECYLINDRICAL_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+
+# Cylinder geometry.
+
+DEF ROTATECYLINDRICAL_CYLINDER Group {
+   Scale { scaleFactor 1.6 1.1 1.6 } # surround volume completely
+   Complexity { value 0.4 }
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
+   Cylinder { parts SIDES }
+}
+
+
+DEF rotateCylindricalRotator Separator {
+   USE ROTATECYLINDRICAL_INACTIVE_MATERIAL
+   DrawStyle { style LINES  lineWidth 1 }
+   USE ROTATECYLINDRICAL_CYLINDER
+}
+
+DEF rotateCylindricalRotatorActive Separator {
+   USE ROTATECYLINDRICAL_ACTIVE_MATERIAL
+   DrawStyle { style LINES  lineWidth 2 }
+   USE ROTATECYLINDRICAL_CYLINDER
+}
+
+# Feedback line.
+
+DEF ROTATECYLINDRICAL_FEEDBACK_MARKER Separator {
+   USE ROTATECYLINDRICAL_FEEDBACK_MATERIAL
+   PickStyle { style UNPICKABLE }
+   DrawStyle { lineWidth 2 }
+   Coordinate3 { point [ 0 1.1 0, 0 -1.1 0 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+}
+
+DEF rotateCylindricalFeedback Separator { USE ROTATECYLINDRICAL_FEEDBACK_MARKER }
+DEF rotateCylindricalFeedbackActive Separator { USE ROTATECYLINDRICAL_FEEDBACK_MARKER }

@@ -1,0 +1,50 @@
+writeref.wrl 
+
+  Test that routes to Script node fields are exported correctly
+
+writeref-2.wrl
+
+  Test that routes to Script node eventIn fields are exported
+  correctly
+
+writeref-3.wrl
+
+  Test that more complicated routes involving Script node fields are exported
+  correctly
+
+writeref-4.wrl
+
+  Test that IS connections in PROTOs are exported correctly
+
+bug199-ok.wrl
+
+  Test some string boundary cases:
+  o \\ followed by a " (test if the last " correctly ignores the previous \)
+  o \" inside a string followed by MField delimiters
+  o String containing a \" followed by a literal newline (the newline
+    should _not_ end the string)
+
+bug199-ok.iv
+
+  Test some string boundary cases:
+  o String containing a single \"
+  o String containing a single literal \
+  o String containing two literal \ characters
+  o \" inside a string followed by MField delimiters
+
+bug077.iv
+
+  Test that engines having a field which is by default connected
+  to the global "realTime" field are correctly exported when used
+  in a field connection.
+
+bug029-1.iv
+
+  Test that we support integer values for enum field in SoUnknownNode
+  instances.
+
+bug029-2.iv
+
+  Test that we support and pass through unknown enum values in SoUnknownNode
+  instances.
+

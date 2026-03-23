@@ -1,0 +1,92 @@
+From: "Morten Eriksen" <mortene@sim.no>
+Subject: Coin 3.1.0 "Buffalo spawn" Released
+
+Coin 3.1.0 "Buffalo spawn"
+==========================
+
+Kongsberg SIM is proud to release version 3.1.0 of the Coin 3D
+graphics library.  Coin 3.1.0 is a minor release.  It keeps binary
+compatibility with the previous version of Coin (3.0.0), and it is
+with only minor exceptions upward source code compatible back to Coin
+1.0.
+
+Coin 3.1.0 does not add a lot of significant functionality over
+version 3.0.0, but minor additions were made to the API to make an
+increased minor version number a necessity. Most changes over the
+3.0.0 release are bug fixes, performance improvements, and various
+compatibility fixes versus Open Inventor.
+
+It should also be mentioned that the Coin v3 series will be the last
+set of releases of Coin to support the archaic Microsoft Visual C++
+6.0 compiler, which has become a big pain to keep supporting at this
+point, C++ languagewise.  Just a word of warning to VC++6.0 users out
+there.  This is the beginning of the end of the line.
+
+
+NEWS File Excerpt:
+------------------
+
+* new:
+  - shape node classes SoIndexedPointSet, SoIndexedMarkerSet
+  - made build configurations available for building without
+    manipulators, draggers, and nodekits, for slimmed down Coin
+    binaries
+  - support in SoRenderManager for superimpositions and multipass
+    antialiasing
+  - offscreen OpenGL contexts for Mac OS X now uses CGL, instead of
+    the deprecated QuickDraw API
+  - direct support for non-power-of-two textures if the OpenGL driver
+    has it
+  - SoOffscreenRenderer::getDC() available under MSWindows for fast
+    transfer from internal buffer to Win32 bitmaps / DCs
+* bugfixes:
+  - font rendering through FreeType library functional again
+  - more robust and more capable SoToVRML2Action
+  - more robust copying of VRML 2 scene graphs
+  - handle transparency in all texture units when multi-texturing
+  - SoNurbsCurve, picking on rational curves, and corrected for weighted
+    coordinates
+* optimizations:
+  - use a lot less mutex resources for common case scene graphs, by
+    using class-wide mutexes instead of per-instance mutexes for shape
+    nodes
+* other:
+  - increased adherence to modern C++ conventions and programming
+    practices
+  - various API documentation improvements
+
+...and more.
+
+See the NEWS file and the ChangeLog file if you want the really gory
+details.  See the file RELNOTES on semantic changes that might affect
+your Coin usage.
+
+
+Download Information:
+---------------------
+
+This message is posted before some of the listed binary downloads are
+available.  If you don't find what you are after, try again at a later
+time.
+
+ChangeLog:
+  http://svn.coin3d.org/repos/Coin/trunk/docs/ChangeLog.v3.1.0
+
+Source Code:
+  http://ftp.coin3d.org/coin/src/all/Coin-3.1.0.tar.gz
+  http://ftp.coin3d.org/coin/src/all/Coin-3.1.0.zip
+
+Precompiled for MS Windows:
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.1.0-bin-msvc6.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.1.0-bin-msvc7.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.1.0-bin-msvc8.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.1.0-bin-msvc9.zip
+    or look in
+  http://ftp.coin3d.org/coin/bin/win32/ ...
+
+Precompiled for Mac OS X:
+  http://ftp.coin3d.org/coin/bin/macosx/
+
+
+Have fun,
+  Morten

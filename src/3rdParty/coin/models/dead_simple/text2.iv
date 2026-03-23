@@ -1,0 +1,56 @@
+#Inventor V2.1 ascii
+
+Separator {
+   Cube { }
+
+   Font {
+      name "Arial"
+   }
+
+   Separator {
+      BaseColor { rgb 1 1 1 }
+      Translation { translation -1 -1 -1 }
+      Text2 { string "corner" }
+   }
+
+   Separator {
+      BaseColor { rgb 0 1 0 }
+      Translation { translation -1 -1 +1 }
+      Text2 { string "corner" }
+   }
+
+   Separator {
+      BaseColor { rgb 0 1 1 }
+      Translation { translation -1 +1 -1 }
+      Text2 { string "corner" }
+   }
+
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Translation { translation -1 +1 +1 }
+      Text2 { string "corner" }
+   }
+
+   Separator {
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +1 -1 -1 }
+      Text2 { string "corner" }
+   }
+
+   Separator {
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +1 -1 +1 }
+      Text2 { string "corner" }
+   }
+
+   Separator {
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +1 +1 -1 }
+      Text2 { string "corner" }
+   }
+
+   Separator {
+      Translation { translation +1 +1 +1 }
+      Text2 { string "corner" }
+   }
+}

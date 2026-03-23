@@ -1,0 +1,104 @@
+#!/usr/bin/perl
+############################################################################
+#
+#  gpp - general pre processor
+#
+#  This script is a pre-processor that can be used for parsing documents
+#  and get #ifdef/#ifndef/#else/#endif to decide how the output looks.
+#  Defines are set with the -D option.  The -nr option is for setting the
+#  name regular expression that is used to convert infile-names to outfile-
+#  names.  --help gives a short usage summary.
+#
+#  Hacked in perl by Lars J. Aas <larsa@sim.no>, 1998.
+#
+
+@options = ();
+@files = ();
+
+foreach $arg ( @ARGV ) {
+    if ( -f $arg ) {
+        push( @files, $arg );
+    } else {
+        push( @options, $arg ); # hopefully
+    }
+}
+
+# parse options
+
+%defines = ();
+$nameexp = "";
+
+foreach $opt ( @options ) {
+    if ( $opt =~ /^-D/ ) { # define
+        $define = substr( $opt, 2 );
+        $defines{$define} = 1;
+    } elsif ( $opt =~ /^-(h|-help)/ || $opt =~ /^--usage/ ) {
+        print "USAGE: gpp -nr<expr> -D<define> <files>\n";
+        exit 0;
+    } elsif ( $opt =~ /^-nr/ ) {
+        $nameexp = substr( $opt, 3 );
+    } else {
+        print STDERR "Error: unknown option \"", $opt,
+            "\" (or no such file).\n";
+        exit 0;
+    }
+}
+
+if ( $nameexp =~ /^$/ ) {
+    print STDERR "ERROR: no name-modifying regular expression.\n";
+    exit 0;
+}
+
+foreach $file ( @files ) {
+    $oldname = $file;
+    $newname = $file;
+    $string = '$newname =~ ' . $nameexp . ";";
+    eval $string;
+    print "old name: ", $oldname, "\nnew name: ", $newname, "\n";
+    if ( $oldname eq $newname ) {
+        print STDERR "ERROR: can't use same name for both input and output.\n";
+        exit 0;
+    }
+
+    @inlines = ();
+    @outlines = ();
+
+    open( INPUT, $oldname ) || die "open( ", $oldname, " ): $!\n"; 
+    @inlines = <INPUT>;
+    close( INPUT );
+
+    $copy = 1;
+    for ( $linenum = 0; $linenum < $#inlines; $linenum++ ) {
+        if ( $inlines[$linenum] =~ /^#/ ) {
+            $directive = $inlines[$linenum];
+            chop( $directive );
+            if ( $directive =~ /^#else/ ) {
+                $copy = ($copy + 1) % 2;
+            } elsif ( $directive =~ /^#endif/ ) {
+                $copy = 1;
+            } elsif ( $directive =~ /^#ifdef / ) {
+                $var = substr( $directive, 7 );
+                if ( $defines{$var} == 1 ) {
+                    $copy = 1;
+                } else {
+                    $copy = 0;
+                }
+            } elsif ( $directive =~ /^#ifndef / ) {
+                $var = substr( $directive, 8 );
+                if ( $defines{$var} == 1 ) {
+                    $copy = 0;
+                } else {
+                    $copy = 1;
+                }
+            }
+        } elsif ( $copy == 1 ) {
+            push( @outlines, $inlines[$linenum] );
+        }
+    }
+
+    open( OUTPUT, "> $newname" ) || die "open( > ", $newname, " ): $!\n";
+    print OUTPUT @outlines;
+    close( OUTPUT );
+    @outlines = ();
+}
+

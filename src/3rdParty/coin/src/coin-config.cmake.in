@@ -1,0 +1,129 @@
+cmake_minimum_required(VERSION 3.0...3.31)
+
+# Have a look at VTKConfig.cmake.in, especially regarding UseVTK.cmake
+# https://github.com/Kitware/VTK/blob/master/CMake/VTKConfig.cmake.in
+# https://github.com/Kitware/VTK/blob/master/CMake/UseVTK.cmake
+# Usage example:
+# https://github.com/LuaDist/cmake/blob/master/Modules/FindVTK.cmake
+# Bastiaan Veelo 2016.03.15
+
+set(COIN_VERSION @COIN_MAJOR_VERSION@.@COIN_MINOR_VERSION@.@COIN_MICRO_VERSION@)
+@PACKAGE_INIT@
+
+set(COIN_BUILD_MAC_FRAMEWORK @COIN_BUILD_MAC_FRAMEWORK@)
+if(NOT COIN_BUILD_MAC_FRAMEWORK)
+
+set_and_check(COINDIR "@PACKAGE_COINDIR@")
+set_and_check(Coin_INCLUDE_DIR "@PACKAGE_COIN_INCLUDE_DIR@")
+set_and_check(Coin_LIB_DIR "@PACKAGE_COIN_LIB_DIR@")
+
+# optional directory from documentation component
+if (EXISTS "@PACKAGE_COIN_DOC_DIR@/")
+  set(Coin_DOC_DIR     "@PACKAGE_COIN_DOC_DIR@")
+endif()
+
+set(COIN_NAME @CMAKE_PROJECT_NAME@)
+
+set(COIN_BUILD_SHARED_LIBS @COIN_BUILD_SHARED_LIBS@)
+if(WIN32)
+	if (COIN_BUILD_SHARED_LIBS)
+		SET(Coin_DEFINES -DCOIN_DLL)
+	else()
+		SET(Coin_DEFINES -DCOIN_NOT_DLL)
+	endif()
+endif()
+
+set(Coin_CONFIGURATION_TYPES @CMAKE_CONFIGURATION_TYPES@)
+set(Coin_BUILD_TYPE @CMAKE_BUILD_TYPE@)
+foreach(configuration IN LISTS Coin_CONFIGURATION_TYPES)
+	if(configuration STREQUAL "Debug")
+		set(Coin_LIBRARY_DEBUG ${COIN_NAME}@CMAKE_DEBUG_POSTFIX@)
+	else()
+		set(Coin_LIBRARY_RELEASE ${COIN_NAME}@CMAKE_RELEASE_POSTFIX@)
+	endif()
+endforeach()
+
+if(NOT Coin_CONFIGURATION_TYPES)
+	if(Coin_BUILD_TYPE STREQUAL "Debug")
+		set(Coin_LIBRARY_RELEASE ${COIN_NAME}@CMAKE_DEBUG_POSTFIX@)
+	else()
+		set(Coin_LIBRARY_RELEASE ${COIN_NAME}@CMAKE_RELEASE_POSTFIX@)
+	endif()
+endif()
+
+if(Coin_LIBRARY_RELEASE AND NOT Coin_LIBRARY_DEBUG)
+	set(Coin_LIBRARY_DEBUG   ${Coin_LIBRARY_RELEASE})
+	set(Coin_LIBRARY         ${Coin_LIBRARY_RELEASE})
+	set(Coin_LIBRARIES       ${Coin_LIBRARY_RELEASE})
+endif()
+
+if(Coin_LIBRARY_DEBUG AND NOT Coin_LIBRARY_RELEASE)
+	set(Coin_LIBRARY_RELEASE ${Coin_LIBRARY_DEBUG})
+	set(Coin_LIBRARY         ${Coin_LIBRARY_DEBUG})
+	set(Coin_LIBRARIES       ${Coin_LIBRARY_DEBUG})
+endif()
+
+if(Coin_LIBRARY_DEBUG AND Coin_LIBRARY_RELEASE)
+	if(CMAKE_CONFIGURATION_TYPES OR CMAKE_BUILD_TYPE)
+		# If the generator supports configuration types then set
+		# optimized and debug libraries, or if the CMAKE_BUILD_TYPE has a value
+		SET(Coin_LIBRARY optimized ${Coin_LIBRARY_RELEASE} debug ${Coin_LIBRARY_DEBUG})
+	else()
+		# If there are no configuration types and CMAKE_BUILD_TYPE has no value
+		# then just use the release libraries
+		SET(Coin_LIBRARY ${Coin_LIBRARY_RELEASE})
+	endif()
+	set(Coin_LIBRARIES optimized ${Coin_LIBRARY_RELEASE} debug ${Coin_LIBRARY_DEBUG})
+endif()
+
+set(Coin_LIBRARY ${Coin_LIBRARY} CACHE FILEPATH "The Coin library")
+mark_as_advanced(Coin_LIBRARY_RELEASE Coin_LIBRARY_DEBUG)
+
+endif()
+include(CMakeFindDependencyMacro)
+
+if(NOT COIN_BUILD_SHARED_LIBS)
+	set(_OPENGL_FOUND @OPENGL_FOUND@)
+	if(_OPENGL_FOUND)
+		find_dependency(OpenGL)
+	endif()
+	set(_Threads_FOUND @Threads_FOUND@)
+	if(_Threads_FOUND)
+		find_dependency(Threads)
+	endif()
+	set(_EXPAT_FOUND @EXPAT_FOUND@)
+	if(_EXPAT_FOUND)
+		find_dependency(EXPAT)
+	endif()
+	set(_superglu_FOUND @superglu_FOUND@)
+	if(_superglu_FOUND)
+		find_dependency(superglu)
+	endif()
+	set(_ZLIB_FOUND @ZLIB_FOUND@)
+	if(_ZLIB_FOUND)
+		find_dependency(ZLIB)
+	endif()
+	set(_BZip2_FOUND @BZip2_FOUND@)
+	if(_BZip2_FOUND)
+		find_dependency(BZip2)
+	endif()
+	set(_Freetype_FOUND @Freetype_FOUND@)
+	if(_Freetype_FOUND)
+		find_dependency(Freetype)
+	endif()
+endif()
+
+set(_simage_FOUND @simage_FOUND@)
+if(_simage_FOUND)
+	find_dependency(simage)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/@COIN_CONFIG_PACKAGE_BASENAME@-export.cmake")
+
+# export "coin-config --have-feature" equivalent info
+set(Coin_HAVE_3DS_IMPORT_CAPABILITIES @FEAT_HAVE_3DS@)
+set(Coin_HAVE_VRML97 @FEAT_HAVE_VRML97@)
+set(Coin_HAVE_SOUND @FEAT_HAVE_SOUND@)
+set(Coin_HAVE_SUPERGLU @FEAT_HAVE_SUPERGLU@)
+set(Coin_HAVE_THREADS @FEAT_HAVE_THREADS@)
+set(Coin_HAVE_SAFETHREAD @FEAT_HAVE_SAFETHREAD@)

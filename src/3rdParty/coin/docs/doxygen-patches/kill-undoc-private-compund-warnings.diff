@@ -1,0 +1,53 @@
+From: Morten Eriksen <mortene@sim.no>
+Subject: [PATCH] Kill warnings on un-documented private compunds
+To: doxygen-develop@lists.sourceforge.net
+Date: 13 Aug 2002 12:11:24 +0200
+Bcc: kristian@sim.no
+Organization: Systems in Motion
+
+Hi,
+
+I have another patch, this time for the following problem, reported a
+couple of weeks ago:
+
+> I have an annoying problem with Doxygen (tested with released
+> version 1.2.17). This declaration in a .h file:
+> 
+> ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] -----
+> 
+> class MyClass {
+> private:
+>   struct ShouldNotBeDocumented {
+>   };
+> };
+> 
+> ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] -----
+> 
+> ..will cause doxygen to emit the following warning:
+> 
+> <...>/private_struct.h:3: Warning: Compound MyClass::ShouldNotBeDocumented is not documented.
+> 
+> [...]
+> 
+> This seems like a bug to me, as the default value of EXTRACT_PRIVATE
+> is "NO"?
+
+Here is the patch (yet again done by my colleague Kristian Eide):
+
+----8<---- [snip] -------8<---- [snip] -------8<---- [snip] ---
+--- doxygen.cpp	Sun Jul 14 18:27:42 2002
++++ ../../doxygen-1.2.17/src/doxygen.cpp	Tue Aug 13 11:39:46 2002
+@@ -3255,7 +3255,8 @@
+         bName.right(2)!="::")
+     {
+       if (!root->name.isEmpty() && root->name[0]!='@' &&
+-          (guessSection(root->fileName)==Entry::HEADER_SEC || Config_getBool("EXTRACT_LOCAL_CLASSES"))
++          (guessSection(root->fileName)==Entry::HEADER_SEC || Config_getBool("EXTRACT_LOCAL_CLASSES") &&
++          (root->protection!=Private || Config_getBool("EXTRACT_PRIVATE")))
+          )
+         warn_undoc(
+                    root->fileName,root->startLine,
+----8<---- [snip] -------8<---- [snip] -------8<---- [snip] ---
+
+Best regards, 
+Morten

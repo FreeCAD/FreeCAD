@@ -1,0 +1,147 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="12cm" viewBox="40 0 1420 1380" style="background-color:white"
+     xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <title>Elements of the Coin3D framework</title>
+
+  <!-- Center text by default. -->
+  <style type="text/css">
+    <![CDATA[
+      text {
+        alignment-baseline: middle;
+        text-anchor: middle;
+        font-family: sans-serif;
+        font-size: 50px;
+        fill: white;
+      }
+      text.dark {
+        fill: black;
+      }
+      rect.heading {
+        fill: #7f00ff;
+      }
+      rect.coin {
+        fill: #ea5f0e;
+      }
+      rect.contents {
+        fill: #c5c7cc;
+      }
+      rect.element {
+        fill: #91949c;
+      }
+    ]]>
+  </style>
+
+  <rect class="heading" x="50" y="10" width="1400" height="100" />
+  <text x="750" y="60">
+    Desktop Application
+  </text>
+
+  <rect class="coin" x="50" y="140" width="106" height="1000" />
+  <rect x="53" y="143" width="1394" height="994" style="fill:none;stroke:#ea5f0e;stroke-width:6" />
+  <text x="103" y="640" transform="rotate(-90 103,640)">
+    Coin3D
+  </text>
+
+  <rect class="heading" x="170" y="160" width="620" height="100" />
+  <text x="480" y="210">
+    GUI
+  </text>
+  <rect class="contents" x="170" y="260" width="300" height="860" />
+  <text class="dark" x="320" y="330">
+    Qt-based:
+  </text>
+  <rect class="element" x="190" y="400" width="260" height="100" />
+  <text x="320" y="450">
+    Quarter
+  </text>
+  <rect class="contents" x="490" y="260" width="300" height="860" />
+  <text class="dark" x="630" y="330">
+    Legacy:
+  </text>
+  <rect class="element" x="510" y="400" width="260" height="100" />
+  <text x="640" y="450">
+    SoQt
+  </text>
+  <rect class="element" x="510" y="520" width="260" height="100" />
+  <text x="640" y="570">
+    SoGtk
+  </text>
+  <rect class="element" x="510" y="640" width="260" height="100" />
+  <text x="640" y="690">
+    SoWin
+  </text>
+  <rect class="element" x="510" y="760" width="260" height="100" />
+  <text x="640" y="810">
+    SoXt
+  </text>
+  <rect class="element" x="510" y="880" width="260" height="100" />
+  <text x="640" y="930">
+    Sc21
+  </text>
+
+  <rect class="heading" x="810" y="160" width="300" height="100" />
+  <text x="960" y="210">
+    Core
+  </text>
+  <rect class="contents" x="810" y="260" width="300" height="860" />
+  <rect class="element" x="830" y="400" width="260" height="100" />
+  <text x="960" y="450">
+    Coin
+  </text>
+  <text class="dark" x="960" y="930" style="font-size:37px">
+    Python binding:
+  </text>
+  <rect class="element" x="830" y="1000" width="260" height="100" />
+  <text x="960" y="1050">
+    Pivy
+  </text>
+
+  <rect class="heading" x="1130" y="160" width="300" height="100" />
+  <text x="1280" y="210">
+    Extensions
+  </text>
+  <rect class="contents" x="1130" y="260" width="300" height="860" />
+  <rect class="element" x="1150" y="280" width="260" height="100" />
+  <text x="1280" y="330">
+    simage
+  </text>
+  <rect class="element" x="1150" y="400" width="260" height="100" />
+  <text x="1280" y="450">
+    SIMVoleon
+  </text>
+  <rect class="element" x="1150" y="520" width="260" height="100" />
+  <text x="1280" y="570">
+    SuperGLU
+  </text>
+  <rect class="element" x="1150" y="640" width="260" height="100" />
+  <text x="1280" y="690">
+    dime
+  </text>
+  <rect class="element" x="1150" y="760" width="260" height="100" />
+  <text x="1280" y="810">
+    profit
+  </text>
+  <rect class="element" x="1150" y="880" width="260" height="100" />
+  <text x="1280" y="930" style="font-size:37px">
+    SmallChange
+  </text>
+  <rect class="element" x="1150" y="1000" width="260" height="100" />
+  <text x="1280" y="1050">
+    nutsnbolts
+  </text>
+
+  <rect class="heading" x="50" y="1170" width="1400" height="100" />
+  <text x="750" y="1220">
+    OpenGL
+  </text>
+
+  <text x="750" y="1320" style="fill:black;font-size:46">
+    * Backwards compatible with the Open Inventor API v2.1
+  </text>
+  <text x="1060" y="450" style="fill:white">*</text>
+  <text x="740" y="690" style="fill:white">*</text>
+  <text x="740" y="810" style="fill:white">*</text>
+
+</svg>

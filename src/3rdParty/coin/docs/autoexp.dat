@@ -1,0 +1,34 @@
+; Coin
+; ====
+;
+; This file contains useful Visual Studio debugger hints for displaying
+; more useful information in the tooltips while debugging with Coin types.
+; The below data must go into the "[AutoExpand]"-section in one of the
+; following files (depending on which version of Visual Studio you use):
+;
+; VC++ 6 => C:\Program Files\Microsoft Visual Studio\Common\MSDev98\Bin\autoexp.dat
+; VC++ 7 => C:\Program Files\Microsoft Visual Studio .NET 2003\Common7\Packages\Debugger\autoexp.dat
+; VC++ 8 => C:\Program Files\Microsoft Visual Studio 8\Common7\Packages\Debugger\autoexp.dat
+;
+; Revision 1
+
+SbBox2s=SbBox2s(min=(<min.vec[0],i>, <min.vec[1],i>), max=(<max.vec[0],i>, <max.vec[1],i>))
+SbBox2f=SbBox2f(min=(<min.vec[0],g>, <min.vec[1],g>), max=(<max.vec[0],g>, <max.vec[1],g>))
+SbBox2d=SbBox2d(min=(<min.vec[0],g>, <min.vec[1],g>), max=(<max.vec[0],g>, <max.vec[1],g>))
+SbBox3s=SbBox3s(min=(<min.vec[0],i>, <min.vec[1],i>, <min.vec[2],i>), max=(<max.vec[0],i>, <max.vec[1],i>, <max.vec[2],i>))
+SbBox3f=SbBox3f(min=(<min.vec[0],g>, <min.vec[1],g>, <min.vec[2],g>), max=(<max.vec[0],g>, <max.vec[1],g>, <max.vec[2],g>))
+SbVec2s=SbVec2s(<vec[0],i>, <vec[1],i>)
+SbVec2f=SbVec2f(<vec[0],g>, <vec[1],g>)
+SbVec2d=SbVec2d(<vec[0],g>, <vec[1],g>)
+SbVec3s=SbVec3s(<vec[0],i>, <vec[1],i>, <vec[2],i>)
+SbVec3f=SbVec3f(<vec[0],g>, <vec[1],g>, <vec[2],g>)
+SbVec3d=SbVec3d(<vec[0],g>, <vec[1],g>, <vec[2],g>)
+SbVec4f=SbVec4f(<vec[0],g>, <vec[1],g>, <vec[2],g>, <vec[3],g>)
+SbVec4d=SbVec4d(<vec[0],g>, <vec[1],g>, <vec[2],g>, <vec[3],g>)
+SbRotation=SbRotation(<quat.vec[0],g>, <quat.vec[1],g>, <quat.vec[2],g>, <quat.vec[3],g>)
+SoBase=refs=<objdata.referencecount,d>
+SoGroup=kids=<children->numitems,d> refs=<objdata.referencecount,d>
+SoSwitch=which=<whichChild.value,d> kids=<children->nunitems,d> refs=<objdata.referencecount,d>
+SoPrimitiveVertex=point=(<point[0],g>, <point[1],g>, <point[2],g>)
+
+

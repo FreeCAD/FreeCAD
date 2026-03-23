@@ -1,0 +1,20 @@
+#Inventor V2.1 ascii
+
+# Check rendering with SoLOD nodes.
+#
+# 19990504 mortene
+
+Separator {
+   # (ROW 0)
+   Separator {
+      LOD {
+	 range [ 10, 20, 30, 40 ]
+
+	 Sphere { }
+	 Cylinder { }
+	 Cone { }
+	 Cube { }
+	 Info { }
+      }
+   }
+}

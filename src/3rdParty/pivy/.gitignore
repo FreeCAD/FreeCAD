@@ -1,0 +1,19 @@
+syntax: glob
+build/
+*.pyc
+**.pyd
+**.so
+**.o
+Inventor/*.h
+Inventor/**/**.h
+VolumeViz/**.h
+SoPyScript/swigpyrun.h
+examples/SoPyScript/examin
+examples/SoPyScript/swigpyrun.h
+CMakeCache.txt
+# pixi environments
+.pixi
+*.egg-info
+
+# Clangd files
+.cache

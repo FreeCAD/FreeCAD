@@ -1,0 +1,23 @@
+#Inventor V2.1 ascii
+
+
+Separator {
+
+  Text2 {
+    string "\""
+
+  }
+  Text2 {
+    string "\"
+
+  }
+  Text2 {
+    string "\\"
+
+  }
+  Text2 {
+    string [ "\", ]",
+        "B" ]
+
+  }
+}

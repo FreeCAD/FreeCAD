@@ -1,0 +1,30 @@
+##############################################################################
+# Unoffical CPACK configuration for Mac OS X systems
+# tested on Mac OS X 10.12 Sierra and 10.14 Mojave (64 bits)
+#
+##############################################################################
+include("@CMAKE_CURRENT_BINARY_DIR@/commons.cmake")
+
+set(CPACK_PACKAGING_INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@")
+
+config_package(LOWCASE)
+
+set(CPACK_GENERATOR "productbuild")
+set(CPACK_PACKAGE_VENDOR "CoinTeam")
+
+# There are no runtime components when installing MacOSX frameworks
+# so we need to disable this. The resources files need to have an 
+# extension txt, rtf, html, ... so they must be copied to the binary
+# directory.  Welcome files are needed for GUI installers only (Windows, MacOSX, ...)
+set(CPACK_COMPONENT_DEVELOPMENT_DEPENDS)
+set(CPACK_RESOURCE_FILE_LICENSE         "@CMAKE_BINARY_DIR@/COPYING.txt")
+set(CPACK_RESOURCE_FILE_README          "@CMAKE_BINARY_DIR@/README.txt")
+set(CPACK_RESOURCE_FILE_WELCOME         "@CMAKE_BINARY_DIR@/WELCOME.rtf")
+
+if("@CMAKE_SIZEOF_VOID_P@" EQUAL 8)
+  set(CPACK_SYSTEM_NAME macosx64)
+else()
+  set(CPACK_SYSTEM_NAME macosx32)
+endif()
+
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME}-inst")

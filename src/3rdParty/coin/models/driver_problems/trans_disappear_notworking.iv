@@ -1,0 +1,22 @@
+#Inventor V2.1 ascii
+
+# contributed by Kristofer Tingdahl. The first frame is rendered
+# ok, but on the following frames the textured and alpha-tested
+# polygon disappears. The depth function seems to be set to an
+# incorrect value when rendering lines and doing alpha-test 
+# rendering.
+
+DrawStyle { style LINES }
+Cube { }
+DrawStyle { style FILLED }
+
+Texture2 {
+   image 2 2 4
+   0xff0000ff 0xff000000 0xff000000 0xff0000ff 
+}
+Coordinate3 {
+   point [ -2 -2 0, 2 -2 0, 2 2 0, -2 2 0 ]
+}
+IndexedFaceSet {
+   coordIndex [ 0, 1, 2, 3, -1 ]
+}

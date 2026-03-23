@@ -1,0 +1,21 @@
+067 Possible mis-compilation with Intel Compiler.
+
+    The following snippet fails against a Coin built with the Intel
+    Compiler, at least with versions 5.0 and 7.0:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #include <Inventor/SoDB.h>
+    #include <Inventor/events/SoMouseButtonEvent.h>
+
+    int
+    main(int argc, char ** argv)
+    {
+      SoDB::init();
+      SoMouseButtonEvent::getClassTypeId();
+      return 0;
+    }
+    --------------8<----------- [snip] ------------------8<--------
+
+    The call-stack backtrace is nonsensical.
+
+    20030514 mortene, reported by Gerhard Bendels and Sheena Ritchie.

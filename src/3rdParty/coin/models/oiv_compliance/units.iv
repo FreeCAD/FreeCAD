@@ -1,0 +1,110 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoUnits in the scene.
+#
+# 19990414 mortene
+
+Separator {
+   # (ROW 0) 
+   Separator {
+      Sphere { }
+
+      BaseColor { rgb 1 0 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units METERS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units CENTIMETERS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units MILLIMETERS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units MICROMETERS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 0 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units MICRONS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units NANOMETERS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units ANGSTROMS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units KILOMETERS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units FEET }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units INCHES }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 1 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units POINTS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units YARDS }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units MILES }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 Units { units NAUTICAL_MILES }
+	 Sphere { }
+      }
+   }
+}

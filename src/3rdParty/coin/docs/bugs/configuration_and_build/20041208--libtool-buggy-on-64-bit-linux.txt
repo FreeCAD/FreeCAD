@@ -1,0 +1,14 @@
+177 Libtool is buggy on 64-bit Linux.
+
+    The fairly old version of Libtool we are currently using for
+    bootstrapping, version 1.5, has known bugs on 64-bit Linux systems
+    with GCC.
+
+    Should upgrade to latest if there are no known showstoppers.
+    (Lars, any info on this?)
+
+    20041208 mortene.
+
+    UPDATE 20060210 mortene: i believe we've upgraded libtool at
+    least once since this bug was filed, so the problem may be
+    gone -- someone needs to check.

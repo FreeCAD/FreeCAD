@@ -1,0 +1,207 @@
+version: 4.0.3-{branch}-ci-{build}
+
+branches:
+  only:
+  - master
+  - /v\d*\.\d*\.\d*/
+
+# do not build feature branches with open pull requests
+skip_branch_with_pr: true
+
+#shallow clone does not work when submodules are involved!
+#shallow_clone: true
+
+matrix:
+  fast_finish: true # set this flag to immediately finish build once one of the jobs fails.
+
+environment:
+  SUPERGLU_VERSION: 1.3.2
+  GH_AUTH_TOKEN:
+    secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
+  matrix:
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x86
+#      CMAKE_ARCH_FLAGS: -m32
+#      COMPILER_ID: gcc
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x64
+#      CMAKE_ARCH_FLAGS: -m64
+#      COMPILER_ID: gcc
+#
+# older compilers are supported in a separate appveyor project
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      CMAKE_GENERATOR: 'Visual Studio 10 2010'
+#      CMAKE_ARCHITECTURE: Win32
+#      CMAKE_PLATFORM: x86
+#      COMPILER_ID: msvc10
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      CMAKE_GENERATOR: 'Visual Studio 10 2010'
+#      CMAKE_ARCHITECTURE: x64
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: msvc10
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      CMAKE_GENERATOR: 'Visual Studio 14 2015'
+      CMAKE_ARCHITECTURE: Win32
+      CMAKE_PLATFORM: x86
+      COMPILER_ID: msvc14
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      CMAKE_GENERATOR: 'Visual Studio 14 2015'
+      CMAKE_ARCHITECTURE: x64
+      CMAKE_PLATFORM: x64
+      COMPILER_ID: msvc14
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      CMAKE_GENERATOR: 'Visual Studio 15 2017'
+      CMAKE_ARCHITECTURE: Win32
+      CMAKE_PLATFORM: x86
+      COMPILER_ID: msvc15
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      CMAKE_GENERATOR: 'Visual Studio 15 2017'
+      CMAKE_ARCHITECTURE: x64
+      CMAKE_PLATFORM: x64
+      COMPILER_ID: msvc15
+
+# newer compilers are supported in a separate appveyor project
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      CMAKE_GENERATOR: 'Visual Studio 16 2019'
+#      CMAKE_ARCHITECTURE: Win32
+#      CMAKE_PLATFORM: x86
+#      COMPILER_ID: msvc16
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+#      CMAKE_GENERATOR: 'Visual Studio 16 2019'
+#      CMAKE_ARCHITECTURE: x64
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: msvc16
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#      CMAKE_GENERATOR: 'Visual Studio 17 2022'
+#      CMAKE_ARCHITECTURE: Win32
+#      CMAKE_PLATFORM: x86
+#      COMPILER_ID: msvc17
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2022
+#      CMAKE_GENERATOR: 'Visual Studio 17 2022'
+#      CMAKE_ARCHITECTURE: x64
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: msvc17
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      MINGW_ARCH: i686
+#      CMAKE_GENERATOR: 'MSYS Makefiles'
+#      COMPILER_ID: mingw32
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+#      MINGW_ARCH: x86_64
+#      CMAKE_GENERATOR: 'MSYS Makefiles'
+#      COMPILER_ID: mingw64
+
+install:
+  - cmd: |
+      choco install jq
+      rem Work around for outdated curl version giving problems with GitHub Authentication when redirected.
+      set PATH=C:\msys64\%COMPILER_ID%\bin;C:\msys64\usr\bin;%PATH%
+      curl --version
+      cd %APPVEYOR_BUILD_FOLDER%
+  - git submodule update --init --recursive
+
+# Assumes that we use the vx.y.z tagging scheme (e.g. v1.3.0)
+before_build:
+  - cmd: |
+      if defined APPVEYOR_REPO_TAG_NAME (set CI_REPO_VERSION=%APPVEYOR_REPO_TAG_NAME:~1%) else (set CI_REPO_VERSION=latest)
+      set BUILD_SOURCE_ARCHIVE=%APPVEYOR_PROJECT_NAME%-%CI_REPO_VERSION%-src.zip
+      7z a -xr!*\.git/ -tzip %BUILD_SOURCE_ARCHIVE% %APPVEYOR_BUILD_FOLDER%
+      C:\msys64\usr\bin\md5sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.md5
+      C:\msys64\usr\bin\sha256sum.exe -b %BUILD_SOURCE_ARCHIVE% > %BUILD_SOURCE_ARCHIVE%.sha256
+      mkdir %APPVEYOR_BUILD_FOLDER%\downloads
+      rem ##############
+      if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_VERSION=%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_VERSION=latest)
+      if defined APPVEYOR_REPO_TAG_NAME (set SUPERGLU_REPO_TAG_NAME=v%SUPERGLU_VERSION%) else (set SUPERGLU_REPO_TAG_NAME=CI-builds)
+      set DOWNLOAD_FILE_SUPERGLU=superglu-%SUPERGLU_REPO_VERSION%-%COMPILER_ID%-%CMAKE_PLATFORM%.zip
+      for /f %%i in ('curl -s -H "Authorization: token %GH_AUTH_TOKEN%" https://api.github.com/repos/coin3d/superglu/releases ^| jq -r --arg SUPERGLU_REPO_TAG_NAME "%SUPERGLU_REPO_TAG_NAME%" ".[] | select(.tag_name==$SUPERGLU_REPO_TAG_NAME) | .id"') do set RELEASE_ID=%%i
+      for /f %%i in ('curl -s -H "Authorization: token %GH_AUTH_TOKEN%" https://api.github.com/repos/coin3d/superglu/releases/%RELEASE_ID% ^| jq -r --arg DOWNLOAD_FILE_SUPERGLU "%DOWNLOAD_FILE_SUPERGLU%" ".assets[] | select(.name==$DOWNLOAD_FILE_SUPERGLU) | .id"') do set ASSET_ID=%%i
+      set DOWNLOAD_ADDRESS_SUPERGLU=https://api.github.com/repos/coin3d/superglu/releases/assets/%ASSET_ID%
+      echo download file %DOWNLOAD_FILE_SUPERGLU% from address %DOWNLOAD_ADDRESS_SUPERGLU%
+      curl -s -S -L -H "Authorization: token %GH_AUTH_TOKEN%" -H "Accept: application/octet-stream" -o %DOWNLOAD_FILE_SUPERGLU% %DOWNLOAD_ADDRESS_SUPERGLU%
+      7z x %DOWNLOAD_FILE_SUPERGLU% -o%APPVEYOR_BUILD_FOLDER%\downloads
+      rem ##############
+      cmake -H. -Bbuild -G "%CMAKE_GENERATOR%" -A %CMAKE_ARCHITECTURE% -DCMAKE_INSTALL_PREFIX=%APPVEYOR_BUILD_FOLDER%\Coin3D -DCMAKE_PREFIX_PATH=%APPVEYOR_BUILD_FOLDER%\downloads\Coin3D -DUSE_SUPERGLU=ON
+
+build_script:
+  - cmd: |
+      set BUILD_TOOL_OPTIONS=/nologo /verbosity:minimal /maxcpucount /property:MultiProcessorCompilation=true;CL_MPCount=3
+      cmake --build build --target INSTALL --config Debug   -- %BUILD_TOOL_OPTIONS%
+      cmake --build build --target INSTALL --config Release -- %BUILD_TOOL_OPTIONS%
+
+after_build:
+  - cmd: |
+      cd %APPVEYOR_BUILD_FOLDER%
+      if defined APPVEYOR_REPO_TAG_NAME (set CI_REPO_VERSION=%APPVEYOR_REPO_TAG_NAME:~1%) else (set CI_REPO_VERSION=latest)
+      set BUILD_ARCHIVE=%APPVEYOR_PROJECT_NAME%-%CI_REPO_VERSION%-%COMPILER_ID%-%CMAKE_PLATFORM%.zip
+      7z a -tzip %BUILD_ARCHIVE% Coin3D
+      C:\msys64\usr\bin\md5sum.exe -b %BUILD_ARCHIVE% > %BUILD_ARCHIVE%.md5
+      C:\msys64\usr\bin\sha256sum.exe -b %BUILD_ARCHIVE% > %BUILD_ARCHIVE%.sha256
+      appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/%APPVEYOR_JOB_ID%/log -FileName %APPVEYOR_PROJECT_NAME%-%CI_REPO_VERSION%-%COMPILER_ID%-%CMAKE_PLATFORM%.log
+
+artifacts:
+  - path: $(APPVEYOR_PROJECT_NAME)*.zip
+    name: CIArchives
+  - path: $(APPVEYOR_PROJECT_NAME)*.tar.gz
+    name: CIArchivesTGZ
+  - path: $(APPVEYOR_PROJECT_NAME)*.log
+    name: logs
+  - path: $(APPVEYOR_PROJECT_NAME)*.md5
+    name: CImd5
+  - path: $(APPVEYOR_PROJECT_NAME)*.sha256
+    name: CIsha256
+
+test_script:
+  - cmd: |
+      cd build
+      ctest -C Release -VV
+
+notifications:
+  - provider: Email
+    to:
+      - '{{commitAuthorEmail}}'
+      - coin-support@coin3d.org
+    on_build_success: false
+    on_build_failure: true
+    on_build_status_changed: true
+
+deploy:
+  # Deploy to GitHub Releases
+  - provider: GitHub
+    auth_token:
+      secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256, logs
+    tag: 'CI builds'
+    description: 'Results of CI builds for various platforms'
+    draft: false
+    prerelease: true
+    force_update: true
+    on:
+      APPVEYOR_REPO_TAG: false      # deploy on untagged builds only
+#      branch: master                # release from master branch only
+
+  # Deploy to GitHub Releases
+  - provider: GitHub
+    auth_token:
+      secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    description: 'Release build'
+    draft: true
+    prerelease: true
+    force_update: true
+    on:
+      APPVEYOR_REPO_TAG: true       # deploy on tag push only

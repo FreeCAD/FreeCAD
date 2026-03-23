@@ -1,0 +1,61 @@
+Be aware that this file is a concatenation of two patches.
+NOTE: the first one is not used anymore, support for MSVC 6.0 has stopped.
+
+It is necessary to patch the evaluator_tab.c file so Microsoft Visual
+C++ 6.0 can grok it.
+
+For some (probably fabulously clever) reason, the MSVC++ compiler
+doesn't set __STDC__ when it's running in "C mode", which will then
+"undefine" the "const" keyword, which again leads to all kinds of
+trouble.
+
+        -- mortene
+
+
+--- old-evaluator_tab.c	Wed Jun 28 13:39:43 2000
++++ evaluator_tab.c	Wed Jun 28 13:39:45 2000
+@@ -72,13 +72,6 @@
+   int so_evallex(void);
+ #include <stdio.h>
+ 
+-#ifndef __cplusplus
+-#ifndef __STDC__
+-#define const
+-#endif
+-#endif
+-
+-
+ 
+ #define	YYFINAL		149
+ #define	YYFLAG		-32768
+
+
+The Sun Forte CC compiler will warn on passing string literals to
+functions with "char *" as argument type.  This patch fixes that
+problem.
+
+Index: evaluator_tab.c
+===================================================================
+RCS file: /export/cvsroot/Coin-2/src/engines/evaluator_tab.c,v
+retrieving revision 1.3
+diff -u -r1.3 evaluator_tab.c
+--- evaluator_tab.c	5 Jun 2003 12:20:57 -0000	1.3
++++ evaluator_tab.c	13 Jan 2004 14:40:00 -0000
+@@ -68,7 +68,7 @@
+   static char * get_regname(char reg, int regtype);
+   enum { REGTYPE_IN, REGTYPE_OUT, REGTYPE_TMP };
+   static so_eval_node *root_node;
+-  static int so_evalerror(char *);
++  static int so_evalerror(const char *);
+   static int so_evallex(void);
+ #include <stdio.h>
+ 
+@@ -1336,7 +1336,7 @@
+  * Called by bison parser upon lexical/syntax error.
+  */
+ int
+-so_evalerror(char *myerr)
++so_evalerror(const char *myerr)
+ {
+   strncpy(myerrorbuf, myerr, 512);
+   myerrorbuf[511] = 0; /* just in case string was too long */

@@ -1,0 +1,279 @@
+#Inventor V2.1 ascii
+
+# Check rendering with SoEnvironment.
+#
+# Turn off headlight in viewer to better assert some of the effects.
+#
+# 19990515 mortene
+
+Separator {
+   DirectionalLight {
+      intensity 0.1
+      direction 1 1 -10
+   }
+
+   # (ROW 0) Check ambientIntensity field.
+   Separator {
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientIntensity 0.0 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientIntensity 0.2 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientIntensity 0.4 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientIntensity 0.6 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientIntensity 0.8 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientIntensity 1.0 }
+	 Cube { }
+      }
+   }
+
+   # (ROW 1) Check ambientColor field.
+   Translation { translation 0 4 0 }
+   Separator {
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientColor 0 0 0 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientColor 0.8 0 0 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientColor 0 0.8 0 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientColor 0 0 0.8 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientColor 0.5 0.5 0 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { ambientColor 1 1 1 }
+	 Cube { }
+      }
+   }
+
+   # (ROW 2) Check attenuation field.
+   Translation { translation 0 4 0 }
+   Separator {
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 0 0 0 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 0 0 1 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 0 0 2 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 0 0 10 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 1 0 1 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 2 0 1 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 10 0 1 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 0 1 1 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 0 2 1 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { attenuation 0 10 1 }
+	 PointLight { location -5 5 5 }
+	 Cube { }
+      }
+   }
+
+   # (ROW 3) Check fog fields.
+   Translation { translation 0 4 0 }
+   Separator {
+      DirectionalLight {
+	 intensity 0.8
+	 direction 1 -1 5
+      }
+
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { fogType HAZE }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { fogType FOG }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment { fogType SMOKE }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment {
+	    fogType FOG
+	    fogColor 1 0 0
+	 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment {
+	    fogType FOG
+	    fogColor 0 1 0
+	 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment {
+	    fogType FOG
+	    fogVisibility 0
+	 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment {
+	    fogType FOG
+	    fogVisibility 100
+	 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment {
+	    fogType FOG
+	    fogVisibility 200
+	 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment {
+	    fogType FOG
+	    fogVisibility 400
+	 }
+	 Cube { }
+      }
+
+      Translation { translation +4 0 0 }
+      Separator {
+	 Environment {
+	    fogType FOG
+	    fogVisibility 800
+	 }
+	 Cube { }
+      }
+   }
+
+   # (ROW 4) Check ignore flags
+   Translation { translation 0 +4 0 }
+   Separator {
+      Environment {
+	 ambientIntensity 1.0 ~
+	 ambientColor 1 1 0 ~
+	 attenuation 0 0 0 ~
+	 fogType SMOKE ~
+	 fogColor 0 0 1 ~
+	 fogVisibility 1 ~
+      }
+      Cube { }
+   }
+}

@@ -1,0 +1,134 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoTexture2Transform.
+#
+# 19990503 mortene
+
+Separator {
+   Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+   }
+   Complexity { textureQuality 0.1 }
+
+   # (ROW 0) Test translation, rotation and scaling by themselves
+   Separator {
+      Texture2Transform { }
+      DEF stdfaceset IndexedFaceSet {
+	 vertexProperty VertexProperty {
+	    vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	    texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	 }
+
+	 coordIndex [ 0, 1, 2, 3, -1 ]
+	 textureCoordIndex [ 0, 1, 2, 3, -1 ]
+      }
+
+      DEF left Translation { translation +4 0 0 }
+      Separator {
+	Texture2Transform { translation 0.5 0.25 }
+        USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	Texture2Transform { rotation 0.39269908169872414 } # 22.5°
+        USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	Texture2Transform { scaleFactor 0.3 0.3 }
+        USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	Texture2Transform { scaleFactor 1 0.1 }
+        USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	Texture2Transform { scaleFactor 1 10 }
+        USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	Texture2Transform { scaleFactor -2 -2 }
+        USE stdfaceset
+      }
+   }
+
+
+   # (ROW 1) Test translation, rotation and scaling with centerpoint set
+   DEF row Translation { translation 0 +4 0 }
+   Separator {
+      Separator {
+	Texture2Transform {
+	    center 0.25 0.75
+	    translation 0.5 0.5
+	}
+         USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	Texture2Transform {
+	    center 0.25 0.75
+	    rotation 0.39269908169872414      # 22.5°
+	}
+        USE stdfaceset
+      }
+
+      USE left
+      Separator {
+	Texture2Transform {
+	    center 0.5 0.6
+	    scaleFactor 0.3 0.5
+	}
+        USE stdfaceset
+	 IndexedFaceSet {
+	    vertexProperty VertexProperty {
+	       vertex [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ]
+	       texCoord [ 0 0, 1 0, 1 1, 0 1 ]
+	    }
+	    
+	    coordIndex [ 0, 1, 2, 3, -1 ]
+	    textureCoordIndex [ 0, 1, 2, 3, -1 ]
+	 }
+      }
+   }
+
+   # (ROW 2) Test translation, rotation and scaling in combination
+   USE row
+   Separator {
+     Texture2Transform {
+	 center 0.5 0.5
+	 translation 0.5 0.5
+	 rotation 0.39269908169872414      # 22.5°
+	 scaleFactor 2 0.5
+     }
+     USE stdfaceset
+   }
+
+   # (ROW 3) Test ignored flags
+   USE left
+   Separator {
+     Texture2Transform {
+	 center 0.25 0.75 ~
+	 translation 0.5 0.5 ~
+	 rotation 0.39269908169872414 ~      # 22.5°
+	 scaleFactor 1.25 1.75 ~
+     }
+     USE stdfaceset
+   }
+}

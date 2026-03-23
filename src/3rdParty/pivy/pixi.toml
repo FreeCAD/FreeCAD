@@ -1,0 +1,51 @@
+[workspace]
+authors = ["Lorenz Lechner <sppedflyer@gmail.com>"]
+channels = ["conda-forge"]
+description = "combining building and dependency management with pixi"
+name = "pivy"
+platforms = ["osx-arm64", "linux-64", "linux-aarch64", "win-64", "osx-64"]
+version = "0.1.0"
+
+[dependencies]
+python = "*"
+swig = "*"
+coin3d = "*"
+cmake = "*"
+ninja = "*"
+soqt6 = "*"
+qt6-main = "*"
+pyside6 = "*"
+simage = "*"
+flake8 = "*"
+
+
+[target.linux-64.dependencies]
+mesa-libgl-devel-cos7-x86_64 = "*"
+gxx = "*"
+
+[target.linux-aarch64.dependencies]
+mesa-libgl-devel-cos7-aarch64 = "*"
+gxx = "*"
+
+[target.osx-arm64.dependencies]
+clangxx = "*"
+
+[target.osx-64.dependencies]
+clangxx = "*"
+
+[target.win-64.dependencies]
+clangxx = "*"
+
+[tasks]
+configure = { cmd = ["cmake", "-G", "Ninja", "-B", "build", "-S", ".",
+                     "-D", "CMAKE_BUILD_TYPE='Release'",
+                     "-D", "CMAKE_INSTALL_PREFIX:FILEPATH=$CONDA_PREFIX",
+                     "-D", "PIVY_USE_QT6:BOOL=ON",
+                     "-D", "QT_HOST_PATH=$CONDA_PREFIX" 
+                     ], depends-on = []}
+
+build = { cmd = ["ninja", "-C", "build", "-j", "1", "install"], depends-on = ["configure"]}
+test = { cmd = ["python", "tests/coin_tests.py"], depends-on = ["build"]}
+test_quarter = { cmd = ["python", "tests/quarter_tests.py"], depends-on = ["build"]}
+lint = { cmd = ["flake8", ".", "--count", "--select=E901,E999,F821,F822,F823",
+                "--show-source", "--statistics", "--exclude=build,.pixi,.svn,CVS,.bzr,.hg,.git,__pycache__,.tox,.eggs,.egg,SoPyScript"]}

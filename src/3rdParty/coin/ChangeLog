@@ -1,0 +1,7 @@
+The ChangeLog file is intentionally not updated in the repository as this
+information can be easily gathered through the revision control system.
+
+Upon release, don't forget to fill the ChangeLog file through e.g.:
+$ git log --no-merges --pretty=format:"%ai  %an  <%ae> (%h)%n%n%x09%s%n" --name-status <CommitSHA>..HEAD > ChangeLog
+
+(replace the <CommitSHA> token with the commit SHA for the previous release tag)

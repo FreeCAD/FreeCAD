@@ -1,0 +1,100 @@
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
+/* this file should only be included from mutex.c */
+
+static int
+internal_mutex_struct_init(cc_mutex * mutex_struct)
+{
+  int status = pthread_mutex_init(&mutex_struct->pthread.mutexid, NULL);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_mutex_struct_init",
+                         "pthread_mutex_init() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_mutex_struct_clean(cc_mutex * mutex_struct)
+{
+  int status = pthread_mutex_destroy(&mutex_struct->pthread.mutexid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_mutex_struct_clean",
+                         "pthread_mutex_destroy() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_mutex_lock(cc_mutex * mutex)
+{
+  int status = pthread_mutex_lock(&mutex->pthread.mutexid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_mutex_lock",
+                         "pthread_mutex_lock() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_mutex_try_lock(cc_mutex * mutex)
+{
+  int status = pthread_mutex_trylock(&mutex->pthread.mutexid);
+  if (status == EBUSY) return CC_BUSY;
+  else if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_mutex_try_lock",
+                         "pthread_mutex_trylock() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_mutex_unlock(cc_mutex * mutex)
+{
+  int status = pthread_mutex_unlock(&mutex->pthread.mutexid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_mutex_unlock",
+                         "pthread_mutex_unlock() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+

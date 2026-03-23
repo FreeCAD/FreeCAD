@@ -1,0 +1,452 @@
+============================================================================
+==                        BUILDING COIN ON WINDOWS                        ==
+============================================================================
+
+Building Coin on Windows is done by using the CMake build configuration.
+Check out the detailed build instructions in the INSTALL file.
+
+The Autotools build system is still maintained but at a significantly lower
+priority.
+
+============================================================================
+==             OLD INFORMATION ON BUILDING COIN ON WINDOWS                ==
+============================================================================
+
+Microsoft Visual Studio
+=======================
+
+The source code archive for Coin comes with Microsoft Visual Studio
+files for building and installing the Coin library.  Visual Studio
+7/7.1, Visual Studio 8, and Visual Studio 9 are supported.  For later
+versions in the future, you can probably just "upgrade" one of these
+to get a working set for that version as well.  Visual Studio 6 will
+not be supported (at the C++ language level) for very much longer.
+
+A separate target "coin4_install" is provided for copying the built Coin
+library into the directory provided in the COINDIR environment variable.
+Set it to e.g. "C:\Coin3D" or wherever you want the Coin SDK to reside by
+using
+
+  Control Panel => System => Advanced => Environment Variables
+
+and make sure you create that directory before starting the build of that
+target - if the variable isn't set or the directory doesn't exist, the
+installation will break and you won't get a functional SDK.  Using the
+source hierarchy as the SDK is not recommended - let Coin be installed, and
+use COINDIR from your other projects that use Coin.
+
+For Microsoft Visual Studio 7/7.1, you will find the complete build file setup
+in the directory build/msvc7/.  Select the sln file.
+
+For Microsoft Visual Studio 8, you will find the complete build file setup
+in the directory build/msvc8/.  Select the sln file.
+
+For Microsoft Visual Studio 9, you will find the complete build file setup
+in the directory build/msvc9/.  Select the sln file.
+
+
+Other IDEs
+==========
+
+We unfortunately don't provide project files for anything other than Visual
+Studio at this point.
+
+
+============================================================================
+==              OLD INFORMATION ON CYGWIN-BASED BUILDS BELOW              ==
+============================================================================
+
+This below text is information about building Coin on MS Windows platforms
+with the Cygwin environment.
+
+
+Compilers
+=========
+
+In-house we mostly use the Visual Studio / Visual C++ compilers,
+versions 7 to 9, when building on Windows.
+
+We have also had success reports from users about building Coin with the
+Intel compiler through using the Visual Studio project file setup for
+that.
+
+Building with GCC (primarily the mingw fork) on Windows is possible,
+but this setup is not something we maintain as actively as the Visual
+C++ support so it might not work out of the box at times.
+
+
+Environments
+============
+
+Microsoft Developer Studio
+--------------------------
+
+With the release of Coin 2.0.0, we started shipping Microsoft
+Developer Studio files with the binary Coin installer. The binary
+installer can be found at http://www.coin3d.org/windows.
+
+These files are automatically generated on our side in the Cygwin
+environment.  We are open for suggestions on how they ought to be
+changed, but since we don't create them manually we can only apply
+changes to the Developer Studio files that can go into the auto-
+generation process.
+
+
+Cygwin
+------
+
+Cygwin is a UNIX/POSIX-like environment from Cygnus.  See
+www.cygwin.com.  We often use this environment for building Coin, so
+it is usually up to date. Remember to include the ``binutils'',
+``diffutils'' and ``make'' packages when installing cygwin.
+
+
+
+Building Coin under MS Windows
+==============================
+
+There are now two ways to build the Coin library with Microsoft Visual C++
+on MS Windows.
+
+
+You can use Cygwin and compile Coin with regular GNU makefiles,
+or you can use a Microsoft Visual Studio Project and Workspace file for
+building Coin from the IDE.
+
+
+
+Section 01 -- Basic build instructions.
+=======================================
+
+  We've worked hard to get the configure and build process to be as
+  straight forward and failsafe on as many platforms as possible, but
+  since it uses some typical UNIX tools unfamiliar to most MSWindows
+  developers our policy on the MSWindows platform is to provide
+  pre-built binary SDKs -- and officially state that building on the
+  Windows platform is not completely trivial.
+
+  Anyway, you should be able to build the library if you have these
+  components installed on your system:
+
+        * Cygwin[1], latest release, with the packages needed to run a
+          configure script[2]
+
+        * Microsoft Visual C++ v6 or v7 [3]
+
+  First, make sure Microsoft Visual C++ is accessible from the Cygwin
+  shell.  If you can run ``cl.exe'' from the bash command line on the
+  following minimal, stand-alone sourcecode snippet:
+
+  ---8<-- [snip] --------8<-- [snip] --------8<-- [snip] -----
+  #include <stdio.h>
+
+  int
+  main(void)
+  {
+       (void)printf("hello world\n");
+       return 0;
+  }
+
+  ---8<-- [snip] --------8<-- [snip] --------8<-- [snip] -----
+
+  ...everything is probably set up for you already. If not, you need
+  to add something like this to .bashrc and .bash_profile:
+
+  NB: This setup is for MSVC++ 9.0.
+  For other compilers in the MSVC series, the procedure is similar.
+
+    # Load the Visual Studio environment:
+    # Many people add this to be called before launching their cygwin shell
+    call "%VS90COMNTOOLS%\vsvars32.bat" 
+
+
+  Now try again to see that the MSVC environment is working. By
+  running eg. "cl" If not, you need to debug this on your end before
+  proceeding. A good way to debug this is to open a Visual Studio
+  console (Visual Studio/Tools/Visual Studio Console) and examine the
+  PATH, LIB and INCLUDE environment variables there. You can also take
+  a peek in the vsvars32.bat file which is used to set up this
+  environment.
+
+  Then, make sure you have not set the variables CC and CXX before
+  running configure.  You unset them with these commands:
+
+        $ unset CC
+        $ unset CXX
+
+  Configure and build the same way as you would on UNIX-based systems,
+  i.e.
+
+        $ [srcdir]/configure
+        $ make install
+
+  If you encounter any trouble, the following lines can be run or
+  added to your ~/.bashrc
+
+    #Resolves a linking problem where gcc link shadows MSVC link
+    PATH=`cygpath -p "$VCINSTALLDIR/BIN:$PATH"`
+
+    #Recent Cygwin unsets the TMP environment variable, making
+    #wrapmsvc.exe unhappy
+    [ -n "${TMP}" ] || export TMP=/tmp
+
+  To specify which C library Coin should be linked against, you should
+  use the --with-msvcrt=<crt> option.  You have the following choices
+  (short aliases on the right):
+
+    singlethread-static        [ /ml  | ml  | libc    ]   (default)
+    singlethread-static-debug  [ /mld | mld | libcd   ]
+    multithread-static         [ /mt  | mt  | libcmt  ]
+    multithread-static-debug   [ /mtd | mtd | libcmtd ]
+    multithread-dynamic        [ /md  | md  | msvcrt  ]
+    multithread-dynamic-debug  [ /mdd | mdd | msvcrtd ]
+
+
+  Note that if you encounter any problems when trying to build on
+  MSWindows, it is expected that you are able to do a minimum of
+  troubleshooting yourself before contacting us.  (If this is not an
+  option, please consider using the pre-built binary installation
+  packages we provide. Follow the download link from
+  <URL:http://www.coin3d.org>.)
+
+  If you are confident that configure and/or build fails due to a
+  mistake on our part, or you otherwise feel completely stuck, we will
+  be happy to assist.
+
+  A few notes about what seems to be the most common problems:
+
+   a) configure reporting ``configure: error: no acceptable ld found
+      in $PATH''. This is because you have not installed Cygwin's
+      ``binutils'' package on your system. So install ``binutils'' and
+      try again.
+
+      (GNU GCC's ``ld'' isn't really needed for the build, since we
+      use 100% native Microsoft Visual C++ tools, but there is a
+      dependency on it in the configure script. This is out of our
+      control for now, but we will likely investigate to see if we can
+      get rid of it.)
+
+   b) Problems related to spaces in paths for any of the components
+      involved, for instance the path to the source code directory, or
+      the build directory, or the installation directory, or to
+      libraries we depend on.
+
+   c) When trying to run the configure script, you get the following
+      error message:
+
+        configure is not recognized as an internal or external command
+        operable program or batch file
+
+      This is probably because you tried to run the configure script
+      from a DOS shell window. You need to use a Cygwin bash shell.
+
+   d) During ``make install'', you get the following error:
+
+        make[2]: Entering directory `/coin-builddir/debug'
+        /bin/bash ../cfg/mkinstalldirs /coin-installdir/bin
+        /usr/bin/install -c ../cfg/wrapmsvc.exe /coin-installdir/bin/wrapmsvc.exe
+        /usr/bin/install: cannot change ownership of `/coin-installdir/bin/wrapmsvc.exe': Invalid argument
+
+      This is a Cygwin installation problem on your local system,
+      which causes ``chmod'' to not work as expected due to erroneous
+      configuration of users and / or permissions.
+
+      You will have to figure out how to solve this one by yourself,
+      as we haven't been able to reproduce it. We'll include more
+      information here if we get further feedback from users with this
+      problem.
+
+   e) We have various reports of problems related to network NTFS file
+      systems mounted under Cygwin.
+
+      The problems seems to stem from the fact that "test -x" on what
+      should be an executable does not recognize it as such. One
+      possible work-around is to mount the disk with "mount -x" from
+      Cygwin, which makes *all* files executable.
+
+      Another, perhaps preferable, fix is to just not use a network
+      share for storing the source code directory, or for setting up
+      the build and install directories.
+
+   f) We have one report on lib.exe failing silently when building
+      simage, libCoin and SoWin with VS.NET with options
+      "--disable-shared" and "--enable-static" to configure.
+
+      A workaround is to do manual creation of the lib-file, after
+      which ``make install'' will execute ok.
+
+   g) The Qt library for MSWindows has a file ''install.exe'' in it's
+      installation package. If the $QTDIR/bin/ path comes before the
+      path to the Cygwin <cygdir>/usr/bin/install.exe tool, the Qt
+      install.exe will be invoked upon ''make install''.
+
+      To get around this, set up your $PATH to have Cygwin's /usr/bin/
+      listed before $QTDIR/bin/.
+
+
+---
+[1] <URL:http://www.cygwin.com>
+
+[2] 'bash', 'binutils', 'diffutils' and 'make' may not be part of the standard
+    package set, but need to be present. Include 'cvs' if you want to
+    stay in sync with the development source code of Coin, plus 'perl'
+    and 'doxygen' if you want to build a local copy of the API
+    documentation.
+
+[3] The Microsoft Visual C++ build tools are now available for free:
+
+        http://msdn.microsoft.com/visualc/vctoolkit2003/
+
+    Note that this only includes the command-line tools. The MS Visual
+    Studio IDE tools are not available, it seems.
+
+
+Section 02 -- Known run-time problems
+=====================================
+
+This section lists all our known run-time problems seen with the Coin
+library on the Microsoft Windows platform -- excluding what we know to
+be specific bugs in our code:
+
+  * We've had one report about the Radeon OpenGL driver crashing when
+    using 3D textures.
+
+    The problem was reproducible with the SoGuiExamples/nodes/texture3
+    example. The Coin-user reporting the problem could not assist us
+    with tracing into the problem, so we would like to get in touch
+    with someone with a Radeon card under MS Windows who could help us
+    find the source of the problem.
+
+    The OpenGL driver in question identifies as:
+
+        GL_VERSION == '1.3.3302 Win2000 Release'
+        GL_VENDOR == 'ATI Technologies Inc.'
+        GL_RENDERER == 'Radeon 7500 DDR x86/SSE2'
+
+
+
+Section 03 -- Tracing into Coin from the MSVC++ IDE.
+====================================================
+
+We've had reports about problems getting symbol and source code
+information when debugging into Coin and / or SoQt or SoWin from the
+Microsoft Visual C++ IDE. This quick description should hopefully get
+you on your way if you experience the same kind of problem:
+
+  o You need to specify the path to the source code of the
+    library. This is a setting of Microsoft Visual C++ and is
+    therefore valid for any project you work on:
+
+         Tools -> Options -> Directories: From the pop up menu "show
+         directories for", choose "source files". Add the path(s) to
+         where the source code of the libraries can be found.
+
+  o However, it may still happen that Visual C++ complains about not
+    finding some files and will give you the possibility to specify
+    the location of the specific files.  This is common with the SoQt
+    & SoWin libraries. The reason for this is that a lot of the source
+    code files for those libraries are generated from *templates*
+    on-the-fly while building, and the "real" sources will then reside
+    in the build-directory.
+
+    So if MSVC++ wants to know where source code files for SoQt/SoWin
+    classes are, point it at your build directory.
+
+  o We have not found out how to specify the path(s) to the source
+    code using environment variables (as you can do for specifying the
+    location of the *.dll files). Therefore you have to set the
+    absolute path in the settings as described above. In case you know
+    how to do this, please contact us and we'll add it to this
+    description.
+
+
+Section 04 -- Building non-default configurations.
+==================================================
+
+For builds with Microsoft Visual C++, any additional options to the
+cl.exe and link.exe tools can be given by setting the environment
+variables CL and LINK, respectively. These matches what you can do
+with CPPFLAGS / CFLAGS / CXXFLAGS and LDFLAGS on typical UNIX compiler
+systems. For additional information, see the following article in
+Microsoft's Developer Knowledge Base:
+
+  http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccore/html/_core_cl_environment_variable.asp
+
+
+Section 05 -- Static versus dynamic libraries
+=============================================
+
+  Note that MS Visual C++ and other MSWin compilers / linkers are a
+  bit peculiar in that building a library as a DLL leaves you with
+  both a .dll-file and a .lib-file. When you link against the library,
+  you do it against the .lib-file, but when the system loads the
+  executable it will of course link against the .dll.
+
+  Using a library in a solely "static" fashion leaves you with just a
+  .lib-file.
+
+  To build SoWin for use as a static library, you need to add the
+  options "--enable-static" and "--disable-shared" when invoking the
+  configure script.
+
+
+Section 06 -- What is this ``configure'' thing?
+===============================================
+
+  The configure script is a script that first determines what kind of
+  system it's being run on, then tries to locate a compiler, and then
+  uses the compiler to probe the system for its capabilities.  For
+  instance, which optional utility libraries are available?  The
+  configure script tries to link with all the potential libraries that
+  we might want to use.  If the linking works, the library is there.
+  If the link-test fails, then it's not.  Another thing that is often
+  probed is whether a library is new enough so that it contains some
+  function foo()?  Depending on these tests, the configure script sets
+  up a header-file called "config.h" that contains #define settings
+  for what the configure script managed to find.  This header is
+  included from all the sources that needs system-dependent code
+  blocks.  In this way you tune the library on individual features
+  instead of basing the compilation on which platform it is that is
+  being used.
+
+  The configure script also has the purpose of figuring out how the
+  compiler should be used when you build the library.  The result of
+  these tests are put into all the Makefile files that are generated
+  at the end of the configure run.  The Makefile files are created
+  through keyword substitution in the Makefile.in templates you will
+  see in the source hierarchy.  After having run configure, all system
+  characteristics should be figured out and the Makefiles should be
+  set up so you only need to type "make" to get everything built.
+
+  Another feature of this setup is to run the configure script from an
+  empty directory.  This will create an an empty directory structure
+  with makefiles that will compile the sources out of the source
+  directory while putting the object files in the newly created
+  directory structure.  This means you can keep your sources in one
+  place (even on a read-only medium like a CDROM), and build the
+  library in some temporary location that can be scrapped after you
+  have built and installed the library.
+
+
+
+
+Section 07 -- Library Dependencies
+====================================
+
+  To find out which dynamically loadable libraries an application loads
+  (depends on), the following commands might be of help:
+
+  MSVC 6:
+        
+    depends <app.exe>
+  
+  MSVC 7 and later:
+
+    dumpbin /dependents <app.exe>
+
+
+
+See also:
+  http://cygwin.com/faq/faq_4.html#SEC34
+  http://sources.redhat.com/ml/cygwin/2001-09/msg00014.html
+

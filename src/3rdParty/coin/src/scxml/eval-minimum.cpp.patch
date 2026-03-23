@@ -1,0 +1,15 @@
+NOTE: This patch seems to be obsolete, it currently is unused.
+
+Index: eval-minimum.cpp
+===================================================================
+--- eval-minimum.cpp	(revision 12928)
++++ eval-minimum.cpp	(working copy)
+@@ -607,7 +607,7 @@
+ 	if ( YY_CURRENT_BUFFER_LVALUE->yy_is_interactive ) \
+ 		{ \
+ 		int c = '*'; \
+-		int n; \
++		unsigned int n; \
+ 		for ( n = 0; n < max_size && \
+ 			     (c = getc( scxml_minimum_in )) != EOF && c != '\n'; ++n ) \
+ 			buf[n] = (char) c; \

@@ -1,0 +1,2380 @@
+There are additional buglists which may contain important bugs and
+unsupported features for Coin. For the Coin satellite libraries,
+extensions and example programs:
+
+        simage/BUGS.txt
+        SoQt/BUGS.txt
+        So[Qt|Xt|Win]/src/Inventor/Qt/common/BUGS.txt
+        SoWin/BUGS.txt
+        SoXt/BUGS.txt
+        SIMVoleon/BUGS.txt
+
+..and buglists less likely to contain important bugs:
+
+        SoGuiExamples/BUGS.txt
+        SmallChange/BUGS.txt
+        SoGtk/BUGS.txt
+        Cute/BUGS.txt
+
+
+Also, a number of bugs deemed to be obsolete due to age or obscurity
+of environment they can be reproduced in, has been moved out of this
+file. So also for bugs of little consequence, or for other reasons of
+being of very low priority. They have been moved into catalogs under:
+
+        Coin/docs/bugs/
+
+
+Now, for the list of (possibly) significant bugs in the core Coin
+library:
+
+=====================================================================
+
+005 Free memory read on connected SoSFEnum fields?
+
+    This is an old problem which might have been fixed now, but we
+    should check it with Valgrind: Purify used to report "Free memory
+    read" when deleting SoSFEnum fields that were connected to other
+    fields.
+
+    <mortene@sim.no> 20020521.
+
+=====================================================================
+
+031 Setting up the alpha channel for the offscreen renderer doesn't
+    consistently (between hosts) produce a transparent background when
+    using setComponents(SoOffscreenRenderer::RGB_TRANSPARENCY).  It
+    works at home on my Debian Linux w/ GeForce4MX440 with the 3123
+    NVIDIA GLX sources, but not at work with whatever gfx system I
+    have there.
+
+    Index: src/misc/SoOffscreenGLXData.icc
+    ===================================================================
+    RCS file: /export/cvsroot/Coin/src/misc/SoOffscreenGLXData.icc,v
+    retrieving revision 1.17
+    diff -u -r1.17 SoOffscreenGLXData.icc
+    --- src/misc/SoOffscreenGLXData.icc     19 Sep 2002 10:08:04 -0000      1.17
+    +++ src/misc/SoOffscreenGLXData.icc     27 Sep 2002 08:50:02 -0000
+    @@ -199,6 +199,8 @@
+         attrs[pos++] = 4;
+         // FIXME: won't get an alpha channel in the context unless we also
+         // request a particular ALPHA bitsize. 20020605 mortene.
+    +    attrs[pos++] = GLX_ALPHA_SIZE;
+    +    attrs[pos++] = 4;
+       }
+       attrs[pos++] = None;
+       return pos;
+
+    20020927 larsa.
+
+    UPDATE 20020927 mortene: this could simply be caused by the GLX /
+    X11 drivers lacking support for any alpha-enabled visuals
+    (according to spec, it is not guaranteed that any such visual is
+    available). Anyway, the right way to solve this problem is to 1)
+    write our own weight-function for X11 visuals (like it's been done
+    for MSWin visuals in SoWin's SoWinGLWidget.cpp), for better
+    control of the selection process. Then 2) warn the user if we
+    can't get hold of any visual capable of all requested features.
+
+    UPDATE 20021022 larsa: this was the case - old XFree3 with old
+    Mesa does not support alpha for offscreen rendering.
+
+    UPDATE 20021121 larsa: The offscreen renderer GL context creation
+    is nevertheless bogus (with GLX at least), and should be fixed so
+    the best possible context is created.
+
+    UPDATE 20060203 mortene: a *lot* has been improved about offscreen
+    rendering contexts since the last update on this bug, but the
+    selection process among the available contexts has still not been
+    fixed, nor exposed to the user in the form of any public API.
+
+=====================================================================
+
+045 SoCenterballManip rotation off-center.
+
+    When dragging the 'stripes' on a CenterballManip node, rotation
+    happen around an off-center axis. (Off CenterballManip center)
+    This happen for rotations around all the axis.
+
+    NOTE: The bug is not visible if there is no connected geometry, or
+    if the geometry is 'simple', like one cube or one cone.
+
+    A simple scene-graph to reproduce:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #Inventor V2.1 ascii
+
+    Separator{
+        CenterballManip {}
+       Array{
+              numElements1 2
+              numElements2 2
+              numElements3 2
+                separation1  2.0 0.0 0.0
+                separation2  0.0 2.0 0.0
+                separation3  0.0 0.0 2.0
+                      Cone {}
+       }
+    }
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    20021209 rolvs
+
+    UPDATE 20030408 mortene: there is also a second bug here; the
+    scene bounding box is not calculated correctly, as can be seen by
+    loading this into e.g. the ExaminerViewer. The near clip plane
+    will clip part of the manip's geometry, something which should
+    never happen.
+
+=====================================================================
+
+047 SoAntiSquish seems to trigger a bug in our matrix factoring code.
+
+    From a coin-discuss posting by Philippe Debann�:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    I am planning to design my own Dragger class and have been looking
+    at the Toolmaker Ch. 8 examples: TranslateRadialDragger and
+    RotTransDragger.  I found an unexpected behaviour of
+    RotTransDragger (top-left of scene): When dragging one of the
+    SoRotateCylindricalDraggers, the dragger will switch from rotation
+    to scaling up as the mouse position approaches and goes beyond the
+    bounding cylinder of the (spherical) dragger.  In fact, the
+    dragger should not do any scaling up/down!! This happens
+    systematically when dragging the horizontal band left or right
+    (Y-axis rotation).
+
+    When I comment out the SoAntiSquish part of RotTransDragger, this
+    unexpected behaviour disappears (But obviously you want the
+    AntiSquish's anti-squishing behaviour!).  Alternately, if I set
+    its 'recalcAlways' field to FALSE, I get a different strange
+    behaviour: manipulation of the RotTransDragger affects the
+    rendering of the RotTransManip to the right of it: its
+    antisquishing scaling factor and fluctuations of its wire-mesh
+    sphere.  All this seems to be independent of the AntiSquish
+    'sizing' field, e.g.  BIGGEST_DIMENSION or LONGEST_DIAGONAL.
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    pederb has investigated, and found that this seems likely to be a
+    problem with our SbMatrix code that factors the translation,
+    scaling and rotation out of a matrix.
+
+    20021218 mortene.
+
+=====================================================================
+
+051 ExaminerViewer's automatic initial "view all" doesn't work on
+    a scene graph with SoImage.
+
+    Reproduce with the following source code snippet. The
+    "aass_logo.rgb" is an image of dimensions 80x68 (I haven't
+    investigated if this matters or not).
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #include <Inventor/Qt/SoQt.h>
+    #include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    #include <Inventor/nodes/SoImage.h>
+    #include <Inventor/nodes/SoCone.h>
+
+    int
+    main(int argc, char* argv[])
+    {
+      QWidget * mainwin = SoQt::init(argv[0]);
+
+      SoSeparator * root = new SoSeparator;
+      root->ref();
+
+      root->addChild(new SoCone);
+
+      SoImage * img = new SoImage;
+      root->addChild(img);
+      img->filename = "aass_logo.rgb";
+
+      SoQtExaminerViewer * viewer = new SoQtExaminerViewer(mainwin);
+      viewer->setSceneGraph(root);
+
+      SoQt::show(mainwin);
+      SoQt::mainLoop();
+
+      delete viewer;
+      root->unref();
+
+      return 0;
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    Notice how the cone is a tiny dot in the lower left corner of the
+    image at first. Then click view all (the eye icon) and see how the
+    camera is then positioned where it should be. Correct behavior
+    would be for the camera to be positioned there from the start.
+
+    20030103 mortene.
+
+    WONTFIX? 20030225 rolvs: In this example, setSceneGraph calls
+    viewAll() before the window is 'show'-ed. The viewport region
+    passed to (*SoCamera)->viewAll( graph, vpreg ) is therefore wrong,
+    causing a malformed boundingbox for the image and thus a malformed
+    view.
+
+    UPDATE 20030225 mortene: is there any simple and clean way to
+    detect and handle this with a) a warning message for the app
+    programmer, b) using a decent "dummy" / default region?
+
+=====================================================================
+
+054 SoComputeBoundingBox engine probably fails with viewport-dependent
+    geometry.
+
+    The SoGuiExamples/engines/computexfbbox example fails with a small
+    scene with an SoText2 in it:
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #Inventor V2.1 ascii
+
+    Cube { }
+    Translation { translation 10 0 0 }
+    Text2 { string [ "hepp", "tjo-bing", "hupp" ] }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    ..and pederb tracked this down to a failure of the engine's
+    evaluate() to be called again when the camera position changes.
+
+    Note that this bug is probably rather hard to fix properly.
+
+    20030128 mortene.
+
+=====================================================================
+
+060 SoToVRML2Action failing with VRML97 nodes.
+
+    Reported by kintel:
+
+      "SoToVRML2Action fails [with this file]:
+
+      ----8<---- [snip] ---------8<---- [snip] ---------8<----
+      #VRML V2.0 utf8
+
+      Transform {
+        children Shape {
+          geometry IndexedFaceSet {
+            coord Coordinate { point [ 0 0 0, 1 0 0, 1 1 0 ] }
+            coordIndex [ 0, 1, 2, -1 ]
+          }
+        }
+      }
+      ----8<---- [snip] ---------8<---- [snip] ---------8<----
+
+      ...and outputs an empty file:
+
+      ----8<---- [snip] ---------8<---- [snip] ---------8<----
+      #VRML V2.0 utf8
+
+      Group {
+        children
+              Group {
+              }
+      }
+      ----8<---- [snip] ---------8<---- [snip] ---------8<----
+
+      This is a special case as it is already a VRML2 file. However, I
+      guess the action will also fail given a mixed scene graph as
+      input. This is a bigger issue since we often have situations
+      with mixed scene graphs and want to convert them to VRML2."
+
+    We've also had at least one external report from a user who found
+    this to be a real problem. From the problem report:
+
+      After some tests I've found that the problem seems to be that
+      VRML shapes instead of being copied through by the ToVRML2
+      action (they are obviously already VRML2), they are deleted
+      (ignored?). It looks like that src/actions/SoToVRML2Action.cpp
+      lacks one more callback to handle nodes already in VRML2 format.
+
+    This is a medium priority item.
+
+    20030307 mortene.
+
+=====================================================================
+
+066 Viewer "view all" functionality not 100% correct.
+
+    See the VRML1 file below containing 5 line segments as separate
+    linesets.  Using this file, the viewAll button in the examiner
+    viewer only _almost_ zooms out the camera enough: parts of the
+    model is outside the view.
+
+    To reproduce:
+
+    o Open model in an examiner viewer.
+    o Resize the window so height ~= 2* width. (at least.)
+    o Rotate the model so you get minimal total height in the view.
+    o Press viewall. If my problems doesn't show, rotate around the up
+      axis and press viewall repeatedly until error occurs.
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #VRML V1.0 ascii
+
+    Separator {
+      Separator {
+        Coordinate3 {
+          point [ 372031 7.20114e+06    32.4351, 372031 7.20114e+06   -465.843 ]
+        }
+        IndexedLineSet {
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+      Separator {
+        Coordinate3 {
+          point [ 386603 7.19641e+06    32.1387, 386603 7.19641e+06   -348.644 ]
+        }
+        IndexedLineSet {
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+      Separator {
+        Coordinate3 {
+          point [ 384767 7.19186e+06    25.2236, 384767 7.19186e+06   -285.863 ]
+        }
+        IndexedLineSet {
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+      Separator {
+        Coordinate3 {
+          point [ 377824 7.20872e+06    32.4382, 377824 7.20872e+06   -329.9802 ]
+        }
+        IndexedLineSet {
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+      Separator {
+        Coordinate3 {
+          point [ 383236 7.18857e+06    40.1396, 383236 7.18857e+06   -371.016 ]
+        }
+        IndexedLineSet {
+          coordIndex [ 0, 1, -1 ]
+        }
+      }
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    I tried the model in the SoGuiExamples/engines/computexfbbox
+    example, and the bounding box gets calculated correctly. I guess
+    that means there's a bug in either SoCamera::viewAll() or in
+    SoGuiViewer::viewAll() -- most likely the latter.
+
+    20030507 mortene, reported by kintel.
+
+=====================================================================
+
+072 Assert failure when writing extension nodekit in binary format.
+
+    Running the example program below causes the following assert to
+    hit:
+
+      test: /home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:248: void set_current_writeref(const SoBase *, int): Assertion `rc >= 0 && "buggy writerefcounter"' failed.
+      Aborted
+
+    This points at some very nasty error, where some part of the scene
+    graph is not tagged for writing on the first SoWriteAction pass,
+    but is still attempted written on the second pass.
+
+    It's really lame that we have this kind of bug at all, as having
+    the two passes traverse the same structures shouldn't be rocket
+    science.
+
+    When writing as ASCII, the assert does *not* hit -- which means
+    traversal is different somewhere for binary and ascii export.
+
+    --------------8<----------- [snip] ------------------8<--------
+    #include <Inventor/actions/SoWriteAction.h>
+    #include <Inventor/nodekits/SoSubKit.h>
+    #include <Inventor/nodekits/SoNodeKit.h>
+    #include <Inventor/nodekits/SoBaseKit.h>
+    #include <Inventor/nodes/SoGroup.h>
+
+    class SoTestKit : public SoBaseKit
+    {
+      SO_KIT_HEADER(SoTestKit);
+      SO_KIT_CATALOG_ENTRY_HEADER(A);
+
+     public:
+      static void initClass();
+      SoTestKit();
+    };
+
+
+
+    SO_KIT_SOURCE(SoTestKit);
+
+    void
+    SoTestKit::initClass()
+    {
+       SO_KIT_INIT_CLASS(SoTestKit, SoBaseKit, "BaseKit");
+    };
+
+    SoTestKit::SoTestKit()
+    {
+       SO_KIT_CONSTRUCTOR(SoTestKit);
+
+       SO_KIT_ADD_CATALOG_ENTRY(A, SoGroup, FALSE, this, \x0, TRUE );
+
+       SO_KIT_INIT_INSTANCE();
+    };
+
+    int
+    main(int argc, char ** argv)
+    {
+      SoDB::init();
+      SoNodeKit::init();
+      SoTestKit::initClass();
+
+      SoTestKit * testkit = new SoTestKit();
+      testkit->ref();
+
+      char * buf = (char*)malloc(1024);
+      SoOutput out;
+      out.setBuffer(buf, 1024, realloc);
+      out.setBinary(TRUE);
+
+      SoWriteAction wa(&out);
+      wa.apply(testkit);
+
+      testkit->unref();
+
+      return 0;
+    }
+    --------------8<----------- [snip] ------------------8<--------
+
+    Problem reported by Tamer Fahmy.
+
+    20030602 mortene.
+
+    UPDATE 20050610 mortene: it seems someone (pederb?) rewrote the
+    assert, and made the code "kinder", as there are now warnings
+    instead:
+
+        Coin warning in SoWriterefCounter::setWriteref(): writeref < 0 for <noname> <0x806d6a8>
+        Coin warning in SoWriterefCounter::<cleanup>(): Not removed from writedict: 0x806d6a8, Group:<noname>
+
+=====================================================================
+
+073 Multiple complexity settings for same SoTexture2 does not work.
+
+    Using the same SoTexture2 nodes with different
+    SoComplexity::textureQuality settings is something which works for
+    SGI Inventor, so it should be considered a Coin bug.
+
+    Reproducible problem, example file:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #Inventor V2.1 ascii
+
+    Separator {
+       Separator {
+          Complexity { textureQuality 0.1 }
+
+          DEF mytex Texture2 {
+             image 2 2 3
+             0xffffff 0x00ff00   # white   green
+             0xff0000 0xffff00   #  red    yellow
+          }
+
+          Cube { }
+       }
+
+       Separator {
+          Complexity { textureQuality 1.0 }
+          USE mytex
+          Translation { translation 5 0 0 }
+          Cube { }
+       }
+    }
+    --------------8<----------- [snip] ------------------8<--------
+
+    pederb's comments on the bug:
+
+        We handled this earlier, but when adding proper support for
+        auto-caching, it was easier to store everything for a texture
+        object inside the texture object, and then identify it with a
+        single uint32. Then it's quite easy to figure out the current
+        texture object after a display list has been executed (the
+        render-cache must store the OpenGL state changes it does so
+        that SoGLLazyElement is updated after the display list has
+        been executed). I could add additional variables for storing
+        the filter settings, but I just couldn't see any practical
+        reason for doing this.
+
+
+    20030916 mortene.
+
+    UPDATE 20040714 mortene: an external Coin user (Nigel Murry) had
+    an ingenious way to use a texture multiple times with varying
+    complexity settings, which now fails -- so there are indeed
+    practical uses for this. So we should really consider this a bug,
+    and a fairly high priority item as well, as this is a regression
+    versus older Coin versions.
+
+    From Murry's bug report on coin-discuss:
+
+        I have been using textures to show how some parameter (like
+        say�temperature) varies over the surface of an
+        object. Sometimes I would like to see distinct color bands and
+        other times I would like to see a continuous variation of
+        color. So I have a SoTexture2 defined using 8 or 16 color
+        levels. Then I change between a "banded" and a continuous
+        display using a SoComplexity node with textureQuality set to
+        0.00001 for a banded display.
+
+        That normally works fine, but when the texture is used more
+        than once there appears to be some confusion as to how the
+        textureQuality is used. In the attached little iv file, if the
+        switch at line 7 is off (whichChild=-1) then the second
+        (legend) use is correct. If the switch at line 7 is on
+        (whichChild=-3) then the second use shows a continuous
+        texture.
+
+=====================================================================
+
+074 SoComplexity::textureQuality changes must be made before
+    SoTexture2 traversal.
+
+    In the "Inventor spirit" of appearance settings not having any
+    effect until hitting a shape node, it should be possible to do
+    this:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #Inventor V2.1 ascii
+
+    Separator {
+      Texture2 {
+         image 2 2 3
+         0xffffff 0x00ff00   # white   green
+         0xff0000 0xffff00   #  red    yellow
+      }
+
+      Complexity { textureQuality 0 }
+
+      Cube { }
+    }
+    --------------8<----------- [snip] ------------------8<--------
+
+    ..but the SoComplexity node will have no effect in this case. I
+    feel it should.
+
+    Note that SGI Inventor doesn't handle this either, but I still
+    think it is a weakness in Coin which we should fix.
+
+    20030916 mortene.
+
+=====================================================================
+
+075 SoHandleBoxManip does not behave correctly when locking a
+    translation axis.
+
+    To reproduce, load this simple iv-file into an examinerviewer:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #Inventor V2.1 ascii
+
+    HandleBoxManip { }
+    --------------8<----------- [snip] ------------------8<--------
+
+    ..then hold down SHIFT while LMB-clicking on one of the sides (for
+    translation). The translation will correctly be locked to one
+    axis, but when releasing the SHIFT button, the manip will jump to
+    the current cursor location. This last behavior is incorrect.
+
+    20030922 mortene.
+
+=====================================================================
+
+076 SoHandleBoxManip does not behave well upon "deep Z translation".
+
+    To reproduce, load this simple iv-file into an examinerviewer:
+
+    --------------8<----------- [snip] ------------------8<--------
+    #Inventor V2.1 ascii
+
+    HandleBoxManip { }
+    --------------8<----------- [snip] ------------------8<--------
+
+    ..then move the box out to the left side of the view
+    (i.e. translate in -X), before LMB-clicking the right side of the
+    box to translate in the Z direction. The manip will correctly move
+    in the Z direction when moving the mouse cursor to the right, but
+    upon continuing moving the mouse cursor to the right it suddenly
+    misbehaves by first jumping back close to the camera, and then
+    starting to move in the *negative* Z direction.
+
+    This is clearly bad handling of some kind of border case.
+
+    20030922 mortene.
+
+    UPDATE 20060208 mortene: this may be a bit hard to reproduce. To
+    make sure to trigger it, one can first move it way back as
+    described above, then do "view all", and then go ahead with the
+    above description again.
+
+=====================================================================
+
+090 Scene graph copy behavior deviates from SGI Inventor.
+
+    For the code example below, we get different behavior on
+    connection copying between Coin and SGI Inventor. For Coin, the
+    node with the slave field is not copied (the connection is just
+    shortcut), while it is copied for SGI Inventor.
+
+-----8<------ [snip] ------------8<------ [snip] -------
+#include <assert.h>
+
+#include <Inventor/SoDB.h>
+#include <Inventor/nodes/SoRotor.h>
+#include <Inventor/SoLists.h>
+
+int
+main(void)
+{
+  SoDB::init();
+
+  SoRotor * masterrotor = new SoRotor;
+  SoRotor * slaverotor = new SoRotor;
+
+  SoRotor * rotor = new SoRotor;
+
+  rotor->rotation.connectFrom(&masterrotor->rotation);
+  slaverotor->speed.connectFrom(&rotor->speed);
+
+  printf("rotor==%p, masterrotor==%p, slaverotor==%p\n",
+         rotor, masterrotor, slaverotor);
+
+
+  SoRotor * copiedrotor = (SoRotor *)rotor->copy(TRUE);
+
+  SoField * f;
+  SbBool ok = copiedrotor->rotation.getConnectedField(f);
+  assert(ok);
+  SoRotor * copiedmaster = (SoRotor *)f->getContainer();
+
+  SoFieldList slavelist;
+  int nr = copiedrotor->speed.getForwardConnections(slavelist);
+  assert(nr==0 || nr==1);
+  SoRotor * copiedslave = nr ? (SoRotor *)slavelist[0]->getContainer() : NULL;
+
+  printf("copiedrotor==%p, copiedmaster==%p, copiedslave==%p\n",
+         copiedrotor, copiedmaster, copiedslave);
+
+  return 0;
+}
+-----8<------ [snip] ------------8<------ [snip] -------
+
+    A test run:
+
+    Coin:
+        rotor==0x807d3c0, masterrotor==0x807c740, slaverotor==0x807ce18
+        copiedrotor==0x807e248, copiedmaster==0x807c740, copiedslave==(nil)
+
+    SGI Inventor:
+        rotor==0x8058710, masterrotor==0x8051690, slaverotor==0x8057ae0
+        copiedrotor==0x8059cb8, copiedmaster==0x8051690, copiedslave==0x8059df0
+
+    (Notice the differences for 'copiedslave'.)
+
+    This is a quite nasty bug, which can cause hard to debug errors
+    when moving code from SGI Inventor to Coin.
+
+    20031121 mortene.
+
+=====================================================================
+
+092 SoToVRMLAction outputs empty scene graph when given a Coin/Inventor
+    scene graph.
+
+    SoToVRMLAction only supports VRML2 scene graphs, not Coin/Inventor
+    scene graphs.
+
+    20031126 kintel.
+
+=====================================================================
+
+095 SoIndexedTriangleStripSet renders much slower with PER_FACE normals.
+
+    According to pederb, this is not expected, so something fishy is
+    going on.
+
+    This is seen on a Linux NVidia box with v41.91 driver and
+    GeForce2.
+
+    Here's a model which reproduces the problem. Just load it into the
+    examinerviewer:
+
+-----8<------ [snip] ------------8<------ [snip] -------
+begin 644 makrell.iv.gz
+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
+(XF.\,Q9<`@``
+`
+end
+-----8<------ [snip] ------------8<------ [snip] -------
+
+    pederb has a patch below that "fixes" the problem, but this is not
+    a proper fix. Somebody needs to investigate to figure out what is
+    really going on. A good start would perhaps be to test on a
+    variety of different OpenGL drivers to figure out whether or not
+    it is a weakness with NVidia's drivers.
+
+-----8<------ [snip] ------------8<------ [snip] -------
+Index: src/misc/SoGLnonindexedTristripSetTemplate.icc
+===================================================================
+RCS file: /export/cvsroot/Coin/src/misc/SoGLnonindexedTristripSetTemplate.icc,v
+retrieving revision 1.6
+diff -u -r1.6 SoGLnonindexedTristripSetTemplate.icc
+--- src/misc/SoGLnonindexedTristripSetTemplate.icc       14 Feb 2003 17:31:28 -0000       1.6
++++ src/misc/SoGLnonindexedTristripSetTemplate.icc       20 Nov 2003 12:43:03 -0000
+@@ -67,8 +67,12 @@
+
+     glBegin(GL_TRIANGLE_STRIP);
+
++#if NBINDING==PER_VERTEX || NBINDING==PER_STRIP || NBINDING==PER_FACE
+ #if NBINDING==PER_VERTEX || NBINDING==PER_STRIP
+     currnormal = normals++;
++#else
++    currnormal = normals;
++#endif
+     glNormal3fv((const GLfloat *)currnormal);
+ #endif
+ #if MBINDING==PER_STRIP || MBINDING==PER_VERTEX
+@@ -80,8 +84,12 @@
+     SEND_VERTEX(idx);
+     idx++;
+
++#if NBINDING==PER_VERTEX || NBINDING==PER_FACE
+ #if NBINDING==PER_VERTEX
+     currnormal = normals++;
++#else
++    currnormal = normals;
++#endif
+     glNormal3fv((const GLfloat *)currnormal);
+ #endif
+ #if MBINDING==PER_VERTEX
+-----8<------ [snip] ------------8<------ [snip] -------
+
+    20031203 mortene.
+
+=====================================================================
+
+099 View frustum culling is not done unless there are cached bounding
+    boxes available.
+
+    E.g. if an app programmer calls setAutoClipping(FALSE) on a
+    standard viewer, SoGetBoundingBoxAction will not be invoked each
+    frame, and there is no other mechanism in Coin which triggers the
+    calculation and storage of bounding boxes.
+
+    This is not a bug, but a performance enhancement suggestion. It
+    can have a dramatic effect under certain circumstances.
+
+    pederb suggests this can be solved by letting SoGLRenderAction
+    invoke an SoGetBoundingBoxAction on the root node before
+    rendering.
+
+    20031211 mortene, reported by pederb.
+
+    UPDATE 20040909 mortene: the above suggestion for a fix may not be
+    such a good idea:
+
+      On Wed, Sep 08, 2004 at 04:27:55PM +0200, Karin Kosina wrote:
+      :
+      : [...]
+      :
+      : And: why don't we implement pederb's suggestion (applying a
+      : GetBoundingBoxAction before rendering)?
+
+      [pederb:]
+
+      I feel it should be possible to toggle this feature on/off.
+      Other applications might apply an SoGetBoundingBoxAction before
+      they call SoSceneManager::render() (or render the scene using an
+      SoGLRenderAction directly). If you have a scene with lots of
+      animations, SoGetBoundingBoxAction can be pretty slow.
+
+      If you have an application that does multipass rendering, and we
+      apply an SoGetBoundingBoxAction every time
+      SoGLRenderAction::apply() is called, that would be pretty bad.
+
+
+    Note: when this bug has been fixed, remove the warning note on
+    So@Gui@Viewer::setAutoClipping() which mentions this problem.
+
+
+    UPDATE 20060208 mortene: pederb added support for automatically
+    applying an SoGetBoundingBoxAction, but it is at the moment only
+    possible to activate with an envvar -- as it is basically a policy
+    decision whether we want this or not.
+
+=====================================================================
+
+102 Lack of control over OffscreenRenderer context setup
+
+    There is currently no way to enable stencil-buffer and other GL
+    features when creating the SoOffscreenRenderer context.  There
+    should be a way to control offscreen renderer features in some
+    way.  Requested by Josh Flowers.
+
+    20040203 larsa.
+
+
+    UPDATE 20040203 mortene: my suggestion is that the API should
+    present the possibility of setting up a callback weighting
+    function to run the available GL-capable contexts through, because
+    this will give the API client full control if he/she so wishes.
+
+    Something like this has already been implemented internally for
+    SoWin, see SoWinGLWidget::weighPixelFormat(). I.e. default
+    weighting algorithms like that function should be available inside
+    libCoin, with the option of overriding them through the API.
+
+    Designing the API so it manages to abstract away the peculiarities
+    of each window-specific (GLX / WGL / AGL) context struct format
+    might be challenging.
+
+    UPDATE 20040922 mortene: there have been several more requests for
+    this feature. Lacking control over the GL context capabilities can
+    be a serious show-stopper for programmers wanting to use e.g. the
+    stencil buffer, so I consider this a medium-to-high priority item.
+
+    UPDATE 20050510 mortene: something like this has been implemented
+    by TGS, with among others the SoGLGraphicConfigTemplate class.
+    Consider using the same design and API.
+
+    UPDATE 20060224 kyrah: mortene has implemented a hack to allow
+    requesting a stencil buffer via the environment variable
+    COIN_OFFSCREEN_STENCIL_BITS. Just noting this here so we don't
+    forget to get rid of this workaround when this issue is finally
+    resolved.
+
+=====================================================================
+
+108 SoVRMLBackground (and SoVRMLImageTexture?) texturing doesn't work
+    with SoOffscreenRenderer.
+
+    Most likely because SoVRMLBackground uses an SoVRMLImageTexture,
+    which loads textures in the background (if Coin is configured with
+    platform-independent mt-support, which is the default). So on the
+    first frame, which is what the SoOffscreenRenderer grabs, textures
+    will not have completed loading yet.
+
+    Should perhaps best be solved by using a new element
+    "SoSynchronizedElement", or some such, which tells traversal
+    operations whether or not they are allowed to run in parallel
+    threads. SoOffscreenRenderer should then add such an element
+    before invoking the SoGLRenderAction.
+
+    20040427 mortene.
+
+    UPDATE 20050505 mortene: Colin Dunlop reported another effect of
+    this; fractured textures (i.e. SoTextureScalePolicy::policy set to
+    FRACTURE) will typically render in low quality. The fix outlined
+    above should also be the underpinning for taking care of this
+    problem.
+
+    When this problem has been properly taken care of, remove the
+    following hack from src/misc/SoOffscreenRenderer (which doesn't
+    seem to work):
+
+      const int bigimagechangelimit = SoGLBigImage::setChangeLimit(INT_MAX);
+
+    (And check whether or not there are any similar hacks to also take
+    care of.)
+
+    UPDATE 20050512 mortene: correction; fractured textures are not
+    scaled or otherwise prepared in separate threads, but gradually in
+    multiple render passes. The SoGLBigImage::setChangeLimit() is
+    there to make sure that all necessary preparations are made on the
+    first pass. This seems to work correctly upon some slight testing
+    with the following iv-file:
+
+-------------8<---------------- [snip] --------------------------
+#Inventor V2.1 ascii
+
+Separator {
+   DirectionalLight {
+      direction 1 -1 -10
+   }
+   PerspectiveCamera {
+      position -0.47643667 0.5896858 6
+      nearDistance 0.1
+      farDistance 100
+   }
+   Separator {
+      TextureScalePolicy {
+         policy FRACTURE
+      }
+      Texture2 {
+         filename "/tmp/M245-m040904.png"
+      }
+      Cube {
+      }
+   }
+}
+-------------8<---------------- [snip] --------------------------
+
+    I'm therefore not quite sure what the problem is at Colin's end,
+    so I've asked for more information. (My best guess is that it is
+    downscaling of tremendously large textures to not-so-large
+    offscreen pixmaps which may look bad, due to scaling algorithms
+    tuned for speed, not quality, in SoGLBigImage.)
+
+=====================================================================
+
+114 VRML-nodes are erroneously renamed upon import.
+
+    VRML-nodes can legally be named in ways which are not ok for
+    ordinary Inventor/Coin nodes. They are therefore sometimes renamed
+    in error upon import of VRML97-files, from within SoBase::setName().
+
+    I suggest this is fixed within SoBase::setName(), by making the
+    code check whether or not the class is internal and has the
+    "SoVRML" prefix, and if so; do the Right Thing wrt the VRML97
+    spec.
+
+    (BTW, do we have the same problem wrt VRML 1 nodes?)
+
+    According to kintel, this is probably quite a bit of work to do
+    properly, one will for instance have to read node names in UTF-8.
+
+    20040521 mortene, bug reported by kintel.
+
+=====================================================================
+
+121 SoOffscreenRenderer tiled rendering causes problems with
+    subsequent viewport changes.
+
+    The SmallChange ViewportRegion node sets up a sub-viewport
+    according to the SoGLRenderAction's viewport settings, and does
+    not know about whether or not the current rendering is part of a
+    tiled rendering. This causes artifacts for the commonly used
+    "sub-viewport + orthocam + scene graph" trick for rendering
+    overlay graphics.
+
+    This needs to be fixed partly in Coin (there is now no mechanism
+    for passing on information about whether or not we're doing tiled
+    rendering), and partly in SmallChange (ViewportRegion must set up
+    the sub-viewport according to the current tile).
+
+    As for the Coin part, this could perhaps best be solved by using a
+    new element "SoViewportTileElement", or some such, which should
+    contain information about tilesize (absolute and
+    relative). SoOffscreenRenderer should then add such an element
+    to the state stack before invoking the SoGLRenderAction.
+
+    This is a tricky issue, of medium priority.
+
+    20040705 mortene.
+
+    UPDATE 20050520 mortene: bug item #191 depends on this bug.
+
+    UPDATE 20050520 mortene: As a side effect of this fix, SoCamera
+    could then also do the view volume narrowing itself, removing the
+    need for the current ugly hack in SoOffscreenRenderer to do this.
+
+=====================================================================
+
+129 Dragger bugs. This is a collection of bugs mostly related to
+    scaling of draggers.
+
+    JackDragger: Scale down as much as possible. Use viewAll to keep
+    the geometry in focus. When a certain limit has been reached, it
+    is no longer possible to click on the drag tabs. Might be because
+    JackDragger uses childdraggers to do it's job, and child draggers
+    currently do not have a good enough minimum scale restriction.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    JackDragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    Scale2Dragger: Scale down a lot, and you will have problems with
+    viewAll. Also had problems with grabbing the dragger. The geometry
+    of the dragger does not get scaled properly. Some of these
+    problems are probably related to the lack of a minimum scale
+    restriction when using child draggers. Others are problems
+    relating to the way the dragger geometry/tabs are scaled.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    Scale2Dragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    SoTabBoxDragger: Lack of minimum scale restriction because it uses
+    child draggers (SoTabPlaneDraggers). The dragger geometry does not
+    look correct with extremely small scale.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    TabBoxDragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    SoTransformerDragger: Geometry does not look correct when having
+    non-uniform scale in the scenegraph. Load the following file into
+    examinerviewer and click on the rotation tab on one of the sides,
+    and you should see the problem.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    TransformerManip {}
+    Text3 {
+      string "b"
+      parts ALL
+    }
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+    Also, free rotation (holding shift while rotating) does not behave
+    100% as expected when the locater position goes outside of the
+    projection sphere. Using the same scenegraph, press shift and
+    rotate the center tab, and you will see the problem. This problem
+    happens when having non-uniform scale.
+
+
+    SoTransformBoxDragger: Unable to grab hold of the dragger tabs
+    when scale is small. This is probably also related to the lack of
+    minimum scale restriction when using child draggers.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    TransformBoxDragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    Scale1Dragger: Impossible to grab hold of dragger tabs again after
+    scaling as small as possible. Tabs should have a certain dimension
+    even though the dragger has been scaled down.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    Scale1Dragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    Scale2Dragger: Difficult to repick dragger tabs when scale gets low.
+    viewAll does not work properly.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    Scale2Dragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    Scale2UniformDragger: viewAll does not work as expected when scaling
+    down a lot. Also the geometry of the dragger gets strange when having
+    low scale.
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+    Scale2UniformDragger {}
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+
+    General observations:
+     A general problem is that it is difficult to separate and click on
+     a tab of choice when scale is small. This should be fixed for
+     easier use. It would be nice if the tabs are spaced so that it is
+     possible to see which is which. Dragger geometries should also be
+     fixed so that they are intuitive and easy to use even when scale
+     is small/big, etc.
+
+     OIV does not have a restriction on the scale when using child
+     draggers, but we should since without there will be trouble.
+
+     viewAll does not always work as expected, not zooming in enough on
+     some draggers under certain circumstances. This should be checked.
+
+
+    Priorities:
+     1) Fix minimum scale restriction when using child draggers
+     2) Fix scaling/positioning of dragger geometries so that
+        they are intuitive and easy to use at any scale
+     3) See if the viewAll works after these bugs have been fixed.
+        If not, find out what's wrong and fix it.
+     4) Roam all the draggers, have fun with them and look for
+        problems to fix
+     5) Fix all other dragger bugs in this list :)
+     6) Fix the rest of the bugs in this list (:
+
+
+     20040810 jornskaa
+
+=====================================================================
+
+133 SoExtSelection selection area rendering bug
+
+    SoGui toolkits needs to set the window id element so the
+    SoExtSelection node can know which window id it is being
+    manipulated in, so it doesn't render the selection area rectangle
+    in all available views.
+
+    You probably also have canvas refresh issues related to this -
+    make sure the inactive views does not refresh their displays
+    during interaction.
+
+    20040831 larsa.
+
+    UPDATE 20040831 mortene: This is a high priority item, as it
+      causes Coin to be unusable when using multiple views and
+      SoExtSelection together.
+
+    UPDATE 20061026 mortene: we have recurring support requests for
+      this bug to be fixed.
+
+      The above suggestion for how to fix it may be be unnecessary
+      roundabout and complicated, BTW. I'm guessing it should be
+      possible to just store the GL context id (taken from
+      SoGLRenderAction::getCacheContext()) when a selection is first
+      activated, and then only render it to that context.
+
+      With regard to picking up events from only the same context, I'm
+      unsure as to whether we're currently able to detect which
+      context an SoHandleEventAction comes from, though.
+
+=====================================================================
+
+135 Elements used by <node>::doAction() functions not automatically
+    set up.
+
+    When writing extension actions, it is a major hassle that one
+    needs to explicitly enable all elements used by nodes' doAction()
+    functions for the new action. It is a hassle for many reasons, not
+    the least that one can not find out which elements are actually
+    used without reading the source code. In addition, these are
+    really implementation details that may change without notice,
+    rendering client code buggy without any warning.
+
+    So this needs to be fixed. Would probably best be done by changing
+    the internals somewhat so that extension actions automatically
+    inherits a list of enabled elements from SoAction as well, and not
+    just from the other actions, where this works as it should
+    already.
+
+    As an example, it should be possible to do something like this for
+    e.g. SoLevelOfDetail:
+
+    ------8<----- [snip] --------------------8<----- [snip] --------------
+    SoLevelOfDetail::initClass(void)
+    {
+      SO_NODE_INTERNAL_INIT_CLASS(SoLevelOfDetail, SO_FROM_INVENTOR_1);
+
+     // FIXME: these elements are used from doAction(), so they should be
+     // enabled for all actions.
+     //   SO_ENABLE(SoAction, SoComplexityTypeElement);
+     //   SO_ENABLE(SoAction, SoViewportRegionElement);
+     [...]
+    ------8<----- [snip] --------------------8<----- [snip] --------------
+
+    Medium priority item, we've had support requests / problem reports
+    from at least two external developers about this. It is a
+    non-trivial issue to fix.
+
+    20040902 mortene.
+
+=====================================================================
+
+140 Rust in the SoVRMLParent machinery for keeping both an SoMFNode
+    and an SoChildList of its children.
+
+    Jochen Stier reported a problem with this on coin-discuss, and
+    provided the following code for reproducing the problem:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+I have a little piece of code that demonstrate the problem. As far as
+I understand, all the print statements should output 1. But that is
+not the case..... The refcount of the children of lGroup is
+incremented during the copy, but never decremented :(
+�
+��� SoVRMLGroup* lGroup = new SoVRMLGroup();
+��� lGroup->ref();
+�
+��� lGroup->addChild(new SoVRMLGroup());
+��� ((SoVRMLGroup*)lGroup->getChild(0))->addChild(new SoVRMLGroup());
+��� ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->addChild(new SoVRMLGroup());
+�
+��� LOG<12> () << lGroup->getRefCount();
+��� LOG<12> () << ((SoVRMLGroup*)lGroup->getChild(0))->getRefCount();
+��� LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->getRefCount();
+�
+��� SoVRMLGroup* lCopy = (SoVRMLGroup*)lGroup->copy();
+��� lCopy->ref();
+�
+��� LOG<12> () << lGroup->getRefCount();
+��� LOG<12> () << ((SoVRMLGroup*)lGroup->getChild(0))->getRefCount();
+��� LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lGroup->getChild(0))->getChild(0))->getRefCount();
+�
+��� LOG<12> () << lCopy->getRefCount();
+��� LOG<12> () << ((SoVRMLGroup*)lCopy->getChild(0))->getRefCount();
+��� LOG<12> () << ((SoVRMLGroup*)((SoVRMLGroup*)lCopy->getChild(0))->getChild(0))->getRefCount();
+�----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    At the least, this can lead to memory leaks as some nodes will
+    never be destructed.
+
+    The problem is related to the fact that we need to keep two copies
+    of references to children nodes for an SoVRMLParent: one from the
+    "children" SoMFNode field (because that is in the public API) and
+    one that can be fetched from the SoNode::getChildren() method
+    (also part of the public API, and used by e.g. traversal methods).
+
+    The issue of keeping these internally in sync at all times has
+    been a long-standing source of bugs, and this bug report indicates
+    that it is still not working 100%.
+
+    Consider this medium-to-high priority.
+
+    20040908 mortene.
+
+    UPDATE 20060208 mortene: see also items #162 and #196, which are
+    closely related.
+
+=====================================================================
+
+141 OpenGL context store/restore "stacking" for
+    e.g. SoOffscreenRenderer will fail if different window system GL
+    bindings are used in libCoin vs the main windows system binding.
+
+    [We used to run into this on Mac OS X, where Sc21 uses
+    NSOpenGLContext, and libCoin attempts to check (and restore) the
+    current context with aglGetCurrentContext(), but this is now
+    fixed, see update below.]
+
+    We can in theory also get the same problem for other combinations,
+    e.g. SoXt for a X11/GLX binding for the application on a Windows
+    system where libCoin will use WGL internally.
+
+    20040915 mortene, reported by kyrah.
+
+    UPDATE 20040915 mortene, this is kintel's write-up of assumed
+    problem areas and issues to cover:
+
+        Cases in which this has potential of breaking Coin:
+        o Offscreen rendering w/Cocoa [fixed]
+        o Offscreen rendering using a window system layer on top of
+          the native system (as Morten also pointed out), e.g. SoXt
+          under Windows.
+        o Offscreen rendering of a scene containing an SoSceneTexture2
+          node
+        o Offscreen rendering done from a callback node
+        o Nested SoSceneTexture2 nodes
+
+        What I have here is not a solution but rather requirements for
+        a solution that will help implementing this properly. The
+        basic mechanism for solving the problem should be the same as
+        kyrah suggested initially (i.e. using callbacks into client
+        code):
+
+        o Must call back into client code (we cannot e.g. execute
+          Objective-C code from Coin)
+        o Must have a stack of these callbacks (to take nested
+          offscreen renderers into account)
+        o Must take into account that multiple threads can
+          simultaneously render (by having one stack per thread?)
+        o Should be able to share resources between on-screen and
+          off-screen contexts:
+          - Imagine rendering a huge volume with SIMVoleon and wanting
+            to also offscreen render that every frame. Without texture
+            sharing, this is not going to be very fast.
+        o Should also support sharing between "layered" and native
+          contexts:
+          - Using e.g. GLX on Windows or NSOpenGL on Mac, we should
+            make the offscreen context (WGL and AGL respectively) able
+            to share from the layered contexts by e.g. extracting the
+            core component.
+
+    larsa's feedback:
+
+        It must behave like a stack, but it must be implemented
+        non-stackish.  I'm trying to figure out how this relates to
+        how BeOS did things.  There you would have to lock a GL
+        context when using it, and unlock it afterwards.  You couldn't
+        lock another context while one was locked already, so you
+        would basically have to unlock the onscreen rendering context
+        while doing any offscreen rendering.  So that's a model that
+        should fit below the surface of whatever design we end up with
+        on this.  I'm not sure if this is a problem at all yet though,
+        just that you wouldn't be able to translate makeCurrent() into
+        Lock() calls without pairing every Lock() up with Unlock() of
+        the previous context...
+
+    Update 20051108 kyrah:
+
+        Part of this problem (offscreen rendering in Sc21) has
+        been fixed by adding a callback interface for providing an
+        external offscreen rendering implementation (see gl.c:
+        cc_glglue_context_set_offscreen_cb_functions()). Note that
+        the other issues mentioned above ("stacked" offscreen
+        renderers, GLX-on-Windows) still remain to be resolved.
+
+=====================================================================
+
+143 Warnings typically triggered from faulty input files should be
+    easy to hide.
+
+    We should provide a mechanism to hide all the warnings typically
+    thrown out when encountering a buggy input file, as a service to
+    applications that have little control over their input sources
+    (like VRML viewers, for instance).
+
+    A couple of ideas:
+
+        * Provide an envvar, "COIN_DONT_WARN_ON_SCENEGRAPH" or some
+          such, that can be set to turn them off.
+
+        * Use a standard "tag" or prefix to those messages, so they
+          are easy to filter out for someone installing their own
+          error handler on SoError / SoDebugError.
+
+    Both the above suggestions could be implemented. In addition, one
+    needs to audit much of the Coin code to find the relevant
+    invocations of SoDebugError::post[Warning]().
+
+    Fairly low priority task.
+
+    20040924 mortene.
+
+=====================================================================
+
+157 SoFont does not support styles under Windows.
+
+    When adding a style to a fontname, the fallback font is used
+    instead (Arial). This wrl file recreates the problem:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+#Inventor V2.1 ascii
+
+Font { name "Times New Roman:Bold" }
+Text2 { string "test" }
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    (This works fine when using FreeType on Linux.)
+
+    20041102 handegar
+
+    UPDATE 20041102 mortene: note that it works as expected when
+    removing the ":Bold"-suffix, which indicates that the string we
+    pass to Win32's CreateFont() is wrong. Most likely it needs to be
+    broken up properly, and we should probably pass the information
+    about "bold" weighting as one of the other arguments to the
+    CreateFont() call, and not as part of the font name.
+
+    When taking care of this bug, please also check how "italics" and
+    other styles works (or not works).
+
+=====================================================================
+
+162 Inconsistent traversal behavior upon traversal of VRML97-nodes
+    with SoSFNode and/or SoMFNode fields.
+
+    According to pederb, only some VRML97-nodes forwards scene graph
+    traversal to the sub-graphs in their SoSFNode- or SoMFNode-fields.
+
+    E.g. SoVRMLText does not traverse its fontStyle field, but
+    SoVRMLShape and SoVRMLAppearance traverses their SoSFNode-fields.
+
+    Is there any good reason why we should /not/ let all nodes
+    continue traversing down into SoSFNode and SoMFNode fields? If
+    not, this should be fixed.
+
+    20041104 mortene, reported by kintel.
+
+    UPDATE 20050711 mortene: see also items #140 and #196, which seems
+    to be the same issue.
+
+=====================================================================
+
+168 Memory read/write errors for VRML97 Group / Parent / Switch nodes.
+
+    Valgrind reports
+
+        Invalid read of size 4
+        Invalid write of size 4
+
+    for the local WRL file ~pederb/store/vrml97/sony_cam.wrl upon exit
+    of the viewer it has been loaded into. The callstack backtraces at
+    the point of the errors are:
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+==31646== Invalid read of size 4
+==31646==    at 0x408BCA83: SoNodeSensor::dyingReference(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:102)
+==31646==    by 0x406FD3E7: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:436)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40949F72: SoVRMLParent::~SoVRMLParent(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Parent.cpp:165)
+==31646==    by 0x4093CAD1: SoVRMLGroup::~SoVRMLGroup(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Group.cpp:291)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    Address 0x45436CEC is 44 bytes inside a block of size 48 free'd
+==31646==    at 0x4002CDAD: __builtin_delete (vg_replace_malloc.c:244)
+==31646==    by 0x408BD037: SoSensor::~SoSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoSensor.cpp:128)
+==31646==    by 0x408BC3A7: SoDelayQueueSensor::~SoDelayQueueSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDelayQueueSensor.cpp:80)
+==31646==    by 0x408BC1B2: SoDataSensor::~SoDataSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDataSensor.cpp:87)
+==31646==    by 0x408BC9B5: SoNodeSensor::~SoNodeSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:66)
+==31646==    by 0x40747E0F: SoProtoInstance::~SoProtoInstance(void) (/home/sigma/mortene/code/coin-head/src/misc/SoProtoInstance.cpp:130)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40748372: SoProtoInstance::sensorCB(void *, SoSensor *) (/home/sigma/mortene/code/coin-head/src/misc/SoProtoInstance.cpp:271)
+==31646==    by 0x408BC285: SoDataSensor::invokeDeleteCallback(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDataSensor.cpp:248)
+==31646==    by 0x408BCA7F: SoNodeSensor::dyingReference(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:121)
+==31646==    by 0x406FD3E7: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:436)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==
+
+and
+
+==31646== Invalid write of size 4
+==31646==    at 0x408BCA96: SoNodeSensor::dyingReference(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:103)
+==31646==    by 0x406FD3E7: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:436)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40949F72: SoVRMLParent::~SoVRMLParent(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Parent.cpp:165)
+==31646==    by 0x4093CAD1: SoVRMLGroup::~SoVRMLGroup(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Group.cpp:291)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    Address 0x45436CEC is 44 bytes inside a block of size 48 free'd
+==31646==    at 0x4002CDAD: __builtin_delete (vg_replace_malloc.c:244)
+==31646==    by 0x408BD037: SoSensor::~SoSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoSensor.cpp:128)
+==31646==    by 0x408BC3A7: SoDelayQueueSensor::~SoDelayQueueSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDelayQueueSensor.cpp:80)
+==31646==    by 0x408BC1B2: SoDataSensor::~SoDataSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDataSensor.cpp:87)
+==31646==    by 0x408BC9B5: SoNodeSensor::~SoNodeSensor(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:66)
+==31646==    by 0x40747E0F: SoProtoInstance::~SoProtoInstance(void) (/home/sigma/mortene/code/coin-head/src/misc/SoProtoInstance.cpp:130)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40748372: SoProtoInstance::sensorCB(void *, SoSensor *) (/home/sigma/mortene/code/coin-head/src/misc/SoProtoInstance.cpp:271)
+==31646==    by 0x408BC285: SoDataSensor::invokeDeleteCallback(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoDataSensor.cpp:248)
+==31646==    by 0x408BCA7F: SoNodeSensor::dyingReference(void) (/home/sigma/mortene/code/coin-head/src/sensors/SoNodeSensor.cpp:121)
+==31646==    by 0x406FD3E7: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:436)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==    by 0x40766885: SoBaseList::truncate(int) (/home/sigma/mortene/code/coin-head/src/lists/SoBaseList.cpp:141)
+==31646==    by 0x40701316: SoChildList::truncate(int) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:176)
+==31646==    by 0x40701B95: SoChildList::~SoChildList(void) (/home/sigma/mortene/code/coin-head/src/misc/SoChildList.cpp:84)
+==31646==    by 0x407E803D: SoGroup::~SoGroup(void) (/home/sigma/mortene/code/coin-head/src/nodes/SoGroup.cpp:239)
+==31646==    by 0x40954FD6: SoVRMLSwitch::~SoVRMLSwitch(void) (/home/sigma/mortene/code/coin-head/src/vrml97/Switch.cpp:179)
+==31646==    by 0x406FD43D: SoBase::destroy(void) (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:447)
+==31646==    by 0x406FD99F: SoBase::unref(void) const (/home/sigma/mortene/code/coin-head/src/misc/SoBase.cpp:634)
+==31646==
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    20041105 mortene.
+
+    UPDATE 20050520 mortene: this bug may be fixed, at least I
+    couldn't reproduce it now (with Valgrind 2.4.0.rc4).
+
+=====================================================================
+
+191 SoOffscreenRenderer bug with SoOrthographicCamera in multitile-mode.
+
+    The following iv-file results in a faulty image when fed to the
+    Ivtools/renderos/renderos example, using a tile size of 512x512:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+OrthographicCamera {
+   viewportMapping CROP_VIEWPORT_LINE_FRAME
+   nearDistance 0.1
+   farDistance 53000
+   height 6393.33333333333
+   position -15206.092773 9440.072266 17456.371094
+   orientation -0.536894 -0.843216 0.027043   0.798199
+}
+
+Cube {
+   width 500
+   height 100
+   depth 50000
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    To reproduce with a forced tile size of 512x512, set the following
+    envvars:
+
+        COIN_OFFSCREENRENDERER_TILEWIDTH=512
+        COIN_OFFSCREENRENDERER_TILEHEIGHT=512
+
+    It appears to have something to do with the SoOffscreenRenderer
+    camera view volume narrowing to not work correctly with the
+    cropped viewport, as commenting out the "viewportMapping" field of
+    the camera causes the bug to go away.
+
+    20050519 mortene.
+
+    Yes. SoCamera will render a frame in the viewport when the
+    viewport mapping is set to one of the CROP modes. To fix this we
+    need a new element called SoViewportTile or something to make it
+    possible for SoCamera to detect that the SoGLRenderAction is
+    actually rendering a tile in the viewport, and not the entire
+    viewport. This is also needed to make other viewport-based
+    rendering nodes, such as legend, work.
+
+    I don't know if SoViewportTileElement is a good idea though, since
+    it will complicate the CROP rendering code in SoCamera quite a
+    bit.
+
+    Another idea: Is it possible to use the WindowSize-parameter in
+    SbViewportRegion to specify the entire viewport? This must be done
+    _after_ the viewport is initialized in the GL context though, maybe
+    in a pre-camera callback or something.
+
+    20050519 pederb
+
+    UPDATE 20050520 mortene: after discussion with pederb, we consider
+    the Correct Fix for this to first take care of bug item #121. This
+    means the SoOffscreenRenderer adding an element to the state stack
+    upon traversal start which identifies the current tile to be
+    rendered (i.e. containing row and column index, and ditto
+    dimensions), and then leaving it to SoCamera to render the
+    viewport cropping correctly. (As a side effect, SoCamera could
+    then also do the view volume narrowing itself, removing the need
+    for the current ugly hack in SoOffscreenRenderer to do this.)
+
+    UPDATE 20050714 mortene: there's something else odd going on
+    here... if the tilewidth and -height is set to 640 and 480,
+    respectively, which is the same as the default size of renderos'
+    buffer, it also comes out wrong -- but only if tiled rendering is
+    *not* used. If we on the other hand force tiled rendering on (by
+    using the envvar COIN_FORCE_TILED_OFFSCREENRENDERING=1), and the
+    tile size is at least of dimensions 640x480, everything works..?
+    Strange.
+
+=====================================================================
+
+194 SoOffscreenRenderer in tile-mode asserts on VRML97 scene graph.
+
+    The following scene graph attempted drawn with an
+    SoOffscreenRenderer (use e.g. the 'osgrab' debugging backdoor in
+    an examiner viewer to reproduce) causes an assert to hit in
+    SoOffscreenRenderer, due to the tail of the
+    SoGLRenderAction::getCurPath() being NULL at one point. The tail
+    of the path should likely never become NULL.
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#VRML V2.0 utf8
+
+Group {
+   children [
+      Shape {
+         geometry Sphere { }
+      }
+   ]
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    20050606 mortene.
+
+=====================================================================
+
+196 Bug with VRML97 scene graph searching.
+
+    The below scene graph (with a VRML97 PROTO) demonstrates a problem
+    with SoSearchAction in VRML97 graphs: one can not get paths to all
+    nodes, which causes e.g. PROTO-connection to "miss out" on certain
+    connections it should be able to make.
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#VRML V2.0 utf8
+
+PROTO AnnText [
+ exposedField MFString sText ""
+ field SFFloat sFontSize 0.1
+ field MFString sFontFamily "courier"
+ field SFString sFontStyle ""
+ exposedField SFVec3f slocation 0 0 0
+]
+{
+   Transform {
+      translation IS slocation
+      children [
+         Shape {
+            geometry Text{
+               string IS sText
+               fontStyle FontStyle {
+                  size IS sFontSize
+                  family IS sFontFamily
+                  style IS sFontStyle
+                  spacing 2.5
+               }
+            }
+         }
+      ]
+   }
+}
+
+Transform {
+   children [
+      AnnText { slocation 0 0 0 sText "hepp" }
+   ]
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    pederb suggests that this should be fix be extending the
+    SoVRMLParent etc hack by duplicating MFNode contents into "hidden"
+    SoChildList instances. pederb has a framework for this in:
+
+        void SoVRMLParent::updateChildList(SoNode * nodewithsfnode, SoChildList & cl)
+
+    Note: is there some other, more fundamental, way we could fix this
+    without applying this hack?  It's not very nice, and is giving us
+    headaches now and then with bugs which are the results of these
+    SoChildList instances not kept in sync.
+
+    20050609 mortene.
+
+    UPDATE 20050711 mortene: see also item #162, which seems to be the
+    same issue.
+
+    UPDATE 20060130 mortene:
+
+      This is a /really/ tricky issue, and one which we don't really
+      know yet how to fix:
+
+      The source of the problem is that VRML nodes use SoSFNode and
+      SoMFNode *fields* to keep track of their child nodes, while the
+      "traditional" Inventor nodes use the SoChildList class.
+
+      For certain functionality of the library, we do however need a
+      SoChildList -- like for e.g. SoPath-instances being able to
+      track their way down through the scene graph.
+
+      So to work around this problem, there is a hack in place at
+      various spots in the VRML nodes with MFNode "children" field(s):
+      the node internally keeps an SoChildList, which is attempted
+      kept synchronized with the MFNode field. This SoChildList
+      instance is then available through the virtual
+      SoNode::getChildren() method, just as for the "normal" Inventor
+      nodes.
+
+      This hack does however have certain ugly weaknesses:
+
+        * it has not been set up everywhere it is probably needed
+          (none or few of the nodes with SoSFNode fields have an
+          SoChildList "on the side", for instance)
+
+        * it causes various problems with the SoPath class, which has
+          no knowledge of SoSFNode / SoMFNode, and is completely and
+          utterly geared towards going through SoChildList
+
+        * there is copy'n'paste-jobs of code for
+          SoChildList<->SoMFNode synchronization at various places --
+          code which is not straightforward to bug-fix and maintain
+
+        * the SoNode::getChildren() method returns a mutable
+          SoChildList (!)
+
+      So, this is one of the really major design flaws of the library,
+      and it looks like we need a stroke of genius to resolve this
+      knot.
+
+      One venue which may be interesting to investigate would be to
+      see if letting SoChildList take care of the synchronization vs
+      SoSFNode & SoMFNode fields would be sensible. Or perhaps let the
+      SoMFNode and SoSFNode classes have a built-in SoChildList which
+      they could auto-sync?
+
+      Another option which may be a possibility would be to let SoPath
+      know about SoMFNode and SoSFNode. My gut feeling about that one
+      is that it would quickly make the SoPath API a lot uglier, tho'.
+
+      I've been asked for an estimate on this task, but given that we
+      don't yet know /how/ to fix it, makes this impossible as of
+      now. I'm quite certain however that we are talking about > 1
+      week of efficient coding and testing.
+
+=====================================================================
+
+203 openal.dll instances may have different calling convention.
+
+    Different than the custom under Windows, and different than from
+    what we assume it is. This causes a crash on those platforms when
+    attempts are made at using sound. (The first attempt at calling an
+    openal.dll function will crash the application, because of
+    unexpected stack layout on return.)
+
+    My suggestion for a "best fix" would be to include code in Coin to
+    detect the calling convention used for a DLL. To do this, one
+    needs to do some trickery with checking the stack pointer after
+    calling a function of the DLL -- something which probably requires
+    some x86 assembly programming.
+
+    This is still not a perfect fix, as functions in a DLL can have
+    different calling conventions. Perhaps it would be possible to
+    query the DLL directly about this? Request for assistance at a
+    Usenet Windows programming group did not result in any useful
+    hints for how to do this.
+
+    20050701 mortene.
+
+=====================================================================
+
+205 Hardcopy export does not work correctly with viewport region
+    changes.
+
+    As reported on coin-discuss by user Ole Jacob Hagen:
+
+        > Generating a postscript file when my scenegraph consists of
+        > one instance of Smallchange's [ViewportRegion] works, but
+        > when I have arranged my scenegraphs into four viewports
+        > (2x2-array) it doesn't work.
+
+    Is this a bug or a limitation? Waiting for pederb's input on this.
+
+    20050714 mortene.
+
+=====================================================================
+
+208 Too high tessellation by default for 3D text?
+
+    The 06.3.Complex3DText example updates at a very slow framerate,
+    so it seems like our default settings for 3D text complexity is
+    too high.
+
+    Investigate, compare with SGI Inventor.
+
+    Not particularly high priority item.
+
+    20051021 mortene.
+
+=====================================================================
+
+209 Bug with SoTranslate1Dragger.
+
+    The following iv-file should work the same in Coin as in SGI
+    Inventor, but it doesn't:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+Switch { DEF DRAG Translate1Dragger { } }
+
+RotationXYZ {
+   angle  = DecomposeVec3f { vector = USE DRAG.translation }.x
+   axis Z
+}
+
+USE DRAG
+
+Cube { width 0.5 height 0.5 depth 0.5 }
+Separator {
+   Translation { translation 0 -5 0 }
+   Cylinder { radius 0.2 height 10 }
+}
+Translation { translation 0 -10 0 }
+Sphere { radius 0.4 }
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    In Coin, the dragger geometry is translated, for some odd
+    reason. In SGI Inventor, it only rotates along with the rest of
+    the geometry, as expected.
+
+    20051208 mortene.
+
+    UPDATE 20060130 mortene:
+
+      As for an estimate on this bug, I expect it to be on the order
+      of just a few hours to fix. Need to investigate and figure out
+      why it happens, and the fix is likely to just be a little
+      modification of the internal default geometry for the dragger,
+      i.e. to the Coin/data/draggerDefaults/translate1Dragger.iv file.
+
+=====================================================================
+
+210 SoText2 font size policy in Coin incompatible with SGI / TGS
+    Inventor?
+
+    According to Frank Hibbeln:
+
+> The doc's for SoFont indicate the size for Text2 nodes is
+> interpreted as pixels whereas the TGS Inventor doc's indicate it's
+> "printer points" (ie i point = 1/72 inch ).
+
+    Should investigate this with SGI Inventor, and see if we need to
+    fix anything for Coin.
+
+    20051212 mortene.
+
+=====================================================================
+
+211 SoTextureCoordinateSphere et al does not work with some
+    primitives.
+
+    SoSphere, SoCube, SoCone and SoCylinder has not been modified to
+    work properly with SoTextureCoordinateSphere,
+    SoTextureCoordinateCylinder etc, but instead just ignoring this
+    texture function nodes.
+
+    20060213 mortene.
+
+=====================================================================
+
+213 SbTesselator fails on polygon which it is supposed to handle.
+
+    The following Inventor file demonstrates a problem with
+    SbTesselator (according to kintel, it is supposed to be able to
+    handle this case):
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+Separator {
+
+   ShapeHints {
+      faceType UNKNOWN_FACE_TYPE
+
+   }
+
+   FaceSet {
+      vertexProperty
+      VertexProperty {
+         vertex [5616.34650  -94900.63137  0,
+          19459.61213 -83978.42044  0,
+          18951.60431 -69500.14309  0,
+          34699.90509 -70643.16262  0,
+          35080.91681 -85883.45559  0,
+          21491.65119 -91598.56887  0,
+          19459.61213 -83978.42044  0,
+          5616.34650  -94900.63137  0,
+          9172.41681  -108997.90091 0,
+          52607.25275 -107600.87747 0,
+          55909.31525 -90328.54153  0,
+          46257.12775 -61371.98684  0,
+          20475.63556 -53243.82669  0,
+          282.24494   -65690.06887  0,
+          5616.34650  -94900.63137  0]
+         orderedRGBA 0xac00ff
+         materialBinding OVERALL
+
+      }
+      numVertices 15
+
+   }
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    Example provided by Frank Hibbeln.
+
+    To see how this polygon is supposed to be tessellated, use the GLU
+    tessellator by setting the following envvar:
+
+        COIN_PREFER_GLU_TESSELLATOR=1
+
+    20060216 mortene.
+
+=====================================================================
+
+214 VMLScript JS support does not work at all with latest Spidermonkey?
+
+    We've had an external report about the VRMLScript node no working
+    at all with JS, not even the models/vrml97/script/simplest-possible.wrl
+    test case.
+
+    The errors output from the code is
+
+        Coin info in SoJavaScriptEngine::field2jsval(): no handler found for MFString
+        Coin info in SoJavaScriptEngine::field2jsval(): no handler found for SFBool
+        [and more of the same]
+
+    There may be bugs in the Script.cpp, JS_VRMLClasses.cpp or
+    SoJavaScriptEngine.cpp code which manifests itself with the latest
+    Spidermonkey release, and not with previous versions (I'm not able
+    to reproduce the errors on my system with the earlier version
+    1.5rc6a).
+
+    20060217 mortene.
+
+=====================================================================
+
+215 SoText2 behaviour under the influence of an SoClipPlane is
+    peculiar.
+
+    The following scene graph demonstrates how SoText2 nodes doesn't
+    work well with SoClipPlane:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+ClipPlane {
+   plane 1 0 0 -1
+   on TRUE
+}
+
+Text2 {
+   string "hepp"
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    Spin the camera around, and see how the SoText2 string slips in
+    and out of view, sometimes partially, sometimes fully.
+
+    Should perhaps try to implement a more consistent behaviour, for
+    instance always showing or not showing the string depending on how
+    the its 3D origin point is placed vs the clip plane(s).
+
+    We need to make a policy decision on this, and document that, at
+    least.
+
+    20060307 mortene.
+
+    This happens since we do culling against the view volume and the
+    clipping plane based on the bounding box of the node and each
+    character. I'm not sure if we should do culling against clipping
+    planes for 2D texts or not. Should investigate how SGI Inventor
+    handles this.
+
+    20060327 pederb
+
+=====================================================================
+
+217 SoDrawStyle::POINTS not handled for linesets in SoToVRML2Action
+
+    If a scene contains a line set where the draw style is set to
+    POINTS, the lines will still be converted to lines and not points.
+
+    Needs a bit of code to fix so I'll probably delay this until the
+    next Coin bugfixing session.
+
+    20060327 pederb
+
+=====================================================================
+
+219 View All doesn't work properly with SoText2 nodes
+
+Pressing "View All" in an examinerviewer with the attached scenegraph
+moves the "ZZZ" string outside the frustum and clips the "YYY" string
+in half.
+The initial view when setting the scenegraph looks correct though.
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+SoText2 {
+  string "XXX"
+}
+Translation {
+  translation 0 100 0
+}
+SoText2 {
+  string "YYY"
+}
+Translation {
+  translation 0 100 0
+}
+SoText2 {
+  string "ZZZ"
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    20061129 kintel
+
+=====================================================================
+
+221 Global field values are not evaluated when reading from file
+
+When creating and connecting from a global field from an .iv file, the
+value of the field is not evaluated until the field is touched. If
+nobody touches the file from code, the initial value will never be
+set.
+
+The offending code is probably related to the "do not notify" flag
+being set when making the field connection (SoField.cpp:2283).
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+#Inventor V2.1 ascii
+
+SoText2 {
+  string "XXX" = GlobalField {
+    type SFString
+    vfctime "Test"
+  }.vfctime
+}
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+    20061129 kintel
+
+=====================================================================

@@ -1,0 +1,124 @@
+From: Morten Eriksen <mortene@sim.no>
+Subject: [PATCH] Re: [Doxygen-users] Avoiding repeated documentation on inherited members?
+To: doxygen-develop@lists.sourceforge.net
+Date: 13 Aug 2002 10:29:21 +0200
+Bcc: kristian@sim.no
+Organization: Systems in Motion
+
+Morten Eriksen <mortene@sim.no> writes:
+
+> I wondering if it's possible to configure Doxygen to _not_ repeat
+> the documentation on C++ inherited members of subclasses?
+
+Replying to my own post here... anyway, I had a problem described like
+this:
+
+> IMHO, this feature tends to clutter up the API documentation more
+> than it clarifies -- at least for the particular class library I'm
+> documenting.
+> 
+> An example to make myself clear:
+> 
+> ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] -----
+> 
+> //! This class blablabla...
+> class Super {
+> public:
+>         //! This method blablabla...
+>         virtual void aVirtualMethod(void);
+> };
+> 
+> //! This class blablabla...
+> class Sub : class Super {
+> public:
+>         virtual void aVirtualMethod(void);
+> };
+> 
+> ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] -----
+> 
+> Now, for class Sub, aVirtualMethod() will be included in the
+> documentation, just repeating the documentation of this method in
+> the Super class. I would like to avoid that, to "clean up" and
+> remove unnecessary clutter in a huge, fine-grained class library I
+> have documented here.
+
+..and another problem described like this:
+
+> [...] is it possible to configure Doxygen to not output
+> non-documented default constructors and destructors of a C++ class?
+> 
+> The documentation for default constructors usually just ends up as
+> 
+>         //! Default constructor.
+>         MyClass::MyClass(void) { [...] }
+> 
+> or
+> 
+>         //! Default constructor, initializes internal member variables.
+>         MyClass::MyClass(void) { [...] }
+> 
+> and for the destructor
+> 
+>         //! Destructor, deallocates resources used by class instance.
+>         MyClass::~MyClass() { [...] }
+> 
+> ..or something in this vein -- which of course is completely worthless
+> to the application programmer, so it could just as well have been left
+> out. *Not* documenting the default constructors and/or the destructor
+> could be sufficient clue to Doxygen to don't bother with them for the
+> output.
+> 
+> So, is there currently any way to leave out un-documented default
+> constructors and destructors?
+
+(Sorry for the lengthy quoting, I just wanted to rehash the problems
+for the developers, as the mails were sent to the -users list.)
+
+Now, I have a patch done by a colleague (Kristian Eide) which fixes
+both problems, so please consider the following for inclusion (done
+against the code of the 1.2.17 release):
+
+----8<--- [snip] --------8<--- [snip] --------8<--- [snip] ----8<----
+
+--- memberdef.cpp	Wed Jun 26 19:16:23 2002
++++ ../../doxygen-1.2.17/src/memberdef.cpp	Mon Aug 12 12:11:13 2002
+@@ -581,8 +581,33 @@
+                              mtype==Friend
+                             );
+     
++    // hide member if it overrides a member in a superclass and has no
++    // documentation
++    bool visibleIfDocVirtual = (reimplements() == NULL ||
++                                hasDocumentation()
++                               );
++
++    // true if this member is a constructor or destructor
++    // This should perhaps be included in the MemberDef class
++    bool cOrDTor = (name()==classDef->localName() ||         // constructor
++                    (name().find('~')!=-1 &&  // hack to detect destructor
++                     name().find("operator")==-1
++                    )
++                   );
++
++    // hide default constructors or destructors (no args) without
++    // documentation
++    bool visibleIfNotDefaultCDTor = !(cOrDTor &&
++                                     defArgList != NULL &&
++                                     (defArgList->isEmpty() ||
++                                      defArgList->first()->type == "void"
++                                     ) &&
++                                     !hasDocumentation()
++                                    );
++
+     bool visible = visibleIfStatic && visibleIfDocumented && 
+-                   visibleIfEnabled && visibleIfPrivate && !annScope;
++                   visibleIfEnabled && visibleIfPrivate &&
++                   visibleIfDocVirtual && visibleIfNotDefaultCDTor && !annScope;
+     //printf("MemberDef::isBriefSectionVisible() %d\n",visible);
+     return visible;
+ }
+
+----8<--- [snip] --------8<--- [snip] --------8<--- [snip] ----8<----
+
+Best regards,
+Morten

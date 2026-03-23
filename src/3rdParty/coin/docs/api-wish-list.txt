@@ -1,0 +1,965 @@
+WHAT'S THIS?
+============
+
+Beyond Coin: Gold (v1.0, the Open Inventor compatibility release), we
+intend to extend the original Open Inventor API where we think it
+lacks needed functionality.  This file contains a collection of such
+API extension ideas that we will consider to implement in the future.
+
+The listing of an API change or API extension in this file does not
+mean that it will be implemented, only that it will be considered for
+implementation.
+
+Ideas for this wish list can be submitted by anyone.
+
+
+THE WISH LIST
+=============
+
+* missing base class fields
+  2000-12-05  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  The following base classes have no corresponding fields:
+    SbBox2f, SbBox2s, SbBox3f, SbColor4f, SbCylinder, SbLine, SbSphere,
+    SbXfBox3f
+
+  A field for every base class is probably not worth implementing, but
+  some would be...
+
+
+* SbVec2i
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  It would be very useful to have this class for storing
+  2D integer vectors.
+
+  The corresponding field classes should also be added.
+
+  [How about implementing classes SbVec[Single|Double]Float[2|3|4] and
+  SbVec[16|32|64]Integer[2|3|4] (perhaps also with "unsigned"
+  mutations?), and mapping the original Inventor API classes to these?
+  (We'd need some code in a sensible language for autogenerating all
+  the C++ code for the class implementations.) 2000-12-07 mortene]
+
+  See also item "SbReal typedef" further down in this file.
+
+
+* SoGLPrimitiveSet node.
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  A node designed for fast rendering, since it's an exact mapping
+  on how OpenGL renders shapes, and all information (except current
+  material and texture) is stored inside the node. This might be our
+  alternative to the (IMHO) silly SoVertexProperty node.
+
+  The node has the following fields:
+
+    SoMFInt32 coordIndex;
+    SoMFInt32 rgbaIndex;
+    SoMFInt32 normalIndex;
+    SoMFInt32 textureCoordIndex;
+
+    SoMFVec3f point;
+    SoMFVec3f normal;
+    SoMFVec2f texCoord;  // or possibly SbVec4f to support 3D textures
+    SoMFUInt32 orderedRGBA;
+
+  All geometry information is inside the node. This will lead to much
+  less overhead for each rendered node, which might be important if
+  you have lots of nodes in a scene.  Also, this makes it very easy to
+  create a display list inside the node, and a much simpler notification
+  scheme.
+
+  This node can contain triangles, triangle strips, triangle fans,
+  quads, quad strips or polygons. All geometry must be initialized
+  with a negative code, and the geometry type will be rendered until
+  the next negative code. Since this scheme is an exact mapping of the
+  way OpenGL renders geometry, this will lead to maximum performance
+  OpenGL rendering. Polygons must of course be convex; polygon
+  tessellation will not be performed by this node, as it is designed
+  for speed, not flexibility.
+
+  Default texture coordinates will not be generated. If you want
+  texture coordinates, supply them yourself. The same goes for normals;
+  they will not be generated.
+
+  For material nodes with multiple values per field, only the first
+  value per field will be used. Diffuse color and transparency can be
+  replaced using an orderedRGBA field inside the node.
+
+  Normal bindings:
+
+  NONE               : when normal and normalIndex are empty
+  PER_VERTEX         : when normalIndex is empty
+  PER_VERTEX_INDEXED : otherwise
+
+  color and texture bindings use the same scheme.
+
+  For INDEXED bindings, you should put a -1 in the normalIndex,
+  rgbaIndex and texCoordIndex fields when there's a negative index
+  code in the coordIndex field. This is mostly to make the node a little
+  more readable for the human eye.
+
+  It is not possible to specify normals, colors or texcoords
+  per face, but this can be achieved with very little overhead using the
+  index-fields (it is very rarely used anyway, I think).
+
+  I guess this node is most suited to be computer generated since
+  it is easy to make mistakes with all the different coordIndex codes.
+  But, experienced OpenGL programmers should be able to use it quite easily.
+
+
+* More nodes and elements to control GL state.
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  Alpha test, blending, stencil etc. We should at least have an
+  SoGLAlphaTestElement, since Coin supports alpha test rendering of
+  textures.
+
+
+* Add SoMFMatrix input fields in SoCalculator
+  2001-03-29  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  It could be useful to do matrix operations in the calculator, and
+  by adding some SoMFMatrix input fields we could do just that.
+  Some new functions would be needed of course, such as
+  multvecmatrix(), multdirmatrix(), multleft(), multright(),
+  inverse() and identity().
+
+
+* A better hash/dict class than SbDict.
+  2001-03-29  Morten Eriksen  <mortene@sim.no>
+  [upwards compatible extension]
+
+  Perhaps something like
+
+        SbDictT (templatized key type, void* value type)
+          +- SbDict32 (key type == uint32_t)
+          +- SbDict64 (key type == uint64_t)
+          +- SbDict (key type == unsigned long, for backwards API compatibility)
+
+  Comment by pederb:
+    Remember that all template code should be inline, in the SbDict.h
+    header file. Otherwise we will run into tons of problems on
+    different compilers.
+
+  Update, mortene:
+    Perhaps it would be better in the long run to use a "code
+    generating" set of #define macros in pure C as the basis for
+    SbDict (ie "templatize" our hash-classes the "C-way").  I believe
+    they do something like this for hashes in the Linux kernel
+    sources.
+
+  Update, mortene 2003-09-12:
+    We now have a C hash ADT. (But it is not generic.)
+
+  Update, larsa 2003-11-04:
+    Inventor/misc/SbHash.h
+
+
+* SoGestureEvent
+  2001-04-29  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  Derived from SoEvent, this class would be a container for a gesture type
+  indicator (SbName) and a variable set of parameters (name + value).
+  Something like this should be implemented to make it easier to create
+  gesture-based interfaces...
+
+
+* SoText2::verticalAlignment / verticalJustification
+  2001-04-30  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  I wish for this new field in the node, to be able to control the
+  vertical alignment of the strings. Useful if you want to align
+  strings at the bottom or centre of something. We could also consider
+  adding this field in SoAsciiText and SoText3.
+
+
+* 3D GUI Components
+  2001-05-01  Peder Blekken  <pederb@sim.no>
+
+  It would be very useful to have a set of classes to build simple 3D
+  GUIs. A nice approach might be to do something similar to how
+  draggers are created -- as nodekits -- with default geometry that
+  can be replaced by supplying your own geometry files.
+
+  Examples of useful components: PushButton, ScrollBar, ComboBox,
+  RadioButton, LineEdit, Menu?...
+
+  Update, mortene@sim.no 2001-05-01:
+
+    I think we also need to write a "panel" class as well as layout
+    handling to do this properly.
+
+  Update, mortene@sim.no 2001-05-01:
+
+    Or how about "tuning" these common 2D components to better (?) fit
+    a 3D environment? I.e. instead of a pushbutton, we could make a
+    "pushball", a set of radiobuttons would be a set of "radioballs",
+    etc etc.
+
+    Many components are inherently 2D and would be hard to re-make in
+    3D, though.
+
+  Update, pederb@sim.no 2001-05-02
+
+    The thought was that the look of the components should be 100%
+    configurable through geometry files. If you want to, you should be
+    able to create a PushButton that looks like a ball by supplying
+    the appropriate geometry file.
+
+    Also, I would like to be able to use the components as 2D GUI
+    components. It is very useful for creating an overlay GUI.  I
+    wouldn't want to have buttons that looks like a ball for a 2D GUI.
+
+
+* Less environment pollution
+  2001-05-02  Lars J. Aas  <larsa@sim.no>
+
+  Instead of having one environment variable for each togglable option, we
+  could use one one variable containing several options.  For instance:
+
+    export COIN_RENDER_CACHING=1
+    export COIN_TEX2_BUILD_MIPMAP_FAST=1
+
+  could become:
+
+    export COIN_OPTIONS="+RENDER_CACHING,+TEX2_BUILD_MIPMAP_FAST"
+
+  You could use + (optional) to turn an option on, and - to turn it off.
+  One could use ! instead of -, but bash (readline?) doesn't handle use of
+  ! as gracefully as it ought to.
+
+  The last occurrence of an option would be the result of a lookup.  That
+  way, you can override previous settings by writing:
+
+    COIN_OPTIONS="$COIN_OPTIONS,-RENDER_CACHING"
+
+  Using a list to assign values (integers and strings) can also be done
+  quite easily.  (COIN_OPTIONS="ARBITRARY_LIMIT=512").
+
+  If there are limits to the length of the contents of an environment
+  variable, an option is to search the environment for COIN_OPTIONS,
+  COIN_OPTIONS2, COIN_OPTIONS3, etc. until there is no environment
+  variable with the name of the next variable.  This will unfortunately
+  not work with the above scheme of appending overriding options at the
+  end of COIN_OPTIONS since you need to know which variable is parsed last.
+
+  ** Comment, mortene 2001-05-02:
+
+    This sounds like a bad idea to me -- trading off env-var pollution
+    for obfuscation.
+
+    The pollution doesn't look to be bad, as long as we keep a "COIN_"
+    prefix to simulate a separate namespace. And besides, querying and
+    setting the single COIN_OPTIONS environment variable would be a
+    lot harder from within application /code/ -- think about it..
+
+  ** Answer, larsa
+
+    I was thinking along the lines of having a simple API for this
+    functionality.  It's not "a lot harder", and we could add flexibility
+    by making variables watchable (callbacks) and other things.
+
+    Another possibility is to have an SoOptions node (or some similar name)
+    that could be placed in the scene graph to control some of these options.
+    This can be complimentary to the current envvar-scheme.
+
+
+* SbBool SbMatrix::inversePossible(void) const
+  2001-07-02  Peder Blekken <pederb@sim.no>
+
+  It would be useful to have a method to test if it is possible to
+  calculate the inverse of a matrix. Right now we check if det4() is
+  equal or very close to zero, but I've seen algorithms in GGems
+  that use the floating point precision constant (FLT_EPSILON) to
+  determine if it's possible to calculate the inverse.
+
+  Update 2001-07-03 mortene: just want to mention that
+  SbMatrix::invertible() would be a somewhat smoother name. :-)
+
+
+* SbList::setEqTester()
+  2001-07-03  Marius Bugge Monsen <mariusbu@sim.no>
+  (write-up by mortene)
+
+  SbList::find() (and indirectly all methods of SbList using find())
+  could be made more flexible if it was possible to register a
+  callback function which did the equality testing against the list
+  items.
+
+  The full method signature would look something like this:
+
+  class SbList {
+    [...]
+    typedef SbBool (*SbListEqTester)(const Type item0, const Type item1);
+    SbListEqTester * setEqTester(SbListEqTester * neweqtester);
+    [...]
+  };
+
+  (BTW, the name for this function is crap -- should think of
+  something better.)
+
+
+* SoNode::setOverride() should be made persistent
+  2001-07-03  Marius Kintel <kintel@sim.no>
+  (write-up by mortene)
+
+  It is now not possible to store override information for nodes
+  permanently in scenegraph "dumps" to .iv-files.  Being able to make
+  this information persistence would be more convenient for the
+  application programmer.
+
+  Note that it is very probable that fixing this would force us to
+  break downward and "cross-over" compatibility with earlier Coin
+  versions and TGS / SGI Inventor versions of the file format, so it
+  is unlikely that we will do anything about this until we'd made our
+  own additional file export / import format from scratch.
+
+  Update 2001-07-03 pederb: It would also be nice if setOverride()
+  could be done field-by-field, and not just for the entire node.
+
+
+* SoDB::registerImporter()
+  2001-07-06  Marius Kintel <kintel@sim.no>, Peder Blekken <pederb@sim.no>
+  (write-up by mortene@sim.no)
+
+  Instead of (or at least in addition to) the silly
+  SoDB::registerHeader() function (bad design, as it can only handle
+  files with a header looking like the original Inventor and VRML
+  stuff) we should perhaps make available a function
+  registerImporter() for generally supporting any file format for
+  import to Coin scenegraphs.
+
+  Update 2001-09-19 larsa:  I'm experimenting with an ImportKit nodekit
+  that could deal with import/export.  Registration (or simply typesystem
+  hierarchy traversal) can probably be used in a factory approach for
+  supporting foreign formats in an abstract way.
+
+
+* New node TextureAttribute
+  2001-06-07  Peder Blekken <pederb@sim.no>, Morten Eriksen <mortene@sim.no>
+
+  Complexity's textureQuality is kind of outdated, since most OpenGL
+  drivers now support linear filtering and mipmapping at no additional
+  performance cost when enabled. It would be more useful to be able to
+  specify when you want to enable linear filtering and/or mipmapping.
+
+  A TextureAttribute node might contain these fields:
+
+    SoSFBool linearFiltering;
+    SoSFBool mipmapping;
+
+    enum ScalePolicy {
+      SCALE_DOWN,
+      SCALE_UP,        // default
+      DONT_SCALE
+    };
+    SoSFEnum scalePolicy;
+
+    enum LoadPolicy {
+      IMMEDIATELY,    // default
+      DELAY_LOAD,
+      DELAY_LOAD_AND_UNLOAD
+    };
+    SoSFEnum loadPolicy;
+
+
+* void SbRotation::getAsEuler(SbVec3f &), void SbRotation::setAsEuler(const SbVec3f &)
+  2001-07-15 <mortene@sim.no>
+
+  Should be simple enough, see quateuler.cpp in this directory for the
+  code we need for the getAsEuler() method.
+
+  See also SmallChange's Rot2Heading engine.
+
+* SoFocusEvent
+  2001-08-15  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  Derived from SoEvent, this event class would notify the scene when the
+  renderarea/viewer has input (event) focus and not.  FOCUS_IN and FOCUS_OUT
+  would be the focus change event values.
+
+
+* SoMarkerSet scaling
+  2001-08-24  suggested by Coin-user Nigel Murry, write-up by <mortene@sim.no>
+  [upwards compatible extension]
+
+  Add functionality to the SoMarkerSet node to make it possible to
+  scale the marker bitmaps.
+
+
+* SbReal typedef
+  2001-09-05  Lars J. Aas  <larsa@sim.no>
+  [will force incompatible changes in the API if we want to do this in
+  a way which permeates the whole library (which we probably do)]
+
+  SbReal could be either defined as float or double (and even "long double"),
+  depending on what precision the developer decided upon at configure time.
+  Lots of the API and internals should then be changed to use SbReals instead
+  of the fixed float-precision types.  Default would be float, since double
+  will break ABI-compatibility.
+
+  Similarly, SbVec2f and SbVec2d would both be fixed to float and double,
+  while SbVec2r could change, depending on the definition of SbReal.
+
+  See also item "SbVec2i, SbVec2d, SbVec4d" earlier in this file.
+
+
+* The SbBool typedef
+  2001-09-05  Lars J. Aas  <larsa@sim.no>
+  [ABI-incompatible change (mangled function signatures will not be
+  the same on converting from int->bool)]
+
+  The SbBool type is always int.  Consider detecting if the bool type exists
+  and use it instead when available.  How does this work across multiple
+  C++ compilers?  Since they're not ABI-compatible in the first place, this
+  change won't hinder anything, will it?
+
+  Update 2001-09-05 mortene: See also FIXME comment near the top of
+  include/Inventor/SbBasic.h.in.
+
+  Update 2002-04-18 mortene: Perhaps not such a good idea after all,
+  as SbBasic.h should also be available to use from C code.
+
+
+* Make APIs for engine classes more consistent.
+  2001-09-11  Karin Kosina <kyrah@sim.no>, write-up by <mortene@sim.no>
+
+  Instead of a field called "enable" for some engines, "disable" in
+  others and yet again "on" in others, use a consistent single name
+  (but provide backward compatibility).
+
+  Update 2001-09-19 larsa:  You also have inconsistencies in method names
+  wrt the notification mechanism, I think.
+
+
+* SoInput::setStrings(char **)
+  2001-09-16  Lars J. Aas  <larsa@sim.no>
+  [ABI-incompatible change (all things in SoInput is virtual, so this should
+   probably be virtual too]
+
+  Writing out scene graphs in strings and creating scene graphs of them by
+  reading them with SoInput::setBuffer() is very convenient, but very long
+  strings is not portable, meaning you have to implement buffer allocation
+  and string concatenation before using SoInput::setBuffer().
+  The idea behind setStrings() is that you create a NULL-terminated string
+  array of shorter strings, and read from that array as if it was a buffer
+  of concatenated strings.
+
+
+* SoInput/SoOutput alternative
+  2001-09-16  Lars J. Aas  <larsa@sim.no>
+
+  The SoInput / SoOutput classes are very messy.  Although they have
+  lots of virtual methods, they are almost impossible to derive to
+  change their behaviour (like I/O through network connections and
+  compression libraries).  A simpler, cleaner, more flexible /
+  extendible alternative should be created and allowed to be used as
+  an alternative to these classes.
+
+  Update 2002-04-18 mortene: I think I would prefer the following
+  actions when solving this: 1) extract the functionality of these
+  classes into "pure" C constructions / code with cleaner & better
+  design, 2) layer the old SoInput and SoOutput classes on top of
+  these new implementations.
+
+
+* SoAction::apply(SoAction * beingApplied)
+  2001-09-20  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  If you need to apply an action as a result of an event during an action
+  traversal, it is very inconvenient to have to figure out what that action
+  was applied to and then apply the other action to the same thing.
+
+  This method should be a shortcut for calling beingApplied->getWhatAppliedTo()
+  and then switch/case the correct this->apply(beingApplied->get*AppliedTo())
+  method.
+
+  Method does not need to be virtual (no ABI problems) since it only forwards
+  to three other virtual methods.
+
+
+* SbFile
+  2001-09-26  Morten Eriksen  <mortene@sim.no>
+  [upwards compatible extension, internal design cleanup]
+
+  Problem: there's now a fair deal of code spread around in the
+  library for doing misc "low-level" file operations which may or may
+  not be OS-dependent. Examples: stat() operations (function is named
+  differently on UNIX and MSWin systems) for testing presence of files
+  or file sizes, path / basename splitting (different for UNIX and
+  MSWin), etc etc.
+
+  These operations should be abstracted into a common class to handle
+  certain file and directory operations, because it would clean up the
+  design and make the chance for bugs slimmer by collecting all the
+  different OS-specific code in a common place.
+
+  A couple of advices for any designer and / or implementer of this
+  class:
+
+     0) I _think_ it'd be wise to use a single class for both the
+        "file" abstraction and the "directory" abstraction -- like all
+        UNIX systems do (ie; directories are just files with other
+        files in them). So we only need a "SbFile", not a
+        "SbDirectory".
+
+     1) Please check the design of available software units of this
+        type before starting the implementation -- I've at least heard
+        good things about the abstractions employed in the Common Lisp
+        specification.  There's no point in reinventing the wheel
+        _completely_ from scratch, and constructing something which is
+        capable of working on the more obscure platforms out there
+        also is not as trivial as it may seem.
+
+     2) It would IMO be preferable to have this class implemented in
+        "pure" C, for easier duplication into any other project /
+        library, plus because we'd like to re-write many of the Sb*
+        classes, So*Error classes and some other Coin classes in C
+        some time in the future for various reasons.
+
+  (If #2 is heeded, "SbFile" should be just a wrapper C++ class around
+  the C struct(s) and functions of the "real" implementation.)
+
+
+* SoField::setValidator(SoValidator *)
+  2001-12-05  Morten Eriksen & Peder Blekken
+  [upwards compatible extension]
+
+  A generic mechanism for controlling the valid range of a field would
+  be *very* useful. It could for instance help application programmers
+  better limit the end-users' freedom to do stupid things with the
+  dragger classes.
+
+
+* SoKeyboardEvent::Key enums
+  2002-01-04  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  The Key enum is lacking lots of keys, and seems to be designed for the
+  US keyboard map.  It should at least be extended to include the full
+  7bit ASCII set of characters so e.g. non-keypad '+' can be used.
+  A more dynamic scheme would be preferable, but as a first measure this
+  should be fixed.
+
+  UPDATE 2005-06-09 mortene: below follows a good example of typical
+  problems with the current code/interface. Try hitting SHIFT + '0'
+  and SHIFT + '9' on a Norwegian keyboard -- the results are very
+  confusing.
+
+  ---------8<--------------- [snip] ---------------------8<---------------
+  #include <Inventor/@Gui@/So@Gui@.h>
+  #include <Inventor/@Gui@/viewers/So@Gui@ExaminerViewer.h>
+  #include <Inventor/nodes/SoEventCallback.h>
+  #include <Inventor/nodes/SoSeparator.h>
+  #include <Inventor/nodes/SoCube.h>
+  #include <Inventor/events/SoKeyboardEvent.h>
+
+  static void
+  event_cb(void * userdata, SoEventCallback * node)
+  {
+    const SoEvent * event = node->getEvent();
+    SoKeyboardEvent *keyboardEvent;
+    SbBool ctrl = event->wasCtrlDown();
+    SbBool shift = event->wasShiftDown();
+
+    if (event->isOfType(SoKeyboardEvent::getClassTypeId())) {
+      keyboardEvent = (SoKeyboardEvent*) event;
+
+      const char c = keyboardEvent->getPrintableCharacter();
+      printf("keyboardEvent->getPrintableCharacter() == %c\n", c);
+
+      if (SoKeyboardEvent::isKeyPressEvent (keyboardEvent,SoKeyboardEvent::NUMBER_0)) {
+        if (ctrl) {
+          fprintf(stderr,"ctrl 0\n");
+        }
+        else {
+          if(shift) {
+            fprintf(stderr,"shift 0\n");
+          } else {
+            fprintf(stderr,"key 0\n");
+          }
+        }
+        return;
+      }
+    }
+  }
+
+  int main(int argc, char ** argv)
+  {
+    @WIDGET@ window = So@Gui@::init(argv[0]);
+
+    SoSeparator * root = new SoSeparator;
+    root->ref();
+    root->addChild(new SoCube);
+
+    // create an Inventor viewer
+    So@Gui@ExaminerViewer * ex1 = new So@Gui@ExaminerViewer(window);
+
+    SoEventCallback * event = new SoEventCallback;
+    event->addEventCallback(SoKeyboardEvent::getClassTypeId(),
+                            event_cb, ex1);
+    root->addChild(event);
+
+    ex1->setSceneGraph(root);
+    ex1->show();
+    So@Gui@::show(window);
+    So@Gui@::mainLoop(); // go
+    delete ex1;
+
+    root->unref();
+
+    return 0;
+  }
+  ---------8<--------------- [snip] ---------------------8<---------------
+
+  The behavior is strange, but I believe this is actually how SGI
+  Inventor works aswell, so it's not exactly a bug.
+
+  To go ahead and fix it properly, I believe the correct thing to do
+  would be to add a replacement for SoKeyboardEvent in Coin (keeping
+  backward compatibility, so I guess it must _supplement_
+  SoKeyboardEvent, not really replace it).
+
+
+* SoSwitch::whichChild as an SoMFBool
+  2002-01-15  Morten Eriksen  <mortene@sim.no>
+  [compatibility-breaking change]
+
+  This field should really have been a set of boolean ON / OFF values
+  from the start if it was designed properly, IMNSHO. As it is now, it
+  is basically limited to show just a single of the children subgraphs
+  (with the added enum-define "design hacks" to also show all or none,
+  with SO_SWITCH_ALL and SO_SWITCH_NONE).
+
+  With a set of booleans, it would be completely flexible in the sense
+  that one would get full control over the visibility of each and
+  every child subgraph, plus we could get rid of the enum-define
+  hacks.
+
+  I guess we should consider implementing this scheme in a new
+  switch-type node instead of breaking compatibility in such a severe
+  way (which would be bad for file format compatibility, among other
+  reasons).
+
+  Update 2002-02-06 larsa:
+
+  * A "Switchboard" node with these properties has been implemented, and
+    is awaiting future inclusion in the Coin library.
+
+
+* SoMouseButtonEvent::isDoubleClick()
+  2002-01-16  Lars J. Aas  <larsa@sim.no>
+  [probably upwards compatible]
+
+  Must be accompanied with some double-click preference/config setting
+  functions too.  Might even consider putting it on the SoButtonEvent
+  level.
+
+  Update 2002-01-20 mortene:
+
+    * See So*/src/Inventor/*/common/docs/api-wish-list.txt for
+      additional information.
+
+    * About the suggested config setting: the doubleclick rate should
+      preferably be extracted from the underlying OS or GUI-toolkit by
+      the So* library when converting a native event into an
+      SoMouseButtonEvent.
+
+
+* SbBigNum type
+  2002-01-17  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  ...with corresponding SbVec and field types.
+
+
+* SoOffscreenRenderer::render(SoPathList &)
+  2002-02-13  Peder Blekken  <pederb@sim.no>, write-up by <mortene@sim.no>
+
+  Would of course be extremely useful for rendering selected parts of
+  the scenegraph, and should even be part of the API just for
+  consistency reasons versus SoGLRenderAction.
+
+  (Perhaps a better, more general solution would be to just add
+  SoOffscreenRenderer::prepareForRendering(), and let the application
+  programmer apply his own SoGLRenderAction?)
+
+
+* Support for field value expressions in Inventor ascii files
+  2002-03-18  Peder Blekken <pederb@sim.no>
+
+  It would be very useful to allow field value expressions. E.g. for
+  an SoSFVec3f, you should be able to write:
+
+  SomeNode {
+    somefield (3500+4500) (1300+5600) (2300/3.0-1230*1.2)
+  }
+
+  In this example I just used parentheses to signal begin/end expression.
+  I'm not sure if this is the best solution though.
+
+
+* SoGLTeaPot
+  2002-04-01  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  A node that will render the commonly used tea pot shape.
+
+  Update, mortene 2004-07-10: should be an easter egg, i.e. not
+  disclosed in API-doc on doc.coin3d.org, don't install header file,
+  etc.  Would be a cool and good learning introduction task for a new
+  developer, e.g. a summer intern.
+
+
+* SoSearchPathAction (which is part of the TGS Inventor API)
+  2002-04-19  Morten Eriksen  <mortene@sim.no>
+
+  Requested by Matt Verona on comp.graphics.api.inventor. Matt
+  suggests using the tokenizer classes from the Boost freeware class
+  library (see the Coin/docs/misc-resources.txt file).
+
+
+* Rewrite non-member/friend operator methods for the base classes.
+  2002-06-05  Kristian Eide, write-up by <mortene@sim.no>
+  [breaks ABI, but API-compatible in both directions]
+
+  This:
+
+    friend SbMatrix operator *(const SbMatrix &m1, const SbMatrix &m2);
+
+  can for instance be rewritten as this, with the exact same
+  semantics:
+
+    SbMatrix SbMatrix::operator*(const SbMatrix &m);
+
+  Rewriting these should be done for two reasons: 1) the member
+  operator-functions can be made more efficient, as they can access
+  the private data of the class-instances directly, 2) it looks
+  cleaner.
+
+  Note that not *all* of them can be converted, like for instance this
+  one, which has a native type on the left side of the binary
+  *-operator:
+
+    friend SbVec3f operator *(float d, const SbVec3f &v);
+
+
+  Note also that these changes would break the ABI, so this would have
+  to be done for the next major release.
+
+
+* Detect and support libtar if present, and update SoInput accordingly.
+  2002-08-30  Lars J. Aas  <larsa@sim.no>
+
+  If you could bundle your inventor model, and all external texture
+  files and .iv files in a tar archive (possibly compressed), and
+  still load it and its sub-files with Coin, that would be a huge gain.
+  The library "libtar" (BSD-licensed, freshmeat) would enable us to do
+  this.
+
+  Typically, the basename of the tar-file would be used as the basename
+  of the Inventor model file loaded from the archive.  That way, you
+  could untar multiple such bundles in the same dir, and not worry
+  about overwriting some "default" filename for the root Inventor file.
+  This has the disadvantage of making it impossible to rename the bundle
+  file though.
+
+  Another option is to load the first .iv-file found in the bundle as
+  the root file.  Libtar will probably allow us to inspect this kind
+  of stuff quite easily.
+
+  A new write-action (or extensions to the existing one) is needed so
+  Coin can generate such bundles automatically, moving referenced files
+  and textures into the being-written bundle.  If bundles always had to
+  be created manually (which is acceptable in the development phase),
+  the point would kind of be gone.
+
+  URL: http://www-dev.cso.uiuc.edu/libtar/
+
+    void SoWriteAction::setTarBundlingEnabled(SbBool bundling);
+    SbBool SoWriteAction::isTarBundlingEnabled(void) const;
+
+
+* Prettier SoWriteAction .iv-formatting
+  2002-09-22  Lars J. Aas  <larsa@sim.no>
+
+  I'm not to happy with the spacing/indentation of SoWriteAction.  I
+  believe the current output is more or less equivalent on the bit-level
+  to what SGI Inventor writes, but it's not the most easy formatting for
+  the eyes.  It seems to be designed for a tab-width setting of 4, and lacks
+  linebreaks after close brackets, and has line breaks before node
+  lines instead or something.
+
+  I therefore propose adding a get/set SbBool flag for TAB-less, properly
+  line-broken indentation in SoWriteAction.
+
+  What I want is more or less like this (note the control characters):
+
+   $ sed -e 's/^I/    /g' -e 's/}/}^M/g' <input.iv \
+     | tr '\r' '\n' \
+     | sed -e '3,$ { /^$/ d; }' >output.iv
+
+    void SoWriteAction::setCoinFormattingEnabled(SbBool bundling);
+    SbBool SoWriteAction::isCoinFormattingEnabled(void) const;
+
+
+* Output .iv-files with CR/LF on Win32 systems
+  2002-11-15  Lars J. Aas  <larsa@sim.no>
+  [upwards compatible extension]
+
+  On Windows systems, it would be better to write scene graph files with
+  \r\n instead of just \n.  This should be configurable through a function
+  call somewhere, and the default should be decided by what kind of system
+  Coin was configured on.
+
+  This should hopefully go in before the 2.0 release.
+
+
+* SoViewportEvent
+  2003-02-11  Lars J. Aas  <larsa@sim.no>
+
+  If you have scene graphs that have fields that are adjusted in relation
+  to the viewport size, the way to detect viewport changes now is to get the
+  viewport information from the SoGLRenderAction action since it's the first
+  action that happens after the viewport is changed.  Updating fields at that
+  time is already too late - the notification mechanism will trigger another
+  redraw so you get two redraws when you resize the viewport.  By first
+  sending a "viewport" event through the scene, fields can be updated in
+  advance and the render pass won't trigger a second one.
+
+* Extending SoInput to support callbacks for file operations
+  2003-02-21  Thomas Hammer  <thammer@sim.no>
+
+  I suggest we add a static function to SoInput to set (user-supplied)
+  callbacks for opening, reading, (possibly seeking and "telling" file
+  position) and closing a datastream (which internally in SoInput
+  would be handled almost identically to a file).
+
+  The callbacks would look something like this:
+
+  void * (*open_func)  (const char *filename,
+                        ... maybe some more params here?)
+  size_t (*read_func)  (void *ptr, size_t size, size_t nmemb,
+                        void *datasource);
+        // datasource is whatever open_func returns,
+        // could be a filehandle, or not.
+  int    (*seek_func)  (void *datasource, int64 offset,
+                        int whence);
+  int    (*close_func) (void *datasource);
+  int64  (*tell_func)  (void *datasource);
+
+  This is approx. how vorbisfile does it. See
+
+  http://www.xiph.org/ogg/vorbis/doc/vorbisfile/callbacks.html
+
+  This way it's the applications responsibility to do file i/o,
+  streaming, decompressing, or whatever.
+
+  I use this mechanism in simage to get around any problems with
+  passing filehandles to the "normal" (stdio) libvorbisfile API. See
+  simage/src/simage_oggvorbis_reader.c.
+
+  I'm not sure this mechanism is sufficient for texture-reading
+  though, because the open_func callback might need some more info
+  about where the texture file is located.  A relative path might not
+  be enough, since the scenegraph might have been generated from
+  several VRML2 files with identical textturefilenames (but different
+  textures).
+
+
+
+IMPLEMENTED, RESIDING IN SmallChange
+====================================
+
+* SoDepthBuffer, SoGLDepthBufferElement
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  This node and element would really be useful to be able to
+  control the depth buffer in a scene graph. It's already
+  implemented, and I use it all the time in internal projects.
+
+  In addition, the element would really be useful when rendering
+  SoAnnotation nodes.
+
+
+* SoViewportRegion
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  This node could also be useful to a lot of people, I think. I've
+  seen postings on comp.graphics.api.inventor on people using
+  SoCallback nodes to change the viewport in a scene graph.
+  It would be much easier to use a node for doing this. The element
+  is already part of the Open Inventor API so it's a really
+  simple node.
+
+  This node is implemented and works like a charm.
+
+
+* Coinboard node
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  Silly name for a node, I know, but Billboard is already taken by
+  VRML97. In my implementation it is actually a shape node which can
+  be directed towards the camera, and the shape can be rendered in
+  multiple positions, controlled by an SoMFVec3f. This is very useful
+  and much more optimal than using a node derived from SoGroup
+  (there is quite a lot of overhead in the GLRender()-method of a
+  shape node (initialize material, find bindings, evaluate lazy
+  elements etc), and since (usually) all shapes are equal under a
+  Billboard shape node, it's just silly to do this repeatedly for all
+  shapes. We should have a normal SoGroup-inherited Billboard node
+  also, I guess.
+
+  This node is typically used for rendering simple shapes with a
+  alpha-transparent texture, such as trees in terrain, particles or
+  other billboards. Unfortunately, this will not work properly
+  in SGI or TGS Inventor, since they don't support alpha test
+  rendering of textured shapes.
+
+  This node is only partly implemented (generatePrimitives() is missing).
+
+
+* SoEnvironment::fogStart field.
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  Why, oh why didn't SGI include this field when designing the
+  Environment node? It makes it possible to set the distance at
+  which fog starts for linear (HAZE) fog. I've already added support
+  for this in SoEnvironmentElement and SoGLEnvironmentElement.
+
+
+* SoSkyDome node.
+  2000-12-07  Peder Blekken  <pederb@sim.no>
+  [upwards compatible extension]
+
+  This node renders a skydome which can be connected to the camera
+  to create a nice, global environment in your applications. The
+  node has the following fields:
+
+    SoSFFloat startAngle;
+    SoSFFloat endAngle;
+    SoSFInt32 numStacks;
+    SoSFInt32 numSlices;
+    SoSFFloat height;
+    SoSFFloat radius;
+
+  This makes it possible to draw a partial (or full) sphere, and the
+  current texture is mapped from startAngle (t=0) to endAngle (t=1).
+  The s texture coordinate is mapped in the same way as SoSphere.
+
+  This node is partly implemented (only GLRender()-method so far).

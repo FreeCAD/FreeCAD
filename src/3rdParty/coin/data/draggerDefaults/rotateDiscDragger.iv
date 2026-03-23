@@ -1,0 +1,54 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+DEF ROTATEDISC_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF ROTATEDISC_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF ROTATEDISC_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+
+
+DEF ROTATEDISC_CYLINDER Separator {
+   DEF ROTATEDISC_CYLINDER_ROTATION Rotation { rotation 1 0 0  1.57 }
+   DEF ROTATEDISC_CYLINDER_SCALE Scale { scaleFactor 1.733 1 1.733 }
+   DEF ROTATEDISC_CYLINDER_SHAPEHINTS ShapeHints { vertexOrdering UNKNOWN_ORDERING }
+   DrawStyle { style LINES }
+   Cylinder { parts SIDES height 0.2 }
+}
+
+DEF ROTATEDISC_CYLINDER_PICK Separator {
+   USE ROTATEDISC_CYLINDER_ROTATION
+   USE ROTATEDISC_CYLINDER_SCALE
+   USE ROTATEDISC_CYLINDER_SHAPEHINTS
+   DrawStyle { style INVISIBLE }
+   Cylinder { parts ALL height 0.2 }
+}
+
+DEF ROTATEDISC_BOX Cube { width 2.2  height 2.2  depth 2.2 }
+
+DEF rotateDiscRotator Separator {
+   USE ROTATEDISC_INACTIVE_MATERIAL
+   USE ROTATEDISC_CYLINDER
+   # For picking.
+   USE ROTATEDISC_CYLINDER_PICK
+}
+
+DEF rotateDiscRotatorActive Separator {
+   USE ROTATEDISC_ACTIVE_MATERIAL
+   USE ROTATEDISC_CYLINDER
+   DrawStyle { style LINES  lineWidth 1 }
+   USE ROTATEDISC_BOX
+}
+
+DEF ROTATEDISC_AXIS_LINE Group {
+   Coordinate3 { point [ 0 0 1.1, 0 0 -1.1 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+}
+
+DEF rotateDiscFeedback Separator {
+   USE ROTATEDISC_FEEDBACK_MATERIAL
+   USE ROTATEDISC_AXIS_LINE
+}
+
+DEF rotateDiscFeedbackActive Separator {
+   USE ROTATEDISC_ACTIVE_MATERIAL
+   USE ROTATEDISC_AXIS_LINE
+}

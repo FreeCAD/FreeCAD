@@ -1,0 +1,11 @@
+#Inventor V2.1 ascii
+
+#
+# Should correctly abort read in 
+# SbBool SoGroup::readChildren(SoInput * in)
+# However, we are ignoring the NULL completely. No real harm done.
+#
+
+Group {
+  NULL
+}

@@ -1,0 +1,11 @@
+115 SoBaseKit::setPart() is inefficient.
+
+    When this function is called on a part which was NULL previously,
+    a default node on that part is first made, before the part is set
+    to the argument to setPart(). This is inefficient and should be
+    unnecessary.
+
+    Priority low on this problem, as it shouldn't cause any serious
+    harm.
+
+    20040607 mortene, bug reported on coin-discuss by Nikolai Ruhe.

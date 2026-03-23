@@ -1,0 +1,150 @@
+============================================================================
+
+General guidelines:
+===================
+
+  * levels of optimization (sorted in order of impact):
+
+        i) asymptotic algorithm time (list traversal, sorting, etc)
+
+       ii) caching strategies (and implementations)
+
+      iii) low-level stuff (piping data to OpenGL, inlining of
+           functions, etc)
+
+     i) should be more-or-less ok in Coin. There might be major
+     remaining tasks at ii). The obvious stuff at iii) is in the Sb*
+     classes; SbVec3f, SbMatrix etc, but we need decent profiling to
+     expose the bottlenecks.
+
+     One important thing to note about case iii) is the fact that we
+     should _really_ have some kind of regression testing system in
+     place before we start optimization of the basic classes, to avoid
+     introducing hard-to-find bugs.
+
+
+  * tasks for optimizations:
+        0) try to single out interesting areas for profiling
+
+        1) make a good test case for one particular area
+        2) optional: show us the testcode for approval & feedback
+        3) do extensive profiling
+        4) analyze results
+        5) optional: present them for sanity checking
+        6) optimize
+        7) submit fixes as patches
+        8) goto 1
+
+    About step 1): it would be good to make testcases which could be
+    made permanent for routine checks on the performance. Maybe we
+    could even automate this with the aid of one of the tools from the
+    Mozilla project?
+
+  * interesting areas to fix (roughly in sorted order):
+
+        - traversal in general, rendering and picking in particular
+          ("optimization-by-caching") -- this is first priority
+
+        - file import / parsing (and export?)
+
+        - startup-time (for instance measured for the
+          examples/components/examinerviewer executable)
+
+        - user interaction through draggers & manipulators, must
+          secure decent responsiveness
+
+============================================================================
+
+Concrete tasks:
+===============
+
+        * File-based SoTexture2 objects are often pointing to the same
+          file on disk as other SoTexture2 objects.  These should be shared
+          in memory as long as possible (until users start using startEditing()
+          and similar things), and also be allocated/reused as the same
+          GL texture objects during render traversals.  This is probably a
+          man-week task to implement some kind of "centralized" SoImage/
+          SoSFImage management system...  This will have huge impact on
+          rendering speed, memory usage, and programmer convenience for
+          the cases where textures are often reused but not "organized
+          properly" in the scene graph.
+
+          This is listed as item #118 in Coin/BUGS.txt, see that file
+          for additional information.
+
+        * From a quick peek at the code, it looks like
+          SoMField-derived classes calls (or may call) valueChanged()
+          multiple times from certain functions.
+
+        * Trace the notification mechanisms to see if we send
+          superfluous notification messages (field->field,
+          field->node, node->node, ...).
+
+          Update: pederb has looked into and optimized at least some
+          parts of this.
+
+        * SoTabBoxDragger rendering seems particularly slow on my PII
+          266MHZ laptop -- why? The dragger geometry looks simple
+          enough, and draggers with more complex geometries seems to
+          render with far better performance.
+
+        * Optimize SoState and element handling, for better traversal
+          performance in general. Some ideas:
+
+           - create our own memory allocator for allocating
+             SoElement-derived classes, freeing them all at once in
+             the destructor.
+
+           - SoElement::copyMatchInfo() would then need to use a
+             separate memory allocator, probably handled by the cache
+             copying the element.
+
+          (Note: should investigate a bit (i.e. do profiling) before
+          deciding if this is really worth the effort.)
+
+        * Consider adding SoModelMatrixElement::getInverse(SoState*)
+          to enable inverse model matrix caching. The inverse model
+          matrix is used quite frequently, and we now have to do this
+          every time it is needed:
+
+            SbMatrix inv = SoModelMatrixElement::get(state).inverse();
+
+        * Implement the Large Model Viewing extensions of later TGS
+          Inventor releases:
+
+                So(Global|Shape)SimplifyAction, SoReorganizeAction,
+                SoRenderList node, SoOctreeOrdering node,
+                SoSimplifier, SoDecimator,
+                SoDecimationPercentageElement,
+                So*Viewer::setGoalFramesPerSecond(), etc
+
+          (This is a large task.)
+
+        * Make use of OpenGL 1.1 and 1.2 features which have the
+          potential to speed up rendering (vertexarrays, for instance
+          (but note: vertexarrays are "incompatible" with GL display
+          lists)).
+
+        * Write code to find information about the graphics
+          accelerator card on run-time, and choose rendering methods
+          with optimized paths. This is very low-priority yet, though.
+
+============================================================================
+
+Priorities:
+===========
+
+General areas where performance is important for the application
+programmer. "More critical" is closer to the top of the list:
+
+        0 Rendering
+        1 File import
+        2 Response time with draggers / manipulators
+        3 Intersection testing
+        4 Application start-up time
+        5 General traversal operations
+        6 Scene graph modifications
+        7 Basic math/geometry classes
+        8 File export
+
+============================================================================

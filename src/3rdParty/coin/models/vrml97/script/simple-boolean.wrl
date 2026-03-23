@@ -1,0 +1,48 @@
+#VRML V2.0 utf8
+
+Group {
+   children [
+      Transform {
+         children [
+            DEF light PointLight {
+               intensity 1
+               on FALSE
+            }
+
+            Transform {
+               translation -2 0 -2
+               children [
+                  Shape {
+                     appearance Appearance {
+                        material Material {
+                           diffuseColor 1 0 1
+                           specularColor 1 1 1
+                           shininess 0.9
+                        }
+                     }
+                     geometry Sphere { }
+                  }
+                  DEF touchsensor TouchSensor { }
+               ]
+            }
+         ]
+      }
+
+      DEF illuminator Script {
+         eventIn SFBool turn_on
+         eventOut SFBool light_changed
+         url [ "javascript:
+	function turn_on (value) {
+	  if (value) {
+	    light_changed = true;
+	  }
+          else {
+            light_changed = false;
+          }
+	} " ]
+      } 
+   ]
+
+   ROUTE touchsensor.isActive TO illuminator.turn_on
+   ROUTE illuminator.light_changed TO light.set_on 
+}

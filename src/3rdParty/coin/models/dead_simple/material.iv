@@ -1,0 +1,29 @@
+#Inventor V2.1 ascii
+
+Separator {
+   ShapeHints {
+      vertexOrdering CLOCKWISE
+      shapeType UNKNOWN_SHAPE_TYPE
+   }
+
+   Material {
+      diffuseColor [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 0 1 1 ]
+   }
+   MaterialBinding { value PER_PART }
+
+   Coordinate3 {
+      point [
+       -1 1 0, -1 -1 0, 1 -1 0, 1 1 0,
+       0 2 -1, -2 0 -1, 0 -2 -1, 2 0 -1,
+      ]
+   }
+   IndexedFaceSet {
+      coordIndex [
+       0, 1, 2, 3, -1,
+       0, 3, 4, -1,
+       0, 5, 1, -1,
+       1, 6, 2, -1,
+       2, 7, 3, -1,
+      ]
+   }
+}

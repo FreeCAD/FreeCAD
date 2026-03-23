@@ -1,0 +1,17 @@
+Title Pivy
+Version 
+Description Pivy, the Coin binding for Python
+DefaultLocation /usr/lib/python2.3/site-packages/
+DeleteWarning 
+
+### Package Flags
+
+NeedsAuthorization YES
+Required NO
+Relocatable NO
+RequiresReboot NO
+UseUserMask NO
+OverwritePermissions NO
+InstallFat NO
+RootVolumeOnly YES
+OnlyUpdateInstalledLanguages NO

@@ -1,0 +1,146 @@
+#Inventor V2.1 ascii
+
+# Check rendering with an SoPointLight.
+# NB: turn off the headlight in the viewer when viewing this file.
+#
+# 19990423 mortene
+
+Separator {
+   Switch {
+      whichChild -1
+      DEF mesh Array {
+	 numElements1 10
+	 numElements2 10
+	 separation1 1 0 0
+	 separation2 0 1 0
+	 origin CENTER
+
+	 Group {
+	    Coordinate3 {
+	       point [
+		0.5 -0.5 0, -0.5 -0.5 0,
+		0.5 0.5 0, -0.5 0.5 0,
+	       ]
+	    }
+	    QuadMesh {
+	       verticesPerColumn 2
+	       verticesPerRow 2
+	    }
+	 }
+      }
+   }
+
+   # ROW 0 -- different locations
+   Translation { translation 0 +10 0 }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Separator {
+	 PointLight { }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { location -4 -4 1 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { location 4 -4 1}
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { location 4 4 1 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { location -4 4 1 }
+	 USE mesh
+      }
+  }
+
+   # ROW 1 -- misc field settings
+   Translation { translation 0 +12 0 }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Separator {
+	 PointLight { on FALSE }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { intensity 0.8 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { intensity 0.5 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { intensity 0.2 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { color 1 0 0 }
+	 USE mesh
+      }
+
+      BaseColor { rgb 0 0 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { color 1 0 0 }
+	 USE mesh
+      }
+   }
+
+   # ROW 2 -- set ignore flags
+   Translation { translation 0 +12 0 }
+   Separator {
+      BaseColor { rgb 1 0 0 }
+      Separator {
+	 PointLight { location 4 4 -1 ~ }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 0 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { intensity 0.2 ~ }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { on FALSE ~ }
+	 USE mesh
+      }
+
+      BaseColor { rgb 1 1 1 }
+      Translation { translation +12 0 0 }
+      Separator {
+	 PointLight { color 1 0 0 ~ }
+	 USE mesh
+      }
+   }
+}

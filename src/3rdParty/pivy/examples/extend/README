@@ -1,0 +1,27 @@
+This example shows how to integrate an existing NodeKit or Node.
+
+The example has been taken from the Coin documentation of SoBaseKit that
+you will find here: http://doc.coin3d.org/Coin/classSoBaseKit.html
+
+Simply generate a swig interface file like I did for the ShapeScale
+nodekit.  The first line tells swig about the module name; in our case:
+
+%module shapescale
+
+then add a %{...%} section where you include all headers of your NodeKits
+that you want to provide in your module. They are needed for compilation.
+
+Now include the 'pivy_common_typemaps.i' interface file that contain
+typemaps that are needed and common for all pivy modules.
+
+%include pivy_common_typemaps.i
+
+Finally add all the headers (of your Nodekits) that swig should actually
+parse, hence the "%include ShapeScale.h" directive at the end.
+
+Look at the CMakeLists.txt file for information on how to build the module.
+
+If everything is build just import the freshly generated module like
+e.g. so:
+
+>>> from shapescale import *

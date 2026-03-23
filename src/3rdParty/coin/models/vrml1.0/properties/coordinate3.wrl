@@ -1,0 +1,30 @@
+#VRML V1.0 ascii
+
+# Check all aspects of Coordinate3 usage
+#
+# 20030514 kintel
+
+Separator {
+  Coordinate3 {
+  }
+  IndexedFaceSet {
+  }
+  Coordinate3 {
+    point []
+  }
+  IndexedFaceSet {
+    coordIndex []
+  }
+  Coordinate3 {
+    point 1 2 3
+  }
+  IndexedFaceSet {
+    coordIndex []
+  }
+  Coordinate3 {
+    point [ 0 0 0, 1 0 0, 1 1 0, 0 1 0 ]
+  }
+  IndexedFaceSet {
+    coordIndex [0,1,2,3,-1]
+  }
+}

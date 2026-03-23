@@ -1,0 +1,114 @@
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
+/* this file should only be included from mutex.c */
+
+#include "glue/win32api.h"
+
+/* FIXME: some of the cases where we are robust and catch and return
+   error codes should probably be replaced by asserts.  Should audit
+   the code versus the Win32 API documentation and fix.  20030604 mortene. */
+
+static int
+win32_mutex_struct_init(cc_mutex * mutex_struct)
+{
+  mutex_struct->w32thread.mutexhandle = CreateMutex(NULL, FALSE, NULL);
+  if (mutex_struct->w32thread.mutexhandle == NULL) {
+    if (COIN_DEBUG) {
+      cc_win32_print_error("win32_mutex_struct_init",
+                           "CreateMutex()", GetLastError());
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+win32_mutex_struct_clean(cc_mutex * mutex_struct)
+{
+  BOOL status = CloseHandle(mutex_struct->w32thread.mutexhandle);
+  if (status == FALSE) {
+    if (COIN_DEBUG) {
+      cc_win32_print_error("win32_mutex_struct_clean",
+                           "CloseHandle()", GetLastError());
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+win32_mutex_lock(cc_mutex * mutex)
+{
+  DWORD status;
+  status = WaitForSingleObject(mutex->w32thread.mutexhandle, INFINITE);
+  if (status == WAIT_FAILED) {
+    if (COIN_DEBUG) {
+      cc_win32_print_error("win32_mutex_lock",
+                           "WaitSingleObject()", GetLastError());
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+win32_mutex_try_lock(cc_mutex * mutex)
+{
+  DWORD status;
+  status = WaitForSingleObject(mutex->w32thread.mutexhandle, 0);
+  if (status == WAIT_TIMEOUT)
+    return CC_BUSY;
+  else if ((status == WAIT_OBJECT_0) || (status == WAIT_ABANDONED))
+    return CC_OK;
+
+  /* if we get here there was an error */
+  if (COIN_DEBUG) {
+    cc_win32_print_error("win32_mutex_try_lock",
+                         "WaitSingleObject()", GetLastError());
+  }
+  return CC_ERROR;
+}
+
+static int
+win32_mutex_unlock(cc_mutex * mutex)
+{
+  BOOL status = ReleaseMutex(mutex->w32thread.mutexhandle);
+  if (status == FALSE) {
+    if (COIN_DEBUG) {
+      cc_win32_print_error("win32_mutex_unlock",
+                           "ReleaseMutex()", GetLastError());
+    }
+    return CC_ERROR;
+  }
+  return CC_OK;
+}

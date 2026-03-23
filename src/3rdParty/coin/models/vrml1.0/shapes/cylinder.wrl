@@ -1,0 +1,110 @@
+#VRML V1.0 ascii
+
+# Check all aspects of Cylinder rendering.
+#
+# State change nodes which does not influence Cylinder rendering:
+#   Normal, NormalBinding, ShapeHints
+#
+# 19990414 mortene
+# 20030509 kintel
+
+Separator {
+   # (ROW 0) Check cylinder on its own.
+   Separator {
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      Cylinder { parts SIDES }
+
+      Translation { translation +2 0 0 }
+      Cylinder { parts BOTTOM }
+
+      Translation { translation +2 0 0 }
+      Cylinder { parts TOP }
+
+      Translation { translation +2 0 0 }
+      Cylinder { parts (TOP|BOTTOM) }
+
+      Translation { translation +2 0 0 }
+      Cylinder { radius 0.5 }
+
+      Translation { translation +2 0 0 }
+      Cylinder { height 0.5 }
+
+   }
+
+   # (ROW 3) With different MaterialBinding settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material { diffuseColor [ 1 1 0, 1 0 1, 1 0 0 ] }
+
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value OVERALL }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_PART }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_FACE }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      Cylinder { }
+   }
+
+   # (ROW 5) Test how Cylinder is affected by texturemapping.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      Cylinder { }
+   }
+
+   # (ROW 6) Test boundary conditions
+   Translation { translation 0 +4 0 }
+   Separator {
+      Cylinder { radius 0 }
+
+      Translation { translation +2 0 0 }
+      Cylinder { radius -1 }
+
+      Translation { translation +2 0 0 }
+      Cylinder { height 0 }
+
+      Translation { translation +2 0 0 }
+      Cylinder { height -1 }
+
+      Translation { translation +2 0 0 }
+      Cylinder { radius 0 height 0 }
+
+      Translation { translation +2 0 0 }
+      Cylinder { radius -1 height -1 }
+  }
+}

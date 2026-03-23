@@ -1,0 +1,32 @@
+025 Import hangs on invalid scenegraph. This reproduces the problem:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    #VRML V2.0 utf8
+
+    Group {
+       children [
+          *
+       ]
+    }
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    The '*' character can be replaced by any character not valid in
+    identifier names, and the bug will still be present.
+
+    Should of course never hang, but rather spit out an error message
+    and abort the import process.
+
+    20020911 mortene.
+
+    UPDATE 20050526 mortene: due to various fixes in SoInput-related
+    code, the status for this bug has changed. Import no longer hangs,
+    but fails -- as it should, but the first error message seems
+    bogus:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+    embla:~/tmp$ ./examinerviewer bug.wrl
+    Coin read error: Expected '{'; got ']'
+            Occurred at line   6 in bug.wrl
+    Coin read error: Couldn't read value for field "children" of VRMLGroup
+            Occurred at line   6 in bug.wrl
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---

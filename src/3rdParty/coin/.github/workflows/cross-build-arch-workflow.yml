@@ -1,0 +1,98 @@
+name: Cross Build Architectures
+
+on:
+  workflow_dispatch:  # Allow manual triggers
+  #pull_request:
+  #  branches: [ master ]
+  #push:
+  #  branches: [ master ]
+
+jobs:
+  cross-build:
+    # The host should always be linux
+    runs-on: ubuntu-18.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    # Run steps on a matrix of 5 arch/distro combinations
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: aarch64
+            distro: ubuntu18.04
+          - arch: ppc64le
+            distro: ubuntu18.04
+          - arch: s390x
+            distro: fedora_latest
+          - arch: armv7
+            distro: ubuntu18.04
+          #- arch: armv6
+          #  distro: buster
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
+      - uses: uraimo/run-on-arch-action@v2.0.7
+        name: Build artifact
+        id: build
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+
+          # Not required, but speeds up builds
+          githubToken: ${{ github.token }}
+
+          # Create an install directory
+          setup: |
+            mkdir -p "${PWD}/cmake_install_dir"
+
+          # Mount the install directory as /cmake_install_dir in the container
+          dockerRunArgs: |
+            --volume "${PWD}/cmake_install_dir:/cmake_install_dir"
+
+          # Pass some environment variables to the container
+          env: | # YAML, but pipe character is necessary
+            artifact_name: coin-${{ matrix.distro }}_${{ matrix.arch }}
+
+          # The shell to run commands with in the container
+          shell: /bin/sh
+
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            case "${{ matrix.distro }}" in
+              ubuntu*|jessie|stretch|buster)
+                apt-get update -y
+                apt-get install -y build-essential cmake git freeglut3-dev libexpat-dev
+                ;;
+              fedora*)
+                dnf -y update
+                dnf -y groupinstall "Development Tools"
+                dnf -y install make automake gcc gcc-c++ cmake git which freeglut-devel expat-devel
+                ;;
+              alpine*)
+                apk update
+                apk add alpine-sdk cmake freeglut-dev expat-dev
+                ;;
+            esac
+
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            which cmake
+            cmake --version
+            cmake -H. -Bcmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/cmake_install_dir
+            cmake --build cmake_build_dir --target install --config Release -- -j4
+
+      - name: Create Artifacts
+        # Items placed in /cmake_install_dir in the container will be in
+        # ${PWD}/cmake_install_dir on the host.
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ matrix.distro }}_${{ matrix.arch }}-Artifacts
+          path: cmake_install_dir/
+        if: always()

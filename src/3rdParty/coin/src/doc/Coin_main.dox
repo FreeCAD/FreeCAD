@@ -1,0 +1,166 @@
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
+/*!
+  \mainpage
+
+  <a href="https://github.com/coin3d/coin/wiki/Home/">Coin</a> is an OpenGL based,
+  retained mode 3D graphics rendering library. It is implemented in
+  C++ and publicly released with the source code open for your
+  perusal. The application programmer's interface (API) is fully
+  compatible with SGI's Open Inventor, the \e de \e facto standard 3D
+  graphics API for complex visualization applications.
+
+  For an excellently written, detailed, tutorial-style introduction to
+  the Open Inventor API used by the Coin library, we highly recommend
+  the book \ref mentorbook.  It walks the Coin application programmer
+  through all the principles applied in the API, richly illustrated
+  and with numerous, well documented code examples.
+
+  For overviews of various selected features of the Coin library, see
+  the "Modules" link to the left and the "Related Pages" link to the
+  right in the top menu on all the pages in this documentation.
+
+  Kongsberg Oil & Gas Technologies provided the bulk of the libraries for
+  interfacing Coin with a wide range of windowing systems and GUI toolkits,
+  the work now being continued by the open source community.
+  <ul>
+  <li><a href="https://github.com/coin3d/quarter">Quarter</a> is for integrating Coin with Trolltech's cross-platform Qt toolkit (UNIX, Windows, Mac OS X).</li>
+  <li><a href="https://github.com/coin3d/soqt">SoQt</a> is also for integrating with Qt, but is of an older legacy design.</li>
+  <li><a href="https://github.com/coin3d/sowin">SoWin</a> is for interfacing with the Win32 API on Microsoft Windows
+      platforms.</li>
+  <li><a href="https://github.com/coin3d/sc21">Sc21</a> is for interfacing with Cocoa on Mac OS X.</li>
+  <li><a href="https://github.com/coin3d/soxt">SoXt</a> is for interfacing with Xt/Motif on X Windows.</li>
+  </ul>
+
+  See <https://github.com/coin3d/coin/wiki/Home> for more information about Coin and the
+  GUI toolkit libraries.
+
+  <b>IMPORTANT NOTE: the online documentation for the Coin library is
+  a continuous work-in-progress.</b> Although the large majority of
+  classes have been documented properly, there might still be some
+  poorly documented items. If you happen upon an undocumented or
+  poorly documented class and / or class method which you find hard to
+  understand, please give us a notice so we can rectify the situation.
+*/
+
+// FIXME: complete this to a first usable version -- it should evolve
+// into a whitepaper-like document to educate people about exactly
+// what Coin is and what features it has. As of now it is just a
+// placeholder for misc explanations etc we drop on coin-discuss or
+// other places.
+//
+// Note that the comment starts with "/*" instead of "/*!", so as not
+// to activate this doc for Doxygen yet, as this is a work in
+// progress.
+//
+// 20031105 mortene.
+/*
+  \page coin_technical_whitepaper Coin Technical Whitepaper
+
+  * larsa on Performer vs Inventor:
+
+    [...] both are scene graph based.
+
+    The main difference is that Open Inventor is data-driven (and
+    event-based), while Performer is application-driven.  It basically
+    means that Open Inventor will know when the program has changed
+    something in the scene, and will redraw it for you, while for
+    application-driven libraries it is up to the application to decide
+    when to render the scene again, which usually ends up meaning
+    continuous redrawing if you're not smart about it.  Also, the
+    event-mechanism in Open Inventor makes it really easy to create
+    interactive 3D components like draggers and manipulators, one of
+    the major features that makes people choose to use Open Inventor.
+
+  * larsa [unpublished] on Application-domain problems:
+
+    [Someone once wrote the following]
+    : I have a scene graph and I want to walk inside the scene
+    : (like a city and I want to walk along the roads in the city). How can I put
+    : the camera in a way so that I can only see the scene in front of me and
+    : round me, just like the view you see when you walk around? Is there any
+    : sample code so that I can use?
+
+    Just thought I should explain why you haven't gotten any answers on this
+    one, since it might clear up other generic issues you or anyone else are 
+    wondering about.
+
+    The Open Inventor library doesn't really know a whole lot.  It doesn't know
+    what "up" is, it has no concept of what is a road, what is a wall, what is
+    on the inside of something and what is on the outside.  It basically has
+    coordinates and polygons and ways to render those.
+
+    On the other hand, Open Inventor is helpful when it comes to organizing your
+    models hierarchically or logically, making it easy for developers to know
+    what is a road and what are walls, if that's what the developer wants to
+    keep organized.  But to Open Inventor, it's still just coordinates and
+    triangles.  Knowing anything more than that falls into The Application Domain.
+
+    So what you have above is a problem relating to the application domain.
+    The solution will be application specific.  For there to have been a
+    "generic ready-made solution" for this, you would have to have a standardized
+    way of organizing 3D models that the ready-made solution could utilize.
+    But Open Inventor developers' needs are so diverse when it comes to what
+    their 3D models should represent, so creating the above standard would
+    be - if not impossible - certainly very suboptimal.
+
+    So it's like this:
+    - As the creator of the application, you are the holder of the knowledge
+      on what a road is and what to do with it.
+    - As the creator of the application, you have the power to control and
+      monitor what the camera is doing, and enforcing your application specific
+      rules on the camera movement.
+
+*/
+
+/* *********************************************************************** */
+
+/*!
+  \page coin_related_pages Related Pages
+
+  Selected topics are covered in more depth using separate pages:
+  - \subpage coin_libraries "Coin use of 3rd party libraries"
+  - \subpage coin_dynload_overview "Dynamic Loading of Extension Nodes"
+  - \subpage coin_environment_variables "Environment Variables"
+  - \subpage coin_compression_overview "File compression"
+  - \subpage coin_foreign_file_support "Foreign File Format Support"
+  - \subpage coin_hardcopy_overview "A HardCopy Overview"
+  - \subpage coin_multithreading_support "Multithreading Support in Coin"
+  - \subpage coin_profiling_intro "Scene Graph Profiling"
+  - \subpage coin_shaders_page "Shaders in Coin"
+  - \subpage coin_vbo_rendering "Vertex array and VBO rendering in Coin"
+  - \subpage coin_scxml_page "State Chart XML"
+  - \subpage coin_xml_parsing "XML Parsing with Coin"
+*/
+
+/* *********************************************************************** */

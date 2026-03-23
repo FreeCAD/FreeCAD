@@ -1,0 +1,947 @@
+# FIXME: this file is obsoleted -- the one in Coin-1/packagain/redhat/
+# is more up-to-date and generally better, it seems. 20011124 mortene.
+#
+# Spec file for constructing installation package in RPM format.
+# Quick instructions (these are similar to instructions found in
+# the simage.spec.in file):
+#
+#   * run configure with the "--prefix" option set to the final
+#     installation directory (or leave out to default to /usr/local/)
+#
+#   * copy the top_builddir/build/coin.spec file to the
+#     /usr/src/redhat/SPECS directory (on RedHat Linux, may differ
+#     on other system (on Mandrake, for instance, you should swap
+#     /usr/src/redhat/ with /usr/src/RPM))
+#
+#   * "cd /usr/src/redhat/SPECS", "rpm -bb coin.spec"
+#
+# There should now be a file Coin-something.rpm below
+# /usr/src/redhat/RPMS.
+#
+#                                                    20000705 mortene.
+
+Summary: A high-level 3D visualization library.
+Name: Coin
+Version: @VERSION@
+Release: @coin_configure_date@
+Copyright: BSD
+Group: Development/Libraries
+URL: http://www.coin3d.org
+Vendor: Kongsberg Oil & Gas Technologies
+Packager: Morten Eriksen <mortene@sim.no>
+
+%description
+
+Coin is a retained mode 3D graphics rendering library based on
+OpenGL. It is implemented in C++ and simultaneously released as Free
+Software under the 3-clause BSD license.
+The application programmer interface (API) is based on the
+API of Open Inventor, the de facto standard 3D graphics library for
+complex visualization purposes.
+
+%prep
+cd $RPM_SOURCE_DIR
+if test ! -d Coin; then
+  hg clone http://hg.sim.no/Coin/default Coin
+else
+  hg -RCoin pull -u
+fi
+
+
+%build
+
+cd $RPM_BUILD_DIR
+test -d Coin || mkdir Coin
+cd Coin
+# Errors might go unnoticed if configuration info is taken from
+# an old cache.
+rm -f ./config.cache
+# The options must cover the set of install-directories in the %files section.
+$RPM_SOURCE_DIR/Coin/configure \
+                       --bindir=@bindir@ --includedir=@includedir@ \
+                       --libdir=@libdir@ --datadir=@datarootdir@ \
+                       --mandir=@mandir@ --with-man
+make
+
+
+%install
+
+cd $RPM_BUILD_DIR/Coin
+make install-strip
+# FIXME: for some unknown reason, the lib-file is not automatically
+# stripped, so we "hack" it in. 20000705 mortene.
+strip @libdir@/libCoin.so.0.0.0
+make doxygen-doc
+
+%files
+
+@bindir@/coin-config
+@bindir@/ivNodeKitStructure
+@bindir@/ivcat
+@bindir@/ivhierarchy
+@bindir@/renderos
+@includedir@/Inventor/Sb.h
+@includedir@/Inventor/SbBSPTree.h
+@includedir@/Inventor/SbBasic.h
+@includedir@/Inventor/SbBox.h
+@includedir@/Inventor/SbBox2f.h
+@includedir@/Inventor/SbBox2s.h
+@includedir@/Inventor/SbBox3f.h
+@includedir@/Inventor/SbColor.h
+@includedir@/Inventor/SbColor4f.h
+@includedir@/Inventor/SbCylinder.h
+@includedir@/Inventor/SbDict.h
+@includedir@/Inventor/SbHeap.h
+@includedir@/Inventor/SbImage.h
+@includedir@/Inventor/SbLine.h
+@includedir@/Inventor/SbLinear.h
+@includedir@/Inventor/SbMatrix.h
+@includedir@/Inventor/SbName.h
+@includedir@/Inventor/SbOctTree.h
+@includedir@/Inventor/SbPList.h
+@includedir@/Inventor/SbPlane.h
+@includedir@/Inventor/SbRotation.h
+@includedir@/Inventor/SbSphere.h
+@includedir@/Inventor/SbString.h
+@includedir@/Inventor/SbTesselator.h
+@includedir@/Inventor/SbTime.h
+@includedir@/Inventor/SbVec2f.h
+@includedir@/Inventor/SbVec2s.h
+@includedir@/Inventor/SbVec3f.h
+@includedir@/Inventor/SbVec3s.h
+@includedir@/Inventor/SbVec4f.h
+@includedir@/Inventor/SbViewVolume.h
+@includedir@/Inventor/SbViewportRegion.h
+@includedir@/Inventor/SbXfBox3f.h
+@includedir@/Inventor/So.h
+@includedir@/Inventor/SoDB.h
+@includedir@/Inventor/SoFullPath.h
+@includedir@/Inventor/SoInput.h
+@includedir@/Inventor/SoInteraction.h
+@includedir@/Inventor/SoLists.h
+@includedir@/Inventor/SoNodeKitPath.h
+@includedir@/Inventor/SoOffscreenRenderer.h
+@includedir@/Inventor/SoOutput.h
+@includedir@/Inventor/SoPath.h
+@includedir@/Inventor/SoPickedPoint.h
+@includedir@/Inventor/SoPrimitiveVertex.h
+@includedir@/Inventor/SoSceneManager.h
+@includedir@/Inventor/SoType.h
+@includedir@/Inventor/VRMLnodes/SoVRMLInterpOutput.h
+@includedir@/Inventor/VRMLnodes/SoVRMLInterpolator.h
+@includedir@/Inventor/actions/SoAction.h
+@includedir@/Inventor/actions/SoActions.h
+@includedir@/Inventor/actions/SoBoxHighlightRenderAction.h
+@includedir@/Inventor/actions/SoCallbackAction.h
+@includedir@/Inventor/actions/SoGLRenderAction.h
+@includedir@/Inventor/actions/SoGetBoundingBoxAction.h
+@includedir@/Inventor/actions/SoGetMatrixAction.h
+@includedir@/Inventor/actions/SoGetPrimitiveCountAction.h
+@includedir@/Inventor/actions/SoHandleEventAction.h
+@includedir@/Inventor/actions/SoLineHighlightRenderAction.h
+@includedir@/Inventor/actions/SoPickAction.h
+@includedir@/Inventor/actions/SoRayPickAction.h
+@includedir@/Inventor/actions/SoSearchAction.h
+@includedir@/Inventor/actions/SoSubAction.h
+@includedir@/Inventor/actions/SoWriteAction.h
+@includedir@/Inventor/bundles/SoBundle.h
+@includedir@/Inventor/bundles/SoMaterialBundle.h
+@includedir@/Inventor/bundles/SoTextureCoordinateBundle.h
+@includedir@/Inventor/caches/SoBoundingBoxCache.h
+@includedir@/Inventor/caches/SoCache.h
+@includedir@/Inventor/caches/SoConvexDataCache.h
+@includedir@/Inventor/caches/SoGLRenderCache.h
+@includedir@/Inventor/caches/SoGLCacheList.h
+@includedir@/Inventor/caches/SoNormalCache.h
+@includedir@/Inventor/caches/SoTextureCoordinateCache.h
+@includedir@/Inventor/details/SoConeDetail.h
+@includedir@/Inventor/details/SoCubeDetail.h
+@includedir@/Inventor/details/SoCylinderDetail.h
+@includedir@/Inventor/details/SoDetail.h
+@includedir@/Inventor/details/SoDetails.h
+@includedir@/Inventor/details/SoFaceDetail.h
+@includedir@/Inventor/details/SoLineDetail.h
+@includedir@/Inventor/details/SoNodeKitDetail.h
+@includedir@/Inventor/details/SoPointDetail.h
+@includedir@/Inventor/details/SoSubDetail.h
+@includedir@/Inventor/details/SoTextDetail.h
+@includedir@/Inventor/draggers/SoCenterballDragger.h
+@includedir@/Inventor/draggers/SoDirectionalLightDragger.h
+@includedir@/Inventor/draggers/SoDragPointDragger.h
+@includedir@/Inventor/draggers/SoDragger.h
+@includedir@/Inventor/draggers/SoHandleBoxDragger.h
+@includedir@/Inventor/draggers/SoJackDragger.h
+@includedir@/Inventor/draggers/SoPointLightDragger.h
+@includedir@/Inventor/draggers/SoRotateCylindricalDragger.h
+@includedir@/Inventor/draggers/SoRotateDiscDragger.h
+@includedir@/Inventor/draggers/SoRotateSphericalDragger.h
+@includedir@/Inventor/draggers/SoScale1Dragger.h
+@includedir@/Inventor/draggers/SoScale2Dragger.h
+@includedir@/Inventor/draggers/SoScale2UniformDragger.h
+@includedir@/Inventor/draggers/SoScaleUniformDragger.h
+@includedir@/Inventor/draggers/SoSpotLightDragger.h
+@includedir@/Inventor/draggers/SoTabBoxDragger.h
+@includedir@/Inventor/draggers/SoTabPlaneDragger.h
+@includedir@/Inventor/draggers/SoTrackballDragger.h
+@includedir@/Inventor/draggers/SoTransformBoxDragger.h
+@includedir@/Inventor/draggers/SoTransformerDragger.h
+@includedir@/Inventor/draggers/SoTranslate1Dragger.h
+@includedir@/Inventor/draggers/SoTranslate2Dragger.h
+@includedir@/Inventor/elements/SoAccumulatedElement.h
+@includedir@/Inventor/elements/SoAmbientColorElement.h
+@includedir@/Inventor/elements/SoAnnoText3CharOrientElement.h
+@includedir@/Inventor/elements/SoAnnoText3FontSizeHintElement.h
+@includedir@/Inventor/elements/SoAnnoText3RenderPrintElement.h
+@includedir@/Inventor/elements/SoBBoxModelMatrixElement.h
+@includedir@/Inventor/elements/SoCacheElement.h
+@includedir@/Inventor/elements/SoClipPlaneElement.h
+@includedir@/Inventor/elements/SoComplexityElement.h
+@includedir@/Inventor/elements/SoComplexityTypeElement.h
+@includedir@/Inventor/elements/SoCoordinateElement.h
+@includedir@/Inventor/elements/SoCreaseAngleElement.h
+@includedir@/Inventor/elements/SoCullElement.h
+@includedir@/Inventor/elements/SoDecimationPercentageElement.h
+@includedir@/Inventor/elements/SoDecimationTypeElement.h
+@includedir@/Inventor/elements/SoDiffuseColorElement.h
+@includedir@/Inventor/elements/SoDrawStyleElement.h
+@includedir@/Inventor/elements/SoElement.h
+@includedir@/Inventor/elements/SoElements.h
+@includedir@/Inventor/elements/SoEmissiveColorElement.h
+@includedir@/Inventor/elements/SoEnvironmentElement.h
+@includedir@/Inventor/elements/SoFloatElement.h
+@includedir@/Inventor/elements/SoFocalDistanceElement.h
+@includedir@/Inventor/elements/SoFontNameElement.h
+@includedir@/Inventor/elements/SoFontSizeElement.h
+@includedir@/Inventor/elements/SoGLAmbientColorElement.h
+@includedir@/Inventor/elements/SoGLClipPlaneElement.h
+@includedir@/Inventor/elements/SoGLCacheContextElement.h
+@includedir@/Inventor/elements/SoGLCoordinateElement.h
+@includedir@/Inventor/elements/SoGLDiffuseColorElement.h
+@includedir@/Inventor/elements/SoGLDrawStyleElement.h
+@includedir@/Inventor/elements/SoGLEmissiveColorElement.h
+@includedir@/Inventor/elements/SoGLEnvironmentElement.h
+@includedir@/Inventor/elements/SoGLLazyElement.h
+@includedir@/Inventor/elements/SoGLLightIdElement.h
+@includedir@/Inventor/elements/SoGLLightModelElement.h
+@includedir@/Inventor/elements/SoGLLinePatternElement.h
+@includedir@/Inventor/elements/SoGLLineWidthElement.h
+@includedir@/Inventor/elements/SoGLModelMatrixElement.h
+@includedir@/Inventor/elements/SoGLNormalElement.h
+@includedir@/Inventor/elements/SoGLNormalizeElement.h
+@includedir@/Inventor/elements/SoGLPointSizeElement.h
+@includedir@/Inventor/elements/SoGLPolygonOffsetElement.h
+@includedir@/Inventor/elements/SoGLPolygonStippleElement.h
+@includedir@/Inventor/elements/SoGLProjectionMatrixElement.h
+@includedir@/Inventor/elements/SoGLRenderPassElement.h
+@includedir@/Inventor/elements/SoGLShadeModelElement.h
+@includedir@/Inventor/elements/SoGLShapeHintsElement.h
+@includedir@/Inventor/elements/SoGLShininessElement.h
+@includedir@/Inventor/elements/SoGLSpecularColorElement.h
+@includedir@/Inventor/elements/SoGLTextureCoordinateElement.h
+@includedir@/Inventor/elements/SoGLTextureEnabledElement.h
+@includedir@/Inventor/elements/SoGLTexture3EnabledElement.h
+@includedir@/Inventor/elements/SoGLTextureImageElement.h
+@includedir@/Inventor/elements/SoGLTextureMatrixElement.h
+@includedir@/Inventor/elements/SoGLUpdateAreaElement.h
+@includedir@/Inventor/elements/SoGLViewingMatrixElement.h
+@includedir@/Inventor/elements/SoGLColorIndexElement.h
+@includedir@/Inventor/elements/SoGLViewportRegionElement.h
+@includedir@/Inventor/elements/SoInt32Element.h
+@includedir@/Inventor/elements/SoLazyElement.h
+@includedir@/Inventor/elements/SoLightAttenuationElement.h
+@includedir@/Inventor/elements/SoLightElement.h
+@includedir@/Inventor/elements/SoLightModelElement.h
+@includedir@/Inventor/elements/SoLinePatternElement.h
+@includedir@/Inventor/elements/SoLineWidthElement.h
+@includedir@/Inventor/elements/SoLocalBBoxMatrixElement.h
+@includedir@/Inventor/elements/SoLongElement.h
+@includedir@/Inventor/elements/SoMaterialBindingElement.h
+@includedir@/Inventor/elements/SoModelMatrixElement.h
+@includedir@/Inventor/elements/SoNormalBindingElement.h
+@includedir@/Inventor/elements/SoNormalElement.h
+@includedir@/Inventor/elements/SoOverrideElement.h
+@includedir@/Inventor/elements/SoPROTOElement.h
+@includedir@/Inventor/elements/SoPickRayElement.h
+@includedir@/Inventor/elements/SoPickStyleElement.h
+@includedir@/Inventor/elements/SoPointSizeElement.h
+@includedir@/Inventor/elements/SoPolygonOffsetElement.h
+@includedir@/Inventor/elements/SoProfileCoordinateElement.h
+@includedir@/Inventor/elements/SoProfileElement.h
+@includedir@/Inventor/elements/SoProjectionMatrixElement.h
+@includedir@/Inventor/elements/SoReplacedElement.h
+@includedir@/Inventor/elements/SoShapeHintsElement.h
+@includedir@/Inventor/elements/SoShapeStyleElement.h
+@includedir@/Inventor/elements/SoShininessElement.h
+@includedir@/Inventor/elements/SoSpecularColorElement.h
+@includedir@/Inventor/elements/SoSubElement.h
+@includedir@/Inventor/elements/SoSwitchElement.h
+@includedir@/Inventor/elements/SoTextOutlineEnabledElement.h
+@includedir@/Inventor/elements/SoTextureCoordinateBindingElement.h
+@includedir@/Inventor/elements/SoTextureCoordinateElement.h
+@includedir@/Inventor/elements/SoTextureImageElement.h
+@includedir@/Inventor/elements/SoTextureMatrixElement.h
+@includedir@/Inventor/elements/SoTextureOverrideElement.h
+@includedir@/Inventor/elements/SoTextureQualityElement.h
+@includedir@/Inventor/elements/SoTransparencyElement.h
+@includedir@/Inventor/elements/SoUnitsElement.h
+@includedir@/Inventor/elements/SoViewVolumeElement.h
+@includedir@/Inventor/elements/SoViewingMatrixElement.h
+@includedir@/Inventor/elements/SoViewportRegionElement.h
+@includedir@/Inventor/elements/SoWindowElement.h
+@includedir@/Inventor/engines/SoBoolOperation.h
+@includedir@/Inventor/engines/SoCalculator.h
+@includedir@/Inventor/engines/SoCompose.h
+@includedir@/Inventor/engines/SoComposeMatrix.h
+@includedir@/Inventor/engines/SoComposeRotation.h
+@includedir@/Inventor/engines/SoComposeRotationFromTo.h
+@includedir@/Inventor/engines/SoComposeVec2f.h
+@includedir@/Inventor/engines/SoComposeVec3f.h
+@includedir@/Inventor/engines/SoComposeVec4f.h
+@includedir@/Inventor/engines/SoComputeBoundingBox.h
+@includedir@/Inventor/engines/SoConcatenate.h
+@includedir@/Inventor/engines/SoCounter.h
+@includedir@/Inventor/engines/SoDecomposeMatrix.h
+@includedir@/Inventor/engines/SoDecomposeRotation.h
+@includedir@/Inventor/engines/SoDecomposeVec2f.h
+@includedir@/Inventor/engines/SoDecomposeVec3f.h
+@includedir@/Inventor/engines/SoDecomposeVec4f.h
+@includedir@/Inventor/engines/SoElapsedTime.h
+@includedir@/Inventor/engines/SoEngine.h
+@includedir@/Inventor/engines/SoEngineOutput.h
+@includedir@/Inventor/engines/SoEngines.h
+@includedir@/Inventor/engines/SoFieldConverter.h
+@includedir@/Inventor/engines/SoGate.h
+@includedir@/Inventor/engines/SoInterpolate.h
+@includedir@/Inventor/engines/SoInterpolateFloat.h
+@includedir@/Inventor/engines/SoInterpolateRotation.h
+@includedir@/Inventor/engines/SoInterpolateVec2f.h
+@includedir@/Inventor/engines/SoInterpolateVec3f.h
+@includedir@/Inventor/engines/SoInterpolateVec4f.h
+@includedir@/Inventor/engines/SoOnOff.h
+@includedir@/Inventor/engines/SoOneShot.h
+@includedir@/Inventor/engines/SoOutputData.h
+@includedir@/Inventor/engines/SoSelectOne.h
+@includedir@/Inventor/engines/SoSubEngine.h
+@includedir@/Inventor/engines/SoTimeCounter.h
+@includedir@/Inventor/engines/SoTransformVec3f.h
+@includedir@/Inventor/engines/SoTriggerAny.h
+@includedir@/Inventor/errors/SoDebugError.h
+@includedir@/Inventor/errors/SoError.h
+@includedir@/Inventor/errors/SoErrors.h
+@includedir@/Inventor/errors/SoMemoryError.h
+@includedir@/Inventor/errors/SoReadError.h
+@includedir@/Inventor/events/SoButtonEvent.h
+@includedir@/Inventor/events/SoEvent.h
+@includedir@/Inventor/events/SoEvents.h
+@includedir@/Inventor/events/SoKeyboardEvent.h
+@includedir@/Inventor/events/SoLocation2Event.h
+@includedir@/Inventor/events/SoMotion3Event.h
+@includedir@/Inventor/events/SoMouseButtonEvent.h
+@includedir@/Inventor/events/SoSpaceballButtonEvent.h
+@includedir@/Inventor/events/SoSubEvent.h
+@includedir@/Inventor/fields/SoField.h
+@includedir@/Inventor/fields/SoFieldContainer.h
+@includedir@/Inventor/fields/SoFieldData.h
+@includedir@/Inventor/fields/SoFields.h
+@includedir@/Inventor/fields/SoMFBitMask.h
+@includedir@/Inventor/fields/SoMFBool.h
+@includedir@/Inventor/fields/SoMFColor.h
+@includedir@/Inventor/fields/SoMFEngine.h
+@includedir@/Inventor/fields/SoMFEnum.h
+@includedir@/Inventor/fields/SoMFFloat.h
+@includedir@/Inventor/fields/SoMFInt32.h
+@includedir@/Inventor/fields/SoMFLong.h
+@includedir@/Inventor/fields/SoMFMatrix.h
+@includedir@/Inventor/fields/SoMFName.h
+@includedir@/Inventor/fields/SoMFNode.h
+@includedir@/Inventor/fields/SoMFPath.h
+@includedir@/Inventor/fields/SoMFPlane.h
+@includedir@/Inventor/fields/SoMFRotation.h
+@includedir@/Inventor/fields/SoMFShort.h
+@includedir@/Inventor/fields/SoMFString.h
+@includedir@/Inventor/fields/SoMFTime.h
+@includedir@/Inventor/fields/SoMFUInt32.h
+@includedir@/Inventor/fields/SoMFULong.h
+@includedir@/Inventor/fields/SoMFUShort.h
+@includedir@/Inventor/fields/SoMFVec2f.h
+@includedir@/Inventor/fields/SoMFVec3f.h
+@includedir@/Inventor/fields/SoMFVec4f.h
+@includedir@/Inventor/fields/SoMField.h
+@includedir@/Inventor/fields/SoSFBitMask.h
+@includedir@/Inventor/fields/SoSFBool.h
+@includedir@/Inventor/fields/SoSFColor.h
+@includedir@/Inventor/fields/SoSFEngine.h
+@includedir@/Inventor/fields/SoSFEnum.h
+@includedir@/Inventor/fields/SoSFFloat.h
+@includedir@/Inventor/fields/SoSFImage.h
+@includedir@/Inventor/fields/SoSFImage3.h
+@includedir@/Inventor/fields/SoSFInt32.h
+@includedir@/Inventor/fields/SoSFLong.h
+@includedir@/Inventor/fields/SoSFMatrix.h
+@includedir@/Inventor/fields/SoSFName.h
+@includedir@/Inventor/fields/SoSFNode.h
+@includedir@/Inventor/fields/SoSFPath.h
+@includedir@/Inventor/fields/SoSFPlane.h
+@includedir@/Inventor/fields/SoSFRotation.h
+@includedir@/Inventor/fields/SoSFShort.h
+@includedir@/Inventor/fields/SoSFString.h
+@includedir@/Inventor/fields/SoSFTime.h
+@includedir@/Inventor/fields/SoSFTrigger.h
+@includedir@/Inventor/fields/SoSFUInt32.h
+@includedir@/Inventor/fields/SoSFULong.h
+@includedir@/Inventor/fields/SoSFUShort.h
+@includedir@/Inventor/fields/SoSFVec2f.h
+@includedir@/Inventor/fields/SoSFVec3f.h
+@includedir@/Inventor/fields/SoSFVec4f.h
+@includedir@/Inventor/fields/SoSField.h
+@includedir@/Inventor/fields/SoSubField.h
+@includedir@/Inventor/lists/SbIntList.h
+@includedir@/Inventor/lists/SbList.h
+@includedir@/Inventor/lists/SbPList.h
+@includedir@/Inventor/lists/SbStringList.h
+@includedir@/Inventor/lists/SbVec3fList.h
+@includedir@/Inventor/lists/SoActionMethodList.h
+@includedir@/Inventor/lists/SoAuditorList.h
+@includedir@/Inventor/lists/SoBaseList.h
+@includedir@/Inventor/lists/SoCallbackList.h
+@includedir@/Inventor/lists/SoDetailList.h
+@includedir@/Inventor/lists/SoEnabledElementsList.h
+@includedir@/Inventor/lists/SoEngineList.h
+@includedir@/Inventor/lists/SoEngineOutputList.h
+@includedir@/Inventor/lists/SoFieldList.h
+@includedir@/Inventor/lists/SoNodeList.h
+@includedir@/Inventor/lists/SoPathList.h
+@includedir@/Inventor/lists/SoPickedPointList.h
+@includedir@/Inventor/lists/SoTypeList.h
+@includedir@/Inventor/lists/SoVRMLInterpOutputList.h
+@includedir@/Inventor/lock/SoLockMgr.h
+@includedir@/Inventor/manips/SoCenterballManip.h
+@includedir@/Inventor/manips/SoClipPlaneManip.h
+@includedir@/Inventor/manips/SoDirectionalLightManip.h
+@includedir@/Inventor/manips/SoHandleBoxManip.h
+@includedir@/Inventor/manips/SoJackManip.h
+@includedir@/Inventor/manips/SoPointLightManip.h
+@includedir@/Inventor/manips/SoSpotLightManip.h
+@includedir@/Inventor/manips/SoTabBoxManip.h
+@includedir@/Inventor/manips/SoTrackballManip.h
+@includedir@/Inventor/manips/SoTransformBoxManip.h
+@includedir@/Inventor/manips/SoTransformManip.h
+@includedir@/Inventor/manips/SoTransformerManip.h
+@includedir@/Inventor/misc/SoAuditorList.h
+@includedir@/Inventor/misc/SoBase.h
+@includedir@/Inventor/misc/SoBasic.h
+@includedir@/Inventor/misc/SoByteStream.h
+@includedir@/Inventor/misc/SoCallbackList.h
+@includedir@/Inventor/misc/SoChildList.h
+@includedir@/Inventor/misc/SoLightPath.h
+@includedir@/Inventor/misc/SoNormalGenerator.h
+@includedir@/Inventor/misc/SoNotification.h
+@includedir@/Inventor/misc/SoState.h
+@includedir@/Inventor/misc/SoTempPath.h
+@includedir@/Inventor/misc/SoTranReceiver.h
+@includedir@/Inventor/misc/SoTranSender.h
+@includedir@/Inventor/misc/SoTranscribe.h
+@includedir@/Inventor/nodekits/SoAppearanceKit.h
+@includedir@/Inventor/nodekits/SoBaseKit.h
+@includedir@/Inventor/nodekits/SoCameraKit.h
+@includedir@/Inventor/nodekits/SoInteractionKit.h
+@includedir@/Inventor/nodekits/SoLightKit.h
+@includedir@/Inventor/nodekits/SoNodeKit.h
+@includedir@/Inventor/nodekits/SoNodeKitListPart.h
+@includedir@/Inventor/nodekits/SoNodekitCatalog.h
+@includedir@/Inventor/nodekits/SoSceneKit.h
+@includedir@/Inventor/nodekits/SoSeparatorKit.h
+@includedir@/Inventor/nodekits/SoShapeKit.h
+@includedir@/Inventor/nodekits/SoSubKit.h
+@includedir@/Inventor/nodekits/SoWrapperKit.h
+@includedir@/Inventor/nodes/SoAnnoText3.h
+@includedir@/Inventor/nodes/SoAnnoText3Property.h
+@includedir@/Inventor/nodes/SoAlphaTest.h
+@includedir@/Inventor/nodes/SoAnnotation.h
+@includedir@/Inventor/nodes/SoAntiSquish.h
+@includedir@/Inventor/nodes/SoArray.h
+@includedir@/Inventor/nodes/SoAsciiText.h
+@includedir@/Inventor/nodes/SoBaseColor.h
+@includedir@/Inventor/nodes/SoBlinker.h
+@includedir@/Inventor/nodes/SoCallback.h
+@includedir@/Inventor/nodes/SoCamera.h
+@includedir@/Inventor/nodes/SoClipPlane.h
+@includedir@/Inventor/nodes/SoColorIndex.h
+@includedir@/Inventor/nodes/SoComplexity.h
+@includedir@/Inventor/nodes/SoCone.h
+@includedir@/Inventor/nodes/SoCoordinate3.h
+@includedir@/Inventor/nodes/SoCoordinate4.h
+@includedir@/Inventor/nodes/SoCube.h
+@includedir@/Inventor/nodes/SoCylinder.h
+@includedir@/Inventor/nodes/SoDirectionalLight.h
+@includedir@/Inventor/nodes/SoDrawStyle.h
+@includedir@/Inventor/nodes/SoEnvironment.h
+@includedir@/Inventor/nodes/SoEventCallback.h
+@includedir@/Inventor/nodes/SoExtSelection.h
+@includedir@/Inventor/nodes/SoFaceSet.h
+@includedir@/Inventor/nodes/SoFile.h
+@includedir@/Inventor/nodes/SoFont.h
+@includedir@/Inventor/nodes/SoFontStyle.h
+@includedir@/Inventor/nodes/SoGroup.h
+@includedir@/Inventor/nodes/SoImage.h
+@includedir@/Inventor/nodes/SoIndexedFaceSet.h
+@includedir@/Inventor/nodes/SoIndexedLineSet.h
+@includedir@/Inventor/nodes/SoIndexedNurbsCurve.h
+@includedir@/Inventor/nodes/SoIndexedNurbsSurface.h
+@includedir@/Inventor/nodes/SoIndexedShape.h
+@includedir@/Inventor/nodes/SoIndexedTriangleStripSet.h
+@includedir@/Inventor/nodes/SoInfo.h
+@includedir@/Inventor/nodes/SoLOD.h
+@includedir@/Inventor/nodes/SoLabel.h
+@includedir@/Inventor/nodes/SoLevelOfDetail.h
+@includedir@/Inventor/nodes/SoLevelOfSimplification.h
+@includedir@/Inventor/nodes/SoLight.h
+@includedir@/Inventor/nodes/SoLightModel.h
+@includedir@/Inventor/nodes/SoLineSet.h
+@includedir@/Inventor/nodes/SoLinearProfile.h
+@includedir@/Inventor/nodes/SoLocateHighlight.h
+@includedir@/Inventor/nodes/SoMarkerSet.h
+@includedir@/Inventor/nodes/SoMaterial.h
+@includedir@/Inventor/nodes/SoMaterialBinding.h
+@includedir@/Inventor/nodes/SoMatrixTransform.h
+@includedir@/Inventor/nodes/SoMultipleCopy.h
+@includedir@/Inventor/nodes/SoNode.h
+@includedir@/Inventor/nodes/SoNodes.h
+@includedir@/Inventor/nodes/SoNonIndexedShape.h
+@includedir@/Inventor/nodes/SoNormal.h
+@includedir@/Inventor/nodes/SoNormalBinding.h
+@includedir@/Inventor/nodes/SoNurbsCurve.h
+@includedir@/Inventor/nodes/SoNurbsProfile.h
+@includedir@/Inventor/nodes/SoNurbsSurface.h
+@includedir@/Inventor/nodes/SoOrthographicCamera.h
+@includedir@/Inventor/nodes/SoPackedColor.h
+@includedir@/Inventor/nodes/SoPathSwitch.h
+@includedir@/Inventor/nodes/SoPendulum.h
+@includedir@/Inventor/nodes/SoPerspectiveCamera.h
+@includedir@/Inventor/nodes/SoPickStyle.h
+@includedir@/Inventor/nodes/SoPointLight.h
+@includedir@/Inventor/nodes/SoPointSet.h
+@includedir@/Inventor/nodes/SoPolygonOffset.h
+@includedir@/Inventor/nodes/SoProfile.h
+@includedir@/Inventor/nodes/SoProfileCoordinate2.h
+@includedir@/Inventor/nodes/SoProfileCoordinate3.h
+@includedir@/Inventor/nodes/SoQuadMesh.h
+@includedir@/Inventor/nodes/SoResetTransform.h
+@includedir@/Inventor/nodes/SoRotation.h
+@includedir@/Inventor/nodes/SoRotationXYZ.h
+@includedir@/Inventor/nodes/SoRotor.h
+@includedir@/Inventor/nodes/SoScale.h
+@includedir@/Inventor/nodes/SoSelection.h
+@includedir@/Inventor/nodes/SoSeparator.h
+@includedir@/Inventor/nodes/SoShape.h
+@includedir@/Inventor/nodes/SoShapeHints.h
+@includedir@/Inventor/nodes/SoShuttle.h
+@includedir@/Inventor/nodes/SoSphere.h
+@includedir@/Inventor/nodes/SoSpotLight.h
+@includedir@/Inventor/nodes/SoSubNode.h
+@includedir@/Inventor/nodes/SoSurroundScale.h
+@includedir@/Inventor/nodes/SoSwitch.h
+@includedir@/Inventor/nodes/SoText2.h
+@includedir@/Inventor/nodes/SoText3.h
+@includedir@/Inventor/nodes/SoTexture2.h
+@includedir@/Inventor/nodes/SoTexture3.h
+@includedir@/Inventor/nodes/SoTexture2Transform.h
+@includedir@/Inventor/nodes/SoTexture3Transform.h
+@includedir@/Inventor/nodes/SoTextureCoordinate2.h
+@includedir@/Inventor/nodes/SoTextureCoordinate3.h
+@includedir@/Inventor/nodes/SoTextureCoordinateBinding.h
+@includedir@/Inventor/nodes/SoTextureCoordinateDefault.h
+@includedir@/Inventor/nodes/SoTextureCoordinateEnvironment.h
+@includedir@/Inventor/nodes/SoTextureCoordinateFunction.h
+@includedir@/Inventor/nodes/SoTextureCoordinatePlane.h
+@includedir@/Inventor/nodes/SoTransform.h
+@includedir@/Inventor/nodes/SoTransformSeparator.h
+@includedir@/Inventor/nodes/SoTransformation.h
+@includedir@/Inventor/nodes/SoTranslation.h
+@includedir@/Inventor/nodes/SoTriangleStripSet.h
+@includedir@/Inventor/nodes/SoUnits.h
+@includedir@/Inventor/nodes/SoVertexProperty.h
+@includedir@/Inventor/nodes/SoVertexShape.h
+@includedir@/Inventor/nodes/SoWWWAnchor.h
+@includedir@/Inventor/nodes/SoWWWInline.h
+@includedir@/Inventor/projectors/SbCylinderPlaneProjector.h
+@includedir@/Inventor/projectors/SbCylinderProjector.h
+@includedir@/Inventor/projectors/SbCylinderSectionProjector.h
+@includedir@/Inventor/projectors/SbCylinderSheetProjector.h
+@includedir@/Inventor/projectors/SbLineProjector.h
+@includedir@/Inventor/projectors/SbPlaneProjector.h
+@includedir@/Inventor/projectors/SbProjector.h
+@includedir@/Inventor/projectors/SbProjectors.h
+@includedir@/Inventor/projectors/SbSpherePlaneProjector.h
+@includedir@/Inventor/projectors/SbSphereProjector.h
+@includedir@/Inventor/projectors/SbSphereSectionProjector.h
+@includedir@/Inventor/projectors/SbSphereSheetProjector.h
+@includedir@/Inventor/sensors/SoAlarmSensor.h
+@includedir@/Inventor/sensors/SoDataSensor.h
+@includedir@/Inventor/sensors/SoDelayQueueSensor.h
+@includedir@/Inventor/sensors/SoFieldSensor.h
+@includedir@/Inventor/sensors/SoIdleSensor.h
+@includedir@/Inventor/sensors/SoNodeSensor.h
+@includedir@/Inventor/sensors/SoOneShotSensor.h
+@includedir@/Inventor/sensors/SoPathSensor.h
+@includedir@/Inventor/sensors/SoSensor.h
+@includedir@/Inventor/sensors/SoSensorManager.h
+@includedir@/Inventor/sensors/SoSensors.h
+@includedir@/Inventor/sensors/SoTimerQueueSensor.h
+@includedir@/Inventor/sensors/SoTimerSensor.h
+@includedir@/Inventor/system/inttypes.h
+@libdir@/libCoin.so.0
+@libdir@/libCoin.so.0.0.0
+@libdir@/libCoin.la
+@libdir@/libCoin.so
+@mandir@/man3/SbBSPTree.3
+@mandir@/man3/SbBool.3
+@mandir@/man3/SbBox2f.3
+@mandir@/man3/SbBox2s.3
+@mandir@/man3/SbBox3f.3
+@mandir@/man3/SbColor.3
+@mandir@/man3/SbColor4f.3
+@mandir@/man3/SbCylinder.3
+@mandir@/man3/SbCylinderPlaneProjector.3
+@mandir@/man3/SbCylinderProjector.3
+@mandir@/man3/SbCylinderSectionProjector.3
+@mandir@/man3/SbCylinderSheetProjector.3
+@mandir@/man3/SbDict.3
+@mandir@/man3/SbIntList.3
+@mandir@/man3/SbLine.3
+@mandir@/man3/SbLineProjector.3
+@mandir@/man3/SbList.3
+@mandir@/man3/SbMatrix.3
+@mandir@/man3/SbName.3
+@mandir@/man3/SbPList.3
+@mandir@/man3/SbPlane.3
+@mandir@/man3/SbPlaneProjector.3
+@mandir@/man3/SbProjector.3
+@mandir@/man3/SbRotation.3
+@mandir@/man3/SbSphere.3
+@mandir@/man3/SbSpherePlaneProjector.3
+@mandir@/man3/SbSphereProjector.3
+@mandir@/man3/SbSphereSectionProjector.3
+@mandir@/man3/SbSphereSheetProjector.3
+@mandir@/man3/SbString.3
+@mandir@/man3/SbStringList.3
+@mandir@/man3/SbTime.3
+@mandir@/man3/SbVec2f.3
+@mandir@/man3/SbVec2s.3
+@mandir@/man3/SbVec3f.3
+@mandir@/man3/SbVec3s.3
+@mandir@/man3/SbVec3fList.3
+@mandir@/man3/SbVec4f.3
+@mandir@/man3/SbViewVolume.3
+@mandir@/man3/SbViewportRegion.3
+@mandir@/man3/SbXfBox3f.3
+@mandir@/man3/SoAction.3
+@mandir@/man3/SoActionMethodList.3
+@mandir@/man3/SoAlarmSensor.3
+@mandir@/man3/SoAnnoText3.3
+@mandir@/man3/SoAnnoText3Property.3
+@mandir@/man3/SoAlphaTest.3
+@mandir@/man3/SoAnnotation.3
+@mandir@/man3/SoAntiSquish.3
+@mandir@/man3/SoArray.3
+@mandir@/man3/SoAsciiText.3
+@mandir@/man3/SoAuditorList.3
+@mandir@/man3/SoBase.3
+@mandir@/man3/SoBaseColor.3
+@mandir@/man3/SoBaseList.3
+@mandir@/man3/SoBlinker.3
+@mandir@/man3/SoBoxHighlightRenderAction.3
+@mandir@/man3/SoButtonEvent.3
+@mandir@/man3/SoCallback.3
+@mandir@/man3/SoCallbackAction.3
+@mandir@/man3/SoCallbackList.3
+@mandir@/man3/SoCamera.3
+@mandir@/man3/SoChildList.3
+@mandir@/man3/SoClipPlane.3
+@mandir@/man3/SoColorIndex.3
+@mandir@/man3/SoComplexity.3
+@mandir@/man3/SoCone.3
+@mandir@/man3/SoCoordinate3.3
+@mandir@/man3/SoCoordinate4.3
+@mandir@/man3/SoCube.3
+@mandir@/man3/SoCylinder.3
+@mandir@/man3/SoDB.3
+@mandir@/man3/SoDataSensor.3
+@mandir@/man3/SoDebugError.3
+@mandir@/man3/SoDelayQueueSensor.3
+@mandir@/man3/SoDetailList.3
+@mandir@/man3/SoDirectionalLight.3
+@mandir@/man3/SoDrawStyle.3
+@mandir@/man3/SoEnabledElementsList.3
+@mandir@/man3/SoEngine.3
+@mandir@/man3/SoEngineList.3
+@mandir@/man3/SoEngineOutput.3
+@mandir@/man3/SoEngineOutputList.3
+@mandir@/man3/SoEnvironment.3
+@mandir@/man3/SoError.3
+@mandir@/man3/SoEvent.3
+@mandir@/man3/SoEventCallback.3
+@mandir@/man3/SoExtSelection.3
+@mandir@/man3/SoFaceSet.3
+@mandir@/man3/SoField.3
+@mandir@/man3/SoFieldContainer.3
+@mandir@/man3/SoFieldData.3
+@mandir@/man3/SoFieldList.3
+@mandir@/man3/SoFieldSensor.3
+@mandir@/man3/SoFile.3
+@mandir@/man3/SoFont.3
+@mandir@/man3/SoFontStyle.3
+@mandir@/man3/SoFullPath.3
+@mandir@/man3/SoGLRenderAction.3
+@mandir@/man3/SoGetBoundingBoxAction.3
+@mandir@/man3/SoGetMatrixAction.3
+@mandir@/man3/SoGetPrimitiveCountAction.3
+@mandir@/man3/SoGroup.3
+@mandir@/man3/SoHandleEventAction.3
+@mandir@/man3/SoIdleSensor.3
+@mandir@/man3/SoImage.3
+@mandir@/man3/SoIndexedFaceSet.3
+@mandir@/man3/SoIndexedLineSet.3
+@mandir@/man3/SoIndexedNurbsCurve.3
+@mandir@/man3/SoIndexedNurbsSurface.3
+@mandir@/man3/SoIndexedShape.3
+@mandir@/man3/SoIndexedTriangleStripSet.3
+@mandir@/man3/SoInfo.3
+@mandir@/man3/SoInput.3
+@mandir@/man3/SoInteraction.3
+@mandir@/man3/SoKeyboardEvent.3
+@mandir@/man3/SoLOD.3
+@mandir@/man3/SoLabel.3
+@mandir@/man3/SoLevelOfDetail.3
+@mandir@/man3/SoLevelOfSimplification.3
+@mandir@/man3/SoLight.3
+@mandir@/man3/SoLightModel.3
+@mandir@/man3/SoLineHighlightRenderAction.3
+@mandir@/man3/SoLineSet.3
+@mandir@/man3/SoLinearProfile.3
+@mandir@/man3/SoLocateHighlight.3
+@mandir@/man3/SoLocation2Event.3
+@mandir@/man3/SoMFBitMask.3
+@mandir@/man3/SoMFBool.3
+@mandir@/man3/SoMFColor.3
+@mandir@/man3/SoMFEngine.3
+@mandir@/man3/SoMFEnum.3
+@mandir@/man3/SoMFFloat.3
+@mandir@/man3/SoMFInt32.3
+@mandir@/man3/SoMFMatrix.3
+@mandir@/man3/SoMFName.3
+@mandir@/man3/SoMFNode.3
+@mandir@/man3/SoMFPath.3
+@mandir@/man3/SoMFPlane.3
+@mandir@/man3/SoMFRotation.3
+@mandir@/man3/SoMFShort.3
+@mandir@/man3/SoMFString.3
+@mandir@/man3/SoMFTime.3
+@mandir@/man3/SoMFUInt32.3
+@mandir@/man3/SoMFUShort.3
+@mandir@/man3/SoMFVec2f.3
+@mandir@/man3/SoMFVec3f.3
+@mandir@/man3/SoMFVec4f.3
+@mandir@/man3/SoMField.3
+@mandir@/man3/SoMarkerSet.3
+@mandir@/man3/SoMaterial.3
+@mandir@/man3/SoMaterialBinding.3
+@mandir@/man3/SoMatrixTransform.3
+@mandir@/man3/SoMemoryError.3
+@mandir@/man3/SoMotion3Event.3
+@mandir@/man3/SoMouseButtonEvent.3
+@mandir@/man3/SoMultipleCopy.3
+@mandir@/man3/SoNode.3
+@mandir@/man3/SoNodeList.3
+@mandir@/man3/SoNodeSensor.3
+@mandir@/man3/SoNonIndexedShape.3
+@mandir@/man3/SoNormal.3
+@mandir@/man3/SoNormalBinding.3
+@mandir@/man3/SoNotList.3
+@mandir@/man3/SoNotRec.3
+@mandir@/man3/SoNurbsCurve.3
+@mandir@/man3/SoNurbsProfile.3
+@mandir@/man3/SoNurbsSurface.3
+@mandir@/man3/SoOneShotSensor.3
+@mandir@/man3/SoOrthographicCamera.3
+@mandir@/man3/SoOutput.3
+@mandir@/man3/SoPackedColor.3
+@mandir@/man3/SoPath.3
+@mandir@/man3/SoPathList.3
+@mandir@/man3/SoPathSensor.3
+@mandir@/man3/SoPathSwitch.3
+@mandir@/man3/SoPendulum.3
+@mandir@/man3/SoPerspectiveCamera.3
+@mandir@/man3/SoPickAction.3
+@mandir@/man3/SoPickStyle.3
+@mandir@/man3/SoPickedPoint.3
+@mandir@/man3/SoPickedPointList.3
+@mandir@/man3/SoPointLight.3
+@mandir@/man3/SoPointSet.3
+@mandir@/man3/SoPolygonOffset.3
+@mandir@/man3/SoPrimitiveVertex.3
+@mandir@/man3/SoProfile.3
+@mandir@/man3/SoProfileCoordinate2.3
+@mandir@/man3/SoProfileCoordinate3.3
+@mandir@/man3/SoQuadMesh.3
+@mandir@/man3/SoRayPickAction.3
+@mandir@/man3/SoReadError.3
+@mandir@/man3/SoResetTransform.3
+@mandir@/man3/SoRotation.3
+@mandir@/man3/SoRotationXYZ.3
+@mandir@/man3/SoRotor.3
+@mandir@/man3/SoSFBitMask.3
+@mandir@/man3/SoSFBool.3
+@mandir@/man3/SoSFColor.3
+@mandir@/man3/SoSFEngine.3
+@mandir@/man3/SoSFEnum.3
+@mandir@/man3/SoSFFloat.3
+@mandir@/man3/SoSFImage.3
+@mandir@/man3/SoSFImage3.3
+@mandir@/man3/SoSFInt32.3
+@mandir@/man3/SoSFMatrix.3
+@mandir@/man3/SoSFName.3
+@mandir@/man3/SoSFNode.3
+@mandir@/man3/SoSFPath.3
+@mandir@/man3/SoSFPlane.3
+@mandir@/man3/SoSFRotation.3
+@mandir@/man3/SoSFShort.3
+@mandir@/man3/SoSFString.3
+@mandir@/man3/SoSFTime.3
+@mandir@/man3/SoSFTrigger.3
+@mandir@/man3/SoSFUInt32.3
+@mandir@/man3/SoSFUShort.3
+@mandir@/man3/SoSFVec2f.3
+@mandir@/man3/SoSFVec3f.3
+@mandir@/man3/SoSFVec4f.3
+@mandir@/man3/SoSField.3
+@mandir@/man3/SoScale.3
+@mandir@/man3/SoSceneManager.3
+@mandir@/man3/SoSearchAction.3
+@mandir@/man3/SoSelection.3
+@mandir@/man3/SoSensor.3
+@mandir@/man3/SoSensorManager.3
+@mandir@/man3/SoSeparator.3
+@mandir@/man3/SoShape.3
+@mandir@/man3/SoShapeHints.3
+@mandir@/man3/SoShuttle.3
+@mandir@/man3/SoSpaceballButtonEvent.3
+@mandir@/man3/SoSphere.3
+@mandir@/man3/SoSpotLight.3
+@mandir@/man3/SoState.3
+@mandir@/man3/SoSurroundScale.3
+@mandir@/man3/SoSwitch.3
+@mandir@/man3/SoText2.3
+@mandir@/man3/SoText3.3
+@mandir@/man3/SoTexture2.3
+@mandir@/man3/SoTexture3.3
+@mandir@/man3/SoTexture2Transform.3
+@mandir@/man3/SoTexture3Transform.3
+@mandir@/man3/SoTextureCoordinate2.3
+@mandir@/man3/SoTextureCoordinate3.3
+@mandir@/man3/SoTextureCoordinateBinding.3
+@mandir@/man3/SoTextureCoordinateDefault.3
+@mandir@/man3/SoTextureCoordinateEnvironment.3
+@mandir@/man3/SoTextureCoordinateFunction.3
+@mandir@/man3/SoTextureCoordinatePlane.3
+@mandir@/man3/SoTimerQueueSensor.3
+@mandir@/man3/SoTimerSensor.3
+@mandir@/man3/SoTransform.3
+@mandir@/man3/SoTransformSeparator.3
+@mandir@/man3/SoTransformation.3
+@mandir@/man3/SoTranslation.3
+@mandir@/man3/SoTriangleStripSet.3
+@mandir@/man3/SoType.3
+@mandir@/man3/SoTypeList.3
+@mandir@/man3/SoUnits.3
+@mandir@/man3/SoVRMLInterpOutputList.3
+@mandir@/man3/SoVertexProperty.3
+@mandir@/man3/SoVertexShape.3
+@mandir@/man3/SoWWWAnchor.3
+@mandir@/man3/SoWWWInline.3
+@mandir@/man3/SoWriteAction.3
+@datarootdir@/Coin/draggerDefaults/centerballDragger.iv
+@datarootdir@/Coin/draggerDefaults/directionalLightDragger.iv
+@datarootdir@/Coin/draggerDefaults/dragPointDragger.iv
+@datarootdir@/Coin/draggerDefaults/handleBoxDragger.iv
+@datarootdir@/Coin/draggerDefaults/jackDragger.iv
+@datarootdir@/Coin/draggerDefaults/pointLightDragger.iv
+@datarootdir@/Coin/draggerDefaults/rotateCylindricalDragger.iv
+@datarootdir@/Coin/draggerDefaults/rotateDiscDragger.iv
+@datarootdir@/Coin/draggerDefaults/rotateSphericalDragger.iv
+@datarootdir@/Coin/draggerDefaults/scale1Dragger.iv
+@datarootdir@/Coin/draggerDefaults/scale2Dragger.iv
+@datarootdir@/Coin/draggerDefaults/scale2UniformDragger.iv
+@datarootdir@/Coin/draggerDefaults/scaleUniformDragger.iv
+@datarootdir@/Coin/draggerDefaults/spotLightDragger.iv
+@datarootdir@/Coin/draggerDefaults/tabBoxDragger.iv
+@datarootdir@/Coin/draggerDefaults/tabPlaneDragger.iv
+@datarootdir@/Coin/draggerDefaults/trackballDragger.iv
+@datarootdir@/Coin/draggerDefaults/transformBoxDragger.iv
+@datarootdir@/Coin/draggerDefaults/transformerDragger.iv
+@datarootdir@/Coin/draggerDefaults/translate1Dragger.iv
+@datarootdir@/Coin/draggerDefaults/translate2Dragger.iv
+@datarootdir@/aclocal/coin.m4
+
+
+%clean
+
+cd $RPM_BUILD_DIR/Coin
+make uninstall
+
+# man pages
+cd @mandir@/man3
+rm SbBSPTree.3 SbBool.3 SbBox2f.3 SbBox2s.3 SbBox3f.3 SbColor.3 SbColor4f.3
+rm SbCylinder.3 SbCylinderPlaneProjector.3 SbCylinderProjector.3
+rm SbCylinderSectionProjector.3 SbCylinderSheetProjector.3 SbDict.3
+rm SbIntList.3 SbLine.3 SbLineProjector.3 SbList.3 SbMatrix.3 SbName.3
+rm SbPList.3 SbPlane.3 SbPlaneProjector.3 SbProjector.3 SbRotation.3 SbSphere.3
+rm SbSpherePlaneProjector.3 SbSphereProjector.3 SbSphereSectionProjector.3
+rm SbSphereSheetProjector.3 SbString.3 SbStringList.3 SbTime.3 SbVec2f.3
+rm SbVec2s.3 SbVec3f.3 SbVec3s.3 SbVec3fList.3 SbVec4f.3 SbViewVolume.3 SbViewportRegion.3
+rm SbXfBox3f.3 SoAction.3 SoActionMethodList.3 SoAlarmSensor.3 SoAnnoText3.3
+rm SoAnnoText3Property.3 SoAlphaTest.3 SoAnnotation.3 SoAntiSquish.3 SoArray.3 SoAsciiText.3
+rm SoAuditorList.3 SoBase.3 SoBaseColor.3 SoBaseList.3 SoBlinker.3
+rm SoBoxHighlightRenderAction.3 SoButtonEvent.3 SoCallback.3 SoCallbackAction.3
+rm SoCallbackList.3 SoCamera.3 SoChildList.3 SoClipPlane.3 SoColorIndex.3
+rm SoComplexity.3 SoCone.3 SoCoordinate3.3 SoCoordinate4.3 SoCube.3 SoCylinder.3
+rm SoDB.3 SoDataSensor.3 SoDebugError.3 SoDelayQueueSensor.3 SoDetailList.3
+rm SoDirectionalLight.3 SoDrawStyle.3 SoEnabledElementsList.3 SoEngine.3
+rm SoEngineList.3 SoEngineOutput.3 SoEngineOutputList.3 SoEnvironment.3
+rm SoError.3 SoEvent.3 SoEventCallback.3 SoExtSelection.3 SoFaceSet.3 SoField.3
+rm SoFieldContainer.3 SoFieldData.3 SoFieldList.3 SoFieldSensor.3 SoFile.3
+rm SoFont.3 SoFontStyle.3 SoFullPath.3 SoGLRenderAction.3 SoGetBoundingBoxAction.3
+rm SoGetMatrixAction.3 SoGetPrimitiveCountAction.3 SoGroup.3 SoHandleEventAction.3
+rm SoIdleSensor.3 SoImage.3 SoIndexedFaceSet.3 SoIndexedLineSet.3 SoIndexedNurbsCurve.3
+rm SoIndexedNurbsSurface.3 SoIndexedShape.3 SoIndexedTriangleStripSet.3 SoInfo.3
+rm SoInput.3 SoInteraction.3 SoKeyboardEvent.3 SoLOD.3 SoLabel.3 SoLevelOfDetail.3
+rm SoLevelOfSimplification.3 SoLight.3 SoLightModel.3 SoLineHighlightRenderAction.3
+rm SoLineSet.3 SoLinearProfile.3 SoLocateHighlight.3 SoLocation2Event.3
+rm SoMFBitMask.3 SoMFBool.3 SoMFColor.3 SoMFEngine.3 SoMFEnum.3 SoMFFloat.3
+rm SoMFInt32.3 SoMFMatrix.3 SoMFName.3 SoMFNode.3 SoMFPath.3 SoMFPlane.3
+rm SoMFRotation.3 SoMFShort.3 SoMFString.3 SoMFTime.3 SoMFUInt32.3 SoMFUShort.3
+rm SoMFVec2f.3 SoMFVec3f.3 SoMFVec4f.3 SoMField.3 SoMarkerSet.3 SoMaterial.3
+rm SoMaterialBinding.3 SoMatrixTransform.3 SoMemoryError.3 SoMotion3Event.3
+rm SoMouseButtonEvent.3 SoMultipleCopy.3 SoNode.3 SoNodeList.3 SoNodeSensor.3
+rm SoNonIndexedShape.3 SoNormal.3 SoNormalBinding.3 SoNotList.3 SoNotRec.3
+rm SoNurbsCurve.3 SoNurbsProfile.3 SoNurbsSurface.3 SoOneShotSensor.3 SoOrthographicCamera.3
+rm SoOutput.3 SoPackedColor.3 SoPath.3 SoPathList.3 SoPathSensor.3 SoPathSwitch.3
+rm SoPendulum.3 SoPerspectiveCamera.3 SoPickAction.3 SoPickStyle.3 SoPickedPoint.3
+rm SoPickedPointList.3 SoPointLight.3 SoPointSet.3 SoPolygonOffset.3 SoPrimitiveVertex.3
+rm SoProfile.3 SoProfileCoordinate2.3 SoProfileCoordinate3.3 SoQuadMesh.3
+rm SoRayPickAction.3 SoReadError.3 SoResetTransform.3 SoRotation.3 SoRotationXYZ.3
+rm SoRotor.3 SoSFBitMask.3 SoSFBool.3 SoSFColor.3 SoSFEngine.3 SoSFEnum.3
+rm SoSFFloat.3 SoSFImage.3 SoSFImage3.3 SoSFInt32.3 SoSFMatrix.3 SoSFName.3 SoSFNode.3
+rm SoSFPath.3 SoSFPlane.3 SoSFRotation.3 SoSFShort.3 SoSFString.3 SoSFTime.3
+rm SoSFTrigger.3 SoSFUInt32.3 SoSFUShort.3 SoSFVec2f.3 SoSFVec3f.3 SoSFVec4f.3
+rm SoSField.3 SoScale.3 SoSceneManager.3 SoSearchAction.3 SoSelection.3
+rm SoSensor.3 SoSensorManager.3 SoSeparator.3 SoShape.3 SoShapeHints.3
+rm SoShuttle.3 SoSpaceballButtonEvent.3 SoSphere.3 SoSpotLight.3 SoState.3
+rm SoSurroundScale.3 SoSwitch.3 SoText2.3 SoText3.3 SoTexture2.3 SoTexture3.3 SoTexture2Transform.3 SoTexture3Transform.3
+rm SoTextureCoordinate2.3 SoTextureCoordinate3.3 SoTextureCoordinateBinding.3 SoTextureCoordinateDefault.3
+rm SoTextureCoordinateEnvironment.3 SoTextureCoordinateFunction.3 SoTextureCoordinatePlane.3
+rm SoTimerQueueSensor.3 SoTimerSensor.3 SoTransform.3 SoTransformSeparator.3
+rm SoTransformation.3 SoTranslation.3 SoTriangleStripSet.3 SoType.3 SoTypeList.3
+rm SoUnits.3 SoVRMLInterpOutputList.3 SoVertexProperty.3 SoVertexShape.3
+rm SoWWWAnchor.3 SoWWWInline.3 SoWriteAction.3
+

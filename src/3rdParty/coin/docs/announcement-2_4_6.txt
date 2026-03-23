@@ -1,0 +1,75 @@
+From: "Lars J. Aas" <larsa@sim.no>
+Subject: Coin 2.4.6 Released
+
+Coin 2.4.6 Released
+===================
+
+Systems in Motion is proud to release v2.4.6 of the Coin 3D graphics
+library.  Coin 2.4.6 is a patchlevel release.  Patchlevel releases contain
+mostly bugfixes, optimizations, documentation improvements, and configure
+and build setup fixes.  This release does not extend the library API beyond
+the previous release.  This will be the very last 2.4 release before the
+upcoming 2.5 release.
+
+
+NEWS File Excerpt for 2.4.6:
+----------------------------
+
+New in Coin v2.4.6 (2007-04-03):
+* new:
+  - implemented SbViewVolume::getAlignRotation()
+  - added support in SoToVRML2Action for SoUnits and SoVRMLTransform
+* optimizations:
+  - fixed pathlist traversals, affecting most notably rendering w/transparency
+    DELAYED_BLEND/ADD mode
+  - added lazy shapehints evaluation to VRML97 rendering
+  - avoid probing glGetError() much (unless specified) since it kills
+    performance in certain remote rendering situations
+  - some optimizations in the reading of ascii vrml/iv files
+* bugfixes:
+  - SoVRMLBillboard axis-of-rotation bugfix
+  - global field and SoUnknownNode I/O fixes
+  - SbDPMatrix::multVecMatrix(SbVec4f) bugfix
+  - implemented missing notification-filtering in SoSwitch/SoVRMLSwitch
+  - plugged more memory leaks
+  - set same default depth function as SGI Inventor
+  - VRML97 TimeSensor bugfix
+  - VRML97 Billboard bugfixes
+  - SoGroup offpath traversal bugfix
+  - fixed AMD64 warning issues
+* other
+  - many Visual Studio build files improvements
+  - remove the Inventor/system/gl.h configure-run dependency
+
+See the ChangeLog file if you want the really gory details.
+
+
+Download Information:
+---------------------
+
+This message may be posted before some of the listed files are available.
+In that case, try again at a later time.
+
+ChangeLog:
+  http://svn.coin3d.org/repos/Coin-2/trunk/docs/ChangeLog.v2.4.6
+
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/all/Coin-2.4.6.tar.gz
+  ftp://ftp.coin3d.org/pub/coin/src/all/Coin-2.4.6.zip
+
+Precompiled for MS Windows:
+  ftp://ftp.coin3d.org/pub/coin/bin/win32/Coin-2.4.6-bin-msvc6.zip
+  ftp://ftp.coin3d.org/pub/coin/bin/win32/Coin-2.4.6-bin-msvc7.zip
+  ftp://ftp.coin3d.org/pub/coin/bin/win32/Coin-2.4.6-bin-msvc8.zip
+    or look in
+  http://ftp.coin3d.org/coin/bin/win32/ ...
+
+Precompiled for Mac OS X:
+  Not available as of this posting.  Visit the following directory to
+  check for any change of status:
+    ftp://ftp.coin3d.org/pub/coin/bin/macosx/
+
+
+Enjoy,
+
+  Lars J

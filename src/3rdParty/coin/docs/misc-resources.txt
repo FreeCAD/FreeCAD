@@ -1,0 +1,285 @@
+WHAT'S THIS?
+============
+
+A collection of useful/interesting links for Coin developers. It can, for
+instance, be resources needed when adding new features to Coin or links to
+techniques for optimizing Coin.
+
+THE LINKS
+=========
+
+* VRML97 Amendment 1: ISO/IEC14772-1:1997/Amd.1:2002
+  http://www.web3d.org/technicalinfo/specifications/vrml97am1/fdam/index.html
+
+* com.graphics.algorithms FAQ:
+  <URL:http://www.faqs.org/faqs/graphics/algorithms-faq/>
+
+  Somebody should read through it meticulously to see if there are any
+  hints which can be used for optimizations or API extensions in Coin,
+  or even completely new features.
+
+* UNC Collide Research Group
+  2000-12-14 Peder Blekken <pederb@sim.no>
+  http://www.cs.unc.edu/~geom/collide/index.shtml
+
+  Contains discussions on several collision detection algorithms.
+
+* Optimized Collision Detection
+  2001-05-10 Peder Blekken <pederb@sim.no>
+  http://www.codercorner.com/Opcode.htm
+
+  Claims to be much faster than other implementations. Is free to use
+  in any commercail or non-commercial program.
+
+* ColDet - Free 3D Collision Detection Library  (under the LGPL)
+  <URL:http://photoneffect.com/coldet/>
+
+* SOLID - Software Library for Interference Detection (LGPL)
+  http://www.win.tue.nl/~gino/solid/
+
+* nVIDIA GL_vertex_array_range and GL_NV_fence
+  2000-12-14 Peder Blekken <pederb@sim.no>
+  http://www.nvidia.com/Marketing/Developer/DevRel.nsf/pages/AEE3673F9B8DBC228825693B00619F9C
+
+  nVIDIA extensions for optimized rendering without using display lists.
+  Link has example program, source code and documentation.
+
+* Interactive Order-Independent Transparency
+  2001-05-18 Peder Blekken <pederb@sim.no>
+  http://www.nvidia.com/Marketing/Developer/DevRel.nsf/bookmark/EEFAD0772D0514D288256A4D00662526
+
+  Uses shadow mapping hardware and alpha test. Can be implemented in
+  OpenGL using Nvidia extensions for GeForce3.
+
+* GL2PS. A Postscript rendering library.
+  2001-06-11 Peder Blekken <pederb@sim.no>
+
+  http://www.geuz.org/gl2ps/
+
+  A library for rendering high quality postscript from any OpenGL
+  application. Released under LGPL.
+
+  Update 2002-01-17 mortene: an article explaining how to do
+  resolution independent vector export from OpenGL can also be found
+  here: <URL:http://www.codeproject.com/useritems/glexport.asp>.
+
+* openNURBS
+  2001-07-20 Marius Kintel <kintel@sim.no>
+
+  http://www.opennurbs.com
+
+  For higher quality ? NURBS rendering. Nice license:
+
+   - Commercial use is encouraged
+   - The tools, support, and membership are free
+   - There are no restrictions. Neither copyright nor copyleft restrictions
+     apply
+   - No contribution of effort or technology is required from the members,
+     although it is encouraged
+
+* SoXt-like GLUT component
+
+  http://www.stud.fee.vutbr.cz/~xpeciv00/OIV/SoGlut/
+
+* In-depth explanation of OpenGL on MSWin platforms:
+
+  <URL:http://msdn.microsoft.com/library/>, follow the link to
+  "Graphics and multimedia", then "Open GL"
+
+* A shareware VRML browser and general 3D viewer (DXF, RAW, OBJ,
+  GLView), which we could take a look at to compare features with our
+  soon-to-come (?) VRMLView replacement:
+
+  http://home.snafu.de/hg/
+
+* OpenGL Multipipe SDK
+
+  http://www.sgi.com/software/multipipe/sdk/
+
+  SDK for programming multipipe applications on SGI hardware. Free
+  download.
+
+* Recommended book for learning about threads programming:
+  "Programming With Threads", Kleiman / Shah / Smaalders, ISBN
+  0131723898
+
+* Miscellaneous C++ libraries: <URL:http://www.boost.org>. If the
+  licenses are liberal, we might be able to avoid re-inventing wheels
+  for some of the libraries provided.
+
+  [Matt Verona suggests using the tokenizer classes to parse the "search path
+  string" when implementing the SoSearchPathAction]
+
+* List of API changes from SGI Inventor v2.0 to v2.1:
+
+   <URL:http://wwwinfo.cern.ch/asd/lhc++/OpenInventor/pro/porting/chapter2.html>.
+
+  Contains lots of information about obsoleted features and field
+  value limitations that we need to check that we heed.
+
+* Information about the OpenGL ABI:
+
+    http://oss.sgi.com/projects/ogl-sample/registry/ARB/get_proc_address.txt
+    http://oss.sgi.com/projects/ogl-sample/ABI/
+
+  See also the GLAF project ("OpenGL Advanced Functionality"), which
+  wraps extensions etc in a portable framework (available under an
+  MIT-license):
+
+     http://webs.ono.com/usr003/cesarblecua/
+
+* An application partly covering the ideas behind our "gl-attack"
+  suggested project: <URL:http://glean.sourceforge.net>.
+
+* Troll Tech's Technical FAQ for Qt contains information about what we
+  can _not_ do when we want to keep ABI compatibility in new releases:
+
+    <URL:http://www.trolltech.com/developer/faqs/technical.html>
+
+* Distributed Open Inventor:
+
+    <URL:http://www.cg.tuwien.ac.at/research/vr/div/>
+
+  Also in the proceedings of the ACM Symposium on Virtual Reality
+  Software and Technology (VRST'99), pp. 74-81, 1999.
+
+  Student project: <URL:http://www.stud.fee.vutbr.cz/~xpeciv00/>
+
+* There's supposedly a shadow demo on www.opengl.org, with source
+  code, which demonstrates how to do shadows on all kinds of (NVidia)
+  gfx cards, from TNT (sw shadow volumes) to GeForce 3 (hardware
+  shadow mapping).
+
+* This link has some useful information on doing hardware-supported
+  dynamic shadowing on NVidia gfx-cards:
+
+    <URL:http://developer.nvidia.com/view.asp?IO=hwshadowmap_paper>
+
+* Another NVidia link: search developer.nvidia.com for "Practical and
+  Robust Shadow Volumes" by Everitt and Kilgard. A good paper and a
+  demo.
+
+* A few more links related to shadow volumes, provided by a Coin user:
+
+  http://developer.nvidia.com/object/robust_shadow_volumes.html
+  http://developer.nvidia.com/object/inf_shadow_volumes.html
+
+  A demo using these techniques:
+
+  http://www.gizmosdk.com/GizmoSDK.html
+
+* A 3D model search engine (with lots of VRML models, at least):
+  http://shape.cs.princeton.edu
+
+* Coin Debian Builds
+  http://buildd.debian.org/build.php?arch=&pkg=coin
+
+  Contains configure/make logs from building Coin on a number (10) of
+  different Debian Linux architectures.
+
+* Open Dynamics Engine, simulation of articulated rigid body dynamics:
+  http://www.q12.org/ode/ode.html (also has links to other similar
+  engines)
+
+* Driver for input device spaceball: http://www.3dconnexion.com/software/sdk/
+
+* Using a spaceball with Qt, info for interfacing with both X11 and
+  Win32: <URL:http://lists.trolltech.com/qt-interest/2002-03/thread00214-0.html>.
+
+* OpenGL FAQ and Troubleshooting Guide:
+     <URL:http://www.frii.com/~martz/oglfaq/>
+
+* FSF Copyright Assignment paperworks
+  http://www.gnu.org/prep/maintain_7.html#SEC7
+  NB: Coin is not an FSF-project, this link is here only for
+  reference/comparison
+
+  "Why the FSF gets copyright assignments from contributors":
+    <URL:http://www.gnu.org/licenses/why-assign.html>
+
+* "Programming in C++, Rules and Recommendations":
+  <URL:http://www.cs.umd.edu/users/cml/cstyle/Ellemtel-rules-mm.html>
+
+  Read through this doc and see if it is something we should link to
+  from the HACKING file.
+
+* Z-Buffer CSG Rendering (solid modeling with boolean logic)
+
+  http://www.nigels.com/research/
+
+* An LGPL-licensed library with at least some CSG support:
+  <URL:http://gts.sourceforge.net/>.
+
+* FLTK binding against SGI Inventor:
+  <URL:http://fl-inventor.sourceforge.net/>, make sure it can also
+  work with Coin. Note: they are using some of our pixmap graphics on
+  the viewer buttons, with no copyright information about this as far
+  as I can see. Get in touch with them.  (mortene)
+
+* SDL and GLUT bindings (So*RenderArea):
+  <URL:http://www.stud.fee.vutbr.cz/~xpeciv00/> (Jan Peciva)
+
+* TrueType Fonts with liberal licensing (?): <URL:http://fonts.tom7.com/>
+
+  A list of PD fonts, from a posting on debian-legal:
+
+        http://bibliofile.mc.duke.edu/gww/fonts/Unicode.html
+        http://maltaesp.hypermart.net/fonts.htm
+        http://www.cs.stir.ac.uk/~kjt/software/nextstep/nextstep.html
+        http://super.groovy.tripod.com/b1.html
+        http://www.meirinsurance.co.il/meir_heb.html
+                (look under the Windows/PC section)
+        http://www.1001freefonts.com/fontfiles/afonts4.htm
+        http://lager.dyndns.org/GnuMICR/download/latest/
+                (GPL'd, see README)
+
+* An organized "free fonts" project (they are released under the GPL):
+  http://www.nongnu.org/freefont/
+
+* A Free Software TrueType/PostScript/... font editor:
+  http://pfaedit.sourceforge.net/
+
+* "Shareware Typefaces" - loads of TrueType fonts:
+  http://www.masterstech-home.com/The_Library/Font_Samples/
+  Viewable samples before downloading.
+
+* In 2003-01, Bitstream and the Gnome project announced that Bitstream
+  will soon give away 10 fonts that can be used for just about any
+  purpose (licensing certainly seems liberal enough for us to include
+  in Coin).
+
+  UPDATE 2003-04-20: now released, at <URL:http://www.gnome.org/fonts>.
+
+* TransGaming, involved in the Wine project, have made a TTF called
+  TGMarlett and released it under the BSD license.
+
+* OpenGL and ActiveX:
+
+  - Working demo code:
+    <URL:http://www.sulaco.co.za/opengl.htm>
+
+  - An OpenGL ActiveX Control Developed with MFC:
+    <URL:http://www.codeproject.com/opengl/opengl_activex.asp>
+
+* An OpenGL extension loading library (like our GLWrapper):
+  <URL:http://www.uni-karlsruhe.de/~uli2/>. Available under a
+  BSD-style license. Check it out to see if it's better designed than
+  GLWrapper.
+
+* Binary native Win32 packages for misc image libraries used by simage:
+  <URL:http://gnuwin32.sourceforge.net>
+
+* MSVC++ run-time array bounds (and other) checking (but probably only
+  for VC.NET?):
+
+  <URL:http://msdn.microsoft.com/library/default.asp?url=/library/en-us/vccore/html/vcrefRTCRuntimeChecks.asp>
+
+* Vertex shader integrated with Inventor API:
+         http://www.csit.fsu.edu/~blanco/Cg/Cg_projects.htm
+
+* GLIBC memory handling debugging:
+
+        http://sdb.suse.de/en/sdb/html/aj_debug.html
+
+  (very short version: set MALLOC_CHECK_ to "1" to get error messages
+  about problems on stderr)

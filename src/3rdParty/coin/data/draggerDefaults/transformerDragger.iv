@@ -1,0 +1,477 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+
+DEF TRANSFORMER_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF TRANSFORMER_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF TRANSFORMER_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+
+# Some specific material definitions for this dragger.
+
+DEF TRANSFORMER_FEEDBACK_TRANSPARENT_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5  transparency 0.5 }
+DEF TRANSFORMER_GREEN_MATERIAL Material { diffuseColor 0.0 0.5 0  emissiveColor 0.0 0.5 0 }
+
+DEF transformerOverallStyle Group { USE TRANSFORMER_INACTIVE_MATERIAL }
+DEF transformerLocateMaterial Material { diffuseColor 0.8 0.3 0  emissiveColor 0.8 0.3 0 }
+
+##########################################################################
+
+# We use 1.001 instead of 1.0 for the geometry to avoid picking
+# problems when the dragger is used in a manipulator and the geometry
+# fills the manipulator box. If we use 1.0, it's "random" if the ray
+# hits the manipulated geometry or the dragger.
+
+# These are the sides of the transformerbox. They are rendered with
+# facesets, so they can be picked and thereby activate the box for
+# dragging. The faces are made invisible (i.e. rendered with lines) so
+# we can see through the box in case the geometry is within it (which
+# is the most common way of using the dragger).
+
+# The 8 corners of the cube. We need to use individual faces so we
+# know which one was picked for interaction.
+DEF TRANSFORMER_SIDE_COORDS Group {
+   Coordinate3 {
+      point [
+       -1.001 -1.001 1.001, 1.001 -1.001 1.001, 1.001 1.001 1.001, -1.001 1.001 1.001,     # front face, ccw, from bottom left
+       -1.001 -1.001 -1.001, 1.001 -1.001 -1.001, 1.001 1.001 -1.001, -1.001 1.001 -1.001  # back face, cw, from bottom left
+      ]
+   }
+}
+
+DEF TRANSFORMER_SIDE_DATA Group {
+   USE TRANSFORMER_SIDE_COORDS
+   # All faces in the box are drawn invisible, with only the lines
+   # showing.
+   DrawStyle { style LINES }
+   # turn off backface culling
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
+}
+
+DEF TRANSFORMER_TRANSLATOR_ACTIVE Group {
+   USE TRANSFORMER_ACTIVE_MATERIAL
+   DrawStyle { style LINES  lineWidth 3.0 }
+}
+
+# Top face.
+DEF transformerTranslator1 Separator {
+   USE TRANSFORMER_SIDE_DATA
+   IndexedFaceSet { coordIndex [ 3, 2, 6, 7, -1 ] }
+}
+DEF transformerTranslator1Active Separator {
+   USE TRANSFORMER_TRANSLATOR_ACTIVE
+   USE transformerTranslator1
+}
+
+# Bottom face.
+DEF transformerTranslator2 Separator {
+   USE TRANSFORMER_SIDE_DATA
+   IndexedFaceSet { coordIndex [ 4, 5, 1, 0, -1 ] }
+}
+DEF transformerTranslator2Active Separator {
+   USE TRANSFORMER_TRANSLATOR_ACTIVE
+   USE transformerTranslator2
+}
+
+# Left face.
+DEF transformerTranslator3 Separator {
+   USE TRANSFORMER_SIDE_DATA
+   IndexedFaceSet { coordIndex [ 4, 0, 3, 7, -1 ] }
+}
+DEF transformerTranslator3Active Separator {
+   USE TRANSFORMER_TRANSLATOR_ACTIVE
+   USE transformerTranslator3
+}
+
+# Right face.
+DEF transformerTranslator4 Separator {
+   USE TRANSFORMER_SIDE_DATA
+   IndexedFaceSet { coordIndex [ 1, 5, 6, 2, -1] }
+}
+DEF transformerTranslator4Active Separator {
+   USE TRANSFORMER_TRANSLATOR_ACTIVE
+   USE transformerTranslator4
+}
+
+# Front face.
+DEF transformerTranslator5 Separator {
+   USE TRANSFORMER_SIDE_DATA
+   IndexedFaceSet { coordIndex [ 0, 1, 2, 3, -1 ] }
+}
+DEF transformerTranslator5Active Separator {
+   USE TRANSFORMER_TRANSLATOR_ACTIVE
+   USE transformerTranslator5
+}
+
+# Back face.
+DEF transformerTranslator6 Separator {
+   USE TRANSFORMER_SIDE_DATA
+   IndexedFaceSet { coordIndex [ 4, 7, 6, 5, -1 ] }
+}
+DEF transformerTranslator6Active Separator {
+   USE TRANSFORMER_TRANSLATOR_ACTIVE
+   USE transformerTranslator6
+}
+
+## Transformer feedback geometry.
+
+DEF transformerTranslateBoxFeedback Separator {
+   USE TRANSFORMER_FEEDBACK_MATERIAL
+   DrawStyle { style LINES }
+   Cube { }
+   USE TRANSFORMER_TRANSLATOR_ACTIVE
+   Coordinate3 { point [ -1.001 1.001 1.001, 1.001 1.001 1.001, 1.001 1.001 -1.001, -1.001 1.001 -1.001 ] }
+   IndexedLineSet { coordIndex [ 0, 1, 2, 3, 0, -1 ] }
+}
+
+DEF TRANSFORMER_SINGLE_AXIS Group {
+   USE TRANSFORMER_ACTIVE_MATERIAL
+
+   Coordinate3 { point [ 0 0.5 0, 0 -0.5 0 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+
+   Translation { translation 0 0.5 0 }
+   DEF TRANSFORMER_AXIS_MARKER Cone { height 0.05  bottomRadius 0.05 }
+
+   Translation { translation 0 -1 0 }
+   Rotation { rotation 0 0 1  3.14 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_AXIS_MARKER
+}
+
+DEF transformerXAxisFeedbackActive Separator {
+   Rotation { rotation 0 0 1  1.57 }
+   USE TRANSFORMER_SINGLE_AXIS
+}
+DEF transformerYAxisFeedbackActive Separator {
+   USE TRANSFORMER_SINGLE_AXIS
+}
+DEF transformerZAxisFeedbackActive Separator {
+   Rotation { rotation 1 0 0  1.57 }
+   USE TRANSFORMER_SINGLE_AXIS
+}
+
+DEF transformerXAxisFeedbackSelect Separator {
+   USE transformerXAxisFeedbackActive
+}
+DEF transformerYAxisFeedbackSelect Separator {
+   USE transformerYAxisFeedbackActive
+}
+DEF transformerZAxisFeedbackSelect Separator {
+   USE transformerZAxisFeedbackActive
+}
+
+# The crosshair geometry is not used in Coin yet.
+DEF transformerXCrosshairFeedback Separator { }
+DEF transformerYCrosshairFeedback Separator { }
+DEF transformerZCrosshairFeedback Separator { }
+
+
+##########################################################################
+
+# The geometry specifications below are for the "arms" of the rotator.
+
+DEF TRANSFORMER_ROTATOR_ACTIVE Group {
+   USE TRANSFORMER_ACTIVE_MATERIAL
+   DrawStyle { lineWidth 3.0 }
+}
+
+DEF TRANSFORMER_ROTATOR_COORDS Coordinate3 {
+   point [ 0 0 0, 1.5 0 0, -1.5 0 0, 0 1.5 0, 0 -1.5 0, 0 0 1.5, 0 0 -1.5 ]
+}
+DEF TRANSFORMER_ROTATOR_MARKER Sphere { radius 0.05 }
+
+DEF TRANSFORMER_ROTATOR_PART1 Group {
+   USE TRANSFORMER_ROTATOR_COORDS
+   IndexedLineSet { coordIndex [ 0, 3, -1 ] }
+   Translation { translation 0 1.5 0 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_ROTATOR_MARKER
+}
+DEF TRANSFORMER_ROTATOR_PART2 Group {
+   USE TRANSFORMER_ROTATOR_COORDS
+   IndexedLineSet { coordIndex [ 0, 4, -1 ] }
+   Translation { translation 0 -1.5 0 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_ROTATOR_MARKER
+}
+DEF TRANSFORMER_ROTATOR_PART3 Group {
+   USE TRANSFORMER_ROTATOR_COORDS
+   IndexedLineSet { coordIndex [ 0, 2, -1 ] }
+   Translation { translation -1.5 0 0 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_ROTATOR_MARKER
+}
+DEF TRANSFORMER_ROTATOR_PART4 Group {
+   USE TRANSFORMER_ROTATOR_COORDS
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+   Translation { translation 1.5 0 0 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_ROTATOR_MARKER
+}
+DEF TRANSFORMER_ROTATOR_PART5 Group {
+   USE TRANSFORMER_ROTATOR_COORDS
+   IndexedLineSet { coordIndex [ 0, 5, -1 ] }
+   Translation { translation 0 0 1.5 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_ROTATOR_MARKER
+}
+DEF TRANSFORMER_ROTATOR_PART6 Group {
+   USE TRANSFORMER_ROTATOR_COORDS
+   IndexedLineSet { coordIndex [ 0, 6, -1 ] }
+   Translation { translation 0 0 -1.5 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_ROTATOR_MARKER
+}
+
+DEF transformerRotator1 Separator {
+   USE TRANSFORMER_GREEN_MATERIAL
+   USE TRANSFORMER_ROTATOR_PART1
+}
+DEF transformerRotator1Active Separator {
+   USE TRANSFORMER_ROTATOR_ACTIVE
+   USE TRANSFORMER_ROTATOR_PART1
+}
+DEF transformerRotator2 Separator {
+   USE TRANSFORMER_GREEN_MATERIAL
+   USE TRANSFORMER_ROTATOR_PART2
+}
+DEF transformerRotator2Active Separator {
+   USE TRANSFORMER_ROTATOR_ACTIVE
+   USE TRANSFORMER_ROTATOR_PART2
+}
+DEF transformerRotator3 Separator {
+   USE TRANSFORMER_GREEN_MATERIAL
+   USE TRANSFORMER_ROTATOR_PART3
+}
+DEF transformerRotator3Active Separator {
+   USE TRANSFORMER_ROTATOR_ACTIVE
+   USE TRANSFORMER_ROTATOR_PART3
+}
+DEF transformerRotator4 Separator {
+   USE TRANSFORMER_GREEN_MATERIAL
+   USE TRANSFORMER_ROTATOR_PART4
+}
+DEF transformerRotator4Active Separator {
+   USE TRANSFORMER_ROTATOR_ACTIVE
+   USE TRANSFORMER_ROTATOR_PART4
+}
+DEF transformerRotator5 Separator {
+   USE TRANSFORMER_GREEN_MATERIAL
+   USE TRANSFORMER_ROTATOR_PART5
+}
+DEF transformerRotator5Active Separator {
+   USE TRANSFORMER_ROTATOR_ACTIVE
+   USE TRANSFORMER_ROTATOR_PART5
+}
+DEF transformerRotator6 Separator {
+   USE TRANSFORMER_GREEN_MATERIAL
+   USE TRANSFORMER_ROTATOR_PART6
+}
+DEF transformerRotator6Active Separator {
+   USE TRANSFORMER_ROTATOR_ACTIVE
+   USE TRANSFORMER_ROTATOR_PART6
+}
+
+## Feedback geometry.
+
+DEF transformerYCircleFeedback Separator {
+   USE TRANSFORMER_FEEDBACK_MATERIAL
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
+   Cylinder { height 0.03  parts SIDES }
+}
+
+DEF transformerXCircleFeedback Separator {
+   Rotation { rotation 0 0 1  1.57 }
+   USE transformerYCircleFeedback
+}
+
+DEF transformerZCircleFeedback Separator {
+   Rotation { rotation 1 0 0  1.57 }
+   USE transformerYCircleFeedback
+}
+
+DEF TRANSFORMER_ROUNDWALL_MARKER Group {
+   USE TRANSFORMER_FEEDBACK_MATERIAL
+   Coordinate3 { point [ 1.001 0 0, -1.001 0 0, 0 1.001 0, 0 -1.001 0, 0 0 1.001, 0 0 -1.001 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ] }
+}
+
+DEF transformerPosXRoundWallFeedback Separator {
+   Transform { rotation 0 0 1 1.57  translation 1 0 0 }
+   USE TRANSFORMER_ROUNDWALL_MARKER
+}
+DEF transformerNegXRoundWallFeedback Separator {
+   Transform { rotation 0 0 1 1.57  translation -1 0 0 }
+   USE TRANSFORMER_ROUNDWALL_MARKER
+}
+DEF transformerPosYRoundWallFeedback Separator {
+   Transform { translation 0 1 0 }
+   USE TRANSFORMER_ROUNDWALL_MARKER
+}
+DEF transformerNegYRoundWallFeedback Separator {
+   Transform { translation 0 -1 0 }
+   USE TRANSFORMER_ROUNDWALL_MARKER
+}
+DEF transformerPosZRoundWallFeedback Separator {
+   Transform { rotation 1 0 0 1.57  translation 0 0 1 }
+   USE TRANSFORMER_ROUNDWALL_MARKER
+}
+DEF transformerNegZRoundWallFeedback Separator {
+   Transform { rotation 1 0 0 1.57  translation 0 0 -1 }
+   USE TRANSFORMER_ROUNDWALL_MARKER
+}
+
+##########################################################################
+
+# The geometry specifications below are for the corner markers on the
+# box which can be picked to trigger scaling operations.
+
+DEF TRANSFORMER_SCALE_ACTIVE Group {
+   DrawStyle { lineWidth 3.0 }
+   USE TRANSFORMER_ACTIVE_MATERIAL
+}
+
+DEF TRANSFORMER_SCALE_MARKER Cube { width 0.1  height 0.1  depth 0.1 }
+
+DEF transformerScale1 Separator {
+   Translation { translation 1 1 1 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_SCALE_MARKER
+}
+DEF transformerScale1Active Separator {
+   USE TRANSFORMER_SCALE_ACTIVE
+   USE transformerScale1
+}
+
+DEF transformerScale2 Separator {
+   Translation { translation 1 1 -1 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_SCALE_MARKER
+}
+DEF transformerScale2Active Separator {
+   USE TRANSFORMER_SCALE_ACTIVE
+   USE transformerScale2
+}
+
+DEF transformerScale3 Separator {
+   Translation { translation 1 -1 1 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_SCALE_MARKER
+}
+DEF transformerScale3Active Separator {
+   USE TRANSFORMER_SCALE_ACTIVE
+   USE transformerScale3
+}
+
+DEF transformerScale4 Separator {
+   Translation { translation 1 -1 -1 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_SCALE_MARKER
+}
+DEF transformerScale4Active Separator {
+   USE TRANSFORMER_SCALE_ACTIVE
+   USE transformerScale4
+}
+
+DEF transformerScale5 Separator {
+   Translation { translation -1 1 1 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_SCALE_MARKER
+}
+DEF transformerScale5Active Separator {
+   USE TRANSFORMER_SCALE_ACTIVE
+   USE transformerScale5
+}
+
+DEF transformerScale6 Separator {
+   Translation { translation -1 1 -1 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_SCALE_MARKER
+}
+DEF transformerScale6Active Separator {
+   USE TRANSFORMER_SCALE_ACTIVE
+   USE transformerScale6
+}
+
+DEF transformerScale7 Separator {
+   Translation { translation -1 -1 1 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_SCALE_MARKER
+}
+DEF transformerScale7Active Separator {
+   USE TRANSFORMER_SCALE_ACTIVE
+   USE transformerScale7
+}
+
+DEF transformerScale8 Separator {
+   Translation { translation -1 -1 -1 }
+   AntiSquish { recalcAlways FALSE }
+   USE TRANSFORMER_SCALE_MARKER
+}
+DEF transformerScale8Active Separator {
+   USE TRANSFORMER_SCALE_ACTIVE
+   USE transformerScale8
+}
+
+## Feedback geometries.
+
+DEF TRANSFORMER_SCALE_DIAGONAL Group {
+   Coordinate3 { point [ -1.001 1.001 1.001, 1.001 -1.001 -1.001 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+}
+
+DEF transformerRadialFeedback Separator {
+   USE TRANSFORMER_FEEDBACK_MATERIAL
+
+   USE TRANSFORMER_SCALE_DIAGONAL
+   Rotation { rotation 0 1 0  1.57 }
+   USE TRANSFORMER_SCALE_DIAGONAL
+   Rotation { rotation 0 1 0  1.57 }
+   USE TRANSFORMER_SCALE_DIAGONAL
+   Rotation { rotation 0 1 0  1.57 }
+   USE TRANSFORMER_SCALE_DIAGONAL
+}
+
+DEF transformerScaleBoxFeedback Separator {
+   USE TRANSFORMER_FEEDBACK_MATERIAL
+   DrawStyle { style LINES  lineWidth 2 }
+   Cube { }
+}
+
+DEF TRANSFORMER_SCALE_WALLDATA Group {
+   USE TRANSFORMER_FEEDBACK_TRANSPARENT_MATERIAL
+   USE TRANSFORMER_SIDE_COORDS
+}
+
+# Right wall
+DEF transformerPosXWallFeedback Separator {
+   USE TRANSFORMER_SCALE_WALLDATA
+   IndexedFaceSet { coordIndex [ 5, 1, 2, 6, -1 ] }
+}
+# Left wall
+DEF transformerNegXWallFeedback Separator {
+   USE TRANSFORMER_SCALE_WALLDATA
+   IndexedFaceSet { coordIndex [ 0, 4, 7, 3, -1 ] }
+}
+
+# Top wall
+DEF transformerPosYWallFeedback Separator {
+   USE TRANSFORMER_SCALE_WALLDATA
+   IndexedFaceSet { coordIndex [ 7, 6, 2, 3, -1 ] }
+}
+# Bottom wall
+DEF transformerNegYWallFeedback Separator {
+   USE TRANSFORMER_SCALE_WALLDATA
+   IndexedFaceSet { coordIndex [ 0, 1, 5, 4, -1 ] }
+}
+
+# Near wall
+DEF transformerPosZWallFeedback Separator {
+   USE TRANSFORMER_SCALE_WALLDATA
+   IndexedFaceSet { coordIndex [ 1, 0, 3, 2, -1 ] }
+}
+# Far wall
+DEF transformerNegZWallFeedback Separator {
+   USE TRANSFORMER_SCALE_WALLDATA
+   IndexedFaceSet { coordIndex [ 4, 5, 6, 7, -1 ] } 
+}

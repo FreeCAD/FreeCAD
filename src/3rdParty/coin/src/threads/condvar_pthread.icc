@@ -1,0 +1,152 @@
+/**************************************************************************\
+ * Copyright (c) Kongsberg Oil & Gas Technologies AS
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * 
+ * Redistributions in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in the
+ * documentation and/or other materials provided with the distribution.
+ * 
+ * Neither the name of the copyright holder nor the names of its
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+\**************************************************************************/
+
+/* This file should only be included from condvar.c */
+
+#include <stdio.h>
+
+#include <Inventor/C/base/time.h>
+
+#include "threads/mutexp.h"
+
+static int
+internal_condvar_struct_init(cc_condvar * condvar_struct)
+{
+  int status = pthread_cond_init(&(condvar_struct->pthread.condid), NULL);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_struct_init",
+                         "pthread_cond_init() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_condvar_struct_clean(cc_condvar * condvar_struct)
+{
+  int status;
+  int ret = CC_OK;
+  status = pthread_cond_destroy(&(condvar_struct->pthread.condid));
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_struct_clean",
+                         "pthread_cond_destroy() error: %d\n", status);
+    ret = CC_ERROR;
+  }
+  return ret;
+}
+
+static int
+internal_condvar_wait(cc_condvar * condvar, cc_mutex * mutex)
+{
+  int status;
+
+  status = pthread_cond_wait(&condvar->pthread.condid,
+                             &mutex->pthread.mutexid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_wait",
+                         "pthread_cond_wait() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_condvar_timed_wait(cc_condvar * condvar, cc_mutex * mutex, cc_time period)
+{
+  struct timespec timeout;
+  cc_time when;
+  int status, ret;
+  double sec;
+
+  when = cc_time_gettimeofday() + period;
+  sec = floor(when);
+  timeout.tv_sec = (int) sec;
+#if defined(HAVE_PTHREAD_TIMESPEC_NSEC)
+  timeout.tv_nsec = (int) ((when - sec) * 1000000000.0);
+#else
+  timeout.tv_usec = (int) ((when - sec) * 1000000.0);
+#endif
+  status = pthread_cond_timedwait(&condvar->pthread.condid,
+                                  &mutex->pthread.mutexid, &timeout);
+  ret = CC_OK;
+  if (status != 0) {
+    if (status == ETIMEDOUT) {
+      ret = CC_TIMEOUT;
+    }
+    else {
+      ret = CC_ERROR;
+      if (COIN_DEBUG) {
+        cc_debugerror_post("internal_condvar_timed_wait",
+                           "pthread_cond_timedwait() error: %d", status);
+        switch (status) {
+        case EINTR: cc_debugerror_post("internal_condvar_timed_wait",
+                                       "EINTR\n"); break;
+        case EBUSY: cc_debugerror_post("internal_condvar_timed_wait",
+                                       "EBUSY\n"); break;
+        default: cc_debugerror_post("internal_condvar_timed_wait",
+                                    "default\n"); break;
+        }
+      }
+    }
+  }
+  return ret;
+}
+
+static int
+internal_condvar_wake_one(cc_condvar * condvar)
+{
+  int status;
+  status = pthread_cond_signal(&condvar->pthread.condid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_wake_one",
+                         "pthread_cond_signal() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}
+
+static int
+internal_condvar_wake_all(cc_condvar * condvar)
+{
+  int status = pthread_cond_broadcast(&condvar->pthread.condid);
+  if (status != 0) {
+    if (COIN_DEBUG)
+      cc_debugerror_post("internal_condvar_wake_all",
+                         "pthread_cond_broadcast() error: %d\n", status);
+    return CC_ERROR;
+  }
+  return CC_OK;
+}

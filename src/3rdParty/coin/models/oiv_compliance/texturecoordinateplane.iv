@@ -1,0 +1,51 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoTextureCoordinatePlane binding.
+#
+# 19990503 mortene
+
+Separator {
+   Texture2 {
+      image 8 6 3
+      0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+      0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+      0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+      0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+      0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+      0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+   }
+
+   # (ROW 0)
+   Separator {
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      TextureCoordinatePlane { }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      TextureCoordinatePlane { directionS 2 3 4 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      TextureCoordinatePlane { directionT 4 3 2 }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      TextureCoordinatePlane {
+	 directionS 2 3 4
+	 directionT 4 3 2
+      }
+      Sphere { }
+
+      Translation { translation +4 0 0 }
+      TextureCoordinateDefault { }
+      TextureCoordinatePlane {
+	 directionS 2 3 4 ~
+	 directionT 4 3 2 ~
+      }
+      Sphere { }
+   }
+}

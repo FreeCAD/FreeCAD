@@ -1,0 +1,78 @@
+From: "Lars J. Aas" <larsa@sim.no>
+Subject: Coin 2.1.0 Released
+
+Coin 2.1.0 Released
+===================
+
+Systems in Motion is proud to release v2.1.0 of the Coin 3D graphics
+library.  Coin 2.1.0 is a minor release.  It extends the functionality of
+previous versions of Coin 2.* in upward compatible ways.  It also fixes
+bugs and problems found in releases 2.0.0 through 2.0.2, and includes
+updates to the documentation.  The API and ABI of the library is slightly
+extended, but not in any way that could conflict with older versions of
+Coin 2.*.
+
+NEWS File Excerpt:
+------------------
+
+* new features:
+  - new SoIntersectionDetectionAction class for collision testing
+  - import and export of files with gzip and bzip2 compression
+    (new methods SoOutput::setCompression() and
+    SoOutput::getAvailableCompressionMethods())
+  - hard-copy support: vector output to Postscript
+  - FreeType support for importing TrueType fonts to SoText2
+  - native Win32 support for importing TrueType fonts to SoText2
+  - new SoInput::setStringArray() convenience method
+  - new SoAction::apply() convenience method
+  - So[Box|Line]HighlightRenderAction highlights selections under
+    all SoSelection nodes, not just the first one
+  - SoSFImage::setValue with CopyPolicy::NO_COPY implemented
+  - autodetection of some common Win32 Coin-linking problems
+  - ensure [u]intptr_t C type is present
+* bugfixes:
+  - SoCube PER_FACE material binding bugfix.
+  - I/O: string quoting bugfix, binary file padding bugfix, ++
+  - field-conversion setup for new field types from 2.0
+  - misc SoOffscreenRenderer fixes
+  - SoOffscreenRenderer large image support
+  - environment mapping when lighting is enabled
+  - import and export operations on iv- and wrl-files for some locales
+  - SoResetTransform SoGetBoundingBoxAction handling
+  - SoNodeSenor (re)attach
+  - So[Box|Line]HighlightRenderAction antialiasing rendering
+  - and more...
+* build fixes:
+  - upgraded to new versions of autoconf, automake, and libtool
+  - fixes for building with the MKS environment
+
+See the ChangeLog file if you want the really gory details.  See
+the file RELNOTES on changes that might affect Coin usage.
+
+
+Download Information:
+---------------------
+
+This message may be posted before some of the listed files are available.
+In that case, try again at a later time.
+
+ChangeLog:
+  http://source.coin3d.org/Coin-2/docs/ChangeLog.v2.1.0
+
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/Coin-2.1.0.tar.gz
+
+Precompiled for Linux (i386):
+  Debian (testing) apt-get:
+    $ apt-get install libcoin40-dev
+
+Precompiled for MS Windows:
+  ftp://ftp.coin3d.org/pub/coin/bin/win32/coin-v2.1.0-install.exe
+
+Precompiled for Mac OS X:
+  ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-2.1.0.dmg
+
+
+Enjoy,
+
+  Lars J

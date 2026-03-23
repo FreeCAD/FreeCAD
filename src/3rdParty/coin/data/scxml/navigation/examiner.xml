@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Examiner Navigation Mode
+Camera navigation SCXML state machine for Coin 3.1.
+-->
+
+<scxml
+  xmlns="http://www.w3.org/2008/07/scxml"
+  version="1.0"
+  profile="x-coin"
+  name="examiner-mode"
+  initial="idle"
+  exmode="lax">
+
+  <state id="base">
+    <!-- A few "global" event transitions that work regardless of active substate. -->
+
+    <transition event="error.*"><log level="9"/></transition>
+
+    <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.LEFT_ALT" target="interact"/>
+    <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_ALT" target="idle"/>
+
+    <transition event="sim.coin3d.coin.navigation.ViewAll">
+      <send targettype="x-coin-navigation" target="Misc"
+            event="x-coin-navigation.Misc.ViewAll" namelist="_sessionid"/>
+    </transition>
+
+    <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON2" target="contextmenurequest"/>
+
+    <transition event="sim.coin3d.coin.PopupMenuOpen" target="idle"/>
+
+    <transition event="sim.coin3d.coin.navigation.Seek" target="seek_wait"/>
+
+    <!-- ** INTERACT MODE ************************************************** -->
+    <state id="interact">
+      <!-- A "dead state".
+           Only interactive scene graph parts will react in this mode,
+           if in mixed-navigation-mode. -->
+    </state>
+
+
+    <!-- ** IDLE MODE ****************************************************** -->
+    <state id="idle">
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.S" target="seek"/>
+
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="rotate"/>
+
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON3" target="pan_button_move"/>
+
+      <!-- we dolly, not zoom, for non-orthographic cameras -->
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON4"
+                  cond="coin:camera.getTypeId()=='OrthographicCamera'"
+                  target="zoom_step_in"/>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON4"
+                  cond="coin:camera.getTypeId()!='OrthographicCamera'"
+                  target="dolly_step_in"/>
+
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON5"
+                  cond="coin:camera.getTypeId()=='OrthographicCamera'"
+                  target="zoom_step_out"/>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON5"
+                  cond="coin:camera.getTypeId()!='OrthographicCamera'"
+                  target="dolly_step_out"/>
+
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.LEFT_SHIFT" target="pan_shift_wait"/>
+
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.LEFT_CONTROL"
+                  cond="coin:camera.getTypeId()=='OrthographicCamera'"
+                  target="zoom_ctrl_wait"/>
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.LEFT_CONTROL"
+                  cond="coin:camera.getTypeId()!='OrthographicCamera'"
+                  target="dolly_ctrl_wait"/>
+
+      <transition event="x-coin-navigation.Rotate.TRIGGER_SPIN" target="spin">
+        <assign location="coin:temp.rotation" expr="_event.rotation"/>
+        <assign location="coin:temp.from" expr="_event.from"/>
+        <send targettype="x-coin-navigation" target="Spin"
+              event="x-coin-navigation.Spin.BEGIN" namelist="_sessionid rotation from"/>
+      </transition>
+    </state>
+
+
+    <!-- ** ROTATE MODE *************************************************** -->
+    <state id="rotate" src="coin:scxml/navigation/common.xml#common_mouse_rotate">
+
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON1" target="idle"/>
+
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON3"
+                  cond="coin:camera.getTypeId()=='OrthographicCamera'"
+                  target="zoom_buttons_move">
+        <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+        <send targettype="x-coin-navigation" target="Zoom"
+              event="x-coin-navigation.Zoom.BEGIN" namelist="_sessionid mouseposition"/>
+      </transition>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON3"
+                  cond="coin:camera.getTypeId()!='OrthographicCamera'"
+                  target="dolly_buttons_move">
+        <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+        <send targettype="x-coin-navigation" target="Dolly"
+              event="x-coin-navigation.Dolly.BEGIN" namelist="_sessionid mouseposition"/>
+      </transition>
+ 
+    </state>
+
+    <!-- ** PAN MODE ******************************************************* -->
+    <state id="pan">
+      <state id="pan_shift_wait">
+        <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_SHIFT" target="idle"/>
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="pan_shift_move"/>
+      </state>
+
+      <state id="pan_shift_move"
+             src="coin:scxml/navigation/common.xml#common_mouse_pan">
+
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON1" target="pan_shift_wait"/>
+        <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_SHIFT" target="rotate"/>
+
+      </state>
+
+      <state id="pan_button_move"
+             src="coin:scxml/navigation/common.xml#common_mouse_pan">
+
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON3" target="idle"/>
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1"
+                    cond="coin:camera.getTypeId()=='OrthographicCamera'"
+                    target="zoom_buttons_move"/>
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1"
+                    cond="coin:camera.getTypeId()!='OrthographicCamera'"
+                    target="dolly_buttons_move"/>
+      </state>
+    </state>
+
+
+    <!-- ** SPIN MODE ****************************************************** -->
+    <state id="spin">
+      <onentry>
+        <send targettype="x-coin-navigation" target="Misc"
+              event="x-coin-navigation.Misc.Redraw"/>
+      </onentry>
+      <onexit>
+        <send targettype="x-coin-navigation" target="Spin"
+              event="x-coin-navigation.Spin.END"/>
+      </onexit>
+
+      <transition event="sim.coin3d.coin.GLRender.POST_RENDER">
+        <send targettype="x-coin-navigation" target="Spin"
+              event="x-coin-navigation.Spin.UPDATE"/>
+      </transition>
+      <transition event="sim.coin3d.coin.GLRender.POST_RENDER">
+        <send targettype="x-coin-navigation" target="Misc"
+              event="x-coin-navigation.Misc.Redraw"/>
+      </transition>
+
+      <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.ESCAPE" target="idle"/>
+
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="rotate"/>
+      <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON3" target="pan_button_move"/>
+    </state>
+
+
+    <!-- ** ZOOM MODE ****************************************************** -->
+    <state id="zoom">
+
+      <state id="zoom_ctrl_wait">
+        <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_CONTROL" target="idle"/>
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="zoom_ctrl_move"/>
+      </state>
+
+      <state id="zoom_ctrl_move"
+             src="coin:scxml/navigation/common.xml#common_mouse_zoom">
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON1" target="zoom_ctrl_wait"/>
+        <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_CONTROL" target="rotate"/>
+      </state>
+
+      <state id="zoom_buttons_move"
+             src="coin:scxml/navigation/common.xml#common_mouse_zoom">
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON3" target="rotate"/>
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON1" target="pan_button_move"/>
+      </state>
+
+      <state id="zoom_step">
+        <transition event="zoom_step_in_container.done" target="idle"/>
+        <transition event="zoom_step_out_container.done" target="idle"/>
+
+        <state id="zoom_step_in_container">
+          <onentry>
+            <send targettype="x-coin-navigation" target="Zoom"
+                  event="x-coin-navigation.Zoom.ZOOM_IN" namelist="_sessionid"/>
+          </onentry>
+          <final id="zoom_step_in"/>
+        </state>
+
+        <state id="zoom_step_out_container">
+          <onentry>
+            <send targettype="x-coin-navigation" target="Zoom"
+                  event="x-coin-navigation.Zoom.ZOOM_OUT" namelist="_sessionid"/>
+          </onentry>
+          <final id="zoom_step_out"/>
+        </state>
+      </state>
+    </state>
+
+
+    <!-- ** DOLLY MODE ***************************************************** -->
+    <state id="dolly">
+
+      <state id="dolly_ctrl_wait">
+        <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_CONTROL" target="idle"/>
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="dolly_ctrl_move"/>
+      </state>
+
+      <state id="dolly_ctrl_move"
+             src="coin:scxml/navigation/common.xml#common_mouse_dolly">
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON1" target="dolly_ctrl_wait"/>
+        <transition event="sim.coin3d.coin.SoKeyboardEvent.UP.LEFT_CONTROL" target="rotate"/>
+      </state>
+
+      <state id="dolly_buttons_move"
+             src="coin:scxml/navigation/common.xml#common_mouse_dolly">
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON3" target="rotate"/>
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.UP.BUTTON1" target="pan_button_move"/>
+      </state>
+
+      <state id="dolly_step">
+        <transition event="dolly_step_in_container.done" target="idle"/>
+        <transition event="dolly_step_out_container.done" target="idle"/>
+
+        <state id="dolly_step_in_container">
+          <onentry>
+            <assign location="coin:temp.absminfocaldistance" expr="2.0"/>
+            <assign location="coin:temp.motiontype" expr="'linear'"/>
+            <send targettype="x-coin-navigation" target="Dolly"
+                  event="x-coin-navigation.Dolly.STEP_IN" namelist="_sessionid absminfocaldistance motiontype"/>
+          </onentry>
+          <final id="dolly_step_in"/>
+        </state>
+
+        <state id="dolly_step_out_container">
+          <onentry>
+            <assign location="coin:temp.absmaxfocaldistance" expr="20.0"/>
+            <assign location="coin:temp.motiontype" expr="'linear'"/>
+            <send targettype="x-coin-navigation" target="Dolly"
+                  event="x-coin-navigation.Dolly.STEP_OUT" namelist="_sessionid absmaxfocaldistance motiontype"/>
+          </onentry>
+          <final id="dolly_step_out"/>
+        </state>
+      </state>
+    </state>
+
+
+    <!-- ** SEEK MODE ****************************************************** -->
+    <state id="seek">
+      <initial id="seek_initial"><transition target="seek_wait"/></initial>
+      <transition event="seek.done" target="idle"/>
+      <state id="seek_wait">
+        <transition event="sim.coin3d.coin.SoKeyboardEvent.DOWN.S" target="idle"/>
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="seek_move">
+          <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+          <send targettype="x-coin-navigation" target="Seek"
+                event="x-coin-navigation.Seek.BEGIN" namelist="_sessionid mouseposition"/>
+        </transition>
+      </state>
+
+      <state id="seek_move">
+        <onentry>
+          <send targettype="x-coin-navigation" target="Misc"
+                event="x-coin-navigation.Misc.Redraw"/>
+        </onentry>
+
+        <transition event="sim.coin3d.coin.GLRender.POST_RENDER">
+          <send targettype="x-coin-navigation" target="Seek"
+                event="x-coin-navigation.Seek.UPDATE"/>
+        </transition>
+        <transition event="sim.coin3d.coin.GLRender.POST_RENDER">
+          <send targettype="x-coin-navigation" target="Misc"
+                event="x-coin-navigation.Misc.Redraw" namelist="_sessionid"/>
+        </transition>
+        <transition event="sim.coin3d.coin.SoMouseButtonEvent.DOWN.BUTTON1" target="seek_move">
+          <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+          <send targettype="x-coin-navigation" target="Seek"
+                event="x-coin-navigation.Seek.END" namelist="_sessionid"/>
+          <send targettype="x-coin-navigation" target="Seek"
+                event="x-coin-navigation.Seek.BEGIN" namelist="_sessionid mouseposition"/>
+        </transition>
+        <transition event="x-coin-navigation.Seek.DONE" target="seek_done">
+          <send targettype="x-coin-navigation" target="Seek"
+                event="x-coin-navigation.Seek.END" namelist="_sessionid"/>
+        </transition>
+        <transition event="x-coin-navigation.Seek.MISS" target="seek_done">
+          <send targettype="x-coin-navigation" target="Seek"
+                event="x-coin-navigation.Seek.END" namelist="_sessionid"/>
+        </transition>
+      </state>
+      <final id="seek_done"/>
+    </state>
+
+
+    <!-- hook state(s) -->
+    <state id="contextmenurequest">
+      <transition target="idle"/>
+    </state>
+
+  </state>
+
+  <final id="exit"/> <!-- the buck can stop here -->
+</scxml>

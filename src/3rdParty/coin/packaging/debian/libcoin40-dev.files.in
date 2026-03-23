@@ -1,0 +1,9 @@
+usr/lib/libCoin.la
+usr/lib/libCoin.a
+usr/lib/libCoin.so
+usr/include/Inventor
+usr/include/SoWinEnterScope.h
+usr/include/SoWinLeaveScope.h
+usr/share/Coin/conf
+usr/bin/coin-config
+usr/share/man/man1

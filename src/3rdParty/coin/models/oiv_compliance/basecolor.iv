@@ -1,0 +1,34 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoBaseColor.
+#
+# 19990414 mortene
+
+Separator {
+   # (ROW 0) 
+   Separator {
+      Cube { }
+
+      BaseColor { rgb 1 0 0 }
+      Translation { translation +4 0 0 }
+      Cube { }
+
+      # check that the ignored flag is heeded.
+      BaseColor { rgb 0 1 0 ~ }
+      Translation { translation +4 0 0 }
+      Cube { }
+
+      # check that only the diffuse color will be replaced.
+      Material {
+	 ambientColor 0.2 0.0 0.0
+	 diffuseColor 0.8 0.0 0.0
+	 specularColor 0.8 0 0
+	 emissiveColor 0.8 0 0
+	 shininess 0.9
+	 transparency 0.5
+      }
+      Translation { translation +4 0 0 }
+      BaseColor { rgb 0 0 1 }
+      Cube { }
+   }
+}

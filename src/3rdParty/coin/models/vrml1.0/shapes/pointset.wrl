@@ -1,0 +1,158 @@
+#VRML V1.0 ascii
+
+# Check all aspects of PointSet rendering.
+#
+# 19990515 mortene
+# 20030509 kintel
+
+Separator {
+   # Global settings.
+   Coordinate3 {
+      point [ 0 0 0, 0.1 0 0, 0.2 0 0, 0.3 0 0, 0.4 0 0 ]
+   }
+   Material {
+      diffuseColor [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 1 1 ]
+   }
+   TextureCoordinate2 {
+      point [ 0 0, 0 1, 1 0, 1 1 ]
+   }
+
+   Switch {
+      whichChild -1
+
+      DEF ps Separator {
+	 PointSet {
+	    numPoints 4
+	 }
+	 Translation { translation 0.3 0 0 }
+	 PointSet {
+	    startIndex 2
+	 }
+      }
+   }
+
+
+   # (ROW 0) MaterialBinding
+   Separator {
+      MaterialBinding { value OVERALL }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      MaterialBinding { value PER_PART }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      MaterialBinding { value PER_FACE }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      USE ps
+   }
+
+   # (ROW 1) NormalBinding
+   Translation { translation 0 +0.5 0 }
+   Separator {
+      Normal {
+        vector [ 0 0 1, 0.707 0 0.707, 1 0 0, 0 0 -1, -1 0 0 ]
+      }
+      NormalBinding { value OVERALL }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      NormalBinding { value PER_PART }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      NormalBinding { value PER_PART_INDEXED }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      NormalBinding { value PER_FACE }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      NormalBinding { value PER_FACE_INDEXED }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      NormalBinding { value PER_VERTEX }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      NormalBinding { value PER_VERTEX_INDEXED }
+      USE ps
+
+      # The next two use obsoleted values for Normalbinding::value.
+
+      Translation { translation +1 0 0 }
+      NormalBinding { value DEFAULT }
+      USE ps
+   }
+
+   # (ROW 5) With different ShapeHints settings.
+   Translation { translation 0 +0.5 0 }
+   Separator {
+      ShapeHints { vertexOrdering CLOCKWISE }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      ShapeHints { vertexOrdering COUNTERCLOCKWISE }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      ShapeHints { shapeType UNKNOWN_SHAPE_TYPE }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      ShapeHints { shapeType SOLID }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      ShapeHints { faceType UNKNOWN_FACE_TYPE }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      ShapeHints { faceType CONVEX }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      ShapeHints { creaseAngle 0.5 }
+      USE ps
+
+      Translation { translation +1 0 0 }
+      ShapeHints { creaseAngle 1.57 }
+      USE ps
+   }
+
+   # (ROW 6) Test how IndexedFaceSet is affected by texturemapping.
+   Translation { translation 0 +0.5 0 }
+   Separator {
+      Material { }
+      Texture2 {
+	 image 6 8 3
+	 0x0000ff00 0x0000ff00 0x00000000 0x00000000 0x00ff0000 0x0000ff00
+	 0x0000ff00 0x0000ff00 0x00000000 0x00000000 0x00ff0000 0x0000ff00
+	 0x0000ff00 0x0000ff00 0x00000000 0x00000000 0x00ff0000 0x00ff0000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ff00ff 0x00ff00ff 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ff00ff 0x00ff00ff 0x00000000 0x00000000 0x00ffffff 0x0000ff00
+	 0x0000ff00 0x0000ff00 0x00000000 0x00000000 0x00ffffff 0x0000ff00
+      }
+
+      USE ps
+   }
+}

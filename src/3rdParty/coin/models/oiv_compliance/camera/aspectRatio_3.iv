@@ -1,0 +1,14 @@
+#Inventor V2.1 ascii
+
+# 19990416 mortene
+
+Separator {
+   OrthographicCamera {
+      viewportMapping LEAVE_ALONE
+      aspectRatio 5.0
+   } 
+
+   DirectionalLight { direction 1 1 1 }
+   DirectionalLight { direction -1 -1 -1 }
+   Cone { }
+}

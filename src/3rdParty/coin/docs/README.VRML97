@@ -1,0 +1,38 @@
+FIXME: this is just pederb's internal TODO-list at the moment. Should
+be cleaned up to contain a proper list of status, missing features and
+good-to-know stuff about Coin's VRML97 support. 20021108 mortene.
+
+-- 
+
+
+Investigate before release
+==========================
+
+- renderCaching++ fields in Transform should not be exported
+  (do a setDefault(TRUE) on those fields in the first write pass)
+
+- material handling when doing textures. It seems like RGB textures
+  should overwrite the diffuse color entirely. This sounds weird though.
+
+
+Not supported
+=============
+
+- Bindable nodes (SoVRMLViewpoint is supported in So@Gui@)
+- MovieTexture
+- Collision
+- Script (coming soon).
+- NavigationInfo (should be handled by browser, bindable)
+- EXTERNPROTO (only local files supported)
+
+Needs more testing
+==================
+
+- Anchor
+- Billboard
+- Inline
+- NavigationInfo
+- PointLight, SpotLight and DirectionalLight (should affect the entire group)
+- ROUTE export
+- PROTO export
+

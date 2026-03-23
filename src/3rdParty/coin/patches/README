@@ -1,0 +1,4 @@
+This directory contains incomplete and experimental patches for new
+features or optimizations in Coin.  It is not necessarily "high-quality"
+patches like in patchqueue/ in the stable branch.  Do not apply anything
+from this directory unless you know exactly what you are doing.

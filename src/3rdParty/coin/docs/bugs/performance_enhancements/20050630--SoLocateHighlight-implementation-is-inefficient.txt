@@ -1,0 +1,35 @@
+202 SoLocateHighlight implementation is inefficient.
+
+    Our implementation of the SoLocateHighlight is quite inefficient,
+    re-rendering the whole scene -- instead of just the part(s) that
+    should be highlighted.
+
+    A better implementation would perhaps just re-render the selected
+    geometry to the OpenGL front buffer after the scene was rendered
+    once.
+
+    This problem reduces the value of an otherwise very useful node.
+
+    20050630 mortene.
+
+    UPDATE 20060130 mortene:
+
+      I'm not sure whether or not we actually *want* to render to the
+      front buffer -- couldn't just "grabbing" the front-buffer
+      resource bring along other problems?
+
+      Also, is this optimization really useful? I can't see it make
+      much difference unless there is so much geometry in the scene
+      that a full re-render takes a lot of time -- and a lot more than
+      just rendering the highlighted part(s). And if the application
+      has that problem, it usually has other, more pressing issues to
+      take care of anyway -- like getting "normal" rendering to be
+      faster.
+
+    UPDATE 20060210 mortene:
+
+      According to larsa, TGS has implemented something else which
+      helps with this typical CAD-type application problem, something
+      they call "FastRender" or "FastEdit" or something like
+      this. Should investigate if that is perhaps a better solution
+      than just fixing SoLocateHighlight rendering.

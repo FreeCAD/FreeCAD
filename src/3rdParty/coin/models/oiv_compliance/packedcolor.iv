@@ -1,0 +1,51 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with an SoPackedColor.
+#
+# 19990504 mortene
+
+Separator {
+   # (ROW 0) 
+   Separator {
+      PackedColor { orderedRGBA 0xff0000ff }
+      Cube { }
+
+      PackedColor { orderedRGBA 0xff0000ff }
+      Translation { translation +4 0 0 }
+      Cube { }
+
+      PackedColor { orderedRGBA 0x00ff00ff }
+      Translation { translation +4 0 0 }
+      Cube { }
+
+      PackedColor { orderedRGBA 0x0000ffff }
+      Translation { translation +4 0 0 }
+      Cube { }
+
+      PackedColor { orderedRGBA 0xffff0080 }
+      Translation { translation +4 0 0 }
+      Cube { }
+
+      PackedColor { orderedRGBA 0xffff0020 }
+      Translation { translation +4 0 0 }
+      Cube { }
+
+      # check that the ignored flag is heeded.
+      PackedColor { orderedRGBA 0xccccccff ~ }
+      Translation { translation +4 0 0 }
+      Cube { }
+
+      # check that only the diffuse color will be replaced.
+      Material {
+	 ambientColor 0.2 0.0 0.0
+	 diffuseColor 0.8 0.0 0.0
+	 specularColor 0.8 0 0
+	 emissiveColor 0.8 0 0
+	 shininess 0.9
+	 transparency 0.5
+      }
+      Translation { translation +4 0 0 }
+      PackedColor { orderedRGBA 0x0000ffff }
+      Cube { }
+   }
+}

@@ -1,0 +1,287 @@
+This is just a proposal for what could be a good replacement for the
+SbVec3f::print(FILE *)-type functions in the Sb classes.  You can't
+reliably pass FILE * pointers between libraries on Windows - generating
+strings on the other hand should be very portable.
+
+  Lars J
+
+Index: include/Inventor/misc/SoDebug.h
+===================================================================
+RCS file: include/Inventor/misc/SoDebug.h
+diff -N include/Inventor/misc/SoDebug.h
+--- /dev/null	1 Jan 1970 00:00:00 -0000
++++ include/Inventor/misc/SoDebug.h	13 Feb 2002 14:34:01 -0000
+@@ -0,0 +1,55 @@
++#ifndef COIN_SODEBUG_H
++#define COIN_SODEBUG_H
++
++/**************************************************************************\
++ *
++ *  This file is part of the Coin 3D visualization library.
++ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
++ *  
++ *  This library is free software; you can redistribute it and/or
++ *  modify it under the terms of the GNU General Public License
++ *  version 2 as published by the Free Software Foundation.  See the
++ *  file LICENSE.GPL at the root directory of this source distribution
++ *  for more details.
++ *
++ *  If you desire to use Coin with software that is incompatible
++ *  licensewise with the GPL, and / or you would like to take
++ *  advantage of the additional benefits with regard to our support
++ *  services, please contact Systems in Motion about acquiring a Coin
++ *  Professional Edition License.  See <URL:http://www.coin3d.org> for
++ *  more information.
++ *
++ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
++ *  <URL:http://www.sim.no>, <mailto:support@sim.no>
++ *
++\**************************************************************************/
++
++#include <Inventor/SbBasic.h>
++
++class SbString;
++
++class COIN_DLL_API SoDebug {
++public:
++  static SbString makeString(const class SbBox2s & box2s);
++  static SbString makeString(const class SbBox2f & box2f);
++  static SbString makeString(const class SbBox3f & box3f);
++
++  static SbString makeString(const class SbColor & color);
++  static SbString makeString(const class SbColor4f & color4f);
++
++  static SbString makeString(const class SbMatrix & matrix);
++
++  static SbString makeString(const class SbVec2s & vec2s);
++  static SbString makeString(const class SbVec3s & vec3s);
++  static SbString makeString(const class SbVec2f & vec2f);
++  static SbString makeString(const class SbVec3f & vec3f);
++  static SbString makeString(const class SbVec4f & vec4f);
++  static SbString makeString(const class SbVec2d & vec2d);
++  static SbString makeString(const class SbVec3d & vec3d);
++  static SbString makeString(const class SbVec4d & vec4d);
++
++  static SbString makeString(const class SoType & type);
++  static SbString makeString(const class SoBase & base);
++};
++
++#endif // !COIN_SODEBUG_H
+Index: src/misc/SoDebug.cpp
+===================================================================
+RCS file: src/misc/SoDebug.cpp
+diff -N src/misc/SoDebug.cpp
+--- /dev/null	1 Jan 1970 00:00:00 -0000
++++ src/misc/SoDebug.cpp	13 Feb 2002 14:34:01 -0000
+@@ -0,0 +1,196 @@
++/**************************************************************************\
++ *
++ *  This file is part of the Coin 3D visualization library.
++ *  Copyright (C) 1998-2005 by Systems in Motion.  All rights reserved.
++ *  
++ *  This library is free software; you can redistribute it and/or
++ *  modify it under the terms of the GNU General Public License
++ *  version 2 as published by the Free Software Foundation.  See the
++ *  file LICENSE.GPL at the root directory of this source distribution
++ *  for more details.
++ *
++ *  If you desire to use Coin with software that is incompatible
++ *  licensewise with the GPL, and / or you would like to take
++ *  advantage of the additional benefits with regard to our support
++ *  services, please contact Systems in Motion about acquiring a Coin
++ *  Professional Edition License.  See <URL:http://www.coin3d.org> for
++ *  more information.
++ *
++ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
++ *  <URL:http://www.sim.no>, <mailto:support@sim.no>
++ *
++\**************************************************************************/
++
++#include <Inventor/misc/SoDebug.h>
++
++#include <Inventor/SbBox2s.h>
++#include <Inventor/SbBox2f.h>
++#include <Inventor/SbBox3f.h>
++
++#include <Inventor/SbColor.h>
++#include <Inventor/SbColor4f.h>
++
++#include <Inventor/SbMatrix.h>
++
++#include <Inventor/SbVec2s.h>
++#include <Inventor/SbVec3s.h>
++#include <Inventor/SbVec2f.h>
++#include <Inventor/SbVec3f.h>
++#include <Inventor/SbVec4f.h>
++#include <Inventor/SbVec2d.h>
++#include <Inventor/SbVec3d.h>
++#include <Inventor/SbVec4d.h>
++
++#include <Inventor/SbString.h>
++#include <Inventor/SbName.h>
++
++#include <Inventor/SoType.h>
++#include <Inventor/misc/SoBase.h>
++
++/*!
++  \class SoDebug SoDebug.h Inventor/misc/SoDebug.h
++  \brief The SoDebug class provides utility methods for aiding developers in
++  printf-style debugging.
++*/
++
++// *************************************************************************
++
++SbString
++SoDebug::makeString(const SbBox2s & box2s)
++{
++  SbString string;
++  SbVec2s min(box2s.getMin());
++  SbVec2s max(box2s.getMax());
++  string.sprintf("<#SbBox2s: [min: %d, %d], [max: %d, %d]>", min[0], min[1], max[0], max[1]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbBox2f & box2f)
++{
++  SbString string;
++  SbVec2f min(box2f.getMin());
++  SbVec2f max(box2f.getMax());
++  string.sprintf("<#SbBox2f: [min: %g, %g], [max: %g, %g]>", min[0], min[1], max[0], max[1]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbBox3f & box3f)
++{
++  SbString string;
++  SbVec3f min(box3f.getMin());
++  SbVec3f max(box3f.getMax());
++  string.sprintf("<#SbBox3f: [min: %g, %g, %g], [max: %g, %g, %g]>",
++                 min[0], min[1], min[2], max[0], max[1], max[2]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const class SbColor & color)
++{
++  SbString string;
++  string.sprintf("<#SbColor: %g, %g, %g>", color[0], color[1], color[2]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const class SbColor4f & color4f)
++{
++  SbString string;
++  string.sprintf("<#SbColor4f: %g, %g, %g, %g>", color4f[0], color4f[1], color4f[2], color4f[3]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbMatrix & matrix)
++{
++  SbString string;
++  string.sprintf("<#SbMatrix: [%g, %g, %g, %g], [%g, %g, %g, %g], [%g, %g, %g, %g], [%g, %g, %g, %g]>",
++                 matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
++                 matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
++                 matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
++                 matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbVec2s & vec2s)
++{
++  SbString string;
++  string.sprintf("<#SbVec2s: %d, %d>", vec2s[0], vec2s[1]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbVec3s & vec3s)
++{
++  SbString string;
++  string.sprintf("<#SbVec3s: %d, %d, %d>", vec3s[0], vec3s[1], vec3s[2]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbVec2f & vec2f)
++{
++  SbString string;
++  string.sprintf("<#SbVec2f: %g, %g>", vec2f[0], vec2f[1]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbVec3f & vec3f)
++{
++  SbString string;
++  string.sprintf("<#SbVec3f: %g, %g, %g>", vec3f[0], vec3f[1], vec3f[2]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbVec4f & vec4f)
++{
++  SbString string;
++  string.sprintf("<#SbVec4f: %g, %g, %g, %g>", vec4f[0], vec4f[1], vec4f[2], vec4f[3]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbVec2d & vec2d)
++{
++  SbString string;
++  string.sprintf("<#SbVec2d: %g, %g>", vec2d[0], vec2d[1]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbVec3d & vec3d)
++{
++  SbString string;
++  string.sprintf("<#SbVec3d: %g, %g, %g>", vec3d[0], vec3d[1], vec3d[2]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SbVec4d & vec4d)
++{
++  SbString string;
++  string.sprintf("<#SbVec4d: %g, %g, %g, %g>", vec4d[0], vec4d[1], vec4d[2], vec4d[3]);
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SoType & type)
++{
++  SbString string;
++  string.sprintf("<#SoType: %s>", type.getName().getString());
++  return string;
++}
++
++SbString
++SoDebug::makeString(const SoBase & base)
++{
++  SbString string;
++  string.sprintf("<#%s>", base.getTypeId().getName().getString());
++  return string;
++}
++
+Index: src/misc/all.cpp
+===================================================================
+RCS file: /export/cvsroot/Coin/src/misc/all.cpp,v
+retrieving revision 1.12
+diff -u -r1.12 all.cpp
+--- src/misc/all.cpp	19 Nov 2001 12:26:44 -0000	1.12
++++ src/misc/all.cpp	13 Feb 2002 14:34:01 -0000
+@@ -49,6 +49,7 @@
+ #include "SoTranReceiver.cpp"
+ #include "SoTranSender.cpp"
+ #include "SoType.cpp"
++#include "SoDebug.cpp"
+ #include "default2dfont.cpp"
+ #include "default3dfont.cpp"
+ #include "simage_wrapper.c"

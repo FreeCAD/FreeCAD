@@ -1,0 +1,13 @@
+#Inventor V2.1 ascii
+
+#
+# SoDrawStyle.style doesn't accept an unknown enum value
+#
+
+Separator {
+
+  SoDrawStyle {
+    style VALUE_A
+
+  }
+}

@@ -1,0 +1,75 @@
+#Inventor V2.1 ascii
+
+# Check rendering with SoSwitch.
+#
+# 19990423 mortene
+
+Separator {
+   # (ROW 0) check out with different whichChild settings.
+   Separator {
+      BaseColor { rgb 1 0 1 }
+      Switch {
+	 Cube { }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 0 0 }
+      Translation { translation +8 0 0 }
+      Switch {
+	 whichChild 0
+	 Cube { }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 1 0 }
+      Translation { translation +8 0 0 }
+      Switch {
+	 whichChild 1
+	 Cube { }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 1 0 1 }
+      Translation { translation +8 0 0 }
+      Switch {
+	 whichChild -1  # SO_SWITCH_NONE
+	 Cube { }
+	 Sphere { }
+      }
+
+      BaseColor { rgb 0 0 1 }
+      Translation { translation +8 0 0 }
+      Switch {
+	 whichChild -3  # SO_SWITCH_ALL
+	 Cube { }
+	 Translation { translation +4 0 0 }
+	 Sphere { }
+      }
+   }
+
+   # (ROW 1) check whichChild == SO_SWITCH_INHERIT
+   Translation { translation 0 +8 0 }
+   Separator {
+      BaseColor { rgb 1 0 1 }
+      Switch {
+	 whichChild 1
+	 Cube { }
+	 Switch {
+	    whichChild -2  # SO_SWITCH_INHERIT
+	    Cube { }
+	    Sphere { }
+	 }
+	 Sphere { }
+      }
+   }
+
+   # (ROW 2) check state when whichChild == SO_SWITCH_ALL
+   Translation { translation 0 +8 0 }
+   Separator {
+     Switch {
+       whichChild -3 # SO_SWITCH_ALL
+       BaseColor { rgb 1 0 0 }
+       Cube { }
+     }
+   }
+}

@@ -1,0 +1,234 @@
+This is still a work in progress.
+
+The problem which is attempted solved is to avoid expensive bounding
+box calculations when the geometry has not changed since the last
+bbox-calculation, by caching the bbox in the same manner as the
+SoSeparator nodes does.
+
+<mortene@sim.no>
+
+-----8<-----------8<-----------8<-----------8<-----------8<------
+
+Index: include/Inventor/nodes/SoShape.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/nodes/SoShape.h,v
+retrieving revision 1.28
+diff -u -r1.28 SoShape.h
+--- include/Inventor/nodes/SoShape.h	4 Dec 2001 22:38:05 -0000	1.28
++++ include/Inventor/nodes/SoShape.h	10 Jan 2002 09:16:21 -0000
+@@ -53,6 +53,7 @@
+   };
+ 
+   virtual SbBool affectsState(void) const;
++  virtual void notify(SoNotList * nl);
+ 
+   virtual void getBoundingBox(SoGetBoundingBoxAction * action);
+   virtual void GLRender(SoGLRenderAction * action);
+@@ -126,6 +127,8 @@
+                       const SbVec3f & normal);
+ 
+ private:
++  class SoShapeP * pimpl;
++
+   void rayPickBoundingBox(SoRayPickAction * action);
+   friend class shapePrimitiveData;         // internal class
+   friend class so_generate_prim_private;   // a very private class
+Index: src/nodes/SoShape.cpp
+===================================================================
+RCS file: /export/cvsroot/Coin/src/nodes/SoShape.cpp,v
+retrieving revision 1.75
+diff -u -r1.75 SoShape.cpp
+--- src/nodes/SoShape.cpp	20 Dec 2001 17:57:11 -0000	1.75
++++ src/nodes/SoShape.cpp	10 Jan 2002 09:18:53 -0000
+@@ -44,6 +44,8 @@
+ #include <Inventor/actions/SoGetBoundingBoxAction.h>
+ #include <Inventor/actions/SoCallbackAction.h>
+ #include <Inventor/actions/SoGLRenderAction.h>
++#include <Inventor/caches/SoBoundingBoxCache.h>
++#include <Inventor/elements/SoCacheElement.h>
+ #include <Inventor/elements/SoTextureCoordinateElement.h>
+ #include <Inventor/elements/SoTransparencyElement.h>
+ #include <Inventor/elements/SoModelMatrixElement.h>
+@@ -103,6 +105,27 @@
+ 
+ // *************************************************************************
+ 
++class SoShapeP {
++public:
++  SoShapeP(SoShape * owner) {
++    this->owner = owner;
++    this->bboxcache = NULL;
++  }
++
++  ~SoShapeP() {
++    if (this->bboxcache) { this->bboxcache->unref(); }
++  }
++
++  SoShape * owner;
++  SoBoundingBoxCache * bboxcache;
++};
++
++#undef PRIVATE
++#define PRIVATE(o) (o->pimpl)
++
++// *************************************************************************
++
++
+ static shapePrimitiveData * primData = NULL;
+ 
+ SO_NODE_ABSTRACT_SOURCE(SoShape);
+@@ -114,6 +137,8 @@
+ SoShape::SoShape(void)
+ {
+   SO_NODE_INTERNAL_CONSTRUCTOR(SoShape);
++
++  PRIVATE(this) = new SoShapeP(this);
+ }
+ 
+ /*!
+@@ -121,6 +146,7 @@
+ */
+ SoShape::~SoShape()
+ {
++  delete PRIVATE(this);
+ }
+ 
+ // Doc in parent.
+@@ -272,6 +298,7 @@
+ static SbBool is_doing_sorted_rendering;     // need this in invokeTriangleCallbacks()
+ static SbBool is_doing_bigtexture_rendering;
+ 
++
+ /*!
+   \internal
+ */
+@@ -343,25 +370,7 @@
+ 
+   if (SoComplexityTypeElement::get(state) ==
+       SoComplexityTypeElement::BOUNDING_BOX) {
+-
+-    SbBox3f box;
+-    SbVec3f center;
+-    this->computeBBox(action, box, center);
+-    center = (box.getMin() + box.getMax()) * 0.5f;
+-    SbVec3f size = box.getMax()  - box.getMin();
+-
+-    SoMaterialBundle mb(action);
+-    mb.sendFirst();
+-
+-    {
+-      SoGLShapeHintsElement::forceSend(state, TRUE, FALSE, FALSE);
+-    }
+-
+-    glPushMatrix();
+-    glTranslatef(center[0], center[1], center[2]);
+-    sogl_render_cube(size[0], size[1], size[2], &mb,
+-                     SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
+-    glPopMatrix();
++    this->GLRenderBoundingBox(action);
+     return FALSE;
+   }
+ 
+@@ -881,7 +890,88 @@
+ void
+ SoShape::GLRenderBoundingBox(SoGLRenderAction * action)
+ {
+-  COIN_OBSOLETED();
++  // FIXME: use some heuristics to decide whether or not to cache? Or
++  // is the overhead too small to care? Perhaps we should only cache
++  // for vertex-based shapes? 20011124 mortene.
++  SbBool iscaching = TRUE;
++
++  switch (action->getCurPathCode()) {
++  case SoAction::IN_PATH:
++    // can't cache if we're not traversing all children
++    iscaching = FALSE;
++    break;
++  case SoAction::OFF_PATH:
++    return; // no need to do any more work
++  case SoAction::BELOW_PATH:
++  case SoAction::NO_PATH:
++    // FIXME: what about this? isInCameraSpace() is not part of
++    // SoGLRenderAction, only SoGetBoundingBoxAction. 20011124
++    // mortene.
++
++    // check if this is a normal traversal
++//      if (action->isInCameraSpace() || action->isResetPath()) iscaching = FALSE;
++    break;
++  default:
++    iscaching = FALSE;
++    assert(0 && "unknown path code");
++    break;
++  }
++
++  SoState * state = action->getState();
++
++  SbBool validcache =
++    PRIVATE(this)->bboxcache && PRIVATE(this)->bboxcache->isValid(state);
++
++  SbBox3f box;
++
++  if (iscaching && validcache) {
++    SoCacheElement::addCacheDependency(state, PRIVATE(this)->bboxcache);
++    SbXfBox3f xfbox = PRIVATE(this)->bboxcache->getBox();
++    box = xfbox.project();
++    
++    // FIXME: is this something we need to do? 20011124 mortene.
++    if (PRIVATE(this)->bboxcache->hasLinesOrPoints()) {
++      SoBoundingBoxCache::setHasLinesOrPoints(state);
++    }
++  }
++  else {
++    SbBool storedinvalid = iscaching && SoCacheElement::setInvalid(FALSE);
++
++    state->push();
++
++    if (iscaching) {
++      // if we get here, we know bbox cache is not created or is invalid
++      if (PRIVATE(this)->bboxcache) { PRIVATE(this)->bboxcache->unref(); }
++      PRIVATE(this)->bboxcache = new SoBoundingBoxCache(state);
++      PRIVATE(this)->bboxcache->ref();
++      // set active cache to record cache dependencies
++      SoCacheElement::set(state, PRIVATE(this)->bboxcache);
++    }
++
++    SbVec3f center;
++    this->computeBBox(action, box, center);
++
++    if (iscaching) {
++      PRIVATE(this)->bboxcache->set(SbXfBox3f(box), FALSE, SbVec3f(0, 0, 0));
++    }
++
++    state->pop(); // FIXME: move to end of this function? 20011124 mortene.
++    if (iscaching) SoCacheElement::setInvalid(storedinvalid);
++  }
++
++  SbVec3f center = (box.getMin() + box.getMax()) * 0.5f;
++  SbVec3f size = box.getMax()  - box.getMin();
++
++  SoMaterialBundle mb(action);
++  mb.sendFirst();
++
++  SoGLShapeHintsElement::forceSend(state, TRUE, FALSE, FALSE);
++
++  glPushMatrix();
++  glTranslatef(center[0], center[1], center[2]);
++  sogl_render_cube(size[0], size[1], size[2], &mb,
++                   SOGL_NEED_NORMALS | SOGL_NEED_TEXCOORDS);
++  glPopMatrix();
+ }
+ 
+ /*!
+@@ -910,4 +1000,12 @@
+       action->addIntersection(isect);
+     }
+   }
++}
++
++// Doc from superclass.
++void
++SoShape::notify(SoNotList * nl)
++{
++  inherited::notify(nl);
++  if (PRIVATE(this)->bboxcache) { PRIVATE(this)->bboxcache->invalidate(); }
+ }

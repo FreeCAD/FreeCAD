@@ -1,0 +1,48 @@
+169 SoDataSensor extension
+
+    To comply with the latest TGS SoDataSensor, we'd need to implement
+    the following:
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+Index: include/Inventor/sensors/SoDataSensor.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/sensors/SoDataSensor.h,v
+retrieving revision 1.18
+diff -u -b -r1.18 SoDataSensor.h
+--- include/Inventor/sensors/SoDataSensor.h       9 Mar 2004 14:38:42 -0000       1.18
++++ include/Inventor/sensors/SoDataSensor.h       16 Nov 2004 17:12:39 -0000
+@@ -40,12 +40,27 @@
+   SoDataSensor(SoSensorCB * func, void * data);
+   virtual ~SoDataSensor(void);
+
++  enum ChangeType {
++    UNSPECIFIED,
++    GROUP_ADD_CHILD,
++    GROUP_INSERT_CHILD,
++    GROUP_REPLACE_CHILD,
++    GROUP_REMOVE_CHILD,
++    GROUP_REMOVE_ALL_CHILDREN,
++    FIELD_MULTIVALUE
++  };
++
+   void setDeleteCallback(SoSensorCB * function, void * data = NULL);
+   SoNode * getTriggerNode(void) const;
+   SoField * getTriggerField(void) const;
+   SoPath * getTriggerPath(void) const;
+   void setTriggerPathFlag(SbBool flag);
+   SbBool getTriggerPathFlag(void) const;
++  ChangeType getTriggerType(void) const;
++  SoNode * getTriggerChild(void) const;
++  int getTriggerChildIndex(void) const;
++  int getTriggerMFieldStartIndex(void) const;
++  int getTriggerMFieldNumValues(void) const;
+
+   virtual void trigger(void);
+   virtual void notify(SoNotList * l);
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    TGS has also a virtual unschedule()-implementation at the SoDataSensor
+    level which we don't - don't know if that is needed to implement these
+    changes.
+
+    20041116 larsa.

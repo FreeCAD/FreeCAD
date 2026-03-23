@@ -1,0 +1,66 @@
+From: "Lars J. Aas" <larsa@sim.no>
+Subject: Coin 2.2 Released
+
+Coin 2.2 Released
+=================
+
+Systems in Motion is proud to release v2.2 of the Coin 3D graphics
+library.  Coin 2.2 is a minor release.  It extends the functionality of
+previous versions of Coin 2.* in upward compatible ways.  It also fixes
+bugs and problems found in releases 2.0 through 2.1, and includes
+updates to the documentation.  The API and ABI of the library is slightly
+extended, but not in any way that could conflict with older versions of
+Coin 2.*.
+
+NEWS File Excerpt:
+------------------
+
+* new features:
+  - multi-texturing (new node SoTextureUnit)
+  - bump-mapping (new nodes SoBumpMap, SoBumpMapCoordinate, SoBumpMapTransform)
+  - render-to-texture (new node SoSceneTexture2)
+  - much improved font support, can now load and use TrueType fonts
+    for all 3D text primitive types
+  - SoTexture2 now supports REPLACE texture model
+  - SoOffscreenRenderer now uses GLX pbuffers for accelerated
+    offscreen rendering on X11, WGL pbuffers on MS Windows, and AGL
+    pbuffers on Mac OS
+  - correct, order independent, transparency rendering (new enum
+    SORTED_LAYERS_BLEND for SoGLRenderAction::setTransparencyType())
+  - MS Windows HTML help reference documentation support
+* bugfixes
+  - engine SoWriteAction bugfix (assert failure in debug version)
+  - SoFile::getBoundingBox() and SoVRMLInline::getBoundingBox()
+  - fixed problem reading gzipped files on Mac OS X
+  - misc FreeType fixes on Linux and Mac OS X
+  - SoNode/SoEngine copy() bugfixes
+  - SoVRMLBackground now reacts to camera movement
+  - fixes for VRML97 PROTO setup and file export
+
+See the ChangeLog file if you want the really gory details.  See
+the file RELNOTES on changes that might affect Coin usage.
+
+
+Download Information:
+---------------------
+
+This message may be posted before some of the listed files are available.
+In that case, try again at a later time.
+
+ChangeLog:
+  http://source.coin3d.org/Coin-2/docs/ChangeLog.v2.2.0
+  http://source.coin3d.org/Coin-2/docs/ChangeLog.v2.2.1
+
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/Coin-2.2.1.tar.gz
+
+Precompiled for MS Windows:
+  ftp://ftp.sim.no/pub/coin/bin/win32/Coin3D_2.2.1-0.exe
+
+Precompiled for Mac OS X:
+  ftp://ftp.coin3d.org/pub/coin/bin/macosx/Coin-2.2.1.dmg
+
+
+Enjoy,
+
+  Lars J

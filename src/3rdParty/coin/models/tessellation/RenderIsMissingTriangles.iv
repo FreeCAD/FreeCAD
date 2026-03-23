@@ -1,0 +1,171 @@
+#Inventor V2.1 ascii
+
+#-----------------------------------------------------------------------------------
+# Example file showing rendering problem where some triangles are not rendered.
+#-----------------------------------------------------------------------------------------
+
+# removing the Perspective camera, fixes the problem
+# it's possible that the problem is only present when
+#   the camera to be configured such that 
+#   certain parts of the Red/Blue IFS are initially visible
+
+# The bad combination is MathSpace, BadTrans, BadRot (in this order)
+# test show that MathSpace, BadRot, BadTrans (in that order) does NOT show the problem
+# test show that rem'ing any of the 3, will resolve the problem
+# it's possible that the "solution" here has to do with the camera not pointing at the geometry initially 
+
+# if any one of the 3 Separators (Red/Blue IFS's) has the "bad" combination of Transforms, 
+#    then all 3 will render badly 
+
+# the following makes no difference
+# USE RED  followed by USE Blue 
+# USE BLUE followed by USE RED
+#-----------------------------------------------------------------------------------------     
+
+DEF SceneRoot Separator {
+
+  PerspectiveCamera {
+    viewportMapping ADJUST_CAMERA
+    position      1900 0 0
+    orientation      0 1 0 1.0
+    nearDistance   100
+    farDistance    800
+    aspectRatio      1
+    focalDistance  700
+    heightAngle      0.25
+    }
+
+								  MaterialBinding { value    OVERALL             }    
+								  Material        { diffuseColor [1 0 0, 0 0 1 ] }    
+								  MaterialBinding { value    PER_FACE_INDEXED    }
+								  ShapeHints      { faceType UNKNOWN_FACE_TYPE   }
+  DEF MathSpace   RotationXYZ     { angle    -1.5707964  axis X  } 
+     
+  Separator {
+#     DEF BadTrans Transform   { translation 1340 188 0             } 
+#     DEF BadRot   Transform   { rotation    0      0 1  1.5707964  } 
+       
+		  DEF Red IndexedFaceSet {
+		    vertexProperty 
+		    VertexProperty {
+		      vertex [ 
+					          291 0 40,
+					           91 0 40,
+					           91 0 32,
+					           99 0 32,
+					           99 0 24,
+					           91 0 24,
+					           91 0 16,
+					           99 0 16,
+					           99 0  8,
+					           91 0  8,
+					           91 0  0,
+					          291 0  0,
+					          291 0  8,
+					          283 0  8,
+					          283 0 16,
+					          291 0 16,
+					          291 0 24,
+					          283 0 24,
+					          283 0 32, 
+					          291 0 32,  
+					          
+					          # same points below as above except: Y=8, and order of points is reversed
+					          291 8 32,       
+					          283 8 32,
+					          283 8 24,
+					          291 8 24,
+					          291 8 16, 
+					          283 8 16, 
+					          283 8  8,
+					          291 8  8,
+					          291 8  0,
+					           91 8  0,
+					           91 8  8,
+					           99 8  8,
+					           99 8 16,
+					           91 8 16,
+					           91 8 24, 
+					           99 8 24, 
+					           99 8 32,
+					           91 8 32,
+					           91 8 40,
+					          291 8 40 
+		          ]
+		      normal [ 0 -1 0,
+		               0  1 0,
+		             ]
+		          
+		        normalBinding PER_FACE_INDEXED
+		      materialBinding PER_FACE_INDEXED
+
+		    }
+		    coordIndex    [  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, -1,
+		                    20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, -1
+		                  ]
+		    materialIndex [ 0, 0 ] 
+		    normalIndex   [ 0, 1 ] 
+		  }
+
+		  DEF Blue IndexedFaceSet {
+		    vertexProperty 
+		    VertexProperty {
+		      vertex [283 0 64, 
+				           91 0 64,
+				           91 0 56, 
+				           99 0 56,
+				           99 0 48,
+				           91 0 48,
+				           91 0 40,
+				          283 0 40,
+				          283 0 48,
+				          291 0 48,
+				          291 0 56,
+				          283 0 56, 
+				          
+				          # same points below as above except: Y=8, and order of points is reversed
+				          283 8 56, 
+				          291 8 56,
+				          291 8 48,
+				          283 8 48,
+				          283 8 40,
+				           91 8 40,
+				           91 8 48,
+				           99 8 48,
+				           99 8 56,
+				           91 8 56,
+				           91 8 64,
+				          283 8 64	          
+	  	           ] 
+		      normal [ 0 -1 0,
+		               0  1 0	         
+		             ]
+		        normalBinding PER_FACE_INDEXED
+		      materialBinding PER_FACE_INDEXED
+		    }
+		    coordIndex    [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, -1,
+						    	     12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, -1
+	                    ]
+		    materialIndex [ 1, 1 ] 
+		    normalIndex   [ 0, 1 ]
+		  }
+	  }
+
+  Separator {
+	    Transform {translation 0 0 200}
+#	 	  DEF BadTrans Transform   { translation 1340 188 0             } 
+#	 	  DEF BadRot   Transform   { rotation    0      0 1  1.5707964  } 
+		 
+		  USE Red 
+		  USE Blue
+  }
+  
+  Separator {  	
+		  DEF BadTrans Transform   { translation 1340 188 0             }  
+		  DEF BadRot   Transform   { rotation    0      0 1  1.5707964  } 
+
+		  USE Red 
+		  USE Blue
+  }
+
+}

@@ -1,0 +1,69 @@
+#!/bin/sh
+#
+# Copyright (C) Kongsberg Oil & Gas Technologies, All rights reserved.
+#
+# This script creates the main Coin-x.x.x.dmg image.
+# The dmg file will be put in the current directory.
+# 
+# Usage: makeinstdmg.sh [-v] -c <Coin-version>
+#  -v   verbose
+#  -c   Coin version string including name, e.g. "-c Coin-2.1.0"
+#
+# Authors:
+#   Marius Kintel <kintel@sim.no>
+
+printUsage()
+{
+  echo "Usage: $0 [-v] -c <Coin-version>"
+  echo
+  echo "  Example: $0 -c Coin-2.1.0"
+}
+
+while getopts 'vc:' c
+do
+  case $c in
+    v) VERBOSE=-v ;;
+    c) VOLNAME=$OPTARG;;
+  esac
+done
+
+if test -z "$VOLNAME"; then
+  printUsage
+  exit 1
+fi
+
+if test $VERBOSE; then
+  set -x
+fi
+
+if test -e /Volumes/$VOLNAME; then
+  echo "/Volumes/Coin-$VOLNAME already exists. Please unmount before running this script."
+  exit 1
+fi
+
+# Determine which README file to use (*gcc4* or *gcc3*)
+gccversion="gcc4"
+versionstring=`cpp -dM /dev/null | grep __VERSION__ |grep '__VERSION__ "3'`
+if test x"$versionstring" = x""; then :; else gccversion="gcc3"; fi
+
+# Remove old generated files
+rm -rf inst-dmg-root
+rm -rf $VOLNAME.dmg
+
+# Create dmgroot from template dir
+ditto -rsrcFork @top_srcdir@/packaging/macosx/inst-dmg-files inst-dmg-root
+mv inst-dmg-root/Desktop_DB inst-dmg-root/Desktop\ DB 
+mv inst-dmg-root/Desktop_DF inst-dmg-root/Desktop\ DF
+
+# Copy dist files
+cp inst-README-$gccversion.txt inst-dmg-root/README.txt
+ditto -rsrcFork Coin.pkg inst-dmg-root/Coin.pkg
+ditto -rsrcFork CoinTools.pkg inst-dmg-root/CoinTools.pkg
+#FIXME: doc disabled for now
+#ditto -rsrcFork @top_srcdir@/packaging/macosx/doc inst-dmg-root/doc
+
+# Build dmg file from dmgroot
+sh makedmg.sh -v $VOLNAME -o $VOLNAME.dmg -r inst-dmg-root
+
+# Remove temporary files
+rm -rf inst-dmg-root

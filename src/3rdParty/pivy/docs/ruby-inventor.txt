@@ -1,0 +1,87 @@
+John K. Grytten <johnkeg@pvv.ntnu.no> reported that it is possible to use
+Coin3d with Ruby by using pivy.
+
+Pretty cool! :) thx, John!
+
+Here are his instructions:
+
+RubyInventor using Pivy
+-----------------------
+
+Yes, you can use Coin with Ruby. And no, you can't just yet install
+a nicely wrapped up package with InstallShield for Windows
+with everything needed! But if you don't mind using an highly
+experimental and creative setup you may get a glimpse of
+tomorrows' defacto standard scientific visualization and simulation
+environment today(!) Surely it has great potential for prototyping stuff
+that can later be implemented as NodeKits etc..
+
+Ok, that's the vision anyway.. now to reality:
+
+Hopefully it will be possible to get rid of the python dependency,
+but that'll probably require some substantial work as one would
+like to use the latest SWIG versions - but then new low-level
+details concerning the Coin include files will probably have
+to be sorted out again (a lot can be learned from pivy of course)
+and also Ruby specific conversions must be worked out.
+The following setup have only been tested on Debian GNU/Linux so far,
+but it works ok (try it in irb - Interactive Ruby!).
+
+Now, let's hack it all together in 1-2-3...
+
+First step: install pivy module for Python:
+-------------------------------------------
+You need this:
+
+pivy from cvs
+coin1
+soqt cvs
+http://prdownloads.sourceforge.net/swig/swig-1.3.13.tar.gz
+
+
+Install pivy.py, pivy.pyc and pivycmodule.so manually
+to /usr/lib/python2.1
+
+Second step: install Ruby/Python extension for Ruby:
+----------------------------------------------------
+http://www.goto.info.waseda.ac.jp/~fukusima/ruby/python/doc/
+
+Please check that extconf.rb detects the correct
+python module directory (you may have more than one python
+installation)
+
+Third step: ExaminerViewer in Ruby:
+-----------------------------------
+#!/usr/bin/env ruby
+
+require 'python'
+require 'python/pivy'
+
+py = Py.pivy
+
+myWindow = py.SoQt_init(ARGV[0].to_s)
+if myWindow == nil
+  raise "could not open window"
+end
+
+root = py.SoSeparator.new
+root.ref
+myMaterial = py.SoMaterial.new
+
+mf = py.SoMFColor.new
+mf.setValue(1.0,0.0,1.0)
+
+myMaterial.getField('diffuseColor').copyFrom mf
+mf.setValue(1.0,0.0,1.0)
+
+root.addChild(myMaterial)
+root.addChild(py.SoCube.new)
+
+myViewer = py.SoQtExaminerViewer.new(myWindow)
+myViewer.setSceneGraph(root)
+myViewer.setTitle("Examiner Viewer")
+myViewer.show
+
+py.SoQt_show(myWindow)
+py.SoQt_mainLoop
+

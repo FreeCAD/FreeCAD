@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{19c5cbef-bc98-4a89-bd9a-557839fa16f1}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;bat</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\misc\create-directories.bat">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\misc\install-headers.bat">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\misc\install-sdk.bat">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

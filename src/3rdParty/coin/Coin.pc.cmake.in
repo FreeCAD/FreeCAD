@@ -1,0 +1,26 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+bindir=@CMAKE_INSTALL_FULL_BINDIR@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+datarootdir=@CMAKE_INSTALL_FULL_DATAROOTDIR@
+datadir=@CMAKE_INSTALL_FULL_DATADIR@
+docdir=@CMAKE_INSTALL_FULL_DOCDIR@
+infodir=@CMAKE_INSTALL_FULL_INFODIR@
+mandir=@CMAKE_INSTALL_FULL_MANDIR@
+htmldir=${docdir}/html
+
+Name: @PROJECT_NAME@
+Description: A high-level 3D graphics toolkit, fully compatible with SGI Open Inventor 2.1
+Version: @PROJECT_VERSION@
+Requires:
+Conflicts:
+Libs: -L${libdir} -lCoin @COIN_EXTRA_LDFLAGS@ @COIN_EXTRA_LIBS@
+Cflags: -I${includedir} @COIN_EXTRA_CFLAGS@ @COIN_EXTRA_CPPFLAGS@
+
+have_3ds_import=@FEAT_HAVE_3DS@
+have_vrml97=@FEAT_HAVE_VRML97@
+have_sound=@FEAT_HAVE_SOUND@
+have_superglu=@FEAT_HAVE_SUPERGLU@
+have_threads=@FEAT_HAVE_THREADS@
+have_threadsafe=@FEAT_HAVE_SAFETHREAD@

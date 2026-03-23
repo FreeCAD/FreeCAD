@@ -1,0 +1,79 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+DEF SPOTLIGHT_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF SPOTLIGHT_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+
+# Duplicates the inactive material. Don't "optimize" away this by
+# referencing the SPOTLIGHT_INACTIVE_MATERIAL instance, as that
+# would be unsecure in case of userdefined geometries.
+DEF spotLightOverallMaterial Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+
+
+DEF SPOTLIGHT_ARROW Separator {
+   # Orient along negative Z axis.
+   Rotation { rotation 1 0 0  -1.57 }
+
+   Coordinate3 { point [ 0 0 0, 0 9 0 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1 ] }
+   Translation { translation 0 10 0 }
+   Cone { }
+   Translation { translation 0 -11 0 }
+   Cone { bottomRadius 0.1 }
+}
+
+DEF spotLightRotatorRotator Separator {
+   USE SPOTLIGHT_INACTIVE_MATERIAL
+   USE SPOTLIGHT_ARROW
+}
+DEF spotLightRotatorRotatorActive Separator {
+   USE SPOTLIGHT_ACTIVE_MATERIAL
+   USE SPOTLIGHT_ARROW
+}
+
+DEF spotLightRotatorFeedback Separator { }
+DEF spotLightRotatorFeedbackActive Separator { }
+
+
+DEF SPOTLIGHT_TRANSLATE_AXIS Group {
+   Rotation { rotation 0 0 1  1.57 }
+   Cylinder { height 3.0  radius 0.2 }
+}
+
+DEF spotLightTranslatorLineTranslator Separator {
+   USE SPOTLIGHT_INACTIVE_MATERIAL
+   USE SPOTLIGHT_TRANSLATE_AXIS
+}
+DEF spotLightTranslatorLineTranslatorActive Separator {
+   USE SPOTLIGHT_ACTIVE_MATERIAL
+   USE SPOTLIGHT_TRANSLATE_AXIS
+}
+
+DEF spotLightTranslatorPlaneTranslator Separator {
+   USE SPOTLIGHT_INACTIVE_MATERIAL
+   Sphere { }
+}
+DEF spotLightTranslatorPlaneTranslatorActive Separator {
+   USE SPOTLIGHT_ACTIVE_MATERIAL
+   Sphere { }
+}
+
+
+DEF SPOTLIGHT_CONEANGLE Separator {
+   Rotation { rotation 1 0 0  1.57 }
+   ShapeHints { vertexOrdering UNKNOWN_ORDERING }
+   Cone { parts SIDES  bottomRadius 2.0 }
+}
+
+DEF spotLightBeam Separator {
+   USE SPOTLIGHT_INACTIVE_MATERIAL
+   DrawStyle { style LINES  lineWidth 2 }
+   USE SPOTLIGHT_CONEANGLE
+}
+DEF spotLightBeamActive Separator {
+   USE SPOTLIGHT_ACTIVE_MATERIAL
+   DrawStyle { style LINES  lineWidth 3 }
+   USE SPOTLIGHT_CONEANGLE
+}
+
+DEF spotLightBeamPlacement Translation { translation 0 0 -1.5 }

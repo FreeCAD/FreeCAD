@@ -1,0 +1,100 @@
+#Inventor V2.1 ascii
+
+# Drawing a triangle strip around a hole. SbTesselator of Coin does not
+# fully construct the triangle strip although vertices are properly set up CCW.
+# See BUGS.txt 213 reported by Frank Hibbeln.
+
+Separator {
+
+   ShapeHints {
+      faceType UNKNOWN_FACE_TYPE
+
+   }
+
+   FaceSet {
+      vertexProperty
+      VertexProperty {
+         vertex [5616.34650  -94900.63137  0,
+          19459.61213 -83978.42044  0,
+          18951.60431 -69500.14309  0,
+          34699.90509 -70643.16262  0,
+          35080.91681 -85883.45559  0,
+          21491.65119 -91598.56887  0,
+          19459.61213 -83978.42044  0,
+          5616.34650  -94900.63137  0,
+
+          9172.41681  -108997.90091 0,
+          52607.25275 -107600.87747 0,
+          55909.31525 -90328.54153  0,
+          46257.12775 -61371.98684  0,
+          20475.63556 -53243.82669  0,
+          282.24494   -65690.06887  0,
+          5616.34650  -94900.63137  0]
+         orderedRGBA 0xac00ff
+         materialBinding OVERALL
+
+      }
+      numVertices 15
+
+   }
+   Separator {
+      Transform { translation 5616.34650  -94900.63137  0 }
+      Text2 { string "pt 0 7 14" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 19459.61213 -83978.42044  0 }
+      Text2 { string "pt 1 6" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 18951.60431 -69500.14309  0 }
+      Text2 { string "pt 2" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 34699.90509 -70643.16262  0 }
+      Text2 { string "pt 3" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 35080.91681 -85883.45559  0 }
+      Text2 { string "pt 4" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 21491.65119 -91598.56887  0 }
+      Text2 { string "pt 5" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 9172.41681  -108997.90091 0 }
+      Text2 { string "pt 8" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 52607.25275 -107600.87747 0 }
+      Text2 { string "pt 9" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 55909.31525 -90328.54153  0 }
+      Text2 { string "pt 10" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 46257.12775 -61371.98684  0 }
+      Text2 { string "pt 11" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 20475.63556 -53243.82669  0 }
+      Text2 { string "pt 12" }
+      Sphere { radius 50 }
+   }
+   Separator {
+      Transform { translation 282.24494   -65690.06887  0 }
+      Text2 { string "pt 13" }
+      Sphere { radius 50 }
+   }
+}

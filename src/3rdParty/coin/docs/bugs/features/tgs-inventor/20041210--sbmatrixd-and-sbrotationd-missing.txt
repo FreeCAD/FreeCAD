@@ -1,0 +1,9 @@
+178 SbMatrixd and SbRotationd missing from Coin.
+
+    These classes are present both in TGS Inventor and in Coin, but in
+    Coin they are named SbDPMatrix and SbDPRotation. They should also
+    be named the same in Coin, to make migration easier.
+
+    Is it possible / sufficient to fix this with a simple typedef?
+
+    20041210 mortene.

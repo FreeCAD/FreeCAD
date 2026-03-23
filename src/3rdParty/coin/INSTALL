@@ -1,0 +1,469 @@
+Introduction
+============
+
+This document contains instructions for those who intend to build the Coin
+library from source and install it on their system.
+
+It does not contain any information about installing binary distributions of
+Coin.
+
+We encourage you to use the CMake build configuration in favor of Autotools as
+all development efforts are directed to this path.  The Autotools build system
+is still maintained but at a significantly lower priority.
+
+The Build Environment
+=====================
+
+CMake
+-----
+
+Coin uses [CMake](https://cmake.org/download) 3.0 or later for the
+configuration, building, and installation procedures.  This means you need a
+build tool and a C/C++ compiler that is supported by CMake.
+
+On Microsoft Windows platforms, you don't need to install the [Cygwin
+environment](www.cygwin.com) or something equivalent anymore to get through the
+build procedure.  CMake will generate native projects for the build tools like
+Ninja, Make, XCode, or Microsoft Visual Studio/MSBuild.
+
+Git
+---
+
+To get the sources you need a Git client, [Git](https://www.git-scm.com/download), 
+[Git GUI clients](https://git-scm.com/downloads/guis), or 
+[TortoiseGit](https://tortoisegit.org/download) are a good choice.  
+The Git command `git` need to be available at the command line.  
+Downloading the compressed sources from the 
+[Releases](https://github.com/coin3d/coin/releases/) section of the project
+won't work as the .git directory is not contained in the zip or tar.gz files
+and therefore submodules are not be properly populated.  
+Instead of doing so you need to clone the repository, e.g. calling
+`git clone --recurse-submodules https://github.com/coin3d/coin`.
+
+Boost
+-----
+
+Coin does not require Boost.
+
+Doxygen
+-------
+
+As the generation of the Coin documentation is enabled by default,
+[Doxygen](http://www.doxygen.nl/download.html) is required.
+
+NSIS
+----
+
+If you intend to generate an installation package of the Coin library on
+Windows, [NSIS](https://nsis.sourceforge.io/Download) is required.
+
+XQuartz, OpenMotif
+------------------
+
+If you intend to build the Coin library on macOS using X11 an appropriate X11
+implementation like XQuartz as well as OpenMotif are required.  You may install
+the packages via homebrew or macports.
+
+Coin build configuration using CMake
+====================================
+
+First you need to find out what generators are supported by CMake on your
+platform.  The command `cmake --help` on the command line provides you an
+extensive list of supported generators.  We strongly recommend you to specify
+the generator explicitly by using CMake's option `-G` as it makes your build
+behave deterministic.  E.g., when you install an additional development
+environment on Windows or a newer CMake version the default compiler for the
+platform selected by CMake may change.  Without the generator option CMake will
+pick up a different compiler by default. Otherwise CMake always uses the
+explicitly specified generator.
+
+For additional configuration options not mentioned on the sample command lines
+see "CMake configuration options" on this page.
+
+Linux
+-----
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
+    (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local
+              -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_DOCUMENTATION=OFF
+    (3) cd coin_build
+        make
+    (4) make install
+    (5) cd cpack.d
+        cpack --config debian.cmake
+        cpack --config fedora.cmake
+
+  or
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
+    (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr/local
+              -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_DOCUMENTATION=OFF
+    (3) cmake --build coin_build --target all --config Release -- -j4
+    (4) cmake --build coin_build --target install --config Release -- -j4
+    (5) cd coin_build/cpack.d
+        cpack --config debian.cmake
+        cpack --config fedora.cmake
+
+1. Get the sources using Git clone command
+
+2. Configure the build
+   If you just want a standard installation (or regenerate the Makefiles using
+   cached options).
+   You may omit the generator, then the default generator for the platform is used.
+   CMake will create the build directory if it does not exist.
+   Coin uses an Out-of-source build mode, i.e. you must not run the cmake command
+   directly from the source directory. Instead you need to run it from a separate
+   build directory, e.g. `coin_build`.
+   On recent CMake versions (3.13 and later) the option `-H` has been superseded
+   by `-S`.  Or, if available, you can edit all options in a GUI like this
+   `cmake-gui ./coin`
+
+3. Build the Coin library using the default build tool on the platform
+   Or, alternatively use the CMake build tool mode.
+   This uses `coin_build` as build directory, builds the target `all` for the
+   `Release` configuration and passes `-j4` (parallel building with 4 cores) to
+   the underlying default build tool (the default build tool on Linux is `make`).
+
+4. Install the Coin library using the default build tool on the platform
+   Or, alternatively again use the CMake build tool mode.  This uses `coin_build`
+   as build directory, builds the target `install` for the `Release` configuration
+   and passes `-j4` (parallel building with 4 cores) to the underlying default
+   build tool (the default build tool on Linux is `make`).
+
+5. Build installation packages of the Coin library (optional)
+   This uses CPack, a packaging tool from the CMake suite.  If something does
+   not work you may need to add the `--verbose --debug` options to the call to
+   figure out what went wrong or is missing.
+
+6. Finally when you are done remove the build directory
+   `rm -rf coin_build`
+
+Windows
+-------
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
+    (2) cmake -Hcoin -Bcoin_build -G "Visual Studio 2015 Win64" -DCMAKE_INSTALL_PREFIX=C:\Coin3D
+              -DCOIN_BUILD_DOCUMENTATION=OFF
+    (3) cmake --build coin_build --target ALL_BUILD --config Release -- /nologo
+              /verbosity:minimal /maxcpucount
+    (4) cmake --build coin_build --target INSTALL --config Release -- /nologo
+              /verbosity:minimal /maxcpucount
+    (5) cd coin_build/cpack.d
+        cpack --config windows.cmake
+
+   or
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
+    (2) cmake -Hcoin -Bcoin_build -G "Visual Studio 2015 Win64" -DCMAKE_INSTALL_PREFIX=C:\Coin3D
+              -DCOIN_BUILD_DOCUMENTATION=OFF
+    (3) MSBuild /p:Configuration=Release /t:ALL_BUILD Coin.sln /nologo
+                /verbosity:minimal /maxcpucount
+    (4) MSBuild /p:Configuration=Release /t:INSTALL Coin.sln /nologo
+                /verbosity:minimal /maxcpucount
+    (5) cd coin_build/cpack.d
+        cpack --config windows.cmake
+
+1. Get the sources using Git clone command
+
+2. Configure the build
+   If you just want a standard installation (or regenerate the build files using
+   cached options).
+   You may omit the generator, then the default generator for the platform is used.
+   CMake will create the build directory if it does not exist.
+   Coin uses an Out-of-source build mode, i.e. you must not run the cmake command
+   directly from the source directory. Instead you need to run it from a separate
+   build directory, e.g. `coin_build`.
+   On recent CMake versions (3.13 and later) the option `-H` has been superseded
+   by `-S`.  Or, if available, you can edit all options in a GUI like this
+   `cmake-gui ./coin`
+
+3. Build the Coin library
+   Open Coin.sln in the build directory from Microsoft Visual Studio. Build the
+   `ALL_BUILD` project from the Microsoft Visual Studio solution explorer.
+   Or, alternatively use the CMake build tool mode.
+   This uses `coin_build` as build directory, builds the target `ALL_BUILD` for
+   the `Release` configuration and passes `/nologo /verbosity:minimal /maxcpucount`
+   (parallel building with maximum number of cores available) to the underlying
+   default build tool (the default build tool on Windows is `MSBuild`).
+   Or, directly build the Coin library using the default build tool on the
+   platform from the command line.
+
+4. Install the Coin Library
+   Build the `INSTALL` project from the Microsoft Visual Studio solution explorer.
+   Or, alternatively again use the CMake build tool mode.
+   This uses `coin_build` as build directory, builds the target `INSTALL` for the
+   `Release` configuration and passes `/nologo /verbosity:minimal /maxcpucount`
+   (parallel building with maximum number of cores available) to the underlying
+   default build tool (the default build tool on Windows is `MSBuild`).
+   Or, install the Coin library using the default build tool on the platform from
+   the command line.
+
+5. Build NSIS installation packages of the Coin library (optional)
+   If something does not work you may need to add the `--verbose --debug` options
+   to the call to figure out what went wrong or is missing.
+
+6. Finally when you are done remove the build directory
+   `rmdir /s coin_build`
+
+macOS
+-----
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
+    (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
+              -DCOIN_BUILD_DOCUMENTATION=OFF -DCOIN_BUILD_MAC_FRAMEWORK=OFF
+    (3) cd coin_build
+        make
+    (4) sudo make install
+    (5) cd cpack.d
+        cpack --config darwin-dmg.cmake
+        cpack --config darwin-pkg.cmake
+
+   or
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
+    (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
+              -DCOIN_BUILD_DOCUMENTATION=OFF -DCOIN_BUILD_MAC_FRAMEWORK=OFF
+    (3) cmake --build coin_build --target all --config Release -- -j4
+    (4) sudo cmake --build coin_build --target install --config Release -- -j4
+    (5) cd coin_build/cpack.d
+        cpack --config darwin-dmg.cmake
+        cpack --config darwin-pkg.cmake
+
+1. Get the sources using Git clone command
+
+2. Configure the build
+   If you just want a standard installation (or regenerate the Makefiles using
+   cached options).
+   You may omit the generator, then the default generator for the platform is used.
+   CMake will create the build directory if it does not exist.
+   Coin uses an Out-of-source build mode, i.e. you must not run the cmake command
+   directly from the source directory. Instead you need to run it from a separate
+   build directory, e.g. `coin_build`.
+   On recent CMake versions (3.13 and later) the option `-H` has been superseded
+   by `-S`.  Or, if available, you can edit all options in a GUI like this
+   `cmake-gui ./coin`
+
+3. Build the Coin framework using the default build tool on the platform 
+   Or, alternatively use the CMake build tool mode.
+   This uses `coin_build` as build directory, builds the target `all` for the 
+   `Release` configuration and passes `-j4` (parallel building with 4 cores) to
+   the underlying default build tool (the default build tool on Linux is `make`).
+
+4. Install the Coin framework using the default build tool on the platform
+   Or, alternatively again use the CMake build tool mode.
+   This uses `coin_build` as build directory, builds the target `install` for the
+   `Release` configuration and passes `-j4` (parallel building with 4 cores) to
+   the underlying default build tool (the default build tool on Linux is `make`).
+   As you are like to install into system locations you need to prefix your
+   command with sudo.
+   By default the name of the Coin framework is `Inventor`.
+
+5. Build installation packages of the Coin framework (optional)
+   This uses CPack a packaging tool from the CMake suite.
+   If something does not work you may need to add the `--verbose --debug`
+   options to the call to figure out what went wrong or is missing.
+
+6. Finally when you are done remove the build directory
+   `rm -rf coin_build`
+
+CMake configuration options
+===========================
+
+    CMAKE_BUILD_TYPE
+
+Probably the most common types are Debug and Release.  The Debug build will
+append a `d` to the target library name.
+
+    CMAKE_INSTALL_PREFIX
+
+Install path prefix, prepended onto install directories. If set to `/tmp` then
+the library will install into `/tmp/lib`.  When building and installing Coin as
+framework on macOS (e.g. add `-DCOIN_BUILD_MAC_FRAMEWORK=OFF` to the cmake call)
+you should set it to either `~/Library/Frameworks`, `/Library/Frameworks`,
+`/System/Library/Frameworks`, or `/Network/Library/Frameworks`
+
+    CMAKE_PREFIX_PATH
+
+Semicolon separated list of directories specifying installation prefixes to be
+searched by CMake `find_package`, `find_library`, `find_...` commands.  When
+CMake searches for config packages, e.g. for `simage` with
+`find_package(simage)`, these directories are searched to find
+`<PackageName>Config.cmake` or `<packagename>-config.cmake`.  This can be used
+to specify non standard installation places for required package information,
+e.g. `/opt/local/Qt5;/opt/local/simage` or
+`C:\Data\local\simage;C:\Data\Qt-5.12.0`.
+
+    COIN_BUILD_SHARED_LIBS
+
+Build shared library when ON, static when OFF.  Default is ON.
+
+    COIN_BUILD_DOCUMENTATION
+
+Build HTML documentation on all platforms when ON, as well as man pages on
+platforms other than Windows.  Default is OFF.  The latest version of the
+documentation can always be found on the
+[Documentation](https://github.com/coin3d/coin/wiki/Documentation) page of
+the wiki.
+
+    COIN_BUILD_DOCUMENTATION_MAN
+
+Build Coin man pages when ON on platforms other than Windows.  Default is OFF.
+
+    COIN_BUILD_DOCUMENTATION_QTHELP
+
+Build QtHelp documentation when ON (requires Qt installation
+[https://www.qt.io](https://www.qt.io) ) Default is OFF.
+
+    COIN_BUILD_DOCUMENTATION_CHM
+
+Build compressed HTML help manual on Windows platform when ON (requires
+Microsoft  HTML Help Workshop
+[download](https://go.microsoft.com/fwlink/?LinkId=14188)).  Default is OFF.
+
+    COIN_BUILD_INTERNAL_DOCUMENTATION
+
+Depends on `COIN_BUILD_DOCUMENTATION` to be ON.  When OFF (the default) only the
+documentation regarding the public API will be built, and warnings for
+undocumented entities are turned on.  When ON the generated documentation will
+include internal classes, which can be useful for Coin developers.  Since it is
+less common to fully document internal entities, warnings for undocumented
+entities are turned off.
+
+    COIN_BUILD_MAC_FRAMEWORK
+
+Build Coin as framework when ON, as library when OFF.  Default is OFF.  On
+macOS, the default behavior is to install Coin as a framework so you can
+compile/link with it by using the compiler option `-framework Inventor`.  If
+you want to make a plain installation into
+`${CMAKE_INSTALL_PREFIX}/{lib,include}` instead, set this option to OFF.
+
+    COIN_BUILD_MAC_X11
+
+Link Coin to the X11 implementation of GL when ON, to OpenGL framework when OFF.
+Default is OFF.  You need to have OpenMotif and XQuartz installed.
+
+    COIN_BUILD_TESTS
+
+Build the provided test cases when ON.  Default is ON.
+
+    HAVE_MULTIPLE_VERSION
+
+Forces the use of versioned paths for includes and documentation when ON, usual
+behavior otherwise.
+
+    COIN_BUILD_SINGLE_LIB
+
+Build only one library when ON, multiple when OFF.  Default is ON for Windows,
+OFF for other platforms.
+
+    COIN_BUILD_MSVC_MP
+
+Enable build with multiple processes in Visual Studio.  Default is ON.  (Only
+available when using Visual C++ compiler)
+
+
+GUI-Toolkit (SoQt, SoWin, SoXt, Quarter) build configuration using CMake
+========================================================================
+
+Building the GUI toolkits is very similar to the Coin build commands.  To build
+a GUI toolkit different from SoQt simply replace `soqt` with `sowin`, `soxt` or
+`quarter` as well as `SOQT` with `SOWIN`, `SOXT` or `QUARTER` in the build
+commands.
+
+Linux
+-----
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/soqt soqt
+    (2) cmake -Hsoqt -Bsoqt_build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+              -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_PREFIX_PATH="/usr/local"
+              -DSOQT_BUILD_DOCUMENTATION=OFF
+    (3) cmake --build soqt_build --target all --config Release -- -j4
+    (4) cmake --build soqt_build --target install --config Release -- -j4
+    (5) cd cpack.d
+        cpack --config debian.cmake
+        cpack --config fedora.cmake
+
+Windows
+-------
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/soqt soqt
+    (2) cmake -Hsoqt -Bsoqt_build -G "Visual Studio 2015" -A x64 -DCMAKE_INSTALL_PREFIX=C:\Coin3D
+              -DCMAKE_PREFIX_PATH="C:\Coin3D;C:\Qt\5.12.1\msvc2015_64"
+              -DSOQT_BUILD_DOCUMENTATION=OFF
+    (3) cmake --build soqt_build --target ALL_BUILD --config Release -- /nologo
+              /verbosity:minimal /maxcpucount
+    (4) cmake --build soqt_build --target INSTALL --config Release -- /nologo
+              /verbosity:minimal /maxcpucount
+    (5) cd soqt_build/cpack.d
+        cpack --config windows.cmake
+
+macOS
+-----
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/soqt soqt
+    (2) cmake -Hsoqt -Bsoqt_build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+              -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
+              -DCMAKE_PREFIX_PATH="/Users/name/Coin3D;/usr/local/Cellar/qt/5.12.1"
+              -DSOQT_BUILD_DOCUMENTATION=OFF -DSOQT_BUILD_MAC_FRAMEWORK=OFF
+    (3) cmake --build soqt_build --target all --config Release -- -j4
+    (4) cmake --build soqt_build --target install --config Release -- -j4
+    (5) cd cpack.d
+        cpack --config darwin-dmg.cmake
+        cpack --config darwin-pkg.cmake
+
+macOS and X11
+-------------
+
+To use X11 on macOS you need to provide X11/XQuartz and OpenMotif packages and
+build Coin with an additional option `-DCOIN_BUILD_MAC_X11=ON`.
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/coin coin
+    (2) cmake -Hcoin -Bcoin_build -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
+    -DCOIN_BUILD_DOCUMENTATION=OFF -DCOIN_BUILD_MAC_FRAMEWORK=OFF
+    (3) cmake --build coin_build --target all --config Release -- -j4
+    (4) cmake --build coin_build --target install --config Release -- -j4
+
+    (1) git clone --recurse-submodules https://github.com/coin3d/soxt soxt
+    (2) cmake -Hsoxt -Bsoxt_build -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+              -DCMAKE_INSTALL_PREFIX=/Users/name/Coin3D
+              -DCMAKE_PREFIX_PATH="/Users/name/Coin3D" -DSOQT_BUILD_DOCUMENTATION=OFF
+              -DSOXT_BUILD_MAC_FRAMEWORK=OFF
+    (3) cmake --build soxt_build --target all --config Release -- -j4
+    (4) cmake --build soxt_build --target install --config Release -- -j4
+    ...
+
+Some build tips
+===============
+
+CMake caches the build options and uses these as defaults during subsequent
+runs.  To clear the cache, delete the file CMakeCache.txt or empty the build
+directory completely.
+
+If you build both Debug and Release configurations and don't want to make clean
+and reconfigure each time something changes, use a separate build directory for
+each type.
+
+When Things Fail
+================
+
+If you experience configure/build/install problems beyond what can be resolved
+by following the instructions in this file and the relevant README files and the
+FAQ, you can ask for help on the [mailing
+list](https://groups.google.com/group/coin3d-discuss) (subscription is needed
+for posting), or you can contact us per [email](coin-support@coin3d.org) for
+technical support.
+
+Before asking, check that the subject hasn't been discussed and resolved already
+by looking through the coin-discuss mailing list or at the [Coin issue
+tracker](https://github.com/coin3d/coin/issues).
+
+If you decide to send us an email about the problem or add an entry to the issue
+tracker, you should include all the information that is relevant to the problem
+together with your description.
+
+This includes the terminal output from CMake for the compilation that fails or
+at least the entire CMake error message.
+
+A description of the build environment you use may also be helpful, e.g. the
+compiler suite and versions of libraries and any system customization that may
+be relevant to the problem.

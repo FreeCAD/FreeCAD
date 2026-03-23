@@ -1,0 +1,35 @@
+#Inventor V2.1 ascii
+
+# Use this file to check that we get timing correct for nodes when
+# there are various structure-type (i.e. group) nodes, and when there
+# are nodekits cumulating lots of nodes below them.
+
+Group {
+   Sphere { }
+}
+
+Translation { translation 3 0 0 }
+
+Switch {
+   whichChild -3
+   Cube { }
+}
+
+Translation { translation 3 0 0 }
+
+DEF coneseparator Separator {
+   Cone { }
+}
+
+Translation { translation 3 0 0 }
+
+ShapeKit {
+   shape Text3 { string "," }
+}
+
+Translation { translation 3 0 0 }
+
+Group {
+   Sphere { }
+   DEF insidesphereseperator Separator { Sphere { } }
+}

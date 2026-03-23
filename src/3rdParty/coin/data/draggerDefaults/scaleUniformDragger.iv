@@ -1,0 +1,81 @@
+#Inventor V2.1 ascii
+
+# Standard common material definitions.
+
+DEF SCALEUNIFORM_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF SCALEUNIFORM_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF SCALEUNIFORM_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor 0.5 0 0.5 }
+
+# Geometry for the markers in the corners of the box.
+
+DEF SCALEUNIFORM_SOLIDMARKER Cube { width 0.1  height 0.1  depth 0.1 }
+
+# Define the 8 corner markers. Put them at the corner points of the
+# box surrounding the geometry + 10% "air".
+
+DEF SCALEUNIFORM_DRAGPOINTS Group {
+   Separator {
+      Translation { translation -1.1 1.1 1.1 }
+      USE SCALEUNIFORM_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation 1.1 1.1 1.1 }
+      USE SCALEUNIFORM_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation 1.1 -1.1 1.1 }
+      USE SCALEUNIFORM_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation -1.1 -1.1 1.1 }
+      USE SCALEUNIFORM_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation -1.1 1.1 -1.1 }
+      USE SCALEUNIFORM_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation 1.1 1.1 -1.1 }
+      USE SCALEUNIFORM_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation 1.1 -1.1 -1.1 }
+      USE SCALEUNIFORM_SOLIDMARKER
+   }
+   Separator {
+      Translation { translation -1.1 -1.1 -1.1 }
+      USE SCALEUNIFORM_SOLIDMARKER
+   }
+}
+
+DEF scaleUniformScaler Separator {
+   USE SCALEUNIFORM_INACTIVE_MATERIAL
+   USE SCALEUNIFORM_DRAGPOINTS
+}
+
+DEF scaleUniformScalerActive Separator {
+   USE SCALEUNIFORM_ACTIVE_MATERIAL
+   USE SCALEUNIFORM_DRAGPOINTS
+
+   # Mark boundaris with a box when active, as Inventor does.
+   DrawStyle { style LINES  lineWidth 1 }
+   Cube { width 2.25  height 2.25  depth 2.25 }
+}
+
+
+# Define the axis cross. Included only to provide a visual cue to the
+# orientation of the scale "box".
+
+DEF SCALEUNIFORM_FEEDBACK_AXES Group {
+   USE SCALEUNIFORM_FEEDBACK_MATERIAL
+   DrawStyle { lineWidth 2 }
+   Coordinate3 { point [ 1 0 0, -1 0 0, 0 1 0, 0 -1 0, 0 0 1, 0 0 -1 ] }
+   IndexedLineSet { coordIndex [ 0, 1, -1, 2, 3, -1, 4, 5, -1 ] }
+}
+
+DEF scaleUniformFeedback Separator {
+   USE SCALEUNIFORM_FEEDBACK_AXES
+}
+DEF scaleUniformFeedbackActive Separator {
+   USE SCALEUNIFORM_FEEDBACK_AXES
+}

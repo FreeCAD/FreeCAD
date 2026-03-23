@@ -1,0 +1,54 @@
+#!/bin/sh
+#
+# Copyright (C) Kongsberg Oil & Gas Technologies, All rights reserved.
+#
+# This script creates the CoinTools.pkg.
+# The pkg file will be put in the current directory.
+# 
+# Usage: makecointoolspkg.sh [-v] -r /path/to/coin/prefix
+#  -v   verbose
+#  -r   Location of tools installation dir (coin configure prefix)
+#
+# Authors:
+#   Marius Kintel <kintel@sim.no>
+
+while getopts 'vr:' c
+do
+  case $c in
+    v) VERBOSE=-v ;;
+    r) ROOT=$OPTARG;;
+  esac
+done
+
+if test -z "$ROOT"; then
+  echo "Usage: $0 [-v] -r /path/to/prefix"
+  exit 1
+fi
+
+if test ! -d $ROOT; then
+  echo "$ROOT not found or not a directory"
+  exit 1
+fi
+
+if test $VERBOSE; then
+  set -x
+fi
+
+# Remove old generated files
+rm -rf CoinTools.pkg
+rm -rf pkgroot pkgresources
+
+# Copy package files to pkgroot and pkgresources
+ditto $ROOT pkgroot
+ditto -rsrcFork @top_srcdir@/packaging/macosx/License.rtf pkgresources/License.rtf
+ditto -rsrcFork @top_srcdir@/packaging/macosx/CoinTools_Welcome.rtf pkgresources/Welcome.rtf
+ditto -rsrcFork @top_srcdir@/packaging/macosx/background.tiff pkgresources/background.tiff
+
+# Package creation using PackageMaker
+if test x$VERBOSE = x; then
+  REDIRECT='> /dev/null 2>&1'
+fi
+eval "@sim_ac_packagemaker_app@/Contents/MacOS/PackageMaker -build -p $PWD/CoinTools.pkg -f $PWD/pkgroot -r $PWD/pkgresources -i CoinTools_Info.plist -d CoinTools_Description.plist $REDIRECT"
+
+# Remove temporary files
+rm -rf pkgroot pkgresources

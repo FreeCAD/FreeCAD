@@ -1,0 +1,10 @@
+052 MSWin dependency walker gives surprising results.
+
+    We have a report that Coin and SoQt configure with
+    --with-msvcrt=multithread-dynamic-debug will still have a
+    dependency on *both* msvcrtd.dll and msvcrt.dll.
+
+    Should investigate closer whether this is to be expected or not,
+    and if yes, how this can happen.
+
+    20030122 mortene.

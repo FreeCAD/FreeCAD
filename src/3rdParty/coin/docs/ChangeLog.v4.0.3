@@ -1,0 +1,264 @@
+2024-09-02 20:50:30 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (c1fd271cc)
+
+	Update NEWS, RELNOTES, and releases.dox files.
+
+M	NEWS
+M	RELNOTES
+M	docs/releases.dox
+
+2024-09-02 20:49:09 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (ec3f43098)
+
+	Bump version number.
+
+M	CMakeLists.txt
+M	configure
+M	configure.ac
+
+2024-09-02 20:48:15 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (fc549bea7)
+
+	Update THANKS file
+
+M	THANKS
+
+2024-08-31 00:21:18 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (1a3dba01b)
+
+	Adapt appveyor_newcomp.yml to changed Boost version [skip ci]
+
+M	appveyor_newcomp.yml
+
+2024-06-16 19:40:07 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (fc53b7459)
+
+	Fix for LTO compilation ODR error. Parsers regenerated with bison 2.7. see #521
+
+M	src/engines/evaluator.y
+M	src/engines/evaluator_tab.c
+M	src/scxml/eval-minimum-tab.cpp
+M	src/scxml/eval-minimum-tab.hpp
+M	src/scxml/eval-minimum-tab.y
+M	src/soscxml/eval-coin-tab.cpp
+M	src/soscxml/eval-coin-tab.hpp
+M	src/soscxml/eval-coin-tab.y
+
+2024-05-14 23:51:29 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (ebd713ded)
+
+	Updated THANKS file [skip ci]
+
+M	THANKS
+
+2024-05-13 23:53:05 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (07ff81ac9)
+
+	Updated Coin documentation link
+
+M	src/glue/gl.cpp
+M	src/misc/SoLockManager.cpp
+
+2024-05-12 21:20:02 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (3115b1e17)
+
+	Fix typo in documentation-workflow.yml
+
+M	.github/workflows/documentation-workflow.yml
+
+2024-05-12 21:13:29 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (8746a01bc)
+
+	Update documentation-workflow.yml
+
+M	.github/workflows/documentation-workflow.yml
+
+2024-05-12 20:59:48 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (dbea7d5a6)
+
+	Update documentation-workflow.yml
+
+M	.github/workflows/documentation-workflow.yml
+
+2024-05-12 20:57:00 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (1872a0cb1)
+
+	Use doxygen provided binaries in documentation-workflow.yml
+
+M	.github/workflows/documentation-workflow.yml
+
+2024-05-07 22:39:11 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (a5a080ab3)
+
+	Add graphviz package to documentation workflow
+
+M	.github/workflows/documentation-workflow.yml
+
+2024-05-07 22:27:25 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (278807cad)
+
+	Update doxygen to version 1.10.0
+
+M	.github/workflows/documentation-workflow.yml
+
+2024-05-07 21:51:12 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (c64736663)
+
+	fix: Separate documentation and CI workflows
+
+M	.github/workflows/continuous-integration-workflow.yml
+A	.github/workflows/documentation-workflow.yml
+
+2024-05-06 19:25:44 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (3dbd84c5c)
+
+	Update continuous-integration-workflow.yml [skip ci]
+
+M	.github/workflows/continuous-integration-workflow.yml
+
+2024-05-05 15:16:05 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (40afe8ca8)
+
+	fixed html_awesome installation command
+
+M	src/doc/CMakeLists.txt
+
+2024-05-05 14:53:07 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (67e35142b)
+
+	fix: Added doxygen to prerequisites [skip ci]
+
+M	.github/workflows/continuous-integration-workflow.yml
+
+2024-05-05 14:50:15 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (de555dc98)
+
+	Added awesome doc publishing to CI [skip ci]
+
+M	.github/workflows/continuous-integration-workflow.yml
+
+2024-05-03 13:17:44 +0200  Uwe Kindler  <uwe_kindler@web.de> (396b532cd)
+
+	Stripped comments from docs/coin.doxygen.awesome.cmake.in
+
+M	docs/coin.doxygen.awesome.cmake.in
+
+2024-05-03 12:16:27 +0200  Uwe Kindler  <uwe_kindler@web.de> (e75c94cf1)
+
+	Activated sorting of member functions for doxygen-awesome
+
+M	docs/coin.doxygen.awesome.cmake.in
+
+2024-05-03 12:07:35 +0200  Uwe Kindler  <uwe_kindler@web.de> (5f006048c)
+
+	Updated coin.doxygen.awesome.cmake.in to latest doxygen version 1.10
+
+M	docs/coin.doxygen.awesome.cmake.in
+
+2024-05-03 11:47:27 +0200  Uwe Kindler  <uwe_kindler@web.de> (b86d2db09)
+
+	Updated brief description for doxygen awesome style
+
+M	docs/coin.doxygen.awesome.cmake.in
+
+2024-05-03 10:32:25 +0200  Uwe Kindler  <uwe_kindler@web.de> (dfae5f3ed)
+
+	Added initial support for building doxygen-awesome documentation
+
+M	.gitmodules
+M	CMakeLists.txt
+A	docs/coin.doxygen.awesome.cmake.in
+A	docs/doxygen-awesome
+M	src/doc/CMakeLists.txt
+
+2024-05-02 20:27:03 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (c17a09567)
+
+	Update SbProfilingData.cpp according to #522
+
+M	src/profiler/SbProfilingData.cpp
+
+2024-05-02 20:15:49 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (a9e993362)
+
+	Fixed static analysis warning.
+
+M	src/collision/SbTri3f.cpp
+
+2024-02-25 18:54:25 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (59d6ef8e8)
+
+	Update continuous-integration-workflow.yml
+
+M	.github/workflows/continuous-integration-workflow.yml
+
+2024-02-25 18:17:03 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (5c567f01f)
+
+	Update appveyor_macos.yml
+
+M	appveyor_macos.yml
+
+2024-02-10 17:00:47 +0100  Bas Ruigrok  <Rexbas@proton.me> (c9781b008)
+
+	Fix orthographic autoclipping by allowing negative farDistance
+
+M	src/rendering/SoRenderManagerP.cpp
+
+2024-02-25 17:34:48 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (d9eff7d86)
+
+	Update continuous-integration-workflow.yml for macOS
+
+M	.github/workflows/continuous-integration-workflow.yml
+
+2024-01-29 16:18:26 +0100  Riccardo Maria Bianchi  <riccardo.maria.bianchi@cern.ch> (0a84aea2e)
+
+	Set minimum C++ standard needed to compile Coin
+
+M	CMakeLists.txt
+
+2024-01-02 14:44:57 +0100  Markus Friedrich  <fm12111+github@googlemail.com> (ce83fe011)
+
+	Rotate a VRMLBackground node with its ancestors' rotations
+
+M	src/vrml97/Background.cpp
+
+2023-12-18 23:00:13 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (af6ec3ded)
+
+	Add debug postfix to executables. [skip ci]
+
+M	testsuite/CMakeLists.txt
+
+2023-12-18 22:36:29 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (df8264648)
+
+	Updated CMake script. [skip ci]
+
+M	testsuite/CMakeLists.txt
+
+2023-12-14 23:49:54 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (cbc3557db)
+
+	Update CI scripts. [skip ci]
+
+M	.github/workflows/codeql.yml
+M	appveyor_macos.yml
+M	appveyor_mingw.yml
+
+2023-12-13 21:15:49 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (bac869919)
+
+	Update CI workflow.
+
+M	.github/workflows/continuous-integration-workflow.yml
+
+2023-12-09 20:30:15 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (064ad27d0)
+
+	Updated release info in documentation. [skip ci]
+
+M	docs/releases.dox
+
+2023-12-03 22:14:54 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (ed3c86df0)
+
+	Update version in AppVeyor scripts. [skip ci]
+
+M	appveyor_macos.yml
+M	appveyor_mingw.yml
+M	appveyor_newcomp.yml
+M	appveyor_oldcomp.yml
+
+2023-12-03 22:14:28 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (b10b5f8b6)
+
+	Removed obsolete file. [skip ci]
+
+D	bitbucket-pipelines.yml
+
+2023-11-06 21:48:55 +0100  Bas Ruigrok  <Rexbas@proton.me> (7ee8ef260)
+
+	Remove clip sensor
+
+M	include/Inventor/SoRenderManager.h
+M	src/rendering/SoRenderManager.cpp
+M	src/rendering/SoRenderManagerP.cpp
+M	src/rendering/SoRenderManagerP.h
+
+2023-11-06 21:24:28 +0100  Bas Ruigrok  <Rexbas@proton.me> (5726c8805)
+
+	Run auto clipping before render
+
+M	src/rendering/SoRenderManager.cpp

@@ -1,0 +1,6 @@
+173 SbIntList implementation
+
+    Being based on SbPList, it stores ints in pointers, which is a waste
+    of space on platforms where pointers are larger than ints/longs.
+
+    20041116 larsa.

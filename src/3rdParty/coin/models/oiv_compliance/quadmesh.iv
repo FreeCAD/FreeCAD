@@ -1,0 +1,23 @@
+#Inventor V2.1 ascii
+
+# Check rendering with an SoQuadMesh.
+#
+# FIXME: lots of stuff missing. 19990423 mortene.
+#
+# 19990423 mortene
+
+Separator {
+   Coordinate3 {
+      point [
+       -2 -2 0, -1 -2 0, 0 -2 0, 1 -2 0, 2 -2 0,        # bottom row
+       -2 -1 0, -1 -1 0, 0 -1 0, 1 -1 0, 2 -1 0,
+       -2 0 0, -1 0 0, 0 0 0, 1 0 0, 2 0 0,             # middle row
+       -2 1 0, -1 1 0, 0 1 0, 1 1 0, 2 1 0,
+       -2 2 0, -1 2 0, 0 2 0, 1 2 0, 2 2 0,             # top row
+      ]
+   }
+   QuadMesh {
+      verticesPerColumn 5
+      verticesPerRow 5
+   }
+}

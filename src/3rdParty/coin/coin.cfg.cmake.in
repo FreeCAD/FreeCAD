@@ -1,0 +1,24 @@
+# prefix is determined in coin-config, making the package "movable"
+# prefix="@prefix@"
+host="@host@"
+exec_prefix="@exec_prefix@"
+version="@COIN_VERSION@"
+cflags="@COIN_EXTRA_CFLAGS@"
+cppflags="@COIN_EXTRA_CPPFLAGS@"
+cxxflags="@COIN_EXTRA_CXXFLAGS@"
+ldflags="@COIN_EXTRA_LDFLAGS@"
+libs="@CMAKE_INSTALL_FULL_LIBDIR@"
+msvcrt="@COIN_MSVC_LIBC@"
+datadir="@CMAKE_INSTALL_FULL_DATADIR@"
+includedir="@CMAKE_INSTALL_FULL_INCLUDEDIR@"
+frameworkdir="@frameworkdir@"
+htmldir="@CMAKE_INSTALL_FULL_DOCDIR@"
+compiler="@COIN_COMPILER@"
+objext="@OBJEXT@"
+have_3ds_import=@FEAT_HAVE_3DS@
+have_vrml97=@FEAT_HAVE_VRML97@
+have_sound=@FEAT_HAVE_SOUND@
+have_superglu=@FEAT_HAVE_SUPERGLU@
+have_threads=@FEAT_HAVE_THREADS@
+have_threadsafe=@FEAT_HAVE_SAFETHREAD@
+compiler_is_gcc=@ac_compiler_gnu@

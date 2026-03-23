@@ -1,0 +1,27 @@
+193 superglu should be sync'ed against SGI GLU.
+
+    This should be done with regular intervals, to get any bug fixes
+    etc migrated into superglu. This hasn't been done for a long time
+    now.
+
+    We should also send back any important bugfixes we've made
+    ourselves.
+
+    20050602 mortene.
+
+     UPDATE 20060130 mortene:
+
+        I made a small amount of fixes, some important, but most of
+        them syntactic (making their original C code also compilable
+        by a C++ compiler, for instance) when I grabbed the GLU source
+        code and made the "superglu" repository.
+
+        So to sync up, one should really first do something like a
+        "cvs diff -u -r <start> -r <today>" on the repository, sort
+        through the diff and pass on to the responsible SGI engineer.
+
+        Then sync with the changes made to GLU between our fork date
+        and today.
+
+        It's a non-trivial task, partly because I've been sloppy
+        enough to let it drift / rot.

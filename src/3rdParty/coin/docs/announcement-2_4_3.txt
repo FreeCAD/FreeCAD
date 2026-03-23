@@ -1,0 +1,79 @@
+From: "Lars J. Aas" <larsa@sim.no>
+Subject: Coin 2.4.3 Released
+
+Coin 2.4.3 Released
+===================
+
+Yesterday's Coin 2.4.2 release contained a couple of ugly regressions.
+They are now fixed, and here is the new 2.4.3 patchlevel release.
+
+
+NEWS File Excerpt for 2.4.3:
+----------------------------
+
+* bugfixes:
+  - SoText2 regression in 2.4.2; text would be too large on MS Windows
+  - SoText2 regression in 2.4.2; if Coin was built multithread-safe,
+    font rendering would hang the application
+  - file import regression in 2.4.2; could no longer read binary
+    Inventor 2.0 files
+
+NEWS File Excerpt for 2.4.2:
+----------------------------
+
+* new features:
+  - Support for compressed textures
+  - Windows: build settings are easier tunable from the Visual Studio
+    projects (edit include/setup.h), and also includes static library
+    build options now
+* optimizations:
+  - major improvements to SoOffscreenRenderer performance,
+    approximately 3x faster for simple scene graphs
+  - OpenAL library now loaded only on demand, i.e. when sound is
+    actually used
+* bugfixes:
+  - Postscript output for the SoOffscreenRenderer was erroneously
+    disabled
+  - SoFaceSet with SoShapeHints::faceType set to UNKNOWN_FACE_TYPE
+    could come out wrong
+  - 64-bit windows port issues believed to be resolved
+  - Reinstanded missing default-2d-font characters
+  - Inventor V1.0 .iv file import fixes
+  - SoToVRML2Action fixes
+  - Font/glyph handling fixes
+  - and more...
+* other:
+  - reference doc improvements with file format examples and defaults
+    sections for all scene objects.
+
+See the ChangeLog file if you want the really gory details.  See
+the file RELNOTES on changes that might affect Coin usage.
+
+
+Download Information:
+---------------------
+
+This message may be posted before some of the listed files are available.
+In that case, try again at a later time.
+
+ChangeLog:
+  http://source.coin3d.org/Coin-2/docs/ChangeLog.v2.4.3
+
+Source Code by FTP:
+  ftp://ftp.coin3d.org/pub/coin/src/all/Coin-2.4.3.tar.gz
+  ftp://ftp.coin3d.org/pub/coin/src/all/Coin-2.4.3.zip
+
+Precompiled for MS Windows:
+  Not available as of this posting.  Visit the following directory to
+  check for any change of status:
+    ftp://ftp.coin3d.org/pub/coin/bin/win32/
+
+Precompiled for Mac OS X:
+  Not available as of this posting.  Visit the following directory to
+  check for any change of status:
+    ftp://ftp.coin3d.org/pub/coin/bin/macosx/
+
+
+Enjoy,
+
+  Lars J

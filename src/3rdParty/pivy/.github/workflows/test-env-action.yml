@@ -1,0 +1,27 @@
+name: lint-build-test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build_n_lint:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      max-parallel: 9
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+      name: Checkout
+
+    - uses: prefix-dev/setup-pixi@v0.9.4
+      with:
+        pixi-version: v0.63.2
+        cache: true
+    - run: pixi run lint
+    - run: pixi run test

@@ -1,0 +1,90 @@
+#VRML V1.0 ascii
+
+# Check rendering with an SoDirectionalLight.
+# NB: turn off the headlight in the viewer.
+#
+# 19990423 mortene
+
+Separator {
+   # ROW 0 -- different direction vectors
+   Separator {
+      Material { diffuseColor 1 0 0 }
+      Separator {
+	 DirectionalLight { }
+	 Cube { }
+      }
+
+      Material { diffuseColor 0 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 DirectionalLight { direction 1 0 0}
+	 Cube { }
+      }
+
+      Material { diffuseColor 1 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 DirectionalLight { direction 0 1 0}
+	 Cube { }
+      }
+
+      Material { diffuseColor 1 0 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 DirectionalLight { direction 0 0 1 }
+	 Cube { }
+      }
+
+      Material { diffuseColor 1 1 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 DirectionalLight { direction 0 -1 -1 }
+	 Cube { }
+      }
+   }
+
+   # ROW 1 -- misc field settings
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material { diffuseColor 1 0 0 }
+      Separator {
+	 DirectionalLight { on FALSE }
+	 Cube { }
+      }
+
+      Material { diffuseColor 1 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 DirectionalLight { intensity 0.8 }
+	 Cube { }
+      }
+
+      Material { diffuseColor 1 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 DirectionalLight { intensity 0.5 }
+	 Cube { }
+      }
+
+      Material { diffuseColor 1 1 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 DirectionalLight { intensity 0.2 }
+	 Cube { }
+      }
+
+      Material { diffuseColor 1 1 1 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 DirectionalLight { color 1 0 0 }
+	 Cube { }
+      }
+
+      Material { diffuseColor 0 0 0 }
+      Translation { translation +4 0 0 }
+      Separator {
+	 DirectionalLight { color 1 0 0 }
+	 Cube { }
+      }
+   }
+}

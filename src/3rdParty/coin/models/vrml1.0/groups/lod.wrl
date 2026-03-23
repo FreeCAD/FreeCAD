@@ -1,0 +1,21 @@
+#VRML V1.0 ascii
+
+# Check rendering with LOD nodes.
+#
+# 19990504 mortene
+# 20030514 kintel
+
+Separator {
+   # (ROW 0)
+   Separator {
+      LOD {
+	 range [ 10, 20, 30, 40 ]
+
+	 Sphere { }
+	 Cylinder { }
+	 Cone { }
+	 Cube { }
+	 Info { }
+      }
+   }
+}

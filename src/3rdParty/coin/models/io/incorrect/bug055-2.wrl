@@ -1,0 +1,11 @@
+#VRML V2.0 utf8
+
+#
+# The '*' character is interpreted as the name of a node type not followed
+# by a body. Coin correctly produces an error, although the error message
+# might be a bit cryptic.
+#
+
+Switch {
+  choice [ * ]
+}

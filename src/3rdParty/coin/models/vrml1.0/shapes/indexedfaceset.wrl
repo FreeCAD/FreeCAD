@@ -1,0 +1,233 @@
+#VRML V1.0 ascii
+
+# Check all aspects of IndexedFaceSet rendering.
+#
+# 19990414 mortene
+# 20030509 kintel
+
+Separator {
+   # Global settings.
+   Coordinate3 {
+      point [
+       -1 1 0, -1 -1 0, 1 -1 0, 1 1 0,
+       0 2 -1, -2 0 -1, 0 -2 -1, 2 0 -1,
+      ]
+   }
+   Material {
+      diffuseColor [
+       1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1, 0 0 0
+      ]
+   }
+   Switch {
+      whichChild -1
+
+      DEF ifs IndexedFaceSet {
+         coordIndex [
+          0, 1, 2, 3, -1,
+          0, 3, 4, -1,
+          0, 5, 1, -1,
+          1, 6, 2, -1,
+          2, 7, 3, -1 ]
+
+         materialIndex [
+          6, 4, 2, 5, -1,
+          5, 0, 1, -1,
+          1, 2, 3, -1,
+          4, 3, 1, -1,
+          1, 1, 1, -1 ]
+
+         textureCoordIndex [
+          6, 4, 2, 5, -1,
+          5, 0, 1, -1,
+          1, 2, 3, -1,
+          4, 3, 1, -1,
+          1, 1, 1, -1 ]
+
+          normalIndex [
+           6, 4, 2, 5, -1,
+           5, 0, 1, -1,
+           1, 2, 3, -1,
+           4, 3, 1, -1,
+           1, 1, 1, -1 ]
+      }
+
+      DEF coordifs IndexedFaceSet {
+         coordIndex [
+          0, 1, 2, 3, -1,
+          0, 3, 4, -1,
+          0, 5, 1, -1,
+          1, 6, 2, -1,
+          2, 7, 3, -1 ]
+      }
+      DEF matidxifs IndexedFaceSet {
+         coordIndex [
+          0, 1, 2, 3, -1,
+          0, 3, 4, -1,
+          0, 5, 1, -1,
+          1, 6, 2, -1,
+          2, 7, 3, -1 ]
+         materialIndex [
+           4, 3, 2, 1, 0
+         ]
+      }
+      DEF normidxifs IndexedFaceSet {
+         coordIndex [
+          0, 1, 2, 3, -1,
+          0, 3, 4, -1,
+          0, 5, 1, -1,
+          1, 6, 2, -1,
+          2, 7, 3, -1 ]
+         normalIndex [
+           4, 3, 2, 1, 0
+         ]
+      }
+   }
+
+
+   # (ROW 0) MaterialBinding
+   Separator {
+      MaterialBinding { value OVERALL }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_PART }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      USE matidxifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_FACE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      USE matidxifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      USE coordifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      USE ifs
+   }
+
+   # (ROW 1) NormalBinding
+   Translation { translation 0 +6 0 }
+   Separator {
+     Normal {
+       vector [ 0 0 1, 1 0 0, 0 1 0, -1 0 0, 0 -1 0, 
+                1 1 0, 1 0 1, 0 1 1, 1 1 1, 0.5 0 0 ]
+     }
+
+      NormalBinding { value OVERALL }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_PART }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_PART_INDEXED }
+      USE normidxifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_FACE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_FACE_INDEXED }
+      USE normidxifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_VERTEX }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_VERTEX_INDEXED }
+      USE coordifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_VERTEX_INDEXED }
+      USE ifs
+   }
+
+   # (ROW 5) With different ShapeStyle settings.
+   Translation { translation 0 +6 0 }
+   Separator {
+      ShapeHints { creaseAngle 0.5 }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { creaseAngle 1.57 }
+      USE ifs
+ 
+      Translation { translation +5 0 0 }
+      ShapeHints { vertexOrdering CLOCKWISE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { vertexOrdering COUNTERCLOCKWISE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { shapeType UNKNOWN_SHAPE_TYPE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { shapeType SOLID }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { faceType UNKNOWN_FACE_TYPE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { faceType CONVEX }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { 
+        vertexOrdering COUNTERCLOCKWISE
+        shapeType SOLID 
+      }
+      USE ifs
+  }
+
+   # (ROW 6) Test how IndexedFaceSet is affected by texturemapping.
+   Translation { translation 0 +6 0 }
+   Separator {
+      Material {}
+      Texture2 {
+         image 6 8 3
+         0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+         0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+         0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+         0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+         0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+         0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+         0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+         0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      USE coordifs
+
+      TextureCoordinate2 {
+        point [ 0 0, 0 1, 1 0, 1 1, 
+                0.25 0.25, 0.25 0.75, 0.75 0.25, 0.75 0.75,
+        ]
+      }
+
+      Translation { translation +5 0 0 }
+      USE coordifs
+
+      Translation { translation +5 0 0 }
+      USE ifs
+   }
+}

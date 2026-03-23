@@ -1,0 +1,771 @@
+2002-08-24 02:33  tamer
+
+	* Makefile, pivy.i, Inventor/Qt/SoQt.h, Inventor/Qt/SoQtCursor.h,
+	examples/Mentor/python/02.1.HelloCone.py,
+	examples/Mentor/python/02.2.EngineSpin.py,
+	examples/Mentor/python/02.3.Trackball.py,
+	examples/Mentor/python/02.4.Examiner.py,
+	examples/Mentor/python/03.1.Molecule.py,
+	examples/Mentor/python/03.2.Robot.py,
+	examples/Mentor/python/04.1.Cameras.py,
+	examples/Mentor/python/04.2.Lights.py,
+	examples/Mentor/python/05.1.FaceSet.py,
+	examples/Mentor/python/05.2.IndexedFaceSet.py,
+	examples/Mentor/python/05.3.TriangleStripSet.py,
+	examples/Mentor/python/05.4.QuadMesh.py,
+	examples/Mentor/python/05.5.Binding.py,
+	examples/Mentor/python/05.6.TransformOrdering.py,
+	examples/Mentor/python/06.1.Text.py,
+	examples/Mentor/python/06.2.Simple3DText.py,
+	examples/Mentor/python/06.3.Complex3DText.py,
+	examples/Mentor/python/07.1.BasicTexture.py,
+	examples/Mentor/python/07.2.TextureCoordinates.py,
+	examples/Mentor/python/07.3.TextureFunction.py,
+	examples/Mentor/python/08.1.BSCurve.py,
+	examples/Mentor/python/08.2.UniCurve.py,
+	examples/Mentor/python/08.3.BezSurf.py,
+	examples/Mentor/python/08.4.TrimSurf.py,
+	examples/Mentor/python/09.1.Print.py,
+	examples/Mentor/python/09.2.Texture.py,
+	examples/Mentor/python/09.4.PickAction.py,
+	examples/Mentor/python/10.1.addEventCB.py,
+	examples/Mentor/python/10.2.setEventCB.py,
+	examples/Mentor/python/10.3and4.MotifList.py,
+	examples/Mentor/python/10.5.SelectionCB.py,
+	examples/Mentor/python/10.6.PickFilterTopLevel.py,
+	examples/Mentor/python/10.7.PickFilterManip.py,
+	examples/Mentor/python/10.8.PickFilterNodeKit.py,
+	examples/Mentor/python/11.1.ReadFile.py,
+	examples/Mentor/python/11.2.ReadString.py,
+	examples/Mentor/python/12.1.FieldSensor.py,
+	examples/Mentor/python/12.3.AlarmSensor.py,
+	examples/Mentor/python/12.4.TimerSensor.py,
+	examples/Mentor/python/13.1.GlobalFlds.py,
+	examples/Mentor/python/13.2.ElapsedTime.py,
+	examples/Mentor/python/13.3.TimeCounter.py,
+	examples/Mentor/python/13.4.Gate.py,
+	examples/Mentor/python/13.5.Boolean.py,
+	examples/Mentor/python/13.6.Calculator.py,
+	examples/Mentor/python/13.7.Rotor.py,
+	examples/Mentor/python/13.8.Blinker.py,
+	examples/Mentor/python/14.1.FrolickingWords.py,
+	examples/Mentor/python/14.2.Editors.py,
+	examples/Mentor/python/14.3.Balance.py,
+	examples/Mentor/python/15.1.ConeRadius.py,
+	examples/Mentor/python/15.2.SliderBox.py,
+	examples/Mentor/python/15.3.AttachManip.py,
+	examples/Mentor/python/15.4.Customize.py,
+	examples/Mentor/python/16.1.Overlay.py,
+	examples/Mentor/python/16.2.Callback.py,
+	examples/Mentor/python/16.3.AttachEditor.py,
+	examples/Mentor/python/16.4.OneWindow.py,
+	examples/Mentor/python/16.5.Examiner.py,
+	examples/Mentor/python/17.1.ColorIndex.py,
+	examples/Mentor/python/17.2.GLCallback.py, fake_headers/qevent.h,
+	fake_headers/qobject.h:
+	
+	SoQt is released as stable now. Therefore changed the Gui binding
+	from SoGtk to SoQt. Tested with SoQt 1.0.1.
+
+2002-07-19 05:37  tamer
+
+	* pivy.i, Inventor/Gtk/SoGtkCursor.h:
+	
+	updated the source tree to work with the newest swig development
+	version (1.3.13) and the newest cvs Coin3d SoGtk version.
+
+2002-06-13 01:28  tamer
+
+	* Makefile, pivy.i, Inventor/SbColor4f.h, Inventor/SbMatrix.h,
+	Inventor/SbString.h, Inventor/SbTesselator.h, Inventor/SbVec2f.h,
+	Inventor/SbVec2s.h, Inventor/SbVec3f.h, Inventor/SbVec4f.h,
+	Inventor/Gtk/SoGtk.h, Inventor/Gtk/SoGtkCursor.h,
+	Inventor/Gtk/SoGtkGraphEditor.h, Inventor/Gtk/SoGtkRenderArea.h,
+	Inventor/Gtk/SoGtkRoster.h, Inventor/actions/SoCallbackAction.h,
+	Inventor/draggers/SoDragger.h, Inventor/fields/SoFieldContainer.h,
+	Inventor/fields/SoMFColor.h, Inventor/fields/SoMFFloat.h,
+	Inventor/fields/SoMFInt32.h, Inventor/fields/SoMFString.h,
+	Inventor/fields/SoMFVec2f.h, Inventor/fields/SoMFVec3f.h,
+	Inventor/fields/SoMFVec4f.h, Inventor/fields/SoSFBool.h,
+	Inventor/fields/SoSFEnum.h, Inventor/fields/SoSFFloat.h,
+	Inventor/fields/SoSFInt32.h, Inventor/fields/SoSFName.h,
+	Inventor/fields/SoSFRotation.h, Inventor/fields/SoSFShort.h,
+	Inventor/fields/SoSFString.h, Inventor/fields/SoSFVec2f.h,
+	Inventor/fields/SoSFVec3f.h, Inventor/fields/SoSFVec4f.h,
+	Inventor/nodes/SoCallback.h, Inventor/nodes/SoEventCallback.h,
+	Inventor/nodes/SoSelection.h, Inventor/sensors/SoSensor.h,
+	examples/Mentor/python/12.2.NodeSensor.py,
+	examples/Mentor/python/17.2.GLCallback.py:
+	
+	updated the source tree to work with the newest swig development
+	version (1.3.12). some keywords changed and some functionality is
+	in place now where workarounds were needed earlier in cvs versions
+	of swig.
+	
+	I checked out the most recent SoGtk cvs version, included the
+	newest headers from this tree and removed the now obsolete ones in
+	the pivy Inventor/Gtk tree.
+	
+	fixed the getFieldName() issue in the SoFieldContainer class to
+	return a tuple (SbBool, SbName) so that NodeSensors work properly
+	now -> this fixed the 12.2.NodeSensor.py segfault.
+
+2002-04-27 06:23  tamer
+
+	* examples/Mentor/python/: 17.1.ColorIndex.py, 17.2.GLCallback.py,
+	17.3.GLFloor.py:
+	
+	updated GL Mentor examples so that they work with PyOpenGL.
+
+2002-04-10 14:54  tamer
+
+	* Inventor/fields/: SoMFColor.h, SoMFInt32.h, SoMFVec2f.h,
+	SoMFVec3f.h, SoMFVec4f.h, SoSFRotation.h:
+	
+	added missing __call__ methods.
+
+2002-04-10 14:36  tamer
+
+	* Inventor/fields/: SoSFBool.h, SoSFInt32.h, SoSFRotation.h,
+	SoSFVec2f.h, SoSFVec3f.h, SoSFVec4f.h:
+	
+	added __call__ methods to field classes.
+
+2002-04-01 08:21  tamer
+
+	* Inventor/SbViewVolume.h:
+	
+	added modified header file.
+
+2002-04-01 08:20  tamer
+
+	* pivy.i, Inventor/SbRotation.h, Inventor/SbTime.h,
+	Inventor/SoOffscreenRenderer.h, Inventor/SoPath.h,
+	Inventor/Gtk/SoGtk.h, Inventor/Gtk/SoGtkCursor.h,
+	Inventor/Gtk/SoGtkRenderArea.h,
+	Inventor/actions/SoCallbackAction.h, Inventor/draggers/SoDragger.h,
+	Inventor/fields/SoField.h, Inventor/fields/SoMFColor.h,
+	Inventor/fields/SoSFShort.h, Inventor/nodes/SoCallback.h,
+	Inventor/nodes/SoCamera.h, Inventor/nodes/SoEventCallback.h,
+	Inventor/nodes/SoSelection.h, Inventor/sensors/SoAlarmSensor.h,
+	Inventor/sensors/SoDataSensor.h,
+	Inventor/sensors/SoDelayQueueSensor.h,
+	Inventor/sensors/SoFieldSensor.h, Inventor/sensors/SoIdleSensor.h,
+	Inventor/sensors/SoNodeSensor.h,
+	Inventor/sensors/SoOneShotSensor.h,
+	Inventor/sensors/SoPathSensor.h, Inventor/sensors/SoSensor.h,
+	Inventor/sensors/SoTimerQueueSensor.h,
+	Inventor/sensors/SoTimerSensor.h,
+	examples/Mentor/python/09.1.Print.py,
+	examples/Mentor/python/09.2.Texture.py,
+	examples/Mentor/python/09.4.PickAction.py,
+	examples/Mentor/python/09.5.GenSph.py,
+	examples/Mentor/python/10.1.addEventCB.py,
+	examples/Mentor/python/10.2.setEventCB.py,
+	examples/Mentor/python/10.3and4.MotifList.py,
+	examples/Mentor/python/10.5.SelectionCB.py,
+	examples/Mentor/python/10.6.PickFilterTopLevel.py,
+	examples/Mentor/python/10.7.PickFilterManip.py,
+	examples/Mentor/python/10.8.PickFilterNodeKit.py,
+	examples/Mentor/python/11.1.ReadFile.py,
+	examples/Mentor/python/11.2.ReadString.py,
+	examples/Mentor/python/12.1.FieldSensor.py,
+	examples/Mentor/python/12.2.NodeSensor.py,
+	examples/Mentor/python/12.3.AlarmSensor.py,
+	examples/Mentor/python/12.4.TimerSensor.py,
+	examples/Mentor/python/13.1.GlobalFlds.py,
+	examples/Mentor/python/13.2.ElapsedTime.py,
+	examples/Mentor/python/13.3.TimeCounter.py,
+	examples/Mentor/python/13.4.Gate.py,
+	examples/Mentor/python/13.5.Boolean.py,
+	examples/Mentor/python/13.6.Calculator.py,
+	examples/Mentor/python/13.7.Rotor.py,
+	examples/Mentor/python/13.8.Blinker.py,
+	examples/Mentor/python/14.1.FrolickingWords.py,
+	examples/Mentor/python/14.2.Editors.py,
+	examples/Mentor/python/14.3.Balance.py,
+	examples/Mentor/python/15.1.ConeRadius.py,
+	examples/Mentor/python/15.2.SliderBox.py,
+	examples/Mentor/python/15.3.AttachManip.py,
+	examples/Mentor/python/15.4.Customize.py,
+	examples/Mentor/python/16.1.Overlay.py,
+	examples/Mentor/python/16.2.Callback.py,
+	examples/Mentor/python/16.3.AttachEditor.py,
+	examples/Mentor/python/16.4.OneWindow.py,
+	examples/Mentor/python/16.5.Examiner.py,
+	examples/Mentor/python/17.1.ColorIndex.py,
+	examples/Mentor/python/17.2.GLCallback.py,
+	examples/Mentor/python/17.3.GLFloor.py,
+	examples/Mentor/python/bookshelf.iv,
+	examples/Mentor/python/desk.iv, examples/Mentor/python/dogDish.iv,
+	examples/Mentor/python/duck.iv,
+	examples/Mentor/python/eatAtJosies.iv,
+	examples/Mentor/python/flower.iv,
+	examples/Mentor/python/flowerPath.iv,
+	examples/Mentor/python/luxo.iv,
+	examples/Mentor/python/windmillTower.iv,
+	examples/Mentor/python/windmillVanes.iv:
+	
+	converted all Inventor Mentor book examples to python as far as
+	possible.  added therefore all fixed coin3d header files.
+
+2002-03-28 06:07  tamer
+
+	* Makefile, Inventor/actions/SoAction.h,
+	Inventor/actions/SoWriteAction.h, Inventor/events/SoEvent.h,
+	Inventor/nodes/SoEventCallback.h,
+	examples/Mentor/python/09.4.PickAction.py:
+	
+	FINALLY!!! fixed this damn segmentation fault in the callback
+	handling, which nearly drove me nuts! wuuaaaaaaaaaaaaah!!!! i was
+	capable of looking in the wrong place for nearly a weeeeeek!!!!
+	aaaaaaaaaaah!!! and then it turns out to be a nasty typo! even more
+	aaaaaaaaaaaaaah!!!! yaaaaaaaaaaaaaaah!!!!
+	heiaaaaaaeeeeeeeeeeeeeh!!!! the most exciting
+	iiiiiiiiaaaaaaaeeeeeeehhh!!!! but now i know swig, reeeaaally
+	reeeeeaaaaally know it and every curse on this planet!
+	*@#$)(*!@#$!!!*
+	
+			       ~~~ NO SURRENDER :: NO GIVING UP ~~~
+	
+	ha!!!!
+
+2002-03-25 19:41  tamer
+
+	* LICENSE, pivy.i, Inventor/nodes/SoEventCallback.h,
+	Inventor/nodes/SoGroup.h, examples/Mentor/python/03.3.Naming.py,
+	examples/Mentor/python/05.5.Binding.py,
+	examples/Mentor/python/09.4.PickAction.py:
+	
+	fixed type casting and inventor mentor examples relying on it.
+
+2002-03-21 10:09  tamer
+
+	* pivy.i, Inventor/events/SoEvent.h,
+	Inventor/nodes/SoEventCallback.h,
+	examples/Mentor/python/02.1.HelloCone.py,
+	examples/Mentor/python/09.2.Texture.py,
+	examples/Mentor/python/09.3.Search.py,
+	examples/Mentor/python/09.4.PickAction.py,
+	examples/Mentor/python/09.5.GenSph.py,
+	examples/Mentor/python/bird.iv, examples/Mentor/python/jumpyMan.iv,
+	examples/Mentor/python/star.iv:
+	
+	new inventor mentor examples pythonized. start of callback
+	handling. (works but needs more work as it lets apps segfault under
+	certain circumstances)
+
+2002-03-19 17:24  tamer
+
+	* Inventor/nodes/SoEventCallback.h,
+	examples/Mentor/python/08.1.BSCurve.py,
+	examples/Mentor/python/08.2.UniCurve.py,
+	examples/Mentor/python/08.3.BezSurf.py,
+	examples/Mentor/python/08.4.TrimSurf.py,
+	examples/Mentor/python/09.1.Print.py,
+	examples/Mentor/python/diamondRug.rgb:
+	
+	added new pythonized Inventor Mentor examples and necessary headers
+	with the glue code.
+
+2002-03-19 07:23  tamer
+
+	* Inventor/SbRotation.h, Inventor/SbVec3f.h, Inventor/SoInput.h,
+	Inventor/fields/SoMFFloat.h, Inventor/fields/SoMFString.h,
+	Inventor/fields/SoSFRotation.h,
+	examples/Mentor/python/06.2.Simple3DText.py,
+	examples/Mentor/python/06.3.Complex3DText.py,
+	examples/Mentor/python/07.1.BasicTexture.py,
+	examples/Mentor/python/07.2.TextureCoordinates.py,
+	examples/Mentor/python/07.3.TextureFunction.py,
+	examples/Mentor/python/08.1.BSCurve.py,
+	examples/Mentor/python/brick.1.rgb, examples/Mentor/python/oak.rgb,
+	examples/Mentor/python/sillyFace.rgb:
+	
+	new Inventor Mentor examples pythonized. added headers with
+	necessary modifications and glue code.
+
+2002-03-19 01:43  tamer
+
+	* pivy.i, Inventor/SbString.h, Inventor/fields/SoMFColor.h,
+	Inventor/fields/SoMFInt32.h, Inventor/fields/SoMFVec2f.h,
+	Inventor/fields/SoMFVec3f.h, Inventor/fields/SoMFVec4f.h,
+	Inventor/fields/SoSFInt32.h, Inventor/fields/SoSFName.h,
+	Inventor/fields/SoSFString.h,
+	examples/Mentor/python/05.1.FaceSet.py,
+	examples/Mentor/python/05.2.IndexedFaceSet.py,
+	examples/Mentor/python/05.3.TriangleStripSet.py,
+	examples/Mentor/python/05.4.QuadMesh.py,
+	examples/Mentor/python/05.5.Binding.py,
+	examples/Mentor/python/05.6.TransformOrdering.py,
+	examples/Mentor/python/06.1.Text.py,
+	examples/Mentor/python/06.2.Simple3DText.py,
+	examples/Mentor/python/globe.rgb, examples/Mentor/python/temple.iv:
+	
+	new Inventor Mentor samples pythonized. added correspondig files
+	and changed headers with glue code.
+
+2002-03-18 07:04  tamer
+
+	* Inventor/fields/SoMFVec3f.h,
+	examples/Mentor/python/05.1.FaceSet.py:
+	
+	fixed setValues() in SoMFVec3f.h.
+
+2002-03-18 06:25  tamer
+
+	* Inventor/SbVec2f.h, Inventor/SbVec3f.h, Inventor/SbVec4f.h,
+	Inventor/SbViewportRegion.h, Inventor/fields/SoMFColor.h,
+	Inventor/fields/SoMFVec2f.h, Inventor/fields/SoMFVec3f.h,
+	Inventor/fields/SoMFVec4f.h,
+	examples/Mentor/python/03.1.Molecule.py,
+	examples/Mentor/python/03.2.Robot.py,
+	examples/Mentor/python/04.1.Cameras.py,
+	examples/Mentor/python/04.2.Lights.py,
+	examples/Mentor/python/05.1.FaceSet.py,
+	examples/Mentor/python/parkbench.iv:
+	
+	new Mentor Inventor examples transformed to python -> added
+	necessary files with appropriate glue code.
+	
+	added workaround with %typemap(out) for the %apply directive which
+	got not applied on getValue(fff[f]) for SbVec3f.h and SbVec4f.h.
+	(don't have a clue why it works for SbVec2f.h, though. bug(tm) in
+	swig?)
+	
+	listening to "Not an Addict"! "Breathing iiiiin and breathing
+	ooooooout..."
+
+2002-03-16 05:27  tamer
+
+	* Inventor/SbName.h:
+	
+	added fixed SbName.h.
+
+2002-03-16 05:26  tamer
+
+	* pivy.i, Inventor/fields/SoMFFloat.h, Inventor/fields/SoSFFloat.h,
+	Inventor/fields/SoSFVec2f.h, Inventor/fields/SoSFVec3f.h,
+	Inventor/fields/SoSFVec4f.h,
+	examples/Mentor/python/01.1.Windmill.iv,
+	examples/Mentor/python/03.1.Molecule.py,
+	examples/Mentor/python/03.2.Robot.py,
+	examples/Mentor/python/03.3.Naming.py,
+	examples/Mentor/python/04.1.Cameras.py,
+	examples/Mentor/python/04.2.Lights.py,
+	examples/Mentor/python/05.1.FaceSet.py,
+	examples/Mentor/python/05.2.IndexedFaceSet.py,
+	examples/Mentor/python/05.3.TriangleStripSet.py,
+	examples/Mentor/python/05.4.QuadMesh.py,
+	examples/Mentor/python/05.5.Binding.py,
+	examples/Mentor/python/05.6.TransformOrdering.py,
+	examples/Mentor/python/06.1.Text.py,
+	examples/Mentor/python/06.2.Simple3DText.py,
+	examples/Mentor/python/06.3.Complex3DText.py,
+	examples/Mentor/python/07.1.BasicTexture.py,
+	examples/Mentor/python/07.2.TextureCoordinates.py,
+	examples/Mentor/python/07.3.TextureFunction.py,
+	examples/Mentor/python/08.1.BSCurve.py,
+	examples/Mentor/python/08.2.UniCurve.py,
+	examples/Mentor/python/08.3.BezSurf.py,
+	examples/Mentor/python/08.4.TrimSurf.py,
+	examples/Mentor/python/09.1.Print.py,
+	examples/Mentor/python/09.2.Texture.py,
+	examples/Mentor/python/09.3.Search.py,
+	examples/Mentor/python/09.4.PickAction.py,
+	examples/Mentor/python/09.5.GenSph.py,
+	examples/Mentor/python/10.1.addEventCB.py,
+	examples/Mentor/python/10.2.setEventCB.py,
+	examples/Mentor/python/10.3and4.MotifList.py,
+	examples/Mentor/python/10.5.SelectionCB.py,
+	examples/Mentor/python/10.6.PickFilterTopLevel.py,
+	examples/Mentor/python/10.7.PickFilterManip.py,
+	examples/Mentor/python/10.8.PickFilterNodeKit.py,
+	examples/Mentor/python/11.1.ReadFile.py,
+	examples/Mentor/python/11.2.ReadString.py,
+	examples/Mentor/python/12.1.FieldSensor.py,
+	examples/Mentor/python/12.2.NodeSensor.py,
+	examples/Mentor/python/12.3.AlarmSensor.py,
+	examples/Mentor/python/12.4.TimerSensor.py,
+	examples/Mentor/python/13.1.GlobalFlds.py,
+	examples/Mentor/python/13.2.ElapsedTime.py,
+	examples/Mentor/python/13.3.TimeCounter.py,
+	examples/Mentor/python/13.4.Gate.py,
+	examples/Mentor/python/13.5.Boolean.py,
+	examples/Mentor/python/13.6.Calculator.py,
+	examples/Mentor/python/13.7.Rotor.py,
+	examples/Mentor/python/13.8.Blinker.py,
+	examples/Mentor/python/14.1.FrolickingWords.py,
+	examples/Mentor/python/14.2.Editors.py,
+	examples/Mentor/python/14.3.Balance.py,
+	examples/Mentor/python/15.1.ConeRadius.py,
+	examples/Mentor/python/15.2.SliderBox.py,
+	examples/Mentor/python/15.3.AttachManip.py,
+	examples/Mentor/python/15.4.Customize.py,
+	examples/Mentor/python/16.1.Overlay.py,
+	examples/Mentor/python/16.2.Callback.py,
+	examples/Mentor/python/16.3.AttachEditor.py,
+	examples/Mentor/python/16.4.OneWindow.py,
+	examples/Mentor/python/16.5.Examiner.py,
+	examples/Mentor/python/17.1.ColorIndex.py,
+	examples/Mentor/python/17.2.GLCallback.py,
+	examples/Mentor/python/17.3.GLFloor.py:
+	
+	fixed and wrote glue code for some headers to get the next 3 (pivy)
+	Mentor working. added the rest of the C++ examples although they
+	are still not rewritten to python.
+
+2002-03-15 08:00  tamer
+
+	* examples/Mentor/python/: 02.3.Trackball.py, 02.4.Examiner.py:
+	
+	I couldn't stop and pivied another 2 examples. it works so
+	seamlessly that I am starting to get frightened... *huh*
+
+2002-03-15 07:46  tamer
+
+	* examples/Mentor/python/: 02.1.HelloCone.py, 02.2.EngineSpin.py:
+	
+	added the first 2 completely pivied Open Inventor Mentor examples.
+
+2002-03-15 07:43  tamer
+
+	* Makefile, Inventor/SbColor.h, Inventor/SbColor4f.h,
+	Inventor/SbVec3f.h, Inventor/fields/SoMFColor.h,
+	Inventor/fields/SoSFColor.h, Inventor/fields/SoSFEnum.h:
+	
+	for getting the first 2 examples of the Inventor Mentor book to run
+	as closely to the C++ syntax I wrote glue code for as many headers
+	as necessary.
+	
+	as there is no operator= in python I added a __call__ method to
+	SoSFEnum to compensate for it. a initializer might now look like
+	this: myRotXYZ.axis(SoRotationXYZ.X)	 # rotate around X axis or
+	myRotXYZ.axis.setValue(SoRotationXYZ.X)
+
+2002-03-15 03:31  tamer
+
+	* Inventor/: SbDict.h, SbVec2f.h, SbVec2s.h, SbVec3f.h, SbVec4f.h:
+	
+	finished glue code for different basic types. (untested, just
+	compiles...)
+
+2002-03-15 01:31  tamer
+
+	* Inventor/: SbMatrix.h, SbVec2f.h:
+	
+	finally fixed the SbMatrix swig cast problem, which resulted in
+	wrong results in the matrix itself. an unnecessary (SbMat const &)
+	cast was added by swig's code generator, which nearly drove me nuts
+	and was responsible for the ugliest workaround in computing history
+	ever. abused %typemap(argout) to fix it which now produces 2 calls
+	to the same method or constructor once with the wrong cast and
+	afterwards without the cast. *shrug*
+	
+	maybe i shouldn't blame swig alone, but the guy who thought it
+	would be enough to have a SbMatrix::setValue(const SbMat & m)
+	instead of a non bloody from hell C++ world crisis generating
+	method like SbMatrix::setValue(const SbMat * m).
+	
+	grrrr!!! !@#&*(@#$^*&%^*&%^!!! aaaaahhhhh!!!!
+
+2002-03-14 07:17  tamer
+
+	* Makefile, Inventor/SbMatrix.h, Inventor/SbVec2f.h:
+	
+	typemapped SbVec2f and fixed SbMatrix.
+
+2002-03-14 00:00  tamer
+
+	* Makefile, pivy.i, Inventor/SbMatrix.h:
+	
+	fixed SbMatrix constructor overloading.
+
+2002-03-12 23:15  tamer
+
+	* AUTHORS, Makefile, pivy.i, Inventor/SbDict.h,
+	Inventor/SbMatrix.h, Inventor/SbOctTree.h, Inventor/SbTesselator.h,
+	Inventor/SbVec2f.h, Inventor/SbVec2s.h, Inventor/SbVec3f.h,
+	Inventor/SbVec4f.h, Inventor/SoInput.h, Inventor/SoType.h,
+	Inventor/Gtk/SoGtkCursor.h, Inventor/Gtk/SoGtkGraphEditor.h,
+	Inventor/Gtk/SoGtkRoster.h, Inventor/engines/SoInterpolate.h,
+	Inventor/lists/SbIntList.h, Inventor/lists/SbPList.h,
+	Inventor/lists/SbStringList.h, Inventor/lists/SbVec3fList.h,
+	Inventor/lists/SoAuditorList.h, Inventor/lists/SoDetailList.h,
+	Inventor/lists/SoEngineOutputList.h, Inventor/lists/SoFieldList.h,
+	Inventor/lists/SoPickedPointList.h, Inventor/lists/SoTypeList.h,
+	Inventor/lists/SoVRMLInterpOutputList.h,
+	Inventor/misc/SoNotification.h, fake_headers/assert.h,
+	fake_headers/inttypes.h, fake_headers/math.h,
+	fake_headers/stdarg.h, fake_headers/stddef.h, fake_headers/stdio.h,
+	fake_headers/stdlib.h, fake_headers/time.h,
+	fake_headers/Inventor/bundles/SoBundle.h,
+	fake_headers/Inventor/bundles/SoMaterialBundle.h,
+	fake_headers/Inventor/bundles/SoTextureCoordinateBundle.h,
+	fake_headers/Inventor/caches/SoBoundingBoxCache.h,
+	fake_headers/Inventor/caches/SoCache.h,
+	fake_headers/Inventor/caches/SoConvexDataCache.h,
+	fake_headers/Inventor/caches/SoGLCacheList.h,
+	fake_headers/Inventor/caches/SoGLRenderCache.h,
+	fake_headers/Inventor/caches/SoNormalCache.h,
+	fake_headers/Inventor/caches/SoTextureCoordinateCache.h,
+	fake_headers/Inventor/elements/SoAccumulatedElement.h,
+	fake_headers/Inventor/elements/SoAmbientColorElement.h,
+	fake_headers/Inventor/elements/SoAnnoText3CharOrientElement.h,
+	fake_headers/Inventor/elements/SoAnnoText3FontSizeHintElement.h,
+	fake_headers/Inventor/elements/SoAnnoText3RenderPrintElement.h,
+	fake_headers/Inventor/elements/SoBBoxModelMatrixElement.h,
+	fake_headers/Inventor/elements/SoCacheElement.h,
+	fake_headers/Inventor/elements/SoClipPlaneElement.h,
+	fake_headers/Inventor/elements/SoComplexityElement.h,
+	fake_headers/Inventor/elements/SoComplexityTypeElement.h,
+	fake_headers/Inventor/elements/SoCoordinateElement.h,
+	fake_headers/Inventor/elements/SoCreaseAngleElement.h,
+	fake_headers/Inventor/elements/SoCullElement.h,
+	fake_headers/Inventor/elements/SoDecimationPercentageElement.h,
+	fake_headers/Inventor/elements/SoDecimationTypeElement.h,
+	fake_headers/Inventor/elements/SoDiffuseColorElement.h,
+	fake_headers/Inventor/elements/SoDrawStyleElement.h,
+	fake_headers/Inventor/elements/SoElement.h,
+	fake_headers/Inventor/elements/SoElements.h,
+	fake_headers/Inventor/elements/SoEmissiveColorElement.h,
+	fake_headers/Inventor/elements/SoEnvironmentElement.h,
+	fake_headers/Inventor/elements/SoFloatElement.h,
+	fake_headers/Inventor/elements/SoFocalDistanceElement.h,
+	fake_headers/Inventor/elements/SoFontNameElement.h,
+	fake_headers/Inventor/elements/SoFontSizeElement.h,
+	fake_headers/Inventor/elements/SoGLAmbientColorElement.h,
+	fake_headers/Inventor/elements/SoGLCacheContextElement.h,
+	fake_headers/Inventor/elements/SoGLClipPlaneElement.h,
+	fake_headers/Inventor/elements/SoGLColorIndexElement.h,
+	fake_headers/Inventor/elements/SoGLCoordinateElement.h,
+	fake_headers/Inventor/elements/SoGLDiffuseColorElement.h,
+	fake_headers/Inventor/elements/SoGLDrawStyleElement.h,
+	fake_headers/Inventor/elements/SoGLEmissiveColorElement.h,
+	fake_headers/Inventor/elements/SoGLEnvironmentElement.h,
+	fake_headers/Inventor/elements/SoGLLazyElement.h,
+	fake_headers/Inventor/elements/SoGLLightIdElement.h,
+	fake_headers/Inventor/elements/SoGLLightModelElement.h,
+	fake_headers/Inventor/elements/SoGLLinePatternElement.h,
+	fake_headers/Inventor/elements/SoGLLineWidthElement.h,
+	fake_headers/Inventor/elements/SoGLModelMatrixElement.h,
+	fake_headers/Inventor/elements/SoGLNormalElement.h,
+	fake_headers/Inventor/elements/SoGLNormalizeElement.h,
+	fake_headers/Inventor/elements/SoGLPointSizeElement.h,
+	fake_headers/Inventor/elements/SoGLPolygonOffsetElement.h,
+	fake_headers/Inventor/elements/SoGLPolygonStippleElement.h,
+	fake_headers/Inventor/elements/SoGLProjectionMatrixElement.h,
+	fake_headers/Inventor/elements/SoGLRenderPassElement.h,
+	fake_headers/Inventor/elements/SoGLShadeModelElement.h,
+	fake_headers/Inventor/elements/SoGLShapeHintsElement.h,
+	fake_headers/Inventor/elements/SoGLShininessElement.h,
+	fake_headers/Inventor/elements/SoGLSpecularColorElement.h,
+	fake_headers/Inventor/elements/SoGLTextureCoordinateElement.h,
+	fake_headers/Inventor/elements/SoGLTextureEnabledElement.h,
+	fake_headers/Inventor/elements/SoGLTextureImageElement.h,
+	fake_headers/Inventor/elements/SoGLTextureMatrixElement.h,
+	fake_headers/Inventor/elements/SoGLUpdateAreaElement.h,
+	fake_headers/Inventor/elements/SoGLViewingMatrixElement.h,
+	fake_headers/Inventor/elements/SoGLViewportRegionElement.h,
+	fake_headers/Inventor/elements/SoInt32Element.h,
+	fake_headers/Inventor/elements/SoLazyElement.h,
+	fake_headers/Inventor/elements/SoLightAttenuationElement.h,
+	fake_headers/Inventor/elements/SoLightElement.h,
+	fake_headers/Inventor/elements/SoLightModelElement.h,
+	fake_headers/Inventor/elements/SoLinePatternElement.h,
+	fake_headers/Inventor/elements/SoLineWidthElement.h,
+	fake_headers/Inventor/elements/SoLocalBBoxMatrixElement.h,
+	fake_headers/Inventor/elements/SoLongElement.h,
+	fake_headers/Inventor/elements/SoMaterialBindingElement.h,
+	fake_headers/Inventor/elements/SoModelMatrixElement.h,
+	fake_headers/Inventor/elements/SoNormalBindingElement.h,
+	fake_headers/Inventor/elements/SoNormalElement.h,
+	fake_headers/Inventor/elements/SoOverrideElement.h,
+	fake_headers/Inventor/elements/SoPickRayElement.h,
+	fake_headers/Inventor/elements/SoPickStyleElement.h,
+	fake_headers/Inventor/elements/SoPointSizeElement.h,
+	fake_headers/Inventor/elements/SoPolygonOffsetElement.h,
+	fake_headers/Inventor/elements/SoProfileCoordinateElement.h,
+	fake_headers/Inventor/elements/SoProfileElement.h,
+	fake_headers/Inventor/elements/SoProjectionMatrixElement.h,
+	fake_headers/Inventor/elements/SoReplacedElement.h,
+	fake_headers/Inventor/elements/SoShapeHintsElement.h,
+	fake_headers/Inventor/elements/SoShapeStyleElement.h,
+	fake_headers/Inventor/elements/SoShininessElement.h,
+	fake_headers/Inventor/elements/SoSpecularColorElement.h,
+	fake_headers/Inventor/elements/SoSubElement.h,
+	fake_headers/Inventor/elements/SoSwitchElement.h,
+	fake_headers/Inventor/elements/SoTextOutlineEnabledElement.h,
+	fake_headers/Inventor/elements/SoTextureCoordinateBindingElement.h,
+	fake_headers/Inventor/elements/SoTextureCoordinateElement.h,
+	fake_headers/Inventor/elements/SoTextureImageElement.h,
+	fake_headers/Inventor/elements/SoTextureMatrixElement.h,
+	fake_headers/Inventor/elements/SoTextureOverrideElement.h,
+	fake_headers/Inventor/elements/SoTextureQualityElement.h,
+	fake_headers/Inventor/elements/SoTransparencyElement.h,
+	fake_headers/Inventor/elements/SoUnitsElement.h,
+	fake_headers/Inventor/elements/SoViewVolumeElement.h,
+	fake_headers/Inventor/elements/SoViewingMatrixElement.h,
+	fake_headers/Inventor/elements/SoViewportRegionElement.h,
+	fake_headers/Inventor/elements/SoWindowElement.h,
+	fake_headers/Inventor/projectors/SbCylinderPlaneProjector.h,
+	fake_headers/Inventor/projectors/SbCylinderProjector.h,
+	fake_headers/Inventor/projectors/SbCylinderSectionProjector.h,
+	fake_headers/Inventor/projectors/SbCylinderSheetProjector.h,
+	fake_headers/Inventor/projectors/SbLineProjector.h,
+	fake_headers/Inventor/projectors/SbPlaneProjector.h,
+	fake_headers/Inventor/projectors/SbProjector.h,
+	fake_headers/Inventor/projectors/SbProjectors.h,
+	fake_headers/Inventor/projectors/SbSpherePlaneProjector.h,
+	fake_headers/Inventor/projectors/SbSphereProjector.h,
+	fake_headers/Inventor/projectors/SbSphereSectionProjector.h,
+	fake_headers/Inventor/projectors/SbSphereSheetProjector.h,
+	fake_headers/gtk/gtk.h, fake_headers/sys/time.h,
+	fake_headers/sys/types.h:
+	
+	Initial revision
+
+2002-03-12 23:15  tamer
+
+	* AUTHORS, Makefile, pivy.i, Inventor/SbDict.h,
+	Inventor/SbMatrix.h, Inventor/SbOctTree.h, Inventor/SbTesselator.h,
+	Inventor/SbVec2f.h, Inventor/SbVec2s.h, Inventor/SbVec3f.h,
+	Inventor/SbVec4f.h, Inventor/SoInput.h, Inventor/SoType.h,
+	Inventor/Gtk/SoGtkCursor.h, Inventor/Gtk/SoGtkGraphEditor.h,
+	Inventor/Gtk/SoGtkRoster.h, Inventor/engines/SoInterpolate.h,
+	Inventor/lists/SbIntList.h, Inventor/lists/SbPList.h,
+	Inventor/lists/SbStringList.h, Inventor/lists/SbVec3fList.h,
+	Inventor/lists/SoAuditorList.h, Inventor/lists/SoDetailList.h,
+	Inventor/lists/SoEngineOutputList.h, Inventor/lists/SoFieldList.h,
+	Inventor/lists/SoPickedPointList.h, Inventor/lists/SoTypeList.h,
+	Inventor/lists/SoVRMLInterpOutputList.h,
+	Inventor/misc/SoNotification.h, fake_headers/assert.h,
+	fake_headers/inttypes.h, fake_headers/math.h,
+	fake_headers/stdarg.h, fake_headers/stddef.h, fake_headers/stdio.h,
+	fake_headers/stdlib.h, fake_headers/time.h,
+	fake_headers/Inventor/bundles/SoBundle.h,
+	fake_headers/Inventor/bundles/SoMaterialBundle.h,
+	fake_headers/Inventor/bundles/SoTextureCoordinateBundle.h,
+	fake_headers/Inventor/caches/SoBoundingBoxCache.h,
+	fake_headers/Inventor/caches/SoCache.h,
+	fake_headers/Inventor/caches/SoConvexDataCache.h,
+	fake_headers/Inventor/caches/SoGLCacheList.h,
+	fake_headers/Inventor/caches/SoGLRenderCache.h,
+	fake_headers/Inventor/caches/SoNormalCache.h,
+	fake_headers/Inventor/caches/SoTextureCoordinateCache.h,
+	fake_headers/Inventor/elements/SoAccumulatedElement.h,
+	fake_headers/Inventor/elements/SoAmbientColorElement.h,
+	fake_headers/Inventor/elements/SoAnnoText3CharOrientElement.h,
+	fake_headers/Inventor/elements/SoAnnoText3FontSizeHintElement.h,
+	fake_headers/Inventor/elements/SoAnnoText3RenderPrintElement.h,
+	fake_headers/Inventor/elements/SoBBoxModelMatrixElement.h,
+	fake_headers/Inventor/elements/SoCacheElement.h,
+	fake_headers/Inventor/elements/SoClipPlaneElement.h,
+	fake_headers/Inventor/elements/SoComplexityElement.h,
+	fake_headers/Inventor/elements/SoComplexityTypeElement.h,
+	fake_headers/Inventor/elements/SoCoordinateElement.h,
+	fake_headers/Inventor/elements/SoCreaseAngleElement.h,
+	fake_headers/Inventor/elements/SoCullElement.h,
+	fake_headers/Inventor/elements/SoDecimationPercentageElement.h,
+	fake_headers/Inventor/elements/SoDecimationTypeElement.h,
+	fake_headers/Inventor/elements/SoDiffuseColorElement.h,
+	fake_headers/Inventor/elements/SoDrawStyleElement.h,
+	fake_headers/Inventor/elements/SoElement.h,
+	fake_headers/Inventor/elements/SoElements.h,
+	fake_headers/Inventor/elements/SoEmissiveColorElement.h,
+	fake_headers/Inventor/elements/SoEnvironmentElement.h,
+	fake_headers/Inventor/elements/SoFloatElement.h,
+	fake_headers/Inventor/elements/SoFocalDistanceElement.h,
+	fake_headers/Inventor/elements/SoFontNameElement.h,
+	fake_headers/Inventor/elements/SoFontSizeElement.h,
+	fake_headers/Inventor/elements/SoGLAmbientColorElement.h,
+	fake_headers/Inventor/elements/SoGLCacheContextElement.h,
+	fake_headers/Inventor/elements/SoGLClipPlaneElement.h,
+	fake_headers/Inventor/elements/SoGLColorIndexElement.h,
+	fake_headers/Inventor/elements/SoGLCoordinateElement.h,
+	fake_headers/Inventor/elements/SoGLDiffuseColorElement.h,
+	fake_headers/Inventor/elements/SoGLDrawStyleElement.h,
+	fake_headers/Inventor/elements/SoGLEmissiveColorElement.h,
+	fake_headers/Inventor/elements/SoGLEnvironmentElement.h,
+	fake_headers/Inventor/elements/SoGLLazyElement.h,
+	fake_headers/Inventor/elements/SoGLLightIdElement.h,
+	fake_headers/Inventor/elements/SoGLLightModelElement.h,
+	fake_headers/Inventor/elements/SoGLLinePatternElement.h,
+	fake_headers/Inventor/elements/SoGLLineWidthElement.h,
+	fake_headers/Inventor/elements/SoGLModelMatrixElement.h,
+	fake_headers/Inventor/elements/SoGLNormalElement.h,
+	fake_headers/Inventor/elements/SoGLNormalizeElement.h,
+	fake_headers/Inventor/elements/SoGLPointSizeElement.h,
+	fake_headers/Inventor/elements/SoGLPolygonOffsetElement.h,
+	fake_headers/Inventor/elements/SoGLPolygonStippleElement.h,
+	fake_headers/Inventor/elements/SoGLProjectionMatrixElement.h,
+	fake_headers/Inventor/elements/SoGLRenderPassElement.h,
+	fake_headers/Inventor/elements/SoGLShadeModelElement.h,
+	fake_headers/Inventor/elements/SoGLShapeHintsElement.h,
+	fake_headers/Inventor/elements/SoGLShininessElement.h,
+	fake_headers/Inventor/elements/SoGLSpecularColorElement.h,
+	fake_headers/Inventor/elements/SoGLTextureCoordinateElement.h,
+	fake_headers/Inventor/elements/SoGLTextureEnabledElement.h,
+	fake_headers/Inventor/elements/SoGLTextureImageElement.h,
+	fake_headers/Inventor/elements/SoGLTextureMatrixElement.h,
+	fake_headers/Inventor/elements/SoGLUpdateAreaElement.h,
+	fake_headers/Inventor/elements/SoGLViewingMatrixElement.h,
+	fake_headers/Inventor/elements/SoGLViewportRegionElement.h,
+	fake_headers/Inventor/elements/SoInt32Element.h,
+	fake_headers/Inventor/elements/SoLazyElement.h,
+	fake_headers/Inventor/elements/SoLightAttenuationElement.h,
+	fake_headers/Inventor/elements/SoLightElement.h,
+	fake_headers/Inventor/elements/SoLightModelElement.h,
+	fake_headers/Inventor/elements/SoLinePatternElement.h,
+	fake_headers/Inventor/elements/SoLineWidthElement.h,
+	fake_headers/Inventor/elements/SoLocalBBoxMatrixElement.h,
+	fake_headers/Inventor/elements/SoLongElement.h,
+	fake_headers/Inventor/elements/SoMaterialBindingElement.h,
+	fake_headers/Inventor/elements/SoModelMatrixElement.h,
+	fake_headers/Inventor/elements/SoNormalBindingElement.h,
+	fake_headers/Inventor/elements/SoNormalElement.h,
+	fake_headers/Inventor/elements/SoOverrideElement.h,
+	fake_headers/Inventor/elements/SoPickRayElement.h,
+	fake_headers/Inventor/elements/SoPickStyleElement.h,
+	fake_headers/Inventor/elements/SoPointSizeElement.h,
+	fake_headers/Inventor/elements/SoPolygonOffsetElement.h,
+	fake_headers/Inventor/elements/SoProfileCoordinateElement.h,
+	fake_headers/Inventor/elements/SoProfileElement.h,
+	fake_headers/Inventor/elements/SoProjectionMatrixElement.h,
+	fake_headers/Inventor/elements/SoReplacedElement.h,
+	fake_headers/Inventor/elements/SoShapeHintsElement.h,
+	fake_headers/Inventor/elements/SoShapeStyleElement.h,
+	fake_headers/Inventor/elements/SoShininessElement.h,
+	fake_headers/Inventor/elements/SoSpecularColorElement.h,
+	fake_headers/Inventor/elements/SoSubElement.h,
+	fake_headers/Inventor/elements/SoSwitchElement.h,
+	fake_headers/Inventor/elements/SoTextOutlineEnabledElement.h,
+	fake_headers/Inventor/elements/SoTextureCoordinateBindingElement.h,
+	fake_headers/Inventor/elements/SoTextureCoordinateElement.h,
+	fake_headers/Inventor/elements/SoTextureImageElement.h,
+	fake_headers/Inventor/elements/SoTextureMatrixElement.h,
+	fake_headers/Inventor/elements/SoTextureOverrideElement.h,
+	fake_headers/Inventor/elements/SoTextureQualityElement.h,
+	fake_headers/Inventor/elements/SoTransparencyElement.h,
+	fake_headers/Inventor/elements/SoUnitsElement.h,
+	fake_headers/Inventor/elements/SoViewVolumeElement.h,
+	fake_headers/Inventor/elements/SoViewingMatrixElement.h,
+	fake_headers/Inventor/elements/SoViewportRegionElement.h,
+	fake_headers/Inventor/elements/SoWindowElement.h,
+	fake_headers/Inventor/projectors/SbCylinderPlaneProjector.h,
+	fake_headers/Inventor/projectors/SbCylinderProjector.h,
+	fake_headers/Inventor/projectors/SbCylinderSectionProjector.h,
+	fake_headers/Inventor/projectors/SbCylinderSheetProjector.h,
+	fake_headers/Inventor/projectors/SbLineProjector.h,
+	fake_headers/Inventor/projectors/SbPlaneProjector.h,
+	fake_headers/Inventor/projectors/SbProjector.h,
+	fake_headers/Inventor/projectors/SbProjectors.h,
+	fake_headers/Inventor/projectors/SbSpherePlaneProjector.h,
+	fake_headers/Inventor/projectors/SbSphereProjector.h,
+	fake_headers/Inventor/projectors/SbSphereSectionProjector.h,
+	fake_headers/Inventor/projectors/SbSphereSheetProjector.h,
+	fake_headers/gtk/gtk.h, fake_headers/sys/time.h,
+	fake_headers/sys/types.h:
+	
+	created CVS tree
+

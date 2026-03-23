@@ -1,0 +1,7 @@
+# Support GitHub linguist library to display right repository language
+configure linguist-generated
+configure.ac linguist-generated
+Makefile.in linguist-generated
+Makefile.am linguist-generated
+ltmain.sh linguist-generated
+install-sh linguist-generated

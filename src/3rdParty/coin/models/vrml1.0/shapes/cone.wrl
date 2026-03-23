@@ -1,0 +1,98 @@
+#VRML V1.0 ascii
+
+# Check all aspects of Cone rendering.
+#
+# State change nodes which does not influence Cone rendering:
+#   Normal, NormalBinding, ShapeHints
+#
+# 19990414 mortene
+# 20030509 kintel
+
+Separator {
+   # (ROW 0) Check cone on its own.
+   Separator {
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      Cone { parts ALL }
+
+      Translation { translation +2 0 0 }
+      Cone { parts SIDES }
+
+      Translation { translation +2 0 0 }
+      Cone { parts BOTTOM }
+
+      Translation { translation +2 0 0 }
+      Cone { bottomRadius 1.5 }
+
+      Translation { translation +2 0 0 }
+      Cone { height 4 }
+   }
+
+   # (ROW 3) With different MaterialBinding settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material { diffuseColor [ 0.8 0.8 0, 0.8 0.0 0.8 ] }
+
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value OVERALL }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_PART }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_FACE }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      Cone { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      Cone { }
+   }
+
+   # (ROW 5) Test how Cone is affected by texturemapping.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      Cone { }
+   }
+
+   # (ROW 6) Test boundary conditions
+   Translation { translation 0 +4 0 }
+   Separator {
+      Translation { translation +2 0 0 }
+      Cone { bottomRadius 0 }
+
+      Translation { translation +2 0 0 }
+      Cone { height 0 }
+
+      Translation { translation +2 0 0 }
+      Cone { bottomRadius -1 height -1 }
+   }
+}

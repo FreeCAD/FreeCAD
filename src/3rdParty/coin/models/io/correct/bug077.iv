@@ -1,0 +1,13 @@
+#Inventor V2.1 ascii
+
+
+Separator {
+
+  Material {
+    shininess 0.5 =
+    ElapsedTime {
+
+    }    . timeOut
+
+  }
+}

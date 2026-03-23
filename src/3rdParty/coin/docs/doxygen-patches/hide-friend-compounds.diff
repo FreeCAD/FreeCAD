@@ -1,0 +1,77 @@
+From: Morten Eriksen <mortene@sim.no>
+Subject: [PATCH] New configuration option to hide friend compounds
+To: doxygen-develop@lists.sourceforge.net
+Date: 13 Aug 2002 12:36:27 +0200
+Bcc: kristian@sim.no
+Organization: Systems in Motion
+
+Hi,
+
+this patch makes it possible to avoid having C++ "friend class ...",
+"friend union ..." and "friend struct ..." items show up in the class
+summary at the top of the output.
+
+I think this is most often the wanted behavior for large class
+libraries, as I believe "friend class" statements are usually only of
+interest for knowing details of the internal implementation of the
+library -- and is of no interest or consequence to the application
+programmer.
+
+The patch implements a new configuration variable
+"HIDE_FRIEND_COMPOUNDS" to make it possible to exclude friend
+compounds from the documentation:
+
+---8<---- [snip] --------8<---- [snip] --------8<---- [snip] -----
+
+--- memberdef.cpp	Tue Aug 13 12:19:14 2002
++++ ../../doxygen-1.2.17/src/memberdef.cpp	Tue Aug 13 12:13:42 2002
+@@ -580,6 +580,14 @@
+                              Config_getBool("EXTRACT_PRIVATE") ||
+                              mtype==Friend
+                             );
++
++    // Hide friend (class|struct|union) declarations if HIDE_FRIEND_COMPOUNDS is true
++    bool visibleIfFriendCompound = !(Config_getBool("HIDE_FRIEND_COMPOUNDS") &&
++                                    isFriend() &&
++                                    (type=="friend class" || type=="friend struct" || 
++                                     type=="friend union"
++                                    )
++                                   );
+     
+     // hide member if it overrides a member in a superclass and has no
+     // documentation
+@@ -607,7 +615,8 @@
+ 
+     bool visible = visibleIfStatic && visibleIfDocumented && 
+                    visibleIfEnabled && visibleIfPrivate &&
+-                   visibleIfDocVirtual && visibleIfNotDefaultCDTor && !annScope;
++                   visibleIfDocVirtual && visibleIfFriendCompound &&
++                   visibleIfNotDefaultCDTor && !annScope;
+     //printf("MemberDef::isBriefSectionVisible() %d\n",visible);
+     return visible;
+ }
+--- config.cpp	Mon Jul 15 13:34:52 2002
++++ ../../doxygen-1.2.17/src/config.cpp	Tue Aug 13 12:20:53 2002
+@@ -3116,6 +3116,14 @@
+                     FALSE
+                  );
+   cb = addBool(
++                    "HIDE_FRIEND_COMPOUNDS",
++                    "If the HIDE_FRIEND_COMPOUNDS tag is set to YES, Doxygen will hide all \n"
++                    "friend (class|struct|union) declarations. \n"
++                    "If set to NO (the default) these declarations will be included in the \n"
++                    "documentation. \n",
++                    FALSE
++                 );
++  cb = addBool(
+                     "BRIEF_MEMBER_DESC",
+                     "If the BRIEF_MEMBER_DESC tag is set to YES (the default) Doxygen will \n"
+                     "include brief member descriptions after the members that are listed in \n"
+
+
+---8<---- [snip] --------8<---- [snip] --------8<---- [snip] -----
+
+(Credit for the patch yet again goes to my colleague Kristian Eide.)
+
+Best regards,
+Morten

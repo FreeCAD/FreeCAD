@@ -1,0 +1,10 @@
+#Inventor V1.0 ascii
+
+Group {
+	Rotation {
+#		rotation	1 1 0  0.7854
+		rotation	0 1 0  0.7854
+	}
+	Cube {
+	}
+}

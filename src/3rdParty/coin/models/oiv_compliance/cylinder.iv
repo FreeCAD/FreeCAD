@@ -1,0 +1,181 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of SoCylinder rendering.
+#
+# State change nodes which does not influence Cylinder rendering:
+#   SoNormal, SoNormalBinding, SoShapeHints
+#
+# 19990414 mortene
+
+Separator {
+   # (ROW 0) Check cylinder on its own.
+   Separator {
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      Cylinder { parts SIDES }
+
+      Translation { translation +2 0 0 }
+      Cylinder { parts BOTTOM }
+
+      Translation { translation +2 0 0 }
+      Cylinder { parts TOP }
+
+      Translation { translation +2 0 0 }
+      Cylinder { parts (TOP|BOTTOM) }
+
+      Translation { translation +2 0 0 }
+      Cylinder { radius 0.5 }
+
+      Translation { translation +2 0 0 }
+      Cylinder { height 0.5 }
+   }
+
+   # (ROW 1) With different LightModel settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      LightModel { model BASE_COLOR }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      LightModel { model PHONG }
+      Cylinder { }
+   }
+
+   # (ROW 2) With different DrawStyle settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Translation { translation +2 0 0 }
+      DrawStyle { style INVISIBLE }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES lineWidth 1 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES lineWidth 2 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES lineWidth 4 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style LINES lineWidth 2 linePattern 0x0180 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style POINTS }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style POINTS pointSize 3 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      DrawStyle { style FILLED }
+      Cylinder { }
+   }
+
+   # (ROW 3) With different MaterialBinding settings.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material { diffuseColor [ 1 1 0, 1 0 1, 1 0 0 ] }
+
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value OVERALL }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_PART }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_FACE }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      Cylinder { }
+   }
+
+   # (ROW 4) Test how Cylinder is affected by Complexity.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Complexity { type BOUNDING_BOX }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 1.0 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.8 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.6 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.4 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.2 }
+      Cylinder { }
+
+      Translation { translation +2 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.0 }
+      Cylinder { }
+   }
+
+   # (ROW 5) Test how Cylinder is affected by texturemapping.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 8 6 3
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      }
+
+      Cylinder { }
+   }
+
+   # (ROW 6) Ignore flags on the fields.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Cylinder { parts BOTTOM ~ }
+
+      Translation { translation +2 0 0 }
+      Cylinder { radius 0.2 ~ }
+
+      Translation { translation +2 0 0 }
+      Cylinder { height 0.2 ~ }
+   }
+}

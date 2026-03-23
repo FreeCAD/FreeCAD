@@ -1,0 +1,54 @@
+html.alternative {
+    /* primary theme color. This will affect the entire websites color scheme: links, arrows, labels, ... */
+    --primary-color: #AF7FE4;
+    --primary-dark-color: #9270E4;
+    --primary-light-color: #7aabd6;
+    --primary-lighter-color: #cae1f1;
+    --primary-lightest-color: #e9f1f8;
+
+    /* page base colors */
+    --page-background-color: white;
+    --page-foreground-color: #2c3e50;
+    --page-secondary-foreground-color: #67727e;
+
+
+    --border-radius-large: 22px;
+    --border-radius-small: 9px;
+    --border-radius-medium: 14px;
+    --spacing-small: 8px;
+    --spacing-medium: 14px;
+    --spacing-large: 19px;
+
+    --top-height: 125px;
+
+    --side-nav-background: #324067;
+    --side-nav-foreground: #F1FDFF;
+    --header-foreground: var(--side-nav-foreground);
+    --searchbar-background: var(--side-nav-foreground);
+    --searchbar-border-radius: var(--border-radius-medium);
+    --header-background: var(--side-nav-background);
+    --header-foreground: var(--side-nav-foreground);
+
+    --toc-background: rgb(243, 240, 252);
+    --toc-foreground: var(--page-foreground-color);
+}
+
+html.alternative.dark-mode {
+    color-scheme: dark;
+
+    --primary-color: #AF7FE4;
+    --primary-dark-color: #9270E4;
+    --primary-light-color: #4779ac;
+    --primary-lighter-color: #191e21;
+    --primary-lightest-color: #191a1c;
+
+    --page-background-color: #1C1D1F;
+    --page-foreground-color: #d2dbde;
+    --page-secondary-foreground-color: #859399;
+    --separator-color: #3a3246;
+    --side-nav-background: #171D32;
+    --side-nav-foreground: #F1FDFF;
+    --toc-background: #20142C;
+    --searchbar-background: var(--page-background-color);
+
+}

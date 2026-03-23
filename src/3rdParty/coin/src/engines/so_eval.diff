@@ -1,0 +1,27 @@
+flex 2.5.4 generates non-portable code (it include unistd.h). The
+patch below fixes this problem. See evaluator.l for instructions.
+
+ pederb, 20040628
+
+Index: so_eval.ic
+===================================================================
+RCS file: /export/cvsroot/Coin/src/engines/so_eval.ic,v
+retrieving revision 1.3
+diff -u -r1.3 so_eval.ic
+--- so_eval.ic	28 Jun 2004 13:22:19 -0000	1.3
++++ so_eval.ic	28 Jun 2004 13:31:56 -0000
+@@ -26,8 +26,13 @@
+ #define YY_FLEX_MINOR_VERSION 5
+ 
+ #include <stdio.h>
+-#include <unistd.h>
++#ifdef HAVE_CONFIG_H
++#include <config.h>
++#endif /* HAVE_CONFIG_H */
+ 
++#ifdef HAVE_UNISTD_H
++#include <unistd.h>
++#endif /* HAVE_UNISTD_H */
+ 
+ /* cfront 1.2 defines "c_plusplus" instead of "__cplusplus" */
+ #ifdef c_plusplus

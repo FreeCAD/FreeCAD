@@ -1,0 +1,117 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with SoShapeHints nodes.
+#
+# 19990504 mortene
+
+Separator {
+   Switch {
+      whichChild -1
+      DEF faces Group {
+	 Coordinate3 {
+	    point [
+	     -2 -1 0, -1 -1 0.2, 1 -1 -0.5, 2 -1 0,
+	     -2 1 0, -1 1 0.2, 1 1 -0.5, 2 1 0,
+	    ]
+	 }
+	 IndexedFaceSet {
+	    coordIndex [ 0, 1, 5, 4, -1, 1, 2, 6, 5, -1, 2, 3, 7, 6, -1]
+	 }
+      }
+   }
+
+   # (ROW 0) vertexOrdering
+   Separator {
+      USE faces
+
+      ShapeHints { }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { vertexOrdering UNKNOWN_ORDERING }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { vertexOrdering CLOCKWISE }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { vertexOrdering COUNTERCLOCKWISE }
+      Translation { translation +6 0 0 }
+      USE faces
+   }
+
+   # (ROW 1) shapeType
+   Translation { translation 0 +4 0 }
+   Separator {
+      USE faces
+
+      ShapeHints { }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { shapeType UNKNOWN_SHAPE_TYPE }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { shapeType SOLID }
+      Translation { translation +6 0 0 }
+      USE faces
+   }
+
+   # (ROW 2) faceType
+   Translation { translation 0 +4 0 }
+   Separator {
+      USE faces
+
+      ShapeHints { }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { faceType UNKNOWN_FACE_TYPE }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { faceType CONVEX }
+      Translation { translation +6 0 0 }
+      USE faces
+   }
+
+   # (ROW 3) creaseAngle
+   Translation { translation 0 +4 0 }
+   Separator {
+      USE faces
+
+      ShapeHints { }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { creaseAngle 0 }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { creaseAngle 0.39 }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { creaseAngle 0.78 }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { creaseAngle 1.17 }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { creaseAngle 1.57 }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { creaseAngle 1.96 }
+      Translation { translation +6 0 0 }
+      USE faces
+
+      ShapeHints { creaseAngle 3.14 }
+      Translation { translation +6 0 0 }
+      USE faces
+   }
+}

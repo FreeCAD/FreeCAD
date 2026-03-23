@@ -1,0 +1,167 @@
+Introduction
+============
+
+cpack.d is a dropin directory for cmake/cpack, decoupling os specific
+packaging rules from project code development.
+
+Every CPack template file (postfixed with '*.cmake.in') in the directory,
+is automatically configured during the usual cmake project building.
+
+The resulting CPack files will be available in the corresponding binary
+directory (postfixed with '*.cmake') and usable as cpack configs.
+
+`cpack --config <build root>/cpack.d/<config-name>.cmake`
+
+The existing templates will produce packages with:
+
+ * package names compliant with the target OS rules
+ * build number equal to the number of commits on the current branch
+ * stripped binaries
+ * support for runtime, development and documentation components
+
+The commons.cmake.in extracts CMake project specific attributes and prepare
+them to be used by the os specific package configs through the invocation of
+the macro 'config_package'.
+
+Project specific settings, like the description summary, are fetched
+from an external directory passed during the invocation of the 'config_package'
+macro via the DATA argument.
+
+Currently supported OSes
+========================
+
+Below a list of the OSes currently supported and their status:
+
+	+------------+-------------+------------+------------------+
+	| Name       |  Version    | Format     | Config           |
+	+============+=============+============+==================+
+	| CentOS     | 7           | rpm        | centos.cmake     |
+	+------------+-------------+------------+------------------+
+	| Debian     | 8           | deb        | debian.cmake     |
+	+------------+-------------+------------+------------------+
+	| MacOS X    | 10.12,10.14 | dmg        | darwin-dmg.cmake |
+	|            |             | pkg        | darwin-pkg.cmake |
+	+------------+-------------+------------+------------------+
+	| Fedora     | 28,29,30    | rpm        | fedora.cmake     |
+	+------------+-------------+------------+------------------+
+	| *RHEL      | 7           | rpm        | rhel.cmake       |
+	+------------+-------------+------------+------------------+
+	| Ubuntu     | 14          | deb        | debian.cmake     |
+	+------------+-------------+------------+------------------+
+	| Windows    | 10          | NSIS       | windows.cmake    |
+	+------------+-------------+------------+------------------+
+
+** RHEL is still untested
+
+Build status report
+===================
+
+If the CMake list PACKAGE_OPTIONS is filled with options names used in the
+project, their status will be reported in a file named:
+
+    build-options.txt
+
+that is added to the runtime package.
+
+The following cmake helper function can be used in the client project for adding
+the options:
+
+    function(report_prepare)
+      set(multiValueArgs IF_APPLE IF_WIN32)
+      cmake_parse_arguments(REPORT "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
+      if (REPORT_IF_APPLE AND APPLE)
+        list(APPEND res ${REPORT_IF_APPLE})
+      endif()
+      if (REPORT_IF_WIN32 AND WIN32)
+        list(APPEND res ${REPORT_IF_WIN32})
+      endif()
+      list(APPEND res ${REPORT_UNPARSED_ARGUMENTS})
+      list(APPEND PACKAGE_OPTIONS ${res})
+      set(PACKAGE_OPTIONS "${PACKAGE_OPTIONS}" PARENT_SCOPE)
+    endfunction(report_prepare)
+
+invoked like in the example:
+
+    report_prepare(
+      SIMAGE_BUILD_SHARED_LIBS
+      SIMAGE_BUILD_DOCUMENTATION
+      SIMAGE_USE_QIMAGE
+      SIMAGE_USE_QT5
+      SIMAGE_LIBSNDFILE_SUPPORT
+      SIMAGE_OGGVORBIS_SUPPORT
+      SIMAGE_QIMAGE_SUPPORT
+      SIMAGE_EPS_SUPPORT
+      SIMAGE_MPEG2ENC_SUPPORT
+      SIMAGE_PIC_SUPPORT
+      SIMAGE_RGB_SUPPORT
+      SIMAGE_TGA_SUPPORT
+      SIMAGE_XWD_SUPPORT
+      IF_WIN32
+        SIMAGE_USE_AVIENC SIMAGE_USE_GDIPLUS SIMAGE_AVIENC_SUPPORT SIMAGE_GDIPLUS_SUPPORT
+      IF_APPLE
+        SIMAGE_USE_CGIMAGE SIMAGE_USE_QUICKTIME SIMAGE_CGIMAGE_SUPPORT SIMAGE_QUICKTIME_SUPPORT
+    )
+
+will produce a report like the following:
+
+    CMAKE_BUILD_TYPE=RelWithDebInfo
+    OPTION_PKG_DEBUGINFO=ON
+    SIMAGE_BUILD_DOCUMENTATION=OFF
+    SIMAGE_BUILD_SHARED_LIBS=ON
+    SIMAGE_EPS_SUPPORT=ON
+    SIMAGE_LIBSNDFILE_SUPPORT=ON
+    SIMAGE_MPEG2ENC_SUPPORT=ON
+    SIMAGE_OGGVORBIS_SUPPORT=ON
+    SIMAGE_PIC_SUPPORT=ON
+    SIMAGE_QIMAGE_SUPPORT=OFF
+    SIMAGE_RGB_SUPPORT=ON
+    SIMAGE_TGA_SUPPORT=ON
+    SIMAGE_USE_QIMAGE=OFF
+    SIMAGE_USE_QT5=OFF
+    SIMAGE_XWD_SUPPORT=OFF
+
+DWARF debuginfo
+===============
+
+The debuginfo support for Debian and RedHat systems is available through a
+CMake option __OPTION_PKG_DEBUGINFO__ that is disabled by default. When enabled
+a new package will be produced conforming the conventions of the target distro.
+
+In order to use this feature:
+
+  * OPTION_PKG_DEBUGINFO must be enabled;
+  * CMake build mode must be __Debug__ or __RelWithDebInfo__ since source code
+    must be compiled with debug options turned on;
+
+When these condition are met, cpack will post-process the resulting binaries
+using an additional tool that essentially:
+
+  1. moves the debuginfo hunks from the binary targets into separate .debug
+     shared objects (one for each target binary)
+  2. creates an additional debuginfo package containing the .debug files with
+     the 'moved' DWARF debuginfo, __and__ the source files used for compiling;
+  3. modifies the referred source code paths inside the .debug files
+     (originally targeting sources at compile-time) according to their position
+     at install-time.
+
+The resulting packages are now stripped and eventually optimized (if CMake
+RelWithDebInfo mode used). In case of issues requiring a source level debug
+session, just installs the additional debuginfo package (it will add source
+files and debug symbols to the hosting system).
+
+__Nothing needs to be changed in the client software__ and the code running in
+the debug session is the same that rised the issues. When finished, the
+debuginfo package can be unistalled.
+
+Drawbacks:
+
+  * not optimal debugger sessions when code optimizations are enabled (as in
+    case of a RelWithDebInfo build);
+  * DWARF debuginfo are a modified copy of the original ones produced during
+    compilation, concretely altering the file path of the sources to their
+    install-time path. This means that install-time path of the sources __must
+    be not longer then the compile-time path__.
+
+__Workaround in case of problems with the file path length__
+
+Just move your project to a longer path.

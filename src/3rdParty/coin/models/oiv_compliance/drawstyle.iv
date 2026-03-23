@@ -1,0 +1,308 @@
+#Inventor V2.1 ascii
+
+# Check rendering with SoDrawStyle.
+#
+# For seeing how drawstyle settings influence different shape types, see
+# the compliance test file for the shapes.
+#
+# 19990515 mortene
+
+Separator {
+   # (ROW 0) Check style field on a cube.
+   Separator {
+      DrawStyle { }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 0 0 }
+      DrawStyle { style INVISIBLE }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 1 0 }
+      DrawStyle { style POINTS }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 0 1 }
+      DrawStyle { style LINES }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 1 0 }
+      DrawStyle { style FILLED }
+      Cube { }
+   }
+
+   # (ROW 1) Check style field in combination with other fields.
+   Translation { translation 0 4 0 }
+   Separator {
+      DrawStyle {
+	 style POINTS
+	 pointSize 4
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 0 0 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 4
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 1 0 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 4
+	 linePattern 0xf0f0
+      }
+      Cube { }
+   }
+
+   # (ROW 2) Check pointSize field.
+   Translation { translation 0 4 0 }
+   Separator {
+      DrawStyle {
+	 style POINTS
+	 pointSize 0
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 0 0 }
+      DrawStyle {
+	 style POINTS
+	 pointSize 0.5
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 1 0 }
+      DrawStyle {
+	 style POINTS
+	 pointSize 1
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 0 1 }
+      DrawStyle {
+	 style POINTS
+	 pointSize 2
+      }
+      Cube { }
+
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 0 1 }
+      DrawStyle {
+	 style POINTS
+	 pointSize 4
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 1 0 }
+      DrawStyle {
+	 style POINTS
+	 pointSize 8
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 1 1 }
+      DrawStyle {
+	 style POINTS
+	 pointSize 16
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 1 1 }
+      DrawStyle {
+	 style POINTS
+	 pointSize 64
+      }
+      Cube { }
+   }
+
+   # (ROW 3) Check lineWidth field.
+   Translation { translation 0 4 0 }
+   Separator {
+      DrawStyle {
+	 style LINES
+	 lineWidth 0
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 0 0 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 0.5
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 1 0 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 1
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 0 1 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 2
+      }
+      Cube { }
+
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 0 1 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 4
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 1 0 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 8
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 1 1 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 16
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 1 1 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 64
+      }
+      Cube { }
+   }
+
+   # (ROW 4) Check linePattern field.
+   Translation { translation 0 4 0 }
+   Separator {
+      DrawStyle {
+	 style LINES
+	 lineWidth 2
+	 linePattern 0x0000
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 0 0 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 2
+	 linePattern 0x0001
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 1 0 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 2
+	 linePattern 0x000f
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 0 1 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 2
+	 linePattern 0x0f0f
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 0 1 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 2
+	 linePattern 0x5555
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 1 0 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 2
+	 linePattern 0x7001
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 1 1 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 2
+	 linePattern 0xff00
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 1 1 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 2
+	 linePattern 0xffff
+      }
+      Cube { }
+   }
+
+   # (ROW 5) Check ignore flags.
+   Translation { translation 0 4 0 }
+   Separator {
+      DrawStyle { }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 0 0 }
+      DrawStyle { style INVISIBLE ~ }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 1 0 }
+      DrawStyle {
+	 style POINTS
+	 pointSize 8 ~
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 0 0 1 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 8 ~
+      }
+      Cube { }
+
+      Translation { translation 4 0 0 }
+      BaseColor { rgb 1 1 0 }
+      DrawStyle {
+	 style LINES
+	 lineWidth 4
+	 linePattern 0x0ff0 ~
+      }
+      Cube { }
+   }
+}

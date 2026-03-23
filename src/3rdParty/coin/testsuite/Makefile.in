@@ -1,0 +1,1193 @@
+
+@MACOSX_TRUE@macosx_boost_add = 
+@MACOSX_FALSE@macosx_boost_add =
+
+@USE_SYSTEM_EXPAT_FALSE@EXPAT_LINKFLAG = 
+@USE_SYSTEM_EXPAT_TRUE@EXPAT_LINKFLAG = -lexpat
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+top_builddir = ..
+CXX = @CXX@
+LDFLAGS = @LDFLAGS@ $(macosx_boost_add)
+
+prefix = @prefix@
+OBJEXT = @OBJEXT@
+EXEEXT = @EXEEXT@
+
+@MAC_FRAMEWORK_FALSE@FRAMEWORKLIBADD =
+@MAC_FRAMEWORK_TRUE@FRAMEWORKLIBADD = -l Coin
+
+TS_INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)/include/Inventor/annex -I$(top_builddir)/include -I$(top_builddir)/include/Inventor/annex -I$(top_srcdir)/testsuite
+TS_CPPFLAGS = $(TS_INCLUDES) @COIN_TESTSUITE_EXTRA_CPPFLAGS@ @COIN_EXTRA_CPPFLAGS@ @COIN_EXTRA_CXXFLAGS@ -Werror -g2
+TS_LDFLAGS = @COIN_TESTSUITE_EXTRA_LDFLAGS@ -L$(top_builddir)/src -L$(top_builddir)/src/.libs $(LDFLAGS) $(EXPAT_LINKFLAG)
+TS_LIBS = $(FRAMEWORKLIBADD) @COIN_HACKING_LIBDIRS@ @COIN_EXTRA_LIBS@ 
+
+EMPTY =
+
+TEST_SUITE_OBJECTS = \
+	TestSuiteInit.$(OBJEXT) \
+	TestSuiteUtils.$(OBJEXT) \
+	TestSuiteMisc.$(OBJEXT) \
+	StandardTests.$(OBJEXT) \
+	actionsSoCallbackAction.$(OBJEXT) \
+	actionsSoWriteAction.$(OBJEXT) \
+	baseSbBSPTree.$(OBJEXT) \
+	baseSbBox2d.$(OBJEXT) \
+	baseSbBox2f.$(OBJEXT) \
+	baseSbBox2i32.$(OBJEXT) \
+	baseSbBox2s.$(OBJEXT) \
+	baseSbBox3i32.$(OBJEXT) \
+	baseSbBox3s.$(OBJEXT) \
+	baseSbByteBuffer.$(OBJEXT) \
+	baseSbDPMatrix.$(OBJEXT) \
+	baseSbDPPlane.$(OBJEXT) \
+	baseSbDPRotation.$(OBJEXT) \
+	baseSbImage.$(OBJEXT) \
+	baseSbMatrix.$(OBJEXT) \
+	baseSbPlane.$(OBJEXT) \
+	baseSbRotation.$(OBJEXT) \
+	baseSbString.$(OBJEXT) \
+	baseSbVec3d.$(OBJEXT) \
+	baseSbVec3f.$(OBJEXT) \
+	baseSbVec3s.$(OBJEXT) \
+	baseSbVec3us.$(OBJEXT) \
+	baseSbVec4f.$(OBJEXT) \
+	baseSbViewVolume.$(OBJEXT) \
+	baserbptree.$(OBJEXT) \
+	draggersSoTransformerDragger.$(OBJEXT) \
+	fieldsSoMFBitMask.$(OBJEXT) \
+	fieldsSoMFBool.$(OBJEXT) \
+	fieldsSoMFColor.$(OBJEXT) \
+	fieldsSoMFColorRGBA.$(OBJEXT) \
+	fieldsSoMFDouble.$(OBJEXT) \
+	fieldsSoMFEngine.$(OBJEXT) \
+	fieldsSoMFEnum.$(OBJEXT) \
+	fieldsSoMFFloat.$(OBJEXT) \
+	fieldsSoMFInt32.$(OBJEXT) \
+	fieldsSoMFMatrix.$(OBJEXT) \
+	fieldsSoMFName.$(OBJEXT) \
+	fieldsSoMFNode.$(OBJEXT) \
+	fieldsSoMFPath.$(OBJEXT) \
+	fieldsSoMFPlane.$(OBJEXT) \
+	fieldsSoMFRotation.$(OBJEXT) \
+	fieldsSoMFShort.$(OBJEXT) \
+	fieldsSoMFString.$(OBJEXT) \
+	fieldsSoMFTime.$(OBJEXT) \
+	fieldsSoMFUInt32.$(OBJEXT) \
+	fieldsSoMFUShort.$(OBJEXT) \
+	fieldsSoMFVec2b.$(OBJEXT) \
+	fieldsSoMFVec2d.$(OBJEXT) \
+	fieldsSoMFVec2f.$(OBJEXT) \
+	fieldsSoMFVec2i32.$(OBJEXT) \
+	fieldsSoMFVec2s.$(OBJEXT) \
+	fieldsSoMFVec3b.$(OBJEXT) \
+	fieldsSoMFVec3d.$(OBJEXT) \
+	fieldsSoMFVec3f.$(OBJEXT) \
+	fieldsSoMFVec3i32.$(OBJEXT) \
+	fieldsSoMFVec3s.$(OBJEXT) \
+	fieldsSoMFVec4b.$(OBJEXT) \
+	fieldsSoMFVec4d.$(OBJEXT) \
+	fieldsSoMFVec4f.$(OBJEXT) \
+	fieldsSoMFVec4i32.$(OBJEXT) \
+	fieldsSoMFVec4s.$(OBJEXT) \
+	fieldsSoMFVec4ub.$(OBJEXT) \
+	fieldsSoMFVec4ui32.$(OBJEXT) \
+	fieldsSoMFVec4us.$(OBJEXT) \
+	fieldsSoSFBitMask.$(OBJEXT) \
+	fieldsSoSFBool.$(OBJEXT) \
+	fieldsSoSFBox2d.$(OBJEXT) \
+	fieldsSoSFBox2f.$(OBJEXT) \
+	fieldsSoSFBox2i32.$(OBJEXT) \
+	fieldsSoSFBox2s.$(OBJEXT) \
+	fieldsSoSFBox3d.$(OBJEXT) \
+	fieldsSoSFBox3f.$(OBJEXT) \
+	fieldsSoSFBox3i32.$(OBJEXT) \
+	fieldsSoSFBox3s.$(OBJEXT) \
+	fieldsSoSFColor.$(OBJEXT) \
+	fieldsSoSFColorRGBA.$(OBJEXT) \
+	fieldsSoSFDouble.$(OBJEXT) \
+	fieldsSoSFEngine.$(OBJEXT) \
+	fieldsSoSFEnum.$(OBJEXT) \
+	fieldsSoSFFloat.$(OBJEXT) \
+	fieldsSoSFImage.$(OBJEXT) \
+	fieldsSoSFImage3.$(OBJEXT) \
+	fieldsSoSFInt32.$(OBJEXT) \
+	fieldsSoSFMatrix.$(OBJEXT) \
+	fieldsSoSFName.$(OBJEXT) \
+	fieldsSoSFNode.$(OBJEXT) \
+	fieldsSoSFPath.$(OBJEXT) \
+	fieldsSoSFPlane.$(OBJEXT) \
+	fieldsSoSFRotation.$(OBJEXT) \
+	fieldsSoSFShort.$(OBJEXT) \
+	fieldsSoSFString.$(OBJEXT) \
+	fieldsSoSFTime.$(OBJEXT) \
+	fieldsSoSFTrigger.$(OBJEXT) \
+	fieldsSoSFUInt32.$(OBJEXT) \
+	fieldsSoSFUShort.$(OBJEXT) \
+	fieldsSoSFVec2b.$(OBJEXT) \
+	fieldsSoSFVec2d.$(OBJEXT) \
+	fieldsSoSFVec2f.$(OBJEXT) \
+	fieldsSoSFVec2i32.$(OBJEXT) \
+	fieldsSoSFVec2s.$(OBJEXT) \
+	fieldsSoSFVec3b.$(OBJEXT) \
+	fieldsSoSFVec3d.$(OBJEXT) \
+	fieldsSoSFVec3f.$(OBJEXT) \
+	fieldsSoSFVec3i32.$(OBJEXT) \
+	fieldsSoSFVec3s.$(OBJEXT) \
+	fieldsSoSFVec4b.$(OBJEXT) \
+	fieldsSoSFVec4d.$(OBJEXT) \
+	fieldsSoSFVec4f.$(OBJEXT) \
+	fieldsSoSFVec4i32.$(OBJEXT) \
+	fieldsSoSFVec4s.$(OBJEXT) \
+	fieldsSoSFVec4ub.$(OBJEXT) \
+	fieldsSoSFVec4ui32.$(OBJEXT) \
+	fieldsSoSFVec4us.$(OBJEXT) \
+	geoSoGeoCoordinate.$(OBJEXT) \
+	geoSoGeoElement.$(OBJEXT) \
+	geoSoGeoLocation.$(OBJEXT) \
+	geoSoGeoOrigin.$(OBJEXT) \
+	geoSoGeoSeparator.$(OBJEXT) \
+	miscSoBase.$(OBJEXT) \
+	miscSoBaseP.$(OBJEXT) \
+	miscSoDB.$(OBJEXT) \
+	miscSoType.$(OBJEXT) \
+	nodesSoAnnotation.$(OBJEXT) \
+	scxmlScXMLMinimumEvaluator.$(OBJEXT) \
+	shadersSoFragmentShader.$(OBJEXT) \
+	shadersSoGeometryShader.$(OBJEXT) \
+	shadersSoShaderParameter.$(OBJEXT) \
+	shadersSoShaderProgram.$(OBJEXT) \
+	shadersSoVertexShader.$(OBJEXT) \
+	shadowsSoGLShadowCullingElement.$(OBJEXT) \
+	shadowsSoShadowCulling.$(OBJEXT) \
+	shadowsSoShadowDirectionalLight.$(OBJEXT) \
+	shadowsSoShadowGroup.$(OBJEXT) \
+	shadowsSoShadowSpotLight.$(OBJEXT) \
+	shadowsSoShadowStyle.$(OBJEXT) \
+	shadowsSoShadowStyleElement.$(OBJEXT) \
+	soscxmlScXMLCoinEvaluator.$(OBJEXT) \
+	xmldocument.$(OBJEXT) \
+	$(EMPTY)
+
+TEST_SUITE_BUILT_FILES = \
+	actionsSoCallbackAction.cpp \
+	actionsSoWriteAction.cpp \
+	baseSbBSPTree.cpp \
+	baseSbBox2d.cpp \
+	baseSbBox2f.cpp \
+	baseSbBox2i32.cpp \
+	baseSbBox2s.cpp \
+	baseSbBox3i32.cpp \
+	baseSbBox3s.cpp \
+	baseSbByteBuffer.cpp \
+	baseSbDPMatrix.cpp \
+	baseSbDPPlane.cpp \
+	baseSbDPRotation.cpp \
+	baseSbImage.cpp \
+	baseSbMatrix.cpp \
+	baseSbPlane.cpp \
+	baseSbRotation.cpp \
+	baseSbString.cpp \
+	baseSbVec3d.cpp \
+	baseSbVec3f.cpp \
+	baseSbVec3s.cpp \
+	baseSbVec3us.cpp \
+	baseSbVec4f.cpp \
+	baseSbViewVolume.cpp \
+	baserbptree.cpp \
+	draggersSoTransformerDragger.cpp \
+	fieldsSoMFBitMask.cpp \
+	fieldsSoMFBool.cpp \
+	fieldsSoMFColor.cpp \
+	fieldsSoMFColorRGBA.cpp \
+	fieldsSoMFDouble.cpp \
+	fieldsSoMFEngine.cpp \
+	fieldsSoMFEnum.cpp \
+	fieldsSoMFFloat.cpp \
+	fieldsSoMFInt32.cpp \
+	fieldsSoMFMatrix.cpp \
+	fieldsSoMFName.cpp \
+	fieldsSoMFNode.cpp \
+	fieldsSoMFPath.cpp \
+	fieldsSoMFPlane.cpp \
+	fieldsSoMFRotation.cpp \
+	fieldsSoMFShort.cpp \
+	fieldsSoMFString.cpp \
+	fieldsSoMFTime.cpp \
+	fieldsSoMFUInt32.cpp \
+	fieldsSoMFUShort.cpp \
+	fieldsSoMFVec2b.cpp \
+	fieldsSoMFVec2d.cpp \
+	fieldsSoMFVec2f.cpp \
+	fieldsSoMFVec2i32.cpp \
+	fieldsSoMFVec2s.cpp \
+	fieldsSoMFVec3b.cpp \
+	fieldsSoMFVec3d.cpp \
+	fieldsSoMFVec3f.cpp \
+	fieldsSoMFVec3i32.cpp \
+	fieldsSoMFVec3s.cpp \
+	fieldsSoMFVec4b.cpp \
+	fieldsSoMFVec4d.cpp \
+	fieldsSoMFVec4f.cpp \
+	fieldsSoMFVec4i32.cpp \
+	fieldsSoMFVec4s.cpp \
+	fieldsSoMFVec4ub.cpp \
+	fieldsSoMFVec4ui32.cpp \
+	fieldsSoMFVec4us.cpp \
+	fieldsSoSFBitMask.cpp \
+	fieldsSoSFBool.cpp \
+	fieldsSoSFBox2d.cpp \
+	fieldsSoSFBox2f.cpp \
+	fieldsSoSFBox2i32.cpp \
+	fieldsSoSFBox2s.cpp \
+	fieldsSoSFBox3d.cpp \
+	fieldsSoSFBox3f.cpp \
+	fieldsSoSFBox3i32.cpp \
+	fieldsSoSFBox3s.cpp \
+	fieldsSoSFColor.cpp \
+	fieldsSoSFColorRGBA.cpp \
+	fieldsSoSFDouble.cpp \
+	fieldsSoSFEngine.cpp \
+	fieldsSoSFEnum.cpp \
+	fieldsSoSFFloat.cpp \
+	fieldsSoSFImage.cpp \
+	fieldsSoSFImage3.cpp \
+	fieldsSoSFInt32.cpp \
+	fieldsSoSFMatrix.cpp \
+	fieldsSoSFName.cpp \
+	fieldsSoSFNode.cpp \
+	fieldsSoSFPath.cpp \
+	fieldsSoSFPlane.cpp \
+	fieldsSoSFRotation.cpp \
+	fieldsSoSFShort.cpp \
+	fieldsSoSFString.cpp \
+	fieldsSoSFTime.cpp \
+	fieldsSoSFTrigger.cpp \
+	fieldsSoSFUInt32.cpp \
+	fieldsSoSFUShort.cpp \
+	fieldsSoSFVec2b.cpp \
+	fieldsSoSFVec2d.cpp \
+	fieldsSoSFVec2f.cpp \
+	fieldsSoSFVec2i32.cpp \
+	fieldsSoSFVec2s.cpp \
+	fieldsSoSFVec3b.cpp \
+	fieldsSoSFVec3d.cpp \
+	fieldsSoSFVec3f.cpp \
+	fieldsSoSFVec3i32.cpp \
+	fieldsSoSFVec3s.cpp \
+	fieldsSoSFVec4b.cpp \
+	fieldsSoSFVec4d.cpp \
+	fieldsSoSFVec4f.cpp \
+	fieldsSoSFVec4i32.cpp \
+	fieldsSoSFVec4s.cpp \
+	fieldsSoSFVec4ub.cpp \
+	fieldsSoSFVec4ui32.cpp \
+	fieldsSoSFVec4us.cpp \
+	geoSoGeoCoordinate.cpp \
+	geoSoGeoElement.cpp \
+	geoSoGeoLocation.cpp \
+	geoSoGeoOrigin.cpp \
+	geoSoGeoSeparator.cpp \
+	miscSoBase.cpp \
+	miscSoBaseP.cpp \
+	miscSoDB.cpp \
+	miscSoType.cpp \
+	nodesSoAnnotation.cpp \
+	scxmlScXMLMinimumEvaluator.cpp \
+	shadersSoFragmentShader.cpp \
+	shadersSoGeometryShader.cpp \
+	shadersSoShaderParameter.cpp \
+	shadersSoShaderProgram.cpp \
+	shadersSoVertexShader.cpp \
+	shadowsSoGLShadowCullingElement.cpp \
+	shadowsSoShadowCulling.cpp \
+	shadowsSoShadowDirectionalLight.cpp \
+	shadowsSoShadowGroup.cpp \
+	shadowsSoShadowSpotLight.cpp \
+	shadowsSoShadowStyle.cpp \
+	shadowsSoShadowStyleElement.cpp \
+	soscxmlScXMLCoinEvaluator.cpp \
+	xmldocument.cpp \
+	$(EMPTY)
+
+all: testsuite$(EXEEXT)
+	LD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$LD_LIBRARY_PATH \
+	DYLD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$DYLD_LIBRARY_PATH \
+	PATH=$(top_builddir)/src:$$PATH \
+	./testsuite --log_level=warning --show_progress=yes \
+	  --detect_memory_leaks=0
+
+verbose: testsuite$(EXEEXT)
+	LD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$LD_LIBRARY_PATH \
+	DYLD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$DYLD_LIBRARY_PATH \
+	PATH=$(top_builddir)/src:$$PATH \
+	./testsuite --log_level=all --show_progress=no \
+	  --detect_memory_leaks=0
+
+debug: testsuite$(EXEEXT)
+	optionsfile=/tmp/opts.$$; \
+	echo set args --log_level=all --show_progress=no --detect_memory_leaks=0 >$optionsfile; \
+	echo run >>$optionsfile; \
+	LD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$LD_LIBRARY_PATH \
+	DYLD_LIBRARY_PATH=$(top_builddir)/src/.libs:$$DYLD_LIBRARY_PATH \
+	PATH=$(top_builddir)/src:$$PATH \
+	gdb ./testsuite -x $optionsfile; \
+	rm -f $optionsfile;
+
+clean:
+	rm -f testsuite$(EXEEXT) *.pdb
+	rm -f $(TEST_SUITE_OBJECTS)
+	rm -f $(TEST_SUITE_BUILT_FILES)
+
+makefile-update:
+	( cd $(srcdir); ./makemakefile.sh Makefile.in filter="$(filter)" )
+	( cd $(top_builddir); ./config.status testsuite/Makefile )
+
+makefile-internal-update:
+	( cd $(srcdir); ./makemakefile.sh -i Makefile.in filter="$(filter)" )
+	( cd $(top_builddir); ./config.status testsuite/Makefile )
+
+testsuite$(EXEEXT): $(TEST_SUITE_OBJECTS)
+	$(CXX) -o $@ $(AM_LDFLAGS) $(TEST_SUITE_OBJECTS) $(TS_LDFLAGS) $(LIBS) $(TS_LIBS)
+
+TestSuiteInit.$(OBJEXT): $(srcdir)/TestSuiteInit.cpp $(srcdir)/TestSuiteUtils.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteInit.cpp
+
+TestSuiteUtils.$(OBJEXT): $(srcdir)/TestSuiteUtils.cpp $(srcdir)/TestSuiteUtils.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteUtils.cpp
+
+TestSuiteMisc.$(OBJEXT): $(srcdir)/TestSuiteMisc.cpp $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -c $(srcdir)/TestSuiteMisc.cpp
+
+StandardTests.$(OBJEXT): $(srcdir)/StandardTests.cpp $(srcdir)/TestSuiteUtils.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -c $(srcdir)/StandardTests.cpp
+
+actionsSoCallbackAction.cpp: $(top_srcdir)/src/actions/SoCallbackAction.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/actions/SoCallbackAction.cpp
+
+actionsSoCallbackAction.$(OBJEXT): actionsSoCallbackAction.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c actionsSoCallbackAction.cpp
+
+actionsSoWriteAction.cpp: $(top_srcdir)/src/actions/SoWriteAction.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/actions/SoWriteAction.cpp
+
+actionsSoWriteAction.$(OBJEXT): actionsSoWriteAction.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c actionsSoWriteAction.cpp
+
+baseSbBSPTree.cpp: $(top_srcdir)/src/base/SbBSPTree.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBSPTree.cpp
+
+baseSbBSPTree.$(OBJEXT): baseSbBSPTree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBSPTree.cpp
+
+baseSbBox2d.cpp: $(top_srcdir)/src/base/SbBox2d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox2d.cpp
+
+baseSbBox2d.$(OBJEXT): baseSbBox2d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox2d.cpp
+
+baseSbBox2f.cpp: $(top_srcdir)/src/base/SbBox2f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox2f.cpp
+
+baseSbBox2f.$(OBJEXT): baseSbBox2f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox2f.cpp
+
+baseSbBox2i32.cpp: $(top_srcdir)/src/base/SbBox2i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox2i32.cpp
+
+baseSbBox2i32.$(OBJEXT): baseSbBox2i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox2i32.cpp
+
+baseSbBox2s.cpp: $(top_srcdir)/src/base/SbBox2s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox2s.cpp
+
+baseSbBox2s.$(OBJEXT): baseSbBox2s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox2s.cpp
+
+baseSbBox3i32.cpp: $(top_srcdir)/src/base/SbBox3i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox3i32.cpp
+
+baseSbBox3i32.$(OBJEXT): baseSbBox3i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox3i32.cpp
+
+baseSbBox3s.cpp: $(top_srcdir)/src/base/SbBox3s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbBox3s.cpp
+
+baseSbBox3s.$(OBJEXT): baseSbBox3s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbBox3s.cpp
+
+baseSbByteBuffer.cpp: $(top_srcdir)/src/base/SbByteBuffer.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbByteBuffer.cpp
+
+baseSbByteBuffer.$(OBJEXT): baseSbByteBuffer.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbByteBuffer.cpp
+
+baseSbDPMatrix.cpp: $(top_srcdir)/src/base/SbDPMatrix.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbDPMatrix.cpp
+
+baseSbDPMatrix.$(OBJEXT): baseSbDPMatrix.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbDPMatrix.cpp
+
+baseSbDPPlane.cpp: $(top_srcdir)/src/base/SbDPPlane.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbDPPlane.cpp
+
+baseSbDPPlane.$(OBJEXT): baseSbDPPlane.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbDPPlane.cpp
+
+baseSbDPRotation.cpp: $(top_srcdir)/src/base/SbDPRotation.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbDPRotation.cpp
+
+baseSbDPRotation.$(OBJEXT): baseSbDPRotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbDPRotation.cpp
+
+baseSbImage.cpp: $(top_srcdir)/src/base/SbImage.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbImage.cpp
+
+baseSbImage.$(OBJEXT): baseSbImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbImage.cpp
+
+baseSbMatrix.cpp: $(top_srcdir)/src/base/SbMatrix.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbMatrix.cpp
+
+baseSbMatrix.$(OBJEXT): baseSbMatrix.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbMatrix.cpp
+
+baseSbPlane.cpp: $(top_srcdir)/src/base/SbPlane.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbPlane.cpp
+
+baseSbPlane.$(OBJEXT): baseSbPlane.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbPlane.cpp
+
+baseSbRotation.cpp: $(top_srcdir)/src/base/SbRotation.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbRotation.cpp
+
+baseSbRotation.$(OBJEXT): baseSbRotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbRotation.cpp
+
+baseSbString.cpp: $(top_srcdir)/src/base/SbString.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbString.cpp
+
+baseSbString.$(OBJEXT): baseSbString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbString.cpp
+
+baseSbVec3d.cpp: $(top_srcdir)/src/base/SbVec3d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec3d.cpp
+
+baseSbVec3d.$(OBJEXT): baseSbVec3d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec3d.cpp
+
+baseSbVec3f.cpp: $(top_srcdir)/src/base/SbVec3f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec3f.cpp
+
+baseSbVec3f.$(OBJEXT): baseSbVec3f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec3f.cpp
+
+baseSbVec3s.cpp: $(top_srcdir)/src/base/SbVec3s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec3s.cpp
+
+baseSbVec3s.$(OBJEXT): baseSbVec3s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec3s.cpp
+
+baseSbVec3us.cpp: $(top_srcdir)/src/base/SbVec3us.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec3us.cpp
+
+baseSbVec3us.$(OBJEXT): baseSbVec3us.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec3us.cpp
+
+baseSbVec4f.cpp: $(top_srcdir)/src/base/SbVec4f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbVec4f.cpp
+
+baseSbVec4f.$(OBJEXT): baseSbVec4f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbVec4f.cpp
+
+baseSbViewVolume.cpp: $(top_srcdir)/src/base/SbViewVolume.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/SbViewVolume.cpp
+
+baseSbViewVolume.$(OBJEXT): baseSbViewVolume.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baseSbViewVolume.cpp
+
+baserbptree.cpp: $(top_srcdir)/src/base/rbptree.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/base/rbptree.cpp
+
+baserbptree.$(OBJEXT): baserbptree.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c baserbptree.cpp
+
+draggersSoTransformerDragger.cpp: $(top_srcdir)/src/draggers/SoTransformerDragger.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/draggers/SoTransformerDragger.cpp
+
+draggersSoTransformerDragger.$(OBJEXT): draggersSoTransformerDragger.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c draggersSoTransformerDragger.cpp
+
+fieldsSoMFBitMask.cpp: $(top_srcdir)/src/fields/SoMFBitMask.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFBitMask.cpp
+
+fieldsSoMFBitMask.$(OBJEXT): fieldsSoMFBitMask.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFBitMask.cpp
+
+fieldsSoMFBool.cpp: $(top_srcdir)/src/fields/SoMFBool.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFBool.cpp
+
+fieldsSoMFBool.$(OBJEXT): fieldsSoMFBool.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFBool.cpp
+
+fieldsSoMFColor.cpp: $(top_srcdir)/src/fields/SoMFColor.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFColor.cpp
+
+fieldsSoMFColor.$(OBJEXT): fieldsSoMFColor.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFColor.cpp
+
+fieldsSoMFColorRGBA.cpp: $(top_srcdir)/src/fields/SoMFColorRGBA.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFColorRGBA.cpp
+
+fieldsSoMFColorRGBA.$(OBJEXT): fieldsSoMFColorRGBA.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFColorRGBA.cpp
+
+fieldsSoMFDouble.cpp: $(top_srcdir)/src/fields/SoMFDouble.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFDouble.cpp
+
+fieldsSoMFDouble.$(OBJEXT): fieldsSoMFDouble.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFDouble.cpp
+
+fieldsSoMFEngine.cpp: $(top_srcdir)/src/fields/SoMFEngine.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFEngine.cpp
+
+fieldsSoMFEngine.$(OBJEXT): fieldsSoMFEngine.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFEngine.cpp
+
+fieldsSoMFEnum.cpp: $(top_srcdir)/src/fields/SoMFEnum.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFEnum.cpp
+
+fieldsSoMFEnum.$(OBJEXT): fieldsSoMFEnum.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFEnum.cpp
+
+fieldsSoMFFloat.cpp: $(top_srcdir)/src/fields/SoMFFloat.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFFloat.cpp
+
+fieldsSoMFFloat.$(OBJEXT): fieldsSoMFFloat.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFFloat.cpp
+
+fieldsSoMFInt32.cpp: $(top_srcdir)/src/fields/SoMFInt32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFInt32.cpp
+
+fieldsSoMFInt32.$(OBJEXT): fieldsSoMFInt32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFInt32.cpp
+
+fieldsSoMFMatrix.cpp: $(top_srcdir)/src/fields/SoMFMatrix.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFMatrix.cpp
+
+fieldsSoMFMatrix.$(OBJEXT): fieldsSoMFMatrix.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFMatrix.cpp
+
+fieldsSoMFName.cpp: $(top_srcdir)/src/fields/SoMFName.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFName.cpp
+
+fieldsSoMFName.$(OBJEXT): fieldsSoMFName.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFName.cpp
+
+fieldsSoMFNode.cpp: $(top_srcdir)/src/fields/SoMFNode.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFNode.cpp
+
+fieldsSoMFNode.$(OBJEXT): fieldsSoMFNode.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFNode.cpp
+
+fieldsSoMFPath.cpp: $(top_srcdir)/src/fields/SoMFPath.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFPath.cpp
+
+fieldsSoMFPath.$(OBJEXT): fieldsSoMFPath.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFPath.cpp
+
+fieldsSoMFPlane.cpp: $(top_srcdir)/src/fields/SoMFPlane.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFPlane.cpp
+
+fieldsSoMFPlane.$(OBJEXT): fieldsSoMFPlane.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFPlane.cpp
+
+fieldsSoMFRotation.cpp: $(top_srcdir)/src/fields/SoMFRotation.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFRotation.cpp
+
+fieldsSoMFRotation.$(OBJEXT): fieldsSoMFRotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFRotation.cpp
+
+fieldsSoMFShort.cpp: $(top_srcdir)/src/fields/SoMFShort.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFShort.cpp
+
+fieldsSoMFShort.$(OBJEXT): fieldsSoMFShort.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFShort.cpp
+
+fieldsSoMFString.cpp: $(top_srcdir)/src/fields/SoMFString.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFString.cpp
+
+fieldsSoMFString.$(OBJEXT): fieldsSoMFString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFString.cpp
+
+fieldsSoMFTime.cpp: $(top_srcdir)/src/fields/SoMFTime.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFTime.cpp
+
+fieldsSoMFTime.$(OBJEXT): fieldsSoMFTime.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFTime.cpp
+
+fieldsSoMFUInt32.cpp: $(top_srcdir)/src/fields/SoMFUInt32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFUInt32.cpp
+
+fieldsSoMFUInt32.$(OBJEXT): fieldsSoMFUInt32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFUInt32.cpp
+
+fieldsSoMFUShort.cpp: $(top_srcdir)/src/fields/SoMFUShort.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFUShort.cpp
+
+fieldsSoMFUShort.$(OBJEXT): fieldsSoMFUShort.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFUShort.cpp
+
+fieldsSoMFVec2b.cpp: $(top_srcdir)/src/fields/SoMFVec2b.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec2b.cpp
+
+fieldsSoMFVec2b.$(OBJEXT): fieldsSoMFVec2b.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec2b.cpp
+
+fieldsSoMFVec2d.cpp: $(top_srcdir)/src/fields/SoMFVec2d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec2d.cpp
+
+fieldsSoMFVec2d.$(OBJEXT): fieldsSoMFVec2d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec2d.cpp
+
+fieldsSoMFVec2f.cpp: $(top_srcdir)/src/fields/SoMFVec2f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec2f.cpp
+
+fieldsSoMFVec2f.$(OBJEXT): fieldsSoMFVec2f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec2f.cpp
+
+fieldsSoMFVec2i32.cpp: $(top_srcdir)/src/fields/SoMFVec2i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec2i32.cpp
+
+fieldsSoMFVec2i32.$(OBJEXT): fieldsSoMFVec2i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec2i32.cpp
+
+fieldsSoMFVec2s.cpp: $(top_srcdir)/src/fields/SoMFVec2s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec2s.cpp
+
+fieldsSoMFVec2s.$(OBJEXT): fieldsSoMFVec2s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec2s.cpp
+
+fieldsSoMFVec3b.cpp: $(top_srcdir)/src/fields/SoMFVec3b.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec3b.cpp
+
+fieldsSoMFVec3b.$(OBJEXT): fieldsSoMFVec3b.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec3b.cpp
+
+fieldsSoMFVec3d.cpp: $(top_srcdir)/src/fields/SoMFVec3d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec3d.cpp
+
+fieldsSoMFVec3d.$(OBJEXT): fieldsSoMFVec3d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec3d.cpp
+
+fieldsSoMFVec3f.cpp: $(top_srcdir)/src/fields/SoMFVec3f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec3f.cpp
+
+fieldsSoMFVec3f.$(OBJEXT): fieldsSoMFVec3f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec3f.cpp
+
+fieldsSoMFVec3i32.cpp: $(top_srcdir)/src/fields/SoMFVec3i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec3i32.cpp
+
+fieldsSoMFVec3i32.$(OBJEXT): fieldsSoMFVec3i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec3i32.cpp
+
+fieldsSoMFVec3s.cpp: $(top_srcdir)/src/fields/SoMFVec3s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec3s.cpp
+
+fieldsSoMFVec3s.$(OBJEXT): fieldsSoMFVec3s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec3s.cpp
+
+fieldsSoMFVec4b.cpp: $(top_srcdir)/src/fields/SoMFVec4b.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec4b.cpp
+
+fieldsSoMFVec4b.$(OBJEXT): fieldsSoMFVec4b.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec4b.cpp
+
+fieldsSoMFVec4d.cpp: $(top_srcdir)/src/fields/SoMFVec4d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec4d.cpp
+
+fieldsSoMFVec4d.$(OBJEXT): fieldsSoMFVec4d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec4d.cpp
+
+fieldsSoMFVec4f.cpp: $(top_srcdir)/src/fields/SoMFVec4f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec4f.cpp
+
+fieldsSoMFVec4f.$(OBJEXT): fieldsSoMFVec4f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec4f.cpp
+
+fieldsSoMFVec4i32.cpp: $(top_srcdir)/src/fields/SoMFVec4i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec4i32.cpp
+
+fieldsSoMFVec4i32.$(OBJEXT): fieldsSoMFVec4i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec4i32.cpp
+
+fieldsSoMFVec4s.cpp: $(top_srcdir)/src/fields/SoMFVec4s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec4s.cpp
+
+fieldsSoMFVec4s.$(OBJEXT): fieldsSoMFVec4s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec4s.cpp
+
+fieldsSoMFVec4ub.cpp: $(top_srcdir)/src/fields/SoMFVec4ub.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec4ub.cpp
+
+fieldsSoMFVec4ub.$(OBJEXT): fieldsSoMFVec4ub.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec4ub.cpp
+
+fieldsSoMFVec4ui32.cpp: $(top_srcdir)/src/fields/SoMFVec4ui32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec4ui32.cpp
+
+fieldsSoMFVec4ui32.$(OBJEXT): fieldsSoMFVec4ui32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec4ui32.cpp
+
+fieldsSoMFVec4us.cpp: $(top_srcdir)/src/fields/SoMFVec4us.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoMFVec4us.cpp
+
+fieldsSoMFVec4us.$(OBJEXT): fieldsSoMFVec4us.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoMFVec4us.cpp
+
+fieldsSoSFBitMask.cpp: $(top_srcdir)/src/fields/SoSFBitMask.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBitMask.cpp
+
+fieldsSoSFBitMask.$(OBJEXT): fieldsSoSFBitMask.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBitMask.cpp
+
+fieldsSoSFBool.cpp: $(top_srcdir)/src/fields/SoSFBool.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBool.cpp
+
+fieldsSoSFBool.$(OBJEXT): fieldsSoSFBool.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBool.cpp
+
+fieldsSoSFBox2d.cpp: $(top_srcdir)/src/fields/SoSFBox2d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBox2d.cpp
+
+fieldsSoSFBox2d.$(OBJEXT): fieldsSoSFBox2d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBox2d.cpp
+
+fieldsSoSFBox2f.cpp: $(top_srcdir)/src/fields/SoSFBox2f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBox2f.cpp
+
+fieldsSoSFBox2f.$(OBJEXT): fieldsSoSFBox2f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBox2f.cpp
+
+fieldsSoSFBox2i32.cpp: $(top_srcdir)/src/fields/SoSFBox2i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBox2i32.cpp
+
+fieldsSoSFBox2i32.$(OBJEXT): fieldsSoSFBox2i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBox2i32.cpp
+
+fieldsSoSFBox2s.cpp: $(top_srcdir)/src/fields/SoSFBox2s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBox2s.cpp
+
+fieldsSoSFBox2s.$(OBJEXT): fieldsSoSFBox2s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBox2s.cpp
+
+fieldsSoSFBox3d.cpp: $(top_srcdir)/src/fields/SoSFBox3d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBox3d.cpp
+
+fieldsSoSFBox3d.$(OBJEXT): fieldsSoSFBox3d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBox3d.cpp
+
+fieldsSoSFBox3f.cpp: $(top_srcdir)/src/fields/SoSFBox3f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBox3f.cpp
+
+fieldsSoSFBox3f.$(OBJEXT): fieldsSoSFBox3f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBox3f.cpp
+
+fieldsSoSFBox3i32.cpp: $(top_srcdir)/src/fields/SoSFBox3i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBox3i32.cpp
+
+fieldsSoSFBox3i32.$(OBJEXT): fieldsSoSFBox3i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBox3i32.cpp
+
+fieldsSoSFBox3s.cpp: $(top_srcdir)/src/fields/SoSFBox3s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFBox3s.cpp
+
+fieldsSoSFBox3s.$(OBJEXT): fieldsSoSFBox3s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFBox3s.cpp
+
+fieldsSoSFColor.cpp: $(top_srcdir)/src/fields/SoSFColor.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFColor.cpp
+
+fieldsSoSFColor.$(OBJEXT): fieldsSoSFColor.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFColor.cpp
+
+fieldsSoSFColorRGBA.cpp: $(top_srcdir)/src/fields/SoSFColorRGBA.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFColorRGBA.cpp
+
+fieldsSoSFColorRGBA.$(OBJEXT): fieldsSoSFColorRGBA.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFColorRGBA.cpp
+
+fieldsSoSFDouble.cpp: $(top_srcdir)/src/fields/SoSFDouble.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFDouble.cpp
+
+fieldsSoSFDouble.$(OBJEXT): fieldsSoSFDouble.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFDouble.cpp
+
+fieldsSoSFEngine.cpp: $(top_srcdir)/src/fields/SoSFEngine.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFEngine.cpp
+
+fieldsSoSFEngine.$(OBJEXT): fieldsSoSFEngine.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFEngine.cpp
+
+fieldsSoSFEnum.cpp: $(top_srcdir)/src/fields/SoSFEnum.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFEnum.cpp
+
+fieldsSoSFEnum.$(OBJEXT): fieldsSoSFEnum.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFEnum.cpp
+
+fieldsSoSFFloat.cpp: $(top_srcdir)/src/fields/SoSFFloat.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFFloat.cpp
+
+fieldsSoSFFloat.$(OBJEXT): fieldsSoSFFloat.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFFloat.cpp
+
+fieldsSoSFImage.cpp: $(top_srcdir)/src/fields/SoSFImage.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage.cpp
+
+fieldsSoSFImage.$(OBJEXT): fieldsSoSFImage.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFImage.cpp
+
+fieldsSoSFImage3.cpp: $(top_srcdir)/src/fields/SoSFImage3.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFImage3.cpp
+
+fieldsSoSFImage3.$(OBJEXT): fieldsSoSFImage3.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFImage3.cpp
+
+fieldsSoSFInt32.cpp: $(top_srcdir)/src/fields/SoSFInt32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFInt32.cpp
+
+fieldsSoSFInt32.$(OBJEXT): fieldsSoSFInt32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFInt32.cpp
+
+fieldsSoSFMatrix.cpp: $(top_srcdir)/src/fields/SoSFMatrix.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFMatrix.cpp
+
+fieldsSoSFMatrix.$(OBJEXT): fieldsSoSFMatrix.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFMatrix.cpp
+
+fieldsSoSFName.cpp: $(top_srcdir)/src/fields/SoSFName.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFName.cpp
+
+fieldsSoSFName.$(OBJEXT): fieldsSoSFName.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFName.cpp
+
+fieldsSoSFNode.cpp: $(top_srcdir)/src/fields/SoSFNode.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFNode.cpp
+
+fieldsSoSFNode.$(OBJEXT): fieldsSoSFNode.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFNode.cpp
+
+fieldsSoSFPath.cpp: $(top_srcdir)/src/fields/SoSFPath.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFPath.cpp
+
+fieldsSoSFPath.$(OBJEXT): fieldsSoSFPath.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFPath.cpp
+
+fieldsSoSFPlane.cpp: $(top_srcdir)/src/fields/SoSFPlane.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFPlane.cpp
+
+fieldsSoSFPlane.$(OBJEXT): fieldsSoSFPlane.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFPlane.cpp
+
+fieldsSoSFRotation.cpp: $(top_srcdir)/src/fields/SoSFRotation.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFRotation.cpp
+
+fieldsSoSFRotation.$(OBJEXT): fieldsSoSFRotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFRotation.cpp
+
+fieldsSoSFShort.cpp: $(top_srcdir)/src/fields/SoSFShort.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFShort.cpp
+
+fieldsSoSFShort.$(OBJEXT): fieldsSoSFShort.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFShort.cpp
+
+fieldsSoSFString.cpp: $(top_srcdir)/src/fields/SoSFString.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFString.cpp
+
+fieldsSoSFString.$(OBJEXT): fieldsSoSFString.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFString.cpp
+
+fieldsSoSFTime.cpp: $(top_srcdir)/src/fields/SoSFTime.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFTime.cpp
+
+fieldsSoSFTime.$(OBJEXT): fieldsSoSFTime.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFTime.cpp
+
+fieldsSoSFTrigger.cpp: $(top_srcdir)/src/fields/SoSFTrigger.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFTrigger.cpp
+
+fieldsSoSFTrigger.$(OBJEXT): fieldsSoSFTrigger.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFTrigger.cpp
+
+fieldsSoSFUInt32.cpp: $(top_srcdir)/src/fields/SoSFUInt32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFUInt32.cpp
+
+fieldsSoSFUInt32.$(OBJEXT): fieldsSoSFUInt32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFUInt32.cpp
+
+fieldsSoSFUShort.cpp: $(top_srcdir)/src/fields/SoSFUShort.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFUShort.cpp
+
+fieldsSoSFUShort.$(OBJEXT): fieldsSoSFUShort.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFUShort.cpp
+
+fieldsSoSFVec2b.cpp: $(top_srcdir)/src/fields/SoSFVec2b.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec2b.cpp
+
+fieldsSoSFVec2b.$(OBJEXT): fieldsSoSFVec2b.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec2b.cpp
+
+fieldsSoSFVec2d.cpp: $(top_srcdir)/src/fields/SoSFVec2d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec2d.cpp
+
+fieldsSoSFVec2d.$(OBJEXT): fieldsSoSFVec2d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec2d.cpp
+
+fieldsSoSFVec2f.cpp: $(top_srcdir)/src/fields/SoSFVec2f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec2f.cpp
+
+fieldsSoSFVec2f.$(OBJEXT): fieldsSoSFVec2f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec2f.cpp
+
+fieldsSoSFVec2i32.cpp: $(top_srcdir)/src/fields/SoSFVec2i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec2i32.cpp
+
+fieldsSoSFVec2i32.$(OBJEXT): fieldsSoSFVec2i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec2i32.cpp
+
+fieldsSoSFVec2s.cpp: $(top_srcdir)/src/fields/SoSFVec2s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec2s.cpp
+
+fieldsSoSFVec2s.$(OBJEXT): fieldsSoSFVec2s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec2s.cpp
+
+fieldsSoSFVec3b.cpp: $(top_srcdir)/src/fields/SoSFVec3b.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec3b.cpp
+
+fieldsSoSFVec3b.$(OBJEXT): fieldsSoSFVec3b.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec3b.cpp
+
+fieldsSoSFVec3d.cpp: $(top_srcdir)/src/fields/SoSFVec3d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec3d.cpp
+
+fieldsSoSFVec3d.$(OBJEXT): fieldsSoSFVec3d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec3d.cpp
+
+fieldsSoSFVec3f.cpp: $(top_srcdir)/src/fields/SoSFVec3f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec3f.cpp
+
+fieldsSoSFVec3f.$(OBJEXT): fieldsSoSFVec3f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec3f.cpp
+
+fieldsSoSFVec3i32.cpp: $(top_srcdir)/src/fields/SoSFVec3i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec3i32.cpp
+
+fieldsSoSFVec3i32.$(OBJEXT): fieldsSoSFVec3i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec3i32.cpp
+
+fieldsSoSFVec3s.cpp: $(top_srcdir)/src/fields/SoSFVec3s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec3s.cpp
+
+fieldsSoSFVec3s.$(OBJEXT): fieldsSoSFVec3s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec3s.cpp
+
+fieldsSoSFVec4b.cpp: $(top_srcdir)/src/fields/SoSFVec4b.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec4b.cpp
+
+fieldsSoSFVec4b.$(OBJEXT): fieldsSoSFVec4b.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec4b.cpp
+
+fieldsSoSFVec4d.cpp: $(top_srcdir)/src/fields/SoSFVec4d.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec4d.cpp
+
+fieldsSoSFVec4d.$(OBJEXT): fieldsSoSFVec4d.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec4d.cpp
+
+fieldsSoSFVec4f.cpp: $(top_srcdir)/src/fields/SoSFVec4f.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec4f.cpp
+
+fieldsSoSFVec4f.$(OBJEXT): fieldsSoSFVec4f.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec4f.cpp
+
+fieldsSoSFVec4i32.cpp: $(top_srcdir)/src/fields/SoSFVec4i32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec4i32.cpp
+
+fieldsSoSFVec4i32.$(OBJEXT): fieldsSoSFVec4i32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec4i32.cpp
+
+fieldsSoSFVec4s.cpp: $(top_srcdir)/src/fields/SoSFVec4s.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec4s.cpp
+
+fieldsSoSFVec4s.$(OBJEXT): fieldsSoSFVec4s.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec4s.cpp
+
+fieldsSoSFVec4ub.cpp: $(top_srcdir)/src/fields/SoSFVec4ub.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec4ub.cpp
+
+fieldsSoSFVec4ub.$(OBJEXT): fieldsSoSFVec4ub.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec4ub.cpp
+
+fieldsSoSFVec4ui32.cpp: $(top_srcdir)/src/fields/SoSFVec4ui32.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec4ui32.cpp
+
+fieldsSoSFVec4ui32.$(OBJEXT): fieldsSoSFVec4ui32.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec4ui32.cpp
+
+fieldsSoSFVec4us.cpp: $(top_srcdir)/src/fields/SoSFVec4us.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/fields/SoSFVec4us.cpp
+
+fieldsSoSFVec4us.$(OBJEXT): fieldsSoSFVec4us.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c fieldsSoSFVec4us.cpp
+
+geoSoGeoCoordinate.cpp: $(top_srcdir)/src/geo/SoGeoCoordinate.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/geo/SoGeoCoordinate.cpp
+
+geoSoGeoCoordinate.$(OBJEXT): geoSoGeoCoordinate.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c geoSoGeoCoordinate.cpp
+
+geoSoGeoElement.cpp: $(top_srcdir)/src/geo/SoGeoElement.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/geo/SoGeoElement.cpp
+
+geoSoGeoElement.$(OBJEXT): geoSoGeoElement.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c geoSoGeoElement.cpp
+
+geoSoGeoLocation.cpp: $(top_srcdir)/src/geo/SoGeoLocation.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/geo/SoGeoLocation.cpp
+
+geoSoGeoLocation.$(OBJEXT): geoSoGeoLocation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c geoSoGeoLocation.cpp
+
+geoSoGeoOrigin.cpp: $(top_srcdir)/src/geo/SoGeoOrigin.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/geo/SoGeoOrigin.cpp
+
+geoSoGeoOrigin.$(OBJEXT): geoSoGeoOrigin.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c geoSoGeoOrigin.cpp
+
+geoSoGeoSeparator.cpp: $(top_srcdir)/src/geo/SoGeoSeparator.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/geo/SoGeoSeparator.cpp
+
+geoSoGeoSeparator.$(OBJEXT): geoSoGeoSeparator.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c geoSoGeoSeparator.cpp
+
+miscSoBase.cpp: $(top_srcdir)/src/misc/SoBase.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/misc/SoBase.cpp
+
+miscSoBase.$(OBJEXT): miscSoBase.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c miscSoBase.cpp
+
+miscSoBaseP.cpp: $(top_srcdir)/src/misc/SoBaseP.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/misc/SoBaseP.cpp
+
+miscSoBaseP.$(OBJEXT): miscSoBaseP.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c miscSoBaseP.cpp
+
+miscSoDB.cpp: $(top_srcdir)/src/misc/SoDB.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/misc/SoDB.cpp
+
+miscSoDB.$(OBJEXT): miscSoDB.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c miscSoDB.cpp
+
+miscSoType.cpp: $(top_srcdir)/src/misc/SoType.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/misc/SoType.cpp
+
+miscSoType.$(OBJEXT): miscSoType.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c miscSoType.cpp
+
+nodesSoAnnotation.cpp: $(top_srcdir)/src/nodes/SoAnnotation.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/nodes/SoAnnotation.cpp
+
+nodesSoAnnotation.$(OBJEXT): nodesSoAnnotation.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c nodesSoAnnotation.cpp
+
+scxmlScXMLMinimumEvaluator.cpp: $(top_srcdir)/src/scxml/ScXMLMinimumEvaluator.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/scxml/ScXMLMinimumEvaluator.cpp
+
+scxmlScXMLMinimumEvaluator.$(OBJEXT): scxmlScXMLMinimumEvaluator.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c scxmlScXMLMinimumEvaluator.cpp
+
+shadersSoFragmentShader.cpp: $(top_srcdir)/src/shaders/SoFragmentShader.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shaders/SoFragmentShader.cpp
+
+shadersSoFragmentShader.$(OBJEXT): shadersSoFragmentShader.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadersSoFragmentShader.cpp
+
+shadersSoGeometryShader.cpp: $(top_srcdir)/src/shaders/SoGeometryShader.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shaders/SoGeometryShader.cpp
+
+shadersSoGeometryShader.$(OBJEXT): shadersSoGeometryShader.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadersSoGeometryShader.cpp
+
+shadersSoShaderParameter.cpp: $(top_srcdir)/src/shaders/SoShaderParameter.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shaders/SoShaderParameter.cpp
+
+shadersSoShaderParameter.$(OBJEXT): shadersSoShaderParameter.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadersSoShaderParameter.cpp
+
+shadersSoShaderProgram.cpp: $(top_srcdir)/src/shaders/SoShaderProgram.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shaders/SoShaderProgram.cpp
+
+shadersSoShaderProgram.$(OBJEXT): shadersSoShaderProgram.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadersSoShaderProgram.cpp
+
+shadersSoVertexShader.cpp: $(top_srcdir)/src/shaders/SoVertexShader.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shaders/SoVertexShader.cpp
+
+shadersSoVertexShader.$(OBJEXT): shadersSoVertexShader.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadersSoVertexShader.cpp
+
+shadowsSoGLShadowCullingElement.cpp: $(top_srcdir)/src/shadows/SoGLShadowCullingElement.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoGLShadowCullingElement.cpp
+
+shadowsSoGLShadowCullingElement.$(OBJEXT): shadowsSoGLShadowCullingElement.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoGLShadowCullingElement.cpp
+
+shadowsSoShadowCulling.cpp: $(top_srcdir)/src/shadows/SoShadowCulling.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowCulling.cpp
+
+shadowsSoShadowCulling.$(OBJEXT): shadowsSoShadowCulling.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoShadowCulling.cpp
+
+shadowsSoShadowDirectionalLight.cpp: $(top_srcdir)/src/shadows/SoShadowDirectionalLight.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowDirectionalLight.cpp
+
+shadowsSoShadowDirectionalLight.$(OBJEXT): shadowsSoShadowDirectionalLight.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoShadowDirectionalLight.cpp
+
+shadowsSoShadowGroup.cpp: $(top_srcdir)/src/shadows/SoShadowGroup.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowGroup.cpp
+
+shadowsSoShadowGroup.$(OBJEXT): shadowsSoShadowGroup.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoShadowGroup.cpp
+
+shadowsSoShadowSpotLight.cpp: $(top_srcdir)/src/shadows/SoShadowSpotLight.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowSpotLight.cpp
+
+shadowsSoShadowSpotLight.$(OBJEXT): shadowsSoShadowSpotLight.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoShadowSpotLight.cpp
+
+shadowsSoShadowStyle.cpp: $(top_srcdir)/src/shadows/SoShadowStyle.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowStyle.cpp
+
+shadowsSoShadowStyle.$(OBJEXT): shadowsSoShadowStyle.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoShadowStyle.cpp
+
+shadowsSoShadowStyleElement.cpp: $(top_srcdir)/src/shadows/SoShadowStyleElement.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/shadows/SoShadowStyleElement.cpp
+
+shadowsSoShadowStyleElement.$(OBJEXT): shadowsSoShadowStyleElement.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c shadowsSoShadowStyleElement.cpp
+
+soscxmlScXMLCoinEvaluator.cpp: $(top_srcdir)/src/soscxml/ScXMLCoinEvaluator.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/soscxml/ScXMLCoinEvaluator.cpp
+
+soscxmlScXMLCoinEvaluator.$(OBJEXT): soscxmlScXMLCoinEvaluator.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c soscxmlScXMLCoinEvaluator.cpp
+
+xmldocument.cpp: $(top_srcdir)/src/xml/document.cpp $(srcdir)/makeextract.sh
+	$(srcdir)/makeextract.sh $(top_srcdir) src/xml/document.cpp
+
+xmldocument.$(OBJEXT): xmldocument.cpp $(srcdir)/TestSuiteUtils.h $(srcdir)/TestSuiteMisc.h
+	$(CXX) $(CPPFLAGS) $(TS_CPPFLAGS) -g -c xmldocument.cpp
+

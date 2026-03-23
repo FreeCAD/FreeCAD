@@ -1,0 +1,1532 @@
+2005-12-26 18:27:29 - r561 - tamer
+
+* examples/SoPyScript/SConstruct, SoPyScript/SConstruct,
+  examples/extend/SConstruct:
+
+  s/COIN3DDIR/COINDIR/
+
+2005-12-21 22:19:54 - r559 - tamer
+
+* NEWS:
+
+  update on correct windows environment variable.
+
+2005-12-21 22:16:03 - r558 - tamer
+
+* setup.py:
+
+  s/COIN3DDIR/COINDIR/ after checking back with Lars. (reported by Michael
+  Zimmermann)
+
+2005-12-20 20:54:07 - r556 - tamer
+
+* setup.py, NEWS:
+
+  added Windows SoQt build support.
+
+2005-12-19 17:35:40 - r554 - tamer
+
+* THANKS:
+
+  added Michael Zimmermann.
+
+2005-11-16 21:18:59 - r552 - tamer
+
+* examples/extend/shapescale.i:
+
+  added undef's needed for windows. reported by Frode ?ijord.
+
+2005-11-16 21:15:18 - r551 - tamer
+
+* Inventor/sensors/SoSensorManager.i:
+
+  added handling for SoSensorManager::setChangedCallback(). reported by Peder
+  Blekken.
+
+2005-11-14 09:56:50 - r549 - tamer
+
+* Inventor/SbImage.i:
+
+  correct type in exception message.
+
+2005-11-14 09:55:37 - r548 - tamer
+
+* fake_headers/sys/unistd.h, fake_headers/stdint.h:
+
+  added fake headers for stdint.h and sys/unistd.h
+
+2005-11-14 09:55:05 - r547 - tamer
+
+* THANKS:
+
+  added Frode ?ijord.
+
+2005-11-14 09:54:22 - r546 - tamer
+
+* Inventor/SoSceneManager.i:
+
+  added handling for SoSceneManager::setRenderCallback(). reported by Frode
+  ?ijord.
+
+2005-10-19 03:29:40 - r544 - tamer
+
+* pivy/__init__.py, pivy/gui/__init__.py, examples/extend/shapescale.i:
+
+  replaced old license header with new one.
+
+2005-10-19 03:28:27 - r543 - tamer
+
+* pivy/sogui.py:
+
+  cleanup: inject the proxy instances to the global module dict in one place
+  instead of having to define them in 3 different places. reported by Terry
+  Jones.
+
+2005-10-07 03:28:58 - r541 - kyrah
+
+* packaging/macosx/Pivy.pkg/Contents/Resources/English.lproj/Installatio
+  nCheck.strings, packaging/macosx/resources/InstallationCheck,
+  packaging/macosx/Pivy.pkg/Contents/Resources/InstallationCheck:
+
+  Speaking of the Lady...
+
+2005-10-07 02:52:39 - r540 - kyrah
+
+* packaging/macosx/resources/InstallationCheck.strings,
+  packaging/macosx/resources/InstallationCheck:
+
+  All Hail Discordia.
+
+2005-10-07 02:15:05 - r539 - kyrah
+
+* packaging/macosx/Pivy.pkg/Contents/Resources/Pivy.bom, packaging/macos
+  x/Pivy.pkg/Contents/Resources/English.lproj/Welcome.rtf, packaging/m
+  acosx/Pivy.pkg/Contents/Resources/English.lproj/background.pdf, pack
+  aging/macosx/Pivy.pkg/Contents/Resources/English.lproj/InstallationC
+  heck.strings, packaging/macosx/resources/README.txt,
+  packaging/macosx/Welcome.rtf, packaging/macosx/Checklist.txt,
+  packaging/macosx/Pivy.pkg/Contents/Info.plist,
+  packaging/macosx/Pivy.pkg/Contents/Archive.pax.gz,
+  packaging/macosx/Pivy.pkg/Contents/Resources/English.lproj,
+  packaging/macosx/Pivy.pmproj, packaging/macosx,
+  packaging/macosx/resources/InstallationCheck.strings,
+  packaging/macosx/Pivy.pkg/Contents/Resources/Pivy.sizes,
+  packaging/macosx/Pivy.pkg/Contents/Archive.bom,
+  packaging/macosx/Pivy.pkg/Contents/PkgInfo,
+  packaging/macosx/Pivy.pkg/Contents, packaging,
+  packaging/macosx/install, packaging/macosx/Pivy.pkg, packaging/macos
+  x/Pivy.pkg/Contents/Resources/English.lproj/Description.plist,
+  packaging/macosx/resources/InstallationCheck,
+  packaging/macosx/Pivy.pkg/Contents/Resources/BundleVersions.plist,
+  packaging/macosx/resources,
+  packaging/macosx/Pivy.pkg/Contents/Resources/Pivy.pax.gz, packaging/
+  macosx/Pivy.pkg/Contents/Resources/English.lproj/Pivy.info,
+  packaging/macosx/Pivy.pkg/Contents/Resources/InstallationCheck,
+  packaging/macosx/Pivy.pkg/Contents/Resources,
+  packaging/macosx/Pivy.pkg/Contents/Resources/package_version:
+
+  Installer for Mac OS 10.4.
+
+2005-09-26 19:25:42 - r537 - tamer
+
+* tests/pivy_tests.py, examples/Mentor/03.3.Naming.py,
+  examples/Mentor/17.3.GLFloor.py, examples/Mentor/09.3.Search.py,
+  examples/Mentor/09.5.GenSph.py, examples/Mentor/12.2.NodeSensor.py:
+
+  remove now obsolete SoDB.init() invocations.
+
+2005-09-26 19:24:48 - r536 - tamer
+
+* pivy/__init__.py:
+
+  let SoDB.init() be invoked automatically upon module import.
+
+2005-09-26 09:49:23 - r535 - tamer
+
+* examples/Mentor/05.3.TriangleStripSet.py,
+  examples/Mentor/14.1.FrolickingWords.py,
+  examples/Mentor/02.4.Examiner.py, examples/Mentor/17.3.GLFloor.py,
+  examples/Mentor/05.1.FaceSet.py, examples/Mentor/05.4.QuadMesh.py,
+  examples/SoPyScript/example.iv,
+  examples/Mentor/05.2.IndexedFaceSet.py,
+  examples/Mentor/16.4.OneWindow.py,
+  examples/Mentor/10.3and4.MotifList.py,
+  examples/Mentor/03.2.Robot.py, examples/Mentor/12.3.AlarmSensor.py,
+  examples/Mentor/06.2.Simple3DText.py,
+  examples/Mentor/14.3.Balance.py, examples/Mentor/04.2.Lights.py,
+  examples/Mentor/13.8.Blinker.py, examples/Mentor/15.1.ConeRadius.py,
+  examples/Mentor/09.1.Print.py, examples/Mentor/03.1.Molecule.py,
+  examples/Mentor/08.2.UniCurve.py,
+  examples/Mentor/05.6.TransformOrdering.py,
+  examples/Mentor/08.1.BSCurve.py, examples/Mentor/06.1.Text.py,
+  examples/Mentor/15.4.Customize.py,
+  examples/Mentor/10.1.addEventCB.py, examples/Mentor/09.5.GenSph.py,
+  examples/SoPyScript/textscroll.py,
+  examples/Mentor/13.3.TimeCounter.py,
+  examples/Mentor/07.1.BasicTexture.py,
+  examples/Mentor/09.2.Texture.py, examples/Mentor/13.1.GlobalFlds.py,
+  examples/Mentor/14.2.Editors.py, examples/Mentor/13.7.Rotor.py,
+  examples/Mentor/07.3.TextureFunction.py,
+  examples/Mentor/12.4.TimerSensor.py,
+  examples/Mentor/12.1.FieldSensor.py,
+  examples/Mentor/12.2.NodeSensor.py, examples/Mentor/13.4.Gate.py,
+  examples/Mentor/17.2.GLCallback.py,
+  examples/Mentor/10.7.PickFilterManip.py,
+  examples/Mentor/10.5.SelectionCB.py,
+  examples/Mentor/09.4.PickAction.py,
+  examples/Mentor/15.3.AttachManip.py,
+  examples/Mentor/13.6.Calculator.py,
+  examples/Mentor/02.2.EngineSpin.py,
+  examples/Mentor/07.2.TextureCoordinates.py,
+  examples/Mentor/11.2.ReadString.py, examples/SoPyScript/glow.py,
+  examples/Mentor/06.3.Complex3DText.py,
+  examples/Mentor/03.3.Naming.py, examples/Mentor/04.1.Cameras.py,
+  examples/Mentor/09.3.Search.py,
+  examples/Mentor/10.8.PickFilterNodeKit.py,
+  examples/Mentor/05.5.Binding.py,
+  examples/Mentor/16.3.AttachEditor.py,
+  examples/Mentor/08.4.TrimSurf.py, examples/Mentor/13.5.Boolean.py,
+  examples/Mentor/08.3.BezSurf.py, examples/extend/scale_test.py,
+  examples/Mentor/13.2.ElapsedTime.py,
+  examples/Mentor/15.2.SliderBox.py,
+  examples/Mentor/02.3.Trackball.py, examples/Mentor/16.2.Callback.py,
+  examples/Mentor/10.2.setEventCB.py:
+
+  autoref'ing now fully works. remove ref/unref() invocations from examples.
+
+2005-09-26 09:48:10 - r534 - tamer
+
+* examples/SIMVoleon/utility.py, examples/SIMVoleon/examine.py:
+
+  cleanup and removal of manual ref's.
+
+2005-09-26 09:46:04 - r533 - tamer
+
+* SoPyScript/SoPyScript.cpp, interfaces/coin.i:
+
+  proper autoref'ing through a feature offered by SWIG.
+
+2005-08-31 17:00:47 - r531 - tamer
+
+* examples/Sc21/Sc21Viewer/English.lproj/.cvsignore:
+
+  removed ignores for cvs.
+
+2005-08-31 16:59:49 - r530 - tamer
+
+* NEWS:
+
+  updated NEWS.
+
+2005-08-31 16:47:12 - r529 - tamer
+
+* docs/license.template, examples/contrib/iv2pov.py,
+  examples/contrib/mirrorball.py:
+
+  set svn:eol-style property to native.
+
+2005-08-31 16:43:58 - r528 - tamer
+
+* examples/Mentor/05.3.TriangleStripSet.py,
+  examples/Mentor/14.1.FrolickingWords.py, interfaces/coin.i,
+  examples/Mentor/02.4.Examiner.py, examples/Mentor/17.3.GLFloor.py,
+  examples/Mentor/05.4.QuadMesh.py, examples/Mentor/05.1.FaceSet.py,
+  examples/Mentor/05.2.IndexedFaceSet.py,
+  examples/Mentor/16.4.OneWindow.py,
+  examples/Mentor/10.3and4.MotifList.py,
+  examples/Mentor/03.2.Robot.py, examples/Mentor/12.3.AlarmSensor.py,
+  examples/Mentor/06.2.Simple3DText.py,
+  examples/Mentor/14.3.Balance.py, examples/Mentor/04.2.Lights.py,
+  interfaces/simvoleon.i, SoPyScript/SConstruct,
+  examples/Mentor/13.8.Blinker.py, examples/Mentor/15.1.ConeRadius.py,
+  interfaces/pivy_common_typemaps.i, examples/Mentor/09.1.Print.py,
+  examples/Mentor/03.1.Molecule.py, examples/Mentor/08.2.UniCurve.py,
+  interfaces/soqt.i, examples/Mentor/02.1.HelloCone.py,
+  tests/pivy_tests.py, examples/Mentor/10.6.PickFilterTopLevel.py,
+  examples/Mentor/11.1.ReadFile.py, examples/SoPyScript/SConstruct,
+  examples/Mentor/17.1.ColorIndex.py,
+  examples/Mentor/05.6.TransformOrdering.py,
+  examples/Mentor/08.1.BSCurve.py, examples/examiner_embed.py,
+  examples/contrib/mirrorball.py, SoPyScript/SoPyScript.cpp,
+  examples/Mentor/06.1.Text.py, examples/Mentor/15.4.Customize.py,
+  LICENSE, docs/license.template, examples/Mentor/10.1.addEventCB.py,
+  setup.py, examples/Mentor/09.5.GenSph.py,
+  examples/Mentor/13.3.TimeCounter.py,
+  examples/Mentor/07.1.BasicTexture.py,
+  examples/Mentor/09.2.Texture.py, interfaces/sogtk.i,
+  examples/Mentor/13.1.GlobalFlds.py,
+  examples/Mentor/07.3.TextureFunction.py,
+  examples/Mentor/13.7.Rotor.py, examples/Mentor/14.2.Editors.py,
+  examples/Mentor/12.1.FieldSensor.py,
+  examples/Mentor/12.4.TimerSensor.py, interfaces/soxt.i,
+  examples/Mentor/12.2.NodeSensor.py, examples/extend/SConstruct,
+  examples/Mentor/13.4.Gate.py,
+  examples/Mentor/10.7.PickFilterManip.py,
+  examples/Mentor/16.1.Overlay.py, examples/Mentor/17.2.GLCallback.py,
+  SoPyScript/SoPyScript.h, examples/Mentor/10.5.SelectionCB.py,
+  examples/Mentor/09.4.PickAction.py,
+  examples/Mentor/15.3.AttachManip.py,
+  examples/Mentor/02.2.EngineSpin.py,
+  examples/Mentor/13.6.Calculator.py,
+  examples/Mentor/07.2.TextureCoordinates.py,
+  examples/contrib/iv2pov.py, examples/Mentor/11.2.ReadString.py,
+  examples/Mentor/06.3.Complex3DText.py,
+  examples/Mentor/03.3.Naming.py, examples/Mentor/04.1.Cameras.py,
+  examples/Mentor/09.3.Search.py,
+  examples/Mentor/10.8.PickFilterNodeKit.py,
+  examples/Mentor/16.5.Examiner.py, examples/Mentor/05.5.Binding.py,
+  interfaces/sowin.i, examples/Mentor/16.3.AttachEditor.py,
+  examples/Mentor/08.4.TrimSurf.py, examples/Mentor/13.5.Boolean.py,
+  examples/Mentor/08.3.BezSurf.py, examples/extend/scale_test.py,
+  examples/Mentor/13.2.ElapsedTime.py,
+  examples/Mentor/15.2.SliderBox.py,
+  examples/Mentor/02.3.Trackball.py,
+  examples/Mentor/10.2.setEventCB.py, examples/Mentor/16.2.Callback.py:
+
+  purification and simplification of the license modeled after the OpenBSD
+  license (which again is modeled after the ISC license). see
+  docs/license.template for more information and license templates to be
+  used for new code.
+
+2005-08-31 16:32:20 - r527 - tamer
+
+* Inventor/SbImage.i:
+
+  proper handling of size[2] == 0 in SbImage::setValue(SbVec3s size, ...) where
+  the image is considered as a 2D image. indendation fixes.
+
+2005-08-30 22:29:38 - r526 - kyrah
+
+* examples/Sc21/Sc21Viewer/English.lproj,
+  examples/Sc21/Sc21Viewer/English.lproj/MainMenu.nib,
+  examples/Sc21/Sc21Viewer,
+  examples/Sc21/Sc21Viewer/English.lproj/MainMenu.nib/info.nib, exampl
+  es/Sc21/Sc21Viewer/English.lproj/MainMenu.nib/keyedobjects.nib,
+  examples/Sc21/Sc21Viewer/Sc21Viewer.py,
+  examples/Sc21/Sc21Viewer/English.lproj/MainMenu.nib/classes.nib,
+  examples/Sc21/Sc21Viewer/English.lproj/MainMenu.nib/data.dependency,
+  examples/Sc21, examples/Sc21/Sc21Viewer/buildapp.py,
+  examples/Sc21/Sc21Viewer/English.lproj/.cvsignore,
+  examples/Sc21/Sc21Viewer/main.py:
+
+  A first PyObjC Sc21 example.
+
+2005-08-19 13:29:50 - r524 - oeystein
+
+* examples/contrib/iv2pov.py:
+
+  Minor changes.
+
+2005-08-19 11:06:51 - r523 - oeystein
+
+* examples/contrib/iv2pov.py:
+
+  Minor fixes
+
+2005-08-19 09:36:49 - r522 - oeystein
+
+* examples/contrib/iv2pov.py:
+
+  A simple inventor-2-POV converter.
+
+2005-08-17 15:33:16 - r519 - tamer
+
+* Inventor/actions/SoCallbackAction.i:
+
+  add missing autocast invocation for SoNode param in
+  SoCallbackActionPythonCB().
+  override getMaterial() to return a tuple for method's out parameters.
+  reported by Oeystein Handegard.
+
+2005-08-15 08:54:43 - r517 - oeystein
+
+* examples/contrib/mirrorball.py:
+
+  Added encoding keyword.
+
+2005-08-15 08:49:28 - r516 - oeystein
+
+* examples/contrib/mirrorball.py:
+
+  A small script which generates a funky mirrorball.
+
+2005-08-12 16:00:18 - r514 - tamer
+
+* examples/contrib:
+
+  added contrib directory for script contributions.
+
+2005-08-12 13:39:53 - r513 - tamer
+
+* THANKS:
+
+  added Oeystein Handegard.
+
+2005-08-12 06:07:20 - r512 - tamer
+
+* setup.py, interfaces/pivy_common_typemaps.i,
+  examples/extend/SConstruct:
+
+  removed PIVY_WIN32 define. new policy: all platforms must have exactly
+  the same resulting wrapper and shouldn't differ in terms of features
+  (also if it means sacrificing features on platforms where it would
+  have worked fine otherwise).
+
+  this will allow to bundle the swig generated wrappers with future
+  releases and frees the user from having to install (the correct)
+  SWIG version which further eases deployment.
+
+2005-08-12 05:28:56 - r511 - tamer
+
+* MANIFEST.in:
+
+  swigpyrun.h will now be picked up correctly by sdist through 'graft
+  SoPyScript'.
+
+2005-08-12 05:26:50 - r510 - tamer
+
+* SoPyScript/SoPyScript.cpp:
+
+  fixup header include.
+
+2005-08-12 05:26:07 - r509 - tamer
+
+* swigpyrun.h, SoPyScript/swigpyrun.h:
+
+  moved the swig runtime header to its more apropriate SoPyScript location.
+
+2005-08-11 09:02:08 - r507 - tamer
+
+* setup.py:
+
+  add a more accurate description, increase the version number and fix the
+  download url. remove the distutils classifier workaround for ancient python
+  versions.
+
+2005-08-11 01:17:47 - r504 - tamer
+
+* SoPyScript/SoPyScript.cpp:
+
+  fixed scripting node regression by reverting to SoType::badType().
+
+2005-08-11 00:00:35 - r502 - tamer
+
+* examples/extend/README:
+
+  remove obsolete notes for older swig versions.
+
+2005-08-10 23:53:18 - r500 - tamer
+
+* NEWS:
+
+  update to reflect current state.
+
+2005-08-09 21:56:43 - r496 - tamer
+
+* interfaces/pivy_common_typemaps.i:
+
+  proper handling for issue14. restructured code and generalized cast function.
+  parent checking is node conducted through SWIG_TypeQuery() invocations done
+  in the cast function.
+
+2005-08-09 18:44:15 - r495 - tamer
+
+* interfaces/pivy_common_typemaps.i:
+
+  as discussed on issue14: actually check with getIsBuiltIn(). plug a memory
+  leak. this is just a temporarily fix until a better approach has been found
+  as this solution doesn't work properly if the extension node is directly
+  inherited from abstract classes such as SoNode or if an actually swigged
+  extension node exists as a parent.
+
+2005-08-09 05:28:33 - r494 - tamer
+
+* SoPyScript/SoPyScript.cpp:
+
+  cleanup.
+
+2005-08-09 05:14:59 - r493 - tamer
+
+* examples/SoPyScript/example_remote.iv:
+
+  renamed scripts on webserver.
+
+2005-08-09 04:27:59 - r492 - tamer
+
+* interfaces/pivy_common_typemaps.i:
+
+  add a better comment.
+
+2005-08-09 04:19:12 - r491 - tamer
+
+* interfaces/pivy_common_typemaps.i:
+
+  fix for issue14. support autocasting for not builtin types. let extension
+  nodes cast to the nearest parent builtin type.
+
+2005-08-09 04:15:25 - r490 - tamer
+
+* Inventor/fields/SoMFVec4f.i, Inventor/fields/SoSFImage3.i,
+  Inventor/fields/SoMFColor.i, Inventor/fields/SoMFName.i,
+  Inventor/fields/SoMFUShort.i, Inventor/fields/SoMFUInt32.i,
+  Inventor/fields/SoMFNode.i, Inventor/fields/SoSFImage.i,
+  Inventor/fields/SoMFBool.i, Inventor/fields/SoMFPath.i,
+  Inventor/fields/SoMFTime.i, Inventor/fields/SoMFInt32.i,
+  Inventor/fields/SoMFPlane.i, Inventor/fields/SoMFRotation.i,
+  Inventor/fields/SoMFShort.i, Inventor/fields/SoMFMatrix.i,
+  Inventor/fields/SoMFEnum.i, Inventor/fields/SoMFFloat.i,
+  Inventor/fields/SoMFEngine.i, Inventor/fields/SoMFVec2f.i,
+  Inventor/fields/SoMFString.i, Inventor/fields/SoMFVec3f.i:
+
+  minor comment fix.
+
+2005-08-09 04:14:34 - r489 - tamer
+
+* setup.py:
+
+  updated and sorted classifiers.
+
+2005-08-08 21:30:39 - r487 - tamer
+
+* examples/Mentor/06.3.Complex3DText.py,
+  examples/Mentor/02.4.Examiner.py, examples/Mentor/09.5.GenSph.py:
+
+  cosmetics: strip empty lines at end.
+
+2005-08-08 21:27:38 - r486 - tamer
+
+* examples/Mentor/08.2.UniCurve.py, examples/Mentor/08.3.BezSurf.py,
+  examples/Mentor/08.1.BSCurve.py, examples/Mentor/08.4.TrimSurf.py:
+
+  remove superfluous \n's. in python we have nice triple quotes for that
+  purpose.
+
+2005-08-08 04:44:45 - r485 - tamer
+
+* setup.py:
+
+  cosmetics: less verbose output.
+
+2005-08-07 19:28:20 - r483 - tamer
+
+* THANKS:
+
+  added Terry Jones.
+
+2005-08-07 19:27:08 - r482 - tamer
+
+* interfaces/soqt.i:
+
+  removed not required Editor includes. further the build breaks on OSX because
+  of a missing SoGuiMaterialEditor.h in the Framework installation. (reported
+  by Terry Jones)
+
+2005-08-07 08:59:02 - r481 - tamer
+
+* Inventor/sensors/SoSensor.i:
+
+  minor code style fix.
+
+2005-08-07 08:35:21 - r480 - tamer
+
+* interfaces/pivy_common_typemaps.i:
+
+  small code style fix.
+
+2005-08-07 08:34:17 - r479 - tamer
+
+* examples/extend/scale_test.py:
+
+  removed now obsolete cast.
+
+2005-08-07 08:33:22 - r478 - tamer
+
+* interfaces/pivy_common_typemaps.i:
+
+  added autocasting for SoEvent classes.
+
+2005-08-07 08:00:12 - r477 - tamer
+
+* Inventor/sensors/SoSensor.i:
+
+  fix typo in typecheck.
+
+2005-08-07 07:39:06 - r476 - tamer
+
+* Inventor/SbColor.i, Inventor/SoOffscreenRenderer.i,
+  Inventor/nodes/SoGroup.i, Inventor/sensors/SoSensor.i,
+  Inventor/SbImage.i, Inventor/SbVec2s.i, Inventor/SbDict.i,
+  Inventor/SbDPRotation.i, Inventor/SbVec3s.i, Inventor/SbRotation.i,
+  Inventor/SbVec2d.i, Inventor/SbMatrix.i, Inventor/SbVec3d.i,
+  Inventor/actions/SoWriteAction.i, Inventor/SbVec2f.i,
+  Inventor/SbVec4d.i, Inventor/SbVec3f.i, Inventor/SbString.i,
+  Inventor/SbVec4f.i, Inventor/actions/SoCallbackAction.i,
+  Inventor/SbColor4f.i, Inventor/SoPath.i,
+  Inventor/nodes/SoSelection.i:
+
+  removed shadowed constructor code as there is really no difference in
+  ownership to the SWIG generated wrapper code.
+
+2005-08-07 07:35:51 - r475 - tamer
+
+* Inventor/lists/SoEngineOutputList.i, Inventor/lists/SbStringList.i,
+  Inventor/lists/SbVec3fList.i, Inventor/lists/SoPickedPointList.i,
+  Inventor/lists/SbIntList.i, Inventor/lists/SoActionMethodList.i,
+  Inventor/lists/SoTypeList.i, Inventor/lists/SoDetailList.i,
+  Inventor/lists/SoEngineList.i:
+
+  added operator[] and set/get support.
+
+2005-08-07 06:19:16 - r474 - tamer
+
+* Inventor/lists/SoBaseList.i, Inventor/lists/SoPathList.i,
+  Inventor/lists/SbPList.i, Inventor/lists/SoFieldList.i,
+  Inventor/lists/SoNodeList.i:
+
+  minor code style fixes.
+
+2005-08-07 06:03:05 - r473 - tamer
+
+* Inventor/SoOffscreenRenderer.i:
+
+  actually, we need the getBuffer() method... *getting some coffee*
+
+2005-08-07 05:55:02 - r472 - tamer
+
+* Inventor/SbColor.i:
+
+  added typemap for hsv[3].
+
+2005-08-07 05:36:11 - r471 - tamer
+
+* MANIFEST.in:
+
+  include HACKING and NEWS.
+
+2005-08-07 05:35:48 - r470 - tamer
+
+* NEWS:
+
+  added NEWS file describing features and bugfixes between releases.
+
+2005-08-07 05:27:42 - r469 - tamer
+
+* Inventor/actions/SoGLRenderAction.i, Inventor/fields/SoMFVec4f.i,
+  Inventor/SoOffscreenRenderer.i, Inventor/Qt/SoQtRenderArea.i,
+  Inventor/SbColor.i, Inventor/fields/SoSFVec2f.i,
+  Inventor/nodes/SoGroup.i, Inventor/sensors/SoSensor.i,
+  Inventor/SbVec3s.i, Inventor/Qt/SoQtCursor.i, Inventor/SbDict.i,
+  Inventor/fields/SoMField.i, Inventor/fields/SoSFVec4f.i,
+  Inventor/draggers/SoDragger.i, Inventor/actions/SoAction.i,
+  Inventor/fields/SoMFUShort.i, Inventor/fields/SoMFNode.i,
+  Inventor/SbBox3s.i, Inventor/SbRotation.i,
+  Inventor/fields/SoMFPath.i, Inventor/SbVec2d.i, Inventor/SbMatrix.i,
+  Inventor/fields/SoMFPlane.i, Inventor/SbVec2f.i, Inventor/SbVec4d.i,
+  Inventor/Win/SoWinCursor.i, Inventor/actions/SoWriteAction.i,
+  Inventor/fields/SoField.i, Inventor/SbVec4f.i,
+  Inventor/actions/SoCallbackAction.i, Inventor/SbColor4f.i,
+  Inventor/fields/SoFieldContainer.i, Inventor/nodes/SoSelection.i,
+  Inventor/nodes/SoNode.i, Inventor/fields/SoMFEngine.i,
+  Inventor/fields/SoMFString.i, Inventor/fields/SoMFVec3f.i,
+  Inventor/nodes/SoCamera.i, Inventor/nodes/SoCallback.i,
+  Inventor/SbImage.i, Inventor/SbVec2s.i, Inventor/fields/SoSFVec3f.i,
+  Inventor/SbDPRotation.i, Inventor/nodes/SoEventCallback.i,
+  Inventor/fields/SoMFColor.i, Inventor/fields/SoMFName.i,
+  Inventor/SbDPMatrix.i, Inventor/lists/SbPList.i,
+  Inventor/fields/SoSFColor.i, Inventor/SbVec3d.i,
+  Inventor/fields/SoMFTime.i, Inventor/fields/SoMFRotation.i,
+  Inventor/fields/SoMFShort.i, Inventor/SbVec3f.i,
+  Inventor/SbString.i, Inventor/SoPath.i,
+  Inventor/fields/SoMFMatrix.i,
+  Inventor/collision/SoIntersectionDetectionAction.i,
+  Inventor/fields/SoMFFloat.i, Inventor/fields/SoMFVec2f.i:
+
+  fix for Issue16. remove all code obsoleted by SWIG's constructor and method
+  overloading handling. however, need to keep shadowing constructor code
+  dealing with ownership.
+
+2005-08-07 05:23:42 - r468 - tamer
+
+* tests/pivy_tests.py:
+
+  added So prefix in description before singled and multi field types.
+
+2005-08-06 16:59:18 - r466 - tamer
+
+* Inventor/sensors/SoDelayQueueSensor.i:
+
+  remove not needed typdef declaration.
+
+2005-08-04 15:11:14 - r464 - tamer
+
+* Inventor/fields/SoSubField.h.fix, Inventor/engines/SoSubEngine.h.fix,
+  Inventor/nodes/SoSubNode.h.fix:
+
+  removed obsolete files. SWIG empty macro define "#define FOO()" doesn't hit
+  anymore.
+
+2005-08-04 14:56:51 - r463 - tamer
+
+* Inventor/system/inttypes.h.win32:
+
+  type definition for COIN_UINT64_T looks like it could pass through SWIG now.
+
+2005-08-04 14:43:53 - r462 - tamer
+
+* fake_headers/Inventor/C/base/string.h,
+  interfaces/coin_header_includes.h, Inventor/fields/SoSFTrigger.i,
+  Inventor/fields/SoSFMatrix.i, Inventor/fields/SoSFImage3.i,
+  Inventor/elements/SoLazyElement.i, HACKING,
+  examples/SoPyScript/example.iv,
+  Inventor/elements/SoDiffuseColorElement.i,
+  VolumeViz/nodes/SoVolumeRender.i, fake_headers/Inventor/C/glue/dl.h,
+  fake_headers/Inventor/C/threads/mutex.h,
+  Inventor/fields/SoMFUShort.i, Inventor/lists/SoFieldList.i,
+  fake_headers/Inventor/C/base/hash.h, Inventor/fields/SoMFNode.i,
+  fake_headers/Inventor/C/threads/thread.h,
+  fake_headers/Inventor/C/threads/worker.h,
+  Inventor/fields/SoMFPath.i, fake_headers/Inventor/C/base/time.h,
+  Inventor/fields/SoMFPlane.i, interfaces/simvoleon.i,
+  fake_headers/Inventor/C/threads/fifo.h, Inventor/fields/SoSFPlane.i,
+  fake_headers/Inventor/C/threads/sched.h,
+  Inventor/system/inttypes.h.win32,
+  fake_headers/Inventor/C/threads/common.h,
+  Inventor/fields/SoSFEngine.i, pivy/gui/__init__.py,
+  fake_headers/Inventor/C/base/list.h, tests/pivy_tests.py,
+  fake_headers/Inventor/C/threads/wpool.h, examples/examiner_embed.py,
+  Inventor/fields/SoMFUInt32.i,
+  fake_headers/Inventor/C/threads/storage.h,
+  fake_headers/Inventor/C/glue/gl.h, pivy/__init__.py,
+  fake_headers/Inventor/C/base/memalloc.h,
+  fake_headers/Inventor/C/errors/error.h,
+  Inventor/fields/SoSubField.h.fix, Inventor/fields/SoMFTime.i,
+  Inventor/fields/SoMFShort.i, Inventor/nodes/SoSubNode.h.fix,
+  Inventor/fields/SoMFMatrix.i,
+  fake_headers/Inventor/C/base/rbptree.h,
+  examples/Mentor/01.1.Windmill.iv,
+  fake_headers/Inventor/C/threads/barrier.h,
+  Inventor/nodekits/SoBaseKit.i, Inventor/fields/SoMField.i,
+  docs/ChangeLog.2004, fake_headers/Inventor/C/threads/condvar.h,
+  fake_headers/Inventor/C/threads/recmutex.h,
+  fake_headers/Inventor/C/base/heap.h,
+  fake_headers/Inventor/C/tidbits.h,
+  examples/SoPyScript/example_local.iv, Inventor/fields/SoSFUShort.i,
+  examples/SoPyScript/example_remote.iv, Inventor/fields/SoSFNode.i,
+  fake_headers/Inventor/C/threads/rwmutex.h,
+  fake_headers/Inventor/C/threads/sync.h,
+  examples/SIMVoleon/utility.py, Inventor/fields/SoSFPath.i,
+  Inventor/engines/SoSubEngine.h.fix, Inventor/fields/SoMFEnum.i,
+  Inventor/fields/SoMFEngine.i, swigpyrun.h,
+  Inventor/lists/SoBaseList.i, Inventor/misc/SoBase.i,
+  examples/SIMVoleon/examine.py, Inventor/fields/SoMFName.i,
+  Inventor/lists/SbPList.i, Inventor/fields/SoSFUInt32.i,
+  Inventor/fields/SoMFBool.i, Inventor/fields/SoMFRotation.i,
+  fake_headers/Inventor/C/errors/debugerror.h,
+  Inventor/engines/SoEngine.i, Inventor/fields/SoSFTime.i:
+
+  set svn:eol-style property to native.
+
+2005-08-04 14:36:46 - r461 - tamer
+
+* setup.py:
+
+  also clean SIMVoleon headers.
+
+2005-08-04 14:36:06 - r460 - tamer
+
+* interfaces/simvoleon.i:
+
+  added autorefing for SoBase derived nodes.
+
+2005-08-04 14:31:19 - r459 - tamer
+
+* examples/SIMVoleon/examine.py:
+
+  ref'ing now works correctly.
+
+2005-08-04 14:30:01 - r458 - tamer
+
+* VolumeViz/nodes, VolumeViz/nodes/SoVolumeRender.i:
+
+  added support for SoVolumeRender::setAbortCallback().
+
+2005-08-04 13:38:01 - r457 - tamer
+
+* setup.py:
+
+  docstring fix.
+
+2005-08-04 13:35:42 - r456 - tamer
+
+* VolumeViz, setup.py:
+
+  cleanup of build system support for SIMVoleon.
+
+2005-08-04 08:31:07 - r455 - reitmayr
+
+* examples/extend/SConstruct:
+
+  correct specification of coin lib for windows
+
+2005-08-04 04:33:06 - r454 - tamer
+
+* examples/SIMVoleon/utility.py, interfaces/simvoleon.i,
+  examples/SIMVoleon/examine.py, setup.py, examples/SIMVoleon:
+
+  added initial SIMVoleon support. needs a couple of proper void * typemaps
+  (best would be an interface to numarray to handle the large volume data).
+  otherwise just the ususal callback handling glue code and getBuffer()
+  size parameter handling through typemap numinputs tweaks. it's a piece
+  of cake by now as everything has already been done for the coin module. ;)
+
+2005-08-04 00:46:51 - r453 - tamer
+
+* examples/extend/scale_test.py:
+
+  (C) header update
+
+2005-08-04 00:13:48 - r452 - tamer
+
+* examples/extend/scale_test.py:
+
+  added FIXME note for the ref() problem.
+
+2005-08-03 22:23:09 - r451 - tamer
+
+* examples/extend/scale_test.py:
+
+  added kit.ref() to workaround a segfault and reordered imports to let it
+  work with SoQt.
+
+2005-08-03 21:29:16 - r449 - tamer
+
+* Inventor/nodekits/SoBaseKit.i:
+
+  __getattribute__ -> __getattr__. fixes field access in nodekits as with
+  SoTranslate1Dragger. fix by Gerhard.
+
+2005-08-03 21:26:07 - r448 - tamer
+
+* interfaces/coin.i:
+
+  small simplification.
+
+2005-08-03 08:48:06 - r447 - tamer
+
+* examples/extend/ShapeScale.cpp, examples/extend/ShapeScale.h:
+
+  (C) date update
+
+2005-08-03 07:52:17 - r446 - tamer
+
+* examples/extend/shapescale.i:
+
+  updated (C)
+
+2005-08-03 07:47:54 - r445 - tamer
+
+* interfaces/pivy_common_typemaps.i:
+
+  readded SbString include needed for extension as the extend example.
+
+2005-08-03 07:47:19 - r444 - tamer
+
+* examples/extend/scale_test.py:
+
+  adapted from the __call_() to the assignment interface.
+
+2005-08-03 07:19:00 - r443 - tamer
+
+* examples/Mentor/07.1.BasicTexture.py, examples/Mentor/09.2.Texture.py,
+  examples/Mentor/05.3.TriangleStripSet.py,
+  examples/Mentor/14.1.FrolickingWords.py,
+  examples/Mentor/02.4.Examiner.py,
+  examples/Mentor/13.1.GlobalFlds.py, examples/Mentor/17.3.GLFloor.py,
+  examples/Mentor/07.3.TextureFunction.py,
+  examples/Mentor/05.1.FaceSet.py, examples/Mentor/05.4.QuadMesh.py,
+  examples/Mentor/13.7.Rotor.py,
+  examples/Mentor/05.2.IndexedFaceSet.py,
+  examples/Mentor/12.2.NodeSensor.py,
+  examples/Mentor/16.4.OneWindow.py,
+  examples/Mentor/10.3and4.MotifList.py, examples/Mentor/13.4.Gate.py,
+  examples/Mentor/17.2.GLCallback.py,
+  examples/Mentor/10.7.PickFilterManip.py,
+  examples/Mentor/03.2.Robot.py, examples/Mentor/12.3.AlarmSensor.py,
+  examples/Mentor/14.3.Balance.py,
+  examples/Mentor/06.2.Simple3DText.py,
+  examples/Mentor/04.2.Lights.py, examples/Mentor/10.5.SelectionCB.py,
+  examples/Mentor/09.4.PickAction.py,
+  examples/Mentor/15.3.AttachManip.py,
+  examples/Mentor/13.8.Blinker.py, examples/Mentor/15.1.ConeRadius.py,
+  examples/Mentor/13.6.Calculator.py,
+  examples/Mentor/02.2.EngineSpin.py,
+  examples/Mentor/07.2.TextureCoordinates.py,
+  examples/Mentor/09.1.Print.py, examples/Mentor/03.1.Molecule.py,
+  examples/Mentor/08.2.UniCurve.py, examples/Mentor/02.1.HelloCone.py,
+  examples/Mentor/06.3.Complex3DText.py,
+  examples/Mentor/04.1.Cameras.py,
+  examples/Mentor/05.6.TransformOrdering.py,
+  examples/Mentor/08.1.BSCurve.py,
+  examples/Mentor/10.8.PickFilterNodeKit.py,
+  examples/Mentor/05.5.Binding.py,
+  examples/Mentor/16.3.AttachEditor.py,
+  examples/Mentor/08.4.TrimSurf.py, examples/Mentor/13.5.Boolean.py,
+  examples/Mentor/08.3.BezSurf.py, examples/Mentor/06.1.Text.py,
+  examples/Mentor/15.4.Customize.py,
+  examples/Mentor/10.1.addEventCB.py, examples/Mentor/09.5.GenSph.py,
+  examples/Mentor/13.2.ElapsedTime.py,
+  examples/Mentor/15.2.SliderBox.py,
+  examples/Mentor/02.3.Trackball.py,
+  examples/Mentor/10.2.setEventCB.py,
+  examples/Mentor/13.3.TimeCounter.py,
+  examples/Mentor/16.2.Callback.py:
+
+  the __call__() interface which allowed fields to be treated like methods
+  has been deprecated. adapted examples to use the new assignment functionality
+  through the = operator (which is a much better and more natural interface).
+
+2005-08-03 07:16:20 - r442 - tamer
+
+* Inventor/SbName.i:
+
+  code style fix
+
+2005-08-03 07:15:13 - r441 - tamer
+
+* setup.py:
+
+  shorten the description.
+
+2005-08-03 07:13:22 - r440 - tamer
+
+* HACKING:
+
+  reworded it a bit.
+
+2005-08-03 07:10:36 - r439 - tamer
+
+* HACKING:
+
+  added document describing which coding style guidelines Pivy should adhere to
+  for consistency reasons. i.e. Coin HACKING for C/C++ code; PEP8 and PEP257
+  for Python code.
+
+2005-08-03 06:49:56 - r438 - tamer
+
+* Inventor/fields/SoMFVec4f.i, Inventor/fields/SoSFTrigger.i,
+  Inventor/fields/SoSFMatrix.i, Inventor/fields/SoSFImage3.i,
+  Inventor/fields/SoSFFloat.i, Inventor/fields/SoSFVec2f.i,
+  Inventor/fields/SoMField.i, Inventor/fields/SoSFVec4f.i,
+  Inventor/fields/SoMFUShort.i, Inventor/fields/SoMFNode.i,
+  Inventor/fields/SoSFImage.i, Inventor/fields/SoSFUShort.i,
+  Inventor/fields/SoSFNode.i, Inventor/fields/SoMFPath.i,
+  Inventor/fields/SoMFInt32.i, Inventor/fields/SoMFPlane.i,
+  Inventor/fields/SoField.i, Inventor/fields/SoSFPath.i,
+  Inventor/fields/SoMFEnum.i, Inventor/fields/SoSFPlane.i,
+  Inventor/fields/SoMFEngine.i, Inventor/fields/SoSFInt32.i,
+  Inventor/fields/SoMFString.i, Inventor/fields/SoMFVec3f.i,
+  Inventor/fields/SoSFEnum.i, Inventor/fields/SoSFEngine.i,
+  Inventor/fields/SoSFVec3f.i, Inventor/fields/SoSFString.i,
+  Inventor/fields/SoMFColor.i, Inventor/fields/SoMFName.i,
+  Inventor/fields/SoMFUInt32.i, Inventor/fields/SoSFColor.i,
+  Inventor/fields/SoSFName.i, Inventor/fields/SoSFUInt32.i,
+  Inventor/fields/SoMFBool.i, Inventor/fields/SoMFTime.i,
+  Inventor/fields/SoMFRotation.i, Inventor/fields/SoMFShort.i,
+  Inventor/fields/SoSFBool.i, Inventor/fields/SoMFMatrix.i,
+  Inventor/fields/SoSFTime.i, Inventor/fields/SoMFVec2f.i,
+  Inventor/fields/SoMFFloat.i, Inventor/fields/SoSFRotation.i,
+  Inventor/fields/SoSFShort.i:
+
+  coding style fixes. *sigh*
+
+2005-08-03 06:17:06 - r437 - tamer
+
+* Inventor/fields/SoMFString.i:
+
+  please, don't comment anything out without leaving a FIXME on why the code is
+  commented.
+  use the #if 0 #endif preprocessor directives to ease finding those parts.
+
+2005-08-03 05:59:26 - r436 - tamer
+
+* interfaces/pivy_common_typemaps.i:
+
+  add generic typemaps for int32_t, uint32_t.
+
+2005-08-02 18:09:24 - r434 - tamer
+
+* Inventor/misc/SoBase.i, tests/pivy_tests.py:
+
+  robustness fix. check if the other value isn't NULL. needed e.g. if return
+  type from SoDB.readAll() is checked. added test case.
+  needs to be fixed for all other __eq__/__nq__ occurences as well.
+
+2005-07-31 23:17:05 - r432 - tamer
+
+* AUTHORS, THANKS:
+
+  added Gerhard Reitmayr to the AUTHORS list.
+
+2005-07-31 17:16:41 - r430 - reitmayr
+
+* tests/pivy_tests.py, interfaces/pivy_common_typemaps.i:
+
+  rearranging declarations makes common type maps for SoFieldContainer output
+  and SbName input work.
+
+2005-07-31 10:54:13 - r429 - reitmayr
+
+* tests/pivy_tests.py:
+
+  more tests for fields, SbTime simplification and len() on MFields
+
+2005-07-31 10:53:27 - r428 - reitmayr
+
+* Inventor/fields/SoSFImage.i, Inventor/fields/SoSFTrigger.i,
+  Inventor/fields/SoSFUInt32.i, Inventor/fields/SoSFUShort.i,
+  Inventor/fields/SoSFImage3.i, Inventor/fields/SoMFPath.i,
+  Inventor/fields/SoMFTime.i, Inventor/fields/SoMFPlane.i,
+  Inventor/fields/SoSFPath.i, Inventor/fields/SoMFEnum.i,
+  Inventor/fields/SoMFUInt32.i, Inventor/fields/SoMFUShort.i,
+  Inventor/fields/SoSFColor.i, Inventor/fields/SoSFTime.i,
+  Inventor/fields/SoSFPlane.i:
+
+  finished getValue/setValue support for fields
+
+2005-07-31 10:52:05 - r427 - reitmayr
+
+* Inventor/fields/SoMField.i:
+
+  support for buildin len() function
+
+2005-07-31 10:49:28 - r426 - reitmayr
+
+* Inventor/SbTime.i:
+
+  simplified SbTime wrapper
+
+2005-07-31 01:55:38 - r425 - tamer
+
+* tests/pivy_tests.py:
+
+  added check for SoField.get().
+
+2005-07-31 01:35:51 - r424 - tamer
+
+* Inventor/fields/SoField.i:
+
+  handle out parameter for SoField::get(SbString&). reported by Gerhard.
+
+2005-07-30 23:11:40 - r423 - reitmayr
+
+* Inventor/fields/SoMFVec4f.i, Inventor/fields/SoSFMatrix.i,
+  Inventor/fields/SoSFVec2f.i, Inventor/fields/SoSFFloat.i,
+  Inventor/fields/SoSFVec4f.i, Inventor/fields/SoMField.i,
+  Inventor/fields/SoMFUShort.i, Inventor/fields/SoMFNode.i,
+  Inventor/fields/SoSFNode.i, Inventor/fields/SoMFInt32.i,
+  Inventor/fields/SoSFInt32.i, Inventor/fields/SoMFEngine.i,
+  Inventor/fields/SoMFString.i, Inventor/fields/SoMFVec3f.i,
+  Inventor/fields/SoSFEnum.i, Inventor/fields/SoSFEngine.i,
+  tests/pivy_tests.py, Inventor/fields/SoSFString.i,
+  Inventor/fields/SoSFVec3f.i, Inventor/fields/SoMFColor.i,
+  Inventor/fields/SoMFName.i, Inventor/fields/SoMFUInt32.i,
+  Inventor/fields/SoSFColor.i, Inventor/fields/SoSFName.i,
+  Inventor/fields/SoMFBool.i, Inventor/fields/SoMFShort.i,
+  Inventor/fields/SoMFRotation.i, Inventor/fields/SoSFBool.i,
+  Inventor/fields/SoMFMatrix.i, Inventor/fields/SoMFFloat.i,
+  Inventor/fields/SoSFRotation.i, Inventor/fields/SoSFShort.i,
+  Inventor/fields/SoMFVec2f.i:
+
+  implemented setValue/s and getValues for most field types. also added tests
+  for these methods. mostly, I used the swig overloading mechanism and just
+  provided typemaps for correct conversion and type checking. A couple of
+  fields are missing, we should go over them and add them sometime.
+
+2005-07-30 23:06:51 - r422 - reitmayr
+
+* Inventor/SbName.i, Inventor/SbString.i:
+
+  added comparisons with strings
+
+2005-07-30 19:18:54 - r420 - reitmayr
+
+* Inventor/misc, Inventor/misc/SoBase.i:
+
+  working comparisions for SoBase objects based on identity of underlying OIV
+  objects (also, required for correct executions of test)
+
+2005-07-30 16:25:56 - r419 - reitmayr
+
+* Inventor/SbName.i, Inventor/SbString.i:
+
+  fixed various versions of the constructor by simply allowing swig to deal
+  with the overloading. resolves all the tests for SbString and SbName
+  constructors
+
+2005-07-30 16:18:18 - r418 - reitmayr
+
+* Inventor/SoType.i, tests/pivy_tests.py:
+
+  fixed typo in SoType.i plus tests for autocasting from SoType.createInstance
+
+2005-07-30 15:38:52 - r417 - reitmayr
+
+* tests/pivy_tests.py:
+
+  tests for list updates
+
+2005-07-30 15:38:26 - r416 - reitmayr
+
+* Inventor/lists/SoBaseList.i, Inventor/lists/SoPathList.i,
+  Inventor/lists/SbPList.i, Inventor/lists/SoFieldList.i,
+  Inventor/lists/SoNodeList.i:
+
+  updated lists with iterators, [] set and get methods. there is a difference
+  between SoBaseList and SoFieldList in that set does not expand for the
+  former, but does for the later. I have left this in, but it is annoying (see
+  tests). we might want to fix that.
+
+2005-07-30 11:12:25 - r415 - reitmayr
+
+* tests/pivy_tests.py:
+
+  a lot of tests I added while working on field get/set stuff
+
+2005-07-29 14:52:44 - r413 - reitmayr
+
+* interfaces/coin.i:
+
+  moved property removal code to the end to work properly, also use locals now
+  to resolve classes correctly
+
+2005-07-28 16:27:29 - r411 - tamer
+
+* interfaces/coin.i:
+
+  reverted removal of the field property removal code snippet (Gerhard
+  explained in full details what and why it is needed for) needs to be
+  tweaked a bit for some special cases.
+
+2005-07-28 16:18:09 - r410 - tamer
+
+* examples/SoPyScript/example.iv, examples/SoPyScript/glow.py:
+
+  fix for SbColor operator handling.
+
+2005-07-28 16:15:08 - r409 - tamer
+
+* Inventor/SbColor.i, Inventor/SbMatrix.i, Inventor/SbDPMatrix.i:
+
+  proper operator handling and cleanup.
+
+2005-07-27 21:04:00 - r407 - tamer
+
+* MANIFEST.in:
+
+  updated the manifesto for the package generation part of distutils.
+
+2005-07-27 21:00:04 - r406 - tamer
+
+* SConstruct:
+
+  removed obsolete scons build file which was needed for building the
+  libpivy_runtime library.
+
+2005-07-27 20:57:49 - r405 - tamer
+
+* setup.py:
+
+  code cleanup and build system adaptions for new pivy package and SWIG runtime
+  system.
+  support for SWIG 1.3.25 and Coin 2.4. new swig runtime systems allowed
+  to get rid of some dirty harry hacks and workarounds and drastically
+  simplified the build script because of the dreaded(tm) libpivy_runtime
+  library dependency has vanished.
+
+2005-07-27 20:52:24 - r404 - tamer
+
+* tests/pivy_tests.py:
+
+  fixed import for new pivy package.
+
+2005-07-27 20:51:35 - r403 - tamer
+
+* SoPyScript/SConstruct:
+
+  we don't need no dreaded libpivy_runtime library anymore... *tralala*
+
+2005-07-27 20:50:57 - r402 - tamer
+
+* SoPyScript/SoPyScript.cpp:
+
+  code cleanups. adaption to the swig 1.3.25 type system and package system.
+
+2005-07-27 20:48:41 - r401 - tamer
+
+* SoPyScript/SoPyScript.h:
+
+  fixed year in (C) header.
+
+2005-07-27 20:47:31 - r400 - tamer
+
+* examples/Mentor/05.3.TriangleStripSet.py,
+  examples/Mentor/14.1.FrolickingWords.py,
+  examples/Mentor/02.4.Examiner.py, examples/Mentor/17.3.GLFloor.py,
+  examples/Mentor/05.1.FaceSet.py, examples/Mentor/05.4.QuadMesh.py,
+  examples/Mentor/05.2.IndexedFaceSet.py,
+  examples/Mentor/16.4.OneWindow.py,
+  examples/Mentor/10.3and4.MotifList.py,
+  examples/Mentor/03.2.Robot.py, examples/Mentor/12.3.AlarmSensor.py,
+  examples/Mentor/06.2.Simple3DText.py,
+  examples/Mentor/14.3.Balance.py, examples/Mentor/04.2.Lights.py,
+  examples/Mentor/13.8.Blinker.py, examples/Mentor/15.1.ConeRadius.py,
+  examples/Mentor/09.1.Print.py, examples/Mentor/03.1.Molecule.py,
+  examples/Mentor/08.2.UniCurve.py, examples/Mentor/02.1.HelloCone.py,
+  examples/Mentor/11.1.ReadFile.py,
+  examples/Mentor/10.6.PickFilterTopLevel.py,
+  examples/Mentor/17.1.ColorIndex.py,
+  examples/Mentor/05.6.TransformOrdering.py,
+  examples/Mentor/08.1.BSCurve.py, examples/Mentor/06.1.Text.py,
+  examples/Mentor/15.4.Customize.py,
+  examples/Mentor/10.1.addEventCB.py, examples/Mentor/09.5.GenSph.py,
+  examples/Mentor/13.3.TimeCounter.py,
+  examples/Mentor/07.1.BasicTexture.py,
+  examples/Mentor/09.2.Texture.py, examples/Mentor/13.1.GlobalFlds.py,
+  examples/Mentor/07.3.TextureFunction.py,
+  examples/Mentor/13.7.Rotor.py, examples/Mentor/14.2.Editors.py,
+  examples/Mentor/12.1.FieldSensor.py,
+  examples/Mentor/12.4.TimerSensor.py,
+  examples/Mentor/12.2.NodeSensor.py, examples/Mentor/13.4.Gate.py,
+  examples/Mentor/17.2.GLCallback.py,
+  examples/Mentor/10.7.PickFilterManip.py,
+  examples/Mentor/16.1.Overlay.py,
+  examples/Mentor/10.5.SelectionCB.py,
+  examples/Mentor/09.4.PickAction.py,
+  examples/Mentor/15.3.AttachManip.py,
+  examples/Mentor/02.2.EngineSpin.py,
+  examples/Mentor/13.6.Calculator.py,
+  examples/Mentor/07.2.TextureCoordinates.py,
+  examples/Mentor/11.2.ReadString.py,
+  examples/Mentor/06.3.Complex3DText.py,
+  examples/Mentor/03.3.Naming.py, examples/Mentor/04.1.Cameras.py,
+  examples/Mentor/09.3.Search.py,
+  examples/Mentor/10.8.PickFilterNodeKit.py,
+  examples/Mentor/05.5.Binding.py, examples/Mentor/16.5.Examiner.py,
+  examples/Mentor/16.3.AttachEditor.py,
+  examples/Mentor/08.4.TrimSurf.py, examples/Mentor/13.5.Boolean.py,
+  examples/Mentor/08.3.BezSurf.py,
+  examples/Mentor/13.2.ElapsedTime.py,
+  examples/Mentor/15.2.SliderBox.py,
+  examples/Mentor/02.3.Trackball.py, examples/Mentor/16.2.Callback.py,
+  examples/Mentor/10.2.setEventCB.py:
+
+  mega patch II: code cleanups and adaptions for the new package code; made all
+  non working examples (mostly SoGuiMaterialEditor and very Xt, OpenGL toolkit
+  specific code) exiting gracefully explaining why with a short message.
+  (done in order to prevent wasting anybody's time in trying to figure out
+  if his system or rather the code is broken *shrug*)
+
+2005-07-27 20:39:21 - r399 - tamer
+
+* examples/SoPyScript/SConstruct:
+
+  say goodbye to the dreaded pivy_runtime library. *taking
+  a confetti shower*
+
+2005-07-27 20:37:51 - r398 - tamer
+
+* examples/examiner_embed.py:
+
+  added a _working_ example that shows how to embed a
+  SoQtExaminerViewer in a PyQt windows in Pivy.
+
+2005-07-27 20:36:33 - r397 - tamer
+
+* examples/extend/scale_test.py, examples/extend/shapescale.i,
+  examples/extend/SConstruct:
+
+  adaptions for the new type and package system.
+
+2005-07-27 20:35:02 - r396 - tamer
+
+* Inventor/fields/SoMFVec4f.i, Inventor/SoOffscreenRenderer.i,
+  Inventor/SbColor.i, Inventor/SbBox3f.i, Inventor/fields/SoSFFloat.i,
+  Inventor/sensors/SoOneShotSensor.i,
+  Inventor/sensors/SoTimerSensor.i, Inventor/SbViewportRegion.i,
+  Inventor/SbVec3s.i, Inventor/SbDPPlane.i, Inventor/SbDict.i,
+  Inventor/fields/SoSFVec4f.i, Inventor/SoNodeKitPath.i,
+  Inventor/actions/SoAction.i, Inventor/fields/SoMFUShort.i,
+  Inventor/SbTime.i, Inventor/SoType.i,
+  Inventor/sensors/SoPathSensor.i, Inventor/SbMatrix.i,
+  Inventor/actions/SoWriteAction.i, Inventor/SbVec4d.i,
+  Inventor/SbVec4f.i, Inventor/SbColor4f.i,
+  Inventor/fields/SoFieldContainer.i, Inventor/nodes/SoSelection.i,
+  Inventor/fields/SoMFVec3f.i, Inventor/fields/SoMFString.i,
+  Inventor/nodes/SoCamera.i, Inventor/SbBox2d.i,
+  Inventor/fields/SoSFEnum.i, Inventor/SbBox2f.i,
+  Inventor/sensors/SoIdleSensor.i, Inventor/SbVec2s.i,
+  Inventor/fields/SoSFVec3f.i, Inventor/SbDPRotation.i,
+  Inventor/fields/SoMFUInt32.i, Inventor/fields/SoSFName.i,
+  Inventor/sensors/SoAlarmSensor.i, Inventor/SbPlane.i,
+  Inventor/SbVec3d.i, Inventor/fields/SoMFShort.i, Inventor/SbVec3f.i,
+  Inventor/fields/SoSFBool.i, Inventor/SoPath.i,
+  Inventor/fields/SoMFVec2f.i, Inventor/fields/SoSFRotation.i,
+  Inventor/fields/SoSFShort.i, Inventor/SbXfBox3f.i,
+  Inventor/nodekits/SoBaseKit.i, Inventor/SbName.i,
+  Inventor/nodes/SoGroup.i, Inventor/fields/SoSFVec2f.i,
+  Inventor/sensors/SoSensor.i, Inventor/sensors/SoFieldSensor.i,
+  Inventor/draggers/SoDragger.i, Inventor/sensors/SoNodeSensor.i,
+  Inventor/SbBox3s.i, Inventor/fields/SoSFImage.i,
+  Inventor/SbRotation.i, Inventor/SbVec2d.i, Inventor/SbVec2f.i,
+  Inventor/fields/SoMFInt32.i, Inventor/sensors/SoDelayQueueSensor.i,
+  Inventor/fields/SoField.i, Inventor/actions/SoCallbackAction.i,
+  Inventor/nodes/SoNode.i, Inventor/fields/SoSFInt32.i,
+  Inventor/fields/SoSFString.i, Inventor/SbImage.i,
+  Inventor/fields/SoMFColor.i, Inventor/SbDPMatrix.i,
+  Inventor/sensors/SoTimerQueueSensor.i, Inventor/fields/SoSFColor.i,
+  Inventor/SbBox2s.i, Inventor/fields/SoMFBool.i, Inventor/SbString.i,
+  Inventor/fields/SoMFFloat.i,
+  Inventor/collision/SoIntersectionDetectionAction.i,
+  Inventor/sensors/SoDataSensor.i:
+
+  mega patch: code cleanups, various tweaks for swig 1.3.25, replace all
+  occurences of _pivy with the new _coin module name.
+  (no way i am ever going to rename anything like this in pivy again. torture
+  me, scratch me, byte me, hurt me, tell me windows is great -> it's not gonna
+  happen... *sigh*)
+
+2005-07-27 20:26:41 - r395 - tamer
+
+* Inventor/Win/SoWinCursor.i:
+
+  _sowin instead of the _pivy module needs to be consulted for
+  SoWinCursor code if this should ever be touched...
+
+2005-07-27 20:25:27 - r394 - tamer
+
+* Inventor/Qt/SoQtCursor.i:
+
+  hmm, did i mention that we need more unit tests? *argh*
+
+2005-07-27 20:23:58 - r393 - tamer
+
+* Inventor/Qt/SoQt.i:
+
+  swig 1.3.25 has a parsing bug reg. methods with an explicit void
+  parameter in their declaration.
+  this results in swig treating them as 2 separate methods and
+  generating a dispatch function for overloaded methods which then
+  happily breaks of course.
+
+2005-07-27 20:20:59 - r392 - tamer
+
+* Inventor/Qt/SoQtRenderArea.i:
+
+  code cleanups.
+
+2005-07-27 20:20:23 - r391 - tamer
+
+* interfaces/pivy.i, interfaces/coin.i:
+
+  renamed pivy to coin as it now lives under the
+  pivy package as pivy.coin.
+
+2005-07-27 20:19:28 - r390 - tamer
+
+* Inventor/Qt/SoQtCursor.i:
+
+  signing a petition for more unit tests. *cough*
+
+2005-07-27 20:18:02 - r389 - tamer
+
+* Inventor/elements, Inventor/elements/SoLazyElement.i,
+  Inventor/elements/SoDiffuseColorElement.i:
+
+  needed to workaround faulty casts in the autogenerated swig wrapper code.
+
+2005-07-27 20:16:47 - r388 - tamer
+
+* interfaces/pivy.i:
+
+  renamed module to pivy.coin. outsourcing of the Coin header files.
+  removal of the pythoncode snippet at the end which afaics is not
+  needed. = assigments for fields work fine without it and it wouldn't
+  have worked for the case where a user imported the pivy module properly
+  through "import pivy" ;).
+
+2005-07-27 20:12:38 - r387 - tamer
+
+* interfaces/sogtk.i, interfaces/soxt.i, interfaces/sowin.i:
+
+  adaption for the pivy package and %import of the coin module.
+
+2005-07-27 20:11:03 - r386 - tamer
+
+* interfaces/soqt.i:
+
+  added %typechecks for QWidget and QEvent and class declarations for same
+  to get entries for them in the generated SWIG type system code.
+  adaption for the pivy package and %import for the coin module which
+  reduces wrapper size and fixes the issues with the type system handling.
+
+2005-07-27 20:08:24 - r385 - tamer
+
+* interfaces/pivy_common_typemaps.i:
+
+  code cleanup, %typecheck additions needed for swig 1.3.25, %includes for
+  SbString.h and SoField.h needed for the swig interface files code
+  refactoring.
+
+2005-07-27 20:03:29 - r384 - tamer
+
+* interfaces/pivy_runtime.i:
+
+  removed obsolete file.
+
+2005-07-27 20:02:08 - r383 - tamer
+
+* interfaces/coin_header_includes.h:
+
+  outsourced all coin header files into its own file.
+
+2005-07-27 20:00:28 - r382 - tamer
+
+* sogui.py, pivy/sogui.py:
+
+  moved sogui proxy module to its new location in the package hierarchy.
+
+2005-07-27 19:59:45 - r381 - tamer
+
+* sogui.py:
+
+  package system adaptions.
+
+2005-07-27 19:58:59 - r380 - tamer
+
+* pivy/__init__.py, pivy/gui/__init__.py, pivy, pivy/gui:
+
+  added new pivy python package hierarchy and __init__.py
+  code.
+
+2005-07-27 19:57:45 - r379 - tamer
+
+* swigpyrun.h:
+
+  added autogenerated header (see:
+  http://www.swig.org/Doc1.3/Modules.html#external_run_time
+  through 'swig -python -external-runtime swigpyrun.h' needed for the new
+  runtime system mechanisms in 1.3.25.
+
+2005-06-16 00:30:06 - r377 - tamer
+
+* MANIFEST.in:
+
+  strip .txt suffix from README.txt.
+
+2005-06-16 00:23:14 - r376 - tamer
+
+* README, README.txt:
+
+  stripped off the unnecessary .txt suffix.
+
+2005-06-15 15:35:10 - r374 - tamer
+
+* sogui.py, interfaces/soqt.i, interfaces/pivy.i, interfaces/sogtk.i,
+  LICENSE, interfaces/soxt.i, interfaces/sowin.i,
+  interfaces/pivy_common_typemaps.i:
+
+  Copyright header date update.
+
+2005-06-15 15:33:26 - r373 - tamer
+
+* MANIFEST.in:
+
+  update for new directory structure.
+
+2005-06-15 15:29:58 - r372 - tamer
+
+* setup.py:
+
+  link the extensions against the python shared library in order to allow
+  dynamically loading of the SoPyScript node without having to link the
+  main application against the python shared library. (problem reported by
+  Gerhard)
+
+2005-06-15 03:22:56 - r371 - tamer
+
+* setup.py:
+
+  added workaround for Linux systems (such as gentoo) where python gets
+  compiled
+  with a compiler named differently than gcc. this breaks hardcoded detection
+  code (tagged as hackish) in distutils.
+
+2005-05-24 08:24:09 - r369 - tamer
+
+* ChangeLog:
+
+  strip the previous years.
+
+2005-05-24 08:22:39 - r368 - tamer
+
+* docs/ChangeLog.2004:
+
+  added ChangeLog.2004 for historical reference.
+
+2005-05-24 08:15:37 - r366 - tamer
+
+* ChangeLog:
+
+  tweaked the svn2cl.py script to produce a readable ChangeLog.
+
+2005-04-14 23:23:10 - r364 - reitmayr
+
+* interfaces/pivy.i, Inventor/engines/SoEngine.i:
+
+  fixed also access to SoEngineOutputs in a dynamic way. Fixed typo in the
+  property removal code. should work fine now. now it becomes really important
+  that all field types have proper setValue methods, because they are used by
+  the attribute setting code to support n.f = x syntax.
+
+2005-04-14 22:59:45 - r363 - reitmayr
+
+* Inventor/nodekits/SoBaseKit.i, interfaces/pivy.i,
+  Inventor/fields/SoFieldContainer.i:
+
+  solved the field access problem: now it is possible to write
+  material.diffuseColor = [0,1,1] for example.
+  The trick is first to delete all properties of classes derived from
+  SoFieldContainer (see pivy.i) and then
+  implement dynamic access in SoFieldContainer. Also required some additional
+  cleanup in the dynamic access
+  for parts.
+
+2005-04-14 18:35:42 - r361 - reitmayr
+
+* Inventor/fields/SoMFBool.i, Inventor/fields/SoMField.i,
+  Inventor/fields/SoMFInt32.i, Inventor/fields/SoMFShort.i,
+  Inventor/fields/SoMFUInt32.i, Inventor/fields/SoMFUShort.i,
+  Inventor/fields/SoMFFloat.i, Inventor/fields/SoMFString.i:
+
+  much cleaner iterator for MFields. works now for all MFields generically and
+  is based on flashy generators.
+
+2005-04-14 18:34:04 - r360 - reitmayr
+
+* interfaces/pivy.i, interfaces/sowin.i:
+
+  fixes for Coin 2.4: removed deprecated fields and added required #include.
+  also removed iterator stuff which is handled now much nicer.
+
+2005-01-13 16:46:12 - r358 - kyrah
+
+* README.txt:
+
+  Removed Mac OS X workaround, since it is no longer necessary
+
+2005-01-13 16:42:37 - r357 - kyrah
+
+* README, README.txt:
+
+  Renamed for easy double-click-ability.
+

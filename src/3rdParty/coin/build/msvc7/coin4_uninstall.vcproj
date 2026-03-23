@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="coin4_uninstall"
+	SccProjectName=""
+	SccLocalPath=""
+	Keyword="MakeFileProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="DLL (Release)|Win32"
+			OutputDirectory=".\Release"
+			IntermediateDirectory=".\Release"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc7 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll release msvc7 coin4 "
+				Output="coin4_uninstall.exe"/>
+		</Configuration>
+		<Configuration
+			Name="LIB (Release)|Win32"
+			OutputDirectory=".\StaticRelease"
+			IntermediateDirectory=".\StaticRelease"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc7 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib release msvc7 coin4 "
+				Output="coin4_uninstall.exe"/>
+		</Configuration>
+		<Configuration
+			Name="DLL (Debug)|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc7 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat dll debug msvc7 coin4 "
+				Output="coin4_uninstall.exe"/>
+		</Configuration>
+		<Configuration
+			Name="LIB (Debug)|Win32"
+			OutputDirectory=".\StaticDebug"
+			IntermediateDirectory=".\StaticDebug"
+			ConfigurationType="0"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCNMakeTool"
+				BuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc7 coin4"
+				ReBuildCommandLine="..\misc\uninstall-sdk.bat lib debug msvc7 coin4 "
+				Output="coin4_uninstall.exe"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Resource Files"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;bat">
+			<File
+				RelativePath="..\misc\uninstall-headers.bat">
+			</File>
+			<File
+				RelativePath="..\misc\uninstall-sdk.bat">
+			</File>
+		</Filter>
+	</Files>
+</VisualStudioProject>

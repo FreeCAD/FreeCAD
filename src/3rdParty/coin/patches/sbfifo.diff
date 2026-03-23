@@ -1,0 +1,360 @@
+This is pederb's implementation of a templatized FIFO-queue ADT. Could
+be eligible for inclusion in Coin if we should ever need it.
+
+mortene.
+
+There's now a fifo implementation in threads/ - void * based, not
+template based.
+
+larsa
+
+--- /dev/null	Tue May  5 22:32:27 1998
++++ include/Inventor/SbFIFO.h	Mon May 13 18:51:45 2002
+@@ -0,0 +1,225 @@
++/**************************************************************************\
++ *
++ *  Copyright (C) 1998-2005 by Systems in Motion. All rights reserved.
++ *
++ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
++ *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097
++ *
++\**************************************************************************/
++
++#ifndef COIN_SBFIFO_H
++#define COIN_SBFIFO_H
++
++#include <Inventor/SbBasic.h>
++#include <Inventor/lists/SbList.h>
++#include <assert.h>
++#include <stddef.h> // NULL definition
++
++// a class used to handle FIFO items. Only SbFIFO can construct
++// this type of object (private constructor and destructor).
++template <class Type> 
++class SbFIFOItem {
++public:
++  Type data;
++  SbFIFOItem<Type> * getNext(void) { return this->next; }
++private:
++  template <class AnyType> friend class SbFIFO;
++  SbFIFOItem(void) : next(NULL) { }
++  ~SbFIFOItem() { }
++  SbFIFOItem * next;
++};
++
++template <class Type>
++class SbFIFO {
++
++public:
++  SbFIFO(void);
++  SbFIFO(const SbFIFO<Type> & l);
++
++  // No need to define the destructor virtual, as Coin code should
++  // always know the class type of the fifo objects it is handling.
++  ~SbFIFO();
++
++  void copy(const SbFIFO<Type> & l);
++
++  void add(const Type data);
++  Type remove(void);
++  int getLength(void) const;
++  void empty(void);
++
++  SbFIFOItem<Type> * getFirst(void);
++  SbFIFOItem<Type> * getLast(void);
++  SbFIFOItem<Type> * find(const Type & data, SbFIFOItem<Type> * start = NULL);
++
++  void insertItem(SbFIFOItem<Type> * insertafter, const Type & data);
++  void removeItem(SbFIFOItem<Type> * removeafter);
++
++  SbFIFO <Type> & operator=(const SbFIFO<Type> & l);
++
++private:
++
++  SbFIFOItem<Type> * getNewItem(void) {
++    if (this->items.getLength()) return this->items.pop();
++    return new SbFIFOItem<Type>;
++  }
++  void clean(void);
++  
++  SbList <SbFIFOItem<Type>*> items;
++  SbFIFOItem<Type> * first;
++  SbFIFOItem<Type> * last;
++  int length;
++};
++
++
++/*** Inlined functions (they all are) *************************************/
++
++template <class Type> inline
++SbFIFO<Type>::SbFIFO(void)
++  : first(NULL), last(NULL), length(0)
++{
++}
++
++template <class Type> inline void
++SbFIFO<Type>::clean(void)
++{
++  int n = this->items.getLength();
++  for (int i = 0; i < n; i++) {
++    delete this->items[i];
++  }
++  this->items.truncate(0);
++  this->first = this->last = NULL;
++  this->length = 0;
++}
++
++template <class Type> inline void
++SbFIFO<Type>::copy(const SbFIFO<Type> & l)
++{
++  if (this == &l) return;
++  this->clean();
++  int n = l.items.getLength();
++  SbFIFOItem<Type> * item = l.first;
++  while (item) {
++    this->add(item->data);
++    item = item->next;
++  }
++}
++
++template <class Type> inline
++SbFIFO<Type>::SbFIFO(const SbFIFO<Type> & l)
++  : first(NULL), last(NULL), length(0)
++{
++  this->copy(l);
++}
++
++template <class Type> inline
++SbFIFO<Type>::~SbFIFO()
++{
++  this->clean();
++}
++
++template <class Type> inline void 
++SbFIFO<Type>::add(const Type data) 
++{
++  SbFIFOItem<Type> * item = this->getNewItem();
++  item->data = data;
++  item->next = NULL;
++  if (this->first == NULL) {
++    this->first = item;
++  }
++  else this->last->next = item;
++  this->last = item;
++  this->length++;
++}
++
++template <class Type> inline Type 
++SbFIFO<Type>::remove(void) 
++{
++  assert(this->first);
++  SbFIFOItem<Type> * ret = this->first;
++  this->first = this->first->next;
++  if (this->first == NULL) this->last = NULL;
++  this->items.append(ret);
++  this->length--;
++  return ret->data;
++}
++
++template <class Type> inline SbFIFO<Type> &
++SbFIFO<Type>::operator=(const SbFIFO<Type> & l)
++{
++  this->copy(l);
++  return *this;
++}
++
++template <class Type> inline SbFIFOItem<Type> * 
++SbFIFO<Type>::getFirst(void) 
++{
++  return this->first;
++}
++
++template <class Type> inline SbFIFOItem<Type> * 
++SbFIFO<Type>::getLast(void) 
++{
++  return this->last;
++}
++
++template <class Type> inline void 
++SbFIFO<Type>::insertItem(SbFIFOItem<Type> * insertafter, const Type & data) 
++{
++  SbFIFOItem<Type> * newitem = this->getNewItem();
++  newitem->data = data;
++  if (insertafter == NULL) {
++    newitem->next = this->first;
++    this->first = this->last = newitem;
++  }
++  else {
++    newitem->next = insertafter->next;
++    insertafter->next = newitem;
++    if (insertafter == this->last) this->last = newitem;
++  }
++  this->length++;
++}
++
++template <class Type> inline void 
++SbFIFO<Type>::removeItem(SbFIFOItem<Type> * removeafter) 
++{
++  assert(this->length > 0);
++  if (removeafter == NULL) {
++    this->items.append(this->first);
++    this->first = this->first->next;
++  }
++  else {
++    this->items.append(removeafter->next);
++    removeafter->next = removeafter->next->next;
++    if (removeafter->next == NULL) this->last = removeafter;
++  }
++  this->length--;
++}
++
++template <class Type> inline SbFIFOItem<Type> * 
++SbFIFO<Type>::find(const Type & data, SbFIFOItem<Type> * start) 
++{
++  SbFIFOItem<Type> * item = start ? start : this->first;
++  while (item) {
++    if (item->data == data) return item;
++    item = item->next;
++  }
++  return NULL;
++}
++
++template <class Type> inline int 
++SbFIFO<Type>::getLength(void) const 
++{
++  return this->length;
++}
++
++template <class Type> inline void 
++SbFIFO<Type>::empty(void)
++{
++  while (this->length) {
++    this->remove();
++  }
++}
++
++
++
++#endif // !COIN_SBFIFO_H
+--- /dev/null	Tue May  5 22:32:27 1998
++++ src/base/SbFIFO.cpp	Mon May 13 18:51:47 2002
+@@ -0,0 +1,119 @@
++/**************************************************************************\
++ *
++ *  Copyright (C) 1998-2005 by Systems in Motion. All rights reserved.
++ *
++ *  Systems in Motion, Prof Brochs gate 6, 7030 Trondheim, NORWAY
++ *  http://www.sim.no support@sim.no Voice: +47 22114160 Fax: +47 22207097
++ *
++\**************************************************************************/
++
++/*!
++  \class SbFIFO SbFIFO.h Inventor/SbFIFO.h
++  \brief The SbFIFO class is a template container class for first-in-first-out queues.
++  \ingroup base
++
++  SbFIFO is an extension of the Coin library versus the original Open
++  Inventor API. It is an ordinary FIFO queue where the number of
++  needed reallocations are minimized by reusing items after
++  removed. It uses templates to make it possible to store any kind of
++  object. All methods in this class are inlined.
++
++  \sa SbFIFOItem
++*/
++
++/*!
++  \class SbFIFOItem SbFIFO.h Inventor/SbFIFO.h
++  \brief The SbFIFOItem class is a class used by SbFIFO to store FIFO items.
++  
++  The constructor and destructor are private, so it's not possible to
++  create an instance of this class outside SbFIFO. It is only possible
++  to read and set the data, and to get the next item in the queue.
++
++  \sa SbFIFO 
++*/
++
++/*!
++  \var Type SbFIFOItem<Type>::data
++  The actual FIFO data.
++*/
++
++/*!
++  \var SbFIFOItem * SbFIFOItem<Type>::getNext()
++  Returns a pointer to the next item in queue. Will return NULL for the 
++  last item in queue.
++*/
++
++/*!
++  \fn SbFIFO<Type>::SbFIFO(void)
++
++  Default constructor.
++*/
++
++/*!
++  \fn SbFIFO<Type>::SbFIFO(const SbFIFO<Type> & l)
++  Copy constructor.
++*/
++
++/*!
++  \fn SbFIFO<Type>::~SbFIFO()
++  Destructor.
++*/
++
++/*!
++  \fn void SbFIFO<Type>::copy(const SbFIFO<Type> & l)
++  Copy data from \a l into this instance.
++*/
++
++/*!
++  \fn void SbFIFO<Type>::add(const Type data)
++  Add a new item to the FIFO queue.
++*/
++
++/*!
++  \fn Type SbFIFO<Type>::remove(void)
++  Removes and returns the next item.
++*/
++
++/*!
++  \fn int SbFIFO<Type>::getLength(void) const
++  Returns the number of items in the queue.
++*/
++
++/*!
++  \fn void SbFIFO::empty(void)
++  Empties queue.
++*/
++
++/*!
++  \fn SbFIFOItem<Type> * SbFIFO<Type>::getFirst(void)
++  Returns a pointer to the first item in queue (last in).
++*/
++
++/*!
++  \fn SbFIFOItem<Type> * SbFIFO<Type>::getLast(void)
++  Returns a pointer to the last item in queue (first in).
++*/
++
++/*!
++  \fn SbFIFOItem<Type> * SbFIFO<Type>::find(const Type & data, SbFIFOItem<Type> * start = NULL)
++  Searches all items for \a data. If \a start != NULL, search will start at that item.
++*/
++
++/*!
++  \fn SbFIFO <Type> & SbFIFO<Type>::operator=(const SbFIFO<Type> & l)
++  Equality operator.
++*/
++
++/*!
++  \fn void SbFIFO<Type>::insertItem(SbFIFOItem<Type> * insertafter, const Type & data)
++  Creates and inserts a new item after \a insertafter. If \a insertafter is NULL,
++  the new item is placed at the beginning of the queue. \a data is copied into
++  the new item before it is placed in the queue.
++*/
++
++/*!
++  \fn void SbFIFO<Type>::removeItem(SbFIFOItem<Type> * removeafter)
++  Removes the item after \a removeafter in the queue. If \a removeafter
++  is NULL, the first item is removed.
++*/
++

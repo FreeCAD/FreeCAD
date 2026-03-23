@@ -1,0 +1,113 @@
+#Inventor V2.0 ascii
+
+DEF root Separator {
+   DEF shuttle SoShuttle {
+      translation0 0 0 0
+      translation1 -1 0.5 -1
+   }
+   Material { diffuseColor 1.0 0.0 0.0 }
+   DEF Glow SoPyScript {
+      fields [ SoSFColor color, SoSFFloat brightness, SoSFFloat transparency ]
+      color 1 0 0 = USE shuttle.translation
+      brightness 0.5
+      transparency 0.3
+      script "
+# make the handler of the color field to call chicken_mcnuggets()
+# instead of the default set handle_color() function
+handler_registry['color'] = 'chicken_mcnuggets'
+
+def chicken_mcnuggets():
+  # print color.getValue().getValue()
+  pass
+
+# Initialize the color Packer (required of any property node that
+# uses an SoColorPacker to set diffuse color or transparency:
+colorPacker = SoColorPacker()
+transpValue = floatp()
+
+def doAction(action):
+    global transpValue
+
+    if not brightness.isIgnored() and not SoOverrideElement.getEmissiveColorOverride(action.getState()):
+        emissiveColor = color.getValue() * brightness.getValue()
+        # print 'doAction():', color.getValue().getValue()
+
+        # Use the Lazy element to set emissive color. 
+        # Note that this will not actually send the color to GL.       
+        SoLazyElement.setEmissive(action.getState(), emissiveColor)
+
+    # To send transparency we again check ignore flag and override element.
+    if not transparency.isIgnored() and not SoOverrideElement.getTransparencyOverride(action.getState()):
+        # keep a copy of the transparency that we are putting in the state:
+        transpValue.assign(transparency.getValue())
+     
+        # The color packer must be provided when the transparency is set,
+        # so that the transparency will be merged with current diffuse color
+        # in the state:
+        SoLazyElement.setTransparency(action.getState(), self, 1, transpValue, colorPacker)
+
+def GLRender(action):
+    action.setTransparencyType(SoGLRenderAction.SORTED_OBJECT_BLEND)
+    doAction(action)
+
+def callback(action):
+    doAction(action)
+
+wa = SoWriteAction()
+wa.apply(self)
+
+print handler_registry
+
+print '== Glow script loaded =='
+"
+   }
+   Cone {}
+   Material { diffuseColor 0 0 1 }
+   Sphere{}
+   SoTranslation { translation 0 1.2 0 }
+   SoFont {
+      name "Times New Roman"
+      size 24.0
+   }
+   DEF TextScroller SoPyScript {
+      fields [ SoSFString string, SoSFColor color ]
+      string "I am Pivy powered!"
+      color 0 1 0
+      script "
+# example that shows a scrolling text using a timer sensor
+idx = 0
+text = string.getValue().getString()
+text_length = len(text)
+
+interval = 0.15
+
+def changeStringSensorCallback(data, sensor):
+  global idx
+  string.setValue(text[:idx])
+
+  if idx == text_length:
+    sensor.setInterval(5.0)
+  else:
+    sensor.setInterval(interval)
+
+  idx %= text_length
+  idx += 1
+
+timersensor = SoTimerSensor(changeStringSensorCallback, None)
+timersensor.setInterval(interval)
+timersensor.schedule()
+
+wa = SoWriteAction()
+wa.apply(self)
+
+string.setValue(text[:idx])
+
+print '== TextScroller script loaded =='
+"
+   }
+   Material { diffuseColor = USE TextScroller.color }
+   SoText2 {
+      string = USE TextScroller.string
+      justification CENTER
+   }
+}

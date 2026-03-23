@@ -1,0 +1,65 @@
+# **************************************************************************
+# Makefile
+#
+# Makefile for creating Mac OS X installers for the Coin binary SDK
+# builds Coin and creates the following files:
+#   Coin-$(VERSION).dmg         - DMG containing install packages
+#   Coin-$(VERSION)-no_inst.dmg - DMG containing only Inventor.framework
+#   coin.info                   - Fink package file
+#
+# Usage:
+#   make VERSION=<coinversion> (e.g. make VERSION=2.1.0)
+#
+# Dependencies:
+#   - Coin-$(VERSION).tar.gz must be placed in ../
+#   - "libsimage.dylib" and "libfreetype.dylib" must be placed in 
+#     supportlibs/lib
+#
+# Authors:
+#   Marius Kintel <kintel@sim.no>
+# **************************************************************************
+
+#VERBOSE = -v
+
+install_prefix = $(PWD)/install
+cointools_prefix = $(install_prefix)/usr/local
+framework_prefix = $(install_prefix)/Library/Frameworks
+top_srcdir = @top_srcdir@
+builddir = build-shared-release
+
+COINDIST = Coin-$(VERSION).tar.gz
+COIN = Coin-$(VERSION)
+COINLIB = $(builddir)/src/libCoin.la
+BUILDOPTIONS = --disable-3ds-import --enable-optimization --disable-debug --disable-symbols --enable-universal
+
+# **************************************************************************
+
+all: $(COIN).dmg $(COIN)-no_inst.dmg coin.info
+
+coin.info: ../$(COINDIST) coin.info.template
+	@md5=`md5 -q ../$(COINDIST)`; \
+	cat coin.info.template | sed -e "s/@md5sum@/$$md5/" > coin.info
+
+$(COIN)-no_inst.dmg: $(COINLIB)
+	@sh makenoinstdmg.sh $(VERBOSE) -f $(framework_prefix)/Inventor.framework -c $(COIN)
+
+$(COIN).dmg: Coin.pkg CoinTools.pkg
+	@sh makeinstdmg.sh $(VERBOSE) -c $(COIN)
+
+Coin.pkg: $(COINLIB)
+	@sh makecoinpkg.sh $(VERBOSE) -f $(framework_prefix)/Inventor.framework
+
+CoinTools.pkg: $(COINLIB)
+	@sh makecointoolspkg.sh $(VERBOSE) -r $(cointools_prefix)
+
+# Configure, build and install Coin
+# Includes copying of libsimage and libfreetype to the correct location
+$(COINLIB): ../$(COIN) supportlibs/lib/libsimage.dylib supportlibs/lib/libfreetype.dylib
+	@if test -d $(builddir); then :; else mkdir $(builddir); fi
+	@cd $(builddir); \
+	../../$(COIN)/configure $(BUILDOPTIONS)
+	cd $(builddir); $(MAKE) MACOSX_DEPLOYMENT_TARGET=10.2
+	cd $(builddir); $(MAKE) DESTDIR=$(install_prefix) install
+	touch $(COINLIB)
+	cp supportlibs/lib/libsimage.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Libraries
+	cp supportlibs/lib/libfreetype.dylib $(framework_prefix)/Inventor.framework/Versions/Current/Libraries

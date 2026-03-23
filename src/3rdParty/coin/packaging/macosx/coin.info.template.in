@@ -1,0 +1,30 @@
+Package: coin
+Version: @VERSION@
+Revision: 0
+Source: mirror:custom:Coin-%v.tar.gz
+CustomMirror: <<
+   Primary: ftp://ftp.coin3d.org/pub/coin/src
+<<
+Source-MD5: @md5sum@
+BuildDepends: doxygen
+Depends: simage
+ConfigureParams: --prefix=%i --mandir=%i/share/man --enable-threadsafe --enable-optimization --disable-debug --disable-symbols --enable-man --enable-html --without-framework --with-x
+CompileScript: <<
+   ./configure %c
+   make -j 3
+<<
+InstallScript: <<
+   make install -j 3
+   mv %i/share/man/man3/threads.3 %i/share/man/man3/coin-threads.3 
+<<
+DocFiles: AUTHORS COPYING NEWS README FAQ FAQ.legal INSTALL README.MACOSX README.VRML97 RELNOTES THANKS
+Description: 3D graphics library with Open Inventor and VRML97 support
+DescDetail: <<
+Coin is an OpenGL-based, retain-mode 3D graphics library that implements
+the Open Inventor 2.1 API. It also includes support for VRML97 and 3D audio.
+For more information on Coin, see http://www.coin3d.org/.
+<<
+License: BSD
+Homepage: http://www.coin3d.org/
+Maintainer: Kurt Schwehr <kurt@etool.com>
+

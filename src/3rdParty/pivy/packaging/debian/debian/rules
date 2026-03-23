@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@ --with python2,python3 --buildsystem=python_distutils		
+
+
+override_dh_auto_install:
+	python3 setup.py install --force --root=debian/python3-pivy --no-compile -O0 --install-layout=deb
+	python3 setup.py clean
+	python2 setup.py install --force --root=debian/python-pivy --no-compile -O0 --install-layout=deb
+	python3 setup.py clean
+
+override_dh_auto_build:
+	echo "don't build, just install"

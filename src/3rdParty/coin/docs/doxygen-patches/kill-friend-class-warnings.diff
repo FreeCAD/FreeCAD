@@ -1,0 +1,46 @@
+From: Morten Eriksen <mortene@sim.no>
+Subject: [PATCH] Fix for Doxygen warning on private members
+To: doxygen-develop@lists.sourceforge.net
+Date: 13 Aug 2002 10:19:56 +0200
+Bcc: kristian@sim.no
+Organization: Systems in Motion
+
+Hi,
+
+I reported a problem last week about Doxygen spitting out warnings
+about missing documentation for private members in certain cases. The
+particular case I was seeing is when you hide a "friend class"
+statement inside the private block of a C++ class declaration, like
+this:
+
+  ---8<--- [snip] -------8<--- [snip] -------8<-
+  class MyClass {
+     // [...]
+
+  private:
+    friend class MyHiddenImplementationClass;
+  };
+  ---8<--- [snip] -------8<--- [snip] -------8<-
+
+..then Doxygen will complain about missing doc on
+MyHiddenImplementationClass, even though EXTRACT_PRIVATE=NO.
+
+Here's a patch from my colleague Kristian Eide that will take care of
+the problem:
+
+--- memberdef.cpp	Tue Aug 13 10:05:39 2002
++++ ../../doxygen-1.2.17/src/memberdef.cpp	Tue Aug 13 09:57:34 2002
+@@ -1519,7 +1519,8 @@
+     t="file", d=fd;
+ 
+   if (d && d->isLinkable() && !isLinkable() && !isDocumentedFriendClass()
+-      && name().find('@')==-1)
++      && name().find('@')==-1 &&
++      (prot!=Private || Config_getBool("EXTRACT_PRIVATE")))
+    warn_undoc(m_defFileName,m_defLine,"Warning: Member %s of %s %s is not documented.",
+         name().data(),t,d->name().data());
+ }
+
+
+Best regards,
+Morten

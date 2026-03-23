@@ -1,0 +1,256 @@
+For UNIX platforms, you should in general follow the instructions in
+the INSTALL file.  If you get into trouble, refer back to this file to
+see if a solution is provided here.
+
+This file is divided into sections for each platform we have specific
+information on.  If you bump into problems not described here, please
+let us know.  If you also have the solution, you get extra bonus
+points :)
+
+The platforms we currently have information for are:
+
+  1. IBM AIX
+  2. SGI IRIX
+  3. SUN SOLARIS
+
+======================================================================
+                               IBM AIX
+======================================================================
+
+Note that we do not have an AIX platform to test on, so we can't
+reproduce and fix these problems yet. We would be grateful for any
+further input provided from people using Coin on AIX.
+
+
+ 1 If you get the error message "Arg list too long" when linking the
+   Coin library, you need to re-run ``configure'' with the
+   "--enable-compact" option and try to make again.
+
+   The problem comes from AIX' much too low setting of the memory
+   allocated for shell argument parsing. This is a kernel parameter
+   which on AIX, unlike other operating systems like Linux or SGI
+   IRIX, can _not_ be tuned.
+
+   For further information about this, see also the item on this in
+   the IRIX section.
+
+
+ 2 We have a report on the final link-stage of a build-process
+   initiated with the ``--enable-compact'' option to configure ending
+   in this error from the AIX linker when used with GNU GCC:
+
+     ld: 0711-781 ERROR: TOC overflow. TOC size: 78464 Maximum size: 65536
+
+   You should be able to fix this by either passing the -mminimal-toc
+   option to the GCC compiler, like this:
+
+     $ <srcpath>/configure <youroptions> CFLAGS=-mminimal-toc
+
+   or the -bbigtoc option to the linker, like this:
+
+     $ <srcpath>/configure <youroptions> LDFLAGS=-bbigtoc
+
+   Note that the last option needs PRPQ P91128 for AIX ld.
+
+========================================================================
+                               SGI IRIX
+========================================================================
+
+ 1 If linking fails due to problems with an error message about
+   "Argument list too long", you need to increase the kernel setting
+   of memory allocated to argument parsing in the shells.
+
+   SGI IRIX have a default setting on the buffer available for
+   shell-argument parsing at an extremely low 20kB. (Other common
+   platforms like Solaris og HPUX11 have a default buffer of => 1MB
+   for ARGMAX. Linux-kernels, up to version 2.4, has a default ARGMAX
+   of 128KB.)
+
+   Combined with the peculiar technique of IRIX ld to extract all .o
+   object-files from ar-archives before linking up a main library from
+   sub-libraries, this makes the final link command when building Coin
+   become way too large under many IRIX platforms.
+
+   (For more information, see the documentation of the "ncargs" kernel
+   variable in "Appendix A: Kernel tunable parameters" in «IRIX 6.5
+   Admin: System Configuration and Operation», available online at
+   <URL:http://techpubs.sgi.com>.)
+
+   You can fix this problem once and for all by doing this as root
+   (ask your sysadmin):
+
+      # systune -i
+      > ncargs 81920
+      > quit
+
+   To make the changes survive a reboot, copy the new kernel over the
+   old one:
+
+      # mv /unix.install /unix
+
+   An alternative fix for this (for instance if you don't have root
+   access to the system, or don't want to lose your uptime count, or
+   don't have the balls to make and install a new kernel) is to re-run
+   ``configure'' with the "--enable-compact" option.
+
+
+ 2 If linking fails with the error messages:
+
+     ld: ERROR 48: Cannot access registry file .libs/so_locations ...
+     ld: FATAL 51: Can't assign virtual addresses for ...
+
+   ..you're typically trying to link over NFS, which the SGI linker is
+   not too fond of in certain situations -- as it needs to be able to
+   lock the so_locations file. If this happens to you, try compiling
+   and linking on a local disk instead. Or just make a symlink from
+   the .libs/so_locations file the linker is trying to make to an
+   empty file (use ``touch'') on a local disk.
+
+
+ 3 If linking fails with something like
+
+        171230:/usr/lib32/cmplrs/nm_elf: rld: Fatal Error: Cannot
+        Successfully map soname 'be.so' under any of the filenames
+        [...]
+
+   You've stumbled into an SGI MIPSPro version 7.30 compiler bug. It
+   can be worked around by setting the environment variable TOOLROOT
+   to the empty string "", like this (for Bourne Shell):
+
+        $ TOOLROOT=""
+        $ export TOOLROOT
+
+
+ 4 If ``make install'' fails in the src/elements/ directory with either
+
+        [...]
+        mkdir -p -- /devlibs/FT_PD_irix-n32-R3/include/Inventor/elements
+        *** Termination code 138 (bu21)
+
+   (for SGI make) or
+
+        gmake[3]: *** [install-libelementsincHEADERS] Segmentation fault (core dumped)
+
+   (for GNU make), chances are you're running SGI IRIX 6.3, with
+   configure picking up the Korn Shell (/bin/ksh) for the build
+   process. ksh seems to have an internal limit which causes the
+   ``make'' tools to freak out when an envvar value has too many
+   characters. Since there are problems with other standard SGI IRIX
+   shells (see below), we advice you to install and use the GNU Bourne
+   Again Shell (bash).
+
+   Pre-compiled packages of bash are available from
+   <URL:http://freeware.sgi.com/>, or you can pick up the sourcecode
+   at <URL:ftp://ftp.gnu.org/gnu/bash>.
+
+   With bash in place, run configure with (assuming you installed bash
+   in /bin):
+
+        $ CONFIG_SHELL=/bin/bash <srcpath>/configure <your-options>
+
+
+ 5 An Autoconf bug seems to affect attempts to run configure with
+   either /bin/sh, /bin/csh or /bin/tcsh. The shell interpreter
+   complains with "missing }". The best solution seems to be to use
+   the GNU Bourne Again Shell. See above.
+
+
+ 6 Problems with object code formats. Will typically manifest itself
+   when trying to build code on top of Coin, for instance one of the
+   So* libraries. A typical error message you will get is like this
+   (example is from an SoQt configure run):
+
+     configure:12022: checking whether libCoin is available
+     configure:12058: g++ -o conftest -g -O2   -I/coin-instdir/include -O2 -D_REENTRANT -O2 -L/coin-instdir/lib -O2 conftest.cc -lCoin -lGL -lXext -lSM -lICE -lX11 -ldl -lpthread -lm  >&5
+     ld32: FATAL 12: Expecting n32 objects: 
+     /coin-instdir/lib/libCoin.so is o32.
+
+   This is a rather classical IRIX problem, not really related
+   specifically to Coin: IRIX has 3 different types of executables /
+   shared libraries / object code formats. You can compile code in
+   "old 32 bits" mode ("o32"), "new 32 bits" mode ("n32") or "new 64
+   bits" mode ("n64"), and these are *not* interchangeable. This means
+   that if you want to build an "n32" executable, _all_ the libraries
+   it depends on must also be in this format.
+
+   What the linker is complaining about in this case is that one or
+   more (or probably all) of the _other_ libraries on the link line is
+   in "n32" format, while libCoin.so was built as an "o32" library.
+
+   You will either have to tell the compiler and linker to use
+   exclusively "o32" libraries, or better: to rebuild the libCoin.so
+   library in "n32" format.
+
+   This is very likely a local configuration issue with the compiler
+   and / or linker set-up, which you should get your local IRIX-guru
+   to investigate.
+
+
+========================================================================
+                             SUN SOLARIS
+========================================================================
+
+Forte compiler suite (aka Workshop)
+
+ 1 The Forte compiler suite for SunOS/Solaris might complain about
+   undefined symbols when trying to link Coin.  When these symbols
+   contains the string "Crun", it means that libCrun is not linked in
+   on the link line, but should be.
+
+   The workaround for this problem is to either add LIBS="-lCrun" at
+   the end of the Coin configure invocation line, or LIBS="-lCstd
+   -lCrun -lc", i.e. something like this:
+
+        $ <srcdir>/configure <youroptions> LIBS="-lCrun"
+
+   or
+
+        $ <srcdir>/configure <youroptions> LIBS="-lCstd -lCrun -lc"
+
+   To get -lCrun to work, you might also need to specify the linker
+   path to that library.  Exactly where you will find it is system
+   dependent, but somewhere under the Forte installation directory
+   would be a good place to look.
+
+   One user had libCrun in /opt/forte-6.1/SUNWspro/WS6U1/lib/.  As
+   usual, "locate" and "find" are your friends.
+
+   (To let configure know about this extra path, add LDFLAGS="-L<path>"
+   at the end of the configure invocation, like explained for the LIBS
+   setting above.)
+
+ 2 We have reports of problems with the final link stage if the C
+   compiler in the Forte suite is used instead of the C++ compiler for
+   compiling Coin's C sources. This might be a Libtool bug. To work
+   around it, set up for building everything with the C++ compiler,
+   something like this:
+
+        $ <srcdir>/configure <youroptions> CC=CC CXX=CC
+
+
+GNU GCC
+
+1 When building with gcc, (we've tested with gcc 3.3) configuring and
+  building Coin is a breeze. You just need to have /opt/csw/gcc3/bin
+  in your PATH environment variable, and /opt/csw/gcc3/lib in your
+  LD_LIBRARY_PATH environment variable (needed for libstdc++). In
+  addition, you must set the AR environment variable to /usr/ccs/bin/ar
+  This can be done when configuring.
+
+
+2 If you nevertheless get linker errors, like the below:
+
+    base/.libs/libbase.a(bitset.o): In function `std::_Base_bitset<(unsigned)1>::_M_do_find_next(unsigned, unsigned) const': /cdl/CDL01/kp/obj/sparc-sun-solaris2.9/libstdc++-v3/src/../../../../gcc-3.3.2/libstdc++-v3/src/bitset.cc:73: multiple definition of `std::_Base_bitset<(unsigned)1>::_M_do_find_first(unsigned) const'
+    actions/.libs/libactions.a(bitset.o):/cdl/CDL01/kp/obj/sparc-sun-solaris2.9/libstdc++-v3/src/../../../../gcc-3.3.2/libstdc++-v3/src/bitset.cc:73: first defined here
+    base/.libs/libbase.a(bitset.o): In function `std::_Base_bitset<(unsigned)1>::_M_do_find_next(unsigned, unsigned) const': /cdl/CDL01/kp/obj/sparc-sun-solaris2.9/libstdc++-v3/src/../../../../gcc-3.3.2/libstdc++-v3/src/bitset.cc:73: multiple definition of `std::_S_first_one'
+    actions/.libs/libactions.a(bitset.o):/cdl/CDL01/kp/obj/sparc-sun-solaris2.9/libstdc++-v3/src/../../../../gcc-3.3.2/libstdc++-v3/src/bitset.cc:73: first defined here
+
+  ...then you should build Coin from scratch again, and make sure you
+  do not try to build with "g++" (a gcc-wrapper that pulls in all kinds
+  of things implicitly), but build with plain "gcc".  Re-run configure
+  like this:
+
+    .../Coin/configure CC=gcc CXX=gcc ...
+
+
+THE END

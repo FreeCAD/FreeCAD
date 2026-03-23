@@ -1,0 +1,18 @@
+044 Release builds on Cygwin/MSVC++ doesn't heed all configure
+    options.
+
+    Specifically, "--disable-symbols" should remove the "/Zi" option
+    to cl.exe, and "--enable-optimization" should add "/O2" (or some
+    such).
+
+    20021118 mortene, problem reported by Michael Wimmer on
+    coin-discuss.
+
+    20021118 larsa - the --disable-symbols problem is fixed, and I'm
+    against adding "--enable-optimization".  The users should rather
+    specify the optimization options they want in CFLAGS/CXXFLAGS.
+
+    20021121 larsa: since Autoconf automatically adds -O2, we should
+    consider adding an option to remove that option, if it can be
+    made to work without touching user-set CFLAGS/CXXFLAGS and only
+    the autoconf-set optimization-options.  Tricky stuff...

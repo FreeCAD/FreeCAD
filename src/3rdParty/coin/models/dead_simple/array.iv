@@ -1,0 +1,26 @@
+#Inventor V2.1 ascii
+
+Group {
+   Separator {
+      Material {
+         diffuseColor [ 1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1 ]
+      }
+
+      MaterialBinding { value PER_PART }
+
+      Array {
+         numElements1 5
+         numElements2 3
+         numElements3 4
+         separation1 4 4 4
+         separation2 2 -2 2
+         separation3 8 1 2
+         origin CENTER
+      
+         Cube { }
+      }
+   }
+
+   Rotation { rotation 0 1 0   0.785 }
+   Cube { }
+}

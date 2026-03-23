@@ -1,0 +1,14 @@
+150 Compatibility issue: SoVRMLMovieTexture fields alpha, model,
+    blendColor and scaleTexCoord missing in Coin.
+
+    This was added for TGS OIV 4.0, so we should implement this for
+    compatibility reasons.
+
+    Note that this breaks ABI-compatibility, so it is only relevant
+    for Coin 3.
+
+    Note also that these fields break compatibility with the VRML97
+    spec if they have non-default values upon export. This should be
+    duly noted in their API doc, when written.
+
+    20041010 mortene.

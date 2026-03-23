@@ -1,0 +1,138 @@
+// This file is included from SoDB.cpp, but really has no relation to the
+// implementation of SoDB - it just contains some system sanitizion code.
+//
+// DO NOT DISABLE CODE IN THIS FILE IF IT DOES NOT COMPILE OR BREAKS THE
+// EXECUTION OF YOUR COIN APPLICATION - THE CONSEQUENCES OF SOME OF THESE
+// TESTS FAILING IS THAT COIN WOULD OPERATE WITH SERIOUS PROBLEMS / BUGS
+// ANYWAYS.  These tests just expose symptoms of a build environment that
+// cannot be used to build a working Coin.
+
+// *************************************************************************
+// this code should just make sure we can't compile this file (compilation
+// will fail) if the compilation environment is not set up correctly - it
+// does not need to be run from anywhere...
+
+static
+void
+SoDB_compileTimeAsserts(void)
+{
+  COIN_CT_ASSERT(sizeof(uint8_t) == 1);
+  COIN_CT_ASSERT(sizeof(int8_t) == 1);
+  COIN_CT_ASSERT(sizeof(uint16_t) == 2);
+  COIN_CT_ASSERT(sizeof(int16_t) == 2);
+  COIN_CT_ASSERT(sizeof(uint32_t) == 4);
+  COIN_CT_ASSERT(sizeof(int32_t) == 4);
+#ifdef HAVE_UINT64_T
+  COIN_CT_ASSERT(sizeof(uint64_t) == 8);
+#endif // HAVE_UINT64_T
+#ifdef HAVE_INT64_T
+  COIN_CT_ASSERT(sizeof(int64_t) == 8);
+#endif // HAVE_INT64_T
+
+  // This now obsoleted sanity check used to be necessary because if
+  // the unsigned long type is less than the pointer size (which is
+  // known to be the case on 64-bits Windows, at least), SbDict usage
+  // failed all over the place where we were casting pointers to and
+  // from SbDict keys.
+  //
+  // We no longer use SbDict internally, since I switched all code to
+  // use the template-based SbHash class.
+  //
+  // For reference, here's some general information on porting code to 64-bit Windows:
+  //
+  //   http://msdn.microsoft.com/library/default.asp?url=/library/en-us/win64/win64/getting_ready_for_64_bit_windows.asp
+  //
+#if 0 // OBSOLETED
+  COIN_CT_ASSERT(sizeof(unsigned long) >= sizeof(void *));
+#endif // OBSOLETED
+}
+
+// *************************************************************************
+// GCC 3.3.1/3.3.2 contains a bug in builtin_expect() which makes the assert
+// macro fail.
+// 
+// See http://gcc.gnu.org/bugzilla/show_bug.cgi?id=13239
+
+#ifndef HAVE___BUILTIN_EXPECT
+
+static
+void
+SoDB_checkGCCBuiltinExpectSanity(void)
+{
+  // nada - system is ok
+}
+
+#else // HAVE___BUILTIN_EXPECT
+
+struct GCCAssertBomber {
+  GCCAssertBomber () : _y(0) { }
+  int _y;
+};                                                                              
+
+static SbBool GCCAssertBomberFunc1() { return TRUE; }
+static GCCAssertBomber GCCAssertBomberFunc2() { return GCCAssertBomber(); }
+
+#define DUMP(string) printf("\t" string "\n")
+
+static
+void
+SoDB_checkGCCBuiltinExpectSanity(void)
+{
+  int bogus_assert =
+    __builtin_expect(!!(GCCAssertBomberFunc1() &&
+                        (GCCAssertBomberFunc2()._y)==0), 1) ? 0 : -1;
+  if ( bogus_assert ) {
+
+    // GCC 3.3.1 / 3.3.2 __builtin_expect() bug was detected.
+
+#ifndef HAVE_ASSERT_WITH_BUILTIN_EXPECT
+
+    // <assert.h> has probably been tweaked since GCC is buggy, but
+    // assert() does not use __builtin_expect().
+
+    // Should we warn about this problem nevertheless?
+
+#else // HAVE_ASSERT_WITH_BUILTIN_EXPECT
+    printf("Coin " COIN_VERSION ": Sanity Check Report\n\n");
+    DUMP("GNU GCC bug 13239 (bugzilla number) was detected.");
+    DUMP("");
+    DUMP("Short explanation:  __builtin_expect() misbehaves with optimized");
+    DUMP("C++ code.  __builtin_expect() is used from assert().  Debug");
+    DUMP("builds of Coin are full of assert() calls.  Some assert() calls");
+    DUMP("will trigger incorrectly, aborting the application, and the");
+    DUMP("assert() diagnostics will send you on a wild goose chase.");
+    DUMP("");
+    DUMP("The buggy compiler can be found on at least the following Linux");
+    DUMP("distributions: SuSE 9.0");
+    DUMP("");
+    DUMP("The bug can at least be found in GCC version 3.3.0 through 3.3.2.");
+    DUMP("");
+    DUMP("You are strongly encouraged to upgrade your GCC installation.");
+    DUMP("Coin is probably not the only library that gets in trouble");
+    DUMP("because of this bug.");
+    DUMP("");
+    DUMP("See the following URLs for more details:");
+    DUMP("  http://gcc.gnu.org/bugzilla/show_bug.cgi?id=13239");
+    DUMP("  http://bugs.gentoo.org/show_bug.cgi?id=44586");
+    DUMP("  http://auto.coin3d.org/coin-discuss/2003-12/3631.html");
+    DUMP("");
+#ifdef NDEBUG
+    DUMP("Since this is a release build of Coin, the bug will not trigger.");
+    DUMP("We therefore let the application continue.  However, you are");
+    DUMP("strongly urged to take action and upgrade GCC to a safe version.");
+    DUMP("GCC 3.3.3 has fixed this problem.");
+    DUMP("");
+#else // !NDEBUG
+    DUMP("Since this is a debug build of Coin, the bug would abort this");
+    DUMP("application within a few microseconds, so we abort it here and");
+    DUMP("now to save you the confusion.");
+    DUMP("");
+    exit(-1);
+#endif // !NDEBUG
+#endif // HAVE_ASSERT_WITH_BUILTIN_EXPECT
+  }
+}
+
+#undef DUMP
+
+#endif // HAVE___BUILTIN_EXPECT

@@ -1,0 +1,62 @@
+#Inventor V2.1 ascii
+
+# Standard material definitions.
+
+DEF TRANSLATE2_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF TRANSLATE2_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+
+
+DEF TRANSLATE2_GEOM Separator {
+   # "Lines" connecting the cones.
+   Cube { width 2  height 0.1  depth 0.1 } # Horizontal
+   Cube { width 0.1  height 2  depth 0.1 } # Vertical
+
+   Separator {
+      Translation { translation 1.25 0 0 }
+      RotationXYZ { axis Z  angle -1.57 }
+      DEF TRANSLATE2_ARROWHEAD Cone { height 0.5  bottomRadius 0.25 }
+   }
+
+   Separator {
+      Translation { translation -1.25 0 0 }
+      RotationXYZ { axis Z  angle 1.57 }
+      USE TRANSLATE2_ARROWHEAD
+   }
+
+   Separator {
+      Translation { translation 0 1.25 0 }
+      USE TRANSLATE2_ARROWHEAD
+   }
+
+   Separator {
+      Translation { translation 0 -1.25 0 }
+      RotationXYZ { axis X  angle 3.14 }
+      USE TRANSLATE2_ARROWHEAD
+   }
+}
+
+DEF translate2Translator Separator {
+   USE TRANSLATE2_INACTIVE_MATERIAL
+   USE TRANSLATE2_GEOM
+}
+
+DEF translate2TranslatorActive Separator {
+   USE TRANSLATE2_ACTIVE_MATERIAL
+   USE TRANSLATE2_GEOM
+}
+
+DEF translate2Feedback Separator { }
+DEF translate2FeedbackActive Separator { }
+
+DEF translate2XAxisFeedback Separator {
+  USE TRANSLATE2_ACTIVE_MATERIAL
+  DrawStyle { lineWidth 2 }
+  Coordinate3 { point [ -3 0 0, 3 0 0 ] }
+  LineSet { }
+}
+DEF translate2YAxisFeedback Separator {
+  USE TRANSLATE2_ACTIVE_MATERIAL
+  DrawStyle { lineWidth 2 }
+  Coordinate3 { point [ 0 -3 0, 0 3 0 ] }
+  LineSet { }
+}

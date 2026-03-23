@@ -1,0 +1,297 @@
+This file contains the textual explanations for errors that can occur when
+configure is run.  The correct message is automatically extracted and dumped
+on the screen by the configure script.
+
+!too-old-qt
+Versions of the Qt library older than version 2.0.0 is not supported.
+You must upgrade to be able to build and use this software package.
+
+!no-moc
+Found no manner in which the Qt ''moc'' utility could be run. Make
+sure Qt is properly installed on your system.
+
+Did you perhaps forget to set up the environment variable QTDIR to the
+base of the Qt installation directory? Or if it was already set up,
+double check to see that it is pointing at the correct directory.
+
+!no-uic
+Found no manner in which the Qt ''uic'' utility could be run. Make
+sure Qt is properly installed on your system.
+
+Did you perhaps forget to set up the environment variable QTDIR to the
+base of the Qt installation directory? Or if it was already set up,
+double check to see that it is pointing at the correct directory.
+
+!no-uic3
+Found no manner in which the Qt4 ''uic3'' utility could be run. Make
+sure Qt4 is properly installed on your system.
+
+Did you perhaps forget to set up the environment variable QTDIR to the
+base of the Qt installation directory? Or if it was already set up,
+double check to see that it is pointing at the correct directory.
+
+!no-rcc
+The Qt ''rcc'' utility was not found in the same directory as the
+other Qt utilities such as ''moc'' or ''uic''. Make sure Qt is
+properly installed on your system.
+
+!no-qt
+Could not find any way to build against the Qt library. If you
+are sure Qt is properly installed on your system, see the file
+config.log to find out what went wrong.
+
+One common way to solve this problem is to set up the environment
+variable QTDIR to the base of the Qt installation directory. Or if it
+was already set up, double check to see that it is pointing at the
+correct directory.
+
+Note that it is possible to override the combinations of Qt libraries
+configure tries to link against by setting up the environment variable
+CONFIG_QTLIBS. This might be necessary if you have installed the Qt
+library in a manner that is not compatible with any of the known
+configurations, for instance by changing the name of the library or
+the Qt library having more dependencies on other libraries that we are
+aware of.
+
+If you for instance know the correct set of libraries to be qt304.lib,
+qtmain.lib and gdi32.lib (this would be on an MSWindows system), then
+set CONFIG_QTLIBS to the string ''-lqt304 -lqtmain -lgdi32'' before
+re-running configure.
+
+If you still can't get the configure script to detect the presence of
+and how to use the Qt library, please mail the config.log file to
+<coin-support@coin3d.org> and ask for help.
+
+!no-pkgconfig-qt
+Could not gather the configure flags for Qt through pkg-config. Please
+ensure that the qt pkg-config metadata .pc files, such as QtCore.pc,
+exist on your system. In case the metadata .pc files are installed
+into a non-default location verify that the PKG_CONFIG_PATH environment
+variable points to the correct directory.
+
+Further details in how to set the PKG_CONFIG_PATH environment variable
+can be found in the pkg-config(1) man page.
+
+!no-gdiplus
+Could not find a way to build against GDI+ (GdiPlus.h / -lgdiplus).
+GDI+ is part of the Microsoft Windows SDK download.  Make sure you have
+the MS Windows SDK set up correctly for your compiler.
+
+For MinGW builds, install Alf P. Steinbach's GDI+ MinGW bindings and
+rename lib/gdiplus.import.a to lib/gdiplus.a in the MinGW path.
+
+See http://alfps.izfree.com/libraries/cpp/gdiplus_for_mingw/ for
+MinGW download information.
+
+!no-qgl
+The configure script could not find any way to build code which uses
+Qt's OpenGL bindings (called "QGL"), neither as part of the main Qt
+library, nor as a stand-alone library.
+
+You must install a Qt library configured with OpenGL support to be
+able to resolve this problem.
+
+If you are *sure* that Qt has been built with OpenGL support and you
+still can't get the configure script to detect the presence of QGL,
+please mail the config.log file to <coin-support@coin3d.org> and ask
+for help.
+
+!qt-install
+The configure script picked out Qt's "install" program when trying to
+find the system-wide "install" program.  This probably happened because
+you have QTDIR/bin too early in the path.  During installation, you
+would run into serious problems because of this.
+
+Fix your PATH variable so the system-wide install program is found
+instead of the Qt installer and re-run configure.
+
+!no-msvc++
+You need to have the Microsoft Visual C++ compiler suite accessible in the
+Cygwin environment.  Read the file <srcdir>/README.WIN32.
+
+If you are absolutely sure you want to attempt to run the configure script
+and the build process without Microsoft Visual C++, and you know what you
+are doing, use the ''--disable-msvc'' option to configure.
+
+!cygwin-link
+Cygwin's /usr/bin/link tool is earlier in the shell's PATH than MSVC's
+link.exe.  Building would fail in the final stage because of this.
+
+Fix your PATH variable so the MSVC link.exe program is found instead
+of Cygwin's /usr/bin/link and re-run configure.
+
+!c--inlinefor
+This C++ compiler (\"$CXX\") does not seem to be capable of compiling
+Coin, as it can't compile a simple test snippet with a for()-loop
+within an inline function.
+
+This check is primarily supposed to smoke out the useless gratis C++
+compiler bundled by Hewlett-Packard along with HP-UX. If you get this
+error message for other compilers, there might be something very wrong
+with your local environment or compiler version.
+
+(We've had error reports with this for g++ 2.95.3 on SuSe Linux, which
+we have so far not been able to pin down to it's exact cause -- just
+that it causes g++ to exit due to an internal compiler error, which is
+of course a "should never happen" condition for any compiler. If you
+are hit by this problem, try upgrading to a later g++ version.)
+
+If you become stuck on this problem, please mail the config.log file
+to <coin-support@coin3d.org> and ask for help.
+
+!c--vdest
+This C++ compiler (\"$CXX\") is not capable of compiling Coin.
+
+If you are using the Sun CC compiler, try upgrading to a new version,
+or even downgrading to an older version.
+
+If not, please mail the config.log file to <coin-support@coin3d.org>
+and ask for help.
+
+!c--fubarenvironment
+Can't compile and/or link and/or run the simplest possible C++
+source code. Something seems to be seriously wrong with your
+development environment. This is a local problem you will have
+to resolve before trying to build the library.
+
+You may get clues to what is wrong by checking the config.log file
+generated by the configure script in the build directory.
+
+If it seems probable to you that you are getting this error due to a
+error in the configure process, please mail the config.log file to
+<coin-support@coin3d.org> and ask for assistance.
+
+!c--gcc296bug
+Your compiler contains a nasty bug which makes it unsuited for
+building this project.
+
+If this is the GCC 2.96.x compiler shipped with Red Hat Linux, Red Hat
+might provide updated RPMs of GCC without the bug. We strongly advise
+you to upgrade before building *any* software on your system.
+
+(gcc 2.96 was never really supported by the GCC team, as it was just a
+snapshot taken from the development CVS repository by RedHat, then
+branded as "version 2.96".)
+
+If you can not find or install any updated version of the compiler,
+you may try to re-run configure with the "--disable-optimization"
+option, which should take care of the problem. Note that this will
+have a negative impact on the Coin library's performance.
+
+Another possibility is to change to a higher optimization level, as
+only the default -O2 optimization level seems to exhibit this
+particular bug. Note that you do so on your own risk, as there might
+be gcc-bugs undetected by us for the higher optimization levels. If
+you still want to go ahead with increasing the optimization level,
+just set up the CPPFLAGS environment variable when invoking configure,
+like this:
+
+        # <srcdir>/configure [your-options] CPPFLAGS="-O3"
+
+
+If this is *not* the GCC 2.96.x compiler, please mail the config.log
+file to <coin-support@coin3d.org> and ask for help.
+
+!no-network-conversion
+Could not find network conversion functions like htonl() and its variants.
+
+On MSWindows systems, this can be caused by problems linking with the
+winsock library (which is either in wsock32.dll or ws2_32.dll).
+
+If you can't figure out what caused this problem, please mail the
+config.log file to <coin-support@coin3d.org> and ask for help.
+
+!no-doxygen
+Could not find the doxygen tool.
+See http://www.doxygen.org for download information.
+
+!no-opengl
+Could not figure out how to use the OpenGL software development kit
+on this system.
+
+If you are sure OpenGL is actually installed and usable on this
+system, and can't figure out why configure still can't use OpenGL,
+please mail the config.log file to <coin-support@coin3d.org> and ask
+for help.
+
+!no-cpp-quoting
+Couldn't figure out how to quote strings in CPP macros.
+
+This is a freak condition. Please mail the config.log file to
+<coin-support@coin3d.org> and ask for help.
+
+!no-math-library
+Could not find a way to use the math library.
+
+Please mail the config.log file to <coin-support@coin3d.org> and ask
+for help.
+
+!invalid-msvcrt
+Your choice for MSVC++ C library (the --with-msvcrt=<crt> option) was
+invalid.  Use one of the following choices (aliases on the right):
+
+  singlethread-static        [ /ml  | ml  | libc    ]
+  singlethread-static-debug  [ /mld | mld | libcd   ]
+  multithread-static         [ /mt  | mt  | libcmt  ]
+  multithread-static-debug   [ /mtd | mtd | libcmtd ]
+  multithread-dynamic        [ /md  | md  | msvcrt  ]
+  multithread-dynamic-debug  [ /mdd | mdd | msvcrtd ]
+
+!unable-to-run-soxx-config
+configure was not able to find or run the required so*-config utility.
+
+Note that the default So*-library to link against is the SoXt
+library. If you want to use another library, for instance SoQt, you
+need to specify this by an additional option to the configure script,
+e.g.: ''--with-soqt''.
+
+To be able to run the script, the <installdir>/bin/ installation
+directory for the So*-library must also be set up in the shell's PATH
+environment variable before invoking the configure script.
+
+!unable-to-run-soqt-config
+configure was not able to find or run the required soqt-config
+utility.
+
+To be able to run the script, the <installdir>/bin/ installation
+directory for the SoQt-library must be set up in the shell's PATH
+environment variable before invoking the configure script.
+
+!x11-qt-but-no-x11-requested
+You are using the X11 version of the Qt toolkit, but requested SoQt
+to be built without X11 support. Please install Qt/Mac (if you don't
+want X11 support) or specify --enable-darwin-x11 to use X11.
+
+!mac-qt-but-x11-requested
+You are using Qt/Mac but are trying to build
+the X11-based version of SoQt. Please either install Qt/X11 or don't
+specify --enable-darwin-x11.
+
+!smallchange-unavailable
+Could not build against the SmallChange library. If you are sure
+SmallChange is properly installed on your system, see the file
+config.log to find out what went wrong.
+
+!simaruba-unavailable
+Could not build against the SIM Aruba library. If you are sure
+SIM Aruba is properly installed on your system, see the file
+config.log to find out what went wrong.
+
+!simvoleon-unavailable
+Could not build against the SimVoleon library. If you are sure
+SimVoleon is properly installed on your system, see the file
+config.log to find out what went wrong.
+
+!soqt-unavailable
+Could not build against the SoQt library. If you are sure
+SoQt is properly installed on your system, see the file
+config.log to find out what went wrong.
+
+!spidermonkey-unavailable
+
+Could not build against the SpiderMoneky library. Make sure the path
+specified by --with-spidermonkey is correct. See the file config.log
+for more information on what went wrong.
+
+
+!end

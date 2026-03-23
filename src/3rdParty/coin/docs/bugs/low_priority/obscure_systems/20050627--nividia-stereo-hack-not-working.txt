@@ -1,0 +1,39 @@
+200 "Fake" NVidia stereo reported to not work with Coin / SoWin/SoQt.
+
+    There's an add-on to NVidia's drivers at
+
+      http://www.nvidia.com/object/3dstereo_71.89
+
+    ..which I assume uses some kind of trick to make a stereo signal
+    out of a mono GL scene (intercepting and transforming the camera-
+    and projection-related state changes?). This is reported to not
+    work with Coin: the (attempted) stereo images comes out with
+    strange rendering artifacts, which seems to stem from the camera
+    settings being wrong.
+
+    For a user's guide, see:
+
+        http://download.nvidia.com/Windows/71.89/71.89_ForceWare_3D_Stereo_Users_Guide.pdf
+
+    And a more technical overview:
+
+        http://www.nvidia.com/attach/168471?type=support&primitive=0
+
+    The reporter's system:
+
+        * NVidia Geforce6800 Graphicscard
+        * Windows XP
+        * latest NVidia drivers + NVidia 3D Stereo Driver
+        * Coin 2.4.2
+
+    He also reproduced the problem with an NVidia Quadro. The driver
+    add-on likely also works with other (and older) NVidia cards.
+
+    To reproduce, running SoGuiExamples' components/simpleexviewer is
+    sufficient, as long as this is done to the viewer configuration
+    (or the stereo will not kick in):
+
+        viewer->setFullScreen(TRUE);
+        viewer->setDecoration(FALSE);
+
+    20050627 mortene. Reported by Guenter Schwann.

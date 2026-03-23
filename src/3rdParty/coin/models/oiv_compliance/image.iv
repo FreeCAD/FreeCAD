@@ -1,0 +1,26 @@
+#Inventor V2.1 ascii
+
+# Check SoImage rendering.
+#
+# 19990515 mortene
+
+Separator {
+   Cube { width 100  depth 100  height 100}
+
+   Image {
+      image 2 4 3 0x4a6078 0x4a6078 0xffffff 0xffffff 0xffffff 0xffffff 0x4a6078 0x4a6078 
+      horAlignment LEFT
+      vertAlignment BOTTOM
+   }
+
+   BaseColor { rgb 1 0 0 }
+   Translation { translation +400 0 0 }
+   Cube { width 100  depth 100  height 100}
+
+   Translation { translation +400 0 0 }
+   Image {
+      image 2 4 3 0x4a6078 0x4a6078 0xffffff 0xffffff 0xffffff 0xffffff 0x4a6078 0x4a6078 
+      width 100
+      height 100
+   }
+}

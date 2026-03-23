@@ -1,0 +1,377 @@
+2025-06-24 19:27:29 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (6d1000e4a)
+
+	Update THANKS, NEWS, RELNOTES, and releases.dox files
+
+M	NEWS
+M	RELNOTES
+M	THANKS
+M	docs/releases.dox
+
+2025-06-24 19:21:37 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (dc8f55ed8)
+
+	Bump version number to 4.0.4
+
+M	CMakeLists.txt
+M	configure
+M	configure.ac
+
+2025-06-19 12:46:46 +0100  Hanslow, Steve  <Steve_Hanslow@mentor.com> (938bcc7c7)
+
+	Issue #556 Only call deleteAll on valid pointers
+
+M	src/actions/SoCallbackAction.cpp
+
+2025-06-10 18:39:31 +0200  Bas Ruigrok  <Rexbas@proton.me> (d59f28eb9)
+
+	Add more COIN_USE_EGL checks
+
+M	src/glue/gl.cpp
+
+2025-06-09 20:02:48 +0200  Bas Ruigrok  <Rexbas@proton.me> (9bcd01b1d)
+
+	Simplify condition to set HAVE_GLX
+
+M	CMakeLists.txt
+
+2025-06-09 19:56:11 +0200  Bas Ruigrok  <Rexbas@proton.me> (708ffd8fb)
+
+	Make sanity check comment more clear
+
+M	src/glue/gl.cpp
+
+2025-06-08 17:18:58 +0200  Bas Ruigrok  <Rexbas@proton.me> (a57729b61)
+
+	Set COIN_BUILD_EGL default to on
+
+M	CMakeLists.txt
+
+2025-06-08 17:16:06 +0200  Bas Ruigrok  <Rexbas@proton.me> (6ebe311ee)
+
+	Make sure HAVE_GLX is set when COIN_BUILD_GLX and COIN_BUILD_EGL are set
+
+M	CMakeLists.txt
+
+2025-06-08 14:10:45 +0200  Bas Ruigrok  <Rexbas@proton.me> (b5c45d1af)
+
+	Make sanity check more clear
+
+M	src/glue/gl.cpp
+
+2025-06-05 14:34:46 +0200  tetektoza  <tetektoza@gmail.com> (faa6d30e9)
+
+	Introduce shaded hidden lines visual style
+
+M	include/Inventor/SoRenderManager.h
+M	src/rendering/SoRenderManager.cpp
+
+2025-04-13 13:11:50 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (40ee7eb38)
+
+	Port away from FindBoost module
+
+M	.github/workflows/continuous-integration-workflow.yml
+
+2025-04-11 15:56:46 +0530  captain0xff  <sayantandebin@gmail.com> (36d8a3123)
+
+	testsuite: return "" when getcwd fails
+
+M	testsuite/TestSuiteUtils.cpp
+
+2025-04-11 15:48:13 +0530  captain0xff  <sayantandebin@gmail.com> (62f3ce3ab)
+
+	add support for building as subdirectory
+
+M	CMakeLists.txt
+M	data/CMakeLists.txt
+M	docs/coin.doxygen.awesome.cmake.in
+M	docs/coin.doxygen.cmake.in
+M	examples/dynloadextensions/CMakeLists.txt
+M	examples/glfw/CMakeLists.txt
+M	src/CMakeLists.txt
+M	src/actions/CMakeLists.txt
+M	src/base/CMakeLists.txt
+M	src/bundles/CMakeLists.txt
+M	src/caches/CMakeLists.txt
+M	src/collision/CMakeLists.txt
+M	src/details/CMakeLists.txt
+M	src/doc/CMakeLists.txt
+M	src/draggers/CMakeLists.txt
+M	src/elements/CMakeLists.txt
+M	src/elements/GL/CMakeLists.txt
+M	src/engines/CMakeLists.txt
+M	src/errors/CMakeLists.txt
+M	src/events/CMakeLists.txt
+M	src/fields/CMakeLists.txt
+M	src/fonts/CMakeLists.txt
+M	src/foreignfiles/CMakeLists.txt
+M	src/geo/CMakeLists.txt
+M	src/glue/CMakeLists.txt
+M	src/hardcopy/CMakeLists.txt
+M	src/io/CMakeLists.txt
+M	src/lists/CMakeLists.txt
+M	src/manips/CMakeLists.txt
+M	src/misc/CMakeLists.txt
+M	src/navigation/CMakeLists.txt
+M	src/nodekits/CMakeLists.txt
+M	src/nodes/CMakeLists.txt
+M	src/profiler/CMakeLists.txt
+M	src/projectors/CMakeLists.txt
+M	src/rendering/CMakeLists.txt
+M	src/scxml/CMakeLists.txt
+M	src/sensors/CMakeLists.txt
+M	src/shaders/CMakeLists.txt
+M	src/shadows/CMakeLists.txt
+M	src/shapenodes/CMakeLists.txt
+M	src/soscxml/CMakeLists.txt
+M	src/threads/CMakeLists.txt
+M	src/upgraders/CMakeLists.txt
+M	src/vrml97/CMakeLists.txt
+M	src/xml/CMakeLists.txt
+M	testsuite/CMakeLists.txt
+
+2025-04-10 09:07:36 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (ecd34feb1)
+
+	Update cmake_minimum_required command
+
+M	src/coin-config.cmake.in
+
+2025-04-10 09:06:13 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (36abede21)
+
+	Update cmake_minimum_required command
+
+M	CMakeLists.txt
+
+2025-04-01 21:13:56 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (5bd2a5203)
+
+	Fixed crash in SoVRMLBackground::GLRender due to unchecked ptr
+
+M	src/vrml97/Background.cpp
+
+2025-03-26 23:04:53 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (5180e9913)
+
+	CI: update CodeQL action
+
+M	.github/workflows/codeql.yml
+
+2025-03-25 21:58:57 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (3cdae91eb)
+
+	Update macOS build matrix
+
+M	appveyor_macos.yml
+
+2025-03-23 22:47:32 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (7dcfe0304)
+
+	Fix regression due to removed cc_glglue initialization.
+
+M	src/glue/gl.cpp
+
+2025-02-10 11:50:44 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (6906266e4)
+
+	Update Github upload-artifact action to v4
+
+M	.github/workflows/continuous-integration-workflow.yml
+
+2025-02-10 10:27:49 +0000  tritao  <joao@tritao.eu> (0c1b33661)
+
+	Add GLFW example.
+
+M	examples/CMakeLists.txt
+A	examples/glfw/.gitignore
+A	examples/glfw/CMakeLists.txt
+A	examples/glfw/glfw.cpp
+
+2025-02-10 10:27:03 +0000  tritao  <joao@tritao.eu> (183cb0d72)
+
+	Allow building EGL and GLX simultaneously.
+
+M	CMakeLists.txt
+M	src/glue/gl.cpp
+M	src/glue/gl_egl.cpp
+
+2025-02-10 10:25:03 +0000  tritao  <joao@tritao.eu> (44cdbad25)
+
+	Add `COIN_BUILD_EXAMPLES` build option and fix examples.
+
+M	CMakeLists.txt
+M	examples/dynloadextensions/CMakeLists.txt
+
+2025-01-25 22:01:04 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (c75f88d1c)
+
+	Transfer the ANSI encoded files to UTF-8
+
+M	AUTHORS
+M	README.UNIX
+M	THANKS
+M	build/msvc10/docs/coin4.doxygen
+M	build/msvc6/docs/coin4.doxygen
+M	build/msvc7/docs/coin4.doxygen
+M	build/msvc8/docs/coin4.doxygen
+M	build/msvc9/docs/coin4.doxygen
+M	docs/ChangeLog.2000
+M	docs/ChangeLog.2002
+M	docs/bugs/low_priority/io/20041105--incorrect_error_message_on_invalid_file.txt
+M	src/base/SbCylinder.cpp
+M	src/base/SbDPLine.cpp
+M	src/base/SbDPPlane.cpp
+M	src/base/SbLine.cpp
+M	src/base/SbPlane.cpp
+M	src/base/SbVec3d.cpp
+M	src/base/SbVec3f.cpp
+M	src/fonts/font13.icc
+M	src/fonts/font17.icc
+M	src/fonts/font25.icc
+M	src/fonts/font33.icc
+M	src/fonts/fontlib_wrapper.cpp
+M	src/fonts/freetype.cpp
+M	src/io/SoInput_FileInfo.h
+M	src/nodekits/SoBaseKit.cpp
+M	src/nodes/SoSpotLight.cpp
+M	src/tidbits.cpp
+M	src/vrml97/Cone.cpp
+M	src/vrml97/Cylinder.cpp
+M	src/vrml97/ElevationGrid.cpp
+M	src/vrml97/Extrusion.cpp
+M	src/vrml97/Material.cpp
+M	src/vrml97/PointLight.cpp
+M	src/vrml97/Sound.cpp
+M	src/vrml97/SpotLight.cpp
+M	src/vrml97/TextureCoordinate.cpp
+M	src/vrml97/TextureTransform.cpp
+M	src/vrml97/Transform.cpp
+
+2025-01-16 22:12:01 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (fb3ec19c8)
+
+	Fix invalid access when removing callback.
+
+M	src/lists/SoCallbackList.cpp
+
+2024-12-25 18:24:27 +0900  Kaz Nishimura  <kazssym@linuxfront.com> (34a7ebd25)
+
+	Fix macro handling to avoid conflicts with Microsoft Win32 API headers
+
+M	include/Inventor/errors/SoDebugError.h
+
+2024-11-17 23:47:52 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (d4cbf4571)
+
+	Fix typos and weird string outputs.
+
+M	src/3ds/3dsLoader.cpp
+M	src/elements/SoElement.cpp
+M	src/fields/SoField.cpp
+M	src/fields/SoFieldData.cpp
+M	src/io/SoInput.cpp
+M	src/misc/SoDB.cpp
+M	src/misc/SoProto.cpp
+M	src/misc/SoType.cpp
+M	src/nodekits/SoBaseKit.cpp
+M	src/nodekits/SoNodekitCatalog.cpp
+M	src/nodes/SoFile.cpp
+M	src/nodes/SoTransform.cpp
+M	src/nodes/SoUnknownNode.cpp
+M	src/nodes/SoWWWInline.cpp
+M	src/rendering/SoGL.cpp
+M	src/vrml97/Inline.cpp
+
+2024-11-17 23:33:26 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (1dbefc945)
+
+	Fix format string vulnerabilities.
+
+M	src/io/SoInput.cpp
+M	src/misc/SoJavaScriptEngine.cpp
+M	src/nodes/SoTexture3.cpp
+M	src/shadows/SoShadowGroup.cpp
+
+2024-11-14 21:45:20 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (e9cd78d42)
+
+	Minor optimization: avoid calculation of identity rotation
+
+M	src/draggers/SoCenterballDragger.cpp
+M	src/draggers/SoDirectionalLightDragger.cpp
+M	src/draggers/SoJackDragger.cpp
+M	src/draggers/SoRotateCylindricalDragger.cpp
+M	src/draggers/SoRotateDiscDragger.cpp
+M	src/draggers/SoRotateSphericalDragger.cpp
+M	src/draggers/SoSpotLightDragger.cpp
+M	src/draggers/SoTrackballDragger.cpp
+M	src/draggers/SoTransformBoxDragger.cpp
+M	src/draggers/SoTransformerDragger.cpp
+M	src/nodes/SoCamera.cpp
+M	src/nodes/SoListener.cpp
+M	src/nodes/SoPendulum.cpp
+M	src/nodes/SoRotation.cpp
+M	src/nodes/SoTexture3Transform.cpp
+M	src/nodes/SoTransform.cpp
+M	src/projectors/SbCylinderPlaneProjector.cpp
+M	src/vrml97/Transform.cpp
+
+2024-11-14 21:21:10 +0100  Volker Enderlein  <volkerenderlein@hotmail.com> (300e2a64c)
+
+	Minor optimization to avoid needless matrix multiplications. see issue #534
+
+M	src/nodes/SoTransform.cpp
+
+2024-10-30 16:30:49 +0300  Dmitry Marakasov  <amdmi3@amdmi3.ru> (b55f2dab1)
+
+	Update repology badge
+
+M	README.md
+
+2023-06-15 21:19:29 -0600  Mark Millard  <msm@wizzerworks.com> (9e7d403d2)
+
+	Fixed bug where assertion is thrown if eglglue_procaddress is NULL and HAVE_EGL is not defined. Broke GLX.
+
+M	src/glue/gl_egl.cpp
+
+2022-01-07 17:33:20 +0100  epuzanov  <epuzanov@users.noreply.github.com> (bb82ff16f)
+
+	Move EGL display initialization to separate eglglue_get_display function
+
+M	CMakeLists.txt
+M	src/glue/gl.cpp
+M	src/glue/gl_egl.cpp
+M	src/rendering/SoOffscreenRenderer.cpp
+
+2021-12-30 22:22:18 +0100  epuzanov  <epuzanov@users.noreply.github.com> (ebc7b038a)
+
+	Add HAVE_EGL to discard.h.in file
+
+M	src/discard.h.in
+
+2021-12-26 21:20:34 +0100  epuzanov  <epuzanov@users.noreply.github.com> (232c3e013)
+
+	Move EGL initialisation into the eglglue_init function
+
+M	src/glue/all-glue-cpp.cpp
+M	src/glue/gl.cpp
+M	src/glue/gl_egl.cpp
+M	src/glue/gl_egl.h
+
+2024-10-01 11:12:00 +0200  epuzanov  <epuzanov@users.noreply.github.com> (70fe308e7)
+
+	initial EGL support
+
+M	CMakeLists.txt
+M	aclocal.m4
+M	build/msvc10/src/config-debug.h
+M	build/msvc10/src/config-release.h
+M	build/msvc6/src/config-debug.h
+M	build/msvc6/src/config-release.h
+M	build/msvc7/src/config-debug.h
+M	build/msvc7/src/config-release.h
+M	build/msvc8/src/config-debug.h
+M	build/msvc8/src/config-release.h
+M	build/msvc9/src/config-debug.h
+M	build/msvc9/src/config-release.h
+M	src/config.h.cmake.in
+M	src/config.h.in
+M	src/glue/CMakeLists.txt
+M	src/glue/Makefile.am
+M	src/glue/Makefile.in
+M	src/glue/gl.cpp
+A	src/glue/gl_egl.cpp
+A	src/glue/gl_egl.h
+
+2024-09-10 22:01:43 +0200  Volker Enderlein  <volkerenderlein@hotmail.com> (2e7e4d041)
+
+	Update documentation-workflow.yml
+
+M	.github/workflows/documentation-workflow.yml

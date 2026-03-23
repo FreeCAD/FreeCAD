@@ -1,0 +1,29 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+datarootdir=@datarootdir@
+datadir=${datarootdir}
+
+Name: Coin
+Description: A high-level 3D graphics toolkit, fully compatible with SGI Open Inventor 2.1
+Version: @COIN_VERSION@
+Requires:
+Conflicts:
+Libs: -L${libdir} @COIN_EXTRA_LDFLAGS@ @COIN_EXTRA_LIBS@
+Cflags: -I${includedir} @COIN_EXTRA_CFLAGS@ @COIN_EXTRA_CPPFLAGS@
+
+coin_host=@host@
+compiler=@COIN_COMPILER@
+compiler_is_gcc=@ac_compiler_gnu@
+frameworkdir=@frameworkdir@
+htmldir=@htmldir@
+msvcrt=@COIN_MSVC_LIBC@
+objext=@OBJEXT@
+
+have_3ds_import=@HAVE_3DS_IMPORT_CAPABILITIES@
+have_vrml97=@HAVE_VRML97@
+have_sound=@HAVE_SOUND@
+have_superglu=@HAVE_SUPERGLU@
+have_threads=@HAVE_THREADS@
+have_threadsafe=@HAVE_THREADSAFE@

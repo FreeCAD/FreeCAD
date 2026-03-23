@@ -1,0 +1,106 @@
+#include <Inventor/@Gui@/So@Gui@.h>
+#include <Inventor/@Gui@/viewers/So@Gui@ExaminerViewer.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/actions/SoWriteAction.h>
+#include <Inventor/SoInput.h>
+#include <Inventor/SoOutput.h>
+#include <Inventor/SoDB.h>
+
+#include <Inventor/C/threads/thread.h>
+#include <Inventor/threads/SbThread.h>
+
+// This application attempts to check if applying an SoWrite action to
+// a scenegraph is thread-safe. A scenegraph is read from the file
+// specified on the command line. Each thread applies an SoWriteAction
+// on the scene. The idea is that if the input file is big enough,
+// each thread will not have time to finish its write operation before
+// the next thread starts.
+
+// Each thread will output an iv file. The contents of this file
+// should of course be the same for all the threads. Verify this by
+// doing something like:
+
+// $ for i in `seq 2 10`; do 
+//     echo 'diff 1.iv' $i.iv
+//     diff 1.iv $i.iv; 
+//  done
+
+
+class thread_data {
+public:
+  SoSeparator * root;
+  SbString filename;
+  int thread_number;
+};
+
+static void * thread_callback(void * closure)
+{
+  thread_data * data = (thread_data *) closure;
+
+  SoOutput out;
+  SbBool ok = out.openFile(data->filename.getString());
+  if (!ok) {
+    fprintf(stderr, "unable to open output file %s\n", data->filename.getString());
+    return NULL;
+  }
+  
+  fprintf(stdout, "start write, thread nr. %i\n", data->thread_number);
+  SoWriteAction wa(&out);
+  wa.apply(data->root);
+  fprintf(stdout, "finished write, thread nr.  %i\n", data->thread_number);
+  
+  return NULL;
+}
+
+int main(int argc, char ** argv)
+{
+  if (argc < 2) {
+    printf("specify an input file\n");
+    return -1;
+  }
+  
+  @WIDGET@ mainwin = So@Gui@::init(argv[0]);
+
+  // read scene
+  SoInput in;
+  SbBool ok = in.openFile(argv[1]);
+  if (!ok) {
+    fprintf(stderr, "unable to open file %s\n", argv[1]);
+    return -1;
+  }
+  
+  SoSeparator * root = SoDB::readAll(&in);
+  if (!root) {
+    fprintf(stderr, "unable to read file %s\n", argv[1]);
+    return -1;
+  }
+  root->ref();
+  
+  // create 10 threads that applies an SoWriteAction to the scene
+  for (int i = 1; i <= 10; i++) {
+    thread_data * data = new thread_data;
+    data->root = root;
+    data->thread_number = i;
+    data->filename.sprintf("%i.iv", i);
+    (void)SbThread::create(thread_callback, data);
+  }
+  
+  // throw up a viewer and show the scene while we wait for the
+  // trheads to finish
+  // Use one of the convenient SoQt viewer classes.
+  So@Gui@ExaminerViewer * eviewer = new So@Gui@ExaminerViewer(mainwin);
+  eviewer->setSceneGraph(root);
+  eviewer->show();
+  // Pop up the main window.
+  So@Gui@::show(mainwin);
+
+  // Loop until exit.
+  So@Gui@::mainLoop();
+
+  // Clean up resources.
+  delete eviewer;
+  root->unref();
+
+  
+  return 0;
+}

@@ -1,0 +1,100 @@
+#Inventor V2.1 ascii
+
+# Standard material definitions.
+
+DEF DRAGPOINT_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF DRAGPOINT_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+DEF DRAGPOINT_FEEDBACK_MATERIAL Material { diffuseColor 0.5 0 0.5  emissiveColor  0.5 0 0.5  transparency 0.2 }
+
+
+
+DEF DRAGPOINT_STICK Group {
+   Rotation { rotation 0 0 1  1.57 }
+   Cylinder { height 1.5 radius 0.2 }
+}
+
+DEF DRAGPOINT_INACTIVE_STICK Separator {
+   USE DRAGPOINT_INACTIVE_MATERIAL
+   USE DRAGPOINT_STICK
+}
+DEF DRAGPOINT_ACTIVE_STICK Separator {
+   USE DRAGPOINT_ACTIVE_MATERIAL
+   USE DRAGPOINT_STICK
+}
+
+DEF dragPointXTranslatorTranslator Separator { USE DRAGPOINT_INACTIVE_STICK } 
+DEF dragPointXTranslatorTranslatorActive Separator { USE DRAGPOINT_ACTIVE_STICK }
+DEF dragPointYTranslatorTranslator Separator { USE DRAGPOINT_INACTIVE_STICK }
+DEF dragPointYTranslatorTranslatorActive Separator { USE DRAGPOINT_ACTIVE_STICK }
+DEF dragPointZTranslatorTranslator Separator { USE DRAGPOINT_INACTIVE_STICK }
+DEF dragPointZTranslatorTranslatorActive Separator { USE DRAGPOINT_ACTIVE_STICK }
+
+
+DEF DRAGPOINT_PLANE Group { Cube { width 1  height 1  depth .1 } }
+
+DEF DRAGPOINT_INACTIVE_PLANE Separator {
+   USE DRAGPOINT_INACTIVE_MATERIAL
+   USE DRAGPOINT_PLANE
+}
+DEF DRAGPOINT_ACTIVE_PLANE Separator {
+   USE DRAGPOINT_ACTIVE_MATERIAL
+   USE DRAGPOINT_PLANE
+}
+
+DEF dragPointXYTranslatorTranslator Separator { USE DRAGPOINT_INACTIVE_PLANE }
+DEF dragPointXYTranslatorTranslatorActive Separator { USE DRAGPOINT_ACTIVE_PLANE }
+DEF dragPointXZTranslatorTranslator Separator { USE DRAGPOINT_INACTIVE_PLANE }
+DEF dragPointXZTranslatorTranslatorActive Separator { USE DRAGPOINT_ACTIVE_PLANE }
+DEF dragPointYZTranslatorTranslator Separator { USE DRAGPOINT_INACTIVE_PLANE }
+DEF dragPointYZTranslatorTranslatorActive Separator { USE DRAGPOINT_ACTIVE_PLANE }
+
+
+DEF DRAGPOINT_FEEDBACK_LINE Group {
+   Coordinate3 { point [ 0 -10 0, 0 10 0 ] }
+   LineSet { }
+
+   Transform { translation 0 10 0 }
+   DEF DRAGPOINT_FEEDBACK_ARROWHEAD Cone { height 0.5 bottomRadius 0.5 }
+   Transform { translation 0 -20 0 }
+   Rotation { rotation 0 0 1  3.14 }
+   USE DRAGPOINT_FEEDBACK_ARROWHEAD
+}
+
+DEF dragPointXFeedback Separator {
+   USE DRAGPOINT_FEEDBACK_MATERIAL
+   Rotation { rotation 0 0 1 1.57 }
+   USE DRAGPOINT_FEEDBACK_LINE
+}
+DEF dragPointYFeedback Separator {
+   USE DRAGPOINT_FEEDBACK_MATERIAL
+   USE DRAGPOINT_FEEDBACK_LINE
+}
+DEF dragPointZFeedback Separator {
+   USE DRAGPOINT_FEEDBACK_MATERIAL
+   Rotation { rotation 1 0 0 1.57 }
+   USE DRAGPOINT_FEEDBACK_LINE
+}
+
+
+DEF DRAGPOINT_FEEDBACK_PLANE Group {
+   ShapeHints { shapeType UNKNOWN_SHAPE_TYPE }
+   Coordinate3 { point [ -10 0 -10, -10 0 10, 10 0 10, 10 0 -10, -10 0 -10 ] }
+   FaceSet { }
+   Scale { scaleFactor 1.05 1 1.05 }
+   LineSet { }
+}
+
+DEF dragPointXYFeedback Separator {
+   USE DRAGPOINT_FEEDBACK_MATERIAL
+   Rotation { rotation 1 0 0  1.57 }
+   USE DRAGPOINT_FEEDBACK_PLANE
+}
+DEF dragPointXZFeedback Separator {
+   USE DRAGPOINT_FEEDBACK_MATERIAL
+   USE DRAGPOINT_FEEDBACK_PLANE
+}
+DEF dragPointYZFeedback Separator {
+   USE DRAGPOINT_FEEDBACK_MATERIAL
+   Rotation { rotation 0 0 1  1.57 }
+   USE DRAGPOINT_FEEDBACK_PLANE
+}

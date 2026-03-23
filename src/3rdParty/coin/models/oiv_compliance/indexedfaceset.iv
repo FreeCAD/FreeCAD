@@ -1,0 +1,259 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of SoIndexedFaceSet rendering.
+#
+# 19990414 mortene
+
+Separator {
+   # Global settings.
+   Coordinate3 {
+      point [
+       -1 1 0, -1 -1 0, 1 -1 0, 1 1 0,
+       0 2 -1, -2 0 -1, 0 -2 -1, 2 0 -1,
+      ]
+   }
+   Material {
+      diffuseColor [
+       1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1, 0 0 0
+      ]
+   }
+   TextureCoordinate2 {
+      point [ 0 0, 0 1, 1 0, 1 1, 
+              0 0, 0 1, 1 0, 1 1,
+              0 0, 0 1, 1 0, 1 1,
+              0 0, 0 1, 1 0, 1 1 ]
+   }
+#   Normal {
+#      vector [
+#       1 0 0, 0 1 0, 0 0 1, 1 1 0, 1 0 1, 0 1 1, 1 1 1, 0.5 0 0
+#      ]
+#   }
+
+   Switch {
+      whichChild -2
+
+      DEF ifs IndexedFaceSet {
+	 coordIndex [
+	  0, 1, 2, 3, -1,
+	  0, 3, 4, -1,
+	  0, 5, 1, -1,
+	  1, 6, 2, -1,
+	  2, 7, 3, -1 ]
+
+	 materialIndex [
+	  0, 1, 2, 3, 0,
+	  0, 3, 4, 0,
+	  0, 5, 1, 0,
+	  1, 6, 2, 0,
+	  2, 7, 3, 0 ]
+
+	 textureCoordIndex [
+	  0, 1, 2, 3, 0,
+	  0, 1, 2, 0,
+	  0, 1, 2, 0,
+	  0, 1, 2, 0,
+	  0, 1, 2, 0 ]
+
+#	 normalIndex [
+#	  0, 1, 2, 3, -1,
+#	  0, 3, 4, -1,
+#	  0, 5, 1, -1,
+#	  1, 6, 2, -1,
+#	  2, 7, 3, -1 ]
+      }
+   }
+
+
+   # (ROW 0) MaterialBinding
+   Separator {
+      MaterialBinding { value OVERALL }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_PART }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_PART_INDEXED }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_FACE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_FACE_INDEXED }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_VERTEX }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      MaterialBinding { value PER_VERTEX_INDEXED }
+      USE ifs
+   }
+
+   # (ROW 1) NormalBinding
+   Translation { translation 0 +6 0 }
+   Separator {
+      NormalBinding { value OVERALL }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_PART }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_PART_INDEXED }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_FACE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_FACE_INDEXED }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_VERTEX }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      NormalBinding { value PER_VERTEX_INDEXED }
+      USE ifs
+   }
+
+   # (ROW 2) Test how IndexedFaceSet is affected by Complexity.
+   Translation { translation 0 +6 0 }
+   Separator {
+      Complexity { type BOUNDING_BOX }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      Complexity { type OBJECT_SPACE  value 1.0 }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.2 }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      Complexity { type OBJECT_SPACE  value 0.0 }
+      USE ifs
+   }
+
+
+   # (ROW 3) With different LightModel settings.
+   Translation { translation 0 +6 0 }
+   Separator {
+      LightModel { model BASE_COLOR }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      LightModel { model PHONG }
+      USE ifs
+   }
+
+   # (ROW 4) With different DrawStyle settings.
+   Translation { translation 0 +6 0 }
+   Separator {
+      DrawStyle { style INVISIBLE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES lineWidth 1 }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES lineWidth 2 }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES lineWidth 4 }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style LINES lineWidth 2 linePattern 0x0180 }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style POINTS }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style POINTS pointSize 3 }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      DrawStyle { style FILLED }
+      USE ifs
+   }
+
+   # (ROW 5) With different ShapeStyle settings.
+   Translation { translation 0 +6 0 }
+   Separator {
+      Translation { translation +5 0 0 }
+      ShapeHints { vertexOrdering CLOCKWISE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { vertexOrdering COUNTERCLOCKWISE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { shapeType UNKNOWN_SHAPE_TYPE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { shapeType SOLID }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { faceType UNKNOWN_FACE_TYPE }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { faceType CONVEX }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { creaseAngle 0.5 }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      ShapeHints { creaseAngle 1.57 }
+      USE ifs
+   }
+
+   # (ROW 6) Test how IndexedFaceSet is affected by texturemapping.
+   Translation { translation 0 +6 0 }
+   Separator {
+      Texture2 {
+	 image 8 6 3
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0xff000000 0xff000000 0x00000000 0x00000000 0xff00ff00 0xff00ff00
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+	 0xffff0000 0xffff0000 0x00000000 0x00000000 0xffffff00 0xffffff00
+      }
+
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      TextureCoordinateBinding { value PER_VERTEX }
+      USE ifs
+
+      Translation { translation +5 0 0 }
+      TextureCoordinateBinding { value PER_VERTEX_INDEXED }
+      USE ifs
+   }
+}

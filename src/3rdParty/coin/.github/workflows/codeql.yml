@@ -1,0 +1,67 @@
+name: "CodeQL"
+
+on:
+  workflow_dispatch:  # Allow manual triggers
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  schedule:
+    - cron: '21 10 * * 4'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    #strategy:
+    #  fail-fast: false
+    #  matrix:
+    #    language: [ 'c-cpp', 'python' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: c-cpp
+        config: |
+          #disable-default-queries: true
+          #queries:
+          #  - uses: security-and-quality
+          query-filters:
+            # Specifically hide the results of these queries.
+            - exclude:
+                id: cpp/assignment-does-not-return-this
+            - exclude:
+                id: cpp/fixme-comment
+            - exclude:
+                id: cpp/rule-of-two
+            - exclude:
+                id: cpp/use-of-goto
+        #config-file: ./lgtm.yml
+
+    #- name: Autobuild
+    #  uses: github/codeonfigureql-action/autobuild@v2
+
+    - name: Create build with CMake
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y install freeglut3-dev
+        cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCOIN_BUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=cmake_install_dir
+
+    - name: Build project with CMake
+      run: cmake --build cmake_build_dir --target all --config Release -- -j4
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:c-cpp"

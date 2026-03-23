@@ -1,0 +1,4077 @@
+2006-12-29 16:12:45  Rev 10471  larsa
+
+	* include/Inventor/details/SoPointDetail.h,
+	src/details/SoPointDetail.cpp:
+
+	correct constness
+
+2006-12-28 15:19:02  Rev 10468  larsa
+
+	* build/msvc6/coin3.dsp, build/msvc8/include/config.h, cfg/gendsp.pl.in,
+	build/msvc6/generate.sh, build/msvc7/coin3.sln,
+	build/msvc8/coin3.sln, build/msvc6/config-wrapper.h, build/msvc7
+	/config-wrapper.h, build/msvc8/config-wrapper.h,
+	build/msvc6/include/config.h, build/msvc7/coin3.vcproj,
+	build/msvc7/include/config.h, build/msvc8/coin3.vcproj:
+
+	misc Visual Studio project improvements
+
+2006-12-27 13:19:18  Rev 10466  larsa
+
+	* build/msvc6/coin3.dsp, build/msvc6/generate.sh, build/msvc6/install-
+	headers.bat, build/msvc7/generate.sh, build/msvc7/install-
+	headers.bat, build/msvc8/generate.sh, build/msvc8/install-
+	headers.bat, build/msvc7/coin3.sln, build/msvc8/coin3.sln,
+	build/msvc6/include/setup.h, build/msvc7/include/setup.h,
+	build/msvc8/include/setup.h, build/msvc7/coin3.vcproj,
+	build/msvc8/coin3.vcproj:
+
+	new and improved Visual Studio projects
+
+2006-12-27 13:17:53  Rev 10465  larsa
+
+	* Makefile.am:
+
+	update dist-files
+
+2006-12-27 13:16:48  Rev 10464  larsa
+
+	* include/Inventor/Makefile.am, include/Inventor/Makefile.in:
+
+	alpha-sort header list
+
+2006-12-27 13:16:20  Rev 10463  larsa
+
+	* include/Inventor/nodes/Makefile.in, include/Inventor/nodes/Makefile.am:
+
+	remove redundancy (caused multiple instances in msvc project files)
+
+2006-12-27 13:15:02  Rev 10462  larsa
+
+	* src/Makefile.am, src/Makefile.in:
+
+	remove redundancy (caused multiple instances in msvc project files)
+
+2006-12-22 12:23:00  Rev 10460  pederb
+
+	* src/misc/SoGLImage.cpp:
+
+	fixed some bugs with rectangular texture handling.
+
+2006-12-19 14:38:33  Rev 10458  larsa
+
+	* src/vrml97/Extrusion.cpp:
+
+	remove redundant variable
+
+2006-12-19 14:35:39  Rev 10457  larsa
+
+	* build/msvc6/coin3.dsp, build/msvc6/install-headers.bat, build/msvc7
+	/install-headers.bat, build/msvc8/install-headers.bat,
+	build/msvc7/coin3.sln, build/msvc8/coin3.sln,
+	build/msvc7/coin3.vcproj, build/msvc8/coin3.vcproj:
+
+	updated files
+
+2006-12-19 14:13:49  Rev 10456  frodo
+
+	* html/Makefile.am, docs/coin.doxygen.in, html/Makefile.in:
+
+	generate and install a doxygen tag file for coin
+
+2006-12-19 11:25:43  Rev 10455  frodo
+
+	* docs/coin.doxygen.in, src/base/SbBox2s.cpp, src/base/SbBox2d.cpp,
+	src/base/SbBox3s.cpp, src/base/SbBox3d.cpp, src/base/SbXfBox3f.cpp,
+	src/base/SbBox2f.cpp, src/base/SbBox3f.cpp:
+
+	add SbBox3d to doc
+
+2006-12-18 17:03:06  Rev 10452  frodo
+
+	* include/Inventor/Makefile.am, src/Makefile.am,
+	include/Inventor/SbBox3d.h, src/base/all-base-cpp.cpp,
+	src/base/Makefile.in, src/base/SbBox3d.cpp, cfg/config.guess,
+	include/Inventor/Makefile.in, src/Makefile.in, src/base/Makefile.am,
+	cfg/config.sub:
+
+	added class SbBox3d
+
+2006-12-18 15:11:50  Rev 10451  handegar
+
+	* src/threads/mutex.c:
+
+	compile fix (msvc8)
+
+2006-12-14 10:51:40  Rev 10449  frodo
+
+	* src/base/SbVec3f.cpp, src/base/SbVec4f.cpp, docs/coin.doxygen.in,
+	src/base/SbBox2s.cpp, src/base/SbBox2d.cpp, src/base/SbBox3s.cpp,
+	src/base/SbXfBox3f.cpp, src/base/SbBox2f.cpp, src/base/SbBox3f.cpp,
+	src/base/SbVec2s.cpp, src/base/SbVec2d.cpp, src/base/SbVec3s.cpp,
+	src/base/SbVec3d.cpp, src/base/SbVec2f.cpp, src/base/SbVec4d.cpp:
+
+	update doc to include some missing classes
+
+2006-12-13 14:21:55  Rev 10447  mortene
+
+	* models/driver_problems/trans_disappear_notworking.iv:
+
+	simplified example, and broke pederb's work-around fix :-)
+
+2006-12-13 13:08:33  Rev 10446  mortene
+
+	* src/threads/mutex.c:
+
+	debug: env control over debug output and asserts for the time spent waiting in
+	mutex locks
+
+2006-12-13 12:47:40  Rev 10445  pederb
+
+	* models/driver_problems/trans_disappear_notworking.iv,
+	models/driver_problems:
+
+	test model for possible nVidia bug.
+
+2006-12-12 13:50:12  Rev 10443  mortene
+
+	* include/Inventor/threads/SbMutex.h, src/threads/mutex.c,
+	include/Inventor/C/threads/mutex.h:
+
+	API: minor fixes to function signatures.
+
+2006-12-12 13:24:22  Rev 10442  frodo
+
+	* THANKS:
+
+	add Robert Crompton
+
+2006-12-12 13:21:48  Rev 10441  frodo
+
+	* html/Makefile.am, docs/coin.doxygen.in, html/Makefile.in, THANKS:
+
+	revert accidental commit
+
+2006-12-12 13:04:23  Rev 10440  frodo
+
+	* html/Makefile.am, docs/coin.doxygen.in, html/Makefile.in, THANKS:
+
+	added Robert Crompton
+
+2006-12-08 18:18:04  Rev 10438  tamer
+
+	* HACKING:
+
+	Update of the external pointer on information regarding ABI issues.
+
+2006-12-08 17:46:09  Rev 10437  mortene
+
+	* src/base/SbColor.cpp:
+
+	now i'm bored
+
+2006-12-08 17:11:17  Rev 10436  mortene
+
+	* src/glue/win32api.c:
+
+	Minor fix: give as much info as possible when Win32's FormatMessage() fails.
+	(WGL functions seems to consistently trip up FormatMessage(), which triggered
+	this change.)
+
+2006-12-04 20:46:06  Rev 10434  kintel
+
+	* src/threads/sched.c:
+
+	Don't try to trigger job on each schedule
+
+2006-11-30 14:20:17  Rev 10432  kintel
+
+	* src/nodes/SoFile.cpp, include/Inventor/nodes/SoFile.h:
+
+	Added setSearchOK() and getSearchOK()
+
+2006-11-29 14:31:14  Rev 10430  kintel
+
+	* BUGS.txt:
+
+	Another bug - seems like global fields are not used very much
+
+2006-11-29 13:18:53  Rev 10429  kintel
+
+	* BUGS.txt:
+
+	Two new bugs
+
+2006-11-29 11:04:20  Rev 10428  larsa
+
+	* src/vrml97/Sound.cpp:
+
+	sprintf->strcpy
+
+2006-11-28 21:19:32  Rev 10426  larsa
+
+	* include/Inventor/misc/SbHash.h:
+
+	be more exception-safe (get rid of a vs-warning)
+
+2006-11-24 13:59:16  Rev 10424  frodo
+
+	* src/threads/sched.c:
+
+	windows compile fix
+
+2006-11-24 13:23:16  Rev 10423  kintel
+
+	* include/Inventor/C/threads/sched.h,
+	include/Inventor/C/threads/schedp.h, src/threads/sched.c:
+
+	Updated cc_sched: float priorities, set_num_allowed, get_num_remaining,
+	change_priority, unschedule
+
+2006-11-24 13:06:50  Rev 10422  kintel
+
+	* src/threads/wpool.c, src/threads/worker.c:
+
+	doc
+
+2006-11-23 16:14:16  Rev 10420  pederb
+
+	* src/actions/SoToVRML2Action.cpp:
+
+	Add support for VRMLTransform nodes in the source scene graph.
+
+2006-11-23 09:10:41  Rev 10419  pederb
+
+	* src/nodes/SoGroup.cpp:
+
+	Bugfix for SoGroup offpath traversal. Reported by Gianni Ambrosio.
+
+2006-11-21 20:50:41  Rev 10417  larsa
+
+	* build/msvc6/coin3.dsp, build/msvc6/coin3.dsw, build/msvc7/coin3.sln,
+	build/msvc8/coin3.sln, build/msvc7/coin3.vcproj,
+	build/msvc8/coin3.vcproj:
+
+	update
+
+2006-11-21 16:07:43  Rev 10416  frodo
+
+	* src/vrml97/Billboard.cpp:
+
+	a vector should not be transformed like a point
+
+2006-11-21 15:04:56  Rev 10415  pederb
+
+	* src/fields/SoMFEnum.cpp:
+
+	Bugfix. Avoid notify() from a destructing SoMFEnum.
+
+2006-11-21 14:28:55  Rev 10414  pederb
+
+	* src/vrml97/Extrusion.cpp, src/caches/SoPrimitiveVertexCache.cpp:
+
+	Fix potential bugs wrt use of memcmp to compare structs.
+
+2006-11-20 15:44:38  Rev 10411  frodo
+
+	* test-code/mt-attack/mt-output-attack.cpp.in, test-code/mt-attack/mt-
+	attack.cpp.in:
+
+	rename this file since we probably want to add more tests here.
+
+2006-11-20 15:36:23  Rev 10410  frodo
+
+	* src/fields/SoField.cpp:
+
+	more fine-grained mutex locking to avoid possible deadlock
+
+2006-11-20 15:16:00  Rev 10409  frodo
+
+	* src/vrml97/Billboard.cpp:
+
+	use the true camera to bilboard vector instead of projection direction
+
+2006-11-20 14:17:03  Rev 10408  frodo
+
+	* test-code/mt-attack/mt-attack.cpp.in, test-code/mt-attack:
+
+	test app for SoWriteAction and SoOutput thread-safety
+
+2006-11-20 10:51:38  Rev 10407  frodo
+
+	* src/draggers/SoDragger.cpp:
+
+	added comment
+
+2006-11-16 14:08:45  Rev 10405  mortene
+
+	* src/glue/gl.c:
+
+	New envvar for finegrained OpenGL driver control (to work around a bug with
+	NVidia offscreen buffers).
+
+2006-11-14 11:27:10  Rev 10403  frodo
+
+	* src/fields/SoGlobalField.cpp:
+
+	minor optimization
+
+2006-11-13 12:22:34  Rev 10401  frodo
+
+	* src/nodes/SoUnknownNode.cpp:
+
+	do not print this info unless COIN_DEBUG_IMPORT is set
+
+2006-11-13 12:18:23  Rev 10400  frodo
+
+	* src/fields/SoGlobalField.cpp:
+
+	read field type as sbtring since it might be quoted
+
+2006-11-10 14:32:18  Rev 10398  frodo
+
+	* src/vrml97/Billboard.cpp:
+
+	remove superfluous include
+
+2006-11-10 14:13:13  Rev 10397  frodo
+
+	* src/vrml97/Billboard.cpp:
+
+	dont ignore preceeding transformations + some cleanups
+
+2006-11-09 13:22:40  Rev 10395  handegar
+
+	* src/draggers/SoJackDragger.cpp:
+
+	Always update the anti-squish node.
+
+2006-11-09 12:23:49  Rev 10394  pederb
+
+	* src/misc/SoCompactPathList.cpp:
+
+	Bugfix.
+
+2006-11-09 11:15:12  Rev 10393  pederb
+
+	* src/misc/SoCompactPathList.cpp:
+
+	compile fix.
+
+2006-11-09 10:38:07  Rev 10392  pederb
+
+	* src/vrml97/ImageTexture.cpp:
+
+	Make the memory-cleanup feature work also without --enable-threadsafe.
+
+2006-11-08 14:28:06  Rev 10389  pederb
+
+	* src/misc/SoCompactPathList.cpp, src/actions/SoAction.cpp,
+	include/Inventor/misc/SoCompactPathList.h:
+
+	Add SoCompactPathList::getDepth(). Use it to assert that the list is always in
+	sync with the current path.
+
+2006-11-08 13:24:35  Rev 10388  pederb
+
+	* src/misc/SoCompactPathList.cpp:
+
+	Compile fix.
+
+2006-11-08 13:23:00  Rev 10387  pederb
+
+	* src/misc/SoPath.cpp, include/Inventor/misc/Makefile.in,
+	src/misc/Makefile.in, include/Inventor/misc/Makefile.am,
+	src/misc/Makefile.am:
+
+	Build SoCompactPathList.
+
+2006-11-08 13:14:33  Rev 10386  pederb
+
+	* include/Inventor/misc/SoCompactPathList.h:
+
+	Make SoCompactPathList internal.
+
+2006-11-08 12:17:38  Rev 10385  pederb
+
+	* include/Inventor/misc/SoCompactPathList.h:
+
+	Compile fix
+
+2006-11-08 12:16:27  Rev 10384  pederb
+
+	* src/misc/SoPath.cpp, src/misc/SoCompactPathList.cpp,
+	src/actions/SoAction.cpp, include/Inventor/misc/SoCompactPathList.h,
+	include/Inventor/actions/SoAction.h:
+
+	Add the SoCompactPathList class and use it to get much faster IN_PATH
+	traversal.
+
+2006-11-08 12:14:26  Rev 10383  pederb
+
+	* src/actions/SoGLRenderAction.cpp:
+
+	Faster DELAYED_BLEND/ADD rendering.
+
+2006-11-08 12:11:10  Rev 10382  pederb
+
+	* src/nodes/SoSeparator.cpp, src/vrml97/Billboard.cpp,
+	src/vrml97/Group.cpp:
+
+	Bugfix for IN_PATH traversal.
+
+2006-11-07 15:03:03  Rev 10380  mortene
+
+	* BUGS.txt:
+
+	New item.
+
+2006-11-07 14:44:28  Rev 10379  mortene
+
+	* src/vrml97/Billboard.cpp:
+
+	Doc: adds .wrl example, illustrating basic axisOfRotation use.
+
+2006-10-30 00:02:45  Rev 10376  larsa
+
+	* RELEASE.txt:
+
+	add an svn command
+
+2006-10-27 13:02:54  Rev 10375  mortene
+
+	* src/misc/SoVertexArrayIndexer.cpp:
+
+	Doc: FIXME note.
+
+2006-10-27 13:02:40  Rev 10374  mortene
+
+	* src/misc/SoVBO.cpp:
+
+	Cosmetics.
+
+2006-10-27 12:57:20  Rev 10373  mortene
+
+	* src/glue/gl_wgl.c, src/glue/gl_glx.c, src/glue/gl_agl.c:
+
+	Doc: FIXMEs about unecessary resource use for offscreen GL contexts.
+
+2006-10-26 11:21:23  Rev 10372  mortene
+
+	* BUGS.txt:
+
+	Add info on item 133.
+
+2006-10-26 07:39:58  Rev 10371  pederb
+
+	* src/vrml97/Extrusion.cpp:
+
+	Bugfix for VBO rendering (begin/end caps).
+
+2006-10-24 15:45:50  Rev 10370  pederb
+
+	* src/base/SbDPViewVolume.cpp, src/base/SbViewVolume.cpp:
+
+	getAlignRotation() implementation.
+
+2006-10-24 13:49:32  Rev 10369  kintel
+
+	* src/actions/SoAction.cpp:
+
+	added missing unref(), no memory leaks but makes it easier to debug
+
+2006-10-24 12:30:26  Rev 10368  kintel
+
+	* src/glue/dl.c:
+
+	plugged memory leak
+
+2006-10-20 10:00:19  Rev 10366  pederb
+
+	* src/vrml97/Geometry.cpp, src/vrml97/IndexedFaceSet.cpp,
+	src/vrml97/ElevationGrid.cpp, src/vrml97/Extrusion.cpp,
+	src/vrml97/IndexedLineSet.cpp:
+
+	Improve vrml97 rendering performance by doing lazy evaluation of shape hints
+	parameters. Problem reported by kintel.
+
+2006-10-20 08:58:26  Rev 10365  pederb
+
+	* src/nodes/SoNode.cpp, src/elements/GL/SoGLLightIdElement.cpp,
+	src/actions/SoGLRenderAction.cpp,
+	src/elements/GL/SoGLModelMatrixElement.cpp,
+	src/elements/GL/SoGLClipPlaneElement.cpp,
+	src/elements/GL/SoGLDisplayList.cpp:
+
+	Only call glGetError() if the COIN_GLERROR_DEBUGGING environment variable is
+	set.
+
+2006-10-19 14:15:08  Rev 10363  pederb
+
+	* src/vrml97/Extrusion.cpp:
+
+	fix cache dependency issues with Extrusion node.
+
+2006-10-18 15:09:46  Rev 10360  pederb
+
+	* src/vrml97/Extrusion.cpp:
+
+	remove debug messages.
+
+2006-10-18 14:43:22  Rev 10359  pederb
+
+	* src/vrml97/Extrusion.cpp:
+
+	Proper VBO rendering in this node.
+
+2006-10-18 14:03:05  Rev 10358  kyrah
+
+	* src/misc/CoinOffscreenGLCanvas.cpp:
+
+	Disable context activation error messages by default since it is
+	standard procedure for tiled rendering to first try with larger
+	sizes and progressively scale down. Problem reported by pederb.
+
+2006-10-18 10:50:03  Rev 10357  pederb
+
+	* include/Inventor/caches/SoVBOCache.h, src/caches/SoVBOCache.cpp:
+
+	First implementation of the VBO cache.
+
+2006-10-18 10:49:31  Rev 10356  pederb
+
+	* src/misc/SoVBO.cpp:
+
+	reduce the default maximum VBO size.
+
+2006-10-18 10:48:53  Rev 10355  pederb
+
+	* src/shaders/SoGLSLShaderObject.cpp:
+
+	Avoid detaching when deallocating a shader object.
+
+2006-10-18 09:59:37  Rev 10354  pederb
+
+	* include/Inventor/caches/Makefile.in,
+	include/Inventor/caches/SoVBOCache.h, src/caches/Makefile.in,
+	include/Inventor/caches/Makefile.am, src/caches/Makefile.am,
+	src/caches/SoVBOCache.cpp:
+
+	new internal cache.
+
+2006-10-17 14:22:27  Rev 10352  pederb
+
+	* src/shaders/SoGLSLShaderProgram.cpp, src/shaders/SoGLShaderObject.cpp,
+	src/shaders/SoGLSLShaderProgram.h, src/shaders/SoGLShaderObject.h:
+
+	Fix even more memory leaks.
+
+2006-10-17 11:29:44  Rev 10351  pederb
+
+	* src/vrml97/VertexPoint.cpp:
+
+	Bugfix for VRMLPointSet callback and picking. Bug reported by Michel Bondy.
+
+2006-10-16 22:13:51  Rev 10349  larsa
+
+	* src/misc/SoSceneManager.cpp:
+
+	sync new actions to existing viewport settings
+
+2006-10-16 10:33:12  Rev 10348  pederb
+
+	* src/shaders/SoShaderObject.cpp:
+
+	Fix some memory leaks.
+
+2006-10-11 14:33:30  Rev 10346  pederb
+
+	* src/actions/SoToVRML2Action.cpp:
+
+	Add support for the SoUnits node. Bug reported by Christian Krug.
+
+2006-10-10 13:08:24  Rev 10344  pederb
+
+	* src/misc/SoSceneManager.cpp:
+
+	Workaround for possible nVidia alpha test bug.
+
+2006-10-05 12:44:26  Rev 10340  frodo
+
+	* include/Inventor/nodekits/SoSubKit.h,
+	include/Inventor/nodes/SoSubNode.h:
+
+	remove some superfluous semicolons
+
+2006-10-04 13:36:45  Rev 10339  kyrah
+
+	* src/nodes/SoComplexity.cpp:
+
+	Typo.
+
+2006-10-03 08:59:12  Rev 10336  frodo
+
+	* THANKS, src/actions/SoGetPrimitiveCountAction.cpp:
+
+	bugfix, add num to total count, patch provided by Juha M?kipelto
+
+2006-10-01 20:34:02  Rev 10335  autosvn
+
+	* test-code/SbMatrix/.cvsignore, build/msvc7/include/.cvsignore,
+	src/threads/.cvsignore, src/lists/.cvsignore,
+	src/extensions/.cvsignore, src/vrml97/.cvsignore, docs/.cvsignore,
+	test-code/SbMatrix/getTransform/.cvsignore, build/msvc6/.cvsignore,
+	src/base/.cvsignore, src/elements/.cvsignore, src/errors/.cvsignore,
+	html/.cvsignore, build/msvc6/include/Inventor/C/.cvsignore,
+	src/nodekits/.cvsignore,
+	build/msvc6/include/Inventor/system/.cvsignore,
+	build/msvc8/include/Inventor/C/.cvsignore,
+	build/msvc6/data/draggerDefaults/.cvsignore,
+	build/msvc7/data/draggerDefaults/.cvsignore,
+	build/msvc8/data/draggerDefaults/.cvsignore,
+	data/draggerDefaults/.cvsignore, src/engines/.cvsignore,
+	src/fonts/.cvsignore, build/msvc6/include/.cvsignore,
+	src/misc/.cvsignore, src/draggers/.cvsignore, src/actions/.cvsignore,
+	src/events/.cvsignore, test-code/SbMatrix/multRight/.cvsignore,
+	.cvsignore, man/man3/.cvsignore, include/Inventor/system/.cvsignore,
+	man/.cvsignore, src/details/.cvsignore, src/shapenodes/.cvsignore,
+	src/upgraders/.cvsignore, include/Inventor/C/base/.cvsignore,
+	include/.cvsignore, src/glue/.cvsignore, src/sensors/.cvsignore,
+	build/msvc6/include/Inventor/.cvsignore,
+	include/Inventor/C/errors/.cvsignore,
+	build/msvc7/include/Inventor/.cvsignore,
+	build/msvc8/include/Inventor/.cvsignore, include/Inventor/.cvsignore,
+	build/.cvsignore, build/msvc8/.cvsignore, src/nodes/.cvsignore,
+	build/msvc7/include/Inventor/C/.cvsignore, bin/.cvsignore,
+	include/Inventor/C/.cvsignore,
+	build/msvc8/include/Inventor/system/.cvsignore, test-
+	code/SbRotation/.cvsignore, src/caches/.cvsignore,
+	src/manips/.cvsignore, test-
+	code/SbRotation/SbRotation_mul_SbRotation/.cvsignore,
+	src/3ds/.cvsignore, src/projectors/.cvsignore,
+	build/msvc8/include/.cvsignore, src/bundles/.cvsignore,
+	src/.cvsignore, src/fields/.cvsignore, build/msvc7/.cvsignore,
+	include/Inventor/C/threads/.cvsignore, src/elements/GL/.cvsignore,
+	include/Inventor/C/glue/.cvsignore, build/msvc6/data/.cvsignore,
+	man/man1/.cvsignore, build/msvc7/data/.cvsignore,
+	build/msvc8/data/.cvsignore,
+	build/msvc7/include/Inventor/system/.cvsignore, data/.cvsignore,
+	test-code/SbMatrix/multLeft/.cvsignore, test-
+	code/SbRotation/setValue_SbMatrix/.cvsignore,
+	include/Inventor/lock/.cvsignore:
+
+	remove now obsolete .cvsignore files.
+
+2006-09-22 23:47:40  Rev 10333  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-09-22 10:56:05  Rev 10332  frodo
+
+	* src/nodes/SoArray.cpp:
+
+	set the correct order for the switchelements. bug reported and patch provided
+	by Volker Enderlein
+
+2006-09-22 07:23:15  Rev 10331  thammer
+
+	* include/Inventor/C/glue/spidermonkey.h:
+
+	Bugfix: Last commit had incorrect placement of some lines. Bug reported by
+	kyrah.
+
+2006-09-21 23:36:22  Rev 10330  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-09-21 11:14:50  Rev 10329  thammer
+
+	* src/vrml97/JS_VRMLClasses.cpp:
+
+	Use doubles internally. Correct presicion for SFVec3d.
+
+2006-09-21 07:54:30  Rev 10328  thammer
+
+	* src/glue/spidermonkey.c, include/Inventor/C/glue/spidermonkey.h:
+
+	Wrapped two new SpiderMonkey functions
+
+2006-09-04 23:35:23  Rev 10327  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-09-04 13:42:27  Rev 10326  larsa
+
+	* include/Inventor/misc/SoBase.h:
+
+	useful utility functions for boost programmers
+
+2006-09-01 23:35:24  Rev 10325  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-09-01 15:24:20  Rev 10324  pederb
+
+	* src/shapenodes/SoLineSet.cpp:
+
+	Bugfix for LineSet nodes with VertexPropery nodes. Bug reported by Hari
+	Sundar.
+
+2006-08-30 23:34:37  Rev 10323  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-08-30 07:28:05  Rev 10322  pederb
+
+	* src/base/SbDPMatrix.cpp:
+
+	Fix for multVecMatrix(SbVec4d, SbVec4d). Bug reported by Gerhard Reitmayr.
+
+2006-08-30 07:24:31  Rev 10321  pederb
+
+	* src/base/SbMatrix.cpp:
+
+	Fix for multVecMatrix(SbVec4f, SbVec4f). Bug reported by Gerhard Reitmayr.
+
+2006-08-22 23:37:55  Rev 10320  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-08-22 15:33:04  Rev 10319  pederb
+
+	* src/shapenodes/SoTriangleStripSet.cpp,
+	src/shapenodes/SoIndexedTriangleStripSet.cpp:
+
+	Flatshading compatibility fix.
+
+2006-08-20 23:33:50  Rev 10318  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-08-20 16:31:33  Rev 10317  larsa
+
+	* build/msvc8/generate.sh, build/msvc8/install-headers.bat,
+	build/msvc8/coin3.sln, build/msvc8/coin3.vcproj:
+
+	update
+
+2006-08-20 16:04:00  Rev 10316  larsa
+
+	* build/msvc7/generate.sh, build/msvc7/install-headers.bat,
+	build/msvc7/coin3.sln, build/msvc7/coin3.vcproj:
+
+	update
+
+2006-08-20 14:47:46  Rev 10315  larsa
+
+	* build/msvc6/coin3.dsp:
+
+	added file
+
+2006-08-20 14:47:21  Rev 10314  larsa
+
+	* build/msvc6/generate.sh, build/msvc6/install-headers.bat:
+
+	bugfix
+
+2006-08-11 23:34:45  Rev 10313  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-08-11 14:14:05  Rev 10312  pederb
+
+	* include/Inventor/engines/SoSubNodeEngineP.h:
+
+	Fix for some VRML2 sensors which were not tagged as VRML2 nodes. Reported by
+	Martin Hahn.
+
+2006-08-11 11:47:12  Rev 10311  frodo
+
+	* src/misc/SoDBP.cpp:
+
+	remove compiler warning
+
+2006-08-11 11:38:13  Rev 10310  frodo
+
+	* src/vrml97/ImageTexture.cpp:
+
+	revert to version 1.54, but keep the searching when delay load is disabled
+
+2006-08-09 23:48:20  Rev 10309  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-08-09 13:28:30  Rev 10308  frodo
+
+	* src/misc/SoDBP.h, src/misc/Makefile.in, src/misc/SoDB.cpp,
+	src/misc/SoDBP.cpp, src/misc/Makefile.am:
+
+	refactoring: SoDBP placed in separate files
+
+2006-07-24 23:34:47  Rev 10307  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-07-24 15:00:20  Rev 10306  sveinung
+
+	* src/misc/SoPick.cpp:
+
+	Fixed texture coordinates in sopick_pick_cube()
+
+2006-07-13 20:22:18  Rev 10305  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-07-13 11:41:04  Rev 10304  pederb
+
+	* src/misc/SoSceneManager.cpp:
+
+	change default depth function to LEQUAL to be compatible with SGI Inventor.
+
+2006-07-05 23:41:38  Rev 10303  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-07-05 09:19:06  Rev 10302  pederb
+
+	* src/nodes/SoExtSelection.cpp:
+
+	Make single-click selection work even in Visible-only mode. Bug reported by
+	Anuwat Dechvijankit.
+
+2006-07-02 23:41:42  Rev 10301  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-07-02 11:23:04  Rev 10300  larsa
+
+	* build/msvc8/data/draggerDefaults/rotateDiscDragger.h,
+	build/msvc8/data/draggerDefaults/transformerDragger.h, build/msvc8,
+	build/msvc8/data/draggerDefaults/handleBoxDragger.h,
+	build/msvc8/data/draggerDefaults/jackDragger.h,
+	build/msvc8/data/draggerDefaults/scale1Dragger.h,
+	build/msvc8/data/draggerDefaults/scale2UniformDragger.h,
+	build/msvc8/data/draggerDefaults/scale2Dragger.h, build/msvc8/data,
+	build/msvc8/data/draggerDefaults/centerballDragger.h,
+	build/msvc8/data/draggerDefaults/rotateCylindricalDragger.h,
+	build/msvc8/data/draggerDefaults/spotLightDragger.h,
+	build/msvc8/data/draggerDefaults/translate1Dragger.h,
+	build/msvc8/data/draggerDefaults,
+	build/msvc8/data/draggerDefaults/tabBoxDragger.h,
+	build/msvc8/.cvsignore,
+	build/msvc8/data/draggerDefaults/translate2Dragger.h,
+	build/msvc8/data/draggerDefaults/pointLightDragger.h,
+	build/msvc8/data/draggerDefaults/transformBoxDragger.h,
+	build/msvc8/data/draggerDefaults/directionalLightDragger.h,
+	build/msvc8/data/draggerDefaults/tabPlaneDragger.h,
+	build/msvc8/data/draggerDefaults/dragPointDragger.h,
+	build/msvc8/data/draggerDefaults/scaleUniformDragger.h,
+	build/msvc8/data/.cvsignore,
+	build/msvc8/data/draggerDefaults/rotateSphericalDragger.h,
+	build/msvc8/data/draggerDefaults/.cvsignore,
+	build/msvc8/data/draggerDefaults/trackballDragger.h:
+
+	forgotten files
+
+2006-07-02 10:23:00  Rev 10299  larsa
+
+	* build/msvc8, build/msvc6/include/Inventor/system/gl.h,
+	build/msvc7/include/config-debug.h,
+	build/msvc8/include/Inventor/system/gl.h, build/msvc8/generate.sh,
+	build/msvc8/install-lib-debug.bat,
+	build/msvc8/include/Inventor/.cvsignore, build/msvc7/coin3.sln,
+	build/msvc8/coin3.sln, build/msvc8/include/setup.h,
+	build/msvc8/.cvsignore, build/msvc8/coin3.vcproj,
+	build/msvc8/include/config.h, build/msvc8/include/Inventor/C/basic.h,
+	build/msvc6/install-headers.bat, build/msvc7/install-headers.bat,
+	build/msvc8/install-headers.bat,
+	build/msvc8/include/Inventor/C/.cvsignore,
+	build/msvc8/include/Inventor,
+	build/msvc8/include/Inventor/system/.cvsignore, build/msvc6/include
+	/config-release.h, build/msvc8/include/config-release.h,
+	build/msvc6/coin3.dsp, build/msvc6/include/config-debug.h,
+	build/msvc8/include/.cvsignore, build/msvc8/install-dll-release.bat,
+	build/msvc7/include/Inventor/system/gl.h, build/msvc8/include/config-
+	debug.h, build/msvc8/install-dll-debug.bat, build/msvc8/config-
+	wrapper.h, build/msvc8/include/Inventor/C,
+	build/msvc8/include/Inventor/system, build/msvc7/coin3.vcproj,
+	build/msvc8/include/Inventor/system/inttypes.h, build/msvc8/include,
+	build/msvc7/include/config-release.h, build/msvc8/install-lib-
+	release.bat:
+
+	regenerate, and add msvc8 solution
+
+2006-06-28 23:49:03  Rev 10298  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-06-28 08:53:10  Rev 10297  pederb
+
+	* src/shapenodes/SoCube.cpp:
+
+	generatePrimitives() PER_PART material binding bugfix. Reported by kintel.
+
+2006-06-21 23:35:06  Rev 10296  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-06-21 13:54:09  Rev 10295  pederb
+
+	* src/shapenodes/SoTriangleStripSet.cpp:
+
+	Fix normal generation bug when numVertices == -1. Reported by Kurt Saetzler.
+
+2006-06-21 13:25:15  Rev 10294  thammer
+
+	* src/vrml97/JS_VRMLClasses.cpp:
+
+	Bugfix: It's not a critical error to ask for a non-existing property.
+
+2006-06-20 23:48:14  Rev 10293  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-06-20 09:26:24  Rev 10292  pederb
+
+	* src/misc/SoBase.cpp:
+
+	Threadsafe fix for ref/unref. Reported by Christian Eckstein.
+
+2006-06-20 09:08:34  Rev 10291  pederb
+
+	* src/vrml97/ImageTexture.cpp:
+
+	Fix prequalify file callback bug. Reported by Sylvain Carette.
+
+2006-06-14 23:43:46  Rev 10290  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-06-14 12:30:29  Rev 10289  thammer
+
+	* src/vrml97/JS_VRMLClasses.cpp:
+
+	Proper support for fields with double precision values. Bug (gcc compile
+	error) reported by kyrah.
+
+2006-06-07 23:35:46  Rev 10288  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-06-07 10:59:46  Rev 10287  thammer
+
+	* src/vrml97/JS_VRMLClasses.cpp:
+
+	Added support for SFVec3f and MFVec3d.
+	Fixed one minor cut-n-paste bug.
+
+2006-06-06 23:36:45  Rev 10286  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-06-06 08:41:42  Rev 10285  pederb
+
+	* src/elements/GL/SoGLVBOElement.cpp:
+
+	Bugfix. In some cases non-GL-caches could get a dependecy on
+	SoGLCacheContextElement.
+
+2006-06-02 23:34:02  Rev 10284  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-06-02 14:27:42  Rev 10283  kintel
+
+	* src/threads/mutex.c:
+
+	doc fix
+
+2006-06-02 12:23:51  Rev 10282  tamer
+
+	* configure:
+
+	bootstrap.
+
+2006-06-02 11:38:50  Rev 10281  tamer
+
+	* configure.ac:
+
+	x86_64 architecture known to work and hardware available.
+
+2006-06-01 23:34:23  Rev 10280  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-06-01 13:10:28  Rev 10279  pederb
+
+	* src/vrml97/IndexedFaceSet.cpp:
+
+	Deadlock fix for shapes with concave polygons. Reported by Kai Henning.
+
+2006-05-24 23:35:45  Rev 10278  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-05-24 10:43:32  Rev 10277  pederb
+
+	* src/shaders/SoGLSLShaderProgram.cpp, src/shaders/SoGLSLShaderProgram.h:
+
+	Bugfix for GLSL context handling. Reported by Michael Mandel.
+
+2006-05-24 08:46:10  Rev 10276  pederb
+
+	* src/vrml97/Extrusion.cpp:
+
+	Another fix for a recently introduced bug.
+
+2006-05-23 23:34:24  Rev 10275  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-05-23 12:31:31  Rev 10274  pederb
+
+	* src/vrml97/Extrusion.cpp:
+
+	Bugfix for recently introduced bug.
+
+2006-05-22 23:34:26  Rev 10273  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-05-22 10:56:14  Rev 10272  pederb
+
+	* src/hardcopy/VectorizeActionP.cpp:
+
+	Detail handling bugfix. Reported by Kusnadi Liem.
+
+2006-05-19 23:34:16  Rev 10271  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-05-19 15:23:41  Rev 10270  pederb
+
+	* src/vrml97/Extrusion.cpp:
+
+	Add support for VBO rendering.
+
+2006-05-19 09:13:23  Rev 10269  pederb
+
+	* src/nodes/SoShapeHints.cpp:
+
+	Updated documentation.
+
+2006-05-12 23:34:49  Rev 10268  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-05-12 12:38:38  Rev 10267  kyrah
+
+	* include/config.h.in:
+
+	Sync with larsa's fixes in configure.ac -r 1.209
+
+2006-05-12 12:11:09  Rev 10266  kyrah
+
+	* THANKS:
+
+	Added David Himes.
+
+2006-05-12 12:01:04  Rev 10265  kyrah
+
+	* aclocal.m4, src/fields/Makefile.in, configure, include/discard.h.in,
+	cfg/config.guess, cfg/config.sub, cfg/ltmain.sh:
+
+	Bootstrap with libtool 1.5.22.
+
+2006-05-11 23:35:05  Rev 10264  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-05-11 14:55:13  Rev 10263  pederb
+
+	* src/base/SbViewVolume.cpp:
+
+	Documentation fix for getProjectionPoint().
+
+2006-05-08 23:33:49  Rev 10262  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-05-08 14:15:33  Rev 10261  larsa
+
+	* configure.ac, src/base/SbTime.cpp:
+
+	Minor fixes from Coin-2
+
+2006-05-05 23:34:42  Rev 10260  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-05-05 13:20:39  Rev 10259  mortene
+
+	* include/Inventor/system/gl.h.in:
+
+	Compile fix: add some GLU defines, found to be missing on some systems.
+
+2006-04-29 23:46:56  Rev 10258  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-04-29 13:05:19  Rev 10256  larsa
+
+	* src/share/gl/CoinGLPerformance.h, src/share/gl/CoinGLPerformance.cpp:
+
+	copyright header updates
+
+2006-04-21 23:34:50  Rev 10255  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-04-21 14:16:29  Rev 10254  mortene
+
+	* THANKS:
+
+	Add Martin Spindler, who implemented the shader nodes.
+
+2006-04-20 23:35:28  Rev 10253  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-04-20 14:49:28  Rev 10252  pederb
+
+	* src/vrml97/TextureCoordinate.cpp:
+
+	Fix ugly VBO texture rendering bug.
+
+2006-04-20 12:07:22  Rev 10251  kintel
+
+	* include/Inventor/fields/Makefile.in, src/fields/Makefile.in:
+
+	Bootstrap-equivalent
+
+2006-04-19 23:36:58  Rev 10250  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-04-19 15:20:05  Rev 10249  pederb
+
+	* include/Inventor/actions/SoActions.h, src/actions/SoAction.cpp:
+
+	Initialize new actions.
+
+2006-04-19 13:17:18  Rev 10248  kintel
+
+	* include/Inventor/fields/SoSFBox3f.h, docs/coin.doxygen.in,
+	src/fields/SoField.cpp, include/Inventor/fields/Makefile.am,
+	src/fields/Makefile.am, src/fields/SoSFBox3f.cpp, src/fields/all-
+	fields-cpp.cpp, include/Inventor/fields/SoFields.h:
+
+	New class: SoSFBox3f
+
+2006-04-19 10:23:10  Rev 10247  kintel
+
+	* src/fields/Makefile.in, src/fields/SoField.cpp,
+	src/fields/Makefile.am, src/fields/all-fields-cpp.cpp:
+
+	Revert some prematurely committed files
+
+2006-04-19 10:19:43  Rev 10246  kintel
+
+	* src/fields/Makefile.in, src/fields/SoField.cpp,
+	src/fields/Makefile.am, src/fields/SoSFBox3s.cpp, src/fields/all-
+	fields-cpp.cpp:
+
+	bugfix: Writing of SoSFBox3f was broken
+
+2006-04-18 23:34:27  Rev 10245  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-04-18 17:55:01  Rev 10244  kintel
+
+	* include/Inventor/C/glue/gl.h, include/Inventor/C/glue/glp.h,
+	src/glue/gl.c, include/Inventor/system/gl.h.in:
+
+	Wrapped (ARB_)occlusion_query
+
+2006-04-14 23:48:14  Rev 10243  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-04-14 14:55:27  Rev 10242  kyrah
+
+	* FAQ.legal:
+
+	Fixed broken link to PEL.
+
+2006-04-14 14:46:28  Rev 10241  kyrah
+
+	* README.MACOSX:
+
+	General update, removed obsolete information, fixed broken links etc.
+
+2006-04-07 23:41:20  Rev 10240  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-04-07 16:27:11  Rev 10239  tamer
+
+	* src/foreignfiles/SoSTLFileKit.cpp:
+
+	minor fixes for 64-bit platforms.
+
+2006-04-07 15:14:53  Rev 10238  pederb
+
+	* src/draggers/SoDirectionalLightDragger.cpp:
+
+	Bugfix. Avoid that a new part is created while the scene graph is traversed.
+	Bug reported by Peciva Jan.
+
+2006-04-03 23:34:11  Rev 10237  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-04-03 13:46:00  Rev 10236  mortene
+
+	* BUGS.txt, src/fields/SoSFEngine.cpp, src/fields/SoSFNode.cpp,
+	src/misc/SoPath.cpp, src/fields/SoMFNode.cpp, src/misc/SoDB.cpp:
+
+	Revert kintel's fixes for bugs 55 and 59, as they broke with the policy of
+	accepting NULL-values in SoMFNode fields.
+
+2006-03-30 23:34:39  Rev 10235  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-30 15:21:14  Rev 10234  kyrah
+
+	* src/shaders/SoGLARBShaderProgram.h, src/shaders/SoGLShaderParameter.h,
+	include/Inventor/misc/SoScriptEngine.h,
+	src/shaders/SoGLShaderObject.h:
+
+	Get rid of "virtual functions but non-virtual destructor"
+	gcc-4.0.1 warning.
+
+2006-03-27 23:34:15  Rev 10233  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-27 10:29:06  Rev 10232  pederb
+
+	* BUGS.txt:
+
+	Update on 215. Fixed 216, added a new bug.
+
+2006-03-27 10:05:46  Rev 10231  pederb
+
+	* src/actions/SoToVRML2Action.cpp:
+
+	Bugfix. Remove erroneous drawstyle test in lineset and pointset callbacks.
+
+2006-03-24 00:34:24  Rev 10230  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-23 15:52:44  Rev 10229  kyrah
+
+	* configure.ac:
+
+	Don't inherit universal binary options into coin-config settings.
+
+2006-03-23 14:21:12  Rev 10228  kyrah
+
+	* configure.ac:
+
+	Use SIM_AC_UNIVERSAL_BINARIES macro. This also adds support for building UBs
+	on PowerPC machines.
+
+2006-03-21 00:34:05  Rev 10227  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-20 15:17:50  Rev 10226  kintel
+
+	* src/misc/SoVBO.cpp:
+
+	bugfix: Only (0,0,0)-vertices were set up in testGLPerformance()
+
+2006-03-17 13:20:41  Rev 10225  kyrah
+
+	* aclocal.m4, configure:
+
+	Bootstrap.
+
+2006-03-16 00:42:59  Rev 10224  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-15 10:36:06  Rev 10223  mortene
+
+	* src/misc/SoType.cpp:
+
+	Doc: add an example to getAllDerivedFrom().
+
+2006-03-15 00:34:13  Rev 10222  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-14 17:11:57  Rev 10221  mortene
+
+	* aclocal.m4, configure:
+
+	bootstrap, fixes OpenGL header detection issues
+
+2006-03-14 15:24:04  Rev 10220  mortene
+
+	* src/tidbits.c:
+
+	FIXME note about recent problems with Cygwin's GetEnvironmentVariable().
+
+2006-03-14 10:11:01  Rev 10219  pederb
+
+	* src/elements/GL/SoGLTextureImageElement.cpp:
+
+	Improved alpha test detection.
+
+2006-03-14 10:02:48  Rev 10218  pederb
+
+	* src/nodes/SoSceneTexture2.cpp:
+
+	Bugfix for alpha test transparency function.
+
+2006-03-14 00:34:24  Rev 10217  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-13 16:07:20  Rev 10216  handegar
+
+	* src/fonts/font13.ic, src/fonts/font33.ic, src/fonts/font25.ic,
+	src/fonts/font17.ic:
+
+	Ascii format converted from DOS-style to UNIX-style.
+
+2006-03-13 16:01:45  Rev 10215  mortene
+
+	* src/foreignfiles/SoSTLFileKit.cpp,
+	src/foreignfiles/SoForeignFileKit.cpp:
+
+	Ascii format converted from DOS-style to UNIX-style.
+
+2006-03-13 10:36:49  Rev 10214  mortene
+
+	* src/nodes/SoExtSelection.cpp:
+
+	Compile fix: take away qualifiers for inline functions.
+
+2006-03-13 10:04:52  Rev 10213  mortene
+
+	* cfg/wrapmsvc.exe, configure:
+
+	bootstrap, new version of wrapmsvc.exe which works with most recent Cygwin
+	versions
+
+2006-03-09 00:34:15  Rev 10212  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-08 10:42:17  Rev 10211  wiesener
+
+	* include/Inventor/events/SoLocation2Event.h,
+	src/events/SoLocation2Event.cpp:
+
+	Fix: Visual Studio 2005 expects a constructor
+
+2006-03-08 08:08:38  Rev 10210  mortene
+
+	* build/msvc6/include/Inventor/system/gl.h,
+	build/msvc7/include/Inventor/system/gl.h:
+
+	Sync.
+
+2006-03-08 00:48:10  Rev 10209  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-07 15:41:30  Rev 10208  kyrah
+
+	* configure.ac:
+
+	Universal Binary support. Note that this needs to be bootstrapped against
+	libtool 1.5.22 to work properly.
+
+2006-03-07 15:08:16  Rev 10207  mortene
+
+	* BUGS.txt:
+
+	New item.
+
+2006-03-07 15:06:14  Rev 10206  mortene
+
+	* BUGS.txt:
+
+	New item.
+
+2006-03-07 14:20:04  Rev 10205  mortene
+
+	* src/glue/gl_wgl.c, src/glue/gl_glx.c, include/Inventor/system/gl.h.in,
+	src/glue/gl_agl.c:
+
+	Bugfix: prefer a buffer with stencil capabilities for pbuffers, as for
+	software offscreen buffers.
+
+2006-03-02 00:34:47  Rev 10204  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-03-01 12:33:12  Rev 10203  mortene
+
+	* src/base/SbGLUTessellator.cpp, include/Inventor/system/gl.h.in:
+
+	Robustness: provide an option to silence warnings on bow-tie polygons (i.e.
+	polygons with intersecting edges) when using the GLU tessellator.
+
+2006-03-01 11:35:47  Rev 10202  mortene
+
+	* src/vrml97/Parent.cpp, src/nodes/SoWWWAnchor.cpp,
+	src/fields/SoField.cpp, src/threads/mutex.c,
+	src/nodes/SoWWWInline.cpp, src/elements/SoFontNameElement.cpp,
+	src/misc/SoGL.cpp, src/threads/thread.c, src/misc/SoGLImage.cpp,
+	src/elements/SoElement.cpp, src/fields/SoMField.cpp,
+	src/elements/SoLightAttenuationElement.cpp, src/misc/AudioTools.cpp,
+	src/foreignfiles/SoForeignFileKit.cpp, src/misc/SoGlyph.cpp,
+	src/misc/SoDB.cpp, src/misc/SoProtoInstance.cpp,
+	src/elements/GL/SoGLCacheContextElement.cpp,
+	src/fonts/fontlib_wrapper.c, src/shapenodes/SoMarkerSet.cpp,
+	src/nodes/SoLevelOfDetail.cpp,
+	src/nodes/SoTextureCoordinateNormalMap.cpp, src/nodes/SoTexture2.cpp,
+	src/elements/SoProfileCoordinateElement.cpp, src/fonts/glyph3d.c,
+	src/vrml97/ImageTexture.cpp, src/vrml97/Script.cpp,
+	src/errors/error.c, src/elements/SoLazyElement.cpp,
+	src/nodes/SoTextureCoordinateEnvironment.cpp,
+	src/upgraders/SoUpgrader.cpp, src/events/SoKeyboardEvent.cpp,
+	src/io/SoOutput.cpp, include/Inventor/C/tidbitsp.h,
+	src/base/rbptree.c, src/errors/SoDebugError.cpp,
+	src/nodes/SoUnknownNode.cpp, src/misc/SoContextHandler.cpp,
+	src/misc/SoLockManager.cpp, src/hardcopy/HardCopy.cpp,
+	src/misc/SoDebug.cpp, src/nodes/SoNurbsProfile.cpp,
+	src/misc/SoSceneManager.cpp, src/threads/recmutex.c,
+	src/events/SoEvent.cpp, src/vrml97/JS_VRMLClasses.cpp,
+	src/nodekits/SoNodeKitPath.cpp, src/misc/CoinOffscreenGLCanvas.cpp,
+	src/misc/SoGLCubeMapImage.cpp, src/nodes/SoNode.cpp,
+	src/io/SoWriterefCounter.cpp, src/fonts/glyph2d.c,
+	src/nodekits/SoNodeKitListPart.cpp, src/engines/SoConvertAll.cpp,
+	src/nodes/SoLinearProfile.cpp, src/threads/sync.c,
+	src/misc/SoPickedPoint.cpp, src/io/SoInput.cpp,
+	src/fields/SoGlobalField.cpp, src/vrml97/Inline.cpp,
+	src/fields/SoSField.cpp, src/elements/SoCoordinateElement.cpp,
+	src/misc/SoGLBigImage.cpp, src/base/namemap.c, src/misc/SoPath.cpp,
+	src/elements/SoCacheElement.cpp,
+	src/nodes/SoTextureCoordinateReflectionMap.cpp,
+	src/shapenodes/SoShape.cpp, src/fields/SoFieldContainer.cpp,
+	src/nodes/SoSelection.cpp, src/misc/SoProto.cpp,
+	src/vrml97/Shape.cpp, src/misc/SoBase.cpp,
+	src/nodes/SoLocateHighlight.cpp, src/nodekits/SoInteractionKit.cpp,
+	src/vrml97/AudioClip.cpp, src/draggers/SoDragger.cpp,
+	src/misc/SoOffscreenGLXData.cpp, src/misc/SoInteraction.cpp,
+	src/errors/debugerror.c, src/misc/SoType.cpp,
+	src/misc/SoAudioDevice.cpp, src/actions/SoAction.cpp,
+	src/misc/SoVBO.cpp:
+
+	Clean-up: take care of the coin_atexit() priority setting mess.
+
+2006-03-01 00:34:41  Rev 10201  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-28 15:47:40  Rev 10200  pederb
+
+	* src/nodes/SoCallback.cpp:
+
+	Doc. update.
+
+2006-02-28 00:34:06  Rev 10199  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-27 15:32:13  Rev 10198  mortene
+
+	* src/glue/cg.c, src/glue/spidermonkey.c, src/glue/openal_wrapper.c,
+	src/glue/zlib.c, src/glue/gl.c, src/glue/freetype.c,
+	src/glue/simage_wrapper.c, src/glue/bzip2.c, src/glue/GLUWrapper.c:
+
+	Bugfixes: clean up dynamically loaded libraries last, so all internal code
+	with dependencies to these libs is guaranteed to be cleaned up first.
+
+2006-02-27 15:30:54  Rev 10197  mortene
+
+	* src/tidbits.c:
+
+	Bugfix: external clean-up code should run *first*, not last (after Coin clean-
+	up functions), as it could easily have dependencies to Coin functionality.
+	Jeez.
+
+2006-02-27 15:29:35  Rev 10196  mortene
+
+	* include/Inventor/C/tidbitsp.h:
+
+	Internal feature: use an enum for the coin_atexit priority argument, to make
+	the risk smaller for inconsistencies with the priority values.
+
+2006-02-27 14:56:31  Rev 10195  mortene
+
+	* src/nodes/SoPolygonOffset.cpp, src/fonts/freetype.c,
+	src/nodes/SoAnnoText3.cpp, src/nodes/SoUnknownNode.cpp,
+	src/base/SbTesselator.cpp:
+
+	Doc: misc API docs additions, FIXMEs and code comments.
+
+2006-02-27 14:54:42  Rev 10194  mortene
+
+	* src/misc/CoinStaticObjectInDLL.cpp:
+
+	Robustness: make it possible to disable the one-DLL-in-process check at run-
+	time. Plus make it a little easier to disable it at compile-time.
+
+2006-02-27 12:29:11  Rev 10193  mortene
+
+	* src/base/SbGLUTessellator.cpp, src/base/SbGLUTessellator.h:
+
+	Bugfix: use correct calling convention under MS Windows for callback
+	functions.
+
+2006-02-27 00:34:15  Rev 10192  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-26 18:37:46  Rev 10191  larsa
+
+	* build/msvc6/coin3.dsp, build/msvc6/include/Inventor/C/basic.h,
+	build/msvc7/include/Inventor/C/basic.h, build/msvc6/include/config-
+	debug.h, build/msvc6/include/Inventor/system/gl.h,
+	build/msvc7/include/config-debug.h, build/msvc6/install-headers.bat,
+	build/msvc7/generate.sh, build/msvc7/include/Inventor/system/gl.h,
+	build/msvc7/install-headers.bat, build/msvc7/coin3.sln,
+	build/msvc6/include/config-release.h, build/msvc7/include/config-
+	release.h, build/msvc7/coin3.vcproj:
+
+	update
+
+2006-02-25 00:33:38  Rev 10190  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-24 16:33:58  Rev 10189  kyrah
+
+	* HACKING:
+
+	Note that Universal Binaries are not supported when using the
+	--enable-hacking trick.
+
+	This could be made to work, but it would require some ugly hacking
+	(assuring that "-Wl,-undefined,dynamic_lookup" is used when
+	linking against Coin in 'hacking' mode, which also requires
+	MACOSX_DEPLOYMENT_TARGET >= 10.3 etc.) -- and I don't consider it
+	useful, since after all the hacking trick is only meant to be
+	used locally on the development machine, not for deployment builds.
+
+2006-02-24 12:22:32  Rev 10188  kyrah
+
+	* BUGS.txt:
+
+	Update to item 102: Mention mortene's COIN_OFFSCREEN_STENCIL_BITS hack.
+
+2006-02-24 00:34:19  Rev 10187  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-23 18:23:06  Rev 10186  mortene
+
+	* src/glue/win32api.c, include/Inventor/C/glue/win32api.h:
+
+	Clean-up: wrap Win32 API functions SelectObject() and GetObject(), for
+	convenience, and for removing a lot of unnecessary error checking in other
+	code.
+
+2006-02-23 18:08:33  Rev 10185  mortene
+
+	* include/Inventor/C/glue/glp.h, src/glue/gl_wgl.c, src/glue/gl_glx.c,
+	src/glue/gl.c, src/glue/gl_agl.c:
+
+	HACK: work-around for the problem with missing stencil bits in offscreen GL
+	buffers.
+
+2006-02-23 14:37:06  Rev 10184  kyrah
+
+	* src/shapenodes/SoNurbsCurve.cpp:
+
+	Doc fix.
+
+2006-02-23 00:34:35  Rev 10183  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-22 17:25:39  Rev 10182  kyrah
+
+	* bin/coin-config:
+
+	Cosmetics: state name of created application bundle.
+
+2006-02-22 12:41:13  Rev 10181  mortene
+
+	* include/Inventor/VRMLnodes/SoVRMLInline.h:
+
+	Bugfix: destructor should be protected, no private. Problem reported by Jan
+	Peciva.
+
+2006-02-22 12:26:19  Rev 10180  mortene
+
+	* src/actions/SoToVRML2Action.cpp, src/actions/SoToVRMLAction.cpp:
+
+	Bugfix: SoType::overrideType() should influence the conversion process.
+	Problem reported and fix suggested by Jan Peciva.
+
+2006-02-22 00:33:58  Rev 10179  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-21 15:20:18  Rev 10178  kyrah
+
+	* include/Inventor/C/tidbits.h:
+
+	coin_host_get_endianness() has been public for a while...
+
+2006-02-21 11:40:01  Rev 10177  pederb
+
+	* src/fields/SoSFNode.cpp:
+
+	Bugfix for recently introduced bug in the binary file format reader.
+
+2006-02-21 09:17:23  Rev 10176  pederb
+
+	* src/glue/openal_wrapper.c:
+
+	Only print debug messages if COIN_DEBUG_AUDIO is set.
+
+2006-02-21 00:34:26  Rev 10175  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-20 20:52:30  Rev 10174  mortene
+
+	* src/nodes/SoSeparator.cpp:
+
+	Minor performance fix: only read static envvar once, not every time an
+	SoSeparator is instantiated. Reported by Frank Hibbeln.
+
+2006-02-20 14:10:35  Rev 10173  mortene
+
+	* src/fonts/win32.c:
+
+	Bugfix: the debugging output listing all available fonts on the system had
+	stopped working because we tried to use an uninitialized device context.
+
+2006-02-20 13:52:29  Rev 10172  mortene
+
+	* src/fonts/win32.c:
+
+	Bugfix: render fonts on baseline, not centered within font bbox. Bug reported
+	by Duncan Soutar.
+
+2006-02-20 12:18:45  Rev 10171  thammer
+
+	* src/glue/spidermonkey.c, include/Inventor/C/glue/spidermonkey.h:
+
+	Added three new functions for exception support
+
+2006-02-18 00:46:19  Rev 10170  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-17 10:50:40  Rev 10169  mortene
+
+	* configure.ac:
+
+	Update list of tested / untested, SIM / not SIM platforms.
+
+2006-02-17 10:30:48  Rev 10168  mortene
+
+	* BUGS.txt:
+
+	new item, JS-support
+
+2006-02-17 00:34:48  Rev 10167  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-16 13:56:52  Rev 10166  mortene
+
+	* docs/bugs/features/tgs-inventor/20041010--SoShapeHints_windingType-
+	missing-in-Coin.txt:
+
+	update
+
+2006-02-16 13:56:32  Rev 10165  mortene
+
+	* src/base/Makefile.in:
+
+	bootstrap
+
+2006-02-16 13:46:23  Rev 10164  mortene
+
+	* BUGS.txt:
+
+	new item, bug in SbTesselator
+
+2006-02-16 13:15:59  Rev 10163  mortene
+
+	* src/base/SbGLUTessellator.cpp, src/caches/SoConvexDataCache.cpp,
+	src/base/all-base-cpp.cpp, include/Inventor/C/glue/GLUWrapper.h,
+	src/shapenodes/soshape_primdata.cpp, src/base/SbGLUTessellator.h,
+	include/Inventor/system/gl.h.in, src/shapenodes/soshape_primdata.h,
+	src/base/Makefile.am, src/glue/GLUWrapper.c:
+
+	Feature: support tessellation through the GLU library instead of using Coin's
+	built-in tessellator.
+
+2006-02-16 00:35:16  Rev 10162  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-15 16:13:52  Rev 10161  kyrah
+
+	* include/Inventor/caches/Makefile.in, src/mpeg/Makefile.in,
+	include/Inventor/lock/Makefile.in,
+	include/Inventor/engines/Makefile.in, src/3ds/Makefile.in,
+	include/Inventor/projectors/Makefile.in, src/misc/Makefile.in,
+	include/Inventor/collision/Makefile.in,
+	include/Inventor/C/errors/Makefile.in, src/vrml97/Makefile.in,
+	include/Inventor/actions/Makefile.in,
+	include/Inventor/events/Makefile.in,
+	include/Inventor/fields/Makefile.in, src/io/Makefile.in, configure,
+	src/hardcopy/Makefile.in, src/errors/Makefile.in,
+	src/elements/Makefile.in, src/nodekits/Makefile.in,
+	include/Inventor/C/Makefile.in, src/caches/Makefile.in,
+	include/Inventor/manips/Makefile.in, src/engines/Makefile.in,
+	include/Inventor/threads/Makefile.in, src/projectors/Makefile.in,
+	src/collision/Makefile.in, include/Inventor/sensors/Makefile.in,
+	include/Inventor/lists/Makefile.in, src/actions/Makefile.in,
+	src/events/Makefile.in, src/fields/Makefile.in,
+	include/Inventor/nodes/Makefile.in, html/Makefile.in,
+	include/Inventor/C/glue/Makefile.in, src/elements/GL/Makefile.in,
+	data/Makefile.in, include/Inventor/system/Makefile.in,
+	man/Makefile.in, include/Inventor/details/Makefile.in,
+	data/draggerDefaults/Makefile.in,
+	include/Inventor/annex/ForeignFiles/Makefile.in,
+	src/manips/Makefile.in, src/fonts/Makefile.in,
+	src/threads/Makefile.in, src/upgraders/Makefile.in,
+	src/sensors/Makefile.in, include/Inventor/bundles/Makefile.in,
+	include/Inventor/C/base/Makefile.in, include/Makefile.in,
+	src/glue/Makefile.in, src/lists/Makefile.in,
+	include/Inventor/draggers/Makefile.in, include/Inventor/Makefile.in,
+	src/nodes/Makefile.in, include/Inventor/annex/Makefile.in,
+	Makefile.in, src/base/Makefile.in,
+	include/Inventor/annex/HardCopy/Makefile.in, src/details/Makefile.in,
+	include/Inventor/MPEG/Makefile.in, src/shapenodes/Makefile.in,
+	src/shaders/Makefile.in, include/Inventor/misc/Makefile.in,
+	src/bundles/Makefile.in, src/draggers/Makefile.in,
+	src/extensions/Makefile.in, src/Makefile.in,
+	include/Inventor/VRMLnodes/Makefile.in, src/foreignfiles/Makefile.in,
+	include/Inventor/C/threads/Makefile.in,
+	include/Inventor/elements/Makefile.in,
+	include/Inventor/errors/Makefile.in, include/discard.h.in,
+	man/man1/Makefile.in, include/Inventor/nodekits/Makefile.in,
+	bin/Makefile.in, man/man3/Makefile.in:
+
+	Bootstrap.
+
+2006-02-15 15:45:16  Rev 10160  kyrah
+
+	* src/lists/Makefile.am, src/vrml97/Makefile.am, src/io/Makefile.am,
+	src/nodes/Makefile.am, src/hardcopy/Makefile.am, Makefile.am,
+	src/base/Makefile.am, src/elements/Makefile.am,
+	src/errors/Makefile.am, src/nodekits/Makefile.am,
+	src/details/Makefile.am, src/caches/Makefile.am, src/Make-Common.tpl,
+	src/engines/Makefile.am, src/shaders/Makefile.am,
+	src/shapenodes/Makefile.am, src/projectors/Makefile.am,
+	src/collision/Makefile.am, src/bundles/Makefile.am,
+	src/draggers/Makefile.am, src/actions/Makefile.am, src/Makefile.am,
+	configure.ac, src/events/Makefile.am, src/fields/Makefile.am,
+	src/foreignfiles/Makefile.am, src/elements/GL/Makefile.am,
+	src/manips/Makefile.am, src/mpeg/Makefile.am, src/3ds/Makefile.am,
+	src/fonts/Makefile.am, src/threads/Makefile.am, src/misc/Makefile.am,
+	src/sensors/Makefile.am, src/glue/Makefile.am,
+	src/upgraders/Makefile.am:
+
+	Enhancement for --enable-hacking:
+
+	Enabled "make install-symlinks" target for non-Mac systems.
+
+2006-02-15 14:18:42  Rev 10159  kyrah
+
+	* include/config.h.in:
+
+	Updated to reflect the change to configure.ac by mortene on
+	2006/02/10 14:52:05.
+
+2006-02-15 00:34:30  Rev 10158  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-14 10:00:09  Rev 10157  pederb
+
+	* src/misc/SoVertexArrayIndexer.cpp:
+
+	Improved OS X test.
+
+2006-02-14 00:34:12  Rev 10156  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-13 13:49:30  Rev 10155  mortene
+
+	* BUGS.txt:
+
+	new bug
+
+2006-02-13 13:27:37  Rev 10154  mortene
+
+	* BUGS.txt:
+
+	new bug
+
+2006-02-13 12:23:45  Rev 10153  kintel
+
+	* src/fields/SoSFNode.cpp:
+
+	Bugfix: Apply previous fix only to ascii files
+
+2006-02-11 00:38:48  Rev 10152  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-10 15:52:26  Rev 10151  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	New leak
+
+2006-02-10 15:41:46  Rev 10150  mortene
+
+	* models/vrml97/script/simple-boolean.wrl, models/vrml97/script:
+
+	Very simple test file for Javascript code in a Script node.
+
+2006-02-10 15:08:59  Rev 10149  mortene
+
+	* src/errors/error.c, src/fields/SoFieldData.cpp,
+	include/Inventor/C/glue/freetype.h, src/nodes/SoCallback.cpp,
+	src/misc/SoBase.cpp, src/fonts/freetype.c,
+	src/nodes/SoVertexProperty.cpp, src/glue/gl.c,
+	src/fields/SoSFImage.cpp:
+
+	Doc: misc code comment updates, FIXMEs, API doc improvements, etc.
+
+2006-02-10 14:59:33  Rev 10148  mortene
+
+	* src/nodes/SoLOD.cpp:
+
+	Bugfix: don't write SoLOD::range when it just has its default value from the
+	start.
+
+2006-02-10 14:56:35  Rev 10147  mortene
+
+	* src/glue/flwwin32.c:
+
+	Clean-up: remove obsoleted src code file.
+
+2006-02-10 14:55:12  Rev 10146  mortene
+
+	* src/fonts/glyph2d.c:
+
+	Tiny clean-up: remove unused variable.
+
+2006-02-10 14:52:06  Rev 10145  mortene
+
+	* BUGS.txt, configure.ac, include/Inventor/C/basic.h.in:
+
+	Bugfix: don't set up #defines for single-precision math functions, if they are
+	lacking. This is simply not robust, and the performance gain should be
+	insignificant. Fixes bug #151.
+
+2006-02-10 14:23:17  Rev 10144  kyrah
+
+	* examples/bindings/glxiv.cpp:
+
+	Cleanup after ourselves...
+
+2006-02-10 14:17:34  Rev 10143  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Update to 037
+
+2006-02-10 14:13:44  Rev 10142  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	New leak
+
+2006-02-10 14:13:20  Rev 10141  kyrah
+
+	* src/fonts/fontlib_wrapper.c:
+
+	Don't use cc_debugerror_* in cleanup function. (Fixes crash when
+	 pressing <esc> in glxiv example.)
+
+2006-02-10 14:01:32  Rev 10140  pederb
+
+	* src/caches/SoGLRenderCache.cpp:
+
+	Nested cache bugfix.
+
+2006-02-10 14:00:38  Rev 10139  pederb
+
+	* src/elements/GL/SoGLLazyElement.cpp:
+
+	Bugfix for nested caching.
+
+2006-02-10 13:43:20  Rev 10138  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	bug 002 was accidently fixed sometime this week
+
+2006-02-10 13:35:38  Rev 10137  kintel
+
+	* include/Inventor/engines/SoSubNodeEngineP.h:
+
+	Call The node cleanup since we use public macros here.
+
+2006-02-10 11:59:35  Rev 10136  kyrah
+
+	* src/glue/gl_glx.c:
+
+	Cleanup: Reset two more static variables, and plug memory leak resulting from
+	not closing the display. Valgrind rules.
+
+2006-02-10 11:48:35  Rev 10135  kintel
+
+	* src/vrml97/Interpolator.cpp:
+
+	correct macro parameters
+
+2006-02-10 11:46:05  Rev 10134  kintel
+
+	* include/Inventor/engines/SoSubNodeEngineP.h:
+
+	Cleanup static memory also from abstract classes
+
+2006-02-10 11:45:37  Rev 10133  kintel
+
+	* src/vrml97/Interpolator.cpp:
+
+	Fixed leak: Use internal macro
+
+2006-02-10 11:40:22  Rev 10132  kintel
+
+	* src/vrml97/Sound.cpp:
+
+	Initialize variable before using
+
+2006-02-10 11:29:02  Rev 10131  mortene
+
+	* BUGS.txt, docs/bugs/features/tgs-inventor/20041010
+	--SoShapeHints_windingType-missing-in-Coin.txt, docs/bugs/features
+	/tgs-inventor/20050620--sodb_threadinit-missing-in-Coin.txt,
+	docs/bugs/configuration_and_build/20050602--sync-with-sgi-glu.txt,
+	docs/bugs/features/tgs-inventor/20041210--sbmatrixd-and-sbrotationd-
+	missing.txt, docs/bugs/configuration_and_build/20041208--libtool-
+	buggy-on-64-bit-linux.txt, docs/bugs/features/tgs-inventor/20041116
+	--SoTrackerEvent-missing.txt,
+	docs/bugs/low_priority/obscure_systems/20050627--coin-plus-soqt-
+	hangs-on-win98.txt, docs/bugs/low_priority/obscure_systems,
+	docs/bugs/low_priority/obscure_systems/20050627--nividia-stereo-hack-
+	not-working.txt, docs/bugs/performance_enhancements/20041116
+	--SbIntList-inefficient.txt,
+	docs/bugs/configuration_and_build/20050624--dll-versioning.txt,
+	docs/bugs/low_priority/robustness/20041207--sbtime_formatdate-not-
+	robust-on-bad-input.txt, docs/bugs/performance_enhancements/20050630
+	--SoLocateHighlight-implementation-is-inefficient.txt,
+	docs/bugs/low_priority/robustness/20041221--multi-crt-robustness.txt:
+
+	updated, removed many low-pri items from main bug-list
+
+2006-02-10 00:34:57  Rev 10130  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-09 23:05:45  Rev 10129  kyrah
+
+	* src/manips/Makefile.in, src/mpeg/Makefile.in, src/fonts/Makefile.in,
+	src/3ds/Makefile.in, src/threads/Makefile.in, src/misc/Makefile.in,
+	src/sensors/Makefile.in, src/glue/Makefile.in,
+	src/upgraders/Makefile.in, src/lists/Makefile.in,
+	src/vrml97/Makefile.in, src/io/Makefile.in, src/nodes/Makefile.in,
+	configure, src/hardcopy/Makefile.in, Makefile.in,
+	src/base/Makefile.in, src/errors/Makefile.in,
+	src/elements/Makefile.in, src/nodekits/Makefile.in,
+	src/details/Makefile.in, src/caches/Makefile.in,
+	src/engines/Makefile.in, src/shaders/Makefile.in,
+	src/shapenodes/Makefile.in, src/projectors/Makefile.in,
+	src/collision/Makefile.in, src/bundles/Makefile.in,
+	src/draggers/Makefile.in, src/actions/Makefile.in, src/Makefile.in,
+	src/events/Makefile.in, src/fields/Makefile.in,
+	src/foreignfiles/Makefile.in, src/elements/GL/Makefile.in:
+
+	Bootstrap.
+
+2006-02-09 22:52:25  Rev 10128  kyrah
+
+	* src/lists/Makefile.am, src/vrml97/Makefile.am, src/io/Makefile.am,
+	src/nodes/Makefile.am, src/hardcopy/Makefile.am,
+	src/base/Makefile.am, src/elements/Makefile.am,
+	src/errors/Makefile.am, src/nodekits/Makefile.am,
+	src/details/Makefile.am, src/caches/Makefile.am,
+	src/engines/Makefile.am, src/shapenodes/Makefile.am,
+	src/shaders/Makefile.am, src/projectors/Makefile.am,
+	src/collision/Makefile.am, src/bundles/Makefile.am,
+	src/draggers/Makefile.am, src/actions/Makefile.am,
+	src/events/Makefile.am, src/fields/Makefile.am,
+	src/foreignfiles/Makefile.am, src/elements/GL/Makefile.am,
+	src/manips/Makefile.am, src/mpeg/Makefile.am, src/fonts/Makefile.am,
+	src/3ds/Makefile.am, src/threads/Makefile.am, src/misc/Makefile.am,
+	src/glue/Makefile.am, src/sensors/Makefile.am,
+	src/upgraders/Makefile.am:
+
+	Enhancement for --enable-hacking (Mac OS X only for now):
+
+	Added target "make install-symlinks" to automatically create
+	symlinks back to the build directory.
+
+2006-02-09 22:24:36  Rev 10127  kyrah
+
+	* src/Makefile.am, src/Make-Common.tpl, Makefile.am:
+
+	Enhancement for --enable-hacking (Mac OS X only for now):
+
+	Added target "make install-symlinks" to automatically create
+	symlinks back to the build directory.
+
+2006-02-09 16:00:47  Rev 10126  kyrah
+
+	* src/lists/Makefile.am, src/vrml97/Makefile.am, src/io/Makefile.am,
+	src/nodes/Makefile.am, src/hardcopy/Makefile.am,
+	src/base/Makefile.am, src/elements/Makefile.am,
+	src/errors/Makefile.am, src/nodekits/Makefile.am,
+	src/details/Makefile.am, src/caches/Makefile.am,
+	src/engines/Makefile.am, src/shapenodes/Makefile.am,
+	src/shaders/Makefile.am, src/projectors/Makefile.am,
+	src/collision/Makefile.am, src/bundles/Makefile.am,
+	src/draggers/Makefile.am, src/actions/Makefile.am,
+	src/events/Makefile.am, src/fields/Makefile.am,
+	src/foreignfiles/Makefile.am, src/elements/GL/Makefile.am,
+	src/manips/Makefile.am, src/mpeg/Makefile.am, src/fonts/Makefile.am,
+	src/3ds/Makefile.am, src/threads/Makefile.am, src/misc/Makefile.am,
+	src/glue/Makefile.am, src/sensors/Makefile.am,
+	src/upgraders/Makefile.am:
+
+	Fix for --enable-hacking on Mac OS X:
+
+	When using --enable-hacking, the user tends to manually replace some
+	of the installed libraries by symlinks back to the build directory.
+	But Mac OS X's install program refuses to overwrite symlinks => we
+	have to explicitly remove existing symlinks before installation.
+
+	Problem reported by kintel.
+
+2006-02-09 15:49:42  Rev 10125  kyrah
+
+	* src/Make-Common.tpl:
+
+	Fix for --enable-hacking on Mac OS X:
+
+	When using --enable-hacking, the user tends to manually replace some
+	of the installed libraries by symlinks back to the build directory.
+	But Mac OS X's install program refuses to overwrite symlinks => we
+	have to explicitly remove existing symlinks before installation.
+
+	Problem reported by kintel.
+
+2006-02-09 15:31:50  Rev 10124  mortene
+
+	* include/Inventor/draggers/Makefile.am,
+	include/Inventor/C/errors/Makefile.am, include/Inventor/Makefile.am,
+	include/Inventor/actions/Makefile.am,
+	include/Inventor/events/Makefile.am,
+	include/Inventor/fields/Makefile.am, include/Inventor/C/Makefile.am,
+	include/Inventor/annex/HardCopy/Makefile.am,
+	include/Inventor/manips/Makefile.am,
+	include/Inventor/MPEG/Makefile.am,
+	include/Inventor/threads/Makefile.am,
+	include/Inventor/misc/Makefile.am,
+	include/Inventor/sensors/Makefile.am,
+	include/Inventor/lists/Makefile.am,
+	include/Inventor/nodes/Makefile.am,
+	include/Inventor/VRMLnodes/Makefile.am, include/Inventor/Make-
+	Include-Common.tpl, include/Inventor/C/threads/Makefile.am,
+	include/Inventor/elements/Makefile.am,
+	include/Inventor/errors/Makefile.am,
+	include/Inventor/C/glue/Makefile.am,
+	include/Inventor/nodekits/Makefile.am,
+	include/Inventor/system/Makefile.am,
+	include/Inventor/details/Makefile.am,
+	include/Inventor/annex/ForeignFiles/Makefile.am,
+	include/Inventor/caches/Makefile.am, include/Inventor/Make-
+	Common.tpl, include/Inventor/engines/Makefile.am,
+	include/Inventor/lock/Makefile.am,
+	include/Inventor/projectors/Makefile.am,
+	include/Inventor/collision/Makefile.am,
+	include/Inventor/C/base/Makefile.am,
+	include/Inventor/bundles/Makefile.am:
+
+	Clean-up: rename Make-Common.tpl to Make-Include-Common.tpl, to avoid
+	confusion, as there is another Make-Common.tpl under Coin/src/.
+
+2006-02-09 14:59:41  Rev 10123  mortene
+
+	* src/elements/GL/Makefile.am:
+
+	templant update
+
+2006-02-09 14:50:53  Rev 10122  pederb
+
+	* src/caches/SoGLRenderCache.cpp:
+
+	Default to not doing nested caching until we have tested this feature more.
+
+2006-02-09 14:47:49  Rev 10121  pederb
+
+	* src/caches/SoGLRenderCache.cpp:
+
+	Compile fix.
+
+2006-02-09 14:37:45  Rev 10120  pederb
+
+	* src/caches/SoGLRenderCache.cpp:
+
+	Support for nesten caching (caches inside other caches).
+
+2006-02-09 14:36:59  Rev 10119  pederb
+
+	* src/elements/GL/SoGLLazyElement.cpp,
+	include/Inventor/elements/SoGLLazyElement.h:
+
+	New function mergeCacheInfo() needed for nested caching.
+
+2006-02-09 13:42:57  Rev 10118  kintel
+
+	* src/misc/SoJavaScriptEngine.cpp:
+
+	Forgot to define globalclass
+
+2006-02-09 13:26:47  Rev 10117  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	New item: crash on repeated SoDB::init() + SoDB::finish()
+
+2006-02-09 12:21:54  Rev 10116  kintel
+
+	* src/nodes/SoWWWAnchor.cpp, docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed resource bug 021
+
+2006-02-09 12:18:42  Rev 10115  kintel
+
+	* src/nodekits/SoNodeKitListPart.cpp, docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed resource bug 022
+
+2006-02-09 12:05:39  Rev 10114  kintel
+
+	* src/misc/SoJavaScriptEngine.cpp, docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed resource bug 018
+
+2006-02-09 11:49:34  Rev 10113  pederb
+
+	* src/base/rbptree.c:
+
+	Fix an old thread safety FIXME.
+
+2006-02-09 11:49:14  Rev 10112  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed 024.
+
+2006-02-09 11:48:43  Rev 10111  kintel
+
+	* src/upgraders/SoUpgrader.cpp, docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed resource bug 020
+
+2006-02-09 11:48:42  Rev 10110  kyrah
+
+	* src/vrml97/Script.cpp:
+
+	Cleanup: Reset static data.
+
+2006-02-09 11:42:03  Rev 10109  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed 034.
+
+2006-02-09 11:41:33  Rev 10108  kintel
+
+	* src/base/rbptree.c, docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed resource bug 005
+
+2006-02-09 11:41:23  Rev 10107  kyrah
+
+	* src/vrml97/Shape.cpp, include/Inventor/VRMLnodes/SoVRMLShape.h:
+
+	Cleanup: Reset static data.
+
+2006-02-09 11:35:49  Rev 10106  kintel
+
+	* src/nodes/SoLocateHighlight.cpp,
+	include/Inventor/nodes/SoLocateHighlight.h,
+	docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed resource bug 030
+
+2006-02-09 11:26:09  Rev 10105  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed bug 031
+
+2006-02-09 11:25:27  Rev 10104  kintel
+
+	* include/Inventor/lock/SoLockMgr.h, src/misc/SoLockManager.cpp,
+	docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed resource bug 028
+
+2006-02-09 11:17:46  Rev 10103  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed 023
+
+2006-02-09 11:17:10  Rev 10102  kyrah
+
+	* src/misc/SoSceneManager.cpp:
+
+	Cleanup: reset static data.
+
+2006-02-09 11:15:49  Rev 10101  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed bug 029
+
+2006-02-09 11:15:25  Rev 10100  kintel
+
+	* src/nodekits/SoNodeKit.cpp, include/Inventor/nodekits/SoNodeKit.h:
+
+	Fixed resource bug 029
+
+2006-02-09 11:03:51  Rev 10099  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed bugs 012, 014, 016 and 032
+
+2006-02-09 11:01:39  Rev 10098  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed 007.
+
+2006-02-09 11:01:13  Rev 10097  kyrah
+
+	* src/draggers/SoDragger.cpp:
+
+	Plug static memory leak.
+
+2006-02-09 10:58:09  Rev 10096  kintel
+
+	* include/Inventor/SoInteraction.h, src/misc/SoInteraction.cpp:
+
+	fixed resource bug 032
+
+2006-02-09 10:44:44  Rev 10095  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed 017.
+
+2006-02-09 10:44:27  Rev 10094  kyrah
+
+	* include/Inventor/misc/SoGLBigImage.h, src/misc/SoGLBigImage.cpp:
+
+	Removed SoGLBigImage::cleanupClass(void) from the API -- using an
+	internal static function for cleanup instead, to keep the difference
+	to Coin-2 as small possible.
+
+	Cleanup: reset static data.
+
+2006-02-09 10:39:10  Rev 10093  kintel
+
+	* src/hardcopy/VectorizeActionP.h, src/hardcopy/HardCopy.cpp:
+
+	Fixed resource bug 016
+
+2006-02-09 10:10:10  Rev 10092  kintel
+
+	* src/foreignfiles/SoForeignFileKit.cpp:
+
+	Fixed resource bug 012
+
+2006-02-09 00:34:07  Rev 10091  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-08 17:09:13  Rev 10090  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed bugs 027 and 033
+
+2006-02-08 17:06:14  Rev 10089  kintel
+
+	* include/Inventor/engines/SoConvertAll.h,
+	include/Inventor/nodekits/SoSubKit.h,
+	include/Inventor/nodekits/SoSubKitP.h,
+	include/Inventor/nodekits/SoBaseKit.h,
+	include/Inventor/fields/SoSubField.h,
+	include/Inventor/fields/SoSubFieldP.h,
+	include/Inventor/actions/SoSubAction.h,
+	include/Inventor/actions/SoSubActionP.h,
+	include/Inventor/engines/SoSubEngine.h,
+	include/Inventor/engines/SoSubEngineP.h,
+	include/Inventor/nodes/SoSubNode.h,
+	include/Inventor/nodes/SoSubNodeP.h, src/engines/SoConvertAll.cpp,
+	include/Inventor/engines/SoSubNodeEngine.h,
+	include/Inventor/engines/SoSubNodeEngineP.h:
+
+	Memory/resource leak/reset fixes
+
+2006-02-08 17:03:14  Rev 10088  pederb
+
+	* src/misc/SoProto.cpp:
+
+	Robustify connectISRefs() (fixes bug # 039).
+
+2006-02-08 16:55:57  Rev 10087  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed missing resets in cc_error and cc_debugerror
+
+2006-02-08 16:54:56  Rev 10086  kyrah
+
+	* src/errors/error.c, src/errors/debugerror.c:
+
+	Cleanup: Reset static data.
+
+2006-02-08 15:41:54  Rev 10085  mortene
+
+	* docs/bugs/features/tgs-inventor/20041116--SoFieldContainer-and-
+	private-fields.txt, docs/bugs/configuration_and_build/20031028--
+	demand-X11-when-using-GLX.txt, docs/bugs/documentation,
+	docs/bugs/documentation/20040625--sbool-is-not-in-coin-docs.txt,
+	docs/bugs/performance_enhancements/20040624--medium-pri-issue
+	--multiple-implicit-refs-to-same-texture-file.txt,
+	docs/bugs/configuration_and_build/20040707--coin-config-uses-
+	LD_LIBRARY_PATH-which-fails-with-tcsh.txt, docs/bugs/features/tgs-
+	inventor, docs/bugs/features, docs/bugs/features/tgs-
+	inventor/20041010--missing-fields-in-SoVRMLMovieTexture.txt,
+	docs/bugs/features/others, docs/bugs/features/tgs-inventor/20041116
+	--SoDataSensor-extension.txt,
+	docs/bugs/performance_enhancements/20040903--SoText2-nodes-never-
+	culled.txt, docs/bugs/features/others/20040218--more-information-
+	from-ivinfo-hack-desirable.txt, BUGS.txt, docs/bugs/features/tgs-
+	inventor/20041010--SoShapeHints_windingType-missing-in-Coin.txt,
+	docs/bugs/features/tgs-inventor/20041010--
+	SoDrawStyle_linePatternScaleFactor.txt,
+	docs/bugs/configuration_and_build/20040705--exec_prefix-expansion-in-
+	coin.cfg-makes-pkg-not-movable.txt, docs/bugs/features/tgs-
+	inventor/20041116--SoIndexedFaceSet-defines.txt, docs/bugs/features
+	/tgs-inventor/20041010--SoVRMLSound_dopplerFactor-and-
+	dopplerVelocity.txt, docs/bugs/features/others/20040722--spacemouse-
+	support-for-draggers-and-manips.txt,
+	docs/bugs/performance_enhancements/20040607--SoBaseKit_setPart-is-
+	inefficient.txt:
+
+	more pruning of the bug-list, taking out the low-pri bugs, the feature
+	requests, etc etc
+
+2006-02-08 15:21:22  Rev 10084  mortene
+
+	* docs/bugs/README.txt:
+
+	Beginnings of an explanatory text about what this is, should elaborate.
+
+2006-02-08 15:20:39  Rev 10083  pederb
+
+	* models/io/incorrect/bug039.iv:
+
+	test file for old bug.
+
+2006-02-08 15:16:05  Rev 10082  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	035 fixed.
+
+2006-02-08 15:15:01  Rev 10081  mortene
+
+	* src/tidbits.c:
+
+	Bugfix: *really* don't use cc_debugerror_postinfo() from coin_atexit_cleanup()
+	(see previous commit).
+
+2006-02-08 15:10:22  Rev 10080  pederb
+
+	* BUGS.txt:
+
+	nodekit writing bug was fixed.
+
+2006-02-08 15:09:45  Rev 10079  kyrah
+
+	* src/tidbits.c:
+
+	Don't use cc_debugerror_postinfo() from coin_atexit_cleanup():
+
+	Trying to do so in threadsafe-mode will result in a static mutex
+	being created in cc_error_handle(), and in an attempt to add a
+	cleanup function for it, cc_error_mutex_cleanup(). But since we
+	are already exiting, this triggers an assert in tidbits.c:1239.
+
+2006-02-08 15:09:03  Rev 10078  mortene
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	minor update
+
+2006-02-08 14:41:10  Rev 10077  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed bugs 006, 008 and 011
+
+2006-02-08 13:37:34  Rev 10076  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed 019
+
+2006-02-08 13:37:19  Rev 10075  kyrah
+
+	* src/misc/SoOffscreenGLXData.cpp, src/misc/SoOffscreenGLXData.h:
+
+	Cleanup: reset static data.
+
+2006-02-08 13:06:01  Rev 10074  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed 025 and 026.
+
+2006-02-08 13:04:55  Rev 10073  kyrah
+
+	* src/misc/AudioTools.cpp, src/misc/CoinOffscreenGLCanvas.cpp:
+
+	Cleanup: reset static data.
+
+2006-02-08 12:58:51  Rev 10072  mortene
+
+	* configure.ac:
+
+	Bugfix: takes care of bug 078.
+
+2006-02-08 12:34:06  Rev 10071  mortene
+
+	* docs/bugs/configuration_and_build/20030122--msvcrt-multiple-
+	dependencies.txt, BUGS.txt, docs/bugs/configuration_and_build,
+	docs/bugs/configuration_and_build/20021118--cygwin-and-msvc-builds-
+	does-not-heed-all-configure-options.txt,
+	docs/bugs/configuration_and_build/20030514--possible-miscompilation-
+	with-intel-compiler.txt, docs/bugs/configuration_and_build/20021218
+	--sgi-inventorxt-does-not-build-with-Coin.txt:
+
+	misc updates, taking out some bugs that are of low priority, storing them
+	under Coin/docs/bugs/.
+
+2006-02-08 12:04:20  Rev 10070  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Typo.
+
+2006-02-08 12:03:30  Rev 10069  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Crash if COIN_DEBUG_CLEANUP is set.
+
+2006-02-08 11:58:21  Rev 10068  kintel
+
+	* src/fields/SoSFBox3s.cpp:
+
+	Use internal init macro
+
+2006-02-08 11:56:26  Rev 10067  mortene
+
+	* src/vrml97/Script.cpp:
+
+	Bugfix: VRMLScript's clean-up function needs to be run before spidermonkey-
+	glue's ditto.
+
+2006-02-08 10:16:24  Rev 10066  kintel
+
+	* src/errors/error.c:
+
+	cosmetics
+
+2006-02-08 10:14:00  Rev 10065  kintel
+
+	* src/draggers/SoTransformerDragger.cpp:
+
+	Fixed resource bug #006
+
+2006-02-08 10:06:49  Rev 10064  kintel
+
+	* src/collision/SoIntersectionDetectionAction.cpp:
+
+	Fixed resource bug #006
+
+2006-02-08 09:20:04  Rev 10063  mortene
+
+	* docs/bugs/performance_enhancements/20060208--libCgGL-not-lazy-
+	loaded.txt, docs/bugs/performance_enhancements:
+
+	new bug, low-pri
+
+2006-02-08 00:34:44  Rev 10062  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-07 22:57:42  Rev 10061  kyrah
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed 013
+
+2006-02-07 22:56:56  Rev 10060  kyrah
+
+	* src/glue/dl.c:
+
+	Rewrote string handling in Mac OS X dlopen workaround code to
+	use cc_string.
+
+	Got rid of statically allocated variables and two bugs in the
+	process (the entry for framework dlopen hack was only created for
+	the first library we tried to look up; and an existing ":" at the
+	end of the library search path was not handled properly).
+
+2006-02-07 18:44:50  Rev 10059  kintel
+
+	* src/errors/SoDebugError.cpp:
+
+	Fixed resource bug #011
+
+2006-02-07 18:17:40  Rev 10058  kintel
+
+	* include/Inventor/nodes/SoSubNode.h:
+
+	Memory/resource leak/reset fixes
+
+2006-02-07 17:07:53  Rev 10057  kintel
+
+	* src/actions/SoSearchAction.cpp, src/misc/SoBase.cpp,
+	src/nodes/SoSeparator.cpp, src/vrml97/Anchor.cpp,
+	src/draggers/SoDragger.cpp, src/elements/SoCacheElement.cpp,
+	src/vrml97/Group.cpp, src/elements/SoFontNameElement.cpp,
+	src/elements/SoProfileCoordinateElement.cpp,
+	src/nodekits/SoBaseKit.cpp:
+
+	Memory/resource leak/reset fixes
+
+2006-02-07 16:08:26  Rev 10056  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Another batch of resource bugs
+
+2006-02-07 15:55:30  Rev 10055  mortene
+
+	* src/misc/SoJavaScriptEngine.cpp,
+	include/Inventor/misc/SoJavaScriptEngine.h:
+
+	Minor clean-up: SoJavaScriptEngine::init() should report whether or not it
+	could successfully init.
+
+2006-02-07 15:45:57  Rev 10054  mortene
+
+	* src/vrml97/JS_VRMLClasses.cpp:
+
+	Bugfix: avoid using spidermonkey() singleton in static allocations, as that
+	may use internal Coin code which has not been initialized yet. Problem
+	reported by kintel.
+
+2006-02-07 14:30:46  Rev 10053  mortene
+
+	* src/vrml97/Script.cpp:
+
+	Bugfix: don't retry to init when initialization of javascript parsing fails.
+
+2006-02-07 14:16:10  Rev 10052  kintel
+
+	* src/nodes/SoWWWAnchor.cpp, src/fonts/freetype.c,
+	src/nodes/SoWWWInline.cpp, src/vrml97/Inline.cpp,
+	src/shapenodes/SoText2.cpp, src/actions/SoGLRenderAction.cpp,
+	src/fonts/glyph2d.c, src/misc/SoDB.cpp, src/tidbits.c,
+	src/fonts/glyph3d.c, src/misc/SoVBO.cpp, src/vrml97/ImageTexture.cpp,
+	src/glue/GLUWrapper.c:
+
+	Memory/resource leak/reset fixes
+
+2006-02-07 14:07:44  Rev 10051  mortene
+
+	* src/vrml97/JS_VRMLClasses.cpp:
+
+	Bugfix: SbList instances must be allocated run-time, not load-time, as some
+	system loaders doesn't run the constructors of static global objects. Problem
+	found by kintel.
+
+2006-02-07 14:06:26  Rev 10050  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	More bugs...
+
+2006-02-07 13:10:57  Rev 10049  kyrah
+
+	* src/glue/gl_wgl.c, include/Inventor/C/glue/gl_agl.h,
+	src/glue/gl_glx.c, include/Inventor/C/glue/gl_wgl.h, src/glue/gl.c,
+	include/Inventor/C/glue/gl_glx.h, src/glue/gl_agl.c,
+	docs/bugs/resource_leaks/BUGS.txt:
+
+	Added cleanup/reset for aglglue/glxglue/wglclue.
+
+2006-02-07 11:04:35  Rev 10048  kyrah
+
+	* src/Makefile.am:
+
+	Disable prebinding using -undefined dynamic_lookup
+
+2006-02-07 00:34:14  Rev 10047  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-06 22:42:55  Rev 10046  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	Fixed #003 and #004
+
+2006-02-06 22:42:02  Rev 10045  kintel
+
+	* src/elements/GL/SoGLCacheContextElement.cpp, src/glue/spidermonkey.c,
+	src/fonts/fontlib_wrapper.c, src/elements/SoLazyElement.cpp,
+	src/events/SoKeyboardEvent.cpp, src/glue/openal_wrapper.c,
+	src/fields/SoField.cpp, src/glue/zlib.c, src/glue/gl.c,
+	src/glue/freetype.c, src/io/SoWriterefCounter.cpp,
+	src/misc/SoGlyph.cpp, src/glue/simage_wrapper.c, src/glue/bzip2.c,
+	src/misc/SoDB.cpp:
+
+	Memory/resource leak/reset fixes
+
+2006-02-06 22:21:58  Rev 10044  kintel
+
+	* src/misc/SoGLImage.cpp:
+
+	Minor variable reset on cleanup
+
+2006-02-06 21:44:40  Rev 10043  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	A new batch of bugs
+
+2006-02-06 21:24:30  Rev 10042  mortene
+
+	* src/misc/SoBase.cpp:
+
+	Bugfix: trailing comment on the header would lead to VRML nodes being written
+	out with 'VRML' prefix in their type names. Reported by kintel.
+
+2006-02-06 20:10:43  Rev 10041  larsa
+
+	* src/misc/SoGL.cpp:
+
+	compile fix
+
+2006-02-06 17:35:01  Rev 10040  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	A batch of new static resource bugs
+
+2006-02-06 17:29:24  Rev 10039  mortene
+
+	* src/elements/GL/SoGLLightIdElement.cpp,
+	src/elements/GL/SoGLClipPlaneElement.cpp:
+
+	Compile fix.
+
+2006-02-06 17:28:27  Rev 10038  mortene
+
+	* include/Inventor/elements/SoGLClipPlaneElement.h,
+	src/elements/GL/SoGLTextureImageElement.cpp,
+	src/elements/GL/SoGLViewportRegionElement.cpp,
+	src/elements/GL/SoGLLightIdElement.cpp,
+	include/Inventor/elements/SoGLLightIdElement.h,
+	src/elements/GL/SoGLClipPlaneElement.cpp:
+
+	Robustness: warn app programmer that the the context-blind GL query functions
+	have an unsafe interface, and that they should be avoided.
+
+2006-02-06 17:20:23  Rev 10037  kyrah
+
+	* BUGS.txt, configure.ac:
+
+	Fixed bug #187: Disallow static libraries in Mac OS X framework build.
+
+2006-02-06 17:00:06  Rev 10036  mortene
+
+	* BUGS.txt:
+
+	#185 now fixed.
+
+2006-02-06 16:53:23  Rev 10035  kyrah
+
+	* src/Makefile.in:
+
+	Bootstrap.
+
+2006-02-06 16:50:57  Rev 10034  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	New bug
+
+2006-02-06 16:49:06  Rev 10033  mortene
+
+	* src/vrml97/Billboard.cpp,
+	include/Inventor/VRMLnodes/SoVRMLBillboard.h, THANKS:
+
+	Bugfix: takes care of bug #185; better handling of coincident vectors for the
+	axisOfRotation and the billboard-to-viewer line. By Aleksandar B. Samardzic,
+	minor fixes by mortene.
+
+2006-02-06 16:40:32  Rev 10032  kyrah
+
+	* src/Makefile.am:
+
+	Cosmetics -- don't set MACOSX_DEPLOYMENT_TARGET unless we actually need it.
+
+2006-02-06 16:40:11  Rev 10031  kintel
+
+	* include/Inventor/C/threads/threadsutilp.h:
+
+	Let CC_MUTEX_DESTRUCT() set the mutex pointer to NULL
+
+2006-02-06 16:34:26  Rev 10030  kintel
+
+	* src/threads/sync.c, src/fields/SoField.cpp,
+	src/misc/SoContextHandler.cpp, src/io/SoWriterefCounter.cpp,
+	src/misc/SoProto.cpp, src/fonts/glyph2d.c, src/fonts/glyph3d.c:
+
+	Fixed resource_leak bug #004
+
+2006-02-06 16:00:41  Rev 10029  kyrah
+
+	* src/Makefile.am:
+
+	One more fix for --enable-hacking to work without manually setting
+	MACOSX_DEPLOYMENT_TARGET. This should be it now.
+
+2006-02-06 15:46:37  Rev 10028  kintel
+
+	* docs/bugs/resource_leaks/BUGS.txt:
+
+	new resource cleanup bug
+
+2006-02-06 15:29:01  Rev 10027  kintel
+
+	* docs/bugs/resource_leaks, docs/bugs/resource_leaks/BUGS.txt:
+
+	Moved and renamed bug #152 and #153 to #001 and #002. Added new bug.
+
+2006-02-06 15:28:20  Rev 10026  kintel
+
+	* BUGS.txt:
+
+	Moved #152 and #153 to docs/bugs/resource_leaks/
+
+2006-02-06 14:25:41  Rev 10025  kintel
+
+	* BUGS.txt, src/nodes/SoExtSelection.cpp:
+
+	Fixed bug #138
+
+2006-02-06 14:15:01  Rev 10024  kyrah
+
+	* include/Inventor/caches/Makefile.in, src/mpeg/Makefile.in,
+	include/Inventor/lock/Makefile.in,
+	include/Inventor/engines/Makefile.in, src/3ds/Makefile.in,
+	include/Inventor/projectors/Makefile.in, src/misc/Makefile.in,
+	include/Inventor/collision/Makefile.in,
+	include/Inventor/C/errors/Makefile.in, src/vrml97/Makefile.in,
+	include/Inventor/actions/Makefile.in,
+	include/Inventor/events/Makefile.in,
+	include/Inventor/fields/Makefile.in, src/io/Makefile.in, configure,
+	src/hardcopy/Makefile.in, src/errors/Makefile.in,
+	src/elements/Makefile.in, src/nodekits/Makefile.in,
+	include/Inventor/C/Makefile.in, src/caches/Makefile.in,
+	include/Inventor/manips/Makefile.in, src/engines/Makefile.in,
+	include/Inventor/threads/Makefile.in, src/projectors/Makefile.in,
+	src/collision/Makefile.in, include/Inventor/sensors/Makefile.in,
+	include/Inventor/lists/Makefile.in, src/actions/Makefile.in,
+	src/events/Makefile.in, src/fields/Makefile.in,
+	include/Inventor/nodes/Makefile.in, html/Makefile.in,
+	include/Inventor/C/glue/Makefile.in, src/elements/GL/Makefile.in,
+	data/Makefile.in, include/Inventor/system/Makefile.in,
+	man/Makefile.in, include/Inventor/details/Makefile.in,
+	data/draggerDefaults/Makefile.in,
+	include/Inventor/annex/ForeignFiles/Makefile.in,
+	src/manips/Makefile.in, src/fonts/Makefile.in,
+	src/threads/Makefile.in, src/upgraders/Makefile.in,
+	src/sensors/Makefile.in, include/Inventor/bundles/Makefile.in,
+	include/Inventor/C/base/Makefile.in, include/Makefile.in,
+	src/glue/Makefile.in, include/Inventor/draggers/Makefile.in,
+	src/lists/Makefile.in, include/Inventor/Makefile.in,
+	src/nodes/Makefile.in, include/Inventor/annex/Makefile.in,
+	Makefile.in, src/base/Makefile.in,
+	include/Inventor/annex/HardCopy/Makefile.in, src/details/Makefile.in,
+	include/Inventor/MPEG/Makefile.in, src/shapenodes/Makefile.in,
+	src/shaders/Makefile.in, include/Inventor/misc/Makefile.in,
+	src/bundles/Makefile.in, src/draggers/Makefile.in,
+	src/extensions/Makefile.in, src/Makefile.in,
+	include/Inventor/VRMLnodes/Makefile.in, src/foreignfiles/Makefile.in,
+	include/Inventor/C/threads/Makefile.in,
+	include/Inventor/elements/Makefile.in,
+	include/Inventor/errors/Makefile.in, man/man1/Makefile.in,
+	include/Inventor/nodekits/Makefile.in, bin/Makefile.in,
+	man/man3/Makefile.in:
+
+	Bootstrap.
+
+2006-02-06 14:09:10  Rev 10023  kyrah
+
+	* HACKING:
+
+	MACOSX_DEPLOYMENT_TARGET no longer required (will be set by
+	configure script if necessary)
+
+2006-02-06 14:06:29  Rev 10022  kyrah
+
+	* configure.ac:
+
+	Improvement for --enable-hacking on Mac OS X: Don't require
+	MACOSX_DEPLOYMENT_VARIABLE to be set manually.
+
+2006-02-06 12:07:17  Rev 10021  kyrah
+
+	* include/Inventor/caches/Makefile.in, src/mpeg/Makefile.in,
+	include/Inventor/lock/Makefile.in,
+	include/Inventor/engines/Makefile.in, src/3ds/Makefile.in,
+	include/Inventor/projectors/Makefile.in, src/misc/Makefile.in,
+	include/Inventor/collision/Makefile.in,
+	include/Inventor/C/errors/Makefile.in, src/vrml97/Makefile.in,
+	include/Inventor/actions/Makefile.in,
+	include/Inventor/events/Makefile.in,
+	include/Inventor/fields/Makefile.in, src/io/Makefile.in, configure,
+	src/hardcopy/Makefile.in, src/errors/Makefile.in,
+	src/elements/Makefile.in, src/nodekits/Makefile.in,
+	include/Inventor/C/Makefile.in, src/caches/Makefile.in,
+	include/Inventor/manips/Makefile.in, src/engines/Makefile.in,
+	include/Inventor/threads/Makefile.in, src/projectors/Makefile.in,
+	src/collision/Makefile.in, include/Inventor/sensors/Makefile.in,
+	include/Inventor/lists/Makefile.in, src/actions/Makefile.in,
+	src/events/Makefile.in, src/fields/Makefile.in,
+	include/Inventor/nodes/Makefile.in, html/Makefile.in,
+	include/Inventor/C/glue/Makefile.in, src/elements/GL/Makefile.in,
+	data/Makefile.in, include/Inventor/system/Makefile.in,
+	man/Makefile.in, include/Inventor/details/Makefile.in,
+	data/draggerDefaults/Makefile.in,
+	include/Inventor/annex/ForeignFiles/Makefile.in,
+	src/manips/Makefile.in, src/fonts/Makefile.in,
+	src/threads/Makefile.in, src/upgraders/Makefile.in,
+	src/sensors/Makefile.in, include/Inventor/bundles/Makefile.in,
+	include/Inventor/C/base/Makefile.in, include/Makefile.in,
+	src/glue/Makefile.in, include/Inventor/draggers/Makefile.in,
+	src/lists/Makefile.in, include/Inventor/Makefile.in,
+	src/nodes/Makefile.in, include/Inventor/annex/Makefile.in,
+	Makefile.in, src/base/Makefile.in,
+	include/Inventor/annex/HardCopy/Makefile.in, src/details/Makefile.in,
+	include/Inventor/MPEG/Makefile.in, src/shapenodes/Makefile.in,
+	src/shaders/Makefile.in, include/Inventor/misc/Makefile.in,
+	src/bundles/Makefile.in, src/draggers/Makefile.in,
+	src/extensions/Makefile.in, src/Makefile.in,
+	include/Inventor/VRMLnodes/Makefile.in, src/foreignfiles/Makefile.in,
+	include/Inventor/C/threads/Makefile.in,
+	include/Inventor/elements/Makefile.in,
+	include/Inventor/errors/Makefile.in, man/man1/Makefile.in,
+	include/Inventor/nodekits/Makefile.in, bin/Makefile.in,
+	man/man3/Makefile.in:
+
+	Bootstrap.
+
+2006-02-06 11:58:18  Rev 10020  kyrah
+
+	* configure.ac:
+
+	Thou shalt not shellscript before having coffee...
+
+2006-02-06 11:11:00  Rev 10019  kyrah
+
+	* src/Makefile.am, configure.ac:
+
+	Don't require MACOSX_DEPLOYMENT_TARGET to be set when not using
+	--enable-hacking. Problem reported by kintel.
+
+2006-02-06 10:56:54  Rev 10018  mortene
+
+	* BUGS.txt, docs/bugs/low_priority/io/20040220--unhelpful-read-error-
+	message.txt, docs/bugs/low_priority/io/20041105--
+	incorrect_error_message_on_invalid_file.txt:
+
+	Various updates to correctly reflect current status.
+
+2006-02-06 10:29:07  Rev 10017  kintel
+
+	* BUGS.txt:
+
+	Update to bug #132: More missing methods
+
+2006-02-06 10:28:40  Rev 10016  kintel
+
+	* include/Inventor/nodes/SoExtSelection.h, src/nodes/SoExtSelection.cpp:
+
+	Update to bug #132: Stubbed more missing methods
+
+2006-02-06 10:18:53  Rev 10015  kyrah
+
+	* examples/bindings/glutiv.cpp:
+
+	Micro doc fix -- use --build-app instead of --build
+
+2006-02-04 00:34:38  Rev 10014  autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-03 18:49:05  Rev 10013  kyrah
+
+	* configure:
+
+	Bootstrap.
+
+2006-02-03 18:46:30  Rev 10012  pederb
+
+	* BUGS.txt:
+
+	Fixed copyContents() bug (# 070).
+
+2006-02-03 18:44:41  Rev 10011  kyrah
+
+	* configure.ac:
+
+	Fix recently incorrect quoting.
+
+2006-02-03 18:10:21  Rev 10010  kyrah
+
+	* configure:
+
+	Bootstrap.
+
+2006-02-03 18:04:44  Rev 10009  kyrah
+
+	* HACKING:
+
+	Another note for --enable-hacking on Mac OS X.
+
+2006-02-03 18:03:01  Rev 10008  kyrah
+
+	* configure.ac:
+
+	--enable-hacking for Mac OS X framework build.
+
+2006-02-03 17:15:56  Rev 10007  pederb
+
+	* src/fields/SoSFEngine.cpp, src/fields/SoSFNode.cpp,
+	src/fields/MFNodeEnginePath.tpl, src/fields/SoFieldContainer.cpp,
+	src/fields/SoMFEngine.cpp, src/fields/SoMFNode.cpp,
+	src/fields/SFNodeEnginePath.tpl:
+
+	Fix copyContents() bug (bug # 070).
+
+2006-02-03 17:13:57  Rev 10006  kyrah
+
+	* include/Inventor/caches/Makefile.in, src/mpeg/Makefile.in,
+	include/Inventor/lock/Makefile.in,
+	include/Inventor/engines/Makefile.in, src/3ds/Makefile.in,
+	include/Inventor/projectors/Makefile.in, src/misc/Makefile.in,
+	include/Inventor/collision/Makefile.in,
+	include/Inventor/C/errors/Makefile.in, src/vrml97/Makefile.in,
+	include/Inventor/actions/Makefile.in,
+	include/Inventor/events/Makefile.in, aclocal.m4,
+	include/Inventor/fields/Makefile.in, src/io/Makefile.in, configure,
+	src/hardcopy/Makefile.in, src/errors/Makefile.in,
+	src/elements/Makefile.in, src/nodekits/Makefile.in,
+	include/Inventor/C/Makefile.in, src/caches/Makefile.in,
+	include/Inventor/manips/Makefile.in, src/engines/Makefile.in,
+	include/Inventor/threads/Makefile.in, src/projectors/Makefile.in,
+	src/collision/Makefile.in, include/Inventor/sensors/Makefile.in,
+	include/Inventor/lists/Makefile.in, src/actions/Makefile.in,
+	src/events/Makefile.in, src/fields/Makefile.in,
+	include/Inventor/nodes/Makefile.in, html/Makefile.in,
+	include/Inventor/C/glue/Makefile.in, src/elements/GL/Makefile.in,
+	data/Makefile.in, include/Inventor/system/Makefile.in,
+	man/Makefile.in, include/Inventor/details/Makefile.in,
+	include/Inventor/annex/ForeignFiles/Makefile.in,
+	data/draggerDefaults/Makefile.in, src/manips/Makefile.in,
+	src/fonts/Makefile.in, src/threads/Makefile.in,
+	src/upgraders/Makefile.in, src/sensors/Makefile.in,
+	include/Inventor/bundles/Makefile.in,
+	include/Inventor/C/base/Makefile.in, include/Makefile.in,
+	src/glue/Makefile.in, src/lists/Makefile.in,
+	include/Inventor/draggers/Makefile.in, include/Inventor/Makefile.in,
+	src/nodes/Makefile.in, include/Inventor/annex/Makefile.in,
+	Makefile.in, src/base/Makefile.in,
+	include/Inventor/annex/HardCopy/Makefile.in, src/details/Makefile.in,
+	include/Inventor/MPEG/Makefile.in, src/shapenodes/Makefile.in,
+	src/shaders/Makefile.in, include/Inventor/misc/Makefile.in,
+	src/bundles/Makefile.in, src/draggers/Makefile.in,
+	src/extensions/Makefile.in, src/Makefile.in,
+	include/Inventor/VRMLnodes/Makefile.in, src/foreignfiles/Makefile.in,
+	include/Inventor/C/threads/Makefile.in,
+	include/Inventor/elements/Makefile.in,
+	include/Inventor/errors/Makefile.in, man/man1/Makefile.in,
+	include/Inventor/nodekits/Makefile.in, bin/Makefile.in,
+	man/man3/Makefile.in:
+
+	Bootstrap.
+
+2006-02-03 16:58:44  Rev 10005  kyrah
+
+	* src/Makefile.am, configure.ac, HACKING:
+
+	Make --enable-hacking work on Mac OS X.
+
+2006-02-03 15:43:06  Rev 10004  pederb
+
+	* BUGS.txt:
+
+	Already fixed.
+
+2006-02-03 15:24:54  Rev 10003  kintel
+
+	* src/actions/SoToVRML2Action.cpp, BUGS.txt,
+	src/shapenodes/SoNonIndexedShape.cpp,
+	src/shapenodes/SoIndexedShape.cpp,
+	src/shapenodes/SoIndexedTriangleStripSet.cpp,
+	src/shapenodes/SoPointSet.cpp:
+
+	Fixed bug #156
+
+2006-02-03 14:44:00  Rev 10002  kintel
+
+	* BUGS.txt, src/nodes/SoExtSelection.cpp:
+
+	Fixed bug #158
+
+2006-02-03 13:55:24  Rev 10001  kintel
+
+	* BUGS.txt:
+
+	Fixed Coin bug #159
+
+2006-02-03 13:44:47  Rev 10000  mortene
+
+	* BUGS.txt:
+
+	040 has been previously fixed.
+
+2006-02-03 12:42:05  Rev 9999   kintel
+
+	* BUGS.txt:
+
+	Fixed bug #189
+
+2006-02-03 12:41:39  Rev 9998   kintel
+
+	* src/nodes/SoWWWInline.cpp:
+
+	Fixed bug #189. Also corrected the default value of setReadAsSoFile() to FALSE
+
+2006-02-03 12:32:27  Rev 9997   kintel
+
+	* src/io/SoInput.cpp:
+
+	bugfix: Don't add empty directories to the search list
+
+2006-02-03 12:29:48  Rev 9996   kyrah
+
+	* src/misc/SoGL.cpp:
+
+	Clamp NURBS sampling error to 0.5 pixels.
+
+2006-02-03 12:21:51  Rev 9995   pederb
+
+	* include/Inventor/nodes/SoBlinker.h, src/nodes/SoBlinker.cpp:
+
+	Fix blinker setup bug (bug # 113).
+
+2006-02-03 11:14:54  Rev 9994   mortene
+
+	* BUGS.txt, docs/bugs/low_priority/robustness/20020915--
+	suboptimal_bbox_on_buggy_model.txt,
+	docs/bugs/low_priority/insignificant, docs/bugs/obsolete/20020930--
+	dragger_geometry_files_may_have_too_large_lineWidth.txt,
+	docs/bugs/low_priority/insignificant/20021011--
+	crash_when_deleting_active_dragger.txt, docs/bugs/low_priority/io,
+	docs/bugs/low_priority/robustness, docs/bugs/obsolete/20020205--
+	textures_on_sgi_octane.txt, docs/bugs/obsolete, docs/bugs,
+	docs/bugs/low_priority/insignificant/20021016--circular-field-
+	connections.txt, docs/bugs/low_priority/io/20020911--
+	unhelpful_error_message_on_invalid_file.txt, docs/bugs/low_priority:
+
+	Updates to the bug-list. Take out fixed, obsoleted and insignificant bugs.
+	Bugs in the latter two categories are now archived under Coin/docs/bugs/.
+
+2006-02-03 10:58:56  Rev 9993   pederb
+
+	* models/vrml97/sensors, models/vrml97/sensors/touch_and_fan_in.wrl:
+
+	new test model.
+
+2006-02-03 10:51:47  Rev 9992   pederb
+
+	* BUGS.txt:
+
+	Fixed fan-in.
+
+2006-02-03 10:48:13  Rev 9991   pederb
+
+	* models/vrml97/misc/fan-in.wrl:
+
+	add comment in file.
+
+2006-02-03 10:44:02  Rev 9990   pederb
+
+	* models/vrml97/misc, models/vrml97, models/vrml97/misc/fan-in.wrl:
+
+	fan-in test model.
+
+2006-02-03 08:28:54  Rev 9989   mortene
+
+	* src/vrml97/JS_VRMLClasses.cpp:
+
+	Compile fix.
+
+2006-02-03 00:34:37  Rev 9988   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-02 22:43:35  Rev 9987   kintel
+
+	* BUGS.txt, src/nodes/SoExtSelection.cpp:
+
+	Fixed bug #206
+
+2006-02-02 19:57:09  Rev 9986   mortene
+
+	* src/misc/SoJavaScriptEngine.cpp:
+
+	Compile fix.
+
+2006-02-02 15:56:38  Rev 9985   pederb
+
+	* src/misc/SoDB.cpp:
+
+	Fix debug/error messages for SoDB::createRoute().
+
+2006-02-02 15:27:13  Rev 9984   kintel
+
+	* src/io/SoInput.cpp:
+
+	Fixed buglet that sneaked in while fixing bug #199
+
+2006-02-02 14:58:33  Rev 9983   pederb
+
+	* src/misc/SoBase.cpp:
+
+	Use SoDB::createRoute() to connect routes.
+
+2006-02-02 14:58:12  Rev 9982   pederb
+
+	* src/misc/SoDB.cpp:
+
+	Proper implementation of SoDB::createRoute() and SoDB::removeRoute().
+
+2006-02-02 14:53:54  Rev 9981   kintel
+
+	* models/io/correct/bug199-ok.iv, models/io/incorrect/bug055-7.wrl,
+	models/io/incorrect/bug055-8.wrl,
+	models/io/incorrect/bug199-error-1.iv,
+	models/io/incorrect/bug199-error-2.iv,
+	models/io/incorrect/bug199-error-3.iv,
+	models/io/incorrect/bug029-3.iv, models/io/incorrect/bug055-5.iv,
+	models/io/incorrect/bug055-6.iv, models/io/correct/bug029-1.iv,
+	models/io/correct/bug029-2.iv, models/io/incorrect,
+	models/io/correct/bug077.iv, models/io/correct/writeref-2.wrl,
+	models/io/correct/writeref-3.wrl, models/io/correct/writeref.wrl,
+	models/io/correct/bug199-ok.wrl, models/io/correct/writeref-4.wrl,
+	models/io/correct/README, models/io,
+	models/io/incorrect/bug199-error-1.wrl,
+	models/io/incorrect/bug055-2.wrl, models/io/correct,
+	models/io/incorrect/bug199-error-2.wrl,
+	models/io/incorrect/bug055-3.wrl, models/io/incorrect/bug055.wrl,
+	models/io/incorrect/bug199-error-3.wrl:
+
+	Some test cases for recently fixed bugs
+
+2006-02-02 14:42:31  Rev 9980   mortene
+
+	* aclocal.m4, configure, src/vrml97/Makefile.in:
+
+	bootstrap
+
+2006-02-02 14:33:42  Rev 9979   mortene
+
+	* src/vrml97/Makefile.am, src/misc/SoJavaScriptEngine.cpp,
+	src/vrml97/JS_VRMLClasses.cpp, src/vrml97/JS_VRMLClasses.h:
+
+	Build clean-up and bugfix: make JS_VRMLClasses.cpp be part of the build system
+	proper (will also fix a bug in ''make dist'' -- JS_VRMLClasses.cpp was not
+	made part of dist).
+
+2006-02-02 13:57:19  Rev 9978   kyrah
+
+	* src/shapenodes/SoNurbsCurve.cpp:
+
+	Added screenshot to class documentation.
+
+2006-02-02 13:33:20  Rev 9977   kintel
+
+	* BUGS.txt:
+
+	Fixed bug #055 and #059
+
+2006-02-02 13:31:58  Rev 9976   kintel
+
+	* src/fields/SoSFEngine.cpp, src/fields/SoSFNode.cpp,
+	src/misc/SoPath.cpp, src/fields/SoSFPath.cpp,
+	src/fields/SoMFNode.cpp, src/misc/SoDB.cpp:
+
+	Fixed bug #055, #059 and related issues
+
+2006-02-02 13:28:16  Rev 9975   kyrah
+
+	* BUGS.txt:
+
+	Fixed Bug 086
+
+2006-02-02 13:27:18  Rev 9974   kyrah
+
+	* src/misc/SoGL.cpp:
+
+	Fixed Bug #086: use complexity-dependent GLU_PARAMETRIC_ERROR when GLU
+	version < 1.3.0 (and thus GLU_OBJECT_PARAMETRIC_ERROR not available).
+
+	Added COIN_DEBUG_NURBS_COMPLEXITY debugging environment variable.
+
+2006-02-02 13:16:19  Rev 9973   kintel
+
+	* src/misc/SoBase.cpp:
+
+	Clarify doc: NULL not allowed in MField
+
+2006-02-02 12:55:10  Rev 9972   pederb
+
+	* src/vrml97/TODO:
+
+	Remove obsoleted file.
+
+2006-02-02 12:53:18  Rev 9971   pederb
+
+	* README.VRML97:
+
+	Updated status.
+
+2006-02-02 12:26:38  Rev 9970   pederb
+
+	* src/fields/SoField.cpp:
+
+	Support for VRML97 fanIn.
+
+2006-02-02 12:25:20  Rev 9969   mortene
+
+	* src/misc/SoBase.cpp:
+
+	Doc: leave a FIXME suggestion about the horrendous SoBase::read() interface.
+
+2006-02-02 10:31:41  Rev 9968   pederb
+
+	* src/misc/SoBase.cpp:
+
+	Allow fanIn even for normal fields (not just eventIn fields).
+
+2006-02-02 00:39:31  Rev 9967   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-02-01 18:38:36  Rev 9966   kyrah
+
+	* src/misc/SoGL.cpp:
+
+	Default to GLU_PARAMETRIC_TOLERANCE if GLU < 1.3.0
+
+2006-02-01 18:25:42  Rev 9965   kintel
+
+	* BUGS.txt:
+
+	Bug #039: It looks like we're still crashing after all. Improved example
+
+2006-02-01 18:24:53  Rev 9964   kyrah
+
+	* src/misc/SoGL.cpp:
+
+	Warn that SoComplexity will have no effect if GLU version < 1.3.0
+
+2006-02-01 17:53:59  Rev 9963   kintel
+
+	* BUGS.txt:
+
+	Update on bug #167
+
+2006-02-01 17:40:57  Rev 9962   kyrah
+
+	* src/nodes/SoNurbsProfile.cpp:
+
+	Added caveat about trimming curve complexity. This should
+	hopefully prevent usage errors such as bug #087 and #089 in the
+	future (or at least give us the chance to say "told ya so!").
+
+2006-02-01 17:12:05  Rev 9961   mortene
+
+	* src/sensors/SoOneShotSensor.cpp, src/sensors/SoDelayQueueSensor.cpp:
+
+	Doc: additional class doc.
+
+2006-02-01 17:04:05  Rev 9960   mortene
+
+	* src/manips/SoTransformManip.cpp:
+
+	Robustness: warn on attempts to use SoTransformManip as a non-abstract class.
+
+2006-02-01 17:00:57  Rev 9959   kintel
+
+	* src/nodes/SoGroup.cpp, src/fields/SoFieldContainer.cpp:
+
+	Fixed bug introduced when fixing bug #077
+
+2006-02-01 16:29:29  Rev 9958   mortene
+
+	* src/engines/SoElapsedTime.cpp, src/engines/SoComposeRotation.cpp:
+
+	Doc: example for the main class API doc.
+
+2006-02-01 15:32:33  Rev 9957   kintel
+
+	* src/misc/SoProto.cpp:
+
+	writeref debugging
+
+2006-02-01 15:30:24  Rev 9956   pederb
+
+	* src/vrml97/Script.cpp:
+
+	Yet another ROUTE export bugfix.
+
+2006-02-01 14:04:35  Rev 9955   kyrah
+
+	* BUGS.txt:
+
+	Removed 089: Not a bug, just a bad example case.
+
+	The base NURBS surface is a plain quad, so obviously you won't
+	see any resolution changes there. And the trimming curves are
+	circles specified by 71 points each (which means that even at
+	the lowest tesselation, which interpolates the control points
+	of a curve), it will be fairly detailed overall.
+
+2006-02-01 13:27:06  Rev 9954   kintel
+
+	* BUGS.txt:
+
+	Fixed bug #029
+
+2006-02-01 13:26:49  Rev 9953   kintel
+
+	* src/fields/SoSFEnum.cpp, src/fields/SoMFEnum.cpp:
+
+	Fixed bug #029 and a related issue reading unknown enum values for
+	SoUnknownNode instances. Ditto for writing.
+
+2006-02-01 13:19:44  Rev 9952   kintel
+
+	* src/io/SoWriterefCounter.cpp:
+
+	typo
+
+2006-02-01 12:46:16  Rev 9951   pederb
+
+	* src/io/SoOutput.cpp:
+
+	ROUTE writeref debugging.
+
+2006-02-01 12:07:59  Rev 9950   pederb
+
+	* src/shapenodes/soshape_primdata.cpp:
+
+	Quick fix for previous fix :)
+
+2006-02-01 12:06:05  Rev 9949   pederb
+
+	* src/shapenodes/soshape_primdata.cpp, src/shapenodes/soshape_primdata.h:
+
+	Fixes for PER_FACE material and normal bindings. This will fix some PER_FACE
+	generatePrimitives() bugs.
+
+2006-02-01 11:48:23  Rev 9948   mortene
+
+	* src/nodes/SoNurbsProfile.cpp:
+
+	Doc: add image to class API example.
+
+2006-02-01 11:38:43  Rev 9947   mortene
+
+	* src/shapenodes/SoNurbsSurface.cpp:
+
+	Doc: snapshot of example.
+
+2006-02-01 11:32:37  Rev 9946   pederb
+
+	* src/vrml97/Script.cpp:
+
+	Fix a ROUTE write bug.
+
+2006-02-01 10:55:45  Rev 9945   pederb
+
+	* src/shapenodes/SoShape.cpp:
+
+	Fix for the fallback rendering code for nodes with an SoVertexProperty
+	instance (SoVertexShape nodes).
+
+2006-02-01 00:34:15  Rev 9944   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-31 21:10:34  Rev 9943   kyrah
+
+	* src/nodes/SoNurbsProfile.cpp:
+
+	Doc improvement: Added usage example, and pointer to NURBS
+	documentation.
+
+2006-01-31 21:10:05  Rev 9942   kyrah
+
+	* src/shapenodes/SoNurbsSurface.cpp:
+
+	Doc improvement: Added usage example.
+
+2006-01-31 20:09:18  Rev 9941   kyrah
+
+	* BUGS.txt:
+
+	Killed 087:
+
+	This was not a "real" bug: the program didn't hang, it just tried to
+	use insane amounts of memory because the person designing that
+	specific curve had chosen a far-out high resolution in the v
+	domain.
+
+	Changing v from [0; 2388.08] to [0; 2.38808] lets me open the file
+	just fine.
+
+	NURBS -- not for the faint of heart, or the uninitiated.
+
+2006-01-31 17:15:34  Rev 9940   kintel
+
+	* src/actions/SoToVRML2Action.cpp:
+
+	MSVC6 compile fix
+
+2006-01-31 17:14:24  Rev 9939   kintel
+
+	* BUGS.txt:
+
+	Update to bug #104
+
+2006-01-31 17:03:29  Rev 9938   kintel
+
+	* BUGS.txt:
+
+	Update to bug #165
+
+2006-01-31 15:41:29  Rev 9937   pederb
+
+	* src/actions/SoToVRML2Action.cpp:
+
+	Misc. fixes to handle shapes with vertexProperty nodes.
+
+2006-01-31 15:29:29  Rev 9936   mortene
+
+	* src/glue/GLUWrapper.c:
+
+	Doc: code comment about nurbs tessellation on GLU-libs older than 1.3.
+
+2006-01-31 15:13:46  Rev 9935   kyrah
+
+	* BUGS.txt:
+
+	Removed erroneously commited local notes.
+
+2006-01-31 14:54:51  Rev 9934   thammer
+
+	* src/misc/SoJavaScriptEngine.cpp:
+
+	Fix incorrect use of assert, which would cause the release version to fail.
+
+2006-01-31 14:27:53  Rev 9933   kintel
+
+	* BUGS.txt, src/io/SoInput.cpp:
+
+	Fixed bug #199
+
+2006-01-31 14:08:45  Rev 9932   kyrah
+
+	* BUGS.txt:
+
+	Bug 088 is not a problem: We are currently not using the
+	extensions at all, just checking for glu version >= 1.3.0 (in
+	which both GLU_nurbs_tesselator and
+
+2006-01-31 12:50:13  Rev 9931   kyrah
+
+	* src/shapenodes/SoNurbsCurve.cpp, src/shapenodes/SoNurbsSurface.cpp:
+
+	Doc: Elaborate on knot value issue.
+
+2006-01-31 10:55:14  Rev 9930   pederb
+
+	* src/vrml97/JS_VRMLClasses.cpp:
+
+	Fix incorrect use of assert, which would cause the release version to fail.
+
+2006-01-31 00:43:12  Rev 9929   kintel
+
+	* BUGS.txt:
+
+	Fixed bug #131
+
+2006-01-31 00:38:15  Rev 9928   kintel
+
+	* BUGS.txt, src/nodes/SoGroup.cpp, src/fields/SoFieldContainer.cpp:
+
+	Fixed bug #131
+
+2006-01-31 00:35:36  Rev 9927   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-31 00:33:28  Rev 9926   kyrah
+
+	* BUGS.txt:
+
+	Killed 007:
+
+	The problem is really an issue of GLU's tessellator, which produces
+	bogus results if the knot vector is in the format [0,...,1]. (This
+	is reproducible in a stand-alone GLU example.) Probably related to
+	floating point issues.
+
+2006-01-31 00:26:59  Rev 9925   kyrah
+
+	* src/shapenodes/SoNurbsCurve.cpp, src/shapenodes/SoNurbsSurface.cpp:
+
+	Mention that knot values should be [0, 1, 2,..., a] rather
+	than [0, 1/a, 2/a,..., 1], or else GLU will produce wrong results
+	in tesselation mode.
+
+2006-01-30 21:08:24  Rev 9924   kintel
+
+	* BUGS.txt:
+
+	Fixed bug #043
+
+2006-01-30 21:07:47  Rev 9923   kintel
+
+	* src/io/SoWriterefCounter.cpp:
+
+	Fixed bug #043: Now prefixes starting characters illegal in VRML2 with '_'
+
+2006-01-30 16:36:50  Rev 9922   mortene
+
+	* BUGS.txt:
+
+	minor update
+
+2006-01-30 16:28:25  Rev 9921   pederb
+
+	* src/actions/SoToVRML2Action.cpp:
+
+	Handle SoLevelOfDetail => SoLOD conversion.
+
+2006-01-30 16:27:32  Rev 9920   kintel
+
+	* src/actions/SoWriteAction.cpp:
+
+	Better debug warning
+
+2006-01-30 16:27:11  Rev 9919   kintel
+
+	* BUGS.txt, src/engines/SoElapsedTime.cpp,
+	src/engines/SoTimeCounter.cpp, src/vrml97/TimeSensor.cpp,
+	src/engines/SoOneShot.cpp:
+
+	Fixed bug #077
+
+2006-01-30 16:14:02  Rev 9918   kintel
+
+	* src/actions/SoWriteAction.cpp:
+
+	Added debug code crying out when the scenegraph changes during a writeaction
+
+2006-01-30 15:58:42  Rev 9917   kyrah
+
+	* src/shapenodes/SoNurbsCurve.cpp:
+
+	Update on FIXME comment.
+
+2006-01-30 13:40:06  Rev 9916   kintel
+
+	* src/fields/SoGlobalField.cpp:
+
+	bugfix: Don't add write reference for global realCTime field
+
+2006-01-30 13:38:38  Rev 9915   kintel
+
+	* src/io/SoWriterefCounter.cpp:
+
+	Minor debug message clarification
+
+2006-01-30 12:30:42  Rev 9914   mortene
+
+	* BUGS.txt:
+
+	Various updates.
+
+2006-01-28 00:34:17  Rev 9913   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-27 14:56:39  Rev 9912   kintel
+
+	* src/vrml97/Switch.cpp:
+
+	minor correction of warning
+
+2006-01-27 00:34:17  Rev 9911   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-26 09:38:23  Rev 9910   pederb
+
+	* src/actions/SoToVRML2Action.cpp:
+
+	Bugfix. SoProfile should not be converted to an ifs.
+
+2006-01-26 09:28:52  Rev 9909   pederb
+
+	* src/actions/SoToVRML2Action.cpp, src/actions/SoToVRMLAction.cpp:
+
+	Copy as many node names as possible when converting a scene graph. Problem
+	reported by Frank Hibbeln.
+
+2006-01-20 00:34:48  Rev 9908   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-19 13:03:37  Rev 9907   pederb
+
+	* src/vrml97/Extrusion.cpp:
+
+	generatePrimitives() bugfix. Reported by Terje.
+
+2006-01-17 00:34:21  Rev 9906   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-16 10:59:44  Rev 9905   pederb
+
+	* src/vrml97/ImageTexture.cpp:
+
+	Improve memory handling when changing the image in a texture node.
+
+2006-01-12 00:35:26  Rev 9904   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-11 15:54:50  Rev 9903   pederb
+
+	* src/caches/SoConvexDataCache.cpp, src/caches/SoBoundingBoxCache.cpp,
+	src/caches/SoGLCacheList.cpp, src/caches/SoCache.cpp,
+	src/caches/SoGlyphCache.cpp, include/Inventor/caches/SoCache.h,
+	src/caches/SoPrimitiveVertexCache.cpp, src/caches/SoNormalCache.cpp:
+
+	Avoid using a public method for debugging.
+
+2006-01-11 15:53:42  Rev 9902   pederb
+
+	* include/Inventor/C/tidbitsp.h, src/tidbits.c:
+
+	Add internal function for cache debugging.
+
+2006-01-11 14:27:48  Rev 9901   pederb
+
+	* src/shapenodes/SoShape.cpp:
+
+	Stop bbox caching shapes that change.
+
+2006-01-11 14:27:38  Rev 9900   mortene
+
+	* src/misc/SoSceneManager.cpp:
+
+	Bugfix: status of the active-flag may change between scheduleRedraw() and when
+	a redraw is actually attempted, so re-check the flag.
+
+2006-01-11 14:23:24  Rev 9899   pederb
+
+	* src/nodes/SoSeparator.cpp, src/vrml97/Group.cpp:
+
+	Stop trying to autocache bboxes for separators that are modified a lot.
+
+2006-01-11 14:15:53  Rev 9898   pederb
+
+	* src/caches/SoConvexDataCache.cpp, src/caches/SoBoundingBoxCache.cpp,
+	src/caches/SoGLCacheList.cpp, src/caches/SoGlyphCache.cpp,
+	src/caches/SoPrimitiveVertexCache.cpp, src/caches/SoNormalCache.cpp:
+
+	Clean up cache debugging.
+
+2006-01-11 14:07:46  Rev 9897   pederb
+
+	* src/caches/SoCache.cpp, include/Inventor/caches/SoCache.h:
+
+	A new method to make it easier to debug caching.
+
+2006-01-11 00:34:39  Rev 9896   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-10 12:24:05  Rev 9895   mortene
+
+	* src/caches/SoCache.cpp:
+
+	Doc: elaborate explanation of how caching works, taken from a support mail
+	reply, written by pederb.
+
+2006-01-10 00:34:03  Rev 9894   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-09 13:41:47  Rev 9893   mortene
+
+	* src/fonts/common.h, src/fonts/glyph2d.h, src/fonts/glyph3d.h,
+	src/fonts/Makefile.in, src/fonts/fontlib_wrapper.h,
+	src/fonts/defaultfonts.h, src/fonts/glyph.c, src/fonts/fontspec.h,
+	src/fonts/win32.h, src/fonts/Makefile.am, src/fonts/freetype.h,
+	src/fonts/glyph.h, src/fonts/glyph2d.c, src/fonts/glyph3d.c:
+
+	Clean-up: collect common glyph-handling code between cc_glyph2d and cc_glyph3d
+	in its own internal interface (cc_glyph).
+
+2006-01-09 13:31:12  Rev 9892   mortene
+
+	* configure.ac:
+
+	Doc: minor code comment.
+
+2006-01-09 12:40:46  Rev 9891   mortene
+
+	* src/fonts/freetype.c:
+
+	Compile fix: takes care of minor problem when building with link-time linking
+	against libFreeType.
+
+2006-01-09 11:41:03  Rev 9890   mortene
+
+	* include/Inventor/C/threads/threadsutilp.h:
+
+	Bugfix: the convenience macros CC_MUTEX_CONSTRUCT etc should be available and
+	active when HAVE_THREADS is defined, and not only when COIN_THREADSAFE is
+	defined.
+
+2006-01-06 00:35:37  Rev 9889   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-05 15:51:45  Rev 9888   pederb
+
+	* src/shaders/SoShaderObject.cpp, src/shaders/SoShaderProgram.cpp:
+
+	Search action bugfix.
+
+2006-01-05 12:07:03  Rev 9887   pederb
+
+	* src/actions/SoReorganizeAction.cpp:
+
+	Copy solid and ccw fields from the original SoVRMLIndexedFaceSet node. Bug
+	reported by handegar.
+
+2006-01-05 11:08:19  Rev 9886   pederb
+
+	* src/vrml97/PointSet.cpp, src/shapenodes/SoIndexedFaceSet.cpp,
+	src/vrml97/IndexedFaceSet.cpp, src/shapenodes/SoIndexedLineSet.cpp,
+	src/shapenodes/SoPointSet.cpp, src/vrml97/IndexedLineSet.cpp:
+
+	Ask SoVBO if we should render as vertex arrays.
+
+2006-01-05 11:07:38  Rev 9885   pederb
+
+	* src/misc/SoVBO.h, src/misc/SoVBO.cpp:
+
+	Make it possible to globally toggle VA and VBO rendering on/off
+
+2006-01-05 10:22:04  Rev 9884   pederb
+
+	* src/misc/SoVBO.cpp:
+
+	Tune the VBO performance test.
+
+2006-01-04 00:35:01  Rev 9883   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-03 12:08:28  Rev 9882   pederb
+
+	* src/projectors/SbSphereSheetProjector.cpp:
+
+	Normalize fix.
+
+2006-01-03 12:02:13  Rev 9881   pederb
+
+	* src/projectors/SbSpherePlaneProjector.cpp:
+
+	Normalize fixes.
+
+2006-01-03 11:42:12  Rev 9880   pederb
+
+	* src/projectors/SbCylinderSectionProjector.cpp:
+
+	Normalize fix.
+
+2006-01-03 11:42:11  Rev 9879   pederb
+
+	* src/projectors/SbCylinderSectionProjector.cpp,
+	src/projectors/SbCylinderSheetProjector.cpp:
+
+	Normalize fix.
+
+2006-01-03 11:22:01  Rev 9878   pederb
+
+	* src/caches/SoNormalCache.cpp:
+
+	Normalize fixes.
+
+2006-01-03 00:37:24  Rev 9877   autocvs
+
+	* ChangeLog:
+
+	Automatic ChangeLog generation
+
+2006-01-02 11:41:29  Rev 9876   pederb
+
+	* src/caches/SoPrimitiveVertexCache.cpp:
+
+	Fix bug for SORTED_OBJECT_SORTED_TRIANGLE transparency modes. Reported by
+	Kristofer Tingdahl.
+

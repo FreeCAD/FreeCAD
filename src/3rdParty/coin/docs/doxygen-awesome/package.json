@@ -1,0 +1,34 @@
+{
+  "name": "@jothepro/doxygen-awesome-css",
+  "version": "2.3.2",
+  "description": "Custom CSS theme for doxygen html-documentation with lots of customization parameters.",
+  "main": "",
+  "scripts": {
+    "npm-pack": "npm pack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jothepro/doxygen-awesome-css.git"
+  },
+  "homepage": "https://jothepro.github.io/doxygen-awesome-css/",
+  "bugs": {
+    "url": "https://github.com/jothepro/doxygen-awesome-css/issues"
+  },
+  "keywords": [
+    "doxygen",
+    "css",
+    "theme",
+    "awesome"
+  ],
+  "author": {
+    "name": "jothepro",
+    "url": "https://github.com/jothepro",
+    "git": "https://github.com/jothepro/doxygen-awesome-css"
+  },
+  "license": "MIT",
+  "config": {},
+  "dependencies": {},
+  "devDependencies": {},
+  "xpack": {}
+}

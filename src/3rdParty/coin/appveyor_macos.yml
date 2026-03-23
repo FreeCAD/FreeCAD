@@ -1,0 +1,139 @@
+version: 4.0.3-{branch}-ci-{build}
+
+branches:
+  only:
+  - master
+  - /v\d*\.\d*\.\d*/
+
+# do not build feature branches with open pull requests
+skip_branch_with_pr: true
+
+#shallow clone does not work when submodules are involved!
+#shallow_clone: true
+
+matrix:
+  fast_finish: true # set this flag to immediately finish build once one of the jobs fails.
+
+environment:
+  GH_AUTH_TOKEN:
+    secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u
+  matrix:
+#    - APPVEYOR_BUILD_WORKER_IMAGE: macos-catalina
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: clang
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: macos-bigsur
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: clang
+#
+#    - APPVEYOR_BUILD_WORKER_IMAGE: macos-monterey
+#      CMAKE_GENERATOR: 'Unix Makefiles'
+#      CMAKE_PLATFORM: x64
+#      COMPILER_ID: clang
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: macos-ventura
+      CMAKE_GENERATOR: 'Unix Makefiles'
+      CMAKE_PLATFORM: x64
+      COMPILER_ID: clang
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: macos-sonoma
+      CMAKE_GENERATOR: 'Unix Makefiles'
+      CMAKE_PLATFORM: x64
+      COMPILER_ID: clang
+
+install:
+  - sh: |
+      brew install jq
+      #brew install doxygen
+  - git submodule update --init --recursive
+
+# Assumes that we use the vx.y.z tagging scheme (e.g. v1.3.0)
+before_build:
+  - sh: |
+      if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export CI_REPO_VERSION=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_VERSION=latest; fi
+      BUILD_SOURCE_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-src.tar.gz
+      if [ ! -d "$APPVEYOR_BUILD_FOLDER/../$APPVEYOR_PROJECT_NAME" ]; then cp -r $APPVEYOR_BUILD_FOLDER $APPVEYOR_BUILD_FOLDER/../$APPVEYOR_PROJECT_NAME; fi
+      cd $APPVEYOR_BUILD_FOLDER/..
+      tar czf $BUILD_SOURCE_ARCHIVE --exclude .git $APPVEYOR_PROJECT_NAME
+      mv $BUILD_SOURCE_ARCHIVE $APPVEYOR_BUILD_FOLDER
+      cd $APPVEYOR_BUILD_FOLDER
+      md5sum -b $BUILD_SOURCE_ARCHIVE > $BUILD_SOURCE_ARCHIVE.md5
+      sha256sum -b $BUILD_SOURCE_ARCHIVE > $BUILD_SOURCE_ARCHIVE.sha256
+      mkdir $APPVEYOR_BUILD_FOLDER/downloads
+      export COMPILER_ID=$APPVEYOR_BUILD_WORKER_IMAGE-$COMPILER_ID`$COMPILER_ID -v 2>&1 | grep version | sed 's/^.*version \([0-9]*\)\.[0-9]*\.[0-9]*.*$/\1/g'`
+      export CFLAGS=$CMAKE_ARCH_FLAGS
+      export CXXFLAGS=$CMAKE_ARCH_FLAGS
+      #cmake -H. -Bbuild_debug   -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Debug   -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_CXX_STANDARD=11
+      cmake -H. -Bbuild_release -G "$CMAKE_GENERATOR" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=true -DCMAKE_INSTALL_PREFIX=$APPVEYOR_BUILD_FOLDER/Coin3D -DCMAKE_CXX_STANDARD=11
+
+build_script:
+  - sh: |
+      BUILD_TOOL_OPTIONS=-j4
+      #cmake --build build_debug   --target install --config Debug   -- $BUILD_TOOL_OPTIONS
+      cmake --build build_release --target install --config Release -- $BUILD_TOOL_OPTIONS
+
+after_build:
+  - sh: |
+      cd $APPVEYOR_BUILD_FOLDER
+      if [ -n "${APPVEYOR_REPO_TAG_NAME}" ]; then export CI_REPO_VERSION=${APPVEYOR_REPO_TAG_NAME:1}; else export CI_REPO_VERSION=latest; fi
+      BUILD_ARCHIVE=$APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.tar.gz
+      tar czf $BUILD_ARCHIVE Coin3D/*
+      md5sum -b $BUILD_ARCHIVE > $BUILD_ARCHIVE.md5
+      sha256sum -b $BUILD_ARCHIVE > $BUILD_ARCHIVE.sha256
+      appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/$APPVEYOR_JOB_ID/log -FileName $APPVEYOR_PROJECT_NAME-$CI_REPO_VERSION-$COMPILER_ID-$CMAKE_PLATFORM.log
+
+artifacts:
+  - path: $(APPVEYOR_PROJECT_NAME)*.zip
+    name: CIArchives
+  - path: $(APPVEYOR_PROJECT_NAME)*.tar.gz
+    name: CIArchivesTGZ
+  - path: $(APPVEYOR_PROJECT_NAME)*.log
+    name: logs
+  - path: $(APPVEYOR_PROJECT_NAME)*.md5
+    name: CImd5
+  - path: $(APPVEYOR_PROJECT_NAME)*.sha256
+    name: CIsha256
+
+test_script:
+  - sh: |
+      cd build_release
+      ctest -C Release -VV
+
+notifications:
+  - provider: Email
+    to:
+      - '{{commitAuthorEmail}}'
+      - coin-support@coin3d.org
+    on_build_success: false
+    on_build_failure: true
+    on_build_status_changed: true
+
+deploy:
+  # Deploy to GitHub Releases
+  - provider: GitHub
+    auth_token:
+      secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256, logs
+    tag: 'CI builds'
+    description: 'Results of CI builds for various platforms'
+    draft: false
+    prerelease: true
+    force_update: true
+    on:
+      APPVEYOR_REPO_TAG: false      # deploy on untagged builds only
+#      branch: master                # release from master branch only
+
+  # Deploy to GitHub Releases
+  - provider: GitHub
+    auth_token:
+      secure: 850frgRGZcc4Cljd2P7Ej68no4/kkl4EMB+DjnX725wcKBRJuFk/kGRdJGyKXd2u # your encrypted token from GitHub
+    artifact: CIArchives, CIArchivesTGZ, CImd5, CIsha256
+    tag: $(APPVEYOR_REPO_TAG_NAME)
+    description: 'Release build'
+    draft: true
+    prerelease: true
+    force_update: true
+    on:
+      APPVEYOR_REPO_TAG: true       # deploy on tag push only

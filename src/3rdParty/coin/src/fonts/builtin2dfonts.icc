@@ -1,0 +1,34 @@
+
+#include <Inventor/system/inttypes.h>
+
+#define COIN_FONT_13_WIDTH   (7)
+#define COIN_FONT_17_WIDTH  (10)
+#define COIN_FONT_25_WIDTH  (14)
+#define COIN_FONT_33_WIDTH  (19)
+
+#define COIN_FONT_13_HEIGHT (14)
+#define COIN_FONT_17_HEIGHT (18)
+#define COIN_FONT_25_HEIGHT (27)
+#define COIN_FONT_33_HEIGHT (36)
+
+#define COIN_FONT_13_BEARING (12)
+#define COIN_FONT_17_BEARING (15)
+#define COIN_FONT_25_BEARING (21)
+#define COIN_FONT_33_BEARING (28)
+
+static const uint8_t font_data_13[256][COIN_FONT_13_HEIGHT*4] = {
+#include "font13.icc"
+};
+
+static const uint8_t font_data_17[256][COIN_FONT_17_HEIGHT*4] = {
+#include "font17.icc"
+};
+
+static const uint8_t font_data_25[256][COIN_FONT_25_HEIGHT*4] = {
+#include "font25.icc"
+};
+
+static const uint8_t font_data_33[256][COIN_FONT_33_HEIGHT*4] = {
+#include "font33.icc"
+};
+

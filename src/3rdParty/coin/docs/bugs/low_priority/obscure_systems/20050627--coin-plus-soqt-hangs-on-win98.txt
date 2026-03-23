@@ -1,0 +1,40 @@
+201 Coin 2.4.1 + SoQt 1.2.0 + Qt 3.3.4 hangs on Win98.
+
+    We've had an external report that the above combination hangs on
+    Win98 systems, even when just attempting to display a simple
+    SoQtRenderArea. The same combination, but with Coin 2.2.1, does
+    not hang (!). It is unclear whether or not they tried with SoQt
+    from CVS.
+
+    The reporter gets the following error message in the terminal
+    window where the application is run from, and supplies to
+    following information:
+
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+        ---------------
+        GetModuleHandleA succeed
+
+        LoadLibrary returns baaa0000
+        not a dibseciton
+        fail GetSurfaceFromDC, ddVal = 887600ff
+
+        bddraw = 1
+
+        fail GetSurfaceFromDC, ddVal = 887600ff
+
+        bddraw = 1
+
+        not a dibseciton
+        fail GetSurfaceFromDC, ddVal = 887600ff
+
+        bddraw = 1
+        ---------------
+
+        The corresponding Window stays lightgrey (backgroundcolor set
+        to black) and the CPU Load rises to 100%. Termination of the
+        Task is not possible (Win98) and so I have to make a hard
+        reset.
+----8<-------------- [snip] -------8<-------------- [snip] -------------
+
+
+    20050627 mortene. Reported by Sascha Schneider.

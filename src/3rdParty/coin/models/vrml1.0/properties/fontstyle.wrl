@@ -1,0 +1,77 @@
+#VRML V1.0 ascii
+
+# Check all aspects of rendering with an SoFontStyle.
+#
+# 19990423 mortene
+# 20030514 kintel
+
+Separator {
+  Separator {
+    Material { diffuseColor 1 0 0.5 }
+    FontStyle {  family SERIF }
+    AsciiText { string [ "family", "is", "SERIF" ] }
+
+    Translation { translation 0 -40 0 }
+    FontStyle {  family SANS }
+    AsciiText { string [ "family", "is", "SANS" ] }
+
+    Translation { translation 0 -40 0 }
+    FontStyle {  family TYPEWRITER }
+    AsciiText { string [ "family", "is", "TYPEWRITER" ] }
+  }
+  Translation { translation +80 +80 0 }
+  Separator {
+    Material { diffuseColor 0.5 0 1 }
+    Translation { translation 0 -40 0 }
+    FontStyle { style NONE }
+    AsciiText { string [ "style", "is", "NONE" ] }
+
+    Translation { translation 0 -40 0 }
+    FontStyle { style BOLD }
+    AsciiText { string [ "style", "is", "BOLD" ] }
+
+    Translation { translation 0 -40 0 }
+    FontStyle { style ITALIC }
+    AsciiText { string [ "style", "is", "ITALIC" ] }
+
+    Translation { translation 0 -40 0 }
+    FontStyle { style (BOLD|ITALIC) }
+    AsciiText { string [ "style", "is", "BOLD|ITALIC" ] }
+
+    Translation { translation 0 -40 0 }
+    FontStyle { style (NONE|BOLD|ITALIC) }
+    AsciiText { string [ "style", "is", "N|B|I" ] }
+  }
+  Translation { translation +80 0 0 }
+  Separator {
+    Material { diffuseColor 0 0.5 1 }
+    Translation { translation 0 -40 0 }
+    FontStyle { size 1 }
+    AsciiText { string [ "size", "is", "1" ] }
+
+    Translation { translation 0 -40 0 }
+    FontStyle { size 10 }
+    AsciiText { string [ "size", "is", "10" ] }
+
+    Translation { translation 0 -60 0 }
+    FontStyle { size 40 }
+    AsciiText { string [ "size", "is", "40" ] }
+  }
+  Translation { translation -160 -260 0 }
+  Separator {
+    FontStyle { family SANS style ITALIC size 15 }
+    AsciiText { string [ "Test string 1" ] }
+    Translation { translation 0 -15 0 }
+    FontStyle { family TYPEWRITER style BOLD size 8 }
+    AsciiText { string [ "Test string 2" ] }
+    Translation { translation 0 -15 0 }
+    FontStyle { family SANS style (BOLD|ITALIC) size 10 }
+    AsciiText { string [ "Test string 3" ] }
+    Translation { translation 0 -15 0 }
+    FontStyle { family SERIF style NONE }
+    AsciiText { string [ "Test string 4" ] }
+    Translation { translation 0 -15 0 }
+    FontStyle { family TYPEWRITER style (NONE|BOLD) size 13 }
+    AsciiText { string [ "Test string 5" ] }
+  }
+}

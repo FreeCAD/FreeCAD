@@ -1,0 +1,39 @@
+#Inventor V2.1 ascii
+
+# Standard material definitions.
+
+DEF TRANSLATE1_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+DEF TRANSLATE1_ACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0  emissiveColor 0.5 0.5 0 }
+
+
+DEF TRANSLATE1_GEOM Group {
+   # "Line" connecting the cones.
+   Cube { width 2  height 0.1  depth 0.1 } # Horizontal
+
+   # First cone.
+   Separator {
+      Translation { translation 1.25 0 0 }
+      RotationXYZ { axis Z  angle -1.5708 }
+      DEF TRANSLATE1_ARROWHEAD Cone { height 0.5  bottomRadius 0.25 }
+   }
+
+   # Second cone.
+   Separator {
+      Translation { translation -1.25 0 0 }
+      RotationXYZ { axis Z  angle 1.5708 }
+      USE TRANSLATE1_ARROWHEAD
+   }
+}
+
+DEF translate1Translator Separator {
+   USE TRANSLATE1_INACTIVE_MATERIAL
+   USE TRANSLATE1_GEOM
+}
+
+DEF translate1TranslatorActive Separator {
+   USE TRANSLATE1_ACTIVE_MATERIAL
+   USE TRANSLATE1_GEOM
+}
+
+DEF translate1Feedback Separator { }
+DEF translate1FeedbackActive Separator { }

@@ -1,0 +1,18 @@
+#Inventor V2.1 ascii
+
+
+Separator {
+
+  MyNode {
+    fields [ SFEnum hepp ]
+    hepp 0
+
+  }
+  MyNode2 {
+    fields [ MFEnum hepp ]
+    hepp [ 0,
+        1,
+        2 ]
+
+  }
+}

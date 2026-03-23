@@ -1,0 +1,10 @@
+Document: libcoin@COIN_SO_VERSION@
+Title: Coin Library
+Author: The Coin Developer Team at Systems in Motion
+Abstract: Coin is an OpenGL-based, retain-mode 3D graphics library
+ that implements the Open Inventor 2.1 API.  
+Section: Graphics
+
+Format: HTML
+Index: /usr/share/doc/libcoin@COIN_SO_VERSION@-doc/html/index.html
+Files: /usr/share/doc/libcoin@COIN_SO_VERSION@-doc/html/*.html /usr/share/doc/libcoin@COIN_SO_VERSION@-doc/html/*.gif /usr/share/doc/libcoin@COIN_SO_VERSION@-doc/html/*.css

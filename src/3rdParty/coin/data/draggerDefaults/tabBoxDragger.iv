@@ -1,0 +1,29 @@
+#Inventor V2.1 ascii
+
+# Standard common material definition.
+DEF TABBOX_INACTIVE_MATERIAL Material { diffuseColor 0.5 0.5 0.5  emissiveColor 0.5 0.5 0.5 }
+
+# Note: these two are duplicated in tabPlaneDragger.iv -- migrate
+# changes.
+
+DEF tabBoxScaleTabMaterial Material { diffuseColor 0 0.5 0  emissiveColor 0 0.5 0 }
+DEF tabBoxScaleTabHints ShapeHints {
+   # Make sure only the front side of the polygons are shown.
+   vertexOrdering COUNTERCLOCKWISE
+   shapeType SOLID
+}
+
+# For displaying the border lines.
+DEF tabBoxBoxGeom Separator {
+   USE TABBOX_INACTIVE_MATERIAL
+   DrawStyle { style LINES }
+   PickStyle { style UNPICKABLE }
+   Cube { }
+}
+
+# Defines translator planes for picking.
+DEF tabBoxTranslator Separator {
+   DrawStyle { style INVISIBLE }
+   Coordinate3 { point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] }
+   IndexedFaceSet { coordIndex [ 0, 1, 2, 3, -1 ] }
+}

@@ -1,0 +1,50 @@
+This document contains a list of ideas for interns' or student's
+projects:
+
+* A QNX port (QNX for x86 platforms is supposedly available for free
+  download from www.qnx.com)
+
+* A "gl-attack" application stressing many different aspects of
+  OpenGL-drivers to try to make them crash or exhibit bugs.
+
+* Work with the documentation to improve it (add example code
+  snippets, screenshots, elaborate on the important parts, ...).
+
+* Write many more examples, covering the functionality offered by
+  Coin.
+
+* Write a tutorial.
+
+* Write a NURBS-library covering all the necessary functionality we
+  need within the nurbs-based node classes. A good starting point
+  would probably be the newly released OpenGL library from SGI (which
+  contains a separate libnurbs module, it seems).  Avoiding using GLU
+  could solve a lot of problems.
+
+* An IVF (MFC-based) GUI-glue library.
+
+* Make simple routines for packaging up Coin for RedHat Linux (.rpm),
+  Suse Linux (.rpm), Debian (.deb), HP-UX (depot), SGI IRIX
+  (something), etc.  Check out the Samba distribution, there are lots
+  of templates to look at.
+
+* Do the work needed for being compatible with 64-bit systems. These
+  areas should at least be audited:
+
+        - binary file format load and save: likely to not be able to
+          interoperate with files from 32-bit system
+
+        - SoOffscreenRenderer raster file I/O?
+
+        - static, default font data
+
+        - SbDict usage (keys are unsigned long (which could be 32 bits
+          wide), values are void*)
+
+* Profiling and optimalization of rendering and other action
+  traversals.
+
+* A regression test system for the classes under Coin/src/base.
+
+* Profiling and optimalization of the base classes. Should depend on a
+  good regression test suite having been implemented first.

@@ -1,0 +1,71 @@
+##############################################################################
+# Unofficial CPACK configuration for Linux Debian
+# Tested on: Debian v10, Ubuntu v19.04.
+# See also:
+# https://www.debian.org/doc/manuals/debian-reference/ch02.en.html#_debian_package_file_names
+# https://www.debian.org/doc/debian-policy/#document-ch-controlfields (5.6.12. Version)
+# NOT tested with lintian (https://packages.debian.org/it/sid/lintian)
+#
+# NOTE: CMake/CPack versions < v3.6 do not provide a DEB generator able to 
+# manage package component filenames correctly. 
+# In such a situation there will be a mismatch between the component PACKAGE 
+# NAME and the  corresponding component PACKAGE FILE NAME.
+#
+# Example for DEVELOPMENT component:
+# package NAME      'libsimage-dev' (OK)
+# package FILE NAME 'libsimage-1.7.1a-690_amd64-development.deb' (WRONG)
+##############################################################################
+include("@CMAKE_CURRENT_BINARY_DIR@/commons.cmake")
+
+config_package(NAME "lib%PROJECT_NAME%" LOWCASE)
+
+# debian architecture as from https://www.debian.org/releases/stable/i386/ch02s01.html.en
+string(REPLACE "x86_64" "amd64" DEB_ARCH "@CMAKE_SYSTEM_PROCESSOR@")
+string(REPLACE "i686"   "i386"  DEB_ARCH "${DEB_ARCH}")
+
+set(CPACK_GENERATOR "DEB")
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-@PACKAGE_BUILD_NUMBER@_${DEB_ARCH}")
+set(CPACK_DEB_COMPONENT_INSTALL "ON")
+set(CPACK_DEBIAN_PACKAGE_HOMEPAGE "${PROJECT_URL}")
+
+execute_process(
+  COMMAND echo ${CPACK_COMPONENTS_ALL}
+  WORKING_DIRECTORY "@CMAKE_CURRENT_BINARY_DIR@"
+  OUTPUT_FILE "components.list"
+)
+
+list(FILTER CPACK_COMPONENTS_ALL INCLUDE REGEX "runtime|development|documentation")
+set(ARTIFACTS "${CPACK_COMPONENTS_ALL}")
+##############################################################################
+# runtime
+set(CPACK_DEBIAN_RUNTIME_PACKAGE_NAME "${CPACK_PACKAGE_NAME}")
+set(CPACK_DEBIAN_RUNTIME_PACKAGE_SECTION "libs")
+# set(_version_part_ "${CPACK_PACKAGE_VERSION}-@PACKAGE_BUILD_NUMBER@_${DEB_ARCH}")
+set(CPACK_DEBIAN_RUNTIME_FILE_NAME "${CPACK_DEBIAN_RUNTIME_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-@PACKAGE_BUILD_NUMBER@_${DEB_ARCH}.deb")
+string(REPLACE "runtime" "${CPACK_DEBIAN_RUNTIME_FILE_NAME}" ARTIFACTS "${ARTIFACTS}")
+if (@OPTION_PKG_DEBUGINFO@)
+  if (@CMAKE_VERSION@ VERSION_LESS "3.13")
+    message(FATAL_ERROR "CPack DEB version @CMAKE_VERSION@ < v3.13 doesn't support debug info")
+  else()
+    set(CPACK_DEBIAN_RUNTIME_DEBUGINFO_PACKAGE ON)
+    set(ARTIFACTS "${ARTIFACTS} ${CPACK_DEBIAN_RUNTIME_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-@PACKAGE_BUILD_NUMBER@_${DEB_ARCH}-dbgsym.ddeb")
+  endif()
+endif()
+##############################################################################
+# development
+set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-dev")
+set(CPACK_DEBIAN_DEVELOPMENT_PACKAGE_SECTION "libdevel")
+set(CPACK_DEBIAN_DEVELOPMENT_FILE_NAME "${CPACK_DEBIAN_DEVELOPMENT_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-@PACKAGE_BUILD_NUMBER@_${DEB_ARCH}.deb")
+string(REPLACE "development" "${CPACK_DEBIAN_DEVELOPMENT_FILE_NAME}" ARTIFACTS "${ARTIFACTS}")
+##############################################################################
+# documentation
+set(CPACK_DEBIAN_DOCUMENTATION_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-doc")
+set(CPACK_DEBIAN_DOCUMENTATION_PACKAGE_SECTION "doc")
+set(CPACK_DEBIAN_DOCUMENTATION_FILE_NAME "${CPACK_DEBIAN_DOCUMENTATION_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-@PACKAGE_BUILD_NUMBER@_all.deb")
+string(REPLACE "documentation" "${CPACK_DEBIAN_DOCUMENTATION_FILE_NAME}" ARTIFACTS "${ARTIFACTS}")
+
+execute_process(
+  COMMAND echo ${ARTIFACTS}
+  WORKING_DIRECTORY "@CMAKE_CURRENT_BINARY_DIR@"
+  OUTPUT_FILE "artifacts.list"
+)

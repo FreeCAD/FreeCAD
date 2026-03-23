@@ -1,0 +1,18 @@
+#Inventor V2.1 ascii
+
+# Note: these two are duplicated in tabBoxDragger.iv -- migrate
+# changes.
+
+DEF tabPlaneScaleTabMaterial Material { diffuseColor 0 0.5 0  emissiveColor 0 0.5 0 }
+DEF tabPlaneScaleTabHints ShapeHints {
+   # Make sure only the front side of the polygons are shown.
+   vertexOrdering COUNTERCLOCKWISE
+   shapeType SOLID
+}
+
+# Use a faceset instead of a lineset so we can pick in the plane.
+DEF tabPlaneTranslator Separator {
+   DrawStyle { style LINES }
+   Coordinate3 { point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] }
+   IndexedFaceSet { coordIndex [ 0, 1, 2, 3, -1 ] }
+}

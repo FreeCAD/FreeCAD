@@ -1,0 +1,50 @@
+Source: coin
+Maintainer: Lars J. Aas <larsa@coin3d.org>
+Section: libs
+Priority: optional
+Build-Depends: debhelper (>= 3.0.40), libgl-dev, xlibs-dev, doxygen
+Standards-Version: 3.5.6
+
+Package: libcoin@COIN_SO_VERSION@
+Architecture: any
+Suggests: coin-data, libsimage20, libopenal0
+Depends: ${shlibs:Depends}
+Description: 3D graphics library with Open Inventor and VRML97 support - runtime library
+ Coin 2.0 is an OpenGL-based, retain-mode 3D graphics library that implements
+ the Open Inventor 2.1 API. It also includes support for VRML97 and 3D audio.
+ .
+ For more information on Coin, see http://www.coin3d.org/.
+
+Package: libcoin@COIN_SO_VERSION@-dev
+Architecture: any
+Depends: libcoin@COIN_SO_VERSION@ (= ${Source-Version})
+Suggests: libcoin@COIN_SO_VERSION@-doc (= ${Source-Version})
+Conflicts: inventor-dev, libcoin20-dev
+Description: 3D graphics library with Open Inventor and VRML97 support - development kit
+ Coin 2.0 is an OpenGL-based, retain-mode 3D graphics library that implements
+ the Open Inventor 2.1 API. It also includes support for VRML97 and 3D audio.
+ .
+ For more information on Coin, see http://www.coin3d.org/.
+
+Package: libcoin@COIN_SO_VERSION@-runtime
+Architecture: all
+Suggests: libcoin@COIN_SO_VERSION@
+Description: 3D graphics library with Open Inventor and VRML97 support - external data files
+ External data files used by the Coin library at run-time.
+ The dragger geometry files represent the defaults that are used if the
+ files are not found.  Installing them is in other words totally optional.
+ .
+ For more information on Coin, see http://www.coin3d.org/.
+
+Package: libcoin@COIN_SO_VERSION@-doc
+Architecture: all
+Suggests: libcoin@COIN_SO_VERSION@-dev (= ${Source-Version})
+Conflicts: inventor-dev, libcoin20-doc
+Description: 3D graphics library with Open Inventor and VRML97 support - documentation
+ API documentation for the Coin 2.0 library (the Open Inventor API) in manpage
+ and HTML format.  The documentation can be built from the Coin source
+ archive with the use of Doxygen.  The HTML documentation can be browsed
+ on-line at http://doc.coin3d.org/.
+ .
+ For more information on Coin, see http://www.coin3d.org/.
+

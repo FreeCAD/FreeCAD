@@ -1,0 +1,35 @@
+name: Awesome Documentation Build
+
+on:
+  workflow_dispatch:  # Allow manual triggers
+  push:
+    branches: [ master ]
+
+jobs:
+  ubuntu-build:
+    name: Ubuntu Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Create build directory and run CMake
+        run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+          sudo apt-get -y update
+          sudo apt-get -y install gcc-13 doxygen graphviz freeglut3-dev
+          curl -L -o doxygen-1.10.0.linux.bin.tar.gz https://github.com/doxygen/doxygen/releases/download/Release_1_10_0/doxygen-1.10.0.linux.bin.tar.gz
+          tar xzf doxygen-1.10.0.linux.bin.tar.gz
+          export PATH=${{ github.workspace }}/doxygen-1.10.0/bin:$PATH
+          cmake -S . -B cmake_build_dir -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=cmake_install_dir -DCOIN_BUILD_AWESOME_DOCUMENTATION=ON
+      - name: Build project
+        run: |
+          export PATH=${{ github.workspace }}/doxygen-1.10.0/bin:$PATH
+          doxygen --version
+          cmake --build cmake_build_dir --target documentation_awesome --config Release -- -j4
+      - name: Deploy Awesome Documentation to Github Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: cmake_build_dir/html_awesome

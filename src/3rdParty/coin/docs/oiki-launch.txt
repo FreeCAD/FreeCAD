@@ -1,0 +1,30 @@
+Subject: new Open Inventor resource launch
+
+  Fellow Open Inventor Aficionados,
+
+I'm writing this to announce the launch of a new Open Inventor web
+resource.  The aim is to create an index and starting point for surfing
+the Open Inventor resources on the web.  The hope is that this resource
+will be for the Open Inventor community what e.g. CLiki[1] is for the
+Common Lisp community.
+
+The site is a Wiki authored web site.  It was therefore named OIki.
+If it has to be an acronym (it has, hasn't it?), let's say it is
+"Open Inventor knowledge index".  The name choice was done just to
+get the pronunciation pun, but don't tell anyone...
+
+Anyways, the main point is that editing is open for everyone.  Amazingly,
+this seems to generally work fine (as in no abuse) for other open Wiki
+sites out there, so I figured it should work fine for the Open Inventor
+community too.
+
+So without further ado, here comes the link...
+
+  http://oiki.coin3d.org/
+
+It is quite comprehensive already, but I figure there are lots of links
+yet to be added.  Give it a spin, and see how you can improve upon it.
+
+  Lars J
+--
+[1] http://ww.telent.net/cliki/index

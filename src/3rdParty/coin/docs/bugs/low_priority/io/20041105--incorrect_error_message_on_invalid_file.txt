@@ -1,0 +1,36 @@
+165 Faulty error reporting upon reading bad file.
+
+    Trying to read the file below with e.g. SoDB::readAll() correctly
+    stops parsing when finding a control character (0xa0) within the
+    '{...}'-brackets, but the error message is bogus:
+
+        Premature end of file
+
+----8<----- [snip] --------------------8<----- [snip] ----------------
+begin 644 rotdisc.iv
+L(TEN=F5N=&]R(%8R+C$@87-C:6D*"E)O=&%T941I<V-$<F%G9V5R('N@?0H`
+`
+end
+----8<----- [snip] --------------------8<----- [snip] ----------------
+
+    Surprisingly, when swapping "RotateDiscDragger" with "Sphere", the
+    error is correctly identified, and we get an
+
+         Expected '}'; got ' ' for Sphere
+
+    (This could however also be improved upon; we shouldn't just use
+    %c to print the faulty character, but print a hex code if outside
+    the visible ASCII range.)
+
+    This is a low priority bug item.
+
+    20041105 mortene, found by sit.
+
+    UPDATE 20060131 kintel: The reason the error message is cryptic
+    in the dragger case is that SoBaseKitP::readUnknownFields()
+    calls SoInput::read(SbName, bool) with the second parameter set
+    to FALSE to allow for "." character in field references.
+    This effectively skips the checks for whether the names read are
+    actually valid field names. The 0xa0 character and the following '}'
+    are therefore interpreted as a field name, but EOF is encountered
+    before the full field declaration can be read.

@@ -1,0 +1,74 @@
+From: "Tom Fredrik Klaussen" <bfg@sim.no>
+Subject: Coin 3.1.2 "Buffalo spawn" Released
+
+Coin 3.1.2 "Buffalo spawn"
+==========================
+
+Kongsberg SIM is proud to release version 3.1.2 of the Coin 3D
+graphics library.  Coin 3.1.2 is a bugfix release.  It keeps binary
+compatibility with the previous version of Coin (3.0.0), and it is
+with only minor exceptions upward source code compatible back to Coin
+1.0.
+
+Coin 3.1.2 does not add any functionality over version 3.1.0.
+
+Documentation builds must use a version of doxygen older than 1.6. As
+of the release date, the newest version of doxygen 1.6.1 has a
+regression bug, which causes some errors when trying to build Coin.
+
+We have discontinued the use of our subversion repositories. All
+further development of Coin and associates is now occurring in
+Mercurial (http://mercurial.selenic.com). Our public repositories are
+available from http://hg.sim.no.
+
+It should also be mentioned that the Coin v3 series will be the last
+set of releases of Coin to support the archaic Microsoft Visual C++
+6.0 compiler, which has become a big pain to keep supporting at this
+point, C++ languagewise.  Just a word of warning to VC++6.0 users out
+there.  This is the beginning of the end of the line.
+
+
+NEWS File Excerpt:
+------------------
+* bugfixes:
+  - removePoint() bugfix for SbBSPTree
+  - divide-by-zero fix for SoNurbs
+  - Fix SoLazyElement handling in SoPrimitiveVertexCache.
+  - Refix NURBS picking according to the GLU specification.
+  - ShadowGroup fixes
+  - Bugfix for closed extrusions.
+  - Bugfix for using SoPrimitiveVertexCache for other actions than SoGL RenderAction.
+  - Increase upper limits for creating VBOs/caches.
+
+See the NEWS file and the ChangeLog file if you want the really gory
+details.  See the file RELNOTES on semantic changes that might affect
+your Coin usage.
+
+
+Download Information:
+---------------------
+
+This message is posted before some of the listed binary downloads are
+available.  If you don't find what you are after, try again at a later
+time.
+
+ChangeLog:
+  http://hg.sim.no/Coin/coin-3.1/file/tip/docs/ChangeLog.v3.1.2
+
+Source Code:
+  http://ftp.coin3d.org/coin/src/all/Coin-3.1.2.tar.gz
+  http://ftp.coin3d.org/coin/src/all/Coin-3.1.2.zip
+
+Precompiled for MS Windows:
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.1.2-bin-msvc8.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.1.2-bin-msvc9.zip
+  http://ftp.coin3d.org/coin/bin/win32/Coin-3.1.2-bin-msvc9-amd64.zip
+    or look in
+  http://ftp.coin3d.org/coin/bin/win32/ ...
+
+Precompiled for Mac OS X:
+  http://ftp.coin3d.org/coin/bin/macosx/
+
+
+Have fun,
+  Tom Fredrik

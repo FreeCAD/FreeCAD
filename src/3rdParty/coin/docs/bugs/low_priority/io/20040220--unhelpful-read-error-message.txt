@@ -1,0 +1,48 @@
+104 Unhelpful read error message.
+
+    Trying to load the faulty iv-file below will correctly terminate
+    the import operation with an error message, but the error message
+    is really lousy:
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+
+    SeparatorKit {
+      childList {
+        ShapeKit {
+          shape Cone{}
+        }
+      }
+    }
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+    Results in:
+
+        Coin read error: Expected '}'; got '{'
+                Occurred at line   4 in hepp.iv
+
+    ...which just seems wrong, or at least completely unhelpful.
+
+    This is a low priority item.
+
+    Just for reference, the corrected iv-file in this case would look
+    something like this:
+
+    --------8<------------- [snip] --------------8<------------- [snip]
+    #Inventor V2.1 ascii
+
+    SeparatorKit {
+      childList NodeKitListPart {
+        containerNode Group {
+          ShapeKit {
+            shape Cone { }
+          }
+        }
+      }
+    }
+    --------8<------------- [snip] --------------8<------------- [snip]
+
+    20040220 mortene.
+
+    UPDATE 20060131 kintel: I think this problem is the same or closely
+    related to bug ''20041105--incorrect_error_message_on_invalid_file.txt''.

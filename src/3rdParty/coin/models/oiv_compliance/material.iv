@@ -1,0 +1,133 @@
+#Inventor V2.1 ascii
+
+# Check all aspects of rendering with SoMaterial nodes.
+#
+# 19990504 mortene
+
+Separator {
+   # (ROW 0) Test material components 
+   Separator {
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { ambientColor 0 0 0 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { ambientColor 1 1 1 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { diffuseColor 0 0 0 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { diffuseColor 1 1 1 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { specularColor 0.5 0 0.5 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { specularColor 1 1 1 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { emissiveColor 0.5 0 0 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { emissiveColor 1 1 1 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { shininess 0 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { shininess 1 }
+      Cube { }
+   }
+
+   # (ROW 1) Test with different transparency settings
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material { transparency 0.1 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.2 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.3 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.4 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.5 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.6 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.7 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.8 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 0.9 }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 1.0 }
+      Cube { }
+   }
+
+
+   # (ROW 2) Test ignore flags 
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material {
+	 ambientColor 0.0 0.0 0.0
+	 diffuseColor 0.0 0.0 0.0
+	 specularColor 0.0 0.0 0.0
+	 emissiveColor 0.0 0.0 0.0
+	 shininess 1.0
+	 transparency 0
+      }
+      Cube { }
+
+      Material { ambientColor 1 1 1 ~ }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { diffuseColor 1 1 1 ~ }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { specularColor 1 1 1 ~ }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { emissiveColor 1 1 1 ~ }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { shininess 0 ~ }
+      Cube { }
+
+      Translation { translation +4 0 0 }
+      Material { transparency 1 ~ }
+      Cube { }
+   }
+}

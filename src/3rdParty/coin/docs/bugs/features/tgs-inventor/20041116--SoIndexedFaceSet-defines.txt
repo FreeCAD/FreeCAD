@@ -1,0 +1,26 @@
+170 SoIndexedFaceSet defines
+
+    The following defines are not defined in Coin, but exists in TGS,
+    so we're not compatible on that.
+
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+Index: include/Inventor/nodes/SoIndexedFaceSet.h
+===================================================================
+RCS file: /export/cvsroot/Coin/include/Inventor/nodes/SoIndexedFaceSet.h,v
+retrieving revision 1.27
+diff -u -b -r1.27 SoIndexedFaceSet.h
+--- include/Inventor/nodes/SoIndexedFaceSet.h       9 Mar 2004 14:38:41 -0000       1.27
++++ include/Inventor/nodes/SoIndexedFaceSet.h       16 Nov 2004 17:17:08 -0000
+@@ -28,6 +28,8 @@
+ #include <Inventor/nodes/SoIndexedShape.h>
+
+ #define SO_END_FACE_INDEX (-1)
++#define SO_END_CONTOUR_INDEX (-1)
++#define SO_END_POLYGON_INDEX (-2)
+
+ class SoIndexedFaceSetP;
+
+    ----8<--- [snip] ---------8<--- [snip] ---------8<--- [snip] ---
+
+    20041116 larsa.

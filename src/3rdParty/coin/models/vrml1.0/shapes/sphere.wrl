@@ -1,0 +1,51 @@
+#VRML V1.0 ascii
+
+# Check all aspects of SoSphere rendering.
+#
+# State change nodes which does not influence Sphere rendering:
+#   SoMaterialBinding, SoNormal, SoNormalBinding, SoShapeHints
+#
+# 19990414 mortene
+
+Separator {
+   # (ROW 0) Check sphere on its own.
+   Separator {
+      Sphere { }
+
+      Translation { translation +2 0 0 }
+      Sphere { radius 0.5 }
+
+      Translation { translation +2 0 0 }
+      Sphere { radius 0 }
+
+      Translation { translation +2 0 0 }
+      Sphere { radius -1 }
+
+   }
+
+   # (ROW 3) With a material.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Material { diffuseColor [ 1 1 0, 1 0 1, 1 0 0 ] }
+      Sphere { }
+   }
+
+   # (ROW 5) Test how Sphere is affected by texturemapping.
+   Translation { translation 0 +4 0 }
+   Separator {
+      Texture2 {
+	 image 6 8 3
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00ff0000 0x00ff0000 0x00000000 0x00000000 0x00ff00ff 0x00ff00ff
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+	 0x00ffff00 0x00ffff00 0x00000000 0x00000000 0x00ffffff 0x00ffffff
+      }
+
+      Sphere { }
+   }
+
+}

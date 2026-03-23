@@ -1,0 +1,23 @@
+#Inventor V2.1 ascii
+
+# Check loading an SoFile node.
+#
+# 19990515 mortene
+
+Separator {
+   # (ROW 0)
+   Separator {
+      File {
+	 name "includefile.iv"
+      }
+# Try uncommenting these to check compliant behavior.
+#        File {
+#  	 name ~
+#        }
+#        File {
+#        }
+#        File {
+#    	 name "doesn't exist"
+#        }
+   }
+}

@@ -1,0 +1,31 @@
+#Inventor V2.1 ascii
+
+# This file demonstrates the SHAPE_FRONTFACES pick-style setting by letting
+# you render a cube (IndexedFaceSet) with only backfaces and avoid picking
+# (seeking) on the invisible front faces.  New feature from 2008-03-11.
+
+Separator {
+  ShapeHints {
+# switch to COUNTERCLOCKWISE to get the outside cube look
+    vertexOrdering CLOCKWISE
+    shapeType SOLID
+  }
+  PickStyle {
+# comment out this setting to get old behaviour where invisible front face
+# got picked instead of visible face.
+    style SHAPE_FRONTFACES
+  }
+  Coordinate3 {
+    point [ 0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 1, 0 1 1, 1 1 1, 1 0 1 ]
+  }
+  IndexedFaceSet {
+    coordIndex [
+      0, 1, 2, 3, -1,
+      7, 6, 5, 4, -1,
+      1, 0, 4, 5, -1,
+      2, 1, 5, 6, -1,
+      3, 2, 6, 7, -1,
+      0, 3, 7, 4, -1
+    ]
+  }
+}

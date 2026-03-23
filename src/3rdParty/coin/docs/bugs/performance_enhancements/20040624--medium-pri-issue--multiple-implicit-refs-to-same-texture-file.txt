@@ -1,0 +1,36 @@
+118 Weakness in internal handling of multiple implicit references to
+    the same texture.
+
+    When reading multiple SoTexture2 nodes (and ditto for SoTexture3,
+    presumably) referencing the same texture, as in this example:
+
+--------8<------------- [snip] --------------8<------------- [snip]
+#Inventor V2.1 ascii
+
+Separator {
+  Texture2 { filename "dirt_Mossy.jpg" }
+  Cube { }
+}
+Separator {
+  Texture2 { filename "dirt_Mossy.jpg" }
+  Cube { }
+}
+--------8<------------- [snip] --------------8<------------- [snip]
+
+    ...the texture occupies n times the memory it need to do. This is
+    a common way to (mis-)layout Inventor and VRML files, so we should
+    really fix this so identical textures are shared.
+
+    This should be possible to do by fixing SbImage so it implicitly
+    shares the textures "behind the scenes". We then need to implement
+    a copy-on-write scheme for when to "split" a texture to two
+    instances, as textures can be modified programmatically after
+    import.
+
+    I believe I have read in their release notes or other
+    documentation that TGS has implemented this for their Inventor
+    implementation.
+
+    This is a low-to-medium priority issue.
+
+    20040624 mortene.

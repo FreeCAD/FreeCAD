@@ -1,0 +1,39 @@
+New in Pivy v0.5.0 (so far):
+* features:
+  - purer and simpler OpenBSD'esque license
+  - SIMVoleon support
+  - Sc21 support
+  - new contributed examples
+  - out-of-the-box build support for SoQt on win32
+  - autocasting for SoSensor derived nodes
+  - Python 2.5 support
+  - PyQt4 support
+* bugfixes:
+  - missing autocast invocation in SoCallbackActionPythonCB() for SoNode param 
+  - out parameter handling for SoCallbackAction::getMaterial()
+  - proper handling of size[2] == 0 in SbImage::setValue(SbVec3s size,...)
+  - callback handling for:
+    + SoSensorManager::setChangedCallback()
+    + SoSceneManager::setRenderCallback()
+  - win32 build system fix: COIN3DDIR environment variable changed to COINDIR
+  - pythonic SoFieldContainer::getFieldName() returning a PyString
+  - SbMatrix.setValue() works again taking a ((ffff),(ffff),(ffff),(ffff))
+  - memleaks
+
+New in Pivy v0.3.0:
+* features:
+  - SWIG 1.3.25 support
+  - pivy installs now as Python package    
+  - SoPyScript node
+  - numerous new test cases
+  - improved basic type support
+  - proper operator overloading handling
+  - field = assignment operator support
+* bugfixes:
+  - SoField::get() didn't return a string
+  - no working embedded SoQtExaminerViewer example
+  - import order of modules should not be significant
+  - Mentor examples needs cleanup
+  - removal of obsolete wrapping code
+  - general code cleanup
+  - autocasting of extension nodes to the first available parent node

@@ -1,0 +1,68 @@
+041 Circular field connections not always handled.
+
+    Circular field connections are legal, but the following example
+    shows off a case where it fails (just build and run to see how):
+
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+    #include <Inventor/SoDB.h>
+    #include <Inventor/nodes/SoCone.h>
+    #include <Inventor/nodes/SoMaterial.h>
+    #include <Inventor/nodes/SoSeparator.h>
+    #include <Inventor/engines/SoInterpolateVec3f.h>
+    #include <Inventor/nodes/SoTranslation.h>
+    #include <Inventor/engines/SoCompose.h>
+
+    int main(int argc, char *argv[])
+    {
+      SoDB::init();
+
+      SoSeparator *root = new SoSeparator;
+      root->ref();
+
+      SoSeparator *test = new SoSeparator;
+      SoTranslation *redball = new SoTranslation;
+      test->addChild(redball);
+
+      SoSeparator *scene = new SoSeparator;
+      SoMaterial *mat = new SoMaterial;
+      scene->addChild(mat);
+
+      root->addChild(test);
+      root->addChild(scene);
+
+      SoDecomposeVec3f *dv = NULL;
+      SoComposeVec3f *cv = NULL;
+      SoInterpolateVec3f *interpred = NULL;
+
+      dv = new SoDecomposeVec3f;
+      interpred = new SoInterpolateVec3f;
+
+      interpred->input0.setValue(0.0, -0.5, 0.0);
+      interpred->input1.setValue(0.0, 0.5, 0.0);
+      interpred->alpha.connectFrom(&dv->x);
+      redball->translation.connectFrom(&interpred->output);
+
+      cv = new SoComposeVec3f;
+      cv->ref();
+      cv->x.connectFrom(&dv->x);
+      cv->y.connectFrom(&dv->y);
+      cv->z.connectFrom(&dv->z);
+
+      dv->vector.connectFrom(&mat->diffuseColor);
+      mat->diffuseColor.connectFrom(&cv->vector);
+
+      root->unref();
+
+      return 0;
+    }
+    ----8<---- [snip] ---------8<---- [snip] ---------8<---- [snip] --
+
+    (Example code from kintel.)
+
+    Needs to analyze the code which spits out the warning and find the
+    exact cause of why this is found to be problematic.
+
+    Using circular connections for fields is pretty obscure, so
+    consider this bug fairly low-priority to fix.
+
+    20021016 mortene.

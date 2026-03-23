@@ -1,0 +1,49 @@
+Source: pivy
+Section: python
+Priority: extra
+Maintainer: looooo <sppedflyer@gmail.com>
+Uploaders: looooo <sppedflyer@gmail.com>
+Build-Depends: debhelper (>= 9), dh-python, python3-all-dev, python-all-dev,
+ libsoqt4-dev (>= 1.5.0-2.1), libcoin80-dev, libsimage-dev, swig3.0
+Standards-Version: 3.9.6
+Vcs-Git: git://anonscm.debian.org/debian-science/packages/pivy.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=debian-science/packages/pivy.git
+Homepage: http://pivy.coin3d.org/
+X-Python-Version: >= 2.4
+X-Python3-Version: >= 3.4
+
+Package: python-pivy
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt4-gl
+Provides: ${python:Provides}
+Description: Coin binding for Python
+ Pivy is a Coin binding for Python. Coin is a high-level 3D graphics library
+ with a C++ API. Coin uses scene-graph data structures to render real-time
+ graphics suitable for mostly all kinds of scientific and engineering
+ visualization applications.
+ Pivy allows:
+ .
+    * Development of Coin applications and extensions in Python
+    * Interactive modification of Coin programs from within the
+      Python interpreter at runtime
+    * Incorporation of Scripting Nodes into the scene graph which
+      are capable of executing Python code and callbacks
+    * Use of Coin within PyQt4 applications with the quarter module
+
+Package: python3-pivy
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-qt4-gl
+Provides: ${python:Provides}
+Description: Coin binding for Python
+ Pivy is a Coin binding for Python. Coin is a high-level 3D graphics library
+ with a C++ API. Coin uses scene-graph data structures to render real-time
+ graphics suitable for mostly all kinds of scientific and engineering
+ visualization applications.
+ Pivy allows:
+ .
+    * Development of Coin applications and extensions in Python
+    * Interactive modification of Coin programs from within the
+      Python interpreter at runtime
+    * Incorporation of Scripting Nodes into the scene graph which
+      are capable of executing Python code and callbacks
+    * Use of Coin within PyQt4 applications with the quarter module

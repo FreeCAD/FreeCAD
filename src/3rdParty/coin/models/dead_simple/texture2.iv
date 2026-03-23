@@ -1,0 +1,19 @@
+#Inventor V2.1 ascii
+
+# Very simple Texture2-example -- to work with during development,
+# for instance.
+#
+# 20020120 mortene.
+
+Separator {
+   Texture2 {
+      image 2 2 3
+
+      0x00ffffff 0x0000ff00
+      0x00ff0000 0x00ffff00
+   }
+
+   Complexity { textureQuality 0.1 }
+
+   Cube { }
+}

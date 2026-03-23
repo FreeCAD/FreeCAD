@@ -1,0 +1,3 @@
+compression = "bzip2"
+compression-level = 9
+single-debian-patch

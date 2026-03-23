@@ -1,0 +1,43 @@
+#Inventor V2.1 ascii
+
+# Simple mapping example for SoTextureCoordinate2.
+#
+# 20020104 mortene.
+
+Separator {
+   Texture2 {
+      image 6 8 3
+      0x00ff0000 0x00ff0000 0x000000ff 0x000000ff 0x00ff00ff 0x00ff00ff
+      0x00ff0000 0x00ff0000 0x000000ff 0x000000ff 0x00ff00ff 0x00ff00ff
+      0x00ff0000 0x00ff0000 0x000000ff 0x000000ff 0x00ff00ff 0x00ff00ff
+      0x0000ff00 0x0000ff00 0x0000ffff 0x0000ffff 0x0000ff00 0x0000ff00
+      0x0000ff00 0x0000ff00 0x0000ffff 0x0000ffff 0x0000ff00 0x0000ff00
+      0x00ffff00 0x00ffff00 0x000000ff 0x000000ff 0x00ffffff 0x00ffffff
+      0x00ffff00 0x00ffff00 0x000000ff 0x000000ff 0x00ffffff 0x00ffffff
+      0x00ffff00 0x00ffff00 0x000000ff 0x000000ff 0x00ffffff 0x00ffffff
+   }
+
+   Coordinate3 { point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] }
+
+   # "1:1 mapping" to actual texture appearance. (Note that Y goes
+   # from bottom to top, versus the common way of specifying bitmap
+   # data from top to bottom.)
+
+   TextureCoordinate2 { point [ 0 1, 1 1, 1 0, 0 0 ] }
+
+   IndexedFaceSet {
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      textureCoordIndex [ 0, 1, 2, 3, -1 ]
+   }
+
+   Translation { translation +4 0 0 }
+
+   # Top left corner.
+
+   TextureCoordinate2 { point [ 0 0.5, 0.5 0.5, 0.5 0, 0 0 ] }
+
+   IndexedFaceSet {
+      coordIndex [ 0, 1, 2, 3, -1 ]
+      textureCoordIndex [ 0, 1, 2, 3, -1 ]
+   }
+}

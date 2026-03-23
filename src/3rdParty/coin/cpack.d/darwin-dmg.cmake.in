@@ -1,0 +1,21 @@
+##############################################################################
+# Unoffical CPACK configuration for Mac OS X systems
+# tested on Mac OS X 10.12 Sierra and 10.14 Mojave (64 bits)
+#
+##############################################################################
+include("@CMAKE_CURRENT_BINARY_DIR@/commons.cmake")
+
+config_package(LOWCASE)
+
+set(CPACK_GENERATOR "DragNDrop")
+
+if("@CMAKE_SIZEOF_VOID_P@" EQUAL 8)
+  set(CPACK_SYSTEM_NAME macosx64)
+else()
+  set(CPACK_SYSTEM_NAME macosx32)
+endif()
+
+set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}-${CPACK_SYSTEM_NAME}-noinst")
+set(CPACK_DMG_DISABLE_APPLICATIONS_SYMLINK ON)
+set(CPACK_DMG_BACKGROUND_IMAGE "@CMAKE_SOURCE_DIR@/packaging/macosx/DMGBackground.tiff")
+set(CPACK_DMG_DS_STORE_SETUP_SCRIPT "@CMAKE_CURRENT_BINARY_DIR@/DMGSetup.scpt")

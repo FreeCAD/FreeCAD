@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Common navigation system mode macros for Coin 3.1.
+-->
+
+<scxml
+  xmlns="http://www.w3.org/2008/07/scxml"
+  version="1.0"
+  name="common"
+  exmode="lax">
+
+  <!-- ** ROTATE MODE ***************************************************** -->
+  <state id="common_mouse_rotate">
+    <onentry>
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Rotate"
+            event="x-coin-navigation.Rotate.BEGIN" namelist="_sessionid mouseposition"/>
+    </onentry>
+
+    <transition event="sim.coin3d.coin.SoLocation2Event">
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Rotate"
+            event="x-coin-navigation.Rotate.UPDATE" namelist="_sessionid mouseposition"/>
+    </transition>
+
+    <onexit>
+      <assign location="coin:temp.triggerspin" expr="TRUE"/>
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Rotate"
+            event="x-coin-navigation.Rotate.END" namelist="_sessionid mouseposition triggerspin"/>
+    </onexit>
+  </state>
+
+  <!-- ** PAN MODE ******************************************************** -->
+  <state id="common_mouse_pan">
+    <onentry>
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Pan"
+            event="x-coin-navigation.Pan.BEGIN" namelist="_sessionid mouseposition"/>
+    </onentry>
+
+    <transition event="sim.coin3d.coin.SoLocation2Event">
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Pan"
+            event="x-coin-navigation.Pan.UPDATE" namelist="_sessionid mouseposition"/>
+    </transition>
+
+    <onexit>
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Pan"
+            event="x-coin-navigation.Pan.END" namelist="_sessionid mouseposition"/>
+    </onexit>
+  </state>
+
+  <!-- ** ZOOM MODE ******************************************************* -->
+  <state id="common_mouse_zoom">
+    <onentry>
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Zoom"
+            event="x-coin-navigation.Zoom.BEGIN" namelist="_sessionid mouseposition"/>
+    </onentry>
+
+    <transition event="sim.coin3d.coin.SoLocation2Event">
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Zoom"
+            event="x-coin-navigation.Zoom.UPDATE" namelist="_sessionid mouseposition"/>
+    </transition>
+
+    <onexit>
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Zoom"
+            event="x-coin-navigation.Zoom.END" namelist="_sessionid mouseposition"/>
+    </onexit>
+  </state>
+
+  <!-- ** DOLLY MODE ****************************************************** -->
+  <state id="common_mouse_dolly">
+    <onentry>
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Dolly"
+            event="x-coin-navigation.Dolly.BEGIN" namelist="_sessionid mouseposition"/>
+    </onentry>
+
+    <transition event="sim.coin3d.coin.SoLocation2Event">
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Dolly"
+            event="x-coin-navigation.Dolly.UPDATE" namelist="_sessionid mouseposition"/>
+    </transition>
+
+    <onexit>
+      <assign location="coin:temp.mouseposition" expr="_event.getNormalizedPosition()"/>
+      <send targettype="x-coin-navigation" target="Dolly"
+            event="x-coin-navigation.Dolly.END" namelist="_sessionid mouseposition"/>
+    </onexit>
+  </state>
+
+</scxml>
