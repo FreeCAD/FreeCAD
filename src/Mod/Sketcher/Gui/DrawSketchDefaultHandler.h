@@ -743,10 +743,10 @@ protected:
                 // if tangency, convert to point-to-edge tangency
                 if (itOfTangentConstraint != AutoConstraints.end()) {
                     if ((*itOfTangentConstraint)->getGeoId(0) != geoId1) {
-                        std::swap(
-                            (*itOfTangentConstraint)->getGeoId(1),
-                            (*itOfTangentConstraint)->getGeoId(0)
-                        );
+                        auto tmp0 = (*itOfTangentConstraint)->getGeoId(0);
+                        auto tmp1 = (*itOfTangentConstraint)->getGeoId(1);
+                        (*itOfTangentConstraint)->setGeoId(0, tmp1);
+                        (*itOfTangentConstraint)->setGeoId(1, tmp0);
                     }
 
                     (*itOfTangentConstraint)->setPosId(0, posId1);

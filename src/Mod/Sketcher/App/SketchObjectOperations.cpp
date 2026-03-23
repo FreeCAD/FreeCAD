@@ -516,8 +516,7 @@ std::unique_ptr<Constraint> transformPreexistingConstraintForTrim(
             newConstr->substituteIndexAndPos(GeoId, PointPos::none, newGeoId, newPosId);
             // make sure the first position is a point
             if (newConstr->getPosId(0) == PointPos::none) {
-                std::swap(newConstr->getGeoId(0), newConstr->getGeoId(1));
-                std::swap(newConstr->getPosId(0), newConstr->getPosId(1));
+                newConstr->swapElements(0, 1);
             }
             // there is no need for the third point if it exists
             newConstr->setElement(2, GeoElementId(GeoEnum::GeoUndef, PointPos::none));

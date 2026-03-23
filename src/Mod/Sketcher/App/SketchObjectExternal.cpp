@@ -543,7 +543,7 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
         if ((xinv && newConstr->Type == Sketcher::DistanceX)
             || (yinv && newConstr->Type == Sketcher::DistanceY)) {
             if (newConstr->getGeoId(0) == newConstr->getGeoId(1)) {
-                std::swap(newConstr->getPosId(0), newConstr->getPosId(1));
+                newConstr->swapElements(0, 1);
             }
             else {
                 newConstr->setValue(-newConstr->getValue());

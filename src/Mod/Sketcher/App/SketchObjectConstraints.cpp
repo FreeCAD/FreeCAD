@@ -516,8 +516,7 @@ int SketchObject::moveDatumsToEnd()
 
 void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int constNum)
 {
-    std::swap(constr->getGeoId(0), constr->getGeoId(1));
-    std::swap(constr->getPosId(0), constr->getPosId(1));
+    constr->swapElements(0, 1);
     constr->setPosId(0, (constr->getPosId(0) == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start);
 
     // Edit the expression if any, else modify constraint value directly
