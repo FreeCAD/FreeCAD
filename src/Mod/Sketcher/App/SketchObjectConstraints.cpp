@@ -1058,15 +1058,15 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
     };
 
     auto transferToReplacement =
-        [&geoId, &posId, &replaceGeoId, &replacePosId](int& constrGeoId, PointPos& constrPosId) {
+        [&geoId, &posId, &replaceGeoId, &replacePosId](Constraint* constr, size_t index) {
             if (replaceGeoId == GeoEnum::GeoUndef) {
                 return false;
             }
-            if (geoId != constrGeoId || posId != constrPosId) {
+            auto element = constr->getElement(index);
+            if (element.GeoId != geoId || element.Pos != posId) {
                 return false;
             }
-            constrGeoId = replaceGeoId;
-            constrPosId = replacePosId;
+            constr->setElement(index, GeoElementId(replaceGeoId, replacePosId));
             return true;
         };
 
@@ -1094,13 +1094,10 @@ int SketchObject::delConstraintOnPoint(int geoId, PointPos posId, bool onlyCoinc
             case Sketcher::Distance:
             case Sketcher::DistanceX:
             case Sketcher::DistanceY: {
-                return (
-                    transferToReplacement(constr->First_Deprecated, constr->FirstPos_Deprecated)
-                    || transferToReplacement(constr->Second_Deprecated, constr->SecondPos_Deprecated)
-                );
+                return (transferToReplacement(constr, 0) || transferToReplacement(constr, 1));
             }
             case Sketcher::PointOnObject: {
-                return transferToReplacement(constr->First_Deprecated, constr->FirstPos_Deprecated);
+                return transferToReplacement(constr, 0);
             }
             case Sketcher::Tangent:
             case Sketcher::Perpendicular: {
