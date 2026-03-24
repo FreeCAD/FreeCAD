@@ -1568,7 +1568,7 @@ void Application::retranslateExportTypes()
     std::erase_if(_mExportTypes, [](const FileTypeItem& item) {
         return item.translatable;
     });
-    for (const auto &cacheEntry : translatableExportTypeCache.getCache()) {
+    for (const auto &cacheEntry : cache) {
         addTranslatableExportType(cacheEntry.description, cacheEntry.extensions, cacheEntry.moduleName);
     }
 }
