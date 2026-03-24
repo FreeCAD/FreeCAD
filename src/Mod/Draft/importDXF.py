@@ -1243,6 +1243,7 @@ def drawMesh(mesh, forceShape=False):
                 md.append([p1, p3, p4])
     try:
         import Mesh
+
         m = Mesh.Mesh(md)
         if forceShape:
             s = Part.Shape()
