@@ -363,7 +363,7 @@ bool TaskDressUpParameters::eventFilter(QObject* watched, QEvent* event)
     if (event->type() == QEvent::KeyPress) {
         auto* listWidget = qobject_cast<QListWidget*>(watched);
         auto* keyEvent = static_cast<QKeyEvent*>(event);  // NOLINT
-        if (listWidget && keyEvent) {
+        if (listWidget) {
             const Qt::KeyboardModifiers ignoredModifiers = Qt::ShiftModifier | Qt::KeypadModifier;
             if ((keyEvent->modifiers() & ~ignoredModifiers) == Qt::NoModifier
                 && (keyEvent->key() == Qt::Key_Down || keyEvent->key() == Qt::Key_Up)) {
