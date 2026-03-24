@@ -59,7 +59,6 @@ import re
 import time
 import FreeCAD
 import Part
-import Mesh
 import DraftVecUtils
 import DraftGeomUtils
 import WorkingPlane
@@ -1243,6 +1242,7 @@ def drawMesh(mesh, forceShape=False):
                 p4 = pts[abs(rawValue(f, 74)) - 1]
                 md.append([p1, p3, p4])
     try:
+        import Mesh
         m = Mesh.Mesh(md)
         if forceShape:
             s = Part.Shape()
