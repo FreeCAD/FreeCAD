@@ -232,7 +232,16 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                         const auto knownGoodFormat {"%Y-%m-%d_%H-%M-%S"};
                         std::strftime(buffer.data(), bufferLength, knownGoodFormat, &local_tm);
                     }
-                    str << bn << buffer.data();
+                    // Sanitize the formatted date string by replacing characters
+                    // that are illegal in Windows file names (e.g. colons from %T)
+                    std::string dateStr(buffer.data());
+                    const std::string illegalChars = "<>:\"/\\|?*";
+                    for (char& ch : dateStr) {
+                        if (illegalChars.find(ch) != std::string::npos) {
+                            ch = '-';
+                        }
+                    }
+                    str << bn << dateStr;
 
                     fn = str.str();
                     bool done = false;
