@@ -77,7 +77,7 @@ public:
         , refGeoId(Sketcher::GeoEnum::GeoUndef)
         , refPosId(Sketcher::PointPos::none)
         , deleteOriginal(false)
-        , createSymConstraints(false)
+        , createSymConstraints(true)
     {}
 
     DrawSketchHandlerSymmetry(const DrawSketchHandlerSymmetry&) = delete;
@@ -299,6 +299,7 @@ void DSHSymmetryController::configureToolWidget()
                 "Create symmetry constraints between the original and mirrored geometries"
             )
         );
+        toolWidget->setCheckboxChecked(WCheckbox::SecondBox, true);
     }
 }
 
