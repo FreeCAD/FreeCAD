@@ -47,6 +47,7 @@ MeasureArea::MeasureArea()
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
         "Area of element"
     );
+    Area.setUnit(Base::Unit::Area);
 }
 
 MeasureArea::~MeasureArea() = default;
