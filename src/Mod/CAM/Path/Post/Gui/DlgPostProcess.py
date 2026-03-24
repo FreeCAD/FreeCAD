@@ -74,6 +74,13 @@ class PostProcessDialog:
         # Tracks dynamically added machine-output QGroupBoxes and their widgets
         self._dynamic_output_groups = []
         self._machine_output_field_widgets = {}  # section_name -> {field_name: widget}
+        # Post-processor parameter widgets (from get_property_schema)
+        self._post_param_widgets = (
+            {}
+        )  # runtime params on Overview: {param_name: (widget, schema_entry)}
+        self._post_config_widgets = (
+            {}
+        )  # non-runtime params on Options: {param_name: (widget, schema_entry)}
         # Stores generated G-code: {full_path_filename: gcode_string}
         self._generated_outputs = {}
         # Original (subpart, gcode) sections — used to regenerate filenames
@@ -174,6 +181,7 @@ class PostProcessDialog:
 
         if not machine_path:
             dlg.labelNoMachineOutput.setVisible(True)
+            self._rebuild_post_params_section(None)
             return
 
         dlg.labelNoMachineOutput.setVisible(False)
@@ -185,16 +193,18 @@ class PostProcessDialog:
             machine = MachineFactory.load_configuration(machine_path)
         except Exception as e:
             Path.Log.warning(f"Could not load machine for output options: {e}")
+            self._rebuild_post_params_section(None)
             return
 
         try:
             from Machine.ui.editor.machine_editor import DataclassGUIGenerator
         except Exception as e:
             Path.Log.warning(f"Could not import DataclassGUIGenerator: {e}")
+            self._rebuild_post_params_section(machine)
             return
 
-        # Insertion point: just before groupBoxPostParams
-        insert_idx = scroll_layout.indexOf(dlg.groupBoxPostParams)
+        # Insertion point: append before the last item (spacer) in the scroll area
+        insert_idx = max(0, scroll_layout.count() - 1)
 
         # --- Main output options (units + top-level booleans) ---
         main_group = QtGui.QGroupBox(translate("CAM_Post", "Main Options"))
@@ -257,6 +267,263 @@ class PostProcessDialog:
             self._dynamic_output_groups.append(group)
             self._machine_output_field_widgets[attr_name] = widgets
             insert_idx += 1
+
+        # Populate non-runtime post-processor config on this (Options) tab
+        self._rebuild_post_config_section(machine, scroll_layout, insert_idx)
+
+        # Populate runtime post-processor params on Overview tab
+        self._rebuild_post_params_section(machine)
+
+    def _rebuild_post_config_section(self, machine, scroll_layout, insert_idx):
+        """Build non-runtime postprocessor property widgets on the Options tab.
+
+        These mirror the same properties shown in the machine editor and allow
+        per-run overrides of machine-config values like pierce_delay, cooling_delay, etc.
+        """
+        # Clear previous non-runtime config widgets
+        for name, (widget, _schema) in self._post_config_widgets.items():
+            # The widget is inside a group box tracked by _dynamic_output_groups
+            pass
+        self._post_config_widgets.clear()
+
+        if machine is None:
+            return
+
+        # Resolve postprocessor class
+        post_class = None
+        postprocessor_name = getattr(machine, "postprocessor_file_name", None)
+        if postprocessor_name:
+            try:
+                from Path.Post.Processor import PostProcessorFactory
+
+                post_obj = PostProcessorFactory.get_post_processor(None, postprocessor_name)
+                if post_obj is not None:
+                    post_class = type(post_obj)
+            except Exception as e:
+                Path.Log.debug(f"Could not resolve postprocessor class for config: {e}")
+
+        if post_class is None:
+            return
+
+        try:
+            schema = post_class.get_property_schema()
+        except Exception:
+            return
+
+        non_runtime = [e for e in schema if not e.get("runtime", False)] if schema else []
+        if not non_runtime:
+            return
+
+        pp_props = getattr(machine, "postprocessor_properties", {}) or {}
+
+        group = QtGui.QGroupBox(translate("CAM_Post", "Postprocessor Properties"))
+        form = QtGui.QFormLayout(group)
+
+        for entry in non_runtime:
+            name = entry.get("name", "")
+            param_type = entry.get("type", "string")
+            label_text = entry.get("label", name)
+            default = entry.get("default")
+            help_text = entry.get("help", "")
+            current = pp_props.get(name, default)
+
+            widget = None
+            if param_type == "bool":
+                widget = QtGui.QCheckBox()
+                widget.setChecked(bool(current))
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.isChecked()
+            elif param_type in ("integer", "int"):
+                widget = QtGui.QSpinBox()
+                widget.setMinimum(entry.get("min", 0))
+                widget.setMaximum(entry.get("max", 99999))
+                widget.setValue(int(current) if current is not None else 0)
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.value()
+            elif param_type == "float":
+                widget = QtGui.QDoubleSpinBox()
+                widget.setMinimum(entry.get("min", 0.0))
+                widget.setMaximum(entry.get("max", 99999.0))
+                widget.setDecimals(entry.get("decimals", 3))
+                widget.setValue(float(current) if current is not None else 0.0)
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.value()
+            elif param_type == "choice":
+                widget = QtGui.QComboBox()
+                for choice in entry.get("choices", []):
+                    if isinstance(choice, tuple):
+                        widget.addItem(str(choice[0]), choice[1])
+                    else:
+                        widget.addItem(str(choice), choice)
+                if current is not None:
+                    idx = widget.findData(current)
+                    if idx >= 0:
+                        widget.setCurrentIndex(idx)
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.currentData()
+            elif param_type == "text":
+                widget = QtGui.QPlainTextEdit()
+                widget.setPlainText(str(current) if current else "")
+                widget.setMaximumHeight(80)
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.toPlainText()
+            else:
+                widget = QtGui.QLineEdit()
+                widget.setText(str(current) if current else "")
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.text()
+
+            if widget is not None:
+                form.addRow(label_text, widget)
+                self._post_config_widgets[name] = (widget, entry)
+
+        scroll_layout.insertWidget(insert_idx, group)
+        self._dynamic_output_groups.append(group)
+
+    def _rebuild_post_params_section(self, machine=None):
+        """Populate groupBoxPostParams with widgets from the postprocessor's get_property_schema().
+
+        Resolves the postprocessor class from the machine config, calls
+        get_property_schema(), and creates appropriate widgets for each entry.
+        Machine-config values override schema defaults when available.
+        """
+        dlg = self.dialog
+        layout = dlg.layoutPostParams
+        placeholder = dlg.labelPostParamsPlaceholder
+
+        # Clear previously created post-param widgets
+        for name, (widget, _schema) in self._post_param_widgets.items():
+            # QFormLayout.labelForField returns the label widget for a given field
+            label_widget = layout.labelForField(widget)
+            if label_widget:
+                layout.removeWidget(label_widget)
+                label_widget.deleteLater()
+            layout.removeWidget(widget)
+            widget.deleteLater()
+        self._post_param_widgets.clear()
+
+        # Resolve postprocessor class from machine
+        post_class = None
+        if machine is not None:
+            postprocessor_name = getattr(machine, "postprocessor_file_name", None)
+            if postprocessor_name:
+                try:
+                    from Path.Post.Processor import PostProcessorFactory
+
+                    # Pass None as job to get the class for schema inspection
+                    post_obj = PostProcessorFactory.get_post_processor(None, postprocessor_name)
+                    if post_obj is not None:
+                        post_class = type(post_obj)
+                except Exception as e:
+                    Path.Log.debug(f"Could not resolve postprocessor class: {e}")
+
+        if post_class is None:
+            placeholder.setVisible(True)
+            return
+
+        # Get the property schema
+        try:
+            schema = post_class.get_property_schema()
+        except Exception as e:
+            Path.Log.warning(f"Could not get property schema: {e}")
+            placeholder.setVisible(True)
+            return
+
+        # Only runtime parameters are shown on the Overview tab
+        runtime_schema = [e for e in schema if e.get("runtime", False)] if schema else []
+
+        if not runtime_schema:
+            placeholder.setVisible(True)
+            return
+
+        placeholder.setVisible(False)
+
+        # Get current machine postprocessor_properties for initial values
+        pp_props = getattr(machine, "postprocessor_properties", {}) or {}
+
+        for entry in runtime_schema:
+
+            name = entry.get("name", "")
+            param_type = entry.get("type", "string")
+            label = entry.get("label", name)
+            default = entry.get("default")
+            help_text = entry.get("help", "")
+
+            # Current value: machine config overrides schema default
+            current = pp_props.get(name, default)
+
+            widget = None
+            if param_type == "bool":
+                widget = QtGui.QCheckBox()
+                widget.setChecked(bool(current))
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.isChecked()
+
+            elif param_type in ("integer", "int"):
+                widget = QtGui.QSpinBox()
+                widget.setMinimum(entry.get("min", 0))
+                widget.setMaximum(entry.get("max", 99999))
+                widget.setValue(int(current) if current is not None else 0)
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.value()
+
+            elif param_type == "float":
+                widget = QtGui.QDoubleSpinBox()
+                widget.setMinimum(entry.get("min", 0.0))
+                widget.setMaximum(entry.get("max", 99999.0))
+                widget.setDecimals(entry.get("decimals", 3))
+                widget.setValue(float(current) if current is not None else 0.0)
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.value()
+
+            elif param_type == "choice":
+                widget = QtGui.QComboBox()
+                for choice in entry.get("choices", []):
+                    if isinstance(choice, tuple):
+                        widget.addItem(str(choice[0]), choice[1])
+                    else:
+                        widget.addItem(str(choice), choice)
+                if current is not None:
+                    idx = widget.findData(current)
+                    if idx >= 0:
+                        widget.setCurrentIndex(idx)
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.currentData()
+
+            elif param_type == "text":
+                widget = QtGui.QPlainTextEdit()
+                widget.setPlainText(str(current) if current else "")
+                widget.setMaximumHeight(80)
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.toPlainText()
+
+            else:
+                # Default: string / unknown type -> QLineEdit
+                widget = QtGui.QLineEdit()
+                widget.setText(str(current) if current else "")
+                widget.setToolTip(help_text)
+                widget.value_getter = lambda w=widget: w.text()
+
+            if widget is not None:
+                layout.addRow(label, widget)
+                self._post_param_widgets[name] = (widget, entry)
+
+    def _collect_post_param_values(self):
+        """Read current values from all post-parameter widgets (runtime + non-runtime).
+
+        Returns:
+            dict: {param_name: value} for all post-processor parameters.
+        """
+        values = {}
+        # Non-runtime config from Options tab
+        for name, (widget, _schema) in self._post_config_widgets.items():
+            if hasattr(widget, "value_getter"):
+                values[name] = widget.value_getter()
+        # Runtime params from Overview tab (override if same key exists)
+        for name, (widget, _schema) in self._post_param_widgets.items():
+            if hasattr(widget, "value_getter"):
+                values[name] = widget.value_getter()
+        return values
 
     def _populate_fixtures(self):
         dlg = self.dialog
@@ -630,6 +897,17 @@ class PostProcessDialog:
             if loaded_machine is not None:
                 postprocessor._machine = loaded_machine
                 self._apply_options_to_machine(postprocessor._machine)
+
+            # Apply post-processor parameter values from the dialog widgets
+            # into machine.postprocessor_properties so _get_property_value() picks them up.
+            post_param_values = self._collect_post_param_values()
+            if post_param_values and postprocessor._machine is not None:
+                if hasattr(postprocessor._machine, "postprocessor_properties"):
+                    postprocessor._machine.postprocessor_properties.update(post_param_values)
+
+            # Signal that the unified dialog handled user interaction so
+            # pre_processing_dialog() is a no-op during export2().
+            postprocessor._dialog_handled = True
 
             post_data = postprocessor.export2() if use_new_flow else postprocessor.export()
 

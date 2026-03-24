@@ -111,7 +111,8 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         schema = self.post.get_property_schema()
 
         # Check that we have the expected number of properties
-        self.assertEqual(len(schema), 5)
+        # 5 machine-config properties + 1 runtime-only (mark_entry_only)
+        self.assertEqual(len(schema), 6)
 
         # Check pierce_delay property
         pierce_delay = next(prop for prop in schema if prop["name"] == "pierce_delay")

@@ -180,6 +180,29 @@
        </item>
 
        <item>
+        <widget class="QGroupBox" name="groupBoxPostParams">
+         <property name="title">
+          <string>Post Processor Parameters</string>
+         </property>
+         <layout class="QFormLayout" name="layoutPostParams">
+          <item row="0" column="0" colspan="2">
+           <widget class="QLabel" name="labelPostParamsPlaceholder">
+            <property name="styleSheet">
+             <string>color: gray;</string>
+            </property>
+            <property name="text">
+             <string>(No additional parameters for this post processor)</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+       <item>
         <spacer name="spacerOverview">
          <property name="orientation">
           <enum>Qt::Orientation::Vertical</enum>
@@ -320,29 +343,6 @@
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignCenter</set>
              </property>
-            </widget>
-           </item>
-
-           <item>
-            <widget class="QGroupBox" name="groupBoxPostParams">
-             <property name="title">
-              <string>Post Processor Parameters</string>
-             </property>
-             <layout class="QVBoxLayout" name="layoutPostParams">
-              <item>
-               <widget class="QLabel" name="labelPostParamsPlaceholder">
-                <property name="styleSheet">
-                 <string>color: gray;</string>
-                </property>
-                <property name="text">
-                 <string>(No additional parameters for this post processor)</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignmentFlag::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-             </layout>
             </widget>
            </item>
 

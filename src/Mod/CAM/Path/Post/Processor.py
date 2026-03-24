@@ -285,30 +285,6 @@ def needsTcOp(oldTc, newTc):
 class PostProcessor:
     """Base Class.  All non-legacy postprocessors should inherit from this class."""
 
-    def __init_subclass__(cls, **kwargs):
-        """Automatically wrap pre_processing_dialog methods to check show_dialog setting."""
-        super().__init_subclass__(**kwargs)
-
-        # Auto-wrap pre_processing_dialog in subclasses
-        if hasattr(cls, "pre_processing_dialog"):
-            original = cls.pre_processing_dialog
-
-            def wrapped(self, *args, **kwargs):
-                # Base class logic - runs BEFORE subclass method
-                if hasattr(self, "_machine") and hasattr(self._machine, "postprocessor_properties"):
-                    show_dialog = self._machine.postprocessor_properties.get("show_dialog", True)
-                    if not show_dialog:
-                        Path.Log.debug(
-                            "Pre-processing dialog skipped (show_dialog=False in machine config)"
-                        )
-                        return True
-
-                # Call the original subclass method
-                return original(self, *args, **kwargs)
-
-            # Replace the subclass method with our wrapped version
-            cls.pre_processing_dialog = wrapped
-
     @classmethod
     def get_common_property_schema(cls) -> List[Dict[str, Any]]:
         """
@@ -1793,9 +1769,16 @@ class PostProcessor:
         Base implementation does nothing, but subclasses can override to implement
         configuration dialogs, validation checks, or user input collection.
 
+        When the unified PostProcessDialog is used, it sets _dialog_handled = True
+        on the postprocessor instance before calling export2(), so this method
+        returns True immediately (the dialog already collected user input).
+
         Returns:
             bool: True to continue with post-processing, False to cancel
         """
+        if getattr(self, "_dialog_handled", False):
+            Path.Log.debug("pre_processing_dialog skipped (handled by unified dialog)")
+            return True
         return True
 
     def convert_command_to_gcode(self, command: Path.Command) -> str:

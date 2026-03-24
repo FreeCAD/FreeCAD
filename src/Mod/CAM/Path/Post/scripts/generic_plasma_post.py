@@ -137,10 +137,23 @@ class GenericPlasma(PostProcessor):
                 "type": "bool",
                 "label": translate("CAM", "Force Rapid Feeds"),
                 "default": False,
+                "runtime": True,
                 "help": translate(
                     "CAM",
                     "Force rapid-feed speeds for all feed specified commands. "
                     "Useful for dry runs to verify paths without cutting.",
+                ),
+            },
+            {
+                "name": "mark_entry_only",
+                "type": "bool",
+                "label": translate("CAM", "Mark Entry Points Only"),
+                "default": False,
+                "runtime": True,
+                "help": translate(
+                    "CAM",
+                    "Mark first entry points only (for drilling prep). "
+                    "Skips cutting moves and only marks where the torch would pierce.",
                 ),
             },
         ]
@@ -473,96 +486,6 @@ class GenericPlasma(PostProcessor):
                     # Replace Path with modified command list
                     item.Path = Path.Path(new_commands)
 
-    def pre_processing_dialog(self):
-        """
-        Show plasma cutting mode dialog to ask user about mark-only operation.
-
-        Returns:
-            bool: True to continue with post-processing, False to cancel
-        """
-        try:
-            from PySide import QtWidgets
-
-            app = QtWidgets.QApplication.instance()
-            if app is None:
-                return True
-
-            # Get current mark_entry_only setting from machine config
-            mark_only = False
-            if self._machine and hasattr(self._machine, "postprocessor_properties"):
-                props = self._machine.postprocessor_properties
-                mark_only = props.get("mark_entry_only", False)
-
-            # Create dialog
-            dialog = QtWidgets.QDialog()
-            dialog.setWindowTitle("Plasma Cutting Mode")
-            dialog.resize(400, 200)
-            layout = QtWidgets.QVBoxLayout(dialog)
-
-            # Add description label
-            label = QtWidgets.QLabel(
-                "Select plasma cutting mode:\n\n"
-                "• Normal: Full cutting with torch control\n"
-                "• Mark Only: Only mark first entry points (for drilling prep)"
-            )
-            label.setWordWrap(True)
-            layout.addWidget(label)
-
-            # Add radio buttons for mode selection
-            button_group = QtWidgets.QButtonGroup(dialog)
-
-            normal_radio = QtWidgets.QRadioButton("Normal Cutting")
-            normal_radio.setChecked(not mark_only)
-            button_group.addButton(normal_radio, 0)
-            layout.addWidget(normal_radio)
-
-            mark_radio = QtWidgets.QRadioButton("Mark Entry Points Only")
-            mark_radio.setChecked(mark_only)
-            button_group.addButton(mark_radio, 1)
-            layout.addWidget(mark_radio)
-
-            # Add info text about mark mode
-            info_label = QtWidgets.QLabel(
-                "Mark mode will:\n"
-                "• Mark first entry point with torch\n"
-                "• Skip all cutting movements\n"
-                "• Useful for preparing holes for drilling"
-            )
-            info_label.setWordWrap(True)
-            info_label.setStyleSheet("color: #666; font-size: 11px;")
-            layout.addWidget(info_label)
-
-            # Add OK/Cancel buttons
-            button_box = QtWidgets.QDialogButtonBox(
-                QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
-            )
-            button_box.accepted.connect(dialog.accept)
-            button_box.rejected.connect(dialog.reject)
-            layout.addWidget(button_box)
-
-            # Show dialog and get result
-            result = dialog.exec_()
-
-            if result == QtWidgets.QDialog.Accepted:
-                # Update machine config with user's choice
-                mark_only_selected = mark_radio.isChecked()
-                if self._machine and hasattr(self._machine, "postprocessor_properties"):
-                    props = self._machine.postprocessor_properties
-                    props["mark_entry_only"] = mark_only_selected
-                    mode_text = "Mark Only" if mark_only_selected else "Normal Cutting"
-                    Path.Log.info(f"Plasma cutting mode set to: {mode_text}")
-                return True
-            else:
-                Path.Log.info("Plasma cutting mode dialog cancelled")
-                return False
-
-        except ImportError:
-            Path.Log.debug("GUI not available - using machine config for mark_entry_only")
-            return True
-        except Exception as e:
-            Path.Log.error(f"Error showing plasma cutting dialog: {str(e)}")
-            return True
-
     def _expand_postprocessor_commands(self, postables):
         """Apply plasma-specific transformations to postables.
 
@@ -588,11 +511,8 @@ class GenericPlasma(PostProcessor):
         - Torch Z-axis control (M3/M5 based on Z movement)
         - Pierce delay after torch ignition
         - Cooling delay after torch extinguishment
-        - Mark entry points only mode (via dialog)
+        - Mark entry points only mode
         - Force rapid feeds for dry runs
-
-        The postprocessor will show a dialog to select between
-        normal cutting and mark-only modes.
         """
         return tooltip
 
