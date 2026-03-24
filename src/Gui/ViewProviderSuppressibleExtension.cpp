@@ -93,7 +93,7 @@ void ViewProviderSuppressibleExtension::extensionSetupContextMenu(QMenu* menu, Q
     auto obj = vp->getObject();
     auto sObj = obj->getExtensionByType<App::SuppressibleExtension>();
     // Show Suppressed toggle action if the Suppressed property is visible
-    if (obj && !sObj->Suppressed.testStatus(App::Property::Hidden)) {
+    if (sObj&& !sObj->Suppressed.testStatus(App::Property::Hidden)) {
         auto* func = new Gui::ActionFunction(menu);
         QAction* act = menu->addAction(QObject::tr("Suppressed"));
         act->setCheckable(true);
