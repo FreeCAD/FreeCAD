@@ -66,6 +66,21 @@ void ViewProviderSuppressibleExtension::extensionUpdateData(const App::Property*
     }
 }
 
+void ViewProviderSuppressibleExtension::extensionFinishRestoring()
+{
+    auto vp = getExtendedViewProvider();
+    auto owner = vp->getObject();
+    if (!owner || !owner->isValid()) {
+        return;
+    }
+
+    auto ext = owner->getExtensionByType<App::SuppressibleExtension>();
+    if (ext && ext->Suppressed.getValue()) {
+        setSuppressedIcon(true);
+        vp->signalChangeHighlight(true, Gui::HighlightMode::StrikeOut);
+    }
+}
+
 void ViewProviderSuppressibleExtension::setSuppressedIcon(bool onoff)
 {
     isSetSuppressedIcon = onoff;

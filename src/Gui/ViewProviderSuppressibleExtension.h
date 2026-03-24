@@ -37,6 +37,7 @@ public:
     ~ViewProviderSuppressibleExtension() override;
 
     void extensionUpdateData(const App::Property* prop) override;
+    void extensionFinishRestoring() override;
 
     void setSuppressedIcon(bool onoff);
     QIcon extensionMergeColorfullOverlayIcons(const QIcon& orig) const override;
