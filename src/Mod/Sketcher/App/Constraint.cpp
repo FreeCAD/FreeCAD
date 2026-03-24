@@ -580,6 +580,14 @@ void Constraint::swapElements(int index1, int index2)
         return;
     }
     if (ensureElementExists(index1) && ensureElementExists(index2)) {
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+        if (index1 < 3 || index2 < 3) {
+            GeoElementId temp = getElement(index1);
+            setElement(index1, getElement(index2));
+            setElement(index2, temp);
+            return;
+        }
+#endif
         std::swap(elements[index1], elements[index2]);
     }
 }
