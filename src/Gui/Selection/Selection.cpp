@@ -62,6 +62,21 @@ using namespace Gui;
 using namespace std;
 namespace sp = std::placeholders;
 
+namespace
+{
+void restoreActiveViewOverrideCursor()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (doc) {
+        // if a document is about to be closed it has no MDI view any more
+        Gui::MDIView* mdi = doc->getActiveView();
+        if (mdi) {
+            mdi->restoreOverrideCursor();
+        }
+    }
+}
+}  // namespace
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
@@ -1088,17 +1103,23 @@ const SelectionChanges& SelectionSingleton::getPreselection() const
 }
 
 // add a SelectionGate to control what is selectable
-void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve, const char* pDocName)
-{
-    App::Document* doc = getDocument(pDocName);
-    if (!doc) {
-        return;
-    }
-    rmvSelectionGate(doc);
 
-    auto context = getSelectionContext(doc->getName());
-    context.info->resolveMode = resolve;
-    context.info->gate = gate;
+void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve)
+{
+    if (TemporaryGate) {
+        restoreActiveViewOverrideCursor();
+        TemporaryGate.reset();
+    }
+    else if (auto activeGate = ActiveGate.lock(); activeGate && activeGate != PersistentGate) {
+        // Legacy safety: clear any non-persistent active gate that isn't tracked as temporary.
+        restoreActiveViewOverrideCursor();
+        ActiveGate.reset();
+    }
+
+    TemporaryGate = std::shared_ptr<Gui::SelectionGate>(gate);
+    ActiveGate = TemporaryGate;
+    gateResolve = resolve;
+    syncGateToAllSelectionContexts();
 }
 
 const Gui::SelectionGate* SelectionSingleton::getSelectionGate(const App::Document* doc) const
@@ -1114,28 +1135,63 @@ const Gui::SelectionGate* SelectionSingleton::getSelectionGate(const App::Docume
 }
 
 // remove the active SelectionGate
-void SelectionSingleton::rmvSelectionGate(App::Document* doc)
+void SelectionSingleton::rmvSelectionGate()
 {
-    auto foundContext = docSelectionContext.find(doc);
-    if (foundContext != docSelectionContext.end() && foundContext->second.gate) {
-        delete foundContext->second.gate;
-        foundContext->second.gate = nullptr;
-
-        // if a document is about to be closed it has no MDI view any more
-        if (Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc)) {
-            if (Gui::MDIView* mdi = guiDoc->getActiveView()) {
-                mdi->restoreOverrideCursor();
-            }
+    if (TemporaryGate) {
+        TemporaryGate.reset();
+        ActiveGate = PersistentGate;
+        if (!ActiveGate.expired()) {
+            gateResolve = persistentGateResolve;
         }
-    }
-}
-void SelectionSingleton::rmvSelectionGate(const char* pDocName)
-{
-    App::Document* doc = getDocument(pDocName);
-    if (!doc) {
+        syncGateToAllSelectionContexts();
+        restoreActiveViewOverrideCursor();
         return;
     }
-    rmvSelectionGate(doc);
+
+    if (ActiveGate.lock() == PersistentGate) {
+        return;
+    }
+
+    if (!ActiveGate.expired()) {
+        ActiveGate.reset();
+        syncGateToAllSelectionContexts();
+        restoreActiveViewOverrideCursor();
+    }
+}
+
+void SelectionSingleton::setPersistentSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve)
+{
+    if (PersistentGate && ActiveGate.lock() == PersistentGate) {
+        restoreActiveViewOverrideCursor();
+        ActiveGate.reset();
+    }
+
+    PersistentGate = std::shared_ptr<Gui::SelectionGate>(gate);
+    persistentGateResolve = resolve;
+
+    if (!TemporaryGate) {
+        ActiveGate = PersistentGate;
+        gateResolve = persistentGateResolve;
+    }
+    syncGateToAllSelectionContexts();
+}
+
+void SelectionSingleton::clearPersistentSelectionGate()
+{
+    if (!PersistentGate) {
+        return;
+    }
+
+    if (ActiveGate.lock() == PersistentGate) {
+        ActiveGate.reset();
+    }
+
+    PersistentGate.reset();
+    syncGateToAllSelectionContexts();
+
+    if (!TemporaryGate && ActiveGate.expired()) {
+        restoreActiveViewOverrideCursor();
+    }
 }
 
 
@@ -2292,7 +2348,18 @@ SelectionSingleton::SelectionContext SelectionSingleton::getSelectionContext(con
     }
 
     if (App::Document* doc = getDocument(pDocName)) {
-        return SelectionContext {.info = &docSelectionContext[doc], .docName = doc->getName()};
+        auto [it, inserted] = docSelectionContext.try_emplace(doc);
+        if (inserted) {
+            if (auto activeGate = ActiveGate.lock()) {
+                it->second.gate = activeGate.get();
+                it->second.resolveMode = gateResolve;
+            }
+            else if (PersistentGate) {
+                it->second.gate = PersistentGate.get();
+                it->second.resolveMode = persistentGateResolve;
+            }
+        }
+        return SelectionContext {.info = &it->second, .docName = doc->getName()};
     }
     return SelectionContext {.info = nullptr, .docName = std::string()};
 }
@@ -2318,6 +2385,25 @@ SelectionSingleton::SelectionConstContext SelectionSingleton::getSelectionContex
         }
     }
     return SelectionConstContext {.info = nullptr, .docName = std::string()};
+}
+
+void SelectionSingleton::syncGateToAllSelectionContexts()
+{
+    Gui::SelectionGate* gate = nullptr;
+    ResolveMode resolve = gateResolve;
+
+    if (auto activeGate = ActiveGate.lock()) {
+        gate = activeGate.get();
+    }
+    else if (PersistentGate) {
+        gate = PersistentGate.get();
+        resolve = persistentGateResolve;
+    }
+
+    for (auto& context : docSelectionContext) {
+        context.second.gate = gate;
+        context.second.resolveMode = resolve;
+    }
 }
 
 //**************************************************************************
@@ -2590,7 +2676,22 @@ PyMethodDef SelectionSingleton::Methods[] = {
      METH_VARARGS,
      "removeSelectionGate() -> None\n"
      "\n"
-     "Remove the active selection gate."},
+     "Remove the active temporary selection gate."},
+    {"setPersistentSelectionGate",
+     (PyCFunction)SelectionSingleton::sSetPersistentSelectionGate,
+     METH_VARARGS,
+     "setPersistentSelectionGate(filter, resolve=ResolveMode.OldStyleElement) -> None\n"
+     "\n"
+     "Set a persistent selection gate that is restored after temporary gates are removed.\n"
+     "\n"
+     "filter : str, SelectionFilter, object\n"
+     "resolve : int"},
+    {"clearPersistentSelectionGate",
+     (PyCFunction)SelectionSingleton::sClearPersistentSelectionGate,
+     METH_VARARGS,
+     "clearPersistentSelectionGate() -> None\n"
+     "\n"
+     "Clear the persistent selection gate."},
     {"setVisible",
      (PyCFunction)SelectionSingleton::sSetVisible,
      METH_VARARGS,
@@ -3206,6 +3307,7 @@ PyObject* SelectionSingleton::sAddSelectionGate(PyObject* /*self*/, PyObject* ar
         PY_CATCH;
     }
 
+
     PyErr_SetString(PyExc_ValueError, "Argument is neither string nor SelectionFiler nor SelectionGate");
 
     return nullptr;
@@ -3213,18 +3315,78 @@ PyObject* SelectionSingleton::sAddSelectionGate(PyObject* /*self*/, PyObject* ar
 
 PyObject* SelectionSingleton::sRemoveSelectionGate(PyObject* /*self*/, PyObject* args)
 {
-    const char* pDocName = "";
-    if (!PyArg_ParseTuple(args, "|s", &pDocName)) {
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
 
     PY_TRY
     {
-        Selection().rmvSelectionGate(pDocName);
+        Selection().rmvSelectionGate();
         Py_Return;
     }
     PY_CATCH;
 }
+
+PyObject* SelectionSingleton::sSetPersistentSelectionGate(PyObject* /*self*/, PyObject* args)
+{
+    char* filter;
+    int resolve = 1;
+    if (PyArg_ParseTuple(args, "s|i", &filter, &resolve)) {
+        PY_TRY
+        {
+            Selection().setPersistentSelectionGate(new SelectionFilterGate(filter), toEnum(resolve));
+            Py_Return;
+        }
+        PY_CATCH;
+    }
+
+    PyErr_Clear();
+    PyObject* filterPy;
+    if (PyArg_ParseTuple(args, "O!|i", SelectionFilterPy::type_object(), &filterPy, &resolve)) {
+        PY_TRY
+        {
+            Selection().setPersistentSelectionGate(
+                new SelectionFilterGatePython(SelectionFilterPy::cast(filterPy)),
+                toEnum(resolve)
+            );
+            Py_Return;
+        }
+        PY_CATCH;
+    }
+
+    PyErr_Clear();
+    PyObject* gate;
+    if (PyArg_ParseTuple(args, "O|i", &gate, &resolve)) {
+        PY_TRY
+        {
+            Selection().setPersistentSelectionGate(
+                new SelectionGatePython(Py::Object(gate, false)),
+                toEnum(resolve)
+            );
+            Py_Return;
+        }
+        PY_CATCH;
+    }
+
+    PyErr_SetString(PyExc_ValueError, "Argument is neither string nor SelectionFiler nor SelectionGate");
+
+    return nullptr;
+}
+
+PyObject* SelectionSingleton::sClearPersistentSelectionGate(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        Selection().clearPersistentSelectionGate();
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
 
 PyObject* SelectionSingleton::sSetVisible(PyObject* /*self*/, PyObject* args)
 {
