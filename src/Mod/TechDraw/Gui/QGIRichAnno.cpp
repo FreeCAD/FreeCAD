@@ -564,6 +564,7 @@ void QGIRichAnno::setEditMode(bool enable)
             QFont font = PreferencesGui::labelFontQFont();
 
             QTextCharFormat defaultFormat;
+            defaultFormat.setFontFamilies({font.family()});
             defaultFormat.setFontPointSize(font.pointSizeF());
             cursor.setCharFormat(defaultFormat);
         }
