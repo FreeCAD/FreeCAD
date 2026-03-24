@@ -1200,8 +1200,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y)
         if (m_Faces[pickId].type == ShapeId::Main || m_Faces[pickId].type == ShapeId::Edge
             || m_Faces[pickId].type == ShapeId::Corner) {
             // Detect double-click: same face clicked twice within the system double-click interval
-            bool isDoubleClick = m_ClickTimer.isValid()
-                && m_LastClickPickId == pickId
+            bool isDoubleClick = m_ClickTimer.isValid() && m_LastClickPickId == pickId
                 && m_ClickTimer.elapsed() < QApplication::doubleClickInterval();
 
             // Handle the cube faces
