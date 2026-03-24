@@ -259,13 +259,15 @@ TaskMassProperties::TaskMassProperties()
     unitsSchemaIndex
         = getUnitsSchemaIndex(panel->ui.unitsComboBox->currentIndex(), preferredSchemaIndex);
 
-    connect(panel->ui.unitsComboBox,
-            &QComboBox::currentIndexChanged,
-            this,
-            [this, preferredSchemaIndex](int index) {
-        unitsSchemaIndex = getUnitsSchemaIndex(index, preferredSchemaIndex);
-        update(Gui::SelectionChanges());
-    });
+    connect(
+        panel->ui.unitsComboBox,
+        &QComboBox::currentIndexChanged,
+        this,
+        [this, preferredSchemaIndex](int index) {
+            unitsSchemaIndex = getUnitsSchemaIndex(index, preferredSchemaIndex);
+            update(Gui::SelectionChanges());
+        }
+    );
 
     auto addTaskBox = [this](const char* icon, const QString& title, QWidget* page) {
         auto* box = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap(icon), title, true, nullptr);
