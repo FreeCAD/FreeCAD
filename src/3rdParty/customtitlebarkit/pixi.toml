@@ -2,7 +2,7 @@
 authors = ["Benjamin Nauck <benjamin@nauck.se>"]
 channels = ["conda-forge"]
 name = "custom_window"
-platforms = ["osx-arm64"]
+platforms = ["osx-arm64", "linux-64"]
 version = "0.1.0"
 
 [tasks]
@@ -14,3 +14,7 @@ qt6-main = ">=6.7"
 cmake = ">=3.21"
 ninja = "*"
 cxx-compiler = "*"
+
+[target.linux-64.dependencies]
+mesa-libgl-devel-cos7-x86_64 = "*"
+qt6-wayland = ">=6.8"

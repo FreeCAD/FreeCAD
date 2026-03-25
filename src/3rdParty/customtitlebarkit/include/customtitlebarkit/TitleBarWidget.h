@@ -29,8 +29,12 @@ public:
     void setNativeControlsSpacerSize(const QSize &size);
 
     /// Replace the native controls spacer with a custom widget (e.g. traffic light buttons).
-    /// Takes ownership of the widget.
+    /// Takes ownership of the widget. Placed on the left side (index 0).
     void setNativeControlsWidget(QWidget *widget);
+
+    /// Place a custom native controls widget on the right side of the titlebar,
+    /// replacing the generic window control buttons. Takes ownership.
+    void setNativeControlsWidgetRight(QWidget *widget);
 
     /// Show or hide the window control buttons (min/max/close).
     void setWindowControlsVisible(bool visible);
@@ -38,6 +42,9 @@ public:
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseDoubleClickEvent(QMouseEvent *event) override;
+
+    void showEvent(QShowEvent* event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private:
     struct Impl;

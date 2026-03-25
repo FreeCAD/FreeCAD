@@ -381,10 +381,15 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     if (isCustomTitleBar()) {
         if (!property("backend").toString().startsWith("mac")) {
-            // what to show and how gets specified in the stylesheet
-            auto* logo = new QWidget(this);
-            logo->setObjectName("titleBarLogo");
-            setMenuIntegration(new FoldableMenuIntegration(logo, this));
+            auto* logoBtn = new QPushButton(this);
+            logoBtn->setObjectName("titleBarLogoBtn");
+            logoBtn->setIcon(Gui::BitmapFactory().iconFromTheme("freecad"));
+            logoBtn->setIconSize(QSize(24, 24));
+            logoBtn->setFixedSize(35, 35);
+            logoBtn->setFlat(true);
+            logoBtn->setCursor(Qt::PointingHandCursor);
+
+            setMenuIntegration(new FoldableMenuIntegration(logoBtn, this));
         }
     }
 
