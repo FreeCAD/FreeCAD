@@ -93,6 +93,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp, "AxisYColor");
     OnChange(*hGrp, "AxisZColor");
     OnChange(*hGrp, "UseVBO");
+    OnChange(*hGrp, "UseSelectionShading");
     OnChange(*hGrp, "RenderCache");
     OnChange(*hGrp, "Orthographic");
     OnChange(*hGrp, "NavigationStyle");
@@ -432,6 +433,11 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
             for (auto _viewer : _viewers) {
                 _viewer->setEnabledVBO(useVbo);
             }
+        }
+    }
+    else if (strcmp(Reason, "UseSelectionShading") == 0) {
+        for (auto _viewer : _viewers) {
+            _viewer->setEnabledSelectionShading(rGrp.GetBool("UseSelectionShading", true));
         }
     }
     else if (strcmp(Reason, "RenderCache") == 0) {

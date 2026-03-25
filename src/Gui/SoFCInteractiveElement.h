@@ -180,5 +180,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SOFCINTERACTIVEELEMENT_H
