@@ -47,6 +47,10 @@ public:
     /// Whether the backend is currently in fullscreen mode.
     virtual bool isFullscreen() const { return false; }
 
+    /// Where the native controls widget should be placed in the titlebar.
+    enum ControlsPosition { LeftSide, RightSide };
+    virtual ControlsPosition nativeControlsPosition() const { return LeftSide; }
+
     /// Create a custom widget for the native controls area.
     /// Returns nullptr by default (transparent spacer is used). Caller takes ownership.
     virtual QWidget *createNativeControlsWidget(QWidget *parent);
