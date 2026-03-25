@@ -176,14 +176,14 @@ def orientWire(w, forward=True):
 
 
 def offsetWire(wire, base, offset, forward, Side=None, tolerance=None):
-    """offsetWire(wire, base, offset, forward, Side=None, tolerance=None) ... offsets the wire away from base and orients the wire accordingly.
+    """offsetWire ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
     tolerance: Deflection tolerance for discretizing non-line/arc edges. Required if wire contains non-line/arc edges.
     """
     Path.Log.track("offsetWire")
 
-    # Pre-process wire: discretize any edges that are not lines or circular arcs
+    # Pre-process the wire: discretize any edges that are not lines or circular arcs
     processed_edges = []
     modified = False
     for edge in wire.Edges:
