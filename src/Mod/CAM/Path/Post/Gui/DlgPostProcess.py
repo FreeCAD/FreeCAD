@@ -117,6 +117,7 @@ class PostProcessDialog:
             self._on_output_files_context_menu
         )
         dlg.buttonSaveOutput.clicked.connect(self._save_output_files)
+        dlg.buttonRecomputeWarnings.clicked.connect(self._recompute_warnings)
 
     # ------------------------------------------------------------------
     # Population
@@ -296,7 +297,7 @@ class PostProcessDialog:
             try:
                 from Path.Post.Processor import PostProcessorFactory
 
-                post_obj = PostProcessorFactory.get_post_processor(None, postprocessor_name)
+                post_obj = PostProcessorFactory.get_post_processor(self.job, postprocessor_name)
                 if post_obj is not None:
                     post_class = type(post_obj)
             except Exception as e:
@@ -314,7 +315,13 @@ class PostProcessDialog:
         if not non_runtime:
             return
 
-        pp_props = getattr(machine, "postprocessor_properties", {}) or {}
+        # Build the configuration bundle to get values with job overrides applied
+        bundle = {}
+        if post_obj is not None and hasattr(post_obj, "build_configuration_bundle"):
+            bundle = post_obj.build_configuration_bundle()
+            Path.Log.debug(f"Post config bundle for dialog: {bundle}")
+
+        pp_props = bundle if bundle else (getattr(machine, "postprocessor_properties", {}) or {})
 
         group = QtGui.QGroupBox(translate("CAM_Post", "Postprocessor Properties"))
         form = QtGui.QFormLayout(group)
@@ -374,6 +381,18 @@ class PostProcessDialog:
                 widget.value_getter = lambda w=widget: w.text()
 
             if widget is not None:
+                # Connect signal to recompute warnings when value changes
+                if isinstance(widget, (QtGui.QCheckBox, QtGui.QLineEdit, QtGui.QPlainTextEdit)):
+                    (
+                        widget.textChanged.connect(self._recompute_warnings)
+                        if hasattr(widget, "textChanged")
+                        else widget.stateChanged.connect(self._recompute_warnings)
+                    )
+                elif isinstance(widget, (QtGui.QSpinBox, QtGui.QDoubleSpinBox)):
+                    widget.valueChanged.connect(self._recompute_warnings)
+                elif isinstance(widget, QtGui.QComboBox):
+                    widget.currentIndexChanged.connect(self._recompute_warnings)
+
                 form.addRow(label_text, widget)
                 self._post_config_widgets[name] = (widget, entry)
 
@@ -580,12 +599,41 @@ class PostProcessDialog:
         self._update_ops_tab_label()
         self._update_total_time()
 
-    def _populate_warnings(self):
+    def _get_dialog_overrides(self):
+        """Collect current dialog widget values as an overrides dict.
+
+        Delegates to _collect_post_param_values() so both sanity checks
+        and output generation use exactly the same values.
+
+        Returns:
+            dict: Property overrides from all postprocessor config widgets.
+        """
+        return self._collect_post_param_values()
+
+    def _recompute_warnings(self):
+        """Recompute warnings using current dialog values instead of saved job state."""
+        # Show temporary feedback
+        dlg = self.dialog
+        original_text = dlg.labelWarningsStatus.text()
+        dlg.labelWarningsStatus.setText("Recomputing...")
+        dlg.labelWarningsStatus.setStyleSheet("color: blue; font-weight: bold;")
+
+        # Process events to update UI
+        QtGui.QApplication.processEvents()
+
+        # Recompute warnings
+        self._populate_warnings(use_dialog_values=True)
+
+        # Brief delay to show the recomputation happened
+        QtCore.QTimer.singleShot(200, lambda: None)
+
+    def _populate_warnings(self, use_dialog_values=False):
         dlg = self.dialog
         try:
             from Path.Main.Sanity.Sanity import CAMSanity
 
-            all_squawks, critical_squawks = CAMSanity.validate_job(self.job)
+            overrides = self._get_dialog_overrides() if use_dialog_values else None
+            all_squawks, critical_squawks = CAMSanity.validate_job(self.job, overrides=overrides)
         except Exception as e:
             Path.Log.warning(f"Sanity check failed: {e}")
             all_squawks = []
@@ -898,16 +946,18 @@ class PostProcessDialog:
                 postprocessor._machine = loaded_machine
                 self._apply_options_to_machine(postprocessor._machine)
 
-            # Apply post-processor parameter values from the dialog widgets
-            # into machine.postprocessor_properties so _get_property_value() picks them up.
-            post_param_values = self._collect_post_param_values()
-            if post_param_values and postprocessor._machine is not None:
-                if hasattr(postprocessor._machine, "postprocessor_properties"):
-                    postprocessor._machine.postprocessor_properties.update(post_param_values)
+            # Build the configuration bundle using dialog widget values as
+            # overrides.  This gives dialog values highest priority (above
+            # job-level overrides) and writes them into self.values so that
+            # export2 and sanity checks all read from the same source.
+            dialog_overrides = self._collect_post_param_values()
+            if hasattr(postprocessor, "apply_configuration_bundle"):
+                postprocessor.apply_configuration_bundle(overrides=dialog_overrides)
 
             # Signal that the unified dialog handled user interaction so
             # pre_processing_dialog() is a no-op during export2().
             postprocessor._dialog_handled = True
+            postprocessor._bundle_applied = True
 
             post_data = postprocessor.export2() if use_new_flow else postprocessor.export()
 

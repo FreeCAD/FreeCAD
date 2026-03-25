@@ -382,6 +382,40 @@ class TestCAMSanity(PathTestBase):
         mock_tc.Label = label
         return mock_tc
 
+    def _make_mock_job(
+        self,
+        machine_name="test_machine",
+        has_tools=True,
+        has_operations=True,
+        has_model=True,
+    ):
+        """Create a mock job with basic attributes for testing."""
+        mock_job = MagicMock()
+        mock_job.Machine = machine_name
+        mock_job.LastPostProcessDate = ""
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessor = "linuxcnc"
+        mock_job.PostProcessorArgs = ""
+        mock_job.PostProcessorOutputFile = ""
+
+        if has_tools:
+            mock_tc = self._make_mock_tc()
+            mock_job.Tools.Group = [mock_tc]
+        else:
+            mock_job.Tools.Group = []
+
+        if has_operations:
+            mock_job.Operations.Group = []
+        else:
+            mock_job.Operations = None
+
+        if has_model:
+            mock_job.Model = MagicMock()
+        else:
+            mock_job.Model = None
+
+        return mock_job
+
     # --- Phase 2: Squawk Detection Tests ---
 
     def test200_zero_feedrate_squawk(self):
@@ -670,3 +704,165 @@ class TestCAMSanity(PathTestBase):
         for s in all_squawks:
             self.assertIn("squawkType", s)
             self.assertIn("Note", s)
+
+    def test320_postprocessor_sanity_checks_integration(self):
+        """Postprocessor sanity checks: collected and integrated into validation.
+
+        Given: A job with a machine that has postprocessor sanity checks.
+        When: CAMSanity.validate_job() is called.
+        Then: Postprocessor squawks appear in validation results.
+        """
+        # Create a mock job with machine
+        mock_job = MagicMock()
+        mock_job.Machine = "test_machine"
+        mock_job.Tools.Group = []
+        mock_job.Operations.Group = []
+
+        # Create a mock postprocessor with sanity checks
+        class MockPostprocessor:
+            def get_sanity_checks(self, job):
+                return [
+                    {
+                        "Date": "Mon Mar 24 17:00:00 2026",
+                        "Operator": "MockPostprocessor",
+                        "Note": "Test postprocessor warning",
+                        "squawkType": "WARNING",
+                        "squawkIcon": "/path/to/warning.svg",
+                    },
+                    {
+                        "Date": "Mon Mar 24 17:00:00 2026",
+                        "Operator": "MockPostprocessor",
+                        "Note": "Test postprocessor note",
+                        "squawkType": "NOTE",
+                        "squawkIcon": "/path/to/note.svg",
+                    },
+                ]
+
+        # Mock machine with postprocessor_file_name
+        mock_machine = MagicMock()
+        mock_machine.postprocessor_file_name = "test_post"
+
+        import unittest.mock
+
+        with unittest.mock.patch(
+            "Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine
+        ), unittest.mock.patch(
+            "Path.Post.Processor.PostProcessorFactory.get_post_processor",
+            return_value=MockPostprocessor(),
+        ):
+
+            all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(mock_job)
+
+            # Verify postprocessor squawks are included
+            postprocessor_squawks = [s for s in all_squawks if s["Operator"] == "MockPostprocessor"]
+            self.assertEqual(len(postprocessor_squawks), 2)
+
+            # Verify critical classification
+            postprocessor_critical = [
+                s for s in critical_squawks if s["Operator"] == "MockPostprocessor"
+            ]
+            self.assertEqual(len(postprocessor_critical), 1)  # Only the WARNING
+            self.assertEqual(postprocessor_critical[0]["squawkType"], "WARNING")
+
+    def test321_postprocessor_sanity_checks_error_handling(self):
+        """Postprocessor sanity checks: graceful handling of exceptions.
+
+        Given: A postprocessor that raises an exception in get_sanity_checks().
+        When: CAMSanity.validate_job() is called.
+        Then: Exception is caught and validation continues.
+        """
+        mock_job = MagicMock()
+        mock_job.Machine = "error_machine"
+        mock_job.Tools.Group = []
+        mock_job.Operations.Group = []
+
+        class ErrorPostprocessor:
+            def get_sanity_checks(self, job):
+                raise Exception("Test postprocessor error")
+
+        mock_machine = MagicMock()
+        mock_machine.postprocessor_file_name = "error_post"
+
+        import unittest.mock
+
+        with unittest.mock.patch(
+            "Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine
+        ), unittest.mock.patch(
+            "Path.Post.Processor.PostProcessorFactory.get_post_processor",
+            return_value=ErrorPostprocessor(),
+        ):
+
+            # Should not raise exception
+            all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(mock_job)
+
+            # Should still return valid results
+            self.assertIsInstance(all_squawks, list)
+            self.assertIsInstance(critical_squawks, list)
+
+    def test322_postprocessor_sanity_checks_no_machine(self):
+        """Postprocessor sanity checks: job without machine.
+
+        Given: A job with no machine assigned.
+        When: CAMSanity.validate_job() is called.
+        Then: No postprocessor checks are performed, but validation continues.
+        """
+        mock_job = MagicMock()
+        mock_job.Tools.Group = []
+        mock_job.Operations.Group = []
+        # No machine attribute
+
+        all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(mock_job)
+
+        # Should still return valid results
+        self.assertIsInstance(all_squawks, list)
+        self.assertIsInstance(critical_squawks, list)
+
+        # No postprocessor squawks should be present
+        postprocessor_squawks = [
+            s
+            for s in all_squawks
+            if hasattr(s, "Operator") and s["Operator"] not in ["CAMSanity", "MockTC"]
+        ]
+        self.assertEqual(len(postprocessor_squawks), 0)
+
+    def test323_generic_plasma_sanity_checks_integration(self):
+        """GenericPlasma postprocessor sanity checks: verify get_sanity_checks is called.
+
+        Given: A job with a machine whose postprocessor_file_name is "generic_plasma".
+        When: CAMSanity.validate_job() is called.
+        Then: GenericPlasma get_sanity_checks() method is called and test squawk appears.
+        """
+        # Create a mock job with a machine name
+        mock_job = self._make_mock_job(machine_name="plasma")
+
+        # Add stock with thickness for plasma-specific checks
+        mock_stock = MagicMock()
+        mock_stock.Thickness = 10.0  # 10mm thick material
+        mock_job.Stock = mock_stock
+
+        # Mock the machine so it returns the correct postprocessor file name
+        mock_machine = MagicMock()
+        mock_machine.postprocessor_file_name = "generic_plasma"
+
+        import unittest.mock
+
+        with unittest.mock.patch(
+            "Machine.models.machine.MachineFactory.get_machine", return_value=mock_machine
+        ):
+            # Call validate_job - this should load the real GenericPlasma postprocessor
+            all_squawks, critical_squawks = Sanity.CAMSanity.validate_job(mock_job)
+
+        # Verify we got squawks
+        self.assertIsInstance(all_squawks, list)
+        self.assertIsInstance(critical_squawks, list)
+        self.assertGreater(len(all_squawks), 0, "Should have some squawks")
+
+        # Look for the test squawk from GenericPlasma.get_sanity_checks
+        test_squawks = [s for s in all_squawks if s["Note"] == "This is a test warning message"]
+        self.assertGreater(len(test_squawks), 0, "Test squawk from GenericPlasma should be present")
+
+        # Verify the test squawk is classified as WARNING (critical)
+        test_critical = [
+            s for s in critical_squawks if s["Note"] == "This is a test warning message"
+        ]
+        self.assertGreater(len(test_critical), 0, "Test squawk should be in critical squawks")

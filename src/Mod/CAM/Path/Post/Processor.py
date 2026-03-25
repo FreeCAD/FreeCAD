@@ -725,49 +725,111 @@ class PostProcessor:
                 self._machine.postprocessor_properties[name] = default
                 Path.Log.debug(f"Schema default applied: {name} = {repr(default)}")
 
-    def _apply_job_property_overrides(self):
-        """Apply job-level postprocessor property overrides on top of machine config.
+    def build_configuration_bundle(self, overrides=None):
+        """Build the complete postprocessor configuration as a flat dict.
 
-        Reads Job.PostProcessorPropertyOverrides (JSON dict) and merges
-        overridden values into self._machine.postprocessor_properties.
-        Only keys present in the override dict are changed; all other
-        machine defaults remain intact.
+        Pure computation with no side effects — suitable for testing.
 
-        This must be called after _merge_machine_config() so that machine
-        defaults are established first, then selectively overridden.
+        Merges in priority order:
+          1. Machine postprocessor_properties (from .fcm file)
+          2. Schema defaults (for keys not already present)
+          3. Overrides (from job or caller)
+
+        If *overrides* is None the overrides are read from
+        Job.PostProcessorPropertyOverrides.  If *overrides* is a dict
+        it is used directly, allowing the dialog to inject values
+        without touching the job object.
+
+        Args:
+            overrides: Optional dict of property overrides.
+
+        Returns:
+            dict: The final postprocessor property bundle.
         """
-        if not self._job or not self._machine:
-            return
+        # Stage 1 — start with machine postprocessor_properties
+        bundle = {}
+        if self._machine:
+            bundle.update(self._machine.postprocessor_properties)
+
+        # Stage 2 — schema defaults for missing keys
+        schema = self.get_full_property_schema()
+        for prop in schema:
+            name = prop.get("name", "")
+            if name and name not in bundle:
+                bundle[name] = prop.get("default", "")
+
+        # Stage 3 — overrides
+        if overrides is None:
+            overrides = self._read_job_overrides()
+
+        for key, value in overrides.items():
+            if key in bundle:
+                Path.Log.info(f"Override: {key} = {value} (was: {bundle.get(key)})")
+                bundle[key] = value
+            else:
+                Path.Log.warning(f"Override key '{key}' not in bundle, ignoring")
+
+        return bundle
+
+    def apply_configuration_bundle(self, overrides=None):
+        """Build the bundle and apply it everywhere.
+
+        1. Calls build_configuration_bundle() to get the final dict.
+        2. Writes the result back to machine.postprocessor_properties.
+        3. Merges machine output config into self.values (header, comments, etc.).
+        4. Syncs every bundle key into self.values as UPPERCASE so that
+           all consumers (G-code generation, sanity checks) read from
+           one source of truth.
+
+        Args:
+            overrides: Optional dict passed through to build_configuration_bundle().
+        """
+        bundle = self.build_configuration_bundle(overrides)
+
+        # Write back to machine postprocessor_properties
+        if self._machine:
+            self._machine.postprocessor_properties.update(bundle)
+
+        # Merge machine output config (header, comments, formatting, etc.)
+        self._merge_machine_config()
+
+        # Sync all bundle keys into self.values as UPPERCASE
+        for key, value in bundle.items():
+            self.values[key.upper()] = value
+
+        Path.Log.debug(f"Configuration bundle applied — " f"bundle: {bundle}")
+
+    # ------------------------------------------------------------------
+    # Bundle helpers
+    # ------------------------------------------------------------------
+
+    def _read_job_overrides(self):
+        """Read overrides dict from Job.PostProcessorPropertyOverrides JSON."""
+        if not self._job:
+            return {}
 
         overrides_str = getattr(self._job, "PostProcessorPropertyOverrides", "{}")
         if not overrides_str or overrides_str == "{}":
-            return
+            return {}
 
         try:
             overrides = json.loads(overrides_str)
         except (json.JSONDecodeError, TypeError) as e:
             Path.Log.warning(f"Invalid PostProcessorPropertyOverrides JSON: {e}")
-            return
+            return {}
 
         if not isinstance(overrides, dict):
             Path.Log.warning("PostProcessorPropertyOverrides is not a dict, ignoring")
-            return
+            return {}
 
-        # Allow any property that already exists in machine.postprocessor_properties
-        # This enables overrides for postprocessors that don't have full schema defined yet
-        existing_props = set(self._machine.postprocessor_properties.keys())
+        return overrides
 
-        for key, value in overrides.items():
-            if key in existing_props:
-                Path.Log.info(
-                    f"Job override: {key} = {value} "
-                    f"(machine default: {self._machine.postprocessor_properties.get(key, 'N/A')})"
-                )
-                self._machine.postprocessor_properties[key] = value
-            else:
-                Path.Log.warning(
-                    f"Job override key '{key}' not found in machine postprocessor_properties, ignoring"
-                )
+    # Keep backward-compat aliases so nothing breaks during transition
+    def _apply_job_property_overrides(self):
+        self.apply_configuration_bundle()
+
+    def _apply_overrides(self, overrides):
+        self.apply_configuration_bundle(overrides)
 
     def _build_header(self, postables):
         """Build the G-code header from job/machine metadata.
@@ -1515,9 +1577,8 @@ class PostProcessor:
             Path.Log.info("Pre-processing dialog cancelled - aborting export")
             return None
 
-        self._merge_machine_config()
-        self._apply_schema_defaults()
-        self._apply_job_property_overrides()
+        if not getattr(self, "_bundle_applied", False):
+            self.apply_configuration_bundle()
 
         # ===== STAGE 1: ORDERING =====
         all_job_sections = []
@@ -1780,6 +1841,66 @@ class PostProcessor:
             Path.Log.debug("pre_processing_dialog skipped (handled by unified dialog)")
             return True
         return True
+
+    def get_sanity_checks(self, job):
+        """
+        Hook for postprocessor-specific sanity checks.
+
+        This method allows postprocessors to define custom validation rules
+        specific to their machine capabilities, configuration requirements,
+        or operational constraints. These checks are integrated into the
+        CAM_QuickValidation system and displayed alongside generic checks.
+
+        Args:
+            job: FreeCAD CAM job object to validate
+
+        Returns:
+            list: List of squawk dictionaries following the same format as CAMSanity
+                  Each squawk should have: Date, Operator, Note, squawkType, squawkIcon
+
+        Example:
+            def get_sanity_checks(self, job):
+                squawks = []
+
+                # Check plasma cutter specific settings
+                if self.values.get('pierce_delay', 0) < 300:
+                    squawks.append(self._create_squawk(
+                        "WARNING",
+                        "Pierce delay may be too short for material piercing"
+                    ))
+
+                return squawks
+        """
+        return []  # Default implementation: no custom checks
+
+    def _create_squawk(self, squawk_type, note):
+        """
+        Helper to create squawk dictionaries in CAMSanity format.
+
+        Args:
+            squawk_type: str - One of "NOTE", "WARNING", "CAUTION", "TIP"
+            note: str - Human-readable message
+
+        Returns:
+            dict: Squawk dictionary compatible with CAMSanity
+        """
+        from datetime import datetime
+
+        # Map to same icons used by CAMSanity
+        icon_map = {
+            "TIP": "Sanity_Bulb",
+            "NOTE": "Sanity_Note",
+            "WARNING": "Sanity_Warning",
+            "CAUTION": "Sanity_Caution",
+        }
+
+        return {
+            "Date": datetime.now().strftime("%c"),
+            "Operator": self.__class__.__name__,
+            "Note": note,
+            "squawkType": squawk_type,
+            "squawkIcon": f"{FreeCAD.getHomePath()}Mod/CAM/Path/Main/Sanity/{icon_map.get(squawk_type, 'Sanity_Note')}.svg",
+        }
 
     def convert_command_to_gcode(self, command: Path.Command) -> str:
         """

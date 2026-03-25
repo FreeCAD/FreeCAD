@@ -500,6 +500,74 @@ class GenericPlasma(PostProcessor):
         self._inject_cooling_delay(postables)
         self._force_rapid_feeds(postables)
 
+    def get_sanity_checks(self, job):
+        """Plasma cutter specific sanity checks."""
+        Path.Log.track("GenericPlasma.get_sanity_checks() called")
+        squawks = []
+
+        # Test squawk.  Remove this.  It will always add a warning.
+        Path.Log.track("Adding test squawk from GenericPlasma")
+        squawks.append(self._create_squawk("WARNING", "This is a test warning message"))
+
+        # Check pierce delay vs material thickness
+        pierce_delay = self.values.get("pierce_delay", 1000)
+        if hasattr(job, "Stock") and hasattr(job.Stock, "Thickness"):
+            thickness_mm = job.Stock.Thickness
+            # Recommended pierce delay: ~70ms per mm of thickness, minimum 500ms
+            recommended_delay = max(500, int(thickness_mm * 70))
+
+            if pierce_delay < recommended_delay:
+                if thickness_mm > 6.35:  # > 1/4 inch is more critical
+                    squawks.append(
+                        self._create_squawk(
+                            "WARNING",
+                            f"Pierce delay ({pierce_delay}ms) may be insufficient for {thickness_mm:.1f}mm material. Recommended: {recommended_delay}ms",
+                        )
+                    )
+                else:
+                    squawks.append(
+                        self._create_squawk(
+                            "NOTE",
+                            f"Pierce delay ({pierce_delay}ms) may be short for {thickness_mm:.1f}mm material. Consider: {recommended_delay}ms",
+                        )
+                    )
+
+        # Check cooling delay for thick materials
+        cooling_delay = self.values.get("cooling_delay", 500)
+        if hasattr(job, "Stock") and hasattr(job.Stock, "Thickness"):
+            thickness_mm = job.Stock.Thickness
+            if thickness_mm > 10.0 and cooling_delay < 1000:  # Thick materials need more cooling
+                squawks.append(
+                    self._create_squawk(
+                        "NOTE",
+                        f"Consider increasing cooling delay for {thickness_mm:.1f}mm material to prevent torch overheating",
+                    )
+                )
+
+        # Check for rapid moves with torch enabled
+        if self.values.get("torch_zaxis_control", True):
+            for op in getattr(job.Operations, "Group", []):
+                if hasattr(op, "HoriFeed") and op.HoriFeed > 3000:  # High feed rates
+                    squawks.append(
+                        self._create_squawk(
+                            "CAUTION",
+                            f"Operation '{op.Label}' has high feed rate ({op.HoriFeed}) with torch Z-control - verify safe operation",
+                        )
+                    )
+
+        # Check marking delay vs pierce delay
+        marking_delay = self.values.get("marking_delay", 100)
+        if marking_delay >= pierce_delay:
+            squawks.append(
+                self._create_squawk(
+                    "NOTE",
+                    f"Marking delay ({marking_delay}ms) >= pierce delay ({pierce_delay}ms) - marking may not be distinct from cutting",
+                )
+            )
+
+        Path.Log.track(f"GenericPlasma.get_sanity_checks() returning {len(squawks)} squawks")
+        return squawks
+
     @property
     def tooltip(self):
         tooltip: str = """
@@ -513,6 +581,7 @@ class GenericPlasma(PostProcessor):
         - Cooling delay after torch extinguishment
         - Mark entry points only mode
         - Force rapid feeds for dry runs
+        - Material-aware sanity checks
         """
         return tooltip
 

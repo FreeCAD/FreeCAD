@@ -508,12 +508,18 @@ class CAMSanity:
         generator = ReportGenerator.ReportGenerator(self.data, embed_images=True)
         return generator.generate_html()
 
-    def get_all_squawks(self):
+    def get_all_squawks(self, overrides=None):
         """Collect squawks from all validation sections without generating images or HTML.
 
         Calls each _xxxData() method directly using the current image_builder (a
         DummyImageBuilder when invoked via validate_job(), so no GUI or file I/O occurs).
         Also runs _validate_job_structure() for structural checks.
+
+        Args:
+            overrides: Optional dict of postprocessor property overrides.
+                       Passed through to apply_configuration_bundle() so that
+                       callers (e.g. the dialog) can inject values without
+                       modifying the job.
 
         Returns:
             tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
@@ -533,11 +539,34 @@ class CAMSanity:
             except Exception as e:
                 Path.Log.warning(f"get_all_squawks: {method.__name__} failed: {e}")
         all_squawks.extend(self._validate_job_structure())
+
+        # Collect postprocessor-specific squawks
+        if hasattr(self.job, "Machine") and self.job.Machine:
+            try:
+                from Machine.models.machine import MachineFactory
+                from Path.Post.Processor import PostProcessorFactory
+
+                machine = MachineFactory.get_machine(self.job.Machine)
+                postprocessor_name = getattr(machine, "postprocessor_file_name", None)
+                if postprocessor_name:
+                    postprocessor = PostProcessorFactory.get_post_processor(
+                        self.job, postprocessor_name
+                    )
+                    if postprocessor and hasattr(postprocessor, "get_sanity_checks"):
+                        if hasattr(postprocessor, "apply_configuration_bundle"):
+                            postprocessor.apply_configuration_bundle(overrides=overrides)
+                        pp_squawks = postprocessor.get_sanity_checks(self.job)
+                        all_squawks.extend(pp_squawks)
+            except Exception as e:
+                Path.Log.warning(f"Failed to get postprocessor sanity checks: {e}")
+
         critical = [s for s in all_squawks if s["squawkType"] in ("WARNING", "CAUTION")]
+        Path.Log.debug(f"get_all_squawks: {len(all_squawks)} squawks, {len(critical)} critical")
+        Path.Log.debug(f"Critical squawks: {critical}")
         return all_squawks, critical
 
     @staticmethod
-    def validate_job(job):
+    def validate_job(job, overrides=None):
         """Lightweight job validation without generating images or HTML.
 
         Bypasses __init__ entirely to avoid calling summarize() or any image-generation
@@ -546,6 +575,9 @@ class CAMSanity:
 
         Args:
             job: FreeCAD CAM job object
+            overrides: Optional dict of postprocessor property overrides.
+                       When provided these are passed to the postprocessor's
+                       apply_configuration_bundle() instead of reading from the job.
 
         Returns:
             tuple: (all_squawks, critical_squawks) where critical = WARNING or CAUTION
@@ -560,7 +592,7 @@ class CAMSanity:
             sanity.filelocation = tmpdir
             sanity.image_builder = ImageBuilder.DummyImageBuilder(tmpdir)
             sanity.data = {}
-            return sanity.get_all_squawks()
+            return sanity.get_all_squawks(overrides=overrides)
 
     def validate_for_postprocessing(self):
         """
