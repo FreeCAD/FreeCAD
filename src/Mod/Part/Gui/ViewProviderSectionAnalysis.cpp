@@ -218,7 +218,7 @@ void ViewProviderSectionAnalysis::installClipPlane()
     // affects every VP it is inserted into.
     auto* doc = feat->getDocument();
     for (auto* obj : doc->getObjects()) {
-        if (obj == feat) {
+        if (obj->isDerivedFrom(Part::SectionAnalysis::getClassTypeId())) {
             continue;
         }
         auto* vp = Gui::Application::Instance->getViewProvider(obj);
