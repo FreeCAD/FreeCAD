@@ -873,7 +873,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         # Test that offsetting the ellipse requires the tolerance parameter (i.e. requires discretization)
         with self.assertRaises(ValueError) as context:
             PathOpUtil.offsetWire(ellipse_wire, base_shape, 2, True)
-        self.assertIn("tolerance parameter is required", str(context.exception))
+        self.assertIn("tolerance", str(context.exception))
 
         # Test offsetting with tolerance
         tolerance = 0.01
