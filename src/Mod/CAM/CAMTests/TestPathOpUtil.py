@@ -862,6 +862,29 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
             total_length += e.Length
         self.assertGreater(total_length, 0)
 
+    def test48(self):
+        """Check offsetting an ellipse discretizes it into line segments."""
+        # Create an ellipse
+        ellipse = Part.Ellipse(Vector(0, 0, 0), 20, 10)
+        ellipse_edge = ellipse.toShape()
+        ellipse_wire = Part.Wire([ellipse_edge])
+        base_shape = Part.Face(ellipse_wire)
+
+        # Test that offsetting the ellipse requires the tolerance parameter (i.e. requires discretization)
+        with self.assertRaises(ValueError) as context:
+            PathOpUtil.offsetWire(ellipse_wire, base_shape, 2, True)
+        self.assertIn("tolerance parameter is required", str(context.exception))
+
+        # Test offsetting with tolerance
+        tolerance = 0.01
+        offset_wire = PathOpUtil.offsetWire(ellipse_wire, base_shape, 2, True, tolerance=tolerance)
+
+        # Verify the result exists and is discretized into multiple edges
+        self.assertIsNotNone(offset_wire)
+        self.assertGreater(
+            len(offset_wire.Edges), 1, "Ellipse should be discretized into multiple edges"
+        )
+
     def test50(self):
         """Orient an already oriented wire"""
         p0 = Vector()
