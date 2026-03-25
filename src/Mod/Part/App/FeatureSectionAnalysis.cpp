@@ -42,6 +42,7 @@
 
 #include <Base/Console.h>
 
+#include "FaceMakerBullseye.h"
 #include "FeatureSectionAnalysis.h"
 
 
@@ -182,102 +183,93 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         d = -d;
     }
 
-    std::vector<TopoDS_Face> sectionFaces;
     gp_Pln slicePlane(a, b, c, -d);
-
-    // Try boolean-cut approach first for each solid (produces correct
-    // faces with holes).  Fall back to BRepAlgoAPI_Section for solids
-    // where the boolean cut fails or produces no section faces.
     TopExp_Explorer xp;
-    int solidCount = 0;
-    std::vector<TopoDS_Shape> unhandledSolids;
+    std::vector<TopoDS_Face> sectionFaces;
 
+    // Primary approach: Section + FaceMakerBullseye per solid.
+    // BRepAlgoAPI_Section computes intersection edges, FaceMakerBullseye
+    // builds faces with proper hole nesting (inner wires inside outer).
     for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
-        solidCount++;
-        size_t facesBefore = sectionFaces.size();
         try {
-            collectSectionFaces(xp.Current(), slicePlane, sectionFaces);
-        }
-        catch (...) {
-            // Boolean cut failed — will try Section fallback
-        }
-        if (sectionFaces.size() == facesBefore) {
-            unhandledSolids.push_back(xp.Current());
-        }
-    }
+            BRepAlgoAPI_Section cs(xp.Current(), slicePlane);
+            if (!cs.IsDone()) {
+                continue;
+            }
 
-    // Fallback: use BRepAlgoAPI_Section for solids where the boolean cut
-    // produced nothing, and for non-solid shapes (shells, faces).
-    // Section gives intersection edges; we build faces from the wires.
-    TopoDS_Shape sectionSource;
-    if (solidCount == 0) {
-        // No solids at all — section the entire source
-        sectionSource = sourceShape;
-    }
-    else if (!unhandledSolids.empty()) {
-        // Build a compound of the solids that need the fallback
-        BRep_Builder bb;
-        TopoDS_Compound comp;
-        bb.MakeCompound(comp);
-        for (const auto& s : unhandledSolids) {
-            bb.Add(comp, s);
-        }
-        sectionSource = comp;
-    }
+            Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+            TopExp_Explorer edgeXp;
+            for (edgeXp.Init(cs.Shape(), TopAbs_EDGE); edgeXp.More(); edgeXp.Next()) {
+                hEdges->Append(edgeXp.Current());
+            }
+            if (hEdges->IsEmpty()) {
+                continue;
+            }
 
-    if (!sectionSource.IsNull()) {
-        try {
-            BRepAlgoAPI_Section cs(sectionSource, slicePlane);
-            if (cs.IsDone()) {
-                Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
-                for (xp.Init(cs.Shape(), TopAbs_EDGE); xp.More(); xp.Next()) {
-                    hEdges->Append(xp.Current());
-                }
+            Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+            ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), false, hWires);
 
-                Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), false, hWires);
+            FaceMakerBullseye fm;
+            fm.setPlane(slicePlane);
+            for (int i = 1; i <= hWires->Length(); i++) {
+                TopoDS_Wire wire = TopoDS::Wire(hWires->Value(i));
+                ShapeFix_Wire aFix;
+                aFix.SetPrecision(Precision::Confusion());
+                aFix.Load(wire);
+                aFix.FixReorder();
+                aFix.FixConnected();
+                aFix.FixClosed();
+                fm.addWire(aFix.Wire());
+            }
+            fm.Build();
 
-                for (int i = 1; i <= hWires->Length(); i++) {
-                    TopoDS_Wire wire = TopoDS::Wire(hWires->Value(i));
-                    ShapeFix_Wire aFix;
-                    aFix.SetPrecision(Precision::Confusion());
-                    aFix.Load(wire);
-                    aFix.FixReorder();
-                    aFix.FixConnected();
-                    aFix.FixClosed();
-                    wire = aFix.Wire();
-
-                    BRepBuilderAPI_MakeFace mkFace(slicePlane, wire);
-                    if (mkFace.IsDone()) {
-                        sectionFaces.push_back(mkFace.Face());
+            if (fm.IsDone()) {
+                gp_Dir sliceNormal = slicePlane.Axis().Direction();
+                for (edgeXp.Init(fm.Shape(), TopAbs_FACE); edgeXp.More(); edgeXp.Next()) {
+                    TopoDS_Face face = TopoDS::Face(edgeXp.Current());
+                    // Ensure consistent face orientation for stable lighting/hatching
+                    BRepAdaptor_Surface adapt(face);
+                    if (adapt.GetType() == GeomAbs_Plane) {
+                        gp_Dir effectiveNormal = adapt.Plane().Axis().Direction();
+                        if (face.Orientation() == TopAbs_REVERSED) {
+                            effectiveNormal.Reverse();
+                        }
+                        if (effectiveNormal.Dot(sliceNormal) < 0) {
+                            face = TopoDS::Face(face.Reversed());
+                        }
                     }
+                    sectionFaces.push_back(face);
                 }
             }
         }
         catch (...) {
-            // Section fallback also failed
         }
     }
 
-    Base::Console().log(
-        "SectionAnalysis: %d solids, %d fallback, %d faces\n",
-        solidCount,
-        (int)unhandledSolids.size(),
-        (int)sectionFaces.size()
-    );
-
+    // Fallback: Boolean Cut approach for solids where Section produced nothing
     if (sectionFaces.empty()) {
+        for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+            try {
+                collectSectionFaces(xp.Current(), slicePlane, sectionFaces);
+            }
+            catch (...) {
+            }
+        }
+    }
+
+    auto& faces = sectionFaces;
+
+    if (faces.empty()) {
         this->Shape.setValue(TopoDS_Shape());
     }
-    else if (sectionFaces.size() == 1) {
-        this->Shape.setValue(sectionFaces.front());
+    else if (faces.size() == 1) {
+        this->Shape.setValue(faces.front());
     }
     else {
-        // Create a compound of all section faces
         BRep_Builder builder;
         TopoDS_Compound compound;
         builder.MakeCompound(compound);
-        for (const auto& face : sectionFaces) {
+        for (const auto& face : faces) {
             builder.Add(compound, face);
         }
         this->Shape.setValue(compound);
