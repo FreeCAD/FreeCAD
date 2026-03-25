@@ -69,9 +69,11 @@ using namespace PartGui;
 // SectionAnalysisWidget
 // -----------------------------------------------------------------------
 
-SectionAnalysisWidget::SectionAnalysisWidget(Part::SectionAnalysis* feat,
-                                               ViewProviderSectionAnalysis* vp,
-                                               QWidget* parent)
+SectionAnalysisWidget::SectionAnalysisWidget(
+    Part::SectionAnalysis* feat,
+    ViewProviderSectionAnalysis* vp,
+    QWidget* parent
+)
     : QWidget(parent)
     , feature(feat)
     , viewProvider(vp)
@@ -102,9 +104,7 @@ void SectionAnalysisWidget::setupGizmos()
     angle1Gizmo = new Gui::RotationGizmo(angle1Spin);
     angle2Gizmo = new Gui::RotationGizmo(angle2Spin);
 
-    gizmoContainer = Gui::GizmoContainer::create(
-        {offsetGizmo, angle1Gizmo, angle2Gizmo},
-        viewProvider);
+    gizmoContainer = Gui::GizmoContainer::create({offsetGizmo, angle1Gizmo, angle2Gizmo}, viewProvider);
 
     // Determine the two tangent axes based on the current normal
     Base::Vector3d n = feature->PlaneNormal.getValue();
@@ -134,9 +134,15 @@ void SectionAnalysisWidget::setupGizmos()
         float transparency = 0;
         SbColor c = {};
 
-        if (std::abs(axis.x) > 0.9) packed = vp->getAxisXColor();
-        else if (std::abs(axis.y) > 0.9) packed = vp->getAxisYColor();
-        else packed = vp->getAxisZColor();
+        if (std::abs(axis.x) > 0.9) {
+            packed = vp->getAxisXColor();
+        }
+        else if (std::abs(axis.y) > 0.9) {
+            packed = vp->getAxisYColor();
+        }
+        else {
+            packed = vp->getAxisZColor();
+        }
         c.setPackedValue(packed, transparency);
         return c;
     };
@@ -189,8 +195,10 @@ void SectionAnalysisWidget::updateGizmoPositions()
         return;
     }
 
-    TopoDS_Shape sourceShape = Part::Feature::getShape(source,
-        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    TopoDS_Shape sourceShape = Part::Feature::getShape(
+        source,
+        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+    );
     if (sourceShape.IsNull()) {
         return;
     }
@@ -251,12 +259,10 @@ void SectionAnalysisWidget::setupUi()
     if (std::abs(n.x) < 1e-6 && std::abs(n.y) < 1e-6 && std::abs(std::abs(n.z) - 1.0) < 1e-6) {
         presetCombo->setCurrentIndex(0);
     }
-    else if (std::abs(n.x) < 1e-6 && std::abs(std::abs(n.y) - 1.0) < 1e-6
-             && std::abs(n.z) < 1e-6) {
+    else if (std::abs(n.x) < 1e-6 && std::abs(std::abs(n.y) - 1.0) < 1e-6 && std::abs(n.z) < 1e-6) {
         presetCombo->setCurrentIndex(1);
     }
-    else if (std::abs(std::abs(n.x) - 1.0) < 1e-6 && std::abs(n.y) < 1e-6
-             && std::abs(n.z) < 1e-6) {
+    else if (std::abs(std::abs(n.x) - 1.0) < 1e-6 && std::abs(n.y) < 1e-6 && std::abs(n.z) < 1e-6) {
         presetCombo->setCurrentIndex(2);
     }
     else {
@@ -381,30 +387,55 @@ void SectionAnalysisWidget::setupUi()
 
 void SectionAnalysisWidget::setupConnections()
 {
-    connect(presetCombo, qOverload<int>(&QComboBox::activated),
-            this, &SectionAnalysisWidget::onPresetChanged);
-    connect(normalX, qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this, &SectionAnalysisWidget::onNormalXChanged);
-    connect(normalY, qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this, &SectionAnalysisWidget::onNormalYChanged);
-    connect(normalZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
-            this, &SectionAnalysisWidget::onNormalZChanged);
-    connect(angle1Spin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &SectionAnalysisWidget::onAngle1Changed);
-    connect(angle2Spin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &SectionAnalysisWidget::onAngle2Changed);
-    connect(offsetSpin, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &SectionAnalysisWidget::onOffsetChanged);
-    connect(offsetSlider, &QSlider::valueChanged,
-            this, &SectionAnalysisWidget::onSliderMoved);
-    connect(flipCheck, &QCheckBox::toggled,
-            this, &SectionAnalysisWidget::onFlipToggled);
-    connect(sectionColorBtn, &Gui::ColorButton::changed,
-            this, [this]() { onSectionColorChanged(sectionColorBtn->color()); });
-    connect(hatchCheck, &QCheckBox::toggled,
-            this, &SectionAnalysisWidget::onHatchToggled);
-    connect(updateViewCheck, &QCheckBox::toggled,
-            this, &SectionAnalysisWidget::onUpdateViewToggled);
+    connect(
+        presetCombo,
+        qOverload<int>(&QComboBox::activated),
+        this,
+        &SectionAnalysisWidget::onPresetChanged
+    );
+    connect(
+        normalX,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &SectionAnalysisWidget::onNormalXChanged
+    );
+    connect(
+        normalY,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &SectionAnalysisWidget::onNormalYChanged
+    );
+    connect(
+        normalZ,
+        qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this,
+        &SectionAnalysisWidget::onNormalZChanged
+    );
+    connect(
+        angle1Spin,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SectionAnalysisWidget::onAngle1Changed
+    );
+    connect(
+        angle2Spin,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SectionAnalysisWidget::onAngle2Changed
+    );
+    connect(
+        offsetSpin,
+        qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+        this,
+        &SectionAnalysisWidget::onOffsetChanged
+    );
+    connect(offsetSlider, &QSlider::valueChanged, this, &SectionAnalysisWidget::onSliderMoved);
+    connect(flipCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onFlipToggled);
+    connect(sectionColorBtn, &Gui::ColorButton::changed, this, [this]() {
+        onSectionColorChanged(sectionColorBtn->color());
+    });
+    connect(hatchCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onHatchToggled);
+    connect(updateViewCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onUpdateViewToggled);
 }
 
 void SectionAnalysisWidget::updateSliderRange()
@@ -414,8 +445,10 @@ void SectionAnalysisWidget::updateSliderRange()
         return;
     }
 
-    TopoDS_Shape sourceShape = Part::Feature::getShape(source,
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    TopoDS_Shape sourceShape = Part::Feature::getShape(
+        source,
+        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+    );
     if (sourceShape.IsNull()) {
         return;
     }
@@ -438,9 +471,16 @@ void SectionAnalysisWidget::updateSliderRange()
     n = n / len;
 
     // Find min/max projection
-    double corners[8][3] = {{xmin, ymin, zmin}, {xmax, ymin, zmin}, {xmin, ymax, zmin},
-                             {xmax, ymax, zmin}, {xmin, ymin, zmax}, {xmax, ymin, zmax},
-                             {xmin, ymax, zmax}, {xmax, ymax, zmax}};
+    double corners[8][3] = {
+        {xmin, ymin, zmin},
+        {xmax, ymin, zmin},
+        {xmin, ymax, zmin},
+        {xmax, ymax, zmin},
+        {xmin, ymin, zmax},
+        {xmax, ymin, zmax},
+        {xmin, ymax, zmax},
+        {xmax, ymax, zmax}
+    };
 
     double projMin = 1e20, projMax = -1e20;
     for (auto& corner : corners) {
@@ -489,7 +529,8 @@ void SectionAnalysisWidget::onPresetChanged(int index)
         case 3: {
             // View Direction: get camera direction
             auto* mdiView = qobject_cast<Gui::View3DInventor*>(
-                Gui::Application::Instance->activeView());
+                Gui::Application::Instance->activeView()
+            );
             if (mdiView) {
                 SbVec3f vd = mdiView->getViewer()->getViewDirection();
                 float vx, vy, vz;
@@ -564,18 +605,18 @@ void SectionAnalysisWidget::onPresetChanged(int index)
     // Center the offset on the bounding box
     App::DocumentObject* source = feature->Source.getValue();
     if (source) {
-        TopoDS_Shape sourceShape = Part::Feature::getShape(source,
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+        TopoDS_Shape sourceShape = Part::Feature::getShape(
+            source,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
         if (!sourceShape.IsNull()) {
             Bnd_Box bbox;
             BRepBndLib::Add(sourceShape, bbox);
             if (!bbox.IsVoid()) {
                 double xmin, ymin, zmin, xmax, ymax, zmax;
                 bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-                Base::Vector3d center((xmin + xmax) / 2, (ymin + ymax) / 2,
-                                     (zmin + zmax) / 2);
-                double centerProj = center.x * normal.x + center.y * normal.y
-                    + center.z * normal.z;
+                Base::Vector3d center((xmin + xmax) / 2, (ymin + ymax) / 2, (zmin + zmax) / 2);
+                double centerProj = center.x * normal.x + center.y * normal.y + center.z * normal.z;
                 feature->PlaneOffset.setValue(centerProj);
             }
         }
@@ -679,13 +720,22 @@ void SectionAnalysisWidget::applyAngles()
     Base::Vector3d oldN = feature->PlaneNormal.getValue();
     double oldD = feature->PlaneOffset.getValue();
     double oldLen = oldN.Length();
-    Base::Vector3d oldPlanePoint = (oldLen > 1e-10) ? (oldN / oldLen) * oldD : Base::Vector3d(0, 0, 0);
+    Base::Vector3d oldPlanePoint = (oldLen > 1e-10) ? (oldN / oldLen) * oldD
+                                                    : Base::Vector3d(0, 0, 0);
     double newOffset = oldPlanePoint.x * n.x + oldPlanePoint.y * n.y + oldPlanePoint.z * n.z;
 
-    Base::Console().log("SectionAnalysis: angle change — planePoint (%.2f,%.2f,%.2f) "
-                        "old offset %.2f → new normal (%.4f,%.4f,%.4f) new offset %.2f\n",
-                        oldPlanePoint.x, oldPlanePoint.y, oldPlanePoint.z, oldD,
-                        n.x, n.y, n.z, newOffset);
+    Base::Console().log(
+        "SectionAnalysis: angle change — planePoint (%.2f,%.2f,%.2f) "
+        "old offset %.2f → new normal (%.4f,%.4f,%.4f) new offset %.2f\n",
+        oldPlanePoint.x,
+        oldPlanePoint.y,
+        oldPlanePoint.z,
+        oldD,
+        n.x,
+        n.y,
+        n.z,
+        newOffset
+    );
 
     feature->PlaneNormal.setValue(n);
     feature->PlaneOffset.setValue(newOffset);
@@ -773,7 +823,8 @@ void SectionAnalysisWidget::onSectionColorChanged(const QColor& color)
 {
     // Update the section face color on the ViewProvider
     auto* vp = dynamic_cast<PartGui::ViewProviderSectionAnalysis*>(
-        Gui::Application::Instance->getViewProvider(feature));
+        Gui::Application::Instance->getViewProvider(feature)
+    );
     if (vp) {
         App::Material mat;
         mat.diffuseColor.set(color.redF(), color.greenF(), color.blueF(), 0.0f);
@@ -784,7 +835,8 @@ void SectionAnalysisWidget::onSectionColorChanged(const QColor& color)
 void SectionAnalysisWidget::onHatchToggled(bool on)
 {
     auto* vp = dynamic_cast<PartGui::ViewProviderSectionAnalysis*>(
-        Gui::Application::Instance->getViewProvider(feature));
+        Gui::Application::Instance->getViewProvider(feature)
+    );
     if (vp) {
         vp->setHatching(on);
     }
@@ -830,15 +882,13 @@ void SectionAnalysisWidget::updateFromFeature()
         normalY->setEnabled(false);
         normalZ->setEnabled(false);
     }
-    else if (std::abs(n.x) < 1e-6 && std::abs(std::abs(n.y) - 1.0) < 1e-6
-             && std::abs(n.z) < 1e-6) {
+    else if (std::abs(n.x) < 1e-6 && std::abs(std::abs(n.y) - 1.0) < 1e-6 && std::abs(n.z) < 1e-6) {
         presetCombo->setCurrentIndex(1);
         normalX->setEnabled(false);
         normalY->setEnabled(false);
         normalZ->setEnabled(false);
     }
-    else if (std::abs(std::abs(n.x) - 1.0) < 1e-6 && std::abs(n.y) < 1e-6
-             && std::abs(n.z) < 1e-6) {
+    else if (std::abs(std::abs(n.x) - 1.0) < 1e-6 && std::abs(n.y) < 1e-6 && std::abs(n.z) < 1e-6) {
         presetCombo->setCurrentIndex(2);
         normalX->setEnabled(false);
         normalY->setEnabled(false);
@@ -863,12 +913,16 @@ void SectionAnalysisWidget::updateFromFeature()
 bool SectionAnalysisWidget::accept()
 {
     try {
-        Gui::cmdAppObjectArgs(feature, "PlaneNormal = FreeCAD.Vector(%f, %f, %f)",
-                              normalX->value(), normalY->value(), normalZ->value());
+        Gui::cmdAppObjectArgs(
+            feature,
+            "PlaneNormal = FreeCAD.Vector(%f, %f, %f)",
+            normalX->value(),
+            normalY->value(),
+            normalZ->value()
+        );
         double offsetValue = offsetSpin->value().getValue() + offsetBase;
         Gui::cmdAppObjectArgs(feature, "PlaneOffset = %f", offsetValue);
-        Gui::cmdAppObjectArgs(feature, "FlipCut = %s",
-                              flipCheck->isChecked() ? "True" : "False");
+        Gui::cmdAppObjectArgs(feature, "FlipCut = %s", flipCheck->isChecked() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!feature->isValid()) {
@@ -882,14 +936,17 @@ bool SectionAnalysisWidget::accept()
     catch (const Base::Exception& e) {
         // On error, abort and remove the object
         auto* vp = dynamic_cast<PartGui::ViewProviderSectionAnalysis*>(
-            Gui::Application::Instance->getViewProvider(feature));
+            Gui::Application::Instance->getViewProvider(feature)
+        );
         if (vp) {
             vp->hide();
         }
         feature->getDocument()->abortTransaction();
         QMessageBox::warning(
-            this, tr("Input error"),
-            QCoreApplication::translate("Exception", e.what()));
+            this,
+            tr("Input error"),
+            QCoreApplication::translate("Exception", e.what())
+        );
         return false;
     }
 
@@ -900,7 +957,8 @@ bool SectionAnalysisWidget::reject()
 {
     // Remove clipping before undo so the source VP is restored
     auto* vp = dynamic_cast<PartGui::ViewProviderSectionAnalysis*>(
-        Gui::Application::Instance->getViewProvider(feature));
+        Gui::Application::Instance->getViewProvider(feature)
+    );
     if (vp) {
         vp->hide();
     }
@@ -917,8 +975,7 @@ bool SectionAnalysisWidget::reject()
 // TaskSectionAnalysis
 // -----------------------------------------------------------------------
 
-TaskSectionAnalysis::TaskSectionAnalysis(Part::SectionAnalysis* feature,
-                                         ViewProviderSectionAnalysis* vp)
+TaskSectionAnalysis::TaskSectionAnalysis(Part::SectionAnalysis* feature, ViewProviderSectionAnalysis* vp)
 {
     widget = new SectionAnalysisWidget(feature, vp);
     addTaskBox(Gui::BitmapFactory().pixmap("Part_SectionAnalysis"), widget);
