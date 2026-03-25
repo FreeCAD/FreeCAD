@@ -1163,14 +1163,21 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             moveConstraint(constr, id, snappedPos);
                             constraints[id] = constr;
                         }
-
                         Sketcher::SketchObject* obj = getSketchObject();
-                        obj->Constraints.setValues(std::move(constraints));
+                        {
+                            // Disable Constraints notifications for this change
+                            // so that it does not trigger a solve
+                            bool enableNotify = obj->Constraints.enableNotify(false);
+                            obj->Constraints.setValues(std::move(constraints));
+                            obj->Constraints.enableNotify(enableNotify);
+                        }
 
                         preselection.PreselectConstraintSet = drag.DragConstraintSet;
                         drag.DragConstraintSet.clear();
                         getDocument()->commitCommand();
-                        tryAutoRecomputeIfNotSolve(getSketchObject());
+                        // We didn't actually solve because this is only a cosmetic change
+                        // but we still need to redraw
+                        slotSolverUpdate();
                     }
                     setSketchMode(STATUS_NONE);
                     return true;
