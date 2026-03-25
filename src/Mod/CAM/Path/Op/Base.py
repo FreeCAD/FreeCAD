@@ -241,7 +241,7 @@ class ObjectOp(object):
                 "App::PropertyDistance",
                 "StartDepth",
                 "Depth",
-                QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- first cut depth in Z"),
+                QT_TRANSLATE_NOOP("App::Property", "Starting Depth of Tool- top of the material in Z. The first cut occurs at StartDepth - StepDown."),
             )
             obj.addProperty(
                 "App::PropertyDistance",
