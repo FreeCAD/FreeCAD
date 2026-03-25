@@ -3385,7 +3385,8 @@ bool ViewProviderSketch::getDetailPath(
             auto len = pPath->getLength();
             if (append) {
                 pPath->append(pcRoot);
-                pPath->append(pcModeSwitch);
+                pPath->append(pcAnnotation);
+                pPath->append(pcSketchFacesToggle);
             }
 
             if (!ViewProvider2DObject::getDetailPath(realName, pPath, false, det)) {
