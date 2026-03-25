@@ -24,6 +24,7 @@
 
 
 import Path
+import Constants
 import CAMTests.PathTestUtils as PathTestUtils
 import CAMTests.PostTestMocks as PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
@@ -609,3 +610,32 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         # LinuxCNC safetyblock defaults
         self.assertIn("G40", gcode, "Safetyblock G40 should appear from schema default")
         self.assertIn("G49", gcode, "Safetyblock G49 should appear from schema default")
+
+    def test_drill_cycles_to_translate(self):
+        drill_codes = Constants.GCODE_DRILL_EXTENDED + Constants.GCODE_MOVE_DRILL
+        self.post._machine.postprocessor_properties["drill_cycles_to_translate"] = "\n".join(
+            drill_codes
+        )
+
+        self.profile_op.Path = Path.Path(
+            [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 10.0}),
+                # move +xy, move z->R, drill Z, z->R,
+                Path.Command("G81", {"X": 10.0, "Y": 10.0, "R": 9.0, "Z": 0, "L": 2}),
+                Path.Command("G0", {"X": 1.0, "Y": 2.0, "Z": 10.0}),
+                Path.Command("G82", {"X": 10.0, "Y": 10.0, "R": 9.0, "Z": 0, "L": 2, "P": 3}),
+                Path.Command("G0", {"X": 3.0, "Y": 4.0, "Z": 10.0}),
+                Path.Command("G81", {"X": 10.0, "Y": 10.0, "R": 9.0, "Z": 0, "Q": 1}),
+            ]
+        )
+        results = self.post.export2()
+        gcode = "\n".join(g for _, g in results)
+
+        # replaced them?
+        for drill_g in drill_codes:
+            self.assertNotIn(drill_g, gcode, f"Should have expanded drills, but saw {drill_g}")
+
+        # did we actually produce any replacement?
+
+        # At least one G4 for the G81 Q
+        self.assertIn("G4 ", gcode)
