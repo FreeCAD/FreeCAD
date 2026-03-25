@@ -195,6 +195,10 @@ public:
         add_varargs_method("nearestFraction", &Module::nearestFraction,
         "nearestFraction(float) - returns the numerator and denominator of the nearest fraction as a tuple."
         );
+        add_varargs_method("scrubEdges", &Module::scrubEdges,
+            "scubbedEdges = scrubEdges(edgeList) -- remove duplicate edges. Also converts partial overlaps into 3 edges as in: \
+             scrubEdges([A, B]) = [a shortened A, an edge for overlap region, a shortened B]."
+        );
 
         initialize("This is a module for making drawings"); // register with Python
     }
@@ -1363,6 +1367,50 @@ private:
         PyObject* pyNumAndDen = Py_BuildValue("(ii)", numAndDen.first, numAndDen.second);
         return Py::asObject(pyNumAndDen);
     }
+
+    Py::Object scrubEdges(const Py::Tuple& args)
+    {
+        PyObject *pcObj{nullptr};
+        if (!PyArg_ParseTuple(args.ptr(), "O!", &(PyList_Type), &pcObj)) {
+            throw Py::TypeError("expected listofedges");
+        }
+
+        std::vector<TopoDS_Edge> edgeList;
+
+        try {
+            Py::Sequence list(pcObj);
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeEdgePy::Type))) {
+                    const TopoDS_Shape& shape = static_cast<TopoShapePy*>((*it).ptr())->
+                        getTopoShapePtr()->getShape();
+                    const TopoDS_Edge edge = TopoDS::Edge(shape);
+                    edgeList.push_back(edge);
+                }
+            }
+        }
+        catch (Standard_Failure& e) {
+            throw Py::Exception(Part::PartExceptionOCCError, e.GetMessageString());
+        }
+
+        if (edgeList.empty()) {
+            Base::Console().message("TechDraw::scrubEdges - list of edges is empty\n");
+            return Py::None();
+        }
+
+        std::vector<TopoDS_Edge> closedEdges;
+        edgeList = DrawProjectSplit::scrubEdges(edgeList, closedEdges);
+        // Need to also check closed edges, since that may be the outline
+        edgeList.insert( edgeList.end(), closedEdges.begin(), closedEdges.end() );
+
+        Py::List cleanEdgeList;
+        for (auto& edge: edgeList) {
+            PyObject* pyEdgePtr = new TopoShapeEdgePy(new TopoShape(edge));
+            cleanEdgeList.append(Py::asObject(pyEdgePtr));
+        }
+
+        return cleanEdgeList;
+    }
+
 
  };
 
