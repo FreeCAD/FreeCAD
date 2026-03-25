@@ -72,6 +72,9 @@
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="dZLLabel">
+        <property name="toolTip">
+         <string>Sets the initial zoom level for the spreadsheet table view (60% to 160%)</string>
+        </property>
         <property name="text">
          <string>Default zoom level</string>
         </property>
@@ -126,6 +129,9 @@ Defaults to: %V = %A
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character to use as field delimiter when importing/exporting CSV files. Default is tab, but commas (,) and semicolons (;) are also common.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Delimiter character</string>
@@ -187,6 +193,9 @@ Defaults to: %V = %A
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to enclose strings that contain the delimiter or newlines. Typically single quote (') or double quote (&amp;quot;).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Quote character</string>
         </property>
@@ -218,6 +227,9 @@ Defaults to: %V = %A
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Character used to represent special unprintable characters in CSV import/export, e.g. \t = tab, \n = newline. Typically the backslash (\).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>Escape character</string>
