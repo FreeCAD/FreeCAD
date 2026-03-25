@@ -48,9 +48,9 @@ GCODE_MOVE_ALL = GCODE_MOVE_LINE + GCODE_MOVE_ARC + GCODE_MOVE_DRILL
 # =============================================================================
 
 # Units mode
-GCODE_UNITS = ["G20", "G21"]
 GCODE_UNITS_METRIC = ["G21"]
 GCODE_UNITS_INCHES = ["G20"]
+GCODE_UNITS = GCODE_UNITS_METRIC + GCODE_UNITS_INCHES
 
 # Dwell
 GCODE_DWELL = ["G4", "G04"]
@@ -163,6 +163,8 @@ GCODE_SUPPORTED = (
     + GCODE_RETURN_INITIAL
     + GCODE_RETURN_R
     + GCODE_TOOL_LENGTH_OFFSET
+    # FIXME: why wasn't this here:
+    + GCODE_FIXTURES
 )
 
 # All supported M-codes for generic post processor
@@ -175,6 +177,8 @@ MCODE_SUPPORTED = (
     + MCODE_COOLANT_MIST
     + MCODE_COOLANT_FLOOD
     + MCODE_COOLANT_OFF
+    + MCODE_SPINDLE_ON
+    + MCODE_SPINDLE_OFF
 )
 
 # All coolant M-codes
