@@ -655,36 +655,6 @@ bool MainWindow::setupPythonConsole()
     return false;
 }
 
-bool MainWindow::checkFirstRun()
-{
-    ParameterGrp::handle hGrpRF = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/RecentFiles"
-    );
-    auto RecentFilesCount = hGrpRF->GetInt("RecentFiles");
-    ParameterGrp::handle hGrpFS2024 = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Start"
-    );
-    auto firstStart = hGrpFS2024->GetBool("FirstStart2024", true);  // NOLINT
-    if (firstStart && RecentFilesCount < 1) {
-        return true;
-    }
-    return false;
-}
-
-
-void MainWindow::moveToDefaultPosition(QRect rect, QPoint pos)
-{
-    int x1 {}, x2 {}, y1 {}, y2 {};
-    // make sure that the main window is not totally out of the visible rectangle
-    rect.getCoords(&x1, &y1, &x2, &y2);
-    const int offsetX = 30;
-    const int offsetY = 10;
-    pos.setX(qMin(qMax(pos.x(), x1 - this->width() + offsetX), x2 - offsetX));
-    pos.setY(qMin(qMax(pos.y(), y1 - offsetY), y2 - offsetY));
-    this->move(pos);
-}
-
-
 bool MainWindow::updateTreeView(bool show)
 {
     if (d->hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
@@ -2026,25 +1996,30 @@ void MainWindow::loadWindowSettings()
     }
 
     resize(size);
-    // TODO: Hotfix to be removed as soon as possible after 1.1.0 Release
+
+    auto recentFiles = App::GetApplication()
+                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/RecentFiles")
+                           ->GetInt("RecentFiles");
+    auto firstStart = App::GetApplication()
+                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start")
+                          ->GetBool("FirstStart2024", true);
+    bool firstRun = firstStart && recentFiles < 1;
 #ifdef FC_OS_WIN64
-    if (checkFirstRun()) {
-        const int topLeftXY = 10;
-        this->move(topLeftXY, topLeftXY);
+    const bool needFirstRunFix = true;
+#else
+    const bool needFirstRunFix = QGuiApplication::platformName() == "wayland";
+#endif
+    if (firstRun && needFirstRunFix) {
+        move(10, 10);
     }
     else {
-        moveToDefaultPosition(rect, pos);
+        int x1 {}, x2 {}, y1 {}, y2 {};
+        // make sure that the main window is not totally out of the visible rectangle
+        rect.getCoords(&x1, &y1, &x2, &y2);
+        pos.setX(qMin(qMax(pos.x(), x1 - width() + 30), x2 - 30));
+        pos.setY(qMin(qMax(pos.y(), y1 - 10), y2 - 10));
+        move(pos);
     }
-#else
-    // TODO: Hotfix to be removed as soon as possible after 1.1.0 Release
-    if (QGuiApplication::platformName() == QString::fromStdString("wayland") && checkFirstRun()) {
-        const int topLeftXY = 10;
-        this->move(topLeftXY, topLeftXY);
-    }
-    else {  // all Linux x11 and Mac
-        moveToDefaultPosition(rect, pos);
-    }
-#endif
 
     Base::StateLocker guard(d->_restoring);
 
