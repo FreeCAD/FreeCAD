@@ -43,7 +43,7 @@ class ColorButton;
 class LinearGizmo;
 class RotationGizmo;
 class GizmoContainer;
-}
+}  // namespace Gui
 
 namespace Part
 {
@@ -60,9 +60,11 @@ class SectionAnalysisWidget: public QWidget
     Q_OBJECT
 
 public:
-    explicit SectionAnalysisWidget(Part::SectionAnalysis* feature,
-                                   ViewProviderSectionAnalysis* vp,
-                                   QWidget* parent = nullptr);
+    explicit SectionAnalysisWidget(
+        Part::SectionAnalysis* feature,
+        ViewProviderSectionAnalysis* vp,
+        QWidget* parent = nullptr
+    );
     ~SectionAnalysisWidget() override;
 
     bool accept();
@@ -72,7 +74,10 @@ public:
     void updateFromFeature();
     void setupGizmos();
     void updateGizmoPositions();
-    Gui::GizmoContainer* getGizmoContainer() const { return gizmoContainer.get(); }
+    Gui::GizmoContainer* getGizmoContainer() const
+    {
+        return gizmoContainer.get();
+    }
 
 private:
     void setupUi();
@@ -127,8 +132,7 @@ class TaskSectionAnalysis: public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    explicit TaskSectionAnalysis(Part::SectionAnalysis* feature,
-                                 ViewProviderSectionAnalysis* vp);
+    explicit TaskSectionAnalysis(Part::SectionAnalysis* feature, ViewProviderSectionAnalysis* vp);
     ~TaskSectionAnalysis() override;
 
     bool accept() override;
