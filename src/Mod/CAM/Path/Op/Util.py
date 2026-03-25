@@ -175,12 +175,38 @@ def orientWire(w, forward=True):
     return wire
 
 
-def offsetWire(wire, base, offset, forward, Side=None):
-    """offsetWire(wire, base, offset, forward) ... offsets the wire away from base and orients the wire accordingly.
+def offsetWire(wire, base, offset, forward, Side=None, tolerance=None):
+    """offsetWire(wire, base, offset, forward, Side=None, tolerance=None) ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
+    tolerance: Deflection tolerance for discretizing non-line/arc edges. Required if wire contains non-line/arc edges.
     """
     Path.Log.track("offsetWire")
+
+    # Pre-process wire: discretize any edges that are not lines or circular arcs
+    processed_edges = []
+    modified = False
+    for edge in wire.Edges:
+        curve = edge.Curve
+        if isinstance(curve, (Part.Line, Part.LineSegment, Part.Circle, Part.ArcOfCircle)):
+            # Keep lines and arcs as-is
+            processed_edges.append(edge)
+        else:
+            # Discretize and replace with line segments
+            if tolerance is None:
+                raise ValueError(
+                    "tolerance parameter is required when wire contains non-line/arc edges"
+                )
+            vertices = edge.discretize(Deflection=tolerance)
+            line_edges = [
+                Part.makeLine(vertices[i], vertices[i + 1]) for i in range(len(vertices) - 1)
+            ]
+            processed_edges.extend(line_edges)
+            modified = True
+
+    # Reassemble the wire if any edges were replaced
+    if modified:
+        wire = Part.Wire(processed_edges)
 
     if len(wire.Edges) == 1:
         edge = wire.Edges[0]
