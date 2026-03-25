@@ -152,6 +152,8 @@ SET(PartGui_SRCS
     PropertyEnumAttacherItem.h
     SoFCShapeObject.cpp
     SoFCShapeObject.h
+    SoFCStencilCap.cpp
+    SoFCStencilCap.h
     SoBrepEdgeSet.cpp
     SoBrepEdgeSet.h
     SoBrepFaceSet.cpp

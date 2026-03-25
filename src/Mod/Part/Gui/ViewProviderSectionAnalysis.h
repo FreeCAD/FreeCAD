@@ -48,6 +48,11 @@ class SectionAnalysis;
 
 namespace PartGui
 {
+class SoFCStencilCap;
+}
+
+namespace PartGui
+{
 
 class PartGuiExport ViewProviderSectionAnalysis: public ViewProviderPart
 {
@@ -81,7 +86,9 @@ private:
     void updateClipPlaneEquation();
     void updatePlaneVisual();
     void updateHatchProjection();
+    void updateStencilCap();
 
+    SoFCStencilCap* pcStencilCap = nullptr;
     SoSwitch* pcPlaneSwitch = nullptr;
     SoSeparator* pcPlaneRoot = nullptr;
     SoShapeHints* pcPlaneHints = nullptr;

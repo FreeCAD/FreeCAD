@@ -57,6 +57,8 @@
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/FeatureSectionAnalysis.h>
 
+#include "SoFCStencilCap.h"
+#include "ViewProviderExt.h"
 #include "ViewProviderSectionAnalysis.h"
 #include "TaskSectionAnalysis.h"
 
@@ -182,6 +184,11 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     pcClipPlane = new SoClipPlane();
     pcClipPlane->ref();
 
+    // GPU stencil-buffer capping node — renders filled cross-section
+    // without OCCT computation.
+    pcStencilCap = new SoFCStencilCap();
+    pcRoot->addChild(pcStencilCap);
+
     updatePlaneVisual();
 }
 
@@ -196,6 +203,7 @@ void ViewProviderSectionAnalysis::finishRestoring()
     }
     updatePlaneVisual();
     updateHatchProjection();
+    updateStencilCap();
     if (hatchEnabled) {
         setHatching(true);
     }
@@ -452,6 +460,91 @@ void ViewProviderSectionAnalysis::updateHatchProjection()
     pcHatchCoordGen->directionT.setValue(SbVec3f(v.x * scale, v.y * scale, v.z * scale));
 }
 
+void ViewProviderSectionAnalysis::updateStencilCap()
+{
+    if (!pcStencilCap) {
+        return;
+    }
+
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat) {
+        return;
+    }
+
+    // Sync cap quad corners from the plane visual
+    if (pcPlaneCoords && pcPlaneCoords->point.getNum() >= 4) {
+        pcStencilCap->capCorner0.setValue(pcPlaneCoords->point[0]);
+        pcStencilCap->capCorner1.setValue(pcPlaneCoords->point[1]);
+        pcStencilCap->capCorner2.setValue(pcPlaneCoords->point[2]);
+        pcStencilCap->capCorner3.setValue(pcPlaneCoords->point[3]);
+    }
+
+    // Sync hatching parameters from the hatch coord gen
+    if (pcHatchCoordGen) {
+        pcStencilCap->hatchDirS.setValue(pcHatchCoordGen->directionS.getValue());
+        pcStencilCap->hatchDirT.setValue(pcHatchCoordGen->directionT.getValue());
+    }
+
+    pcStencilCap->hatchEnabled.setValue(hatchEnabled);
+
+    // Collect source geometry for the stencil fill pass
+    std::vector<StencilSource> sources;
+    for (auto* obj : clippedObjects) {
+        auto* vp = Gui::Application::Instance->getViewProvider(obj);
+        if (!vp) {
+            continue;
+        }
+        // Find the coordinate and face set nodes via scene graph search
+        // (avoids accessing protected members of ViewProviderPartExt)
+        auto* root = dynamic_cast<SoSeparator*>(vp->getRoot());
+        if (!root) {
+            continue;
+        }
+
+        SoSearchAction saCoords;
+        saCoords.setType(SoCoordinate3::getClassTypeId());
+        saCoords.setInterest(SoSearchAction::FIRST);
+        saCoords.apply(root);
+        auto* foundCoords = saCoords.getPath()
+            ? static_cast<SoCoordinate3*>(saCoords.getPath()->getTail())
+            : nullptr;
+
+        SoSearchAction saFaces;
+        saFaces.setType(SoIndexedFaceSet::getClassTypeId());
+        saFaces.setInterest(SoSearchAction::FIRST);
+        saFaces.apply(root);
+        auto* foundFaces = saFaces.getPath()
+            ? static_cast<SoIndexedFaceSet*>(saFaces.getPath()->getTail())
+            : nullptr;
+
+        if (!foundCoords || !foundFaces) {
+            continue;
+        }
+
+        StencilSource src;
+        src.coords = foundCoords;
+        src.faceSet = foundFaces;
+        // Get the object's world transform from its placement
+        auto* geoFeat = dynamic_cast<App::GeoFeature*>(obj);
+        if (geoFeat) {
+            Base::Matrix4D mat = geoFeat->globalPlacement().toMatrix();
+            // Convert Base::Matrix4D to SbMatrix (column-major)
+            for (int r = 0; r < 4; r++) {
+                for (int c = 0; c < 4; c++) {
+                    src.transform[c][r] = static_cast<float>(mat[r][c]);
+                }
+            }
+        }
+        else {
+            src.transform.makeIdentity();
+        }
+
+        sources.push_back(src);
+    }
+
+    pcStencilCap->setSources(sources);
+}
+
 void ViewProviderSectionAnalysis::setHatching(bool on)
 {
     hatchEnabled = on;
@@ -528,6 +621,7 @@ void ViewProviderSectionAnalysis::show()
     installClipPlane();
     updatePlaneVisual();
     updateHatchProjection();
+    updateStencilCap();
     if (hatchEnabled) {
         setHatching(true);
     }
@@ -561,6 +655,7 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
         if (prop == &feat->PlaneNormal) {
             updateHatchProjection();
         }
+        updateStencilCap();
     }
 
     if (prop == &feat->Source) {
@@ -569,6 +664,7 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
             installClipPlane();
         }
         updatePlaneVisual();
+        updateStencilCap();
     }
 
     // After a shape recompute, the face set geometry is rebuilt and all
@@ -579,6 +675,7 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
             installClipPlane();
         }
         updatePlaneVisual();
+        updateStencilCap();
         if (hatchEnabled) {
             setHatching(true);
         }
