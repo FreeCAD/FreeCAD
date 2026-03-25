@@ -156,4 +156,29 @@ protected:
     SbBool active;
 };
 
+class GuiExport SoSelectionShadingElement: public SoElement
+{
+    using inherited = SoElement;
+
+    SO_ELEMENT_HEADER(SoSelectionShadingElement);
+
+public:
+    static void initClass();
+
+    void init(SoState* state) override;
+    static void set(SoState* state, SbBool value);
+    static SbBool get(SoState* state);
+
+    SbBool matches(const SoElement* element) const override;
+    SoElement* copyMatchInfo() const override;
+
+protected:
+    ~SoSelectionShadingElement() override;
+
+protected:
+    SbBool shading;
+};
+
 }  // namespace Gui
+
+#endif  // GUI_SOFCINTERACTIVEELEMENT_H

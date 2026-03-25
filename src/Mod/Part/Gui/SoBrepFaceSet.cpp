@@ -1419,6 +1419,10 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
     SoState* state = action->getState();
     state->push();
 
+    if (!Gui::SoSelectionShadingElement::get(state)) {
+        SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    }
+
     SoLazyElement::setEmissive(state, &ctx->highlightColor);
     // if shading is disabled then set also the diffuse color
     if (SoLazyElement::getLightModel(state) == SoLazyElement::BASE_COLOR) {
@@ -1541,6 +1545,10 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction* action, SelContextPtr ctx,
 
     if (push) {
         state->push();
+
+        if (!Gui::SoSelectionShadingElement::get(state)) {
+            SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+        }
 
         SoLazyElement::setEmissive(state, &ctx->selectionColor);
         // if shading is disabled then set also the diffuse color

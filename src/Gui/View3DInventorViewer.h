@@ -530,6 +530,8 @@ public:
     NaviCube* getNaviCube() const;
     void setEnabledVBO(bool on);
     bool isEnabledVBO() const;
+    void setEnabledSelectionShading(bool on);
+    bool isEnabledSelectionShading() const;
     void setRenderCache(int);
 
     //! Update colors of axis in corner to match preferences
@@ -653,6 +655,7 @@ private:
     QLabel* fpsCounter = nullptr;
     unsigned long previousAxisLetterColor = 0;
     bool vboEnabled;
+    bool shadingEnabled;
     bool naviCubeEnabled;
     // Screen-only viewer decorations such as the navicube are rendered only
     // when the active render intent allows them.

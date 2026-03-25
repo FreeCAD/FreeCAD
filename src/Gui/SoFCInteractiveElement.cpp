@@ -268,3 +268,51 @@ SoElement* SoGLVBOActivatedElement::copyMatchInfo() const
 {
     return nullptr;
 }
+
+// ---------------------------------
+
+SO_ELEMENT_SOURCE(SoSelectionShadingElement)
+
+void SoSelectionShadingElement::initClass()
+{
+    SO_ELEMENT_INIT_CLASS(SoSelectionShadingElement, inherited);
+    SO_ENABLE(SoGLRenderAction, SoSelectionShadingElement);
+}
+
+void SoSelectionShadingElement::init(SoState* state)
+{
+    inherited::init(state);
+    this->shading = true;
+}
+
+SoSelectionShadingElement::~SoSelectionShadingElement() = default;
+
+void SoSelectionShadingElement::set(SoState* state, SbBool value)
+{
+    auto elem = static_cast<SoSelectionShadingElement*>(SoElement::getElement(state, classStackIndex));
+    elem->shading = value;
+}
+
+SbBool SoSelectionShadingElement::get(SoState* state)
+{
+    const auto self = static_cast<const SoSelectionShadingElement*>(
+        SoElement::getConstElement(state, classStackIndex)
+    );
+    return self->shading;
+}
+
+SbBool SoSelectionShadingElement::matches(const SoElement* element) const
+{
+    const SoSelectionShadingElement* elem = dynamic_cast<const SoSelectionShadingElement*>(element);
+    assert(elem);
+    return (elem->shading == this->shading);
+}
+
+SoElement* SoSelectionShadingElement::copyMatchInfo() const
+{
+    SoSelectionShadingElement* element = static_cast<SoSelectionShadingElement*>(
+        this->getTypeId().createInstance()
+    );
+    element->shading = this->shading;
+    return element;
+}

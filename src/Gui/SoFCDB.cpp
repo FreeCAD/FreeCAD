@@ -122,6 +122,7 @@ void Gui::SoFCDB::init()
     SoFCDocumentAction ::initClass();
     SoGLWidgetNode ::initClass();
     SoGLVBOActivatedElement ::initClass();
+    SoSelectionShadingElement ::initClass();
     SoFCEnableSelectionAction ::initClass();
     SoFCEnablePreselectionAction ::initClass();
     SoFCSelectionColorAction ::initClass();

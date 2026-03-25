@@ -475,6 +475,7 @@ void View3DInventorViewer::init()
     shading = true;
     fpsEnabled = false;
     vboEnabled = false;
+    shadingEnabled = true;
 
     attachSelection();
 
@@ -1455,6 +1456,16 @@ void View3DInventorViewer::setEnabledVBO(bool on)
 bool View3DInventorViewer::isEnabledVBO() const
 {
     return vboEnabled;
+}
+
+void View3DInventorViewer::setEnabledSelectionShading(bool on)
+{
+    shadingEnabled = on;
+}
+
+bool View3DInventorViewer::isEnabledSelectionShading() const
+{
+    return shadingEnabled;
 }
 
 void View3DInventorViewer::setRenderCache(int mode)
@@ -2646,6 +2657,7 @@ void View3DInventorViewer::renderScene()
         SoGLWidgetElement::set(state, qobject_cast<QOpenGLWidget*>(this->getGLWidget()));
         SoGLRenderActionElement::set(state, glra);
         SoGLVBOActivatedElement::set(state, this->vboEnabled);
+        SoSelectionShadingElement::set(state, this->shadingEnabled);
         drawSingleBackground(col);
         glra->apply(this->backgroundroot);
     }
