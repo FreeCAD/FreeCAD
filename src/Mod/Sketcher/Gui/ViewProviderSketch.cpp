@@ -4341,7 +4341,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
 
         for (rit = delConstraints.rbegin(); rit != delConstraints.rend(); ++rit) {
             try {
-                Gui::cmdAppObjectArgs(getObject(), "delConstraint(%d)", *rit);
+                Gui::cmdAppObjectArgs(getObject(), "delConstraint(%d, True)", *rit);
             }
             catch (const Base::Exception& e) {
                 Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
@@ -4393,7 +4393,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
             stream << *endit;
 
             try {
-                Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s])", stream.str().c_str());
+                Gui::cmdAppObjectArgs(getObject(), "delGeometries([%s], True)", stream.str().c_str());
             }
             catch (const Base::Exception& e) {
                 Base::Console().developerError("ViewProviderSketch", "%s\n", e.what());
