@@ -166,13 +166,16 @@ void StdCmdOpen::activated(int iMsg)
         getGuiApplication()->checkRestoreError(doc);
     }
 
-    fileList.erase(std::remove_if(fileList.begin(),
-                                  fileList.end(),
-                                  [](const QString& file) {
-                                      return file.endsWith(QStringLiteral(".FCBak"),
-                                                           Qt::CaseInsensitive);
-                                  }),
-                   fileList.end());
+    fileList.erase(
+        std::remove_if(
+            fileList.begin(),
+            fileList.end(),
+            [](const QString& file) {
+                return file.endsWith(QStringLiteral(".FCBak"), Qt::CaseInsensitive);
+            }
+        ),
+        fileList.end()
+    );
     if (fileList.isEmpty()) {
         return;
     }
