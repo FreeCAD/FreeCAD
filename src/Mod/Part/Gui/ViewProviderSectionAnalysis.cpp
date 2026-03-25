@@ -147,24 +147,27 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
         const int sz = 256;
         const int spacing = 64;
         const int lineWidth = 1;
-        unsigned char* img = new unsigned char[sz * sz * 4];
-        std::memset(img, 0, sz * sz * 4);
+        // Use RGB texture (no alpha) in MODULATE mode.  Background is
+        // white (Cs * 1 = Cs, preserves surface color), lines are dark
+        // gray (Cs * 0.3, darkens).  Avoids DECAL alpha issues where
+        // some face rendering paths become transparent.
+        unsigned char* img = new unsigned char[sz * sz * 3];
+        std::memset(img, 255, sz * sz * 3);  // white background
         for (int y = 0; y < sz; y++) {
             for (int x = 0; x < sz; x++) {
-                int idx = (y * sz + x) * 4;
+                int idx = (y * sz + x) * 3;
                 int diag = (x + y) % spacing;
                 if (diag < lineWidth) {
-                    img[idx] = 0;
-                    img[idx + 1] = 0;
-                    img[idx + 2] = 0;
-                    img[idx + 3] = 180;
+                    img[idx] = 76;      // ~0.3 * 255
+                    img[idx + 1] = 76;
+                    img[idx + 2] = 76;
                 }
             }
         }
-        pcHatchTexture->image.setValue(SbVec2s(sz, sz), 4, img);
+        pcHatchTexture->image.setValue(SbVec2s(sz, sz), 3, img);
         pcHatchTexture->wrapS = SoTexture2::REPEAT;
         pcHatchTexture->wrapT = SoTexture2::REPEAT;
-        pcHatchTexture->model = SoTexture2::DECAL;
+        pcHatchTexture->model = SoTexture2::MODULATE;
         delete[] img;
     }
 
@@ -286,7 +289,14 @@ void ViewProviderSectionAnalysis::updateClipPlaneEquation()
     // OCCT keeps the negative-normal side (where n.p < d).
     // SoClipPlane keeps the positive-normal half-space.
     // So we negate the normal to keep the same side as OCCT.
-    SbVec3f planePoint(n.x * d, n.y * d, n.z * d);
+    //
+    // Offset the clip plane by a tiny epsilon toward the remaining solid
+    // so it clips slightly past the section face.  This prevents z-fighting
+    // between the source body's surface at the clip boundary and the
+    // section face (which lies exactly on the cutting plane).
+    constexpr double clipEps = 0.01;  // 10 microns
+    double dClip = d - clipEps;
+    SbVec3f planePoint(n.x * dClip, n.y * dClip, n.z * dClip);
     SbVec3f clipNormal(-n.x, -n.y, -n.z);
     pcClipPlane->plane.setValue(SbPlane(clipNormal, planePoint));
     pcClipPlane->on.setValue(TRUE);

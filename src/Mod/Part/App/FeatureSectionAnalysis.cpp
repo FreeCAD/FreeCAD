@@ -116,7 +116,22 @@ void SectionAnalysis::collectSectionFaces(const TopoDS_Shape& solid,
             gp_Pln plane = adapt.Plane();
             if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
                 && plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
-                faces.push_back(face);
+                // Ensure consistent face orientation — the effective normal
+                // (geometric normal ± topological orientation) should match
+                // the slice plane direction so lighting/hatching is stable.
+                // BRepAdaptor_Surface::Plane() returns the geometric normal
+                // which ignores face topology, so check Orientation() too.
+                gp_Dir effectiveNormal = plane.Axis().Direction();
+                if (face.Orientation() == TopAbs_REVERSED) {
+                    effectiveNormal.Reverse();
+                }
+                gp_Dir sliceNormal = slicePlane.Axis().Direction();
+                if (effectiveNormal.Dot(sliceNormal) < 0) {
+                    faces.push_back(TopoDS::Face(face.Reversed()));
+                }
+                else {
+                    faces.push_back(face);
+                }
             }
         }
     }
@@ -157,26 +172,49 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     std::vector<TopoDS_Face> sectionFaces;
     gp_Pln slicePlane(a, b, c, -d);
 
-    Base::Console().log("SectionAnalysis::execute() normal=(%.4f,%.4f,%.4f) offset=%.2f flip=%d\n",
-                        a, b, c, d, (int)flip);
-
-    // Process solids — wrap each in try/catch since assemblies may have invalid shapes
+    // Try boolean-cut approach first for each solid (produces correct
+    // faces with holes).  Fall back to BRepAlgoAPI_Section for solids
+    // where the boolean cut fails or produces no section faces.
     TopExp_Explorer xp;
     int solidCount = 0;
+    std::vector<TopoDS_Shape> unhandledSolids;
+
     for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
         solidCount++;
+        size_t facesBefore = sectionFaces.size();
         try {
             collectSectionFaces(xp.Current(), slicePlane, sectionFaces);
         }
         catch (...) {
-            Base::Console().log("SectionAnalysis: solid %d failed boolean cut, skipping\n", solidCount);
+            // Boolean cut failed — will try Section fallback
+        }
+        if (sectionFaces.size() == facesBefore) {
+            unhandledSolids.push_back(xp.Current());
         }
     }
 
-    // Process non-solid shells and faces
+    // Fallback: use BRepAlgoAPI_Section for solids where the boolean cut
+    // produced nothing, and for non-solid shapes (shells, faces).
+    // Section gives intersection edges; we build faces from the wires.
+    TopoDS_Shape sectionSource;
     if (solidCount == 0) {
+        // No solids at all — section the entire source
+        sectionSource = sourceShape;
+    }
+    else if (!unhandledSolids.empty()) {
+        // Build a compound of the solids that need the fallback
+        BRep_Builder bb;
+        TopoDS_Compound comp;
+        bb.MakeCompound(comp);
+        for (const auto& s : unhandledSolids) {
+            bb.Add(comp, s);
+        }
+        sectionSource = comp;
+    }
+
+    if (!sectionSource.IsNull()) {
         try {
-            BRepAlgoAPI_Section cs(sourceShape, slicePlane);
+            BRepAlgoAPI_Section cs(sectionSource, slicePlane);
             if (cs.IsDone()) {
                 Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
                 for (xp.Init(cs.Shape(), TopAbs_EDGE); xp.More(); xp.Next()) {
@@ -205,12 +243,12 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
             }
         }
         catch (...) {
-            // Skip non-solid shapes that fail
+            // Section fallback also failed
         }
     }
 
-    Base::Console().log("SectionAnalysis: %d solids processed, %d section faces found\n",
-                        solidCount, (int)sectionFaces.size());
+    Base::Console().log("SectionAnalysis: %d solids, %d fallback, %d faces\n",
+                        solidCount, (int)unhandledSolids.size(), (int)sectionFaces.size());
 
     if (sectionFaces.empty()) {
         this->Shape.setValue(TopoDS_Shape());
