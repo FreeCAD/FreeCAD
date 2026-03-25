@@ -35,10 +35,12 @@ struct CustomTitleBarWindow::Impl {
         titleBar->setNativeControlsSpacerSize({cachedSpacerWidth, 0});
     }
 
-    void layoutOverlay(CustomTitleBarWindow *window) {
-        if (!titleBar) return;
-        int overlayH = backend->snapTitleBarHeight(
-            qMax(titleBar->minimumHeight(), titleBar->sizeHint().height()));
+    void layoutOverlay(CustomTitleBarWindow* window)
+    {
+        if (!titleBar) {
+            return;
+        }
+        int overlayH = backend->snapTitleBarHeight(titleBar->minimumHeight());
         int spacerH = titleBarVisible ? overlayH : 0;
         // Spacer reserves space in QMainWindow's internal layout
         menuSpacer->setFixedHeight(spacerH);
@@ -80,7 +82,10 @@ CustomTitleBarWindow::CustomTitleBarWindow(Mode mode, QWidget *parent)
 
     // Replace the native controls spacer with a custom widget if the backend provides one
     if (auto *ctrlWidget = d->backend->createNativeControlsWidget(d->titleBar)) {
-        d->titleBar->setNativeControlsWidget(ctrlWidget);
+        if (d->backend->nativeControlsPosition() == PlatformTitleBarBackend::RightSide)
+            d->titleBar->setNativeControlsWidgetRight(ctrlWidget);
+        else
+            d->titleBar->setNativeControlsWidget(ctrlWidget);
     }
 
     // Plain spacer as menu widget — reserves space in QMainWindow's layout

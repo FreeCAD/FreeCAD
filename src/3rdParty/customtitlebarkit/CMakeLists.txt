@@ -44,7 +44,46 @@ target_include_directories(customtitlebarkit
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-set_target_properties(customtitlebarkit PROPERTIES AUTOMOC ON)
+set_target_properties(customtitlebarkit PROPERTIES AUTOMOC ON AUTORCC ON)
+
+target_sources(customtitlebarkit PRIVATE
+    resources.qrc
+)
+
+# Output to FreeCAD's bin/lib directories so the DLL is found at runtime
+if(NOT CUSTOMTITLEBARKIT_STANDALONE)
+    set(FC_BIN_DIR "${CMAKE_BINARY_DIR}/bin")
+    set(FC_LIB_DIR "${CMAKE_BINARY_DIR}/lib")
+    
+    set_target_properties(customtitlebarkit PROPERTIES
+        # Default directories
+        RUNTIME_OUTPUT_DIRECTORY "${FC_BIN_DIR}"
+        LIBRARY_OUTPUT_DIRECTORY "${FC_LIB_DIR}"
+        ARCHIVE_OUTPUT_DIRECTORY "${FC_LIB_DIR}"
+        
+        # Override multi-config generator subfolders (e.g. MSVC appending /Release)
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${FC_BIN_DIR}"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${FC_BIN_DIR}"
+        RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO "${FC_BIN_DIR}"
+        RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL "${FC_BIN_DIR}"
+        
+        LIBRARY_OUTPUT_DIRECTORY_DEBUG "${FC_LIB_DIR}"
+        LIBRARY_OUTPUT_DIRECTORY_RELEASE "${FC_LIB_DIR}"
+        LIBRARY_OUTPUT_DIRECTORY_RELWITHDEBINFO "${FC_LIB_DIR}"
+        LIBRARY_OUTPUT_DIRECTORY_MINSIZEREL "${FC_LIB_DIR}"
+        
+        ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${FC_LIB_DIR}"
+        ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${FC_LIB_DIR}"
+        ARCHIVE_OUTPUT_DIRECTORY_RELWITHDEBINFO "${FC_LIB_DIR}"
+        ARCHIVE_OUTPUT_DIRECTORY_MINSIZEREL "${FC_LIB_DIR}"
+    )
+
+    install(TARGETS customtitlebarkit
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+    )
+endif()
 
 target_link_libraries(customtitlebarkit PUBLIC Qt6::Widgets)
 
@@ -77,9 +116,24 @@ elseif(WIN32)
     )
     target_link_libraries(customtitlebarkit PRIVATE dwmapi)
 elseif(UNIX)
+    find_package(Qt6 COMPONENTS Svg)
     target_sources(customtitlebarkit PRIVATE
+        src/platform/linux/LinuxTitleBarBackend.h
         src/platform/linux/LinuxTitleBarBackend.cpp
+        src/platform/linux/LinuxWindowButton.h
+        src/platform/linux/LinuxWindowButton.cpp
+        src/platform/linux/LinuxDesktopDetection.h
+        src/platform/linux/LinuxDesktopDetection.cpp
     )
+    if(Qt6Svg_FOUND)
+        target_link_libraries(customtitlebarkit PRIVATE Qt6::Svg)
+    endif()
+
+    find_package(Qt6 COMPONENTS GuiPrivate)
+    if(Qt6GuiPrivate_FOUND)
+        target_link_libraries(customtitlebarkit PRIVATE Qt6::GuiPrivate)
+        target_compile_definitions(customtitlebarkit PRIVATE HAVE_QT_GUI_PRIVATE=1)
+    endif()
 endif()
 
 if(CUSTOMTITLEBARKIT_STANDALONE)

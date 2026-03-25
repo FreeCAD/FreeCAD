@@ -28,13 +28,11 @@ struct FoldableMenuBar::Impl {
         if (!menuBar) return;
         if (!foldable || revealWidth >= menuBar->sizeHint().width()) {
             menuBar->clearMask();
-            menuBar->setVisible(true);
-        } else if (revealWidth <= 0) {
-            // Empty QRegion clears the mask (Qt treats it as "no mask"),
-            // so hide the widget instead.
-            menuBar->setVisible(false);
-        } else {
-            menuBar->setVisible(true);
+        }
+        else if (revealWidth <= 0) {
+            menuBar->setMask(QRegion(-1, -1, 1, 1));
+        }
+        else {
             menuBar->setMask(QRegion(0, 0, revealWidth, menuBar->height()));
         }
     }
@@ -163,12 +161,14 @@ FoldableMenuBar::FoldableMenuBar(QWidget *parent)
 
     connect(d->animation, &QPropertyAnimation::finished, this, [this]() {
         if (!d->expanded) {
-            d->menuBar->setEnabled(false);
             d->clearOverlayMasks();
-            // In overlay mode, hide and reparent container back to this
             if (d->overlayExpand && d->menuContainer->parent() != this) {
-                d->menuContainer->hide();
                 d->menuContainer->setParent(this);
+                d->menuContainer->show();
+                d->menuContainer->setGeometry(0, 0, 0, 0);
+            }
+            else if (!d->overlayExpand) {
+                d->menuContainer->setMaximumWidth(0);
             }
         }
         if (d->expanded) {
@@ -238,8 +238,7 @@ void FoldableMenuBar::setMenuBar(QMenuBar *menuBar)
 
     // Apply current foldable state
     if (d->foldable && !d->expanded) {
-        d->menuBar->setVisible(false);
-        d->menuBar->setEnabled(false);
+        d->updateClip();
     }
 }
 
@@ -275,17 +274,20 @@ void FoldableMenuBar::setFoldable(bool foldable)
     if (foldable) {
         d->expanded = false;
         d->revealWidth = 0;
-        d->menuBar->setVisible(false);
-        d->menuBar->setEnabled(false);
-        if (d->overlayExpand)
-            d->menuContainer->hide();
-    } else {
+        d->updateClip();
+        if (d->overlayExpand) {
+            d->menuContainer->setGeometry(0, 0, 0, 0);
+        }
+        else {
+            d->menuContainer->setMaximumWidth(0);
+        }
+    }
+    else {
         d->expanded = true;
         d->menuBar->clearMask();
-        d->menuBar->setVisible(true);
-        d->menuBar->setEnabled(true);
-        if (!d->overlayExpand)
-            d->menuContainer->show();
+        if (!d->overlayExpand) {
+            d->menuContainer->setMaximumWidth(QWIDGETSIZE_MAX);
+        }
     }
 }
 
@@ -302,16 +304,25 @@ void FoldableMenuBar::setOverlayExpand(bool overlay)
     if (overlay) {
         // Remove from layout — it will float as an overlay when expanded
         d->layout->removeWidget(d->menuContainer);
-        if (d->foldable && !d->expanded)
-            d->menuContainer->hide();
-    } else {
+        d->menuContainer->setMaximumWidth(QWIDGETSIZE_MAX);
+        if (d->foldable && !d->expanded) {
+            d->menuContainer->setGeometry(0, 0, 0, 0);
+        }
+    }
+    else {
         d->clearOverlayMasks();
         // Ensure menuContainer is parented to this and add to layout
-        if (d->menuContainer->parent() != this)
+        if (d->menuContainer->parent() != this) {
             d->menuContainer->setParent(this);
-        d->layout->addWidget(d->menuContainer);
-        if (!d->foldable || d->expanded)
             d->menuContainer->show();
+        }
+        d->layout->addWidget(d->menuContainer);
+        if (d->foldable && !d->expanded) {
+            d->menuContainer->setMaximumWidth(0);
+        }
+        else {
+            d->menuContainer->setMaximumWidth(QWIDGETSIZE_MAX);
+        }
     }
 }
 
@@ -338,8 +349,6 @@ void FoldableMenuBar::setExpanded(bool expanded)
         int targetWidth = d->menuBar->sizeHint().width();
 
         if (expanded) {
-            d->menuBar->setEnabled(true);
-
             if (d->overlayExpand) {
                 // Reparent to window so menu floats above all titlebar content
                 QWidget *win = window();
@@ -350,6 +359,9 @@ void FoldableMenuBar::setExpanded(bool expanded)
                     d->menuContainer->raise();
                 }
             }
+            else {
+                d->menuContainer->setMaximumWidth(QWIDGETSIZE_MAX);
+            }
 
             d->animation->setStartValue(0);
             d->animation->setEndValue(targetWidth);
@@ -358,9 +370,14 @@ void FoldableMenuBar::setExpanded(bool expanded)
             d->animation->setEndValue(0);
         }
         d->animation->start();
-    } else {
-        d->menuBar->setVisible(expanded);
-        if (expanded) d->menuBar->clearMask();
+    }
+    else {
+        if (expanded) {
+            d->menuBar->clearMask();
+        }
+        else {
+            d->menuBar->setMask(QRegion(-1, -1, 1, 1));
+        }
     }
 
     Q_EMIT expandedChanged(expanded);

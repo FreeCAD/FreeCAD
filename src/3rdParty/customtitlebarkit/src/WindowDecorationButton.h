@@ -4,35 +4,24 @@
 #ifndef WINDOWDECORATIONBUTTON_H
 #define WINDOWDECORATIONBUTTON_H
 
-#include <QAbstractButton>
+#include <QPushButton>
 
-class QStyleOptionButton;
-
-/// A borderless window control button with text-based icons.
-/// Themeable via QSS — object names: "minimizeButton", "maximizeButton", "closeButton".
-/// Supports :hover and :pressed pseudo-states for both background and color.
-class WindowDecorationButton : public QAbstractButton {
+/// A borderless window control button.
+/// Themeable via QSS — object names: "minimizeButton", "maximizeButton", "restoreButton", "closeButton".
+class WindowDecorationButton: public QPushButton
+{
     Q_OBJECT
 
 public:
-    enum Role { Minimize, Maximize, Restore, Close };
+    enum Role
+    {
+        Minimize,
+        Maximize,
+        Restore,
+        Close
+    };
 
-    explicit WindowDecorationButton(Role role, QWidget *parent = nullptr);
-
-    void setRole(Role role);
-    Role role() const { return m_role; }
-
-    QSize sizeHint() const override;
-
-protected:
-    void paintEvent(QPaintEvent *event) override;
-    void initStyleOption(QStyleOptionButton *option) const;
-
-private:
-    void updateObjectName();
-    void updateText();
-
-    Role m_role;
+    explicit WindowDecorationButton(Role role, QWidget* parent = nullptr);
 };
 
-#endif // WINDOWDECORATIONBUTTON_H
+#endif  // WINDOWDECORATIONBUTTON_H

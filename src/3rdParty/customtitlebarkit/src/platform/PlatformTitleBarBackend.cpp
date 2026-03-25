@@ -9,6 +9,10 @@
 #include "mac/MacGenericBackend.h"
 #endif
 
+#ifdef Q_OS_LINUX
+#include "linux/LinuxTitleBarBackend.h"
+#endif
+
 bool PlatformTitleBarBackend::handleNativeEvent(const QByteArray &, void *, qintptr *)
 {
     return false;
@@ -32,6 +36,10 @@ std::unique_ptr<PlatformTitleBarBackend> PlatformTitleBarBackend::create()
 #ifdef Q_OS_MACOS
     if (mode.toLower() == "mac-generic")
         return std::make_unique<MacGenericBackend>();
+#endif
+#ifdef Q_OS_LINUX
+    if (mode.toLower() == "linux")
+        return std::make_unique<LinuxTitleBarBackend>();
 #endif
     return createPlatform();
 }
