@@ -62,7 +62,7 @@ struct StencilSource
 ///
 /// The result is a filled cross-section at the clip plane, without
 /// any OCCT boolean computation.
-class SoFCStencilCap : public SoNode
+class SoFCStencilCap: public SoNode
 {
     using inherited = SoNode;
 
@@ -85,14 +85,14 @@ public:
 
     /// Section appearance.
     SoSFColor sectionColor;
-    SoSFBool  hatchEnabled;
+    SoSFBool hatchEnabled;
 
     /// Hatching texture projection axes (same as SoTextureCoordinatePlane).
     SoSFVec3f hatchDirS;
     SoSFVec3f hatchDirT;
 
     /// Enable/disable stencil capping (allows fallback to OCCT path).
-    SoSFBool  enabled;
+    SoSFBool enabled;
 
 protected:
     ~SoFCStencilCap() override;

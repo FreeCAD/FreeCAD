@@ -168,8 +168,7 @@ void SoFCStencilCap::renderStencilFill(SoGLRenderAction* action)
                 if (i == numIndices || indices[i] < 0) {
                     int count = i - start;
                     if (count >= 3) {
-                        glDrawElements(GL_TRIANGLE_FAN, count, GL_UNSIGNED_INT,
-                                       &indices[start]);
+                        glDrawElements(GL_TRIANGLE_FAN, count, GL_UNSIGNED_INT, &indices[start]);
                     }
                     start = i + 1;
                 }
@@ -207,8 +206,7 @@ void SoFCStencilCap::renderStencilFill(SoGLRenderAction* action)
                 if (i == numIndices || indices[i] < 0) {
                     int count = i - start;
                     if (count >= 3) {
-                        glDrawElements(GL_TRIANGLE_FAN, count, GL_UNSIGNED_INT,
-                                       &indices[start]);
+                        glDrawElements(GL_TRIANGLE_FAN, count, GL_UNSIGNED_INT, &indices[start]);
                     }
                     start = i + 1;
                 }
