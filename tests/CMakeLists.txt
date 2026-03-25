@@ -135,6 +135,9 @@ endif()
 if(BUILD_START)
     list (APPEND TestExecutables Start_tests_run)
 endif()
+if(BUILD_TECHDRAW)
+    list (APPEND TestExecutables TechDraw_tests_run)
+endif(BUILD_TECHDRAW)
 
 # -------------------------
 
