@@ -158,7 +158,7 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
                 int idx = (y * sz + x) * 3;
                 int diag = (x + y) % spacing;
                 if (diag < lineWidth) {
-                    img[idx] = 76;      // ~0.3 * 255
+                    img[idx] = 76;  // ~0.3 * 255
                     img[idx + 1] = 76;
                     img[idx + 2] = 76;
                 }
@@ -322,8 +322,10 @@ void ViewProviderSectionAnalysis::updatePlaneVisual()
         return;
     }
 
-    TopoDS_Shape sourceShape = Part::Feature::getShape(source,
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    TopoDS_Shape sourceShape = Part::Feature::getShape(
+        source,
+        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+    );
     if (sourceShape.IsNull()) {
         return;
     }
@@ -359,9 +361,16 @@ void ViewProviderSectionAnalysis::updatePlaneVisual()
 
     // Project bbox corners onto plane tangent axes
     double umin_p = 1e20, umax_p = -1e20, vmin_p = 1e20, vmax_p = -1e20;
-    double corners[8][3] = {{xmin, ymin, zmin}, {xmax, ymin, zmin}, {xmin, ymax, zmin},
-                             {xmax, ymax, zmin}, {xmin, ymin, zmax}, {xmax, ymin, zmax},
-                             {xmin, ymax, zmax}, {xmax, ymax, zmax}};
+    double corners[8][3] = {
+        {xmin, ymin, zmin},
+        {xmax, ymin, zmin},
+        {xmin, ymax, zmin},
+        {xmax, ymax, zmin},
+        {xmin, ymin, zmax},
+        {xmax, ymin, zmax},
+        {xmin, ymax, zmax},
+        {xmax, ymax, zmax}
+    };
     for (auto& c : corners) {
         Base::Vector3d pt(c[0], c[1], c[2]);
         umin_p = std::min(umin_p, pt * u);
@@ -371,8 +380,9 @@ void ViewProviderSectionAnalysis::updatePlaneVisual()
     }
 
     // Cap the plane size to bbox diagonal to prevent blowup at steep angles
-    double bboxDiag = std::sqrt((xmax - xmin) * (xmax - xmin) + (ymax - ymin) * (ymax - ymin)
-                                + (zmax - zmin) * (zmax - zmin));
+    double bboxDiag = std::sqrt(
+        (xmax - xmin) * (xmax - xmin) + (ymax - ymin) * (ymax - ymin) + (zmax - zmin) * (zmax - zmin)
+    );
     double maxExtent = bboxDiag * 0.7;
     double umid = (umin_p + umax_p) / 2.0;
     double vmid = (vmin_p + vmax_p) / 2.0;
@@ -388,10 +398,14 @@ void ViewProviderSectionAnalysis::updatePlaneVisual()
     double distToPlane = n * bboxCenter - d;
     Base::Vector3d planeCenter = bboxCenter - n * distToPlane;
 
-    Base::Vector3d p0 = planeCenter + u * (umid - uHalf - (bboxCenter * u)) + v * (vmid - vHalf - (bboxCenter * v));
-    Base::Vector3d p1 = planeCenter + u * (umid + uHalf - (bboxCenter * u)) + v * (vmid - vHalf - (bboxCenter * v));
-    Base::Vector3d p2 = planeCenter + u * (umid + uHalf - (bboxCenter * u)) + v * (vmid + vHalf - (bboxCenter * v));
-    Base::Vector3d p3 = planeCenter + u * (umid - uHalf - (bboxCenter * u)) + v * (vmid + vHalf - (bboxCenter * v));
+    Base::Vector3d p0 = planeCenter + u * (umid - uHalf - (bboxCenter * u))
+        + v * (vmid - vHalf - (bboxCenter * v));
+    Base::Vector3d p1 = planeCenter + u * (umid + uHalf - (bboxCenter * u))
+        + v * (vmid - vHalf - (bboxCenter * v));
+    Base::Vector3d p2 = planeCenter + u * (umid + uHalf - (bboxCenter * u))
+        + v * (vmid + vHalf - (bboxCenter * v));
+    Base::Vector3d p3 = planeCenter + u * (umid - uHalf - (bboxCenter * u))
+        + v * (vmid + vHalf - (bboxCenter * v));
 
     pcPlaneCoords->point.set1Value(0, SbVec3f(p0.x, p0.y, p0.z));
     pcPlaneCoords->point.set1Value(1, SbVec3f(p1.x, p1.y, p1.z));
@@ -571,8 +585,7 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
     }
 }
 
-void ViewProviderSectionAnalysis::setupContextMenu(QMenu* menu, QObject* receiver,
-                                                    const char* member)
+void ViewProviderSectionAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     addDefaultAction(menu, QObject::tr("Edit Section Analysis"));
     ViewProviderPart::setupContextMenu(menu, receiver, member);
@@ -611,7 +624,8 @@ bool ViewProviderSectionAnalysis::setEdit(int ModNum)
             // setEditViewer() will then attach them to the 3D viewer
             Gui::Control().showDialog(
                 new TaskSectionAnalysis(getObject<Part::SectionAnalysis>(), this),
-                getDocument()->getDocument());
+                getDocument()->getDocument()
+            );
         }
 
         return true;

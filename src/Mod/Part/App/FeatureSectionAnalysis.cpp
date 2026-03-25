@@ -54,30 +54,46 @@ PROPERTY_SOURCE(Part::SectionAnalysis, Part::Feature)
 
 SectionAnalysis::SectionAnalysis()
 {
-    ADD_PROPERTY_TYPE(Source, (nullptr), "Section Analysis", App::Prop_None,
-        "Source shape to section");
-    ADD_PROPERTY_TYPE(PlaneNormal, (Base::Vector3d(0, 0, 1)), "Section Analysis",
-        App::Prop_None, "Normal of the cutting plane");
-    ADD_PROPERTY_TYPE(PlaneOffset, (0.0), "Section Analysis", App::Prop_None,
-        "Distance of cutting plane from origin along the normal direction");
-    ADD_PROPERTY_TYPE(FlipCut, (false), "Section Analysis", App::Prop_None,
-        "Flip which side of the plane is visible");
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Section Analysis", App::Prop_None, "Source shape to section");
+    ADD_PROPERTY_TYPE(
+        PlaneNormal,
+        (Base::Vector3d(0, 0, 1)),
+        "Section Analysis",
+        App::Prop_None,
+        "Normal of the cutting plane"
+    );
+    ADD_PROPERTY_TYPE(
+        PlaneOffset,
+        (0.0),
+        "Section Analysis",
+        App::Prop_None,
+        "Distance of cutting plane from origin along the normal direction"
+    );
+    ADD_PROPERTY_TYPE(
+        FlipCut,
+        (false),
+        "Section Analysis",
+        App::Prop_None,
+        "Flip which side of the plane is visible"
+    );
 
     Source.setScope(App::LinkScope::Global);
 }
 
 short SectionAnalysis::mustExecute() const
 {
-    if (Source.isTouched() || PlaneNormal.isTouched()
-        || PlaneOffset.isTouched() || FlipCut.isTouched()) {
+    if (Source.isTouched() || PlaneNormal.isTouched() || PlaneOffset.isTouched()
+        || FlipCut.isTouched()) {
         return 1;
     }
     return Feature::mustExecute();
 }
 
-void SectionAnalysis::collectSectionFaces(const TopoDS_Shape& solid,
-                                          const gp_Pln& slicePlane,
-                                          std::vector<TopoDS_Face>& faces) const
+void SectionAnalysis::collectSectionFaces(
+    const TopoDS_Shape& solid,
+    const gp_Pln& slicePlane,
+    std::vector<TopoDS_Face>& faces
+) const
 {
     // Extract plane coefficients: ax + by + cz + d_coeff = 0
     // The offset-from-origin is -d_coeff.
@@ -144,8 +160,8 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         return new App::DocumentObjectExecReturn("No source shape linked.");
     }
 
-    TopoDS_Shape sourceShape = Feature::getShape(source,
-        ShapeOption::ResolveLink | ShapeOption::Transform);
+    TopoDS_Shape sourceShape
+        = Feature::getShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
     if (sourceShape.IsNull()) {
         return new App::DocumentObjectExecReturn("Source shape is empty.");
     }
@@ -222,8 +238,7 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
                 }
 
                 Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
-                    hEdges, Precision::Confusion(), false, hWires);
+                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), false, hWires);
 
                 for (int i = 1; i <= hWires->Length(); i++) {
                     TopoDS_Wire wire = TopoDS::Wire(hWires->Value(i));
@@ -247,8 +262,12 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         }
     }
 
-    Base::Console().log("SectionAnalysis: %d solids, %d fallback, %d faces\n",
-                        solidCount, (int)unhandledSolids.size(), (int)sectionFaces.size());
+    Base::Console().log(
+        "SectionAnalysis: %d solids, %d fallback, %d faces\n",
+        solidCount,
+        (int)unhandledSolids.size(),
+        (int)sectionFaces.size()
+    );
 
     if (sectionFaces.empty()) {
         this->Shape.setValue(TopoDS_Shape());

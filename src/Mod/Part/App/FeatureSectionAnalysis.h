@@ -56,9 +56,11 @@ public:
     }
 
 private:
-    void collectSectionFaces(const TopoDS_Shape& solid,
-                             const gp_Pln& slicePlane,
-                             std::vector<TopoDS_Face>& faces) const;
+    void collectSectionFaces(
+        const TopoDS_Shape& solid,
+        const gp_Pln& slicePlane,
+        std::vector<TopoDS_Face>& faces
+    ) const;
 };
 
 }  // namespace Part

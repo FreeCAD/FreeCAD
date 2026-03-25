@@ -2458,9 +2458,7 @@ CmdPartSectionAnalysis::CmdPartSectionAnalysis()
     sAppModule = "Part";
     sGroup = QT_TR_NOOP("Part");
     sMenuText = QT_TR_NOOP("Section Analysis");
-    sToolTipText = QT_TR_NOOP(
-        "Creates a section analysis of the selected shape with a cutting plane"
-    );
+    sToolTipText = QT_TR_NOOP("Creates a section analysis of the selected shape with a cutting plane");
     sWhatsThis = "Part_SectionAnalysis";
     sStatusTip = sToolTipText;
     sPixmap = "Part_SectionAnalysis";
@@ -2501,20 +2499,32 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Section Analysis"));
-    doCommand(Doc,
+    doCommand(
+        Doc,
         "App.getDocument('%s').addObject('Part::SectionAnalysis', 'SectionAnalysis')",
-        docName.c_str());
-    doCommand(Doc,
+        docName.c_str()
+    );
+    doCommand(
+        Doc,
         "App.getDocument('%s').ActiveObject.Source = App.getDocument('%s').getObject('%s')",
-        docName.c_str(), docName.c_str(), objName.c_str());
+        docName.c_str(),
+        docName.c_str(),
+        objName.c_str()
+    );
 
     // Set the plane normal to the snapped axis
-    doCommand(Doc,
+    doCommand(
+        Doc,
         "App.getDocument('%s').ActiveObject.PlaneNormal = FreeCAD.Vector(%f, %f, %f)",
-        docName.c_str(), nx, ny, nz);
+        docName.c_str(),
+        nx,
+        ny,
+        nz
+    );
 
     // Center the offset on the bounding box along the normal
-    doCommand(Doc,
+    doCommand(
+        Doc,
         "__sa = App.getDocument('%s').ActiveObject\n"
         "__bb = __sa.Source.Shape.BoundBox\n"
         "__n = __sa.PlaneNormal\n"
@@ -2523,7 +2533,8 @@ void CmdPartSectionAnalysis::activated(int iMsg)
         "(__bb.ZMin + __bb.ZMax) / 2 * __n.z\n"
         "__sa.PlaneOffset = __center\n"
         "del __sa, __bb, __n, __center",
-        docName.c_str());
+        docName.c_str()
+    );
 
     // Don't commitCommand() here — leave the transaction open.
     // The task panel's accept() commits it, reject()/Cancel aborts and removes the object.
