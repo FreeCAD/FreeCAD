@@ -5,7 +5,8 @@
 
 #include "Mod/TechDraw/App/LineFormat.h"
 
-namespace {
+namespace
+{
 
 TechDraw::LineFormat makeLineFormat()
 {
