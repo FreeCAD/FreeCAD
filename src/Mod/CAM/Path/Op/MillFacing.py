@@ -172,7 +172,8 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 "Facing",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Distance to extend cuts beyond polygon boundary for tool disengagement.",
+                    "Distance to extend cuts beyond the boundary shape."
+                    " Positive values contract inward; negative values expand outward.",
                 ),
             ),
             (
