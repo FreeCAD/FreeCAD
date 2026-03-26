@@ -1846,7 +1846,6 @@ App::ElementNamePair SketchObject::getElementName(
     // the wrong element to be selected.
     const char *mapped = Data::isMappedElement(name);
     const char* indexedSubname = mapped;
-    bool isInternalFace = false;
 
     if (mapped) {
         const char* dot = strchr(mapped, '.');
@@ -1855,34 +1854,46 @@ App::ElementNamePair SketchObject::getElementName(
             indexedSubname = dot + 1; 
 
             if (indexedSubname == strstr(indexedSubname, "InternalFace")) {
-                isInternalFace = true;
+                Data::IndexedName internalFaceIndexedName = Data::IndexedName(indexedSubname, {"InternalFace"}, false);
+
+                if (internalFaceIndexedName) {
+                    const Part::TopoShape &internalShape = InternalShape.getShape();
+                    Data::MappedElement mappedElement = internalShape.getElementName(name);
+
+                    // let's attempt to find the right mapped name before marking this as missing by running findSimilarNames.
+                    // We could use getExportElementName to do the same thing, but this is more direct and should be more performant
+                    if (!mappedElement.index && type == ElementNameType::Export) {
+                        std::vector<Data::MappedElement> foundNames = findSimilarNames(mappedElement.name, internalShape);
+
+                        if (foundNames.size()) {
+                            // just grab the first name.
+                            mappedElement = foundNames[0];
+                        }
+                    }
+
+                    ret.newName = Data::ComplexGeoData::elementMapPrefix();
+                    mappedElement.name.appendToBuffer(ret.newName);
+
+                    ret.oldName = internalPrefix();
+                    mappedElement.index.appendToStringBuffer(ret.oldName);
+
+                    ret.newName += ".";
+                    ret.newName += ret.oldName;
+
+                    return ret;
+                }
             }
         }
     }
 
-    if(hasSketchMarker(name) && !isInternalFace)
+    if(hasSketchMarker(name))
         return Part2DObject::getElementName(name,type);
 
-    Data::IndexedName index = isInternalFace ? Data::IndexedName(indexedSubname, {"InternalFace"}, false) : checkSubName(name);
+    Data::IndexedName index = checkSubName(name);
     index.appendToStringBuffer(ret.oldName);
     if (auto realName = convertInternalName(ret.oldName.c_str())) {
         Data::MappedElement mappedElement;
-        if (mapped) {
-            const Part::TopoShape internalShape = InternalShape.getShape();
-            mappedElement = internalShape.getElementName(name);
-
-            // let's attempt to find the right mapped name before marking this as missing by running findSimilarNames.
-            // We could use getExportElementName to do the same thing, but this is more direct and should be more performant
-            if (!mappedElement.index && type == ElementNameType::Export && isInternalFace) {
-                std::vector<Data::MappedElement> foundNames = findSimilarNames(mappedElement.name, internalShape);
-
-                if (foundNames.size()) {
-                    // just grab the first name.
-                    mappedElement = foundNames[0];
-                }
-            }
-        }
-        else if (type == ElementNameType::Export) {
+        if (type == ElementNameType::Export) {
             ret.newName = getExportElementName(InternalShape.getShape(), realName).newName;
         }
         else {
