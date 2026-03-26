@@ -91,6 +91,11 @@ private:
     void updateStencilCap();
     void applyPerSolidColors();
 
+    static void sectionDragStartCallback(void* data, SoDragger* d);
+    static void sectionDragMotionCallback(void* data, SoDragger* d);
+    static void sectionDragFinishCallback(void* data, SoDragger* d);
+    Base::Placement draggerStartPlacement;
+
     SoFCStencilCap* pcStencilCap = nullptr;
     SoSwitch* pcPlaneSwitch = nullptr;
     SoSeparator* pcPlaneRoot = nullptr;

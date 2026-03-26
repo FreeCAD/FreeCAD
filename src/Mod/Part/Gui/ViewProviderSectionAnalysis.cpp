@@ -48,7 +48,8 @@
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Inventor/Draggers/SoTransformDragger.h>
+#include <Gui/ViewParams.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
@@ -669,23 +670,110 @@ void ViewProviderSectionAnalysis::setPerSolidColors(bool on)
 void ViewProviderSectionAnalysis::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
     Q_UNUSED(ModNum);
-    if (!viewer) {
+    if (!viewer || !transformDragger) {
         return;
     }
 
-    // Get the gizmo container from the active task panel
-    Gui::TaskView::TaskDialog* activeDlg = Gui::Control().activeDialog();
-    auto* saDlg = qobject_cast<TaskSectionAnalysis*>(activeDlg);
-    if (saDlg && saDlg->getGizmoContainer()) {
-        // Use identity placement — our gizmo positions are already in world space
-        Base::Placement identity;
-        saDlg->getGizmoContainer()->attachViewer(viewer, identity);
+    transformDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+
+    // Orient the dragger so Z aligns with the cutting plane normal.
+    // Translation along Z = change PlaneOffset.
+    // Rotation around X/Y = change PlaneNormal.
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (feat) {
+        Base::Vector3d n = feat->PlaneNormal.getValue();
+        double len = n.Length();
+        if (len > 1e-10) {
+            n = n / len;
+        }
+
+        // Build rotation that maps (0,0,1) → plane normal
+        Base::Rotation rot(Base::Vector3d(0, 0, 1), n);
+        Base::Vector3d planePoint = n * feat->PlaneOffset.getValue();
+        Base::Matrix4D mat = Base::Placement(planePoint, rot).toMatrix();
+
+        viewer->getDocument()->setEditingTransform(mat);
+        viewer->setupEditingRoot(transformDragger, &mat);
     }
 }
 
 void ViewProviderSectionAnalysis::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
     ViewProviderDragger::unsetEditViewer(viewer);
+}
+
+void ViewProviderSectionAnalysis::sectionDragStartCallback(void* data, SoDragger*)
+{
+    auto* vp = static_cast<ViewProviderSectionAnalysis*>(data);
+    vp->transformDragger->clearIncrementCounts();
+
+    // Save the initial plane state
+    auto* feat = vp->getObject<Part::SectionAnalysis>();
+    if (feat) {
+        Base::Vector3d n = feat->PlaneNormal.getValue();
+        double d = feat->PlaneOffset.getValue();
+        double len = n.Length();
+        if (len > 1e-10) {
+            n = n / len;
+        }
+        Base::Rotation rot(Base::Vector3d(0, 0, 1), n);
+        vp->draggerStartPlacement = Base::Placement(n * d, rot);
+    }
+}
+
+void ViewProviderSectionAnalysis::sectionDragMotionCallback(void* data, SoDragger*)
+{
+    auto* vp = static_cast<ViewProviderSectionAnalysis*>(data);
+    auto* feat = vp->getObject<Part::SectionAnalysis>();
+    if (!feat || !vp->transformDragger) {
+        return;
+    }
+
+    // Read incremental changes from the dragger
+    double transStep = vp->transformDragger->translationIncrement.getValue();
+    int zSteps = vp->transformDragger->translationIncrementCountZ.getValue();
+    double rotStep = vp->transformDragger->rotationIncrement.getValue();
+    int xRotSteps = vp->transformDragger->rotationIncrementCountX.getValue();
+    int yRotSteps = vp->transformDragger->rotationIncrementCountY.getValue();
+
+    // Apply Z translation → PlaneOffset change
+    double offsetDelta = zSteps * transStep;
+    Base::Vector3d startNormal = vp->draggerStartPlacement.getRotation().multVec(
+        Base::Vector3d(0, 0, 1));
+    double startOffset = startNormal * vp->draggerStartPlacement.getPosition();
+    double newOffset = startOffset + offsetDelta;
+
+    // Apply X/Y rotation → PlaneNormal change
+    Base::Rotation startRot = vp->draggerStartPlacement.getRotation();
+    Base::Rotation deltaRot;
+    if (xRotSteps != 0 || yRotSteps != 0) {
+        // Rotation around the dragger's local X and Y axes
+        Base::Vector3d localX = startRot.multVec(Base::Vector3d(1, 0, 0));
+        Base::Vector3d localY = startRot.multVec(Base::Vector3d(0, 1, 0));
+        Base::Rotation rotX(localX, xRotSteps * rotStep);
+        Base::Rotation rotY(localY, yRotSteps * rotStep);
+        deltaRot = rotY * rotX;
+    }
+
+    Base::Vector3d newNormal = deltaRot.multVec(startNormal);
+    newNormal.Normalize();
+
+    feat->PlaneNormal.setValue(newNormal);
+    feat->PlaneOffset.setValue(newOffset);
+}
+
+void ViewProviderSectionAnalysis::sectionDragFinishCallback(void* data, SoDragger*)
+{
+    auto* vp = static_cast<ViewProviderSectionAnalysis*>(data);
+    if (vp->transformDragger) {
+        vp->transformDragger->clearIncrementCounts();
+    }
+
+    // Trigger deferred recompute for the OCCT section faces
+    auto* feat = vp->getObject<Part::SectionAnalysis>();
+    if (feat) {
+        feat->recomputeFeature();
+    }
 }
 
 void ViewProviderSectionAnalysis::show()
@@ -797,12 +885,42 @@ bool ViewProviderSectionAnalysis::setEdit(int ModNum)
             pcPlaneSwitch->whichChild = SO_SWITCH_ALL;
         }
 
+        // Create the Transform dragger — configured for section plane DOF:
+        // Z translation (offset along normal) + X/Y rotation (tilt)
+        if (!transformDragger) {
+            transformDragger = new Gui::SoTransformDragger();
+            transformDragger->setAxisColors(
+                Gui::ViewParams::instance()->getAxisXColor(),
+                Gui::ViewParams::instance()->getAxisYColor(),
+                Gui::ViewParams::instance()->getAxisZColor()
+            );
+            transformDragger->draggerSize.setValue(
+                Gui::ViewParams::instance()->getDraggerScale());
+
+            // Finer increments for section plane manipulation
+            transformDragger->translationIncrement.setValue(0.1);  // 0.1mm steps
+            transformDragger->rotationIncrement.setValue(M_PI / 180.0);  // 1° steps
+
+            // Section plane: only Z translation + X/Y rotation
+            transformDragger->hideTranslationX();
+            transformDragger->hideTranslationY();
+            transformDragger->showTranslationZ();
+            transformDragger->showRotationX();
+            transformDragger->showRotationY();
+            transformDragger->hideRotationZ();
+            transformDragger->hidePlanarTranslationXY();
+            transformDragger->hidePlanarTranslationYZ();
+            transformDragger->hidePlanarTranslationZX();
+
+            transformDragger->addStartCallback(sectionDragStartCallback, this);
+            transformDragger->addFinishCallback(sectionDragFinishCallback, this);
+            transformDragger->addMotionCallback(sectionDragMotionCallback, this);
+        }
+
         if (saDlg) {
             Gui::Control().showDialog(saDlg, getDocument()->getDocument());
         }
         else {
-            // The task panel sets up gizmos via GizmoContainer::create(vp)
-            // setEditViewer() will then attach them to the 3D viewer
             Gui::Control().showDialog(
                 new TaskSectionAnalysis(getObject<Part::SectionAnalysis>(), this),
                 getDocument()->getDocument()
@@ -823,6 +941,7 @@ void ViewProviderSectionAnalysis::unsetEdit(int ModNum)
         if (pcPlaneSwitch) {
             pcPlaneSwitch->whichChild = SO_SWITCH_NONE;
         }
+        transformDragger.reset();
         Gui::Control().closeDialog(nullptr);
     }
     else {

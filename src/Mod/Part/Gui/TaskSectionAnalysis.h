@@ -37,9 +37,6 @@ namespace Gui
 {
 class QuantitySpinBox;
 class ColorButton;
-class LinearGizmo;
-class RotationGizmo;
-class GizmoContainer;
 }  // namespace Gui
 
 namespace Part
@@ -69,12 +66,6 @@ public:
     Part::SectionAnalysis* getObject() const;
     ViewProviderSectionAnalysis* getViewProvider() const;
     void updateFromFeature();
-    void setupGizmos();
-    void updateGizmoPositions();
-    Gui::GizmoContainer* getGizmoContainer() const
-    {
-        return gizmoContainer.get();
-    }
 
 private:
     void setupUi();
@@ -121,11 +112,6 @@ private:
     double offsetBase = 0.0;  // projMin — added to spinbox value to get PlaneOffset
     QTimer* recomputeTimer = nullptr;
 
-    // Gizmos — the GizmoContainer owns the gizmo lifetimes
-    Gui::LinearGizmo* offsetGizmo = nullptr;
-    Gui::RotationGizmo* angle1Gizmo = nullptr;
-    Gui::RotationGizmo* angle2Gizmo = nullptr;
-    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
 };
 
 class TaskSectionAnalysis: public Gui::TaskView::TaskDialog
@@ -140,7 +126,6 @@ public:
     bool reject() override;
     Part::SectionAnalysis* getObject() const;
     void updateFromFeature();
-    Gui::GizmoContainer* getGizmoContainer() const;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {
