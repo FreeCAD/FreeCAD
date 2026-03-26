@@ -167,6 +167,7 @@ class ProcessingOptions:
     filter_inefficient_moves: bool = False  # Collapse redundant G0 rapid move chains
     split_arcs: bool = False
     tool_change: bool = True  # Enable tool change commands
+    translate_drill_cycles: bool = False  # Expand canned drill cycles to G0/G1 moves
     translate_rapid_moves: bool = False
     xy_before_z_after_tool_change: bool = (
         False  # Decompose first move after tool change: XY first, then Z
@@ -1080,6 +1081,7 @@ class Machine:
             "filter_inefficient_moves": self.processing.filter_inefficient_moves,
             "split_arcs": self.processing.split_arcs,
             "tool_change": self.processing.tool_change,
+            "translate_drill_cycles": self.processing.translate_drill_cycles,
             "translate_rapid_moves": self.processing.translate_rapid_moves,
             "xy_before_z_after_tool_change": self.processing.xy_before_z_after_tool_change,
         }
@@ -1557,6 +1559,9 @@ class Machine:
             )
             config.processing.split_arcs = processing_data.get("split_arcs", False)
             config.processing.tool_change = processing_data.get("tool_change", True)
+            config.processing.translate_drill_cycles = processing_data.get(
+                "translate_drill_cycles", False
+            )
             config.processing.translate_rapid_moves = processing_data.get(
                 "translate_rapid_moves", False
             )

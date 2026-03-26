@@ -1,30 +1,26 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre <yorik@uncreated.net>
+# SPDX-FileCopyrightText: 2014 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileCopyrightText: 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>
+# SPDX-FileCopyrightText: 2024 Ondsel <development@ondsel.com>
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2022 - 2025 Larry Woestman <LarryWoestman2@gmail.com>   *
-# *   Copyright (c) 2024 Ondsel <development@ondsel.com>                    *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 """
 The base classes for post processors in the CAM workbench.
 """
@@ -55,7 +51,7 @@ translate = FreeCAD.Qt.translate
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-debug = True
+debug = False
 if debug:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -247,7 +243,8 @@ class PostProcessorFactory:
                     spec.loader.exec_module(module)
                     Path.Log.debug(f"found module {module_name} at {module_path}")
 
-                except (FileNotFoundError, ImportError, ModuleNotFoundError):
+                except (FileNotFoundError, ImportError, ModuleNotFoundError) as e:
+                    Path.Log.debug(f"Failed to load {module_path}: {e}")
                     continue
 
                 try:
@@ -275,6 +272,10 @@ class PostProcessorFactory:
                             pass
                     raise
 
+        Path.Log.warning(
+            f"Post processor '{postname}' not found in any search path. "
+            f"Searched for '{module_name}.py' in {len(paths)} paths."
+        )
         return None
 
 
@@ -940,6 +941,7 @@ class PostProcessor:
 
         Subclasses can override to customize canned cycle handling.
         """
+        Path.Log.track("Expanding canned cycles")
         for section_name, sublist in postables:
             for item in sublist:
                 has_drill_cycles = False
@@ -1060,6 +1062,39 @@ class PostProcessor:
                             cmd.Name = "G1"
                         new_commands.append(cmd)
                     item.path = Path.Path(new_commands)
+
+    def _expand_translate_drill_cycles(self, postables):
+        """Translate canned drill cycles to G0/G1 move sequences.
+
+        When machine processing.translate_drill_cycles is True, expands
+        canned drill cycle commands (G73, G81, G82, G83) into equivalent
+        G0/G1 move sequences using the DrillCycleExpander.
+
+        Subclasses can override to customize drill cycle translation.
+        """
+        Path.Log.track("Translating drill cycles")
+        if not (
+            self._machine
+            and hasattr(self._machine, "processing")
+            and self._machine.processing.translate_drill_cycles
+        ):
+            Path.Log.debug("Drill cycle translation disabled")
+            return
+
+        from Path.Post.DrillCycleExpander import DrillCycleExpander
+
+        for section_name, sublist in postables:
+            for item in sublist:
+                Path.Log.track(f"Processing item: {item.label}")
+                if item.path:
+                    has_drill = any(
+                        cmd.Name in DrillCycleExpander.EXPANDABLE_CYCLES
+                        for cmd in item.path.Commands
+                    )
+                    if has_drill:
+                        Path.Log.debug(f"Translating drill cycles for {item.label}")
+                        expander = DrillCycleExpander()
+                        item.path = expander.expand_path(item.path)
 
     def _expand_xy_before_z(self, postables):
         """Decompose first move after tool change into XY then Z.
@@ -1587,6 +1622,7 @@ class PostProcessor:
 
         # ===== STAGE 2: COMMAND EXPANSION =====
         gcodeheader = self._build_header(postables)
+        self._expand_translate_drill_cycles(postables)
         self._expand_canned_cycles(postables)
         self._expand_split_arcs(postables)
         self._expand_spindle_wait(postables)

@@ -942,6 +942,17 @@ class PostProcessDialog:
 
             postprocessor = PostProcessorFactory.get_post_processor(job_arg, postprocessor_name)
 
+            if postprocessor is None:
+                QtGui.QMessageBox.warning(
+                    self.dialog,
+                    translate("CAM_Post", "Generate Output"),
+                    translate(
+                        "CAM_Post",
+                        "Could not load post-processor '{}'.".format(postprocessor_name),
+                    ),
+                )
+                return
+
             # Override the postprocessor's machine with the dialog's selection, then
             # write back any changes the user made in the Options tab before export2()
             # calls _merge_machine_config().
