@@ -175,11 +175,10 @@ def orientWire(w, forward=True):
     return wire
 
 
-def discretizeWire(wire, tolerance=0.01):
-    """discretizeWire discretizes any non-line/arc edges in the wire.
+def approximateWire(wire, tolerance=0.01):
+    """approximateWire approximates any non-line/arc edges with lines or arcs.
     Edges that are lines or circular arcs are kept as-is.
-    Other edge types (ellipses, splines, beziers, etc.) are converted to arcs and lines.
-    tolerance: Deflection tolerance for discretization. Must be positive if wire contains non-line/arc edges.
+    tolerance: Deflection tolerance for approximation. Must be positive if wire contains non-line/arc edges.
     Returns the wire with non-line/arc edges replaced by arcs and line segments.
     """
     processed_edges = []
@@ -190,10 +189,10 @@ def discretizeWire(wire, tolerance=0.01):
             # Keep lines and arcs as-is
             processed_edges.append(edge)
         else:
-            # Discretize to lines and arcs
+            # Approximate with lines and arcs
             if tolerance <= 0:
                 raise ValueError(
-                    "tolerance parameter is required to be a positive value to discritize non-line/arc edges"
+                    "tolerance parameter is required to be a positive value to approximate non-line/arc edges"
                 )
             modified = True
 
@@ -234,8 +233,8 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
     """
     Path.Log.track("offsetWire")
 
-    # Pre-process the wire: discretize any non-line/arc edges
-    wire = discretizeWire(wire, tolerance)
+    # Pre-process the wire: approximate any non-line/arc edges with arcs and lines
+    wire = approximateWire(wire, tolerance)
 
     if len(wire.Edges) == 1:
         edge = wire.Edges[0]
