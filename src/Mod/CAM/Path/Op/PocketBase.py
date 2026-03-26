@@ -212,6 +212,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "\nManual: uses order of shapes selection",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "ForceMaxStepOver",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Forces the stepover value to be used even if not all area is cleared. For large stepover values (>50%), the stepover may be automatically reduced to ensure full area coverage. Enable this to use the maximum stepover regardless of coverage.",
+            ),
+        )
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -239,6 +248,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["PocketExtraOffset"] = extraOffset
         params["ToolRadius"] = self.radius
         params["PocketLastStepover"] = obj.PocketLastStepOver
+        params["ForceMaxStepover"] = obj.ForceMaxStepOver
 
         Pattern = {
             "ZigZag": 1,
@@ -278,6 +288,16 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Skips machining regions that have already been cleared by previous operations.",
+                ),
+            )
+        if not hasattr(obj, "ForceMaxStepOver"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ForceMaxStepOver",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Forces the stepover value to be used even if not all area is cleared. For large stepover values (>50%), the stepover may be automatically reduced to ensure full area coverage. Enable this to use the maximum stepover regardless of coverage.",
                 ),
             )
         if not hasattr(obj, "RetractThreshold"):

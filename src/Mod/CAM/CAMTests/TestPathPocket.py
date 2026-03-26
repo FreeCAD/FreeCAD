@@ -97,16 +97,14 @@ class TestPathPocket(PathTestBase):
         Returns:
             The created pocket operation object
         """
-        # Compute job name from label
+        # Create job for this operation
         job_name = "Job_{}".format(label)
-
-        # Create Job with the geometry
         job = PathJob.Create(job_name, [part_obj])
         if FreeCAD.GuiUp:
             job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
 
         # Instantiate a Pocket operation
-        pocket = PathPocket.Create("Pocket1")
+        pocket = PathPocket.Create(label)
 
         # Set tool diameter
         pocket.ToolController.Tool.Diameter = tool_diameter
@@ -138,6 +136,9 @@ class TestPathPocket(PathTestBase):
                 )
 
         _addViewProvider(pocket)
+
+        # Add pocket to job's operations
+        job.addObject(pocket)
 
         # Generate the toolpath
         pocket.recompute()
@@ -244,7 +245,14 @@ class TestPathPocket(PathTestBase):
         part_obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "TrianglePart")
         part_obj.Shape = pocket_solid
 
-        # Create pocket operation with specified parameters
+        # Calculate max expected loops based on base width
+        stepover_distance = tool_diameter * (stepover_percent / 100.0)
+        available_clearance = (triangle_base - tool_diameter) / 2.0
+        max_expected_loops = int(available_clearance / stepover_distance)
+
+        # Create pocket operation without ForceMaxStepOver
+        # Without the flag, algorithm should add extra loops to ensure full coverage
+        # (This will fail until the feature is implemented)
         pocket = self.createPocketOperation(
             part_obj,
             pocket_bottom_z,
@@ -258,14 +266,32 @@ class TestPathPocket(PathTestBase):
         # Count offset loops from generated G-code
         actual_num_loops = countOffsetLoops(pocket.Path.Commands, pocket_bottom_z)
 
-        # Calculate max expected loops based on base width
-        # For triangular pockets, actual loops will be less than max due to narrowing geometry
-        stepover_distance = tool_diameter * (stepover_percent / 100.0)
-        available_clearance = (triangle_base - tool_diameter) / 2.0
-        max_expected_loops = int(available_clearance / stepover_distance)
+        # Without ForceMaxStepOver, should generate more loops than base-calculated max
+        # to ensure full area coverage despite narrowing geometry
+        # (This will fail until the feature is implemented)
+        self.assertGreater(actual_num_loops, max_expected_loops)
 
-        # Verify actual loop count is close to max expected (within 1 loop)
-        self.assertGreaterEqual(actual_num_loops, max_expected_loops - 1)
+        # Create second pocket with ForceMaxStepOver=True
+        # With the flag set, algorithm should use max stepover even if not all area is cleared
+        # (This is the existing behavior and should pass)
+        pocket_forced = self.createPocketOperation(
+            part_obj,
+            pocket_bottom_z,
+            "pocket_pointy_triangle_forced",
+            tool_diameter,
+            StepOver=stepover_percent,
+            ClearingPattern="Offset",
+            StartAt="Edge",
+            ForceMaxStepOver=True,
+        )
+
+        # Count loops for forced max stepover pocket
+        actual_num_loops_forced = countOffsetLoops(pocket_forced.Path.Commands, pocket_bottom_z)
+
+        # With ForceMaxStepOver=True, should be close to max expected (within 1 loop)
+        # and should not exceed the max expected count
+        self.assertGreaterEqual(actual_num_loops_forced, max_expected_loops - 1)
+        self.assertLessEqual(actual_num_loops_forced, max_expected_loops)
 
 
 def _addViewProvider(pocketOp):
