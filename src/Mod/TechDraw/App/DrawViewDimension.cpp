@@ -1353,6 +1353,10 @@ areaPoint DrawViewDimension::getAreaParameters(ReferenceVector references)
     areaPoint pts;
 
     App::DocumentObject* refObject = references.front().getObject();
+    if (!refObject) {
+        throw Base::RuntimeError("Area dimension has no reference object");
+    }
+
     if (refObject->isDerivedFrom<DrawViewPart>() && !references[0].getSubName().empty()) {
         // this is a 2d object (a DVP + subelements)
         TechDraw::FacePtr face = getViewPart()->getFace(references[0].getSubName());
@@ -1363,8 +1367,8 @@ areaPoint DrawViewDimension::getAreaParameters(ReferenceVector references)
         }
         auto dvp = static_cast<DrawViewPart*>(refObject);
 
-        auto filteredFaces  = GeometryUtils::findHolesInFace(dvp, references.front().getSubName());
-        auto perforatedFace = GeometryUtils::makePerforatedFace(face, filteredFaces);
+        std::vector<FacePtr> holesInFace = GeometryUtils::findHolesInFace(dvp, references.front().getSubName());
+        TopoDS_Face perforatedFace = GeometryUtils::makePerforatedFace(face, holesInFace);
 
         // these areas are scaled because the source geometry is scaled, but it makes no sense to
         // report a scaled area.

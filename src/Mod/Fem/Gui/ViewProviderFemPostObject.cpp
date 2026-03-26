@@ -436,14 +436,12 @@ void ViewProviderFemPostObject::updateProperties()
             colorArrays.push_back(FieldName);
         }
     }
+    // don't add cell data arrays until they are supported in the 3d view
+    // vtkCellData* cell = poly->GetCellData();
+    // for (int i = 0; i < cell->GetNumberOfArrays(); ++i) {
+    //    colorArrays.emplace_back(cell->GetArrayName(i));
+    //}
 
-    vtkCellData* cell = poly->GetCellData();
-    for (int i = 0; i < cell->GetNumberOfArrays(); ++i) {
-        colorArrays.emplace_back(cell->GetArrayName(i));
-    }
-
-    App::Enumeration empty;
-    Field.setValue(empty);
     m_coloringEnum.setEnums(colorArrays);
     Field.setValue(m_coloringEnum);
 
@@ -499,7 +497,6 @@ void ViewProviderFemPostObject::updateProperties()
         }
     }
 
-    Component.setValue(empty);
     m_vectorEnum.setEnums(colorArrays);
     Component.setValue(m_vectorEnum);
 

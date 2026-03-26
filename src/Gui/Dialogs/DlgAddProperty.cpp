@@ -802,6 +802,9 @@ bool DlgAddProperty::clearBoundProperty()
 
     if (App::Property* prop = propertyItem->getFirstProperty()) {
         propertyItem->unbind();
+        if (auto* eb = dynamic_cast<ExpressionBinding*>(editor.get())) {
+            eb->unbind();
+        }
         propertyItem->removeProperty(prop);
         container->removeDynamicProperty(prop->getName());
         closeTransaction(TransactionOption::Abort);

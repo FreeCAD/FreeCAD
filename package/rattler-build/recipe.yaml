@@ -1,5 +1,5 @@
 context:
-  version: "1.1.0rc3"
+  version: "1.1.0"
 
 package:
   name: freecad
@@ -99,8 +99,8 @@ requirements:
         - cross-python_${{ target_platform }}
 
   host:
-    - coin3d
-    - eigen
+    - coin3d >=4.0.3,<4.0.4
+    - eigen >=3.3,<5
     - fmt
     - freetype
     - hdf5
@@ -156,7 +156,6 @@ requirements:
     - occt>=7.8,<7.9
     - olefile
     - opencamlib
-    - opencv
     - pandas
     - pip
     - pivy

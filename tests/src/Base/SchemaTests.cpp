@@ -1152,6 +1152,24 @@ TEST_F(SchemaTest, sweep_mks)
     });
 }
 
+TEST_F(SchemaTest, mks_negative_values_use_magnitude_for_threshold_selection)
+{
+    UnitsApi::setSchema("MKS");
+    UnitsApi::setDecimals(6);
+
+    auto translate = [](const char* raw) {
+        auto quantity = Quantity::parse(raw);
+        QuantityFormat fmt(QuantityFormat::Default);
+        quantity.setFormat(fmt);
+        double factor {};
+        std::string unitString;
+        return UnitsApi::schemaTranslate(quantity, factor, unitString);
+    };
+
+    EXPECT_EQ(translate("-10000000 Pa"), "-10 MPa");
+    EXPECT_EQ(translate("-0.001 mm"), "-1 \xC2\xB5m");
+}
+
 TEST_F(SchemaTest, sweep_imperial)
 {
     UnitsApi::setSchema("Imperial");

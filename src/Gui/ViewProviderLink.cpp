@@ -1624,7 +1624,7 @@ void LinkView::updateLink()
 bool LinkView::linkGetElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
     std::ostringstream ss;
-    CoinPtr<SoPath> path = pp->getPath();
+    CoinPtr<SoPath> path {pp->getPath()};
     if (!nodeArray.empty()) {
         auto idx = path->findNode(pcLinkRoot);
         if (idx < 0 || idx + 2 >= path->getLength()) {

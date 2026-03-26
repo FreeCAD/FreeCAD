@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>280</width>
-    <height>307</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -88,6 +88,9 @@
        <widget class="QPushButton" name="viewPositionButton">
         <property name="text">
          <string>3D View</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -230,7 +233,7 @@ the sketch plane's normal vector will be used</string>
  <customwidgets>
   <customwidget>
    <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
+   <extends>QAbstractSpinBox</extends>
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
   <customwidget>
