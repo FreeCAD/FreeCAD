@@ -2489,12 +2489,14 @@ void Area::makeOffset(
                     else {
                         // No gap, can use this offset
                         offset_min = offset_mid;
-                        area = test_area;
                     }
                 }
 
-                // Use the min_offset, the biggest offset with no gap
-                offset = offset_min;
+                // Adjust offset in the direction opposite to stepover to ensure connectivity when
+                // the offset vanishes. This is important because our circular arcs are discretized.
+                double sign_stepover = (stepover > 0) ? 1.0 : -1.0;
+                offset = offset_min - sign_stepover * myParams.Accuracy;
+                area = performSingleOffset(offset);
             }
         }
 
