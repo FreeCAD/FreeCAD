@@ -159,16 +159,18 @@ void TaskActiveView::updatePreview()
         Base::FileInfo::getTempFileName(baseName.c_str(), doc->TransientDir.getValue()) + ".png";
 
     QColor bg;
-    int bgIndex = ui->cbBg->currentIndex();
+    auto bgType = static_cast<BackgroundType>(ui->cbBg->currentIndex());
 
-    if (bgIndex == 0) {      // Transparent
-        bg = QColor(Qt::transparent);
-    } 
-    else if (bgIndex == 1) { // Solid
-        bg = ui->ccBgColor->color();
-    } 
-    else if (bgIndex == 2) { // 3D View
-        bg = QColor();         
+    switch (bgType) {
+        case BackgroundType::Transparent:
+            bg = QColor(Qt::transparent);
+            break;
+        case BackgroundType::Solid:
+            bg = ui->ccBgColor->color();
+            break;
+        case BackgroundType::View3D:
+            bg = QColor();
+            break;
     }
 
     int imageWidth{SXGAWidth};
@@ -229,8 +231,8 @@ void TaskActiveView::setUiPrimary()
     ui->gbFraming->setChecked(false);
     enableCrop(false);
     
-    ui->cbBg->setCurrentIndex(0);
-    onBgTypeChanged(0); 
+    ui->cbBg->setCurrentIndex(static_cast<int>(BackgroundType::Transparent));
+    onBgTypeChanged(static_cast<int>(BackgroundType::Transparent)); 
 
     ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
     ui->qsbHeight->setValue(Rez::appX(SXGAHeight));
@@ -238,7 +240,9 @@ void TaskActiveView::setUiPrimary()
 
 void TaskActiveView::onBgTypeChanged(int index)
 {
-    bool isSolid = (index == 1);
+    auto bgType = static_cast<BackgroundType>(index);
+    bool isSolid = (bgType == BackgroundType::Solid);
+    
     ui->ccBgColor->setEnabled(isSolid);
     ui->lColor->setEnabled(isSolid);
 }
