@@ -19,6 +19,7 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <algorithm>
 #include <cmath>
 
 #include <QCheckBox>
@@ -128,57 +129,45 @@ void SectionAnalysisWidget::setupUi()
         presetCombo->setCurrentIndex(4);  // Custom
     }
 
-    // Normal spinboxes
-    planeLayout->addWidget(new QLabel(tr("Normal X:"), this), 1, 0);
+    // Normal spinboxes (hidden — internal state, angles/presets are the user interface)
     normalX = new QDoubleSpinBox(this);
     normalX->setRange(-1.0, 1.0);
     normalX->setDecimals(4);
-    normalX->setSingleStep(0.1);
     normalX->setValue(n.x);
-    planeLayout->addWidget(normalX, 1, 1);
+    normalX->setVisible(false);
 
-    planeLayout->addWidget(new QLabel(tr("Normal Y:"), this), 2, 0);
     normalY = new QDoubleSpinBox(this);
     normalY->setRange(-1.0, 1.0);
     normalY->setDecimals(4);
-    normalY->setSingleStep(0.1);
     normalY->setValue(n.y);
-    planeLayout->addWidget(normalY, 2, 1);
+    normalY->setVisible(false);
 
-    planeLayout->addWidget(new QLabel(tr("Normal Z:"), this), 3, 0);
     normalZ = new QDoubleSpinBox(this);
     normalZ->setRange(-1.0, 1.0);
     normalZ->setDecimals(4);
-    normalZ->setSingleStep(0.1);
     normalZ->setValue(n.z);
-    planeLayout->addWidget(normalZ, 3, 1);
-
-    // Enable/disable normal spinboxes based on preset
-    bool isCustom = (presetCombo->currentIndex() == 4);
-    normalX->setEnabled(isCustom);
-    normalY->setEnabled(isCustom);
-    normalZ->setEnabled(isCustom);
+    normalZ->setVisible(false);
 
     // Angle adjustments (tilt the plane from the preset orientation)
     angleLabel1 = new QLabel(tr("X Angle:"), this);
-    planeLayout->addWidget(angleLabel1, 4, 0);
+    planeLayout->addWidget(angleLabel1, 1, 0);
     angle1Spin = new Gui::QuantitySpinBox(this);
     angle1Spin->setUnit(Base::Unit::Angle);
     angle1Spin->setRange(-90.0, 90.0);
     angle1Spin->setSingleStep(0.1);
     angle1Spin->setValue(0.0);
-    planeLayout->addWidget(angle1Spin, 4, 1);
+    planeLayout->addWidget(angle1Spin, 1, 1);
 
     angleLabel2 = new QLabel(tr("Z Angle:"), this);
-    planeLayout->addWidget(angleLabel2, 5, 0);
+    planeLayout->addWidget(angleLabel2, 2, 0);
     angle2Spin = new Gui::QuantitySpinBox(this);
     angle2Spin->setUnit(Base::Unit::Angle);
     angle2Spin->setRange(-90.0, 90.0);
     angle2Spin->setSingleStep(0.1);
     angle2Spin->setValue(0.0);
-    planeLayout->addWidget(angle2Spin, 5, 1);
+    planeLayout->addWidget(angle2Spin, 2, 1);
 
-    // Set angle labels based on initial preset
+    // Set angle labels and enable state based on initial preset
     {
         int idx = presetCombo->currentIndex();
         if (idx == 0) {
@@ -196,28 +185,30 @@ void SectionAnalysisWidget::setupUi()
         else {
             angleLabel1->setText(tr("Angle 1:"));
             angleLabel2->setText(tr("Angle 2:"));
+            angle1Spin->setEnabled(false);
+            angle2Spin->setEnabled(false);
         }
     }
 
     // Offset
-    planeLayout->addWidget(new QLabel(tr("Distance:"), this), 6, 0);
+    planeLayout->addWidget(new QLabel(tr("Distance:"), this), 3, 0);
     offsetSpin = new Gui::QuantitySpinBox(this);
     offsetSpin->setUnit(Base::Unit::Length);
     offsetSpin->setRange(-1e9, 1e9);
     offsetSpin->setSingleStep(0.01);
     offsetSpin->setValue(feature->PlaneOffset.getValue());
-    planeLayout->addWidget(offsetSpin, 6, 1);
+    planeLayout->addWidget(offsetSpin, 3, 1);
 
     // Offset slider
     offsetSlider = new QSlider(Qt::Horizontal, this);
     offsetSlider->setRange(0, 1000);
     offsetSlider->setValue(500);
-    planeLayout->addWidget(offsetSlider, 7, 0, 1, 2);
+    planeLayout->addWidget(offsetSlider, 4, 0, 1, 2);
 
     // Flip
     flipCheck = new QCheckBox(tr("Flip Direction"), this);
     flipCheck->setChecked(feature->FlipCut.getValue());
-    planeLayout->addWidget(flipCheck, 8, 0, 1, 2);
+    planeLayout->addWidget(flipCheck, 5, 0, 1, 2);
 
     mainLayout->addWidget(planeGroup);
 
@@ -412,16 +403,15 @@ void SectionAnalysisWidget::onPresetChanged(int index)
             break;
         }
         default:
-            // Custom: just enable the spinboxes
-            normalX->setEnabled(true);
-            normalY->setEnabled(true);
-            normalZ->setEnabled(true);
+            // Custom: no base axis for angle decomposition
+            angle1Spin->setEnabled(false);
+            angle2Spin->setEnabled(false);
             return;
     }
 
-    normalX->setEnabled(false);
-    normalY->setEnabled(false);
-    normalZ->setEnabled(false);
+    // Enable angle spinboxes for axis-aligned presets
+    angle1Spin->setEnabled(true);
+    angle2Spin->setEnabled(true);
 
     // Update angle labels for the selected preset
     switch (index) {
@@ -742,53 +732,66 @@ void SectionAnalysisWidget::recompute()
 
 void SectionAnalysisWidget::updateFromFeature()
 {
-    // Read values from feature and update all controls (without triggering signals)
+    // Read values from feature and update all controls (without triggering signals).
+    // Keeps the current preset — decomposes the normal into angles relative to it.
     Base::Vector3d n = feature->PlaneNormal.getValue();
-    double d = feature->PlaneOffset.getValue();
     bool flip = feature->FlipCut.getValue();
 
     normalX->blockSignals(true);
     normalY->blockSignals(true);
     normalZ->blockSignals(true);
-    offsetSpin->blockSignals(true);
     flipCheck->blockSignals(true);
+    angle1Spin->blockSignals(true);
+    angle2Spin->blockSignals(true);
 
     normalX->setValue(n.x);
     normalY->setValue(n.y);
     normalZ->setValue(n.z);
-    offsetSpin->setValue(d);
     flipCheck->setChecked(flip);
 
-    // Detect preset
-    if (std::abs(n.x) < 1e-6 && std::abs(n.y) < 1e-6 && std::abs(std::abs(n.z) - 1.0) < 1e-6) {
-        presetCombo->setCurrentIndex(0);
-        normalX->setEnabled(false);
-        normalY->setEnabled(false);
-        normalZ->setEnabled(false);
-    }
-    else if (std::abs(n.x) < 1e-6 && std::abs(std::abs(n.y) - 1.0) < 1e-6 && std::abs(n.z) < 1e-6) {
-        presetCombo->setCurrentIndex(1);
-        normalX->setEnabled(false);
-        normalY->setEnabled(false);
-        normalZ->setEnabled(false);
-    }
-    else if (std::abs(std::abs(n.x) - 1.0) < 1e-6 && std::abs(n.y) < 1e-6 && std::abs(n.z) < 1e-6) {
-        presetCombo->setCurrentIndex(2);
-        normalX->setEnabled(false);
-        normalY->setEnabled(false);
-        normalZ->setEnabled(false);
-    }
-    else {
-        presetCombo->setCurrentIndex(4);
-        normalX->setEnabled(true);
-        normalY->setEnabled(true);
-        normalZ->setEnabled(true);
+    // Decompose the current normal into angles relative to the current preset.
+    // This is the exact inverse of the Rodrigues rotation in applyAngles().
+    int preset = presetCombo->currentIndex();
+    switch (preset) {
+        case 0: {  // XY plane (Z normal)
+            // Forward: n = (cosA·sinB, sinA, cosA·cosB)
+            Base::Vector3d ne = (n.z < 0) ? -n : n;
+            double alpha = std::asin(std::clamp(ne.y, -1.0, 1.0));
+            double cosA = std::cos(alpha);
+            double beta = (cosA > 1e-10) ? std::atan2(ne.x, ne.z) : 0.0;
+            angle1Spin->setValue(alpha * 180.0 / M_PI);
+            angle2Spin->setValue(beta * 180.0 / M_PI);
+            break;
+        }
+        case 1: {  // XZ plane (Y normal)
+            // Forward: n = (-cosA·sinB, cosA·cosB, -sinA)
+            Base::Vector3d ne = (n.y < 0) ? -n : n;
+            double alpha = std::asin(std::clamp(-ne.z, -1.0, 1.0));
+            double cosA = std::cos(alpha);
+            double beta = (cosA > 1e-10) ? std::atan2(-ne.x, ne.y) : 0.0;
+            angle1Spin->setValue(alpha * 180.0 / M_PI);
+            angle2Spin->setValue(beta * 180.0 / M_PI);
+            break;
+        }
+        case 2: {  // YZ plane (X normal)
+            // Forward: n = (cosA·cosB, cosA·sinB, sinA)
+            Base::Vector3d ne = (n.x < 0) ? -n : n;
+            double alpha = std::asin(std::clamp(ne.z, -1.0, 1.0));
+            double cosA = std::cos(alpha);
+            double beta = (cosA > 1e-10) ? std::atan2(ne.y, ne.x) : 0.0;
+            angle1Spin->setValue(alpha * 180.0 / M_PI);
+            angle2Spin->setValue(beta * 180.0 / M_PI);
+            break;
+        }
+        default:
+            break;  // Custom/View Direction: leave angles as-is
     }
 
+    angle1Spin->blockSignals(false);
+    angle2Spin->blockSignals(false);
     normalX->blockSignals(false);
     normalY->blockSignals(false);
     normalZ->blockSignals(false);
-    offsetSpin->blockSignals(false);
     flipCheck->blockSignals(false);
 
     updateSliderRange();
