@@ -101,10 +101,15 @@ void SoFCStencilCap::ensureHatchTexture()
     hatchTexCreated = true;
 }
 
-void SoFCStencilCap::setSectionFaces(const SbVec3f* verts, int numVerts,
-                                     const int32_t* indices, int numIndices,
-                                     const int32_t* partIdx, int numParts,
-                                     const std::vector<long>& solidFaceCounts)
+void SoFCStencilCap::setSectionFaces(
+    const SbVec3f* verts,
+    int numVerts,
+    const int32_t* indices,
+    int numIndices,
+    const int32_t* partIdx,
+    int numParts,
+    const std::vector<long>& solidFaceCounts
+)
 {
     sectionVerts.assign(verts, verts + numVerts);
     sectionIndices.assign(indices, indices + numIndices);
@@ -206,7 +211,7 @@ void SoFCStencilCap::renderPerSolidHatch()
         // Draw this solid's triangles
         const int32_t* idx = &sectionIndices[range.indexStart];
         int count = range.indexCount;
-        for (int i = 0; i < count; ) {
+        for (int i = 0; i < count;) {
             int start = i;
             while (i < count && idx[i] >= 0) {
                 i++;

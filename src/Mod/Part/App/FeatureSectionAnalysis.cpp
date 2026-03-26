@@ -181,8 +181,8 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
 
         std::function<void(App::DocumentObject*)> collectShapes;
         collectShapes = [&](App::DocumentObject* obj) {
-            TopoDS_Shape shape = Feature::getShape(
-                obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+            TopoDS_Shape shape
+                = Feature::getShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
             if (!shape.IsNull()) {
                 builder.Add(compound, shape);
                 found = true;
@@ -241,7 +241,8 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         Base::Console().warning(
             "SectionAnalysis: no solids found in source shape. "
             "For nested Part containers (e.g. STEP imports), try selecting "
-            "individual bodies or creating a compound first.\n");
+            "individual bodies or creating a compound first.\n"
+        );
     }
 
     // Primary approach: Section + FaceMakerBullseye per solid.
@@ -326,7 +327,9 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     if (faces.empty() && solidCount > 0) {
         Base::Console().warning(
             "SectionAnalysis: %d solids found but no cross-section faces generated. "
-            "The cutting plane may not intersect the geometry.\n", solidCount);
+            "The cutting plane may not intersect the geometry.\n",
+            solidCount
+        );
     }
 
     if (faces.empty()) {
