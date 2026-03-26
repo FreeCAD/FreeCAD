@@ -52,6 +52,7 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
 
+#include <App/Part.h>
 #include <Mod/Part/App/Datums.h>
 #include <Mod/Part/App/Part2DObject.h>
 
@@ -2458,7 +2459,7 @@ CmdPartSectionAnalysis::CmdPartSectionAnalysis()
     sAppModule = "Part";
     sGroup = QT_TR_NOOP("Part");
     sMenuText = QT_TR_NOOP("Section Analysis");
-    sToolTipText = QT_TR_NOOP("Creates a section analysis of the selected shape with a cutting plane");
+    sToolTipText = QT_TR_NOOP("Creates a section analysis with a cutting plane");
     sWhatsThis = "Part_SectionAnalysis";
     sStatusTip = sToolTipText;
     sPixmap = "Part_SectionAnalysis";
@@ -2467,12 +2468,33 @@ CmdPartSectionAnalysis::CmdPartSectionAnalysis()
 void CmdPartSectionAnalysis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+
+    // Find source: use selection if available, otherwise find the first
+    // visible shape in the document (supports no-selection workflow).
+    App::DocumentObject* source = nullptr;
     auto sel = Gui::Selection().getSelectionEx();
-    if (sel.empty()) {
+    if (!sel.empty()) {
+        source = sel.front().getObject();
+    }
+    else {
+        // Auto-detect: prefer active Part/Body, then any visible shape
+        auto* doc = App::GetApplication().getActiveDocument();
+        for (auto* obj : doc->getObjects()) {
+            if (obj->isDerivedFrom(Part::Feature::getClassTypeId())
+                || obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+                auto* vp = Gui::Application::Instance->getViewProvider(obj);
+                if (vp && vp->isVisible()) {
+                    source = obj;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (!source) {
         return;
     }
 
-    auto* source = sel.front().getObject();
     std::string objName = source->getNameInDocument();
     std::string docName = getDocument()->getName();
 
@@ -2526,13 +2548,16 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     doCommand(
         Doc,
         "__sa = App.getDocument('%s').ActiveObject\n"
-        "__bb = __sa.Source.Shape.BoundBox\n"
-        "__n = __sa.PlaneNormal\n"
-        "__center = (__bb.XMin + __bb.XMax) / 2 * __n.x + "
+        "__src = __sa.Source\n"
+        "if hasattr(__src, 'Shape') and not __src.Shape.isNull():\n"
+        "    __bb = __src.Shape.BoundBox\n"
+        "    __n = __sa.PlaneNormal\n"
+        "    __center = (__bb.XMin + __bb.XMax) / 2 * __n.x + "
         "(__bb.YMin + __bb.YMax) / 2 * __n.y + "
         "(__bb.ZMin + __bb.ZMax) / 2 * __n.z\n"
-        "__sa.PlaneOffset = __center\n"
-        "del __sa, __bb, __n, __center",
+        "    __sa.PlaneOffset = __center\n"
+        "    del __bb, __n, __center\n"
+        "del __sa, __src",
         docName.c_str()
     );
 
@@ -2546,7 +2571,7 @@ void CmdPartSectionAnalysis::activated(int iMsg)
 
 bool CmdPartSectionAnalysis::isActive()
 {
-    return PartGui::hasShapesInSelection() && !Gui::Control().activeDialog(getDocument());
+    return getDocument() && !Gui::Control().activeDialog(getDocument());
 }
 
 //===========================================================================
