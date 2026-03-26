@@ -31,6 +31,7 @@
 # include <GL/gl.h>
 #endif
 
+#include <cmath>
 #include <cstring>
 
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -39,6 +40,118 @@
 
 
 using namespace PartGui;
+
+// -----------------------------------------------------------------------
+// GL helpers — isolated for future renderer migration (Vulkan/Metal/etc.)
+// -----------------------------------------------------------------------
+
+namespace
+{
+
+/// Create a small tileable diagonal-line texture (16x16 RGB).
+/// Returns the GL texture ID.  The texture uses GL_REPEAT wrapping
+/// so a single tile covers any area.
+GLuint createHatchTexture()
+{
+    const int sz = 16;
+    const int lineWidth = 1;
+
+    unsigned char img[sz * sz * 3];
+    std::memset(img, 255, sizeof(img));
+
+    for (int y = 0; y < sz; y++) {
+        for (int x = 0; x < sz; x++) {
+            int idx = (y * sz + x) * 3;
+            if (((x + y) % sz) < lineWidth) {
+                img[idx] = 76;
+                img[idx + 1] = 76;
+                img[idx + 2] = 76;
+            }
+        }
+    }
+
+    GLuint texId = 0;
+    glGenTextures(1, &texId);
+    glBindTexture(GL_TEXTURE_2D, texId);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, sz, sz, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, img);
+    return texId;
+}
+
+/// Set up GL state for multiply-blend hatching overlay.
+/// After this call, drawing white-textured geometry darkens the
+/// framebuffer where the texture has dark pixels.
+void beginHatchOverlay(GLuint texId, const float dirS[4], const float dirT[4])
+{
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glDisable(GL_LIGHTING);
+
+    // Multiply blend: result = framebuffer * texture
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_DST_COLOR, GL_ZERO);
+    glColor3f(1.0f, 1.0f, 1.0f);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, texId);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    // Auto-generate texture coordinates via object-linear projection
+    glEnable(GL_TEXTURE_GEN_S);
+    glEnable(GL_TEXTURE_GEN_T);
+    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+    glTexGenfv(GL_S, GL_OBJECT_PLANE, dirS);
+    glTexGenfv(GL_T, GL_OBJECT_PLANE, dirT);
+}
+
+void endHatchOverlay()
+{
+    glPopAttrib();
+}
+
+/// Rotate the GL texture matrix by `angleDeg` degrees around Z.
+void pushTextureRotation(float angleDeg)
+{
+    glMatrixMode(GL_TEXTURE);
+    glPushMatrix();
+    glRotatef(angleDeg, 0.0f, 0.0f, 1.0f);
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void popTextureRotation()
+{
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+}
+
+/// Draw indexed triangle fans from a coordIndex array (uses -1 as separator).
+void drawIndexedFaces(const int32_t* indices, int count)
+{
+    for (int i = 0; i < count; ) {
+        int start = i;
+        while (i < count && indices[i] >= 0) {
+            i++;
+        }
+        int vertCount = i - start;
+        if (vertCount >= 3) {
+            glDrawElements(GL_TRIANGLE_FAN, vertCount,
+                           GL_UNSIGNED_INT, &indices[start]);
+        }
+        i++;  // skip -1
+    }
+}
+
+}  // anonymous namespace
+
+
+// -----------------------------------------------------------------------
+// SoFCStencilCap — Coin3D node for per-solid hatching overlay
+// -----------------------------------------------------------------------
 
 SO_NODE_SOURCE(SoFCStencilCap)
 
@@ -65,51 +178,17 @@ void SoFCStencilCap::initClass()
 
 void SoFCStencilCap::ensureHatchTexture()
 {
-    if (hatchTexCreated) {
-        return;
+    if (!hatchTexCreated) {
+        hatchTexId = createHatchTexture();
+        hatchTexCreated = true;
     }
-
-    const int sz = 256;
-    const int spacing = 64;
-    const int lineWidth = 1;
-
-    // RGB texture: white = pass-through, gray = darken
-    unsigned char* img = new unsigned char[sz * sz * 3];
-    std::memset(img, 255, sz * sz * 3);
-
-    for (int y = 0; y < sz; y++) {
-        for (int x = 0; x < sz; x++) {
-            int idx = (y * sz + x) * 3;
-            int diag = (x + y) % spacing;
-            if (diag < lineWidth) {
-                img[idx] = 76;
-                img[idx + 1] = 76;
-                img[idx + 2] = 76;
-            }
-        }
-    }
-
-    glGenTextures(1, &hatchTexId);
-    glBindTexture(GL_TEXTURE_2D, hatchTexId);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, sz, sz, 0, GL_RGB, GL_UNSIGNED_BYTE, img);
-
-    delete[] img;
-    hatchTexCreated = true;
 }
 
 void SoFCStencilCap::setSectionFaces(
-    const SbVec3f* verts,
-    int numVerts,
-    const int32_t* indices,
-    int numIndices,
-    const int32_t* partIdx,
-    int numParts,
-    const std::vector<long>& solidFaceCounts
-)
+    const SbVec3f* verts, int numVerts,
+    const int32_t* indices, int numIndices,
+    const int32_t* partIdx, int numParts,
+    const std::vector<long>& solidFaceCounts)
 {
     sectionVerts.assign(verts, verts + numVerts);
     sectionIndices.assign(indices, indices + numIndices);
@@ -139,8 +218,10 @@ void SoFCStencilCap::setSectionFaces(
         int piStart = faceStart;
         int piEnd = faceStart + numFaces;
 
-        int cStart = (piStart < (int)faceCoordStart.size()) ? faceCoordStart[piStart] : numIndices;
-        int cEnd = (piEnd < (int)faceCoordStart.size()) ? faceCoordStart[piEnd] : numIndices;
+        int cStart = (piStart < (int)faceCoordStart.size())
+                     ? faceCoordStart[piStart] : numIndices;
+        int cEnd = (piEnd < (int)faceCoordStart.size())
+                   ? faceCoordStart[piEnd] : numIndices;
 
         solidRanges.push_back({cStart, cEnd - cStart});
         faceStart += numFaces;
@@ -153,47 +234,30 @@ void SoFCStencilCap::renderPerSolidHatch()
         return;
     }
 
+    int nSolids = static_cast<int>(solidRanges.size());
+    if (nSolids <= 1) {
+        return;  // single solid — Coin3D handles it
+    }
+
     ensureHatchTexture();
     if (!hatchTexCreated) {
         return;
     }
 
-    int nSolids = static_cast<int>(solidRanges.size());
-    if (nSolids <= 1) {
-        return;  // single solid — Coin3D handles it fine
-    }
-
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-
-    glDisable(GL_LIGHTING);
-    // Multiply blend: framebuffer_color * texture_color
-    // White texture pixels = no change, dark pixels = darken existing color
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_DST_COLOR, GL_ZERO);
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, hatchTexId);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-    // Enable texture coordinate auto-generation (object linear)
     SbVec3f dirS = hatchDirS.getValue();
     SbVec3f dirT = hatchDirT.getValue();
     GLfloat planeS[] = {dirS[0], dirS[1], dirS[2], 0.0f};
     GLfloat planeT[] = {dirT[0], dirT[1], dirT[2], 0.0f};
-    glEnable(GL_TEXTURE_GEN_S);
-    glEnable(GL_TEXTURE_GEN_T);
-    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
-    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
-    glTexGenfv(GL_S, GL_OBJECT_PLANE, planeS);
-    glTexGenfv(GL_T, GL_OBJECT_PLANE, planeT);
+
+    beginHatchOverlay(hatchTexId, planeS, planeT);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glVertexPointer(3, GL_FLOAT, 0, sectionVerts.data());
 
     float angleStep = 180.0f / nSolids;
 
-    // Skip solid 0 — Coin3D already rendered it with the standard hatching angle.
-    // Only overdraw solids 1+ with their rotated angles.
+    // Skip solid 0 — Coin3D rendered it with the standard hatching angle.
+    // Only overdraw solids 1+ with rotated angles.
     for (int s = 1; s < nSolids; s++) {
         const auto& range = solidRanges[s];
         if (range.indexCount <= 0) {
@@ -202,43 +266,25 @@ void SoFCStencilCap::renderPerSolidHatch()
 
         float angle = s * angleStep;
         if (angle != 0.0f) {
-            glMatrixMode(GL_TEXTURE);
-            glPushMatrix();
-            glRotatef(angle, 0.0f, 0.0f, 1.0f);
-            glMatrixMode(GL_MODELVIEW);
+            pushTextureRotation(angle);
         }
 
-        // Draw this solid's triangles
-        const int32_t* idx = &sectionIndices[range.indexStart];
-        int count = range.indexCount;
-        for (int i = 0; i < count;) {
-            int start = i;
-            while (i < count && idx[i] >= 0) {
-                i++;
-            }
-            int vertCount = i - start;
-            if (vertCount >= 3) {
-                glDrawElements(GL_TRIANGLE_FAN, vertCount, GL_UNSIGNED_INT, &idx[start]);
-            }
-            i++;  // skip -1
-        }
+        drawIndexedFaces(&sectionIndices[range.indexStart], range.indexCount);
 
         if (angle != 0.0f) {
-            glMatrixMode(GL_TEXTURE);
-            glPopMatrix();
-            glMatrixMode(GL_MODELVIEW);
+            popTextureRotation();
         }
     }
 
     glDisableClientState(GL_VERTEX_ARRAY);
-    glPopAttrib();
+
+    endHatchOverlay();
 }
 
 void SoFCStencilCap::GLRender(SoGLRenderAction* action)
 {
     (void)action;
 
-    // Per-solid hatching overlay: render section faces with rotated textures
     if (!solidRanges.empty() && hatchEnabled.getValue()) {
         renderPerSolidHatch();
     }

@@ -160,17 +160,16 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     pcHatchTexture = new SoTexture2();
     pcHatchTexture->ref();
     {
-        const int sz = 256;
-        const int spacing = 64;
-        const int lineWidth = 2;
-        // 45° diagonal lines in MODULATE mode (RGB, no alpha).
-        // White background preserves surface color, dark lines darken it.
+        // Small tileable texture — GPU repeats it via GL_REPEAT.
+        // 16x16 with one diagonal line = minimal memory, same visual.
+        const int sz = 16;
+        const int lineWidth = 1;
         unsigned char* img = new unsigned char[sz * sz * 3];
-        std::memset(img, 255, sz * sz * 3);
+        std::memset(img, 255, sz * sz * 3);  // white background
         for (int y = 0; y < sz; y++) {
             for (int x = 0; x < sz; x++) {
                 int idx = (y * sz + x) * 3;
-                if (((x + y) % spacing) < lineWidth) {
+                if (((x + y) % sz) < lineWidth) {
                     img[idx] = 25;
                     img[idx + 1] = 25;
                     img[idx + 2] = 25;
