@@ -72,6 +72,8 @@ public:
     bool onDelete(const std::vector<std::string>&) override;
 
     void setHatching(bool on);
+    void setPerSolidColors(bool on);
+    void setShowPlane(bool on);
 
 protected:
     bool setEdit(int ModNum) override;
@@ -84,6 +86,7 @@ private:
     void updatePlaneVisual();
     void updateHatchProjection();
     void updateStencilCap();
+    void applyPerSolidColors();
 
     SoFCStencilCap* pcStencilCap = nullptr;
     SoSwitch* pcPlaneSwitch = nullptr;
@@ -99,6 +102,7 @@ private:
     SoTextureCoordinatePlane* pcHatchCoordGen = nullptr;
     bool clipInstalled = false;
     bool hatchEnabled = true;
+    bool usePerSolidColors = false;
     std::vector<App::DocumentObject*> clippedObjects;
 };
 

@@ -92,6 +92,8 @@ private:
     void onFlipToggled(bool on);
     void onSectionColorChanged(const QColor& color);
     void onHatchToggled(bool on);
+    void onPerSolidColorToggled(bool on);
+    void onShowPlaneToggled(bool on);
     void onUpdateViewToggled(bool on);
     void recompute();
     void deferRecompute();
@@ -111,6 +113,8 @@ private:
     QCheckBox* flipCheck = nullptr;
     Gui::ColorButton* sectionColorBtn = nullptr;
     QCheckBox* hatchCheck = nullptr;
+    QCheckBox* perSolidColorCheck = nullptr;
+    QCheckBox* showPlaneCheck = nullptr;
     QCheckBox* updateViewCheck = nullptr;
     double sliderMin = 0.0;
     double sliderMax = 100.0;

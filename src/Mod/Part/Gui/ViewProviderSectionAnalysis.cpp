@@ -145,10 +145,10 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     {
         const int sz = 256;
         const int spacing = 64;
-        const int lineWidth = 1;
+        const int lineWidth = 2;
         // Use RGB texture (no alpha) in MODULATE mode.  Background is
         // white (Cs * 1 = Cs, preserves surface color), lines are dark
-        // gray (Cs * 0.3, darkens).  Avoids DECAL alpha issues where
+        // (Cs * 0.1, darkens to 10%).  Avoids DECAL alpha issues where
         // some face rendering paths become transparent.
         unsigned char* img = new unsigned char[sz * sz * 3];
         std::memset(img, 255, sz * sz * 3);  // white background
@@ -157,9 +157,9 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
                 int idx = (y * sz + x) * 3;
                 int diag = (x + y) % spacing;
                 if (diag < lineWidth) {
-                    img[idx] = 76;  // ~0.3 * 255
-                    img[idx + 1] = 76;
-                    img[idx + 2] = 76;
+                    img[idx] = 25;  // ~0.1 * 255 — nearly black lines
+                    img[idx + 1] = 25;
+                    img[idx + 2] = 25;
                 }
             }
         }
@@ -457,6 +457,81 @@ void ViewProviderSectionAnalysis::updateHatchProjection()
     pcHatchCoordGen->directionT.setValue(SbVec3f(v.x * scale, v.y * scale, v.z * scale));
 }
 
+void ViewProviderSectionAnalysis::applyPerSolidColors()
+{
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat) {
+        return;
+    }
+
+    const auto& counts = feat->SolidFaceCounts.getValues();
+    if (counts.empty()) {
+        return;
+    }
+
+    // Collect source body materials from the source's child bodies
+    std::vector<App::Material> solidMats;
+    App::DocumentObject* source = feat->Source.getValue();
+    if (source) {
+        auto children = source->getOutList();
+        for (auto* child : children) {
+            if (!child->isDerivedFrom(Part::Feature::getClassTypeId())) {
+                continue;
+            }
+            auto* vp = Gui::Application::Instance->getViewProvider(child);
+            auto* vpPart = dynamic_cast<ViewProviderPartExt*>(vp);
+            if (vpPart) {
+                App::Material mat = vpPart->ShapeAppearance[0];
+                // Force fully opaque — section faces should never be
+                // transparent even if the source body has transparency.
+                mat.transparency = 0.0f;
+                mat.diffuseColor.a = 0.0f;  // a=0 means opaque in FreeCAD
+                solidMats.push_back(mat);
+            }
+        }
+    }
+
+    // Fallback: use a predefined palette
+    if (solidMats.empty()) {
+        float palette[][3] = {
+            {0.8f, 0.3f, 0.2f},
+            {0.2f, 0.5f, 0.8f},
+            {0.3f, 0.7f, 0.3f},
+            {0.8f, 0.7f, 0.2f},
+            {0.6f, 0.3f, 0.7f},
+            {0.9f, 0.5f, 0.3f},
+        };
+        for (size_t i = 0; i < counts.size(); i++) {
+            App::Material mat;
+            auto& p = palette[i % 6];
+            mat.diffuseColor.set(p[0], p[1], p[2], 0.0f);
+            solidMats.push_back(mat);
+        }
+    }
+
+    // Build per-face material array
+    int totalFaces = 0;
+    for (auto c : counts) {
+        totalFaces += c;
+    }
+    if (totalFaces == 0) {
+        return;
+    }
+
+    std::vector<App::Material> materials;
+    materials.reserve(totalFaces);
+    for (size_t i = 0; i < counts.size(); i++) {
+        const auto& mat = (i < solidMats.size()) ? solidMats[i] : solidMats.back();
+        for (long j = 0; j < counts[i]; j++) {
+            materials.push_back(mat);
+        }
+    }
+
+    if (!materials.empty()) {
+        ShapeAppearance.setValues(materials);
+    }
+}
+
 void ViewProviderSectionAnalysis::updateStencilCap()
 {
     if (!pcStencilCap) {
@@ -591,6 +666,30 @@ void ViewProviderSectionAnalysis::setHatching(bool on)
     }
 }
 
+void ViewProviderSectionAnalysis::setShowPlane(bool on)
+{
+    if (pcPlaneSwitch) {
+        pcPlaneSwitch->whichChild = on ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    }
+}
+
+void ViewProviderSectionAnalysis::setPerSolidColors(bool on)
+{
+    usePerSolidColors = on;
+    if (on) {
+        applyPerSolidColors();
+    }
+    else {
+        // Restore single section color
+        App::Material mat;
+        mat.diffuseColor.set(0.8f, 0.3f, 0.2f, 0.0f);
+        ShapeAppearance.setValues({mat});
+        if (hatchEnabled) {
+            setHatching(true);
+        }
+    }
+}
+
 void ViewProviderSectionAnalysis::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
     Q_UNUSED(ModNum);
@@ -619,11 +718,15 @@ void ViewProviderSectionAnalysis::show()
     updatePlaneVisual();
     updateHatchProjection();
     updateStencilCap();
+    if (usePerSolidColors) {
+        applyPerSolidColors();
+    }
     if (hatchEnabled) {
         setHatching(true);
     }
+    // Plane visual hidden by default — shown when editing via task panel
     if (pcPlaneSwitch) {
-        pcPlaneSwitch->whichChild = SO_SWITCH_ALL;
+        pcPlaneSwitch->whichChild = SO_SWITCH_NONE;
     }
     ViewProviderPart::show();
 }
@@ -673,6 +776,9 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
         }
         updatePlaneVisual();
         updateStencilCap();
+        if (usePerSolidColors) {
+            applyPerSolidColors();
+        }
         if (hatchEnabled) {
             setHatching(true);
         }
@@ -710,6 +816,11 @@ bool ViewProviderSectionAnalysis::setEdit(int ModNum)
 
         Gui::Selection().clearSelection();
 
+        // Show the cutting plane visual when entering edit mode
+        if (pcPlaneSwitch) {
+            pcPlaneSwitch->whichChild = SO_SWITCH_ALL;
+        }
+
         if (saDlg) {
             Gui::Control().showDialog(saDlg, getDocument()->getDocument());
         }
@@ -732,6 +843,10 @@ bool ViewProviderSectionAnalysis::setEdit(int ModNum)
 void ViewProviderSectionAnalysis::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
+        // Hide the cutting plane visual when leaving edit mode
+        if (pcPlaneSwitch) {
+            pcPlaneSwitch->whichChild = SO_SWITCH_NONE;
+        }
         Gui::Control().closeDialog(nullptr);
     }
     else {
