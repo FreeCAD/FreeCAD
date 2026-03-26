@@ -111,7 +111,6 @@ private:
     double sliderMax = 100.0;
     double offsetBase = 0.0;  // projMin — added to spinbox value to get PlaneOffset
     QTimer* recomputeTimer = nullptr;
-
 };
 
 class TaskSectionAnalysis: public Gui::TaskView::TaskDialog

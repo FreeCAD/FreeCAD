@@ -739,7 +739,8 @@ void ViewProviderSectionAnalysis::sectionDragMotionCallback(void* data, SoDragge
     // Apply Z translation → PlaneOffset change
     double offsetDelta = zSteps * transStep;
     Base::Vector3d startNormal = vp->draggerStartPlacement.getRotation().multVec(
-        Base::Vector3d(0, 0, 1));
+        Base::Vector3d(0, 0, 1)
+    );
     double startOffset = startNormal * vp->draggerStartPlacement.getPosition();
     double newOffset = startOffset + offsetDelta;
 
@@ -894,11 +895,10 @@ bool ViewProviderSectionAnalysis::setEdit(int ModNum)
                 Gui::ViewParams::instance()->getAxisYColor(),
                 Gui::ViewParams::instance()->getAxisZColor()
             );
-            transformDragger->draggerSize.setValue(
-                Gui::ViewParams::instance()->getDraggerScale());
+            transformDragger->draggerSize.setValue(Gui::ViewParams::instance()->getDraggerScale());
 
             // Finer increments for section plane manipulation
-            transformDragger->translationIncrement.setValue(0.1);  // 0.1mm steps
+            transformDragger->translationIncrement.setValue(0.1);        // 0.1mm steps
             transformDragger->rotationIncrement.setValue(M_PI / 180.0);  // 1° steps
 
             // Section plane: only Z translation + X/Y rotation
