@@ -26,7 +26,6 @@
 #include <string>
 #include <map>
 #include <set>
-#include <unordered_map>
 #include <vector>
 #include <cctype>
 #include <mutex>
@@ -91,6 +90,7 @@ struct DocumentP
     bool _isModified;
     bool _isTransacting;
     bool _isActive;
+    bool _restoredGuiDocument;
     bool _changeViewTouchDocument;
     bool _editWantsRestore;
     bool _editWantsRestorePrevious;
@@ -437,6 +437,7 @@ Document::Document(App::Document* pcDocument, Application* app)
     d->_isModified = false;
     d->_isTransacting = false;
     d->_isActive = false;
+    d->_restoredGuiDocument = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = nullptr;
@@ -1846,14 +1847,21 @@ void Document::Save(Base::Writer& writer) const
  */
 void Document::Restore(Base::XMLReader& reader)
 {
+    // Reset for this restore cycle. If GuiDocument.xml is missing (common in
+    // CLI-generated FCStd files), RestoreDocFile() won't run and this remains false.
+    d->_restoredGuiDocument = false;
     reader.addFile("GuiDocument.xml", this);
 
     // hide all elements to avoid to update the 3d view when loading data files
     // RestoreDocFile then restores the visibility status again
     std::map<const App::DocumentObject*, ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        it->second->startRestoring();
         it->second->setStatus(Gui::isRestoring, true);
+        Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+            App::Property::User1,
+            &it->second->Visibility
+        );
+        it->second->startRestoring();
     }
 }
 
@@ -1862,6 +1870,8 @@ void Document::Restore(Base::XMLReader& reader)
  */
 void Document::RestoreDocFile(Base::Reader& reader)
 {
+    d->_restoredGuiDocument = true;
+
     // We must create an XML parser to read from the input stream
     std::shared_ptr<Base::XMLReader> localreader
         = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
@@ -1965,6 +1975,22 @@ void Document::slotFinishRestoreObject(const App::DocumentObject& obj)
     if (vpd) {
         vpd->setStatus(Gui::isRestoring, false);
         vpd->finishRestoring();
+
+        // Fallback for documents without GuiDocument.xml (e.g. App-only CLI saves):
+        // ensure view provider visibility follows App::DocumentObject::Visibility.
+        if (!d->_restoredGuiDocument && vpd->getObject()) {
+            auto* obj = vpd->getObject();
+
+            // CLI-generated files may not carry GuiDocument.xml, so presentation
+            // state has to be rebuilt from App data after restore.
+            vpd->updateView();
+            Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
+                App::Property::User1,
+                &vpd->Visibility
+            );
+            vpd->Visibility.setValue(obj->Visibility.getValue());
+        }
+
         if (!vpd->canAddToSceneGraph()) {
             toggleInSceneGraph(vpd);
         }
@@ -1982,6 +2008,17 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
         ViewProvider* viewProvider = getViewProvider(act);
         if (viewProvider && viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
             signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        }
+    }
+
+    // Optional UX fallback for App-only restores (no GuiDocument.xml):
+    // ensure a usable initial framing if camera/view state was not persisted.
+    if (!d->_restoredGuiDocument) {
+        for (const auto& mdiView : getMDIViews()) {
+            if (auto* view3D = freecad_cast<View3DInventor*>(mdiView)) {
+                QTimer::singleShot(0, view3D, [view3D]() { view3D->viewAll(); });
+                break;
+            }
         }
     }
 
