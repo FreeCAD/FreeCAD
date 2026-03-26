@@ -175,11 +175,11 @@ def orientWire(w, forward=True):
     return wire
 
 
-def discretizeWire(wire, tolerance):
+def discretizeWire(wire, tolerance=0.01):
     """discretizeWire discretizes any non-line/arc edges in the wire.
     Edges that are lines or circular arcs are kept as-is.
     Other edge types (ellipses, splines, etc.) are discretized into line segments.
-    tolerance: Deflection tolerance for discretization. Required if wire contains non-line/arc edges.
+    tolerance: Deflection tolerance for discretization. Must be positive if wire contains non-line/arc edges.
     Returns the wire with non-line/arc edges replaced by line segments.
     """
     processed_edges = []
@@ -208,11 +208,11 @@ def discretizeWire(wire, tolerance):
     return wire
 
 
-def offsetWire(wire, base, offset, forward, Side=None, tolerance=0):
+def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
     """offsetWire ... offsets the wire away from base and orients the wire accordingly.
     The function tries to avoid most of the pitfalls of Part.makeOffset2D which is possible because all offsetting
     happens in the XY plane.
-    tolerance: Deflection tolerance for discretizing non-line/arc edges. Required if wire contains non-line/arc edges.
+    tolerance: Deflection tolerance for discretization. Must be positive if wire contains non-line/arc edges.
     """
     Path.Log.track("offsetWire")
 
