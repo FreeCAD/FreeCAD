@@ -64,15 +64,17 @@ class LinuxCNCSerializer(AssetSerializer):
             # This is where we need a machine definition so we can export these out correctly
             # for a metric or imperial machine
             # Using user preferred for now
+            # FIXME: can it really be all 3 variants? the TestPathToolLibrarySerializer has it as `str`
             if hasattr(diameter, "Value"):
-                diameter_value = str(diameter.Value).replace(",", ".")
+                diameter_value = diameter.Value
             elif isinstance(diameter, str):
-                diameter_value = diameter.split(" ")[0].replace(",", ".")
+                diameter_value = FreeCAD.Units.Quantity(diameter).Value
             else:
-                diameter_value = str(diameter).replace(",", ".")
+                diameter_value = diameter
             line = (
                 f"T{bit_no} {pocket} X0 Y0 Z0 A0 B0 C0 U0 V0 W0 "
-                f"D{diameter_value} I0 J0 Q0 ;{bit.label}\n"
+                # FIXME: what should precision be? (cf. "machine" comment above)
+                f"D{diameter_value:.3f} I0 J0 Q0 ;{bit.label}\n"
             )
             output.write(line.encode("utf-8"))
 
