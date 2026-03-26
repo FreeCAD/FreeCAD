@@ -201,6 +201,72 @@ class TestPathPocket(PathTestBase):
         # Verify actual loop count matches expected loop count
         self.assertEqual(actual_num_loops, expected_num_loops)
 
+    def test_pocket_pointy_triangle_offset(self):
+        """test_pocket_pointy_triangle_offset() Verify pocket operation with pointy triangular geometry and offset clearing."""
+
+        # Test geometry constants
+        triangle_base = 15.0
+        triangle_height = 100.0
+        box_margin = 10.0
+        outer_box_size = max(triangle_base, triangle_height) + box_margin
+        outer_box_height = 20.0
+        pocket_depth_amount = 1.0
+        pocket_bottom_z = outer_box_height - pocket_depth_amount
+
+        # Tool and operation constants
+        tool_diameter = 5.0
+        stepover_percent = 10
+
+        # Create a box with a triangular pocket (extrusion with cutout)
+        # Pocket is 1mm deep, from Z=19 to Z=20
+        outer = Part.makeBox(outer_box_size, outer_box_size, outer_box_height)
+
+        # Create triangle centered in the box
+        center_x = outer_box_size / 2.0
+        center_y = outer_box_size / 2.0
+
+        # Create a pointy triangle (isosceles with apex pointing up)
+        # Base centered at bottom, apex at top
+        base_y = center_y - triangle_height / 2.0
+        apex_y = center_y + triangle_height / 2.0
+
+        v1 = FreeCAD.Vector(center_x - triangle_base / 2.0, base_y, pocket_bottom_z)
+        v2 = FreeCAD.Vector(center_x + triangle_base / 2.0, base_y, pocket_bottom_z)
+        v3 = FreeCAD.Vector(center_x, apex_y, pocket_bottom_z)
+
+        # Create triangle wire and extrude
+        triangle_wire = Part.makePolygon([v1, v2, v3, v1])
+        triangle_face = Part.Face(triangle_wire)
+        inner = triangle_face.extrude(FreeCAD.Vector(0, 0, pocket_depth_amount))
+
+        pocket_solid = outer.cut(inner)
+
+        part_obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "TrianglePart")
+        part_obj.Shape = pocket_solid
+
+        # Create pocket operation with specified parameters
+        pocket = self.createPocketOperation(
+            part_obj,
+            pocket_bottom_z,
+            "pocket_pointy_triangle_offset",
+            tool_diameter,
+            StepOver=stepover_percent,
+            ClearingPattern="Offset",
+            StartAt="Edge",
+        )
+
+        # Count offset loops from generated G-code
+        actual_num_loops = countOffsetLoops(pocket.Path.Commands, pocket_bottom_z)
+
+        # Calculate max expected loops based on base width
+        # For triangular pockets, actual loops will be less than max due to narrowing geometry
+        stepover_distance = tool_diameter * (stepover_percent / 100.0)
+        available_clearance = (triangle_base - tool_diameter) / 2.0
+        max_expected_loops = int(available_clearance / stepover_distance)
+
+        # Verify actual loop count is close to max expected (within 1 loop)
+        self.assertGreaterEqual(actual_num_loops, max_expected_loops - 1)
+
 
 def _addViewProvider(pocketOp):
     if FreeCAD.GuiUp:
