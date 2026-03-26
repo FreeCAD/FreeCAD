@@ -372,6 +372,14 @@ void SectionAnalysisWidget::setupUi()
     hatchCheck->setChecked(true);
     appearLayout->addWidget(hatchCheck, 1, 0, 1, 2);
 
+    perSolidColorCheck = new QCheckBox(tr("Per-Body Colors"), this);
+    perSolidColorCheck->setChecked(false);
+    appearLayout->addWidget(perSolidColorCheck, 2, 0, 1, 2);
+
+    showPlaneCheck = new QCheckBox(tr("Show Cutting Plane"), this);
+    showPlaneCheck->setChecked(true);
+    appearLayout->addWidget(showPlaneCheck, 3, 0, 1, 2);
+
     mainLayout->addWidget(appearGroup);
 
     // Update View checkbox
@@ -432,6 +440,8 @@ void SectionAnalysisWidget::setupConnections()
         onSectionColorChanged(sectionColorBtn->color());
     });
     connect(hatchCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onHatchToggled);
+    connect(perSolidColorCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onPerSolidColorToggled);
+    connect(showPlaneCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onShowPlaneToggled);
     connect(updateViewCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onUpdateViewToggled);
 }
 
@@ -836,6 +846,26 @@ void SectionAnalysisWidget::onHatchToggled(bool on)
     );
     if (vp) {
         vp->setHatching(on);
+    }
+}
+
+void SectionAnalysisWidget::onPerSolidColorToggled(bool on)
+{
+    auto* vp = dynamic_cast<PartGui::ViewProviderSectionAnalysis*>(
+        Gui::Application::Instance->getViewProvider(feature)
+    );
+    if (vp) {
+        vp->setPerSolidColors(on);
+    }
+}
+
+void SectionAnalysisWidget::onShowPlaneToggled(bool on)
+{
+    auto* vp = dynamic_cast<PartGui::ViewProviderSectionAnalysis*>(
+        Gui::Application::Instance->getViewProvider(feature)
+    );
+    if (vp) {
+        vp->setShowPlane(on);
     }
 }
 
