@@ -1,7 +1,7 @@
 # Locate PyCXX headers and source files
 
 # This module defines
-# PYCXX_INCLUDE_DIR
+# PYCXX_INCLUDE_DIRS
 # PYCXX_SOURCE_DIR
 # PYCXX_FOUND
 # PYCXX_SOURCES
@@ -22,37 +22,43 @@
 
 set(PYCXX_FOUND "YES")
 
+if(FREECAD_USE_EXTERNAL_PYCXX)
+    find_package(PkgConfig)
+    pkg_check_modules(PyCXX REQUIRED PyCXX)
+    pkg_get_variable(PYCXX_SOURCE_DIR PyCXX srcdir)
+endif(FREECAD_USE_EXTERNAL_PYCXX)
+
 # find the header directory
-if(PYCXX_INCLUDE_DIR)
+if(PYCXX_INCLUDE_DIRS)
     # headers better be in there
-    if(NOT EXISTS "${PYCXX_INCLUDE_DIR}/CXX/Config.hxx")
+    if(NOT EXISTS "${PYCXX_INCLUDE_DIRS}/CXX/Config.hxx")
         if(PyCXX_FIND_REQUIRED)
             MESSAGE(FATAL_ERROR
-                "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
-            "${PYCXX_INCLUDE_DIR}")
+                "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIRS "
+            "${PYCXX_INCLUDE_DIRS}")
         else(PyCXX_FIND_REQUIRED)
             MESSAGE(WARNING
-                "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIR "
-            "${PYCXX_INCLUDE_DIR}")
+                "PyCXX: could not find CXX/Config.hxx in PYCXX_INCLUDE_DIRS "
+            "${PYCXX_INCLUDE_DIRS}")
             unset(PYCXX_FOUND)
         endif(PyCXX_FIND_REQUIRED)
-    endif(NOT EXISTS "${PYCXX_INCLUDE_DIR}/CXX/Config.hxx")
-else(PYCXX_INCLUDE_DIR)
+    endif(NOT EXISTS "${PYCXX_INCLUDE_DIRS}/CXX/Config.hxx")
+else(PYCXX_INCLUDE_DIRS)
     # check in 'standard' places
-    find_path(PYCXX_INCLUDE_DIR CXX/Config.hxx
+    find_path(PYCXX_INCLUDE_DIRS CXX/Config.hxx
         ${PYTHON_INCLUDE_DIR}
         "${CMAKE_CURRENT_LIST_DIR}/..")
-    if(NOT PYCXX_INCLUDE_DIR)
+    if(NOT PYCXX_INCLUDE_DIRS)
         if(PyCXX_FIND_REQUIRED)
             MESSAGE(FATAL_ERROR
-                "PyCXX not found; please set PYCXX_INCLUDE_DIR to "
+                "PyCXX not found; please set PYCXX_INCLUDE_DIRS to "
                 "the location of CXX/Config.hxx")
         else(PyCXX_FIND_REQUIRED)
             MESSAGE(STATUS "PyCXX not found")
             unset(PYCXX_FOUND)
         endif(PyCXX_FIND_REQUIRED)
-    endif(NOT PYCXX_INCLUDE_DIR)
-endif(PYCXX_INCLUDE_DIR)
+    endif(NOT PYCXX_INCLUDE_DIRS)
+endif(PYCXX_INCLUDE_DIRS)
 
 # find the sources directory
 if(PYCXX_SOURCE_DIR)
@@ -72,8 +78,8 @@ if(PYCXX_SOURCE_DIR)
 else(PYCXX_SOURCE_DIR)
     # check in 'standard' places
     find_path(PYCXX_SOURCE_DIR cxxextensions.c
-        "${PYCXX_INCLUDE_DIR}/CXX"
-        "${PYCXX_INCLUDE_DIR}/Src"
+        "${PYCXX_INCLUDE_DIRS}/CXX"
+        "${PYCXX_INCLUDE_DIRS}/Src"
         "${PYTHON_INCLUDE_DIR}/CXX"
         "${PYTHON_INCLUDE_DIR}/Src"
         "${CMAKE_CURRENT_LIST_DIR}/../Src"
@@ -91,8 +97,8 @@ else(PYCXX_SOURCE_DIR)
 endif(PYCXX_SOURCE_DIR)
 
 # Find PyCXX Version
-if(PYCXX_INCLUDE_DIR AND PYCXX_SOURCE_DIR)
-    file(READ ${PYCXX_INCLUDE_DIR}/CXX/Version.hxx PYCXX_VERSION_H)
+if(PYCXX_INCLUDE_DIRS AND PYCXX_SOURCE_DIR)
+    file(READ ${PYCXX_INCLUDE_DIRS}/CXX/Version.hxx PYCXX_VERSION_H)
     foreach(item IN ITEMS MAJOR MINOR PATCH)
         string(REGEX REPLACE
             ".*#define[ \t]+PYCXX_VERSION_${item}[ \t]+([0-9]+).*"
@@ -106,7 +112,7 @@ endif()
 # see what we've got
 if(PYCXX_FOUND)
     MESSAGE(STATUS "PyCXX found:")
-    MESSAGE(STATUS "  Headers:  ${PYCXX_INCLUDE_DIR}")
+    MESSAGE(STATUS "  Headers:  ${PYCXX_INCLUDE_DIRS}")
     MESSAGE(STATUS "  Sources:  ${PYCXX_SOURCE_DIR}")
     MESSAGE(STATUS "  Version:  ${PYCXX_VERSION}")
 
