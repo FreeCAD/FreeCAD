@@ -760,6 +760,12 @@ void ViewProviderSectionAnalysis::sectionDragMotionCallback(void* data, SoDragge
 
     feat->PlaneNormal.setValue(newNormal);
     feat->PlaneOffset.setValue(newOffset);
+
+    // Sync the task panel UI to reflect dragger changes
+    auto* dlg = qobject_cast<TaskSectionAnalysis*>(Gui::Control().activeDialog());
+    if (dlg) {
+        dlg->updateFromFeature();
+    }
 }
 
 void ViewProviderSectionAnalysis::sectionDragFinishCallback(void* data, SoDragger*)
@@ -895,6 +901,11 @@ bool ViewProviderSectionAnalysis::setEdit(int ModNum)
                 Gui::ViewParams::instance()->getAxisZColor()
             );
             transformDragger->draggerSize.setValue(Gui::ViewParams::instance()->getDraggerScale());
+
+            // Hide axis labels — not meaningful for section plane
+            transformDragger->xAxisLabel.setValue("");
+            transformDragger->yAxisLabel.setValue("");
+            transformDragger->zAxisLabel.setValue("");
 
             // Finer increments for section plane manipulation
             transformDragger->translationIncrement.setValue(0.1);        // 0.1mm steps
