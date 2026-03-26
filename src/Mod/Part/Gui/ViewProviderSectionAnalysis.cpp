@@ -69,10 +69,20 @@ ViewProviderSectionAnalysis::ViewProviderSectionAnalysis()
 {
     sPixmap = "Part_SectionAnalysis";
 
-    ADD_PROPERTY_TYPE(ShowHatching, (true), "Section Analysis", App::Prop_None,
-        "Show diagonal hatching lines on cross-section faces");
-    ADD_PROPERTY_TYPE(PerBodyColors, (false), "Section Analysis", App::Prop_None,
-        "Use source body colors for cross-section faces");
+    ADD_PROPERTY_TYPE(
+        ShowHatching,
+        (true),
+        "Section Analysis",
+        App::Prop_None,
+        "Show diagonal hatching lines on cross-section faces"
+    );
+    ADD_PROPERTY_TYPE(
+        PerBodyColors,
+        (false),
+        "Section Analysis",
+        App::Prop_None,
+        "Use source body colors for cross-section faces"
+    );
 
     // Default section face color: reddish-orange
     App::Material mat;
@@ -571,10 +581,14 @@ void ViewProviderSectionAnalysis::updateStencilCap()
         int numParts = faceset->partIndex.getNum();
         if (numVerts > 0 && numIndices > 0 && numParts > 0) {
             pcStencilCap->setSectionFaces(
-                coords->point.getValues(0), numVerts,
-                faceset->coordIndex.getValues(0), numIndices,
-                faceset->partIndex.getValues(0), numParts,
-                solidCounts);
+                coords->point.getValues(0),
+                numVerts,
+                faceset->coordIndex.getValues(0),
+                numIndices,
+                faceset->partIndex.getValues(0),
+                numParts,
+                solidCounts
+            );
         }
     }
 }
