@@ -42,7 +42,15 @@ jobs:
           if [ "${{ github.event_name }}" = "release" ]; then
             export BUILD_TAG="${{ github.event.release.tag_name }}"
           else
-            export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+            BRANCH="${{ github.ref_name }}"
+            DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+            if [ "$BRANCH" = "$DEFAULT_BRANCH" ]; then
+              export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+            else
+              # Sanitize branch name for use in a tag (replace non-alphanumeric with -)
+              SAFE_BRANCH=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9._-]/-/g')
+              export BUILD_TAG=${SAFE_BRANCH}-$(date "+%Y.%m.%d")
+            fi
             gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" \
                                            -F .github/workflows/weekly-build-notes.md \
                                            --prerelease || \
