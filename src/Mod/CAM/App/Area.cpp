@@ -2369,6 +2369,47 @@ TopoDS_Shape Area::makeOffset(
     return TopoDS_Shape();
 }
 
+std::shared_ptr<CArea> Area::performSingleOffset(double offset)
+{
+    auto area = make_shared<CArea>();
+    CArea areaOpen;
+
+    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
+#ifdef AREA_OFFSET_ALGO
+    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
+
+    switch (myParams.Algo) {
+        case Area::Algolibarea:
+            // Separate closed and open curves for libarea
+            for (const CCurve& c : myArea->m_curves) {
+                if (c.IsClosed()) {
+                    area->append(c);
+                }
+                else {
+                    areaOpen.append(c);
+                }
+            }
+            // libarea somehow fails offset without Reorder, but ClipperOffset
+            // works okay. Don't know why
+            area->Reorder();
+            area->Offset(-offset);
+            if (areaOpen.m_curves.size()) {
+                areaOpen.Thicken(offset);
+                area->Clip(ClipperLib::ctUnion, &areaOpen, SubjectFill, ClipFill);
+            }
+            break;
+        case Area::AlgoClipperOffset:
+#endif
+            *area = *myArea;
+            area->OffsetWithClipper(offset, JoinType, EndType, myParams.MiterLimit, myParams.RoundPrecision);
+#ifdef AREA_OFFSET_ALGO
+            break;
+    }
+#endif
+
+    return area;
+}
+
 void Area::makeOffset(
     list<shared_ptr<CArea>>& areas,
     PARAM_ARGS(PARAM_FARG, AREA_PARAMS_OFFSET),
@@ -2412,61 +2453,8 @@ void Area::makeOffset(
         }
     }
     for (int i = 0; count < 0 || i < count; ++i, offset += stepover) {
-        if (from_center) {
-            areas.push_front(make_shared<CArea>());
-        }
-        else {
-            areas.push_back(make_shared<CArea>());
-        }
-        CArea& area = from_center ? (*areas.front()) : (*areas.back());
-        CArea areaOpen;
-#ifdef AREA_OFFSET_ALGO
-        if (myParams.Algo == Area::Algolibarea) {
-            for (const CCurve& c : myArea->m_curves) {
-                if (c.IsClosed()) {
-                    area.append(c);
-                }
-                else {
-                    areaOpen.append(c);
-                }
-            }
-        }
-        else
-#endif
-            area = *myArea;
-
-#ifdef AREA_OFFSET_ALGO
-        switch (myParams.Algo) {
-            case Area::Algolibarea:
-                // libarea somehow fails offset without Reorder, but ClipperOffset
-                // works okay. Don't know why
-                area.Reorder();
-                area.Offset(-offset);
-                if (areaOpen.m_curves.size()) {
-                    areaOpen.Thicken(offset);
-                    area.Clip(ClipperLib::ctUnion, &areaOpen, SubjectFill, ClipFill);
-                }
-                break;
-            case Area::AlgoClipperOffset:
-#endif
-                area.OffsetWithClipper(
-                    offset,
-                    JoinType,
-                    EndType,
-                    myParams.MiterLimit,
-                    myParams.RoundPrecision
-                );
-#ifdef AREA_OFFSET_ALGO
-                break;
-        }
-#endif
-        if (area.m_curves.empty()) {
-            if (from_center) {
-                areas.pop_front();
-            }
-            else {
-                areas.pop_back();
-            }
+        auto area = performSingleOffset(offset);
+        if (area->m_curves.empty()) {
             if (areas.empty()) {
                 break;
             }
@@ -2477,6 +2465,12 @@ void Area::makeOffset(
                 continue;
             }
             return;
+        }
+        if (from_center) {
+            areas.push_front(area);
+        }
+        else {
+            areas.push_back(area);
         }
     }
 }
