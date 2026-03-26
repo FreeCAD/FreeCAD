@@ -334,6 +334,18 @@ std::string DocumentObject::getFullLabel() const
     return name;
 }
 
+std::string DocumentObject::getFullNameLabel() const
+{
+    const std::string& fullName = getFullName();
+    const std::string& name     = getNameInDocument();
+    const std::string& label    = Label.getValue();
+
+    if (!label.empty() && label != name) {
+        return fullName + " (" + label + ")";
+    }
+    return fullName;
+}
+
 const char* DocumentObject::getDagKey() const
 {
     if (!pcNameInDocument) {
@@ -1607,5 +1619,4 @@ App::PropertyPlacement* DocumentObject::getPlacementProperty() const
 
     return getPropertyByName<App::PropertyPlacement>("Placement");
 }
-
 
