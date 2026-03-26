@@ -53,7 +53,6 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
-#include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Gui/Inventor/Draggers/SoRotationDragger.h>
 
 #include "TaskSectionAnalysis.h"
@@ -78,7 +77,6 @@ SectionAnalysisWidget::SectionAnalysisWidget(
     setupUi();
     setupConnections();
     updateSliderRange();
-    setupGizmos();
 
     // Enable hatching by default
     onHatchToggled(true);
@@ -91,142 +89,6 @@ ViewProviderSectionAnalysis* SectionAnalysisWidget::getViewProvider() const
     return viewProvider;
 }
 
-void SectionAnalysisWidget::setupGizmos()
-{
-    if (!Gui::GizmoContainer::isEnabled() || !viewProvider) {
-        return;
-    }
-
-    offsetGizmo = new Gui::LinearGizmo(offsetSpin);
-    angle1Gizmo = new Gui::RotationGizmo(angle1Spin);
-    angle2Gizmo = new Gui::RotationGizmo(angle2Spin);
-
-    gizmoContainer = Gui::GizmoContainer::create({offsetGizmo, angle1Gizmo, angle2Gizmo}, viewProvider);
-
-    // Determine the two tangent axes based on the current normal
-    Base::Vector3d n = feature->PlaneNormal.getValue();
-    double len = n.Length();
-    if (len > 1e-10) {
-        n = n / len;
-    }
-
-    Base::Vector3d tangent1, tangent2;
-    if (std::abs(n.z) > 0.9) {
-        tangent1 = Base::Vector3d(1, 0, 0);  // X
-        tangent2 = Base::Vector3d(0, 1, 0);  // Y
-    }
-    else if (std::abs(n.y) > 0.9) {
-        tangent1 = Base::Vector3d(1, 0, 0);  // X
-        tangent2 = Base::Vector3d(0, 0, 1);  // Z
-    }
-    else {
-        tangent1 = Base::Vector3d(0, 1, 0);  // Y
-        tangent2 = Base::Vector3d(0, 0, 1);  // Z
-    }
-
-    // Set arc colors from user preferences based on which real axis each controls
-    auto axisColor = [](const Base::Vector3d& axis) -> SbColor {
-        auto* vp = Gui::ViewParams::instance();
-        unsigned long packed = 0;
-        float transparency = 0;
-        SbColor c = {};
-
-        if (std::abs(axis.x) > 0.9) {
-            packed = vp->getAxisXColor();
-        }
-        else if (std::abs(axis.y) > 0.9) {
-            packed = vp->getAxisYColor();
-        }
-        else {
-            packed = vp->getAxisZColor();
-        }
-        c.setPackedValue(packed, transparency);
-        return c;
-    };
-
-    // Apply colors to the rotation dragger arcs
-    auto* arc1Dragger = angle1Gizmo->getDraggerContainer()->getDragger();
-    arc1Dragger->color.setValue(axisColor(tangent1));
-    arc1Dragger->activeColor.setValue(axisColor(tangent1));
-
-    auto* arc2Dragger = angle2Gizmo->getDraggerContainer()->getDragger();
-    arc2Dragger->color.setValue(axisColor(tangent2));
-    arc2Dragger->activeColor.setValue(axisColor(tangent2));
-
-    // Orient the arcs at 90 degrees to each other using the rotation field
-    // (same approach as SoTransformDragger::setupRotationDraggers)
-    float angle90 = static_cast<float>(M_PI / 2.0);
-    auto* container1 = angle1Gizmo->getDraggerContainer();
-    SbRotation rot1(SbVec3f(tangent1.x, tangent1.y, tangent1.z), 0);
-    container1->rotation.setValue(rot1);
-
-    auto* container2 = angle2Gizmo->getDraggerContainer();
-    SbRotation rot2(SbVec3f(0, 0, 1), angle90);
-    container2->rotation.setValue(rot2);
-
-    // Don't auto-orient with camera — keep arcs fixed in world space
-    angle1Gizmo->automaticOrientation = false;
-    angle2Gizmo->automaticOrientation = false;
-
-    updateGizmoPositions();
-}
-
-void SectionAnalysisWidget::updateGizmoPositions()
-{
-    if (!offsetGizmo || !viewProvider) {
-        return;
-    }
-
-    auto* feat = feature;
-    Base::Vector3d n = feat->PlaneNormal.getValue();
-    double d = feat->PlaneOffset.getValue();
-    double len = n.Length();
-    if (len < 1e-10) {
-        return;
-    }
-    n = n / len;
-
-    // Position at bbox center projected onto cutting plane
-    App::DocumentObject* source = feat->Source.getValue();
-    if (!source) {
-        return;
-    }
-
-    TopoDS_Shape sourceShape = Part::Feature::getShape(
-        source,
-        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-    );
-    if (sourceShape.IsNull()) {
-        return;
-    }
-
-    Bnd_Box bbox;
-    BRepBndLib::Add(sourceShape, bbox);
-    if (bbox.IsVoid()) {
-        return;
-    }
-
-    double xmin, ymin, zmin, xmax, ymax, zmax;
-    bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-    Base::Vector3d bboxCenter((xmin + xmax) / 2, (ymin + ymax) / 2, (zmin + zmax) / 2);
-    double distToPlane = n * bboxCenter - d;
-    Base::Vector3d planeCenter = bboxCenter - n * distToPlane;
-
-    // Gizmo lives in always-positive space [0, range].
-    // Origin at the near edge, arrow points along normal toward far edge.
-    // The spinbox value (0..range) maps directly to drag length.
-    Base::Vector3d nearEdge = planeCenter - n * (d - offsetBase);
-    offsetGizmo->Gizmo::setDraggerPlacement(nearEdge, n);
-    offsetGizmo->setMultFactor(1.0);
-    offsetGizmo->setAddFactor(0.0);
-    offsetGizmo->setDragLength(d - offsetBase);
-
-    // Place rotation arcs at the arrow tip, separated along the normal direction
-    angle1Gizmo->sepDistance = 0;
-    angle1Gizmo->placeOverLinearGizmo(offsetGizmo);
-    angle2Gizmo->sepDistance = 3.0;  // 3mm behind the first arc
-    angle2Gizmo->placeOverLinearGizmo(offsetGizmo);
-}
 
 Part::SectionAnalysis* SectionAnalysisWidget::getObject() const
 {
@@ -630,7 +492,6 @@ void SectionAnalysisWidget::onPresetChanged(int index)
     }
 
     updateSliderRange();
-    updateGizmoPositions();
     recompute();
 }
 
@@ -747,7 +608,6 @@ void SectionAnalysisWidget::applyAngles()
     feature->PlaneNormal.setValue(n);
     feature->PlaneOffset.setValue(newOffset);
     updateSliderRange();
-    updateGizmoPositions();
     recompute();
 }
 
@@ -788,7 +648,6 @@ void SectionAnalysisWidget::onOffsetChanged(double val)
     offsetSlider->setValue(sliderPos);
     offsetSlider->blockSignals(false);
 
-    updateGizmoPositions();
     deferRecompute();
 }
 
@@ -801,14 +660,12 @@ void SectionAnalysisWidget::onSliderMoved(int val)
     offsetSpin->blockSignals(false);
 
     feature->PlaneOffset.setValue(spinVal + offsetBase);
-    updateGizmoPositions();
     deferRecompute();
 }
 
 void SectionAnalysisWidget::onFlipToggled(bool on)
 {
     feature->FlipCut.setValue(on);
-    updateGizmoPositions();
     recompute();
 }
 
@@ -1015,10 +872,6 @@ Part::SectionAnalysis* TaskSectionAnalysis::getObject() const
     return widget->getObject();
 }
 
-Gui::GizmoContainer* TaskSectionAnalysis::getGizmoContainer() const
-{
-    return widget->getGizmoContainer();
-}
 
 void TaskSectionAnalysis::updateFromFeature()
 {
