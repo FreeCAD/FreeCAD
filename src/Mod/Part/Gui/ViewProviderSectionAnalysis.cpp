@@ -175,7 +175,6 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     updateHatchProjection();
 
 
-
     // Create the clip plane node (not yet inserted into source VP)
     pcClipPlane = new SoClipPlane();
     pcClipPlane->ref();
