@@ -174,7 +174,12 @@
                                "This gives a 3D pattern mainly for 3D printing. The shift only "   \
                                "applies to 'Offset', 'Grid'\n"                                     \
                                "and 'Triangle'",                                                   \
-                               App::PropertyDistance))
+                               App::PropertyDistance))(                                            \
+        (bool,                                                                                     \
+         force_max_stepover,                                                                       \
+         ForceMaxStepover,                                                                         \
+         false,                                                                                    \
+         "Force maximum stepover even if not all area is cleared"))
 
 #define AREA_PARAMS_POCKET_CONF \
     ((bool, thicken, Thicken, false, "Thicken the resulting wires with ToolRadius"))

@@ -168,6 +168,17 @@ protected:
     /** Perform a single offset operation on myArea and return the result */
     std::shared_ptr<CArea> performSingleOffset(double offset);
 
+    /** Check if there's a gap between two offset areas
+     *
+     * Returns true if there's uncovered area between prev and curr after
+     * accounting for tool coverage.
+     */
+    bool hasGap(
+        const std::shared_ptr<CArea>& prev,
+        const std::shared_ptr<CArea>& curr,
+        double tool_radius
+    );
+
     /** Make a pocket of the combined shape
      *
      * User #AREA_PARAMS_POCKET setting in myParams.

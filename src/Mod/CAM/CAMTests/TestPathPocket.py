@@ -104,7 +104,7 @@ class TestPathPocket(PathTestBase):
             job.ViewObject.Proxy = PathJobGui.ViewProvider(job.ViewObject)
 
         # Instantiate a Pocket operation
-        pocket = PathPocket.Create(label)
+        pocket = PathPocket.Create(label, parentJob=job)
 
         # Set tool diameter
         pocket.ToolController.Tool.Diameter = tool_diameter
@@ -216,7 +216,7 @@ class TestPathPocket(PathTestBase):
 
         # Tool and operation constants
         tool_diameter = 5.0
-        stepover_percent = 10
+        stepover_percent = 90
 
         # Create a box with a triangular pocket (extrusion with cutout)
         # Pocket is 1mm deep, from Z=19 to Z=20
@@ -268,7 +268,6 @@ class TestPathPocket(PathTestBase):
 
         # Without ForceMaxStepOver, should generate more loops than base-calculated max
         # to ensure full area coverage despite narrowing geometry
-        # (This will fail until the feature is implemented)
         self.assertGreater(actual_num_loops, max_expected_loops)
 
         # Create second pocket with ForceMaxStepOver=True

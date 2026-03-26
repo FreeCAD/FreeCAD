@@ -26,6 +26,7 @@
 #define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
 
 #include <limits>
+#include <optional>
 
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
@@ -2410,6 +2411,24 @@ std::shared_ptr<CArea> Area::performSingleOffset(double offset)
     return area;
 }
 
+bool Area::hasGap(const std::shared_ptr<CArea>& prev, const std::shared_ptr<CArea>& curr, double tool_radius)
+{
+    // Check if there's a gap between previous and current
+    CArea gap = *prev;
+    gap.Subtract(*curr);
+
+    // Subtract the thickened areas (regions cut by the tool)
+    CArea prev_thickened = *prev;
+    prev_thickened.Thicken(tool_radius);
+    gap.Subtract(prev_thickened);
+
+    CArea curr_thickened = *curr;
+    curr_thickened.Thicken(tool_radius);
+    gap.Subtract(curr_thickened);
+
+    return !gap.m_curves.empty();
+}
+
 void Area::makeOffset(
     list<shared_ptr<CArea>>& areas,
     PARAM_ARGS(PARAM_FARG, AREA_PARAMS_OFFSET),
@@ -2442,30 +2461,50 @@ void Area::makeOffset(
     PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
 #endif
 
-    if (offset < 0) {
-        if (count < 0) {
-            if (!last_stepover) {
-                last_stepover = offset * 0.5;
-            }
-        }
-        else {
-            last_stepover = 0;
-        }
-    }
+    // Track previous offset area for gap detection
+    std::optional<std::shared_ptr<CArea>> previous_area;
+    double tool_radius_val = myParams.ToolRadius;
+    bool check_gaps = !myParams.ForceMaxStepover;
+    const double gap_tolerance = 1.0 / myParams.ClipperScale;
+
     for (int i = 0; count < 0 || i < count; ++i, offset += stepover) {
         auto area = performSingleOffset(offset);
-        if (area->m_curves.empty()) {
-            if (areas.empty()) {
-                break;
+
+        // Check for gaps if we have a previous area and gap checking is enabled
+        if (previous_area && check_gaps) {
+            // First check if the full offset leaves any gaps
+            if (hasGap(*previous_area, area, tool_radius_val)) {
+                // Gap exists, binary search for the largest offset that doesn't leave a gap
+                double offset_min = offset - stepover;
+                double offset_max = offset;
+
+                while (fabs(offset_max - offset_min) > gap_tolerance) {
+                    double offset_mid = (offset_min + offset_max) / 2.0;
+                    auto test_area = performSingleOffset(offset_mid);
+
+                    if (hasGap(previous_area.value(), test_area, tool_radius_val)) {
+                        // Gap exists, need smaller stepover
+                        offset_max = offset_mid;
+                    }
+                    else {
+                        // No gap, can use this offset
+                        offset_min = offset_mid;
+                        area = test_area;
+                    }
+                }
+
+                // Use the min_offset, the biggest offset with no gap
+                offset = offset_min;
             }
-            if (last_stepover && last_stepover > stepover) {
-                offset -= stepover;
-                stepover = last_stepover;
-                --i;
-                continue;
-            }
-            return;
         }
+
+        if (area->m_curves.empty()) {
+            break;
+        }
+
+        // Store this area for next iteration's gap check
+        previous_area = area;
+
         if (from_center) {
             areas.push_front(area);
         }
