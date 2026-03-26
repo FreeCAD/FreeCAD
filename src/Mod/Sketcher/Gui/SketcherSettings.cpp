@@ -192,6 +192,7 @@ void SketcherSettings::loadSettings()
     setProperty("checkBoxUnifiedCoincident", ui->checkBoxUnifiedCoincident->isChecked());
     ui->checkBoxHorVerAuto->onRestore();
     setProperty("checkBoxHorVerAuto", ui->checkBoxHorVerAuto->isChecked());
+    ui->checkBoxLineGroup->onRestore();
     ui->checkBoxAddExtGeo->onRestore();
     ui->checkBoxMakeInternals->onRestore();
 
