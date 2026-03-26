@@ -116,8 +116,7 @@ void Part::FaceMakerBuildFace::Build_Essence()
 
     // Step 4: Build a large planar base face
     const Standard_Real aMax = 1.0e8;
-    TopoDS_Face baseFace =
-        BRepBuilderAPI_MakeFace(plane, -aMax, aMax, -aMax, aMax).Face();
+    TopoDS_Face baseFace = BRepBuilderAPI_MakeFace(plane, -aMax, aMax, -aMax, aMax).Face();
     baseFace.Orientation(TopAbs_FORWARD);
 
     // Step 5: Add each split edge in both orientations and build PCurves
