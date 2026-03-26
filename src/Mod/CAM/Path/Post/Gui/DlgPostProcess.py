@@ -578,10 +578,7 @@ class PostProcessDialog:
         tree.blockSignals(True)
         tree.clear()
 
-        for op in self._get_operations():
-            # Skip operations that are toggled inactive
-            if not getattr(op, "Active", True):
-                continue
+        for op in self._get_active_operations():
             item = QtGui.QTreeWidgetItem(tree)
             item.setText(0, op.Label)
             ct = getattr(op, "CycleTime", None)
@@ -727,6 +724,10 @@ class PostProcessDialog:
             return ops.Group
         return []
 
+    def _get_active_operations(self):
+        """Return only active operations, matching what the tree widget displays."""
+        return [op for op in self._get_operations() if getattr(op, "Active", True)]
+
     def _update_total_time(self):
         tree = self.dialog.treeWidgetOperations
         total_secs = 0
@@ -767,7 +768,7 @@ class PostProcessDialog:
 
     def _select_by_type(self):
         """Pop a menu of distinct operation types; selecting one checks only those ops."""
-        ops = self._get_operations()
+        ops = self._get_active_operations()
         tree = self.dialog.treeWidgetOperations
         types = {}
         for i in range(tree.topLevelItemCount()):
@@ -874,14 +875,16 @@ class PostProcessDialog:
         job = self.job
         dlg = self.dialog
 
-        # Build filtered operations list from the Operations tab checkboxes
-        all_ops = self._get_operations()
+        # Build filtered operations list from the Operations tab checkboxes.
+        # Use _get_active_operations() because the tree skips inactive ops,
+        # so tree indices align with the active-only list, not the full list.
+        active_ops = self._get_active_operations()
         tree = dlg.treeWidgetOperations
         selected_ops = [
-            all_ops[i]
+            active_ops[i]
             for i in range(tree.topLevelItemCount())
             if tree.topLevelItem(i).checkState(0) == QtCore.Qt.CheckState.Checked
-            and i < len(all_ops)
+            and i < len(active_ops)
         ]
         job_arg = {"job": job, "operations": selected_ops}
 
@@ -1204,7 +1207,7 @@ class PostProcessDialog:
         """Return a dict of the user's choices. Call after exec_() returns Accepted."""
         dlg = self.dialog
         tree = dlg.treeWidgetOperations
-        ops = self._get_operations()
+        ops = self._get_active_operations()
 
         # Only active operations that the user kept checked
         selected_ops = [
