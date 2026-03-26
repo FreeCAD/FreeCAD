@@ -735,6 +735,7 @@ class PostProcessor:
           1. Machine postprocessor_properties (from .fcm file)
           2. Schema defaults (for keys not already present)
           3. Overrides (from job or caller)
+          4. other job configuration elements (author, comment, selected fixtures)
 
         If *overrides* is None the overrides are read from
         Job.PostProcessorPropertyOverrides.  If *overrides* is a dict
@@ -747,7 +748,7 @@ class PostProcessor:
         Returns:
             dict: The final postprocessor property bundle.
         """
-        # Stage 1 — start with machine postprocessor_properties
+        # Stage 1 — machine postprocessor_properties
         bundle = {}
         if self._machine:
             bundle.update(self._machine.postprocessor_properties)
@@ -759,16 +760,21 @@ class PostProcessor:
             if name and name not in bundle:
                 bundle[name] = prop.get("default", "")
 
-        # Stage 3 — overrides
+        # Stage 3 — job configuration elements (defaults from the document/job)
+        # These are not schema properties but are needed by the postprocessor.
+        # They provide sensible defaults that can be overridden in Stage 4.
+        if self._job:
+            doc = getattr(self._job, "Document", None)
+            bundle.setdefault("job_author", getattr(doc, "CreatedBy", "") if doc else "")
+            bundle.setdefault("comment", getattr(self._job, "Description", "") or "")
+            bundle.setdefault("selected_fixtures", [])
+
+        # Stage 4 — caller / dialog overrides (highest priority)
         if overrides is None:
             overrides = self._read_job_overrides()
 
         for key, value in overrides.items():
-            if key in bundle:
-                Path.Log.info(f"Override: {key} = {value} (was: {bundle.get(key)})")
-                bundle[key] = value
-            else:
-                Path.Log.warning(f"Override key '{key}' not in bundle, ignoring")
+            bundle[key] = value
 
         return bundle
 
@@ -876,14 +882,15 @@ class PostProcessor:
                             gcodeheader.add_document_name(doc_name)
 
                 # Add description if enabled
-                if self._machine.output.header.include_description and self._job:
-                    if hasattr(self._job, "Description") and self._job.Description:
-                        gcodeheader.add_description(self._job.Description)
+                if self._machine.output.header.include_description:
+                    description = self.values.get("COMMENT", "")
+                    if description:
+                        gcodeheader.add_description(description)
 
                 # Add author if enabled
-                if self._job and hasattr(self._job, "Document") and self._job.Document:
-                    if hasattr(self._job.Document, "CreatedBy") and self._job.Document.CreatedBy:
-                        gcodeheader.add_author(self._job.Document.CreatedBy)
+                author = self.values.get("JOB_AUTHOR", "")
+                if author:
+                    gcodeheader.add_author(author)
 
                 # Add date/time if enabled
                 if self._machine.output.header.include_date:

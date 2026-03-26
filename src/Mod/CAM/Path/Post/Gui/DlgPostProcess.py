@@ -1,4 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 
 """Unified Post-Processing dialog.
 
@@ -12,12 +31,18 @@ a config dict on accept.  No functional post-processing logic lives here yet.
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Preferences as PathPrefs
+import Path.Preferences as PathPref
 from PySide import QtCore, QtGui
 
 translate = FreeCAD.Qt.translate
 
-LOG_MODULE = Path.Log.thisModule()
+debug = True
+if debug:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
 
 _TAB_OVERVIEW = 0
 _TAB_OPERATIONS = 1
@@ -104,6 +129,7 @@ class PostProcessDialog:
         dlg.buttonSelectAllOps.clicked.connect(self._select_all_ops)
         dlg.buttonSelectNoneOps.clicked.connect(self._select_none_ops)
         dlg.buttonSelectByType.clicked.connect(self._select_by_type)
+        dlg.buttonWorkplan.clicked.connect(self._show_workplan)
         dlg.treeWidgetOperations.itemChanged.connect(self._on_ops_changed)
         dlg.comboBoxMachine.currentIndexChanged.connect(self._on_machine_changed)
         dlg.buttonBrowseOutputLocation.clicked.connect(self._browse_output_location)
@@ -569,8 +595,8 @@ class PostProcessDialog:
 
     def _populate_job_details(self):
         dlg = self.dialog
-        dlg.lineEditJobAuthor.setText(getattr(self.job, "Author", "") or "")
-        dlg.plainTextEditComment.setPlainText("")
+        dlg.lineEditJobAuthor.setText(getattr(self.job.Document, "CreatedBy", "") or "")
+        dlg.plainTextEditComment.setPlainText(getattr(self.job, "Description", "") or "")
 
     def _populate_operations(self):
         dlg = self.dialog
@@ -802,6 +828,140 @@ class PostProcessDialog:
         tree.blockSignals(False)
         self._on_ops_changed(None)
 
+    def _show_workplan(self):
+        """Display the workplan (postable items structure) in a dialog."""
+        from Path.Post.PostList import buildPostList
+        import Path.Base.Util as PathUtil
+
+        # Create a minimal processor-like object for building the postlist
+        class TempProcessor:
+            def __init__(self, job, operations):
+                self._job = job
+                self._operations = operations
+
+        # Create temporary processor with active operations
+        temp_processor = TempProcessor(self.job, self._get_active_operations())
+
+        # Build the workplan text
+        workplan_text = self._format_workplan(temp_processor)
+
+        # Create and show the dialog
+        dlg = QtGui.QDialog(self.dialog)
+        dlg.setWindowTitle(translate("CAM_Post", "Workplan"))
+        dlg.resize(800, 600)
+
+        layout = QtGui.QVBoxLayout(dlg)
+
+        # Add text display
+        text_edit = QtGui.QTextEdit()
+        text_edit.setPlainText(workplan_text)
+        text_edit.setReadOnly(True)
+        text_edit.setFont(QtGui.QFont("Courier", 9))
+        layout.addWidget(text_edit)
+
+        # Add close button
+        button_box = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Close)
+        button_box.rejected.connect(dlg.reject)
+        layout.addWidget(button_box)
+
+        dlg.exec_()
+
+    def _format_workplan(self, processor):
+        """Format the workplan text similar to the export function provided."""
+        from Path.Post.PostList import buildPostList
+
+        lines = []
+        lines.append("=" * 80)
+        lines.append("POSTABLES LIST")
+        lines.append("=" * 80)
+        lines.append("")
+        lines.append(f"Job: {processor._job.Label}")
+        lines.append(f"SplitOutput: {getattr(processor._job, 'SplitOutput', 'N/A')}")
+        lines.append(f"OrderOutputBy: {getattr(processor._job, 'OrderOutputBy', 'N/A')}")
+        lines.append(f"Fixtures: {getattr(processor._job, 'Fixtures', 'N/A')}")
+        lines.append("")
+
+        postables = buildPostList(processor)
+
+        for idx, postable in enumerate(postables, 1):
+            group_key = postable[0]
+            objects = postable[1]
+
+            # Format the group key display
+            if group_key == "":
+                display_key = "(empty string)"
+            else:
+                display_key = f'"{group_key}"'
+
+            lines.append(f"[{idx}] Postable Group: {display_key}")
+            lines.append(f"    Objects: {len(objects)}")
+            lines.append("")
+
+            for obj_idx, obj in enumerate(objects, 1):
+                lines.append(f"    [{obj_idx}] {obj.Label}")
+
+                # Determine object type/role
+                obj_type = None
+                if hasattr(obj, "item_type"):
+                    # Postable object
+                    obj_type = obj.item_type.title()
+                    if obj.item_type == "fixture":
+                        if hasattr(obj, "path") and obj.path and len(obj.path.Commands) > 0:
+                            fixture_cmd = obj.path.Commands[0]
+                            lines.append(f"        Fixture: {fixture_cmd.Name}")
+                    elif obj.item_type == "tool_controller":
+                        if hasattr(obj, "data") and "tool_number" in obj.data:
+                            lines.append(f"        Tool Number: {obj.data['tool_number']}")
+                        lines.append(f"        Tool: {obj.Label}")
+                    elif obj.item_type == "operation":
+                        if hasattr(obj, "data") and "tool_controller" in obj.data:
+                            tc = obj.data["tool_controller"]
+                            lines.append(
+                                f"        ToolController: {tc.Label} (T{tc.data.get('tool_number', '?')})"
+                            )
+                        else:
+                            lines.append(f"        ToolController: None")
+                else:
+                    # Legacy object
+                    if type(obj).__name__ == "_TempObject":
+                        obj_type = "Fixture Setup"
+                        if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
+                            fixture_cmd = obj.Path.Commands[0]
+                            lines.append(f"        Fixture: {fixture_cmd.Name}")
+                    elif hasattr(obj, "TypeId"):
+                        # Check if it's a tool controller
+                        if "ToolController" in obj.TypeId or obj.Name.startswith("TC"):
+                            obj_type = "Tool Change"
+                            if hasattr(obj, "ToolNumber"):
+                                lines.append(f"        Tool Number: {obj.ToolNumber}")
+                            if hasattr(obj, "Label"):
+                                lines.append(f"        Tool: {obj.Label}")
+                        else:
+                            # It's an operation
+                            obj_type = "Operation"
+                            if hasattr(obj, "ToolController") and obj.ToolController:
+                                tc = obj.ToolController
+                                lines.append(
+                                    f"        ToolController: {tc.Label} (T{tc.ToolNumber})"
+                                )
+                            elif hasattr(obj, "ToolController"):
+                                lines.append(f"        ToolController: None")
+                    else:
+                        obj_type = type(obj).__name__
+
+                if obj_type:
+                    lines.append(f"        Type: {obj_type}")
+
+            lines.append("")
+
+        lines.append("=" * 80)
+        lines.append(f"Total Groups: {len(postables)}")
+        total_objects = sum(len(p[1]) for p in postables)
+        lines.append(f"Total Objects: {total_objects}")
+        lines.append("=" * 80)
+
+        return "\n".join(lines)
+
     # ------------------------------------------------------------------
     # G-code output generation / preview / save
     # ------------------------------------------------------------------
@@ -965,6 +1125,13 @@ class PostProcessDialog:
             # job-level overrides) and writes them into self.values so that
             # export2 and sanity checks all read from the same source.
             dialog_overrides = self._collect_post_param_values()
+
+            # Add job_author, comment, and selected_fixtures from dialog fields
+            dialog_config = self.config()
+            dialog_overrides["job_author"] = dialog_config["job_author"]
+            dialog_overrides["comment"] = dialog_config["comment"]
+            dialog_overrides["selected_fixtures"] = dialog_config["selected_fixtures"]
+
             if hasattr(postprocessor, "apply_configuration_bundle"):
                 postprocessor.apply_configuration_bundle(overrides=dialog_overrides)
 

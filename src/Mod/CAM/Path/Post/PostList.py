@@ -1,4 +1,22 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 sliptonic <shopinthewoods@gmail.com>
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import re
 from dataclasses import dataclass, field
@@ -13,6 +31,20 @@ if debug:
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
+def _get_effective_fixtures(processor):
+    """Return the fixture list the postprocessor should use.
+
+    If the configuration bundle contains a non-empty SELECTED_FIXTURES
+    list, only those fixtures are returned (preserving job order).
+    Otherwise all job fixtures are returned.
+    """
+    all_fixtures = processor._job.Fixtures
+    selected = getattr(processor, "values", {}).get("SELECTED_FIXTURES", None)
+    if selected:
+        return [f for f in all_fixtures if f in selected]
+    return all_fixtures
 
 
 @dataclass
@@ -206,7 +238,7 @@ def build_postlist_by_fixture(processor: Any) -> list:
     """
     Path.Log.debug("Ordering by Fixture")
     postlist = []
-    wcslist = processor._job.Fixtures
+    wcslist = _get_effective_fixtures(processor)
     currTc = None
 
     for index, f in enumerate(wcslist):
@@ -246,7 +278,7 @@ def build_postlist_by_tool(processor: Any) -> list:
     """
     Path.Log.debug("Ordering by Tool")
     postlist = []
-    wcslist = processor._job.Fixtures
+    wcslist = _get_effective_fixtures(processor)
     toolstring = "None"
     currTc = None
 
@@ -309,7 +341,7 @@ def build_postlist_by_operation(processor: Any) -> list:
     """
     Path.Log.debug("Ordering by Operation")
     postlist = []
-    wcslist = processor._job.Fixtures
+    wcslist = _get_effective_fixtures(processor)
     currTc = None
 
     for obj in processor._operations:

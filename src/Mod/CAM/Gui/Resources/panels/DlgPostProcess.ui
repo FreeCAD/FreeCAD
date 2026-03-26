@@ -266,6 +266,16 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="buttonWorkplan">
+           <property name="toolTip">
+            <string>Show the workplan (postable items structure)</string>
+           </property>
+           <property name="text">
+            <string>Workplan</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="spacerOpButtons">
            <property name="orientation">
             <enum>Qt::Orientation::Horizontal</enum>
