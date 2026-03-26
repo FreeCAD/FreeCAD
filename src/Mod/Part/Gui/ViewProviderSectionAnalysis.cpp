@@ -146,18 +146,15 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
         const int sz = 256;
         const int spacing = 64;
         const int lineWidth = 2;
-        // Use RGB texture (no alpha) in MODULATE mode.  Background is
-        // white (Cs * 1 = Cs, preserves surface color), lines are dark
-        // (Cs * 0.1, darkens to 10%).  Avoids DECAL alpha issues where
-        // some face rendering paths become transparent.
+        // 45° diagonal lines in MODULATE mode (RGB, no alpha).
+        // White background preserves surface color, dark lines darken it.
         unsigned char* img = new unsigned char[sz * sz * 3];
-        std::memset(img, 255, sz * sz * 3);  // white background
+        std::memset(img, 255, sz * sz * 3);
         for (int y = 0; y < sz; y++) {
             for (int x = 0; x < sz; x++) {
                 int idx = (y * sz + x) * 3;
-                int diag = (x + y) % spacing;
-                if (diag < lineWidth) {
-                    img[idx] = 25;  // ~0.1 * 255 — nearly black lines
+                if (((x + y) % spacing) < lineWidth) {
+                    img[idx] = 25;
                     img[idx + 1] = 25;
                     img[idx + 2] = 25;
                 }
@@ -176,6 +173,8 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     pcHatchCoordGen = new SoTextureCoordinatePlane();
     pcHatchCoordGen->ref();
     updateHatchProjection();
+
+
 
     // Create the clip plane node (not yet inserted into source VP)
     pcClipPlane = new SoClipPlane();
@@ -626,7 +625,6 @@ void ViewProviderSectionAnalysis::setHatching(bool on)
     }
 
     if (on) {
-        // Find the SoBrepFaceSet/SoIndexedFaceSet in our scene graph
         SoSearchAction sa;
         sa.setType(SoIndexedFaceSet::getClassTypeId());
         sa.setInterest(SoSearchAction::FIRST);
@@ -636,14 +634,12 @@ void ViewProviderSectionAnalysis::setHatching(bool on)
             auto* parent = static_cast<SoSeparator*>(path->getNodeFromTail(1));
             int faceIdx = parent->findChild(path->getTail());
             if (faceIdx >= 0 && parent->findChild(pcHatchTexture) < 0) {
-                // Insert coordinate generator first, then texture — both before the faceset
                 parent->insertChild(pcHatchTexture, faceIdx);
                 parent->insertChild(pcHatchCoordGen, faceIdx);
             }
         }
     }
     else {
-        // Remove both nodes
         SoSearchAction sa;
         sa.setNode(pcHatchTexture);
         sa.setInterest(SoSearchAction::FIRST);
