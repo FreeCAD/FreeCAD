@@ -40,6 +40,8 @@
 #include <BRepAlgoAPI_Cut.hxx>
 #include <BRepAlgoAPI_Section.hxx>
 
+#include <functional>
+
 #include <Base/Console.h>
 
 #include "FaceMakerBullseye.h"
@@ -165,8 +167,42 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         return new App::DocumentObjectExecReturn("No source shape linked.");
     }
 
+    // Collect shapes recursively — handles nested App::Part containers
+    // (e.g., STEP imports from Fusion 360 with sub-assemblies).
     TopoDS_Shape sourceShape
         = Feature::getShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
+
+    if (sourceShape.IsNull()) {
+        // Try recursive collection for nested Part containers
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+        builder.MakeCompound(compound);
+        bool found = false;
+
+        std::function<void(App::DocumentObject*)> collectShapes;
+        collectShapes = [&](App::DocumentObject* obj) {
+            TopoDS_Shape shape = Feature::getShape(
+                obj, ShapeOption::ResolveLink | ShapeOption::Transform);
+            if (!shape.IsNull()) {
+                builder.Add(compound, shape);
+                found = true;
+                return;
+            }
+            // Recurse into children (App::Part, App::DocumentObjectGroup, etc.)
+            for (auto* child : obj->getOutList()) {
+                collectShapes(child);
+            }
+        };
+
+        for (auto* child : source->getOutList()) {
+            collectShapes(child);
+        }
+
+        if (found) {
+            sourceShape = compound;
+        }
+    }
+
     if (sourceShape.IsNull()) {
         return new App::DocumentObjectExecReturn("Source shape is empty.");
     }
@@ -194,6 +230,19 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     TopExp_Explorer xp;
     std::vector<TopoDS_Face> sectionFaces;
     std::vector<long> faceCounts;
+
+    // Count solids in source shape
+    int solidCount = 0;
+    for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+        solidCount++;
+    }
+
+    if (solidCount == 0) {
+        Base::Console().warning(
+            "SectionAnalysis: no solids found in source shape. "
+            "For nested Part containers (e.g. STEP imports), try selecting "
+            "individual bodies or creating a compound first.\n");
+    }
 
     // Primary approach: Section + FaceMakerBullseye per solid.
     // BRepAlgoAPI_Section computes intersection edges, FaceMakerBullseye
@@ -273,6 +322,12 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
 
     SolidFaceCounts.setValues(faceCounts);
     auto& faces = sectionFaces;
+
+    if (faces.empty() && solidCount > 0) {
+        Base::Console().warning(
+            "SectionAnalysis: %d solids found but no cross-section faces generated. "
+            "The cutting plane may not intersect the geometry.\n", solidCount);
+    }
 
     if (faces.empty()) {
         this->Shape.setValue(TopoDS_Shape());

@@ -34,8 +34,6 @@
 #include <cstring>
 
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/nodes/SoCoordinate3.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
 
 #include "SoFCStencilCap.h"
 
@@ -48,16 +46,9 @@ SoFCStencilCap::SoFCStencilCap()
 {
     SO_NODE_CONSTRUCTOR(SoFCStencilCap);
 
-    SO_NODE_ADD_FIELD(capCorner0, (SbVec3f(0, 0, 0)));
-    SO_NODE_ADD_FIELD(capCorner1, (SbVec3f(0, 0, 0)));
-    SO_NODE_ADD_FIELD(capCorner2, (SbVec3f(0, 0, 0)));
-    SO_NODE_ADD_FIELD(capCorner3, (SbVec3f(0, 0, 0)));
-    SO_NODE_ADD_FIELD(sectionColor, (SbColor(0.8f, 0.3f, 0.2f)));
     SO_NODE_ADD_FIELD(hatchEnabled, (true));
     SO_NODE_ADD_FIELD(hatchDirS, (SbVec3f(1, 0, 0)));
     SO_NODE_ADD_FIELD(hatchDirT, (SbVec3f(0, 1, 0)));
-    // Disabled by default — enable once the OCCT path is made conditional
-    SO_NODE_ADD_FIELD(enabled, (false));
 }
 
 SoFCStencilCap::~SoFCStencilCap()
@@ -72,11 +63,6 @@ void SoFCStencilCap::initClass()
     SO_NODE_INIT_CLASS(SoFCStencilCap, SoNode, "Node");
 }
 
-void SoFCStencilCap::setSources(const std::vector<StencilSource>& sources)
-{
-    stencilSources = sources;
-}
-
 void SoFCStencilCap::ensureHatchTexture()
 {
     if (hatchTexCreated) {
@@ -87,7 +73,7 @@ void SoFCStencilCap::ensureHatchTexture()
     const int spacing = 64;
     const int lineWidth = 1;
 
-    // RGB texture, MODULATE mode: white = pass-through, gray = darken
+    // RGB texture: white = pass-through, gray = darken
     unsigned char* img = new unsigned char[sz * sz * 3];
     std::memset(img, 255, sz * sz * 3);
 
@@ -115,202 +101,140 @@ void SoFCStencilCap::ensureHatchTexture()
     hatchTexCreated = true;
 }
 
-void SoFCStencilCap::renderStencilFill(SoGLRenderAction* action)
+void SoFCStencilCap::setSectionFaces(const SbVec3f* verts, int numVerts,
+                                     const int32_t* indices, int numIndices,
+                                     const int32_t* partIdx, int numParts,
+                                     const std::vector<long>& solidFaceCounts)
 {
-    (void)action;
+    sectionVerts.assign(verts, verts + numVerts);
+    sectionIndices.assign(indices, indices + numIndices);
 
-    // Disable color and depth writes — stencil only
-    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-    glDepthMask(GL_FALSE);
+    // Compute per-solid index ranges using partIndex + solidFaceCounts
+    solidRanges.clear();
+    int faceStart = 0;
 
-    // Disable all clip planes so we render full geometry
-    GLboolean clipEnabled[6];
-    for (int i = 0; i < 6; i++) {
-        clipEnabled[i] = glIsEnabled(GL_CLIP_PLANE0 + i);
-        if (clipEnabled[i]) {
-            glDisable(GL_CLIP_PLANE0 + i);
-        }
-    }
-
-    glEnable(GL_STENCIL_TEST);
-    glStencilMask(0xFF);
-
-    // Pass 1: Back faces — increment stencil on depth pass
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);  // renders back faces
-    glStencilFunc(GL_ALWAYS, 0, 0xFF);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_INCR_WRAP);
-
-    for (const auto& src : stencilSources) {
-        if (!src.coords || !src.faceSet) {
-            continue;
-        }
-
-        glPushMatrix();
-        glMultMatrixf(src.transform[0]);
-
-        const SbVec3f* pts = src.coords->point.getValues(0);
-        int numPts = src.coords->point.getNum();
-        const int32_t* indices = src.faceSet->coordIndex.getValues(0);
-        int numIndices = src.faceSet->coordIndex.getNum();
-
-        if (numPts > 0 && numIndices > 0) {
-            glEnableClientState(GL_VERTEX_ARRAY);
-            glVertexPointer(3, GL_FLOAT, 0, pts);
-
-            // Draw indexed triangles — SoIndexedFaceSet uses -1 as separator
-            // We draw triangle fans for each face (typically triangulated already)
-            int start = 0;
-            for (int i = 0; i <= numIndices; i++) {
-                if (i == numIndices || indices[i] < 0) {
-                    int count = i - start;
-                    if (count >= 3) {
-                        glDrawElements(GL_TRIANGLE_FAN, count, GL_UNSIGNED_INT, &indices[start]);
-                    }
-                    start = i + 1;
-                }
+    // Build a map: partIndex face -> coordIndex offset
+    std::vector<int> faceCoordStart;
+    faceCoordStart.push_back(0);
+    int currentPi = 0;
+    int currentTri = 0;
+    for (int i = 0; i < numIndices && currentPi < numParts; i++) {
+        if (indices[i] < 0) {
+            currentTri++;
+            if (currentTri >= partIdx[currentPi]) {
+                currentPi++;
+                currentTri = 0;
+                faceCoordStart.push_back(i + 1);
             }
-
-            glDisableClientState(GL_VERTEX_ARRAY);
-        }
-
-        glPopMatrix();
-    }
-
-    // Pass 2: Front faces — decrement stencil on depth pass
-    glCullFace(GL_BACK);  // renders front faces
-    glStencilOp(GL_KEEP, GL_KEEP, GL_DECR_WRAP);
-
-    for (const auto& src : stencilSources) {
-        if (!src.coords || !src.faceSet) {
-            continue;
-        }
-
-        glPushMatrix();
-        glMultMatrixf(src.transform[0]);
-
-        const SbVec3f* pts = src.coords->point.getValues(0);
-        int numPts = src.coords->point.getNum();
-        const int32_t* indices = src.faceSet->coordIndex.getValues(0);
-        int numIndices = src.faceSet->coordIndex.getNum();
-
-        if (numPts > 0 && numIndices > 0) {
-            glEnableClientState(GL_VERTEX_ARRAY);
-            glVertexPointer(3, GL_FLOAT, 0, pts);
-
-            int start = 0;
-            for (int i = 0; i <= numIndices; i++) {
-                if (i == numIndices || indices[i] < 0) {
-                    int count = i - start;
-                    if (count >= 3) {
-                        glDrawElements(GL_TRIANGLE_FAN, count, GL_UNSIGNED_INT, &indices[start]);
-                    }
-                    start = i + 1;
-                }
-            }
-
-            glDisableClientState(GL_VERTEX_ARRAY);
-        }
-
-        glPopMatrix();
-    }
-
-    glDisable(GL_CULL_FACE);
-
-    // Restore clip planes
-    for (int i = 0; i < 6; i++) {
-        if (clipEnabled[i]) {
-            glEnable(GL_CLIP_PLANE0 + i);
         }
     }
 
-    // Restore writes
-    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-    glDepthMask(GL_TRUE);
-}
+    for (size_t s = 0; s < solidFaceCounts.size(); s++) {
+        int numFaces = solidFaceCounts[s];
+        int piStart = faceStart;
+        int piEnd = faceStart + numFaces;
 
-void SoFCStencilCap::renderCapQuad()
-{
-    SbVec3f c0 = capCorner0.getValue();
-    SbVec3f c1 = capCorner1.getValue();
-    SbVec3f c2 = capCorner2.getValue();
-    SbVec3f c3 = capCorner3.getValue();
+        int cStart = (piStart < (int)faceCoordStart.size()) ? faceCoordStart[piStart] : numIndices;
+        int cEnd = (piEnd < (int)faceCoordStart.size()) ? faceCoordStart[piEnd] : numIndices;
 
-    SbColor col = sectionColor.getValue();
-    glColor3f(col[0], col[1], col[2]);
-
-    if (hatchEnabled.getValue() && hatchTexCreated) {
-        glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, hatchTexId);
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-        // Compute texture coords by projecting cap corners onto the
-        // hatching plane frame (same as SoTextureCoordinatePlane).
-        SbVec3f dirS = hatchDirS.getValue();
-        SbVec3f dirT = hatchDirT.getValue();
-
-        glBegin(GL_QUADS);
-        glTexCoord2f(c0.dot(dirS), c0.dot(dirT));
-        glVertex3f(c0[0], c0[1], c0[2]);
-        glTexCoord2f(c1.dot(dirS), c1.dot(dirT));
-        glVertex3f(c1[0], c1[1], c1[2]);
-        glTexCoord2f(c2.dot(dirS), c2.dot(dirT));
-        glVertex3f(c2[0], c2[1], c2[2]);
-        glTexCoord2f(c3.dot(dirS), c3.dot(dirT));
-        glVertex3f(c3[0], c3[1], c3[2]);
-        glEnd();
-
-        glDisable(GL_TEXTURE_2D);
-    }
-    else {
-        glBegin(GL_QUADS);
-        glVertex3f(c0[0], c0[1], c0[2]);
-        glVertex3f(c1[0], c1[1], c1[2]);
-        glVertex3f(c2[0], c2[1], c2[2]);
-        glVertex3f(c3[0], c3[1], c3[2]);
-        glEnd();
+        solidRanges.push_back({cStart, cEnd - cStart});
+        faceStart += numFaces;
     }
 }
 
-void SoFCStencilCap::GLRender(SoGLRenderAction* action)
+void SoFCStencilCap::renderPerSolidHatch()
 {
-    if (!enabled.getValue() || stencilSources.empty()) {
+    if (solidRanges.empty() || sectionVerts.empty() || sectionIndices.empty()) {
         return;
     }
 
-    // Check stencil buffer availability
-    GLint stencilBits = 0;
-    glGetIntegerv(GL_STENCIL_BITS, &stencilBits);
-    if (stencilBits == 0) {
-        return;  // no stencil buffer — fall back to OCCT path
+    ensureHatchTexture();
+    if (!hatchTexCreated) {
+        return;
+    }
+
+    int nSolids = static_cast<int>(solidRanges.size());
+    if (nSolids <= 1) {
+        return;  // single solid — Coin3D handles it fine
     }
 
     glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-    // Clear stencil
-    glClearStencil(0);
-    glClear(GL_STENCIL_BUFFER_BIT);
-
-    // Enable depth test (needed for correct stencil fill)
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-
-    // --- Stencil fill pass ---
-    renderStencilFill(action);
-
-    // --- Cap rendering pass ---
-    // Draw cap quad only where stencil != 0 (inside the solid)
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(GL_NOTEQUAL, 0, 0xFF);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
-    // Disable lighting — we want flat section color
     glDisable(GL_LIGHTING);
+    // Multiply blend: framebuffer_color * texture_color
+    // White texture pixels = no change, dark pixels = darken existing color
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_DST_COLOR, GL_ZERO);
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, hatchTexId);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-    ensureHatchTexture();
-    renderCapQuad();
+    // Enable texture coordinate auto-generation (object linear)
+    SbVec3f dirS = hatchDirS.getValue();
+    SbVec3f dirT = hatchDirT.getValue();
+    GLfloat planeS[] = {dirS[0], dirS[1], dirS[2], 0.0f};
+    GLfloat planeT[] = {dirT[0], dirT[1], dirT[2], 0.0f};
+    glEnable(GL_TEXTURE_GEN_S);
+    glEnable(GL_TEXTURE_GEN_T);
+    glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+    glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_OBJECT_LINEAR);
+    glTexGenfv(GL_S, GL_OBJECT_PLANE, planeS);
+    glTexGenfv(GL_T, GL_OBJECT_PLANE, planeT);
 
-    glDisable(GL_STENCIL_TEST);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, sectionVerts.data());
 
+    float angleStep = 180.0f / nSolids;
+
+    // Skip solid 0 — Coin3D already rendered it with the standard hatching angle.
+    // Only overdraw solids 1+ with their rotated angles.
+    for (int s = 1; s < nSolids; s++) {
+        const auto& range = solidRanges[s];
+        if (range.indexCount <= 0) {
+            continue;
+        }
+
+        float angle = s * angleStep;
+        if (angle != 0.0f) {
+            glMatrixMode(GL_TEXTURE);
+            glPushMatrix();
+            glRotatef(angle, 0.0f, 0.0f, 1.0f);
+            glMatrixMode(GL_MODELVIEW);
+        }
+
+        // Draw this solid's triangles
+        const int32_t* idx = &sectionIndices[range.indexStart];
+        int count = range.indexCount;
+        for (int i = 0; i < count; ) {
+            int start = i;
+            while (i < count && idx[i] >= 0) {
+                i++;
+            }
+            int vertCount = i - start;
+            if (vertCount >= 3) {
+                glDrawElements(GL_TRIANGLE_FAN, vertCount, GL_UNSIGNED_INT, &idx[start]);
+            }
+            i++;  // skip -1
+        }
+
+        if (angle != 0.0f) {
+            glMatrixMode(GL_TEXTURE);
+            glPopMatrix();
+            glMatrixMode(GL_MODELVIEW);
+        }
+    }
+
+    glDisableClientState(GL_VERTEX_ARRAY);
     glPopAttrib();
+}
+
+void SoFCStencilCap::GLRender(SoGLRenderAction* action)
+{
+    (void)action;
+
+    // Per-solid hatching overlay: render section faces with rotated textures
+    if (!solidRanges.empty() && hatchEnabled.getValue()) {
+        renderPerSolidHatch();
+    }
 }

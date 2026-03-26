@@ -56,6 +56,9 @@ class PartGuiExport ViewProviderSectionAnalysis: public ViewProviderPart
     PROPERTY_HEADER_WITH_OVERRIDE(PartGui::ViewProviderSectionAnalysis);
 
 public:
+    App::PropertyBool ShowHatching;
+    App::PropertyBool PerBodyColors;
+
     ViewProviderSectionAnalysis();
     ~ViewProviderSectionAnalysis() override;
 
