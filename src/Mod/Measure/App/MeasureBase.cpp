@@ -215,7 +215,8 @@ const char* Measure::MeasurePython::getViewProviderName(void) const
     if (objName.starts_with("Center_of_mass")
 
         || objName.find("CenterOfMass") != std::string::npos
-        || objName.find("centerofmass") != std::string::npos) {
+        || objName.find("centerofmass") != std::string::npos
+        || objName.find("Geometric_Center") != std::string::npos) {
         return "MeasureGui::ViewProviderMeasureCOM";
     }
 

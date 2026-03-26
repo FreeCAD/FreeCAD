@@ -405,7 +405,20 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
         // Update label
         std::string userLabel(obj->Label.getValue());
         std::string name = userLabel.substr(0, userLabel.find(":"));
-        obj->Label.setValue((name + ": ") + obj->getResultString().toStdString());
+        std::string resultString = obj->getResultString().toStdString();
+
+        // Small UI fix. Since the name Geometric Center is already in the result string
+        // we need to remove it first to not have duplicate name
+        if (name == "Geometric_Center") {
+            std::string label = "Geometric Center";
+            size_t position = resultString.find(label);
+
+            if (position != std::string::npos) {
+                resultString.erase(position, label.size());
+            }
+        }
+
+        obj->Label.setValue((name + ": ") + resultString);
     }
 
     ViewProviderDocumentObject::updateData(prop);

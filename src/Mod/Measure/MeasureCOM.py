@@ -119,7 +119,7 @@ class MeasureCOM(MeasureBasePython):
 
     def getResultString(self, obj):
         values = [Units.Quantity(v, Units.Length).getUserPreferred()[0] for v in obj.Result]
-        return "COM\nX: {}\nY: {}\nZ: {}".format(*values)
+        return "Geometric Center\nX: {}\nY: {}\nZ: {}".format(*values)
 
     def execute(self, obj):
         element = obj.Element
