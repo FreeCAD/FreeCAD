@@ -40,7 +40,7 @@ namespace PartGui
 /// producing different hatching angles for each body in the cross-section.
 /// Uses GL multiply-blend to darken the existing per-body colors without
 /// replacing them.
-class SoFCStencilCap : public SoNode
+class SoFCStencilCap: public SoNode
 {
     using inherited = SoNode;
 
@@ -60,10 +60,15 @@ public:
     SoSFVec3f hatchDirT;
 
     /// Set section face tessellation data for per-solid hatching.
-    void setSectionFaces(const SbVec3f* verts, int numVerts,
-                         const int32_t* indices, int numIndices,
-                         const int32_t* partIdx, int numParts,
-                         const std::vector<long>& solidFaceCounts);
+    void setSectionFaces(
+        const SbVec3f* verts,
+        int numVerts,
+        const int32_t* indices,
+        int numIndices,
+        const int32_t* partIdx,
+        int numParts,
+        const std::vector<long>& solidFaceCounts
+    );
 
 protected:
     ~SoFCStencilCap() override;
@@ -72,7 +77,11 @@ private:
     void renderPerSolidHatch();
 
     // Per-solid hatching data (copied from faceset at update time)
-    struct SolidRange { int indexStart; int indexCount; };
+    struct SolidRange
+    {
+        int indexStart;
+        int indexCount;
+    };
     std::vector<SolidRange> solidRanges;
     std::vector<SbVec3f> sectionVerts;
     std::vector<int32_t> sectionIndices;
