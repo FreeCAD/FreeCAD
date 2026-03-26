@@ -77,8 +77,7 @@ GLuint createHatchTexture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, sz, sz, 0,
-                 GL_RGB, GL_UNSIGNED_BYTE, img);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, sz, sz, 0, GL_RGB, GL_UNSIGNED_BYTE, img);
     return texId;
 }
 
@@ -132,15 +131,14 @@ void popTextureRotation()
 /// Draw indexed triangle fans from a coordIndex array (uses -1 as separator).
 void drawIndexedFaces(const int32_t* indices, int count)
 {
-    for (int i = 0; i < count; ) {
+    for (int i = 0; i < count;) {
         int start = i;
         while (i < count && indices[i] >= 0) {
             i++;
         }
         int vertCount = i - start;
         if (vertCount >= 3) {
-            glDrawElements(GL_TRIANGLE_FAN, vertCount,
-                           GL_UNSIGNED_INT, &indices[start]);
+            glDrawElements(GL_TRIANGLE_FAN, vertCount, GL_UNSIGNED_INT, &indices[start]);
         }
         i++;  // skip -1
     }
@@ -185,10 +183,14 @@ void SoFCStencilCap::ensureHatchTexture()
 }
 
 void SoFCStencilCap::setSectionFaces(
-    const SbVec3f* verts, int numVerts,
-    const int32_t* indices, int numIndices,
-    const int32_t* partIdx, int numParts,
-    const std::vector<long>& solidFaceCounts)
+    const SbVec3f* verts,
+    int numVerts,
+    const int32_t* indices,
+    int numIndices,
+    const int32_t* partIdx,
+    int numParts,
+    const std::vector<long>& solidFaceCounts
+)
 {
     sectionVerts.assign(verts, verts + numVerts);
     sectionIndices.assign(indices, indices + numIndices);
@@ -218,10 +220,8 @@ void SoFCStencilCap::setSectionFaces(
         int piStart = faceStart;
         int piEnd = faceStart + numFaces;
 
-        int cStart = (piStart < (int)faceCoordStart.size())
-                     ? faceCoordStart[piStart] : numIndices;
-        int cEnd = (piEnd < (int)faceCoordStart.size())
-                   ? faceCoordStart[piEnd] : numIndices;
+        int cStart = (piStart < (int)faceCoordStart.size()) ? faceCoordStart[piStart] : numIndices;
+        int cEnd = (piEnd < (int)faceCoordStart.size()) ? faceCoordStart[piEnd] : numIndices;
 
         solidRanges.push_back({cStart, cEnd - cStart});
         faceStart += numFaces;
