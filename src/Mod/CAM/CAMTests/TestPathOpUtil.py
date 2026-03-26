@@ -879,7 +879,7 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         self.assertGreater(total_length, 0)
 
     def test48(self):
-        """Check offsetting an ellipse discretizes it into line segments."""
+        """Check offsetting an ellipse converts it to circular arcs."""
         # Create an ellipse
         ellipse = Part.Ellipse(Vector(0, 0, 0), 20, 10)
         ellipse_edge = ellipse.toShape()
@@ -896,11 +896,19 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         # Test offsetting with default (positive) tolerance
         offset_wire = PathOpUtil.offsetWire(ellipse_wire, base_shape, 2, True)
 
-        # Verify the result exists and is discretized into multiple edges
+        # Verify the result exists and is converted into multiple edges
         self.assertIsNotNone(offset_wire)
         self.assertGreater(
-            len(offset_wire.Edges), 1, "Ellipse should be discretized into multiple edges"
+            len(offset_wire.Edges), 1, "Ellipse should be converted to multiple edges"
         )
+
+        # Verify that all edges are circular arcs from the biarc conversion
+        for edge in offset_wire.Edges:
+            self.assertIsInstance(
+                edge.Curve,
+                (Part.Circle, Part.ArcOfCircle),
+                "All edges should be circular arcs, no line segments",
+            )
 
     def test50(self):
         """Orient an already oriented wire"""

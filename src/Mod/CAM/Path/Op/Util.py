@@ -178,9 +178,9 @@ def orientWire(w, forward=True):
 def discretizeWire(wire, tolerance=0.01):
     """discretizeWire discretizes any non-line/arc edges in the wire.
     Edges that are lines or circular arcs are kept as-is.
-    Other edge types (ellipses, splines, etc.) are discretized into line segments.
+    Other edge types (ellipses, splines, beziers, etc.) are converted to arcs and lines.
     tolerance: Deflection tolerance for discretization. Must be positive if wire contains non-line/arc edges.
-    Returns the wire with non-line/arc edges replaced by line segments.
+    Returns the wire with non-line/arc edges replaced by arcs and line segments.
     """
     processed_edges = []
     modified = False
@@ -190,17 +190,35 @@ def discretizeWire(wire, tolerance=0.01):
             # Keep lines and arcs as-is
             processed_edges.append(edge)
         else:
-            # Discretize and replace with line segments
+            # Discretize to lines and arcs
             if tolerance <= 0:
                 raise ValueError(
                     "tolerance parameter is required to be a positive value to discritize non-line/arc edges"
                 )
-            vertices = edge.discretize(Deflection=tolerance)
-            line_edges = [
-                Part.makeLine(vertices[i], vertices[i + 1]) for i in range(len(vertices) - 1)
-            ]
-            processed_edges.extend(line_edges)
             modified = True
+
+            # Convert to BSpline first if appropriate, to enable arc fitting
+            if isinstance(curve, (Part.Ellipse, Part.Hyperbola, Part.Parabola)):
+                # Convert edge to NURBS (BSpline)
+                shape = edge.toNurbs()
+                edge = shape.Edges[0]
+            elif isinstance(curve, Part.BezierCurve):
+                # Convert BezierCurve to BSpline
+                curve = edge.Curve.toBSpline()
+                edge = curve.toShape()
+
+            if isinstance(edge.Curve, Part.BSplineCurve):
+                # Convert BSpline to arcs
+                curves = edge.Curve.toBiArcs(tolerance)
+                for curve in curves:
+                    processed_edges.append(curve.toShape())
+            else:
+                # For other curve types, fall back to discretization to line segments
+                vertices = edge.discretize(Deflection=tolerance)
+                line_edges = [
+                    Part.makeLine(vertices[i], vertices[i + 1]) for i in range(len(vertices) - 1)
+                ]
+                processed_edges.extend(line_edges)
 
     # Reassemble the wire if any edges were replaced
     if modified:
