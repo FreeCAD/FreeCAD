@@ -26,40 +26,21 @@
 #include <Inventor/nodes/SoNode.h>
 #include <Inventor/nodes/SoSubNode.h>
 #include <Inventor/fields/SoSFBool.h>
-#include <Inventor/fields/SoSFColor.h>
-#include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/fields/SoSFVec3f.h>
 
-class SoCoordinate3;
-class SoIndexedFaceSet;
 class SoGLRenderAction;
 
 
 namespace PartGui
 {
 
-/// Geometry source for the stencil fill pass — references a source
-/// object's tessellated face data and its world transform.
-struct StencilSource
-{
-    SoCoordinate3* coords = nullptr;      // vertex positions
-    SoIndexedFaceSet* faceSet = nullptr;  // triangle indices
-    SbMatrix transform;                   // model → world
-};
-
-/// GPU-based cross-section cap using the stencil buffer.
+/// Per-solid hatching overlay node.
 ///
-/// Algorithm:
-///   1. Clear stencil to 0
-///   2. Disable color/depth writes, disable clip planes
-///   3. Render source geometry back-faces: stencil++ on depth pass
-///   4. Render source geometry front-faces: stencil-- on depth pass
-///   5. Re-enable clip planes, color/depth writes
-///   6. Draw cap quad where stencil != 0
-///
-/// The result is a filled cross-section at the clip plane, without
-/// any OCCT boolean computation.
-class SoFCStencilCap: public SoNode
+/// Renders section face triangles with per-solid texture matrix rotation,
+/// producing different hatching angles for each body in the cross-section.
+/// Uses GL multiply-blend to darken the existing per-body colors without
+/// replacing them.
+class SoFCStencilCap : public SoNode
 {
     using inherited = SoNode;
 
@@ -71,34 +52,30 @@ public:
 
     void GLRender(SoGLRenderAction* action) override;
 
-    /// Set the source geometry to render during the stencil pass.
-    void setSources(const std::vector<StencilSource>& sources);
-
-    /// Cap quad corners (world space).
-    SoSFVec3f capCorner0;
-    SoSFVec3f capCorner1;
-    SoSFVec3f capCorner2;
-    SoSFVec3f capCorner3;
-
-    /// Section appearance.
-    SoSFColor sectionColor;
+    /// Hatching on/off.
     SoSFBool hatchEnabled;
 
     /// Hatching texture projection axes (same as SoTextureCoordinatePlane).
     SoSFVec3f hatchDirS;
     SoSFVec3f hatchDirT;
 
-    /// Enable/disable stencil capping (allows fallback to OCCT path).
-    SoSFBool enabled;
+    /// Set section face tessellation data for per-solid hatching.
+    void setSectionFaces(const SbVec3f* verts, int numVerts,
+                         const int32_t* indices, int numIndices,
+                         const int32_t* partIdx, int numParts,
+                         const std::vector<long>& solidFaceCounts);
 
 protected:
     ~SoFCStencilCap() override;
 
 private:
-    void renderStencilFill(SoGLRenderAction* action);
-    void renderCapQuad();
+    void renderPerSolidHatch();
 
-    std::vector<StencilSource> stencilSources;
+    // Per-solid hatching data (copied from faceset at update time)
+    struct SolidRange { int indexStart; int indexCount; };
+    std::vector<SolidRange> solidRanges;
+    std::vector<SbVec3f> sectionVerts;
+    std::vector<int32_t> sectionIndices;
 
     /// Hatch texture GL name (created once, reused).
     unsigned int hatchTexId = 0;

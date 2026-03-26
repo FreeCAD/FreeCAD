@@ -54,6 +54,7 @@
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/FeatureSectionAnalysis.h>
 
+#include "SoBrepFaceSet.h"
 #include "SoFCStencilCap.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderSectionAnalysis.h"
@@ -68,7 +69,12 @@ ViewProviderSectionAnalysis::ViewProviderSectionAnalysis()
 {
     sPixmap = "Part_SectionAnalysis";
 
-    // Default section face color: reddish-orange (like Fusion 360 hatching)
+    ADD_PROPERTY_TYPE(ShowHatching, (true), "Section Analysis", App::Prop_None,
+        "Show diagonal hatching lines on cross-section faces");
+    ADD_PROPERTY_TYPE(PerBodyColors, (false), "Section Analysis", App::Prop_None,
+        "Use source body colors for cross-section faces");
+
+    // Default section face color: reddish-orange
     App::Material mat;
     mat.diffuseColor.set(0.8f, 0.3f, 0.2f, 0.0f);
     ShapeAppearance.setValues({mat});
@@ -191,6 +197,10 @@ void ViewProviderSectionAnalysis::finishRestoring()
 {
     ViewProviderPart::finishRestoring();
 
+    // Restore persisted settings
+    hatchEnabled = ShowHatching.getValue();
+    usePerSolidColors = PerBodyColors.getValue();
+
     // After document restore, shapes are computed and the scene graph is
     // fully built.  Safe to set up clip planes, plane visual, and hatching.
     if (Visibility.getValue()) {
@@ -199,6 +209,9 @@ void ViewProviderSectionAnalysis::finishRestoring()
     updatePlaneVisual();
     updateHatchProjection();
     updateStencilCap();
+    if (usePerSolidColors) {
+        applyPerSolidColors();
+    }
     if (hatchEnabled) {
         setHatching(true);
     }
@@ -455,6 +468,7 @@ void ViewProviderSectionAnalysis::updateHatchProjection()
     pcHatchCoordGen->directionT.setValue(SbVec3f(v.x * scale, v.y * scale, v.z * scale));
 }
 
+
 void ViewProviderSectionAnalysis::applyPerSolidColors()
 {
     auto* feat = getObject<Part::SectionAnalysis>();
@@ -541,15 +555,7 @@ void ViewProviderSectionAnalysis::updateStencilCap()
         return;
     }
 
-    // Sync cap quad corners from the plane visual
-    if (pcPlaneCoords && pcPlaneCoords->point.getNum() >= 4) {
-        pcStencilCap->capCorner0.setValue(pcPlaneCoords->point[0]);
-        pcStencilCap->capCorner1.setValue(pcPlaneCoords->point[1]);
-        pcStencilCap->capCorner2.setValue(pcPlaneCoords->point[2]);
-        pcStencilCap->capCorner3.setValue(pcPlaneCoords->point[3]);
-    }
-
-    // Sync hatching parameters from the hatch coord gen
+    // Sync hatching parameters
     if (pcHatchCoordGen) {
         pcStencilCap->hatchDirS.setValue(pcHatchCoordGen->directionS.getValue());
         pcStencilCap->hatchDirT.setValue(pcHatchCoordGen->directionT.getValue());
@@ -557,67 +563,26 @@ void ViewProviderSectionAnalysis::updateStencilCap()
 
     pcStencilCap->hatchEnabled.setValue(hatchEnabled);
 
-    // Collect source geometry for the stencil fill pass
-    std::vector<StencilSource> sources;
-    for (auto* obj : clippedObjects) {
-        auto* vp = Gui::Application::Instance->getViewProvider(obj);
-        if (!vp) {
-            continue;
+    // Pass section face tessellation data for per-solid hatching
+    const auto& solidCounts = feat->SolidFaceCounts.getValues();
+    if (hatchEnabled && solidCounts.size() > 1 && coords && faceset) {
+        int numVerts = coords->point.getNum();
+        int numIndices = faceset->coordIndex.getNum();
+        int numParts = faceset->partIndex.getNum();
+        if (numVerts > 0 && numIndices > 0 && numParts > 0) {
+            pcStencilCap->setSectionFaces(
+                coords->point.getValues(0), numVerts,
+                faceset->coordIndex.getValues(0), numIndices,
+                faceset->partIndex.getValues(0), numParts,
+                solidCounts);
         }
-        // Find the coordinate and face set nodes via scene graph search
-        // (avoids accessing protected members of ViewProviderPartExt)
-        auto* root = dynamic_cast<SoSeparator*>(vp->getRoot());
-        if (!root) {
-            continue;
-        }
-
-        SoSearchAction saCoords;
-        saCoords.setType(SoCoordinate3::getClassTypeId());
-        saCoords.setInterest(SoSearchAction::FIRST);
-        saCoords.apply(root);
-        auto* foundCoords = saCoords.getPath()
-            ? static_cast<SoCoordinate3*>(saCoords.getPath()->getTail())
-            : nullptr;
-
-        SoSearchAction saFaces;
-        saFaces.setType(SoIndexedFaceSet::getClassTypeId());
-        saFaces.setInterest(SoSearchAction::FIRST);
-        saFaces.apply(root);
-        auto* foundFaces = saFaces.getPath()
-            ? static_cast<SoIndexedFaceSet*>(saFaces.getPath()->getTail())
-            : nullptr;
-
-        if (!foundCoords || !foundFaces) {
-            continue;
-        }
-
-        StencilSource src;
-        src.coords = foundCoords;
-        src.faceSet = foundFaces;
-        // Get the object's world transform from its placement
-        auto* geoFeat = dynamic_cast<App::GeoFeature*>(obj);
-        if (geoFeat) {
-            Base::Matrix4D mat = geoFeat->globalPlacement().toMatrix();
-            // Convert Base::Matrix4D to SbMatrix (column-major)
-            for (int r = 0; r < 4; r++) {
-                for (int c = 0; c < 4; c++) {
-                    src.transform[c][r] = static_cast<float>(mat[r][c]);
-                }
-            }
-        }
-        else {
-            src.transform.makeIdentity();
-        }
-
-        sources.push_back(src);
     }
-
-    pcStencilCap->setSources(sources);
 }
 
 void ViewProviderSectionAnalysis::setHatching(bool on)
 {
     hatchEnabled = on;
+    ShowHatching.setValue(on);
 
     if (!pcHatchTexture || !pcHatchCoordGen || !pcRoot) {
         return;
@@ -658,6 +623,7 @@ void ViewProviderSectionAnalysis::setHatching(bool on)
             auto* parent = static_cast<SoSeparator*>(path2->getNodeFromTail(1));
             parent->removeChild(pcHatchCoordGen);
         }
+        // Clear per-part texture rotations
     }
 }
 
@@ -671,6 +637,7 @@ void ViewProviderSectionAnalysis::setShowPlane(bool on)
 void ViewProviderSectionAnalysis::setPerSolidColors(bool on)
 {
     usePerSolidColors = on;
+    PerBodyColors.setValue(on);
     if (on) {
         applyPerSolidColors();
     }

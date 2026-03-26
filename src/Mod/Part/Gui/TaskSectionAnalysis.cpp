@@ -369,11 +369,11 @@ void SectionAnalysisWidget::setupUi()
     appearLayout->addWidget(sectionColorBtn, 0, 1);
 
     hatchCheck = new QCheckBox(tr("Show Hatching"), this);
-    hatchCheck->setChecked(true);
+    hatchCheck->setChecked(viewProvider->ShowHatching.getValue());
     appearLayout->addWidget(hatchCheck, 1, 0, 1, 2);
 
     perSolidColorCheck = new QCheckBox(tr("Per-Body Colors"), this);
-    perSolidColorCheck->setChecked(false);
+    perSolidColorCheck->setChecked(viewProvider->PerBodyColors.getValue());
     appearLayout->addWidget(perSolidColorCheck, 2, 0, 1, 2);
 
     showPlaneCheck = new QCheckBox(tr("Show Cutting Plane"), this);
