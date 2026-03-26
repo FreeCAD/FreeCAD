@@ -2463,7 +2463,7 @@ void Area::makeOffset(
 
     // Track previous offset area for gap detection
     std::optional<std::shared_ptr<CArea>> previous_area;
-    double tool_radius_val = myParams.ToolRadius;
+    double tool_radius = myParams.ToolRadius;
     bool check_gaps = !myParams.ForceMaxStepover;
     const double gap_tolerance = 1.0 / myParams.ClipperScale;
 
@@ -2473,7 +2473,7 @@ void Area::makeOffset(
         // Check for gaps if we have a previous area and gap checking is enabled
         if (previous_area && check_gaps) {
             // First check if the full offset leaves any gaps
-            if (hasGap(*previous_area, area, tool_radius_val)) {
+            if (hasGap(*previous_area, area, tool_radius)) {
                 // Gap exists, binary search for the largest offset that doesn't leave a gap
                 double offset_min = offset - stepover;
                 double offset_max = offset;
@@ -2482,18 +2482,16 @@ void Area::makeOffset(
                     double offset_mid = (offset_min + offset_max) / 2.0;
                     auto test_area = performSingleOffset(offset_mid);
 
-                    if (hasGap(previous_area.value(), test_area, tool_radius_val)) {
-                        // Gap exists, need smaller stepover
+                    if (hasGap(previous_area.value(), test_area, tool_radius)) {
                         offset_max = offset_mid;
                     }
                     else {
-                        // No gap, can use this offset
                         offset_min = offset_mid;
                     }
                 }
 
-                // Adjust offset in the direction opposite to stepover to ensure connectivity when
-                // the offset vanishes. This is important because our circular arcs are discretized.
+                // Leave a little extra space to ensure connectivity when the offset vanishes. This
+                // is important because our circular arcs are discretized.
                 double sign_stepover = (stepover > 0) ? 1.0 : -1.0;
                 offset = offset_min - sign_stepover * myParams.Accuracy;
                 area = performSingleOffset(offset);

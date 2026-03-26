@@ -1,28 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-# ***************************************************************************
-# *   Copyright (c) 2024 FreeCAD Project                                    *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
-
 import FreeCAD
 import Part
 import Path.Op.Pocket as PathPocket
@@ -251,8 +228,6 @@ class TestPathPocket(PathTestBase):
         max_expected_loops = int(available_clearance / stepover_distance)
 
         # Create pocket operation without ForceMaxStepOver
-        # Without the flag, algorithm should add extra loops to ensure full coverage
-        # (This will fail until the feature is implemented)
         pocket = self.createPocketOperation(
             part_obj,
             pocket_bottom_z,
@@ -266,8 +241,8 @@ class TestPathPocket(PathTestBase):
         # Count offset loops from generated G-code
         actual_num_loops = countOffsetLoops(pocket.Path.Commands, pocket_bottom_z)
 
-        # Without ForceMaxStepOver, should generate more loops than base-calculated max
-        # to ensure full area coverage despite narrowing geometry
+        # Without ForceMaxStepOver, pocket should generate more loops than base-calculated max
+        # to ensure full area coverage
         self.assertGreater(actual_num_loops, max_expected_loops)
 
         # Create second pocket with ForceMaxStepOver=True
@@ -287,8 +262,8 @@ class TestPathPocket(PathTestBase):
         # Count loops for forced max stepover pocket
         actual_num_loops_forced = countOffsetLoops(pocket_forced.Path.Commands, pocket_bottom_z)
 
-        # With ForceMaxStepOver=True, should be close to max expected (within 1 loop)
-        # and should not exceed the max expected count
+        # With ForceMaxStepOver=True, should be close to max expected (slightly less, because of
+        # narrowing geometry)
         self.assertGreaterEqual(actual_num_loops_forced, max_expected_loops - 1)
         self.assertLessEqual(actual_num_loops_forced, max_expected_loops)
 
