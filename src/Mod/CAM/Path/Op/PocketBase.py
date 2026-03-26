@@ -218,7 +218,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "Pocket",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Forces the stepover value to be used even if not all area is cleared. For large stepover values (>50%), the stepover may be automatically reduced to ensure full area coverage. Enable this to use the maximum stepover regardless of coverage.",
+                "Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, >50%) to ensure full area coverage.",
             ),
         )
 
@@ -297,7 +297,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Pocket",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Forces the stepover value to be used even if not all area is cleared. For large stepover values (>50%), the stepover may be automatically reduced to ensure full area coverage. Enable this to use the maximum stepover regardless of coverage.",
+                    "Force maximum stepover even if not all area is cleared. Without this flag set, the stepover may be reduced (for large stepover, >50%) to ensure full area coverage.",
                 ),
             )
         if not hasattr(obj, "RetractThreshold"):

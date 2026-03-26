@@ -179,7 +179,8 @@
          force_max_stepover,                                                                       \
          ForceMaxStepover,                                                                         \
          false,                                                                                    \
-         "Force maximum stepover even if not all area is cleared"))
+         "Force maximum stepover even if not all area is cleared. Without this flag set, the "    \
+         "stepover may be reduced (for large stepover, >50%) to ensure full area coverage"))
 
 #define AREA_PARAMS_POCKET_CONF \
     ((bool, thicken, Thicken, false, "Thicken the resulting wires with ToolRadius"))
