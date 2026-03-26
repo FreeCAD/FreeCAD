@@ -45,6 +45,10 @@ public:
     App::PropertyDistance PlaneOffset;
     App::PropertyBool FlipCut;
 
+    /// Number of section faces produced per solid (for per-solid coloring).
+    /// Index i = number of faces from solid i.  Sum = total faces in Shape.
+    App::PropertyIntegerList SolidFaceCounts;
+
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     const char* getViewProviderName() const override

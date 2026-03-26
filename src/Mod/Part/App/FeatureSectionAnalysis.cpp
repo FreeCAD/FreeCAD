@@ -74,6 +74,13 @@ SectionAnalysis::SectionAnalysis()
         App::Prop_None,
         "Flip which side of the plane is visible"
     );
+    ADD_PROPERTY_TYPE(
+        SolidFaceCounts,
+        ({}),
+        "Section Analysis",
+        static_cast<App::PropertyType>(App::Prop_Output | App::Prop_Hidden),
+        "Number of section faces per solid (for per-solid coloring)"
+    );
 
     Source.setScope(App::LinkScope::Global);
 }
@@ -186,14 +193,17 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     gp_Pln slicePlane(a, b, c, -d);
     TopExp_Explorer xp;
     std::vector<TopoDS_Face> sectionFaces;
+    std::vector<long> faceCounts;
 
     // Primary approach: Section + FaceMakerBullseye per solid.
     // BRepAlgoAPI_Section computes intersection edges, FaceMakerBullseye
     // builds faces with proper hole nesting (inner wires inside outer).
     for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+        size_t facesBefore = sectionFaces.size();
         try {
             BRepAlgoAPI_Section cs(xp.Current(), slicePlane);
             if (!cs.IsDone()) {
+                faceCounts.push_back(0);
                 continue;
             }
 
@@ -203,6 +213,7 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
                 hEdges->Append(edgeXp.Current());
             }
             if (hEdges->IsEmpty()) {
+                faceCounts.push_back(0);
                 continue;
             }
 
@@ -227,7 +238,6 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
                 gp_Dir sliceNormal = slicePlane.Axis().Direction();
                 for (edgeXp.Init(fm.Shape(), TopAbs_FACE); edgeXp.More(); edgeXp.Next()) {
                     TopoDS_Face face = TopoDS::Face(edgeXp.Current());
-                    // Ensure consistent face orientation for stable lighting/hatching
                     BRepAdaptor_Surface adapt(face);
                     if (adapt.GetType() == GeomAbs_Plane) {
                         gp_Dir effectiveNormal = adapt.Plane().Axis().Direction();
@@ -244,19 +254,24 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         }
         catch (...) {
         }
+        faceCounts.push_back(static_cast<long>(sectionFaces.size() - facesBefore));
     }
 
-    // Fallback: Boolean Cut approach for solids where Section produced nothing
+    // Fallback: Boolean Cut approach if Section produced nothing
     if (sectionFaces.empty()) {
+        faceCounts.clear();
         for (xp.Init(sourceShape, TopAbs_SOLID); xp.More(); xp.Next()) {
+            size_t facesBefore = sectionFaces.size();
             try {
                 collectSectionFaces(xp.Current(), slicePlane, sectionFaces);
             }
             catch (...) {
             }
+            faceCounts.push_back(static_cast<long>(sectionFaces.size() - facesBefore));
         }
     }
 
+    SolidFaceCounts.setValues(faceCounts);
     auto& faces = sectionFaces;
 
     if (faces.empty()) {
