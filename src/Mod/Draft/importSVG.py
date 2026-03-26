@@ -57,9 +57,11 @@ import xml.sax
 
 import FreeCAD
 import Part
-import Draft
 from DraftVecUtils import equals
 from FreeCAD import Vector
+from draftfunctions.svg import get_svg
+from draftmake import make_dimension
+from draftutils import gui_utils
 from draftutils import params
 from draftutils import utils
 from draftutils.utils import svg_precision
@@ -752,7 +754,7 @@ class svgHandler(xml.sax.ContentHandler):
                 p2 = Vector(float(p2[0]), -float(p2[1]), 0)
                 p3 = data["freecad:dimpoint"]
                 p3 = Vector(float(p3[0]), -float(p3[1]), 0)
-                obj = Draft.make_dimension(p1, p2, p3)
+                obj = make_dimension.make_dimension(p1, p2, p3)
                 self.applyTrans(obj)
                 self.format(obj)
                 self.lastdim = obj
@@ -1014,7 +1016,7 @@ class svgHandler(xml.sax.ContentHandler):
             for transform in self.grouptransform[::-1]:
                 sh = transformCopyShape(sh, transform)
             return sh
-        elif Draft.getType(sh) in ["Dimension", "LinearDimension"]:
+        elif utils.get_type(sh) in ["Dimension", "LinearDimension"]:
             pts = []
             for p in [sh.Start, sh.End, sh.Dimline]:
                 cp = Vector(p)
@@ -1290,9 +1292,9 @@ def export(exportList, filename):
         if hasattr(obj, "Shape") and obj.Shape and obj.Shape.BoundBox.isValid():
             bb.add(obj.Shape.BoundBox)
         else:
-            # if Draft.get_type(obj) in ("Text", "LinearDimension", ...)
+            # if utils.get_type(obj) in ("Text", "LinearDimension", ...)
             _wrn("'{}': no Shape, " "calculate manual bounding box".format(obj.Label))
-            bb.add(Draft.get_bbox(obj))
+            bb.add(gui_utils.get_bbox(obj))
 
     if not bb.isValid():
         _err(
@@ -1360,7 +1362,7 @@ def export(exportList, filename):
             # raw-style exports do not translate the sketch
             svg.write('<g id="%s" transform="scale(1,-1)">\n' % ob.Name)
 
-        svg.write(Draft.get_svg(ob, override=False))
+        svg.write(get_svg(ob, override=False))
         _label_enc = str(ob.Label.encode("utf8"))
         _label = _label_enc.replace("<", "&lt;").replace(">", "&gt;")
         # replace('"', "&quot;")

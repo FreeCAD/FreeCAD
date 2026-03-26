@@ -24,7 +24,7 @@
 //  inherites global class SMESH_Octree
 //  File      : SMESH_OctreeNode.hxx
 //  Created   : Tue Jan 16 16:00:00 2007
-//  Author    : Nicolas Geimer & Aurelien Motteux  (OCC)
+//  Author    : Nicolas Geimer & Aurélien Motteux (OCC)
 //  Module    : SMESH
 //
 #ifndef _SMESH_OCTREENODE_HXX_

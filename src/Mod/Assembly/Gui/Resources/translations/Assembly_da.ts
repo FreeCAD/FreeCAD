@@ -763,7 +763,7 @@ SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="234"/>
       <source>Reverse</source>
-      <translation>Omvendt</translation>
+      <translation>Modsat</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="245"/>
@@ -948,7 +948,7 @@ Filerne hedder "runPreDrag. smt" og "dragging.log" og er placeret i standardmapp
       <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
-        <numerusform>%n Frihedsgrader</numerusform>
+        <numerusform>%n frihedsgrader</numerusform>
         <numerusform>%n Degrees of Freedom</numerusform>
       </translation>
     </message>

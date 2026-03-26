@@ -31,7 +31,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="93"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="113"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
       <source>Faces</source>
-      <translation>Ansigter</translation>
+      <translation>Flader</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="151"/>
@@ -250,7 +250,7 @@
       <location filename="../../Blending/TaskBlendCurve.ui" line="26"/>
       <location filename="../../Blending/TaskBlendCurve.ui" line="119"/>
       <source>Edge</source>
-      <translation>Linje</translation>
+      <translation>Kant</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="43"/>
@@ -446,7 +446,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Command.cpp" line="333"/>
       <source>Sections</source>
-      <translation>Sektioner</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="334"/>
@@ -488,8 +488,8 @@ This command only works with a mesh object.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
+      <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <source>Edit Filling</source>
       <translation type="unfinished">Edit Filling</translation>
     </message>
@@ -506,7 +506,7 @@ This command only works with a mesh object.</translation>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
       <source>Edit %1</source>
-      <translation>Rediger %1</translation>
+      <translation>Redigér %1</translation>
     </message>
   </context>
   <context>

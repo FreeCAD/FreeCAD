@@ -35,10 +35,12 @@
 #include <set>
 #include <map>
 #include <string>
+#include <optional>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
 #include <Base/ProgressIndicator.h>
+#include "TransactionDefs.h"
 
 // forward declarations
 using PyObject = struct _object;
@@ -203,6 +205,8 @@ public:
      */
     App::Document* getDocument(const char *Name) const;
 
+    App::Document* getDocumentOrActive(const char *Name) const;
+
     /// %Path matching modes for getDocumentByPath()
     enum class PathMatchMode
     {
@@ -289,9 +293,11 @@ public:
     /**
      * @brief Setup a pending application-wide active transaction.
      *
-     * Call this function to setup an application-wide transaction. All current
-     * pending transactions of opening documents will be committed first.
-     * However, no new transaction is created by this call. Any subsequent
+     * Call this function to setup a transaction in the currently active document
+     * if no document is active, a global transaction is created. If the current 
+     * active document already has a transaction setup it will either commit the
+     * current transaction or rename it, depending on the tmpName flag of the 
+     * currently setup transaction. No new transaction is created by this call. Any subsequent
      * changes in any current opening document will auto create a transaction
      * with the given name and ID. If more than one document is changed, the
      * transactions will share the same ID, and will be undo/redo together.
@@ -303,32 +309,41 @@ public:
      *
      * @return The new transaction ID.
      */
-    int setActiveTransaction(const char* name, bool persist = false);
 
-    /**
-     * @brief Get the current active transaction name and ID.
+    int setActiveTransaction(TransactionName name);
+
+    int openGlobalTransaction(TransactionName name);
+    int getGlobalTransaction() const;
+
+    bool transactionIsActive(int tid) const;
+    std::string getTransactionName(int tid) const;
+    bool transactionTmpName(int tid) const;
+    Document* transactionInitiator(int tid) const;
+    std::optional<TransactionDescription> transactionDescription(int tid) const;
+    void setTransactionDescription(int tid, const TransactionDescription& desc);
+    void setTransactionName(int tid, const TransactionName& name);
+
+    /** Commit/abort current active transactions
      *
      * If there is no active transaction, an empty string is returned.
      *
-     * @param[out] tid If not `nullptr`, the current active transaction ID is
-     * returned through this pointer.
-     * @return The current active transaction name.
-     */
-    const char* getActiveTransaction(int* tid = nullptr) const;
-
-    /**
-     * @brief Commit/abort current active transactions.
-     *
      * @param[in] abort: whether to abort or commit the transactions
-     * @param[in] id: by default 0 meaning that the current active transaction ID is used.
-     *
-     * Besides calling this function directly, it will be called by
-     * automatically if 1) any new transaction is created with a different ID,
-     * or 2) any transaction with the current active transaction ID is either
-     * committed or aborted.
+     * @param[in] id: by default 0 meaning that the current global transaction ID is used.
+     * 
+     * Bsides calling this function directly, it will be called by automatically
+     * if 1) any new transaction is created with a different ID, or 2) any
+     * transaction with the current active transaction ID is either committed or
+     * aborted
+     * returns true if it succeeded in closing the transaction
      */
-    void closeActiveTransaction(bool abort=false, int id=0);
-    /// @}
+    bool closeActiveTransaction(TransactionCloseMode mode = TransactionCloseMode::Commit, int id=0);
+
+    /// Internally call closeActiveTransaction(), but it makes the call site clearer
+    bool commitTransaction(int tid);
+    bool abortTransaction(int tid);
+
+
+    //@}
 
     // NOLINTBEGIN
     // clang-format off
@@ -604,6 +619,22 @@ public:
     void addExportType(const char* filter, const char* moduleName);
 
     /**
+     * @brief Register an export filetype with a translatable description
+     *
+     * @param[in] description A translatable string describing the file type. Must not contain the
+     * list of extensions.
+     * @param[in] extensions A list of supported extensions. Do not include the "*.", only the
+     * extension itself. For example, "txt", not "*.txt".
+     * @param[in] moduleName The name of the module handling the export.
+     */
+    void addTranslatableExportType(const std::string &description,
+                                   const std::vector<std::string> &extensions,
+                                   const std::string &moduleName);
+
+    /// Intended to be called when the language is changed, this retranslates the export type.
+    void retranslateExportTypes();
+
+    /**
      * @copydoc changeImportModule
      */
     void changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName);
@@ -771,59 +802,6 @@ public:
 
     /// Get the application help directory.
     static std::string getHelpDir();
-    /// @}
-
-    /**
-     * @name Verbosity Information
-     *
-     * @{
-     */
-
-    /**
-     * @brief Get verbose information about the application.
-     *
-     * @param[in,out] str The text stream to write the information to.
-     * @param[in] mConfig The application configuration.
-     */
-    static void getVerboseCommonInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
-
-    /**
-     * @brief Get verbose information about add-ons.
-     *
-     * @copydetails getVerboseCommonInfo
-     */
-    static void getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig);
-
-    /**
-     * @brief Add module info to the verbose output.
-     *
-     * This function is used to add information about a single add-on.
-     *
-     * @param[in,out] str The text stream to write the information to.
-     * @param[in] modPath The path of the module.
-     * @param[in,out] firstMod Whether this is the first module being added.
-     */
-    static void addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod);
-
-    /// Get a pretty formatted product information string.
-    static QString prettyProductInfoWrapper();
-
-    /**
-     * @brief Get a value from a map or an empty string.
-     *
-     * @param[in] map The map to search.
-     * @param[in] key The key to search for.
-     * @return Returns the value if found, or an empty string otherwise.
-     */
-    static QString getValueOrEmpty(const std::map<std::string, std::string>& map, const std::string& key);
-
-    /**
-     * Constant that request verbose version information to be printed.
-     *
-     * If an exception has this message, it means that we will print verbosee
-     * version information.
-     */
-    static constexpr const char* verboseVersionEmitMessage{"verbose_version"};
     /// @}
 
     /**
@@ -995,6 +973,7 @@ private:
         std::string filter;
         std::string module;
         std::vector<std::string> types;
+        bool translatable = false;
     };
 
     // open ending information
@@ -1023,10 +1002,16 @@ private:
 
     friend class AutoTransaction;
 
-    std::string _activeTransactionName;
-    int _activeTransactionID{0};
-    int _activeTransactionGuard{0};
-    bool _activeTransactionTmpName{false};
+    std::map<int, TransactionDescription> _activeTransactionDescriptions; // Maps transaction ID to transaction name
+    
+    int currentlyClosingID {0};
+
+    // This is the transaction ID for a global transaction
+    // Documents will take this ID if it is non-zero
+    // and generate their own otherwise
+    int _globalTransactionID { 0 };
+    bool _globalTransactionTmpName {false};
+    std::string _globalTransactionName;
 
     Base::ProgressIndicator _progressIndicator;
 

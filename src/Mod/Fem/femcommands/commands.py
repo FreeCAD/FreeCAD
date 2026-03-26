@@ -256,18 +256,18 @@ class _ConstraintElectricChargeDensity(CommandManager):
         self.do_activated = "add_obj_on_gui_set_edit"
 
 
-class _ConstraintElectrostaticPotential(CommandManager):
-    "The FEM_ConstraintElectrostaticPotential command definition"
+class _ConstraintElectromagnetic(CommandManager):
+    "The FEM_ConstraintElectromagnetic command definition"
 
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintElectrostaticPotential",
-            "Electrostatic Potential Boundary Condition",
+            "FEM_ConstraintElectromagnetic",
+            "Electromagnetic Boundary Condition",
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintElectrostaticPotential",
-            "Creates an electrostatic potential boundary condition",
+            "FEM_ConstraintElectromagnetic",
+            "Creates an electromagnetic boundary condition",
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -725,6 +725,29 @@ class _MeshClear(CommandManager):
         FreeCAD.ActiveDocument.recompute()
 
 
+class _MeshClearGroups(CommandManager):
+    "The FEM_MeshClearGroups command definition"
+
+    def __init__(self):
+        super().__init__()
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshClearGroups", "Clear Mesh Groups")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshClearGroups", "Remove groups from FEM mesh")
+        self.is_active = "with_femmesh"
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("ClearGroups FEM mesh")
+        FreeCADGui.addModule("Fem")
+        grps = "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh.Groups"
+        remove_func = "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh.removeGroup"
+        FreeCADGui.doCommand(f"tuple(map({remove_func}, {grps}))")
+        FreeCAD.Console.PrintMessage(
+            f"Groups cleared: Now {self.selobj.Name} has {self.selobj.FemMesh.GroupCount} groups\n"
+        )
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
+
+
 class _MeshDisplayInfo(CommandManager):
     "The FEM_MeshDisplayInfo command definition"
 
@@ -983,9 +1006,7 @@ class _SolverCalculixContextManager:
             "{}.MatrixSolverType = {}".format(self.cli_name, ccx_prefs.GetInt("Solver", 0))
         )
         FreeCADGui.doCommand(
-            "{}.BeamShellResultOutput3D = {}".format(
-                self.cli_name, ccx_prefs.GetBool("BeamShellOutput", True)
-            )
+            "{}.Output3d = {}".format(self.cli_name, ccx_prefs.GetBool("BeamShellOutput", True))
         )
         FreeCADGui.doCommand(
             "{}.GeometricalNonlinearity = {}".format(
@@ -1166,6 +1187,33 @@ class _PostFilterGlyph(CommandManager):
         self.do_activated = "add_filter_set_edit"
 
 
+class _CompSolvers(CommandManager):
+    def __init__(self):
+        super().__init__()
+        self.pixmap = ""
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_CompSolvers", "Solvers")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_CompSolvers", "Creates a FEM solver")
+        self.is_active = "with_analysis"
+        self.commands = [
+            "FEM_SolverCalculiX",
+            "FEM_SolverElmer",
+            "FEM_SolverMystran",
+            "FEM_SolverZ88",
+        ]
+
+    def Activated(self, i):
+        FreeCADGui.runCommand(self.commands[i])
+
+    def GetCommands(self):
+        return self.commands
+
+    def GetDefaultCommand(self):
+        gen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        # DefaultSolver == 0 is "None"
+        index = gen_prefs.GetInt("DefaultSolver", 0)
+        return (index - 1) if index > 0 else 0
+
+
 # the string in add command will be the page name on FreeCAD wiki
 FreeCADGui.addCommand("FEM_Analysis", _Analysis())
 FreeCADGui.addCommand("FEM_ClippingPlaneAdd", _ClippingPlaneAdd())
@@ -1175,7 +1223,7 @@ FreeCADGui.addCommand("FEM_ConstraintBodyHeatSource", _ConstraintBodyHeatSource(
 FreeCADGui.addCommand("FEM_ConstraintCentrif", _ConstraintCentrif())
 FreeCADGui.addCommand("FEM_ConstraintCurrentDensity", _ConstraintCurrentDensity())
 FreeCADGui.addCommand("FEM_ConstraintElectricChargeDensity", _ConstraintElectricChargeDensity())
-FreeCADGui.addCommand("FEM_ConstraintElectrostaticPotential", _ConstraintElectrostaticPotential())
+FreeCADGui.addCommand("FEM_ConstraintElectromagnetic", _ConstraintElectromagnetic())
 FreeCADGui.addCommand("FEM_ConstraintFlowVelocity", _ConstraintFlowVelocity())
 FreeCADGui.addCommand("FEM_ConstraintInitialFlowVelocity", _ConstraintInitialFlowVelocity())
 FreeCADGui.addCommand("FEM_ConstraintInitialPressure", _ConstraintInitialPressure())
@@ -1206,6 +1254,7 @@ FreeCADGui.addCommand("FEM_MaterialSolid", _MaterialSolid())
 FreeCADGui.addCommand("FEM_FEMMesh2Mesh", _FEMMesh2Mesh())
 FreeCADGui.addCommand("FEM_MeshBoundaryLayer", _MeshBoundaryLayer())
 FreeCADGui.addCommand("FEM_MeshClear", _MeshClear())
+FreeCADGui.addCommand("FEM_MeshClearGroups", _MeshClearGroups())
 FreeCADGui.addCommand("FEM_MeshDisplayInfo", _MeshDisplayInfo())
 FreeCADGui.addCommand("FEM_MeshGmshFromShape", _MeshGmshFromShape())
 FreeCADGui.addCommand("FEM_MeshGroup", _MeshGroup())
@@ -1220,6 +1269,7 @@ FreeCADGui.addCommand("FEM_SolverElmer", _SolverElmer())
 FreeCADGui.addCommand("FEM_SolverMystran", _SolverMystran())
 FreeCADGui.addCommand("FEM_SolverRun", _SolverRun())
 FreeCADGui.addCommand("FEM_SolverZ88", _SolverZ88())
+FreeCADGui.addCommand("FEM_CompSolvers", _CompSolvers())
 
 if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
     FreeCADGui.addCommand("FEM_PostFilterGlyph", _PostFilterGlyph())

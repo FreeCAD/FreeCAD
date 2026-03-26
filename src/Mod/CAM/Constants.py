@@ -19,6 +19,9 @@ GCODE_MOVE_RAPID = ["G0", "G00"]
 # Linear interpolation (feed moves)
 GCODE_MOVE_STRAIGHT = ["G1", "G01"]
 
+# Linear interpolation (rapid and feed moves)
+GCODE_MOVE_LINE = GCODE_MOVE_RAPID + GCODE_MOVE_STRAIGHT
+
 # Circular interpolation - clockwise
 GCODE_MOVE_CW = ["G2", "G02"]
 
@@ -38,7 +41,7 @@ GCODE_MOVE_MILL = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC
 GCODE_MOVE = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC + GCODE_MOVE_DRILL
 
 # All move commands (cutting moves + rapid)
-GCODE_MOVE_ALL = GCODE_MOVE + GCODE_MOVE_RAPID
+GCODE_MOVE_ALL = GCODE_MOVE_LINE + GCODE_MOVE_ARC + GCODE_MOVE_DRILL
 
 # =============================================================================
 # G-Code Modal Commands

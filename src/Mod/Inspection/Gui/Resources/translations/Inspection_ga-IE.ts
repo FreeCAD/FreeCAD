@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection…</source>
-      <translation type="unfinished">Inspection…</translation>
+      <translation>Cigireacht…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
       <source>Inspects distance information</source>
-      <translation type="unfinished">Inspects distance information</translation>
+      <translation>Déanann sé iniúchadh ar fhaisnéis achair</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="49"/>
       <source>Visual Inspection…</source>
-      <translation type="unfinished">Visual Inspection…</translation>
+      <translation>Cigireacht Amhairc…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="50"/>
       <source>Inspects the objects visually</source>
-      <translation type="unfinished">Inspects the objects visually</translation>
+      <translation>Déanann sé iniúchadh amhairc ar na rudaí</translation>
     </message>
   </context>
   <context>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../VisualInspection.cpp" line="234"/>
       <source>Visual Inspection</source>
-      <translation type="unfinished">Visual Inspection</translation>
+      <translation>Cigireacht Amhairc</translation>
     </message>
   </context>
   <context>
@@ -50,12 +50,12 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation type="unfinished">Visual Inspection</translation>
+      <translation>Cigireacht Amhairc</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
       <source>Actual</source>
-      <translation type="unfinished">Actual</translation>
+      <translation>Iarbhír</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="39"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="50"/>
       <source>Nominal</source>
-      <translation type="unfinished">Nominal</translation>
+      <translation>Ainmniúil</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="77"/>
@@ -76,13 +76,13 @@
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation type="unfinished">Search distance</translation>
+      <translation>Fad cuardaigh</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>
       <location filename="../../VisualInspection.ui" line="174"/>
       <source> mm</source>
-      <translation type="unfinished"> mm</translation>
+      <translation> mm</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="145"/>
@@ -95,12 +95,12 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="510"/>
       <source>Remove annotations</source>
-      <translation type="unfinished">Remove annotations</translation>
+      <translation>Bain anótálacha</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Do you want to remove all annotations?</source>
-      <translation type="unfinished">Do you want to remove all annotations?</translation>
+      <translation>Ar mhaith leat na nótaí go léir a bhaint?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="569"/>
@@ -110,23 +110,23 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="572"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Fág Mód Faisnéise</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="708"/>
       <source>Distance: &gt; %1</source>
-      <translation type="unfinished">Distance: &gt; %1</translation>
+      <translation>Fad: &gt; %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="711"/>
       <source>Distance: &lt; %1</source>
-      <translation type="unfinished">Distance: &lt; %1</translation>
+      <translation>Fad: &lt;%1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="730"/>
       <location filename="../../ViewProviderInspection.cpp" line="748"/>
       <source>Distance: %1</source>
-      <translation type="unfinished">Distance: %1</translation>
+      <translation>Fad: %1</translation>
     </message>
   </context>
 </TS>

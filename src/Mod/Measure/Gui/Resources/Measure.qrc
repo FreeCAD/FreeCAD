@@ -12,5 +12,6 @@
         <file>icons/Measurement-Diameter.svg</file>
         <file>icons/Measurement-Radius.svg</file>
         <file>icons/Measurement-Volume.svg</file>
+        <file>icons/MassPropertiesIcon.svg</file>
     </qresource>
 </RCC>

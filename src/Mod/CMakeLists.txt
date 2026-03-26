@@ -30,10 +30,6 @@ if(BUILD_HELP)
   add_subdirectory(Help)
 endif(BUILD_HELP)
 
-if(BUILD_IDF)
-  add_subdirectory(Idf)
-endif(BUILD_IDF)
-
 if(BUILD_IMPORT)
   add_subdirectory(Import)
 endif(BUILD_IMPORT)

@@ -1097,6 +1097,16 @@ public:
         guard.tryInvoke();
     }
 
+    template<std::predicate<const T&> F>
+    int removeIf(F f) {
+        ListT vals = _lValueList;
+        size_t removed = std::erase_if(vals, f);
+        if (removed > 0) {
+            setValues(std::move(vals));
+        }
+        return static_cast<int>(removed);
+    }
+
 protected:
     void setPyValues(const std::vector<PyObject*>& vals, const std::vector<int>& indices) override
     {

@@ -73,6 +73,7 @@ We agree these things should get collective attention because they are larger th
 | [Improve Circular Holes](Epics/Circular%20Holes%20Improvement.md)               | Improve the user experience and efficiency of Circular holes operations | Active   |
 | [Improve Core Dressups](Epics/ImproveCoreDressups.md)                           | Improve the user experience and feature completion of core dressups     | Active   |
 | [Improve Adaptive Operation](Epics/ImproveAdaptiveOperation.md)                 | Improve the user experience and feature completion of Adaptive          | Active   |
+| [Clipper 2 Upgrade](Epics/Clipper.md)                                           | Upgrade Clipper 1/libarea/kurve to Clipper 2                            | Active   |
 
 # Priorities
 *(When evaluating Pull Requests, the following priorities will be considered)*

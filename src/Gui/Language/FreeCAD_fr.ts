@@ -26,8 +26,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
       <source>Enum</source>
       <translation>Énumération</translation>
     </message>
@@ -128,10 +128,10 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
+      <location filename="../Transform.cpp" line="108"/>
       <location filename="../TaskTransform.cpp" line="128"/>
       <location filename="../TaskTransform.cpp" line="808"/>
-      <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="423"/>
       <source>Transform</source>
       <translation>Paramètres de la transformation</translation>
     </message>
@@ -1139,7 +1139,7 @@ entraîner une perte de données !</translation>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="95"/>
       <source>Accelerator</source>
-      <translation>Accélérateur</translation>
+      <translation>Raccourci</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActions.ui" line="118"/>
@@ -2515,12 +2515,12 @@ Specify another directory.</source>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="101"/>
       <source>Failed to extract document</source>
-      <translation>Impossible d''extraire le document</translation>
+      <translation>L'extraction du document a échouée.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectUtility.cpp" line="118"/>
       <source>Failed to create document</source>
-      <translation>La création du document a échouée</translation>
+      <translation>La création du document a échouée.</translation>
     </message>
   </context>
   <context>
@@ -6040,66 +6040,66 @@ Pg.Suiv/Pg.Préc du clavier</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="157"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="303"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="492"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="135"/>
       <location filename="../InputVector.h" line="160"/>
       <location filename="../InputVector.h" line="281"/>
       <location filename="../InputVector.h" line="306"/>
       <location filename="../InputVector.h" line="479"/>
       <location filename="../InputVector.h" line="495"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Défini par l'utilisateur…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Mauvaise direction</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="242"/>
       <location filename="../InputVector.h" line="377"/>
       <location filename="../InputVector.h" line="566"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>La direction ne peut pas être un vecteur nul</translation>
     </message>
@@ -6387,7 +6387,7 @@ sur Alt + bouton droit de la souris OU les touches Pg.Suiv/Pg.Préc du clavier</
     <message>
       <location filename="../Widgets.cpp" line="409"/>
       <source>Press modifier keys</source>
-      <translation>Appuyez sur les touches de modification</translation>
+      <translation>Appuyer sur les touches de modificateur</translation>
     </message>
   </context>
   <context>
@@ -6594,7 +6594,7 @@ sur Alt + bouton droit de la souris OU les touches Pg.Suiv/Pg.Préc du clavier</
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1018"/>
       <source>Show Hidden</source>
-      <translation>Afficher les éléments masqués</translation>
+      <translation>Afficher les propriétés cachées</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1035"/>
@@ -8616,8 +8616,8 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Définir une sélection</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
+      <location filename="../ViewProviderLink.cpp" line="3184"/>
       <source>Transform</source>
       <translation>Transformer</translation>
     </message>
@@ -8746,8 +8746,8 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Le glisser/déposer a échoué</translation>
     </message>
     <message>
-      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <location filename="../MainWindow.cpp" line="900"/>
+      <location filename="../ViewProviderLink.cpp" line="2999"/>
       <source>Apply to all</source>
       <translation>Appliquer à tout</translation>
     </message>
@@ -8774,7 +8774,7 @@ Choisissez "Interrompre" pour annuler.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3053"/>
       <source>Copy on Change</source>
-      <translation>Copier lors de la modification</translation>
+      <translation>Copier en cas de modification</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3054"/>
@@ -8836,7 +8836,7 @@ sera perdue.</translation>
       <location filename="../ViewProviderLink.cpp" line="3195"/>
       <location filename="../ViewProviderLink.cpp" line="3201"/>
       <source>Override Colors</source>
-      <translation>Remplacer les couleurs</translation>
+      <translation>Remplacer des couleurs</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObject.cpp" line="275"/>
@@ -10834,7 +10834,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../CommandView.cpp" line="2219"/>
       <source>&amp;Load Image…</source>
-      <translation>&amp;Charger un image…</translation>
+      <translation>&amp;Charger une image…</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2220"/>
@@ -12932,7 +12932,7 @@ activée ou désactivée.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="928"/>
       <source>Do&amp;cument Utility</source>
-      <translation>Utilitaire de doc&amp;ument</translation>
+      <translation>Utilitaire de doc&amp;uments</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="930"/>
@@ -13439,7 +13439,7 @@ d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="818"/>
       <source>&amp;Units Converter</source>
-      <translation>&amp;Convertisseur d'unités</translation>
+      <translation>&amp;Lancer le convertisseur d'unités</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="820"/>

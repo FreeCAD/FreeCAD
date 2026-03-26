@@ -56,8 +56,13 @@ constexpr int SXGAHeight{1024};
 
 // ctor for creation
 TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
-    : ui(new Ui_TaskActiveView), m_pageFeat(pageFeat), m_imageFeat(nullptr),
-      m_previewImageFeat(nullptr), m_btnOK(nullptr), m_btnCancel(nullptr)
+    : ui(new Ui_TaskActiveView)
+    , m_pageFeat(pageFeat)
+    , m_imageFeat(nullptr)
+    , m_previewImageFeat(nullptr)
+    , m_btnOK(nullptr)
+    , m_btnCancel(nullptr)
+    , m_tid(0)
 {
     ui->setupUi(this);
 
@@ -67,11 +72,11 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     setUiPrimary();
 
     // For live preview
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
+    m_tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
 
     m_previewImageFeat = createActiveView();
     if (!m_previewImageFeat) {
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(m_tid);
         this->setEnabled(false);
         return;
     }
@@ -91,14 +96,14 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
 TaskActiveView::~TaskActiveView()
 {
     if (m_previewImageFeat) {
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(m_tid);
     }
 }
 
 bool TaskActiveView::accept()
 {
     if (m_previewImageFeat) {
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(m_tid);
         m_imageFeat = m_previewImageFeat;
         m_previewImageFeat = nullptr;
     }
@@ -109,7 +114,7 @@ bool TaskActiveView::accept()
 bool TaskActiveView::reject()
 {
     if (m_previewImageFeat) {
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(m_tid);
         m_previewImageFeat = nullptr;
     }
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");

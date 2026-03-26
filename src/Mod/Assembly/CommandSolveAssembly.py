@@ -66,7 +66,7 @@ class CommandSolveAssembly:
 
         App.setActiveTransaction("Solve assembly")
         assembly.recompute(True)
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
 
 
 if App.GuiUp:

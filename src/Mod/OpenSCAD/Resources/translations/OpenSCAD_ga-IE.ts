@@ -205,7 +205,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="368"/>
       <source>Save</source>
-      <translation type="unfinished">Save</translation>
+      <translation>Sábháil</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="336"/>
@@ -440,7 +440,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="188"/>
       <source>Mirror Mesh Feature</source>
-      <translation type="unfinished">Mirror Mesh Feature</translation>
+      <translation>Gné Mogalra Scátháin</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="191"/>

@@ -63,6 +63,7 @@ inline const UnitsSchemaSpec s1
         { "Length",             {{ 0 , "m"    , 1e3 }}},
         { "Area",               {{ 0 , "m^2"  , 1e6 }}},
         { "Volume",             {{ 0 , "m^3"  , 1e9 }}},
+        { "Inertia",            {{ 0 , "kg*m^2", 1e6 }}},
         { "Power",              {{ 0 , "W"    , 1e6 }}},
         { "ElectricPotential",  {{ 0 , "V"    , 1e6 }}},
         { "HeatFlux",           {{ 0 , "W/m^2", 1.0 }}},
@@ -78,6 +79,7 @@ inline const UnitsSchemaSpec s2
         { "Area",         {{ 0 , "in^2"    , in * in           }}},
         { "Volume",       {{ 0 , "in^3"    , in * in * in      }}},
         { "Mass",         {{ 0 , "lb"      , lb                }}},
+        { "Inertia",      {{ 0 , "lb*in^2", lb * in * in       }}},
         { "Pressure",     {{ 0 , "psi"     , psi               }}},
         { "Stiffness",    {{ 0 , "lbf/in"  , lbf / in * 1000   }}},
         { "Velocity",     {{ 0 , "in/min"  , in / 60           }}},
@@ -112,6 +114,12 @@ inline const UnitsSchemaSpec s3
         { "Angle", {
             { 0               , "°"          , 1.0             }}
         },
+        { "ElectricCurrent", {
+            { 1e-6            , "nA"         , 1e-9            },
+            { 1e-3            , "\xC2\xB5""A", 1e-6            },
+            { 1               , "mA"         , 1e-3            },
+            { 0               , "A"          , 1.0             }}
+        },
         { "Mass", {
             { 1e-6            , "\xC2\xB5g"  , 1e-9            },
             { 1e-3            , "mg"         , 1e-6            },
@@ -119,10 +127,24 @@ inline const UnitsSchemaSpec s3
             { 1e3             , "kg"         , 1.0             },
             { 0               , "t"          , 1e3             }}
         },
+        { "Inertia", {
+            { 0               , "kg*mm^2"    , 1.0             }}
+        },
         { "Density", {
             { 1e-4            , "kg/m^3"     , 1e-9            },
             { 1.0             , "kg/cm^3"    , 1e-3            },
             { 0               , "kg/mm^3"    , 1.0             }}
+        },
+        { "Concentration", {
+            { 1e-9            , "\xC2\xB5mol/l", 1e-12         },
+            { 1e-6            , "mmol/l"     , 1e-9            },
+            { 0               , "mol/l"      , 1e-6            }}
+        },
+        { "AmountOfSubstance", {
+            { 1e-6            , "nmol"       , 1e-9            },
+            { 1e-3            , "\xC2\xB5mol", 1e-6            },
+            { 1               , "mmol"       , 1e-3            },
+            { 0               , "mol"        , 1.0             }}
         },
         { "ThermalConductivity", {
             { 1e6             , "W/m/K"      , 1e3             },
@@ -175,6 +197,8 @@ inline const UnitsSchemaSpec s3
             { 0               , "MN"         , 1e9             }}
         },
         { "Power", {
+            { 1               , "nW"         , 1e-3            },
+            { 1e3             , "\xC2\xB5W"  , 1               },
             { 1e6             , "mW"         , 1e3             },
             { 1e9             , "W"          , 1e6             },
             { 0               , "kW"         , 1e9             }}
@@ -351,6 +375,9 @@ inline const UnitsSchemaSpec s4
             { 1.0             , "g"          , 1e-3            },
             { 1e3             , "kg"         , 1.0             },
             { 0               , "t"          , 1e3             }}
+        },
+        { "Inertia", {
+            { 0               , "kg*m^2"     , 1e6             }}
         },
         { "Density", {
             { 0.0001          , "kg/m^3"     , 0.000000001     },
@@ -561,6 +588,9 @@ inline const UnitsSchemaSpec s5
         { "Volume", {
             { 0              , "m^3"         , 1e9              }}
         },
+        { "Inertia", {
+            { 0              , "kg*cm^2"     , 100.0            }}
+        },
         { "Power", {
             { 0              , "W"           , 1e6              }}
         },
@@ -606,11 +636,17 @@ inline const UnitsSchemaSpec s7
         { "Area", {
             { 0               , "in^2"     , in * in           }}
         },
+        { "Density", {
+            { 0               , "lb/in^3"  , lb / (in * in * in)}}
+        },
         { "Volume", {
             { 0               , "in^3"     , in * in * in      }}
         },
         { "Mass", {
             { 0               , "lb"       , lb                }}
+        },
+        { "Inertia", {
+            { 0               , "lb*in^2"  , lb * in * in       }}
         },
         { "Pressure", {
             { 1000 * psi      , "psi"      , psi               },
@@ -644,6 +680,8 @@ inline const UnitsSchemaSpec s9
         { "Area"     , {{ 0   , "ft^2"  , ft * ft                  }}},
         { "Volume"   , {{ 0   , "ft^3"  , ft * ft * ft             }}},
         { "Mass"     , {{ 0   , "lb"    , lb                       }}},
+        { "Inertia"  , {{ 0   , "lb*ft^2", lb * ft * ft            }}},
+        { "Density"  , {{ 0   , "lb/ft^3", lb / (ft * ft * ft)     }}},
         { "Pressure" , {{ 0   , "psi"   , psi                      }}},
         { "Stiffness", {{ 0   , "lbf/in", lbf / in * 1000          }}},
         { "Velocity" , {{ 0   , "mph"   , mi / 3600                }}},

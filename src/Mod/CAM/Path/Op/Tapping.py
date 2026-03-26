@@ -97,6 +97,13 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add tapping specific properties to obj."""
+        # DEPRECATED: This operation is deprecated. Use Drilling operation with Strategy=Tapping instead.
+        Path.Log.warning(
+            "DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. "
+            "Please use the Drilling operation with Strategy set to 'Tapping' instead. "
+            "Existing Tapping operations will continue to work but you cannot create new ones."
+        )
+
         obj.addProperty(
             "App::PropertyFloat",
             "DwellTime",
@@ -308,9 +315,5 @@ def Create(name, obj=None, parentJob=None):
     """Create(name) ... Creates and returns a Tapping operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
-
     obj.Proxy = ObjectTapping(obj, name, parentJob)
-    if obj.Proxy:
-        obj.Proxy.findAllHoles(obj)
-
     return obj

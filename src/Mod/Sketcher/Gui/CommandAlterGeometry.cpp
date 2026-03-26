@@ -87,6 +87,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArc");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateText");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseByCenter");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateEllipseBy3Points");
@@ -207,6 +208,10 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
             // only handle edges
             if (subname.size() > 4 && subname.substr(0, 4) == "Edge") {
                 int geoId = std::atoi(subname.substr(4, 4000).c_str()) - 1;
+                auto gf = Obj->getGeometryFacade(geoId);
+                if (!gf || gf->isInternalAligned()) {
+                    continue;
+                }
                 // issue the actual commands to toggle
                 Gui::cmdAppObjectArgs(Obj, "toggleConstruction(%d) ", geoId);
             }

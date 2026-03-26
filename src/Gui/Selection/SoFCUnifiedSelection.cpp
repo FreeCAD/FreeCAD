@@ -790,20 +790,21 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
         // We need to convert the short name in the selection to a full element path to look it up
         // Ex:  Body.Pad.Face9  to Body.Pad.;g3;SKT;:H12dc,E;FAC;:H12dc:4,F;:G0;XTR;:H12dc:8,F.Face9
         getFullSubElementName(subName);
-        const char* subSelected
+        std::string subSelected
             = Gui::Selection().getSelectedElement(vpd->getObject(), subName.c_str());
 
         FC_TRACE(
-            "select " << (subSelected ? subSelected : "'null'") << ", " << objectName << ", " << subName
+            "select " << (!subSelected.empty() ? subSelected : "'null'") << ", " << objectName
+                      << ", " << subName
         );
         std::string newElement;
-        if (subSelected) {
-            newElement = Data::newElementName(subSelected);
+        if (!subSelected.empty()) {
+            newElement = Data::newElementName(subSelected.c_str());
             subSelected = newElement.c_str();
             std::string nextsub;
-            const char* next = strrchr(subSelected, '.');
-            if (next && next != subSelected) {
-                if (next[1] == 0) {
+            size_t next = subSelected.rfind('.');
+            if (next != std::string::npos && next != 0) {
+                if (next == subSelected.size() - 1) {
                     // The convention of dot separated SubName demands a mandatory
                     // ending dot for every object name reference inside SubName.
                     // The non-object sub-element, however, must not end with a dot.
@@ -811,17 +812,13 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
                     // selection (because no sub-element), so we shall search
                     // upwards for the second last dot, which is the end of the
                     // parent name of the current selected object
-                    for (--next; next != subSelected; --next) {
-                        if (*next == '.') {
-                            break;
-                        }
-                    }
+                    next = subSelected.rfind('.', next - 1);
                 }
-                if (*next == '.') {
-                    nextsub = std::string(subSelected, next - subSelected + 1);
+                if (next != std::string::npos) {
+                    nextsub = subSelected.substr(0, next + 1);
                 }
             }
-            if (nextsub.length() || *subSelected != 0) {
+            if (!nextsub.empty() || !subSelected.empty()) {
                 hasNext = true;
                 subName = nextsub;
                 detailPath->truncate(0);
@@ -1315,7 +1312,7 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext(
     }
 
     auto front = dynamic_cast<SoFCSelectionRoot*>(stack.front());
-    if (front == nullptr) {
+    if (!front) {
         return SoFCSelectionContextBasePtr();
     }
 
@@ -1341,7 +1338,7 @@ SoFCSelectionContextBasePtr SoFCSelectionRoot::getNodeContext2(
     }
 
     auto* back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
-    if (back == nullptr || back->contextMap2.empty()) {
+    if (!back || back->contextMap2.empty()) {
         return ret;
     }
 
@@ -1387,7 +1384,7 @@ std::pair<bool, SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionConte
 
     if (res.first) {
         auto back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
-        if (back != nullptr) {
+        if (back) {
             stack.back() = _node;
             if (create) {
                 res.second = &back->contextMap2[stack];
@@ -1406,7 +1403,7 @@ std::pair<bool, SoFCSelectionContextBasePtr*> SoFCSelectionRoot::findActionConte
     }
     else {
         auto front = dynamic_cast<SoFCSelectionRoot*>(stack.front());
-        if (front != nullptr) {
+        if (front) {
             stack.front() = _node;
             if (create) {
                 res.second = &front->contextMap[stack];
@@ -2027,7 +2024,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
                         continue;
                     }
                     auto node = dynamic_cast<SoFCSelectionRoot*>(path->getNode(i));
-                    if (node != nullptr && node->selectionStyle.getValue() == SoFCSelectionRoot::Box) {
+                    if (node && node->selectionStyle.getValue() == SoFCSelectionRoot::Box) {
                         bbox = true;
                         break;
                     }

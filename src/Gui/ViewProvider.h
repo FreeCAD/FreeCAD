@@ -86,26 +86,102 @@ enum ViewStatus
 };
 
 
-/** Convenience smart pointer to wrap coin node.
+/** Convenience smart pointer to manage the lifetime of coin nodes.
  *
- * It is basically boost::intrusive plus implicit pointer conversion to save the
- * trouble of typing get() all the time.
+ * This class is copied from Inventor/misc/SoRefPtr.h and can be removed when the
+ * minimum supported coin version provides this header.
  */
-template<class T>
-class CoinPtr: public boost::intrusive_ptr<T>
+template<typename T>
+class SoRefPtr
 {
 public:
-    // Too bad, VC2013 does not support constructor inheritance
-    // using boost::intrusive_ptr<T>::intrusive_ptr;
-    using inherited = boost::intrusive_ptr<T>;
-    CoinPtr() = default;
-    CoinPtr(T* p, bool add_ref = true)
-        : inherited(p, add_ref)
+    SoRefPtr(void) noexcept
+        : ptr(NULL)
     {}
-    template<class Y>
-    CoinPtr(CoinPtr<Y> const& r)
-        : inherited(r)
-    {}
+
+    explicit SoRefPtr(T* p)
+        : ptr(p)
+    {
+        if (this->ptr) {
+            this->ptr->ref();
+        }
+    }
+
+    SoRefPtr(const SoRefPtr& other)
+        : ptr(other.ptr)
+    {
+        if (this->ptr) {
+            this->ptr->ref();
+        }
+    }
+
+    SoRefPtr(SoRefPtr&& other) noexcept
+        : ptr(other.ptr)
+    {
+        other.ptr = NULL;
+    }
+
+    ~SoRefPtr(void)
+    {
+        if (this->ptr) {
+            this->ptr->unref();
+        }
+    }
+
+    SoRefPtr& operator=(SoRefPtr other) noexcept
+    {
+        this->swap(other);
+        return *this;
+    }
+
+    void reset(T* p = NULL)
+    {
+        SoRefPtr tmp(p);
+        this->swap(tmp);
+    }
+
+    T* get(void) const noexcept
+    {
+        return this->ptr;
+    }
+    T& operator*(void) const
+    {
+        return *this->ptr;
+    }
+    T* operator->(void) const noexcept
+    {
+        return this->ptr;
+    }
+    explicit operator bool(void) const noexcept
+    {
+        return this->ptr != NULL;
+    }
+
+    void swap(SoRefPtr& other) noexcept
+    {
+        using std::swap;
+        swap(this->ptr, other.ptr);
+    }
+
+private:
+    T* ptr;
+};
+
+/** Convenience smart pointer to wrap coin node.
+ *
+ * This class isn't merged with SoRefPtr because it can be removed in the future
+ */
+template<class T>
+class CoinPtr: public SoRefPtr<T>
+{
+public:
+    using SoRefPtr<T>::SoRefPtr;
+
+    CoinPtr& operator=(T* ptr)
+    {
+        SoRefPtr<T>::reset(ptr);
+        return *this;
+    }
 
     operator T*() const
     {
@@ -559,6 +635,8 @@ public:
     virtual ViewProvider* startEditing(int ModNum = 0);
     bool isEditing() const;
     void finishEditing();
+    virtual void setActive(bool active);
+
     /// adjust viewer settings when editing a view provider
     virtual void setEditViewer(View3DInventorViewer*, int ModNum);
     /// restores viewer settings when leaving editing mode

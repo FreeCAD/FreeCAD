@@ -2372,7 +2372,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>Mesh Boolean</source>
-      <translation>Booleana su Mesh</translation>
+      <translation>Booleana su mesh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>

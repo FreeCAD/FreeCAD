@@ -19,12 +19,12 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation>&lt;p&gt;Ubacuje komponentu u aktivni sklop. Time se kreiraju dinamičke veze ka delovima, telima, primitivima i sklopovima. Da biste ubacili vanjske komponente, uverite se da je fajl &lt;b&gt;otvoren u trenutnoj sesiji&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Ubacite pomoću levog klika miša na stavke u listi.&lt;/li&gt;&lt;li&gt;Izbacite pomoću desnog klika miša na stavke u listi.&lt;/li&gt;&lt;li&gt;Držite SHIFT da biste dodali više instanci komponente dok klikćete na pogled.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Ubaci komponentu u aktivni sklop. Ovo napravi veze prema delovima, telima, primitivima i sklopovima. Da bi ubacio spoljne komponente, uveri se da je datoteka &lt;b&gt;otvorena u trenutnoj sesiji&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Ubaci levim klikom miša na stavke u listi.&lt;/li&gt;&lt;li&gt;Ukloni desnim klikom miša na stavke u listi.&lt;/li&gt;&lt;li&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
       <source>Component</source>
-      <translation>Komponenta</translation>
+      <translation>Deo</translation>
     </message>
   </context>
   <context>

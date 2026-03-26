@@ -44,7 +44,7 @@ def get_information():
         "name": "Magnetic shielding 2D",
         "meshtype": "face",
         "meshelement": "Tria6",
-        "constraints": ["electrostatic potential"],
+        "constraints": ["electromagnetic"],
         "solvers": ["elmer"],
         "material": "solid",
         "equations": ["electromagnetic"],
@@ -131,7 +131,7 @@ def setup(doc=None, solvertype="elmer"):
     analysis.addObject(iron_obj)
 
     # boundary condition
-    mg_den = ObjectsFem.makeConstraintElectrostaticPotential(doc, "MagneticDensity")
+    mg_den = ObjectsFem.makeConstraintElectromagnetic(doc, "MagneticDensity")
     mg_den.References = [(shell, "Edge3")]
     mg_den.BoundaryCondition = "Neumann"
     mg_den.EnableMagnetic_1 = True

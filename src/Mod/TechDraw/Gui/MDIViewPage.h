@@ -72,8 +72,9 @@ public:
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
+    void onRelabel(Gui::Document* pDoc) override;
 
     void print() override;
     void print(QPrinter* printer) override;
@@ -88,7 +89,7 @@ public:
 
     void saveSVG(std::string fileName);
     void saveDXF(std::string fileName);
-    void savePDF(std::string fileName);
+    void savePDF(const std::string& fileName) const;
 
     void zoomIn();
     void zoomOut();
@@ -98,7 +99,7 @@ public:
 
     PyObject* getPyObject() override;
     TechDraw::DrawPage * getPage() { return m_vpPage->getDrawPage(); }
-    ViewProviderPage* getViewProviderPage() {return m_vpPage;}
+    ViewProviderPage* getViewProviderPage() const {return m_vpPage;}
 
     void setTabText(std::string tabText);
 
@@ -110,11 +111,16 @@ public:
     void setDimensionsSelectability(bool val);
     void enableContextualMenu(bool val) { isContextualMenuEnabled = val; }
 
+    QString getPdfFileName() const;     // static?
+    static bool isFileWritable(const QString& filename);
+    void exportAsPdf() const;
+
+
 public Q_SLOTS:
     void viewAll() override;
     void saveSVG();
     void saveDXF();
-    void savePDF();
+    void slotContextExportPdf();
     void toggleFrame();
     void toggleKeepUpdated();
     void sceneSelectionChanged();

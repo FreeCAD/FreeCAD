@@ -458,7 +458,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="107"/>
       <source>Create compound</source>
-      <translation>Créer un composite</translation>
+      <translation>Créer un composé</translation>
     </message>
   </context>
   <context>

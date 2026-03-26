@@ -36,6 +36,7 @@
 #include "GeometryFacadePy.h"
 #include "PropertyConstraintList.h"
 #include "Sketch.h"
+#include "SketchGeometry.h"
 #include "SketchGeometryExtension.h"
 #include "SketchGeometryExtensionPy.h"
 #include "SketchObject.h"
@@ -88,6 +89,7 @@ PyMOD_INIT_FUNC(Sketcher)
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
 
+    Sketcher::SketchGeometryType::init();
     Sketcher::SketchGeometryExtension ::init();
     Sketcher::ExternalGeometryExtension ::init();
     Sketcher::SolverGeometryExtension ::init();

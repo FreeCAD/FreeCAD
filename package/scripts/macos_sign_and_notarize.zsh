@@ -247,7 +247,16 @@ print "Notarization submission ID: $id"
 
 if wait_for_notarization_result "$id"; then
   print "✅ Notarization succeeded. Stapling..."
-  xcrun stapler staple "${DMG_NAME}"
+  local staple_attempt=0
+  while ! xcrun stapler staple "${DMG_NAME}"; do
+    (( staple_attempt++ ))
+    if [[ $staple_attempt -ge 5 ]]; then
+      print "❌ Failed to staple after 5 attempts" >&2
+      exit 1
+    fi
+    print "Staple attempt $staple_attempt failed, retrying in $((staple_attempt * 10))s..."
+    sleep $((staple_attempt * 10))
+  done
   print "Stapled: ${DMG_NAME}"
   rm -f "${ID_FILE}"
 else
