@@ -478,7 +478,7 @@ class Linuxcnc(PostProcessor):
                 if hasattr(op, "SpindleSpeed"):
                     Path.Log.track(f"Operation SpindleSpeed: {op.SpindleSpeed}")
                     if op.SpindleSpeed > max_spindle_speed:
-                        Path.Log.track(f"Adding WARNING for high spindle speed")
+                        Path.Log.track("Adding WARNING for high spindle speed")
                         squawks.append(
                             self._create_squawk(
                                 "WARNING",
