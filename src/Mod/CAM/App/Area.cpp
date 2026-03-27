@@ -2584,7 +2584,6 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
             Offset = -tool_radius - extra_offset - shift;
             ExtraPass = -1;
             Stepover = -stepover;
-            LastStepover = -last_stepover;
             // make offset and make sure the loop is CW (i.e. inner wires)
             return makeOffset(index, PARAM_FIELDS(PARAM_FNAME, AREA_PARAMS_OFFSET), -1, from_center);
         }

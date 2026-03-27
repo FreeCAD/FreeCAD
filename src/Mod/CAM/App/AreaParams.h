@@ -150,13 +150,6 @@
          0.0,                                                                                      \
          "Cutter diameter to step over on each pass. If =0, use ToolRadius.",                      \
          App::PropertyLength))(                                                                    \
-        (double,                                                                                   \
-         last_stepover,                                                                            \
-         PocketLastStepover,                                                                       \
-         0.0,                                                                                      \
-         "Cutter diameter to step over for the last loop when using offset pocket.\n"              \
-         "If =0, use 0.5*ToolRadius.",                                                             \
-         App::PropertyLength))(                                                                    \
         (bool, from_center, FromCenter, false, "Start pocketing from center"))(                    \
         (double, angle, Angle, 45, "Pattern angle in degree", App::PropertyAngle))(                \
         (double,                                                                                   \
@@ -203,14 +196,12 @@
       Offset, \
       0.0, \
       "Offset value, positive for expansion, negative for shrinking", \
-      App::PropertyDistance))((long, extra_pass, ExtraPass, 0, "Number of extra offset pass to generate."))((double, stepover, Stepover, 0.0, "Cutter diameter to step over on each pass. If =0, use Offset", App::PropertyLength))( \
+      App::PropertyDistance))((long, extra_pass, ExtraPass, 0, "Number of extra offset pass to generate."))( \
         (double, \
-         last_stepover, \
-         LastStepover, \
+         stepover, \
+         Stepover, \
          0.0, \
-         "Cutter diameter to step over for the last loop when shrinking " \
-         "with ExtraPass<0, i.e. for\n" \
-         "offset pocketing. If =0, use 0.5*Offset.", \
+         "Cutter diameter to step over on each pass. If =0, use Offset", \
          App::PropertyLength) \
     )
 
