@@ -1052,7 +1052,7 @@ class PostProcessDialog:
                 use_new_flow = True
             else:
                 postprocessor_name = (
-                    getattr(job, "PostProcessor", None) or PathPrefs.defaultPostProcessor()
+                    getattr(job, "PostProcessor", None) or Path.Preferences.defaultPostProcessor()
                 )
                 if not postprocessor_name:
                     QtGui.QMessageBox.warning(
