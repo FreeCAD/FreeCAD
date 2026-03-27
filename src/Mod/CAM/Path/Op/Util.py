@@ -245,70 +245,60 @@ def offsetWire(wire, base, offset, forward, Side=None, tolerance=0.01):
             # it's a full circle and there are some problems with that, see
             # https://www.freecad.org/wiki/Part%20Offset2D
             # it's easy to construct them manually though
+            center = curve.Center
+            radius = curve.Radius
             z = -1 if forward else 1
-            new_edge = Part.makeCircle(curve.Radius + offset, curve.Center, FreeCAD.Vector(0, 0, z))
+            new_edge = Part.makeCircle(radius + offset, center, FreeCAD.Vector(0, 0, z))
             if base.isInside(new_edge.Vertexes[0].Point, offset / 2, True):
-                if offset > curve.Radius or Path.Geom.isRoughly(offset, curve.Radius):
+                if offset > radius or Path.Geom.isRoughly(offset, radius):
                     # offsetting a hole by its own radius (or more) makes the hole vanish
                     return None
                 if Side:
                     Side[0] = "Inside"
-                    print("inside")
-                new_edge = Part.makeCircle(
-                    curve.Radius - offset, curve.Center, FreeCAD.Vector(0, 0, -z)
-                )
+                new_edge = Part.makeCircle(radius - offset, center, FreeCAD.Vector(0, 0, -z))
 
             return Part.Wire([new_edge])
 
         if isinstance(curve, Part.Circle) and not wire.isClosed():
-            # Process arc segment
-            z = -1 if forward else 1
-            l1 = math.sqrt(
-                (edge.Vertexes[0].Point.x - curve.Center.x) ** 2
-                + (edge.Vertexes[0].Point.y - curve.Center.y) ** 2
-            )
-            l2 = math.sqrt(
-                (edge.Vertexes[1].Point.x - curve.Center.x) ** 2
-                + (edge.Vertexes[1].Point.y - curve.Center.y) ** 2
-            )
+            center = curve.Center
+            radius = curve.Radius
+            point1 = edge.Vertexes[0].Point
+            point2 = edge.Vertexes[-1].Point
 
-            # Calculate angles based on x-axis (0 - PI/2)
-            start_angle = math.acos((edge.Vertexes[0].Point.x - curve.Center.x) / l1)
-            end_angle = math.acos((edge.Vertexes[1].Point.x - curve.Center.x) / l2)
+            # Get angles based on x-axis (0 - pi)
+            start_angle = (point1 - center).getAngle(FreeCAD.Vector(1, 0, 0))
+            end_angle = (point2 - center).getAngle(FreeCAD.Vector(1, 0, 0))
 
-            # Angles are based on x-axis (Mirrored on x-axis) -> negative y value means negative angle
-            if edge.Vertexes[0].Point.y < curve.Center.y:
+            # Angles are based on x-axis (Mirrored on x-axis)
+            # Negative y value means negative angle
+            if point1.y < center.y:
                 start_angle *= -1
-            if edge.Vertexes[1].Point.y < curve.Center.y:
+            if point2.y < center.y:
                 end_angle *= -1
 
-            if (
-                edge.Vertexes[0].Point.x > curve.Center.x
-                or edge.Vertexes[1].Point.x > curve.Center.x
-            ) and curve.AngleXU < 0:
-                tmp = start_angle
-                start_angle = end_angle
-                end_angle = tmp
+            # Create candidate arc to check direction
+            circle = Part.Circle(center, FreeCAD.Vector(0, 0, 1), radius)
+            candidate1 = Part.ArcOfCircle(circle, start_angle, end_angle)
+            candidate2 = Part.ArcOfCircle(circle, end_angle, start_angle)
+            edge_middle_point = edge.discretize(3)[1]
+            dist1 = candidate1.discretize(3)[1].distanceToPoint(edge_middle_point)
+            dist2 = candidate2.discretize(3)[1].distanceToPoint(edge_middle_point)
+            if dist1 > dist2:
+                start_angle, end_angle = end_angle, start_angle
+
+            circle = Part.Circle(center, FreeCAD.Vector(0, 0, 1), radius + offset)
+            candidate = Part.ArcOfCircle(circle, start_angle, end_angle)
+            middle_point = candidate.discretize(3)[1]
 
             # Inside / Outside
-            if base.isInside(edge.Vertexes[0].Point, offset / 2, True):
-                offset *= -1
+            if base.isInside(middle_point, offset / 2, True):
+                if offset > radius or Path.Geom.isRoughly(offset, radius):
+                    return None
+                circle = Part.Circle(center, FreeCAD.Vector(0, 0, 1), radius - offset)
                 if Side:
                     Side[0] = "Inside"
 
-            # Create new arc
-            if curve.AngleXU > 0:
-                edge = Part.ArcOfCircle(
-                    Part.Circle(curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius + offset),
-                    start_angle,
-                    end_angle,
-                ).toShape()
-            else:
-                edge = Part.ArcOfCircle(
-                    Part.Circle(curve.Center, FreeCAD.Vector(0, 0, 1), curve.Radius - offset),
-                    start_angle,
-                    end_angle,
-                ).toShape()
+            edge = Part.ArcOfCircle(circle, start_angle, end_angle).toShape()
 
             return Part.Wire([edge])
 
