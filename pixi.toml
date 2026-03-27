@@ -12,7 +12,6 @@ blinker = "*"
 calculix = "*"
 ccache = "*"
 cmake = "*"
-coin3d = "*"
 compilers = ">=1.10,<1.11"
 conda-devenv = "*"
 debugpy = "*"
@@ -42,7 +41,6 @@ openssl = "*"
 pandas = "*"
 pcl = "*"
 pip = "*"
-pivy = "*"
 ply = "*"
 pre-commit = "*"
 pybind11 = "*"
@@ -65,6 +63,7 @@ xlutils = "*"
 yaml-cpp = "*"
 zlib = "*"
 zstd = "*"
+expat = "*"
 
 ## Linux Dependencies (x86-64)
 [target.linux-64.dependencies]
@@ -100,6 +99,8 @@ xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeC
 xorg-x11-server-common-cos7-x86_64 = "*"
 xorg-x11-server-xvfb-cos7-x86_64 = "*"
 xorg-xproto = "*"
+mesa-libglu-devel-conda-x86_64 = "*"
+libopengl-devel = "*"
 
 ## Linux Dependencies (aarch64)
 [target.linux-aarch64.dependencies]
@@ -140,6 +141,7 @@ xcb-util-cursor = "==0.1.5"  ## hack to address https://github.com/FreeCAD/FreeC
 xorg-x11-server-common-cos7-aarch64 = "*"
 xorg-x11-server-xvfb-cos7-aarch64 = "*"
 xorg-xproto = "*"
+libopengl-devel = "*"
 
 ## macOS Dependencies (Intel)
 [target.osx-64.dependencies]

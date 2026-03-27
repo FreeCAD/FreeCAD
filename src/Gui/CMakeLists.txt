@@ -100,9 +100,9 @@ endif(MSVC)
 
 if(MSVC)
     set(FreeCADGui_LIBS
-         FreeCADApp
-         libfastsignals
-         ${OPENGL_gl_LIBRARY}
+        FreeCADApp
+        libfastsignals
+        ${OPENGL_gl_LIBRARY}
     )
 
     if(FREECAD_USE_3DCONNEXION_LEGACY)

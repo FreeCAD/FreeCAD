@@ -38,6 +38,7 @@ endif()
 
 
 option(FREECAD_USE_CCACHE "Auto detect and use ccache during compilation" ON)
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
 
 if(FREECAD_USE_CCACHE)
     find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
@@ -110,8 +111,10 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     SetupFreetype()
 
     if(BUILD_GUI)
-        SetupCoin3D()
-        SetupPivy()
+        if (FREECAD_USE_EXTERNAL_COIN_PIVY)
+            SetupCoin3D()
+            SetupPivy()
+        endif()
         SetupSpaceball()
         SetupShibokenAndPyside()
         SetupMatplotlib()

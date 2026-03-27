@@ -36,11 +36,13 @@ endif()
 find_package(yaml-cpp REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 message(STATUS "Found LibPack 3 yaml-cpp ${yaml-cpp_VERSION}")
 
-find_package(Coin REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
+if (FREECAD_USE_EXTERNAL_COIN_PIVY)
+    find_package(Coin REQUIRED PATHS ${FREECAD_LIBPACK_DIR}/lib/cmake NO_DEFAULT_PATH)
 
-message(STATUS "Found LibPack 3 Coin ${Coin_VERSION}")
-# For compatibility with the rest of the cMake scripts:
-set (COIN3D_FOUND TRUE)
+    message(STATUS "Found LibPack 3 Coin ${Coin_VERSION}")
+    # For compatibility with the rest of the cMake scripts:
+    set (COIN3D_FOUND TRUE)
+endif()
 
 set (NETGENDATA ${FREECAD_LIBPACK_DIR}/include/netgen)
 
