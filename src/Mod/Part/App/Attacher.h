@@ -565,7 +565,12 @@ public:
     ) const override;
 
 private:
-    gp_Pnt getProximityPoint(eMapMode mode, const TopoDS_Shape& s1, const TopoDS_Shape& s2) const;
+    gp_Pnt getProximityPoint(
+        const std::vector<App::DocumentObject*>& objs,
+        eMapMode mode, 
+        const TopoDS_Shape& s1, 
+        const TopoDS_Shape& s2
+    ) const;
 };
 
 //====================================================================
