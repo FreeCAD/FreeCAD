@@ -469,7 +469,17 @@ void TaskMeasure::updateResultWithUnit()
         return;
     }
 
-    QString resultString = _mMeasureObject->getResultString();
+    QString resultString;
+    auto prop = _mMeasureObject->getResultProp();
+    auto qtyProp = dynamic_cast<App::PropertyQuantity*>(prop);
+
+    if (qtyProp) {
+        double value = qtyProp->getQuantityValue().getValue();
+        resultString = QString::number(value);
+    } else {
+        resultString = _mMeasureObject->getResultString();
+    }
+
     QString currentUnit = unitSwitch->currentText();
 
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
