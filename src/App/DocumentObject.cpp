@@ -313,35 +313,47 @@ const char* DocumentObject::getStatusString() const
 
 std::string DocumentObject::getFullName() const
 {
-    if (!getDocument() || !isAttachedToDocument()) {
-        return "?";
-    }
-    std::string name(getDocument()->getName());
-    name += '#';
-    name += *pcNameInDocument;
-    return name;
+    // if (!getDocument() || !isAttachedToDocument()) {
+    //     return "?";
+    // }
+    // std::string name(getDocument()->getName());
+    // name += '#';
+    // name += *pcNameInDocument;
+    // return name;
+
+    return getFullNameLabel();
 }
 
 std::string DocumentObject::getFullLabel() const
 {
-    if (!getDocument()) {
-        return "?";
-    }
+    // if (!getDocument()) {
+    //     return "?";
+    // }
 
-    auto name = getDocument()->Label.getStrValue();
-    name += "#";
-    name += Label.getStrValue();
-    return name;
+    // auto name = getDocument()->Label.getStrValue();
+    // name += "#";
+    // name += Label.getStrValue();
+    // return name;
+
+    return getFullNameLabel();
 }
 
 std::string DocumentObject::getFullNameLabel() const
 {
-    const std::string& fullName = getFullName();
-    const std::string& name     = getNameInDocument();
-    const std::string& label    = Label.getValue();
+    if (!getDocument() || !isAttachedToDocument()) {
+        return "?";
+    }
 
-    if (!label.empty() && label != name) {
-        return fullName + " (" + label + ")";
+    std::string fullName = (getDocument()->getName());
+    fullName += "#";
+
+    std::string objName = *pcNameInDocument;
+    fullName += objName;
+
+    std::string objLabel = Label.getStrValue();
+
+    if (objLabel != objName) {
+        return fullName + " (" + objLabel + ")";
     }
     return fullName;
 }
