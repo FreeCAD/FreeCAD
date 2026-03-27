@@ -12,7 +12,7 @@
 #include "Gui/Dialogs/DlgObjectSelection.h"
 #include "Gui/MetaTypes.h"
 
-class ObjectSelectionTest : public QObject
+class ObjectSelectionTest: public QObject
 {
     Q_OBJECT
 
@@ -21,8 +21,9 @@ public:
     {
         tests::initApplication();
         // Gui::Application::Instance must not be nullptr when the dialog calls getViewProvider()
-        if (!Gui::Application::Instance)
+        if (!Gui::Application::Instance) {
             new Gui::Application(false);
+        }
     }
 
 private Q_SLOTS:
@@ -42,10 +43,11 @@ private Q_SLOTS:
     {
         // Child depends on parent, so it appears multiple times in the tree
         auto* parent = doc->addObject("App::Part", "Parent");
-        auto* child  = doc->addObject("App::FeaturePython", "Child");
+        auto* child = doc->addObject("App::FeaturePython", "Child");
 
         auto* linkProp = static_cast<App::PropertyLink*>(
-            child->addDynamicProperty("App::PropertyLink", "Source"));
+            child->addDynamicProperty("App::PropertyLink", "Source")
+        );
         linkProp->setValue(parent);
         doc->recompute();
 
@@ -57,35 +59,41 @@ private Q_SLOTS:
 
         QList<QTreeWidgetItem*> childItems;
         std::function<void(QTreeWidgetItem*)> findItems = [&](QTreeWidgetItem* item) {
-            if (qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole)).getObject() == child)
+            if (qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole)).getObject() == child) {
                 childItems.append(item);
-            for (int i = 0; i < item->childCount(); ++i)
+            }
+            for (int i = 0; i < item->childCount(); ++i) {
                 findItems(item->child(i));
+            }
         };
-        for (int i = 0; i < treeWidget->topLevelItemCount(); ++i)
+        for (int i = 0; i < treeWidget->topLevelItemCount(); ++i) {
             findItems(treeWidget->topLevelItem(i));
+        }
 
         QVERIFY(childItems.size() >= 2);
 
         // Verify initial state is all checked
-        for (auto* item : childItems)
+        for (auto* item : childItems) {
             QCOMPARE(item->checkState(0), Qt::Checked);
+        }
 
         // Uncheck one instance and verify all instances follow
         childItems.first()->setCheckState(0, Qt::Unchecked);
         QCoreApplication::processEvents();
 
-        for (auto* item : childItems)
+        for (auto* item : childItems) {
             QCOMPARE(item->checkState(0), Qt::Unchecked);
+        }
     }
 
     void testCheckPropagatesToAllInstances()
     {
         auto* parent = doc->addObject("App::Part", "Parent");
-        auto* child  = doc->addObject("App::FeaturePython", "Child");
+        auto* child = doc->addObject("App::FeaturePython", "Child");
 
         auto* linkProp = static_cast<App::PropertyLink*>(
-            child->addDynamicProperty("App::PropertyLink", "Source"));
+            child->addDynamicProperty("App::PropertyLink", "Source")
+        );
         linkProp->setValue(parent);
         doc->recompute();
 
@@ -97,13 +105,16 @@ private Q_SLOTS:
 
         QList<QTreeWidgetItem*> childItems;
         std::function<void(QTreeWidgetItem*)> findItems = [&](QTreeWidgetItem* item) {
-            if (qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole)).getObject() == child)
+            if (qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole)).getObject() == child) {
                 childItems.append(item);
-            for (int i = 0; i < item->childCount(); ++i)
+            }
+            for (int i = 0; i < item->childCount(); ++i) {
                 findItems(item->child(i));
+            }
         };
-        for (int i = 0; i < treeWidget->topLevelItemCount(); ++i)
+        for (int i = 0; i < treeWidget->topLevelItemCount(); ++i) {
             findItems(treeWidget->topLevelItem(i));
+        }
 
         QVERIFY(childItems.size() >= 2);
 
@@ -111,15 +122,17 @@ private Q_SLOTS:
         QCoreApplication::processEvents();
 
         // Verify initial state is all unchecked
-        for (auto* item : childItems)
+        for (auto* item : childItems) {
             QCOMPARE(item->checkState(0), Qt::Unchecked);
+        }
 
         // Check one instance and verify all instances follow
         childItems.first()->setCheckState(0, Qt::Checked);
         QCoreApplication::processEvents();
 
-        for (auto* item : childItems)
+        for (auto* item : childItems) {
             QCOMPARE(item->checkState(0), Qt::Checked);
+        }
     }
 
 private:
