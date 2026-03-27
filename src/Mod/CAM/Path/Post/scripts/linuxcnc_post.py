@@ -456,7 +456,7 @@ class Linuxcnc(PostProcessor):
                 if hasattr(op, "HoriFeed"):
                     Path.Log.track(f"Operation HoriFeed: {op.HoriFeed}")
                     if op.HoriFeed > max_rapid_feed:
-                        Path.Log.track(f"Adding CAUTION for high feed rate")
+                        Path.Log.track("Adding CAUTION for high feed rate")
                         squawks.append(
                             self._create_squawk(
                                 "CAUTION",
