@@ -7853,6 +7853,11 @@ Bu işlem, içindeki takım uçlarını silmez.</translation>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>Uyarlanabilir işlem sınır telini belirleyemedi. Temel geometriyi seçtiniz mi?</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation type="unfinished">see property below</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

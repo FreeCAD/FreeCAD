@@ -224,6 +224,7 @@ def allEnabledPostProcessors(include=None):
 
 _post_type_cache = {}
 _post_type_cache_keys = None
+_extra_post_paths: list = []
 
 
 def classifyPostProcessor(name):
@@ -349,9 +350,52 @@ def searchPathsPost():
     if p:
         paths.append(p)
     paths.append(macroFilePath())
+    paths.extend(_extra_post_paths)  # addon post directories
     paths.append(os.path.join(pathPostSourcePath(), "scripts/"))
     paths.append(pathPostSourcePath())
     return paths
+
+
+def addAddonPostPath(path: str) -> None:
+    """Register an additional directory to search for post-processors.
+
+    Called by addon Init.py at FreeCAD startup. Each call adds one
+    directory. Duplicate registrations are silently ignored. Invalidates
+    the post-type cache so newly registered posts are classified correctly.
+    """
+    global _extra_post_paths, _post_type_cache, _post_type_cache_keys
+    if path not in _extra_post_paths:
+        _extra_post_paths.append(path)
+        _post_type_cache = {}
+        _post_type_cache_keys = None
+
+
+def addAddonAssetPath(addon_dir: str) -> None:
+    """Register all assets provided by an addon directory.
+
+    Convenience function for addon Init.py files. Discovers the standard
+    subdirectory layout of a Machines-style addon and registers each type:
+      - ``<addon_dir>/posts/``     → post-processor search path
+      - ``<addon_dir>/machines/``  → machine definition templates
+
+    Duplicate registrations are silently ignored.
+
+    Args:
+        addon_dir: Root directory of the installed addon.
+    """
+    posts_dir = os.path.join(addon_dir, "posts")
+    if os.path.isdir(posts_dir):
+        addAddonPostPath(posts_dir)
+
+    machines_dir = os.path.join(addon_dir, "machines")
+    if os.path.isdir(machines_dir):
+        try:
+            from Machine.models.machine import MachineFactory
+
+            MachineFactory.register_addon_machine_dir(machines_dir)
+        except ImportError:
+            # fail silently if the machine module is not available
+            pass
 
 
 def defaultJobTemplate():

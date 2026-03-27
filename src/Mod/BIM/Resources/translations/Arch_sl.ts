@@ -5886,33 +5886,33 @@ Ustvarjanj stavbe prekinjeno.</translation>
       <translation type="unfinished">Create 2D View</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1155"/>
+      <location filename="../../ArchBuildingPart.py" line="1148"/>
       <source>Active</source>
       <translation type="unfinished">Active</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1166"/>
+      <location filename="../../ArchBuildingPart.py" line="1159"/>
       <source>Set Working Plane</source>
       <translation>Nastavi delavno ravnino</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1176"/>
+      <location filename="../../ArchBuildingPart.py" line="1169"/>
       <source>Write Camera Position</source>
       <translation type="unfinished">Write Camera Position</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1175"/>
       <source>New Group</source>
       <translation>Nova skupina</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>Reorder Children Alphabetically</source>
       <translation type="unfinished">Reorder Children Alphabetically</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1190"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>Clone Level Up</source>
       <translation type="unfinished">Clone Level Up</translation>
     </message>
@@ -6192,147 +6192,147 @@ Ustvarjanj stavbe prekinjeno.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1130"/>
-      <location filename="../../ArchBuildingPart.py" line="522"/>
+      <location filename="../../ArchBuildingPart.py" line="540"/>
       <source>The line width of this object</source>
       <translation>Debelina črt tega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="531"/>
+      <location filename="../../ArchBuildingPart.py" line="549"/>
       <source>An optional unit to express levels</source>
       <translation>Nadomestna enota za ravní</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="539"/>
+      <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Preoblikovanje, ki bo uporabljeno na oznaki ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="550"/>
+      <location filename="../../ArchBuildingPart.py" line="568"/>
       <source>If true, show the level</source>
       <translation>Če drži, prikaži ravèn</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="559"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Če drži, prikaži enoto na znački ravní</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="569"/>
+      <location filename="../../ArchBuildingPart.py" line="587"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Če drži, bo odmik prikazovalnika vplival tudi na oznako izhodišča</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If true, the object's label is displayed</source>
       <translation>Če drži, bo prikazana oznaka predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="586"/>
+      <location filename="../../ArchBuildingPart.py" line="604"/>
       <source>The font to be used for texts</source>
       <translation>Pisava za besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="613"/>
       <source>The font size of texts</source>
       <translation>Velikost pisave za besedila</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="606"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The individual face colors</source>
       <translation>Barve posamičnih ploskev</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="619"/>
+      <location filename="../../ArchBuildingPart.py" line="637"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Če drži, se bo delavna ravnina ob omogočitvi samodejno prilagodila tej rávni</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="630"/>
+      <location filename="../../ArchBuildingPart.py" line="648"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Če je nastavjeno na Drži, bo delovna ravnina ostala v samodejnem načinu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="640"/>
+      <location filename="../../ArchBuildingPart.py" line="658"/>
       <source>Camera position data associated with this object</source>
       <translation>Podatki o mestu kamere vezani na ta predmet</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="652"/>
+      <location filename="../../ArchBuildingPart.py" line="670"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Če je nastavljeno, se ob dvokliku obnovi pogled, shranjen v tem predmetu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="662"/>
+      <location filename="../../ArchBuildingPart.py" line="680"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Če drži, z dvoklikom na predmet v drevesu ta postane dejaven</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="676"/>
+      <location filename="../../ArchBuildingPart.py" line="694"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation type="unfinished">If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="687"/>
+      <location filename="../../ArchBuildingPart.py" line="705"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation type="unfinished">A slot to save the OpenInventor representation of this object, if enabled</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="701"/>
+      <location filename="../../ArchBuildingPart.py" line="719"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Če drži, prikaži predmete, zajete v tej stavbi, ki bodo prevzeli te nastavitve črt, barv in prozornosti</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="709"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>The line width of child objects</source>
       <translation>Debelina črte podrejenega predmeta</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="718"/>
+      <location filename="../../ArchBuildingPart.py" line="736"/>
       <source>The line color of child objects</source>
       <translation>Barva črt podrejenih predmetov</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="727"/>
+      <location filename="../../ArchBuildingPart.py" line="745"/>
       <source>The shape appearance of child objects</source>
       <translation type="unfinished">The shape appearance of child objects</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="736"/>
+      <location filename="../../ArchBuildingPart.py" line="755"/>
       <source>The transparency of child objects</source>
       <translation>Prozornost podrejenih predmetov</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="747"/>
+      <location filename="../../ArchBuildingPart.py" line="766"/>
       <source>Cut the view above this level</source>
       <translation>Odreži pogled nad to ravnjo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="757"/>
+      <location filename="../../ArchBuildingPart.py" line="776"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Razdalja med ravnino ravní in rezalni črto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="766"/>
+      <location filename="../../ArchBuildingPart.py" line="785"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Pri uporabi te ravní vključi rezanje</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="779"/>
+      <location filename="../../ArchBuildingPart.py" line="798"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>Orisni kvader novoustvarjenih predmetov izražen kot [Xnajm,Ynajm,Znajm,Xnajv,Ynajv,Znajv]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="787"/>
+      <location filename="../../ArchBuildingPart.py" line="806"/>
       <source>Turns auto group box on/off</source>
       <translation>Vključi/izključi kvader samodejnih skupin</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="795"/>
+      <location filename="../../ArchBuildingPart.py" line="814"/>
       <source>Automatically set size from contents</source>
       <translation>Samodejno nastavi velikost po vsebini</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="803"/>
+      <location filename="../../ArchBuildingPart.py" line="822"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Rob, uporabljen pri vključenem samodejnem nastavljanju velikosti</translation>
     </message>
@@ -8295,7 +8295,7 @@ Ustvarjanj stavbe prekinjeno.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1250"/>
+      <location filename="../../ArchBuildingPart.py" line="1243"/>
       <source>Writing camera position</source>
       <translation>Zapisovanje položaja kamere</translation>
     </message>

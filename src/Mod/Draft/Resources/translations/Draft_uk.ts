@@ -410,7 +410,7 @@ It cannot be zero.</source>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="139"/>
       <source>Center of Rotation</source>
-      <translation type="unfinished">Center of Rotation</translation>
+      <translation>Центр обертання</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="209"/>

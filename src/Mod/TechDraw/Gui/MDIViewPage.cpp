@@ -35,6 +35,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
+#include <QMetaObject>
 #include <fastsignals/signal.h>
 #include <cmath>
 
@@ -171,6 +172,13 @@ void MDIViewPage::closeEvent(QCloseEvent* event)
 
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
 {
+    // Close this MDI tab when its backing DrawPage is deleted (e.g. undo page creation).
+    const char* objName = obj.getNameInDocument();
+    if (obj.isDerivedFrom<TechDraw::DrawPage>() && objName && m_objectName == objName) {
+        QMetaObject::invokeMethod(this, &Gui::MDIView::deleteSelf, Qt::QueuedConnection);
+        return;
+    }
+
     //if this page has a QView for this obj, delete it.
     blockSceneSelection(true);
     if (obj.isDerivedFrom<TechDraw::DrawView>()) {

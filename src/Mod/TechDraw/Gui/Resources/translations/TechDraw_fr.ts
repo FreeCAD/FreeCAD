@@ -4709,7 +4709,7 @@ Les faces doivent être détectées pour utiliser les hachures, mais il peut ré
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="215"/>
       <source>Report progress</source>
-      <translation>Messages d'avancement</translation>
+      <translation>Rapport d'avancement</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="228"/>
@@ -4780,7 +4780,9 @@ Augmenter la limite si nécessaire.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="501"/>
       <source>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</source>
-      <translation>Choisir des raccourcis clavier qui n'entrent pas en conflit, car certaines combinaisons de raccourcis clavier du système d'exploitation et du style de navigation peuvent entrer en conflit avec les touches de modificateur par défaut pour le déplacement des bulles et le remplacement de l'accrochage de la vue.</translation>
+      <translation>Choisir des raccourcis clavier qui n'entrent pas en conflit : certaines combinaisons de raccourcis clavier du système d'exploitation et du
+style de navigation peuvent entrer en conflit avec les touches de modificateur par défaut pour le déplacement des bulles et le remplacement
+de l'accrochage des vues.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="515"/>
@@ -4943,12 +4945,12 @@ Sinon, seuls les marques de changement, les flèches et les symboles seront affi
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="177"/>
       <source>Length of horizontal portion of balloon leader</source>
-      <translation>Longueur de la portion horizontale de la ligne de repère de la bulle</translation>
+      <translation>Longueur de la portion horizontale des lignes de repère des bulles</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="180"/>
       <source>Balloon leader kink length</source>
-      <translation>Longueur du pli de la ligne de référence des bulles</translation>
+      <translation>Longueur du pli des lignes de référence des bulles</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="192"/>
@@ -5056,8 +5058,8 @@ Sinon, seuls les marques de changement, les flèches et les symboles seront affi
 always be the right choice.  Flat or square caps are useful
 for using drawings as a 1:1 cutting guide.
 </source>
-      <translation>Forme des extrémités des lignes. La forme par défaut (ronde) est presque toujours le bon choix.  Les
-extrémités plates ou carrées sont utiles pour utiliser les dessins comme guide de découpe à l'échelle 1:1.</translation>
+      <translation>Forme des extrémités des lignes. La forme par défaut (ronde) est presque toujours le bon choix.  Les extrémités plates ou carrées sont
+utiles pour utiliser les dessins comme guide de découpe à l'échelle 1:1.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="768"/>
@@ -5427,7 +5429,7 @@ polices transparentes ou de couleur claire avec cette option.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="361"/>
       <source>Use system setting for number of decimals</source>
-      <translation>Utiliser les paramètres système pour le nombre de décimales</translation>
+      <translation>Utiliser les paramètres du système pour le nombre de décimales</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="488"/>
@@ -5534,12 +5536,12 @@ Multiplicateur de « Taille de la police »</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="307"/>
       <source>Number of decimals if &apos;Use global decimals&apos; is not used</source>
-      <translation>Nombre de décimales si l'option « Utiliser les paramètres système pour les décimals » n'est pas utilisée.</translation>
+      <translation>Nombre de décimales si l'option « Utiliser les paramètres du système pour le nombre de décimales » n'est pas utilisée.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="364"/>
       <source>Use global decimals</source>
-      <translation>Utiliser les paramètres système pour les décimals</translation>
+      <translation>Utiliser les paramètres du système pour les décimales</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="398"/>
@@ -5621,7 +5623,7 @@ Cela n'affecte que la barre d'outils ; tous les outils restent disponibles via l
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation>Mode de l'outil Cote pour les diamètres/rayons</translation>
+      <translation>Mode de l'outil de cote pour les diamètres/rayons</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
@@ -6058,7 +6060,7 @@ Fast, but result is a collection of short straight lines.</source>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="143"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="176"/>
       <source>Show hard lines</source>
-      <translation>Afficher les lignes dures</translation>
+      <translation>Afficher les lignes pleines</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="173"/>

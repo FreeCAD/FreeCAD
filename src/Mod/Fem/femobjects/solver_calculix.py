@@ -253,7 +253,7 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="BeamShellResultOutput3D",
+                name="Output3d",
                 group="Solver",
                 doc="Output 3D results for 1D and 2D analysis ",
                 value=True,
@@ -360,6 +360,11 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 prop.handle_change_type(
                     obj, "App::PropertyEnumeration", lambda x: False if x == "linear" else True
                 )
+
+            # Migrate group of properties for old projects
+            if obj.getGroupOfProperty(prop.name) != prop.group:
+                obj.setGroupOfProperty(prop.name, prop.group)
+
         # remove old properties
         try:
             obj.AutomaticIncrementation = not obj.getPropertyByName(
@@ -392,4 +397,13 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
 
         except Base.PropertyError:
             # do nothing
+            pass
+
+        # rename BeamShellResultOutput3D
+        try:
+            obj.Output3d = obj.getPropertyByName("BeamShellResultOutput3D")
+            obj.setPropertyStatus("BeamShellResultOutput3D", "-LockDynamic")
+            obj.removeProperty("BeamShellResultOutput3D")
+
+        except Base.PropertyError:
             pass

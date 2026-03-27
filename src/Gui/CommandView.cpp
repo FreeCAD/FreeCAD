@@ -842,25 +842,25 @@ void StdCmdDrawStyle::languageChange()
     auto pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
     QList<QAction*> a = pcAction->actions();
 
-    a[0]->setText(QCoreApplication::translate("Std_DrawStyle", "&1 As Is"));
+    a[0]->setText(QCoreApplication::translate("Std_DrawStyle", "As Is"));
     a[0]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Normal mode"));
 
-    a[1]->setText(QCoreApplication::translate("Std_DrawStyle", "&2 Points"));
+    a[1]->setText(QCoreApplication::translate("Std_DrawStyle", "Points"));
     a[1]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Points mode"));
 
-    a[2]->setText(QCoreApplication::translate("Std_DrawStyle", "&3 Wireframe"));
+    a[2]->setText(QCoreApplication::translate("Std_DrawStyle", "Wireframe"));
     a[2]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Wireframe mode"));
 
-    a[3]->setText(QCoreApplication::translate("Std_DrawStyle", "&4 Hidden Line"));
+    a[3]->setText(QCoreApplication::translate("Std_DrawStyle", "Hidden Line"));
     a[3]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Hidden line mode"));
 
-    a[4]->setText(QCoreApplication::translate("Std_DrawStyle", "&5 No Shading"));
+    a[4]->setText(QCoreApplication::translate("Std_DrawStyle", "No Shading"));
     a[4]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "No shading mode"));
 
-    a[5]->setText(QCoreApplication::translate("Std_DrawStyle", "&6 Shaded"));
+    a[5]->setText(QCoreApplication::translate("Std_DrawStyle", "Shaded"));
     a[5]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Shaded mode"));
 
-    a[6]->setText(QCoreApplication::translate("Std_DrawStyle", "&7 Flat Lines"));
+    a[6]->setText(QCoreApplication::translate("Std_DrawStyle", "Flat Lines"));
     a[6]->setToolTip(QCoreApplication::translate("Std_DrawStyle", "Flat lines mode"));
 }
 
@@ -1448,7 +1448,7 @@ StdCmdViewBottom::StdCmdViewBottom()
     : Command("Std_ViewBottom")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&5 Bottom");
+    sMenuText = QT_TR_NOOP("Bottom");
     sToolTipText = QT_TR_NOOP("Sets the camera to the bottom view");
     sWhatsThis = "Std_ViewBottom";
     sStatusTip = sToolTipText;
@@ -1472,7 +1472,7 @@ StdCmdViewFront::StdCmdViewFront()
     : Command("Std_ViewFront")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&1 Front");
+    sMenuText = QT_TR_NOOP("Front");
     sToolTipText = QT_TR_NOOP("Sets the camera to the front view");
     sWhatsThis = "Std_ViewFront";
     sStatusTip = sToolTipText;
@@ -1496,7 +1496,7 @@ StdCmdViewLeft::StdCmdViewLeft()
     : Command("Std_ViewLeft")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&6 Left");
+    sMenuText = QT_TR_NOOP("Left");
     sToolTipText = QT_TR_NOOP("Sets the camera to the left view");
     sWhatsThis = "Std_ViewLeft";
     sStatusTip = sToolTipText;
@@ -1520,7 +1520,7 @@ StdCmdViewRear::StdCmdViewRear()
     : Command("Std_ViewRear")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&4 Rear");
+    sMenuText = QT_TR_NOOP("Rear");
     sToolTipText = QT_TR_NOOP("Sets the camera to the rear view");
     sWhatsThis = "Std_ViewRear";
     sStatusTip = sToolTipText;
@@ -1544,7 +1544,7 @@ StdCmdViewRight::StdCmdViewRight()
     : Command("Std_ViewRight")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&3 Right");
+    sMenuText = QT_TR_NOOP("Right");
     sToolTipText = QT_TR_NOOP("Sets the camera to the right view");
     sWhatsThis = "Std_ViewRight";
     sStatusTip = sToolTipText;
@@ -1568,7 +1568,7 @@ StdCmdViewTop::StdCmdViewTop()
     : Command("Std_ViewTop")
 {
     sGroup = "Standard-View";
-    sMenuText = QT_TR_NOOP("&2 Top");
+    sMenuText = QT_TR_NOOP("Top");
     sToolTipText = QT_TR_NOOP("Sets the camera to the top view");
     sWhatsThis = "Std_ViewTop";
     sStatusTip = sToolTipText;
@@ -3704,7 +3704,7 @@ StdTreeSyncView::StdTreeSyncView()
     : Command("Std_TreeSyncView")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&1 Sync View");
+    sMenuText = QT_TR_NOOP("Sync View");
     sToolTipText = QT_TR_NOOP(
         "Switches to the 3D view containing the selected item from the tree view"
     );
@@ -3724,7 +3724,7 @@ StdTreeSyncSelection::StdTreeSyncSelection()
     : Command("Std_TreeSyncSelection")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&2 Sync Selection");
+    sMenuText = QT_TR_NOOP("Sync Selection");
     sToolTipText = QT_TR_NOOP(
         "Expands the tree item when the corresponding object is selected in the 3D view"
     );
@@ -3744,7 +3744,7 @@ StdTreeSyncPlacement::StdTreeSyncPlacement()
     : Command("Std_TreeSyncPlacement")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&3 Sync Placement");
+    sMenuText = QT_TR_NOOP("Sync Placement");
     sToolTipText
         = QT_TR_NOOP("Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)");
     sStatusTip = sToolTipText;
@@ -3763,7 +3763,7 @@ StdTreePreSelection::StdTreePreSelection()
     : Command("Std_TreePreSelection")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&4 Preselection");
+    sMenuText = QT_TR_NOOP("Preselection");
     sToolTipText = QT_TR_NOOP(
         "Preselects the object in 3D view when hovering the cursor over the tree item"
     );
@@ -3783,7 +3783,7 @@ StdTreeRecordSelection::StdTreeRecordSelection()
     : Command("Std_TreeRecordSelection")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("&5 Record Selection");
+    sMenuText = QT_TR_NOOP("Record Selection");
     sToolTipText
         = QT_TR_NOOP("Records the selection in the tree view in order to go back/forward using the navigation buttons");
     sStatusTip = sToolTipText;

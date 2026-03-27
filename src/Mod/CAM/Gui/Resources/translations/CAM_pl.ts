@@ -7970,6 +7970,11 @@ Zestawy narzędzi zostaną usunięte z dysku i wszystkich bibliotek, które je z
       <translation>Operacja adaptacyjna nie mogła określić linii granicznej. 
 Czy geometria bazowa została wybrana?</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation>zobacz właściwość poniżej</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

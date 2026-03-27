@@ -2789,7 +2789,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
     // delete recompute log
     d->clearRecomputeLog();
 
-    FC_TIME_INIT(t);
+    Base::TimeTracker tracker("Document::recompute");
 
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
 
@@ -2831,7 +2831,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     bool canAbort = hGrp->GetBool("CanAbortRecompute", true);
 
-    FC_TIME_INIT(t2);
+    tracker.checkpoint("pre-recompute & topo sort");
 
     try {
         std::set<DocumentObject*> filter;
@@ -2906,7 +2906,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         e.reportException();
     }
 
-    FC_TIME_LOG(t2, "Recompute");
+    tracker.checkpoint("Recompute");
 
     for (auto obj : topoSortedObjects) {
         if (!obj->isAttachedToDocument()) {
@@ -2918,7 +2918,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
 
     signalRecomputed(*this, topoSortedObjects);
 
-    FC_TIME_LOG(t, "Recompute total");
+    tracker.checkpoint("Recompute total");
 
     if (!d->_RecomputeLog.empty()) {
         if (!testStatus(Status::IgnoreErrorOnRecompute)) {

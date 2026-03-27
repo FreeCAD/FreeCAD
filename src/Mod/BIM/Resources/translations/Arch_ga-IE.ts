@@ -5890,33 +5890,33 @@ Cruthú foirgnimh curtha ar ceal.</translation>
       <translation>Cruthaigh Radharc 2T</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1155"/>
+      <location filename="../../ArchBuildingPart.py" line="1148"/>
       <source>Active</source>
       <translation>Gníomhach</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1166"/>
+      <location filename="../../ArchBuildingPart.py" line="1159"/>
       <source>Set Working Plane</source>
       <translation>Socraigh Plána Oibre</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1176"/>
+      <location filename="../../ArchBuildingPart.py" line="1169"/>
       <source>Write Camera Position</source>
       <translation>Scríobh Suíomh an Cheamara</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1175"/>
       <source>New Group</source>
       <translation>Grúpa Nua</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Athordaigh na Leanaí in Aibítre</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1190"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>Clone Level Up</source>
       <translation>Leibhéal Clónála Suas</translation>
     </message>
@@ -6196,147 +6196,147 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1130"/>
-      <location filename="../../ArchBuildingPart.py" line="522"/>
+      <location filename="../../ArchBuildingPart.py" line="540"/>
       <source>The line width of this object</source>
       <translation>Leithead líne an réada seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="531"/>
+      <location filename="../../ArchBuildingPart.py" line="549"/>
       <source>An optional unit to express levels</source>
       <translation>Aonad roghnach chun leibhéil a chur in iúl</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="539"/>
+      <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Claochlú le cur i bhfeidhm ar an marc leibhéal</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="550"/>
+      <location filename="../../ArchBuildingPart.py" line="568"/>
       <source>If true, show the level</source>
       <translation>Más fíor, taispeáin an leibhéal</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="559"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Más fíor, taispeáin an t-aonad ar an gclib leibhéal</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="569"/>
+      <location filename="../../ArchBuildingPart.py" line="587"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Más fíor, beidh tionchar ag an bhfritháireamh taispeána ar an marc tionscnaimh freisin</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If true, the object's label is displayed</source>
       <translation>Más fíor, taispeántar lipéad an réada</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="586"/>
+      <location filename="../../ArchBuildingPart.py" line="604"/>
       <source>The font to be used for texts</source>
       <translation>An cló le húsáid le haghaidh téacsanna</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="613"/>
       <source>The font size of texts</source>
       <translation>Méid cló na dtéacsanna</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="606"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The individual face colors</source>
       <translation>Dathanna aghaidhe aonair</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="619"/>
+      <location filename="../../ArchBuildingPart.py" line="637"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Más fíor é, nuair a ghníomhaítear é, oiriúnóidh an plána oibre go huathoibríoch don leibhéal seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="630"/>
+      <location filename="../../ArchBuildingPart.py" line="648"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Má shocraítear go Fíor, coinneofar an plána oibre i mód Uathoibríoch</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="640"/>
+      <location filename="../../ArchBuildingPart.py" line="658"/>
       <source>Camera position data associated with this object</source>
       <translation>Sonraí suíomh ceamara a bhaineann leis an réad seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="652"/>
+      <location filename="../../ArchBuildingPart.py" line="670"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Má shocraítear é, athchóireofar an radharc atá stóráilte sa réad seo nuair a chliceálann tú faoi dhó é</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="662"/>
+      <location filename="../../ArchBuildingPart.py" line="680"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Más fíor é, gníomhaíonn cliceáil faoi dhó ar an réad seo sa chrann é</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="676"/>
+      <location filename="../../ArchBuildingPart.py" line="694"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Má tá sé seo cumasaithe, sábhálfar léiriú OpenInventor den réad seo sa chomhad FreeCAD, rud a ligfidh tagairt a dhéanamh dó i gcomhaid eile i mód éadrom.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="687"/>
+      <location filename="../../ArchBuildingPart.py" line="705"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation>Sliotán chun ionadaíocht OpenInventor an réada seo a shábháil, má tá sé cumasaithe</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="701"/>
+      <location filename="../../ArchBuildingPart.py" line="719"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Más fíor, taispeáin go nglacfaidh na rudaí atá sa Chuid Foirgnimh seo leis na socruithe líne, datha agus trédhearcachta seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="709"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>The line width of child objects</source>
       <translation>Leithead líne na n-ábhar linbh</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="718"/>
+      <location filename="../../ArchBuildingPart.py" line="736"/>
       <source>The line color of child objects</source>
       <translation>Dath líne na n-ábhar linbh</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="727"/>
+      <location filename="../../ArchBuildingPart.py" line="745"/>
       <source>The shape appearance of child objects</source>
       <translation>Cruth cuma na n-ábhar linbh</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="736"/>
+      <location filename="../../ArchBuildingPart.py" line="755"/>
       <source>The transparency of child objects</source>
       <translation>Trédhearcacht réada linbh</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="747"/>
+      <location filename="../../ArchBuildingPart.py" line="766"/>
       <source>Cut the view above this level</source>
       <translation>Gearr an radharc os cionn an leibhéil seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="757"/>
+      <location filename="../../ArchBuildingPart.py" line="776"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>An fad idir an plána leibhéalta agus an líne ghearrtha</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="766"/>
+      <location filename="../../ArchBuildingPart.py" line="785"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Cas air gearradh nuair a ghníomhaítear an leibhéal seo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="779"/>
+      <location filename="../../ArchBuildingPart.py" line="798"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>An bosca gabhála le haghaidh réada nua-chruthaithe a léirítear mar [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="787"/>
+      <location filename="../../ArchBuildingPart.py" line="806"/>
       <source>Turns auto group box on/off</source>
       <translation>Casann bosca grúpa uathoibríoch air/as</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="795"/>
+      <location filename="../../ArchBuildingPart.py" line="814"/>
       <source>Automatically set size from contents</source>
       <translation>Socraigh méid go huathoibríoch ón ábhar</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="803"/>
+      <location filename="../../ArchBuildingPart.py" line="822"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Corrlach le húsáid nuair a bhíonn an méid uathoibríoch casta air</translation>
     </message>
@@ -8299,7 +8299,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1250"/>
+      <location filename="../../ArchBuildingPart.py" line="1243"/>
       <source>Writing camera position</source>
       <translation>Suíomh an cheamara á scríobh</translation>
     </message>

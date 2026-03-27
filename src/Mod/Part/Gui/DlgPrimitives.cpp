@@ -2648,7 +2648,7 @@ QDialogButtonBox::StandardButtons TaskPrimitives::getStandardButtons() const
 void TaskPrimitives::modifyStandardButtons(QDialogButtonBox* box)
 {
     QPushButton* btn = box->button(QDialogButtonBox::Ok);
-    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "&Create"));
+    btn->setText(QApplication::translate("PartGui::DlgPrimitives", "C&reate"));
 }
 
 bool TaskPrimitives::accept()

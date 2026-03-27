@@ -42,7 +42,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="705"/>
       <source>Test Console Output</source>
-      <translation type="unfinished">Test Console Output</translation>
+      <translation>Probar salida de la consola</translation>
     </message>
     <message>
       <location filename="../CommandTest.cpp" line="706"/>

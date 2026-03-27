@@ -7974,6 +7974,11 @@ bibliothèques qui les contiennent.</translation>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>L'opération adaptative n'a pas pu déterminer la polyligne de délimitation. Avez-vous sélectionné la géométrie de base ?</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation>Voir la propriété ci-dessous</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

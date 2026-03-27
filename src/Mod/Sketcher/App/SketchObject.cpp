@@ -45,6 +45,8 @@
 #include <App/MappedName.h>
 #include <App/ObjectIdentifier.h>
 #include <Base/Console.h>
+#include <Base/Reader.h>
+#include <Base/TimeInfo.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/PartPyCXX.h>
@@ -555,7 +557,7 @@ void SketchObject::updateGeoHistory() {
         geoHistory = std::make_unique<GeoHistory>();
     }
 
-    FC_TIME_INIT(t);
+    Base::TimeTracker tracker("updateGeoHistory");
     const auto &geos = getInternalGeometry();
     geoHistory->clear();
     for (auto geo : geos) {
@@ -567,7 +569,6 @@ void SketchObject::updateGeoHistory() {
             geoHistory->update(pend,-id);
     }
     geoHistory->finishUpdate(geoMap);
-    FC_TIME_LOG(t,"update geometry history (" << geoHistory->size() << ", " << geoMap.size()<<')');
 }
 
 // clang-format on

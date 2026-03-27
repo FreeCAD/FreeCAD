@@ -7917,6 +7917,11 @@ Ní scriosfaidh sé seo na giotáin uirlisí atá inti.</translation>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>Níorbh fhéidir leis an oibríocht oiriúnaitheach an sreang teorann a chinneadh. Ar roghnaigh tú geoiméadracht bhunúsach?</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation>féach an mhaoin thíos</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

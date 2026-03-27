@@ -1058,6 +1058,7 @@ PyObject* TopoShapePy::transformShape(PyObject* args)
 }
 
 PyObject* TopoShapePy::transformed(PyObject* args, PyObject* keywds) const
+
 {
     static const std::array<const char*, 5> kwlist {"matrix", "copy", "checkScale", "op", nullptr};
     PyObject* pymat;

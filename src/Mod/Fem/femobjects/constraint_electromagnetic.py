@@ -24,13 +24,13 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM constraint electrostatic potential document object"
+__title__ = "FreeCAD FEM constraint electromagnetic document object"
 __author__ = "Markus Hovorka, Bernd Hahnebach, Uwe Stöhr, Mario Passaglia"
 __url__ = "https://www.freecad.org"
 
-## @package constraint_electrostaticpotential
+## @package constraint_electromagnetic
 #  \ingroup FEM
-#  \brief constraint electrostatic potential object
+#  \brief constraint electromagnetic object
 
 from FreeCAD import Base
 
@@ -39,9 +39,9 @@ from . import base_fempythonobject
 _PropHelper = base_fempythonobject._PropHelper
 
 
-class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject):
+class ConstraintElectromagnetic(base_fempythonobject.BaseFemPythonObject):
 
-    Type = "Fem::ConstraintElectrostaticPotential"
+    Type = "Fem::ConstraintElectromagnetic"
 
     def __init__(self, obj):
         super().__init__(obj)
@@ -232,7 +232,7 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 name="CapacitanceBody",
                 group="Parameter",
                 doc="Capacitance body",
-                value=1,
+                value=0,
             )
         )
         prop.append(

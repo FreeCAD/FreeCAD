@@ -5888,33 +5888,33 @@ Creación de Edificio cancelada.</translation>
       <translation>Crear vista 2D</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1155"/>
+      <location filename="../../ArchBuildingPart.py" line="1148"/>
       <source>Active</source>
       <translation>Activo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1166"/>
+      <location filename="../../ArchBuildingPart.py" line="1159"/>
       <source>Set Working Plane</source>
       <translation>Configurar Plano de Trabajo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1176"/>
+      <location filename="../../ArchBuildingPart.py" line="1169"/>
       <source>Write Camera Position</source>
       <translation>Establecer posición de cámara</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1175"/>
       <source>New Group</source>
       <translation>Nuevo grupo</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Reordenar hijos alfabéticamente</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1190"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>Clone Level Up</source>
       <translation type="unfinished">Clone Level Up</translation>
     </message>
@@ -6194,147 +6194,147 @@ Creación de Edificio cancelada.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1130"/>
-      <location filename="../../ArchBuildingPart.py" line="522"/>
+      <location filename="../../ArchBuildingPart.py" line="540"/>
       <source>The line width of this object</source>
       <translation>El ancho de línea de este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="531"/>
+      <location filename="../../ArchBuildingPart.py" line="549"/>
       <source>An optional unit to express levels</source>
       <translation>Una unidad opcional para expresar niveles</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="539"/>
+      <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Una transformación para aplicar a la marca de nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="550"/>
+      <location filename="../../ArchBuildingPart.py" line="568"/>
       <source>If true, show the level</source>
       <translation>Si es verdadero, muestra el nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="559"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Si es verdadero, muestra la unidad en la etiqueta de nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="569"/>
+      <location filename="../../ArchBuildingPart.py" line="587"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Si es verdadero, el desfase de la pantalla afectará también a la marca de origen</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If true, the object's label is displayed</source>
       <translation>Si es verdadero, se muestra la etiqueta del objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="586"/>
+      <location filename="../../ArchBuildingPart.py" line="604"/>
       <source>The font to be used for texts</source>
       <translation>La fuente que se utilizará para los textos</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="613"/>
       <source>The font size of texts</source>
       <translation>El tamaño de fuente de los textos</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="606"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The individual face colors</source>
       <translation>Los colores de la cara individual</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="619"/>
+      <location filename="../../ArchBuildingPart.py" line="637"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Si es verdadero, cuando está activado, el plano de trabajo se adaptará automáticamente a este nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="630"/>
+      <location filename="../../ArchBuildingPart.py" line="648"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Si se establece en Verdadero, el plano de trabajo se mantendrá en modo automático</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="640"/>
+      <location filename="../../ArchBuildingPart.py" line="658"/>
       <source>Camera position data associated with this object</source>
       <translation>Datos de posición de cámara asociados con este objeto</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="652"/>
+      <location filename="../../ArchBuildingPart.py" line="670"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Si se establece, la vista almacenada en este objeto se restaurará al hacer doble clic</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="662"/>
+      <location filename="../../ArchBuildingPart.py" line="680"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Si es verdadero, haciendo doble clic en este objeto en el árbol, se activa</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="676"/>
+      <location filename="../../ArchBuildingPart.py" line="694"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Si esto está habilitado, la representación OpenInventor de este objeto se guardará en el archivo de FreeCAD, permitiendo referenciarla en otros archivos en modo ligero.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="687"/>
+      <location filename="../../ArchBuildingPart.py" line="705"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation>Un espacio para guardar la representación OpenInventor de este objeto, si está habilitado</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="701"/>
+      <location filename="../../ArchBuildingPart.py" line="719"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Si es verdadero, mostrar los objetos contenidos en esta Parte del Edificio que adoptarán estos ajustes de línea, color y transparencia</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="709"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>The line width of child objects</source>
       <translation>Ancho de línea de los objetos hijo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="718"/>
+      <location filename="../../ArchBuildingPart.py" line="736"/>
       <source>The line color of child objects</source>
       <translation>El color de línea de los objetos hijo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="727"/>
+      <location filename="../../ArchBuildingPart.py" line="745"/>
       <source>The shape appearance of child objects</source>
       <translation>La apariencia de forma de los objetos hijo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="736"/>
+      <location filename="../../ArchBuildingPart.py" line="755"/>
       <source>The transparency of child objects</source>
       <translation>La transparencia de los objetos hijo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="747"/>
+      <location filename="../../ArchBuildingPart.py" line="766"/>
       <source>Cut the view above this level</source>
       <translation>Cortar la vista sobre este nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="757"/>
+      <location filename="../../ArchBuildingPart.py" line="776"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>La distancia entre el plano de nivel y la línea de corte</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="766"/>
+      <location filename="../../ArchBuildingPart.py" line="785"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Activar corte al activar este nivel</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="779"/>
+      <location filename="../../ArchBuildingPart.py" line="798"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>La caja de captura de objetos recién creados expresada como [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="787"/>
+      <location filename="../../ArchBuildingPart.py" line="806"/>
       <source>Turns auto group box on/off</source>
       <translation>Activa o desactiva el cuadro de grupo automático</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="795"/>
+      <location filename="../../ArchBuildingPart.py" line="814"/>
       <source>Automatically set size from contents</source>
       <translation>Establecer automáticamente el tamaño de los contenidos</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="803"/>
+      <location filename="../../ArchBuildingPart.py" line="822"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Un margen para usar cuando el tamaño automático está activado</translation>
     </message>
@@ -8297,7 +8297,7 @@ Creación de Edificio cancelada.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1250"/>
+      <location filename="../../ArchBuildingPart.py" line="1243"/>
       <source>Writing camera position</source>
       <translation>Escribiendo posición de la cámara</translation>
     </message>

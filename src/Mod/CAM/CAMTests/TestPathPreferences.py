@@ -49,6 +49,66 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
         self.assertIn("generic", posts)
         self.assertIn("opensbp", posts)
 
+    def test10_addon_post_path_registered(self):
+        """A path added via addAddonPostPath() appears in searchPathsPost().
+
+        Given: a temporary directory
+        When: addAddonPostPath() is called with that directory
+        Then: the directory is included in the list returned by searchPathsPost()
+        """
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            Path.Preferences.addAddonPostPath(tmpdir)
+            paths = Path.Preferences.searchPathsPost()
+            self.assertIn(tmpdir, paths)
+            # Cleanup
+            Path.Preferences._extra_post_paths.remove(tmpdir)
+
+    def test11_addon_post_path_no_duplicates(self):
+        """Calling addAddonPostPath() twice with the same path adds it only once.
+
+        Given: a temporary directory
+        When: addAddonPostPath() is called twice with the same path
+        Then: searchPathsPost() contains the path exactly once
+        """
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            Path.Preferences.addAddonPostPath(tmpdir)
+            Path.Preferences.addAddonPostPath(tmpdir)
+            paths = Path.Preferences.searchPathsPost()
+            self.assertEqual(paths.count(tmpdir), 1)
+            Path.Preferences._extra_post_paths.remove(tmpdir)
+
+    def test12_addon_asset_path_registers_posts_and_machines(self):
+        """addAddonAssetPath() registers both the posts and machines subdirectories.
+
+        Given: a temporary addon root with posts/ and machines/ subdirectories
+        When: addAddonAssetPath() is called with the root
+        Then: the posts dir appears in searchPathsPost() and the machines dir
+              is registered in MachineFactory._addon_machine_dirs
+        """
+        import tempfile
+        import os
+        import pathlib
+        from Machine.models.machine import MachineFactory
+
+        with tempfile.TemporaryDirectory() as addon_root:
+            posts_dir = os.path.join(addon_root, "posts")
+            machines_dir = os.path.join(addon_root, "machines")
+            os.makedirs(posts_dir)
+            os.makedirs(machines_dir)
+
+            Path.Preferences.addAddonAssetPath(addon_root)
+
+            self.assertIn(posts_dir, Path.Preferences.searchPathsPost())
+            self.assertIn(pathlib.Path(machines_dir), MachineFactory._addon_machine_dirs)
+
+            # Cleanup
+            Path.Preferences._extra_post_paths.remove(posts_dir)
+            MachineFactory._addon_machine_dirs.remove(pathlib.Path(machines_dir))
+
     def test10(self):
         """Default paths for tools are resolved correctly"""
 

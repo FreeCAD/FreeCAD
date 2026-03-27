@@ -7989,6 +7989,11 @@ This will not delete the toolbits contained within it.</source>
       <translation>У выніку адаптыўнай аперацыі не атрымалася вызначыць межавую лінію.
 Ці абралі асноўную геаметрыю?</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation>глядзіце ўласцівасці ніжэй</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

@@ -5897,33 +5897,33 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Skapa 2D-vy</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1155"/>
+      <location filename="../../ArchBuildingPart.py" line="1148"/>
       <source>Active</source>
       <translation>Aktiv</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1166"/>
+      <location filename="../../ArchBuildingPart.py" line="1159"/>
       <source>Set Working Plane</source>
       <translation>Ställ in arbetsplanet</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1176"/>
+      <location filename="../../ArchBuildingPart.py" line="1169"/>
       <source>Write Camera Position</source>
       <translation>Skriva kameraposition</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1175"/>
       <source>New Group</source>
       <translation>Ny prisgrupp</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Ordna om barnen i alfabetisk ordning</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1190"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>Clone Level Up</source>
       <translation>Klona nivå upp</translation>
     </message>
@@ -6203,147 +6203,147 @@ Skapandet av byggnaden avbröts.</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1130"/>
-      <location filename="../../ArchBuildingPart.py" line="522"/>
+      <location filename="../../ArchBuildingPart.py" line="540"/>
       <source>The line width of this object</source>
       <translation>Linjebredden för detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="531"/>
+      <location filename="../../ArchBuildingPart.py" line="549"/>
       <source>An optional unit to express levels</source>
       <translation>En valfri enhet för att uttrycka nivåer</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="539"/>
+      <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>A transformation to apply to the level mark</source>
       <translation>En transformation som ska tillämpas på nivåmarkeringen</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="550"/>
+      <location filename="../../ArchBuildingPart.py" line="568"/>
       <source>If true, show the level</source>
       <translation>Om sant, visa nivån</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="559"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Om det är sant, visa enheten på nivåtaggen</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="569"/>
+      <location filename="../../ArchBuildingPart.py" line="587"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Om true, kommer displayförskjutningen även att påverka ursprungsmärket</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If true, the object's label is displayed</source>
       <translation>Om true, visas objektets etikett</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="586"/>
+      <location filename="../../ArchBuildingPart.py" line="604"/>
       <source>The font to be used for texts</source>
       <translation>Det typsnitt som ska användas för texter</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="613"/>
       <source>The font size of texts</source>
       <translation>Teckenstorlek för texter</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="606"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The individual face colors</source>
       <translation>De individuella ytfärgerna</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="619"/>
+      <location filename="../../ArchBuildingPart.py" line="637"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Om true, när den är aktiverad, kommer arbetsplanet automatiskt att anpassas till denna nivå</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="630"/>
+      <location filename="../../ArchBuildingPart.py" line="648"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Om den är inställd på True kommer arbetsplanet att hållas i Auto-läge</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="640"/>
+      <location filename="../../ArchBuildingPart.py" line="658"/>
       <source>Camera position data associated with this object</source>
       <translation>Kamerapositionsdata associerade med detta objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="652"/>
+      <location filename="../../ArchBuildingPart.py" line="670"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Om den är inställd kommer vyn som lagrats i detta objekt att återställas vid dubbelklick</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="662"/>
+      <location filename="../../ArchBuildingPart.py" line="680"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Om True, dubbelklickar du på detta objekt i trädet och aktiverar det</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="676"/>
+      <location filename="../../ArchBuildingPart.py" line="694"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>Om detta är aktiverat sparas OpenInventor-representationen av detta objekt i FreeCAD-filen, vilket gör det möjligt att referera till det i andra filer i lättviktsläge.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="687"/>
+      <location filename="../../ArchBuildingPart.py" line="705"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation>En plats för att spara OpenInventor-representationen av detta objekt, om den är aktiverad</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="701"/>
+      <location filename="../../ArchBuildingPart.py" line="719"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Om sant, visa de objekt som ingår i denna byggnadsdel kommer att anta dessa inställningar för linje, färg och transparens</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="709"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>The line width of child objects</source>
       <translation>Linjebredd för underordnade objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="718"/>
+      <location filename="../../ArchBuildingPart.py" line="736"/>
       <source>The line color of child objects</source>
       <translation>Linjefärg för underordnade objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="727"/>
+      <location filename="../../ArchBuildingPart.py" line="745"/>
       <source>The shape appearance of child objects</source>
       <translation>Barnobjektens formutseende</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="736"/>
+      <location filename="../../ArchBuildingPart.py" line="755"/>
       <source>The transparency of child objects</source>
       <translation>Transparensen hos underordnade objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="747"/>
+      <location filename="../../ArchBuildingPart.py" line="766"/>
       <source>Cut the view above this level</source>
       <translation>Klipp ut vyn ovanför denna nivå</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="757"/>
+      <location filename="../../ArchBuildingPart.py" line="776"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Avståndet mellan nivåplanet och snittlinjen</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="766"/>
+      <location filename="../../ArchBuildingPart.py" line="785"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Slå på skärning när du aktiverar denna nivå</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="779"/>
+      <location filename="../../ArchBuildingPart.py" line="798"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>Fångstboxen för nyskapade objekt uttryckt som [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="787"/>
+      <location filename="../../ArchBuildingPart.py" line="806"/>
       <source>Turns auto group box on/off</source>
       <translation>Slår på/av automatisk gruppbox</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="795"/>
+      <location filename="../../ArchBuildingPart.py" line="814"/>
       <source>Automatically set size from contents</source>
       <translation>Ställ automatiskt in storlek utifrån innehåll</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="803"/>
+      <location filename="../../ArchBuildingPart.py" line="822"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>En marginal som ska användas när autosize är aktiverat</translation>
     </message>
@@ -8306,7 +8306,7 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1250"/>
+      <location filename="../../ArchBuildingPart.py" line="1243"/>
       <source>Writing camera position</source>
       <translation>Skriva kameraposition</translation>
     </message>

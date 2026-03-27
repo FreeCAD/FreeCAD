@@ -435,14 +435,15 @@ class Arch_Wall:
             n = self.wp.axis
             bv = point.sub(b)
             dv = bv.cross(n)
+            ov = DraftVecUtils.scaleTo(dv, self.Offset)
             dv = DraftVecUtils.scaleTo(dv, self.Width / 2)
             if self.Align == "Center":
                 self.tracker.update([b, point])
             elif self.Align == "Left":
-                self.tracker.update([b.add(dv), point.add(dv)])
+                self.tracker.update([b.add(dv).add(ov), point.add(dv).add(ov)])
             else:
                 dv = dv.negative()
-                self.tracker.update([b.add(dv), point.add(dv)])
+                self.tracker.update([b.add(dv).sub(ov), point.add(dv).sub(ov)])
             if self.Length:
                 self.Length.setText(
                     FreeCAD.Units.Quantity(bv.Length, FreeCAD.Units.Length).UserString

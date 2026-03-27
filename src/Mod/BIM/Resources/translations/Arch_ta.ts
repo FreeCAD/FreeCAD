@@ -5897,33 +5897,33 @@ Building creation aborted.</source>
       <translation>2D காட்சியை உருவாக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1155"/>
+      <location filename="../../ArchBuildingPart.py" line="1148"/>
       <source>Active</source>
       <translation>செயலில்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1166"/>
+      <location filename="../../ArchBuildingPart.py" line="1159"/>
       <source>Set Working Plane</source>
       <translation>வேலை செய்யும் விமானத்தை அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1176"/>
+      <location filename="../../ArchBuildingPart.py" line="1169"/>
       <source>Write Camera Position</source>
       <translation>கேமரா நிலையை எழுதவும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1175"/>
       <source>New Group</source>
       <translation>புதிய குழு</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>Reorder Children Alphabetically</source>
       <translation>குழந்தைகளை அகரவரிசைப்படி மறுவரிசைப்படுத்துங்கள்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1190"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <source>Clone Level Up</source>
       <translation>நகலி நிலை மேலே</translation>
     </message>
@@ -6203,147 +6203,147 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1130"/>
-      <location filename="../../ArchBuildingPart.py" line="522"/>
+      <location filename="../../ArchBuildingPart.py" line="540"/>
       <source>The line width of this object</source>
       <translation>இந்த பொருளின் வரி அகலம்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="531"/>
+      <location filename="../../ArchBuildingPart.py" line="549"/>
       <source>An optional unit to express levels</source>
       <translation>நிலைகளை வெளிப்படுத்த ஒரு விருப்ப அலகு</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="539"/>
+      <location filename="../../ArchBuildingPart.py" line="557"/>
       <source>A transformation to apply to the level mark</source>
       <translation>நிலை குறிக்கு விண்ணப்பிக்க ஒரு மாற்றம்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="550"/>
+      <location filename="../../ArchBuildingPart.py" line="568"/>
       <source>If true, show the level</source>
       <translation>உண்மை என்றால், அளவைக் காட்டு</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="559"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, show the unit on the level tag</source>
       <translation>உண்மை எனில், லெவல் டேக்கில் யூனிட்டைக் காட்டவும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="569"/>
+      <location filename="../../ArchBuildingPart.py" line="587"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>சரி எனில், காட்சி ஆஃப்செட் மூலக் குறியையும் பாதிக்கும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="577"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>If true, the object's label is displayed</source>
       <translation>உண்மை எனில், பொருளின் சிட்டை காட்டப்படும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="586"/>
+      <location filename="../../ArchBuildingPart.py" line="604"/>
       <source>The font to be used for texts</source>
       <translation>உரைகளுக்கு பயன்படுத்த வேண்டிய எழுத்துரு</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="595"/>
+      <location filename="../../ArchBuildingPart.py" line="613"/>
       <source>The font size of texts</source>
       <translation>உரைகளின் எழுத்துரு அளவு</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="606"/>
+      <location filename="../../ArchBuildingPart.py" line="624"/>
       <source>The individual face colors</source>
       <translation>தனிப்பட்ட முகத்தின் நிறங்கள்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="619"/>
+      <location filename="../../ArchBuildingPart.py" line="637"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>உண்மை எனில், செயல்படுத்தப்படும் போது, ​​வேலை செய்யும் வானூர்தி தானாகவே இந்த நிலைக்கு மாற்றியமைக்கும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="630"/>
+      <location filename="../../ArchBuildingPart.py" line="648"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>சரி என அமைத்தால், வேலை செய்யும் வானூர்தி ஆட்டோ பயன்முறையில் வைக்கப்படும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="640"/>
+      <location filename="../../ArchBuildingPart.py" line="658"/>
       <source>Camera position data associated with this object</source>
       <translation>இந்த பொருளுடன் தொடர்புடைய கேமரா நிலை தரவு</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="652"/>
+      <location filename="../../ArchBuildingPart.py" line="670"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>அமைக்கப்பட்டால், இந்த பொருளில் சேமிக்கப்பட்ட காட்சி இருமுறை சொடுக்கு செய்வதன் மூலம் மீட்டமைக்கப்படும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="662"/>
+      <location filename="../../ArchBuildingPart.py" line="680"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>உண்மை எனில், மரத்தில் உள்ள இந்தப் பொருளை இருமுறை சொடுக்கு செய்வதன் மூலம் அது செயல்படுத்தப்படும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="676"/>
+      <location filename="../../ArchBuildingPart.py" line="694"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation>இது இயக்கப்பட்டால், இந்த பொருளின் OpenInventor பிரதிநிதித்துவம் FreeCAD கோப்பில் சேமிக்கப்படும், இது இலகுரக பயன்முறையில் மற்ற கோப்புகளில் குறிப்பிட அனுமதிக்கிறது.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="687"/>
+      <location filename="../../ArchBuildingPart.py" line="705"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation>இயக்கப்பட்டிருந்தால், இந்த பொருளின் OpenInventor பிரதிநிதித்துவத்தை சேமிப்பதற்கான ச்லாட்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="701"/>
+      <location filename="../../ArchBuildingPart.py" line="719"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>உண்மை எனில், இந்தக் கட்டிடப் பகுதியில் உள்ள பொருட்களைக் காட்டு, இந்த வரி, நிறம் மற்றும் வெளிப்படைத்தன்மை அமைப்புகளை ஏற்கும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="709"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>The line width of child objects</source>
       <translation>குழந்தை பொருள்களின் வரி அகலம்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="718"/>
+      <location filename="../../ArchBuildingPart.py" line="736"/>
       <source>The line color of child objects</source>
       <translation>குழந்தை பொருட்களின் வரி நிறம்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="727"/>
+      <location filename="../../ArchBuildingPart.py" line="745"/>
       <source>The shape appearance of child objects</source>
       <translation>குழந்தை பொருட்களின் வடிவ தோற்றம்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="736"/>
+      <location filename="../../ArchBuildingPart.py" line="755"/>
       <source>The transparency of child objects</source>
       <translation>குழந்தை பொருட்களின் வெளிப்படைத்தன்மை</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="747"/>
+      <location filename="../../ArchBuildingPart.py" line="766"/>
       <source>Cut the view above this level</source>
       <translation>இந்த நிலைக்கு மேலே உள்ள காட்சியை வெட்டுங்கள்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="757"/>
+      <location filename="../../ArchBuildingPart.py" line="776"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>நிலை விமானத்திற்கும் வெட்டுக் கோட்டிற்கும் இடையிலான தூரம்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="766"/>
+      <location filename="../../ArchBuildingPart.py" line="785"/>
       <source>Turn cutting on when activating this level</source>
       <translation>இந்த நிலையைச் செயல்படுத்தும்போது வெட்டுதலை இயக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="779"/>
+      <location filename="../../ArchBuildingPart.py" line="798"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>புதிதாக உருவாக்கப்பட்ட பொருள்களுக்கான பிடிப்பு பெட்டி [XMin,YMin,ZMin,XMax,YMax,ZMax]</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="787"/>
+      <location filename="../../ArchBuildingPart.py" line="806"/>
       <source>Turns auto group box on/off</source>
       <translation>தானியங்கு குழு பெட்டியை ஆன்/ஆஃப் செய்கிறது</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="795"/>
+      <location filename="../../ArchBuildingPart.py" line="814"/>
       <source>Automatically set size from contents</source>
       <translation>உள்ளடக்கத்திலிருந்து அளவை தானாக அமைக்கவும்</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="803"/>
+      <location filename="../../ArchBuildingPart.py" line="822"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>தானியங்கு அளவு இயக்கப்பட்டிருக்கும் போது பயன்படுத்த வேண்டிய விளிம்பு</translation>
     </message>
@@ -8306,7 +8306,7 @@ Building creation aborted.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1250"/>
+      <location filename="../../ArchBuildingPart.py" line="1243"/>
       <source>Writing camera position</source>
       <translation>கேமரா நிலையை எழுதுதல்</translation>
     </message>

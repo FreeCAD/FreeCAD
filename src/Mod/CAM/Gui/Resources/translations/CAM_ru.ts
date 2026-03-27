@@ -7913,6 +7913,11 @@ This will not delete the toolbits contained within it.</source>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>Выберите только один объект пути</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation>см. свойство ниже</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

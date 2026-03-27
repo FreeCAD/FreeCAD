@@ -7915,6 +7915,11 @@ Dies wird die darin enthaltenen Werkzeugbits nicht löschen.</translation>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
       <translation>Adaptive Bearbeitung konnte den begrenzenden Kantenzug nicht bestimmen. Wurde Basisgeometrie ausgewählt?</translation>
     </message>
+    <message>
+      <location filename="../../../Path/Post/scripts/opensbp_post.py" line="107"/>
+      <source>see property below</source>
+      <translation>siehe Eigenschaft unten</translation>
+    </message>
   </context>
   <context>
     <name>CAM_Drilling</name>

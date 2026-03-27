@@ -95,6 +95,7 @@
 #include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
 #include <Base/UniqueNameManager.h>
+#include <Base/TimeInfo.h>
 #include <Base/SystemHandler.h>
 #include <Base/Tools.h>
 #include <Base/Translate.h>
@@ -672,12 +673,12 @@ bool Application::isClosingAll() const {
 }
 
 struct DocTiming {
-    FC_DURATION_DECLARE(d1);
-    FC_DURATION_DECLARE(d2);
-    DocTiming() {
-        FC_DURATION_INIT(d1);
-        FC_DURATION_INIT(d2);
-    }
+    std::chrono::duration<double> d1;
+    std::chrono::duration<double> d2;
+    DocTiming()
+        : d1(std::chrono::duration<double>(0))
+        , d2(std::chrono::duration<double>(0))
+    {}
 };
 
 class DocOpenGuard {
@@ -777,7 +778,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     std::map<DocumentT, DocTiming> timings;
 
-    FC_TIME_INIT(t);
+    Base::TimeTracker tracker("Application::openDocuments");
 
     std::vector<DocumentT> openedDocs;
 
@@ -803,8 +804,8 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                     }
                 }
 
-                FC_TIME_INIT(t1);
                 DocTiming timing;
+                std::chrono::high_resolution_clock::time_point startTime = std::chrono::high_resolution_clock::now();
 
                 const char *path = name.c_str();
                 const char *label = nullptr;
@@ -817,7 +818,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 }
 
                 auto doc = openDocumentPrivate(path, name.c_str(), label, isMainDoc, initFlags, std::move(objNames));
-                FC_DURATION_PLUS(timing.d1,t1);
+                timing.d1 += std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - startTime);
                 if (doc) {
                     timings[doc].d1 += timing.d1;
                     newDocs.emplace(doc);
@@ -906,7 +907,8 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             }
 
             auto &timing = timings[doc];
-            FC_TIME_INIT(t1);
+            std::chrono::high_resolution_clock::time_point startTime = std::chrono::high_resolution_clock::now();
+
             // Finalize document restoring with the correct order
             if(doc->afterRestore(true)) {
                 openedDocs.emplace_back(doc);
@@ -923,7 +925,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 _pendingDocs.emplace_back(doc->FileName.getValue());
                 _pendingDocMap.erase(doc->FileName.getValue());
             }
-            FC_DURATION_PLUS(timing.d2,t1);
+            timing.d2 += std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::high_resolution_clock::now() - startTime);
             seq.next();
         }
         // Close the document for reloading
@@ -943,10 +945,9 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
 
     for (auto &doc : openedDocs) {
         auto &timing = timings[doc];
-        FC_DURATION_LOG(timing.d1, doc.getDocumentName() << " restore");
-        FC_DURATION_LOG(timing.d2, doc.getDocumentName() << " postprocess");
+        Base::Console().log("%s restore time: %f\n", doc.getDocumentName(), timing.d1.count());
+        Base::Console().log("%s postprocess time: %f\n", doc.getDocumentName(), timing.d2.count());
     }
-    FC_TIME_LOG(t,"total");
     PropertyLinkBase::updateAllElementReferences();
     _isRestoring = false;
 
@@ -1567,7 +1568,7 @@ void Application::retranslateExportTypes()
     std::erase_if(_mExportTypes, [](const FileTypeItem& item) {
         return item.translatable;
     });
-    for (const auto &cacheEntry : translatableExportTypeCache.getCache()) {
+    for (const auto &cacheEntry : cache) {
         addTranslatableExportType(cacheEntry.description, cacheEntry.extensions, cacheEntry.moduleName);
     }
 }

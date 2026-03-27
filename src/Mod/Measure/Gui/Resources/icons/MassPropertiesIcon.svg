@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 16.933333 16.933333"
+   version="1.1"
+   id="svg5"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient5">
+      <stop
+         style="stop-color:#c4a000;stop-opacity:1"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#fce94f;stop-opacity:1"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient5"
+       id="linearGradient6"
+       x1="14.816666"
+       y1="7.1542969"
+       x2="8.4667969"
+       y2="7.1542969"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="reflect"
+       gradientTransform="translate(0,0.79375016)" />
+  </defs>
+  <g
+     id="g3"
+     transform="translate(0,-1.0583333)">
+    <path
+       style="fill:#edd400;fill-opacity:1;stroke:#302b00;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 3.9687383,15.875 H 12.964595 L 11.747505,7.408332 H 5.1858272 Z"
+       id="path2" />
+    <path
+       style="fill:url(#linearGradient6);fill-opacity:1;stroke:#fce94f;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="M 5.6484375,7.9480471 4.5976562,15.336589 H 12.335938 L 11.285156,7.9480471 Z"
+       id="path4" />
+    <circle
+       style="mix-blend-mode:normal;fill:none;stroke:#302b00;stroke-width:1.5875;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="circle1"
+       cx="8.4666662"
+       cy="4.7624993"
+       r="2.1166666" />
+    <path
+       style="baseline-shift:baseline;display:inline;overflow:visible;opacity:1;vector-effect:none;fill:#fce94f;stroke-linecap:round;stroke-linejoin:round;enable-background:accumulate;stop-color:#000000;stop-opacity:1"
+       d="m 8.4667969,2.3914064 c -1.3028191,10e-8 -2.3710938,1.0682747 -2.3710938,2.3710938 0,1.3028191 1.0682747,2.3710937 2.3710938,2.3710937 1.3028192,0 2.3710941,-1.0682746 2.3710941,-2.3710937 0,-1.3028191 -1.0682749,-2.3710937 -2.3710941,-2.3710938 z m 0,0.5097657 c 1.0388127,0 1.8613281,0.8225154 1.8613281,1.8613281 0,1.0388127 -0.8225154,1.8613281 -1.8613281,1.8613281 -1.0388127,0 -1.8613282,-0.8225154 -1.8613282,-1.8613281 0,-1.0388127 0.8225155,-1.8613281 1.8613282,-1.8613281 z"
+       id="circle3" />
+  </g>
+</svg>

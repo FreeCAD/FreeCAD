@@ -73,7 +73,7 @@ class ElmerTools(ObjectTools):
             # MPI parallel computing version
             grid_args.extend(["-partdual", "-metiskway", str(num_proc)])
             p.start(grid_bin, grid_args)
-            p.waitForFinished()
+            p.waitForFinished(-1)
 
         self.model_file = os.path.join(self.obj.WorkingDirectory, writer._SIF_NAME)
         handled = w.getHandledConstraints()
