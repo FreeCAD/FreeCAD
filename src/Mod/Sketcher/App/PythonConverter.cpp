@@ -547,13 +547,11 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 res = "Symmetric', " + id1pos1 + ", " + id2pos2 + ", " + id3;
             }
             else {
-                res = "Symmetric', " + id1pos1 + ", " + id2pos2 + ", " + id3
-                    + ", " + pos3;
+                res = "Symmetric', " + id1pos1 + ", " + id2pos2 + ", " + id3 + ", " + pos3;
             }
             break;
         case Sketcher::SnellsLaw:
-            res = "SnellsLaw', " + id1pos1 + ", " + id2pos2 + ", " + id3 + ", "
-                + val;
+            res = "SnellsLaw', " + id1pos1 + ", " + id2pos2 + ", " + id3 + ", " + val;
             break;
         case Sketcher::InternalAlignment: {
             std::string alignType = constraint->internalAlignmentTypeToString();
@@ -571,8 +569,8 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
                 res = "InternalAlignment:" + alignType + "', " + id1pos1 + ", " + id2;
             }
             else if (constraint->AlignmentType == BSplineControlPoint) {
-                res = "InternalAlignment:" + alignType + "', " + id1pos1 + ", " + id2
-                    + ", " + std::to_string(constraint->InternalAlignmentIndex);
+                res = "InternalAlignment:" + alignType + "', " + id1pos1 + ", " + id2 + ", "
+                    + std::to_string(constraint->InternalAlignmentIndex);
             }
             else if (constraint->AlignmentType == BSplineKnotPoint) {
                 res = "InternalAlignment:" + alignType + "', " + id1 + ", 1, " + id2 + ", "
