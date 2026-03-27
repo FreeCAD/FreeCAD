@@ -907,7 +907,7 @@ class PostProcessDialog:
                                     f"        ToolController: {tc.Label} (T{tc.ToolNumber})"
                                 )
                             elif hasattr(obj, "ToolController"):
-                                lines.append(f"        ToolController: None")
+                                lines.append("        ToolController: None")
                     else:
                         obj_type = type(obj).__name__
 
