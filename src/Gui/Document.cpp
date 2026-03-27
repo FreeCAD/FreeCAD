@@ -26,6 +26,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <unordered_map>
 #include <vector>
 #include <cctype>
 #include <mutex>
@@ -1976,19 +1977,14 @@ void Document::slotFinishRestoreObject(const App::DocumentObject& obj)
         vpd->setStatus(Gui::isRestoring, false);
         vpd->finishRestoring();
 
-        // Fallback for documents without GuiDocument.xml (e.g. App-only CLI saves):
-        // ensure view provider visibility follows App::DocumentObject::Visibility.
-        if (!d->_restoredGuiDocument && vpd->getObject()) {
-            auto* obj = vpd->getObject();
-
-            // CLI-generated files may not carry GuiDocument.xml, so presentation
-            // state has to be rebuilt from App data after restore.
+        // Fallback for documents without GuiDocument.xml.
+        if (!d->_restoredGuiDocument) {
             vpd->updateView();
             Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
                 App::Property::User1,
                 &vpd->Visibility
             );
-            vpd->Visibility.setValue(obj->Visibility.getValue());
+            vpd->Visibility.setValue(obj.Visibility.getValue());
         }
 
         if (!vpd->canAddToSceneGraph()) {
@@ -2011,8 +2007,6 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
         }
     }
 
-    // Optional UX fallback for App-only restores (no GuiDocument.xml):
-    // ensure a usable initial framing if camera/view state was not persisted.
     if (!d->_restoredGuiDocument) {
         for (const auto& mdiView : getMDIViews()) {
             if (auto* view3D = freecad_cast<View3DInventor*>(mdiView)) {
