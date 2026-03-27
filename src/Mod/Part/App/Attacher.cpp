@@ -2578,7 +2578,7 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                 GProp_PrincipalProps pr = gpr.PrincipalProperties();
                 if (pr.HasSymmetryPoint()) {
                     throw Base::ValueError(
-                        "AttachEngine3D::calculateAttachedPlacement:AxisOfInertia: " +
+                        "AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "Inertia tensor is trivial, principal axes are undefined."
                     );
