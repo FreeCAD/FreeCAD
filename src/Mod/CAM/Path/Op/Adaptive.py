@@ -507,13 +507,6 @@ def GenerateGCode(op, obj, adaptiveResults):
 
             passStartDepth = passEndDepth
 
-            # return to safe height in this Z pass
-            z = obj.ClearanceHeight.Value
-            if z != lz:
-                op.commandlist.append(Path.Command("G0", {"Z": z}))
-
-            lz = z
-
     z = obj.ClearanceHeight.Value
     if z != lz:
         op.commandlist.append(Path.Command("G0", {"Z": z}))
