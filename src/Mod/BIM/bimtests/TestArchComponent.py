@@ -710,7 +710,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         self.document.recompute()
         volume_box1 = box1.Shape.Volume
         volume_box2 = box2.Shape.Volume  # Box2 will be deleted.
-        
+
         comp1 = Arch.makeComponent(box1)
         comp2 = Arch.makeComponent(box2, delete=True)
         self.document.recompute()
