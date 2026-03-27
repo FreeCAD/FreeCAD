@@ -1965,61 +1965,42 @@ void MainWindow::loadWindowSettings()
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
+    // Put window in center of screen position by default (e.g. first run and safe-mode)
+    // Note that pos refers to frameGeometry(), while size refers to geometry()
+    QSize frameSizeDiff = frameSize() - size();
     QRect rect = QApplication::primaryScreen()->availableGeometry();
-    int maxHeight = rect.height();
-    int maxWidth = rect.width();
+    QSize winSize
+        = (QSize(1800, 1000).boundedTo(rect.size()) - frameSizeDiff).expandedTo(minimumSize());
+    QPoint winPos = rect.center() - QRect({}, (winSize + frameSizeDiff) / 2).bottomRight();
 
+    // Read stored values from config (deprecated, not written since 1.0rc1)
     config.beginGroup(qtver);
-    QPoint winPos = config.value(QStringLiteral("Position"), pos()).toPoint();
-    maxWidth -= winPos.x();
-    maxHeight -= winPos.y();
-    QSize winSize = config.value(QStringLiteral("Size"), QSize(maxWidth, maxHeight)).toSize();
+    winPos = config.value(QStringLiteral("Position"), winPos).toPoint();
+    winSize = config.value(QStringLiteral("Size"), winSize).toSize();
     bool max = config.value(QStringLiteral("Maximized"), false).toBool();
     bool showStatusBar = config.value(QStringLiteral("StatusBar"), true).toBool();
     QByteArray windowState = config.value(QStringLiteral("MainWindowState")).toByteArray();
     config.endGroup();
 
-
-    std::string geometry = d->hGrp->GetASCII("Geometry");
-    std::istringstream iss(geometry);
-    int x, y, w, h;
-    if (iss >> x >> y >> w >> h) {
+    // Read stored values from user parameters
+    std::istringstream iss(d->hGrp->GetASCII("Geometry"));
+    if (int x, y, w, h; iss >> x >> y >> w >> h) {
         winPos = QPoint(x, y);
         winSize = QSize(w, h);
     }
-
     max = d->hGrp->GetBool("Maximized", max);
     showStatusBar = d->hGrp->GetBool("StatusBar", showStatusBar);
-    std::string wstate = d->hGrp->GetASCII("MainWindowState");
-    if (!wstate.empty()) {
+    if (auto wstate = d->hGrp->GetASCII("MainWindowState"); !wstate.empty()) {
         windowState = QByteArray::fromBase64(wstate.c_str());
     }
 
     resize(winSize);
-
-    auto recentFiles = App::GetApplication()
-                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/RecentFiles")
-                           ->GetInt("RecentFiles");
-    auto firstStart = App::GetApplication()
-                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Start")
-                          ->GetBool("FirstStart2024", true);
-    bool firstRun = firstStart && recentFiles < 1;
-#ifdef FC_OS_WIN64
-    const bool needFirstRunFix = true;
-#else
-    const bool needFirstRunFix = QGuiApplication::platformName() == "wayland";
-#endif
-    if (firstRun && needFirstRunFix) {
-        move(10, 10);
-    }
-    else {
-        int x1 {}, x2 {}, y1 {}, y2 {};
-        // make sure that the main window is not totally out of the visible rectangle
-        rect.getCoords(&x1, &y1, &x2, &y2);
-        winPos.setX(qMin(qMax(winPos.x(), x1 - width() + 30), x2 - 30));
-        winPos.setY(qMin(qMax(winPos.y(), y1 - 10), y2 - 10));
-        move(winPos);
-    }
+    int x1 {}, x2 {}, y1 {}, y2 {};
+    // make sure that the main window is not totally out of the visible rectangle
+    rect.getCoords(&x1, &y1, &x2, &y2);
+    winPos.setX(qMin(qMax(winPos.x(), x1 - width() + 30), x2 - 30));
+    winPos.setY(qMin(qMax(winPos.y(), y1 - 10), y2 - 10));
+    move(winPos);
 
     Base::StateLocker guard(d->_restoring);
 
