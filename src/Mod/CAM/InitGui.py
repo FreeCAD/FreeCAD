@@ -124,7 +124,7 @@ class CAMWorkbench(Workbench):
         Path.GuiInit.Startup()
 
         # build commands list
-        projcmdlist = ["CAM_Job", "CAM_Sanity", "CAM_QuickValidate"]
+        projcmdlist = ["CAM_Job", "CAM_Sanity"]
         postcmdlist = ["CAM_Post", "CAM_PostSelected"]
         toolcmdlist = ["CAM_Inspect", "CAM_SelectLoop", "CAM_OpActiveToggle"]
 

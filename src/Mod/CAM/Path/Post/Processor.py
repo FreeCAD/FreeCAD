@@ -774,7 +774,10 @@ class PostProcessor:
             overrides = self._read_job_overrides()
 
         for key, value in overrides.items():
-            bundle[key] = value
+            if key in bundle:
+                bundle[key] = value
+            else:
+                Path.Log.warning(f"override key '{key}' not in bundle, ignoring")
 
         return bundle
 

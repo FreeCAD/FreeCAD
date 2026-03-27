@@ -128,7 +128,6 @@ class PostProcessDialog:
         self._btn_generate.clicked.connect(self._generate_output)
         dlg.buttonSelectAllOps.clicked.connect(self._select_all_ops)
         dlg.buttonSelectNoneOps.clicked.connect(self._select_none_ops)
-        dlg.buttonSelectByType.clicked.connect(self._select_by_type)
         dlg.buttonWorkplan.clicked.connect(self._show_workplan)
         dlg.treeWidgetOperations.itemChanged.connect(self._on_ops_changed)
         dlg.comboBoxMachine.currentIndexChanged.connect(self._on_machine_changed)
@@ -143,7 +142,6 @@ class PostProcessDialog:
             self._on_output_files_context_menu
         )
         dlg.buttonSaveOutput.clicked.connect(self._save_output_files)
-        dlg.buttonRecomputeWarnings.clicked.connect(self._recompute_warnings)
 
     # ------------------------------------------------------------------
     # Population
@@ -406,21 +404,21 @@ class PostProcessDialog:
                 widget.setToolTip(help_text)
                 widget.value_getter = lambda w=widget: w.text()
 
-            if widget is not None:
-                # Connect signal to recompute warnings when value changes
-                if isinstance(widget, (QtGui.QCheckBox, QtGui.QLineEdit, QtGui.QPlainTextEdit)):
-                    (
-                        widget.textChanged.connect(self._recompute_warnings)
-                        if hasattr(widget, "textChanged")
-                        else widget.stateChanged.connect(self._recompute_warnings)
-                    )
-                elif isinstance(widget, (QtGui.QSpinBox, QtGui.QDoubleSpinBox)):
-                    widget.valueChanged.connect(self._recompute_warnings)
-                elif isinstance(widget, QtGui.QComboBox):
-                    widget.currentIndexChanged.connect(self._recompute_warnings)
+            # if widget is not None:
+            #     # Connect signal to recompute warnings when value changes
+            #     if isinstance(widget, (QtGui.QCheckBox, QtGui.QLineEdit, QtGui.QPlainTextEdit)):
+            #         (
+            #             widget.textChanged.connect(self._recompute_warnings)
+            #             if hasattr(widget, "textChanged")
+            #             else widget.stateChanged.connect(self._recompute_warnings)
+            #         )
+            #     elif isinstance(widget, (QtGui.QSpinBox, QtGui.QDoubleSpinBox)):
+            #         widget.valueChanged.connect(self._recompute_warnings)
+            #     elif isinstance(widget, QtGui.QComboBox):
+            #         widget.currentIndexChanged.connect(self._recompute_warnings)
 
-                form.addRow(label_text, widget)
-                self._post_config_widgets[name] = (widget, entry)
+            #     form.addRow(label_text, widget)
+            #     self._post_config_widgets[name] = (widget, entry)
 
         scroll_layout.insertWidget(insert_idx, group)
         self._dynamic_output_groups.append(group)
@@ -789,42 +787,6 @@ class PostProcessDialog:
         tree.blockSignals(True)
         for i in range(tree.topLevelItemCount()):
             tree.topLevelItem(i).setCheckState(0, QtCore.Qt.CheckState.Unchecked)
-        tree.blockSignals(False)
-        self._on_ops_changed(None)
-
-    def _select_by_type(self):
-        """Pop a menu of distinct operation types; selecting one checks only those ops."""
-        ops = self._get_active_operations()
-        tree = self.dialog.treeWidgetOperations
-        types = {}
-        for i in range(tree.topLevelItemCount()):
-            if i < len(ops):
-                t = ops[i].TypeId.split("::")[-1]
-                types.setdefault(t, []).append(i)
-
-        if not types:
-            return
-
-        menu = QtGui.QMenu(self.dialog)
-        for t in sorted(types):
-            action = menu.addAction(t)
-            action.setData(t)
-
-        btn = self.dialog.buttonSelectByType
-        chosen = menu.exec_(btn.mapToGlobal(btn.rect().bottomLeft()))
-        if not chosen:
-            return
-
-        selected_type = chosen.data()
-        tree.blockSignals(True)
-        for i in range(tree.topLevelItemCount()):
-            op_type = ops[i].TypeId.split("::")[-1] if i < len(ops) else ""
-            state = (
-                QtCore.Qt.CheckState.Checked
-                if op_type == selected_type
-                else QtCore.Qt.CheckState.Unchecked
-            )
-            tree.topLevelItem(i).setCheckState(0, state)
         tree.blockSignals(False)
         self._on_ops_changed(None)
 

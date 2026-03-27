@@ -256,16 +256,6 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonSelectByType">
-           <property name="toolTip">
-            <string>Select or deselect operations by type</string>
-           </property>
-           <property name="text">
-            <string>Select by Type...</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="buttonWorkplan">
            <property name="toolTip">
             <string>Show the workplan (postable items structure)</string>
@@ -478,12 +468,6 @@
           <property name="toolTip">
            <string>G-code content for the selected file. You may edit before saving.</string>
           </property>
-          <property name="lineWrapMode">
-           <enum>QPlainTextEdit::LineWrapMode::NoWrap</enum>
-          </property>
-          <property name="placeholderText">
-           <string>(no output generated)</string>
-          </property>
          </widget>
         </widget>
        </item>
@@ -521,33 +505,6 @@
        <string>Warnings</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Orientation::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="buttonRecomputeWarnings">
-           <property name="toolTip">
-            <string>Recompute validation warnings using current dialog values</string>
-           </property>
-           <property name="text">
-            <string>Recompute Warnings</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item>
         <widget class="QLabel" name="labelWarningsStatus">
          <property name="styleSheet">
