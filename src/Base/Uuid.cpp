@@ -87,5 +87,5 @@ void Uuid::setValue(const std::string& sString)
 
 const std::string& Uuid::getValue() const
 {
-    return _uuid;
+    return std::static_cast<const std::string&>(_uuid);
 }
