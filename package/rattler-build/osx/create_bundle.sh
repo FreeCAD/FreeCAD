@@ -49,8 +49,7 @@ cp build/FreeCAD FreeCAD.app/Contents/MacOS/FreeCAD
 
 # Add deployment target suffix to artifact name (e.g., "-macOS11" or "-macOS15")
 deploy_target="${MACOS_DEPLOYMENT_TARGET:-11.0}"
-deploy_suffix="-macOS${deploy_target%%.*}"
-version_name="FreeCAD_${BUILD_TAG}-macOS-$(uname -m)${deploy_suffix}"
+version_name="FreeCAD_${BUILD_TAG}-macOS${deploy_target%%.*}-$(uname -m)"
 application_menu_name="FreeCAD_${BUILD_TAG}"
 
 echo -e "\################"
