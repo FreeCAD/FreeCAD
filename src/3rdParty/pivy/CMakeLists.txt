@@ -7,6 +7,7 @@ endif()
 
 option(DISABLE_SWIG_WARNINGS "if on no swig warnings are shown" OFF)
 option(PIVY_USE_QT6 "Prefer Qt6 over Qt5 if available" OFF)
+option(PIVY_USE_SOQT "Generate bindings for SoQt" ON)
 
 find_package(SWIG 4.0.0 REQUIRED)
 include(${SWIG_USE_FILE})
@@ -16,16 +17,15 @@ if (NOT TARGET Coin)
 else()
     set(Coin_FOUND 1)
     get_target_property(Coin_LIB_DIR Coin LIBRARY_OUTPUT_DIRECTORY)
-    # This seems to return the SOVERSION on linux so didn't use it to avoid confusion
-    # get_target_property(Coin_VERSION Coin VERSION)
-    set(Coin_VERSION "Check target Coin!")
+    set(Coin_VERSION ${COIN_VERSION})
 
     set(Coin_INCLUDE_DIR ${Coin_SOURCE_DIR}/include)
     set(Coin_GENERATED_INCLUDE_DIR ${Coin_BINARY_DIR}/include)
-
-    add_library(Coin::Coin ALIAS Coin)
 endif()
-find_package(SoQt CONFIG)
+
+if (PIVY_USE_SOQT)
+    find_package(SoQt CONFIG)
+endif()
 
 if (SoQt_FOUND)
     if (PIVY_USE_QT6)
@@ -88,4 +88,4 @@ install(DIRECTORY
     PATTERN "*.dylib"
     PATTERN "*.dll"
     PATTERN "*.pyd"
-    )
+)
