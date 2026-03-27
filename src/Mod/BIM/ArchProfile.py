@@ -114,16 +114,16 @@ class _Profile(Draft._DraftObject):
         """Rename property OutDiameter to OutsideDiameter and rename property group Draft to Profile"""
 
         if hasattr(obj, "OutDiameter"):
-            # 1v1 to 1v2 changes
+            # 1v1 to 1v2 changes.
             obj.setPropertyStatus("OutDiameter", "-LockDynamic")
             obj.renameProperty("OutDiameter", "OutsideDiameter")
             obj.setPropertyStatus("OutsideDiameter", "LockDynamic")
             if obj.getGroupOfProperty("OutsideDiameter") == "Draft":
                 self._update_propgroup_1v1_to_1v2(obj)
-            self.execute(obj)  # to use Part::FaceMakerCheese for the face
+            self.execute(obj)  # To use Part::FaceMakerCheese for the face.
             return
         for prop in ("Height", "Size"):
-            # profiles other than the circular tubeprofile have either a Height or Size property
+            # Profiles other than the circular tubeprofile have either a Height or Size property.
             if hasattr(obj, prop) and obj.getGroupOfProperty(prop) == "Draft":
                 self._update_propgroup_1v1_to_1v2(obj)
                 return
