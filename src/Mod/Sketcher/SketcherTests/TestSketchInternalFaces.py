@@ -255,7 +255,6 @@ class TestSketchInternalFaces(unittest.TestCase):
         self.Doc.recompute()
         faces = get_internal_faces(sk)
         self.assertEqual(len(faces), 2)
-        inner_area = math.pi * 25
         outer_area = math.pi * 100
         self.assertAlmostEqual(total_face_area(faces), outer_area, places=1)
 
@@ -326,7 +325,6 @@ class TestSketchInternalFaces(unittest.TestCase):
         """Rectangle with a diagonal line should produce 2 triangular faces."""
         sk = self._make_sketch()
         add_rectangle(sk, 0, 0, 10, 10)
-        i = int(sk.GeometryCount)
         sk.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(10, 10, 0)))
         self.Doc.recompute()
         faces = get_internal_faces(sk)
