@@ -205,6 +205,12 @@ else()
   )
 endif()
 
+# Export a Coin::Coin target when the library is built as a cmake subdirectory
+# so that the same target can be linked using find_package and this method
+if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+  add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+endif()
+
 if(WIN32)
   if(COIN_BUILD_SHARED_LIBS)
     configure_file(${PROJECT_NAME}.rc.cmake.in ${PROJECT_NAME}.rc)

@@ -31,7 +31,7 @@ class SbByteBufferP {
 INLINE void
 SbByteBuffer::makeUnique()
 {
-  if (PRIVATE(this)->size_ && !PRIVATE(this)->buffer.unique()) {
+  if (PRIVATE(this)->size_ && !(PRIVATE(this)->buffer.use_count() == 1)) {
     std::shared_ptr<char> tmp_buffer(new char [PRIVATE(this)->size_], std::default_delete<char[]>());
     memcpy(tmp_buffer.get(),PRIVATE(this)->buffer.get(),PRIVATE(this)->size_);
     PRIVATE(this)->buffer=tmp_buffer;

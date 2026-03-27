@@ -555,14 +555,18 @@ if(WIN32)
     set(COIN_DEFAULT_POSTFIX ${COIN_DEFAULT_STATIC_POSTFIX})
     set(COIN_LIBRARY_SUFFIX ${CMAKE_STATIC_LIBRARY_SUFFIX})
   endif()
-  set(CMAKE_RELEASE_POSTFIX "${COIN_DEFAULT_POSTFIX}"
-    CACHE STRING "Default filename postfix for libraries under configuration Release")
-  set(CMAKE_MINSIZEREL_POSTFIX "${COIN_DEFAULT_POSTFIX}"
-    CACHE STRING "Default filename postfix for libraries under configuration MinSizeRel")
-  set(CMAKE_RELWITHDEBINFO_POSTFIX "${COIN_DEFAULT_POSTFIX}"
-    CACHE STRING "Default filename postfix for libraries under configuration RelWithDebInfo")
-  set(CMAKE_DEBUG_POSTFIX "${COIN_DEFAULT_POSTFIX}d"
-    CACHE STRING "Default filename postfix for libraries under configuration Debug")
+  # Don't set these if the project is built as cmake a subdirectory
+  if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    set(CMAKE_RELEASE_POSTFIX "${COIN_DEFAULT_POSTFIX}"
+      CACHE STRING "Default filename postfix for libraries under configuration Release")
+    set(CMAKE_MINSIZEREL_POSTFIX "${COIN_DEFAULT_POSTFIX}"
+      CACHE STRING "Default filename postfix for libraries under configuration MinSizeRel")
+    set(CMAKE_RELWITHDEBINFO_POSTFIX "${COIN_DEFAULT_POSTFIX}"
+      CACHE STRING "Default filename postfix for libraries under configuration RelWithDebInfo")
+    set(CMAKE_DEBUG_POSTFIX "${COIN_DEFAULT_POSTFIX}d"
+      CACHE STRING "Default filename postfix for libraries under configuration Debug")
+  endif()
+
 
   set(COIN_RELEASE_SYSTEM_LIBRARY_NAME Coin${CMAKE_RELEASE_POSTFIX}${COIN_LIBRARY_SUFFIX})
   set(COIN_DEBUG_SYSTEM_LIBRARY_NAME Coin${CMAKE_DEBUG_POSTFIX}${COIN_LIBRARY_SUFFIX})
