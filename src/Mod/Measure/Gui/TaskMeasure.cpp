@@ -476,7 +476,8 @@ void TaskMeasure::updateResultWithUnit()
     if (qtyProp) {
         double value = qtyProp->getQuantityValue().getValue();
         resultString = QString::number(value);
-    } else {
+    }
+    else {
         resultString = _mMeasureObject->getResultString();
     }
 
