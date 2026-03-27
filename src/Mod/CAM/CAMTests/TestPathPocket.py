@@ -4,9 +4,7 @@ import FreeCAD
 import Part
 import Path.Op.Pocket as PathPocket
 import Path.Main.Job as PathJob
-import Path.Geom
 from CAMTests.PathTestUtils import PathTestBase
-from CAMTests.TestPathAdaptive import getGcodeMoves
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
