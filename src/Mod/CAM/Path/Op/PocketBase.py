@@ -255,9 +255,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         super().opOnDocumentRestored(obj)
-        if hasattr(obj, "PocketLastStepOver"):
-            obj.removeProperty("PocketLastStepOver")
-
         if not hasattr(obj, "UseRestMachining"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -311,6 +308,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             if obj.KeepToolDown:
                 obj.setExpression("RetractThreshold", "1 * OpToolDiameter")
             obj.removeProperty("KeepToolDown")
+        if hasattr(obj, "PocketLastStepOver"):
+            obj.removeProperty("PocketLastStepOver")
 
         Path.Log.track()
 
