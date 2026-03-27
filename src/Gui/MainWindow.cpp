@@ -2116,13 +2116,6 @@ void MainWindow::saveWindowSettings(bool canDelay)
         return;
     }
 
-    QString vendor = QString::fromUtf8(App::Application::Config()["ExeVendor"].c_str());
-    QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
-    int major = (QT_VERSION >> 0x10) & 0xff;
-    int minor = (QT_VERSION >> 0x08) & 0xff;
-    QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
-    QSettings config(vendor, application);
-
     Base::ConnectionBlocker block(d->connParam);
     d->hGrp->SetBool("Maximized", this->isMaximized());
     d->hGrp->SetBool("StatusBar", this->statusBar()->isVisible());
