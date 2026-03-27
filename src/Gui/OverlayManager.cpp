@@ -1676,7 +1676,9 @@ void OverlayManager::onDockFeaturesChange(QDockWidget::DockWidgetFeatures featur
     }
 
     // Rebuild the title widget as it may have a different set of buttons shown.
-    setupTitleBar(dw);
+    if (auto tw = dw->titleBarWidget(); !tw || qobject_cast<OverlayTitleBar*>(tw)) {
+        setupTitleBar(dw);
+    }
 }
 
 void OverlayManager::onTaskViewUpdate()

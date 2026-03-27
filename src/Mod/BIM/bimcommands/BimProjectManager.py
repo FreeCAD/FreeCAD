@@ -26,9 +26,19 @@
 
 import math
 import os
+import re
 
 import FreeCAD
 import FreeCADGui
+
+
+def _parse_vector(text):
+    """Parse a Vector(x,y,z) string safely without eval()."""
+    match = re.match(r"^\s*Vector\s*\(\s*([^,]+)\s*,\s*([^,]+)\s*,\s*([^,)]+)\s*\)\s*$", text)
+    if not match:
+        raise ValueError("Invalid Vector string: " + text)
+    return FreeCAD.Vector(float(match.group(1)), float(match.group(2)), float(match.group(3)))
+
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
@@ -668,7 +678,6 @@ class BIM_ProjectManager:
         from PySide import QtGui
         import FreeCADGui
         import WorkingPlane
-        from FreeCAD import Vector  # required for following eval calls
 
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
@@ -692,14 +701,14 @@ class BIM_ProjectManager:
                 values = d.Meta
             bimunit = 0
             wp = WorkingPlane.get_working_plane()
-            if "wpposition" in values:
-                wp.position = eval(values["wpposition"])
-            if "wpu" in values:
-                wp.u = eval(values["wpu"])
-            if "wpv" in values:
-                wp.v = eval(values["wpv"])
-            if "wpaxis" in values:
-                wp.axis = eval(values["wpaxis"])
+            for key, attr in [
+                ("wpposition", "position"),
+                ("wpu", "u"),
+                ("wpv", "v"),
+                ("wpaxis", "axis"),
+            ]:
+                if key in values:
+                    setattr(wp, attr, _parse_vector(values[key]))
             wp._handle_custom(_hist_add=True)  # update the widget
             if "unit" in values:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").SetInt(
