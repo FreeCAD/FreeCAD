@@ -291,10 +291,10 @@ struct PointConstraints
                 for (auto& coincidence : allcoincid) {
                     VertexIds v1;
                     VertexIds v2;
-                    v1.GeoId = coincidence->First;
-                    v1.PosId = coincidence->FirstPos;
-                    v2.GeoId = coincidence->Second;
-                    v2.PosId = coincidence->SecondPos;
+                    v1.GeoId = coincidence->getGeoId(0);
+                    v1.PosId = coincidence->getPosId(0);
+                    v2.GeoId = coincidence->getGeoId(1);
+                    v2.PosId = coincidence->getPosId(1);
 
                     // Look if coincident vertices are in the group of adjacent ones we are
                     // processing
@@ -609,10 +609,10 @@ Sketcher::Constraint* SketchAnalysis::create(const ConstraintIds& id)
 {
     auto c = new Sketcher::Constraint();
     c->Type = id.Type;
-    c->First = id.First;
-    c->Second = id.Second;
-    c->FirstPos = id.FirstPos;
-    c->SecondPos = id.SecondPos;
+    c->setGeoId(0, id.First);
+    c->setGeoId(1, id.Second);
+    c->setPosId(0, id.FirstPos);
+    c->setPosId(1, id.SecondPos);
     return c;
 }
 
@@ -763,8 +763,14 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
     for (auto it : constraint) {
         if (it->Type == Sketcher::Equal) {
-            ConstraintIds
-                id {Base::Vector3d {}, it->First, it->Second, it->FirstPos, it->SecondPos, it->Type};
+            ConstraintIds id {
+                Base::Vector3d {},
+                it->getGeoId(0),
+                it->getGeoId(1),
+                it->getPosId(0),
+                it->getPosId(1),
+                it->Type
+            };
 
             auto pos = std::find_if(equallines.begin(), equallines.end(), Constraint_Equal(id));
 

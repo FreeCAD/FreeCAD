@@ -1301,7 +1301,7 @@ void SketchObject::synchroniseGeometryState()
         bool constraintBlockedState = false;
 
         for (auto cstr : Constraints.getValues()) {
-            if (cstr->First == int(i)) {
+            if (cstr->getGeoId(0) == int(i)) {
                 getInternalTypeState(cstr, constraintInternalAlignment);
                 getBlockedState(cstr, constraintBlockedState);
             }
@@ -1407,8 +1407,8 @@ void SketchObject::migrateSketch()
                 continue;
             }
 
-            int circleGeoId = c->First;
-            int bSplineGeoId = c->Second;
+            int circleGeoId = c->getGeoId(0);
+            int bSplineGeoId = c->getGeoId(1);
 
             auto bsp = static_cast<const Part::GeomBSplineCurve*>(getGeometry(bSplineGeoId));
 
@@ -1419,7 +1419,8 @@ void SketchObject::migrateSketch()
             }
 
             for (auto& ccp : Constraints.getValues()) {
-                if ((ccp->Type == Radius || ccp->Type == Diameter) && ccp->First == circleGeoId) {
+                if ((ccp->Type == Radius || ccp->Type == Diameter)
+                    && ccp->getGeoId(0) == circleGeoId) {
                     ccp->Type = Weight;
                     ccp->setValue(weights[c->InternalAlignmentIndex]);
                 }
@@ -1478,7 +1479,7 @@ void SketchObject::migrateSketch()
     // populate parabola and focus geoids
     for (const auto& c : constraints) {
         if (c->Type == InternalAlignment && c->AlignmentType == ParabolaFocus) {
-            parabolaGeoId2FocusGeoId[c->Second] = {c->First};
+            parabolaGeoId2FocusGeoId[c->getGeoId(1)] = {c->getGeoId(0)};
         }
     }
 
@@ -1527,10 +1528,10 @@ void SketchObject::migrateSketch()
             = std::ranges::any_of(axisGeoId2ParabolaGeoId, [&](const auto& pair) {
                   auto parabolaGeoId = pair.second;
                   auto axisgeoid = pair.first;
-                  return (c->First == axisgeoid && c->Second == parabolaGeoId
-                          && c->SecondPos == PointPos::mid)
-                      || (c->Second == axisgeoid && c->First == parabolaGeoId
-                          && c->FirstPos == PointPos::mid);
+                  return (c->getGeoId(0) == axisgeoid && c->getGeoId(1) == parabolaGeoId
+                          && c->getPosId(1) == PointPos::mid)
+                      || (c->getGeoId(1) == axisgeoid && c->getGeoId(0) == parabolaGeoId
+                          && c->getPosId(0) == PointPos::mid);
               });
 
         if (axisMajorCoincidentFound) {
@@ -1543,20 +1544,20 @@ void SketchObject::migrateSketch()
             auto parabolaGeoId = pair.second;
             auto axisgeoid = pair.first;
             auto focusGeoId = parabolaGeoId2FocusGeoId[parabolaGeoId];
-            return (c->First == axisgeoid && c->Second == focusGeoId
-                    && c->SecondPos == PointPos::start)
-                || (c->Second == axisgeoid && c->First == focusGeoId
-                    && c->FirstPos == PointPos::start);
+            return (c->getGeoId(0) == axisgeoid && c->getGeoId(1) == focusGeoId
+                    && c->getPosId(1) == PointPos::start)
+                || (c->getGeoId(1) == axisgeoid && c->getGeoId(0) == focusGeoId
+                    && c->getPosId(0) == PointPos::start);
         });
 
         if (focusCoincidentFound != axisGeoId2ParabolaGeoId.end()) {
             auto* newConstr = new Sketcher::Constraint();
             newConstr->Type = Sketcher::InternalAlignment;
             newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
-            newConstr->First = focusCoincidentFound->first;  // axis geoid
-            newConstr->FirstPos = Sketcher::PointPos::none;
-            newConstr->Second = focusCoincidentFound->second;  // parabola geoid
-            newConstr->SecondPos = Sketcher::PointPos::none;
+            newConstr->setGeoId(0, focusCoincidentFound->first);  // axis geoid
+            newConstr->setPosId(0, Sketcher::PointPos::none);
+            newConstr->setGeoId(1, focusCoincidentFound->second);  // parabola geoid
+            newConstr->setPosId(1, Sketcher::PointPos::none);
             newConstraints.push_back(newConstr);
 
             addGeometryState(newConstr);
@@ -1738,8 +1739,8 @@ SketchObject::getHigherElements(const char *element, bool silent) const
                     continue;
                 }
                 for (int i=0; i<2; ++i) {
-                    int geoid = i ? cstr->Second : cstr->First;
-                    const Sketcher::PointPos &pos = i ? cstr->SecondPos : cstr->FirstPos;
+                    int geoid = i ? cstr->getGeoId(1) : cstr->getGeoId(0);
+                    const Sketcher::PointPos &pos = i ? cstr->getPosId(1) : cstr->getPosId(0);
                     if(geoid >= 0 && index == getSolvedSketch().getPointId(geoid, pos) + 1)
                         res.push_back(Data::IndexedName::fromConst("Constraint", n));
                 };

@@ -707,23 +707,21 @@ protected:
                         AutoConstraints,
                         std::tuple {Sketcher::Tangent, geoId1, geoId2},
                         [](const auto& ace) {
-                            return std::tuple {ace->Type, ace->First, ace->Second};
+                            return std::tuple {ace->Type, ace->getGeoId(0), ace->getGeoId(1)};
                         }
                     );
                 }
 
                 if (itOfTangentConstraint != AutoConstraints.end()) {
                     // modify tangency to endpoint-to-endpoint
-                    (*itOfTangentConstraint)->FirstPos = posId1;
-                    (*itOfTangentConstraint)->SecondPos = posId2;
+                    (*itOfTangentConstraint)->setPosId(0, posId1);
+                    (*itOfTangentConstraint)->setPosId(1, posId2);
                 }
                 else {
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Coincident;
-                    c->First = geoId1;
-                    c->FirstPos = posId1;
-                    c->Second = geoId2;
-                    c->SecondPos = posId2;
+                    c->setElement(0, Sketcher::GeoElementId(geoId1, posId1));
+                    c->setElement(1, Sketcher::GeoElementId(geoId2, posId2));
                     AutoConstraints.push_back(std::move(c));
                 }
             } break;
@@ -744,30 +742,29 @@ protected:
 
                 // if tangency, convert to point-to-edge tangency
                 if (itOfTangentConstraint != AutoConstraints.end()) {
-                    if ((*itOfTangentConstraint)->First != geoId1) {
-                        std::swap((*itOfTangentConstraint)->Second, (*itOfTangentConstraint)->First);
+                    if ((*itOfTangentConstraint)->getGeoId(0) != geoId1) {
+                        auto tmp0 = (*itOfTangentConstraint)->getGeoId(0);
+                        auto tmp1 = (*itOfTangentConstraint)->getGeoId(1);
+                        (*itOfTangentConstraint)->setGeoId(0, tmp1);
+                        (*itOfTangentConstraint)->setGeoId(1, tmp0);
                     }
 
-                    (*itOfTangentConstraint)->FirstPos = posId1;
+                    (*itOfTangentConstraint)->setPosId(0, posId1);
                 }
                 else {
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::PointOnObject;
-                    c->First = geoId1;
-                    c->FirstPos = posId1;
-                    c->Second = geoId2;
+                    c->setElement(0, Sketcher::GeoElementId(geoId1, posId1));
+                    c->setGeoId(1, geoId2);
                     AutoConstraints.push_back(std::move(c));
                 }
             } break;
             case Sketcher::Symmetric: {
                 auto c = std::make_unique<Sketcher::Constraint>();
                 c->Type = Sketcher::Symmetric;
-                c->First = geoId2;
-                c->FirstPos = Sketcher::PointPos::start;
-                c->Second = geoId2;
-                c->SecondPos = Sketcher::PointPos::end;
-                c->Third = geoId1;
-                c->ThirdPos = posId1;
+                c->setElement(0, Sketcher::GeoElementId(geoId2, Sketcher::PointPos::start));
+                c->setElement(1, Sketcher::GeoElementId(geoId2, Sketcher::PointPos::end));
+                c->setElement(2, Sketcher::GeoElementId(geoId1, posId1));
                 AutoConstraints.push_back(std::move(c));
             } break;
             // In special case of Horizontal/Vertical constraint, geoId2 is normally
@@ -779,7 +776,7 @@ protected:
             case Sketcher::Vertical: {
                 auto c = std::make_unique<Sketcher::Constraint>();
                 c->Type = ac.Type;
-                c->First = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
+                c->setGeoId(0, (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1));
                 AutoConstraints.push_back(std::move(c));
             } break;
             case Sketcher::Tangent: {
@@ -839,8 +836,8 @@ protected:
                 }
 
                 auto resultCoincident = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
-                    return ace->Type == Sketcher::Coincident && ace->First == geoId1
-                        && ace->Second == geoId2;
+                    return ace->Type == Sketcher::Coincident && ace->getGeoId(0) == geoId1
+                        && ace->getGeoId(1) == geoId2;
                 });
 
                 auto resultPointOnObject = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
@@ -849,33 +846,34 @@ protected:
                 });
 
                 if (resultCoincident != AutoConstraints.end()
-                    && isStartOrEnd((*resultCoincident)->FirstPos)
-                    && isStartOrEnd((*resultCoincident)->SecondPos)) {
+                    && isStartOrEnd((*resultCoincident)->getPosId(0))
+                    && isStartOrEnd((*resultCoincident)->getPosId(1))) {
                     // endpoint-to-endpoint tangency
                     (*resultCoincident)->Type = Sketcher::Tangent;
                 }
                 else if (resultPointOnObject != AutoConstraints.end()
-                         && isStartOrEnd((*resultPointOnObject)->FirstPos)) {
+                         && isStartOrEnd((*resultPointOnObject)->getPosId(0))) {
                     // endpoint-to-edge tangency
                     (*resultPointOnObject)->Type = Sketcher::Tangent;
                 }
                 else if (resultCoincident != AutoConstraints.end()
-                         && (*resultCoincident)->FirstPos == Sketcher::PointPos::mid
-                         && (*resultCoincident)->SecondPos == Sketcher::PointPos::mid && geom1 && geom2
+                         && (*resultCoincident)->getPosId(0) == Sketcher::PointPos::mid
+                         && (*resultCoincident)->getPosId(1) == Sketcher::PointPos::mid && geom1
+                         && geom2
                          && (geom1->is<Part::GeomCircle>() || geom1->is<Part::GeomArcOfCircle>())
                          && (geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>())) {
                     // equality
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Equal;
-                    c->First = geoId1;
-                    c->Second = geoId2;
+                    c->setGeoId(0, geoId1);
+                    c->setGeoId(1, geoId2);
                     AutoConstraints.push_back(std::move(c));
                 }
                 else {  // regular edge to edge tangency
                     auto c = std::make_unique<Sketcher::Constraint>();
                     c->Type = Sketcher::Tangent;
-                    c->First = geoId1;
-                    c->Second = geoId2;
+                    c->setGeoId(0, geoId1);
+                    c->setGeoId(1, geoId2);
                     AutoConstraints.push_back(std::move(c));
                 }
             } break;
@@ -1142,12 +1140,9 @@ protected:
     {
         auto constr = std::make_unique<Sketcher::Constraint>();
         constr->Type = type;
-        constr->First = first;
-        constr->FirstPos = firstPos;
-        constr->Second = second;
-        constr->SecondPos = secondPos;
-        constr->Third = third;
-        constr->ThirdPos = thirdPos;
+        constr->setElement(0, Sketcher::GeoElementId(first, firstPos));
+        constr->setElement(1, Sketcher::GeoElementId(second, secondPos));
+        constr->setElement(2, Sketcher::GeoElementId(third, thirdPos));
         return ShapeConstraints.emplace_back(std::move(constr)).get();
     }
 

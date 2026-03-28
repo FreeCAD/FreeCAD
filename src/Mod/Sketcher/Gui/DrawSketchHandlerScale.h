@@ -505,9 +505,9 @@ private:
                     continue;
                 }
 
-                int firstIndex = offsetGeoID(cstr->First, firstCurveCreated);
-                int secondIndex = offsetGeoID(cstr->Second, firstCurveCreated);
-                int thirdIndex = offsetGeoID(cstr->Third, firstCurveCreated);
+                int firstIndex = offsetGeoID(cstr->getGeoId(0), firstCurveCreated);
+                int secondIndex = offsetGeoID(cstr->getGeoId(1), firstCurveCreated);
+                int thirdIndex = offsetGeoID(cstr->getGeoId(2), firstCurveCreated);
 
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
 
@@ -525,9 +525,9 @@ private:
                      || cstr->Type == Angle)
                     && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef
                     && thirdIndex != GeoEnum::GeoUndef) {
-                    newConstr->First = firstIndex;
-                    newConstr->Second = secondIndex;
-                    newConstr->Third = thirdIndex;
+                    newConstr->setGeoId(0, firstIndex);
+                    newConstr->setGeoId(1, secondIndex);
+                    newConstr->setGeoId(2, thirdIndex);
                 }
                 else if ((cstr->Type == Coincident || cstr->Type == Tangent
                           || cstr->Type == Symmetric || cstr->Type == Perpendicular
@@ -535,38 +535,39 @@ private:
                           || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
                          && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef
                          && thirdIndex == GeoEnum::GeoUndef) {
-                    newConstr->First = firstIndex;
-                    newConstr->Second = secondIndex;
+                    newConstr->setGeoId(0, firstIndex);
+                    newConstr->setGeoId(1, secondIndex);
                 }
                 else if (cstr->Type == Angle && firstIndex != GeoEnum::GeoUndef
                          && secondIndex == GeoEnum::GeoUndef && thirdIndex == GeoEnum::GeoUndef) {
-                    newConstr->First = firstIndex;
+                    newConstr->setGeoId(0, firstIndex);
                 }
                 else if ((cstr->Type == Radius || cstr->Type == Diameter)
                          && firstIndex != GeoEnum::GeoUndef) {
-                    newConstr->First = firstIndex;
+                    newConstr->setGeoId(0, firstIndex);
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 else if ((cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
                          && firstIndex != GeoEnum::GeoUndef && secondIndex != GeoEnum::GeoUndef) {
-                    newConstr->First = firstIndex;
-                    newConstr->Second = secondIndex;
+                    newConstr->setGeoId(0, firstIndex);
+                    newConstr->setGeoId(1, secondIndex);
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 else if ((cstr->Type == Distance || cstr->Type == DistanceX || cstr->Type == DistanceY)
-                         && firstIndex != GeoEnum::GeoUndef && cstr->Second == GeoEnum::GeoUndef) {
-                    newConstr->First = firstIndex;
+                         && firstIndex != GeoEnum::GeoUndef
+                         && cstr->getGeoId(1) == GeoEnum::GeoUndef) {
+                    newConstr->setGeoId(0, firstIndex);
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 else if ((cstr->Type == Block || cstr->Type == Weight)
                          && firstIndex != GeoEnum::GeoUndef) {
-                    newConstr->First = firstIndex;
+                    newConstr->setGeoId(0, firstIndex);
                 }
                 else if ((cstr->Type == Vertical || cstr->Type == Horizontal)
                          && (firstIndex != GeoEnum::GeoUndef
-                             && (cstr->Second == GeoEnum::GeoUndef || secondIndex != GeoUndef))) {
-                    newConstr->First = firstIndex;
-                    newConstr->Second = secondIndex;
+                             && (cstr->getGeoId(1) == GeoEnum::GeoUndef || secondIndex != GeoUndef))) {
+                    newConstr->setGeoId(0, firstIndex);
+                    newConstr->setGeoId(1, secondIndex);
                 }
                 else {
                     continue;
@@ -582,19 +583,19 @@ private:
         // We might want to skip (remove) a constraint if
         return
             // 1. it's first geometry is undefined => not a valid constraint, should not happen
-            (constr->First == GeoEnum::GeoUndef)
+            (constr->getGeoId(0) == GeoEnum::GeoUndef)
 
             // 2. we do not want to have constraints that relate to the origin => it would break if
             // the scale center is not the origin
             || (!allowOriginConstraint
-                && (constr->First == GeoEnum::VAxis || constr->First == GeoEnum::HAxis
-                    || constr->Second == GeoEnum::VAxis || constr->Second == GeoEnum::HAxis
-                    || constr->Third == GeoEnum::VAxis || constr->Third == GeoEnum::HAxis))
+                && (constr->getGeoId(0) == GeoEnum::VAxis || constr->getGeoId(0) == GeoEnum::HAxis
+                    || constr->getGeoId(1) == GeoEnum::VAxis || constr->getGeoId(1) == GeoEnum::HAxis
+                    || constr->getGeoId(2) == GeoEnum::VAxis || constr->getGeoId(2) == GeoEnum::HAxis))
 
             // 3. it is linked to an external projected geometry => would be unstable
-            || (constr->First != GeoEnum::GeoUndef && constr->First <= GeoEnum::RefExt)
-            || (constr->Second != GeoEnum::GeoUndef && constr->Second <= GeoEnum::RefExt)
-            || (constr->Third != GeoEnum::GeoUndef && constr->Third <= GeoEnum::RefExt);
+            || (constr->getGeoId(0) != GeoEnum::GeoUndef && constr->getGeoId(0) <= GeoEnum::RefExt)
+            || (constr->getGeoId(1) != GeoEnum::GeoUndef && constr->getGeoId(1) <= GeoEnum::RefExt)
+            || (constr->getGeoId(2) != GeoEnum::GeoUndef && constr->getGeoId(2) <= GeoEnum::RefExt);
     }
 
     // Offset the geom index to match the newly created one

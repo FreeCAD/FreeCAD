@@ -477,7 +477,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (const auto& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
@@ -533,8 +533,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseMajorDiameter;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->Second = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -548,8 +548,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseMinorDiameter;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->Second = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -563,9 +563,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus1;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos = Sketcher::PointPos::start;
-        newConstr->Second = GeoId;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -578,9 +577,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomEllipse>(const int Geo
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus2;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos = Sketcher::PointPos::start;
-        newConstr->Second = GeoId;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
     }
@@ -617,7 +615,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (const auto& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
@@ -673,8 +671,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseMajorDiameter;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->Second = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -688,8 +686,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseMinorDiameter;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->Second = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -703,9 +701,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus1;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos = Sketcher::PointPos::start;
-        newConstr->Second = GeoId;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -718,9 +715,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfEllipse>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = EllipseFocus2;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos = Sketcher::PointPos::start;
-        newConstr->Second = GeoId;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
     }
@@ -741,7 +737,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
@@ -793,8 +789,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::HyperbolaMajor;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->Second = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -808,8 +804,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::HyperbolaMinor;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->Second = GeoId;
+        newConstr->setGeoId(0, currentgeoid + incrgeo + 1);
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
 
@@ -824,9 +820,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfHyperbola>(const 
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::HyperbolaFocus;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos = Sketcher::PointPos::start;
-        newConstr->Second = GeoId;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -847,7 +842,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
@@ -883,9 +878,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::ParabolaFocus;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos = Sketcher::PointPos::start;
-        newConstr->Second = GeoId;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::start));
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
         incrgeo++;
@@ -900,9 +894,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomArcOfParabola>(const i
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::ParabolaFocalAxis;
-        newConstr->First = currentgeoid + incrgeo + 1;
-        newConstr->FirstPos = Sketcher::PointPos::none;
-        newConstr->Second = GeoId;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo + 1, Sketcher::PointPos::none));
+        newConstr->setGeoId(1, GeoId);
 
         icon.push_back(newConstr);
 
@@ -930,16 +923,16 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
 
     // search for existing poles
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
         switch (constr->AlignmentType) {
         case Sketcher::BSplineControlPoint:
-            controlpointgeoids[constr->InternalAlignmentIndex] = constr->First;
+            controlpointgeoids[constr->InternalAlignmentIndex] = constr->getGeoId(0);
             break;
         case Sketcher::BSplineKnotPoint:
-            knotgeoids[constr->InternalAlignmentIndex] = constr->First;
+            knotgeoids[constr->InternalAlignmentIndex] = constr->getGeoId(0);
             break;
         default:
             return -1;
@@ -949,7 +942,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
     if (controlpointgeoids[0] != GeoEnum::GeoUndef) {
         isfirstweightconstrained =
             std::ranges::any_of(vals, [&controlpointgeoids](const auto& constr) {
-                return (constr->Type == Sketcher::Weight && constr->First == controlpointgeoids[0]);
+                return (constr->Type == Sketcher::Weight && constr->getGeoId(0) == controlpointgeoids[0]);
             });
     }
 
@@ -982,9 +975,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::BSplineControlPoint;
-        newConstr->First = currentgeoid + incrgeo;
-        newConstr->FirstPos = Sketcher::PointPos::mid;
-        newConstr->Second = GeoId;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo, Sketcher::PointPos::mid));
+        newConstr->setGeoId(1, GeoId);
         newConstr->InternalAlignmentIndex = index;
 
         icon.push_back(newConstr);
@@ -995,7 +987,7 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
                 // if the first weight is 1.0 it's probably going to be non-rational
                 auto* newConstr3 = new Sketcher::Constraint();
                 newConstr3->Type = Sketcher::Weight;
-                newConstr3->First = controlpointgeoids[0];
+                newConstr3->setGeoId(0, controlpointgeoids[0]);
                 newConstr3->setValue(weights[0]);
 
                 icon.push_back(newConstr3);
@@ -1011,10 +1003,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
             // AND these weights are equal, constrain them to be equal
             auto* newConstr2 = new Sketcher::Constraint();
             newConstr2->Type = Sketcher::Equal;
-            newConstr2->First = currentgeoid + incrgeo;
-            newConstr2->FirstPos = Sketcher::PointPos::none;
-            newConstr2->Second = controlpointgeoids[0];
-            newConstr2->SecondPos = Sketcher::PointPos::none;
+            newConstr2->setElement(0, GeoElementId(currentgeoid + incrgeo, Sketcher::PointPos::none));
+            newConstr2->setElement(1, GeoElementId(controlpointgeoids[0], Sketcher::PointPos::none));
 
             icon.push_back(newConstr2);
         }
@@ -1037,9 +1027,8 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
         auto* newConstr = new Sketcher::Constraint();
         newConstr->Type = Sketcher::InternalAlignment;
         newConstr->AlignmentType = Sketcher::BSplineKnotPoint;
-        newConstr->First = currentgeoid + incrgeo;
-        newConstr->FirstPos = Sketcher::PointPos::start;
-        newConstr->Second = GeoId;
+        newConstr->setElement(0, GeoElementId(currentgeoid + incrgeo, Sketcher::PointPos::start));
+        newConstr->setGeoId(1, GeoId);
         newConstr->InternalAlignmentIndex = index;
 
         icon.push_back(newConstr);
@@ -1112,25 +1101,25 @@ int SketchObject::deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeo
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
         switch (constr->AlignmentType) {
         case Sketcher::EllipseMajorDiameter:
         case Sketcher::HyperbolaMajor:
-            majorelementindex = constr->First;
+            majorelementindex = constr->getGeoId(0);
             break;
         case Sketcher::EllipseMinorDiameter:
         case Sketcher::HyperbolaMinor:
-            minorelementindex = constr->First;
+            minorelementindex = constr->getGeoId(0);
             break;
         case Sketcher::EllipseFocus1:
         case Sketcher::HyperbolaFocus:
-            focus1elementindex = constr->First;
+            focus1elementindex = constr->getGeoId(0);
             break;
         case Sketcher::EllipseFocus2:
-            focus2elementindex = constr->First;
+            focus2elementindex = constr->getGeoId(0);
             break;
         default:
             return -1;
@@ -1195,16 +1184,16 @@ int SketchObject::deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delge
     const std::vector<Sketcher::Constraint*>& vals = Constraints.getValues();
 
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
         switch (constr->AlignmentType) {
         case Sketcher::ParabolaFocus:
-            focus1elementindex = constr->First;
+            focus1elementindex = constr->getGeoId(0);
             break;
         case Sketcher::ParabolaFocalAxis:
-            majorelementindex = constr->First;
+            majorelementindex = constr->getGeoId(0);
             break;
         default:
             return -1;
@@ -1263,16 +1252,16 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
 
     // search for existing poles
     for (auto const& constr : vals) {
-        if (constr->Type != Sketcher::InternalAlignment || constr->Second != GeoId) {
+        if (constr->Type != Sketcher::InternalAlignment || constr->getGeoId(1) != GeoId) {
             continue;
         }
 
         switch (constr->AlignmentType) {
         case Sketcher::BSplineControlPoint:
-            poleGeoIdsAndConstraints[constr->First] = 0;
+            poleGeoIdsAndConstraints[constr->getGeoId(0)] = 0;
             break;
         case Sketcher::BSplineKnotPoint:
-            knotGeoIdsAndConstraints[constr->First] = 0;
+            knotGeoIdsAndConstraints[constr->getGeoId(0)] = 0;
             break;
         default:
             return -1;
@@ -1290,17 +1279,17 @@ int SketchObject::deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeo
             || constr->Type == Sketcher::Weight) {
             continue;
         }
-        bool firstIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->First) == 1;
-        bool secondIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->Second) == 1;
+        bool firstIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->getGeoId(0)) == 1;
+        bool secondIsInCPGeoIds = poleGeoIdsAndConstraints.count(constr->getGeoId(1)) == 1;
         if (constr->Type == Sketcher::Equal && firstIsInCPGeoIds == secondIsInCPGeoIds) {
             continue;
         }
         // any equality constraint constraining a pole is not interpole
         if (firstIsInCPGeoIds) {
-            ++poleGeoIdsAndConstraints[constr->First];
+            ++poleGeoIdsAndConstraints[constr->getGeoId(0)];
         }
         if (secondIsInCPGeoIds) {
-            ++poleGeoIdsAndConstraints[constr->Second];
+            ++poleGeoIdsAndConstraints[constr->getGeoId(1)];
         }
     }
 

@@ -96,12 +96,12 @@ Constraint* Constraint::copy() const
     temp->MetaData = this->MetaData;
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    temp->First = this->First;
-    temp->FirstPos = this->FirstPos;
-    temp->Second = this->Second;
-    temp->SecondPos = this->SecondPos;
-    temp->Third = this->Third;
-    temp->ThirdPos = this->ThirdPos;
+    temp->First_Deprecated = this->First_Deprecated;
+    temp->FirstPos_Deprecated = this->FirstPos_Deprecated;
+    temp->Second_Deprecated = this->Second_Deprecated;
+    temp->SecondPos_Deprecated = this->SecondPos_Deprecated;
+    temp->Third_Deprecated = this->Third_Deprecated;
+    temp->ThirdPos_Deprecated = this->ThirdPos_Deprecated;
 #endif
 
     return temp;
@@ -388,11 +388,11 @@ GeoElementId Constraint::getElement(size_t index) const
     if (index < 3) {
         switch (index) {
             case 0:
-                return GeoElementId(First, FirstPos);
+                return GeoElementId(First_Deprecated, FirstPos_Deprecated);
             case 1:
-                return GeoElementId(Second, SecondPos);
+                return GeoElementId(Second_Deprecated, SecondPos_Deprecated);
             case 2:
-                return GeoElementId(Third, ThirdPos);
+                return GeoElementId(Third_Deprecated, ThirdPos_Deprecated);
         }
     }
 #endif
@@ -408,16 +408,16 @@ void Constraint::setElement(size_t index, GeoElementId element)
         if (index < 3) {
             switch (index) {
                 case 0:
-                    First = element.GeoId;
-                    FirstPos = element.Pos;
+                    First_Deprecated = element.GeoId;
+                    FirstPos_Deprecated = element.Pos;
                     break;
                 case 1:
-                    Second = element.GeoId;
-                    SecondPos = element.Pos;
+                    Second_Deprecated = element.GeoId;
+                    SecondPos_Deprecated = element.Pos;
                     break;
                 case 2:
-                    Third = element.GeoId;
-                    ThirdPos = element.Pos;
+                    Third_Deprecated = element.GeoId;
+                    ThirdPos_Deprecated = element.Pos;
                     break;
             }
         }
@@ -447,11 +447,11 @@ int Constraint::getGeoId(int index) const
     if (index < 3) {
         switch (index) {
             case 0:
-                return First;
+                return First_Deprecated;
             case 1:
-                return Second;
+                return Second_Deprecated;
             case 2:
-                return Third;
+                return Third_Deprecated;
         }
     }
 #endif
@@ -464,11 +464,11 @@ PointPos Constraint::getPosId(int index) const
     if (index < 3) {
         switch (index) {
             case 0:
-                return FirstPos;
+                return FirstPos_Deprecated;
             case 1:
-                return SecondPos;
+                return SecondPos_Deprecated;
             case 2:
-                return ThirdPos;
+                return ThirdPos_Deprecated;
         }
     }
 #endif
@@ -481,11 +481,11 @@ int Constraint::getPosIdAsInt(int index) const
     if (index < 3) {
         switch (index) {
             case 0:
-                return (int)FirstPos;
+                return (int)FirstPos_Deprecated;
             case 1:
-                return (int)SecondPos;
+                return (int)SecondPos_Deprecated;
             case 2:
-                return (int)ThirdPos;
+                return (int)ThirdPos_Deprecated;
         }
     }
 #endif
@@ -503,13 +503,13 @@ void Constraint::setGeoId(int index, int geoId)
     if (index < 3) {
         switch (index) {
             case 0:
-                First = geoId;
+                First_Deprecated = geoId;
                 break;
             case 1:
-                Second = geoId;
+                Second_Deprecated = geoId;
                 break;
             case 2:
-                Third = geoId;
+                Third_Deprecated = geoId;
                 break;
         }
     }
@@ -525,13 +525,13 @@ void Constraint::setPosId(int index, PointPos pos)
     if (index < 3) {
         switch (index) {
             case 0:
-                FirstPos = pos;
+                FirstPos_Deprecated = pos;
                 break;
             case 1:
-                SecondPos = pos;
+                SecondPos_Deprecated = pos;
                 break;
             case 2:
-                ThirdPos = pos;
+                ThirdPos_Deprecated = pos;
                 break;
         }
     }
@@ -547,13 +547,13 @@ void Constraint::setPosId(int index, int pos)
     if (index < 3) {
         switch (index) {
             case 0:
-                FirstPos = static_cast<PointPos>(pos);
+                FirstPos_Deprecated = static_cast<PointPos>(pos);
                 break;
             case 1:
-                SecondPos = static_cast<PointPos>(pos);
+                SecondPos_Deprecated = static_cast<PointPos>(pos);
                 break;
             case 2:
-                ThirdPos = static_cast<PointPos>(pos);
+                ThirdPos_Deprecated = static_cast<PointPos>(pos);
                 break;
         }
     }
@@ -580,6 +580,14 @@ void Constraint::swapElements(int index1, int index2)
         return;
     }
     if (ensureElementExists(index1) && ensureElementExists(index2)) {
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+        if (index1 < 3 || index2 < 3) {
+            GeoElementId temp = getElement(index1);
+            setElement(index1, getElement(index2));
+            setElement(index2, temp);
+            return;
+        }
+#endif
         std::swap(elements[index1], elements[index2]);
     }
 }

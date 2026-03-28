@@ -159,12 +159,13 @@ bool Sketch::analyseBlockedGeometry(
 
             for (auto c : constraintList) {
                 // is block driving
-                if (c->Type == Sketcher::Block && c->isActive && c->First == geoindex) {
+                if (c->Type == Sketcher::Block && c->isActive && c->getGeoId(0) == geoindex) {
                     blockisDriving = true;
                 }
                 // We have another driving constraint (which may be InternalAlignment)
                 if (c->Type != Sketcher::Block && c->isDriving
-                    && (c->First == geoindex || c->Second == geoindex || c->Third == geoindex)) {
+                    && (c->getGeoId(0) == geoindex || c->getGeoId(1) == geoindex
+                        || c->getGeoId(2) == geoindex)) {
                     blockOnly = false;
                 }
             }
@@ -373,7 +374,7 @@ void Sketch::buildInternalAlignmentGeometryMap(const std::vector<Constraint*>& c
 {
     for (auto* c : constraintList) {
         if (c->Type == InternalAlignment) {
-            internalAlignmentGeometryMap[c->First] = c->Second;
+            internalAlignmentGeometryMap[c->getGeoId(0)] = c->getGeoId(1);
         }
     }
 }
@@ -1971,7 +1972,7 @@ int Sketch::addConstraint(const Constraint* constraint)
 
     switch (constraint->Type) {
         case DistanceX:
-            if (constraint->FirstPos == PointPos::none) {  // horizontal length of a line
+            if (constraint->getPosId(0) == PointPos::none) {  // horizontal length of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -1981,9 +1982,10 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addDistanceXConstraint(constraint->First, c.value, c.driving);
+                rtn = addDistanceXConstraint(constraint->getGeoId(0), c.value, c.driving);
             }
-            else if (constraint->Second == GeoEnum::GeoUndef) {  // point on fixed x-coordinate
+            else if (constraint->getGeoId(1) == GeoEnum::GeoUndef) {  // point on fixed
+                                                                      // x-coordinate
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -1993,9 +1995,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addCoordinateXConstraint(constraint->First, constraint->FirstPos, c.value, c.driving);
+                rtn = addCoordinateXConstraint(
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    c.value,
+                    c.driving
+                );
             }
-            else if (constraint->SecondPos != PointPos::none) {  // point to point horizontal distance
+            else if (constraint->getPosId(1) != PointPos::none) {  // point to point
+                                                                   // horizontal distance
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2006,17 +2014,17 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addDistanceXConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
                     c.value,
                     c.driving
                 );
             }
             break;
         case DistanceY:
-            if (constraint->FirstPos == PointPos::none) {  // vertical length of a line
+            if (constraint->getPosId(0) == PointPos::none) {  // vertical length of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2026,9 +2034,10 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addDistanceYConstraint(constraint->First, c.value, c.driving);
+                rtn = addDistanceYConstraint(constraint->getGeoId(0), c.value, c.driving);
             }
-            else if (constraint->Second == GeoEnum::GeoUndef) {  // point on fixed y-coordinate
+            else if (constraint->getGeoId(1) == GeoEnum::GeoUndef) {  // point on fixed
+                                                                      // y-coordinate
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2038,9 +2047,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addCoordinateYConstraint(constraint->First, constraint->FirstPos, c.value, c.driving);
+                rtn = addCoordinateYConstraint(
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    c.value,
+                    c.driving
+                );
             }
-            else if (constraint->SecondPos != PointPos::none) {  // point to point vertical distance
+            else if (constraint->getPosId(1) != PointPos::none) {  // point to point
+                                                                   // vertical distance
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2051,89 +2066,90 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addDistanceYConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
                     c.value,
                     c.driving
                 );
             }
             break;
         case Horizontal:
-            if (constraint->Second == GeoEnum::GeoUndef) {  // horizontal line
-                rtn = addHorizontalConstraint(constraint->First);
+            if (constraint->getGeoId(1) == GeoEnum::GeoUndef) {  // horizontal line
+                rtn = addHorizontalConstraint(constraint->getGeoId(0));
             }
             else {  // two points on the same horizontal line
                 rtn = addHorizontalConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1)
                 );
             }
             break;
         case Vertical:
-            if (constraint->Second == GeoEnum::GeoUndef) {  // vertical line
-                rtn = addVerticalConstraint(constraint->First);
+            if (constraint->getGeoId(1) == GeoEnum::GeoUndef) {  // vertical line
+                rtn = addVerticalConstraint(constraint->getGeoId(0));
             }
             else {  // two points on the same vertical line
                 rtn = addVerticalConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1)
                 );
             }
             break;
         case Coincident:
             rtn = addPointCoincidentConstraint(
-                constraint->First,
-                constraint->FirstPos,
-                constraint->Second,
-                constraint->SecondPos
+                constraint->getGeoId(0),
+                constraint->getPosId(0),
+                constraint->getGeoId(1),
+                constraint->getPosId(1)
             );
             break;
         case PointOnObject:
-            if (Geoms[checkGeoId(constraint->Second)].type == BSpline) {
+            if (Geoms[checkGeoId(constraint->getGeoId(1))].type == BSpline) {
                 c.value = new double(constraint->getValue());
                 // Driving doesn't make sense here
                 Parameters.push_back(c.value);
 
                 rtn = addPointOnObjectConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
                     c.value
                 );
             }
             else {
                 rtn = addPointOnObjectConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1)
                 );
             }
             break;
         case Parallel:
-            rtn = addParallelConstraint(constraint->First, constraint->Second);
+            rtn = addParallelConstraint(constraint->getGeoId(0), constraint->getGeoId(1));
             break;
         case Perpendicular:
-            if (constraint->FirstPos != PointPos::none && constraint->SecondPos != PointPos::none
-                && constraint->Third != GeoEnum::GeoUndef) {
+            if (constraint->getPosId(0) != PointPos::none && constraint->getPosId(1) != PointPos::none
+                && constraint->getGeoId(2) != GeoEnum::GeoUndef) {
                 // point point line perpendicularity
                 rtn = addPerpendicularConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
+                    constraint->getGeoId(2)
                 );
             }
-            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                     && constraint->Third == GeoEnum::GeoUndef) {
+            else if (constraint->getPosId(0) == PointPos::none
+                     && constraint->getPosId(1) == PointPos::none
+                     && constraint->getGeoId(2) == GeoEnum::GeoUndef) {
                 // simple perpendicularity
-                rtn = addPerpendicularConstraint(constraint->First, constraint->Second);
+                rtn = addPerpendicularConstraint(constraint->getGeoId(0), constraint->getGeoId(1));
             }
             else {
                 // any other point-wise perpendicularity
@@ -2147,12 +2163,12 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addAngleAtPointConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third,
-                    constraint->ThirdPos,
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
+                    constraint->getGeoId(2),
+                    constraint->getPosId(2),
                     c.value,
                     constraint->Type,
                     c.driving
@@ -2162,29 +2178,29 @@ int Sketch::addConstraint(const Constraint* constraint)
         case Tangent: {
             bool isSpecialCase = false;
 
-            if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                && constraint->Third == GeoEnum::GeoUndef) {
+            if (constraint->getPosId(0) == PointPos::none && constraint->getPosId(1) == PointPos::none
+                && constraint->getGeoId(2) == GeoEnum::GeoUndef) {
                 // simple tangency
-                rtn = addTangentConstraint(constraint->First, constraint->Second);
+                rtn = addTangentConstraint(constraint->getGeoId(0), constraint->getGeoId(1));
 
                 isSpecialCase = true;
             }
-            else if (constraint->FirstPos == PointPos::start
-                     && constraint->Third == GeoEnum::GeoUndef) {
+            else if (constraint->getPosId(0) == PointPos::start
+                     && constraint->getGeoId(2) == GeoEnum::GeoUndef) {
                 // check for B-Spline Knot to curve tangency
-                auto knotgeoId = checkGeoId(constraint->First);
+                auto knotgeoId = checkGeoId(constraint->getGeoId(0));
                 if (Geoms[knotgeoId].type == Point) {
                     auto* point = static_cast<const GeomPoint*>(Geoms[knotgeoId].geo);
 
                     if (GeometryFacade::isInternalType(point, InternalType::BSplineKnotPoint)) {
-                        auto bsplinegeoid = internalAlignmentGeometryMap.at(constraint->First);
+                        auto bsplinegeoid = internalAlignmentGeometryMap.at(constraint->getGeoId(0));
 
                         bsplinegeoid = checkGeoId(bsplinegeoid);
 
-                        auto linegeoid = checkGeoId(constraint->Second);
+                        auto linegeoid = checkGeoId(constraint->getGeoId(1));
 
                         if (Geoms[linegeoid].type == Line) {
-                            if (constraint->SecondPos == PointPos::none) {
+                            if (constraint->getPosId(1) == PointPos::none) {
                                 rtn = addTangentLineAtBSplineKnotConstraint(
                                     linegeoid,
                                     bsplinegeoid,
@@ -2193,11 +2209,11 @@ int Sketch::addConstraint(const Constraint* constraint)
 
                                 isSpecialCase = true;
                             }
-                            else if (constraint->SecondPos == PointPos::start
-                                     || constraint->SecondPos == PointPos::end) {
+                            else if (constraint->getPosId(1) == PointPos::start
+                                     || constraint->getPosId(1) == PointPos::end) {
                                 rtn = addTangentLineEndpointAtBSplineKnotConstraint(
                                     linegeoid,
-                                    constraint->SecondPos,
+                                    constraint->getPosId(1),
                                     bsplinegeoid,
                                     knotgeoId
                                 );
@@ -2221,12 +2237,12 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addAngleAtPointConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third,
-                    constraint->ThirdPos,
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
+                    constraint->getGeoId(2),
+                    constraint->getPosId(2),
                     c.value,
                     constraint->Type,
                     c.driving
@@ -2235,7 +2251,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             break;
         }
         case Distance:
-            if (constraint->SecondPos != PointPos::none) {  // point to point distance
+            if (constraint->getPosId(1) != PointPos::none) {  // point to point distance
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2245,18 +2261,20 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
                 rtn = addDistanceConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
                     c.value,
                     c.driving
                 );
             }
-            else if (constraint->FirstPos == PointPos::none && constraint->SecondPos == PointPos::none
-                     && constraint->Second != GeoEnum::GeoUndef
-                     && constraint->Third == GeoEnum::GeoUndef) {  // circle to circle, circle to
-                                                                   // arc, etc.
+            else if (constraint->getPosId(0) == PointPos::none
+                     && constraint->getPosId(1) == PointPos::none
+                     && constraint->getGeoId(1) != GeoEnum::GeoUndef
+                     && constraint->getGeoId(2) == GeoEnum::GeoUndef) {  // circle to circle,
+                                                                         // circle to
+                                                                         // arc, etc.
 
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
@@ -2266,10 +2284,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                     Parameters.push_back(c.value);
                     DrivenParameters.push_back(c.value);
                 }
-                rtn = addDistanceConstraint(constraint->First, constraint->Second, c.value, c.driving);
+                rtn = addDistanceConstraint(
+                    constraint->getGeoId(0),
+                    constraint->getGeoId(1),
+                    c.value,
+                    c.driving
+                );
             }
-            else if (constraint->Second != GeoEnum::GeoUndef) {
-                if (constraint->FirstPos != PointPos::none) {  // point to line distance
+            else if (constraint->getGeoId(1) != GeoEnum::GeoUndef) {
+                if (constraint->getPosId(0) != PointPos::none) {  // point to line distance
                     c.value = new double(constraint->getValue());
                     if (c.driving) {
                         FixParameters.push_back(c.value);
@@ -2279,9 +2302,9 @@ int Sketch::addConstraint(const Constraint* constraint)
                         DrivenParameters.push_back(c.value);
                     }
                     rtn = addDistanceConstraint(
-                        constraint->First,
-                        constraint->FirstPos,
-                        constraint->Second,
+                        constraint->getGeoId(0),
+                        constraint->getPosId(0),
+                        constraint->getGeoId(1),
                         c.value,
                         c.driving
                     );
@@ -2297,11 +2320,11 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addDistanceConstraint(constraint->First, c.value, c.driving);
+                rtn = addDistanceConstraint(constraint->getGeoId(0), c.value, c.driving);
             }
             break;
         case Angle:
-            if (constraint->Third != GeoEnum::GeoUndef) {
+            if (constraint->getGeoId(2) != GeoEnum::GeoUndef) {
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2312,19 +2335,19 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addAngleAtPointConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third,
-                    constraint->ThirdPos,
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
+                    constraint->getGeoId(2),
+                    constraint->getPosId(2),
                     c.value,
                     constraint->Type,
                     c.driving
                 );
             }
             // angle between two lines (with explicit start points)
-            else if (constraint->SecondPos != PointPos::none) {
+            else if (constraint->getPosId(1) != PointPos::none) {
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2335,15 +2358,15 @@ int Sketch::addConstraint(const Constraint* constraint)
                 }
 
                 rtn = addAngleConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
                     c.value,
                     c.driving
                 );
             }
-            else if (constraint->Second != GeoEnum::GeoUndef) {  // angle between two lines
+            else if (constraint->getGeoId(1) != GeoEnum::GeoUndef) {  // angle between two lines
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2353,9 +2376,14 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addAngleConstraint(constraint->First, constraint->Second, c.value, c.driving);
+                rtn = addAngleConstraint(
+                    constraint->getGeoId(0),
+                    constraint->getGeoId(1),
+                    c.value,
+                    c.driving
+                );
             }
-            else if (constraint->First != GeoEnum::GeoUndef) {  // orientation angle of a line
+            else if (constraint->getGeoId(0) != GeoEnum::GeoUndef) {  // orientation angle of a line
                 c.value = new double(constraint->getValue());
                 if (c.driving) {
                     FixParameters.push_back(c.value);
@@ -2365,7 +2393,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                     DrivenParameters.push_back(c.value);
                 }
 
-                rtn = addAngleConstraint(constraint->First, c.value, c.driving);
+                rtn = addAngleConstraint(constraint->getGeoId(0), c.value, c.driving);
             }
             break;
         case Radius: {
@@ -2378,7 +2406,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                 DrivenParameters.push_back(c.value);
             }
 
-            rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
+            rtn = addRadiusConstraint(constraint->getGeoId(0), c.value, c.driving);
             break;
         }
         case Diameter: {
@@ -2391,7 +2419,7 @@ int Sketch::addConstraint(const Constraint* constraint)
                 DrivenParameters.push_back(c.value);
             }
 
-            rtn = addDiameterConstraint(constraint->First, c.value, c.driving);
+            rtn = addDiameterConstraint(constraint->getGeoId(0), c.value, c.driving);
             break;
         }
         case Weight: {
@@ -2404,83 +2432,101 @@ int Sketch::addConstraint(const Constraint* constraint)
                 DrivenParameters.push_back(c.value);
             }
 
-            rtn = addRadiusConstraint(constraint->First, c.value, c.driving);
+            rtn = addRadiusConstraint(constraint->getGeoId(0), c.value, c.driving);
             break;
         }
         case Equal:
-            rtn = addEqualConstraint(constraint->First, constraint->Second);
+            rtn = addEqualConstraint(constraint->getGeoId(0), constraint->getGeoId(1));
             break;
         case Symmetric:
-            if (constraint->ThirdPos != PointPos::none) {
+            if (constraint->getPosId(2) != PointPos::none) {
                 rtn = addSymmetricConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third,
-                    constraint->ThirdPos
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
+                    constraint->getGeoId(2),
+                    constraint->getPosId(2)
                 );
             }
             else {
                 rtn = addSymmetricConstraint(
-                    constraint->First,
-                    constraint->FirstPos,
-                    constraint->Second,
-                    constraint->SecondPos,
-                    constraint->Third
+                    constraint->getGeoId(0),
+                    constraint->getPosId(0),
+                    constraint->getGeoId(1),
+                    constraint->getPosId(1),
+                    constraint->getGeoId(2)
                 );
             }
             break;
         case InternalAlignment:
             switch (constraint->AlignmentType) {
                 case EllipseMajorDiameter:
-                    rtn = addInternalAlignmentEllipseMajorDiameter(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentEllipseMajorDiameter(
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1)
+                    );
                     break;
                 case EllipseMinorDiameter:
-                    rtn = addInternalAlignmentEllipseMinorDiameter(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentEllipseMinorDiameter(
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1)
+                    );
                     break;
                 case EllipseFocus1:
-                    rtn = addInternalAlignmentEllipseFocus1(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentEllipseFocus1(
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1)
+                    );
                     break;
                 case EllipseFocus2:
-                    rtn = addInternalAlignmentEllipseFocus2(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentEllipseFocus2(
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1)
+                    );
                     break;
                 case HyperbolaMajor:
                     rtn = addInternalAlignmentHyperbolaMajorDiameter(
-                        constraint->First,
-                        constraint->Second
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1)
                     );
                     break;
                 case HyperbolaMinor:
                     rtn = addInternalAlignmentHyperbolaMinorDiameter(
-                        constraint->First,
-                        constraint->Second
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1)
                     );
                     break;
                 case HyperbolaFocus:
-                    rtn = addInternalAlignmentHyperbolaFocus(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentHyperbolaFocus(
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1)
+                    );
                     break;
                 case ParabolaFocus:
-                    rtn = addInternalAlignmentParabolaFocus(constraint->First, constraint->Second);
+                    rtn = addInternalAlignmentParabolaFocus(
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1)
+                    );
                     break;
                 case BSplineControlPoint:
                     rtn = addInternalAlignmentBSplineControlPoint(
-                        constraint->First,
-                        constraint->Second,
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1),
                         constraint->InternalAlignmentIndex
                     );
                     break;
                 case BSplineKnotPoint:
                     rtn = addInternalAlignmentKnotPoint(
-                        constraint->First,
-                        constraint->Second,
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1),
                         constraint->InternalAlignmentIndex
                     );
                     break;
                 case ParabolaFocalAxis:
                     rtn = addInternalAlignmentParabolaFocalDistance(
-                        constraint->First,
-                        constraint->Second
+                        constraint->getGeoId(0),
+                        constraint->getGeoId(1)
                     );
                     break;
                 default:
@@ -2504,11 +2550,11 @@ int Sketch::addConstraint(const Constraint* constraint)
 
             // assert(constraint->ThirdPos==none); //will work anyway...
             rtn = addSnellsLawConstraint(
-                constraint->First,
-                constraint->FirstPos,
-                constraint->Second,
-                constraint->SecondPos,
-                constraint->Third,
+                constraint->getGeoId(0),
+                constraint->getPosId(0),
+                constraint->getGeoId(1),
+                constraint->getPosId(1),
+                constraint->getGeoId(2),
                 c.value,
                 c.secondvalue,
                 c.driving
@@ -2623,7 +2669,7 @@ void Sketch::getBlockedGeometry(
     for (auto it = ConstraintList.cbegin(); it != ConstraintList.cend(); ++it, ++i) {
         switch ((*it)->Type) {
             case Block: {
-                int geoid = (*it)->First;
+                int geoid = (*it)->getGeoId(0);
 
                 if (geoid >= 0 && geoid < int(blockedGeometry.size())) {
                     blockedGeometry[geoid] = true;
@@ -2641,12 +2687,12 @@ void Sketch::getBlockedGeometry(
     // if a GeoId is blocked and it is linked to Internal Alignment, then GeoIds linked via Internal
     // Alignment are also to be blocked
     for (auto idx : internalAlignmentConstraintIndex) {
-        if (blockedGeometry[ConstraintList[idx]->Second]) {
-            blockedGeometry[ConstraintList[idx]->First] = true;
+        if (blockedGeometry[ConstraintList[idx]->getGeoId(1)]) {
+            blockedGeometry[ConstraintList[idx]->getGeoId(0)] = true;
             // associated geometry gets the same blocking constraint index as the blocked element
-            geo2blockingconstraintindex[ConstraintList[idx]->First]
-                = geo2blockingconstraintindex[ConstraintList[idx]->Second];
-            internalAlignmentgeo.push_back(ConstraintList[idx]->First);
+            geo2blockingconstraintindex[ConstraintList[idx]->getGeoId(0)]
+                = geo2blockingconstraintindex[ConstraintList[idx]->getGeoId(1)];
+            internalAlignmentgeo.push_back(ConstraintList[idx]->getGeoId(0));
             unenforceableConstraints[idx] = true;
         }
     }
@@ -2657,7 +2703,8 @@ void Sketch::getBlockedGeometry(
             // additionally any further constraint on auxiliary elements linked via Internal
             // Alignment are also unenforceable.
             for (auto& iag : internalAlignmentgeo) {
-                if ((*it)->First == iag || (*it)->Second == iag || (*it)->Third == iag) {
+                if ((*it)->getGeoId(0) == iag || (*it)->getGeoId(1) == iag
+                    || (*it)->getGeoId(2) == iag) {
                     unenforceableConstraints[i] = true;
                 }
             }
@@ -2669,24 +2716,27 @@ void Sketch::getBlockedGeometry(
 
             // further, any constraint taking only one element, which is blocked is also
             // unenforceable
-            if ((*it)->Second == GeoEnum::GeoUndef && (*it)->Third == GeoEnum::GeoUndef
-                && (*it)->First >= 0) {
-                if (blockedGeometry[(*it)->First] && i < geo2blockingconstraintindex[(*it)->First]) {
+            if ((*it)->getGeoId(1) == GeoEnum::GeoUndef && (*it)->getGeoId(2) == GeoEnum::GeoUndef
+                && (*it)->getGeoId(0) >= 0) {
+                if (blockedGeometry[(*it)->getGeoId(0)]
+                    && i < geo2blockingconstraintindex[(*it)->getGeoId(0)]) {
                     unenforceableConstraints[i] = true;
                 }
             }
             // further any constraint on only two elements where both elements are blocked or one is
             // blocked and the other is an axis or external provided that the constraints precede
             // the last block constraint.
-            else if ((*it)->Third == GeoEnum::GeoUndef) {
-                if (((*it)->First >= 0 && (*it)->Second >= 0 && blockedGeometry[(*it)->First]
-                     && blockedGeometry[(*it)->Second]
-                     && (i < geo2blockingconstraintindex[(*it)->First]
-                         || i < geo2blockingconstraintindex[(*it)->Second]))
-                    || ((*it)->First < 0 && (*it)->Second >= 0 && blockedGeometry[(*it)->Second]
-                        && i < geo2blockingconstraintindex[(*it)->Second])
-                    || ((*it)->First >= 0 && (*it)->Second < 0 && blockedGeometry[(*it)->First]
-                        && i < geo2blockingconstraintindex[(*it)->First])) {
+            else if ((*it)->getGeoId(2) == GeoEnum::GeoUndef) {
+                if (((*it)->getGeoId(0) >= 0 && (*it)->getGeoId(1) >= 0
+                     && blockedGeometry[(*it)->getGeoId(0)] && blockedGeometry[(*it)->getGeoId(1)]
+                     && (i < geo2blockingconstraintindex[(*it)->getGeoId(0)]
+                         || i < geo2blockingconstraintindex[(*it)->getGeoId(1)]))
+                    || ((*it)->getGeoId(0) < 0 && (*it)->getGeoId(1) >= 0
+                        && blockedGeometry[(*it)->getGeoId(1)]
+                        && i < geo2blockingconstraintindex[(*it)->getGeoId(1)])
+                    || ((*it)->getGeoId(0) >= 0 && (*it)->getGeoId(1) < 0
+                        && blockedGeometry[(*it)->getGeoId(0)]
+                        && i < geo2blockingconstraintindex[(*it)->getGeoId(0)])) {
                     unenforceableConstraints[i] = true;
                 }
             }
@@ -2695,33 +2745,33 @@ void Sketch::getBlockedGeometry(
             // elements where one is blocked and the other two are axis or external geo, provided
             // that the constraints precede the last block constraint.
             else {
-                if (((*it)->First >= 0 && (*it)->Second >= 0 && (*it)->Third >= 0
-                     && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second]
-                     && blockedGeometry[(*it)->Third]
-                     && (i < geo2blockingconstraintindex[(*it)->First]
-                         || i < geo2blockingconstraintindex[(*it)->Second]
-                         || i < geo2blockingconstraintindex[(*it)->Third]))
-                    || ((*it)->First < 0 && (*it)->Second >= 0 && (*it)->Third >= 0
-                        && blockedGeometry[(*it)->Second] && blockedGeometry[(*it)->Third]
-                        && (i < geo2blockingconstraintindex[(*it)->Second]
-                            || i < geo2blockingconstraintindex[(*it)->Third]))
-                    || ((*it)->First >= 0 && (*it)->Second < 0 && (*it)->Third >= 0
-                        && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Third]
-                        && (i < geo2blockingconstraintindex[(*it)->First]
-                            || i < geo2blockingconstraintindex[(*it)->Third]))
-                    || ((*it)->First >= 0 && (*it)->Second >= 0 && (*it)->Third < 0
-                        && blockedGeometry[(*it)->First] && blockedGeometry[(*it)->Second]
-                        && (i < geo2blockingconstraintindex[(*it)->First]
-                            || i < geo2blockingconstraintindex[(*it)->Second]))
-                    || ((*it)->First >= 0 && (*it)->Second < 0 && (*it)->Third < 0
-                        && blockedGeometry[(*it)->First]
-                        && i < geo2blockingconstraintindex[(*it)->First])
-                    || ((*it)->First < 0 && (*it)->Second >= 0 && (*it)->Third < 0
-                        && blockedGeometry[(*it)->Second]
-                        && i < geo2blockingconstraintindex[(*it)->Second])
-                    || ((*it)->First < 0 && (*it)->Second < 0 && (*it)->Third >= 0
-                        && blockedGeometry[(*it)->Third]
-                        && i < geo2blockingconstraintindex[(*it)->Third])) {
+                if (((*it)->getGeoId(0) >= 0 && (*it)->getGeoId(1) >= 0 && (*it)->getGeoId(2) >= 0
+                     && blockedGeometry[(*it)->getGeoId(0)] && blockedGeometry[(*it)->getGeoId(1)]
+                     && blockedGeometry[(*it)->getGeoId(2)]
+                     && (i < geo2blockingconstraintindex[(*it)->getGeoId(0)]
+                         || i < geo2blockingconstraintindex[(*it)->getGeoId(1)]
+                         || i < geo2blockingconstraintindex[(*it)->getGeoId(2)]))
+                    || ((*it)->getGeoId(0) < 0 && (*it)->getGeoId(1) >= 0 && (*it)->getGeoId(2) >= 0
+                        && blockedGeometry[(*it)->getGeoId(1)] && blockedGeometry[(*it)->getGeoId(2)]
+                        && (i < geo2blockingconstraintindex[(*it)->getGeoId(1)]
+                            || i < geo2blockingconstraintindex[(*it)->getGeoId(2)]))
+                    || ((*it)->getGeoId(0) >= 0 && (*it)->getGeoId(1) < 0 && (*it)->getGeoId(2) >= 0
+                        && blockedGeometry[(*it)->getGeoId(0)] && blockedGeometry[(*it)->getGeoId(2)]
+                        && (i < geo2blockingconstraintindex[(*it)->getGeoId(0)]
+                            || i < geo2blockingconstraintindex[(*it)->getGeoId(2)]))
+                    || ((*it)->getGeoId(0) >= 0 && (*it)->getGeoId(1) >= 0 && (*it)->getGeoId(2) < 0
+                        && blockedGeometry[(*it)->getGeoId(0)] && blockedGeometry[(*it)->getGeoId(1)]
+                        && (i < geo2blockingconstraintindex[(*it)->getGeoId(0)]
+                            || i < geo2blockingconstraintindex[(*it)->getGeoId(1)]))
+                    || ((*it)->getGeoId(0) >= 0 && (*it)->getGeoId(1) < 0 && (*it)->getGeoId(2) < 0
+                        && blockedGeometry[(*it)->getGeoId(0)]
+                        && i < geo2blockingconstraintindex[(*it)->getGeoId(0)])
+                    || ((*it)->getGeoId(0) < 0 && (*it)->getGeoId(1) >= 0 && (*it)->getGeoId(2) < 0
+                        && blockedGeometry[(*it)->getGeoId(1)]
+                        && i < geo2blockingconstraintindex[(*it)->getGeoId(1)])
+                    || ((*it)->getGeoId(0) < 0 && (*it)->getGeoId(1) < 0 && (*it)->getGeoId(2) >= 0
+                        && blockedGeometry[(*it)->getGeoId(2)]
+                        && i < geo2blockingconstraintindex[(*it)->getGeoId(2)])) {
 
                     unenforceableConstraints[i] = true;
                 }

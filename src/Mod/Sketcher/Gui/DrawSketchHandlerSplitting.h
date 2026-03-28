@@ -145,12 +145,12 @@ public:
                           return (
                               constr->Type == Sketcher::InternalAlignment
                               && constr->AlignmentType == Sketcher::BSplineKnotPoint
-                              && constr->First == pointGeoId
+                              && constr->getGeoId(0) == pointGeoId
                           );
                       });
 
                 if (conIt != constraints.end()) {
-                    GeoId = (*conIt)->Second;
+                    GeoId = (*conIt)->getGeoId(1);
                 }
             }
         }

@@ -208,7 +208,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         else {
             return false;
         }
-        constraint->First = FirstIndex;
+        constraint->setGeoId(0, FirstIndex);
         return true;
     };
 
@@ -279,8 +279,8 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             if (valid) {
-                constraint->First = FirstIndex;
-                constraint->Second = SecondIndex;
+                constraint->setGeoId(0, FirstIndex);
+                constraint->setGeoId(1, SecondIndex);
                 return true;
             }
         }
@@ -329,7 +329,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return false;
             }
 
-            constraint->First = FirstIndex;
+            constraint->setGeoId(0, FirstIndex);
             constraint->setValue(Value);
             return true;
         }
@@ -409,9 +409,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             if (valid) {
-                constraint->First = FirstIndex;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                constraint->Second = SecondIndex;
+                constraint->setElement(
+                    0,
+                    GeoElementId(FirstIndex, static_cast<Sketcher::PointPos>(FirstPos))
+                );
+                constraint->setGeoId(1, SecondIndex);
                 return true;
             }
         }
@@ -430,29 +432,29 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                     }
                 }
                 constraint->Type = Angle;
-                constraint->Second = SecondIndex;
+                constraint->setGeoId(1, SecondIndex);
             }
             else if (strcmp("Distance", ConstraintType) == 0) {
                 constraint->Type = Distance;
-                constraint->Second = SecondIndex;
+                constraint->setGeoId(1, SecondIndex);
             }
             else if (strcmp("DistanceX", ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
                 constraint->Type = DistanceX;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
+                constraint->setPosId(0, static_cast<Sketcher::PointPos>(FirstPos));
             }
             else if (strcmp("DistanceY", ConstraintType) == 0) {
                 FirstPos = SecondIndex;
                 SecondIndex = -1;
                 constraint->Type = DistanceY;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
+                constraint->setPosId(0, static_cast<Sketcher::PointPos>(FirstPos));
             }
             else {
                 return false;
             }
 
-            constraint->First = FirstIndex;
+            constraint->setGeoId(0, FirstIndex);
             constraint->setValue(Value);
             return true;
         }
@@ -528,23 +530,23 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             else if (strcmp("TangentViaPoint", ConstraintType) == 0) {
                 constraint->Type = Tangent;
                 // valid = true;//non-standard assignment
-                constraint->First = intArg1;
-                constraint->FirstPos = Sketcher::PointPos::none;
-                constraint->Second = intArg2;
-                constraint->SecondPos = Sketcher::PointPos::none;
-                constraint->Third = intArg3;
-                constraint->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->setElement(0, GeoElementId(intArg1, Sketcher::PointPos::none));
+                constraint->setElement(1, GeoElementId(intArg2, Sketcher::PointPos::none));
+                constraint->setElement(
+                    2,
+                    GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4))
+                );
                 return true;
             }
             else if (strcmp("PerpendicularViaPoint", ConstraintType) == 0) {
                 constraint->Type = Perpendicular;
                 // valid = true;//non-standard assignment
-                constraint->First = intArg1;
-                constraint->FirstPos = Sketcher::PointPos::none;
-                constraint->Second = intArg2;
-                constraint->SecondPos = Sketcher::PointPos::none;
-                constraint->Third = intArg3;
-                constraint->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->setElement(0, GeoElementId(intArg1, Sketcher::PointPos::none));
+                constraint->setElement(1, GeoElementId(intArg2, Sketcher::PointPos::none));
+                constraint->setElement(
+                    2,
+                    GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4))
+                );
                 return true;
             }
             else if (strstr(
@@ -568,18 +570,24 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 }
 
                 if (valid) {
-                    constraint->First = intArg1;
-                    constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                    constraint->Second = intArg3;
+                    constraint->setElement(
+                        0,
+                        GeoElementId(intArg1, static_cast<Sketcher::PointPos>(intArg2))
+                    );
+                    constraint->setGeoId(1, intArg3);
                     constraint->InternalAlignmentIndex = intArg4;
                     return true;
                 }
             }
             if (valid) {
-                constraint->First = intArg1;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                constraint->Second = intArg3;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->setElement(
+                    0,
+                    GeoElementId(intArg1, static_cast<Sketcher::PointPos>(intArg2))
+                );
+                constraint->setElement(
+                    1,
+                    GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4))
+                );
                 return true;
             }
         }
@@ -588,9 +596,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Value = PyFloat_AsDouble(oNumArg4);
             if (strcmp("Distance", ConstraintType) == 0) {
                 constraint->Type = Distance;
-                constraint->First = intArg1;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                constraint->Second = intArg3;
+                constraint->setElement(
+                    0,
+                    GeoElementId(intArg1, static_cast<Sketcher::PointPos>(intArg2))
+                );
+                constraint->setGeoId(1, intArg3);
                 constraint->setValue(Value);
                 return true;
             }
@@ -645,20 +655,28 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             intArg5 = PyLong_AsLong(oNumArg5);
             if (strcmp("Symmetric", ConstraintType) == 0) {
                 constraint->Type = Symmetric;
-                constraint->First = intArg1;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                constraint->Second = intArg3;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
-                constraint->Third = intArg5;
+                constraint->setElement(
+                    0,
+                    GeoElementId(intArg1, static_cast<Sketcher::PointPos>(intArg2))
+                );
+                constraint->setElement(
+                    1,
+                    GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4))
+                );
+                constraint->setGeoId(2, intArg5);
                 return true;
             }
             if (strcmp("Perpendicular", ConstraintType) == 0) {
                 constraint->Type = Perpendicular;
-                constraint->First = intArg1;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-                constraint->Second = intArg3;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
-                constraint->Third = intArg5;
+                constraint->setElement(
+                    0,
+                    GeoElementId(intArg1, static_cast<Sketcher::PointPos>(intArg2))
+                );
+                constraint->setElement(
+                    1,
+                    GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4))
+                );
+                constraint->setGeoId(2, intArg5);
                 return true;
             }
         }
@@ -692,12 +710,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 }
                 constraint->Type = Angle;
                 // valid = true;//non-standard assignment
-                constraint->First = intArg1;
-                constraint->FirstPos = Sketcher::PointPos::none;
-                constraint->Second = intArg2;  // let's goof up all the terminology =)
-                constraint->SecondPos = Sketcher::PointPos::none;
-                constraint->Third = intArg3;
-                constraint->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
+                constraint->setElement(0, GeoElementId(intArg1, Sketcher::PointPos::none));
+                constraint->setGeoId(1, intArg2);  // let's goof up all the terminology =)
+                constraint->setPosId(1, Sketcher::PointPos::none);
+                constraint->setElement(
+                    2,
+                    GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4))
+                );
                 constraint->setValue(Value);
                 return true;
             }
@@ -705,10 +724,8 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return false;
             }
 
-            constraint->First = intArg1;
-            constraint->FirstPos = static_cast<Sketcher::PointPos>(intArg2);
-            constraint->Second = intArg3;
-            constraint->SecondPos = static_cast<Sketcher::PointPos>(intArg4);
+            constraint->setElement(0, GeoElementId(intArg1, static_cast<Sketcher::PointPos>(intArg2)));
+            constraint->setElement(1, GeoElementId(intArg3, static_cast<Sketcher::PointPos>(intArg4)));
             constraint->setValue(Value);
             return true;
         }
@@ -772,12 +789,18 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3, PosIndex3
             if (strcmp("Symmetric", ConstraintType) == 0) {
                 constraint->Type = Symmetric;
-                constraint->First = FirstIndex;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                constraint->Second = SecondIndex;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
-                constraint->Third = ThirdIndex;
-                constraint->ThirdPos = static_cast<Sketcher::PointPos>(ThirdPos);
+                constraint->setElement(
+                    0,
+                    GeoElementId(FirstIndex, static_cast<Sketcher::PointPos>(FirstPos))
+                );
+                constraint->setElement(
+                    1,
+                    GeoElementId(SecondIndex, static_cast<Sketcher::PointPos>(SecondPos))
+                );
+                constraint->setElement(
+                    2,
+                    GeoElementId(ThirdIndex, static_cast<Sketcher::PointPos>(ThirdPos))
+                );
                 return true;
             }
         }
@@ -785,12 +808,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Value = PyFloat_AsDouble(index_or_value);
             if (strcmp("SnellsLaw", ConstraintType) == 0) {
                 constraint->Type = SnellsLaw;
-                constraint->First = FirstIndex;
-                constraint->FirstPos = static_cast<Sketcher::PointPos>(FirstPos);
-                constraint->Second = SecondIndex;
-                constraint->SecondPos = static_cast<Sketcher::PointPos>(SecondPos);
-                constraint->Third = ThirdIndex;
-                constraint->ThirdPos = Sketcher::PointPos::none;
+                constraint->setElement(
+                    0,
+                    GeoElementId(FirstIndex, static_cast<Sketcher::PointPos>(FirstPos))
+                );
+                constraint->setElement(
+                    1,
+                    GeoElementId(SecondIndex, static_cast<Sketcher::PointPos>(SecondPos))
+                );
+                constraint->setElement(2, GeoElementId(ThirdIndex, Sketcher::PointPos::none));
                 constraint->setValue(Value);
                 return true;
             }
@@ -891,13 +917,13 @@ std::string ConstraintPy::representation() const
             result << "'Coincident'>";
             break;
         case Horizontal:
-            result << "'Horizontal' (" << getConstraintPtr()->First << ")>";
+            result << "'Horizontal' (" << getConstraintPtr()->getGeoId(0) << ")>";
             break;
         case Vertical:
-            result << "'Vertical' (" << getConstraintPtr()->First << ")>";
+            result << "'Vertical' (" << getConstraintPtr()->getGeoId(0) << ")>";
             break;
         case Block:
-            result << "'Block' (" << getConstraintPtr()->First << ")>";
+            result << "'Block' (" << getConstraintPtr()->getGeoId(0) << ")>";
             break;
         case Radius:
             result << "'Radius'>";
@@ -912,7 +938,7 @@ std::string ConstraintPy::representation() const
             result << "'Parallel'>";
             break;
         case Tangent:
-            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef) {
+            if (this->getConstraintPtr()->getGeoId(2) == GeoEnum::GeoUndef) {
                 result << "'Tangent'>";
             }
             else {
@@ -920,7 +946,7 @@ std::string ConstraintPy::representation() const
             }
             break;
         case Perpendicular:
-            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef) {
+            if (this->getConstraintPtr()->getGeoId(2) == GeoEnum::GeoUndef) {
                 result << "'Perpendicular'>";
             }
             else {
@@ -931,7 +957,7 @@ std::string ConstraintPy::representation() const
             result << "'Distance'>";
             break;
         case Angle:
-            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef) {
+            if (this->getConstraintPtr()->getGeoId(2) == GeoEnum::GeoUndef) {
                 result << "'Angle'>";
             }
             else {
@@ -988,12 +1014,12 @@ std::string ConstraintPy::representation() const
             }
             break;
         case Equal:
-            result << "'Equal' (" << getConstraintPtr()->First << "," << getConstraintPtr()->Second
-                   << ")>";
+            result << "'Equal' (" << getConstraintPtr()->getGeoId(0) << ","
+                   << getConstraintPtr()->getGeoId(1) << ")>";
             break;
         case PointOnObject:
-            result << "'PointOnObject' (" << getConstraintPtr()->First << ","
-                   << getConstraintPtr()->Second << ")>";
+            result << "'PointOnObject' (" << getConstraintPtr()->getGeoId(0) << ","
+                   << getConstraintPtr()->getGeoId(1) << ")>";
             break;
         case Group:
             result << "'Group'>";
@@ -1085,17 +1111,17 @@ Py::String ConstraintPy::getType() const
 
 Py::Long ConstraintPy::getFirst() const
 {
-    return Py::Long(this->getConstraintPtr()->First);
+    return Py::Long(this->getConstraintPtr()->getGeoId(0));
 }
 
 void ConstraintPy::setFirst(Py::Long arg)
 {
-    this->getConstraintPtr()->First = arg;
+    this->getConstraintPtr()->setGeoId(0, arg);
 }
 
 Py::Long ConstraintPy::getFirstPos() const
 {
-    return Py::Long(static_cast<int>(this->getConstraintPtr()->FirstPos));
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->getPosId(0)));
 }
 
 void ConstraintPy::setFirstPos(Py::Long arg)
@@ -1104,7 +1130,7 @@ void ConstraintPy::setFirstPos(Py::Long arg)
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none)
         && pos <= static_cast<int>(Sketcher::PointPos::mid)) {
-        this->getConstraintPtr()->FirstPos = static_cast<Sketcher::PointPos>(pos);
+        this->getConstraintPtr()->setPosId(0, static_cast<Sketcher::PointPos>(pos));
     }
     else {
         std::stringstream str;
@@ -1116,17 +1142,17 @@ void ConstraintPy::setFirstPos(Py::Long arg)
 
 Py::Long ConstraintPy::getSecond() const
 {
-    return Py::Long(this->getConstraintPtr()->Second);
+    return Py::Long(this->getConstraintPtr()->getGeoId(1));
 }
 
 void ConstraintPy::setSecond(Py::Long arg)
 {
-    this->getConstraintPtr()->Second = arg;
+    this->getConstraintPtr()->setGeoId(1, arg);
 }
 
 Py::Long ConstraintPy::getSecondPos() const
 {
-    return Py::Long(static_cast<int>(this->getConstraintPtr()->SecondPos));
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->getPosId(1)));
 }
 
 void ConstraintPy::setSecondPos(Py::Long arg)
@@ -1135,7 +1161,7 @@ void ConstraintPy::setSecondPos(Py::Long arg)
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none)
         && pos <= static_cast<int>(Sketcher::PointPos::mid)) {
-        this->getConstraintPtr()->SecondPos = static_cast<Sketcher::PointPos>(pos);
+        this->getConstraintPtr()->setPosId(1, static_cast<Sketcher::PointPos>(pos));
     }
     else {
         std::stringstream str;
@@ -1147,17 +1173,17 @@ void ConstraintPy::setSecondPos(Py::Long arg)
 
 Py::Long ConstraintPy::getThird() const
 {
-    return Py::Long(this->getConstraintPtr()->Third);
+    return Py::Long(this->getConstraintPtr()->getGeoId(2));
 }
 
 void ConstraintPy::setThird(Py::Long arg)
 {
-    this->getConstraintPtr()->Third = arg;
+    this->getConstraintPtr()->setGeoId(2, arg);
 }
 
 Py::Long ConstraintPy::getThirdPos() const
 {
-    return Py::Long(static_cast<int>(this->getConstraintPtr()->ThirdPos));
+    return Py::Long(static_cast<int>(this->getConstraintPtr()->getPosId(2)));
 }
 
 void ConstraintPy::setThirdPos(Py::Long arg)
@@ -1166,7 +1192,7 @@ void ConstraintPy::setThirdPos(Py::Long arg)
 
     if (pos >= static_cast<int>(Sketcher::PointPos::none)
         && pos <= static_cast<int>(Sketcher::PointPos::mid)) {
-        this->getConstraintPtr()->ThirdPos = static_cast<Sketcher::PointPos>(pos);
+        this->getConstraintPtr()->setPosId(2, static_cast<Sketcher::PointPos>(pos));
     }
     else {
         std::stringstream str;

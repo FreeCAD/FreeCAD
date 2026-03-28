@@ -962,21 +962,24 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
              itc != mirrorconstr.end();
              ++itc) {
 
-            if ((*itc)->First != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->First == Sketcher::GeoEnum::HAxis
-                || (*itc)->First == Sketcher::GeoEnum::VAxis)
+            if ((*itc)->getGeoId(0) != Sketcher::GeoEnum::GeoUndef
+                || (*itc)->getGeoId(0) == Sketcher::GeoEnum::HAxis
+                || (*itc)->getGeoId(0) == Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                (*itc)->First -= (addedGeometries + 1);
-            if ((*itc)->Second != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->Second == Sketcher::GeoEnum::HAxis
-                || (*itc)->Second == Sketcher::GeoEnum::VAxis)
+                (*itc)->setGeoId(0, (*itc)->getGeoId(0) - (addedGeometries + 1));
+            }
+            if ((*itc)->getGeoId(1) != Sketcher::GeoEnum::GeoUndef
+                || (*itc)->getGeoId(1) == Sketcher::GeoEnum::HAxis
+                || (*itc)->getGeoId(1) == Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                (*itc)->Second -= (addedGeometries + 1);
-            if ((*itc)->Third != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->Third == Sketcher::GeoEnum::HAxis
-                || (*itc)->Third == Sketcher::GeoEnum::VAxis)
+                (*itc)->setGeoId(1, (*itc)->getGeoId(1) - (addedGeometries + 1));
+            }
+            if ((*itc)->getGeoId(2) != Sketcher::GeoEnum::GeoUndef
+                || (*itc)->getGeoId(2) == Sketcher::GeoEnum::HAxis
+                || (*itc)->getGeoId(2) == Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                (*itc)->Third -= (addedGeometries + 1);
+                (*itc)->setGeoId(2, (*itc)->getGeoId(2) - (addedGeometries + 1));
+            }
         }
 
         mirrorsketch->addGeometry(mirrorgeo);
@@ -1057,21 +1060,24 @@ void CmdSketcherMergeSketches::activated(int iMsg)
             Sketcher::Constraint* constraint =
                 mergesketch->Constraints.getValues()[i + baseConstraints];
 
-            if (constraint->First != Sketcher::GeoEnum::GeoUndef
-                && constraint->First != Sketcher::GeoEnum::HAxis
-                && constraint->First != Sketcher::GeoEnum::VAxis)
+            if (constraint->getGeoId(0) != Sketcher::GeoEnum::GeoUndef
+                && constraint->getGeoId(0) != Sketcher::GeoEnum::HAxis
+                && constraint->getGeoId(0) != Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                constraint->First += baseGeometry;
-            if (constraint->Second != Sketcher::GeoEnum::GeoUndef
-                && constraint->Second != Sketcher::GeoEnum::HAxis
-                && constraint->Second != Sketcher::GeoEnum::VAxis)
+                constraint->setGeoId(0, constraint->getGeoId(0) + baseGeometry);
+            }
+            if (constraint->getGeoId(1) != Sketcher::GeoEnum::GeoUndef
+                && constraint->getGeoId(1) != Sketcher::GeoEnum::HAxis
+                && constraint->getGeoId(1) != Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                constraint->Second += baseGeometry;
-            if (constraint->Third != Sketcher::GeoEnum::GeoUndef
-                && constraint->Third != Sketcher::GeoEnum::HAxis
-                && constraint->Third != Sketcher::GeoEnum::VAxis)
+                constraint->setGeoId(1, constraint->getGeoId(1) + baseGeometry);
+            }
+            if (constraint->getGeoId(2) != Sketcher::GeoEnum::GeoUndef
+                && constraint->getGeoId(2) != Sketcher::GeoEnum::HAxis
+                && constraint->getGeoId(2) != Sketcher::GeoEnum::VAxis) {
                 // not x, y axes or origin
-                constraint->Third += baseGeometry;
+                constraint->setGeoId(2, constraint->getGeoId(2) + baseGeometry);
+            }
         }
 
         baseGeometry = addedGeometries + 1;
