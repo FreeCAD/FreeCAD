@@ -8808,7 +8808,7 @@ class ifcaxis2placement3d(ifcplacement):
 			return eval_wr4_wr
 
 	def wr5(self):
-		eval_wr5_wr = ( not (EXISTS(self.axis) XOR EXISTS(self.refdirection)))
+		eval_wr5_wr = ( not (EXISTS(self.axis) ^ EXISTS(self.refdirection)))
 		if not eval_wr5_wr:
 			raise AssertionError('Rule wr5 violated')
 		else:
@@ -12999,7 +12999,7 @@ class ifcshapemodel(ifcrepresentation):
 			raise AssertionError('Argument ofshapeaspect is INVERSE. It is computed and can not be set to any value')
 		return property(**locals())
 	def wr11(self):
-		eval_wr11_wr = ((SIZEOF(self.self.ifcrepresentation.self.ofproductrepresentation)  ==  1) XOR (SIZEOF(self.self.ifcrepresentation.self.representationmap)  ==  1) XOR (SIZEOF(self.ofshapeaspect)  ==  1))
+		eval_wr11_wr = ((SIZEOF(self.self.ifcrepresentation.self.ofproductrepresentation)  ==  1) ^ (SIZEOF(self.self.ifcrepresentation.self.representationmap)  ==  1) ^ (SIZEOF(self.ofshapeaspect)  ==  1))
 		if not eval_wr11_wr:
 			raise AssertionError('Rule wr11 violated')
 		else:
@@ -15432,14 +15432,14 @@ class ifcdoorliningproperties(ifcpropertysetdefinition):
 			return eval_wr32_wr
 
 	def wr33(self):
-		eval_wr33_wr = ((EXISTS(self.transomoffset)  and  EXISTS(self.transomthickness)) XOR (( not EXISTS(self.transomoffset))  and  ( not EXISTS(self.transomthickness))))
+		eval_wr33_wr = ((EXISTS(self.transomoffset)  and  EXISTS(self.transomthickness)) ^ (( not EXISTS(self.transomoffset))  and  ( not EXISTS(self.transomthickness))))
 		if not eval_wr33_wr:
 			raise AssertionError('Rule wr33 violated')
 		else:
 			return eval_wr33_wr
 
 	def wr34(self):
-		eval_wr34_wr = ((EXISTS(self.casingdepth)  and  EXISTS(self.casingthickness)) XOR (( not EXISTS(self.casingdepth))  and  ( not EXISTS(self.casingthickness))))
+		eval_wr34_wr = ((EXISTS(self.casingdepth)  and  EXISTS(self.casingthickness)) ^ (( not EXISTS(self.casingdepth))  and  ( not EXISTS(self.casingthickness))))
 		if not eval_wr34_wr:
 			raise AssertionError('Rule wr34 violated')
 		else:
@@ -17233,7 +17233,7 @@ class ifcgridaxis(BaseEntityClass):
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = ((SIZEOF(self.partofu)  ==  1) XOR (SIZEOF(self.partofv)  ==  1) XOR (SIZEOF(self.partofw)  ==  1))
+		eval_wr2_wr = ((SIZEOF(self.partofu)  ==  1) ^ (SIZEOF(self.partofv)  ==  1) ^ (SIZEOF(self.partofw)  ==  1))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
@@ -26847,7 +26847,7 @@ class ifcdocumentreference(ifcexternalreference):
 			raise AssertionError('Argument referencetodocument is INVERSE. It is computed and can not be set to any value')
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = (EXISTS(self.name) XOR EXISTS(self.referencetodocument[1]))
+		eval_wr1_wr = (EXISTS(self.name) ^ EXISTS(self.referencetodocument[1]))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:

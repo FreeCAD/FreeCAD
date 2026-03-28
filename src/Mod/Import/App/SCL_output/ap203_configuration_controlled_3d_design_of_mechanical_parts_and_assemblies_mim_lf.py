@@ -2586,7 +2586,7 @@ class styled_item(representation_item):
 				self._item = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((SIZEOF(self.self.styles)  ==  1) XOR (SIZEOF(None)  ==  0))
+		eval_wr1_wr = ((SIZEOF(self.self.styles)  ==  1) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -7725,8 +7725,8 @@ class applied_attribute_classification_assignment(attribute_classification_assig
 		# Mandatory argument
 			if value==None:
 				raise AssertionError('Argument attribute_classification_assignment_assigned_class is mantatory and can not be set to None')
-			if not check_type(value,class):
-				self._attribute_classification_assignment_assigned_class = class(value)
+			if not check_type(value,class_):
+				self._attribute_classification_assignment_assigned_class = class_(value)
 			else:
 				self._attribute_classification_assignment_assigned_class = value
 		return property(**locals())
@@ -15497,7 +15497,7 @@ class class_by_extension(class_):
 	'''Entity class_by_extension definition.
 	'''
 	def __init__( self , inherited0__name , inherited1__description ,  ):
-		class.__init__(self , inherited0__name , inherited1__description , )
+		class_.__init__(self , inherited0__name , inherited1__description , )
 
 ####################
  # ENTITY edge_based_wireframe_model #
@@ -19879,7 +19879,7 @@ class solid_with_stepped_round_hole_and_conical_transitions(solid_with_stepped_r
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.SOLID_WITH_THROUGH_DEPRESSION'  ==  TYPEOF(self)) XOR (SIZEOF(self.conical_transitions)  <=  self.self.solid_with_stepped_round_hole.self.segments))
+		eval_wr2_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.SOLID_WITH_THROUGH_DEPRESSION'  ==  TYPEOF(self)) ^ (SIZEOF(self.conical_transitions)  <=  self.self.solid_with_stepped_round_hole.self.segments))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
@@ -23480,7 +23480,7 @@ class class_by_intension(class_):
 	'''Entity class_by_intension definition.
 	'''
 	def __init__( self , inherited0__name , inherited1__description ,  ):
-		class.__init__(self , inherited0__name , inherited1__description , )
+		class_.__init__(self , inherited0__name , inherited1__description , )
 
 ####################
  # ENTITY manifold_subsurface_shape_representation #
@@ -24315,7 +24315,7 @@ class characterized_class(characterized_object,class_):
 	'''
 	def __init__( self , inherited0__name , inherited1__description , inherited2__name , inherited3__description ,  ):
 		characterized_object.__init__(self , inherited0__name , inherited1__description , )
-		class.__init__(self , inherited2__name , inherited3__description , )
+		class_.__init__(self , inherited2__name , inherited3__description , )
 
 ####################
  # ENTITY externally_defined_tile_style #
@@ -25515,7 +25515,7 @@ class surface_style_rendering_with_properties(surface_style_rendering):
 				self._properties = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((HIINDEX(self.self.properties)  ==  1) XOR (TYPEOF(self.self.properties[1])  !=  TYPEOF(self.self.properties[2])))
+		eval_wr1_wr = ((HIINDEX(self.self.properties)  ==  1) ^ (TYPEOF(self.self.properties[1])  !=  TYPEOF(self.self.properties[2])))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -26368,7 +26368,7 @@ class product_identification(configuration_item,characterized_object):
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = (( not (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.'  +  'CONFIGURABLE_ITEM')  ==  TYPEOF(self))) XOR (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.'  +  'PRODUCT_SPECIFICATION')  ==  TYPEOF(self)))
+		eval_wr2_wr = (( not (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.'  +  'CONFIGURABLE_ITEM')  ==  TYPEOF(self))) ^ (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.'  +  'PRODUCT_SPECIFICATION')  ==  TYPEOF(self)))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
@@ -30094,14 +30094,14 @@ class track_blended_solid_with_end_conditions(track_blended_solid):
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = ( not (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.VERTEX'  ==  TYPEOF(self.end_conditions[1]))  and  ( not ((self.end_conditions[1]  ==  self.self.edge_blended_solid.self.blended_edges[1].self.edge_start) XOR (self.end_conditions[1]  ==  self.self.edge_blended_solid.self.blended_edges[1].self.edge_end)))))
+		eval_wr3_wr = ( not (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.VERTEX'  ==  TYPEOF(self.end_conditions[1]))  and  ( not ((self.end_conditions[1]  ==  self.self.edge_blended_solid.self.blended_edges[1].self.edge_start) ^ (self.end_conditions[1]  ==  self.self.edge_blended_solid.self.blended_edges[1].self.edge_end)))))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
 			return eval_wr3_wr
 
 	def wr4(self):
-		eval_wr4_wr = ( not (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.VERTEX'  ==  TYPEOF(self.end_conditions[2]))  and  ( not ((self.end_conditions[2]  ==  self.self.edge_blended_solid.self.blended_edges[HIINDEX(self.self.edge_blended_solid.self.blended_edges)].self.edge_start) XOR (self.end_conditions[2]  ==  self.self.edge_blended_solid.self.blended_edges[HIINDEX(self.self.edge_blended_solid.self.blended_edges)].self.edge_end)))))
+		eval_wr4_wr = ( not (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.VERTEX'  ==  TYPEOF(self.end_conditions[2]))  and  ( not ((self.end_conditions[2]  ==  self.self.edge_blended_solid.self.blended_edges[HIINDEX(self.self.edge_blended_solid.self.blended_edges)].self.edge_start) ^ (self.end_conditions[2]  ==  self.self.edge_blended_solid.self.blended_edges[HIINDEX(self.self.edge_blended_solid.self.blended_edges)].self.edge_end)))))
 		if not eval_wr4_wr:
 			raise AssertionError('Rule wr4 violated')
 		else:
@@ -30484,7 +30484,7 @@ class extruded_face_solid_with_trim_conditions(extruded_face_solid):
 			return eval_wr3_wr
 
 	def wr4(self):
-		eval_wr4_wr = ((((self.first_trim_intent  ==  trim_intent.self.offset)  and  (self.first_offset  >  0)) XOR ((self.first_trim_intent  !=  trim_intent.self.offset)  and  (self.first_offset  ==  0)))  and  (((self.second_trim_intent  ==  trim_intent.self.offset)  and  (self.second_offset  >  0)) XOR ((self.second_trim_intent  !=  trim_intent.self.offset)  and  (self.second_offset  ==  0))))
+		eval_wr4_wr = ((((self.first_trim_intent  ==  trim_intent.self.offset)  and  (self.first_offset  >  0)) ^ ((self.first_trim_intent  !=  trim_intent.self.offset)  and  (self.first_offset  ==  0)))  and  (((self.second_trim_intent  ==  trim_intent.self.offset)  and  (self.second_offset  >  0)) ^ ((self.second_trim_intent  !=  trim_intent.self.offset)  and  (self.second_offset  ==  0))))
 		if not eval_wr4_wr:
 			raise AssertionError('Rule wr4 violated')
 		else:
@@ -32790,7 +32790,7 @@ class datum(shape_aspect):
 			raise AssertionError('Argument established_by_relationships is INVERSE. It is computed and can not be set to any value')
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.COMMON_DATUM'  ==  TYPEOF(self)) XOR (SIZEOF(None)  ==  1) XOR (SIZEOF(None)  >=  1))
+		eval_wr1_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.COMMON_DATUM'  ==  TYPEOF(self)) ^ (SIZEOF(None)  ==  1) ^ (SIZEOF(None)  >=  1))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -33384,21 +33384,21 @@ class dimension_callout(draughting_callout):
 	def __init__( self , inherited0__name , inherited1__contents ,  ):
 		draughting_callout.__init__(self , inherited0__name , inherited1__contents , )
 	def wr1(self):
-		eval_wr1_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.LEADER_DIRECTED_CALLOUT'  ==  TYPEOF(self)) XOR (SIZEOF(None)  ==  0))
+		eval_wr1_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.LEADER_DIRECTED_CALLOUT'  ==  TYPEOF(self)) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.PROJECTION_DIRECTED_CALLOUT'  ==  TYPEOF(self)) XOR (SIZEOF(None)  ==  0))
+		eval_wr2_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.PROJECTION_DIRECTED_CALLOUT'  ==  TYPEOF(self)) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.DIMENSION_CURVE_DIRECTED_CALLOUT'  ==  TYPEOF(self)) XOR (SIZEOF(None)  ==  0))
+		eval_wr3_wr = (('AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.DIMENSION_CURVE_DIRECTED_CALLOUT'  ==  TYPEOF(self)) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
@@ -35573,7 +35573,7 @@ class externally_defined_class(class_,externally_defined_item):
 	'''Entity externally_defined_class definition.
 	'''
 	def __init__( self , inherited0__name , inherited1__description , inherited2__item_id , inherited3__source ,  ):
-		class.__init__(self , inherited0__name , inherited1__description , )
+		class_.__init__(self , inherited0__name , inherited1__description , )
 		externally_defined_item.__init__(self , inherited2__item_id , inherited3__source , )
 
 ####################
@@ -39027,7 +39027,7 @@ class surface_style_parameter_line(founded_item):
 				self._direction_counts = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((HIINDEX(self.self.direction_counts)  ==  1) XOR (TYPEOF(self.self.direction_counts[1])  !=  TYPEOF(self.self.direction_counts[2])))
+		eval_wr1_wr = ((HIINDEX(self.self.direction_counts)  ==  1) ^ (TYPEOF(self.self.direction_counts[1])  !=  TYPEOF(self.self.direction_counts[2])))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -39637,10 +39637,10 @@ def check_continuous_edges(edges,):
 	'''
 	if (SIZEOF(edges)  ==  1):
 		return TRUE
-	if ((edges[2].edge_start  ==  edges[1].edge_end) XOR (edges[2].edge_start  ==  edges[1].edge_start)):
+	if ((edges[2].edge_start  ==  edges[1].edge_end) ^ (edges[2].edge_start  ==  edges[1].edge_start)):
 		next_vertex = edges[2].edge_end
 	else:
-		if ((edges[2].edge_end  ==  edges[1].edge_end) XOR (edges[2].edge_end  ==  edges[1].edge_start)):
+		if ((edges[2].edge_end  ==  edges[1].edge_end) ^ (edges[2].edge_end  ==  edges[1].edge_start)):
 			next_vertex = edges[2].edge_start
 		else:
 			return FALSE
@@ -39666,7 +39666,8 @@ def acyclic_mapped_representation(mi,):
 	'''
 	rs1 = using_representations(mi)
 	rs2 = []
-	for  while SIZEOF(rs1)  >  0		for  i in range(1,HIINDEX(rs1),1):
+	while SIZEOF(rs1)  >  0:
+		for  i in range(1,HIINDEX(rs1),1):
 			rms = bag_to_set(USEDIN(rs1[i],'AP203_CONFIGURATION_CONTROLLED_3D_DESIGN_OF_MECHANICAL_PARTS_AND_ASSEMBLIES_MIM_LF.REPRESENTATION_MAP.MAPPED_REPRESENTATION'))
 			if (SIZEOF(rms)  >  0):
 				for  j in range(1,HIINDEX(rms),1):
@@ -39702,7 +39703,7 @@ def validate_countersink_radii(cskhole,):
 	:type cskhole:solid_with_stepped_round_hole_and_conical_transitions
 	'''
 	for  i in range(1,SIZEOF(cskhole.conical_transitions),1):
-		if (((cskhole.conical_transitions[i].transition_number  ==  1)  and  (cskhole.conical_transitions[i].cone_apex_angle  <  0)) XOR ((cskhole.conical_transitions[i].transition_number  ==  n)  and  (cskhole.conical_transitions[i].cone_apex_angle  >  0))):
+		if (((cskhole.conical_transitions[i].transition_number  ==  1)  and  (cskhole.conical_transitions[i].cone_apex_angle  <  0)) ^ ((cskhole.conical_transitions[i].transition_number  ==  n)  and  (cskhole.conical_transitions[i].cone_apex_angle  >  0))):
 			return FALSE
 		else:
 			if ((cskhole.conical_transitions[i].transition_number  !=  1)  and  (cskhole.conical_transitions[i].transition_number  !=  n)):
@@ -41323,7 +41324,7 @@ def control_characters_free(s,):
 	'''
 	for  i in range(1,LENGTH(s),1):
 		ch = s[i]
-		if (((ch  ==  '\x9')  or  (ch  ==  '\xA'))  or  (ch  ==  '\xD')):
+		if (((ch  ==  '\x09')  or  (ch  ==  '\x0A'))  or  (ch  ==  '\x0D')):
 			return FALSE
 	return TRUE
 

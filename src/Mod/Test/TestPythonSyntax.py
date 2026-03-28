@@ -59,12 +59,6 @@ class PythonSyntaxTestCase(unittest.TestCase):
 
     def setUp(self):
         self.whitelist = []
-        self.whitelist += [
-            "ap203_configuration_controlled_3d_design_of_mechanical_parts_and_assemblies_mim_lf.py"
-        ]
-        self.whitelist += ["automotive_design.py"]
-        self.whitelist += ["ifc2x3.py"]
-        self.whitelist += ["ifc4.py"]
 
     def testAll(self):
         mod_dir = os.path.join(App.getHomePath(), "Mod")

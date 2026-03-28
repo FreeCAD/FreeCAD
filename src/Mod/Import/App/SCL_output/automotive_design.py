@@ -2352,7 +2352,7 @@ class styled_item(representation_item):
 				self._item = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((SIZEOF(self.self.styles)  ==  1) XOR (SIZEOF(None)  ==  0))
+		eval_wr1_wr = ((SIZEOF(self.self.styles)  ==  1) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -6091,21 +6091,21 @@ class point_on_planar_curve_pair_range(simple_pair_range):
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_yaw))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_yaw))) XOR (self.lower_limit_yaw  <  self.upper_limit_yaw))
+		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_yaw))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_yaw))) ^ (self.lower_limit_yaw  <  self.upper_limit_yaw))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_pitch))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_pitch))) XOR (self.lower_limit_pitch  <  self.upper_limit_pitch))
+		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_pitch))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_pitch))) ^ (self.lower_limit_pitch  <  self.upper_limit_pitch))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
 			return eval_wr3_wr
 
 	def wr4(self):
-		eval_wr4_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_roll))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_roll))) XOR (self.lower_limit_roll  <  self.upper_limit_roll))
+		eval_wr4_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_roll))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_roll))) ^ (self.lower_limit_roll  <  self.upper_limit_roll))
 		if not eval_wr4_wr:
 			raise AssertionError('Rule wr4 violated')
 		else:
@@ -6594,21 +6594,21 @@ class planar_pair_range(simple_pair_range):
 				self._upper_limit_actual_translation_y = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) XOR (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
+		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) ^ (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_translation_x))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_translation_x))) XOR (self.lower_limit_actual_translation_x  <  self.upper_limit_actual_translation_x))
+		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_translation_x))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_translation_x))) ^ (self.lower_limit_actual_translation_x  <  self.upper_limit_actual_translation_x))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_translation_y))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_translation_y))) XOR (self.lower_limit_actual_translation_y  <  self.upper_limit_actual_translation_y))
+		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_translation_y))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_translation_y))) ^ (self.lower_limit_actual_translation_y  <  self.upper_limit_actual_translation_y))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
@@ -9835,7 +9835,7 @@ class kinematic_analysis_result(BaseEntityClass):
 				self._contained_kinematic_results = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((SIZEOF(None)  >  0) XOR (SIZEOF(None)  ==  0))
+		eval_wr1_wr = ((SIZEOF(None)  >  0) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -14913,14 +14913,14 @@ class cylindrical_pair_range(simple_pair_range):
 				self._upper_limit_actual_rotation = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_translation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_translation))) XOR (self.lower_limit_actual_translation  <  self.upper_limit_actual_translation))
+		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_translation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_translation))) ^ (self.lower_limit_actual_translation  <  self.upper_limit_actual_translation))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) XOR (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
+		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) ^ (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
@@ -16633,14 +16633,14 @@ class universal_pair_range(simple_pair_range):
 				self._upper_limit_second_rotation = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_first_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_first_rotation))) XOR (self.lower_limit_first_rotation  <  self.upper_limit_first_rotation))
+		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_first_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_first_rotation))) ^ (self.lower_limit_first_rotation  <  self.upper_limit_first_rotation))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_second_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_second_rotation))) XOR (self.lower_limit_second_rotation  <  self.upper_limit_second_rotation))
+		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_second_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_second_rotation))) ^ (self.lower_limit_second_rotation  <  self.upper_limit_second_rotation))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
@@ -16858,14 +16858,14 @@ class slot_end(shape_aspect):
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = ((self.self.description  ==  ['open','radiused']) XOR (SIZEOF(None)  ==  0))
+		eval_wr3_wr = ((self.self.description  ==  ['open','radiused']) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
 			return eval_wr3_wr
 
 	def wr4(self):
-		eval_wr4_wr = (( not (self.self.description  ==  ['flat','woodruff'])) XOR (SIZEOF(None)  ==  1))
+		eval_wr4_wr = (( not (self.self.description  ==  ['flat','woodruff'])) ^ (SIZEOF(None)  ==  1))
 		if not eval_wr4_wr:
 			raise AssertionError('Rule wr4 violated')
 		else:
@@ -17020,7 +17020,7 @@ class edge_round(transition_feature):
 	def __init__( self , inherited0__name , inherited1__description , inherited2__of_shape , inherited3__product_definitional ,  ):
 		transition_feature.__init__(self , inherited0__name , inherited1__description , inherited2__of_shape , inherited3__product_definitional , )
 	def wr1(self):
-		eval_wr1_wr = ((self.self.description  !=  'constant radius') XOR (SIZEOF(None)  ==  1))
+		eval_wr1_wr = ((self.self.description  !=  'constant radius') ^ (SIZEOF(None)  ==  1))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -17922,21 +17922,21 @@ class spherical_pair_range(simple_pair_range):
 				self._upper_limit_roll = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_yaw))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_yaw))) XOR (self.lower_limit_yaw  <  self.upper_limit_yaw))
+		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_yaw))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_yaw))) ^ (self.lower_limit_yaw  <  self.upper_limit_yaw))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_pitch))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_pitch))) XOR (self.lower_limit_pitch  <  self.upper_limit_pitch))
+		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_pitch))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_pitch))) ^ (self.lower_limit_pitch  <  self.upper_limit_pitch))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_roll))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_roll))) XOR (self.lower_limit_roll  <  self.upper_limit_roll))
+		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_roll))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_roll))) ^ (self.lower_limit_roll  <  self.upper_limit_roll))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
@@ -21235,7 +21235,7 @@ class joggle_termination(shape_aspect):
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = ((self.self.description  ==  'value termination') XOR (SIZEOF(None)  ==  0))
+		eval_wr3_wr = ((self.self.description  ==  'value termination') ^ (SIZEOF(None)  ==  0))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
@@ -22740,7 +22740,7 @@ class bead_end(shape_aspect):
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = ((self.self.description  !=  'linear') XOR (SIZEOF(None)  >  0))
+		eval_wr3_wr = ((self.self.description  !=  'linear') ^ (SIZEOF(None)  >  0))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
@@ -24289,7 +24289,7 @@ class characterized_class(characterized_object,class_):
 	'''
 	def __init__( self , inherited0__name , inherited1__description , inherited2__name , inherited3__description ,  ):
 		characterized_object.__init__(self , inherited0__name , inherited1__description , )
-		class.__init__(self , inherited2__name , inherited3__description , )
+		class_.__init__(self , inherited2__name , inherited3__description , )
 
 ####################
  # ENTITY externally_defined_tile_style #
@@ -25358,7 +25358,7 @@ class surface_style_rendering_with_properties(surface_style_rendering):
 				self._properties = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((HIINDEX(self.self.properties)  ==  1) XOR (TYPEOF(self.self.properties[1])  !=  TYPEOF(self.self.properties[2])))
+		eval_wr1_wr = ((HIINDEX(self.self.properties)  ==  1) ^ (TYPEOF(self.self.properties[1])  !=  TYPEOF(self.self.properties[2])))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -26445,7 +26445,7 @@ class gear_pair_range(simple_pair_range):
 				self._upper_limit_actual_rotation_1 = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation_1))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation_1))) XOR (self.lower_limit_actual_rotation_1  <  self.upper_limit_actual_rotation_1))
+		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation_1))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation_1))) ^ (self.lower_limit_actual_rotation_1  <  self.upper_limit_actual_rotation_1))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -27539,7 +27539,7 @@ class approximation_tolerance_deviation(founded_item):
 				self._definition_space = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((HIINDEX(self.self.tolerances)  ==  1) XOR (TYPEOF(self.self.tolerances[1])  !=  TYPEOF(self.self.tolerances[2])))
+		eval_wr1_wr = ((HIINDEX(self.self.tolerances)  ==  1) ^ (TYPEOF(self.self.tolerances[1])  !=  TYPEOF(self.self.tolerances[2])))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -27703,7 +27703,7 @@ class screw_pair_range(simple_pair_range):
 				self._upper_limit_actual_rotation = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) XOR (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
+		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) ^ (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -31740,7 +31740,7 @@ class surface_pair_range(simple_pair_range):
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) XOR (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
+		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) ^ (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
@@ -33583,7 +33583,7 @@ class rack_and_pinion_pair_range(simple_pair_range):
 				self._upper_limit_rack_displacement = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_rack_displacement))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_rack_displacement))) XOR (self.lower_limit_rack_displacement  <  self.upper_limit_rack_displacement))
+		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_rack_displacement))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_rack_displacement))) ^ (self.lower_limit_rack_displacement  <  self.upper_limit_rack_displacement))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -33599,21 +33599,21 @@ class dimension_callout(draughting_callout):
 	def __init__( self , inherited0__name , inherited1__contents ,  ):
 		draughting_callout.__init__(self , inherited0__name , inherited1__contents , )
 	def wr1(self):
-		eval_wr1_wr = (('AUTOMOTIVE_DESIGN.LEADER_DIRECTED_CALLOUT'  ==  TYPEOF(self)) XOR (SIZEOF(None)  ==  0))
+		eval_wr1_wr = (('AUTOMOTIVE_DESIGN.LEADER_DIRECTED_CALLOUT'  ==  TYPEOF(self)) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = (('AUTOMOTIVE_DESIGN.PROJECTION_DIRECTED_CALLOUT'  ==  TYPEOF(self)) XOR (SIZEOF(None)  ==  0))
+		eval_wr2_wr = (('AUTOMOTIVE_DESIGN.PROJECTION_DIRECTED_CALLOUT'  ==  TYPEOF(self)) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = (('AUTOMOTIVE_DESIGN.DIMENSION_CURVE_DIRECTED_CALLOUT'  ==  TYPEOF(self)) XOR (SIZEOF(None)  ==  0))
+		eval_wr3_wr = (('AUTOMOTIVE_DESIGN.DIMENSION_CURVE_DIRECTED_CALLOUT'  ==  TYPEOF(self)) ^ (SIZEOF(None)  ==  0))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
@@ -33891,7 +33891,7 @@ class approximation_tolerance_parameter(founded_item):
 				self._tolerances = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((HIINDEX(self.self.tolerances)  ==  1) XOR (TYPEOF(self.self.tolerances[1])  !=  TYPEOF(self.self.tolerances[2])))
+		eval_wr1_wr = ((HIINDEX(self.self.tolerances)  ==  1) ^ (TYPEOF(self.self.tolerances[1])  !=  TYPEOF(self.self.tolerances[2])))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -34491,21 +34491,21 @@ class point_on_surface_pair_range(simple_pair_range):
 			return eval_wr1_wr
 
 	def wr2(self):
-		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_yaw))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_yaw))) XOR (self.lower_limit_yaw  <  self.upper_limit_yaw))
+		eval_wr2_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_yaw))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_yaw))) ^ (self.lower_limit_yaw  <  self.upper_limit_yaw))
 		if not eval_wr2_wr:
 			raise AssertionError('Rule wr2 violated')
 		else:
 			return eval_wr2_wr
 
 	def wr3(self):
-		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_pitch))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_pitch))) XOR (self.lower_limit_pitch  <  self.upper_limit_pitch))
+		eval_wr3_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_pitch))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_pitch))) ^ (self.lower_limit_pitch  <  self.upper_limit_pitch))
 		if not eval_wr3_wr:
 			raise AssertionError('Rule wr3 violated')
 		else:
 			return eval_wr3_wr
 
 	def wr4(self):
-		eval_wr4_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_roll))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_roll))) XOR (self.lower_limit_roll  <  self.upper_limit_roll))
+		eval_wr4_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_roll))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_roll))) ^ (self.lower_limit_roll  <  self.upper_limit_roll))
 		if not eval_wr4_wr:
 			raise AssertionError('Rule wr4 violated')
 		else:
@@ -35521,7 +35521,7 @@ class prismatic_pair_range(simple_pair_range):
 				self._upper_limit_actual_translation = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_translation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_translation))) XOR (self.lower_limit_actual_translation  <  self.upper_limit_actual_translation))
+		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_translation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_translation))) ^ (self.lower_limit_actual_translation  <  self.upper_limit_actual_translation))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -36152,7 +36152,7 @@ class externally_defined_class(class_,externally_defined_item):
 	'''Entity externally_defined_class definition.
 	'''
 	def __init__( self , inherited0__name , inherited1__description , inherited2__item_id , inherited3__source ,  ):
-		class.__init__(self , inherited0__name , inherited1__description , )
+		class_.__init__(self , inherited0__name , inherited1__description , )
 		externally_defined_item.__init__(self , inherited2__item_id , inherited3__source , )
 
 ####################
@@ -37125,7 +37125,7 @@ class revolute_pair_range(simple_pair_range):
 				self._upper_limit_actual_rotation = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) XOR (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
+		eval_wr1_wr = ((('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.lower_limit_actual_rotation))  or  ('AUTOMOTIVE_DESIGN.UNLIMITED_RANGE'  ==  TYPEOF(self.upper_limit_actual_rotation))) ^ (self.lower_limit_actual_rotation  <  self.upper_limit_actual_rotation))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -37500,7 +37500,7 @@ class fillet(transition_feature):
 	def __init__( self , inherited0__name , inherited1__description , inherited2__of_shape , inherited3__product_definitional ,  ):
 		transition_feature.__init__(self , inherited0__name , inherited1__description , inherited2__of_shape , inherited3__product_definitional , )
 	def wr1(self):
-		eval_wr1_wr = ((self.self.description  !=  'constant radius') XOR (SIZEOF(None)  ==  1))
+		eval_wr1_wr = ((self.self.description  !=  'constant radius') ^ (SIZEOF(None)  ==  1))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -40141,7 +40141,7 @@ class surface_style_parameter_line(founded_item):
 				self._direction_counts = value
 		return property(**locals())
 	def wr1(self):
-		eval_wr1_wr = ((HIINDEX(self.self.direction_counts)  ==  1) XOR (TYPEOF(self.self.direction_counts[1])  !=  TYPEOF(self.self.direction_counts[2])))
+		eval_wr1_wr = ((HIINDEX(self.self.direction_counts)  ==  1) ^ (TYPEOF(self.self.direction_counts[1])  !=  TYPEOF(self.self.direction_counts[2])))
 		if not eval_wr1_wr:
 			raise AssertionError('Rule wr1 violated')
 		else:
@@ -40870,8 +40870,10 @@ def convert_spatial_to_ypr_rotation(pair,rotation,):
 	s_a = SIN(conv_angle)
 	c_a = COS(conv_angle)
 	if ((dy  ==  0)  and  ((dx  *  dz)  ==  0)):
-		for  while conv_angle  <=  (- PI )			conv_angle = conv_angle  +  (2  *   PI )
-		for  while conv_angle  >   PI 			conv_angle = conv_angle - (2  *   PI )
+		while conv_angle  <=  (- PI ):
+			conv_angle = conv_angle  +  (2  *   PI )
+		while conv_angle  >   PI :
+			conv_angle = conv_angle - (2  *   PI )
 		ya = ucf  *  conv_angle
 		if (conv_angle  !=   PI ):
 			ra = -ya
@@ -42406,7 +42408,8 @@ def convert_plane_angle_for_pair_from_radian(pair,angle_expr,):
 	pau = pa_units[1]
 	if (( not ('AUTOMOTIVE_DESIGN.SI_UNIT'  ==  TYPEOF(pau)))  and  ( not ('AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau)))):
 		return  None
-	for  while 'AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau)		conv_factor = conv_factor  *  pau.conversion_based_unit.conversion_factor.value_component
+	while 'AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau):
+		conv_factor = conv_factor  *  pau.conversion_based_unit.conversion_factor.value_component
 		pau = pau.conversion_based_unit.conversion_factor.unit_component
 		if ((( not ('AUTOMOTIVE_DESIGN.SI_UNIT'  ==  TYPEOF(pau)))  and  ( not ('AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau))))  or  ( not ('AUTOMOTIVE_DESIGN.PLANE_ANGLE_UNIT'  ==  TYPEOF(pau)))):
 			return  None
@@ -42658,7 +42661,8 @@ def plane_angle_for_pair_in_radian(pair,angle,):
 	pau = pa_units[1]
 	if (( not ('AUTOMOTIVE_DESIGN.SI_UNIT'  ==  TYPEOF(pau)))  and  ( not ('AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau)))):
 		return  None
-	for  while 'AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau)		converted_angle = converted_angle  *  pau.conversion_based_unit.conversion_factor.value_component
+	while 'AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau):
+		converted_angle = converted_angle  *  pau.conversion_based_unit.conversion_factor.value_component
 		pau = pau.conversion_based_unit.conversion_factor.unit_component
 		if ((( not ('AUTOMOTIVE_DESIGN.SI_UNIT'  ==  TYPEOF(pau)))  and  ( not ('AUTOMOTIVE_DESIGN.CONVERSION_BASED_UNIT'  ==  TYPEOF(pau))))  or  ( not ('AUTOMOTIVE_DESIGN.PLANE_ANGLE_UNIT'  ==  TYPEOF(pau)))):
 			return  None
@@ -42762,7 +42766,7 @@ def control_characters_free(s,):
 	'''
 	for  i in range(1,LENGTH(s),1):
 		ch = s[i]
-		if (((ch  ==  '\x9')  or  (ch  ==  '\xA'))  or  (ch  ==  '\xD')):
+		if (((ch  ==  '\x09')  or  (ch  ==  '\x0A'))  or  (ch  ==  '\x0D')):
 			return FALSE
 	return TRUE
 
