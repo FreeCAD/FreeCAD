@@ -242,6 +242,9 @@ Requires to re-enter edit mode to take effect.</string>
         <property name="text">
          <string>Generate internal faces</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher</cstring>
         </property>
