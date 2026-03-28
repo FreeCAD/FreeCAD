@@ -75,7 +75,7 @@ extern const long NlErrorCode;
 
 long NlLoadLibrary() {
   long error = 0;
-  HMODULE h = LoadLibraryA(TheLibrary);
+  HMODULE h = LoadLibraryExA(TheLibrary, NULL, LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
   if (!h) {
     error = HRESULT_FROM_WIN32(GetLastError());
   }
