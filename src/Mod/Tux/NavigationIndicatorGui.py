@@ -685,7 +685,10 @@ def retranslateUi():
         <b>"""
         + translate("NavigationIndicator", "Fly mode")
         + ":</b> "
-        + translate("NavigationIndicator", "Hold right mouse button and move mouse to look. Use WASD/QE to move, Scroll to change speed. Shift for speed boost.")
+        + translate(
+            "NavigationIndicator",
+            "Hold right mouse button and move mouse to look. Use WASD/QE to move, Scroll to change speed. Shift for speed boost.",
+        )
         + "</small></p>"
     )
 
