@@ -124,6 +124,7 @@ private:
     bool m_ctrl;
 
     DragState m_dragState;
+    std::optional<double> m_snappedNormalOffset;
     bool m_inhibitSnapOnPosChange{false};
 
 private:

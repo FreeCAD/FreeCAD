@@ -601,9 +601,7 @@ double QGIViewDimension::computeLineAndLabelAngles(const Base::Vector2d& rotatio
 
     // If we are too close to the line origin, no further adjustments
     if (lineLabelDistance >= rawDistance) {
-        // avoid flickering when label is close to center
-        lineLabelDistance = rawDistance - Precision::Confusion();
-        //return 0.0;
+        return 0.0;
     }
 
     // Rotate the line by angle between the label rectangle center and label bottom side center
@@ -1695,6 +1693,8 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
             labelPosition = -cos(devAngle) * ((labelCenter - arcPoint).Length());
         }
 
+        m_cachedDiameterLineAngle = lineAngle;  // cache for label snap
+
         drawDimensionLine(radiusPath, arcPoint, lineAngle,
                           // If not reduced rendering and at least in one arc wedge, draw to center
                           angleFactor && renderExtent >= ViewProviderDimension::REND_EXTENT_NORMAL
@@ -1728,6 +1728,8 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
             lineAngle = labelDirection.Angle();
             labelPosition = -labelDirection.Length();
         }
+
+        m_cachedDiameterLineAngle = lineAngle;  // cache for label snap
 
         drawDimensionLine(radiusPath, arcPoint, lineAngle,
                           // If not reduced rendering and at least in one arc wedge, draw to center
@@ -1985,12 +1987,24 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
         }
         else if (standardStyle == ViewProviderDimension::STD_STYLE_ISO_ORIENTED) {
             // We may rotate the label so no reference line is needed
-            double lineAngle;
-            double devAngle = computeLineAndLabelAngles(curveCenter, labelCenter,
-                                                        labelRectangle.Height() * 0.5
-                                                            + getIsoDimensionLineSpacing(),
-                                                        lineAngle, labelAngle);
+            double lineAngle = 0.0;
+            double devAngle = 0.0;
 
+            const double lineLabelDistance = labelRectangle.Height() * 0.5 + getIsoDimensionLineSpacing();
+            
+            constexpr double maxRatio = 0.5;
+            devAngle = computeLineAndLabelAngles(curveCenter, labelCenter,
+                                                     lineLabelDistance, lineAngle, labelAngle);
+
+            if ((labelCenter - curveCenter).Length() * maxRatio <= lineLabelDistance 
+                && m_cachedDiameterLineAngle.has_value()) {
+                lineAngle = m_cachedDiameterLineAngle.value();
+                labelAngle = m_cachedDiameterLabelAngle.value(); 
+            } else {               
+                m_cachedDiameterLineAngle = lineAngle; // cache for label snap
+                m_cachedDiameterLabelAngle = labelAngle;
+            }
+ 
             // Correct the label center distance projected on the leader line and subtract radius
             double labelPosition =
                 cos(devAngle) * ((labelCenter - curveCenter).Length()) - curveRadius;
@@ -2004,10 +2018,19 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
             // Text must remain horizontal, but it may split the leader line
             double lineAngle = (labelCenter - curveCenter).Angle();
             //Base::Vector2d lineDirection(Base::Vector2d::FromPolar(1.0, lineAngle));
+            double rawDistance = (labelCenter - curveCenter).Length();
+
+            if (rawDistance < Precision::Confusion() && m_cachedDiameterLineAngle.has_value())
+            {
+                lineAngle = m_cachedDiameterLineAngle.value();
+            }
+            else {
+                m_cachedDiameterLineAngle = lineAngle; // cache for label snap
+            }
 
             drawDimensionLine(
                 diameterPath, curveCenter + Base::Vector2d::FromPolar(curveRadius, lineAngle),
-                lineAngle, -curveRadius * 2.0, (labelCenter - curveCenter).Length() - curveRadius,
+                lineAngle, -curveRadius * 2.0, rawDistance - curveRadius,
                 labelRectangle, 2, standardStyle, flipArrows);
         }
         else {
