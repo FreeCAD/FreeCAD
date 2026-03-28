@@ -675,6 +675,40 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         move_lines = [l for l in output.splitlines() if re.match(r"^\s*G[01]\b", l.strip())]
         self.assertEqual(move_lines, [], f"Unexpected G-code move lines: {move_lines}")
 
+
+    def test_drill_cycles_translated(self):
+        """by default, expanded"""
+        drill_codes = Constants.GCODE_DRILL_EXTENDED + Constants.GCODE_MOVE_DRILL
+
+        self.profile_op.Path = Path.Path(
+            [ Path.Command(g) for g in [
+                "G0 X0.0 Y0.0 Z10.0",
+                "(G83)",
+                "G83 X10.0 Y10.0 Z0 F100 R9.0 Q4",
+                # move +xy, move z->R, drill Z, z->R,
+                "(G81)",
+                "G81 X10.0 Y10.0 R9.0 Z0 L2",
+                "G0 X1.0 Y2.0 Z10.0",
+                "(G82)",
+                "G82 X10.0 Y10.0 R9.0 Z0 L2 P3",
+                "G0 X3.0 Y4.0 Z10.0",
+                "(G82 w/Q)",
+                "G81 X10.0 Y10.0 R9.0 Z0 Q1",
+            ]]
+        )
+        results = self.post.export2()
+        gcode = "\n".join(g for _, g in results)
+
+        # replaced them?
+        for drill_g in drill_codes:
+            # prefix space to distinguish from comment
+            self.assertNotIn(" "+drill_g, gcode, f"Should have expanded drills, but saw {drill_g}")
+
+        # did we actually produce any replacement?
+
+        # At least one G4 for the G81 Q
+        self.assertIn("PAUSE ", gcode, gcode)
+
     @unittest.expectedFailure
     def test_todo(self):
         self.assertTrue(False, "helix speed projection")

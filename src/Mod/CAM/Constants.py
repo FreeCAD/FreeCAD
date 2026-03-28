@@ -9,6 +9,9 @@ This module contains centralized constants used throughout the CAM workbench,
 including G-code commands, M-codes, and other standardized values.
 """
 
+# FIXME: added L even though it can only be 1 for certain drill codes
+PARAMETER_ORDER = ["X", "Y", "Z", "F", "I", "J", "K", "R", "Q", "P", "L"]
+
 # =============================================================================
 # G-Code Motion Commands
 # =============================================================================
@@ -32,7 +35,8 @@ GCODE_MOVE_CCW = ["G3", "G03"]
 GCODE_MOVE_ARC = GCODE_MOVE_CW + GCODE_MOVE_CCW
 
 # Canned drilling cycles
-GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"]
+GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"] # FIXME: G85 not supported in Post/Processor.py
+GCODE_EXPANDABLE_DRILL = [ "G73", "G81", "G82", "G83" ]
 
 # Cutting moves (feed moves and arcs)
 GCODE_MOVE_MILL = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC
@@ -61,7 +65,7 @@ GCODE_CUTTER_COMPENSATION = ["G40", "G41", "G42"]
 GCODE_CYCLE_CANCEL = ["G80"]
 
 # Additional drilling cycles
-GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
+GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"] # FIXME: G86 G87 are mentioned in other code
 
 # Probing
 GCODE_PROBE = ["G38.2"]

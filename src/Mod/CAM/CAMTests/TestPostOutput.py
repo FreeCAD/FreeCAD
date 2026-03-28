@@ -481,7 +481,7 @@ class TestExport2Integration(unittest.TestCase):
 
     def _create_machine(self, **output_options):
         """Helper to create a machine with specified output options."""
-        from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
+        from Machine.models.machine import OutputUnits, Toolhead, ToolheadType
 
         machine = Machine.create_3axis_config()
         machine.name = "TestMachine"
@@ -751,10 +751,11 @@ class TestExport2Integration(unittest.TestCase):
 
     def test010_export2_returns_gcode_sections(self):
         """Test that export2() returns a non-empty list of (name, gcode) tuples."""
-        from Path.Post.Processor import PostProcessor
 
-        post = PostProcessor(self.job, "", "", "mm")
-        results = post.export2()
+        machine = self._create_machine(
+            output_header=True, include_machine_name=True, line_numbers=False
+        )
+        results = self._run_export2(machine)
 
         self.assertIsNotNone(results, "export2 should return results")
         self.assertIsInstance(results, list)

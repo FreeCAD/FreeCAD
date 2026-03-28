@@ -146,15 +146,6 @@ class TestDrillCycleExpander(unittest.TestCase):
 
         result = expander.expand_commands(input_cmds)
 
-        print("\n")
-        print("#### Input ####")
-        print(f"starting position: {initial_position}")
-        print(f"retract mode: {retract_mode}")
-        print(Path.Path(input_cmds).toGCode())
-        print("#### Result ####")
-        print(Path.Path(result).toGCode())
-        print("##########")
-
         self.assertEqual(len(result), len(expected_cmds))
         for i, (res, exp) in enumerate(zip(result, expected_cmds)):
             self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
@@ -255,10 +246,10 @@ class TestDrillCycleExpander(unittest.TestCase):
             Path.Command("G0", {"Z": 1.0}),
             Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 1.0}),  # XY move at current Z
             Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 0.1}),  # Z to R position
-            Path.Command("G1", {"X": 1.0, "Y": 1.0, "Z": -0.1, "F": 10.0}),
-            Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 0.1}),
-            Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": -0.09}),
-            Path.Command("G1", {"X": 1.0, "Y": 1.0, "Z": -0.3, "F": 10.0}),
+            Path.Command("G1", {"X": 1.0, "Y": 1.0, "Z": -0.1, "F": 10.0}), # drill
+            Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 0.1}), # retract
+            Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": -0.09}), # back to bottom
+            Path.Command("G1", {"X": 1.0, "Y": 1.0, "Z": -0.3, "F": 10.0}), # drill...
             Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": 0.1}),
             Path.Command("G0", {"X": 1.0, "Y": 1.0, "Z": -0.29}),
             Path.Command("G1", {"X": 1.0, "Y": 1.0, "Z": -0.5, "F": 10.0}),
@@ -470,3 +461,138 @@ class TestDrillCycleExpander(unittest.TestCase):
         for i, (res, exp) in enumerate(zip(result, expected_cmds)):
             self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
             self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
+
+
+    def legacy_drill_translate(self, command, motion_mode="G90", retract="G98", modal_state={}, chipbreaking_amount=None):
+        # Use Post.UtilsParse drill_translate(), for comparison
+        # returns [ Path.Commands ]
+
+        from Path.Post.UtilsParse import drill_translate
+
+        mock_values = {
+            "MOTION_MODE": motion_mode,
+            "COMMAND_SPACE": " ",
+            "UNIT_FORMAT": "mm",
+            "UNIT_SPEED_FORMAT": "mm/s",
+            "AXIS_PRECISION": 3,
+            "FEED_PRECISION": 3,
+            "OUTPUT_LINE_NUMBERS": False,
+            "COMMENT_SYMBOL" : "(",
+            "CHIPBREAKING_AMOUNT" : chipbreaking_amount,
+        }
+        mock_modal_state = {  # self._modal_state, # FIXME: not being tracked
+            "Z": 0,
+            "X": 0,
+            "Y": 0,
+            "Z": 0,
+            "F": 1000,
+        }
+        mock_modal_state.update( modal_state )
+
+        params = command.Parameters
+
+        gcode_str_list = []
+        print(f"#t call str style w/ command {command} -> {command.Name} {command.Parameters}")
+        drill_translate(
+            mock_values,
+            gcode_str_list,
+            command.Name,
+            params,
+            motion_location = mock_modal_state,
+            drill_retract_mode = retract,
+        )
+        commands = [Path.Command(g) for g in gcode_str_list]
+
+        return commands
+
+    @unittest.expectedFailure # see issue 28984
+    def test_utilsparse_drill_translate_identical(self):
+        """Old solution and new solution should be the same"""
+
+        # try to excercise all code-paths
+        for motion in ["G90", "G91"]:
+            for retract in ["G98", "G99"]:
+                # nb: g73 has a different code path too
+                command = Path.Command("G83 X10.0 Y10.0 Z0 F100 R9.0 Q4")
+
+                modal_state = {"Z":20} # needs Z for initial move
+                if motion == "G91":
+                    modal_state.update( {"X":0, "Y":0})
+
+                legacy = self.legacy_drill_translate( command, modal_state=modal_state, retract=retract, motion_mode=motion )
+
+                expander = DrillCycleExpander(
+                    retract_mode=retract, initial_position=modal_state.copy()
+                )
+                result = expander.expand_command( command )
+
+                as_strings = [x.toGCode() for x in result]
+                lines = "\n".join(as_strings)
+
+                self.maxDiff = None
+                # FIXME: Path.Command doesn't implement .__eq__? I got failures when the .Name and .Parameters where the same
+
+                # Expected, new algorithm
+
+                if motion == "G90":
+                    final_z = 20 if retract == "G98" else 9
+                    expected = [ Path.Command(g) for g in [
+                        # (tracking current.Z):
+                        # No prelim Z, Z>R
+                        "G0 X10 Y10 Z20", # prelim move, Z unchanged
+                        "G0 X10 Y10 Z9", # start: to R if != Z FIXME: used to G1 if R<Z
+                        "G1 X10 Y10 Z5 F100", # drill
+                        "G0 X10 Y10 Z9", # retract
+                        f"G0 X10 Y10 Z{5 + 4*0.05}", # back to bottom
+                        "G1 X10 Y10 Z1 F100", # drill
+                        "G0 X10 Y10 Z9", # retract
+                        f"G0 X10 Y10 Z{1 + 4*0.05}", # back to bottom
+                        "G1 X10 Y10 Z0 F100", # drill
+                        "G0 X10 Y10 Z9", # retract
+                        f"G0 X10 Y10 Z{final_z}", # back to original-Z|R
+                        ]
+                    ]
+                else:
+                    final_z = 20 if retract == "G98" else 9
+                    expected = [ Path.Command(g) for g in [
+                        # (tracking current.Z):
+                        # No prelim Z, Z>R
+                        f"G0 X10 Y10 Z{20-20}", # prelim move, Z unchanged
+                        f"G0 X0 Y0 Z{20-9}", # start: to R if != Z FIXME: used to G1 if R<Z
+                        "G1 X0 Y0 Z4 F100", # drill
+                        "G0 X0 Y0 Z{4}", # retract
+                        f"G0 X10 Y10 Z-{4 - 4*0.05}", # back to bottom
+                        "G1 X0 Y0 Z-1 F100", # drill
+                        "G0 X0 Y0 Z{8}", # retract
+                        f"G0 X0 Y0 Z{8 - 4*0.05}", # back to bottom
+                        "G1 X0 Y0 Z0 F100", # drill
+                        "G0 X0 Y0 Z9", # retract
+                        f"G0 X0 Y0 Z{final_z}", # back to original-Z|R
+                        ]
+                    ]
+
+                self.assertEqual(
+                    lines,
+                    "\n".join([x.toGCode() for x in expected]),
+                    f"For new, mode {motion}, retract {retract}"
+                )
+
+                # Using toGCode() (string) to compare
+                self.assertEqual(
+                    lines,
+                    "\n".join([x.toGCode() for x in legacy]),
+                    f"For legacy, mode {motion}, retract {retract}"
+                )
+
+    @unittest.expectedFailure
+    def test_bad_values(self):
+        """Examples
+            required retract_mode, motion_mode, R Q P params, initial modal state for Z start
+            etc.
+        """
+        assertTrue(False, "FIXME: DrillCycleExpander returns [] on bad values, no way of reporting the issue")
+
+    @unittest.expectedFailure # see issue 28984
+    def test_G91(self):
+        """Can expand in relative mode"""
+        assertTrue(False, "FIXME: DrillCycleExpander doesn't implement G91 mode")

@@ -29,26 +29,19 @@ import argparse
 import importlib.util
 import json
 import os
-from PySide import QtCore, QtGui
-import re
 import sys
 from typing import Any, Dict, List, Optional, Tuple, Union
-from copy import copy
-
-import Constants
-import Path.Base.Util as PathUtil
-import Path.Post.UtilsArguments as PostUtilsArguments
-import Path.Post.UtilsExport as PostUtilsExport
-import Path.Post.PostList as PostList
-from Path.Post.UtilsParse import drill_translate, format_command_line, drill_translate_gcode
 
 import FreeCAD
+import Constants
 import Path
-
 import Path.Post.Utils as PostUtils
-from Machine.models.machine import (
-    MachineFactory,
-)
+import Path.Post.UtilsArguments as PostUtilsArguments
+import Path.Post.UtilsExport as PostUtilsExport
+from Path.Post import PostList
+from Path.Post.UtilsParse import format_command_line
+from Path.Post.DrillCycleExpander import DrillCycleExpander
+from Machine.models.machine import MachineFactory
 
 translate = FreeCAD.Qt.translate
 
@@ -348,7 +341,7 @@ class PostProcessor:
                 "help": translate(
                     "CAM",
                     "List of drill cycle commands to translate to G0/G1 moves (one per line). "
-                    f"Standard drill cycles: {', '.join(Constants.GCODE_MOVE_DRILL)}. "
+                    f"Standard drill cycles: {', '.join(Constants.GCODE_EXPANDABLE_DRILL)}. "
                     "Leave empty if postprocessor supports drill cycles natively.",
                 ),
             },
@@ -952,6 +945,8 @@ class PostProcessor:
         Subclasses can override to customize canned cycle handling.
         """
 
+        Path.Log.track("Expanding canned cycles")
+
         to_translate = self._machine.postprocessor_properties.get("drill_cycles_to_translate", None)
         if True:
             print(  # DEBUG
@@ -981,31 +976,27 @@ class PostProcessor:
             translated = []
 
             mock_modal_state = {  # self._modal_state, # FIXME: not being tracked
-                "Z": 0,
                 "X": 0,
                 "Y": 0,
                 "Z": 0,
                 "F": 1000,
             }
 
+            expander = DrillCycleExpander(
+                        motion_mode = "G90", # FIXME: get from modal-state when we track it
+                        initial_position = mock_modal_state.copy(), # FIXME
+                        retract_mode = "G98",  # FIXME
+            )
+            # FIXME: is this obsolete for MBPP?
+            chipbreaking_amount = self.values.get("CHIPBREAKING_AMOUNT", None)
+
             for command in item.Path.Commands:
                 if command.Name in to_translate:
-                    # requires XYZ parameters
-                    print(f"# drill modal state {self._modal_state}")
+                    drill_translated = expander.expand_command( command )
+                    if drill_translated == []:
+                        # FIXME: we need more info for a useful user error.
+                        raise CAMError(f"Unknown error in {command}")
 
-                    chipbreaking_amount = self.values.get("CHIPBREAKING_AMOUNT", None)
-                    print(f"modal_state {mock_modal_state}")
-                    drill_translated = drill_translate(
-                        command,
-                        motion_mode = "G90", # FIXME: get from modal-state when we track it
-                        modal_state = mock_modal_state, # FIXME
-                        drill_retract_mode = "G98",  # FIXME
-                        chipbreaking_amount = (
-                            FreeCAD.Units.Quantity(chipbreaking_amount, FreeCAD.Units.Length)
-                            if chipbreaking_amount is not None
-                            else None
-                        ),
-                    )
                     translated.extend( drill_translated )
                     print(f"#== replace expand  : {translated}")
                 else:
@@ -1139,8 +1130,6 @@ class PostProcessor:
         ):
             Path.Log.debug("Drill cycle translation disabled")
             return
-
-        from Path.Post.DrillCycleExpander import DrillCycleExpander
 
         for section_name, sublist in postables:
             for item in sublist:
@@ -1704,14 +1693,6 @@ class PostProcessor:
         self._expand_bcnc_commands(postables)
         self._expand_tool_length_offset(postables)
 
-        """
-        for p in postables:
-            if..
-                newlist = (canned(cmd) for cmd in item.Path.Commands)
-                newlist = (splitarcs(cmd) for cmd in newlist)
-                item.Path = Path.Path(newlist)
-        """
-
         Path.Log.debug(postables)
 
         # ===== STAGE 3: COMMAND CONVERSION =====
@@ -2269,10 +2250,7 @@ class PostProcessor:
             print(f"### feed {feed_value}")
 
             # There are actually oddball controls that use {units}/second feedrate.
-            if self._machine and hasattr(self._machine, "feedrate_per_second"):
-                # FIXME: Check if feedrate is in seconds or minutes
-                feed_value = feed_value
-            else:
+            if not ( self._machine and hasattr(self._machine, "feedrate_per_second") ):
                 # Convert from mm/sec to mm/min (multiply by 60)
                 feed_value = feed_value * 60.0
 
@@ -2332,7 +2310,6 @@ class PostProcessor:
 
         This method can be overridden by derived postprocessors to customize rapid move handling.
         """
-        from Path.Post.UtilsParse import format_command_line
 
         # Extract command components
         command_name = command.Name
@@ -2527,7 +2504,7 @@ class WrapperPost(PostProcessor):
         Path.Log.debug(f"postables count: {len(postables)}")
 
         g_code_sections = []
-        for idx, section in enumerate(postables):
+        for section in postables:
             partname, sublist = section
 
             gcode = self.script_module.export(sublist, "-", self._job.PostProcessorArgs)

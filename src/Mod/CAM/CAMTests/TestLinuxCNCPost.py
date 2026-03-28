@@ -612,6 +612,7 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         self.assertIn("G49", gcode, "Safetyblock G49 should appear from schema default")
 
     def test_drill_cycles_to_translate(self):
+        # FIXME: where should this really go, it's a general drill-translate w/export2
         drill_codes = Constants.GCODE_DRILL_EXTENDED + Constants.GCODE_MOVE_DRILL
         self.post._machine.postprocessor_properties["drill_cycles_to_translate"] = "\n".join(
             drill_codes
@@ -621,9 +622,9 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
             [
                 Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 10.0}),
                 # move +xy, move z->R, drill Z, z->R,
-                Path.Command("G81", {"X": 10.0, "Y": 10.0, "R": 9.0, "Z": 0, "L": 2}),
+                Path.Command("G81", {"X": 10.0, "Y": 10.0, "R": 9.0, "Z": 0}),
                 Path.Command("G0", {"X": 1.0, "Y": 2.0, "Z": 10.0}),
-                Path.Command("G82", {"X": 10.0, "Y": 10.0, "R": 9.0, "Z": 0, "L": 2, "P": 3}),
+                Path.Command("G82", {"X": 10.0, "Y": 10.0, "R": 9.0, "Z": 0, "P": 2}),
                 Path.Command("G0", {"X": 3.0, "Y": 4.0, "Z": 10.0}),
                 Path.Command("G81", {"X": 10.0, "Y": 10.0, "R": 9.0, "Z": 0, "Q": 1}),
             ]
@@ -639,3 +640,6 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
 
         # At least one G4 for the G81 Q
         self.assertIn("G4 ", gcode)
+
+        # TODO: like TestPostOutput.py tests, do all the code paths
+        # TODO: and, test for all parameters modal

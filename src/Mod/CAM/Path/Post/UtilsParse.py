@@ -96,11 +96,8 @@ def check_for_drill_translate(
                 drill_retract_mode,
             )
         except (ArithmeticError, LookupError) as err:
+            # FIXME: silent consumption of errors
             print("exception occurred", err)
-        # drill_translate uses G90 mode internally, so need to
-        # switch back to G91 mode if it was that way originally
-        if values["MOTION_MODE"] == "G91":
-            gcode.append(f"{linenumber(values)}G91")
         return True
     return False
 
@@ -411,7 +408,7 @@ def drill_translate(
     motion_location: PathParameters,
     drill_retract_mode: str,
 ) -> None:
-    """Translate drill cycles.
+    """Translate drill cycles for a str g-code and dict of params.
 
     Currently only cycles in XY are provided (G17).
     XZ (G18) and YZ (G19) are not dealt with.
@@ -427,17 +424,23 @@ def drill_translate(
     F_feedrate: str
     G0_retract_z: str
 
+    restore_state = []
     if values["MOTION_MODE"] == "G91":
-        # force absolute coordinates during cycles
+        # force absolute coordinates during cycles, fixup of xyz below
         gcode.append(f"{linenumber(values)}G90")
+        restore_state.append("G91") # and revert when done
 
-    drill_x = Units.Quantity(params["X"], Units.Length)
-    drill_y = Units.Quantity(params["Y"], Units.Length)
-    drill_z = Units.Quantity(params["Z"], Units.Length)
+    ##
+    drill_x = Units.Quantity(params.get("X", motion_location["X"]), Units.Length)
+    drill_y = Units.Quantity(params.get("Y", motion_location["Y"]), Units.Length)
+    drill_z = Units.Quantity(params.get("Z", motion_location["Z"]), Units.Length)
+    # FIXME: Are other params modal: should we default to motion_location, as if it were the modal_state?
     retract_z = Units.Quantity(params["R"], Units.Length)
     if retract_z < drill_z:  # R less than Z is error
+        # FIXME: should be a warning at least
         comment = create_comment(values, "Drill cycle error: R less than Z")
         gcode.append(f"{linenumber(values)}{comment}")
+        gcode.extend( restore_state )
         return
     motion_z = Units.Quantity(motion_location["Z"], Units.Length)
     if values["MOTION_MODE"] == "G91":  # relative movements
@@ -450,7 +453,8 @@ def drill_translate(
 
     cmd = format_command_line(values, ["G0", f"Z{format_for_axis(values, retract_z)}"])
     G0_retract_z = f"{cmd}"
-    cmd = format_for_feed(values, Units.Quantity(params["F"], Units.Velocity))
+    # FIXME: e.g. should we be getting F from motion_location?
+    cmd = format_for_feed(values, Units.Quantity(params.get("F", motion_location["Z"]), Units.Velocity))
     F_feedrate = f'{values["COMMAND_SPACE"]}F{cmd}'
 
     # preliminary movement(s)
@@ -480,6 +484,9 @@ def drill_translate(
         output_G73_G83_drill_moves(
             values, gcode, command, params, drill_z, retract_z, F_feedrate, G0_retract_z
         )
+
+    # for G91
+    gcode.extend( restore_state )
 
 
 def format_command_line(values: Values, command_line: CommandLine) -> str:
@@ -644,7 +651,8 @@ def output_G81_G82_drill_moves(
     gcode.append(f"{linenumber(values)}{cmd}{F_feedrate}")
     # pause where applicable
     if command == "G82":
-        cmd = format_command_line(values, ["G4", f'P{str(params["P"])}'])
+        # FIXME: no specific TIME_PRECISION
+        cmd = format_command_line(values, ["G4", f'P{params["P"]:.{values["AXIS_PRECISION"]}f}'])
         gcode.append(f"{linenumber(values)}{cmd}")
     gcode.append(f"{linenumber(values)}{G0_retract_z}")
 
