@@ -1361,26 +1361,32 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             break;
         case mmTranslate: {
             if (shapes.empty()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "No subobjects specified (need one vertex)."
                 );
+                // clang-format on
             }
             const TopoDS_Shape& sh = shapes[0]->getShape();
             if (sh.IsNull()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Null shape."
                 );
+                // clang-format on
             }
             if (sh.ShapeType() != TopAbs_VERTEX) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "No subobjects specified (need one vertex)."
                 );
+                // clang-format on
             }
             gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(sh));
             Base::Placement plm = Base::Placement();
@@ -1434,11 +1440,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 SketchBasePoint = pos.Location();
             }
             else {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Need either a conic section edge, or a whole object for ObjectXY-like modes."
                 );
+                // clang-format on
             }
 
             switch (mmode) {
@@ -1456,11 +1464,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                     break;
                 case mmParallelPlane: {
                     if (shapes.size() < 2) {
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEngine3D::calculateAttachedPlacement: " +
                             objs[0]->getFullNameLabel() + ": " +
                             "Not enough subshapes (need one plane and one vertex)."
                         );
+                        // clang-format on
                     }
 
                     TopoDS_Vertex vertex;
@@ -1470,11 +1480,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                     catch (...) {
                     }
                     if (vertex.IsNull()) {
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEngine3D::calculateAttachedPlacement: " +
                             objs[0]->getFullNameLabel() + ": " +
                             "Null vertex."
                         );
+                        // clang-format on
                     }
 
                     SketchNormal = dirZ;
@@ -1495,20 +1507,24 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             GProp_GProps gpr = AttachEngine::getInertialPropsOfShape(shapes);
             GProp_PrincipalProps pr = gpr.PrincipalProperties();
             if (pr.HasSymmetryPoint()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement:InertialCS: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Inertia tensor is trivial, principal axes are undefined."
-
                 );
+                // clang-format on
             }
             if (pr.HasSymmetryAxis()) {
+                // clang-format off
                 Base::Console().warning(
                     "AttachEngine3D::calculateAttachedPlacement:InertialCS: %s: "
                     "Inertia tensor has axis of symmetry. "
                     "Second and third axes of inertia are undefined.\n",
                     objs[0]->getFullNameLabel()
                 );
+                // clang-format on
+
                 // find defined axis, and use it as Z axis
                 // situation: we have two moments that are almost equal, and one
                 // that is substantially different. The one that is different
@@ -1538,11 +1554,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
         } break;
         case mmFlatFace: {
             if (shapes.empty()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "No subobjects specified (needed one planar face)."
                 );
+                // clang-format on
             }
 
             TopoDS_Face face;
@@ -1555,11 +1573,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             }
             if (face.IsNull()) {
                 if (!TopoShape(*shapes[0]).findPlane(plane)) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngine3D::calculateAttachedPlacement: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "No planar face."
                     );
+                    // clang-format on
                 }
             }
             else {
@@ -1575,11 +1595,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                         plane = check.Plan();
                     }
                     else {
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEngine3D::calculateAttachedPlacement: " +
                             objs[0]->getFullNameLabel() + ": " +
                             "No planar face."
                         );
+                        // clang-format on
                     }
                 }
 
@@ -1607,11 +1629,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
         } break;
         case mmTangentPlane: {
             if (shapes.size() < 2) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Not enough subshapes (need one face and one vertex)."
                 );
+                // clang-format on
             }
 
             bool bThruVertex = false;
@@ -1627,11 +1651,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             catch (...) {
             }
             if (face.IsNull()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Null face."
                 );
+                // clang-format on
             }
 
             TopoDS_Vertex vertex;
@@ -1641,11 +1667,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             catch (...) {
             }
             if (vertex.IsNull()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Null vertex."
                 );
+                // clang-format on
             }
 
             Handle(Geom_Surface) hSurf = BRep_Tool::Surface(face);
@@ -1654,11 +1682,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             GeomAPI_ProjectPointOnSurf projector(p, hSurf);
             double u, v;
             if (projector.NbPoints() == 0) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Projecting point onto surface failed."
                 );
+                // clang-format on
             }
 
             projector.LowerDistanceParameters(u, v);
@@ -1670,11 +1700,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             Tools::getNormal(face, u, v, Precision::Confusion(), SketchNormal, done);
 
             if (!done) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Finding normal to surface at projected point failed."
                 );
+                // clang-format on
             }
 
             // if getNormal succeeds, at least one of the tangent is defined
@@ -1707,11 +1739,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
         case mmRevolutionSection:
         case mmConcentric: {  // all alignments to point on curve
             if (shapes.empty()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "No subshapes specified (need one edge, and an optional vertex)."
                 );
+                // clang-format on
             }
 
             bool bThruVertex = false;
@@ -1727,11 +1761,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             catch (...) {
             }
             if (path.IsNull()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Null path."
                 );
+                // clang-format on
             }
 
             BRepAdaptor_Curve adapt(path);
@@ -1757,11 +1793,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 catch (...) {
                 }
                 if (vertex.IsNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngine3D::calculateAttachedPlacement: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null vertex."
                     );
+                    // clang-format on
                 }
                 p_in = BRep_Tool::Pnt(vertex);
 
@@ -1769,11 +1807,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
 
                 GeomAPI_ProjectPointOnCurve projector(p_in, hCurve);
                 if (projector.NbPoints() < 1) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngine3D::calculateAttachedPlacement: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "Projecting point onto curve failed."
                     );
+                    // clang-format on
                 }
                 u = projector.LowerDistanceParameter();
             }
@@ -1785,11 +1825,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             adapt.D1(u, p, d);
 
             if (d.Magnitude() < Precision::Confusion()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Path curve derivative is below 1e-7, too low, can't align"
                 );
+                // clang-format on
             }
 
             // Set origin. Note that it will be overridden later for mmConcentric and
@@ -1810,11 +1852,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 catch (Standard_Failure& e) {
                     // ignore. This is probably due to insufficient continuity.
                     dd = gp_Vec(0., 0., 0.);
+                    // clang-format off
                     Base::Console().warning(
                         "AttachEngine3D::calculateAttachedPlacement: %s: "
                         "Can't calculate second derivative of curve. OCC error: %s\n",
                         objs[0]->getFullNameLabel(), e.GetMessageString()
                     );
+                    // clang-format on
                 }
 
                 gp_Vec T, N, B;  // Frenet?Serret axes: tangent, normal, binormal
@@ -1826,11 +1870,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                     B = T.Crossed(N);
                 }
                 else {
+                    // clang-format off
                     Base::Console().warning(
                         "AttachEngine3D::calculateAttachedPlacement: %s: "
                         "Cannot align X-axis path curve second derivative is below 1e-14.\n",
                         objs[0]->getFullNameLabel()
                     );
+                    // clang-format on
                     N = gp_Vec(0., 0., 0.);
                     B = gp_Vec(0., 0., 0.);  // redundant, just for consistency
                 }
@@ -1846,22 +1892,26 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                     case mmFrenetTN:
                     case mmConcentric:
                         if (N.Magnitude() == 0.0) {
+                            // clang-format off
                             throw Base::ValueError(
                                 "AttachEngine3D::calculateAttachedPlacement: " +
                                 objs[0]->getFullNameLabel() + ": " +
                                 "Frenet-Serret normal is undefined. Can't align to TN plane."
                             );
+                            // clang-format on
                         }
                         SketchNormal = B;
                         SketchXAxis = T;
                         break;
                     case mmFrenetTB:
                         if (N.Magnitude() == 0.0) {
+                            // clang-format off
                             throw Base::ValueError(
                                 "AttachEngine3D::calculateAttachedPlacement: " +
                                 objs[0]->getFullNameLabel() + ": " +
                                 "Frenet-Serret normal is undefined. Can't align to TB plane."
                             );
+                            // clang-format on
                         }
                         SketchNormal = N.Reversed();  // it is more convenient to sketch on
                                                       // something looking at it so it is convex.
@@ -1873,11 +1923,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 if (mmode == mmRevolutionSection || mmode == mmConcentric) {
                     // make sketch origin be at center of osculating circle
                     if (N.Magnitude() == 0.0) {
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEngine3D::calculateAttachedPlacement: " +
                             objs[0]->getFullNameLabel() + ": " +
                             "Path has infinite radius of curvature at the point. "
                             "Can't align for revolving."
+                            // clang-format on
                         );
                     }
                     double curvature = dd.Dot(N) / pow(d.Magnitude(), 2);
@@ -1905,11 +1957,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             for (const auto& shape : shapes) {
                 const TopoDS_Shape& sh = shape->getShape();
                 if (sh.IsNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngine3D::calculateAttachedPlacement: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
                 if (sh.ShapeType() == TopAbs_VERTEX) {
                     const TopoDS_Vertex& v = TopoDS::Vertex(sh);
@@ -1933,11 +1987,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             }
 
             if (points.size() < 3) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Less than 3 points are specified. Can't derive the plane."
                 );
+                // clang-format on
             }
 
             gp_Pnt p0 = points[0];
@@ -1948,11 +2004,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             gp_Vec vec02(p0, p2);
             if (vec01.Magnitude() < Precision::Confusion()
                 || vec02.Magnitude() < Precision::Confusion()) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Some of 3 points are coincident, Can't make a plane."
                 );
+                // clang-format on
             }
             vec01.Normalize();
             vec02.Normalize();
@@ -1961,11 +2019,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             if (mmode == mmThreePointsPlane) {
                 norm = vec01.Crossed(vec02);
                 if (norm.Magnitude() < Precision::Confusion()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngine3D::calculateAttachedPlacement: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "Points are collinear. Can't make a plane."
                     );
+                    // clang-format on
                 }
                 // SketchBasePoint = (p0+p1+p2)/3.0
                 SketchBasePoint = gp_Pnt(
@@ -1976,11 +2036,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 norm = vec02.Subtracted(vec01.Multiplied(vec02.Dot(vec01)))
                            .Reversed();  // norm = vec02 forced perpendicular to vec01.
                 if (norm.Magnitude() < Precision::Confusion()) {
+                    // clang-format off
                     throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Points are collinear. Can't make a plane."
                     );
+                    // clang-format on
                 }
                 // SketchBasePoint = (p0+p1)/2.0
 
@@ -2001,11 +2063,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
             // expected to be in one plane.
 
             if (shapes.size() < 4) {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Not enough shapes (4 lines needed: edgeA, axisA, axisB, edgeB)."
                 );
+                // clang-format on
             }
 
             // extract the four lines
@@ -2019,20 +2083,24 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 catch (...) {
                 }
                 if (edges[i]->IsNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngine3D::calculateAttachedPlacement: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null edge."
                     );
+                    // clang-format on
                 }
 
                 adapts[i] = BRepAdaptor_Curve(*(edges[i]));
                 if (adapts[i].GetType() != GeomAbs_Line) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngine3D::calculateAttachedPlacement: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "Folding non-straight edge."
                     );
+                    // clang-format on
                 }
                 lines[i] = adapts[i].Line();
             }
@@ -2067,11 +2135,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                 signs[1] = -1.0;
             }
             else {
+                // clang-format off
                 throw Base::ValueError(
                     "AttachEngine3D::calculateAttachedPlacement: " +
                     objs[0]->getFullNameLabel() + ": " +
                     "Folding edges do not share a vertex."
                 );
+                // clang-format on
             }
             for (int i = 2; i < 4; i++) {
                 p1 = adapts[i].Value(adapts[i].FirstParameter());
@@ -2083,11 +2153,13 @@ Base::Placement AttachEngine3D::_calculateAttachedPlacement(
                     signs[i] = -1.0;
                 }
                 else {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngine3D::calculateAttachedPlacement: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "Folding edges to not share a vertex."
                     );
+                    // clang-format on
                 }
             }
 
@@ -2577,11 +2649,13 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                 LineBasePoint = gpr.CentreOfMass();
                 GProp_PrincipalProps pr = gpr.PrincipalProperties();
                 if (pr.HasSymmetryPoint()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:AxisOfInertia: " +
                         objs[0]->getFullNameLabel() + ": " +
                         "Inertia tensor is trivial, principal axes are undefined."
                     );
+                    // clang-format on
                 }
 
                 // query moments, to use them to check if axis is defined
@@ -2597,31 +2671,37 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                 if (mmode == mm1AxisInertia1) {
                     LineDir = pr.FirstAxisOfInertia();
                     if (pr.HasSymmetryAxis() && !(d23 < d31 && d23 < d12)) {
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEngineLine::calculateAttachedPlacement:AxisOfInertia:" +
                             objs[0]->getFullNameLabel() + ": " +
                             "Inertia tensor has axis of symmetry; first axis of inertia is undefined."
                         );
+                        // clang-format on
                     }
                 }
                 else if (mmode == mm1AxisInertia2) {
                     LineDir = pr.SecondAxisOfInertia();
                     if (pr.HasSymmetryAxis() && !(d31 < d12 && d31 < d23)) {
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEngineLine::calculateAttachedPlacement:AxisOfInertia:" +
                             objs[0]->getFullNameLabel() + ": " +
                             "Inertia tensor has axis of symmetry; second axis of inertia is undefined."
                         );
+                        // clang-format on
                     }
                 }
                 else if (mmode == mm1AxisInertia3) {
                     LineDir = pr.ThirdAxisOfInertia();
                     if (pr.HasSymmetryAxis() && !(d12 < d23 && d12 < d31)) {
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEngineLine::calculateAttachedPlacement:AxisOfInertia:" +
                             objs[0]->getFullNameLabel() + ": " +
                             "Inertia tensor has axis of symmetry; third axis of inertia is undefined."
                         );
+                        // clang-format on
                     }
                 }
             } break;
@@ -2631,11 +2711,13 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                 for (const auto& shape : shapes) {
                     const TopoDS_Shape& sh = shape->getShape();
                     if (sh.IsNull()) {
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEngineLine::calculateAttachedPlacement:" +
                             objs[0]->getFullNameLabel() + ": " +
                             "Null shape."
                         );
+                        // clang-format on
                     }
                     if (sh.ShapeType() == TopAbs_VERTEX) {
                         const TopoDS_Vertex& v = TopoDS::Vertex(sh);
@@ -2659,11 +2741,13 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                 }
 
                 if (points.size() < 2) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Less than 2 points are specified, can't derive the line."
                     );
+                    // clang-format on
                 }
 
                 gp_Pnt p0 = points[0];
@@ -2676,11 +2760,13 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
             case mm1Asymptote1:
             case mm1Asymptote2: {
                 if (shapes[0]->isNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
                 TopoDS_Edge e;
                 try {
@@ -2689,19 +2775,23 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                 catch (...) {
                 }
                 if (e.IsNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null edge."
                     );
+                    // clang-format on
                 }
                 BRepAdaptor_Curve adapt(e);
                 if (adapt.GetType() != GeomAbs_Hyperbola) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Asymptotes are available only for hyperbola-shaped edges, the one supplied is not."
                     );
+                    // clang-format on
                 }
                 gp_Hypr hyp = adapt.Hyperbola();
                 if (mmode == mm1Asymptote1) {
@@ -2715,11 +2805,13 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
             case mm1Directrix1:
             case mm1Directrix2: {
                 if (shapes[0]->isNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
                 TopoDS_Edge e;
                 try {
@@ -2728,11 +2820,13 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                 catch (...) {
                 }
                 if (e.IsNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null edge."
                     );
+                    // clang-format on
                 }
                 BRepAdaptor_Curve adapt(e);
                 gp_Ax1 dx1, dx2;  // vars to receive directrices
@@ -2751,19 +2845,23 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                         gp_Parab cc = adapt.Parabola();
                         dx1 = cc.Directrix();
                         if (mmode == mm1Directrix2) {
+                            // clang-format off
                             throw Base::ValueError(
                                 "AttachEngineLine::calculateAttachedPlacement:" +
                                 objs[0]->getFullNameLabel() + ": " +
                                 "Parabola has no second directrix."
                             );
+                            // clang-format on
                         }
                     } break;
                     default:
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEngineLine::calculateAttachedPlacement:" +
                             objs[0]->getFullNameLabel() + ": " +
                             "Referenced edge is not a conic section with a directrix."
                         );
+                        // clang-format on
                 }
                 if (mmode == mm1Directrix1) {
                     LineDir = dx1.Direction();
@@ -2776,18 +2874,22 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
             } break;
             case mm1Intersection: {
                 if (shapes.size() < 2) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Intersection mode requires two shapes, only one is supplied."
                     );
+                    // clang-format on
                 }
                 if (shapes[0]->isNull() || shapes[1]->isNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
 
                 const TopoDS_Face& face1 = TopoDS::Face(shapes[0]->getShape());
@@ -2797,36 +2899,44 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
                 Handle(Geom_Surface) hSurf2 = BRep_Tool::Surface(face2);
                 GeomAPI_IntSS intersector(hSurf1, hSurf2, Precision::Confusion());
                 if (!intersector.IsDone()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Intersection failed."
                     );
+                    // clang-format on
                 }
 
                 const Standard_Integer intLines = intersector.NbLines();
                 if (intLines == 0) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "The two shapes don't intersect."
                     );
+                    // clang-format on
                 }
                 if (intLines != 1) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Intersection is not a single curve."
                     );
+                    // clang-format on
                 }
 
                 GeomAdaptor_Curve adapt(intersector.Line(1));
                 if (adapt.GetType() != GeomAbs_Line) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Intersection is not a straight line."
                     );
+                    // clang-format on
                 }
 
                 LineBasePoint = adapt.Line().Location();
@@ -2834,51 +2944,63 @@ Base::Placement AttachEngineLine::_calculateAttachedPlacement(
             } break;
             case mm1Proximity: {
                 if (shapes.size() < 2) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Proximity mode requires two shapes, only one is supplied."
                     );
+                    // clang-format on
                 }
                 if (shapes[0]->isNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
                 if (shapes[1]->isNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
                 BRepExtrema_DistShapeShape distancer(shapes[0]->getShape(), shapes[1]->getShape());
                 if (!distancer.IsDone()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Proximity calculation failed."
                     );
+                    // clang-format on
                 }
                 if (distancer.NbSolution() > 1) {
+                    // clang-format off
                     Base::Console().warning(
                         "AttachEngineLine::calculateAttachedPlacement: %s: "
                         "Proximity calculation gave %i solutions, ambiguous.\n",
                         objs[0]->getFullNameLabel(), int(distancer.NbSolution())
                     );
+                    // clang-format on
                 }
                 gp_Pnt p1 = distancer.PointOnShape1(1);
                 gp_Pnt p2 = distancer.PointOnShape2(1);
                 LineBasePoint = p1;
                 gp_Vec dist = gp_Vec(p1, p2);
                 if (dist.Magnitude() < Precision::Confusion()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEngineLine::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Can't make proximity line, because shapes touch or intersect."
                     );
+                    // clang-format on
                 }
                 LineDir = gp_Dir(dist);
             } break;
@@ -3004,11 +3126,13 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
 
                 const TopoDS_Shape& sh = shapes[0]->getShape();
                 if (sh.IsNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEnginePoint::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
                 if (sh.ShapeType() == TopAbs_VERTEX) {
                     const TopoDS_Vertex& v = TopoDS::Vertex(sh);
@@ -3019,11 +3143,13 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
                     BRepAdaptor_Curve crv(e);
                     double u = crv.FirstParameter();
                     if (Precision::IsInfinite(u)) {
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEnginePoint::calculateAttachedPlacement:" +
                             objs[0]->getFullNameLabel() + ": " +
                             "Edge is infinite."
                         );
+                        // clang-format on
                     }
                     BasePoint = crv.Value(u);
                 }
@@ -3032,11 +3158,13 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
             case mm0Focus1:
             case mm0Focus2: {
                 if (shapes[0]->isNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEnginePoint::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
                 TopoDS_Edge e;
                 try {
@@ -3045,11 +3173,13 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
                 catch (...) {
                 }
                 if (e.IsNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEnginePoint::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null edge."
                     );
+                    // clang-format on
                 }
                 BRepAdaptor_Curve adapt(e);
                 gp_Pnt f1, f2;
@@ -3068,19 +3198,23 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
                         gp_Parab cc = adapt.Parabola();
                         f1 = cc.Focus();
                         if (mmode == mm0Focus2) {
+                            // clang-format off
                             throw Base::ValueError(
                                 "AttachEnginePoint::calculateAttachedPlacement:" +
                                 objs[0]->getFullNameLabel() + ": " +
                                 "Parabola has no second focus."
                             );
+                            // clang-format on
                         }
                     } break;
                     default:
+                        // clang-format off
                         throw Base::ValueError(
                             "AttachEnginePoint::calculateAttachedPlacement:" +
                             objs[0]->getFullNameLabel() + ": " +
                             "Referenced edge is not a conic section with a directrix."
                         );
+                        // clang-format on
                 }
                 if (mmode == mm0Focus1) {
                     BasePoint = f1;
@@ -3092,25 +3226,31 @@ Base::Placement AttachEnginePoint::_calculateAttachedPlacement(
             case mm0ProximityPoint1:
             case mm0ProximityPoint2: {
                 if (shapes.size() < 2) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEnginePoint::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Proximity mode requires two shapes; only one is supplied."
                     );
+                    // clang-format on
                 }
                 if (shapes[0]->isNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEnginePoint::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
                 if (shapes[1]->isNull()) {
+                    // clang-format off
                     throw Base::ValueError(
                         "AttachEnginePoint::calculateAttachedPlacement:" +
                         objs[0]->getFullNameLabel() + ": " +
                         "Null shape."
                     );
+                    // clang-format on
                 }
 
                 BasePoint = getProximityPoint(objs, mmode, shapes[0]->getShape(), shapes[1]->getShape());
@@ -3200,11 +3340,13 @@ gp_Pnt AttachEnginePoint::getProximityPoint(
             }
 
             if (points.size() > 1) {
+                // clang-format off
                 Base::Console().warning(
                     "AttachEnginePoint::calculateAttachedPlacement: %s: "
                     "Proximity calculation gave %d solutions, ambiguous.\n",
                     objs[0]->getFullNameLabel(), int(points.size())
                 );
+                // clang-format on
             }
 
             // if an intersection is found return the first hit
@@ -3220,18 +3362,22 @@ gp_Pnt AttachEnginePoint::getProximityPoint(
 
     BRepExtrema_DistShapeShape distancer(s1, s2);
     if (!distancer.IsDone()) {
+        // clang-format off
         throw Base::ValueError(
             "AttachEnginePoint::calculateAttachedPlacement:" +
             objs[0]->getFullNameLabel() + ": " +
             "Proximity calculation failed."
         );
+        // clang-format on
     }
     if (distancer.NbSolution() > 1) {
+        // clang-format off
         Base::Console().warning(
             "AttachEnginePoint::calculateAttachedPlacement: %s "
             "Proximity calculation gave %i solutions, ambiguous.\n",
             objs[0]->getFullNameLabel(), int(distancer.NbSolution())
         );
+        // clang-format on
     }
 
     gp_Pnt p1 = distancer.PointOnShape1(1);
