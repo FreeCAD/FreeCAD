@@ -63,7 +63,7 @@ ViewProvider2DObjectGrid::ViewProvider2DObjectGrid()
 {
     ADD_PROPERTY_TYPE(
         ShowGrid,
-        (false),
+        (true),
         "Grid",
         (App::PropertyType)(App::Prop_None),
         "Toggle grid visibility"

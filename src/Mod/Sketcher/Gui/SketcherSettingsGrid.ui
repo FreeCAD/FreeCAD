@@ -38,7 +38,7 @@
          <string>Grid</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowGrid</cstring>
@@ -189,6 +189,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
            </property>
            <property name="currentIndex">
             <number>-1</number>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>GridLinePattern</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Sketcher/General</cstring>
            </property>
           </widget>
          </item>

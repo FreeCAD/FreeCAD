@@ -390,7 +390,7 @@ void SketcherSettingsGrid::loadSettings()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
     );
-    int pattern = hGrp->GetInt("GridLinePattern", 0b0000111100001111);
+    int pattern = hGrp->GetInt("GridLinePattern", 0b1111111111111111);
     int index = ui->gridLinePattern->findData(QVariant(pattern));
     if (index < 0) {
         index = 1;
