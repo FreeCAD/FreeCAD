@@ -469,8 +469,6 @@ private:
     // internal state
     bool upsideDown {false};
     bool snapHorizon {true};
-    bool horizonSnapped {false};
-    bool button2pending {false};
     bool flySpeedInitialized {false};
     float flySpeed {50.0f};
     float currentYaw {0.0f};
@@ -481,7 +479,7 @@ private:
     QTimer* flyTimer {nullptr};
     QObject* keyFilter {nullptr};
 
-    friend class FlyKeyFilter;
+    friend class GodotNavInputEventHandler;  // we need a seperate class to handle input events.
 };
 
 class GuiExport SolidWorksNavigationStyle: public UserNavigationStyle
