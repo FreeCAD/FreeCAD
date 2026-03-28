@@ -1970,10 +1970,10 @@ void MainWindow::loadWindowSettings()
     int maxWidth = rect.width();
 
     config.beginGroup(qtver);
-    QPoint pos = config.value(QStringLiteral("Position"), this->pos()).toPoint();
-    maxWidth -= pos.x();
-    maxHeight -= pos.y();
-    QSize size = config.value(QStringLiteral("Size"), QSize(maxWidth, maxHeight)).toSize();
+    QPoint winPos = config.value(QStringLiteral("Position"), pos()).toPoint();
+    maxWidth -= winPos.x();
+    maxHeight -= winPos.y();
+    QSize winSize = config.value(QStringLiteral("Size"), QSize(maxWidth, maxHeight)).toSize();
     bool max = config.value(QStringLiteral("Maximized"), false).toBool();
     bool showStatusBar = config.value(QStringLiteral("StatusBar"), true).toBool();
     QByteArray windowState = config.value(QStringLiteral("MainWindowState")).toByteArray();
@@ -1984,8 +1984,8 @@ void MainWindow::loadWindowSettings()
     std::istringstream iss(geometry);
     int x, y, w, h;
     if (iss >> x >> y >> w >> h) {
-        pos = QPoint(x, y);
-        size = QSize(w, h);
+        winPos = QPoint(x, y);
+        winSize = QSize(w, h);
     }
 
     max = d->hGrp->GetBool("Maximized", max);
@@ -1995,7 +1995,7 @@ void MainWindow::loadWindowSettings()
         windowState = QByteArray::fromBase64(wstate.c_str());
     }
 
-    resize(size);
+    resize(winSize);
 
     auto recentFiles = App::GetApplication()
                            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/RecentFiles")
@@ -2016,9 +2016,9 @@ void MainWindow::loadWindowSettings()
         int x1 {}, x2 {}, y1 {}, y2 {};
         // make sure that the main window is not totally out of the visible rectangle
         rect.getCoords(&x1, &y1, &x2, &y2);
-        pos.setX(qMin(qMax(pos.x(), x1 - width() + 30), x2 - 30));
-        pos.setY(qMin(qMax(pos.y(), y1 - 10), y2 - 10));
-        move(pos);
+        winPos.setX(qMin(qMax(winPos.x(), x1 - width() + 30), x2 - 30));
+        winPos.setY(qMin(qMax(winPos.y(), y1 - 10), y2 - 10));
+        move(winPos);
     }
 
     Base::StateLocker guard(d->_restoring);
