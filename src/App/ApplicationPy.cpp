@@ -300,11 +300,10 @@ PyObject* ApplicationPy::sLoadFile(PyObject* /*self*/, PyObject* args)
             module = modules.front();
         }
 
-        // path could contain characters that need escaping, such as quote signs
-        // therefore use its representation in the Python code string
-        PyObject* pathObj = PyUnicode_FromString(path);
-        PyObject* pathReprObj = PyObject_Repr(pathObj);
-        const char* pathRepr = PyUnicode_AsUTF8(pathReprObj);
+        // path and doc could contain characters that need escaping, such as quote signs
+        // therefore use their repr() in the Python code string
+        auto pathRepr = static_cast<std::string>(Py::String(path).repr());
+        auto docRepr = static_cast<std::string>(Py::String(doc).repr());
 
         std::stringstream str;
         str << "import " << module << std::endl;
@@ -312,11 +311,8 @@ PyObject* ApplicationPy::sLoadFile(PyObject* /*self*/, PyObject* args)
             str << module << ".openDocument(" << pathRepr << ")" << std::endl;
         }
         else {
-            str << module << ".insert(" << pathRepr << ",'" << doc << "')" << std::endl;
+            str << module << ".insert(" << pathRepr << "," << docRepr << ")" << std::endl;
         }
-
-        Py_DECREF(pathObj);
-        Py_DECREF(pathReprObj);
 
         Base::Interpreter().runString(str.str().c_str());
         Py_Return;
