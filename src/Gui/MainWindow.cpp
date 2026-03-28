@@ -1994,13 +1994,46 @@ void MainWindow::loadWindowSettings()
         windowState = QByteArray::fromBase64(wstate.c_str());
     }
 
-    resize(winSize);
-    int x1 {}, x2 {}, y1 {}, y2 {};
-    // make sure that the main window is not totally out of the visible rectangle
-    rect.getCoords(&x1, &y1, &x2, &y2);
-    winPos.setX(qMin(qMax(winPos.x(), x1 - width() + 30), x2 - 30));
-    winPos.setY(qMin(qMax(winPos.y(), y1 - 10), y2 - 10));
+    winSize = winSize.expandedTo(minimumSize());
+
+    // Check that no part of window outside all screens
+    QRect winGeometry = QRect(winPos, winSize + frameSizeDiff);
+    const auto screens = QApplication::screens();
+    auto invisible = QPolygon(winGeometry);
+    for (auto s : screens) {
+        invisible = invisible.subtracted(s->geometry().adjusted(-10, -10, 10, 10));
+    }
+    if (!invisible.empty()) {
+        // If not, move it inside the most overlapped or closest screen
+        // Union of screens are not considered, as it e.g. may have holes in general case
+        QRect screen {};
+        for (int screenArea = 0; auto s : screens) {
+            auto overlap = s->availableGeometry().intersected(winGeometry);
+            int overlapArea = overlap.width() * overlap.height();
+            if (overlapArea > screenArea) {
+                screen = s->availableGeometry();
+                screenArea = overlapArea;
+            }
+        }
+        if (screen.isEmpty()) {
+            for (int screenDist = -1; auto s : screens) {
+                auto dist = (winGeometry.center() - s->availableGeometry().center()).manhattanLength();
+                if (screenDist == -1 || dist < screenDist) {
+                    screen = s->availableGeometry();
+                    screenDist = dist;
+                }
+            }
+        }
+        winSize = winSize.boundedTo(screen.size() - frameSizeDiff).expandedTo(minimumSize());
+        winGeometry = QRect(winPos, winSize + frameSizeDiff);
+        winPos.setX(qMax(qMin(winPos.x(), screen.right() - winGeometry.width()), screen.x()));
+        winPos.setY(qMax(qMin(winPos.y(), screen.bottom() - winGeometry.height()), screen.y()));
+    }
+
+    // Scale before move reducing, or vice versa, so a dpi change wont make window to be moved
+    resize(winSize.boundedTo(size()));
     move(winPos);
+    resize(winSize);
 
     Base::StateLocker guard(d->_restoring);
 
