@@ -482,7 +482,6 @@ class _ArchSchedule:
 
             # get unit
             tp = None
-            unit = None
             q = None
             if unit:
                 unit = unit.replace("^", "")  # get rid of existing power symbol
