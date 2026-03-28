@@ -402,6 +402,16 @@ class _ArchReportDocObserver:
     def slotRecomputedDocument(self, doc):
         if doc != self.doc:
             return
+        # Guard against executing after the Report object has been removed.
+        # During deletion the observer may not yet be unregistered when the
+        # post-removal recompute fires.
+        try:
+            if not self.report.isAttachedToDocument():
+                FreeCAD.removeDocumentObserver(self)
+                return
+        except RuntimeError:
+            FreeCAD.removeDocumentObserver(self)
+            return
         self.report.Proxy.execute(self.report)
 
 
@@ -676,6 +686,14 @@ class _ArchReport:
 
         return current_row  # Return the next available row
 
+    def unsetupObject(self, obj):
+        """Remove the document observer so that recomputes after removal do not
+        call execute() on a stale reference and create an orphaned spreadsheet.
+        """
+        if getattr(self, "docObserver", None) is not None:
+            FreeCAD.removeDocumentObserver(self.docObserver)
+            self.docObserver = None
+
     def execute(self, obj):
         """Executes all statements and writes the results to the target spreadsheet."""
         if not self.live_statements:
@@ -786,6 +804,16 @@ class ViewProviderReport:
                     return False
             return True
         return False
+
+    def onDelete(self, vobj, subelements):
+        """Remove the document observer so that recomputes after removal do not
+        call execute() on a stale reference and create an orphaned spreadsheet.
+        """
+        proxy = getattr(vobj.Object, "Proxy", None)
+        if proxy and getattr(proxy, "docObserver", None) is not None:
+            FreeCAD.removeDocumentObserver(proxy.docObserver)
+            proxy.docObserver = None
+        return True
 
     def attach(self, vobj):
         """Called by the C++ loader when the view provider is rehydrated."""
