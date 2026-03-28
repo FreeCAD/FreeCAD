@@ -1637,7 +1637,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty(
             "App::PropertyAngle",
             "HelixAngle",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Helix ramp entry angle (degrees)",
@@ -1646,7 +1646,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty(
             "App::PropertyLength",
             "HelixMaxStepdown",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "The maximum allowable descent in a single revolution of the helix.",
@@ -1655,7 +1655,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty(
             "App::PropertyAngle",
             "HelixConeAngle",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Helix cone angle (degrees)",
@@ -1664,7 +1664,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty(
             "App::PropertyPercent",
             "HelixMaxDiameterPercent",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
@@ -1673,7 +1673,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.addProperty(
             "App::PropertyPercent",
             "HelixMinDiameterPercent",
-            "Adaptive",
+            "AdaptiveHelixEntry",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Minimum acceptable helix entry diameter, as a percentage of the tool diameter",
@@ -1784,7 +1784,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyAngle",
                 "HelixConeAngle",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 "Helix cone angle (degrees)",
             )
 
@@ -1852,7 +1852,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyPercent",
                 "HelixMaxDiameterPercent",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter",
@@ -1861,7 +1861,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyPercent",
                 "HelixMinDiameterPercent",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Minimum acceptable helix entry diameter, as a percentage of the tool diameter",
@@ -1877,7 +1877,7 @@ class PathAdaptive(PathOp.ObjectOp):
             obj.addProperty(
                 "App::PropertyLength",
                 "HelixMaxStepdown",
-                "Adaptive",
+                "AdaptiveHelixEntry",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "The maximum allowable descent in a single revolution of the helix.",
