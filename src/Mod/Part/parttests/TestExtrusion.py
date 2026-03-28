@@ -19,25 +19,15 @@ class TestExtrusion(unittest.TestCase):
         """Create a sketch with overlapping rectangle (-20,-15)-(15,15) + circle at (10,0) r=15."""
         sk = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         i = int(sk.GeometryCount)
-        sk.addGeometry(
-            Part.LineSegment(FreeCAD.Vector(-20, -15, 0), FreeCAD.Vector(15, -15, 0))
-        )
-        sk.addGeometry(
-            Part.LineSegment(FreeCAD.Vector(15, -15, 0), FreeCAD.Vector(15, 15, 0))
-        )
-        sk.addGeometry(
-            Part.LineSegment(FreeCAD.Vector(15, 15, 0), FreeCAD.Vector(-20, 15, 0))
-        )
-        sk.addGeometry(
-            Part.LineSegment(FreeCAD.Vector(-20, 15, 0), FreeCAD.Vector(-20, -15, 0))
-        )
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-20, -15, 0), FreeCAD.Vector(15, -15, 0)))
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(15, -15, 0), FreeCAD.Vector(15, 15, 0)))
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(15, 15, 0), FreeCAD.Vector(-20, 15, 0)))
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(-20, 15, 0), FreeCAD.Vector(-20, -15, 0)))
         sk.addConstraint(Sketcher.Constraint("Coincident", i, 2, i + 1, 1))
         sk.addConstraint(Sketcher.Constraint("Coincident", i + 1, 2, i + 2, 1))
         sk.addConstraint(Sketcher.Constraint("Coincident", i + 2, 2, i + 3, 1))
         sk.addConstraint(Sketcher.Constraint("Coincident", i + 3, 2, i, 1))
-        sk.addGeometry(
-            Part.Circle(FreeCAD.Vector(10, 0, 0), FreeCAD.Vector(0, 0, 1), 15), False
-        )
+        sk.addGeometry(Part.Circle(FreeCAD.Vector(10, 0, 0), FreeCAD.Vector(0, 0, 1), 15), False)
         self.Doc.recompute()
         return sk
 
@@ -73,9 +63,7 @@ class TestExtrusion(unittest.TestCase):
                 ]
             )
         )
-        circle = Part.Face(
-            Part.Wire(Part.makeCircle(15, FreeCAD.Vector(10, 0, 0)))
-        )
+        circle = Part.Face(Part.Wire(Part.makeCircle(15, FreeCAD.Vector(10, 0, 0))))
         union = rect.fuse(circle)
         expected_volume = sum(f.Area for f in union.Faces) * 10
         self.assertAlmostEqual(ext.Shape.Volume, expected_volume, delta=1.0)
@@ -87,18 +75,10 @@ class TestExtrusion(unittest.TestCase):
         """Part Extrude of a simple rectangle should produce correct volume."""
         sk = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         i = int(sk.GeometryCount)
-        sk.addGeometry(
-            Part.LineSegment(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(10, 0, 0))
-        )
-        sk.addGeometry(
-            Part.LineSegment(FreeCAD.Vector(10, 0, 0), FreeCAD.Vector(10, 10, 0))
-        )
-        sk.addGeometry(
-            Part.LineSegment(FreeCAD.Vector(10, 10, 0), FreeCAD.Vector(0, 10, 0))
-        )
-        sk.addGeometry(
-            Part.LineSegment(FreeCAD.Vector(0, 10, 0), FreeCAD.Vector(0, 0, 0))
-        )
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(10, 0, 0)))
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(10, 0, 0), FreeCAD.Vector(10, 10, 0)))
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(10, 10, 0), FreeCAD.Vector(0, 10, 0)))
+        sk.addGeometry(Part.LineSegment(FreeCAD.Vector(0, 10, 0), FreeCAD.Vector(0, 0, 0)))
         sk.addConstraint(Sketcher.Constraint("Coincident", i, 2, i + 1, 1))
         sk.addConstraint(Sketcher.Constraint("Coincident", i + 1, 2, i + 2, 1))
         sk.addConstraint(Sketcher.Constraint("Coincident", i + 2, 2, i + 3, 1))
