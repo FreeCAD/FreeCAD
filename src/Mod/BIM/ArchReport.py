@@ -785,6 +785,7 @@ class ViewProviderReport:
     def __init__(self, vobj):
         vobj.Proxy = self
         self.vobj = vobj
+        vobj.ToggleVisibility = "NoToggleVisibility"
 
     def getIcon(self):
         return ":/icons/Arch_Schedule.svg"
@@ -817,7 +818,12 @@ class ViewProviderReport:
 
     def attach(self, vobj):
         """Called by the C++ loader when the view provider is rehydrated."""
-        self.vobj = vobj  # Ensure self.vobj is set for consistent access
+        self.vobj = vobj
+        vobj.ToggleVisibility = "NoToggleVisibility"
+
+    def isShow(self):
+        """Always return True so the Tree View does not fade this object."""
+        return True
 
     def claimChildren(self):
         """
@@ -1385,11 +1391,10 @@ class ReportTaskPanel:
 
         # After populating all rows, trigger a validation for all statements.
         # This ensures the counts and statuses are up-to-date when the panel opens.
-        for statement in self.obj.Proxy.live_statements:
-            statement.validate_and_update_status()
-            self._update_table_row_status(
-                self.obj.Proxy.live_statements.index(statement), statement
-            )
+        statements = self.obj.Proxy.live_statements
+        for index, statement in enumerate(statements):
+            statement.validate_and_update_status(statements, index)
+            self._update_table_row_status(index, statement)
 
         # Re-enable signals after population so user edits are handled
         self.table_statements.blockSignals(False)
@@ -1577,7 +1582,9 @@ class ReportTaskPanel:
             statement.include_column_names = self.chk_include_column_names.isChecked()
             statement.add_empty_row_after = self.chk_add_empty_row_after.isChecked()
             statement.print_results_in_bold = self.chk_print_results_in_bold.isChecked()
-            statement.validate_and_update_status()  # Update status in the statement object
+            statement.validate_and_update_status(
+                self.obj.Proxy.live_statements, self.current_edited_statement_index
+            )
             self._update_table_row_status(
                 self.current_edited_statement_index, statement
             )  # Refresh table status
@@ -1994,7 +2001,9 @@ class ReportTaskPanel:
         statement.add_empty_row_after = self.chk_add_empty_row_after.isChecked()
         statement.print_results_in_bold = self.chk_print_results_in_bold.isChecked()
 
-        statement.validate_and_update_status()
+        statement.validate_and_update_status(
+            self.obj.Proxy.live_statements, self.current_edited_statement_index
+        )
         self._update_table_row_status(self.current_edited_statement_index, statement)
         self._set_dirty(True)
 
@@ -2064,7 +2073,11 @@ class ReportTaskPanel:
 
             for row_idx, row_data in enumerate(data_rows):
                 for col_idx, cell_value in enumerate(row_data):
-                    item = QtWidgets.QTableWidgetItem(str(cell_value))
+                    if isinstance(cell_value, FreeCAD.Units.Quantity):
+                        display_text = cell_value.toStr()
+                    else:
+                        display_text = str(cell_value)
+                    item = QtWidgets.QTableWidgetItem(display_text)
                     self.table_preview_results.setItem(row_idx, col_idx, item)
             self.table_preview_results.horizontalHeader().setSectionResizeMode(
                 QtWidgets.QHeaderView.Interactive
