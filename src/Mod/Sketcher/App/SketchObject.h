@@ -152,6 +152,7 @@ public:
      */
     bool isInGroup(int geoId, bool includeHandle = true) const;
     bool isGroupHandle(int geoId) const;
+    std::set<int> getGroupGeometries(int handleGeoId) const;
     /*!
      \brief Returns geoId if it's not in a group. Or the group handle if it is in a group.
      \param geoId - the geometry id in the sketch
