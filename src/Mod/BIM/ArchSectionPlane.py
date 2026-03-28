@@ -494,9 +494,10 @@ def getSVG(
                     "stroke-width": "SVGLINEWIDTH",
                     "stroke-dasharray": "SVGHIDDENPATTERN",
                 }
+                svgcache += '<g transform="scale(-1,1)">\n'
                 svgcache += TechDraw.projectToSVG(
                     hshapes,
-                    direction,
+                    -direction,
                     hStyle=style,
                     h0Style=style,
                     h1Style=style,
@@ -504,6 +505,7 @@ def getSVG(
                     v0Style=style,
                     v1Style=style,
                 )
+                svgcache += "</g>\n"
             if sshapes:
                 if showFill:
                     # svgcache += fillpattern
