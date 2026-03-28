@@ -80,6 +80,7 @@ set(Part_tests
     parttests/TopoShapeTest.py
     parttests/TestTangentMode3-0.21.FCStd
     parttests/TestPartMirror.py
+    parttests/TestExtrusion.py
 )
 
 add_custom_target(PartScripts ALL SOURCES

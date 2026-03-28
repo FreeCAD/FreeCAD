@@ -36,6 +36,7 @@ from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
 from parttests.TopoShapeTest import TopoShapeTest
 from parttests.TestPartMirror import TestPartMirroringRegression
+from parttests.TestExtrusion import TestExtrusion
 
 
 # ---------------------------------------------------------------------------

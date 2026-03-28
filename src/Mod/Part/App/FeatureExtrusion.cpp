@@ -58,7 +58,7 @@ const char* Extrusion::eInnerWireTaperStrings[] = {"Inverted", "SameAsOuter", nu
 
 namespace
 {
-std::vector<std::string> MakerEnums = {"Simple", "Cheese", "Extrusion", "Bullseye"};
+std::vector<std::string> MakerEnums = {"Simple", "Cheese", "Extrusion", "Bullseye", "BuildFace"};
 
 const char* enumToClass(const char* mode)
 {
@@ -73,6 +73,9 @@ const char* enumToClass(const char* mode)
     }
     if (MakerEnums.at(3) == mode) {
         return "Part::FaceMakerBullseye";
+    }
+    if (MakerEnums.at(4) == mode) {
+        return "Part::FaceMakerBuildFace";
     }
 
     return "Part::FaceMakerBullseye";
@@ -91,6 +94,9 @@ const char* classToEnum(const char* type)
     }
     if (strcmp(type, "Part::FaceMakerBullseye") == 0) {
         return MakerEnums.at(3).c_str();
+    }
+    if (strcmp(type, "Part::FaceMakerBuildFace") == 0) {
+        return MakerEnums.at(4).c_str();
     }
 
     return MakerEnums.at(3).c_str();
@@ -385,6 +391,13 @@ void Extrusion::extrudeShape(TopoShape& result, const TopoShape& source, const E
 
         // extrude!
         result.makeElementPrism(myShape, vec);
+
+        // If the extrusion of multiple faces produced multiple solids,
+        // fuse them into a single solid. This happens when overlapping
+        // sketch geometry is split into separate face regions.
+        if (params.solid && result.countSubShapes(TopAbs_SOLID) > 1) {
+            result = result.makeElementFuse(result.getSubTopoShapes(TopAbs_SOLID));
+        }
     }
 }
 
@@ -492,8 +505,8 @@ void Part::Extrusion::setupObject()
 {
     Part::Feature::setupObject();
     // default for newly created features
-    this->FaceMakerMode.setValue(MakerEnums.at(3).c_str());
-    this->FaceMakerClass.setValue("Part::FaceMakerBullseye");
+    this->FaceMakerMode.setValue(MakerEnums.at(4).c_str());
+    this->FaceMakerClass.setValue("Part::FaceMakerBuildFace");
 }
 
 void Extrusion::onDocumentRestored()
