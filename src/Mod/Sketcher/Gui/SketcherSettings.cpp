@@ -357,6 +357,7 @@ void SketcherSettingsGrid::saveSettings()
     ui->gridSize->onSave();
     ui->checkBoxGridAuto->onSave();
     ui->gridSizePixelThreshold->onSave();
+    ui->gridTransparency->onSave();
     ui->gridLineColor->onSave();
     ui->gridDivLineColor->onSave();
     ui->gridLineWidth->onSave();
@@ -381,6 +382,7 @@ void SketcherSettingsGrid::loadSettings()
     ui->gridSize->onRestore();
     ui->checkBoxGridAuto->onRestore();
     ui->gridSizePixelThreshold->onRestore();
+    ui->gridTransparency->onRestore();
     ui->gridLineColor->onRestore();
     ui->gridDivLineColor->onRestore();
     ui->gridLineWidth->onRestore();

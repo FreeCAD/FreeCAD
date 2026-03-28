@@ -386,6 +386,12 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               Client.setGridDivLineColor(color);
           },
           nullptr}},
+        {"GridTransparency",
+         {[this](const std::string& string, [[maybe_unused]] App::Property* property) {
+              auto v = getSketcherGeneralParameter(string, 60);
+              Client.setGridTransparency(static_cast<float>(v) / 100.0f);
+          },
+          nullptr}},
         {"SegmentsPerGeometry",
          {[this](const std::string& string,
                                          [[maybe_unused]] App::Property* property) {
