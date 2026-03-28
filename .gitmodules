@@ -10,3 +10,6 @@
 [submodule "src/Mod/AddonManager"]
 	path = src/Mod/AddonManager
 	url = https://github.com/FreeCAD/AddonManager.git
+[submodule "src/3rdParty/libharu"]
+	path = src/3rdParty/libharu
+	url = https://github.com/libharu/libharu

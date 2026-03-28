@@ -27,6 +27,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/GeoFeature.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -35,6 +36,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/ViewProvider.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -53,6 +56,31 @@ using DU = DrawUtil;
 
 constexpr int SXGAWidth{1280};
 constexpr int SXGAHeight{1024};
+
+//! Return visible Part/Mesh/GeoFeature objects from the document (excluding TechDraw pages etc.)
+static std::vector<App::DocumentObject*> getVisible3DObjects(App::Document* doc,
+                                                              Gui::Document* guiDoc)
+{
+    std::vector<App::DocumentObject*> result;
+    if (!doc || !guiDoc) {
+        return result;
+    }
+    for (auto* obj : doc->getObjects()) {
+        if (!obj->isDerivedFrom(Part::Feature::getClassTypeId())
+            && !obj->isDerivedFrom(Mesh::Feature::getClassTypeId())
+            && !obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            continue;
+        }
+        if (obj->isDerivedFrom<TechDraw::DrawPage>()) {
+            continue;
+        }
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(obj);
+        if (vp && vp->isVisible()) {
+            result.push_back(obj);
+        }
+    }
+    return result;
+}
 
 // ctor for creation
 TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
@@ -88,6 +116,7 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     connect(ui->cbNoBG, &QCheckBox::clicked, this, &TaskActiveView::updatePreview);
     connect(ui->ccBgColor, &QPushButton::clicked, this, &TaskActiveView::updatePreview);
     connect(ui->cbCrop, &QCheckBox::clicked, this, &TaskActiveView::updatePreview);
+    connect(ui->cb3DPDFExport, &QCheckBox::clicked, this, &TaskActiveView::updatePreview);
 
     updatePreview();
 }
@@ -188,6 +217,7 @@ void TaskActiveView::updatePreview()
         if (auto* vp = guiDoc->getViewProvider(m_previewImageFeat)) {
             if (auto* vpImage = freecad_cast<ViewProviderImage*>(vp)) {
                 vpImage->Crop.setValue(ui->cbCrop->isChecked());
+                vpImage->Enable3DPDFExport.setValue(ui->cb3DPDFExport->isChecked());
             }
         }
     }
@@ -223,6 +253,7 @@ void TaskActiveView::setUiPrimary()
     enableCrop(false);
     ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
     ui->qsbHeight->setValue(Rez::appX(SXGAHeight));
+    ui->cb3DPDFExport->setChecked(false);
 }
 
 void TaskActiveView::enableCrop(bool state)
@@ -264,7 +295,14 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
     m_pageFeat->addView(newObj);
     newObj->Label.setValue("ActiveView");
 
-    return static_cast<TechDraw::DrawViewImage*>(newObj);
+    // Capture visible 3D objects and store in Source property for 3D PDF export
+    Gui::Document* pageGuiDoc =
+        Gui::Application::Instance->getDocument(pageDocument->getName());
+    std::vector<App::DocumentObject*> visible3DObjects = getVisible3DObjects(pageDocument, pageGuiDoc);
+    auto* newImg = static_cast<TechDraw::DrawViewImage*>(newObj);
+    newImg->Source.setValues(visible3DObjects);
+
+    return newImg;
 }
 
 void TaskActiveView::changeEvent(QEvent* e)

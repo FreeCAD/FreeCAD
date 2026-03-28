@@ -38,6 +38,10 @@ ViewProviderImage::ViewProviderImage()
     sPixmap = "actions/TechDraw_Image";
 
     ADD_PROPERTY_TYPE(Crop ,(false), "Image", App::Prop_None, "Crop image to Width x Height");
+    ADD_PROPERTY_TYPE(Enable3DPDFExport ,(false), "Image", App::Prop_None, "Enable 3D PDF export for this image view");
+    ADD_PROPERTY_TYPE(NoBackground ,(true), "Background", App::Prop_None, "Use no background (transparent)");
+    ADD_PROPERTY_TYPE(SolidBackground ,(false), "Background", App::Prop_None, "Use solid background color");
+    ADD_PROPERTY_TYPE(BackgroundColor ,(Base::Color(0.5f, 0.5f, 0.5f)), "Background", App::Prop_None, "Background color when SolidBackground is enabled");
 }
 
 ViewProviderImage::~ViewProviderImage()
