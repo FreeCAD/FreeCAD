@@ -23,7 +23,6 @@
 
 #include <memory>
 
-#include <QDir>
 #include <QString>
 #include <QVariant>
 
