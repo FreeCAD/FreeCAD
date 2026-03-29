@@ -2,7 +2,6 @@
 """Tests for SoQtOffscreenRenderer, including writeToBuffer."""
 
 import unittest
-import FreeCAD
 import FreeCADGui
 
 
