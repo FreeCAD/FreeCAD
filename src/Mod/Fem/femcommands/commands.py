@@ -31,6 +31,7 @@ __url__ = "https://www.freecad.org"
 
 import FreeCAD
 import FreeCADGui
+import warnings
 from FreeCAD import Qt
 
 from .manager import CommandManager
@@ -47,6 +48,21 @@ from femsolver.settings import get_default_solver
 # Translation:
 # some information in the regard of translation can be found in forum post
 # https://forum.freecad.org/viewtopic.php?f=18&t=62449&p=543845#p543593
+
+
+_SWIG_PY_OBJECT_MODULE_WARNING = "builtin type SwigPyObject has no __module__ attribute"
+
+
+def _get_active_view_scene_graph():
+    # Accessing the Pivy scene graph currently emits a Python 3.11 SWIG warning
+    # the first time the proxy object is created in a session.
+    with warnings.catch_warnings():
+        warnings.filterwarnings(
+            "ignore",
+            message=_SWIG_PY_OBJECT_MODULE_WARNING,
+            category=DeprecationWarning,
+        )
+        return FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
 
 
 class _Analysis(CommandManager):
@@ -149,7 +165,7 @@ class _ClippingPlaneAdd(CommandManager):
         )
         clip_plane = coin.SoClipPlaneManip()
         clip_plane.setValue(coin_bound_box, coin_normal_vector, 1)
-        FreeCADGui.ActiveDocument.ActiveView.getSceneGraph().insertChild(clip_plane, 1)
+        _get_active_view_scene_graph().insertChild(clip_plane, 1)
 
 
 class _ClippingPlaneRemoveAll(CommandManager):
@@ -171,13 +187,12 @@ class _ClippingPlaneRemoveAll(CommandManager):
         return resources
 
     def Activated(self):
-        line1 = "for node in list(sg.getChildren()):\n"
-        line2 = "    if isinstance(node, coin.SoClipPlane):\n"
-        line3 = "        sg.removeChild(node)"
-        FreeCADGui.doCommand("from pivy import coin")
-        FreeCADGui.doCommand("sg = Gui.ActiveDocument.ActiveView.getSceneGraph()")
-        FreeCADGui.doCommand("nodes = sg.getChildren()")
-        FreeCADGui.doCommand(line1 + line2 + line3)
+        from pivy import coin
+
+        scene_graph = _get_active_view_scene_graph()
+        for node in list(scene_graph.getChildren()):
+            if isinstance(node, coin.SoClipPlane):
+                scene_graph.removeChild(node)
 
 
 class _ConstantVacuumPermittivity(CommandManager):
