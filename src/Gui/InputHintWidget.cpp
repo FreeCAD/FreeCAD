@@ -303,6 +303,16 @@ QString Gui::InputHintWidget::inputRepresentation(const InputHint::UserInput key
         /*: Keyboard key for Scroll Lock */
         case KeyScrollLock: return tr("Scroll Lock");
 
+        // Modifier variants (same Qt values as Key* but stored as KeyboardModifier)
+        case ModifierShift: return tr("⇧ Shift");
+        case ModifierCtrl: return tr("Ctrl");
+#ifdef FC_OS_WIN32
+        case ModifierMeta: return QStringLiteral("⊞ Win");
+#else
+        case ModifierMeta: return QStringLiteral("❖ Meta");
+#endif
+        case ModifierAlt: return tr("Alt");
+
         // function
         case KeyF1: return QStringLiteral("F1");
         case KeyF2: return QStringLiteral("F2");
