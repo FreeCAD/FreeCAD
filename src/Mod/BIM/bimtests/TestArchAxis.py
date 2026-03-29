@@ -81,7 +81,7 @@ class TestArchAxis(TestArchBase.TestArchBase):
         self.assertEqual(len(parent_shapes), len(link_shapes))
         self.assertEqual([t[0] for t in parent_texts], [t[0] for t in link_texts])
 
-        delta = link.getGlobalPlacement().multiply(axis.getGlobalPlacement().inverse())
+        delta = link.Placement.multiply(axis.Placement.inverse())
         for i, item in enumerate(parent_texts):
             expected = delta.multVec(item[1])
             actual = link_texts[i][1]
