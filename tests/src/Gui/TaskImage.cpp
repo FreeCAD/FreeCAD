@@ -22,7 +22,7 @@ namespace
 {
 std::unique_ptr<Gui::Application> guiApp;
 std::unique_ptr<Gui::MainWindow> mainWindow;
-}
+}  // namespace
 
 class testTaskImage: public QObject
 {
