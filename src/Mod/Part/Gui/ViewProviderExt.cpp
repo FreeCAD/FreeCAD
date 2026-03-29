@@ -1473,7 +1473,7 @@ void ViewProviderPartExt::updateVisual()
 {
     TopoDS_Shape shape = getRenderedShape().getShape();
 
-    if (lastRenderedShape.IsPartner(shape)) {
+    if (!VisualTouched && lastRenderedShape.IsPartner(shape)) {
         return;
     }
 
