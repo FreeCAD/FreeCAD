@@ -230,7 +230,7 @@ class Arch_Window:
             # library object
             col = self.doc.Objects
             path = self.librarypresets[self.Preset - len(WindowPresets)][1]
-            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('" + path + "')")
+            FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject(" + repr(path) + ")")
             # find the latest added window
             nol = self.doc.Objects
             for o in nol[len(col) :]:

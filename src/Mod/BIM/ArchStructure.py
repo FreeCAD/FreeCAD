@@ -476,7 +476,7 @@ class _CommandStructure:
                     )
                     # if not self.bmode:
                     #    FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
-                FreeCADGui.doCommand('s.Profile = "' + self.Profile[2] + '"')
+                FreeCADGui.doCommand("s.Profile = " + repr(self.Profile[2]))
         else:
             FreeCADGui.doCommand(
                 "s = Arch.makeStructure(length="

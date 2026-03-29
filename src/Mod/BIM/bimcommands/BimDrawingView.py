@@ -69,7 +69,7 @@ class BIM_DrawingView:
                 FreeCADGui.doCommand(
                     "vobj = Draft.make_shape2dview(FreeCAD.ActiveDocument." + s.Name + ")"
                 )
-                FreeCADGui.doCommand('vobj.Label = "' + translate("BIM", "Viewed lines") + '"')
+                FreeCADGui.doCommand("vobj.Label = " + repr(translate("BIM", "Viewed lines")))
                 FreeCADGui.doCommand("vobj.InPlace = False")
                 FreeCADGui.doCommand("obj.addObject(vobj)")
                 bb = FreeCAD.BoundBox()
@@ -80,7 +80,7 @@ class BIM_DrawingView:
                     FreeCADGui.doCommand(
                         "cobj = Draft.make_shape2dview(FreeCAD.ActiveDocument." + s.Name + ")"
                     )
-                    FreeCADGui.doCommand('cobj.Label = "' + translate("BIM", "Cut lines") + '"')
+                    FreeCADGui.doCommand("cobj.Label = " + repr(translate("BIM", "Cut lines")))
                     FreeCADGui.doCommand("cobj.InPlace = False")
                     FreeCADGui.doCommand('cobj.ProjectionMode = "Cutfaces"')
                     FreeCADGui.doCommand("obj.addObject(cobj)")
