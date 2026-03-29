@@ -63,7 +63,7 @@ ViewProvider2DObjectGrid::ViewProvider2DObjectGrid()
 {
     ADD_PROPERTY_TYPE(
         ShowGrid,
-        (false),
+        (true),
         "Grid",
         (App::PropertyType)(App::Prop_None),
         "Toggle grid visibility"
@@ -469,55 +469,55 @@ void ViewProvider2DObject::updatePlane()
 
     static const int32_t lines[6] = {0, 1, 2, 3, 0, -1};
 
+    // Wrap plane contents in a separator so the unpickable state doesn't
+    // leak to sibling nodes (like pcSketchFaces) under pcAnnotation.
+    auto planeSeparator = new SoSeparator();
+    plane->addChild(planeSeparator);
+
+    // Make the plane unpickable so it doesn't block selection of
+    // internal faces or other sketch elements beneath it.
+    auto pickStyle = new SoPickStyle();
+    pickStyle->style = SoPickStyle::UNPICKABLE;
+    planeSeparator->addChild(pickStyle);
+
+    // Shared coordinates for outline and face
     auto pCoords = new SoCoordinate3();
     pCoords->point.setNum(4);
     pCoords->point.setValues(0, 4, verts);
-    plane->addChild(pCoords);
+    planeSeparator->addChild(pCoords);
 
+    // Solid outline
     auto pLines = new SoIndexedLineSet();
     pLines->coordIndex.setNum(6);
     pLines->coordIndex.setValues(0, 6, lines);
-    plane->addChild(pLines);
+    planeSeparator->addChild(pLines);
 
-    // add semi transparent face
-    auto faceSeparator = new SoSeparator();
-    plane->addChild(faceSeparator);
+    // Dashed outline overlay (rendered on top)
+    auto dashed = new SoDrawStyle();
+    dashed->linePattern = 0xF0F0;
+    auto annotation = new SoAnnotation();
+    annotation->addChild(dashed);
+    annotation->addChild(pLines);
+    planeSeparator->addChild(annotation);
 
+    // Semi-transparent face fill
     auto material = new SoMaterial();
     SbColor color(1.0f, 1.0f, 0.0f);
     material->transparency.setValue(0.85f);
     material->ambientColor.setValue(color);
     material->diffuseColor.setValue(color);
-    faceSeparator->addChild(material);
+    planeSeparator->addChild(material);
 
-    // disable backface culling and render with two-sided lighting
     auto shapeHints = new SoShapeHints();
     shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
-    faceSeparator->addChild(shapeHints);
-
-    auto pickStyle = new SoPickStyle();
-    pickStyle->style = SoPickStyle::UNPICKABLE;
-    faceSeparator->addChild(pickStyle);
+    planeSeparator->addChild(shapeHints);
 
     auto faceSet = new SoFaceSet();
     auto vertexProperty = new SoVertexProperty();
     vertexProperty->vertex.setValues(0, 4, verts);
     faceSet->vertexProperty.setValue(vertexProperty);
-    faceSeparator->addChild(faceSet);
-
-    auto ps = new SoPickStyle();
-    ps->style.setValue(SoPickStyle::BOUNDING_BOX);
-
-    auto dashed = new SoDrawStyle();
-    dashed->linePattern = 0xF0F0;
-
-    auto annotation = new SoAnnotation();
-    annotation->addChild(dashed);
-    annotation->addChild(pLines);
-
-    plane->addChild(annotation);
-    plane->addChild(ps);
+    planeSeparator->addChild(faceSet);
 }
 
 namespace Gui

@@ -1826,7 +1826,20 @@ static std::string checkFileName(const char* file)
     if (GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
             ->GetBool("CheckExtension", true)) {
-        const char* ext = strrchr(file, '.');
+        constexpr std::size_t backupExtLen = sizeof(".fcbak") - 1;
+        constexpr std::size_t backupAndDocExtLen = sizeof(".fcbak.fcstd") - 1;
+        if (boost::iends_with(fn, ".fcbak.fcstd")) {
+            fn.erase(fn.size() - backupAndDocExtLen);
+            fn += ".FCStd";
+            return fn;
+        }
+        if (boost::iends_with(fn, ".fcbak")) {
+            fn.erase(fn.size() - backupExtLen);
+            fn += ".FCStd";
+            return fn;
+        }
+
+        const char* ext = strrchr(fn.c_str(), '.');
         if ((ext == nullptr) || !boost::iequals(ext + 1, "fcstd")) {
             if (ext && ext[1] == 0) {
                 fn += "FCStd";

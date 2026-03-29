@@ -173,7 +173,7 @@ void SketchObject::setupObject()
     ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher");
     ArcFitTolerance.setValue(hGrpp->GetFloat("ArcFitTolerance", Precision::Confusion()*10.0));
-    MakeInternals.setValue(hGrpp->GetBool("MakeInternals", false));
+    MakeInternals.setValue(hGrpp->GetBool("MakeInternals", true));
     _ExternalGeoVersion.setValue(1);
     inherited::setupObject();
 }

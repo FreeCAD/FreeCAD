@@ -70,7 +70,6 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     ui->qsbHeight->setUnit(Base::Unit::Length);
 
     setUiPrimary();
-    connect(ui->cbCrop, &QCheckBox::clicked, this, &TaskActiveView::onCropChanged);
 
     // For live preview
     m_tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create ActiveView"));
@@ -82,12 +81,14 @@ TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
         return;
     }
 
+    connect(ui->gbFraming, &QGroupBox::toggled, this, &TaskActiveView::onCropChanged);
+
     connect(ui->qsbWidth, &Gui::QuantitySpinBox::editingFinished, this, &TaskActiveView::updatePreview);
     connect(ui->qsbHeight, &Gui::QuantitySpinBox::editingFinished, this, &TaskActiveView::updatePreview);
-    connect(ui->cbUse3d, &QCheckBox::clicked, this, &TaskActiveView::updatePreview);
-    connect(ui->cbNoBG, &QCheckBox::clicked, this, &TaskActiveView::updatePreview);
-    connect(ui->ccBgColor, &QPushButton::clicked, this, &TaskActiveView::updatePreview);
-    connect(ui->cbCrop, &QCheckBox::clicked, this, &TaskActiveView::updatePreview);
+
+    connect(ui->cbBg, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TaskActiveView::onBgTypeChanged);
+    connect(ui->cbBg, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &TaskActiveView::updatePreview);
+    connect(ui->ccBgColor, &Gui::ColorButton::changed, this, &TaskActiveView::updatePreview);
 
     updatePreview();
 }
@@ -157,17 +158,24 @@ void TaskActiveView::updatePreview()
     std::string tempName =
         Base::FileInfo::getTempFileName(baseName.c_str(), doc->TransientDir.getValue()) + ".png";
 
-    QColor bg = ui->ccBgColor->color();
-    if (ui->cbUse3d->isChecked()) {
-        bg = QColor();
-    }
-    else if (ui->cbNoBG->isChecked()) {
-        bg = QColor(Qt::transparent);
+    QColor bg;
+    auto bgType = static_cast<BackgroundType>(ui->cbBg->currentIndex());
+
+    switch (bgType) {
+        case BackgroundType::Transparent:
+            bg = QColor(Qt::transparent);
+            break;
+        case BackgroundType::Solid:
+            bg = ui->ccBgColor->color();
+            break;
+        case BackgroundType::View3D:
+            bg = QColor();
+            break;
     }
 
     int imageWidth{SXGAWidth};
     int imageHeight{SXGAHeight};
-    if (ui->cbCrop->isChecked()) {
+    if (ui->gbFraming->isChecked()) {
         imageWidth = Rez::guiX(ui->qsbWidth->rawValue());
         imageHeight = Rez::guiX(ui->qsbHeight->rawValue());
     }
@@ -187,7 +195,7 @@ void TaskActiveView::updatePreview()
     if (auto* guiDoc = Gui::Application::Instance->getDocument(doc)) {
         if (auto* vp = guiDoc->getViewProvider(m_previewImageFeat)) {
             if (auto* vpImage = freecad_cast<ViewProviderImage*>(vp)) {
-                vpImage->Crop.setValue(ui->cbCrop->isChecked());
+                vpImage->Crop.setValue(ui->gbFraming->isChecked());
             }
         }
     }
@@ -212,23 +220,39 @@ void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
 // Slots
 void TaskActiveView::onCropChanged()
 {
-    enableCrop(ui->cbCrop->isChecked());
+    enableCrop(ui->gbFraming->isChecked());
+    updatePreview();
 }
 
 // Private helper methods
 void TaskActiveView::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Insert Active View"));
-    ui->cbCrop->setChecked(false);
+    ui->gbFraming->setChecked(false);
     enableCrop(false);
+    
+    ui->cbBg->setCurrentIndex(static_cast<int>(BackgroundType::Transparent));
+    onBgTypeChanged(static_cast<int>(BackgroundType::Transparent)); 
+
     ui->qsbWidth->setValue(Rez::appX(SXGAWidth));
     ui->qsbHeight->setValue(Rez::appX(SXGAHeight));
+}
+
+void TaskActiveView::onBgTypeChanged(int index)
+{
+    auto bgType = static_cast<BackgroundType>(index);
+    bool isSolid = (bgType == BackgroundType::Solid);
+    
+    ui->ccBgColor->setEnabled(isSolid);
+    ui->lColor->setEnabled(isSolid);
 }
 
 void TaskActiveView::enableCrop(bool state)
 {
     ui->qsbHeight->setEnabled(state);
     ui->qsbWidth->setEnabled(state);
+    ui->lWidth->setEnabled(state);
+    ui->lHeight->setEnabled(state);
 }
 
 TechDraw::DrawViewImage* TaskActiveView::createActiveView()

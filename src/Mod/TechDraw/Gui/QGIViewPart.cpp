@@ -125,6 +125,12 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
         // we are selected, don't change anything?
     }
     else if (change == ItemSceneChange && scene()) {
+        // Disconnect the signal to prevent callbacks during teardown
+        if (m_selectionChangedConnection) {
+            QObject::disconnect(m_selectionChangedConnection);
+            // Reset the connection handle so it's not holding a stale reference
+            m_selectionChangedConnection = QMetaObject::Connection();
+        }
         // This means we are finished?
         tidy();
     }
@@ -132,6 +138,9 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& valu
         if (scene()) {
             // added to scene
             m_selectionChangedConnection = connect(scene(), &QGraphicsScene::selectionChanged, this, [this]() {
+                if (!scene()) {
+                    return;
+                }
                 // When selection changes, if the mouse is not over the view,
                 // hide any non-selected vertices.
                 if (!isUnderMouse()) {
@@ -270,7 +279,7 @@ void QGIViewPart::draw()
     //this is old C/L
     drawCenterLines(true);//have to draw centerlines after border to get size correct.
     drawAllSectionLines();//same for section lines
-    
+
     prepareGeometryChange();
 }
 

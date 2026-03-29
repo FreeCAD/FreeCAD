@@ -45,7 +45,12 @@ class ApplicationDirectoriesTestClass: public App::ApplicationDirectories
 public:
     void wrapAppendVersionIfPossible(const fs::path& basePath, std::vector<std::string>& subdirs) const
     {
-        appendVersionIfPossible(basePath, subdirs);
+        appendVersionIfPossible(basePath, subdirs, MissingDirectoryBehavior::doNotAppend);
+    }
+
+    void wrapAppendVersionIfPossibleCreate(const fs::path& basePath, std::vector<std::string>& subdirs) const
+    {
+        appendVersionIfPossible(basePath, subdirs, MissingDirectoryBehavior::create);
     }
 
     std::tuple<int, int> wrapExtractVersionFromConfigMap(
@@ -791,6 +796,102 @@ TEST_F(ApplicationDirectoriesTest, sanitizeReturnsUnchangedIfNoNullCharacter)
 
     EXPECT_EQ(result.string(), input);
     EXPECT_EQ(result.string().find('\0'), std::string::npos);
+}
+
+// --- Tests for MissingDirectoryBehavior::create ---
+
+// Base exists, current version dir already present -> append current, no extra creation needed
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseExistsAppendsCurrentWhenAlreadyPresent)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_current";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(base / "configs");
+    fs::create_directories(versionedPath(base / "configs", 5, 4));
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+    EXPECT_TRUE(fs::is_directory(versionedPath(base / "configs", 5, 4)));
+}
+
+// Base exists, older version dir present -> create behavior still uses current version
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseExistsUsesCurrentEvenWhenOlderVersionPresent)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_older";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(versionedPath(base / "configs", 5, 2));
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+    EXPECT_TRUE(fs::is_directory(versionedPath(base / "configs", 5, 4)));
+}
+
+// Base exists but no versioned children -> create behavior appends current AND creates the directory
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseExistsNoVersionsAppendsAndCreatesDir)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_noversions";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(base / "configs");
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+    // The directory should have been created on disk
+    EXPECT_TRUE(fs::is_directory(versionedPath(base / "configs", 5, 4)));
+}
+
+// Contrast: doNotAppend does NOT append or create when base exists with no versioned children
+TEST_F(ApplicationDirectoriesTest, appendDoNotAppendBaseExistsNoVersionsLeavesUnchanged)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "donotappend_noversions";
+    std::vector<std::string> sub {"configs"};
+    fs::create_directories(base / "configs");
+
+    auto before = sub;
+    appDirs->wrapAppendVersionIfPossible(base, sub);
+
+    EXPECT_EQ(sub, before);
+    EXPECT_FALSE(fs::exists(versionedPath(base / "configs", 5, 4)));
+}
+
+// Base does not exist -> both behaviors append current version (no directory creation needed)
+TEST_F(ApplicationDirectoriesTest, appendCreateBaseMissingAppendsCurrentSuffix)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_missing";
+    std::vector<std::string> sub {"configs"};
+
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+
+    ASSERT_EQ(sub.size(), 2u);
+    EXPECT_EQ(sub.back(), App::ApplicationDirectories::versionStringForPath(5, 4));
+}
+
+// Already versioned -> create behavior still bails out (no change)
+TEST_F(ApplicationDirectoriesTest, appendCreateAlreadyVersionedBails)
+{
+    auto appDirs = makeAppDirsForVersion(5, 4);
+
+    fs::path base = tempDir() / "create_bail";
+    std::vector<std::string> sub {"configs", App::ApplicationDirectories::versionStringForPath(5, 2)};
+    fs::create_directories(base / sub[0] / sub[1]);
+
+    auto before = sub;
+    appDirs->wrapAppendVersionIfPossibleCreate(base, sub);
+    EXPECT_EQ(sub, before);
 }
 
 /* NOLINTEND(

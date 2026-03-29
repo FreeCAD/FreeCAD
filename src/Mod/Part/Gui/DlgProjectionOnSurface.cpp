@@ -88,7 +88,7 @@ public:
             return false;
         }
 
-        auto subShape = aPart->Shape.getShape().getSubShape(sSubName);
+        auto subShape = aPart->Shape.getShape().getSubShape(sSubName, true);
         if (subShape.IsNull()) {
             return false;
         }
@@ -449,7 +449,10 @@ void PartGui::DlgProjectionOnSurface::store_current_selected_parts(
                 if (!it->getSubNames().empty()) {
                     auto parentShape = currentShapeStore.inputShape;
                     for (const auto& itName : selObj.front().getSubNames()) {
-                        auto currentShape = aPart->Shape.getShape().getSubShape(itName.c_str());
+                        auto currentShape = aPart->Shape.getShape().getSubShape(itName.c_str(), true);
+                        if (currentShape.IsNull()) {
+                            continue;
+                        }
 
                         transform_shape_to_global_position(currentShape, aPart);
 

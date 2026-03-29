@@ -348,7 +348,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
           nullptr}},
         {"GridLinePattern",
          {[this](const std::string& string, [[maybe_unused]] App::Property* property) {
-              auto v = getSketcherGeneralParameter(string, 0x0f0f);
+              auto v = getSketcherGeneralParameter(string, 0xffff);
               Client.setGridLinePattern(v);
           },
           nullptr}},
@@ -384,6 +384,12 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               auto v = getSketcherGeneralParameter(string, packedDefaultGridColor);
               auto color = Base::Color(v);
               Client.setGridDivLineColor(color);
+          },
+          nullptr}},
+        {"GridTransparency",
+         {[this](const std::string& string, [[maybe_unused]] App::Property* property) {
+              auto v = getSketcherGeneralParameter(string, 60);
+              Client.setGridTransparency(static_cast<float>(v) / 100.0f);
           },
           nullptr}},
         {"SegmentsPerGeometry",
@@ -426,7 +432,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
 
     // unsubscribed parameters which update a property on just once upon construction (and before
     // restore if properties are being restored from a file)
-    updateBoolProperty("ShowGrid", &Client.ShowGrid, false);
+    updateBoolProperty("ShowGrid", &Client.ShowGrid, true);
     updateBoolProperty("GridAuto", &Client.GridAuto, true);
     updateGridSize("GridSize", &Client.GridSize);
 }
