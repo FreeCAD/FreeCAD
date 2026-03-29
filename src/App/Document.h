@@ -891,6 +891,22 @@ public:
 
     int getBookedTransactionID() const;
 
+    /// Create a new transaction context, but does not activate if
+    int createTransactionContext();
+    /// Returns the default transaction context id, the context
+    /// it refers to cannot be destroyed
+    int defaultTransactionContextId();
+    /// Returns the id of the current transaction context, useful
+    /// to index taskview and selection for instance
+    int currentTransactionContextId();
+    /// Makes a a givent transaction context current, every transaction related call
+    /// will apply to the active context
+    /// Returns true on success
+    bool activateTransactionContext(int id);
+    /// Destroys a given transaction context, the transactions will not be recovereable
+    /// Returns true on success
+    bool removeTransactionContext(int id);
+
     /**
      * @brief Rename the current transaction.
      *
@@ -927,6 +943,10 @@ public:
      * @return The transaction ID, or 0 if @p pos is out of range.
      */
     int getTransactionID(bool undo, unsigned pos = 0) const;
+
+    int getTransactionContext() const;
+    int getDefaultTransactionContext() const;
+    int createTransactionContext() const;
 
     /**
      * @brief Check if a transaction is open and its list is empty.
@@ -1455,14 +1475,26 @@ private:
     void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
                                 const std::function<void()>& changeFunc);
 
+
+    // Accessors for current transaction context members
+    int& bookedTransaction();
+    int& bookedTransaction() const;
+    Transaction* activeUndoTransaction();
+    Transaction* activeUndoTransaction() const;
+    void setActiveUndoTransaction(Transaction* transaction);
+    void clearActiveUndoTransaction();
+    std::list<Transaction*>& undoTransactions();
+    const std::list<Transaction*>& undoTransactions() const;
+    std::map<int, Transaction*>& undoMap();
+    std::map<int, Transaction*>& undoMap() const;
+    std::list<Transaction*>& redoTransactions();
+    std::list<Transaction*>& redoTransactions() const;
+    std::map<int, Transaction*>& redoMap();
+    std::map<int, Transaction*>& redoMap() const;
+
 private:
     // # Data Member of the document
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    std::list<Transaction*> mUndoTransactions;
-    std::map<int, Transaction*> mUndoMap;
-    std::list<Transaction*> mRedoTransactions;
-    std::map<int, Transaction*> mRedoMap;
-
     struct DocumentP* d;
 
     std::string oldLabel;

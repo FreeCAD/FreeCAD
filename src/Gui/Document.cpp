@@ -112,6 +112,7 @@ struct DocumentP
     std::list<Gui::BaseView*> baseViews;
     /// List of all registered views
     std::list<Gui::BaseView*> passiveViews;
+    std::map<Gui::BaseView*, int> viewToTransactionContext;
     std::map<const App::DocumentObject*, ViewProviderDocumentObject*> _ViewProviderMap;
     std::map<SoSeparator*, ViewProviderDocumentObject*> _CoinMap;
     std::map<std::string, ViewProvider*> _ViewProviderMapAnnotation;
@@ -319,6 +320,34 @@ struct DocumentP
         if (dlg) {
             dlg->setDocumentName(doc->getName());
         }
+    }
+    bool attachTransactionContext(Gui::BaseView* pcView)
+    {
+        if (!viewToTransactionContext.contains(pcView)) {
+            int tcid = _pcDocument->createTransactionContext();
+            viewToTransactionContext[pcView] = tcid;
+            return true;
+        }
+        return false;
+    }
+    bool detachTransactionContext(Gui::BaseView* pcView)
+    {
+        auto foundTcid = viewToTransactionContext.find(pcView);
+        if (foundTcid != viewToTransactionContext.end()) {
+            _pcDocument->removeTransactionContext(foundTcid->second);
+            viewToTransactionContext.erase(foundTcid);
+            return true;
+        }
+        return false;
+    }
+    bool activateTransactionContext(Gui::BaseView* pcView)
+    {
+        auto foundTcid = viewToTransactionContext.find(pcView);
+        if (foundTcid != viewToTransactionContext.end()) {
+            _pcDocument->activateTransactionContext(foundTcid->second);
+            return true;
+        }
+        return false;
     }
 };
 
@@ -2279,6 +2308,9 @@ MDIView* Document::createView(const Base::Type& typeId, CreateViewMode mode)
         }
 
         view3D->getViewer()->redraw();
+
+        // Use the default transaction context for the main 3d view
+        // d->viewToTransactionContext[view3D] = d->_pcDocument->defaultTransactionContextId();
         return view3D;
     }
     return nullptr;
@@ -2323,6 +2355,7 @@ bool Document::saveCameraSettings(const char* settings) const
 void Document::attachView(Gui::BaseView* pcView, bool bPassiv)
 {
     if (!bPassiv) {
+        d->attachTransactionContext(pcView);
         d->baseViews.push_back(pcView);
     }
     else {
@@ -2342,6 +2375,8 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
             d->baseViews.remove(pcView);
         }
 
+        d->detachTransactionContext(pcView);
+        
         // last view?
         if (d->baseViews.empty()) {
             // decouple a passive view
@@ -2356,6 +2391,17 @@ void Document::detachView(Gui::BaseView* pcView, bool bPassiv)
                 d->_pcAppWnd->onLastWindowClosed(this);
             }
         }
+    }
+}
+void Document::activateTransactionContext(Gui::BaseView* pcView)
+{
+    if (pcView) {
+        d->activateTransactionContext(pcView);
+    }
+    else {
+        // The default transaction context of a document cannot
+        // be destroyed so it's safe to activate it
+        d->_pcDocument->activateTransactionContext(d->_pcDocument->defaultTransactionContextId());
     }
 }
 

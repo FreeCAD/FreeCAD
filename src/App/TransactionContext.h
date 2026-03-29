@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2026 Théo Veilleux-Trinh <theo.veilleux.trinh@proton.me>*
+ *   Copyright (c) 2002 Théo Veilleux-Trinh <theo.veilleux.trinh@proton.me>*
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,32 +24,31 @@
 
 #pragma once
 
-#include <string>
+#include <list>
+#include <map>
 
-namespace App {
+#include "TransactionDefs.h"
+#include "Transactions.h"
 
-class Document;
+namespace App 
+{
+class Transaction;
 
-constexpr int NullTransaction = 0;
+// Defines an undo-redo stack, documents have at least one such stacks
+struct TransactionContext {
+    TransactionContext(int id_)
+        : id(id_)
+    {
 
-struct TransactionName {
-    // Name of the transaction as it will appear in the GUI
-    std::string name;
-    
-    // If true, the transaction is allowed to be renamed
-    bool temporary { false };
+    }
+
+    int id;
+    int bookedTransaction { NullTransaction };
+    Transaction* activeUndoTransaction {nullptr};
+    std::list<Transaction*> undoTransactions;
+    std::map<int, Transaction*> undoMap;
+    std::list<Transaction*> redoTransactions;
+    std::map<int, Transaction*> redoMap;
 };
 
-struct TransactionDescription {
-    // Document on which the transaction was first created
-    // useful for mass transaction (e.g. delete from an assembly)
-    // where other documents may use the same transaction id
-    Document* initiator { nullptr };
-    TransactionName name;
-};
-
-enum class TransactionCloseMode {
-    Commit = 0,
-    Abort = 1,
-};
 }

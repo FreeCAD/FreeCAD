@@ -55,7 +55,7 @@ void AutoTransaction::close(TransactionCloseMode mode)
 {
     if (tid != NullTransaction) {
         GetApplication().closeActiveTransaction(mode, tid);
-        tid = 0;
+        tid = NullTransaction;
     }
 }
 
@@ -78,12 +78,12 @@ int Application::openGlobalTransaction(TransactionName name)
     }
 
     FC_WARN("Setting a global transaction with name='" << name.name);
-    if (_globalTransactionID != 0 && transactionTmpName(_globalTransactionID)) {
+    if (_globalTransactionID != NullTransaction && transactionTmpName(_globalTransactionID)) {
         setTransactionName(_globalTransactionID, name);
     } else {
         FC_LOG("set global transaction '" << name.name << "'");
 
-        if (_globalTransactionID != 0 && !commitTransaction(_globalTransactionID)) {
+        if (_globalTransactionID != NullTransaction && !commitTransaction(_globalTransactionID)) {
             FC_WARN("could not close current global transaction");
             return _globalTransactionID;
         }
@@ -166,6 +166,10 @@ void Application::setTransactionName(int tid, const TransactionName& name)
             v.second->renameTransaction(name.name, tid);
         }
     } 
+}
+int Application::generateTransactionContextId()
+{
+    return transactionContextIdGenerator++;
 }
 
 bool Application::closeActiveTransaction(TransactionCloseMode mode, int id)

@@ -1622,6 +1622,12 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     if (d->activeDocument == pcDocument) {
         return;  // nothing needs to be done
     }
+    if (d->activeDocument) {
+        // Reset the document to the default transaction context
+        // such that it has a valid context even if the last view used
+        // is closed
+        d->activeDocument->activateTransactionContext(nullptr);
+    }
 
     updateActions();
 
@@ -1780,6 +1786,7 @@ void Application::viewActivated(MDIView* pcView)
     getMainWindow()->setWindowTitle(pcView->buildWindowTitle());
     if (auto document = pcView->getGuiDocument()) {
         getMainWindow()->setWindowModified(document->isModified());
+        document->activateTransactionContext(pcView);
     }
 
     // Set the new active document which is taken of the activated view. If, however,
