@@ -1721,30 +1721,30 @@ void MainWindow::delayedStartup()
 {
     // automatically run unit tests in Gui
     if (App::Application::Config()["RunMode"] == "Internal") {
-        QTimer::singleShot(1000, this, [] {
-            try {
-                string command = "import sys\n"
-                                 "import FreeCAD\n"
-                                 "import QtUnitGui\n\n"
-                                 "testCase = FreeCAD.ConfigGet(\"TestCase\")\n"
-                                 "QtUnitGui.addTest(testCase)\n"
-                                 "QtUnitGui.setTest(testCase)\n"
-                                 "result = QtUnitGui.runTest()\n"
-                                 "sys.stdout.flush()\n";
-                if (App::Application::Config()["ExitTests"] == "yes") {
-                    command += "sys.exit(0 if result else 1)";
-                }
-                Base::Interpreter().runString(command.c_str());
+        try {
+            // Command-line GUI tests should not depend on the interactive QtUnitGui
+            // dialog. In headless runs such as QT_QPA_PLATFORM=offscreen/minimal,
+            // that dialog path can hang before the test body executes. Run the
+            // embedded text-based GUI test script directly once startup reaches
+            // delayedStartup().
+            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiTest"));
+            if (App::Application::Config()["ExitTests"] == "yes") {
+                Base::Interpreter().runString(
+                    "import sys\n"
+                    "sys.exit(0 if test_result.wasSuccessful() else 1)\n"
+                );
             }
-            catch (const Base::SystemExitException&) {
-                // Properly quit the Qt event loop before propagating the exception
-                QApplication::quit();
-                throw;
-            }
-            catch (const Base::Exception& e) {
-                e.reportException();
-            }
-        });
+        }
+        catch (const Base::SystemExitException&) {
+            // Properly quit the Qt event loop before propagating the exception
+            QApplication::quit();
+            throw;
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+            QApplication::quit();
+            throw;
+        }
         return;
     }
 

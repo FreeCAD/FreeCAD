@@ -340,6 +340,7 @@ generate_from_py(Command)
 generate_from_py(Navigation/NavigationStyle)
 
 generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
+generate_embed_from_py(FreeCADGuiTest GuiTestScript.h)
 
 # The Pyi files
 SET(FreeCADGui_Pyi_SRCS
@@ -1425,6 +1426,7 @@ SET(FreeCADGui_SRCS
     ExpressionBindingPy.h
     ExpressionCompleter.h
     FreeCADGuiInit.py
+    FreeCADGuiTest.py
     FreeCADStyle.h
     GraphicsViewZoom.h
     GuiApplication.h
