@@ -118,7 +118,9 @@ bool ViewProviderAssemblyLink::doubleClicked()
             return true;
         }
 
-        vpa = freecad_cast<ViewProviderAssembly*>(Gui::Application::Instance->getViewProvider(assembly));
+        vpa = freecad_cast<ViewProviderAssembly*>(
+            Gui::Application::Instance->getViewProvider(assembly)
+        );
         if (!vpa) {
             return true;
         }
