@@ -121,7 +121,10 @@ struct NotificationAreaP
     bool missedNotifications = false;
 
     // Access control
-    std::mutex mutexNotification;
+    // recursive_mutex: Qt warning handlers can re-enter pushNotification()
+    // on the same thread during widget creation. Re-entrancy is safe because
+    // each entry appends to the notification list without invalidating iterators.
+    std::recursive_mutex mutexNotification;
 
     // Pointers to widgets (no ownership)
     QMenu* menu = nullptr;
@@ -911,14 +914,14 @@ NotificationArea::NotificationArea(QWidget* parent)
     // NOLINTBEGIN
     //  Signals for synchronisation of storage before showing/hiding the widget
     QObject::connect(pImp->menu, &QMenu::aboutToHide, [&]() {
-        lock_guard<std::mutex> g(pImp->mutexNotification);
+        lock_guard<std::recursive_mutex> g(pImp->mutexNotification);
         static_cast<NotificationsAction*>(pImp->notificationaction)->clearUnreadFlag();
         static_cast<NotificationsAction*>(pImp->notificationaction)->shiftToCache();
     });
 
     QObject::connect(pImp->menu, &QMenu::aboutToShow, [this]() {
         // guard to avoid modifying the notification list and indices while creating the tooltip
-        lock_guard<std::mutex> g(pImp->mutexNotification);
+        lock_guard<std::recursive_mutex> g(pImp->mutexNotification);
         setText(QString::number(0));  // no unread notifications
         if (pImp->missedNotifications) {
             setIcon(TrayIcon::Normal);
@@ -1003,7 +1006,7 @@ void NotificationArea::mousePressEvent(QMouseEvent* e)
 
         QAction* delnotifications = menu.addAction(tr("Delete User Notifications"), [&]() {
             // guard to avoid modifying the notification list and indices while creating the tooltip
-            lock_guard<std::mutex> g(pImp->mutexNotification);
+            lock_guard<std::recursive_mutex> g(pImp->mutexNotification);
             na->deleteNotifications();
             setText(QString::number(na->getUnreadCount()));
         });
@@ -1012,7 +1015,7 @@ void NotificationArea::mousePressEvent(QMouseEvent* e)
 
         QAction* delall = menu.addAction(tr("Delete All"), [&]() {
             // guard to avoid modifying the notification list and indices while creating the tooltip
-            lock_guard<std::mutex> g(pImp->mutexNotification);
+            lock_guard<std::recursive_mutex> g(pImp->mutexNotification);
             na->deleteAll();
             setText(QString::number(0));
         });
@@ -1049,7 +1052,7 @@ void NotificationArea::pushNotification(
         showConfirmationDialog(notifiername, message);
     }
     // guard to avoid modifying the notification list and indices while creating the tooltip
-    lock_guard<std::mutex> g(pImp->mutexNotification);
+    lock_guard<std::recursive_mutex> g(pImp->mutexNotification);
 
     // NOLINTNEXTLINE
     NotificationsAction* na = static_cast<NotificationsAction*>(pImp->notificationaction);
@@ -1140,7 +1143,7 @@ void NotificationArea::showConfirmationDialog(const QString& notifiername, const
 void NotificationArea::showInNotificationArea()
 {
     // guard to avoid modifying the notification list and indices while creating the tooltip
-    lock_guard<std::mutex> g(pImp->mutexNotification);
+    lock_guard<std::recursive_mutex> g(pImp->mutexNotification);
 
     // NOLINTNEXTLINE
     NotificationsAction* na = static_cast<NotificationsAction*>(pImp->notificationaction);
@@ -1246,7 +1249,7 @@ void NotificationArea::showInNotificationArea()
                         [this, item, repetitions = item->getRepetitions()]() {
                             // guard to avoid modifying the notification
                             // start index while creating the tooltip
-                            lock_guard<std::mutex> g(pImp->mutexNotification);
+                            lock_guard<std::recursive_mutex> g(pImp->mutexNotification);
 
                             // if the item exists and the number of repetitions has not changed in
                             // the meantime
