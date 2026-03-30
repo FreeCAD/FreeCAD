@@ -10473,7 +10473,7 @@ CmdSketcherConstrainGroup::CmdSketcherConstrainGroup()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Group Constrain");
+    sMenuText = QT_TR_NOOP("Group Constraint");
     sToolTipText = QT_TR_NOOP("Constrains the selected geometries together as a single entity."
         "The position and size of the grouped geometries can be defined by constraining the construction line that is generated."
         "Constraints applied to grouped edges are ignored as long as the Group constraint is here.");
