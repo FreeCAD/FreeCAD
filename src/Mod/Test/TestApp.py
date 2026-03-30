@@ -93,6 +93,11 @@ def TestText(s):
     return retval
 
 
+def RunConfiguredTextTest():
+    test_case = FreeCAD.ConfigGet("TestCase")
+    return TestText(test_case)
+
+
 def Test(s):
     TestText(s)
 
