@@ -62,4 +62,3 @@ class TestArchAxis(TestArchBase.TestArchBase):
         axis_system = Arch.makeAxisSystem([axis1, axis2], name="TestAxisSystem")
         self.assertIsNotNone(axis_system, "makeAxisSystem failed to create an axis system.")
         self.assertEqual(axis_system.Label, "TestAxisSystem", "Axis system label is incorrect.")
-
