@@ -569,23 +569,57 @@ bool ApplicationDirectories::usingCurrentVersionConfig(fs::path config) const {
     return version == versionStringForPath(std::get<0>(_currentVersion), std::get<1>(_currentVersion));
 }
 
-void ApplicationDirectories::migrateConfig(const fs::path &oldPath, const fs::path &newPath)
+ApplicationDirectories::MigrationResult ApplicationDirectories::migrateConfig(
+    const fs::path& oldPath,
+    const fs::path& newPath)
 {
+    MigrationResult result;
     fs::create_directories(newPath);
-    for (auto& file : fs::directory_iterator(oldPath)) {
+    std::error_code errorCode;
+    for (auto& file : fs::directory_iterator(oldPath, errorCode)) {
         if (file == newPath) {
             // Handle the case where newPath is a subdirectory of oldPath
             continue;
         }
-        fs::copy(file.path(),
-                 newPath / file.path().filename(),
-                 fs::copy_options::recursive | fs::copy_options::copy_symlinks);
+        auto sourcePath = file.path();
+        auto pathString = Base::FileInfo::pathToString(sourcePath);
+
+        if (file.is_symlink(errorCode)) {
+            auto target = fs::read_symlink(sourcePath, errorCode);
+            if (errorCode || !fs::exists(target, errorCode)) {
+                Base::Console().warning("Migration: skipping broken symlink '%s'\n",
+                                        pathString.c_str());
+                result.failedPaths.push_back(sourcePath);
+                continue;
+            }
+        }
+
+        try {
+            fs::copy(sourcePath,
+                     newPath / sourcePath.filename(),
+                     fs::copy_options::recursive | fs::copy_options::copy_symlinks);
+        }
+        catch (const fs::filesystem_error& error) {
+            Base::Console().warning("Migration: failed to copy '%s': %s\n",
+                                    pathString.c_str(),
+                                    error.what());
+            result.failedPaths.push_back(sourcePath);
+        }
     }
+    if (errorCode) {
+        Base::Console().warning("Migration: error iterating '%s': %s\n",
+                                Base::FileInfo::pathToString(oldPath).c_str(),
+                                errorCode.message().c_str());
+    }
+    return result;
 }
 
-void ApplicationDirectories::migrateAllPaths(const std::vector<fs::path> &paths) const {
+ApplicationDirectories::MigrationResult ApplicationDirectories::migrateAllPaths(
+    const std::vector<fs::path>& paths) const
+{
+    MigrationResult allResult;
     auto [major, minor] = _currentVersion;
-    std::set<fs::path> uniquePaths (paths.begin(), paths.end());
+    std::set<fs::path> uniquePaths(paths.begin(), paths.end());
     for (auto path : uniquePaths) {
         if (path.filename().empty()) {
             // Handle the case where the path was constructed from a std::string with a trailing /
@@ -594,16 +628,29 @@ void ApplicationDirectories::migrateAllPaths(const std::vector<fs::path> &paths)
         fs::path newPath;
         if (isVersionedPath(path)) {
             newPath = path.parent_path() / versionStringForPath(major, minor);
-        } else {
+        }
+        else {
             newPath = path / versionStringForPath(major, minor);
         }
-        Base::Console().message("Migrating config from %s to %s\n", Base::FileInfo::pathToString(path), Base::FileInfo::pathToString(newPath));
+        Base::Console().message("Migrating config from %s to %s\n",
+                                Base::FileInfo::pathToString(path),
+                                Base::FileInfo::pathToString(newPath));
         if (fs::exists(newPath)) {
             continue;  // Ignore an existing path: not an error, just a migration that was already done
         }
         fs::create_directories(newPath);
-        migrateConfig(path, newPath);
+        auto result = migrateConfig(path, newPath);
+        allResult.migratedPaths.emplace_back(path, newPath);
+        allResult.failedPaths.insert(allResult.failedPaths.end(),
+                                     result.failedPaths.begin(),
+                                     result.failedPaths.end());
     }
+    if (!allResult.failedPaths.empty()) {
+        Base::Console().warning("Migration completed with %d skipped file(s). "
+                                "See warnings above for details.\n",
+                                static_cast<int>(allResult.failedPaths.size()));
+    }
+    return allResult;
 }
 
 // TODO: Consider using this for all UNIX-like OSes
