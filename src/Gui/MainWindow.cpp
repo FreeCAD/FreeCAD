@@ -494,6 +494,16 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
 
+    // Initialize the Command Palette action with an application-wide shortcut
+    // so it works regardless of which widget has focus.
+    if (auto cmd = Application::Instance->commandManager().getCommandByName("Std_CommandPalette")) {
+        cmd->initAction();
+        if (auto action = cmd->getAction()) {
+            action->action()->setShortcutContext(Qt::ApplicationShortcut);
+            addAction(action->action());
+        }
+    }
+
     statusBar()->showMessage(tr("Ready"), 2001);
 }
 
