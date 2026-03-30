@@ -25,41 +25,29 @@
 import FreeCAD as App
 import Arch
 import ArchAxis
-from bimtests import TestArchBase
+from bimtests import TestArchBaseGui
 
 
-class TestArchAxis(TestArchBase.TestArchBase):
+class TestArchAxisGui(TestArchBaseGui.TestArchBaseGui):
 
-    def test_make_axis_default(self):
-        axis = Arch.makeAxis()
-        self.assertIsNotNone(axis, "Failed to create a default axis")
+    def test_axis_bubble_data_link_parity(self):
+        axis = Arch.makeAxis(num=2, size=1500)
+        self.document.recompute()
 
-    def test_make_axis_custom(self):
-        axis = Arch.makeAxis(num=3, size=2000)
-        self.assertEqual(len(axis.Distances), 3, "Incorrect number of axes created")
-        self.assertEqual(axis.Distances[1], 2000, "Axis size is incorrect")
+        link = self.document.addObject("App::Link", "AxisLink")
+        link.LinkedObject = axis
+        link.LinkTransform = True
+        link.Placement.Base = App.Vector(1000, 2000, 0)
+        self.document.recompute()
 
-    def test_axis_properties(self):
-        axis = Arch.makeAxis()
-        self.assertEqual(axis.Label, "Axes", "Default label is incorrect")
+        parent_shapes, parent_texts = ArchAxis.get_axis_bubble_data(axis, axis.ViewObject)
+        link_shapes, link_texts = ArchAxis.get_axis_bubble_data(link, axis.ViewObject)
 
-    def test_makeAxis(self):
-        """Test the makeAxis function."""
-        operation = "Testing makeAxis function"
-        self.printTestMessage(operation)
+        self.assertEqual(len(parent_shapes), len(link_shapes))
+        self.assertEqual([t[0] for t in parent_texts], [t[0] for t in link_texts])
 
-        axis = Arch.makeAxis(num=2, size=500)
-        self.assertIsNotNone(axis, "makeAxis failed to create an axis object.")
-        self.assertEqual(axis.Label, "Axes", "Axis label is incorrect.")
-
-    def test_makeAxisSystem(self):
-        """Test the makeAxisSystem function."""
-        operation = "Testing makeAxisSystem function"
-        self.printTestMessage(operation)
-
-        axis1 = Arch.makeAxis(num=1, size=1000)
-        axis2 = Arch.makeAxis(num=1, size=2000)
-        axis_system = Arch.makeAxisSystem([axis1, axis2], name="TestAxisSystem")
-        self.assertIsNotNone(axis_system, "makeAxisSystem failed to create an axis system.")
-        self.assertEqual(axis_system.Label, "TestAxisSystem", "Axis system label is incorrect.")
-
+        delta = link.Placement.multiply(axis.Placement.inverse())
+        for i, item in enumerate(parent_texts):
+            expected = delta.multVec(item[1])
+            actual = link_texts[i][1]
+            self.assertLess((expected - actual).Length, 1e-6)
