@@ -104,8 +104,8 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         }
         Edges.setValues(edges);
 
-        Part::SignalException sig;
-        TopoDS_Shape shape = mkChamfer.Shape();
+        TopoDS_Shape shape;
+        Part::SignalException::guard([&] { shape = mkChamfer.Shape(); });
         if (shape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }

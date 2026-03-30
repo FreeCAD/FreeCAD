@@ -36,6 +36,7 @@
 #include <Base/Exception.h>
 
 #include "FeatureFillet.h"
+#include "SignalException.h"
 #include "TopoShapeOpCode.h"
 
 
@@ -54,9 +55,6 @@ App::DocumentObjectExecReturn* Fillet::execute()
 
 
     try {
-#if defined(__GNUC__) && defined(FC_OS_LINUX)
-        Base::SignalException se;
-#endif
         TopoShape baseTopoShape
             = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
         auto baseShape = baseTopoShape.getShape();
@@ -113,7 +111,8 @@ App::DocumentObjectExecReturn* Fillet::execute()
         }
         Edges.setValues(edges);
 
-        TopoDS_Shape shape = mkFillet.Shape();
+        TopoDS_Shape shape;
+        Part::SignalException::guard([&] { shape = mkFillet.Shape(); });
         if (shape.IsNull()) {
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }

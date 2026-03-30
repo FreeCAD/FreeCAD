@@ -119,9 +119,6 @@ const char* Boolean::opCode() const
 App::DocumentObjectExecReturn* Boolean::execute()
 {
     try {
-#if defined(__GNUC__) && defined(FC_OS_LINUX)
-        Base::SignalException se;
-#endif
         auto base = Base.getValue();
         auto tool = Tool.getValue();
 

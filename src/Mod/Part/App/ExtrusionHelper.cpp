@@ -47,6 +47,7 @@
 #include <ShapeFix_Wire.hxx>
 
 #include "ExtrusionHelper.h"
+#include "SignalException.h"
 #include "TopoShape.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "Geometry.h"
@@ -686,21 +687,19 @@ void ExtrusionHelper::makeElementDraft(
         }
 
         try {
-#if defined(__GNUC__) && defined(FC_OS_LINUX)
-            Base::SignalException se;
-#endif
+            Part::SignalException::guard([&] {
+                // make loft
+                BRepOffsetAPI_ThruSections mkGenerator(
+                    params.solid ? Standard_True : Standard_False,
+                    /*ruled=*/Standard_True
+                );
+                for (auto& s : list_of_sections) {
+                    mkGenerator.AddWire(TopoDS::Wire(s.getShape()));
+                }
 
-            // make loft
-            BRepOffsetAPI_ThruSections mkGenerator(
-                params.solid ? Standard_True : Standard_False,
-                /*ruled=*/Standard_True
-            );
-            for (auto& s : list_of_sections) {
-                mkGenerator.AddWire(TopoDS::Wire(s.getShape()));
-            }
-
-            mkGenerator.Build();
-            drafts.push_back(TopoShape(0, hasher).makeElementShape(mkGenerator, list_of_sections));
+                mkGenerator.Build();
+                drafts.push_back(TopoShape(0, hasher).makeElementShape(mkGenerator, list_of_sections));
+            });
         }
         catch (Standard_Failure&) {
             throw;
