@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2025 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *                                                                         *
+ *   Copyright (c) 2026 The FreeCAD project association AISBL              *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -23,24 +24,21 @@
 
 #pragma once
 
+#include <functional>
 #include <Mod/Part/PartGlobal.h>
 
 namespace Part
 {
 
+/// Executes a callable with POSIX signal handlers that convert crashes
+/// (SIGSEGV, SIGBUS, SIGFPE, etc.) into C++ exceptions (Standard_Failure).
+/// On Linux/macOS the signal handler does longjmp back into guard(),
+/// which then throws, so no macro (OCC_CATCH_SIGNALS) is needed at the call site.
+/// On other platforms this is a no-op passthrough.
 class PartExport SignalException
 {
 public:
-    SignalException();
-    ~SignalException();
-
-    SignalException(const SignalException&) = default;
-    SignalException(SignalException&&) = default;
-    SignalException& operator=(const SignalException&) = default;
-    SignalException& operator=(SignalException&&) = default;
-
-private:
-    bool enabled {false};
+    static void guard(std::function<void()> fn);
 };
 
 }  // namespace Part
