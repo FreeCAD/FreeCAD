@@ -139,9 +139,26 @@
 #include "Navigation/NavigationAnimation.h"
 #include "Utilities.h"
 
+#include <Inventor/fields/SoSFImage.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
+#include <Inventor/nodes/SoFragmentShader.h>
+#include <Inventor/nodes/SoShaderParameter.h>
+#include <Inventor/nodes/SoShaderProgram.h>
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoTextureCubeMap.h>
+#include <Inventor/nodes/SoVertexShader.h>
 #include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoTransformSeparator.h>
 #include <Inventor/So3DAnnotation.h>
+
+#include <array>
+#include <cmath>
+
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_FAILURE_USERMSG
+#include "vendor/stb_image.h"
+#include "Inventor/SoFCSkyboxShaders.h"
 
 
 FC_LOG_LEVEL_INIT("3DViewer", true, true)
@@ -149,6 +166,156 @@ FC_LOG_LEVEL_INIT("3DViewer", true, true)
 // #define FC_LOGGING_CB
 
 using namespace Gui;
+
+// ---------------------------------------------------------------------------
+// HDRI skybox helpers (ported from coin4-demo)
+// ---------------------------------------------------------------------------
+
+static std::array<float, 3> skyboxCubeDir(int face, float s, float t)
+{
+    float u = 2.0f * s - 1.0f;
+    float v = 2.0f * t - 1.0f;
+    switch (face) {
+        case 0:
+            return {1.0f, -v, -u};
+        case 1:
+            return {-1.0f, -v, u};
+        case 2:
+            return {u, 1.0f, v};
+        case 3:
+            return {u, -1.0f, -v};
+        case 4:
+            return {u, -v, 1.0f};
+        default:
+            return {-u, -v, -1.0f};
+    }
+}
+
+static std::array<uint8_t, 3> skyboxSampleEquirect(
+    const float* hdr,
+    int w,
+    int h,
+    float dx,
+    float dy,
+    float dz
+)
+{
+    float len = sqrtf(dx * dx + dy * dy + dz * dz);
+    dx /= len;
+    dy /= len;
+    dz /= len;
+
+    float u = 0.5f + atan2f(dz, dx) / (2.0f * float(M_PI));
+    float v = 0.5f - asinf(dy) / float(M_PI);
+
+    int px = int(u * w) % w;
+    int py = int(v * h);
+    px = (px % w + w) % w;
+    py = std::max(0, std::min(py, h - 1));
+
+    const float* p = hdr + (py * w + px) * 3;
+
+    auto tm = [](float f) -> uint8_t {
+        f = f / (1.0f + f);
+        f = powf(f, 1.0f / 2.2f);
+        return uint8_t(std::min(255.0f, f * 255.0f));
+    };
+    return {tm(p[0]), tm(p[1]), tm(p[2])};
+}
+
+static SoSeparator* buildHdriSkybox(const char* hdrPath, SoTextureCubeMap*& cubeMapOut)
+{
+    int w, h, nc;
+    float* hdr = stbi_loadf(hdrPath, &w, &h, &nc, 3);
+    cubeMapOut = nullptr;
+    if (!hdr) {
+        Base::Console().warning(
+            "View3DInventorViewer: could not load HDR '%s': %s\n",
+            hdrPath,
+            stbi_failure_reason()
+        );
+        return nullptr;
+    }
+
+    const int FS = 1024;
+    SoTextureCubeMap* cubeMap = new SoTextureCubeMap;
+    cubeMap->model = SoTextureCubeMap::REPLACE;
+    cubeMap->wrapS = SoTextureCubeMap::CLAMP;
+    cubeMap->wrapT = SoTextureCubeMap::CLAMP;
+
+    SoSFImage* faces[6] = {
+        &cubeMap->imagePosX,
+        &cubeMap->imageNegX,
+        &cubeMap->imagePosY,
+        &cubeMap->imageNegY,
+        &cubeMap->imagePosZ,
+        &cubeMap->imageNegZ,
+    };
+
+    std::vector<uint8_t> buf(FS * FS * 3);
+    for (int f = 0; f < 6; f++) {
+        for (int y = 0; y < FS; y++) {
+            for (int x = 0; x < FS; x++) {
+                auto dir = skyboxCubeDir(f, (x + 0.5f) / FS, (y + 0.5f) / FS);
+                auto rgb = skyboxSampleEquirect(hdr, w, h, dir[0], dir[1], dir[2]);
+                int i = (y * FS + x) * 3;
+                buf[i] = rgb[0];
+                buf[i + 1] = rgb[1];
+                buf[i + 2] = rgb[2];
+            }
+        }
+        faces[f]->setValue(SbVec2s(FS, FS), 3, buf.data());
+    }
+    stbi_image_free(hdr);
+
+    SoSeparator* sep = new SoSeparator;
+
+    SoDepthBuffer* db = new SoDepthBuffer;
+    db->test = FALSE;
+    db->write = FALSE;
+    sep->addChild(db);
+
+    SoLightModel* lm = new SoLightModel;
+    lm->model = SoLightModel::BASE_COLOR;
+    sep->addChild(lm);
+
+    cubeMapOut = cubeMap;
+    sep->addChild(cubeMap);
+
+    SoShaderProgram* prog = new SoShaderProgram;
+    SoVertexShader* vs = new SoVertexShader;
+    SoFragmentShader* fs = new SoFragmentShader;
+    vs->sourceType.setValue(SoShaderObject::GLSL_PROGRAM);
+    vs->sourceProgram.setValue(skyboxVert);
+    fs->sourceType.setValue(SoShaderObject::GLSL_PROGRAM);
+    fs->sourceProgram.setValue(skyboxFrag);
+
+    SoShaderParameter1i* cubeParam = new SoShaderParameter1i;
+    cubeParam->name.setValue("cubemap");
+    cubeParam->value.setValue(0);
+    fs->parameter.set1Value(0, cubeParam);
+
+    prog->shaderObject.set1Value(0, vs);
+    prog->shaderObject.set1Value(1, fs);
+    sep->addChild(prog);
+
+    // Fullscreen NDC quad: the vertex shader outputs these coordinates
+    // directly as clip-space positions, bypassing projection entirely.
+    // This avoids near/far clipping artifacts and works for both
+    // perspective and orthographic cameras.
+    SoCoordinate3* coords = new SoCoordinate3;
+    coords->point.set1Value(0, SbVec3f(-1.0f, -1.0f, 0.0f));
+    coords->point.set1Value(1, SbVec3f(1.0f, -1.0f, 0.0f));
+    coords->point.set1Value(2, SbVec3f(1.0f, 1.0f, 0.0f));
+    coords->point.set1Value(3, SbVec3f(-1.0f, 1.0f, 0.0f));
+    sep->addChild(coords);
+
+    SoFaceSet* quad = new SoFaceSet;
+    quad->numVertices.setValue(4);
+    sep->addChild(quad);
+
+    return sep;
+}
 
 /*!
 As ProgressBar has no chance to control the incoming Qt events of Quarter so we need to stop
@@ -695,6 +862,8 @@ void View3DInventorViewer::init()
     naviCubeEnabled = true;
 
     updateColors();
+
+    applySkyboxPreference();
 }
 
 View3DInventorViewer::~View3DInventorViewer()
@@ -1396,6 +1565,75 @@ void View3DInventorViewer::setGradientBackgroundColor(
 )
 {
     pcBackGround->setColorGradient(fromColor, toColor, midColor);
+}
+
+void View3DInventorViewer::applySkyboxPreference()
+{
+    // Remove any existing skybox
+    if (skyboxSeparator) {
+        int idx = backgroundroot->findChild(skyboxSeparator);
+        if (idx != -1) {
+            backgroundroot->removeChild(idx);
+        }
+        skyboxSeparator->unref();
+        skyboxSeparator = nullptr;
+        skyboxCubeMap = nullptr;
+        // Restore gradient background if we previously hid it
+        if (skyboxHidGradient && backgroundroot->findChild(pcBackGround) == -1) {
+            backgroundroot->addChild(pcBackGround);
+        }
+        skyboxHidGradient = false;
+    }
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+    bool enabled = hGrp->GetBool("SkyboxEnabled", false);
+    std::string hdrPath = hGrp->GetASCII("SkyboxHDRFile", "");
+
+    if (!enabled || hdrPath.empty()) {
+        return;
+    }
+
+    SoTextureCubeMap* cm = nullptr;
+    SoSeparator* sep = buildHdriSkybox(hdrPath.c_str(), cm);
+    if (!sep) {
+        return;
+    }
+
+    sep->ref();
+    skyboxSeparator = sep;
+    skyboxCubeMap = cm;
+
+    // backgroundroot uses a fixed orthographic camera that doesn't track the
+    // user's view. Insert a callback that applies the real scene camera
+    // transforms before the skybox shader runs, so gl_ModelViewMatrix and
+    // gl_ProjectionMatrix reflect the actual view direction and FOV.
+    SoCallback* camCb = new SoCallback;
+    camCb->setCallback(
+        [](void* userData, SoAction* action) {
+            if (!action->isOfType(SoGLRenderAction::getClassTypeId())) {
+                return;
+            }
+            auto* viewer = static_cast<View3DInventorViewer*>(userData);
+            SoCamera* cam = viewer->getSoRenderManager()->getCamera();
+            if (cam) {
+                cam->GLRender(static_cast<SoGLRenderAction*>(action));
+            }
+        },
+        this
+    );
+    sep->insertChild(camCb, 0);
+
+    // Add to backgroundroot so it renders before any scene geometry and is
+    // never frustum-culled
+    backgroundroot->addChild(sep);
+
+    // Remove the gradient background to avoid double-drawing behind the skybox.
+    if (backgroundroot->findChild(pcBackGround) != -1) {
+        backgroundroot->removeChild(pcBackGround);
+        skyboxHidGradient = true;
+    }
 }
 
 void View3DInventorViewer::setEnabledFPSCounter(bool on)

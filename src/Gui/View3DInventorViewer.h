@@ -79,6 +79,7 @@ class SoGroup;  // NOLINT
 class SoPickStyle;
 class NaviCube;
 class SoClipPlane;
+class SoTextureCubeMap;
 
 namespace Quarter = SIM::Coin3D::Quarter;
 
@@ -151,7 +152,8 @@ public:
     {
         NoGradient,
         LinearGradient,
-        RadialGradient
+        RadialGradient,
+        SkyboxHDR
     };
     //@}
 
@@ -553,6 +555,7 @@ private:
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors();
+    void applySkyboxPreference();
 
 private:
     NaviCube* naviCube;
@@ -621,6 +624,11 @@ private:
     ViewerEventFilter* viewerEventFilter;
 
     PyObject* _viewerPy;
+
+    // HDRI skybox
+    SoSeparator* skyboxSeparator {nullptr};
+    SoTextureCubeMap* skyboxCubeMap {nullptr};
+    bool skyboxHidGradient {false};
 
     static unsigned char XPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
     static unsigned char YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];

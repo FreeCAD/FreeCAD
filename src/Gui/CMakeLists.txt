@@ -1181,6 +1181,8 @@ SET(Inventor_SRCS
     Inventor/SoDrawingGrid.h
     Inventor/SoFCBackgroundGradient.h
     Inventor/SoFCBoundingBox.h
+    Inventor/SoFCSkyboxShaders.h
+    vendor/stb_image.h
     Inventor/SoMouseWheelEvent.h
     Inventor/SoFCTransform.h
     Inventor/SoToggleSwitch.h
