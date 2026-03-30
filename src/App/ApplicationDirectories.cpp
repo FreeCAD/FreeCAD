@@ -558,10 +558,11 @@ bool ApplicationDirectories::usingCurrentVersionConfig(fs::path config) const {
     return version == versionStringForPath(std::get<0>(_currentVersion), std::get<1>(_currentVersion));
 }
 
-std::vector<std::string> ApplicationDirectories::migrateConfig(const fs::path& oldPath,
-                                                                const fs::path& newPath)
+ApplicationDirectories::MigrationResult ApplicationDirectories::migrateConfig(
+    const fs::path& oldPath,
+    const fs::path& newPath)
 {
-    std::vector<std::string> skippedPaths;
+    MigrationResult result;
     fs::create_directories(newPath);
     std::error_code errorCode;
     for (auto& file : fs::directory_iterator(oldPath, errorCode)) {
@@ -577,7 +578,7 @@ std::vector<std::string> ApplicationDirectories::migrateConfig(const fs::path& o
             if (errorCode || !fs::exists(target, errorCode)) {
                 Base::Console().warning("Migration: skipping broken symlink '%s'\n",
                                         pathString.c_str());
-                skippedPaths.push_back(pathString);
+                result.failedPaths.push_back(sourcePath);
                 continue;
             }
         }
@@ -591,7 +592,7 @@ std::vector<std::string> ApplicationDirectories::migrateConfig(const fs::path& o
             Base::Console().warning("Migration: failed to copy '%s': %s\n",
                                     pathString.c_str(),
                                     error.what());
-            skippedPaths.push_back(pathString);
+            result.failedPaths.push_back(sourcePath);
         }
     }
     if (errorCode) {
@@ -599,13 +600,13 @@ std::vector<std::string> ApplicationDirectories::migrateConfig(const fs::path& o
                                 Base::FileInfo::pathToString(oldPath).c_str(),
                                 errorCode.message().c_str());
     }
-    return skippedPaths;
+    return result;
 }
 
-std::vector<std::string> ApplicationDirectories::migrateAllPaths(
+ApplicationDirectories::MigrationResult ApplicationDirectories::migrateAllPaths(
     const std::vector<fs::path>& paths) const
 {
-    std::vector<std::string> allSkipped;
+    MigrationResult allResult;
     auto [major, minor] = _currentVersion;
     std::set<fs::path> uniquePaths(paths.begin(), paths.end());
     for (auto path : uniquePaths) {
@@ -627,15 +628,18 @@ std::vector<std::string> ApplicationDirectories::migrateAllPaths(
             continue;  // Ignore an existing path: not an error, just a migration that was already done
         }
         fs::create_directories(newPath);
-        auto skipped = migrateConfig(path, newPath);
-        allSkipped.insert(allSkipped.end(), skipped.begin(), skipped.end());
+        auto result = migrateConfig(path, newPath);
+        allResult.migratedPaths.emplace_back(path, newPath);
+        allResult.failedPaths.insert(allResult.failedPaths.end(),
+                                     result.failedPaths.begin(),
+                                     result.failedPaths.end());
     }
-    if (!allSkipped.empty()) {
+    if (!allResult.failedPaths.empty()) {
         Base::Console().warning("Migration completed with %d skipped file(s). "
                                 "See warnings above for details.\n",
-                                static_cast<int>(allSkipped.size()));
+                                static_cast<int>(allResult.failedPaths.size()));
     }
-    return allSkipped;
+    return allResult;
 }
 
 // TODO: Consider using this for all UNIX-like OSes

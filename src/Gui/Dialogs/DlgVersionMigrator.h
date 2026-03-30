@@ -119,7 +119,7 @@ protected:
         const std::string& newString
     );
 
-    void writeMigrationLog(const std::vector<std::string>& skippedPaths);
+    void writeMigrationLog(const std::vector<std::filesystem::path>& skippedPaths);
 
 private:
     std::string _configDir;

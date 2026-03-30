@@ -256,13 +256,13 @@ void PathMigrationWorker::run()
 {
     try {
         App::GetApplication().GetUserParameter().SaveDocument();
-        auto skipped = App::Application::directories()->migrateAllPaths({_userAppDir, _configDir});
+        auto result = App::Application::directories()->migrateAllPaths({_userAppDir, _configDir});
         replaceOccurrencesInPreferences();
-        if (!skipped.empty()) {
-            writeMigrationLog(skipped);
+        if (!result.failedPaths.empty()) {
+            writeMigrationLog(result.failedPaths);
             QStringList skippedList;
-            for (const auto& path : skipped) {
-                skippedList.append(QString::fromStdString(path));
+            for (const auto& path : result.failedPaths) {
+                skippedList.append(QString::fromStdString(Base::FileInfo::pathToString(path)));
             }
             Q_EMIT(completedWithWarnings(skippedList));
         }
@@ -362,7 +362,7 @@ void PathMigrationWorker::replaceInContents(
     }
 }
 
-void PathMigrationWorker::writeMigrationLog(const std::vector<std::string>& skippedPaths)
+void PathMigrationWorker::writeMigrationLog(const std::vector<std::filesystem::path>& skippedPaths)
 {
     auto logName = "migration-to-"
         + App::ApplicationDirectories::versionStringForPath(_major, _minor) + ".log";
@@ -371,7 +371,7 @@ void PathMigrationWorker::writeMigrationLog(const std::vector<std::string>& skip
         std::ofstream log(logPath);
         log << "Migration completed with " << skippedPaths.size() << " skipped file(s):\n\n";
         for (const auto& path : skippedPaths) {
-            log << "  " << path << "\n";
+            log << "  " << Base::FileInfo::pathToString(path) << "\n";
         }
         log << "\nSee the FreeCAD Report View for additional details.\n";
     }

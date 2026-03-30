@@ -434,10 +434,10 @@ TEST_F(ApplicationDirectoriesTest, migrateConfigCreatesDestinationAndCopiesFiles
     writeFile(oldPath / "b.ini", "bravo");
 
     // Act
-    auto skipped = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
+    auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
 
     // Assert
-    EXPECT_TRUE(skipped.empty());
+    EXPECT_TRUE(result.failedPaths.empty());
     ASSERT_TRUE(fs::exists(newPath));
     ASSERT_TRUE(fs::is_directory(newPath));
 
@@ -597,9 +597,9 @@ TEST_F(ApplicationDirectoriesTest, migrateConfigSkipsBrokenSymlink)
     writeFile(oldPath / "good.txt", "ok");
     fs::create_symlink(oldPath / "nonexistent_target", oldPath / "bad_link");
 
-    auto skipped = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
+    auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
 
-    EXPECT_FALSE(skipped.empty());
+    EXPECT_FALSE(result.failedPaths.empty());
     EXPECT_TRUE(fs::exists(newPath / "good.txt"));
     EXPECT_EQ(readFile(newPath / "good.txt"), "ok");
 }
@@ -612,9 +612,9 @@ TEST_F(ApplicationDirectoriesTest, migrateConfigCopiesValidSymlink)
     writeFile(oldPath / "target.txt", "content");
     fs::create_symlink(oldPath / "target.txt", oldPath / "good_link");
 
-    auto skipped = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
+    auto result = App::ApplicationDirectories::migrateConfig(oldPath, newPath);
 
-    EXPECT_TRUE(skipped.empty());
+    EXPECT_TRUE(result.failedPaths.empty());
     EXPECT_TRUE(fs::exists(newPath / "target.txt"));
     EXPECT_TRUE(fs::exists(newPath / "good_link"));
 }
@@ -630,9 +630,9 @@ TEST_F(ApplicationDirectoriesTest, migrateAllPathsReturnsSkippedPaths)
     fs::create_symlink(base / "no_such_file", base / "broken");
 
     std::vector<fs::path> inputs {base};
-    auto skipped = appDirs->migrateAllPaths(inputs);
+    auto result = appDirs->migrateAllPaths(inputs);
 
-    EXPECT_FALSE(skipped.empty());
+    EXPECT_FALSE(result.failedPaths.empty());
     fs::path dest = versionedPath(base, 5, 4);
     EXPECT_TRUE(fs::exists(dest / "good.txt"));
 }
