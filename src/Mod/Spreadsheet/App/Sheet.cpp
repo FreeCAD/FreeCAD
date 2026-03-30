@@ -858,7 +858,7 @@ void Sheet::updateProperty(CellAddress key)
  *
  */
 
-Property* Sheet::getPropertyByName(const char* name) const
+Property* Sheet::getPropertyByName(const char* name, App::PropertyLookupMode mode) const
 {
     CellAddress addr = getCellAddress(name, true);
     Property* prop = nullptr;
@@ -869,7 +869,7 @@ Property* Sheet::getPropertyByName(const char* name) const
         return prop;
     }
     else {
-        return DocumentObject::getPropertyByName(name);
+        return DocumentObject::getPropertyByName(name, mode);
     }
 }
 

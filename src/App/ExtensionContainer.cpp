@@ -187,9 +187,9 @@ void ExtensionContainer::visitProperties(const std::function<void(Property*)>& v
     };
 }
 
-Property* ExtensionContainer::getPropertyByName(const char* name) const
+Property* ExtensionContainer::getPropertyByName(const char* name, PropertyLookupMode mode) const
 {
-    auto prop = App::PropertyContainer::getPropertyByName(name);
+    auto prop = App::PropertyContainer::getPropertyByName(name, mode);
     if (prop) {
         return prop;
     }

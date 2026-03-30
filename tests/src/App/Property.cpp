@@ -90,8 +90,110 @@ TEST_F(PropertyFloatTest, testWriteRead)
     EXPECT_DOUBLE_EQ(prop2.getValue(), value);
 }
 
+std::string PropertyAlias::_docName;
+App::Document* PropertyAlias::_doc {nullptr};
+
 std::string RenameProperty::_docName;
 App::Document* RenameProperty::_doc {nullptr};
+
+// Tests that an alias resolves to the same property as the canonical name.
+TEST_F(PropertyAlias, aliasResolvesToCanonicalProperty)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    App::Property* byCanonical = varSet->getPropertyByName("NewName");
+    App::Property* byAlias = varSet->getPropertyByName("OldName");
+
+    ASSERT_NE(byCanonical, nullptr);
+    EXPECT_EQ(byAlias, byCanonical);
+}
+
+// Tests that a non-deprecated alias emits no warning.
+TEST_F(PropertyAlias, nonDeprecatedAliasEmitsNoWarning)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    WarningCapture capture;
+    varSet->getPropertyByName("OldName");
+
+    EXPECT_TRUE(capture.warnings.empty());
+}
+
+// Tests that a deprecated alias still resolves but emits a warning.
+TEST_F(PropertyAlias, deprecatedAliasEmitsWarningAndResolves)
+{
+    varSet->addPropertyAlias("NewName", "OldDeprecated", App::PropertyAliasType::Deprecated);
+
+    WarningCapture capture;
+    App::Property* prop = varSet->getPropertyByName("OldDeprecated");
+
+    ASSERT_NE(prop, nullptr);
+    EXPECT_EQ(prop, varSet->getPropertyByName("NewName"));
+    ASSERT_EQ(capture.warnings.size(), 1u);
+    EXPECT_NE(capture.warnings[0].find("OldDeprecated"), std::string::npos);
+    EXPECT_NE(capture.warnings[0].find("NewName"), std::string::npos);
+}
+
+// Tests that an unknown name still returns nullptr (no regression).
+TEST_F(PropertyAlias, unknownNameReturnsNullptr)
+{
+    App::Property* prop = varSet->getPropertyByName("DoesNotExist");
+
+    EXPECT_EQ(prop, nullptr);
+}
+
+// Tests that an alias works for a static property (Label is inherited from DocumentObject).
+TEST_F(PropertyAlias, aliasForStaticProperty)
+{
+    varSet->addPropertyAlias("Label", "OldLabel");
+
+    App::Property* byCanonical = varSet->getPropertyByName("Label");
+    App::Property* byAlias = varSet->getPropertyByName("OldLabel");
+
+    ASSERT_NE(byCanonical, nullptr);
+    EXPECT_EQ(byAlias, byCanonical);
+}
+
+// Tests that Python attribute access via an alias returns the correct value.
+TEST_F(PropertyAlias, pythonAttributeAccessViaAlias)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    std::string cmd = "vs = App.getDocument('" + _docName + "').getObject('"
+        + varSet->getNameInDocument()
+        + "')\n"
+          "val = vs.OldName\n"
+          "assert val == 42, f'Expected 42, got {val}'";
+    Base::Interpreter().runString(cmd.c_str());
+}
+
+// Tests that Python getPropertyByName() resolves aliases.
+TEST_F(PropertyAlias, pythonGetPropertyByNameViaAlias)
+{
+    varSet->addPropertyAlias("NewName", "OldName");
+
+    std::string cmd = "vs = App.getDocument('" + _docName + "').getObject('"
+        + varSet->getNameInDocument()
+        + "')\n"
+          "p1 = vs.getPropertyByName('NewName')\n"
+          "p2 = vs.getPropertyByName('OldName')\n"
+          "assert p1 == p2, f'Alias must resolve to same value, got {p1} vs {p2}'";
+    Base::Interpreter().runString(cmd.c_str());
+}
+
+// Tests that addPropertyAlias is callable from Python.
+TEST_F(PropertyAlias, pythonAddPropertyAlias)
+{
+    std::string cmd = "vs = App.getDocument('" + _docName + "').getObject('"
+        + varSet->getNameInDocument()
+        + "')\n"
+          "vs.addPropertyAlias('NewName', 'PyAlias')\n"
+          "p = vs.getPropertyByName('PyAlias')\n"
+          "assert p is not None, 'Alias registered from Python must resolve'";
+    Base::Interpreter().runString(cmd.c_str());
+
+    EXPECT_EQ(varSet->getPropertyByName("PyAlias"), varSet->getPropertyByName("NewName"));
+}
 
 // Tests whether we can rename a property
 TEST_F(RenameProperty, renameProperty)

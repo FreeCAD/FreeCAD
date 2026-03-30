@@ -225,7 +225,8 @@ public:
      * @{
      */
 
-    Property* getPropertyByName(const char* name) const override;
+    Property* getPropertyByName(const char* name,
+                                PropertyLookupMode mode = PropertyLookupMode::WithAliases) const override;
 
     /**
      * @brief Find a property by its name and cast it to the specified type.
