@@ -1161,6 +1161,60 @@ SoPickedPoint* View3DInventorViewer::getPointOnRay(const SbVec2s& pos, const Vie
     return (pick ? new SoPickedPoint(*pick) : nullptr);
 }
 
+std::vector<std::unique_ptr<SoPickedPoint>> View3DInventorViewer::getPickedPointsOnRay(
+    const SbVec2s& pos, const ViewProvider* vp) const
+{
+    std::vector<std::unique_ptr<SoPickedPoint>> result;
+
+    SoPath* path {};
+    if (vp == editViewProvider && pcEditingRoot->getNumChildren() > 1) {
+        path = new SoPath(1);
+        path->ref();
+        path->append(pcEditingRoot);
+    }
+    else {
+        SoSearchAction sa;
+        sa.setNode(vp->getRoot());
+        sa.setSearchingAll(true);
+        sa.apply(getSoRenderManager()->getSceneGraph());
+        path = sa.getPath();
+        if (!path) {
+            return result;
+        }
+        path->ref();
+    }
+    SoGetMatrixAction gm(getSoRenderManager()->getViewportRegion());
+    gm.apply(path);
+
+    auto trans = new SoTransform;
+    trans->setMatrix(gm.getMatrix());
+    trans->ref();
+
+    auto root = new SoSeparator;
+    root->ref();
+    root->addChild(getSoRenderManager()->getCamera());
+    root->addChild(trans);
+    root->addChild(path->getTail());
+
+    SoRayPickAction rp(getSoRenderManager()->getViewportRegion());
+    rp.setPickAll(true);
+    rp.setPoint(pos);
+    rp.setRadius(getPickRadius());
+    rp.apply(root);
+
+    const SoPickedPointList& picks = rp.getPickedPointList();
+    result.reserve(picks.getLength());
+    for (int i = 0; i < picks.getLength(); ++i) {
+        result.push_back(std::make_unique<SoPickedPoint>(*picks[i]));
+    }
+
+    root->unref();
+    trans->unref();
+    path->unref();
+
+    return result;
+}
+
 SoPickedPoint* View3DInventorViewer::getPointOnRay(
     const SbVec3f& pos,
     const SbVec3f& dir,

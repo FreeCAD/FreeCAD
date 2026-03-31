@@ -838,9 +838,9 @@ void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
 
         SbVec2s screencoords = viewer->getPointOnViewport(sbpoint);
 
-        std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(screencoords, viewer));
+        auto picks = this->getPickedPointsOnRay(screencoords, viewer);
 
-        if (detectAndShowPreselection(Point.get()) && sketchHandler) {
+        if (detectAndShowPreselection(picks) && sketchHandler) {
             sketchHandler->applyCursor();
         }
     }
@@ -1569,9 +1569,8 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
         && Mode != STATUS_SELECT_Constraint && Mode != STATUS_SKETCH_Drag
         && Mode != STATUS_SKETCH_DragConstraint && Mode != STATUS_SKETCH_UseRubberBand) {
 
-        std::unique_ptr<SoPickedPoint> Point(this->getPointOnRay(cursorPos, viewer));
-
-        preselectChanged = detectAndShowPreselection(Point.get());
+        auto picks = this->getPickedPointsOnRay(cursorPos, viewer);
+        preselectChanged = detectAndShowPreselection(picks);
     }
 
     switch (Mode) {
@@ -2508,7 +2507,8 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
+bool ViewProviderSketch::detectAndShowPreselection(
+    const std::vector<std::unique_ptr<SoPickedPoint>>& pickedPoints)
 {
     assert(isInEditMode());
 
@@ -2554,9 +2554,9 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         }
     };
 
-    if (Point) {
+    auto result = editCoinManager->detectPreselection(pickedPoints);
 
-        EditModeCoinManager::PreselectionResult result = editCoinManager->detectPreselection(Point);
+    if (result.hasHit()) {
 
         if (result.PointIndex != -1
             && result.PointIndex != preselection.PreselectPoint) {// if a new point is hit
@@ -2564,7 +2564,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             ss << "Vertex" << result.PointIndex + 1;
             bool accepted =
                 setPreselect(
-                    ss.str(), Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2])
+                    ss.str(), result.pickPoint[0], result.pickPoint[1], result.pickPoint[2])
                 != 0;
             preselection.blockedPreselection = !accepted;
             if (accepted) {
@@ -2595,7 +2595,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
                         + 1;// convert index start from -3 to 1
             bool accepted =
                 setPreselect(
-                    ss.str(), Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2])
+                    ss.str(), result.pickPoint[0], result.pickPoint[1], result.pickPoint[2])
                 != 0;
             preselection.blockedPreselection = !accepted;
             if (accepted) {
@@ -2625,7 +2625,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             }
             bool accepted =
                 setPreselect(
-                    ss.str(), Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2])
+                    ss.str(), result.pickPoint[0], result.pickPoint[1], result.pickPoint[2])
                 != 0;
             preselection.blockedPreselection = !accepted;
             if (accepted) {
@@ -2652,7 +2652,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
 
                 accepted &=
                     setPreselect(
-                        ss.str(), Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2])
+                        ss.str(), result.pickPoint[0], result.pickPoint[1], result.pickPoint[2])
                     != 0;
 
                 preselection.blockedPreselection = !accepted;
@@ -2677,9 +2677,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
                 return true;// Preselection changed
             }
         }
-        else if ((result.PointIndex == -1 && result.GeoIndex == -1
-                  && result.Cross == EditModeCoinManager::PreselectionResult::Axes::None
-                  && result.ConstrIndices.empty())
+        else if (!result.hasHit()
                  && (preselection.isPreselectPointValid() || preselection.isPreselectCurveValid()
                      || preselection.isCrossPreselected()
                      || !preselection.PreselectConstraintSet.empty()
@@ -2692,7 +2690,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             return true;
         }
         Gui::Selection().setPreselectCoord(
-            Point->getPoint()[0], Point->getPoint()[1], Point->getPoint()[2]);
+            result.pickPoint[0], result.pickPoint[1], result.pickPoint[2]);
     }
     else if (preselection.isPreselectCurveValid() || preselection.isPreselectPointValid()
              || !preselection.PreselectConstraintSet.empty() || preselection.isCrossPreselected()

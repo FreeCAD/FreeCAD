@@ -257,6 +257,11 @@ public:
      * It's in the responsibility of the caller to delete the returned instance.
      */
     SoPickedPoint* getPointOnRay(const SbVec2s& pos, const ViewProvider* vp) const;
+    /** Helper method to get all picked entities along a ray while editing.
+     * Returns copies of all picked points sorted by distance (front to back).
+     */
+    std::vector<std::unique_ptr<SoPickedPoint>> getPickedPointsOnRay(
+        const SbVec2s& pos, const ViewProvider* vp) const;
     /** Helper method to get picked entities while editing.
      * It's in the responsibility of the caller to delete the returned instance.
      */

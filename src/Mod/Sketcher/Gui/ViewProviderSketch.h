@@ -812,7 +812,8 @@ private:
     /** @name preselection functions */
     //@{
     /// helper to detect preselection
-    bool detectAndShowPreselection(SoPickedPoint* Point);
+    bool detectAndShowPreselection(
+        const std::vector<std::unique_ptr<SoPickedPoint>>& pickedPoints);
     int getPreselectPoint() const;
     int getPreselectCurve() const;
     int getPreselectCross() const;

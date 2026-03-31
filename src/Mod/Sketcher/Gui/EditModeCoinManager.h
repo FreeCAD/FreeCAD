@@ -25,6 +25,7 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 #include <vector>
 
 #include <App/Application.h>
@@ -194,6 +195,15 @@ public:
                                       // -3,-4,-5,... for external geometry
         Axes Cross = Axes::None;
         std::set<int> ConstrIndices;
+        SbVec3f pickPoint {0, 0, 0};
+
+        bool hasHit() const
+        {
+            return PointIndex != InvalidPoint
+                || GeoIndex != InvalidCurve
+                || Cross != Axes::None
+                || !ConstrIndices.empty();
+        }
 
         inline void clear()
         {
@@ -222,6 +232,13 @@ public:
     /** @name handle preselection and selection of points */
     //@{
     PreselectionResult detectPreselection(SoPickedPoint* Point);
+    /** Detect preselection from a list of picks with priority ordering.
+     * Constraints are checked first (across all picks), then geometry
+     * from the front-most pick. The picked 3D position is stored in
+     * PreselectionResult::pickPoint.
+     */
+    PreselectionResult detectPreselection(
+        const std::vector<std::unique_ptr<SoPickedPoint>>& pickedPoints);
     /// The client is responsible for unref-ing the SoGroup to release the memory.
     SoGroup* getSelectedConstraints();
     //@}

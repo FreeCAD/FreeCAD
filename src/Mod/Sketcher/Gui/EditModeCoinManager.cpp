@@ -682,6 +682,26 @@ void EditModeCoinManager::setAxisPickStyle(bool on)
     }
 }
 
+EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
+    const std::vector<std::unique_ptr<SoPickedPoint>>& pickedPoints)
+{
+    // Constraints have highest pick priority — they render behind geometry
+    // but should be pickable through it. Check all picks for constraint hits.
+    for (const auto& pp : pickedPoints) {
+        auto result = detectPreselection(pp.get());
+        if (!result.ConstrIndices.empty()) {
+            return result;
+        }
+    }
+
+    // No constraint hit — use front-most pick for geometry
+    if (!pickedPoints.empty()) {
+        return detectPreselection(pickedPoints[0].get());
+    }
+
+    return {};
+}
+
 EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(SoPickedPoint* Point)
 {
     EditModeCoinManager::PreselectionResult result;
@@ -690,14 +710,7 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
         return result;
     }
 
-    // Check constraints first — they may be visually behind geometry lines
-    // but should still be pickable (constraint icons have lower z-depth than
-    // geometry for rendering, but should have higher pick priority).
-    result.ConstrIndices = pEditModeConstraintCoinManager->detectConstraintAtPosition(
-        SbVec2f(Point->getPoint()[0], Point->getPoint()[1]));
-    if (!result.ConstrIndices.empty()) {
-        return result;
-    }
+    result.pickPoint = Point->getPoint();
 
     SoPath* path = Point->getPath();
     SoNode* tail = path->getTail();  // Tail is directly the node containing points and curves
