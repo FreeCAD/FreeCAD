@@ -173,7 +173,8 @@ void Gui::GuiNativeEvent::pollSpacenav()
             if (ret == 0 || (ret < 0 && errno != EAGAIN && errno != EWOULDBLOCK)) {
                 // EOF or socket error — spacenavd disconnected
                 Base::Console().warning(
-                    "Lost connection to spacenav daemon. Restart FreeCAD to reconnect.\n");
+                    "Lost connection to spacenav daemon. Restart FreeCAD to reconnect.\n"
+                );
                 spnavNotifier->setEnabled(false);
                 spnav_close();
                 spnavNotifier = nullptr;
