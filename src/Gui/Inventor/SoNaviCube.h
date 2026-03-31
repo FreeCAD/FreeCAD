@@ -92,8 +92,12 @@ public:
         ArrowWest,
         ArrowRight,
         ArrowLeft,
-        DotBackside,
-        ViewMenu
+        Backside1,
+        Backside2,
+        Home,
+        Isometric,
+        ViewMenu,
+        ViewMenuBorder
     };
 
     enum class FaceType

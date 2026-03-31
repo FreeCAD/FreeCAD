@@ -557,8 +557,12 @@ void SoNaviCube::rebuildButtonFaces() const
     addButtonFace(PickId::ArrowWest, SbVec3f(0, -1, 0));
     addButtonFace(PickId::ArrowLeft, SbVec3f(0, 0, 1));
     addButtonFace(PickId::ArrowRight, SbVec3f(0, 0, -1));
-    addButtonFace(PickId::DotBackside, SbVec3f(0, 1, 0));
+    addButtonFace(PickId::Backside1, SbVec3f(0, 1, 0));
+    addButtonFace(PickId::Backside2, SbVec3f(0, 1, 0));
+    addButtonFace(PickId::Isometric);
+    addButtonFace(PickId::Home);
     addButtonFace(PickId::ViewMenu);
+    addButtonFace(PickId::ViewMenuBorder);
 }
 
 void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
@@ -588,22 +592,85 @@ void SoNaviCube::addButtonFace(PickId pickId, const SbVec3f& direction) const
             break;
         }
         case PickId::ViewMenu: {
-            offx = 0.84F;
+            offx = 0.90F;
+            offy = 0.90F;
+            pointData = {0.0F, 0.0F, -13.0F, -12.0F, 13.0F, -12.0F, 0.0F, 0.0F};
+            break;
+        }
+        case PickId::ViewMenuBorder: {
+            offx = 0.90F;
+            offy = 0.87F;
+
+            float width = 19.0F;
+            float height = 13.0F;
+            float radius = 4.0F;
+
+            pointData = {
+                -width,
+                -(height - radius),
+                -(width - radius),
+                -height,
+                width - radius,
+                -height,
+                width,
+                -(height - radius),
+                width,
+                height - radius,
+                width - radius,
+                height,
+                -(width - radius),
+                height,
+                -width,
+                height - radius
+            };
+            break;
+        }
+        case PickId::Isometric: {
+            offx = 0.10F;
             offy = 0.84F;
             pointData = {0.0F, 0.0F, 15.0F,  -6.0F, 0.0F,   -12.0F, -15.0F, -6.0F,
                          0.0F, 0.0F, -15.0F, -6.0F, -15.0F, 12.0F,  0.0F,   18.0F,
                          0.0F, 0.0F, 0.0F,   18.0F, 15.0F,  12.0F,  15.0F,  -6.0F};
             break;
         }
-        case PickId::DotBackside: {
-            int steps = 16;
-            pointData.reserve(steps * 2);
-            for (int i = 0; i < steps; i++) {
-                float angle = 2.0F * std::numbers::pi_v<float>
-                    * (static_cast<float>(i) + 0.5F) / static_cast<float>(steps);
-                pointData.emplace_back(10.0F * std::cos(angle) + 87.0F);
-                pointData.emplace_back(10.0F * std::sin(angle) - 87.0F);
-            }
+        case PickId::Home: {
+            offx = 0.09F;
+            offy = 0.09F;
+            pointData = {
+                // Roof (triangle with overhang)
+                0.0F,   -18.0F,  // Top of the roof
+                18.0F,  -6.0F,   // Bottom-right corner of the roof (overhang)
+
+                12.0F,  -6.0F,  // Top-right corner of the base
+                12.0F,  8.0F,   // Bottom-right corner of the base
+                4.0F,   8.0F,   // Bottom-right of the door
+                4.0F,   0.0F,   // Top-right of the door
+                -4.0F,  0.0F,   // Top-left of the door
+                -4.0F,  8.0F,   // Bottom-left of the door
+                -12.0F, 8.0F,   // Bottom-left corner of the base
+                -12.0F, -6.0F,  // Top-left corner of the base
+
+                -18.0F, -6.0F,  // Bottom-left corner of the roof (overhang)
+                0.0F,   -18.0F  // Back to the top of the roof
+            };
+            break;
+        }
+        case PickId::Backside1: {
+            offx = 0.80F;
+            offy = 0.0F;
+            pointData = {24., 21.5, 17.,  29.1, 16.7, 25.6, 12.0, 25.3, 8.2, 24.0, 4.,  22.,
+                         1.2, 19.,  0.,   15.,  0.,   10.,  1.5,  8.1,  4.4, 6.1,  8.0, 5.5,
+                         14., 4.,   14.6, 9.2,  10.1, 10.2, 6.,   12.,  3.5, 14.,  3.4, 14.5,
+                         6.0, 15.8, 10.,  17.,  16.3, 18.,  16.3, 13.6, 24., 21.5};
+            break;
+        }
+        case PickId::Backside2: {
+            offx = 0.80F;
+            offy = 0.0F;
+            pointData = {18.,  6.,   22.6, 0.,   22.5, 3.0,  27.,  3.3,  31.4, 4.3,  35.0,
+                         5.6,  37.5, 7.1,  40.,  9.7,  40.,  12.8, 38.5, 16.5, 36.2, 20.,
+                         33.,  21.9, 28.3, 22.9, 28.7, 16.,  32.8, 15.,  36.4, 12.9, 33.8,
+                         10.8, 30.,  9.3,  26.1, 8.5,  22.5, 8.1,  22.4, 10.8, 18.,  6.};
             break;
         }
     }
